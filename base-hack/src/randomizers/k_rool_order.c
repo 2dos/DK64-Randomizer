@@ -99,7 +99,17 @@ void completeBoss(void) {
 	// Go to next boss in sequence
 	if ((k_rool_phase == 4) || (Rando.k_rool_order[k_rool_phase + 1] == 0xFF)) {
 		// Ending phase
-		beatGame();
+		setPermFlag(FLAG_GAME_BEATEN);
+		save();
+		if (inU8List(CurrentMap, &maps_with_extended_end_cs, sizeof(maps_with_extended_end_cs))) {
+			playCutscene(CurrentActorPointer_0, 0x1A, 1);
+			renderingParamsData* render = Player->rendering_param_pointer;
+			render->scale_x = 0.0f;
+			render->scale_y = 0.0f;
+			render->scale_z = 0.0f;
+		} else {
+			initiateTransitionFade(MAP_ISLES, 29, GAMEMODE_ADVENTURE);
+		}
 		for (int i = 0; i < 5; i++) {
 			setFlag(FLAG_KROOL_ENTERED + i, 0, FLAGTYPE_PERMANENT);
 		}
