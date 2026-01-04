@@ -118,7 +118,6 @@ extern Gfx* drawScreenRect(Gfx* dl, int x1, int y1, int x2, int y2, int red, int
 extern Gfx* drawTextContainer(Gfx* dl, int style, float x, float y, const char* str, int red, int green, int blue, int opacity, int background);
 extern Gfx* drawText(Gfx* dl, int style, float x, float y, const char* str, int red, int green, int blue, int opacity);
 extern Gfx* drawDPad(Gfx* dl);
-extern Gfx* drawImageWithFilter(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity);
 extern void correctKongFaces(void);
 
 extern Gfx* display_file_images(Gfx* dl, int y_offset);

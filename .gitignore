@@ -189,6 +189,7 @@ n64chain.zip
 n64chain.tgz
 base-hack/build/n64chain
 base-hack/build/libdragon
+base-hack/build/armips
 base-hack/rom_tester/output.txt
 base-hack/assets/instance_scripts/dump
 base-hack/include/build_os.h

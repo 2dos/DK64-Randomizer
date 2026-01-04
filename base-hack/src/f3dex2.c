@@ -1,16 +1,12 @@
 #include "../include/common.h"
 
-Gfx* drawImageWithFilter(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity) {
+Gfx* drawImage(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity) {
 	dl = initDisplayList(dl);
 	gDPSetRenderMode(dl++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-	gDPSetPrimColor(dl++, 0, 0, red, green, blue, opacity);
+	gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, opacity);
 	gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
 	gDPSetTextureFilter(dl++, G_TF_POINT);
 	return displayImage(dl++, text_index, 0, codec_index, img_width, img_height, x, y, xScale, yScale, 0, 0.0f);
-}
-
-Gfx* drawImage(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity) {
-	return drawImageWithFilter(dl, text_index, codec_index, img_width, img_height, x, y, xScale, yScale, 0xFF, 0xFF, 0xFF, opacity);
 }
 
 Gfx* drawTri(Gfx* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha) {
@@ -33,6 +29,7 @@ Gfx* drawTri(Gfx* dl, short x1, short y1, short x2, short y2, short x3, short y3
 	return dl;
 }
 
+__attribute__((noinline))
 Gfx* drawPixelText(Gfx* dl, int x, int y, const char* str, int red, int green, int blue, int alpha) {
 	gDPPipeSync(dl++);
 	gDPSetCycleType(dl++, G_CYC_1CYCLE);
@@ -44,6 +41,7 @@ Gfx* drawPixelText(Gfx* dl, int x, int y, const char* str, int red, int green, i
     return textDraw(dl,2,x,y,str);
 }
 
+__attribute__((noinline))
 Gfx* drawPixelTextContainer(Gfx* dl, int x, int y, const char* str, int red, int green, int blue, int alpha, int offset) {
 	if (offset) {
 		dl = drawPixelText(dl,x-offset,y+offset,str,0,0,0,alpha);

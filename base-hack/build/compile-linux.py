@@ -134,8 +134,6 @@ with open("asm/objects.asm", "w") as obj_asm:
             out_obj = os.path.join("obj", obj_name)
             obj_asm.write(f'.importobj "{out_obj}"\n')
 
-            reduced_optimization = src_path in strict_aliasing_avoids
-
             flags = [
                 "-c",
 
@@ -157,6 +155,8 @@ with open("asm/objects.asm", "w") as obj_asm:
                 # Disable features that bloat code
                 "-fno-stack-protector",
                 "-fno-pic",
+                "-fno-inline",
+                "-fno-unroll-loops",
                 "-mno-abicalls",
                 "-fno-asynchronous-unwind-tables",
                 "-fno-unwind-tables",
