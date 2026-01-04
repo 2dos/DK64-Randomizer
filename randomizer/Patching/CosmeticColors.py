@@ -168,7 +168,6 @@ def apply_cosmetic_colors(settings: Settings, ROM_COPY: ROM):
                 0xB7B: (32, 32),
                 0x323: (32, 32),
                 0xBAA: (4, 4),
-                rim_texture: (32, 32),
                 0xE4D: (64, 32),
                 0xE4E: (64, 32),
             }
