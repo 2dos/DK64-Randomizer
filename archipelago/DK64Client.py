@@ -317,10 +317,10 @@ class DK64Client:
                 "BizHawk": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-BizHawk-DK64-Edition",
                 "Simple64": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Simple64",
             }
-            
+
             emulator_id = self.n64_client.emulator_info.id.name
             setup_guide = emulator_setup_guides.get(emulator_id, "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators")
-            
+
             logger.error(f"{self.n64_client.emulator_info.id.name} is not set up correctly! Please follow the appropriate setup guide to ensure the game works!")
             logger.error(f"{setup_guide}")
             raise Exception("Bad emulator setup")
