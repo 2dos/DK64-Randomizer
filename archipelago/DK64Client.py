@@ -306,6 +306,25 @@ class DK64Client:
         if not self.memory_pointer:
             self.memory_pointer = self.n64_client.read_u32(DK64MemoryMap.memory_pointer)
         self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.connection, 0xFF)
+        if self.n64_client.read_u8(DK64MemoryMap.eeprom_determined) == 1:
+            if self.n64_client.read_u32(DK64MemoryMap.save_type) != 2:
+                # Map emulator IDs to their setup guides
+                emulator_setup_guides = {
+                    "Project64": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Project-64",
+                    "Project64_v4": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Project-64",
+                    "RMG": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Rosalies-Mupen-GUI",
+                    "ParallelLauncher": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Parallel-Launcher",
+                    "RetroArch": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-RetroArch",
+                    "BizHawk": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-BizHawk-DK64-Edition",
+                    "Simple64": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Simple64",
+                }
+
+                emulator_id = self.n64_client.emulator_info.id.name
+                setup_guide = emulator_setup_guides.get(emulator_id, "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators")
+
+                logger.error(f"{self.n64_client.emulator_info.id.name} is not set up correctly! Please follow the appropriate setup guide to ensure the game works!")
+                logger.error(f"{setup_guide}")
+                raise Exception("Bad emulator setup")
 
     # ==================== MESSAGING METHODS ====================
 

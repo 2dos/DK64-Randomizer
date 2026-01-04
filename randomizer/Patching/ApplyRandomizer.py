@@ -673,7 +673,6 @@ def patching_response(spoiler):
     randomize_coins(spoiler, ROM_COPY)
     place_mayhem_coins(spoiler, ROM_COPY)
     ApplyShopRandomizer(spoiler, ROM_COPY)
-    showWinCondition(spoiler.settings, ROM_COPY)
     remove5DSCameraPoint(spoiler, ROM_COPY)
     alterTextboxRequirements(spoiler)
     spoiler.arcade_item_reward = Items.NintendoCoin
@@ -729,6 +728,7 @@ def patching_response(spoiler):
         applyKongModelSwaps(spoiler.settings, ROM_COPY)
         updateHelmFaces(spoiler.settings, ROM_COPY)
         updateSnidePanel(spoiler.settings, ROM_COPY)
+        showWinCondition(spoiler.settings, ROM_COPY)
 
         patchAssembly(ROM_COPY, spoiler)
         ApplyMirrorMode(spoiler.settings, ROM_COPY)
