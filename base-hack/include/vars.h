@@ -1,4 +1,6 @@
-#define NULL 0
+#ifndef IS_LINUX
+    #define NULL 0
+#endif
 
 // SFX Index
 #define Banana 0x2A0

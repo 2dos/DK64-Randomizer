@@ -4,6 +4,7 @@ from BuildLib import finalROM
 
 with open(finalROM, "r+b") as fh:
     length = len(fh.read())
+    print("Original Size:", hex(length))
     to_add = length % 0x10
     if to_add != 0:
         arr = []

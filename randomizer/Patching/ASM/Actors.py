@@ -159,7 +159,6 @@ def krushaChanges(ROM_COPY: LocalROM, settings, offset_dict: dict):
             writeFloat(ROM_COPY, ledge_hang_y_0 + (4 * kong_index), Overlay.Static, 14, offset_dict)
             writeValue(ROM_COPY, potion_anim + (2 * kong_index), Overlay.Static, 0xE, offset_dict)
             writeFunction(ROM_COPY, 0x80677E94, Overlay.Static, "adjustAnimationTables", offset_dict)  # Give Krusha animations to slot
-            writeFunction(ROM_COPY, 0x806C32B8, Overlay.Static, "updateCutsceneModels", offset_dict)  # Fix cutscene models
             updateActorFunctionInt(ROM_COPY, 2 + kong_index, 0x806C9F44)
             updateActorFunction(ROM_COPY, KONG_PELLETS[kong_index], "OrangeGunCode")
             start = getSym("actor_health_damage") + (4 * KONG_PELLETS[kong_index]) + 2

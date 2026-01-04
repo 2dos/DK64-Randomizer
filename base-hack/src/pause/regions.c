@@ -15,10 +15,10 @@
 #define NO_HINT_REGION -2
 #define INCONSISTENT_HINT_REGION -1
 
-static char last_safe_parent = -1;
-static char hint_region_text[32] = "";
+ROM_DATA static char last_safe_parent = -1;
+ROM_DATA static char hint_region_text[32] = "";
 
-static const char map_hint_regions[] = {
+ROM_RODATA_NUM static const char map_hint_regions[] = {
     /*
         Only for situations where an entire map is a singular hint region
         Key:
@@ -250,7 +250,7 @@ static const char map_hint_regions[] = {
     REFERENCE_PARENT, // jetpac_rocket
 };
 
-static const char fungi_chunk_regions[] = {
+ROM_RODATA_NUM static const char fungi_chunk_regions[] = {
     REGION_FORESTSTART, // 0 = Starting area
     REGION_FORESTMILLS, // 1 = Blue Tunnel
     REGION_FORESTMILLS, // 2 = Mills Main

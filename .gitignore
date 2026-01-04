@@ -186,9 +186,12 @@ base-hack/build/autopatch
 web_cache/
 web_cache/*
 n64chain.zip
+n64chain.tgz
 base-hack/build/n64chain
+base-hack/build/libdragon
 base-hack/rom_tester/output.txt
 base-hack/assets/instance_scripts/dump
+base-hack/include/build_os.h
 tests/test_spoiler.py
 coloredbananas.txt
 balloons.txt
@@ -232,3 +235,9 @@ base-hack/assets/vial_spin/f8.png
 base-hack/assets/vial_spin/*.py
 *.apworld
 /dk64/
+*.rgba32
+*.rgba5551
+*.i4
+*.ia4
+*.i8
+*.ia8

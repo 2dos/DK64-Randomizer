@@ -13,7 +13,7 @@
 #define PARENT_FILTER_THRESHOLD 14 // Parent chain length limit regarding filtration
 #define LOCK_STACK_THRESHOLD 28 // Lock Stack length limit regarding filtration
 
-static const unsigned char banned_filter_maps[] = {
+ROM_RODATA_NUM static const unsigned char banned_filter_maps[] = {
 	// Maps where the filtration process is banned
 	MAP_FUNKY, // Funky's
 	MAP_DKARCADE, // Arcade
@@ -51,7 +51,7 @@ typedef struct cutscene_wipe {
 	/* 0x003 */ char unused;
 } cutscene_wipe;
 
-static const cutscene_wipe wipe_prevent_list[] = {
+ROM_RODATA_NUM static const cutscene_wipe wipe_prevent_list[] = {
 	// Cutscenes where the filtration process is prevented, regardless of map permissions
 	{
 		// Mountain GB Spawn Cutscene
@@ -114,7 +114,7 @@ int isPreventCutscenePlaying(void) {
 	 * @brief Check if a cutscene which prevents the filtration process is playing
 	 */
 	if (CutsceneActive) {
-		for (int i = 0; i < (sizeof(wipe_prevent_list)/4); i++) {
+		for (unsigned int i = 0; i < (sizeof(wipe_prevent_list)/4); i++) {
 			if (CutsceneIndex == wipe_prevent_list[i].cutscene) {
 				if ((wipe_prevent_list[i].cutscene_type == 1) && ((CutsceneStateBitfield & 4) != 0)) {
 					return 1;
@@ -151,10 +151,8 @@ void callParentMapFilter(void) {
 		// Set permanent flag to clear the story cutscene of the level you're in
 		setPermFlag(FLAG_STORY_JAPES + level);
 	}
-	for (int i = 0; i < sizeof(banned_filter_maps); i++) {
-		if (banned_filter_maps[i] == curr) {
-			return;
-		}
+	if (inU8List(curr, &banned_filter_maps[0], sizeof(banned_filter_maps))) {
+		return;
 	}
 	if ((level == LEVEL_BONUS) || (level == LEVEL_SHARED)) {
 		return;

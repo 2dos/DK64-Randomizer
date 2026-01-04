@@ -83,7 +83,7 @@ void helmTime_exitKRool(void) {
 	fixHelmTimerCorrection();
 }
 
-static unsigned char helm_entry_points[] = {0, 3, 4};
+ROM_RODATA_NUM static const unsigned char helm_entry_points[] = {0, 3, 4};
 
 void initHelmSetup(void) {
 	int setting = Rando.fast_start_helm;
@@ -105,9 +105,8 @@ void initHelmSetup(void) {
 }
 
 int getHelmExit(void) {
-	int setting = Rando.fast_start_helm;
 	initHelmSetup();
-	return helm_entry_points[setting];
+	return helm_entry_points[(int)Rando.fast_start_helm];
 }
 
 void WarpToHelm(void) {

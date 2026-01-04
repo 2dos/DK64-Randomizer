@@ -34,6 +34,8 @@ if not os.path.exists("build/n64chain"):
         zip_ref.extractall("build/n64chain/")
 cwd = os.path.dirname(os.path.abspath(__file__))
 print(f"{cwd}\\n64chain\\tools\\bin\\mips64-elf-gcc")
+with open("include/build_os.h", "w") as fh:
+    fh.write("#define IS_WINDOWS\n")
 with open("asm/objects.asm", "w") as obj_asm:
     # traverse whole directory
     for root, dirs, files in os.walk(r"src"):

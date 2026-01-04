@@ -10,8 +10,8 @@
  */
 #include "../../include/common.h"
 
-static unsigned short gb_total = 0;
-static unsigned char recently_disabled_helm_hurry = 0;
+ROM_DATA static unsigned short gb_total = 0;
+ROM_DATA static unsigned char recently_disabled_helm_hurry = 0;
 
 int canSaveHelmHurry(void) {
     /**

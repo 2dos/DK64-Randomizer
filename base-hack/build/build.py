@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import sys
 import zlib
+import platform
 
 import create_helm_geo
 import generate_disco_models
@@ -2094,7 +2095,10 @@ with open(newROMName, "r+b") as fh:
             with open(x.source_file, "rb") as fg:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
-            subprocess.Popen(["build\\flips.exe", "--apply", x.bps_file, x.source_file, x.source_file]).wait()
+            if platform.system() == "Linux":
+                subprocess.Popen(["build/flips-linux", "--apply", x.bps_file, x.source_file, x.source_file]).wait()
+            else:
+                subprocess.Popen(["build\\flips.exe", "--apply", x.bps_file, x.source_file, x.source_file]).wait()
             # shutil.copyfile(x.source_file, x.source_file.replace(".bin", ".raw"))
 
         x.generateTextureFile()

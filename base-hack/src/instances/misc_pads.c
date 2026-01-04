@@ -16,7 +16,7 @@ typedef enum helm_prog_enum {
     /* 1 */ HELMPROG_GONE,
 } helm_prog_enum;
 
-static const kongs monkeyport_kongs[] = {KONG_TINY, KONG_DK, KONG_LANKY, KONG_TINY, KONG_TINY}; // Kongs used for the switchsanity setting for lower monkeyport in Isles
+ROM_DATA static kongs monkeyport_kongs[] = {KONG_TINY, KONG_DK, KONG_LANKY, KONG_TINY, KONG_TINY}; // Kongs used for the switchsanity setting for lower monkeyport in Isles
 
 int hasHelmProgMove(helm_prog_enum sub_id) {
     // 0 = Monkeyport pad, 1 = Gone Pad
@@ -73,7 +73,7 @@ int ableToUseMonkeyport(int id) {
                     // Set Monkeyport thing
                     return (Player->characterID == 5) || (Rando.perma_lose_kongs);
                 } else {
-                    if ((Player->characterID == monkeyport_kongs[mport_kong] + 2) || (Rando.perma_lose_kongs)) {
+                    if (((unsigned int)Player->characterID == monkeyport_kongs[mport_kong] + 2) || (Rando.perma_lose_kongs)) {
                         if (mport_kong == 1) {
                             // Blast
                             createCollisionObjInstance(COLLISION_BBLAST, MAP_ISLES, 0);
@@ -144,7 +144,6 @@ int getHelmLobbyGoneReqKong(void) {
     return sub_type + 1;
 }
 
-char bonus_shown = 0;
 
 void activateGonePad(void) {
     actorSpawnerData* spawner = ActorSpawnerPointer;

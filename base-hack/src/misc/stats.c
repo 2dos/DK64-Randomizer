@@ -11,8 +11,7 @@
 
 #include "../../include/common.h"
 
-static int igt_running_lasttag = 0;
-unsigned short GameStats[STAT_TERMINATOR] = {0};
+ROM_DATA static int igt_running_lasttag = 0;
 
 void setKongIgt(void) {
     igt_running_lasttag = FrameReal / 60;
@@ -78,7 +77,7 @@ typedef struct dynamic_credits_item {
     /* 0x006 */ unsigned char has_data;
 } dynamic_credits_item;
 
-static const dynamic_credits_item stat_credits_items[] = {
+ROM_RODATA_NUM static const dynamic_credits_item stat_credits_items[] = {
     {.header = "GAME STATISTICS",   .global_data = 0,                       .sub_data = 0, .has_data = 0},
     {.header = "KONG PLAYTIME",     .global_data = 0,                       .sub_data = 0, .has_data = 0},
     {.header = "DK: ",              .global_data = DATA_IGT_DK,             .sub_data = 1, .has_data = 1},
@@ -95,7 +94,7 @@ static const dynamic_credits_item stat_credits_items[] = {
     {.header = "DEATHS: ",          .global_data = DATA_STAT_DEATHS,        .sub_data = 2, .has_data = 1},
 };
 
-static char number_text[10] = "";
+ROM_DATA static char number_text[10] = "";
 
 #define STATIC_CREDITS_ALLOCATION 0x300
 #define DYNAMIC_CREDITS_ALLOCATION 0x200

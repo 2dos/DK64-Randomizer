@@ -4,7 +4,7 @@ StartingItemsStruct starting_item_data = {
 	.melons = 1,
 };
 
-static const unsigned short fast_start_flags[] = {
+ROM_RODATA_NUM static const unsigned short fast_start_flags[] = {
 	FLAG_TBARREL_DIVE,
 	FLAG_TBARREL_ORANGE,
 	FLAG_TBARREL_BARREL,

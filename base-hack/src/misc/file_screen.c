@@ -10,13 +10,13 @@
  */
 #include "../../include/common.h"
 
-static char balanced_igt[20] = "";
-static char perc_str[7] = "";
-static char gb_str[5] = "";
+ROM_DATA static char balanced_igt[20] = "";
+ROM_DATA static char perc_str[7] = "";
+ROM_DATA static char gb_str[5] = "";
 char k_rool_text[9] = "& K.ROOL";
 
 #define LINE_GAP 0x8C
-static char updated_tracker = 0;
+ROM_DATA static char updated_tracker = 0;
 
 typedef struct tracker_struct {
 	/* 0x000 */ short min_x;
@@ -32,7 +32,7 @@ typedef struct tracker_struct {
 
 #define TRACKER_ENABLED_DEFAULT 1
 
-static tracker_struct tracker_info[] = {
+ROM_DATA static tracker_struct tracker_info[] = {
 	// Position of items on the tracker image
 	{
 		// Coconut
@@ -591,9 +591,9 @@ void wipeTrackerCache(void) {
 	}
 }
 
-static unsigned char slam_screen_level = 0;
-static unsigned char belt_screen_level = 0;
-static unsigned char ins_screen_level = 0;
+ROM_DATA static unsigned char slam_screen_level = 0;
+ROM_DATA static unsigned char belt_screen_level = 0;
+ROM_DATA static unsigned char ins_screen_level = 0;
 
 typedef struct passMapping {
 	short button_required;
@@ -626,10 +626,10 @@ typedef enum passEnum {
 #define C_Left 0x0002
 #define C_Right 0x0001
 
-static char passwordProgress = 0;
-static char acceptPassInput = 0;
-static char inputtedPass[8];
-static passMapping button_mapping_password[] = {
+ROM_DATA static char passwordProgress = 0;
+ROM_DATA static char acceptPassInput = 0;
+ROM_DATA static unsigned char inputtedPass[8];
+ROM_RODATA_NUM static const passMapping button_mapping_password[] = {
 	{.button_required = D_Up | C_Up, .btf_val = PASSKEY_DU, .text_char='U'},
 	{.button_required = D_Down | C_Down, .btf_val = PASSKEY_DD, .text_char='D'},
 	{.button_required = D_Left | C_Left, .btf_val = PASSKEY_DL, .text_char='L'},
@@ -637,7 +637,7 @@ static passMapping button_mapping_password[] = {
 	{.button_required = Z_Button, .btf_val = PASSKEY_Z, .text_char='Z'},
 	{.button_required = Start_Button, .btf_val = PASSKEY_S, .text_char='S'},
 };
-static char passTextDisplay[9];
+ROM_DATA static char passTextDisplay[9];
 unsigned char pregiven_status[] = {
 	0, // 0  = TRACKER_TYPE_COCONUT
 	0, // 1  = TRACKER_TYPE_BONGOS
@@ -928,9 +928,9 @@ Gfx* display_text(Gfx* dl) {
 	return dl;
 }
 
-static unsigned char hash_textures[] = {48,49,50,51,55,62,63,64,65,76};
+ROM_RODATA_NUM static const unsigned char hash_textures[] = {48,49,50,51,55,62,63,64,65,76};
 #define INFO_Y_DIFF 50
-static char *flag_strings[] = {
+ROM_RODATA_PTR static const char *flag_strings[] = {
 	"PLANDOMIZER",
 	"SPOILER GENNED",
 	"LOCKED",
@@ -1084,31 +1084,30 @@ void startFile(void) {
 }
 
 int testPasswordSequence(void) {
-	return encPass(&inputtedPass, &Rando.hash) == Rando.password;
+	return encPass(&inputtedPass[0], &Rando.hash[0]) == Rando.password;
 }
 
 void wipePassword(void) {
 	passwordProgress = 0;
 	for (int i = 0; i < 8; i++) {
-		inputtedPass[i] == PASSKEY_NULL;
+		inputtedPass[i] = PASSKEY_NULL;
 		passTextDisplay[i] = 0;
 	}
 }
 
 void handlePassword(void) {
-	short button_btf = *(short*)(&NewlyPressedControllerInput.Buttons);
+	short button_btf = NewlyPressedControllerInput.Buttons_as_short;
 	if (button_btf == 0) {
 		acceptPassInput = 1;
 	} else if (acceptPassInput) {
 		if (passwordProgress >= 8) {
 			return;
 		}
-		int has_button = 0;
-		int button_sent = 0;
-		for (int i = 0; i < sizeof(button_mapping_password) >> 2; i++) {
+		for (unsigned int i = 0; i < sizeof(button_mapping_password) >> 2; i++) {
 			if (button_mapping_password[i].button_required & button_btf) {
-				inputtedPass[passwordProgress] = button_mapping_password[i].btf_val;
-				passTextDisplay[passwordProgress++] = button_mapping_password[i].text_char;
+				inputtedPass[(int)passwordProgress] = button_mapping_password[i].btf_val;
+				passTextDisplay[(int)passwordProgress] = (char)button_mapping_password[i].text_char;
+				passwordProgress++;
 				acceptPassInput = 0;
 				playSFX(64); // Arcade walk
 				return;
@@ -1166,7 +1165,7 @@ Gfx* password_screen_gfx(actorData* actor, Gfx* dl) {
 	for (int i = passwordProgress; i < 8; i++) {
 		passTextDisplay[i] = '?';
 	}
-	return printText(dl, x2 * 4.0f, y2 * 4.0f, 1.0f, &passTextDisplay);
+	return printText(dl, x2 * 4.0f, y2 * 4.0f, 1.0f, (char*)&passTextDisplay);
 }
 
 void file_progress_screen_code(actorData* actor, int buttons) {
@@ -1212,7 +1211,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 	updateMenuController(actor,paad,1);
 }
 
-static char* inverted_controls_str[] = {
+ROM_RODATA_PTR static const char* inverted_controls_str[] = {
 	"INVERTED",
 	"NON-INVERTED"
 };
@@ -1236,7 +1235,7 @@ Gfx* displayInverted(Gfx* dl, int style, int x, int y, char* str, int unk0) {
 	return displayText(dl, style, x, y, inverted_controls_str[(int)InvertedControls], unk0);
 }
 
-static unsigned char previous_map_save = MAP_ISLES;
+ROM_DATA static unsigned char previous_map_save = MAP_ISLES;
 
 void setPrevSaveMap(void) {
 	/**

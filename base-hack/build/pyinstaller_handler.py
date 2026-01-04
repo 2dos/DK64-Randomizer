@@ -27,14 +27,14 @@ def compilePython():
     """Compile Python code."""
     print("Compiling Cranky's Lab")
     dir_hash = None
-    dir_hash_file = "./Build/dir_hash.txt"
+    dir_hash_file = "./build/dir_hash.txt"
     if os.path.exists(dir_hash_file):
         with open(dir_hash_file, "r") as fh:
             dir_hash = fh.read()
-    target_hash = md5_dir("./Build/")
+    target_hash = md5_dir("./build/")
     print("- Stored Hash:", "None" if dir_hash is None else dir_hash)
     print("- Calculated Hash", target_hash)
-    if not os.path.exists("./Build/dist") or not os.path.exists("./Build/dist/build.exe"):
+    if not os.path.exists("./build/dist") or not os.path.exists("./build/dist/build.exe"):
         print("- Executable: Doesn't Exist, Recompiling")
     else:
         if dir_hash is not None and dir_hash == target_hash:
@@ -44,7 +44,7 @@ def compilePython():
     print("- Recompilation: Starting...")
     with open(dir_hash_file, "w") as fh:
         fh.write(target_hash)
-    segs = ["--onefile", "Build/build.py", "--distpath", "./Build/dist", "--workpath", "./Build/build", "--log-level=INFO"]
+    segs = ["--onefile", "build/build.py", "--distpath", "./build/dist", "--workpath", "./build/build", "--log-level=INFO"]
 
     hidden_imports = [
         "getMoveSignLocations",

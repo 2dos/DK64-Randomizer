@@ -10,12 +10,9 @@
  */
 #include "../../include/common.h"
 
-static char igt_text[20] = "IGT: 0000:00:00";
-static char points_text[21] = "420l801 POINTS LEFT";
-static int stored_igt = 0;
-spoiler_struct spoiler_items[SPOILER_COUNT] = {
-    {.flag = 0},
-};
+ROM_DATA static char igt_text[20] = "IGT: 0000:00:00";
+ROM_DATA static char points_text[21] = "420l801 POINTS LEFT";
+ROM_DATA static int stored_igt = 0;
 
 void getLevelPoints(int level, unsigned short *points, unsigned short *total_points) {
     int points_left = 0;
@@ -68,7 +65,7 @@ Gfx* printLevelIGT(Gfx* dl, int x, int y, float scale, char* str) {
     return dl;
 }
 
-static char* items[] = {
+ROM_RODATA_PTR static const char* items[] = {
     "GOLDEN BANANAS",
     "CROWN PADS",
     "BOSSES AND FINAL KEY",
@@ -85,7 +82,7 @@ static char* items[] = {
     "MELON CRATES",
     "SHOPS",
 };
-static char* raw_items[] = {
+ROM_RODATA_PTR static const char* raw_items[] = {
     "GOLDEN BANANAS",
     "BATTLE CROWNS",
     "BOSS KEYS",
@@ -103,8 +100,8 @@ static char* raw_items[] = {
     "MOVES",
 };
 
-static char check_level = 0;
-static char level_check_text[0x18] = "";
+ROM_DATA static char check_level = 0;
+ROM_DATA static char level_check_text[0x18] = "";
 
 typedef struct CheckDataLevelStruct {
     unsigned char level[9];
@@ -120,7 +117,7 @@ typedef struct CheckDataStruct {
 } CheckDataStruct;
 
 // 7 main levels, isles, helm
-static CheckDataStruct check_data = {
+ROM_DATA static CheckDataStruct check_data = {
     .denominator = {
         .type[CHECK_GB] =      {.level = {20, 20, 20, 20, 20, 20, 20, 21, 0}},
         .type[CHECK_CROWN] =   {.level = {1, 1, 1, 1, 1, 1, 1, 2, 1}},
@@ -181,7 +178,7 @@ void checkItemDB(void) {
             check_data.numerator.type[i].level[j] = 0;
         }
         // Check FLUT
-        for (int k = 0; k < (sizeof(item_db) / sizeof(check_struct)); k++) {
+        for (unsigned int k = 0; k < (sizeof(item_db) / sizeof(check_struct)); k++) {
             if (item_db[k].type == i) {
                 int lvl = item_db[k].associated_level;
                 check_data.numerator.type[i].level[lvl] += checkFlag(item_db[k].flag, FLAGTYPE_PERMANENT);
@@ -264,7 +261,7 @@ Gfx* pauseScreen3And4Header(Gfx* dl) {
     return dl;
 }
 
-static char teststr[5] = "";
+ROM_DATA static char teststr[5] = "";
 
 Gfx* drawTextPointers(Gfx* dl) {
     if ((TBVoidByte & 2) && (display_billboard_fix)) {
@@ -365,12 +362,4 @@ Gfx* handleOutOfCounters(int x, int y, int top, int bottom, Gfx* dl, int unk0, i
         return displayText(dl, 1, x, y, &text, 0x80);
     }
     return printOutOfCounter(x, y, top, bottom, dl, unk0, scale);
-}
-
-void initPauseMenu(void) {
-    /**
-     * @brief Initialize the pause menu changes for Rando
-     */
-    
-    initHintFlags();
 }

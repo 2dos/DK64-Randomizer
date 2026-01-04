@@ -28,6 +28,8 @@ if not os.path.exists(build_file):
 if current_os in ("Linux", "Darwin"):
     st = os.stat(build_file)
     os.chmod(build_file, st.st_mode | stat.S_IEXEC)  # add execute permission
+    st = os.stat("build/flips-linux")
+    os.chmod("build/flips-linux", st.st_mode | stat.S_IEXEC)  # add execute permission
 
 # Run the build file with the passed arguments
 try:

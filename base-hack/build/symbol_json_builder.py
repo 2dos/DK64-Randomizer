@@ -76,6 +76,9 @@ with open(f"{PATH_PRE}rom/dev-symbols.sym", "r") as fh:
             # Disable `.byt` stuff sneaking through
             continue
         addr_int = int(line_split[0], 16)
+        if addr_int < 0x100:
+            if line_split[1] not in ("itemdata", "0", "itemdatasize"):
+                raise Exception(f"{line_split[1]} placed out of bounds. Add it to a.c pre-pended with ROM_DATA or initialize it to a non-zero value.")
         if addr_int < 0x80400000 and not LOWER_LIMIT_DISABLE:
             # Disable out-of-range stuff (lower bound)
             continue
