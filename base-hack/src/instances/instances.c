@@ -37,6 +37,7 @@
 #define MILL_WARNINGLIGHTS 0xC
 #define MILL_CRUSHER 0x8
 #define MILL_TRIANGLEPAD 0x0
+#define MILLREAR_MINI_BOX 0x3
 #define GMUSH_BOARD 0xB
 #define CAVES_GBDOME 0x27
 #define CAVES_BOULDERDOME 0x2B
@@ -993,6 +994,20 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == MILLREAR_CHUNKYCHECK_RATE) {
 					return Player->characterID == 6 || Rando.quality_of_life.vanilla_fixes;
+				} else if (param2 == MILLREAR_MINI_BOX) {
+					if (index == 0) {
+						if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
+							if (!checkFlag(223, FLAGTYPE_PERMANENT)) {
+								setPermFlag(223);
+							}
+							hideObject(behaviour_pointer);
+							behaviour_pointer->unk_70 = 0;
+							behaviour_pointer->unk_71 = 0;
+							setScriptRunState(behaviour_pointer, RUNSTATE_PAUSED, 0);
+						} else {
+							PlayCutsceneFromModelTwoScript(behaviour_pointer, 1,1,0);
+						}
+					}
 				}
 				break;
 			case MAP_FUNGIGIANTMUSHROOM:

@@ -208,4 +208,5 @@ export enum Events {
     HelmLobbyW1bTagged = 207,
     KilledRabbit = 208,
     LankyMushroomSlamSwitch = 209,
+    ChunkyFreed = 210,
 }

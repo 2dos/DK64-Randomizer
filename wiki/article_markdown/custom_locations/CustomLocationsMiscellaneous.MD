@@ -10,7 +10,7 @@
 | Jungle Japes | Diddy Cavern |  | `self.logic = lambda _: True` | 
 | Jungle Japes | Inside Diddy's Cavern |  | `self.logic = lambda _: True` | 
 | Jungle Japes | First tunnel - later half |  | `self.logic = lambda _: True` | 
-| Jungle Japes | Painting Hill | MelonCrate | `self.logic = lambda _: True` | 
+| Jungle Japes | Painting Hill | MelonCrate, Bananaport | `self.logic = lambda _: True` | 
 | Jungle Japes | Hive area near Hunky barrel |  | `self.logic = lambda _: True` | 
 | Jungle Japes | Near Stump |  | `self.logic = lambda _: True` | 
 | Jungle Japes | Near Log |  | `self.logic = lambda _: True` | 

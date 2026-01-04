@@ -142,8 +142,8 @@ LogicRegions = {
     ]),
 
     Regions.BeyondHatch: Region("Beyond Hatch", HintRegion.Storage, Levels.FranticFactory, True, -1, [
-        LocationLogic(Locations.ChunkyKong, lambda l: l.CanFreeChunky()),
-        LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: l.CanFreeChunky()),
+        LocationLogic(Locations.ChunkyKong, lambda l: Events.ChunkyFreed in l.Events),
+        LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: Events.ChunkyFreed in l.Events),
         LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: ((l.punch and l.chunky) or l.CanPhase()) and ((l.punch and l.CanSlamSwitch(Levels.FranticFactory, 1)) or l.generalclips) and l.ischunky),
         LocationLogic(Locations.RainbowCoin_Location02, lambda l: (l.punch and l.chunky) or l.CanPhase()),
         LocationLogic(Locations.FactoryKasplatStorage, lambda l: not l.settings.kasplat_rando),
@@ -173,7 +173,7 @@ LogicRegions = {
     ]),
 
     Regions.FactoryStoragePipe: Region("Factory Storage Pipe", HintRegion.Storage, Levels.FranticFactory, False, None, [], [
-        # If we were to move the switch to Chunky's cage back up this pipe, the event would go here.
+        Event(Events.ChunkyFreed, lambda l: l.CanFreeChunky())
     ], [
         TransitionFront(Regions.BeyondHatch, lambda _: True),
     ]),
