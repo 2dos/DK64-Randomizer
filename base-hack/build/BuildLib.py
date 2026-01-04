@@ -170,7 +170,7 @@ def convertToI4(png_file):
                 if polarity == 0:
                     value = intensity << 4
                     polarity = 1
-                elif polarity == 0:
+                elif polarity == 1:
                     value |= intensity
                     polarity = 0
                     fh.write(value.to_bytes(1, "big"))
@@ -207,7 +207,7 @@ def convertToIA4(png_file):
                 if polarity == 0:
                     value = output << 4
                     polarity = 1
-                elif polarity == 0:
+                elif polarity == 1:
                     value |= output
                     polarity = 0
                     fh.write(value.to_bytes(1, "big"))

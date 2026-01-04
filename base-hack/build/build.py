@@ -88,7 +88,7 @@ file_dict = [
         file_index=95,
         source_file="assets/transition/transition-body.png",
         texture_format=TextureFormat.IA4,
-        target_compressed_size=0x800,
+        target_compressed_size=int(64*64*0.5),
     ),
     File(name="Medal Image", pointer_table_index=TableNames.TexturesHUD, file_index=116, source_file="assets/displays/medal.png", texture_format=TextureFormat.RGBA5551),
     File(
