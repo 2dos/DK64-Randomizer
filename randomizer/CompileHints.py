@@ -21,6 +21,7 @@ from randomizer.Enums.Settings import (
     BananaportRando,
     BLockerSetting,
     ClimbingStatus,
+    FasterChecksSelected,
     ProgressiveHintItem,
     ActivateAllBananaports,
     LogicType,
@@ -1423,6 +1424,12 @@ def compileHints(spoiler: Spoiler) -> bool:
             # Forest Donkey Mill needs to find the Grinder Room rather than Forest Main
             Locations.ForestDonkeyMill: [Regions.GrinderRoom, Maps.ForestMillFront],
         }
+        # If the Arcade GB isn't on the blast course, it's in the Arcade region and can be entrance hinted
+        if not spoiler.LogicVariables.checkFastCheck(FasterChecksSelected.factory_arcade_round_1):
+            location_exceptions[Locations.FactoryDonkeyDKArcade] = [Regions.FactoryArcadeTunnel, Maps.FranticFactory]
+        # If it is on, then it's on the blast course - this exception will make it unhintable
+        else:
+            location_exceptions[Locations.FactoryDonkeyDKArcade] = [Regions.FactoryBaboonBlast, Maps.FactoryBaboonBlast]
         region_exceptions = {
             # Most Galleon ships share a Map but have segmented sections. We want to be sure we're looking for the correct transition for each check.
             Regions.TinyShip: [Transitions.GalleonTinyToShipyard],
