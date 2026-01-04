@@ -132,22 +132,22 @@ end_time=$(date +%s%3N)
 runtime=$((end_time - start_time))
 echo " DONE ($runtime ms)"
 
-# if [[ "$test_on" == "--test" ]]; then
-#     :
-# else
-#     # Create base hack BPS
-#     # echo -n "Create base hack BPS..."
-#     # start_time=$(date +%s%3N)
-#     # build/flips-linux ./rom/dk64.z64 ./rom/dk64-randomizer-base-dev.z64 ./rom/patch.bps --bps >> rom/build.log
-#     # end_time=$(date +%s%3N)
-#     # runtime=$((end_time - start_time))
-#     # echo " DONE ($runtime ms)"
+if [[ "$test_on" == "--test" ]]; then
+    :
+else
+    # Create base hack BPS
+    echo -n "Create base hack BPS..."
+    start_time=$(date +%s%3N)
+    build/flips-linux ./rom/dk64.z64 ./rom/dk64-randomizer-base-dev.z64 ./rom/patch.bps --bps >> rom/build.log
+    end_time=$(date +%s%3N)
+    runtime=$((end_time - start_time))
+    echo " DONE ($runtime ms)"
 
-#     # # Copy patch
-#     # mkdir -p ../static/patches
-#     # cp rom/patch.bps ../static/patches/shrink-dk64.bps
-#     # rm -f rom/dk64-randomizer-base-temp.z64 rom/dk64-randomizer-base.z64 rom/dk64-randomizer-base-dev.z64 rom/dk64-randomizer-base.wch rom/patch.bps
-# fi
+    # Copy patch
+    mkdir -p ../static/patches
+    cp rom/patch.bps ../static/patches/shrink-dk64.bps
+    rm -f rom/dk64-randomizer-base-temp.z64 rom/dk64-randomizer-base.z64 rom/dk64-randomizer-base-dev.z64 rom/dk64-randomizer-base.wch rom/patch.bps
+fi
 
 runscript "Removing unnecessary files" "build/cleanup.py"
 

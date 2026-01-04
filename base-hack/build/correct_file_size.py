@@ -3,6 +3,8 @@
 from BuildLib import finalROM
 
 with open(finalROM, "r+b") as fh:
+    fh.seek(0x3154)
+    fh.write((0).to_bytes(4, "big"))
     length = len(fh.read())
     print("Original Size:", hex(length))
     to_add = length % 0x10

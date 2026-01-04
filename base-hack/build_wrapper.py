@@ -33,7 +33,7 @@ if current_os in ("Linux", "Darwin"):
 
 # Run the build file with the passed arguments
 try:
-    subprocess.run([build_file, *args], check=True, shell=shell)
+    subprocess.run([build_file, *args], check=True)
 except subprocess.CalledProcessError as e:
     print(f"Build failed with exit code {e.returncode}")
     sys.exit(e.returncode)
