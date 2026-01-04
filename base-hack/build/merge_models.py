@@ -131,7 +131,7 @@ def mergeModel(
                         else:
                             new_dy = -dx
                             new_dx = dy
-                        print(f"{connecting_bone}: {dx}->{new_dx} | {dy}->{new_dy}")
+                        # print(f"{connecting_bone}: {dx}->{new_dx} | {dy}->{new_dy}")
                         fh.seek(collision_head + (x * 0x10) + 4)
                         fh.write(int(float_to_hex(new_dx), 16).to_bytes(4, "big"))
                         fh.write(int(float_to_hex(new_dy), 16).to_bytes(4, "big"))
@@ -161,8 +161,8 @@ def mergeModel(
                         bone = int(int.from_bytes(fh.read(2), "big") / 0x40)
                         in_bone = bone in vert_rotation
                         focused_bone = bone
-                        if in_bone:
-                            print(f"Bone {bone} ({hex(dl_start + (8 * x))})")
+                        # if in_bone:
+                        #     print(f"Bone {bone} ({hex(dl_start + (8 * x))})")
                     elif command == 1:
                         fh.seek(dl_start + (8 * x) + 1)
                         load_count = int.from_bytes(fh.read(2), "big") >> 4
@@ -174,7 +174,7 @@ def mergeModel(
                         vert_start = int.from_bytes(fh.read(3), "big")
                         if in_bone:
                             fh.seek(dl_start + (8 * x))
-                            print(hex(int.from_bytes(fh.read(8), "big")))
+                            # print(hex(int.from_bytes(fh.read(8), "big")))
                         for y in range(load_count):
                             if (vert_buffer_start + y) < 32:
                                 vert_buffer[vert_buffer_start + y] = vert_start + (y * 0x10)
@@ -188,8 +188,8 @@ def mergeModel(
                                         translated_verts.append(vert_start + (y * 0x10))
                                     else:
                                         translated_verts_opp.append(vert_start + (y * 0x10))
-                            else:
-                                print(vert_start + (y * 0x10))
+                            # else:
+                            #     print(vert_start + (y * 0x10))
                     elif command in (5, 6, 7):
                         continue
                         groups = [1] if command == 5 else [1, 5]
@@ -215,7 +215,7 @@ def mergeModel(
                 translated_verts = list(set(translated_verts))
                 translated_verts_opp = list(set(translated_verts_opp))
                 for xi, vert_group in enumerate([translated_verts, translated_verts_opp]):
-                    print(xi, len(vert_group))
+                    # print(xi, len(vert_group))
                     for x in vert_group:
                         fh.seek(0x28 + x)
                         coords = []

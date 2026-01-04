@@ -154,13 +154,7 @@ void fixGraceCheese(void) {
 		return;
 	}
 	if (CurrentMap == MAP_TROFFNSCOFF) {
-		int transitioning_to_boss = 0;
-		for (int i = 0; i < 7; i++) {
-			if (BossMapArray[i] == DestMap) {
-				transitioning_to_boss = 1;
-			}
-		}
-		if (transitioning_to_boss) {
+		if (inShortList(DestMap, &BossMapArray[0], 7)) {
 			return;
 		}
 	}
@@ -181,13 +175,7 @@ void changeKongOnTransition_Permaloss(void) {
 void forceBossKong(void) {
 	if (Rando.perma_lose_kongs) {
 		if (CurrentMap == MAP_TROFFNSCOFF) {
-			int transitioning_to_boss = 0;
-			for (int i = 0; i < 7; i++) {
-				if (BossMapArray[i] == DestMap) {
-					transitioning_to_boss = 1;
-				}
-			}
-			if (transitioning_to_boss) {
+			if (inShortList(DestMap, &BossMapArray[0], 7)) {
 				if (TransitionSpeed > 0.0f) {
 					if (LZFadeoutProgress == 30.0f) {
 						if (Player) {
@@ -203,13 +191,7 @@ void forceBossKong(void) {
 
 void preventBossCheese(void) {
 	if (Rando.perma_lose_kongs) {
-		int in_boss = 0;
-		for (int i = 0; i < 7; i++) {
-			if (BossMapArray[i] == CurrentMap) {
-				in_boss = 1;
-			}
-		}
-		if (in_boss) {
+		if (inShortList(CurrentMap, &BossMapArray[0], 7)) {
 			changeKongOnTransition_Permaloss();
 		}
 	}

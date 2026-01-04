@@ -10,8 +10,8 @@
  */
 #include "../../include/common.h"
 
-static char warp_timer = 0; // Global variable for a warp timer upon getting caught by a guard
-static unsigned char bad_guard_states[] = {
+ROM_DATA static char warp_timer = 0; // Global variable for a warp timer upon getting caught by a guard
+ROM_RODATA_NUM static const unsigned char bad_guard_states[] = {
     // Control States that you can't be caught in
     0x18, // BBlast Pad
     0x52, // Bananaport
@@ -38,7 +38,7 @@ int isBadMovementState(void) {
      * @brief Check if you're in a bad control state
      */
     if (Player) {
-        return inU8List(Player->control_state, &bad_guard_states, sizeof(bad_guard_states));
+        return inU8List(Player->control_state, &bad_guard_states[0], sizeof(bad_guard_states));
     }
     return 1;
 }
@@ -49,11 +49,10 @@ typedef struct guard_effect_struct {
     /* 0x004 */ void *sprite;
 } guard_effect_struct;
 
-static guard_effect_struct guard_effect_timers[2] = {
-    {.timer = 0, .btf = CONT_A, .sprite = 0x80720CF0}, // Disable A
-    {.timer = 0, .btf = CONT_G, .sprite = 0x80720D38}, // Disable Z
+ROM_DATA static guard_effect_struct guard_effect_timers[2] = {
+    {.timer = 0, .btf = CONT_A, .sprite = (void*)0x80720CF0}, // Disable A
+    {.timer = 0, .btf = CONT_G, .sprite = (void*)0x80720D38}, // Disable Z
 };
-unsigned short guard_tag_timer = 0;
 
 void guardCatchInternal(void) {
     tagKong(Player->new_kong);
@@ -173,7 +172,7 @@ int inRabbitRace(void) {
     return 0;
 }
 
-static const rgb kop_color_data[] = {
+ROM_RODATA_NUM static const rgb kop_color_data[] = {
     {.red = 0xFF, .green = 0x9D, .blue = 0}, // Disable A
     {.red = 0xFF, .green = 0x9D, .blue = 0}, // Disable Z
     {.red = 0, .green = 0, .blue = 0}, // Get Out

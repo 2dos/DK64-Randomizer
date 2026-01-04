@@ -400,10 +400,10 @@ typedef struct behaviour_data {
 	/* 0x03C */ char unk_3C[0x44-0x3C];
 	/* 0x044 */ unsigned short timer;
 	/* 0x046 */ unsigned short unk_46;
-	/* 0x048 */ unsigned char current_state;
+	/* 0x048 */ char current_state;
 	/* 0x049 */ char counter;
 	/* 0x04A */ char unk_4A;
-	/* 0x04B */ unsigned char next_state;
+	/* 0x04B */ char next_state;
 	/* 0x04C */ char counter_next;
 	/* 0x04D */ char unk_4D[0x54-0x4D];
 	/* 0x054 */ char pause_state;
@@ -725,7 +725,7 @@ typedef struct hud_element {
 } hud_element;
 
 typedef struct hudData {
-	/* 0x000 */ hud_element item[0xE];
+	/* 0x000 */ hud_element item[0x1F];
 } hudData;
 
 typedef struct text_struct {
@@ -1628,7 +1628,10 @@ typedef struct buttons {
 } buttons;
 
 typedef struct Controller {
-	/* 0x000 */ buttons Buttons;
+	union {
+		/* 0x000 */ buttons Buttons;
+		/* 0x000 */ short Buttons_as_short;
+	};
 	/* 0x002 */ char stickX;
 	/* 0x003 */ char stickY;
 } Controller;
@@ -2326,8 +2329,8 @@ typedef struct collision_tree_struct {
 } collision_tree_struct;
 
 typedef struct move_overlay_paad {
-	/* 0x000 */ void* upper_text;
-	/* 0x004 */ void* lower_text;
+	/* 0x000 */ const void* upper_text;
+	/* 0x004 */ const void* lower_text;
 	/* 0x008 */ unsigned char opacity;
 	/* 0x009 */ unsigned char index;
 	/* 0x00A */ char unk_0A;

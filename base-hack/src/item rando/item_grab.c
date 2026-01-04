@@ -16,10 +16,10 @@ typedef struct item_info {
     /* 0x008 */ helm_hurry_items helm_hurry_item;
 } item_info;
 
-static const unsigned char bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
-static const unsigned char instrument_songs[] = {SONG_BONGOS, SONG_GUITAR, SONG_TROMBONE, SONG_SAXOPHONE, SONG_TRIANGLE};
+ROM_DATA static unsigned char bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
+ROM_DATA static unsigned char instrument_songs[] = {SONG_BONGOS, SONG_GUITAR, SONG_TROMBONE, SONG_SAXOPHONE, SONG_TRIANGLE};
 
-static const item_info item_detection_data[] = {
+ROM_DATA static item_info item_detection_data[] = {
     {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_NONE
 	{.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_KONG
 	{.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_MOVE}, // REQITEM_MOVE
@@ -44,8 +44,7 @@ static const item_info item_detection_data[] = {
     {.song = SONG_BLUEPRINTGET, .sprite = 0x92, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_AP
 };
 
-static const unsigned char move_sprites[] = {0x94, 0x96, 0x93, 0x38, 0x3A}; // Cranky, Funky, Candy, Camera, Shockwave
-static const unsigned char shopkeeper_sprites[] = {0x94, 0x96, 0x93, 0x95}; // Cranky, Funky, Candy, Snide
+ROM_DATA static unsigned char shopkeeper_sprites[] = {0x94, 0x96, 0x93, 0x95}; // Cranky, Funky, Candy, Snide
 
 void displayMedalOverlay(int flag, item_packet *item_send) {
     float reward_x = 160.f;
@@ -53,7 +52,7 @@ void displayMedalOverlay(int flag, item_packet *item_send) {
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
         setPermFlag(flag);
         giveItemFromPacket(item_send, 0);
-        void* sprite = 0;
+        const void* sprite = 0;
         requirement_item item_type = item_send->item_type;
         int item_kong = item_send->kong;
         songs song = item_detection_data[item_type].song;
@@ -93,6 +92,7 @@ void displayMedalOverlay(int flag, item_packet *item_send) {
                 break;
             case REQITEM_SHOPKEEPER:
                 sprite_index = shopkeeper_sprites[item_kong];
+            default:
                 break;
         }
         if (song != SONG_SILENCE) {
@@ -204,14 +204,14 @@ void giveFairyItem(int flag, int state, flagtypes type) {
     setPermFlag(flag);
 }
 
-static const unsigned char dance_skip_ban_maps[] = {
+ROM_DATA static unsigned char dance_skip_ban_maps[] = {
     MAP_AZTECBEETLE, // Aztec Beetle
     MAP_FACTORYCARRACE, // Factory Car Race
     MAP_GALLEONSEALRACE, // Galleon Seal Race
     MAP_CASTLECARRACE, // Castle Car Race
 };
 
-static const unsigned char dance_force_maps[] = {
+ROM_DATA static unsigned char dance_force_maps[] = {
     MAP_AZTECBEETLE, // Aztec Beetle
     MAP_FACTORYCARRACE, // Factory Car Race
     MAP_GALLEONSEALRACE, // Galleon Seal Race
@@ -253,7 +253,7 @@ int canDanceSkip(void) {
         if (isCavesBeetleReward()) {
             return 0;
         }
-        for (int i = 0; i < sizeof(dance_skip_ban_maps); i++) {
+        for (unsigned int i = 0; i < sizeof(dance_skip_ban_maps); i++) {
             if (dance_skip_ban_maps[i] == CurrentMap) {
                 return 0;
             }
@@ -268,7 +268,7 @@ void forceDance(void) {
         setAction(0x29, 0, 0);
         return;
     }
-    for (int i = 0; i < sizeof(dance_force_maps); i++) {
+    for (unsigned int i = 0; i < sizeof(dance_force_maps); i++) {
         if (dance_force_maps[i] == CurrentMap) {
             setAction(0x29, 0, 0);
             return;
@@ -290,7 +290,6 @@ void getItem(int object_type) {
     float pickup_volume = 1-(0.3f * *(char*)(0x80745838));
     int song = -1;
     helm_hurry_items hh_item = HHITEM_NOTHING;
-    ICE_TRAP_TYPES it_type = -1;
     int multiplier = 1;
     switch(object_type) {
         case 0x0A:
@@ -562,7 +561,7 @@ typedef struct collectable_render {
     /* 0x006 */ short kong;
 } collectable_render;
 
-static collectable_render CollectableRenderData[] = {
+ROM_DATA static collectable_render CollectableRenderData[] = {
     {.cb_single = 0x000D, .cb_bunch = 0x002B, .coin = 0x001D, .kong = KONG_DK},
     {.cb_single = 0x000A, .cb_bunch = 0x0208, .coin = 0x0024, .kong = KONG_DIDDY},
     {.cb_single = 0x001E, .cb_bunch = 0x0205, .coin = 0x0023, .kong = KONG_LANKY},
@@ -630,7 +629,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
     char item_level = -1;
     char item_kong = -1;
     getFlagMappingData(index, &item_level, &item_kong);
-    int is_acceptable_item = inShortList(obj_type, &acceptable_items, sizeof(acceptable_items) >> 1);
+    int is_acceptable_item = inShortList(obj_type, (short*)&acceptable_items[0], sizeof(acceptable_items) >> 1);
     if (is_acceptable_item) {
         if (inBossMap(CurrentMap, 1, 1, 0)) {
             if (obj_type != 0x13C) {

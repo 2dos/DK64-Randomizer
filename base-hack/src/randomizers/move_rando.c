@@ -9,7 +9,7 @@ typedef enum KeySubtitleEnum {
 	KEYSUB_K38,
 } KeySubtitleEnum;
 
-static char *key_subtitles[] = {
+ROM_RODATA_PTR static const char *key_subtitles[] = {
 	"OPENS LEVEL 2",
 	"OPENS LEVELS 3 & 4",
 	"OPENS LEVEL 5",
@@ -18,7 +18,7 @@ static char *key_subtitles[] = {
 	"HELPS OPEN K. ROOL",
 };
 
-static unsigned char key_subtitle_indexes[] = {
+ROM_RODATA_NUM static const unsigned char key_subtitle_indexes[] = {
 	KEYSUB_K1,
 	KEYSUB_K2,
 	KEYSUB_K38,
@@ -66,7 +66,7 @@ int getPrice(purchase_struct *shop_data) {
 					return Rando.slam_prices[MovesBase[0].simian_slam - 1]; // Indexing error
 				}
 			case 7:
-				return Rando.ammo_belt_prices[MovesBase[0].ammo_belt];
+				return Rando.ammo_belt_prices[(int)MovesBase[0].ammo_belt];
 			case 9:
 				{
 					int level = getInstrumentLevel();
@@ -91,7 +91,6 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 	int world = getWorld(CurrentMap,0);
 	paad->level = world;
 	int shop_owner = CurrentActorPointer_0->actorType;
-	int p_index = 0;
 	if (has_entered_level) {
 		purchase_struct* selected = getShopData(shop_owner - 0xBD, Character, world);
 		if (selected) {
@@ -122,7 +121,6 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 void purchaseMove(shop_paad* paad) {
 	int item_given = -1;
 	int crystals_unlocked = crystalsUnlocked(paad->kong);
-	int p_kong = paad->kong;
 	giveItem(paad->item_type, paad->item_level, paad->kong, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .apply_ice_trap = 1});
 	vendors vendor = CurrentActorPointer_0->actorType - 0xBD;
 	int world = getWorld(CurrentMap, 0);
@@ -196,7 +194,7 @@ void setLocation(purchase_struct* purchase_data, int force_text) {
 	}
 }
 
-static short flag_location_series[] = {
+ROM_RODATA_NUM static const short flag_location_series[] = {
 	FLAG_TBARREL_DIVE,
 	FLAG_TBARREL_ORANGE,
 	FLAG_TBARREL_BARREL,
@@ -244,8 +242,8 @@ Gfx* displayMoveText(Gfx* dl, actorData* actor) {
 	return dl;
 }
 
-static char hint_displayed_text[20] = "";
-static char* level_names[] = {
+ROM_DATA static char hint_displayed_text[20] = "";
+ROM_RODATA_PTR static const char* level_names[] = {
 	"JAPES",
 	"AZTEC",
 	"FACTORY",
@@ -254,7 +252,7 @@ static char* level_names[] = {
 	"CAVES",
 	"CASTLE",
 };
-static char* kong_names[] = {
+ROM_RODATA_PTR static const char* kong_names[] = {
 	"DK",
 	"DIDDY",
 	"LANKY",
@@ -460,7 +458,7 @@ void getNextMoveText(void) {
 				} else {
 					if (top_item == ITEMTEXT_HINTITEM) {
 						if ((p_kong >= 0) && (p_kong < 5) && (p_value >= 0) && (p_value < 7)) {
-							dk_strFormat(&hint_displayed_text, "%s %s HINT", level_names[p_value], kong_names[p_kong]);
+							dk_strFormat((char*)&hint_displayed_text, "%s %s HINT", level_names[p_value], kong_names[p_kong]);
 							paad->upper_text = &hint_displayed_text;
 						} else {
 							paad->upper_text = getTextPointer(0x27,top_item,0);
@@ -528,7 +526,7 @@ void displayBFIMoveText(void) {
 	}
 }
 
-static const unsigned char Explanation_Special[] = {
+ROM_RODATA_NUM static const unsigned char Explanation_Special[] = {
 	0x00, 0x0B, 0x0F, 0x14, // DK
 	0x00, 0x0C, 0x10, 0x15, // Diddy
 	0x00, 0x0E, 0x13, 0x16, // Lanky
@@ -536,8 +534,8 @@ static const unsigned char Explanation_Special[] = {
 	0x00, 0x0D, 0x12, 0x18, // Chunky - Is Item 2 a bug?
 };
 
-static const unsigned char Explanation_Slam[] = {0x0, 0x19, 0x1A};
-static const unsigned char Explanation_Gun[] = {0x0, 0x12, 0x13, 0x14};
+ROM_RODATA_NUM static const unsigned char Explanation_Slam[] = {0x0, 0x19, 0x1A, 0x1B};
+ROM_RODATA_NUM static const unsigned char Explanation_Gun[] = {0x0, 0x12, 0x13, 0x14};
 
 void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag) {
 	int substate = paad->unk_0E;

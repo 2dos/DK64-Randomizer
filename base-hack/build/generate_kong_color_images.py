@@ -228,6 +228,7 @@ def convertColors():
             with open(finalROM, "r+b") as fh:
                 texture_f = ROMPointerFile(fh, TableNames.TexturesGeometry, zone["image"])
                 fh.seek(texture_f.start)
+                print("KONG TEX:", hex(texture_f.start))
                 comp = gzip.compress(bytearray(bytes_array), compresslevel=9)
                 fh.write(comp)
 
@@ -254,6 +255,7 @@ def applyMelonMask(shift: int):
                 if table != 7:
                     file_data = zlib.decompress(file_data, (15 + 32))
                 temp_name = "temp.bin"
+                print("MELON MASK:",hex(file_start))
                 with open(temp_name, "wb") as fg:
                     fg.write(file_data)
                 if table == 25 and img == getBonusSkinOffset(ExtraTextures.MelonSurface):

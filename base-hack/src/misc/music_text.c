@@ -11,10 +11,10 @@
 
 #include "../../include/common.h"
 
-static unsigned char display_timer = 0;
-static short displayed_text_offset = -1;
-static short storedMusicTrackChannel[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-static char storedTrackState[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+ROM_DATA static unsigned char display_timer = 0;
+ROM_DATA static short displayed_text_offset = -1;
+ROM_DATA static short storedMusicTrackChannel[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+ROM_DATA static char storedTrackState[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 void resetDisplayedMusic(void) {
     DisplayedSongNamePointer = 0; // Uses a static address for autotrackers

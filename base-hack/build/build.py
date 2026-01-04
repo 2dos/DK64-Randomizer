@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import sys
 import zlib
+import platform
 
 import create_helm_geo
 import generate_disco_models
@@ -87,7 +88,7 @@ file_dict = [
         file_index=95,
         source_file="assets/transition/transition-body.png",
         texture_format=TextureFormat.IA4,
-        target_compressed_size=0x800,
+        target_compressed_size=int(64*64*0.5),
     ),
     File(name="Medal Image", pointer_table_index=TableNames.TexturesHUD, file_index=116, source_file="assets/displays/medal.png", texture_format=TextureFormat.RGBA5551),
     File(
@@ -2094,7 +2095,10 @@ with open(newROMName, "r+b") as fh:
             with open(x.source_file, "rb") as fg:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
-            subprocess.Popen(["build\\flips.exe", "--apply", x.bps_file, x.source_file, x.source_file]).wait()
+            if platform.system() == "Linux":
+                subprocess.Popen(["build/flips-linux", "--apply", x.bps_file, x.source_file, x.source_file]).wait()
+            else:
+                subprocess.Popen(["build\\flips.exe", "--apply", x.bps_file, x.source_file, x.source_file]).wait()
             # shutil.copyfile(x.source_file, x.source_file.replace(".bin", ".raw"))
 
         x.generateTextureFile()
@@ -2107,7 +2111,7 @@ with open(newROMName, "r+b") as fh:
                 compressed_size = len(precomp)
                 if x.target_compressed_size is None:
                     x.target_compressed_size = compressed_size
-                x.target_compressed_size += 0x800
+                x.target_compressed_size += 0x80
                 if x.pointer_table_index == TableNames.ModelTwoGeometry:
                     print("Expanding buffer compression ", x.pointer_table_index, x.file_index, hex(x.target_compressed_size), hex(compressed_size), hex(uncompressed_size))
 

@@ -89,7 +89,7 @@
     {
       "label": "Build Test Hack",
       "type": "shell",
-      "command": "cd ${workspaceFolder}/base-hack ; ${command:python.interpreterPath} ./build_wrapper.py ; cd ${workspaceFolder} ; ${command:python.interpreterPath} base_hack_test.py",
+      "command": "cd ${workspaceFolder}/base-hack ; ${command:python.interpreterPath} ./build_wrapper.py --test ; cd ${workspaceFolder} ; ${command:python.interpreterPath} base_hack_test.py",
       "problemMatcher": [],
       "group": {
         "kind": "build",

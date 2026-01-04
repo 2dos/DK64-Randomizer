@@ -36,7 +36,7 @@ void arcadeExit(void) {
 	}
 }
 
-static unsigned char arcade_background_vanilla[] = {1, 4, 3, 2};
+ROM_RODATA_NUM static const unsigned char arcade_background_vanilla[] = {1, 4, 3, 2};
 
 int determineArcadeLevel(void) {
 	/**

@@ -9,6 +9,11 @@
 #define SONG_COUNT 176
 #define ENEMIES_TOTAL 428
 #define ENEMY_REWARD_CACHE_SIZE 16
+#define ROM_DATA __attribute__((used, section(".data")))
+#define ROM_RODATA_NUM __attribute__((used, section(".rodata_num")))
+#define ROM_RODATA_PTR __attribute__((used, section(".rodata_ptr")))
+
+#include "build_os.h"
 #include "../include2/ultra64.h"
 #include "common_enums.h"
 #include "common_structs.h"
@@ -18,7 +23,6 @@
 #include "item_data.h"
 #include "variable_space_structs.h"
 #include "dk64.h"
-#include "enums.h"
 #include "flags.h"
 #include "hooks.h"
 #include "global.h"

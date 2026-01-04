@@ -71,7 +71,7 @@ void fairyDuplicateCode(void) {
     playActorAnimation(CurrentActorPointer_0, 0x2B5);
 }
 
-static const short shop_owner_anims[] = {
+ROM_DATA static short shop_owner_anims[] = {
     622, // Cranky Idle
     624, // Funky Idle
     626, // Candy Idle
@@ -138,7 +138,7 @@ void candyCodeHandler(void) {
 }
 
 float getModelTwoScale(int obj_id) {
-    for (int i = 0; i < (sizeof(item_conversions) / sizeof(item_conversion_info)); i++) {
+    for (unsigned int i = 0; i < (sizeof(item_conversions) / sizeof(item_conversion_info)); i++) {
         if (item_conversions[i].model_two == obj_id) {
             return item_conversions[i].scale;
         }
@@ -228,10 +228,10 @@ void fairyQueenCheckSpeedup(void *actor, int unk) {
 }
 
 #define STORED_COUNT 18
-static int stored_maps[STORED_COUNT] = {};
-static unsigned char stored_kasplat[STORED_COUNT] = {};
-static unsigned char stored_enemies[ENEMY_REWARD_CACHE_SIZE][STORED_COUNT] = {};
-static unsigned short stored_holdable;
+ROM_DATA static int stored_maps[STORED_COUNT] = {};
+ROM_DATA static unsigned char stored_kasplat[STORED_COUNT] = {};
+ROM_DATA static unsigned char stored_enemies[ENEMY_REWARD_CACHE_SIZE][STORED_COUNT] = {};
+ROM_DATA static unsigned short stored_holdable;
 
 int setupHook(int map) {
     /**
@@ -316,7 +316,7 @@ void CheckKasplatSpawnBitfield(void) {
         while (1 == 1) {
             if (referenced_spawner) {
                 int actor_type = referenced_spawner->actor_type + 0x10;
-                int is_drop = inShortList(actor_type, &actor_drops, sizeof(actor_drops) >> 1);
+                int is_drop = inShortList(actor_type, (short*)&actor_drops[0], sizeof(actor_drops) >> 1);
                 if (is_drop) {
                     int flag = referenced_spawner->flag;
                     if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {

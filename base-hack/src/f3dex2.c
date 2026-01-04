@@ -1,16 +1,12 @@
 #include "../include/common.h"
 
-Gfx* drawImageWithFilter(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity) {
+Gfx* drawImage(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity) {
 	dl = initDisplayList(dl);
 	gDPSetRenderMode(dl++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-	gDPSetPrimColor(dl++, 0, 0, red, green, blue, opacity);
+	gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, opacity);
 	gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
 	gDPSetTextureFilter(dl++, G_TF_POINT);
 	return displayImage(dl++, text_index, 0, codec_index, img_width, img_height, x, y, xScale, yScale, 0, 0.0f);
-}
-
-Gfx* drawImage(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity) {
-	return drawImageWithFilter(dl, text_index, codec_index, img_width, img_height, x, y, xScale, yScale, 0xFF, 0xFF, 0xFF, opacity);
 }
 
 Gfx* drawTri(Gfx* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha) {
@@ -33,7 +29,8 @@ Gfx* drawTri(Gfx* dl, short x1, short y1, short x2, short y2, short x3, short y3
 	return dl;
 }
 
-Gfx* drawPixelText(Gfx* dl, int x, int y, char* str, int red, int green, int blue, int alpha) {
+__attribute__((noinline))
+Gfx* drawPixelText(Gfx* dl, int x, int y, const char* str, int red, int green, int blue, int alpha) {
 	gDPPipeSync(dl++);
 	gDPSetCycleType(dl++, G_CYC_1CYCLE);
 	gSPClearGeometryMode(dl++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH | G_CLIPPING | 0x0040F9FA);
@@ -44,14 +41,15 @@ Gfx* drawPixelText(Gfx* dl, int x, int y, char* str, int red, int green, int blu
     return textDraw(dl,2,x,y,str);
 }
 
-Gfx* drawPixelTextContainer(Gfx* dl, int x, int y, char* str, int red, int green, int blue, int alpha, int offset) {
+__attribute__((noinline))
+Gfx* drawPixelTextContainer(Gfx* dl, int x, int y, const char* str, int red, int green, int blue, int alpha, int offset) {
 	if (offset) {
 		dl = drawPixelText(dl,x-offset,y+offset,str,0,0,0,alpha);
 	}
 	return drawPixelText(dl,x,y,str,red,green,blue,alpha);
 }
 
-Gfx* displayCenteredText(Gfx* dl, int y, char* str, int offset) {
+Gfx* displayCenteredText(Gfx* dl, int y, const char* str, int offset) {
 	int length = cstring_strlen(str);
 	return drawPixelTextContainer(dl, 160 - (length << 2), y, str, 0xFF, 0xFF, 0xFF, 0xFF, offset);
 }
@@ -67,7 +65,7 @@ Gfx* drawScreenRect(Gfx* dl, int x1, int y1, int x2, int y2, int red, int green,
 	return dl;
 }
 
-Gfx* drawString(Gfx* dl, int style, float x, float y, char* str) {
+Gfx* drawString(Gfx* dl, int style, float x, float y, const char* str) {
 	float height = (float)getTextStyleHeight(style);
 	float text_y = y - (height * 0x5);
 	int centered = 0;
@@ -77,7 +75,7 @@ Gfx* drawString(Gfx* dl, int style, float x, float y, char* str) {
 	return displayText(dl, style & 0x7F, 4 * x, 4 * text_y, str, centered);
 }
 
-Gfx* drawText(Gfx* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity) {
+Gfx* drawText(Gfx* dl, int style, float x, float y, const char* str, int red, int green, int blue, int opacity) {
 	dl = initDisplayList(dl);
 	int short_style = style & 0x7F;
 	if (short_style == 1) {
@@ -96,7 +94,7 @@ Gfx* drawText(Gfx* dl, int style, float x, float y, char* str, int red, int gree
 	return drawString(dl,style,x,y,str);
 }
 
-Gfx* drawTextContainer(Gfx* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity, int background) {
+Gfx* drawTextContainer(Gfx* dl, int style, float x, float y, const char* str, int red, int green, int blue, int opacity, int background) {
 	if (background) {
 		dl = drawText(dl,style,x-background,y+background,str,0,0,0,opacity);
 	}
@@ -104,10 +102,10 @@ Gfx* drawTextContainer(Gfx* dl, int style, float x, float y, char* str, int red,
 }
 
 #define CHAR_LIMIT 0x60
-static char* character_recoloring_str = 0;
-static char use_character_recoloring = 0;
-static char char_color_data[CHAR_LIMIT];
-static unsigned char char_opacity_data[CHAR_LIMIT];
+ROM_DATA static char* character_recoloring_str = 0;
+ROM_DATA static char use_character_recoloring = 0;
+ROM_DATA static char char_color_data[CHAR_LIMIT];
+ROM_DATA static unsigned char char_opacity_data[CHAR_LIMIT];
 
 void setCharacterRecoloring(int output, char* stored_str) {
 	use_character_recoloring = output;

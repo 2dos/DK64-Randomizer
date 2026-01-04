@@ -22,7 +22,7 @@ void freeDK(void) {
 	deleteActorContainer(CurrentActorPointer_0);
 }
 
-static char jumping_started = 0; // Global variable indicating that the jumping sequence has started
+ROM_DATA static char jumping_started = 0; // Global variable indicating that the jumping sequence has started
 
 void cutsceneDKCode(void) {
 	/**
@@ -82,7 +82,7 @@ void cutsceneDKCode(void) {
 	renderActor(CurrentActorPointer_0,0);
 }
 
-static const unsigned char pair_data[] = {
+ROM_RODATA_NUM static const unsigned char pair_data[] = {
 	MAP_JAPES,
 	MAP_AZTECLLAMATEMPLE,
 	MAP_AZTECTINYTEMPLE,
@@ -90,12 +90,7 @@ static const unsigned char pair_data[] = {
 };
 
 void charSpawnerItemCode(void) {
-	int check_index = 0;
-	for (int i = 0; i < 4; i++) {
-		if (pair_data[i] == CurrentMap) {
-			check_index = i;
-		}
-	}
+	int check_index = inU8List(CurrentMap, &pair_data[0], sizeof(pair_data)) - 1;
 	int model = kong_check_data[check_index].model;
 	if (model == 0) {
 		return;

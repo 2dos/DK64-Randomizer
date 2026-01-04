@@ -12,9 +12,8 @@
 
 #define ENEMY_ITEM_MAP_CAP 128
 
-static enemy_item_db_item current_map_items[ENEMY_ITEM_MAP_CAP] = {};
-unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE] = {};
-static char enemy_db_populated = 0;
+ROM_DATA static enemy_item_db_item current_map_items[ENEMY_ITEM_MAP_CAP] = {};
+ROM_DATA static char enemy_db_populated = 0;
 
 void setEnemyDBPopulation(int value) {
     enemy_db_populated = value;

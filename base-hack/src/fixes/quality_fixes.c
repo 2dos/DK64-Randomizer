@@ -54,8 +54,6 @@ void qualityOfLife_fixes(void) {
 	}
 }
 
-int force_enable_diving_timer = 0;
-
 void dropWrapper(void* actor) {
 	clearTagSlide(actor);
 	force_enable_diving_timer = ObjectModel2Timer;
@@ -85,14 +83,14 @@ void playTransformationSong(songs song, float volume) {
 	playSong(song, volume);
 }
 
-static unsigned short previous_total_cbs = 0xFFFF;
-static unsigned char previous_world = 0xFF;
+ROM_DATA static unsigned short previous_total_cbs = 0xFFFF;
+ROM_DATA static unsigned char previous_world = 0xFF;
 
 #define SPRITE_ALPHA_OUT 8
 #define SPRITE_ALPHA_IN 44
 #define SPRITE_ALPHA_END 52
 
-static unsigned char ding_sprite_timer = 0;
+ROM_DATA static unsigned char ding_sprite_timer = 0;
 
 int hasEnoughCBs(void) {
 	int world = getWorld(CurrentMap, 1);
@@ -367,14 +365,14 @@ void movePelletWrapper(actorData* actor) {
 	unkProjectileCode_2(actor);
 }
 
-static unsigned char good_gamemode_list[] = {
+ROM_RODATA_NUM static const unsigned char good_gamemode_list[] = {
 	GAMEMODE_ADVENTURE,
 	GAMEMODE_RAP,
 	GAMEMODE_SNIDEGAMES,
 };
 
 void fixHelmTimerDisable(void) {
-	if (inU8List(Gamemode, &good_gamemode_list, 3)) {
+	if (inU8List(Gamemode, &good_gamemode_list[0], 3)) {
 		return;
 	}
 	HelmTimerShown = 0;

@@ -30,9 +30,9 @@ fi
 
 # Set Build flag
 if [[ "$test_on" == "--test" ]]; then
-    echo 0 > Build/BuildingBPS.txt
+    echo 0 > build/BuildingBPS.txt
 else
-    echo 1 > Build/BuildingBPS.txt
+    echo 1 > build/BuildingBPS.txt
 fi
 
 # Helper function to run python scripts
@@ -42,6 +42,18 @@ runscript() {
     echo -n "$msg..."
     start_time=$(date +%s%3N)
     "$python_ver" "$script" >> rom/build.log
+    end_time=$(date +%s%3N)
+    runtime=$((end_time - start_time))
+    echo " $msg DONE ($runtime ms)"
+}
+
+runscriptarg() {
+    local msg="$1"
+    local script="$2"
+    local arg="$3"
+    echo -n "$msg..."
+    start_time=$(date +%s%3N)
+    "$python_ver" "$script" "$arg" >> rom/build.log
     end_time=$(date +%s%3N)
     runtime=$((end_time - start_time))
     echo " $msg DONE ($runtime ms)"
@@ -64,12 +76,12 @@ if [[ "$use_compiled" -eq 1 ]]; then
     runscript "Compile Cranky's Lab" "build/pyinstaller_handler.py"
 fi
 
-runscript "Compile C Code" "build/compile.py"
+runscript "Compile C Code" "build/compile-linux.py"
 
 # Run ARMIPS Jumplist
 echo -n "Running ARMIPS (Jumplist)..."
 start_time=$(date +%s%3N)
-build/armips asm/jump_list.asm
+build/armips/build/armips asm/jump_list.asm
 end_time=$(date +%s%3N)
 runtime=$((end_time - start_time))
 echo " DONE ($runtime ms)"
@@ -90,7 +102,7 @@ runscript "Building Cutscene Database" "build/build_cutscene_dict.py"
 # Build Symbols File
 echo -n "Building Symbols File..."
 start_time=$(date +%s%3N)
-build/armips asm/main.asm -sym rom/dev-symbols.sym
+build/armips/build/armips asm/main.asm -sym rom/dev-symbols.sym
 end_time=$(date +%s%3N)
 runtime=$((end_time - start_time))
 echo " DONE ($runtime ms)"
@@ -108,12 +120,7 @@ if [[ "$test_on" == "--test" ]]; then
 fi
 
 # Modify ROM CRC
-echo -n "Modify ROM CRC..."
-start_time=$(date +%s%3N)
-build/n64crc rom/dk64-randomizer-base-dev.z64 >> rom/build.log
-end_time=$(date +%s%3N)
-runtime=$((end_time - start_time))
-echo " DONE ($runtime ms)"
+runscriptarg "Modify ROM CRC..." "build/crc.py" "rom/dk64-randomizer-base-dev.z64"
 
 # Dump pointer tables
 echo -n "Dump pointer tables..."
@@ -131,7 +138,7 @@ else
     # Create base hack BPS
     echo -n "Create base hack BPS..."
     start_time=$(date +%s%3N)
-    build/flips ./rom/dk64.z64 ./rom/dk64-randomizer-base-dev.z64 ./rom/patch.bps --bps >> rom/build.log
+    build/flips-linux ./rom/dk64.z64 ./rom/dk64-randomizer-base-dev.z64 ./rom/patch.bps --bps >> rom/build.log
     end_time=$(date +%s%3N)
     runtime=$((end_time - start_time))
     echo " DONE ($runtime ms)"

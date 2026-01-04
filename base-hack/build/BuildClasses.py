@@ -4,10 +4,11 @@ import subprocess
 from typing import BinaryIO
 import zlib
 import math
+import platform
 
 import encoders
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, Overlay
-from BuildLib import float_to_hex, main_pointer_table_offset, convertToRGBA32
+from BuildLib import float_to_hex, main_pointer_table_offset, convertToRGBA32, convertToRGBA5551, convertToI4, convertToI8, convertToIA4, convertToIA8
 
 
 class File:
@@ -98,13 +99,24 @@ class File:
     def generateTextureFile(self):
         """Generate Texture File."""
         if self.texture_format != TextureFormat.Null:
-            if self.texture_format in [TextureFormat.RGBA5551, TextureFormat.I4, TextureFormat.I8, TextureFormat.IA4, TextureFormat.IA8]:
-                result = subprocess.check_output(["./build/n64tex.exe", self.getTextureFormatName(), self.source_file])
-                if self.target_compressed_size is not None:
-                    self.source_file = self.source_file.replace(".png", f".{self.getTextureFormatName()}")
+            if self.texture_format == TextureFormat.RGBA5551:
+                convertToRGBA5551(self.source_file)
+                self.source_file = self.source_file.replace(".png", ".rgba5551")
             elif self.texture_format == TextureFormat.RGBA32:
                 convertToRGBA32(self.source_file)
                 self.source_file = self.source_file.replace(".png", ".rgba32")
+            elif self.texture_format == TextureFormat.I4:
+                convertToI4(self.source_file)
+                self.source_file = self.source_file.replace(".png", ".i4")
+            elif self.texture_format == TextureFormat.I8:
+                convertToI8(self.source_file)
+                self.source_file = self.source_file.replace(".png", ".i8")
+            elif self.texture_format == TextureFormat.IA4:
+                convertToIA4(self.source_file)
+                self.source_file = self.source_file.replace(".png", ".ia4")
+            elif self.texture_format == TextureFormat.IA8:
+                convertToIA8(self.source_file)
+                self.source_file = self.source_file.replace(".png", ".ia8")
             else:
                 print(" - ERROR: Unsupported texture format " + self.getTextureFormatName())
 

@@ -1,7 +1,7 @@
 #include "../include/common.h"
 
-const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
-const short normal_key_flags[] = {
+ROM_RODATA_NUM const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
+ROM_RODATA_NUM const short normal_key_flags[] = {
 	FLAG_KEYHAVE_KEY1,
 	FLAG_KEYHAVE_KEY2,
 	FLAG_KEYHAVE_KEY3,
@@ -11,17 +11,17 @@ const short normal_key_flags[] = {
 	FLAG_KEYHAVE_KEY7,
 	FLAG_KEYHAVE_KEY8
 };
-short tbarrel_flags[] = {
+ROM_RODATA_NUM const short tbarrel_flags[] = {
 	FLAG_TBARREL_BARREL,
 	FLAG_TBARREL_DIVE,
 	FLAG_TBARREL_ORANGE,
 	FLAG_TBARREL_VINE,
 };
-short bfi_move_flags[] = {
+ROM_RODATA_NUM const short bfi_move_flags[] = {
 	FLAG_ABILITY_CAMERA,
 	FLAG_ABILITY_SHOCKWAVE,
 };
-const short tnsportal_flags[] = {
+ROM_RODATA_NUM const short tnsportal_flags[] = {
 	// Troff n Scoff portal clear flags
 	FLAG_PORTAL_JAPES,
 	FLAG_PORTAL_AZTEC,
@@ -31,8 +31,8 @@ const short tnsportal_flags[] = {
 	FLAG_PORTAL_CAVES,
 	FLAG_PORTAL_CASTLE,
 };
-const unsigned char kong_pellets[] = {48,36,42,43,38};
-const rgb colorblind_colors[15] = {
+ROM_RODATA_NUM const unsigned char kong_pellets[] = {48,36,42,43,38};
+ROM_RODATA_NUM const rgb colorblind_colors[15] = {
     // Protan
     {.red=0x27, .green=0x27, .blue=0x27}, // DK
     {.red=0x00, .green=0x72, .blue=0xFF}, // Diddy
@@ -52,7 +52,7 @@ const rgb colorblind_colors[15] = {
     {.red=0xFF, .green=0xFF, .blue=0xFF}, // Tiny
     {.red=0xFF, .green=0xA4, .blue=0xA4}, // Chunky
 };
-const unsigned char crown_maps[] = {
+ROM_RODATA_NUM const unsigned char crown_maps[] = {
 	MAP_BATTLEARENA_BEAVERBRAWL,
 	MAP_BATTLEARENA_KRITTERKARNAGE,
 	MAP_BATTLEARENA_ARENAAMBUSH,
@@ -64,7 +64,7 @@ const unsigned char crown_maps[] = {
 	MAP_BATTLEARENA_SHOCKWAVESHOWDOWN,
 	MAP_BATTLEARENA_BISHBASHBRAWL
 };
-const unsigned char regular_boss_maps[] = {
+ROM_RODATA_NUM const unsigned char regular_boss_maps[] = {
 	MAP_JAPESDILLO,
     MAP_AZTECDOGADON,
     MAP_FACTORYJACK,
@@ -73,19 +73,19 @@ const unsigned char regular_boss_maps[] = {
     MAP_CAVESDILLO,
     MAP_CASTLEKUTOUT
 };
-static const unsigned char training_maps[] = {
+ROM_RODATA_NUM static const unsigned char training_maps[] = {
 	MAP_TBARREL_VINE,
 	MAP_TBARREL_BARREL,
 	MAP_TBARREL_DIVE,
 	MAP_TBARREL_ORANGE,
 };
-static unsigned char shop_maps[] = {
+ROM_RODATA_NUM static const unsigned char shop_maps[] = {
 	MAP_CRANKY,
 	MAP_CANDY,
 	MAP_FUNKY,
 	MAP_SNIDE,
 };
-static const map_bitfield minigame_maps_btf = {
+ROM_RODATA_NUM static const map_bitfield minigame_maps_btf = {
     // Bitfield on whether a map is a minigame map
 	.test_map = 0,
     .funkys_store = 0,
@@ -309,7 +309,7 @@ static const map_bitfield minigame_maps_btf = {
 	.arcade_100m = 1,
 	.jetpac_rocket = 1,
 };
-static const char overlay_indexes[] = {
+ROM_RODATA_NUM static const char overlay_indexes[] = {
 	OVERLAY_NONE, // Test Map
 	OVERLAY_MENU, // Funky's Store
 	OVERLAY_ARCADE, // DK Arcade
@@ -530,7 +530,7 @@ static const char overlay_indexes[] = {
 
 #define UNAFFECTED_HEAD_MODEL -3
 
-const char big_head_actors[MODEL_COUNT] = {
+ROM_DATA char big_head_actors[MODEL_COUNT] = {
 	UNAFFECTED_HEAD_MODEL, // No Model
 	0, // Diddy
 	0, // Diddy (Instrument)
@@ -771,7 +771,7 @@ const char big_head_actors[MODEL_COUNT] = {
 };
 
 
-char* levels[] = {
+ROM_RODATA_PTR const char* levels[] = {
     "ALL",
     "JUNGLE JAPES",
     "ANGRY AZTEC",
@@ -795,11 +795,11 @@ int getBitArrayValue(unsigned char* arr, int value) {
 }
 
 int inMinigame(maps map) {
-	return getBitArrayValue(&minigame_maps_btf, map);
+	return getBitArrayValue((unsigned char*)&minigame_maps_btf, map);
 }
 
 int inShop(maps map, int include_snide) {
-	return inU8List(map, &shop_maps[0], 3 + include_snide);
+	return inU8List(map, (unsigned char*)&shop_maps[0], 3 + include_snide);
 }
 
 void playSFX(short sfxIndex) {
@@ -853,7 +853,7 @@ void* findActorWithType(int search_actor_type) {
 }
 
 int isRDRAM(void* address) {
-	if (((int)address >= 0x80000000) && ((int)address < 0x80800000)) {
+	if (((unsigned int)address >= 0x80000000) && ((unsigned int)address < 0x80800000)) {
 		return 1;
 	}
 	return 0;
@@ -870,7 +870,7 @@ void resetMapContainer(void) {
 	}
 }
 
-static unsigned char vanilla_portal_maps[] = {
+ROM_RODATA_NUM static const unsigned char vanilla_portal_maps[] = {
 	MAP_JAPES,
 	MAP_AZTEC,
 	MAP_FACTORY,
@@ -892,7 +892,7 @@ void correctDKPortal(void) {
 			portal_state = 0;
 		} else if ((CurrentMap == MAP_FUNGI) && (exit == 27)) {
 			portal_state = 0;
-		} else if ((exit == 0) && (inU8List(CurrentMap, &vanilla_portal_maps, 7))) {
+		} else if ((exit == 0) && (inU8List(CurrentMap, &vanilla_portal_maps[0], 7))) {
 			portal_state = 0;
 		} else if (exit == -1) {
 			portal_state = 0;
@@ -911,7 +911,7 @@ void correctDKPortal(void) {
 	}
 }
 
-int getCenter(int style, char* str) {
+int getCenter(int style, const char* str) {
 	return (screenCenterX + 100 - (getCenterOffset(style,str))) * 0.5f;
 }
 
@@ -1000,7 +1000,7 @@ int getWrinklyLevelIndex(void) {
 	return getWorld(CurrentMap, 0);
 }
 
-sprite_data_struct bean_sprite = {
+ROM_RODATA_NUM const sprite_data_struct bean_sprite = {
 	.unk0 = 0xC4,
 	.images_per_frame_horizontal = 1,
 	.images_per_frame_vertical = 1,
@@ -1026,7 +1026,7 @@ sprite_data_struct bean_sprite = {
 	},
 };
 
-sprite_data_struct pearl_sprite = {
+ROM_RODATA_NUM const sprite_data_struct pearl_sprite = {
 	.unk0 = 0xC5,
 	.images_per_frame_horizontal = 1,
 	.images_per_frame_vertical = 1,
@@ -1039,7 +1039,7 @@ sprite_data_struct pearl_sprite = {
 	.images = {6021},
 };
 
-sprite_data_struct krool_sprite = {
+ROM_RODATA_NUM const sprite_data_struct krool_sprite = {
 	.unk0 = 0xC6,
 	.images_per_frame_horizontal = 2,
 	.images_per_frame_vertical = 1,
@@ -1052,7 +1052,7 @@ sprite_data_struct krool_sprite = {
 	.images = {0x383, 0x384},
 };
 
-sprite_data_struct feather_gun_sprite = {
+ROM_RODATA_NUM const sprite_data_struct feather_gun_sprite = {
 	.unk0 = 0xC7,
 	.images_per_frame_horizontal = 1,
 	.images_per_frame_vertical = 1,
@@ -1074,7 +1074,7 @@ sprite_data_struct feather_gun_sprite = {
 	},
 };
 
-sprite_data_struct fool_overlay_sprite = {
+ROM_RODATA_NUM const sprite_data_struct fool_overlay_sprite = {
 	.unk0 = 0xC8,
 	.images_per_frame_horizontal = 1,
 	.images_per_frame_vertical = 1,
@@ -1089,7 +1089,7 @@ sprite_data_struct fool_overlay_sprite = {
 	},
 };
 
-sprite_data_struct company_coin_sprite = {
+ROM_RODATA_NUM const sprite_data_struct company_coin_sprite = {
 	.unk0 = 0xC9,
 	.images_per_frame_horizontal = 1,
 	.images_per_frame_vertical = 1,
@@ -1119,7 +1119,7 @@ sprite_data_struct company_coin_sprite = {
 	},
 };
 
-sprite_data_struct potion_sprite = {
+ROM_RODATA_NUM const sprite_data_struct potion_sprite = {
 	.unk0 = 0xCA,
 	.images_per_frame_horizontal = 1,
 	.images_per_frame_vertical = 1,
@@ -1171,7 +1171,7 @@ void giveMelon(void) {
 	applyDamageMask(0, 1);
 }
 
-int inShortList(int target, short* list, int count) {
+int inShortList(const int target, const short* list, const int count) {
 	for (int i = 0; i < count; i++) {
 		if (list[i] == target) {
 			return i + 1;
@@ -1180,7 +1180,7 @@ int inShortList(int target, short* list, int count) {
 	return 0;
 }
 
-int inU8List(int target, unsigned char* list, int count) {
+int inU8List(const int target, const unsigned char* list, const int count) {
 	for (int i = 0; i < count; i++) {
 		if (list[i] == target) {
 			return i + 1;
@@ -1192,8 +1192,6 @@ int inU8List(int target, unsigned char* list, int count) {
 void giveCrystal(void) {
 	changeCollectableCount(5, 0, 150);
 }
-
-move_text_overlay_struct text_overlay_data[TEXT_OVERLAY_BUFFER] = {};
 
 int spawnItemOverlay(requirement_item type, int level, int kong, int force) {
 	for (int i = 0; i < TEXT_OVERLAY_BUFFER; i++) {
@@ -1239,7 +1237,7 @@ int inBattleCrown(maps map) {
 }
 
 int inTraining(maps map) {
-	for (int i = 0; i < sizeof(training_maps); i++) {
+	for (unsigned int i = 0; i < sizeof(training_maps); i++) {
 		if (map == training_maps[i]) {
 			return 1;
 		}
@@ -1268,15 +1266,15 @@ int inBossMap(maps map, int include_regular, int include_krool, int include_shoe
 
 int isGamemode(gamemodes target_mode, int force_both) {
 	if (force_both) {
-		if ((Gamemode == target_mode) && (Mode == target_mode)) {
+		if (((gamemodes)Gamemode == target_mode) && ((gamemodes)Mode == target_mode)) {
 			return 1;
 		}
 		return 0;
 	}
-	if (Gamemode == target_mode) {
+	if ((gamemodes)Gamemode == target_mode) {
 		return 1;
 	}
-	return Mode == target_mode;
+	return (gamemodes)Mode == target_mode;
 }
 
 int filterSong(int* song_write) {
@@ -1303,7 +1301,7 @@ int filterSong(int* song_write) {
 	return getTrackChannel(song);
 }
 
-static unsigned char galleon_underwater_maps[] = {
+ROM_RODATA_NUM static const unsigned char galleon_underwater_maps[] = {
 	MAP_GALLEON2DS,
 	MAP_GALLEON5DSDIDDYLANKYCHUNKY,
 	MAP_GALLEON5DSDKTINY,
@@ -1335,7 +1333,7 @@ int applyDamageMask(int player_index, int damage) {
 		if (Player->grounded_bitfield & 4) {
 			// Underwater
 			applied_multiplier = 1;
-			if (inU8List(CurrentMap, &galleon_underwater_maps, sizeof(galleon_underwater_maps))) {
+			if (inU8List(CurrentMap, &galleon_underwater_maps[0], sizeof(galleon_underwater_maps))) {
 				applied_multiplier = 0;
 			}
 		}
@@ -1374,7 +1372,7 @@ void* getFile(int size, int rom) {
 	return loc;
 }
 
-static float percentage_rewards[] = {
+ROM_RODATA_NUM static const float percentage_rewards[] = {
 	0.4f, // GBs
 	0.5f, // Crowns
 	0.25f, // Keys
@@ -1384,7 +1382,7 @@ static float percentage_rewards[] = {
 	0.5f, // Nintendo Coins
 };
 
-static unsigned char reward_cap[] = {
+ROM_RODATA_NUM static const unsigned char reward_cap[] = {
 	201, // GBs
 	10, // Crowns
 	8, // Keys
@@ -1456,9 +1454,8 @@ int getTotalMoveCount(void) {
 	return count;
 }
 
-unsigned int cs_skip_db[2] = {0, 0};
-static unsigned char unused_bonus_ids[] = {2, 29, 30, 32, 34, 35, 38, 41, 42, 52};
-static unsigned char use_req_counters[] = {
+ROM_RODATA_NUM static const unsigned char unused_bonus_ids[] = {2, 29, 30, 32, 34, 35, 38, 41, 42, 52};
+ROM_RODATA_NUM static const unsigned char use_req_counters[] = {
 	REQITEM_COMPANYCOIN,
 	REQITEM_MEDAL,
 	REQITEM_KONG,
@@ -1475,7 +1472,7 @@ static unsigned char use_req_counters[] = {
 
 int getItemCountReq(requirement_item item) {
 	int count = 0;
-	if (inU8List(item, &use_req_counters, sizeof(use_req_counters))) {
+	if (inU8List(item, &use_req_counters[0], sizeof(use_req_counters))) {
 		return getItemCount_new(item, -1, -1);
 	}
 	switch(item) {
@@ -1507,7 +1504,7 @@ int getItemCountReq(requirement_item item) {
 			}
 		case REQITEM_BONUSES_NOHELM:
 			for (int i = 1; i < 54; i++) {
-				if (!inU8List(i, &unused_bonus_ids, sizeof(unused_bonus_ids))) {
+				if (!inU8List(i, &unused_bonus_ids[0], sizeof(unused_bonus_ids))) {
 					if (checkFlag(bonus_data[i].flag, FLAGTYPE_PERMANENT)) {
 						count += 1;
 					}
@@ -1554,10 +1551,10 @@ void exitBoss(void) {
 	initiateTransition(MAP_TROFFNSCOFF, 2);
 }
 
-static const unsigned char krusha_adj_models[] = {KONGMODEL_KRUSHA, KONGMODEL_KROOL_CUTSCENE, KONGMODEL_KROOL_FIGHT};
+ROM_RODATA_NUM static const unsigned char krusha_adj_models[] = {KONGMODEL_KRUSHA, KONGMODEL_KROOL_CUTSCENE, KONGMODEL_KROOL_FIGHT};
 int isKrushaAdjacentModel(int kong) {
 	custom_kong_models slot_value = Rando.kong_models[kong];
-	return inU8List(slot_value, &krusha_adj_models, 3);
+	return inU8List(slot_value, &krusha_adj_models[0], 3);
 }
 
 int isGlobalCutscenePlaying(int cutscene_index) {
@@ -1575,7 +1572,7 @@ int isGlobalCutscenePlaying(int cutscene_index) {
 
 int DetermineLevel_NewLevel(maps map) {
 	for (int i = 0; i < 8; i++) {
-		if (CurrentMap == LobbiesArray[i]) {
+		if (CurrentMap == (maps)LobbiesArray[i]) {
 			if (!checkFlag(FLAG_STORY_JAPES + i, FLAGTYPE_PERMANENT)) {
 				setPermFlag(FLAG_STORY_JAPES + i);
 				if (StorySkip) {
@@ -1616,7 +1613,7 @@ void refillPlayerHealthKKO(void* actor, int cutscene, int bitfield) {
 	refillHealth(0);
 }
 
-static short dynflag_items[] = {
+ROM_RODATA_NUM static const short dynflag_items[] = {
 	0x00A,
 	0x00D,
 	0x016,
@@ -1635,7 +1632,7 @@ static short dynflag_items[] = {
 };
 
 int isDynFlag(int obj, maps map) {
-	if (inShortList(obj, &dynflag_items, 15)) {
+	if (inShortList(obj, &dynflag_items[0], 15)) {
 		return 1;
 	}
 	if (Rando.race_coins_shuffled) {
@@ -1656,7 +1653,7 @@ int getProjectileCount_modified(void *player, unsigned short int_bitfield, void*
 		actorData *actor = LoadedActorArray[i].actor;
 		if (player == actor->parent) {
 			if (actor->interaction_bitfield == int_bitfield) {
-				if ((!code) || callFunc(code, actor)) {
+				if ((!code) || callFunc(code, (int)actor)) {
 					count += 1;
 					int *paad = actor->paad;
 					if (paad) {

@@ -11,8 +11,8 @@
 
 #include "../../include/common.h"
 
-static CountStruct current_item_data;
-static const MoveSpecialBijectionStruct move_flag_bijection[] = {
+ROM_DATA static CountStruct current_item_data;
+ROM_DATA static MoveSpecialBijectionStruct move_flag_bijection[] = {
     {.flag = FLAG_TBARREL_DIVE, .move_enum = MOVE_SPECIAL_DIVING},
     {.flag = FLAG_TBARREL_ORANGE, .move_enum = MOVE_SPECIAL_ORANGES},
     {.flag = FLAG_TBARREL_BARREL, .move_enum = MOVE_SPECIAL_BARRELS},
@@ -28,7 +28,7 @@ typedef struct pad_refresh_calls {
     unsigned char pad;
 } pad_refresh_calls;
 
-static const pad_refresh_calls call_checks_pad_refresh[] = {
+ROM_DATA static pad_refresh_calls call_checks_pad_refresh[] = {
     {.level = 0,    .kong = KONG_DK,                .signal = ITEMREFRESH_BLAST},
     {.level = 2,    .kong = KONG_DIDDY,             .signal = ITEMREFRESH_SPRING},
     {.level = 1,    .kong = KONG_LANKY,             .signal = ITEMREFRESH_BALLOON},
@@ -181,6 +181,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
                     }
                 }
             }
+        default:
             break;
     }
     checkSeedVictory();
@@ -233,7 +234,7 @@ int getItemCount_new(requirement_item item, int level, int kong) {
             return count;
         case REQITEM_HINT:
             if (!bitfield_series) {
-                bitfield_series = &current_item_data.hint_bitfield;
+                bitfield_series = (unsigned char*)&current_item_data.hint_bitfield;
             }
             {
                 if ((level >= 0) && (kong >= 0)) {
@@ -339,6 +340,7 @@ int getItemCount_new(requirement_item item, int level, int kong) {
             } else if (level == 12) {
                 return current_item_data.flag_moves.camera && current_item_data.flag_moves.shockwave;
             }
+        default:
             break;
     }
     return 0;
@@ -400,7 +402,7 @@ int getShopFlag(vendors vendor, int level, int kong) {
     return 0;
 }
 
-static unsigned char FileInfoData[] = {
+ROM_DATA static unsigned char FileInfoData[] = {
     2, // Melon Count
     1, // File Populated
     0x16, // IGT

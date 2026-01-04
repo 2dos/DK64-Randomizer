@@ -228,7 +228,6 @@ actor_spawn_packet extra_actor_spawns[2] = {
     {.actor = 45}, // Japes Boulder
     {.actor = 45}, // Aztec Vulture
 };
-patch_db_item patch_flags[16] = {}; // Flag table for dirt patches to differentiate it from balloons
 BoulderItemStruct boulder_item_table[16] = {
     // Holdable Object Rewards
     { .map = MAP_ISLES, .spawner_id = 1},
@@ -351,7 +350,6 @@ bonus_barrel_info bonus_data[BONUS_DATA_COUNT] = {
     {.flag=FLAG_TBARREL_ORANGE, .spawn_actor=NEWACTOR_POTIONANY,    .kong_actor=0},
     {.flag=FLAG_TBARREL_BARREL, .spawn_actor=NEWACTOR_POTIONANY,    .kong_actor=0},
 };
-meloncrate_db_item crate_flags[16] = {}; // Melon crate table
 model_item_data kong_check_data[4] = {
     // Kong table
     {.model =  1, .item = {.item_type = REQITEM_KONG, .kong = KONG_DIDDY}},
@@ -553,7 +551,7 @@ void updateBoulderId(int index, int id) {
 int getBoulderIndex(void) {
     int id = getActorSpawnerIDFromTiedActor(CurrentActorPointer_0);
     for (int i = 0; i < 16; i++) {
-        if (boulder_item_table[i].map == CurrentMap) {
+        if ((maps)boulder_item_table[i].map == CurrentMap) {
             if (boulder_item_table[i].spawner_id == id) {
                 return i;
             }
@@ -577,7 +575,7 @@ typedef struct barrel_skin_tie {
     /* 0x005 */ char kong;
 } barrel_skin_tie;
 
-static const barrel_skin_tie bonus_skins[] = {
+ROM_RODATA_NUM static const barrel_skin_tie bonus_skins[] = {
     {.actor = 78,                               .reqitem=REQITEM_BLUEPRINT,         .level=-1, .kong=-1, .skin=SKIN_BLUEPRINT},
     {.actor = 75,                               .reqitem=REQITEM_BLUEPRINT,         .level=-1, .kong=-1, .skin=SKIN_BLUEPRINT},
     {.actor = 77,                               .reqitem=REQITEM_BLUEPRINT,         .level=-1, .kong=-1, .skin=SKIN_BLUEPRINT},
@@ -624,7 +622,7 @@ static const barrel_skin_tie bonus_skins[] = {
 };
 
 enum_bonus_skin getBarrelSkinIndex(int actor) {
-    for (int i = 0; i < (sizeof(bonus_skins) / sizeof(barrel_skin_tie)); i++) {
+    for (unsigned int i = 0; i < (sizeof(bonus_skins) / sizeof(barrel_skin_tie)); i++) {
         if (bonus_skins[i].actor == actor) {
             return bonus_skins[i].skin;
         }
@@ -633,7 +631,7 @@ enum_bonus_skin getBarrelSkinIndex(int actor) {
 }
 
 enum_bonus_skin getShopSkinIndex(item_packet *data) {
-    for (int i = 0; i < (sizeof(bonus_skins) / sizeof(barrel_skin_tie)); i++) {
+    for (unsigned int i = 0; i < (sizeof(bonus_skins) / sizeof(barrel_skin_tie)); i++) {
         if (bonus_skins[i].reqitem == data->item_type) {
             if ((bonus_skins[i].level == -1) || (bonus_skins[i].level == data->level)) {
                 if ((bonus_skins[i].kong == -1) || (bonus_skins[i].kong == data->kong)) {

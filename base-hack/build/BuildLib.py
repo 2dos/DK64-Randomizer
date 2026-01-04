@@ -155,12 +155,97 @@ def hueShiftColor(color: tuple, amount: int, head_ratio: int = None) -> tuple:
         blue_ratio = x
     return (int((red_ratio + m) * 255), int((green_ratio + m) * 255), int((blue_ratio + m) * 255))
 
+def convertToI4(png_file):
+    """Convert PNG to I4 binary."""
+    im = Image.open(png_file).convert("RGBA")
+    width, height = im.size
+    new_file = png_file.replace(".png", ".i4")
+    polarity = 0
+    value = 0
+    with open(new_file, "wb") as fh:
+        for y in range(height):
+            for x in range(width):
+                r, g, b, a = im.getpixel((x, y))
+                intensity = int((r + g + b) / 3) >> 4
+                if polarity == 0:
+                    value = intensity << 4
+                    polarity = 1
+                elif polarity == 1:
+                    value |= intensity
+                    polarity = 0
+                    fh.write(value.to_bytes(1, "big"))
+                    value = 0
+        if polarity != 0:
+            fh.write(value.to_bytes(1, "big"))
+
+def convertToI8(png_file):
+    """Convert PNG to I8 binary."""
+    im = Image.open(png_file).convert("RGBA")
+    width, height = im.size
+    new_file = png_file.replace(".png", ".i8")
+    with open(new_file, "wb") as fh:
+        for y in range(height):
+            for x in range(width):
+                r, g, b, a = im.getpixel((x, y))
+                intensity = int((r + g + b) / 3)
+                fh.write(intensity.to_bytes(1, "big"))
+
+def convertToIA4(png_file):
+    """Convert PNG to IA4 binary."""
+    im = Image.open(png_file).convert("RGBA")
+    width, height = im.size
+    new_file = png_file.replace(".png", ".ia4")
+    polarity = 0
+    value = 0
+    with open(new_file, "wb") as fh:
+        for y in range(height):
+            for x in range(width):
+                r, g, b, a = im.getpixel((x, y))
+                intensity = int((r + g + b) / 3) >> 5
+                alpha = 1 if a > 128 else 0
+                output = intensity << 1 | alpha
+                if polarity == 0:
+                    value = output << 4
+                    polarity = 1
+                elif polarity == 1:
+                    value |= output
+                    polarity = 0
+                    fh.write(value.to_bytes(1, "big"))
+                    value = 0
+        if polarity != 0:
+            fh.write(value.to_bytes(1, "big"))
+
+def convertToIA8(png_file):
+    """Convert PNG to IA8 binary."""
+    im = Image.open(png_file).convert("RGBA")
+    width, height = im.size
+    new_file = png_file.replace(".png", ".ia8")
+    with open(new_file, "wb") as fh:
+        for y in range(height):
+            for x in range(width):
+                r, g, b, a = im.getpixel((x, y))
+                intensity = int((r + g + b) / 3) >> 4
+                alpha = a >> 4
+                value = (intensity << 4) | alpha
+                fh.write(value.to_bytes(1, "big"))
+
+def convertToRGBA5551(png_file):
+    """Convert PNG to RGBA5551 binary."""
+    im = Image.open(png_file).convert("RGBA")
+    width, height = im.size
+    new_file = png_file.replace(".png", ".rgba5551")
+    with open(new_file, "wb") as fh:
+        for y in range(height):
+            for x in range(width):
+                r, g, b, a = im.getpixel((x, y))
+                has_alpha = 1 if a > 128 else 0
+                data = ((r >> 3) << 11) | ((g >> 3) << 6) | ((b >> 3) << 1) | has_alpha
+                fh.write(data.to_bytes(2, "big"))
 
 def convertToRGBA32(png_file):
     """Convert PNG to RGBA32 binary."""
-    im = Image.open(png_file)
+    im = Image.open(png_file).convert("RGBA")
     width, height = im.size
-    pix = im.load()
     new_file = png_file.replace(".png", ".rgba32")
     with open(new_file, "wb") as fh:
         for y in range(height):

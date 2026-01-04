@@ -77,11 +77,19 @@ def getActorDefaultString(input) -> str:
     dict_str = []
     if not isinstance(input, dict):
         return str(input)
+    prop_map = {
+        "collision_info": "void*",
+        "unk10": "void*",
+        "code": "void*",
+    }
     for k in input:
         val = input[k]
         if isinstance(val, list):
             val = "{" + ", ".join([str(x) for x in val]) + "}"
-        dict_str.append(f".{k} = {val}")
+        dtype_cast = ""
+        if k in prop_map:
+            dtype_cast = f"({prop_map[k]})"
+        dict_str.append(f".{k} = {dtype_cast}{val}")
     complete_internals = ", ".join(dict_str)
     return "{" + complete_internals + "}"
 
@@ -717,8 +725,11 @@ with open("src/lib_items.c", "w") as fh:
             },
         ]
     )
-    for sym in data_types:
-        fh.write(f"\n{data_types[sym]} {sym}[] = {{\n\t" + ",\n\t".join([getActorDefaultString(x) for x in actor_data[sym]]) + "\n};")
+    for sym, dtype in data_types.items():
+        dtype_cast = ""
+        if dtype in ("short*", "void*"):
+            dtype_cast = f"({dtype})"
+        fh.write(f"\n{dtype} {sym}[] = {{\n\t" + ",\n\t".join([f'{dtype_cast}{getActorDefaultString(x)}' for x in actor_data[sym]]) + "\n};")
     with open("include/item_data.h", "a") as fg:
         fg.write(f"extern GBDictItem new_flag_mapping[{len(actor_data['new_flag_mapping'])}];\n")
         # File Size Calc (Just for base hack testing purposes)

@@ -26,7 +26,7 @@ typedef enum dpad_visual_enum {
     /* 2 */ DPADVISIBLE_MINIMAL,
 } dpad_visual_enum;
 
-static unsigned char race_maps[] = {
+ROM_RODATA_NUM static const unsigned char race_maps[] = {
     MAP_JAPESMINECART,
     MAP_FUNGIMINECART,
     MAP_CASTLEMINECART,
@@ -48,9 +48,9 @@ typedef struct hud_element_definition {
     /* 0x013 */ unsigned char sprite_index[5]; // One per kong
 } hud_element_definition;
 
-static short hud_counts[(ITEMID_TERMINATOR - ITEMID_CHAOSBLOCKER_KONG)] = {};
+ROM_DATA static short hud_counts[(ITEMID_TERMINATOR - ITEMID_CHAOSBLOCKER_KONG)] = {};
 
-static const hud_element_definition elements[] = {
+ROM_DATA static hud_element_definition elements[] = {
     {
         // CB (T&S)
         .x = 0x1E, .y=0x26, .unk0 = 15.5f, .unk1=26.0f,
@@ -120,7 +120,7 @@ static const hud_element_definition elements[] = {
     {
         // Race Coin
         .x = 0x122, .y=0x26, .unk0 = 16.5f, .unk1=-19.0f,
-        .cheat=0, .counter=&RaceCoinCount, .run_allocation=1,
+        .cheat=0, .counter=(short*)&RaceCoinCount, .run_allocation=1,
         .sprite_index={73, 73, 73, 73, 73},
     },
     {
@@ -397,7 +397,7 @@ void allocateHUD(int reallocate) {
     }
 }
 
-void* getHUDSprite_Complex(item_ids item) {
+const void* getHUDSprite_Complex(item_ids item) {
     int kong = getKong(0);
     if (item == ITEMID_CBS_0) {
         kong = *(int*)(0x80745288); // T&S Hover
@@ -461,7 +461,7 @@ int canUseDPad(void) {
     if (inShop(CurrentMap, 0)) {
         return 0; // In Shop
     }
-    if (inU8List(CurrentMap, &race_maps, 8)) {
+    if (inU8List(CurrentMap, &race_maps[0], 8)) {
         return 0; // In Race
     }
     if (inMinigame(CurrentMap)) {
@@ -473,7 +473,7 @@ int canUseDPad(void) {
     return CAN_USE_DPAD | CAN_SHOW_DPAD;
 }
 
-static char mdl_text[4] = "100";
+ROM_DATA static char mdl_text[4] = "100";
 
 Gfx* drawDPad(Gfx* dl) {
     /**
@@ -553,9 +553,9 @@ Gfx* drawDPad(Gfx* dl) {
         }
         if (display_mdl_num) {
             dl = initDisplayList(dl);
-            dk_strFormat(&mdl_text, "%d", mdl_num);
+            dk_strFormat((char*)&mdl_text, "%d", mdl_num);
             gDPSetCombineMode(dl++, G_CC_DECALRGBA, G_CC_DECALRGBA);
-            dl = printText(dl, dpad_x_pos + 80, DPAD_Y - 15, 0.5f, &mdl_text);
+            dl = printText(dl, dpad_x_pos + 80, DPAD_Y - 15, 0.5f, (char*)&mdl_text);
         } else {
             dl = drawImage(dl, 116, RGBA16, 32, 32, dpad_x_pos + 75, DPAD_Y, ICON_SCALE, ICON_SCALE, 0xFF);
         }

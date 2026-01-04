@@ -10,12 +10,6 @@
  */
 #include "../../include/common.h"
 
-static drop_item default_drop = {
-    .dropped_object = 0x2F,
-    .drop_count = 1,
-    .drop_music = SONG_MELONSLICEDROP,
-};
-
 void spawnEnemyDrops(actorData* actor) {
     /**
      * @brief Handle the spawning of enemy drops. Based on a vanilla function with the same name.

@@ -181,7 +181,7 @@ def recolorBones(filename: str, bones: list[int], color: tuple):
             fh.seek(ins_start)
             i_hi = int.from_bytes(fh.read(4), "big")
             i_lo = int.from_bytes(fh.read(4), "big")
-            print(hex(instruction), hex(ins_start))
+            # print(hex(instruction), hex(ins_start))
             if instruction == 0xDA:
                 fh.seek(ins_start + 6)
                 bone_index = int(int.from_bytes(fh.read(2), "big") / 0x40)
@@ -212,8 +212,8 @@ def recolorBones(filename: str, bones: list[int], color: tuple):
                     # print(i_vert_buffer_start, yi, len(verts_loaded), i_vert_buffer_start + yi)
                     if i_vert_buffer_start + yi < 32:
                         vert_cache[i_vert_buffer_start + yi] = y
-                    else:
-                        print(hex(i_hi), hex(i_lo))
+                    # else:
+                    #     print(hex(i_hi), hex(i_lo))
             elif instruction == 5:
                 # G_TRI
                 tri_buffer_positions = [
@@ -222,7 +222,7 @@ def recolorBones(filename: str, bones: list[int], color: tuple):
                     ((i_hi >> 0) & 0xFF) >> 1,
                 ]
                 if bone_index in bones:
-                    print(vert_cache)
+                    # print(vert_cache)
                     verts_to_modify.extend(
                         [
                             vert_cache[tri_buffer_positions[0]],
@@ -241,7 +241,7 @@ def recolorBones(filename: str, bones: list[int], color: tuple):
                     ((i_lo >> 0) & 0xFF) >> 1,
                 ]
                 if bone_index in bones:
-                    print(vert_cache, tri_buffer_positions)
+                    # print(vert_cache, tri_buffer_positions)
                     verts_to_modify.extend(
                         [
                             vert_cache[tri_buffer_positions[0]],
