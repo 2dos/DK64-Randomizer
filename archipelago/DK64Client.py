@@ -17,11 +17,11 @@ import time
 import traceback
 import typing
 
-from client.common import DK64MemoryMap, create_task_log_exception, check_version, get_ap_version
-from client.emu_loader import EmuLoaderClient
-from client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
-from client.check_flag_locations import location_flag_to_name, location_name_to_flag
-from client.ap_check_ids import check_id_to_name, check_names_to_id
+from archipelago.client.common import DK64MemoryMap, create_task_log_exception, check_version, get_ap_version
+from archipelago.client.emu_loader import EmuLoaderClient
+from archipelago.client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
+from archipelago.client.check_flag_locations import location_flag_to_name, location_name_to_flag
+from archipelago.client.ap_check_ids import check_id_to_name, check_names_to_id
 from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop, ClientCommandProcessor
 from NetUtils import ClientStatus
 from randomizer.Patching.ItemRando import normalize_location_name
@@ -1158,8 +1158,10 @@ class DK64Context(CommonContext):
 
     async def send_checks(self):
         """Send the checks to the server."""
-        message = [{"cmd": "LocationChecks", "locations": self.found_checks}]
-        await self.send_msgs(message)
+        if self.found_checks:
+            message = [{"cmd": "LocationChecks", "locations": self.found_checks}]
+            await self.send_msgs(message)
+            self.found_checks = []
 
     had_invalid_slot_data: typing.Optional[bool] = None
 

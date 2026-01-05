@@ -1,13 +1,14 @@
 """Common classes and functions for the N64 client for DK64."""
 
+from __future__ import annotations
+
 from asyncio import Task, create_task
-from types import CoroutineType
+from typing import Any, Set, Coroutine
 import urllib.request
 import os
 import pkgutil
 import json
 import sys
-from typing import Any, Set
 from Utils import get_settings
 
 
@@ -74,7 +75,7 @@ class DK64MemoryMap:
 all_tasks: Set[Task[Any]] = set()
 
 
-def create_task_log_exception(awaitable: CoroutineType[Any, Any, None]) -> Task[Any]:
+def create_task_log_exception(awaitable: Coroutine[Any, Any, None]) -> Task[Any]:
     """Create an asyncio task that logs any exceptions raised during its execution.
 
     Args:
@@ -86,7 +87,7 @@ def create_task_log_exception(awaitable: CoroutineType[Any, Any, None]) -> Task[
     """
     from CommonClient import logger
 
-    async def _log_exception(awaitable: CoroutineType[Any, Any, None]) -> None:
+    async def _log_exception(awaitable: Coroutine[Any, Any, None]) -> None:
         try:
             await awaitable
         except Exception as e:

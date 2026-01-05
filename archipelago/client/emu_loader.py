@@ -6,7 +6,7 @@ import os
 import glob
 from typing import Optional, Set, Tuple, List, Dict, Any
 from enum import IntEnum, auto
-from client.common import DK64MemoryMap
+from archipelago.client.common import DK64MemoryMap
 
 try:
     from CommonClient import logger
