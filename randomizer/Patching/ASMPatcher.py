@@ -1934,6 +1934,19 @@ def patchAssembly(ROM_COPY, spoiler):
 
     writeHook(ROM_COPY, 0x806E563C, Overlay.Static, "AnyInsPadCheck", offset_dict)
 
+    # Adding Fairy slow pitch variant
+    writeValue(ROM_COPY, 0x8074564E, Overlay.Static, 0x7FFF, offset_dict)
+    writeValue(ROM_COPY, 0x807457B6, Overlay.Static, 0x925, offset_dict)
+    MUSIC_MIDI_OFFSET = 0x807FFA00
+    SONG_COUNT = 175
+    writeValue(ROM_COPY, 0x8060A2B6, Overlay.Static, getHi(MUSIC_MIDI_OFFSET), offset_dict)
+    writeValue(ROM_COPY, 0x8060A2BA, Overlay.Static, getLo(MUSIC_MIDI_OFFSET), offset_dict)
+    writeValue(ROM_COPY, 0x806010B2, Overlay.Static, getHi(MUSIC_MIDI_OFFSET), offset_dict)
+    writeValue(ROM_COPY, 0x806010BA, Overlay.Static, getLo(MUSIC_MIDI_OFFSET), offset_dict)
+    writeValue(ROM_COPY, 0x806010DA, Overlay.Static, getHi(MUSIC_MIDI_OFFSET), offset_dict)
+    writeValue(ROM_COPY, 0x806010DE, Overlay.Static, getLo(MUSIC_MIDI_OFFSET), offset_dict)
+    writeValue(ROM_COPY, 0x806010EE, Overlay.Static, (SONG_COUNT + 2) * 4, offset_dict)
+
     #
     writeHook(ROM_COPY, 0x806C3260, Overlay.Static, "fixLankyPhaseHandState", offset_dict)  # Ensures K Rool has a head in the end cutscene if in Lanky Phase
     writeFunction(ROM_COPY, 0x80628034, Overlay.Static, "exitBoss", offset_dict)

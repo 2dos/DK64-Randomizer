@@ -24,7 +24,7 @@ void load_object_script(int obj_instance_id) {
 		scriptLoadedArray[script_index] = obj_instance_id;
 		int obj_idx = convertIDToIndex(obj_instance_id);
 		ModelTwoData* _object = &ObjectModel2Pointer[obj_idx];
-		int* behav = _object->behaviour_pointer;
+		behaviour_data* behav = _object->behaviour_pointer;
 		updateObjectScript(behav);
 		executeBehaviourScript(behav, _object->sub_id);
 	}
@@ -60,8 +60,8 @@ void adjust_level_modifiers(void) {
 
 #define FUNGI_TOD_LENGTH 4500 // 2.5 * 60 * 30 (2.5 minutes)
 #define FUNGI_SEG_LENGTH 1500
-static short progressive_time_of_day = FUNGI_SEG_LENGTH;
-static float subseg_brightnesses[6] = {
+ROM_DATA static short progressive_time_of_day = FUNGI_SEG_LENGTH;
+ROM_RODATA_NUM static const float subseg_brightnesses[6] = {
 	0.77f,
 	1.00f, // Peak Daytime
 	0.77f,

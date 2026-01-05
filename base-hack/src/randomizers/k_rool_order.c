@@ -11,8 +11,8 @@ typedef struct boss_spawn_info {
 	/* 0x00B */ char spawn_location; // 0 = respond to xyz, 1 = at boss, 2 = at player
 } boss_spawn_info;
 
-unsigned char k_rool_phase = 0;
-static const boss_spawn_info boss_spawn_data[] = {
+ROM_DATA static unsigned char k_rool_phase = 0;
+ROM_RODATA_NUM static const boss_spawn_info boss_spawn_data[] = {
 	{.map_id = MAP_JAPESDILLO, .pen_id = 4, .x = 0, .y=0, .z=0, .unk0 = 0x800, .unk1 = 6, .spawn_location=0}, // Japes Dillo
 	{.map_id = MAP_CAVESDILLO, .pen_id = -1, .x = 0, .y=0, .z=0, .unk0 = 0x800, .unk1 = 5, .spawn_location=1}, // Caves Dillo - Spawns at boss, not sure what unk0 is
 	{.map_id = MAP_GALLEONPUFFTOSS, .pen_id = -1, .x=0, .y=0, .z=0, .unk0 = 0x5DC, .unk1 = 1, .spawn_location=1}, // Pufftoss - Spawns at boss
@@ -34,11 +34,11 @@ static const boss_spawn_info boss_spawn_data[] = {
 */
 
 typedef struct boss_map_to_model {
-	/* 0x000 */ short map;
-	/* 0x002 */ short model;
+	/* 0x000 */ unsigned char map;
+	/* 0x002 */ unsigned char model;
 } boss_map_to_model;
 
-static const boss_map_to_model model_data[] = {
+ROM_RODATA_NUM static const boss_map_to_model model_data[] = {
 	{.map = MAP_JAPESDILLO, .model=0x38}, // Dillo - With Shell
 	{.map = MAP_AZTECDOGADON, .model=0x3C}, // Dogadon
 	{.map = MAP_FACTORYJACK, .model=0x25}, // Mad Jack
@@ -66,7 +66,7 @@ void swap_ending_cutscene_model(void) {
 	*(short*)(0x80755764) = model;
 }
 
-static unsigned char maps_with_extended_end_cs[] = {
+ROM_RODATA_NUM static const unsigned char maps_with_extended_end_cs[] = {
 	// MAP_KROOLDK, // n64 lol
 	// MAP_KROOLDIDDY, // n64 lol
 	// MAP_KROOLLANKY, // n64 lol
@@ -78,15 +78,15 @@ void completeBoss(void) {
 	// Spawn Key
 	level_indexes level = getWorld(CurrentMap, 0);
 	if (level <= LEVEL_ISLES) {
-		for (int j = 0; j < sizeof(boss_spawn_data) / sizeof(boss_spawn_info); j++) {
-			boss_spawn_info* tied_data = &boss_spawn_data[j];
+		for (unsigned int j = 0; j < sizeof(boss_spawn_data) / sizeof(boss_spawn_info); j++) {
+			boss_spawn_info* tied_data = (boss_spawn_info*)&boss_spawn_data[j];
 			if (tied_data->map_id == CurrentMap) {
 				if (tied_data->spawn_location == 1) {
 					spawnKey(normal_key_flags[level], CurrentActorPointer_0->xPos + tied_data->x, CurrentActorPointer_0->yPos + tied_data->y, CurrentActorPointer_0->zPos + tied_data->z, tied_data->unk0, tied_data->unk1);
 				} else if (tied_data->spawn_location == 2) {
 					spawnKey(normal_key_flags[level], Player->xPos + tied_data->x, Player->yPos + tied_data->y, Player->zPos + tied_data->z, tied_data->unk0, tied_data->unk1);
 				} else if (tied_data->pen_id > -1) {
-					pen_a_data* tied_pen = &FenceInformation->pen_A[tied_data->pen_id];
+					pen_a_data* tied_pen = &FenceInformation->pen_A[(int)tied_data->pen_id];
 					spawnKey(normal_key_flags[level], tied_pen->x, tied_pen->y, tied_pen->z, tied_data->unk0, tied_data->unk1);
 				} else {
 					spawnKey(normal_key_flags[level], tied_data->x, tied_data->y, tied_data->z, tied_data->unk0, tied_data->unk1);
@@ -100,10 +100,10 @@ void completeBoss(void) {
 	if ((k_rool_phase == 4) || (Rando.k_rool_order[k_rool_phase + 1] == 0xFF)) {
 		// Ending phase
 		setPermFlag(FLAG_GAME_BEATEN);
-		save();
-		if (inU8List(CurrentMap, &maps_with_extended_end_cs, sizeof(maps_with_extended_end_cs))) {
+    save();
+		if (inU8List(CurrentMap, &maps_with_extended_end_cs[0], sizeof(maps_with_extended_end_cs))) {
 			playCutscene(CurrentActorPointer_0, 0x1A, 1);
-			renderingParamsData* render = Player->rendering_param_pointer;
+			renderingParamsData* render = (renderingParamsData*)Player->rendering_param_pointer;
 			render->scale_x = 0.0f;
 			render->scale_y = 0.0f;
 			render->scale_z = 0.0f;
@@ -142,7 +142,7 @@ void fixKRoolKong(void) {
 	}
 }
 
-static unsigned char valid_lz_types[] = {9, 12, 13, 16};
+ROM_RODATA_NUM static const unsigned char valid_lz_types[] = {9, 12, 13, 16};
 void handleKRoolSaveProgress(void) {
 	if (!Rando.quality_of_life.save_krool_progress) {
 		return;
@@ -165,7 +165,7 @@ void handleKRoolSaveProgress(void) {
 	}
 	for (int i = 0; i < TriggerSize; i++) {
 		if (inBossMap(TriggerArray[i].map, 1, 1, 1)) {
-			if (inU8List(TriggerArray[i].type, &valid_lz_types, sizeof(valid_lz_types))) {
+			if (inU8List(TriggerArray[i].type, &valid_lz_types[0], sizeof(valid_lz_types))) {
 				TriggerArray[i].map = latest_map;
 				return;
 			}

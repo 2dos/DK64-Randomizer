@@ -11,10 +11,11 @@ from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Items import Items
 
+print("Building Test Instance")
 APPLY_VARIABLES = True
 ROM_FILE = "./base-hack/rom/dk64-randomizer-base-dev.z64"
 DEBUG_PRINT = False
-IO_LOGGING = False
+IO_LOGGING = True
 
 if not APPLY_VARIABLES:
     sys.exit()
@@ -320,7 +321,9 @@ with open("./base-hack/include/variable_space_structs.h", "r") as varspace:
 
 with open(ROM_FILE, "r+b") as rom:
     ROM_COPY = TestROM(rom)
+    print("Patching Assembly")
     patchAssembly(ROM_COPY, spoiler)
+    print("Patching Cosmetics")
     patchAssemblyCosmetic(ROM_COPY, settings, False)
     rom.seek(0x1FF3000)
     rom.write(b"BALLAAM\x00")
@@ -346,3 +349,4 @@ if IO_LOGGING:
                 value = x["value"]
                 fh.write(f"- Wrote {hex(value)} ({size} bytes) to {hex(seek_pointer)}\n")
                 seek_pointer += size
+print("Build done")

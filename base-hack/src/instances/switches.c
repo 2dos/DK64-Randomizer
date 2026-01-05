@@ -32,7 +32,7 @@ typedef struct SwitchInfo {
 	/* 0x004 */ kongs vanilla_kong;
 } SwitchInfo;
 
-static const SwitchInfo switch_data[] = {
+ROM_DATA static SwitchInfo switch_data[] = {
 	{.setting_address = &Rando.switchsanity.isles.aztec_lobby_feather, .vanilla_kong=KONG_TINY},
 	{.setting_address = &Rando.switchsanity.isles.fungi_lobby_feather, .vanilla_kong=KONG_TINY},
 	{.setting_address = &Rando.switchsanity.japes.feather, .vanilla_kong=KONG_TINY},
@@ -51,7 +51,7 @@ static const SwitchInfo switch_data[] = {
 	{.setting_address = &Rando.switchsanity.fungi.green_pineapple, .vanilla_kong=KONG_CHUNKY},
 };
 
-static const SwitchInfo pad_data[] = {
+ROM_DATA static SwitchInfo pad_data[] = {
 	{.setting_address = &Rando.switchsanity.isles.spawn_rocketbarrel, .vanilla_kong=KONG_LANKY},
 	{.setting_address = &Rando.switchsanity.aztec.guitar, .vanilla_kong=KONG_DIDDY},
 	{.setting_address = &Rando.switchsanity.aztec.snoop_switch, .vanilla_kong=KONG_DK},
@@ -66,7 +66,7 @@ int randomGunSwitchGenericCode(behaviour_data* behaviour_pointer, int index, int
 	return getPressedRandoSwitch(behaviour_pointer, setting, kong_pellets[vanilla_kong], index);
 }
 
-int randomInstrumentGenericCode(behaviour_data* behaviour_pointer, int index, int pad_index) {
+int randomInstrumentGenericCode(int pad_index) {
 	int referenced_kong = pad_data[pad_index].vanilla_kong;
 	int setting = 0;
 	if (pad_data[pad_index].setting_address) {

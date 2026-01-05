@@ -20,8 +20,8 @@ int isSharedMove(vendors shop_index, int level) {
 	for (int i = 1; i < 5; i++) {
 		purchase_struct* src = getShopData(shop_index, i, level);
 		if (src) {
-			unsigned char *src_arr = &src->item;
-			unsigned char *targ_arr = &targ->item;
+			unsigned char *src_arr = (unsigned char*)&src->item;
+			unsigned char *targ_arr = (unsigned char*)&targ->item;
 			for (int j = 0; j < 4; j++) {
 				if (src_arr[j] != targ_arr[j]) {
 					return 0;
@@ -75,8 +75,8 @@ int getMoveCountInShop(counter_paad* paad, vendors shop_index) {
 
 #define IMG_WIDTH 32
 
-static void* texture_data[SKIN_TERMINATOR] = {};
-static unsigned char texture_load[SKIN_TERMINATOR] = {};
+ROM_DATA static void* texture_data[SKIN_TERMINATOR] = {};
+ROM_DATA static unsigned char texture_load[SKIN_TERMINATOR] = {};
 
 void wipeCounterImageCache(void) {
 	for (int i = 0; i < SKIN_TERMINATOR; i++) {
@@ -140,7 +140,7 @@ unsigned int getActorModelTwoDist(ModelTwoData* _object) {
 	Candy's Shop: 0x124
 	Snide's HQ: 0x79
 */
-static short shop_objects[] = {0x73, 0x7A, 0x124, 0x79};
+ROM_RODATA_NUM static const short shop_objects[] = {0x73, 0x7A, 0x124, 0x79};
 
 int getClosestShop(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
@@ -190,9 +190,9 @@ float getShopScale(int index) {
 	return 1.0f;
 }
 
-static const short float_ids[] = {0x1F4, 0x36};
-static const float float_offsets[] = {51.0f, 45.0f, 45.0f, 47.5f};
-static const float h_factors[] = {60.0f, 60.0f, 62.0f, 120.6f};
+ROM_RODATA_NUM static const short float_ids[] = {0x1F4, 0x36};
+ROM_RODATA_NUM static const float float_offsets[] = {51.0f, 45.0f, 45.0f, 47.5f};
+ROM_RODATA_NUM static const float h_factors[] = {60.0f, 60.0f, 62.0f, 120.6f};
 
 void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;

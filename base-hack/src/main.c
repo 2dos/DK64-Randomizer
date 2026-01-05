@@ -4,16 +4,13 @@
 #define SNIDES_BONUS_GAMES 13
 
 #define LAG_CAP 10
-static short past_lag[LAG_CAP] = {};
-static unsigned char instrument_cs_indexes[] = {0, 4, 7, 8, 9};
-static char lag_counter = 0;
-static float current_avg_lag = 0;
-static char has_loaded = 0;
-static char new_picture = 0;
-FastTextStruct hint_pointers[35] = {};
-char* itemloc_pointers[LOCATION_ITEM_COUNT] = {};
+ROM_DATA static short past_lag[LAG_CAP] = {};
+ROM_RODATA_NUM static const unsigned char instrument_cs_indexes[] = {0, 4, 7, 8, 9};
+ROM_DATA static char lag_counter = 0;
+ROM_DATA static float current_avg_lag = 0;
+ROM_DATA static char has_loaded = 0;
+ROM_DATA static char new_picture = 0;
 char grab_lock_timer = -1;
-char tag_locked = 0;
 
 int resetPictureStatus(void) {
 	int value = *(unsigned char*)(0x807F946E);
@@ -176,7 +173,7 @@ void cFuncLoop(void) {
 	current_avg_lag /= LAG_CAP;
 }
 
-static unsigned char mj_falling_cutscenes[] = {
+ROM_RODATA_NUM static const unsigned char mj_falling_cutscenes[] = {
 	8, 2, 16, 18, 17
 };
 
@@ -249,7 +246,7 @@ void earlyFrame(void) {
 		}
 	} else if (CurrentMap == MAP_FACTORYJACK) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)) {
-			if (inU8List(CutsceneIndex, &mj_falling_cutscenes, sizeof(mj_falling_cutscenes))) {
+			if (inU8List(CutsceneIndex, &mj_falling_cutscenes[0], sizeof(mj_falling_cutscenes))) {
 				// Falling off Mad Jack
 				if (Player) {
 					Player->control_state = 0xC;
@@ -353,21 +350,21 @@ void earlyFrame(void) {
 	}
 }
 
-static char fpsStr[15] = "";
-static unsigned char bp_numerator = 0;
-static unsigned char bp_denominator = 0;
-static char bpStr[10] = "";
-static char pkmnStr[10] = "";
-static char hud_timer = 0;
-static char wait_progress_master = 0;
-static char wait_progress_timer = 0;
+ROM_DATA static char fpsStr[15] = "";
+ROM_DATA static unsigned char bp_numerator = 0;
+ROM_DATA static unsigned char bp_denominator = 0;
+ROM_DATA static char bpStr[10] = "";
+ROM_DATA static char pkmnStr[10] = "";
+ROM_DATA static char hud_timer = 0;
+ROM_DATA static char wait_progress_master = 0;
+ROM_DATA static char wait_progress_timer = 0;
 
 #define WAIT_SIZE 64
-static char wait_text_0[WAIT_SIZE] = "REMOVING LANKY KONG";
-static char wait_text_1[WAIT_SIZE] = "TELLING 2DOS TO PLAY DK64";
-static char wait_text_2[WAIT_SIZE] = "LOCKING K. LUMSY IN A CAGE";
-static char wait_text_3[WAIT_SIZE] = "STEALING THE BANANA HOARD";
-static unsigned char wait_text_lengths[] = {19, 25, 26, 25};
+ROM_DATA static char wait_text_0[WAIT_SIZE] = "REMOVING LANKY KONG";
+ROM_DATA static char wait_text_1[WAIT_SIZE] = "TELLING 2DOS TO PLAY DK64";
+ROM_DATA static char wait_text_2[WAIT_SIZE] = "LOCKING K. LUMSY IN A CAGE";
+ROM_DATA static char wait_text_3[WAIT_SIZE] = "STEALING THE BANANA HOARD";
+ROM_DATA static unsigned char wait_text_lengths[] = {19, 25, 26, 25};
 
 void insertROMMessages(void) {
 	for (int i = 0; i < 4; i++) {
@@ -394,14 +391,14 @@ void insertROMMessages(void) {
 	}
 }
 
-static const char* wait_texts[] = {
+ROM_DATA static char* wait_texts[] = {
 	"BOOTING UP THE RANDOMIZER",
 	wait_text_0,
 	wait_text_1,
 	wait_text_2,
 	wait_text_3,
 };
-static unsigned char ammo_hud_timer = 0;
+ROM_DATA static unsigned char ammo_hud_timer = 0;
 
 #define HERTZ 60
 
@@ -431,7 +428,7 @@ typedef struct eeprom_warning_struct {
 } eeprom_warning_struct;
 
 #define STANDARD_MARGIN_BOTTOM 14
-static const eeprom_warning_struct warning_text[] = {
+ROM_RODATA_NUM static const eeprom_warning_struct warning_text[] = {
 	{.text="WARNING", .x_offset=-10, .error=1, .margin_bottom=20},
 	{.text="YOUR EMULATOR SETUP IS WRONG", .x_offset=-96, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="YOUR GAME WILL NOT SAVE!", .x_offset=-76, .error=1, .margin_bottom=STANDARD_MARGIN_BOTTOM},
@@ -441,11 +438,6 @@ static const eeprom_warning_struct warning_text[] = {
 	{.text="OR THE DISCORD", .x_offset=-32, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="DISCORD.DK64RANDOMIZER.COM", .x_offset=-88, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="FOR HELP", .x_offset=-8, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
-};
-static const eeprom_warning_struct corrupt_warning_text[] = {
-	{.text="YOUR SAVE MIGHT BE CORRUPTED.", .x_offset=-96, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
-	{.text="DUE TO AN UNEXPECTED.", .x_offset=-64, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
-	{.text="INTERRUPTION MID-SAVE.", .x_offset=-70, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 };
 
 typedef struct menu_paad {
@@ -465,7 +457,7 @@ Gfx *displayMenuWarnings(Gfx *dl) {
 				int bottom = 700;
 				dl = drawScreenRect(dl, 250, top, 1000, bottom, 3, 3, 3, 1);
 				for (int k = 0; k < count; k++) {
-					eeprom_warning_struct* local_warning = &warning_text[k];
+					eeprom_warning_struct* local_warning = (eeprom_warning_struct*)&warning_text[k];
 					dl = drawInfoText(dl, local_warning->x_offset, y_info, local_warning->text, local_warning->error);
 					y_info += local_warning->margin_bottom;
 				}
@@ -486,7 +478,7 @@ Gfx* displayListModifiers(Gfx* dl) {
 					wait_progress_master = 0;
 				}
 			}
-			rgba* address = &KongRGBA[wait_progress_master];
+			rgba* address = &KongRGBA[(int)wait_progress_master];
 			int left_f = (((LOADBAR_FINISH - LOADBAR_START) + LOADBAR_MAXWIDTH) / LOADBAR_DIVISOR) * wait_progress_timer;
 			int left = left_f + LOADBAR_START - LOADBAR_MAXWIDTH;
 			int right = left + LOADBAR_MAXWIDTH;

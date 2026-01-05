@@ -37,7 +37,7 @@ void getModelTwoItemFromActor(int actor, short* item, float* scale) {
 	 * @param item Address to store item model two index
 	 * @param scale Address to store item scale
 	 */
-	for (int i = 0; i < (sizeof(item_conversions) / sizeof(item_conversion_info)); i++) {
+	for (unsigned int i = 0; i < (sizeof(item_conversions) / sizeof(item_conversion_info)); i++) {
 		if (actor == item_conversions[i].actor) {
 			*item = item_conversions[i].model_two;
 			*scale = item_conversions[i].scale;

@@ -214,8 +214,8 @@
 #define FACTORY_CRUSHER_3 0x3
 #define FACTORY_CRUSHER_4 0x4
 
-static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
-static const unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
+ROM_DATA static unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
+ROM_DATA static unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
 	int world = getWorld(CurrentMap, 0);
@@ -514,7 +514,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 					} else {
 						// Key-based access
-						if (!getItemCount_new(REQITEM_KEY, -1, 0) < 8) {
+						if (getItemCount_new(REQITEM_KEY, -1, 0) < 8) {
 							return 0;
 						}
 					}
@@ -583,7 +583,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					};
 					int head_sounds[] = {173,171,169,174,172,175,168,170};
 					int selection = -1;
-					for (int k = 0; k < sizeof(head_ids)/4; k++) {
+					for (unsigned int k = 0; k < sizeof(head_ids)/4; k++) {
 						if (param2 == head_ids[k]) {
 							selection = k / 2;
 						}
@@ -944,7 +944,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->current_state = 10;
 						unsigned char crusher_compontents[] = {1,3,8,9,4,10,11,12,13,2,5,6,7};
-						for (int component = 0; component < sizeof(crusher_compontents); component++) {
+						for (unsigned int component = 0; component < sizeof(crusher_compontents); component++) {
 							int index = convertIDToIndex(crusher_compontents[component]);
 							if (index > -1) {
 								behaviour_data* behaviour = ObjectModel2Pointer[index].behaviour_pointer;
@@ -1224,7 +1224,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					//activates the Goo Hands in Tiny's part of the Lanky/Tiny Crypt if all 6 of them are initialized
 					unsigned char hands[] = {6, 7, 9, 10, 11, 12};
 					//activates the hands
-					for(int hand = 0; hand < sizeof(hands); hand++){
+					for(unsigned int hand = 0; hand < sizeof(hands); hand++){
 						//obtain hand variables
 						// Get model two pointer of the Goo Hand in question
 						int slot = convertIDToIndex(hands[hand]);
@@ -1485,7 +1485,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	} else if (index == -14) {
 		return randomGunSwitchGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -15) {
-		return randomInstrumentGenericCode(behaviour_pointer, id, param2);
+		return randomInstrumentGenericCode(param2);
 	} else if (index == -16) {
 		hideObject(behaviour_pointer);
 	} else if (index == -17) {

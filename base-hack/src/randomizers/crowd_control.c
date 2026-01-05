@@ -1,6 +1,6 @@
 #include "../../include/common.h"
 
-static cc_effects effect_data;
+ROM_DATA static cc_effects effect_data;
 
 /*
     Effects:
@@ -79,9 +79,9 @@ int cc_allower_icetrap(void) {
     return ice_trap_queued == ICETRAP_OFF;
 }
 
-static char in_forced_rap = 0;
-static unsigned char previous_rap_map = 0;
-static unsigned char previous_rap_exit = 0;
+ROM_DATA static char in_forced_rap = 0;
+ROM_DATA static unsigned char previous_rap_map = 0;
+ROM_DATA static unsigned char previous_rap_exit = 0;
 int cc_enabler_warptorap(void) {
     in_forced_rap = 1;
     previous_rap_map = CurrentMap;
@@ -122,8 +122,8 @@ typedef struct timer_paad {
     /* 0x00C */ int time;
 } timer_paad;
 
-static char getout_killed = 0;
-static char getout_init = 0;
+ROM_DATA static char getout_killed = 0;
+ROM_DATA static char getout_init = 0;
 Gfx* displayGetOutReticle(Gfx* dl) {
     float x = 0.0f;
     float y = 0.0f;
@@ -153,6 +153,7 @@ int cc_enable_getout(void) {
     getout_init = 1;
     playSFX(0x1A2);
     initTimer(LastSpawnedActor);
+    return 1;
 }
 
 void fakeGetOut(void) {
@@ -216,7 +217,7 @@ int cc_allower_rockfall(void) {
     return LoadedActorCount < 50; // Not safe to add it
 }
 
-int cc_enabler_rockfall(void) {
+void *cc_enabler_rockfall(void) {
     if (ObjectModel2Timer % 20) {
         return 0;
     }
@@ -451,7 +452,7 @@ int cc_allower_boulder(void) {
     return LoadedActorCount < 30; // Not safe to add it
 }
 
-int cc_enabler_boulder(void) {
+void *cc_enabler_boulder(void) {
     actor_init_data unk;
     return spawnActorSpawnerContainer(61, Player->xPos, Player->yPos, Player->zPos, 0, 1.0f, 0, &unk);
 }
@@ -460,12 +461,12 @@ int cc_allower_crate(void) {
     return cc_allower_boulder() && (Player->grounded_bitfield & 1);
 }
 
-int cc_enabler_crate(void) {
+void *cc_enabler_crate(void) {
     actor_init_data unk;
     return spawnActorSpawnerContainer(21, Player->xPos, Player->yPos, Player->zPos, 0, 1.0f, 0, &unk);
 }
 
-static const short ignored_paper_types[] = {
+ROM_RODATA_NUM static const short ignored_paper_types[] = {
     188, // Camera
     139, // Dirt Patch
 };
@@ -474,7 +475,7 @@ int cc_enabler_paper(void) {
     for (int i = 0; i < ActorCount; i++) {
         actorData *actor = ActorArray[i];
         if (actor) {
-            if (!inShortList(actor->actorType, &ignored_paper_types, sizeof(ignored_paper_types) >> 1)) {
+            if (!inShortList(actor->actorType, &ignored_paper_types[0], sizeof(ignored_paper_types) >> 1)) {
                 if (actor->render) {
                     actor->render->scale_z = 0.015f;
                 }   
@@ -538,7 +539,7 @@ typedef struct water_height_struct {
     /* 0x006 */ short max_height;
 } water_height_struct;
 
-static water_height_struct water_height_info[] = {
+ROM_RODATA_NUM static const water_height_struct water_height_info[] = {
     {.map = MAP_JAPES, .default_height = 245, .min_height = 150, .max_height = 285},
     {.map = MAP_AZTECLLAMATEMPLE, .default_height = 325, .min_height = 190, .max_height = 370},
     {.map = MAP_GALLEON, .default_height = 1525, .min_height = 90, .max_height = 1615},
@@ -552,8 +553,8 @@ static water_height_struct water_height_info[] = {
 };
 
 int cc_enabler_water(void) {
-    for (int i = 0; i < sizeof(water_height_info) / sizeof(water_height_struct); i++) {
-        if (water_height_info[i].map == CurrentMap) {
+    for (unsigned int i = 0; i < sizeof(water_height_info) / sizeof(water_height_struct); i++) {
+        if ((maps)water_height_info[i].map == CurrentMap) {
             int count = *(unsigned char*)(0x807F93C5); // New variable written with some nice ASM
             int rand = getRNGLower31() & 0xFFFF;
             int delta = water_height_info[i].max_height - water_height_info[i].min_height;
@@ -570,15 +571,15 @@ int cc_enabler_water(void) {
 }
 
 int cc_allower_water(void) {
-    for (int i = 0; i < sizeof(water_height_info) / sizeof(water_height_struct); i++) {
-        if (water_height_info[i].map == CurrentMap) {
+    for (unsigned int i = 0; i < sizeof(water_height_info) / sizeof(water_height_struct); i++) {
+        if ((maps)water_height_info[i].map == CurrentMap) {
             return 1;
         }
     }
     return 0;
 }
 
-static const cc_effect_data cc_funcs[] = {
+ROM_RODATA_NUM static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enable_drunky, .disabler = &cc_disable_drunky, .restart_upon_map_entry = 1}, // Drunky Kong
     {.restart_upon_map_entry = 0}, // Disable Tag Anywhere
     {.enabler = &cc_enabler_icetrap, .allower=&cc_allower_icetrap, .auto_disable = 1}, // Ice Trap
@@ -604,7 +605,7 @@ void cc_effect_handler(void) {
     CCEffectData = &effect_data;
     CCButtons = &cc_enabled_buttons;
     int head = (int)&effect_data;
-    for (int i = 0; i < sizeof(cc_effects); i++) {
+    for (unsigned int i = 0; i < sizeof(cc_effects); i++) {
         unsigned char* eff_data = (unsigned char*)head + i;
         cc_state state = *eff_data;
         switch (state) {

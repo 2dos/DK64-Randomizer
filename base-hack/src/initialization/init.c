@@ -12,8 +12,7 @@
  */
 #include "../../include/common.h"
 
-static char music_storage[MUSIC_SIZE];
-unsigned char HeadSize[MODEL_COUNT];
+ROM_DATA static char music_storage[MUSIC_SIZE];
 
 char music_types[SONG_COUNT] = {
 	-1,
@@ -306,7 +305,7 @@ void initHack(int source) {
 			style128Mtx[0xF] = 100;
 			writeEndSequence();
 			
-			initPauseMenu(); // Changes to enable more items
+			initHintFlags(); // Changes to enable more items
 			fixCutsceneModels();
 			if (Rando.hard_mode.lava_water) {
 				// Dynamic Textures
@@ -356,5 +355,3 @@ void quickInit(void) {
 	Gamemode = GAMEMODE_MAINMENU;
 	Mode = GAMEMODE_MAINMENU;
 }
-
-int balloon_path_pointers[PATH_CAP];

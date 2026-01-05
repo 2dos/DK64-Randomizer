@@ -31,7 +31,7 @@ typedef struct crown_timer_reduction {
     /* 0x002 */ short timer_change;
 } crown_timer_reduction;
 
-static const crown_timer_reduction actor_crown_timer_changes[] = {
+ROM_DATA static crown_timer_reduction actor_crown_timer_changes[] = {
     {.target_actor = 285, .timer_change = -3}, // Bat
     {.target_actor = 178, .timer_change = -1}, // Beaver (Blue)
     {.target_actor = 212, .timer_change = -2}, // Beaver (Gold)
@@ -84,7 +84,7 @@ void handleCrownTimerInternal(void) {
         return;
     }
     int actor_type = CurrentActorPointer_0->actorType;
-    for (int i = 0; i < sizeof(actor_crown_timer_changes)/sizeof(crown_timer_reduction); i++) {
+    for (unsigned int i = 0; i < sizeof(actor_crown_timer_changes)/sizeof(crown_timer_reduction); i++) {
         if (actor_crown_timer_changes[i].target_actor == actor_type) {
             int change = -1;
             if (Player->control_state != 0x2D) { // Not shockwaving
@@ -158,107 +158,6 @@ void handleBugEnemy(void) {
         trashCanBugCode();
         return;
     }
-    /*
-    fly_paad_0* paad_178 = CurrentActorPointer_0->paad2;
-    initCharSpawnerActor();
-    int control_state = CurrentActorPointer_0->control_state;
-    if ((control_state != 0x37) && (control_state != 0x40)) {
-        if ((collisionType == 9) || (collisionActive)) {
-            // 80605314
-            playActorAnimation(CurrentActorPointer_0, 0x331);
-            CurrentActorPointer_0->control_state = 0x37;
-            CurrentActorPointer_0->control_state_progress = 0;
-            playSFXFromActor(Player, 0x16, 0xFF, 0x7F, 0x1E);
-        }
-    }
-    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        CurrentActorPointer_0->hSpeed = 40.0f;
-        CurrentActorPointer_0->control_state = 0x23;
-        CurrentActorPointer_0->control_state_progress = 0;
-        CurrentActorPointer_0->unk_EC = ((getRNGLower31() >> 0xF) & 7) + 0xF;
-        paad_178->x = CurrentActorPointer_0->xPos;
-        paad_178->y = CurrentActorPointer_0->yPos;
-        paad_178->z = CurrentActorPointer_0->zPos;
-        paad_178->y_0 = paad_178->y;
-        paad_178->counter_10 = 1;
-        paad_178->counter = (getRNGLower31() & 0xFF) + 0x78;
-    }
-    if ((CurrentActorPointer_0->control_state != 0x37) && (CurrentActorPointer_0->sound_slot != -1)) {
-        unkLightFunc_0(CurrentActorPointer_0, 0x10E, 0, 0, 0, 0xFF, 1.0f, 0);
-    }
-    control_state = CurrentActorPointer_0->control_state;
-    if (control_state == 0x26) {
-        paad_178->x = Player->xPos;
-        paad_178->y = Player->yPos;
-        paad_178->z = Player->zPos;
-        paad_178->counter = (getRNGLower31() & 0xFF) + 0x78;
-    } else {
-        if (control_state == 0x37) {
-            CurrentActorPointer_0->obj_props_bitfield &= 0xFFFF7FFF;
-            CurrentActorPointer_0->shadow_intensity -= 8;
-            CurrentActorPointer_0->yPos -= 8.0f;
-            if (CurrentActorPointer_0->shadow_intensity < 0) {
-                CurrentActorPointer_0->shadow_intensity = 0;
-                CurrentActorPointer_0->control_state = 0x40;
-                CurrentActorPointer_0->control_state_progress = 0;
-                CurrentActorPointer_0->noclip_byte = 1;
-            }
-        } else if (control_state != 0x23) {
-            handleGuardDefaultAnimation(0x32F);
-        }
-        if (control_state != 0x23) {
-            renderActor(CurrentActorPointer_0, 0);
-            return;
-        }
-    }
-    int angle = getAngleBetweenPoints(CurrentActorPointer_0->xPos, CurrentActorPointer_0->zPos, paad_178->x, paad_178->z);
-    angle = getPauseWheelRotationProgress(angle + 0x800, CurrentActorPointer_0->rot_y);
-    CurrentActorPointer_0->rot_y -= (angle >> 4);
-    if (paad_178->counter_10-- < 1) {
-        paad_178->counter_10 = (getRNGLower31() & 0x3F) + 0xF;
-        angle = getAngleBetweenPoints(TiedCharacterSpawner->xPos, TiedCharacterSpawner->zPos, paad_178->x, paad_178->z);
-        short new_angle = angle + ((getRNGLower31() & 7) * 0x100) + 0x400;
-        float magnitude = getRNGAsFloat() * 180.0f;
-        paad_178->y = paad_178->y_0;
-        paad_178->x = TiedCharacterSpawner->xPos + (magnitude * determineXRatioMovement(new_angle));
-        paad_178->z = TiedCharacterSpawner->zPos + (magnitude * determineZRatioMovement(new_angle));
-        CurrentActorPointer_0->control_state = 0x23;
-    }
-    if (CurrentActorPointer_0->control_state == 0x23) {
-        if (paad_178->counter-- < 1) {
-            paad_178->counter_10 = 0x3C;
-            CurrentActorPointer_0->control_state = 0x26;
-        }
-    }
-    float delta_y = paad_178->y - (CurrentActorPointer_0->yPos * 0.0625f);
-    if (delta_y > 8.0f) {
-        delta_y = 8.0f;
-    } else if (delta_y < -8.0f) {
-        delta_y = -8.0f;
-    }
-    CurrentActorPointer_0->xPos += (8.0f * determineXRatioMovement(CurrentActorPointer_0->rot_y));
-    CurrentActorPointer_0->yPos += delta_y;
-    float lim = TiedCharacterSpawner->yPos + 200.0f;
-    if (CurrentActorPointer_0->yPos > lim) {
-        CurrentActorPointer_0->yPos = lim;
-    }
-    CurrentActorPointer_0->zPos += (8.0f * determineZRatioMovement(CurrentActorPointer_0->rot_y));
-    renderActor(CurrentActorPointer_0, 0);
-
-    /*
-    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        modifyCharSpawnerAttributes(TRASHCAN_BUG_ANIM_2, TRASHCAN_BUG_ANIM_1, TRASHCAN_BUG_ANIM_3); // TODO: Figure out anim indexes
-        CurrentActorPointer_0->obj_props_bitfield &= 0xFFFF7FFF;
-    }
-    void* func = 0;
-    if (ObjectModel2Timer & 1) {
-        func = (void*)0x806B3F3C;
-    } else {
-        func = (void*)0x806B3E7C;
-    }
-    flyingEnemyHandler(func, TRASHCAN_BUG_ANIM_4, TRASHCAN_BUG_ANIM_1, 0x10E);
-    */
-
     initCharSpawnerActor();
     int control_state = CurrentActorPointer_0->control_state;
     if ((control_state != 0x37) && (control_state != 0x40)) {
@@ -379,7 +278,7 @@ void kioskBugEnd(void) {
     renderActor(CurrentActorPointer_0, 0);
 }
 
-static unsigned char valid_stomp_states[] = {
+ROM_DATA static unsigned char valid_stomp_states[] = {
     0x17, // Jumping
     0x30, // Bouncing
     0x19, // Bouncing (From Mushroom)
@@ -391,7 +290,7 @@ static unsigned char valid_stomp_states[] = {
 };
 
 int stompHandler(void* unk0, playerData* player, int unk1) {
-    if (!unkCollisionFunc(unk1, 1)) { // Not sure what this signifies?
+    if (!unkCollisionFunc((void*)unk1, 1)) { // Not sure what this signifies?
         return 0;
     }
     if (inU8List(player->control_state, &valid_stomp_states[0], sizeof(valid_stomp_states))) {

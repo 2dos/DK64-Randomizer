@@ -116,11 +116,7 @@ int getItemRequiredKong(maps map, int id) {
     return 0;
 }
 
-static const short helm_temp_flags[] = {0x4B, 0x4C, 0x4E, 0x4D, 0x4F};
-// Flag order: DK, Chunky, Tiny, Lanky, Diddy
-// ID order: DK, Chunky, Lanky, Tiny, Diddy
-
-static short spherical_items[] = {
+ROM_DATA static short spherical_items[] = {
     // CB Single
     0x0A,
     0x0D,

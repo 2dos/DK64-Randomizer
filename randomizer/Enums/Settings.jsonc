@@ -511,10 +511,16 @@
       The Model type for Ice Traps
     - Simple: Only GB Ice Traps will appear
     - Complex: Any Ice Trap Model will appear
+    - Fair: All ice traps except keys will appear
   */
   "IceTrapModel": {
     "simple": 0,
     "complex": 1
+  },
+  "IceTrapModel2": {
+    "simple": 0,
+    "complex": 1,
+    "fair": 2
   },
 
   /*
@@ -1421,7 +1427,8 @@
     "ice_trap_model": 293,
     "krool_in_boss_pool_v2": 294,
     "no_consumable_upgrades": 295,
-    "bosses_selected": 296
+    "bosses_selected": 296,
+    "ice_trap_model_v2": 297
   },
   /*
     SettingsStringDataType:
@@ -1478,6 +1485,7 @@
     "helm_setting": { "obj": "HelmSetting" },
     "ice_trap_frequency": { "obj": "IceTrapFrequency" },
     "ice_trap_model": { "obj": "IceTrapModel" },
+    "ice_trap_model_v2": { "obj": "IceTrapModel2" },
     "item_rando_list_selected": { "obj": "ItemRandoListSelected" },
     "kasplat_rando_setting": { "obj": "KasplatRandoSetting" },
     "krusha_ui": { "obj": "KrushaUi" },
@@ -2049,6 +2057,7 @@
     },
     "SettingsStringEnum.ice_trap_frequency": { "obj": "IceTrapFrequency" },
     "SettingsStringEnum.ice_trap_model": { "obj": "IceTrapModel" },
+    "SettingsStringEnum.ice_trap_model_v2": { "obj": "IceTrapModel2" },
     "SettingsStringEnum.ice_traps_damage": {
       "obj": "SettingsStringDataType.bool"
     },

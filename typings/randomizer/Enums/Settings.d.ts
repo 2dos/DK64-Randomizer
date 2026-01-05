@@ -276,6 +276,12 @@ export enum IceTrapModel {
     complex = 1,
 }
 
+export enum IceTrapModel2 {
+    simple = 0,
+    complex = 1,
+    fair = 2,
+}
+
 export enum ItemRandoListSelected {
     shop = 1,
     moves = 2,
@@ -957,6 +963,7 @@ export enum SettingsStringEnum {
     krool_in_boss_pool_v2 = 294,
     no_consumable_upgrades = 295,
     bosses_selected = 296,
+    ice_trap_model_v2 = 297,
 }
 
 export enum SettingsStringDataType {
@@ -1005,6 +1012,7 @@ export const SettingsMap = {
     'helm_setting': HelmSetting,
     'ice_trap_frequency': IceTrapFrequency,
     'ice_trap_model': IceTrapModel,
+    'ice_trap_model_v2': IceTrapModel2,
     'item_rando_list_selected': ItemRandoListSelected,
     'kasplat_rando_setting': KasplatRandoSetting,
     'krusha_ui': KrushaUi,
@@ -1316,6 +1324,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.enemy_kill_crown_timer: SettingsStringDataType.bool,
     SettingsStringEnum.ice_trap_frequency: IceTrapFrequency,
     SettingsStringEnum.ice_trap_model: IceTrapModel,
+    SettingsStringEnum.ice_trap_model_v2: IceTrapModel2,
     SettingsStringEnum.ice_traps_damage: SettingsStringDataType.bool,
     SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
     SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,

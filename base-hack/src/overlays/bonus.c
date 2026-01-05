@@ -11,7 +11,7 @@
 
 #include "../../include/common.h"
 
-static const unsigned char veasy_bonuses[] = {
+ROM_RODATA_NUM static const unsigned char veasy_bonuses[] = {
 	MAP_BASH_VEASY,
 	MAP_KOSH_VEASY,
 	MAP_PPPANIC_VEASY,
@@ -22,7 +22,7 @@ static const unsigned char veasy_bonuses[] = {
 	MAP_SEARCHLIGHT_VEASY,
 };
 
-static const unsigned char easy_bonuses[] = {
+ROM_RODATA_NUM static const unsigned char easy_bonuses[] = {
 	MAP_BASH_EASY,
 	MAP_KOSH_EASY,
 	MAP_MAUL_EASY,
@@ -39,7 +39,7 @@ static const unsigned char easy_bonuses[] = {
 	MAP_BATTYBARREL_EASY,
 	MAP_SEARCHLIGHT_EASY,
 };
-static const unsigned char med_bonuses[] = {
+ROM_RODATA_NUM static const unsigned char med_bonuses[] = {
 	MAP_BASH_NORMAL,
 	MAP_KOSH_NORMAL,
 	MAP_MAUL_NORMAL,
@@ -58,7 +58,7 @@ static const unsigned char med_bonuses[] = {
 	MAP_SEARCHLIGHT_NORMAL,
 };
 
-static const unsigned char hard_bonuses[] = {
+ROM_RODATA_NUM static const unsigned char hard_bonuses[] = {
 	MAP_MAUL_HARD,
 	MAP_SNATCH_HARD,
 	MAP_KOSH_HARD,
@@ -76,20 +76,20 @@ static const unsigned char hard_bonuses[] = {
 	MAP_BASH_HARD,
 };
 
-static const unsigned char insane_bonuses[] = {
+ROM_RODATA_NUM static const unsigned char insane_bonuses[] = {
 	MAP_MAUL_INSANE,
 	MAP_SNATCH_INSANE,
 	MAP_KLAMOUR_INSANE,
 };
 
 typedef struct bonus_extra_text {
-	/* 0x000 */ char* text;
+	/* 0x000 */ const char* text;
 	/* 0x004 */ const unsigned char* map_array;
-	/* 0x008 */ unsigned char count;
-	/* 0x009 */ unsigned char rgb[3];
+	/* 0x008 */ const unsigned char count;
+	/* 0x009 */ const unsigned char rgb[3];
 } bonus_extra_text;
 
-static const bonus_extra_text bonus_second_overlays[] = {
+ROM_RODATA_NUM static const bonus_extra_text bonus_second_overlays[] = {
 	{.text = "(VERY EASY)", .map_array=&veasy_bonuses[0], .count=sizeof(veasy_bonuses), .rgb={0, 255, 0}},
 	{.text = "(EASY)", .map_array=&easy_bonuses[0], .count=sizeof(easy_bonuses), .rgb={39, 135, 22}},
 	{.text = "(NORMAL)", .map_array=&med_bonuses[0], .count=sizeof(med_bonuses), .rgb={135, 112, 22}},

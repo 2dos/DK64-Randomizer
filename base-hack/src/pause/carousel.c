@@ -10,12 +10,6 @@
  */
 #include "../../include/common.h"
 
-short file_items[16] = {
-    0, 0, 0, 0, // GBs, Crowns, Keys, Medals
-    0, 0, 0, 0, // RW, Fairy, Nintendo, BP
-    0, 0, 0, 0, // Kongs, Beans, Pearls, Rainbow
-    0, 0, 0, 0, // Hints, Crates, Shops
-};
 
 int file_sprites[17] = {
     0x9, // GB

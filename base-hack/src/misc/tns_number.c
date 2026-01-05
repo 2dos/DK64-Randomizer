@@ -23,7 +23,7 @@ void shiftBrokenJapesPortal(void) {
 	}
 }
 
-static const unsigned char tns_maps[] = {
+ROM_RODATA_NUM static const unsigned char tns_maps[] = {
 	MAP_JAPES, // Japes
 	MAP_FACTORY, // Factory
 	MAP_GALLEON, // Galleon
@@ -35,7 +35,7 @@ static const unsigned char tns_maps[] = {
 	MAP_CASTLECRYPT, // Castle Crypt
 };
 
-static const unsigned char tns_count[] = {
+ROM_RODATA_NUM static const unsigned char tns_count[] = {
 	3,
 	5,
 	5,
@@ -48,12 +48,7 @@ static const unsigned char tns_count[] = {
 };
 
 void displayNumberOnTns(void) {
-	int in_tns_map = -1;
-	for (int i = 0; i < 9; i++) {
-		if (tns_maps[i] == CurrentMap) {
-			in_tns_map = i;
-		}
-	}
+	int in_tns_map = inU8List(CurrentMap, &tns_maps[0], sizeof(tns_maps)) - 1;
 	if (in_tns_map > -1) {
 		int world_index = getWorld(CurrentMap, 0);
 		if (world_index <= 7) {

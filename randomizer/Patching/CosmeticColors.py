@@ -86,9 +86,6 @@ class HelmDoorImages:
         self.format = format
 
 
-RECOLOR_MEDAL_RIM = False
-
-
 def changePatchFace(settings: Settings, ROM_COPY: ROM):
     """Change the top of the dirt patch image."""
     if not settings.better_dirt_patch_cosmetic:
@@ -163,10 +160,7 @@ def apply_cosmetic_colors(settings: Settings, ROM_COPY: ROM):
                 finish = (2 * x) + 3
                 channel = int(settings.gb_custom_color[start:finish], 16)
                 channels.append(channel)
-        rim_texture = getBonusSkinOffset(ExtraTextures.MedalRim)
         base_textures = [0xB7B, 0x323]
-        if RECOLOR_MEDAL_RIM:
-            base_textures.extend([rim_texture, 0xBAA])  # Medal and top ring
         # base_textures = [0xB7B, 0x323, 0xBAA, rim_texture, 0xE4D, 0xE4E]  # Banana hoard looks **very** strange like this
         textures = base_textures + list(range(0x155C, 0x1568))
         for tex in textures:
@@ -174,7 +168,6 @@ def apply_cosmetic_colors(settings: Settings, ROM_COPY: ROM):
                 0xB7B: (32, 32),
                 0x323: (32, 32),
                 0xBAA: (4, 4),
-                rim_texture: (32, 32),
                 0xE4D: (64, 32),
                 0xE4E: (64, 32),
             }

@@ -10,7 +10,7 @@
  */
 #include "../../include/common.h"
 
-const check_struct item_db[] = {
+ROM_RODATA_NUM const check_struct item_db[] = {
 	{.flag=1, .type=0, .associated_level=0},
 	{.flag=2, .type=0, .associated_level=0},
 	{.flag=3, .type=0, .associated_level=0},
