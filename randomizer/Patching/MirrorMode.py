@@ -55,6 +55,7 @@ def ApplyMirrorMode(settings: Settings, ROM_COPY: LocalROM):
                 dl_end = readDataFromBytestream(data, 0x48, 4)
             FlipDisplayList(ROM_COPY, data, dl_start, dl_end, tbl, file_index)
 
+
 def truncateFiles(ROM_COPY: ROM):
     """Truncates the size of compressed files."""
     start = time.perf_counter()
@@ -117,6 +118,6 @@ def truncateFiles(ROM_COPY: ROM):
             if append_byte:
                 ROM_COPY.write(0)
             total_offset += entry_size
-            total_bytes_overwritten += (entry_size + 4)
+            total_bytes_overwritten += entry_size + 4
     end = time.perf_counter()
     print(f"File truncating took {end - start:.6f} seconds. Processed {hex(total_bytes_overwritten)} bytes")
