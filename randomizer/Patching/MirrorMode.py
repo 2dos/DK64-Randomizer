@@ -86,7 +86,7 @@ def truncateFiles(ROM_COPY: ROM):
         files = []
         ROM_COPY.seek(POINTER_OFFSET + (table_id * 4))
         table_start = POINTER_OFFSET + int.from_bytes(ROM_COPY.readBytes(4), "big")
-        has_compressed = False
+        please_shift = False
         for entry in range(entry_count):
             ROM_COPY.seek(table_start + (entry * 4))
             file_start = POINTER_OFFSET + (int.from_bytes(ROM_COPY.readBytes(4), "big") & 0x7FFFFFFF)
@@ -101,11 +101,12 @@ def truncateFiles(ROM_COPY: ROM):
             indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
             if indicator == 0x1F8B:
                 truncated_data = gzip.compress(zlib.decompress(data, (15 + 32)), compresslevel=9)
-                has_compressed = True
+                if len(data) != len(truncated_data):
+                    please_shift = True
             else:
                 truncated_data = data
             files.append(truncated_data)
-        if has_compressed:
+        if please_shift:
             ROM_COPY.seek(table_start)
             head = POINTER_OFFSET + (int.from_bytes(ROM_COPY.readBytes(4), "big") & 0x7FFFFFFF)
             total_offset = 0
