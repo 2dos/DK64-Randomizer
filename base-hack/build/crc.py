@@ -9,6 +9,7 @@ import os
 # Utilities
 # ----------------------------
 
+
 def pad_zeroes(int_val, n_bytes):
     """Pad a hex number with a series of zeroes."""
     hex_string = format(int_val, "x")
@@ -134,6 +135,7 @@ def fix_checksum(file):
     """Fix the checksum for an N64 ROM."""
     new_checksum = recalculate_checksum(file)
     update_checksum(file, new_checksum)
+
 
 if os.path.exists(sys.argv[1]):
     with open(sys.argv[1], "r+b") as fh:
