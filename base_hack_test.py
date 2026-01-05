@@ -2,6 +2,7 @@
 
 import sys
 import json
+import platform
 from typing import BinaryIO
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
@@ -10,12 +11,14 @@ from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Items import Items
+from randomizer.Patching.MirrorMode import truncateFiles
 
 print("Building Test Instance")
 APPLY_VARIABLES = True
 ROM_FILE = "./base-hack/rom/dk64-randomizer-base-dev.z64"
 DEBUG_PRINT = False
 IO_LOGGING = True
+ROM_HEADER = platform.system() == "Linux"
 
 if not APPLY_VARIABLES:
     sys.exit()
@@ -96,6 +99,10 @@ class TestROM:
         if IO_LOGGING:
             io_logs.append({"action": "write", "value": 0, "size": len(bytes)})
         self.stream.write(bytes)
+
+    def write(self, value: int):
+        """Write U8 value."""
+        self.writeMultipleBytes(value, 1)
 
 
 set_variables = {}
@@ -327,6 +334,15 @@ with open(ROM_FILE, "r+b") as rom:
     patchAssemblyCosmetic(ROM_COPY, settings, False)
     rom.seek(0x1FF3000)
     rom.write(b"BALLAAM\x00")
+    truncateFiles(ROM_COPY)
+    if ROM_HEADER:
+        # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
+        ROM_COPY.seek(0x3C)
+        CARTRIDGE_ID = "ED"
+        ROM_COPY.writeBytes(CARTRIDGE_ID.encode("ascii"))
+        ROM_COPY.seek(0x3F)
+        SAVE_TYPE = 2  # 16K EEPROM
+        ROM_COPY.writeMultipleBytes(SAVE_TYPE << 4, 1)
 
 
 if IO_LOGGING:
