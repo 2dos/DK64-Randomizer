@@ -205,7 +205,7 @@ def convertToIA4(png_file):
             for x in range(width):
                 r, g, b, a = im.getpixel((x, y))
                 intensity = int((r + g + b) / 3) >> 5
-                alpha = 1 if a > 128 else 0
+                alpha = 1 if a > 0 else 0
                 output = intensity << 1 | alpha
                 if polarity == 0:
                     value = output << 4
@@ -243,7 +243,7 @@ def convertToRGBA5551(png_file):
         for y in range(height):
             for x in range(width):
                 r, g, b, a = im.getpixel((x, y))
-                has_alpha = 1 if a > 128 else 0
+                has_alpha = 1 if a > 0 else 0
                 data = ((r >> 3) << 11) | ((g >> 3) << 6) | ((b >> 3) << 1) | has_alpha
                 fh.write(data.to_bytes(2, "big"))
 
