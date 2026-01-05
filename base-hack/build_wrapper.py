@@ -1,6 +1,5 @@
 """Wrapper script to determine what script file to use depending on your OS."""
 
-#!/usr/bin/env python3
 import os
 import platform
 import subprocess
