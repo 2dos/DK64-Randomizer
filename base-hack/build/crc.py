@@ -1,3 +1,5 @@
+"""Python recreation of the CRC32 Algorithm."""
+
 import math
 from typing import BinaryIO
 import sys
@@ -8,24 +10,29 @@ import os
 # ----------------------------
 
 def pad_zeroes(int_val, n_bytes):
+    """Pad a hex number with a series of zeroes."""
     hex_string = format(int_val, "x")
     return hex_string.zfill(n_bytes * 2)
 
 
 def modulo(a, b):
+    """Return the modulo of a number."""
     return a - math.floor(a / b) * b
 
 
 def to_integer(x):
+    """Convert a number to an integer correctly."""
     x = int(x)
     return math.ceil(x) if x < 0 else math.floor(x)
 
 
 def to_uint32(x):
+    """Truncate a number to a 32-bit integer."""
     return modulo(to_integer(x), 2 ** 32)
 
 
 def rol(i, b):
+    """idk."""
     return to_uint32(((i << b) | (i >> (32 - b))) & 0xFFFFFFFF)
 
 
@@ -34,6 +41,7 @@ def rol(i, b):
 # ----------------------------
 
 def _make_crc32_table():
+    """Create the CRC32 table."""
     table = []
     for n in range(256):
         c = n
@@ -47,6 +55,7 @@ CRC32_TABLE = _make_crc32_table()
 
 
 def crc32(file: BinaryIO, headerSize=0, ignoreLast4Bytes=False):
+    """CRC32 algorithm."""
     if headerSize:
         file.seek(headerSize)
         data = file.read()
@@ -69,6 +78,7 @@ def crc32(file: BinaryIO, headerSize=0, ignoreLast4Bytes=False):
 
 
 def recalculate_checksum(file: BinaryIO):
+    """Calculate the CRC32 checksum."""
     n = 0x00001000
     seed = 0xDF26F436
 
@@ -112,6 +122,7 @@ def recalculate_checksum(file: BinaryIO):
 
 
 def update_checksum(file: BinaryIO, newChecksum: list[int]):
+    """Update the CRC32 checksum in ROM."""
     file.seek(0x10)
     file.write(newChecksum[0].to_bytes(4, "big"))
 
@@ -120,6 +131,7 @@ def update_checksum(file: BinaryIO, newChecksum: list[int]):
 
 
 def fix_checksum(file):
+    """Fix the checksum for an N64 ROM."""
     new_checksum = recalculate_checksum(file)
     update_checksum(file, new_checksum)
 

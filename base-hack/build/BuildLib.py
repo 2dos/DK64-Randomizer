@@ -155,6 +155,7 @@ def hueShiftColor(color: tuple, amount: int, head_ratio: int = None) -> tuple:
         blue_ratio = x
     return (int((red_ratio + m) * 255), int((green_ratio + m) * 255), int((blue_ratio + m) * 255))
 
+
 def convertToI4(png_file):
     """Convert PNG to I4 binary."""
     im = Image.open(png_file).convert("RGBA")
@@ -178,6 +179,7 @@ def convertToI4(png_file):
         if polarity != 0:
             fh.write(value.to_bytes(1, "big"))
 
+
 def convertToI8(png_file):
     """Convert PNG to I8 binary."""
     im = Image.open(png_file).convert("RGBA")
@@ -189,6 +191,7 @@ def convertToI8(png_file):
                 r, g, b, a = im.getpixel((x, y))
                 intensity = int((r + g + b) / 3)
                 fh.write(intensity.to_bytes(1, "big"))
+
 
 def convertToIA4(png_file):
     """Convert PNG to IA4 binary."""
@@ -215,6 +218,7 @@ def convertToIA4(png_file):
         if polarity != 0:
             fh.write(value.to_bytes(1, "big"))
 
+
 def convertToIA8(png_file):
     """Convert PNG to IA8 binary."""
     im = Image.open(png_file).convert("RGBA")
@@ -229,6 +233,7 @@ def convertToIA8(png_file):
                 value = (intensity << 4) | alpha
                 fh.write(value.to_bytes(1, "big"))
 
+
 def convertToRGBA5551(png_file):
     """Convert PNG to RGBA5551 binary."""
     im = Image.open(png_file).convert("RGBA")
@@ -241,6 +246,7 @@ def convertToRGBA5551(png_file):
                 has_alpha = 1 if a > 128 else 0
                 data = ((r >> 3) << 11) | ((g >> 3) << 6) | ((b >> 3) << 1) | has_alpha
                 fh.write(data.to_bytes(2, "big"))
+
 
 def convertToRGBA32(png_file):
     """Convert PNG to RGBA32 binary."""

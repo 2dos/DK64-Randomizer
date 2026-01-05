@@ -255,7 +255,7 @@ def applyMelonMask(shift: int):
                 if table != 7:
                     file_data = zlib.decompress(file_data, (15 + 32))
                 temp_name = "temp.bin"
-                print("MELON MASK:",hex(file_start))
+                print("MELON MASK:", hex(file_start))
                 with open(temp_name, "wb") as fg:
                     fg.write(file_data)
                 if table == 25 and img == getBonusSkinOffset(ExtraTextures.MelonSurface):

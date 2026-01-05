@@ -182,7 +182,6 @@ with open("asm/objects.asm", "w") as obj_asm:
                 "-DF3DEX2_GBI",
             ]
 
-
             subprocess.run(
                 [toolchain_gcc] + flags + ["-o", out_obj, src_path],
                 check=True,
