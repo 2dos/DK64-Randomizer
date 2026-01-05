@@ -57,7 +57,7 @@ def ApplyMirrorMode(settings: Settings, ROM_COPY: LocalROM):
 
 
 def truncateFiles(ROM_COPY: ROM):
-    """Truncates the size of compressed files."""
+    """Truncate the size of compressed files."""
     start = time.perf_counter()
     POINTER_OFFSET = 0x101C50
     uncompressed_tables = [
