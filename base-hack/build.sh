@@ -2,7 +2,7 @@
 set -euo pipefail
 
 test_on="${1:-}"
-python_ver="${2:-python}"
+python_ver="${2:-python3}"
 use_compiled=0
 
 # Clear screen

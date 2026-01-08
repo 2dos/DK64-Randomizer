@@ -83,6 +83,7 @@ if baseclasses_loaded:
             sys.path.insert(0, temp_dir)
 
     platform_type = sys.platform
+    python_version = f"{sys.version_info.major}{sys.version_info.minor}"
     baseclasses_path = os.path.dirname(os.path.dirname(BaseClasses.__file__))
     if not baseclasses_path.endswith("lib"):
         baseclasses_path = os.path.join(baseclasses_path, "lib")
@@ -106,10 +107,23 @@ if baseclasses_loaded:
         zip_path = "vendor/windows.zip"  # Path inside the package
         copy_dependencies(zip_path, "windows.zip")
     elif platform_type == "linux":
-        zip_path = "vendor/linux.zip"
-        copy_dependencies(zip_path, "linux.zip")
+        # Try version-specific zip first, fall back to generic
+        version_zip = f"vendor/linux_{python_version}.zip"
+        generic_zip = "vendor/linux.zip"
+        try:
+            copy_dependencies(version_zip, f"linux_{python_version}.zip")
+        except (FileNotFoundError, KeyError):
+            try:
+                copy_dependencies(generic_zip, "linux.zip")
+            except (FileNotFoundError, KeyError):
+                raise Exception(f"Could not find vendor dependencies for Linux Python {python_version}")
     else:
         raise Exception(f"Unsupported platform: {platform_type}")
+
+    # Add paths for APWorld context - use __file__ to get the correct base path
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    if current_dir not in sys.path:
+        sys.path.insert(0, current_dir)
 
     sys.path.append("worlds/dk64/")
     sys.path.append("worlds/dk64/archipelago/")
