@@ -297,14 +297,7 @@ if baseclasses_loaded:
         randomize_blocker_required_amounts: bool  # whether to randomize B. Lockers
         blocker_max: int  # maximum B. Locker value
         maximize_helm_blocker: bool  # whether to maximize Helm B. Locker (enabled if any player has it on)
-        level1_blocker: int  # manual B. Locker values (if not randomized)
-        level2_blocker: int
-        level3_blocker: int
-        level4_blocker: int
-        level5_blocker: int
-        level6_blocker: int
-        level7_blocker: int
-        level8_blocker: int
+        level_blockers: typing.Dict[str, int]  # manual B. Locker values (if not randomized)
         generated_blockers: typing.Optional[typing.List[int]]  # actual blocker values after generation (shared across group)
         logic_type: int  # logic type: 1=glitchless, 0=advanced_glitchless, 2=glitched
         tricks_selected: typing.Set[str]  # intersection of tricks enabled by all players
@@ -973,14 +966,16 @@ if baseclasses_loaded:
                                 randomize_blocker_required_amounts=bool(world.options.randomize_blocker_required_amounts.value),
                                 blocker_max=int(world.options.blocker_max.value),
                                 maximize_helm_blocker=bool(world.options.maximize_helm_blocker.value),
-                                level1_blocker=int(world.options.level1_blocker.value),
-                                level2_blocker=int(world.options.level2_blocker.value),
-                                level3_blocker=int(world.options.level3_blocker.value),
-                                level4_blocker=int(world.options.level4_blocker.value),
-                                level5_blocker=int(world.options.level5_blocker.value),
-                                level6_blocker=int(world.options.level6_blocker.value),
-                                level7_blocker=int(world.options.level7_blocker.value),
-                                level8_blocker=int(world.options.level8_blocker.value),
+                                level_blockers={
+                                    "level_1": int(world.options.level_blockers.value.get("level_1", 0)),
+                                    "level_2": int(world.options.level_blockers.value.get("level_2", 0)),
+                                    "level_3": int(world.options.level_blockers.value.get("level_3", 0)),
+                                    "level_4": int(world.options.level_blockers.value.get("level_4", 0)),
+                                    "level_5": int(world.options.level_blockers.value.get("level_5", 0)),
+                                    "level_6": int(world.options.level_blockers.value.get("level_6", 0)),
+                                    "level_7": int(world.options.level_blockers.value.get("level_7", 0)),
+                                    "level_8": int(world.options.level_blockers.value.get("level_8", 64)),
+                                },
                                 generated_blockers=None,  # will be filled after first player generates
                                 logic_type=int(world.options.logic_type.value),
                                 tricks_selected=set(world.options.tricks_selected.value),
@@ -1047,14 +1042,7 @@ if baseclasses_loaded:
                         self.options.randomize_blocker_required_amounts.value = int(self.seed_groups[group]["randomize_blocker_required_amounts"])
                         self.options.blocker_max.value = self.seed_groups[group]["blocker_max"]
                         self.options.maximize_helm_blocker.value = int(self.seed_groups[group]["maximize_helm_blocker"])
-                        self.options.level1_blocker.value = self.seed_groups[group]["level1_blocker"]
-                        self.options.level2_blocker.value = self.seed_groups[group]["level2_blocker"]
-                        self.options.level3_blocker.value = self.seed_groups[group]["level3_blocker"]
-                        self.options.level4_blocker.value = self.seed_groups[group]["level4_blocker"]
-                        self.options.level5_blocker.value = self.seed_groups[group]["level5_blocker"]
-                        self.options.level6_blocker.value = self.seed_groups[group]["level6_blocker"]
-                        self.options.level7_blocker.value = self.seed_groups[group]["level7_blocker"]
-                        self.options.level8_blocker.value = self.seed_groups[group]["level8_blocker"]
+                        self.options.level_blockers.value = self.seed_groups[group]["level_blockers"]
 
                         # Create group random for LZR seed synchronization and replace self.random
                         combined_seed = f"{self.multiworld.seed}_{group}"
@@ -1143,14 +1131,7 @@ if baseclasses_loaded:
                         self.options.randomize_blocker_required_amounts.value = int(self.seed_groups[group]["randomize_blocker_required_amounts"])
                         self.options.blocker_max.value = self.seed_groups[group]["blocker_max"]
                         self.options.maximize_helm_blocker.value = int(self.seed_groups[group]["maximize_helm_blocker"])
-                        self.options.level1_blocker.value = self.seed_groups[group]["level1_blocker"]
-                        self.options.level2_blocker.value = self.seed_groups[group]["level2_blocker"]
-                        self.options.level3_blocker.value = self.seed_groups[group]["level3_blocker"]
-                        self.options.level4_blocker.value = self.seed_groups[group]["level4_blocker"]
-                        self.options.level5_blocker.value = self.seed_groups[group]["level5_blocker"]
-                        self.options.level6_blocker.value = self.seed_groups[group]["level6_blocker"]
-                        self.options.level7_blocker.value = self.seed_groups[group]["level7_blocker"]
-                        self.options.level8_blocker.value = self.seed_groups[group]["level8_blocker"]
+                        self.options.level_blockers.value = self.seed_groups[group]["level_blockers"]
 
                         # Apply synchronized logic and glitch settings
                         self.options.logic_type.value = self.seed_groups[group]["logic_type"]
