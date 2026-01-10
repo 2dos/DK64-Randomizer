@@ -210,6 +210,9 @@ void newCounterCode(void) {
 					deleteActorContainer(CurrentActorPointer_0);
 					return;
 				}
+				setActorModel(CurrentActorPointer_0, 0x139);
+			} else {
+				setActorModel(CurrentActorPointer_0, 0xA4);
 			}
 			paad->shop = closest_shop;
 			// Update Position depending on scale
