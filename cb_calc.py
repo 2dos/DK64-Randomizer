@@ -145,6 +145,10 @@ class Logic:
         """Not needed, this is only used for free trade guns."""
         return False
 
+    def CanFreeChunky(self):
+        """Small wrapper for an even which is used in a few places."""
+        return Events.ChunkyFreed in self.Events
+
     def isKrushaAdjacent(self, kong):
         """Check if a given kong is krusha adjacent."""
         return False
