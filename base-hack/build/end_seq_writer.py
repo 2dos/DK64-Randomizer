@@ -24,6 +24,7 @@ class CreditItem:
             self.duration = names_length * 2
         self.text = text
 
+
 class CreditName:
     """Credited user name."""
 
@@ -34,6 +35,7 @@ class CreditName:
         self.artist = artist
         self.composer = composer
         self.add_thanks = add_thanks
+
 
 class UserCreditData:
     """Data associated with user credit creation formula."""
@@ -46,6 +48,7 @@ class UserCreditData:
         self.header_sep = header_sep and show_header
         self.sort = sort
         self.limit = limit
+
 
 user_credits = [
     CreditName('2dos', dev_status='Main'),
@@ -86,6 +89,7 @@ user_credits = [
     CreditName('Enob', add_thanks='Untitled2'),
     CreditName('SchwartzGandhi', add_thanks='Untitled2'),
 ]
+
 
 def generateUserCredits():
     """Generate the list of user credits in the correct format."""
