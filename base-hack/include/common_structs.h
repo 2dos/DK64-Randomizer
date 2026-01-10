@@ -623,7 +623,10 @@ typedef struct actorSpawnerData {
 
 typedef struct spawnerPacket {
 	/* 0x000 */ int model;
-	/* 0x004 */ char unk_4[0x18-4];
+	/* 0x004 */ int animation;
+	/* 0x008 */ float position[3];
+	/* 0x014 */ short y_rot;
+	/* 0x016 */ short unk_15c;
 	/* 0x018 */ void* extra_data;
 } spawnerPacket;
 

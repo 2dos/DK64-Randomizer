@@ -341,7 +341,7 @@ void fixChimpyCamBug(void) {
 void movePelletWrapper(actorData* actor) {
 	if (!(CurrentActorPointer_0->obj_props_bitfield & 0x10)) {
 		if ((Player->control_state == 2) && (Player->was_gun_out == 1)) {
-			int dist = getScreenDist(screenCenterX >> 1, screenCenterY >> 1);
+			int dist = getScreenDist(screenWidth >> 1, screenHeight >> 1);
 			int cap = getDistanceCap(dist);
 			if ((cap == 0) || (cap == 996)) {
 				// Lets not get into a div-by-0 mess

@@ -176,3 +176,4 @@ class Songs(IntEnum):
     FinalCBGet = 172
     KRoolDefeat = 173
     NintendoLogo = 174
+    FakeFairyNearby = 175

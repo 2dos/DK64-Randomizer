@@ -237,7 +237,11 @@
       255
    ],
    "helm_hurry_mode":0,
-   "win_condition":5,
+   "win_condition":3,
+   "win_condition_extra": {
+      "item": 3,
+      "count": 1
+   },
    "version":2,
    "item_rando":1,
    "remove_oscillation_effects":1,

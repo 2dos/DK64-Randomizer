@@ -786,6 +786,7 @@ class Song(IntEnum):
     FinalCBGet = auto()
     KRoolDefeat = auto()
     NintendoLogo = auto()
+    FakeFairyNearby = auto()
 
 
 class Overlay(IntEnum):

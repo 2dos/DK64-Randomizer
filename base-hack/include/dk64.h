@@ -290,7 +290,7 @@ extern void save(void);
 extern void getObjectPosition(int index, int unk0, int unk1, void* x, void* y, void* z);
 
 extern void setActorModel(void* actor, int index);
-extern void spawn3DActor(spawnerPacket* packet);
+extern int spawn3DActor(spawnerPacket* packet);
 extern int getChunk(float x, float y, float z, int unk0);
 extern void spawnKey(short flag, int x, int y, int z, short unk0, short unk1);
 extern void spawnTimer(int x, int y, int timer);
@@ -660,8 +660,8 @@ extern float GroundAttackSpeedThreshold[7];
 extern bonus_vanilla_info BonusBarrelData[54];
 extern short ArenaScore;
 
-extern short screenCenterX;
-extern short screenCenterY;
+extern short screenWidth;
+extern short screenHeight;
 extern float collisionPos[3];
 extern char FileIndex;
 extern int LockStackCount;

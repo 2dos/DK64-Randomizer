@@ -90,7 +90,6 @@ def mirrorMode(ROM_COPY: LocalROM, settings, offset_dict: dict):
         # Invert pan
         writeHook(ROM_COPY, 0x80737708, Overlay.Static, "invertPan", offset_dict)
 
-
 def shuffleJetpacEnemies(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to shuffling Jetpac enemies."""
     if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies):
