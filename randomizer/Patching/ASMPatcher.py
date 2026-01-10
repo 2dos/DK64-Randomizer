@@ -86,8 +86,8 @@ KLAPTRAPS_IN_SEARCHLIGHT_SEEK = 1
 CAMERA_RESET_REDUCTION = True
 PAL_DOGADON_REMATCH_FIRE = True
 REMOVE_CS_BARS = False
-JP_TEXTBOX_SIZES = False  # Temp
-FRAMEBUFFER_STORE_FIX = False  # Temp
+JP_TEXTBOX_SIZES = True
+FRAMEBUFFER_STORE_FIX = True
 BLOCK_FILE_DELETION_ON_CHECKSUM_MISMATCH = False
 HARDER_CRUSHERS = True
 BOULDERS_DONT_DESTROY = True
@@ -1938,14 +1938,14 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8074564E, Overlay.Static, 0x7FFF, offset_dict)
     writeValue(ROM_COPY, 0x807457B6, Overlay.Static, 0x925, offset_dict)
     MUSIC_MIDI_OFFSET = 0x807FFA00
-    SONG_COUNT = 175
+    SONG_COUNT = 176
     writeValue(ROM_COPY, 0x8060A2B6, Overlay.Static, getHi(MUSIC_MIDI_OFFSET), offset_dict)
     writeValue(ROM_COPY, 0x8060A2BA, Overlay.Static, getLo(MUSIC_MIDI_OFFSET), offset_dict)
     writeValue(ROM_COPY, 0x806010B2, Overlay.Static, getHi(MUSIC_MIDI_OFFSET), offset_dict)
     writeValue(ROM_COPY, 0x806010BA, Overlay.Static, getLo(MUSIC_MIDI_OFFSET), offset_dict)
     writeValue(ROM_COPY, 0x806010DA, Overlay.Static, getHi(MUSIC_MIDI_OFFSET), offset_dict)
     writeValue(ROM_COPY, 0x806010DE, Overlay.Static, getLo(MUSIC_MIDI_OFFSET), offset_dict)
-    writeValue(ROM_COPY, 0x806010EE, Overlay.Static, (SONG_COUNT + 2) * 4, offset_dict)
+    writeValue(ROM_COPY, 0x806010EE, Overlay.Static, (SONG_COUNT + 1) * 4, offset_dict)
 
     #
     writeHook(ROM_COPY, 0x806C3260, Overlay.Static, "fixLankyPhaseHandState", offset_dict)  # Ensures K Rool has a head in the end cutscene if in Lanky Phase

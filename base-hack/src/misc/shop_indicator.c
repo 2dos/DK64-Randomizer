@@ -121,10 +121,10 @@ void updateCounterDisplay(void) {
 	}
 }
 
-unsigned int getActorModelTwoDist(ModelTwoData* _object) {
-	int ax = CurrentActorPointer_0->xPos;
-	int ay = CurrentActorPointer_0->yPos;
-	int az = CurrentActorPointer_0->zPos;
+unsigned int getActorModelTwoDist(ModelTwoData* _object, float *pos_tuple) {
+	int ax = pos_tuple[0];
+	int ay = pos_tuple[1];
+	int az = pos_tuple[2];
 	int mx = _object->xPos;
 	int my = _object->yPos;
 	int mz = _object->zPos;
@@ -142,24 +142,19 @@ unsigned int getActorModelTwoDist(ModelTwoData* _object) {
 */
 ROM_RODATA_NUM static const short shop_objects[] = {0x73, 0x7A, 0x124, 0x79};
 
-int getClosestShop(void) {
+int getClosestShop(float *pos_checker) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	int closest_dist = -1;
 	int closest_shop_index = -1;
 	paad->linked_behaviour = 0;
 	for (int i = 0; i < ObjectModel2Count; i++) {
 		ModelTwoData* _object = &ObjectModel2Pointer[i];
-		int local_idx = -1;
-		for (int j = 0; j < 4; j++) {
-			if (_object->object_type == shop_objects[j]) {
-				local_idx = j;
-			}
-		}
-		if (local_idx > -1) {
-			int temp_dist = getActorModelTwoDist(_object);
+		int local_idx = inShortList(_object->object_type, &shop_objects[0], 4);
+		if (local_idx) {
+			int temp_dist = getActorModelTwoDist(_object, pos_checker);
 			if ((closest_dist == -1) || (temp_dist < closest_dist)) {
 				closest_dist = temp_dist;
-				closest_shop_index = local_idx;
+				closest_shop_index = local_idx - 1;
 				paad->linked_behaviour = _object->behaviour_pointer;
 			}
 		}
@@ -209,7 +204,7 @@ void newCounterCode(void) {
 				paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], SKIN_NULL, i);
 			}
 			CurrentActorPointer_0->rot_z = 3072; // Facing vertical
-			int closest_shop = getClosestShop();
+			int closest_shop = getClosestShop(&CurrentActorPointer_0->xPos);
 			if (closest_shop == SHOP_SNIDE) {
 				if (!Rando.snide_has_rewards) {
 					deleteActorContainer(CurrentActorPointer_0);

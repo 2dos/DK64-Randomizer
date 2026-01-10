@@ -268,7 +268,7 @@ def writeRawFile(table_index: TableNames, file_index: int, compressed: bool, dat
     if compressed:
         write_data = gzip.compress(bytes(data), compresslevel=9)
     if len(write_data) > file_size:
-        raise Exception(f"Cannot write file {file_index} in table {table_index} to ROM as it's too big.")
+        raise Exception(f"Cannot write file {file_index} in table {table_index} to ROM as it's too big ({hex(len(write_data))} > {hex(file_size)}).")
     ROM_COPY.seek(file_start)
     ROM_COPY.writeBytes(write_data)
 

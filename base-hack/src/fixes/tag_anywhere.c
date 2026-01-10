@@ -614,7 +614,7 @@ void changeKong(int next_character) {
     // Cancel anything
     if (Player->strong_kong_ostand_bitfield & 0x40) {
         // Gorilla Gone
-        cancelMusic(0x6C, 0);
+        cancelMusic(SONG_GORILLAGONE, 0);
         Player->obj_props_bitfield |= 0x8000;
         removeGorillaGone(Player);
     }

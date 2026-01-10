@@ -150,8 +150,8 @@
 .definelabel ExitCount, 0x807FC904
 .definelabel CheatBitfield, 0x80744544
 
-.definelabel screenCenterX, 0x80744490
-.definelabel screenCenterY, 0x80744494
+.definelabel screenWidth, 0x80744490
+.definelabel screenHeight, 0x80744494
 .definelabel collisionPos, 0x807F621C
 .definelabel FileIndex, 0x807467C8
 .definelabel LockStackCount, 0x807F5A68

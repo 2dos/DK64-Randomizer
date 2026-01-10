@@ -912,7 +912,7 @@ void correctDKPortal(void) {
 }
 
 int getCenter(int style, const char* str) {
-	return (screenCenterX + 100 - (getCenterOffset(style,str))) * 0.5f;
+	return (screenWidth + 100 - (getCenterOffset(style,str))) * 0.5f;
 }
 
 int getLo(void* addr) {

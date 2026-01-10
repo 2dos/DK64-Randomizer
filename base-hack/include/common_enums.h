@@ -950,6 +950,7 @@ typedef enum songs {
 	/* 0x0AC */ SONG_FINALCBGET,
 	/* 0x0AD */ SONG_KROOLDEFEAT,
 	/* 0x0AE */ SONG_NINTENDOLOGO,
+	/* 0x0AF */ SONG_FAKEFAIRYNEARBY,
 } songs;
 
 typedef enum level_indexes {

@@ -744,14 +744,14 @@ int isTrapModel(void) {
 
 void cancelIceTrapSong(int song, int unk0) {
     if (isTrapModel()) {
-        song = 175;
+        song = SONG_FAKEFAIRYNEARBY;
     }
     cancelMusic(song, unk0);
 }
 
 void playIceTrapSong(int song, float volume) {
     if (isTrapModel()) {
-        song = 175;
+        song = SONG_FAKEFAIRYNEARBY;
     }
     playSong(song, volume);
 }
