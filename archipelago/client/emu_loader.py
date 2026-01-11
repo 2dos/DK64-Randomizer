@@ -161,7 +161,7 @@ class ProcessMemory:
         self.process_name = process_name
         self.process_handle = None
         self.process_id = None
-        self.mem_file = None  # For Linux /proc/pid/mem
+        self.mem_fd = None  # File descriptor for Linux /proc/pid/mem
         self._attach_to_process()
 
     def _attach_to_process(self):
@@ -177,9 +177,9 @@ class ProcessMemory:
                     if not self.process_handle:
                         raise Exception(f"Failed to open process {self.process_name}")
                 elif IS_LINUX:
-                    # On Linux, we'll open /proc/pid/mem for memory access
+                    # On Linux, open /proc/pid/mem as a file descriptor for atomic pread/pwrite operations
                     try:
-                        self.mem_file = open(f"/proc/{self.process_id}/mem", "r+b")
+                        self.mem_fd = os.open(f"/proc/{self.process_id}/mem", os.O_RDWR)
                     except (OSError, IOError) as e:
                         raise Exception(f"Failed to open memory file for process {self.process_name}: {e}")
                 return
@@ -278,12 +278,11 @@ class ProcessMemory:
 
     def _read_bytes_linux(self, address: int, size: int) -> bytes:
         """Read bytes from process memory on Linux."""
-        if not self.mem_file:
+        if self.mem_fd is None:
             raise Exception("Process not attached")
 
         try:
-            self.mem_file.seek(address)
-            data = self.mem_file.read(size)
+            data = os.pread(self.mem_fd, size, address)
             if len(data) != size:
                 raise Exception(f"Failed to read {size} bytes at address 0x{address:08x}")
             return data
@@ -314,13 +313,11 @@ class ProcessMemory:
 
     def _write_bytes_linux(self, address: int, data: bytes, size: int):
         """Write bytes to process memory on Linux."""
-        if not self.mem_file:
+        if self.mem_fd is None:
             raise Exception("Process not attached")
 
         try:
-            self.mem_file.seek(address)
-            written = self.mem_file.write(data[:size])
-            self.mem_file.flush()
+            written = os.pwrite(self.mem_fd, data[:size], address)
             if written != size:
                 raise Exception(f"Failed to write {size} bytes at address 0x{address:08x}")
         except (OSError, IOError) as e:
@@ -341,9 +338,9 @@ class ProcessMemory:
         if IS_WINDOWS and self.process_handle:
             ctypes.windll.kernel32.CloseHandle(self.process_handle)
             self.process_handle = None
-        elif IS_LINUX and self.mem_file:
-            self.mem_file.close()
-            self.mem_file = None
+        elif IS_LINUX and self.mem_fd is not None:
+            os.close(self.mem_fd)
+            self.mem_fd = None
 
 
 class Emulators(IntEnum):

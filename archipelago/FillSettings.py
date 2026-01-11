@@ -338,16 +338,16 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
 
     # Medal distribution settings
     if options.medal_distribution.value == 0:  # pre_selected
-        settings_dict["medal_cb_req"] = options.medal_cb_req.value
+        settings_dict["medal_cb_req"] = options.cbs_required_for_medal.value
     elif options.medal_distribution.value == 4:  # progressive
-        settings_dict["medal_cb_req"] = options.medal_cb_req.value
+        settings_dict["medal_cb_req"] = options.cbs_required_for_medal.value
 
     settings_dict["medal_requirement"] = options.jetpac_requirement.value
-    settings_dict["rareware_gb_fairies"] = options.rareware_gb_fairies.value
+    settings_dict["rareware_gb_fairies"] = options.fairies_required_for_bfi.value
     settings_dict["mirror_mode"] = options.mirror_mode.value
     settings_dict["key_8_helm"] = options.helm_key_lock.value
     settings_dict["shuffle_helm_location"] = options.shuffle_helm_level_order.value
-    settings_dict["mermaid_gb_pearls"] = options.mermaid_gb_pearls.value
+    settings_dict["mermaid_gb_pearls"] = options.pearls_required_for_mermaid.value
     settings_dict["cb_medal_behavior_new"] = options.medal_distribution.value
     settings_dict["smaller_shops"] = options.smaller_shops.value and not hasattr(multiworld, "generation_is_fake")
     settings_dict["puzzle_rando_difficulty"] = options.puzzle_rando.value
@@ -366,18 +366,18 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
 def apply_blocker_settings(settings_dict: dict, options) -> None:
     """Apply level blocker settings."""
     blocker_options = [
-        options.level1_blocker,
-        options.level2_blocker,
-        options.level3_blocker,
-        options.level4_blocker,
-        options.level5_blocker,
-        options.level6_blocker,
-        options.level7_blocker,
-        options.level8_blocker,
+        options.level_blockers.value.get("level_1", 0),
+        options.level_blockers.value.get("level_2", 0),
+        options.level_blockers.value.get("level_3", 0),
+        options.level_blockers.value.get("level_4", 0),
+        options.level_blockers.value.get("level_5", 0),
+        options.level_blockers.value.get("level_6", 0),
+        options.level_blockers.value.get("level_7", 0),
+        options.level_blockers.value.get("level_8", 64),
     ]
 
     # Blocker settings - prioritize chaos blockers, then randomization setting
-    settings_dict["maximize_helm_blocker"] = options.maximize_helm_blocker.value
+    settings_dict["maximize_helm_blocker"] = options.maximize_level8_blocker.value
 
     if options.enable_chaos_blockers.value:
         settings_dict["blocker_text"] = options.chaos_ratio.value
@@ -390,7 +390,7 @@ def apply_blocker_settings(settings_dict: dict, options) -> None:
         settings_dict["blocker_selection_behavior"] = BLockerSetting.pre_selected
         # When using pre-selected, we need to set the blocker values
         for i, blocker in enumerate(blocker_options):
-            settings_dict[f"blocker_{i}"] = blocker.value
+            settings_dict[f"blocker_{i}"] = blocker
 
 
 def apply_item_randomization_settings(settings_dict: dict, options) -> None:
@@ -407,7 +407,6 @@ def apply_item_randomization_settings(settings_dict: dict, options) -> None:
         ItemRandoListSelected.banana,
         ItemRandoListSelected.racebanana,
         ItemRandoListSelected.gauntletbanana,
-        ItemRandoListSelected.blueprintbanana,
         ItemRandoListSelected.crown,
         ItemRandoListSelected.blueprint,
         ItemRandoListSelected.key,
@@ -440,6 +439,8 @@ def apply_item_randomization_settings(settings_dict: dict, options) -> None:
         settings_dict["item_rando_list_1"].append(ItemRandoListSelected.shopowners)
     if options.half_medals_in_pool.value:
         settings_dict["item_rando_list_1"].append(ItemRandoListSelected.halfmedal)
+    if options.snide_turnins_to_pool.value:
+        settings_dict["item_rando_list_1"].append(ItemRandoListSelected.blueprintbanana)
 
 
 def apply_hard_mode_settings(settings_dict: dict, options) -> None:
@@ -548,7 +549,6 @@ def apply_switchsanity_settings(settings_dict: dict, options) -> None:
 def apply_logic_and_barriers_settings(settings_dict: dict, options) -> None:
     """Apply logic and barriers configuration."""
     settings_dict["logic_type"] = options.logic_type.value
-    settings_dict["remove_barriers_enabled"] = bool(options.remove_barriers_selected)
     settings_dict["remove_barriers_selected"] = []
 
     # Barrier removal mapping
@@ -575,8 +575,6 @@ def apply_logic_and_barriers_settings(settings_dict: dict, options) -> None:
     for barrier in options.remove_barriers_selected:
         if barrier in barrier_mapping:
             settings_dict["remove_barriers_selected"].append(barrier_mapping[barrier])
-    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.helm_star_gates)
-    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.helm_punch_gates)
 
 
 def apply_glitches_and_tricks_settings(settings_dict: dict, options) -> None:
@@ -625,22 +623,22 @@ def apply_enemies(settings_dict: dict, options) -> None:
         "Ghost": Enemies.Ghost,
         "Gimpfish": Enemies.Gimpfish,
         "Kaboom": Enemies.Kaboom,
-        "KasplatChunky": Enemies.KasplatChunky,
-        "KasplatDK": Enemies.KasplatDK,
-        "KasplatDiddy": Enemies.KasplatDiddy,
-        "KasplatLanky": Enemies.KasplatLanky,
-        "KasplatTiny": Enemies.KasplatTiny,
-        "KlaptrapGreen": Enemies.KlaptrapGreen,
-        "KlaptrapPurple": Enemies.KlaptrapPurple,
-        "KlaptrapRed": Enemies.KlaptrapRed,
+        "ChunkyKasplat": Enemies.KasplatChunky,
+        "DKKasplat": Enemies.KasplatDK,
+        "DiddyKasplat": Enemies.KasplatDiddy,
+        "LankyKasplat": Enemies.KasplatLanky,
+        "TinyKasplat": Enemies.KasplatTiny,
+        "GreenKlaptrap": Enemies.KlaptrapGreen,
+        "PurpleKlaptrap": Enemies.KlaptrapPurple,
+        "RedKlaptrap": Enemies.KlaptrapRed,
         "Klobber": Enemies.Klobber,
         "Klump": Enemies.Klump,
-        "Guard": Enemies.Guard,
+        "Kop": Enemies.Guard,
         "Kosha": Enemies.Kosha,
         "Kremling": Enemies.Kremling,
         "Krossbones": Enemies.Krossbones,
-        "MrDice0": Enemies.MrDice0,
-        "MrDice1": Enemies.MrDice1,
+        "GreenDice": Enemies.MrDice0,
+        "RedDice": Enemies.MrDice1,
         "MushroomMan": Enemies.MushroomMan,
         "Pufftup": Enemies.Pufftup,
         "RoboKremling": Enemies.RoboKremling,
@@ -651,10 +649,10 @@ def apply_enemies(settings_dict: dict, options) -> None:
         "SpiderSmall": Enemies.SpiderSmall,
         "ZingerCharger": Enemies.ZingerCharger,
         "ZingerLime": Enemies.ZingerLime,
-        "GuardDisableA": Enemies.GuardDisableA,
-        "GuardDisableZ": Enemies.GuardDisableZ,
-        "GuardTag": Enemies.GuardTag,
-        "GuardGetOut": Enemies.GuardGetOut,
+        "DisableAKop": Enemies.GuardDisableA,
+        "DisableZKop": Enemies.GuardDisableZ,
+        "DisableTaggingKop": Enemies.GuardTag,
+        "GetOutKop": Enemies.GuardGetOut,
     }
 
     for enemy in options.enemies_selected:

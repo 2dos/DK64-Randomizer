@@ -21,7 +21,7 @@ class Goal(Choice):
     """Determines the goal of the seed.
 
     Options:
-    - beat_k_rool: Defeat K. Rool! K. Rool can be fought by finding all 8 keys, then entering the ship that appears at the back of DK Isle.
+    - acquire_keys_3_and_8: Acquire both Keys 3 and Key 8 to win.
     - acquire_key_8: Win by obtaining Key 8, which is normally found at the end of Hideout Helm.
     - kremling_kapture: Take a picture of every enemy to win.
     - dk_rap: Obtain all items mentioned in the DK Rap to win.
@@ -207,23 +207,16 @@ class ReceiveNotifications(Choice):
     """Determines if the player will receive notifications about item sends.
 
     Options:
-    - display_all_speedup (1): If we have more than 5 items queued, we will speed up the display based on the percentage.
-    - display_all_discard_extra (2): If we have more than 5 items queued, we will speed up the display based on percentage, but discard any non progression items.
-    - display_all_fast (3): Displays ALL items at the fastest speed.
-    - display_extra_fast (4): Displays Progression items at the default speed, and non progression items at a faster speed.
-    - display_extra_items (5): Displays extra items and progression items at standard speed.
-    - display_only_progression (6): Progression only, no speed changes.
+    - display_all_fast: Displays ALL items at the fastest speed.
+    - display_only_progression: Displays only progression items at the fastest speed.
+    - display_nothing: No item notifications.
     """
 
     display_name = "Receive Notifications Type"
 
-    option_display_all_speedup = 1
-    option_display_all_discard_extra = 2
-    option_display_all_fast = 3
-    option_display_extra_fast = 4
-    option_display_extra_items = 5
-    option_display_only_progression = 6
-    option_display_nothing = 7
+    option_display_all_fast = 1
+    option_display_only_progression = 2
+    option_display_nothing = 3
     default = 1
 
 
@@ -361,7 +354,7 @@ class MermaidRequirement(Range):
     default = 1
 
 
-class KeysRequiredToBeatKrool(Range):
+class NumberOfStartingKeys(Range):
     """Determines how many keys are pregiven.
 
     Choosing a value of 0 means you start with 0 keys.
@@ -493,7 +486,7 @@ class MirrorMode(Toggle):
 
 
 class HardModeSelected(OptionList):
-    """If Hard Mode is enabled, determines which Hard Mode settings are included.
+    """Determines which Hard Mode settings are enabled.
 
     Valid Keys:
     "hard_enemies": Enemies Fight Back a little harder.
@@ -535,6 +528,8 @@ class RemoveBarriers(OptionList):
     "caves_igloo_pads"
     "caves_ice_walls"
     "castle_crypt_doors"
+    "helm_star_gates"
+    "helm_punch_gates"
     """
 
     display_name = "Removed Barriers"
@@ -557,6 +552,8 @@ class RemoveBarriers(OptionList):
         "caves_igloo_pads",
         "caves_ice_walls",
         "castle_crypt_doors",
+        "helm_star_gates",
+        "helm_punch_gates",
     }
 
     default = [
@@ -569,6 +566,8 @@ class RemoveBarriers(OptionList):
         "galleon_lighthouse_gate",
         "galleon_seasick_ship",
         "caves_igloo_pads",
+        "helm_star_gates",
+        "helm_punch_gates",
     ]
 
 
@@ -606,84 +605,39 @@ class MaximizeHelmBLocker(Toggle):
     display_name = "Maximize Helm B. Locker"
 
 
-class Level1Blocker(Range):
-    """Determines the value of Level 1's B. Locker if Randomize B. Lockers are turned off."""
+class LevelBlockers(OptionDict):
+    """Determines the B. Locker values for each level if Randomize B. Lockers are turned off.
 
-    display_name = "Level 1 B. Locker"
+    Valid Keys:
+    - "level_1"
+    - "level_2"
+    - "level_3"
+    - "level_4"
+    - "level_5"
+    - "level_6"
+    - "level_7"
+    - "level_8"
 
-    range_start = 0
-    range_end = 201
-    default = 0
+    Valid Values:
+    - a number from 0 to 201
+    - "random", which will pick a random valid value for you
+    - a range in the form "x-y", which will pick a random valid value between x and y
+    """
 
+    display_name = "Level B. Lockers"
 
-class Level2Blocker(Range):
-    """Determines the value of Level 2's B. Locker if Randomize B. Lockers are turned off."""
-
-    display_name = "Level 2 B. Locker"
-
-    range_start = 0
-    range_end = 201
-    default = 0
-
-
-class Level3Blocker(Range):
-    """Determines the value of Level 3's B. Locker if Randomize B. Lockers are turned off."""
-
-    display_name = "Level 3 B. Locker"
-
-    range_start = 0
-    range_end = 201
-    default = 0
-
-
-class Level4Blocker(Range):
-    """Determines the value of Level 4's B. Locker if Randomize B. Lockers are turned off."""
-
-    display_name = "Level 4 B. Locker"
-
-    range_start = 0
-    range_end = 201
-    default = 0
-
-
-class Level5Blocker(Range):
-    """Determines the value of Level 5's B. Locker if Randomize B. Lockers are turned off."""
-
-    display_name = "Level 5 B. Locker"
-
-    range_start = 0
-    range_end = 201
-    default = 0
-
-
-class Level6Blocker(Range):
-    """Determines the value of Level 6's B. Locker if Randomize B. Lockers are turned off."""
-
-    display_name = "Level 6 B. Locker"
-
-    range_start = 0
-    range_end = 201
-    default = 0
-
-
-class Level7Blocker(Range):
-    """Determines the value of Level 7's B. Locker if Randomize B. Lockers are turned off."""
-
-    display_name = "Level 7 B. Locker"
-
-    range_start = 0
-    range_end = 201
-    default = 0
-
-
-class Level8Blocker(Range):
-    """Determines the value of Level 8's B. Locker if Randomize B. Lockers are turned off."""
-
-    display_name = "Level 8 B. Locker"
-
-    range_start = 0
-    range_end = 201
-    default = 64
+    min = 0
+    max = 201
+    default = {
+        "level_1": 0,
+        "level_2": 0,
+        "level_3": 0,
+        "level_4": 0,
+        "level_5": 0,
+        "level_6": 0,
+        "level_7": 0,
+        "level_8": 64,
+    }
 
 
 class BouldersInPool(Toggle):
@@ -1254,26 +1208,26 @@ class EnemiesSelected(OptionList):
     "BeaverGold"
     "Bug"
     "FireballGlasses"
-    "GetOut"
+    "Kop"
     "Ghost"
     "Gimpfish"
     "Kaboom"
-    "KasplatChunky"
-    "KasplatDK"
-    "KasplatDiddy"
-    "KasplatLanky"
-    "KasplatTiny"
-    "KlaptrapGreen"
-    "KlaptrapPurple"
-    "KlaptrapRed"
+    "ChunkyKasplat"
+    "DKKasplat"
+    "DiddyKasplat"
+    "LankyKasplat"
+    "TinyKasplat"
+    "GreenKlaptrap"
+    "PurpleKlaptrap"
+    "RedKlaptrap"
     "Klobber"
     "Klump"
-    "Guard"
+    "Kop"
     "Kosha"
     "Kremling"
     "Krossbones"
-    "MrDice0"
-    "MrDice1"
+    "GreenDice"
+    "RedDice"
     "MushroomMan"
     "Pufftup"
     "RoboKremling"
@@ -1284,10 +1238,10 @@ class EnemiesSelected(OptionList):
     "SpiderSmall"
     "ZingerCharger"
     "ZingerLime"
-    "GuardDisableA"
-    "GuardDisableZ"
-    "GuardTag"
-    "GuardGetOut"
+    "DisableAKop"
+    "DisableZKop"
+    "DisableTaggingKop"
+    "GetOutKop"
     """
 
     display_name = "Enemies Selected"
@@ -1302,22 +1256,22 @@ class EnemiesSelected(OptionList):
         "Ghost",
         "Gimpfish",
         "Kaboom",
-        "KasplatChunky",
-        "KasplatDK",
-        "KasplatDiddy",
-        "KasplatLanky",
-        "KasplatTiny",
-        "KlaptrapGreen",
-        "KlaptrapPurple",
-        "KlaptrapRed",
+        "ChunkyKasplat",
+        "DKKasplat",
+        "DiddyKasplat",
+        "LankyKasplat",
+        "TinyKasplat",
+        "GreenKlaptrap",
+        "PurpleKlaptrap",
+        "RedKlaptrap",
         "Klobber",
         "Klump",
-        "Guard",
+        "Kop",
         "Kosha",
         "Kremling",
         "Krossbones",
-        "MrDice0",
-        "MrDice1",
+        "GreenDice",
+        "RedDice",
         "MushroomMan",
         "Pufftup",
         "RoboKremling",
@@ -1328,10 +1282,10 @@ class EnemiesSelected(OptionList):
         "SpiderSmall",
         "ZingerCharger",
         "ZingerLime",
-        "GuardDisableA",
-        "GuardDisableZ",
-        "GuardTag",
-        "GuardGetOut",
+        "DisableAKop",
+        "DisableZKop",
+        "DisableTaggingKop",
+        "GetOutKop",
     }
 
 
@@ -1374,6 +1328,12 @@ class RemoveBaitPotions(Toggle):
     display_name = "Remove Bait Potions"
 
 
+class SnideTurninsToThePool(DefaultOnToggle):
+    """If enabled, Snide Turnins will be added to the pool."""
+
+    display_name = "Add Snide Turnins to the Pool"
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -1383,7 +1343,7 @@ class DK64Options(PerGameCommonOptions):
     tag_link: TagLink
     trap_link: TrapLink
     goal: Goal
-    pregiven_keys: KeysRequiredToBeatKrool
+    pregiven_keys: NumberOfStartingKeys
     require_beating_krool: RequireBeatingKrool
     helm_key_lock: HelmKeyLock
     shuffle_helm_level_order: ShuffleHelmLevel
@@ -1391,24 +1351,17 @@ class DK64Options(PerGameCommonOptions):
     helm_phase_count: HelmPhaseCount
     krool_in_boss_pool: KroolInBossPool
     remove_barriers_selected: RemoveBarriers
-    medal_cb_req: MedalColorBananaRequirement
+    cbs_required_for_medal: MedalColorBananaRequirement
     medal_distribution: MedalDistribution
-    mermaid_gb_pearls: MermaidRequirement
+    pearls_required_for_mermaid: MermaidRequirement
     jetpac_requirement: JetpacRequirement
-    rareware_gb_fairies: RarewareGBRequirement
+    fairies_required_for_bfi: RarewareGBRequirement
     randomize_blocker_required_amounts: RandomizeBlockers
     blocker_max: MaximumBLocker
     enable_chaos_blockers: ChaosBLockers
-    maximize_helm_blocker: MaximizeHelmBLocker
+    maximize_level8_blocker: MaximizeHelmBLocker
     chaos_ratio: ChaosRatio
-    level1_blocker: Level1Blocker
-    level2_blocker: Level2Blocker
-    level3_blocker: Level3Blocker
-    level4_blocker: Level4Blocker
-    level5_blocker: Level5Blocker
-    level6_blocker: Level6Blocker
-    level7_blocker: Level7Blocker
-    level8_blocker: Level8Blocker
+    level_blockers: LevelBlockers
     open_lobbies: OpenLobbies
     switchsanity: SwitchSanity
     climbing_shuffle: ClimbingShuffle
@@ -1473,6 +1426,7 @@ class DK64Options(PerGameCommonOptions):
     loading_zone_rando: LoadingZoneRando
     galleon_water_level: GalleonWaterLevel
     remove_bait_potions: RemoveBaitPotions
+    snide_turnins_to_pool: SnideTurninsToThePool
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1482,7 +1436,7 @@ dk64_option_groups: List[OptionGroup] = [
             Goal,
             RequireBeatingKrool,
             GoalQuantity,
-            KeysRequiredToBeatKrool,
+            NumberOfStartingKeys,
             HelmPhaseCount,
             HelmDoor1Item,
             HelmDoor2Item,
@@ -1499,14 +1453,7 @@ dk64_option_groups: List[OptionGroup] = [
             ChaosBLockers,
             MaximizeHelmBLocker,
             ChaosRatio,
-            Level1Blocker,
-            Level2Blocker,
-            Level3Blocker,
-            Level4Blocker,
-            Level5Blocker,
-            Level6Blocker,
-            Level7Blocker,
-            Level8Blocker,
+            LevelBlockers,
         ],
     ),
     OptionGroup(
@@ -1522,6 +1469,7 @@ dk64_option_groups: List[OptionGroup] = [
             Dropsanity,
             HintItemRandomization,
             HalfMedals,
+            SnideTurninsToThePool,
             SnideMaximum,
         ],
     ),
