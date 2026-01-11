@@ -127,6 +127,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             f"This patch was generated with version {patch_major}.{patch_minor}.{patch_patch} of the randomizer, but you are using version {major}.{minor}.{patch}. Cosmetic packs have been disabled for this patch."
         )
         fixLankyIncompatibility(ROM_COPY)
+        truncateFiles(ROM_COPY)
     elif from_patch_gen is True:
         sav = settings.rom_data
         if from_patch_gen:

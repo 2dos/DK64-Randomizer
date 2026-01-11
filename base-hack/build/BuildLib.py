@@ -3,6 +3,8 @@
 import struct
 from PIL import Image
 import math
+import zlib
+from BuildEnums import MusicTypes, Song
 
 main_pointer_table_offset = 0x101C50
 BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer says we can go as low as 0x25 bytes, but leaving some room for me to have left out something
@@ -10,6 +12,209 @@ ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
 finalROM = "rom/dk64-randomizer-base-dev.z64"
 music_size = 24000
+music_sizes_fine = {
+    MusicTypes.BGM: 24000,
+    MusicTypes.Event: 7000,
+    MusicTypes.MajorItem: 3000,
+    MusicTypes.MinorItem: 1500,
+}
+music_type_mapping = {
+    Song.TrainingGrounds: MusicTypes.BGM,
+    Song.Isles: MusicTypes.BGM,
+    Song.IslesKremIsle: MusicTypes.BGM,
+    Song.IslesKLumsy: MusicTypes.BGM,
+    Song.IslesBFI: MusicTypes.BGM,
+    Song.IslesSnideRoom: MusicTypes.BGM,
+    Song.JapesLobby: MusicTypes.BGM,
+    Song.AztecLobby: MusicTypes.BGM,
+    Song.FactoryLobby: MusicTypes.BGM,
+    Song.GalleonLobby: MusicTypes.BGM,
+    Song.ForestLobby: MusicTypes.BGM,
+    Song.CavesLobby: MusicTypes.BGM,
+    Song.CastleLobby: MusicTypes.BGM,
+    Song.HelmLobby: MusicTypes.BGM,
+    # Jungle Japes BGM
+    Song.JapesMain: MusicTypes.BGM,
+    Song.JapesStart: MusicTypes.BGM,
+    Song.JapesTunnels: MusicTypes.BGM,
+    Song.JapesStorm: MusicTypes.BGM,
+    Song.JapesCaves: MusicTypes.BGM,
+    Song.JapesBlast: MusicTypes.BGM,
+    Song.JapesCart: MusicTypes.BGM,
+    Song.JapesDillo: MusicTypes.BGM,
+    # Angry Aztec BGM
+    Song.AztecMain: MusicTypes.BGM,
+    Song.AztecTunnels: MusicTypes.BGM,
+    Song.AztecTemple: MusicTypes.BGM,
+    Song.Aztec5DT: MusicTypes.BGM,
+    Song.AztecBlast: MusicTypes.BGM,
+    Song.AztecBeetle: MusicTypes.BGM,
+    Song.AztecChunkyKlaptraps: MusicTypes.BGM,
+    Song.AztecDogadon: MusicTypes.BGM,
+    # Frantic Factory BGM
+    Song.FactoryMain: MusicTypes.BGM,
+    Song.FactoryProduction: MusicTypes.BGM,
+    Song.FactoryResearchAndDevelopment: MusicTypes.BGM,
+    Song.FactoryCrusher: MusicTypes.BGM,
+    Song.FactoryCarRace: MusicTypes.BGM,
+    Song.FactoryJack: MusicTypes.BGM,
+    # Gloomy Galleon BGM
+    Song.GalleonTunnels: MusicTypes.BGM,
+    Song.GalleonOutside: MusicTypes.BGM,
+    Song.GalleonLighthouse: MusicTypes.BGM,
+    Song.GalleonMechFish: MusicTypes.BGM,
+    Song.Galleon2DS: MusicTypes.BGM,
+    Song.Galleon5DS: MusicTypes.BGM,
+    Song.GalleonMermaid: MusicTypes.BGM,
+    Song.GalleonChest: MusicTypes.BGM,
+    Song.GalleonBlast: MusicTypes.BGM,
+    Song.GalleonSealRace: MusicTypes.BGM,
+    Song.GalleonPufftoss: MusicTypes.BGM,
+    # Fungi Forest BGM
+    Song.ForestDay: MusicTypes.BGM,
+    Song.ForestNight: MusicTypes.BGM,
+    Song.ForestBarn: MusicTypes.BGM,
+    Song.ForestMill: MusicTypes.BGM,
+    Song.ForestAnthill: MusicTypes.BGM,
+    Song.ForestMushroom: MusicTypes.BGM,
+    Song.ForestMushroomRooms: MusicTypes.BGM,
+    Song.ForestSpider: MusicTypes.BGM,
+    Song.ForestBlast: MusicTypes.BGM,
+    Song.ForestRabbitRace: MusicTypes.BGM,
+    Song.ForestCart: MusicTypes.BGM,
+    Song.ForestDogadon: MusicTypes.BGM,
+    # Crystal Caves BGM
+    Song.Caves: MusicTypes.BGM,
+    Song.CavesIgloos: MusicTypes.BGM,
+    Song.CavesCabins: MusicTypes.BGM,
+    Song.CavesRotatingRoom: MusicTypes.BGM,
+    Song.CavesTantrum: MusicTypes.BGM,
+    Song.CavesBlast: MusicTypes.BGM,
+    Song.CavesIceCastle: MusicTypes.BGM,
+    Song.CavesBeetleRace: MusicTypes.BGM,
+    Song.CavesDillo: MusicTypes.BGM,
+    # Creepy Castle BGM
+    Song.Castle: MusicTypes.BGM,
+    Song.CastleShed: MusicTypes.BGM,
+    Song.CastleTree: MusicTypes.BGM,
+    Song.CastleTunnels: MusicTypes.BGM,
+    Song.CastleCrypt: MusicTypes.BGM,
+    Song.CastleInnerCrypts: MusicTypes.BGM,
+    Song.CastleDungeon_Chains: MusicTypes.BGM,
+    Song.CastleDungeon_NoChains: MusicTypes.BGM,
+    Song.CastleBallroom: MusicTypes.BGM,
+    Song.CastleMuseum: MusicTypes.BGM,
+    Song.CastleGreenhouse: MusicTypes.BGM,
+    Song.CastleTrash: MusicTypes.BGM,
+    Song.CastleTower: MusicTypes.BGM,
+    Song.CastleBlast: MusicTypes.BGM,
+    Song.CastleCart: MusicTypes.BGM,
+    Song.CastleKutOut: MusicTypes.BGM,
+    # Hideout Helm BGM
+    Song.HelmBoMOn: MusicTypes.BGM,
+    Song.HelmBoMOff: MusicTypes.BGM,
+    Song.HelmBonus: MusicTypes.BGM,
+    # NPC BGM
+    Song.Cranky: MusicTypes.BGM,
+    Song.Funky: MusicTypes.BGM,
+    Song.Candy: MusicTypes.BGM,
+    Song.Snide: MusicTypes.BGM,
+    Song.WrinklyKong: MusicTypes.BGM,
+    # Moves and Animals BGM
+    Song.StrongKong: MusicTypes.BGM,
+    Song.Rocketbarrel: MusicTypes.BGM,
+    Song.Sprint: MusicTypes.BGM,
+    Song.MiniMonkey: MusicTypes.BGM,
+    Song.HunkyChunky: MusicTypes.BGM,
+    Song.GorillaGone: MusicTypes.BGM,
+    Song.Rambi: MusicTypes.BGM,
+    Song.Enguarde: MusicTypes.BGM,
+    # Battle BGM
+    Song.BattleArena: MusicTypes.BGM,
+    Song.TroffNScoff: MusicTypes.BGM,
+    Song.AwaitingBossEntry: MusicTypes.BGM,
+    Song.BossIntroduction: MusicTypes.BGM,
+    Song.MiniBoss: MusicTypes.BGM,
+    Song.KRoolBattle: MusicTypes.BGM,
+    # Menu and Story BGM
+    Song.MainMenu: MusicTypes.BGM,
+    Song.PauseMenu: MusicTypes.BGM,
+    Song.NintendoLogo: MusicTypes.BGM,
+    Song.DKRap: MusicTypes.Protected,
+    Song.IntroStory: MusicTypes.BGM,
+    Song.KRoolTheme: MusicTypes.BGM,
+    Song.KLumsyCelebration: MusicTypes.BGM,
+    Song.KRoolTakeoff: MusicTypes.BGM,
+    Song.KRoolEntrance: MusicTypes.BGM,
+    Song.KLumsyEnding: MusicTypes.BGM,
+    Song.EndSequence: MusicTypes.BGM,
+    # Minigame BGM
+    Song.Minigames: MusicTypes.BGM,
+    Song.MadMazeMaul: MusicTypes.BGM,
+    Song.StealthySnoop: MusicTypes.BGM,
+    Song.MinecartMayhem: MusicTypes.BGM,
+    Song.MonkeySmash: MusicTypes.BGM,
+    # Major Items
+    Song.OhBanana: MusicTypes.MajorItem,
+    Song.GBGet: MusicTypes.MajorItem,
+    Song.MoveGet: MusicTypes.MajorItem,
+    Song.GunGet: MusicTypes.MajorItem,
+    Song.BananaMedalGet: MusicTypes.MajorItem,
+    Song.BlueprintDrop: MusicTypes.MajorItem,
+    Song.BlueprintGet: MusicTypes.MajorItem,
+    Song.HeadphonesGet: MusicTypes.MajorItem,
+    Song.DropRainbowCoin: MusicTypes.MajorItem,
+    Song.RainbowCoinGet: MusicTypes.MajorItem,
+    Song.CompanyCoinGet: MusicTypes.MajorItem,
+    Song.BeanGet: MusicTypes.MajorItem,
+    Song.PearlGet: MusicTypes.MajorItem,
+    # Minor Items
+    Song.MelonSliceDrop: MusicTypes.MinorItem,
+    Song.MelonSliceGet: MusicTypes.MinorItem,
+    Song.BananaCoinGet: MusicTypes.MinorItem,
+    Song.CrystalCoconutGet: MusicTypes.MinorItem,
+    Song.FairyTick: MusicTypes.MinorItem,
+    Song.MinecartCoinGet: MusicTypes.MinorItem,
+    Song.DropCoins: MusicTypes.MinorItem,
+    Song.Checkpoint: MusicTypes.MinorItem,
+    Song.NormalStar: MusicTypes.MinorItem,
+    # Events
+    Song.Success: MusicTypes.Event,
+    Song.Failure: MusicTypes.Event,
+    Song.SuccessRaces: MusicTypes.Event,
+    Song.FailureRaces: MusicTypes.Event,
+    Song.BossUnlock: MusicTypes.Event,
+    Song.BossDefeat: MusicTypes.Event,
+    Song.Bongos: MusicTypes.Event,
+    Song.Guitar: MusicTypes.Event,
+    Song.Trombone: MusicTypes.Event,
+    Song.Saxophone: MusicTypes.Event,
+    Song.Triangle: MusicTypes.Event,
+    Song.BaboonBalloon: MusicTypes.Event,
+    Song.Transformation: MusicTypes.Event,
+    Song.VultureRing: MusicTypes.Event,
+    Song.BBlastFinalStar: MusicTypes.Event,
+    Song.FinalCBGet: MusicTypes.Event,
+    # Ambient
+    Song.WaterDroplets: MusicTypes.Ambient,
+    Song.TwinklySounds: MusicTypes.Ambient,
+    Song.FairyNearby: MusicTypes.Ambient,
+    Song.FakeFairyNearby: MusicTypes.Ambient,
+    Song.SeasideSounds: MusicTypes.Ambient,
+    # Protected
+    Song.UnusedCoin: MusicTypes.Protected,
+    Song.StartPause: MusicTypes.Protected,
+    Song.JapesHighPitched: MusicTypes.Protected,
+    Song.BonusBarrelIntroduction: MusicTypes.Protected,
+    Song.TagBarrel: MusicTypes.Protected,
+    Song.GameOver: MusicTypes.Protected,
+    Song.KRoolDefeat: MusicTypes.Protected,
+    # System
+    Song.Silence: MusicTypes.System,
+    Song.TransitionOpen: MusicTypes.System,
+    Song.TransitionClose: MusicTypes.System,
+    Song.NintendoLogoOld: MusicTypes.System,
+}
 heap_size = 0x34000 + music_size
 flut_size = 0
 MODEL_DIRECTORY = "assets/models/"
@@ -79,6 +284,29 @@ def float_to_hex(f):
     if f == 0:
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+
+
+def getMusicType(song) -> MusicTypes:
+    """Get the music type from song num."""
+    return music_type_mapping.get(song, MusicTypes.Protected)
+
+
+def getMusicSize(song) -> int:
+    """Get the allocated size for a song in ROM."""
+    mtype = getMusicType(song)
+    if mtype not in music_sizes_fine:
+        with open(ROMName, "rb") as fh:
+            fh.seek(main_pointer_table_offset)
+            music_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+            fh.seek(music_table + (song * 4))
+            file_start = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+            file_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+            fh.seek(file_start)
+            try:
+                return len(zlib.decompress(fh.read(file_end - file_start), (15 + 32)))
+            except Exception:
+                return 16000
+    return music_sizes_fine[mtype]
 
 
 def hueShift(im: Image, amount: int):

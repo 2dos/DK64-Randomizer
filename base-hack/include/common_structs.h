@@ -2403,3 +2403,7 @@ typedef struct coinHUDStruct {
 	/* 0x000 */ unsigned short map_id;
 	/* 0x004 */ unsigned short requirement;
 } coinHUDStruct;
+
+typedef struct DLArr {
+	/* 0x000 */ unsigned char unk0[0x11B0];
+} DLArr;

@@ -282,3 +282,7 @@
 
 .definelabel EnvironmentFog, 0x807F7360
 .definelabel RaceCoinCount, 0x80750AC4
+
+.definelabel DLPointers, 0x8076A050
+.definelabel CameraDL, 0x8076A048
+.definelabel DLArray, 0x80767CE8

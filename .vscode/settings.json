@@ -37,5 +37,35 @@
         "pause.h": "c",
         "crowd_control.h": "c",
         "archipelago.h": "c"
-    }
+    },
+    "files.watcherExclude": {
+        "**/.git/**": true,
+        "**/build/armips/**": true,
+        "**/build/libdragon/**": true,
+        "**/build/n64chain/**": true,
+        "**/out/**": true,
+        "**/dist/**": true,
+        "**/node_modules/**": true,
+        "**/*.o": true,
+        "**/*.a": true,
+        "**/*.elf": true,
+        "**/*.bin": true,
+        "**/*.z64": true,
+        "**/*.n64": true,
+        "**/*.rom": true
+    },
+    "search.exclude": {
+        "**/.git/**": true,
+        "**/build/armips/**": true,
+        "**/build/libdragon/**": true,
+        "**/build/n64chain/**": true,
+        "**/*.o": true,
+        "**/*.elf": true,
+        "**/*.bin": true,
+        "**/*.z64": true
+    },
+    "window.commandCenter": false,
+    "editor.largeFileOptimizations": true,
+    "files.maxMemoryForLargeFilesMB": 16,
+    "typescript.disableAutomaticTypeAcquisition": true
 }

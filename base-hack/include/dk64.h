@@ -512,6 +512,16 @@ extern void customDamageCode(void);
 extern void unkSoundFunction(void *actor, int unk);
 extern int isModelTwoTiedFlagSet(maps map, int id);
 
+extern void renderFrame(void);
+extern void dlInit(Gfx *dl, int count, int unk0, int unk1, int unk2, int unk3);
+extern Gfx *DLPointers[2];
+extern DLArr *CameraDL;
+extern DLArr DLArray[2];
+extern void handleController(void);
+extern Gfx *unkFadeFunction(Gfx *dl, int transition);
+extern void endDL(Gfx * dl, int index, int* count, int unk0);
+extern void unkDLFunction1(void *unk0, void *camera_dl, int unk1, int unk2);
+
 //vanilla data
 extern OSThread* __osActiveQueue;
 extern float TransitionSpeed;
