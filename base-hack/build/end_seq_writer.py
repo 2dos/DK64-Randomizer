@@ -58,7 +58,7 @@ user_credits = [
     CreditName('Cfox', dev_status='Main'),
     CreditName('KillKlli', dev_status='Main'),
     CreditName('Lrauq', dev_status='Main'),
-    CreditName('ShadowShine97', dev_status='Main'),
+    CreditName('ShadowShine57', dev_status='Main'),
     CreditName('TheSoundDefense', dev_status='Main'),
     CreditName('Znernicus', dev_status='Main'),
     CreditName('Aljex', dev_status='Assistant'),
@@ -88,6 +88,7 @@ user_credits = [
     CreditName('Adeleine64DS', add_thanks='Untitled2'),
     CreditName('Enob', add_thanks='Untitled2'),
     CreditName('SchwartzGandhi', add_thanks='Untitled2'),
+    CreditName('gloomy', composer=True),
 ]
 
 
@@ -120,7 +121,7 @@ def generateUserCredits():
         if c.sort:
             user_list.sort()
         if not c.header_sep and c.show_header:
-            user_list = [c.header, ""] + user_list
+            user_list = [c.header, " "] + user_list
         # Split the list evenly
         section_count = math.ceil(len(user_list) / c.limit)
         section_size = len(user_list) / section_count

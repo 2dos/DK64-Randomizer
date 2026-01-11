@@ -1057,3 +1057,15 @@ class CustomActors(IntEnum):
     GuardDisableZ = auto()
     GuardGetOut = auto()
     GuardTag = auto()
+
+
+class MusicTypes(IntEnum):
+    """Music Types enum."""
+
+    BGM = auto()
+    Event = auto()
+    MinorItem = auto()
+    MajorItem = auto()
+    Protected = auto()
+    Ambient = auto()
+    System = auto()

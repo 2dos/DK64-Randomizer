@@ -13,7 +13,6 @@ strict_aliasing_avoids = [
     "src/initialization/text.c",
     "src/initialization/widescreen.c",
     "src/misc/krusha.c",
-    "src/minigames/wordle/main.c",
 ]
 strict_aliasing_avoids_backslash = [x.replace("/", "\\") for x in strict_aliasing_avoids]
 print(strict_aliasing_avoids_backslash)
@@ -45,6 +44,10 @@ with open("asm/objects.asm", "w") as obj_asm:
             # check the extension of files
             if file.endswith(".c") and file[:-2] not in avoids:
                 # print whole path of files
+                with open(os.path.join(root, file), "r") as fh:
+                    first_line = fh.readlines()[0]
+                    if "//avoid" in first_line:
+                        continue
                 _o = os.path.join(root, file).replace("/", "_").replace("\\", "_").replace(".c", ".o")
                 pth = os.path.join(root, file)
                 print(pth)

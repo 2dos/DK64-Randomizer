@@ -9,12 +9,10 @@ import subprocess
 # ----------------------------
 cwd = os.path.dirname(os.path.abspath(__file__))
 
-avoids = []
 strict_aliasing_avoids = [
     "src/initialization/text.c",
     "src/initialization/widescreen.c",
     "src/misc/krusha.c",
-    "src/minigames/wordle/main.c",
 ]
 strict_aliasing_avoids_backslash = [x.replace("/", "\\") for x in strict_aliasing_avoids]
 
@@ -120,10 +118,13 @@ os.makedirs("asm", exist_ok=True)
 with open("asm/objects.asm", "w") as obj_asm:
     for root, dirs, files in os.walk("src"):
         for file in files:
-            if not file.endswith(".c") or file in avoids:
+            if not file.endswith(".c"):
                 continue
-
             src_path = os.path.join(root, file)
+            with open(src_path, "r") as fh:
+                first_line = fh.readlines()[0]
+                if "//avoid" in first_line:
+                    continue
 
             obj_name = (
                 src_path
