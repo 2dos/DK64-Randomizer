@@ -47,3 +47,8 @@
 .definelabel getDLFunction0, 0x806FE078
 .definelabel getDLFunction1, 0x8068DC54
 .definelabel unkTextFunction1, 0x806FDB8C
+.definelabel renderFrame, 0x8060A9BC
+.definelabel dlInit, 0x80610044
+.definelabel unkFadeFunction, 0x80704484
+.definelabel endDL, 0x805FE71C
+.definelabel unkDLFunction1, 0x805FE7B4

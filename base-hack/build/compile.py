@@ -13,6 +13,7 @@ strict_aliasing_avoids = [
     "src/initialization/text.c",
     "src/initialization/widescreen.c",
     "src/misc/krusha.c",
+    "src/minigames/wordle/main.c",
 ]
 strict_aliasing_avoids_backslash = [x.replace("/", "\\") for x in strict_aliasing_avoids]
 print(strict_aliasing_avoids_backslash)
