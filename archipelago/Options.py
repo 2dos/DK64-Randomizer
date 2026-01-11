@@ -207,23 +207,16 @@ class ReceiveNotifications(Choice):
     """Determines if the player will receive notifications about item sends.
 
     Options:
-    - display_all_speedup (1): If we have more than 5 items queued, we will speed up the display based on the percentage.
-    - display_all_discard_extra (2): If we have more than 5 items queued, we will speed up the display based on percentage, but discard any non progression items.
-    - display_all_fast (3): Displays ALL items at the fastest speed.
-    - display_extra_fast (4): Displays Progression items at the default speed, and non progression items at a faster speed.
-    - display_extra_items (5): Displays extra items and progression items at standard speed.
-    - display_only_progression (6): Progression only, no speed changes.
+    - display_all_fast: Displays ALL items at the fastest speed.
+    - display_only_progression: Displays only progression items at the fastest speed.
+    - display_nothing: No item notifications.
     """
 
     display_name = "Receive Notifications Type"
 
-    option_display_all_speedup = 1
-    option_display_all_discard_extra = 2
-    option_display_all_fast = 3
-    option_display_extra_fast = 4
-    option_display_extra_items = 5
-    option_display_only_progression = 6
-    option_display_nothing = 7
+    option_display_all_fast = 1
+    option_display_only_progression = 2
+    option_display_nothing = 3
     default = 1
 
 
@@ -493,7 +486,7 @@ class MirrorMode(Toggle):
 
 
 class HardModeSelected(OptionList):
-    """If Hard Mode is enabled, determines which Hard Mode settings are included.
+    """Determines which Hard Mode settings are enabled.
 
     Valid Keys:
     "hard_enemies": Enemies Fight Back a little harder.
