@@ -24,7 +24,7 @@ from adjust_exits import adjustExits, addMechFishLZ
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, ExtraTextures, Maps
-from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, getMusicType, getMusicSize, newROMName, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS, imageToMinMap, KONG_MODEL_EXP_SIZE
+from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS, imageToMinMap, KONG_MODEL_EXP_SIZE
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from cutscene_builder import buildScripts
@@ -911,26 +911,26 @@ new_coin_sfx = "assets/music/coin_sfx.bin"
 if os.path.exists(new_coin_sfx):
     os.remove(new_coin_sfx)
 shutil.copyfile(base_coin_sfx, new_coin_sfx)
-base_fake_fairy_sfx = "assets/music/fake_fairy.dk64song"
-new_fake_fairy_sfx = "assets/music/fake_fairy.bin"
-if os.path.exists(new_fake_fairy_sfx):
-    os.remove(new_fake_fairy_sfx)
-shutil.copyfile(base_fake_fairy_sfx, new_fake_fairy_sfx)
+# base_fake_fairy_sfx = "assets/music/fake_fairy.dk64song"
+# new_fake_fairy_sfx = "assets/music/fake_fairy.bin"
+# if os.path.exists(new_fake_fairy_sfx):
+#     os.remove(new_fake_fairy_sfx)
+# shutil.copyfile(base_fake_fairy_sfx, new_fake_fairy_sfx)
 
 map_replacements = []
 # Gen fake fairy song
-# with open(ROMName, "rb") as fh:
-#     wrinkly_f = ROMPointerFile(fh, TableNames.MusicMIDI, 66)
-#     fh.seek(wrinkly_f.start)
-#     dec = zlib.decompress(fh.read(wrinkly_f.size), 15 + 32)
-#     with open("assets/music/fake_fairy.bin", "wb") as fg:
-#         fg.write(dec)
-# with open("assets/music/fake_fairy.bin", "r+b") as fg:
-#     fg.seek(0x40)
-#     div = int.from_bytes(fg.read(4), "big")
-#     div = int(div * 0.6)
-#     fg.seek(0x40)
-#     fg.write(div.to_bytes(4, "big"))
+with open(ROMName, "rb") as fh:
+    wrinkly_f = ROMPointerFile(fh, TableNames.MusicMIDI, 66)
+    fh.seek(wrinkly_f.start)
+    dec = zlib.decompress(fh.read(wrinkly_f.size), 15 + 32)
+    with open("assets/music/fake_fairy.bin", "wb") as fg:
+        fg.write(dec)
+with open("assets/music/fake_fairy.bin", "r+b") as fg:
+    fg.seek(0x40)
+    div = int.from_bytes(fg.read(4), "big")
+    div = int(div * 0.6)
+    fg.seek(0x40)
+    fg.write(div.to_bytes(4, "big"))
 
 
 song_replacements = [
@@ -954,11 +954,8 @@ for song in song_replacements:
         pointer_table_index=TableNames.MusicMIDI,
         file_index=song["index"],
         source_file=f"assets/music/{song['name']}.bin",
-        do_not_recompress=True,
+        target_compressed_size=music_size,
     )
-    sz = getMusicSize(song["index"])
-    if sz is not None:
-        item.setTargetSize(sz)
     if song["bps"]:
         item.bps_file = f"assets/music/{song['name']}.bps"
     else:
@@ -1033,18 +1030,15 @@ for x in maps_to_expand:
 for x in range(175):
     if x > 0:
         if x not in changed_song_indexes:
-            data = File(
-                name=f"Song {x}",
-                pointer_table_index=TableNames.MusicMIDI,
-                file_index=x,
-                source_file=f"song{x}.bin",
-                do_not_recompress=True,
+            file_dict.append(
+                File(
+                    name=f"Song {x}",
+                    pointer_table_index=TableNames.MusicMIDI,
+                    file_index=x,
+                    source_file=f"song{x}.bin",
+                    target_compressed_size=music_size,
+                )
             )
-            sz = getMusicSize(x)
-            if sz is not None:
-                data.setTargetSize(sz)
-
-            file_dict.append(data)
 for x in range(6):
     file_dict.append(
         File(
