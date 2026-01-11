@@ -1327,6 +1327,10 @@ class RemoveBaitPotions(Toggle):
 
     display_name = "Remove Bait Potions"
 
+class SnideTurninsToThePool(DefaultOnToggle):
+    """If enabled, Snide Turnins will be added to the pool."""
+
+    display_name = "Add Snide Turnins to the Pool"
 
 @dataclass
 class DK64Options(PerGameCommonOptions):
@@ -1420,6 +1424,7 @@ class DK64Options(PerGameCommonOptions):
     loading_zone_rando: LoadingZoneRando
     galleon_water_level: GalleonWaterLevel
     remove_bait_potions: RemoveBaitPotions
+    snide_turnins_to_pool: SnideTurninsToThePool
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1462,6 +1467,7 @@ dk64_option_groups: List[OptionGroup] = [
             Dropsanity,
             HintItemRandomization,
             HalfMedals,
+            SnideTurninsToThePool,
             SnideMaximum,
         ],
     ),
