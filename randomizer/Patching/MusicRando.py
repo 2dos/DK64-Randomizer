@@ -16,7 +16,7 @@ from randomizer.Lists.Songs import song_data, song_idx_list
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
 from randomizer.Patching.Library.Generic import Overlay, IsDDMSSelected
-from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, writeRawFile
+from randomizer.Patching.Library.Assets import TableNames, writeRawFile
 from randomizer.Patching.Library.ASM import writeValue, populateOverlayOffsets, getROMAddress
 
 storage_banks = {
