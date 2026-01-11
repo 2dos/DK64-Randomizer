@@ -1357,7 +1357,7 @@ class DK64Options(PerGameCommonOptions):
     randomize_blocker_required_amounts: RandomizeBlockers
     blocker_max: MaximumBLocker
     enable_chaos_blockers: ChaosBLockers
-    maximize_helm_blocker: MaximizeHelmBLocker
+    maximize_level8_blocker: MaximizeHelmBLocker
     chaos_ratio: ChaosRatio
     level_blockers: LevelBlockers
     open_lobbies: OpenLobbies

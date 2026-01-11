@@ -377,7 +377,7 @@ def apply_blocker_settings(settings_dict: dict, options) -> None:
     ]
 
     # Blocker settings - prioritize chaos blockers, then randomization setting
-    settings_dict["maximize_helm_blocker"] = options.maximize_helm_blocker.value
+    settings_dict["maximize_helm_blocker"] = options.maximize_level8_blocker.value
 
     if options.enable_chaos_blockers.value:
         settings_dict["blocker_text"] = options.chaos_ratio.value
