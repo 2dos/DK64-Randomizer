@@ -199,6 +199,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.IslesMain, lambda _: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: l.can_use_vines or l.CanMoonkick() or l.assumeUpperIslesAccess),
+        TransitionFront(Regions.IslesEar, lambda l: l.CanMoonkick()),
     ]),
 
     Regions.IslesMainUpper: Region("Isles Main Upper", HintRegion.MainIsles, Levels.DKIsles, False, None, [
@@ -215,12 +216,12 @@ LogicRegions = {
         TransitionFront(Regions.IslesHill, lambda _: True),
         TransitionFront(Regions.AztecLobbyRoof, lambda l: l.CanMoonkick()),
         TransitionFront(Regions.AngryAztecLobby, lambda l: l.settings.open_lobbies or Events.JapesKeyTurnedIn in l.Events or l.CanPhase(), Transitions.IslesMainToAztecLobby),
-        TransitionFront(Regions.IslesEar, lambda l: l.CanMoonkick() or ((l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events) and ((l.istiny and l.twirl) or (l.isdonkey or l.ischunky or ((l.isdiddy or l.islanky) and l.monkey_maneuvers and not l.isKrushaAdjacent(l.kong)))))),
+        TransitionFront(Regions.IslesEar, lambda l: (l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events) and ((l.istiny and l.twirl) or (l.isdonkey or l.ischunky or ((l.isdiddy or l.islanky) and l.monkey_maneuvers and not l.isKrushaAdjacent(l.kong))))),
     ]),
 
     Regions.IslesEar: Region("Isles Ear", HintRegion.MainIsles, Levels.DKIsles, False, None, [], [], [
         TransitionFront(Regions.CrystalCavesLobby, lambda _: True, Transitions.IslesMainToCavesLobby),
-        TransitionFront(Regions.IslesMain, lambda _: True),
+        TransitionFront(Regions.IslesHill, lambda _: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: (l.istiny and l.twirl) or (l.isdonkey or l.ischunky or ((l.isdiddy or l.islanky) and l.monkey_maneuvers) and not l.isKrushaAdjacent(l.kong))),
     ]),
 
