@@ -220,7 +220,7 @@ LogicRegions = {
 
     Regions.IslesEar: Region("Isles Ear", HintRegion.MainIsles, Levels.DKIsles, False, None, [], [], [
         TransitionFront(Regions.CrystalCavesLobby, lambda _: True, Transitions.IslesMainToCavesLobby),
-        TransitionFront(Regions.IslesMain, lambda _: True),
+        TransitionFront(Regions.IslesHill, lambda _: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: (l.istiny and l.twirl) or (l.isdonkey or l.ischunky or ((l.isdiddy or l.islanky) and l.monkey_maneuvers) and not l.isKrushaAdjacent(l.kong))),
     ]),
 
