@@ -79,7 +79,7 @@ def truncateFiles(ROM_COPY: ROM):
             # These tables are always uncompressed, ignore
             continue
         if table_id in (TableNames.MapWalls, TableNames.MapFloors):
-            # messing with these tables causes issues. Ignoring
+            # messing with these tables causes the game to take a hard angry nap
             continue
         ROM_COPY.seek(POINTER_OFFSET + (32 * 4) + (table_id * 4))
         entry_count = int.from_bytes(ROM_COPY.readBytes(4), "big")

@@ -3,7 +3,9 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/base-hack/include/**",
+                "${workspaceFolder}/base-hack/include2/**",
+                "${workspaceFolder}/base-hack/src/**",
             ],
             "compilerPath": "cl.exe",
             "cppStandard": "c++17",

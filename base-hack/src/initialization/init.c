@@ -14,7 +14,7 @@
 
 ROM_DATA static char music_storage[MUSIC_SIZE];
 
-char music_types[SONG_COUNT] = {
+ROM_RODATA_NUM const char music_types[SONG_COUNT] = {
 	-1,
 	SONGTYPE_BGM,
 	SONGTYPE_BGM,
@@ -193,10 +193,6 @@ char music_types[SONG_COUNT] = {
 	-1,
 };
 
-typedef struct musicInfo {
-	/* 0x000 */ short data[0xB0];
-} musicInfo;
-
 void fixMusicRando(void) {
 	/**
 	 * @brief Initialize Music Rando so that the data for each song is correct.
@@ -204,7 +200,7 @@ void fixMusicRando(void) {
 	 */
 	if (Rando.music_rando_on) {
 		// Type indexes
-		*(short*)(0x806CA97E) = 0x560 | ((songData[0x6B] >> 1) & 3); // Baboon Balloon
+		*(short*)(0x806CA97E) = 0x560 | ((songData[SONG_BABOONBALLOON] >> 1) & 3); // Baboon Balloon
 	}
 }
 

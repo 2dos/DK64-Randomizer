@@ -502,7 +502,7 @@ extern short mayhem_minecart_size[3];
 extern mtx_item static_mtx[22];
 extern FastTextStruct hint_pointers[35];
 extern char* itemloc_pointers[LOCATION_ITEM_COUNT];
-extern char music_types[SONG_COUNT];
+extern const char music_types[SONG_COUNT];
 extern char grab_lock_timer;
 extern char tag_locked;
 extern char enable_skip_check;

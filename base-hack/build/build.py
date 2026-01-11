@@ -2111,7 +2111,10 @@ with open(newROMName, "r+b") as fh:
                 compressed_size = len(precomp)
                 if x.target_compressed_size is None:
                     x.target_compressed_size = compressed_size
-                x.target_compressed_size += 0x80
+                buffer_size = 0x80
+                if x.pointer_table_index == TableNames.MapGeometry and x.file_index == 82:
+                    buffer_size = 0x100
+                x.target_compressed_size += buffer_size
                 if x.pointer_table_index == TableNames.ModelTwoGeometry:
                     print("Expanding buffer compression ", x.pointer_table_index, x.file_index, hex(x.target_compressed_size), hex(compressed_size), hex(uncompressed_size))
 
