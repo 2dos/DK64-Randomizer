@@ -55,21 +55,22 @@ def ApplyMirrorMode(settings: Settings, ROM_COPY: LocalROM):
                 dl_end = readDataFromBytestream(data, 0x48, 4)
             FlipDisplayList(ROM_COPY, data, dl_start, dl_end, tbl, file_index)
 
+
 def trimData(data: bytes, alignment: int = 0x10) -> bytes:
     """Trim a bytes object to remove trailing null bytes, and then align the size of the object to a certain modulo."""
     if alignment <= 0:
         raise ValueError("alignment must be positive")
-    
+
     i = len(data) - 1
     while i >= 0 and data[i] == 0:
         i -= 1
     if i < 0:
-        return b''
-    trimmed = data[:i + 1]
+        return b""
+    trimmed = data[: i + 1]
 
     pad = (-len(trimmed)) % alignment
     if pad:
-        trimmed += b'\x00' * pad
+        trimmed += b"\x00" * pad
 
     return trimmed
 
