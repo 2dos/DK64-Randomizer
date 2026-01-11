@@ -285,9 +285,11 @@ def float_to_hex(f):
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
 
+
 def getMusicType(song) -> MusicTypes:
     """Get the music type from song num."""
     return music_type_mapping.get(song, MusicTypes.Protected)
+
 
 def getMusicSize(song) -> int:
     mtype = getMusicType(song)
@@ -301,7 +303,7 @@ def getMusicSize(song) -> int:
             fh.seek(file_start)
             try:
                 return len(zlib.decompress(fh.read(file_end - file_start), (15 + 32)))
-            except:
+            except Exception:
                 return 16000
     return music_sizes_fine[mtype]
 

@@ -1058,6 +1058,7 @@ class CustomActors(IntEnum):
     GuardGetOut = auto()
     GuardTag = auto()
 
+
 class MusicTypes(IntEnum):
     """Music Types enum."""
 
