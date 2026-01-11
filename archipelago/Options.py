@@ -1327,10 +1327,12 @@ class RemoveBaitPotions(Toggle):
 
     display_name = "Remove Bait Potions"
 
+
 class SnideTurninsToThePool(DefaultOnToggle):
     """If enabled, Snide Turnins will be added to the pool."""
 
     display_name = "Add Snide Turnins to the Pool"
+
 
 @dataclass
 class DK64Options(PerGameCommonOptions):

@@ -576,6 +576,7 @@ def apply_logic_and_barriers_settings(settings_dict: dict, options) -> None:
         if barrier in barrier_mapping:
             settings_dict["remove_barriers_selected"].append(barrier_mapping[barrier])
 
+
 def apply_glitches_and_tricks_settings(settings_dict: dict, options) -> None:
     """Apply glitches and tricks configuration."""
     # Prevents tricks and glitches from being added twice
