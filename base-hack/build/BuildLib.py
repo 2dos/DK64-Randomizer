@@ -292,6 +292,7 @@ def getMusicType(song) -> MusicTypes:
 
 
 def getMusicSize(song) -> int:
+    """Get the allocated size for a song in ROM."""
     mtype = getMusicType(song)
     if mtype not in music_sizes_fine:
         with open(ROMName, "rb") as fh:
