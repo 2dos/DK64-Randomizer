@@ -1073,6 +1073,7 @@
         "getnewsavetime": 2153761164,
         "iscutscenebarspresent": 2153761380,
         "updatecamera": 2153761428,
+        "setcolorframebuffer": 2153768148,
         "enddl": 2153768732,
         "unkdlfunction1": 2153768884,
         "islobby": 2153770868,
@@ -1452,6 +1453,7 @@
         "countflagarray": 2155027112,
         "printdebugtext": 2155027744,
         "dumpreturns": 2155028824,
+        "playsfxarcade": 2155050552,
         "altersfxvolume": 2155051864,
         "adjustsfxtype_internal": 2155052064,
         "cspgetstate": 2155052592,
@@ -1610,6 +1612,7 @@
         "p1heldbuttons": 2155793752,
         "previouslypressedbuttons": 2155793760,
         "newlypressedcontrollerinput": 2155793766,
+        "minigameinput": 2155793896,
         "extrasavedata": 2155795112,
         "storedsettings": 2155795808,
         "eepromtype": 2155798188,
@@ -3014,5 +3017,8 @@
         "check_crate": 13,
         "check_shops": 14,
         "check_terminator": 15
+    },
+    "minigames": {
+        "wordle.loop": 2147634484
     }
 }

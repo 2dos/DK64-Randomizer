@@ -521,6 +521,9 @@ extern void handleController(void);
 extern Gfx *unkFadeFunction(Gfx *dl, int transition);
 extern void endDL(Gfx * dl, int index, int* count, int unk0);
 extern void unkDLFunction1(void *unk0, void *camera_dl, int unk1, int unk2);
+extern Gfx *setColorFramebuffer(Gfx *dl);
+extern Controller *MinigameInput;
+extern void playSFXArcade(int unk0, int sfx, short unk2, int unk3, float unk4, int unk5, int unk6);
 
 //vanilla data
 extern OSThread* __osActiveQueue;

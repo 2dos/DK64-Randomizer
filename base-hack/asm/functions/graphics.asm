@@ -52,3 +52,4 @@
 .definelabel unkFadeFunction, 0x80704484
 .definelabel endDL, 0x805FE71C
 .definelabel unkDLFunction1, 0x805FE7B4
+.definelabel setColorFramebuffer, 0x805FE4D4

@@ -114,17 +114,21 @@ if not os.path.exists(toolchain_gcc):
 
 os.makedirs("obj", exist_ok=True)
 os.makedirs("asm", exist_ok=True)
-
+genned_minigames = []
 with open("asm/objects.asm", "w") as obj_asm:
     for root, dirs, files in os.walk("src"):
         for file in files:
             if not file.endswith(".c"):
                 continue
             src_path = os.path.join(root, file)
+            minigame = None
             with open(src_path, "r") as fh:
                 first_line = fh.readlines()[0]
                 if "//avoid" in first_line:
                     continue
+                if "// minigame:" in first_line:
+                    minigame = first_line.split("// minigame:")[1].strip()
+                    print("Found minigame:", minigame)
 
             obj_name = (
                 src_path
@@ -134,7 +138,16 @@ with open("asm/objects.asm", "w") as obj_asm:
             )
 
             out_obj = os.path.join("obj", obj_name)
-            obj_asm.write(f'.importobj "{out_obj}"\n')
+            if minigame is None:
+                obj_asm.write(f'.importobj "{out_obj}"\n')
+            else:
+                print(os.getcwd())
+                os.makedirs(f"asm/minigames/{minigame}", exist_ok=True)
+                mode = "a" if minigame in genned_minigames else "w"
+                with open(f"asm/minigames/{minigame}/objects.asm", mode) as obj_asm2:
+                    obj_asm2.write(f'.importobj "{out_obj}"\n')
+                if minigame not in genned_minigames:
+                    genned_minigames.append(minigame)
 
             flags = [
                 "-c",
@@ -190,3 +203,25 @@ with open("asm/objects.asm", "w") as obj_asm:
             )
 
 print("✅ Compilation complete!")
+WRITE_ADDR = 0x80024390  # Arcade *can* be written earlier, but jetpac has some extra loader code that mandates a later write
+os.makedirs("minigame", exist_ok=True)
+open("minigame/dummy.bin", "wb").close()
+for minigame in genned_minigames:
+    with open(f"asm/minigames/{minigame}/main.asm", "w") as asm:
+        asm.write(".n64 // Let armips know we're coding for the N64 architecture\n")
+        asm.write(f".open \"minigame/dummy.bin\", \"minigame/{minigame}.bin\", 0 // Open the ROM file\n")
+        asm.write(f".include \"asm/symbols.asm\" // Include dk64.asm to tell armips' linker where to find the game's function(s)\n")
+        asm.write(f".headersize {hex(WRITE_ADDR)}\n")
+        asm.write(f".org {hex(WRITE_ADDR)}\n")
+        asm.write(f".include \"asm/minigames/{minigame}/objects.asm\"\n")
+        asm.write(".close // Close the ROM file\n")
+    BASE_DIR = os.getcwd()
+    armips = os.path.join(BASE_DIR, "build", "armips", "build", "armips")
+    asm = os.path.join(BASE_DIR, "asm", "minigames", minigame, "main.asm")
+    sym = os.path.join(BASE_DIR, "minigame", f"{minigame}-symbols.sym")
+
+    subprocess.run(
+        [armips, asm, "-sym", sym],
+        check=True
+    )
+os.remove("minigame/dummy.bin")
