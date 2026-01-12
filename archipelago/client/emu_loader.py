@@ -180,7 +180,7 @@ class ProcessMemory:
                 elif IS_LINUX:
                     # On Linux, proactively check ptrace scope before attempting to attach
                     check_and_fix_ptrace_scope()
-                    
+
                     # Open /proc/pid/mem as a file descriptor for atomic pread/pwrite operations
                     try:
                         self.mem_fd = os.open(f"/proc/{self.process_id}/mem", os.O_RDWR)
