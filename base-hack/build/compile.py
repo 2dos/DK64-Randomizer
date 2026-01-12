@@ -37,6 +37,8 @@ print(f"{cwd}\\n64chain\\tools\\bin\\mips64-elf-gcc")
 with open("include/build_os.h", "w") as fh:
     fh.write("#define IS_WINDOWS\n")
 genned_minigames = []
+minigame_libs = []
+minigame_asms = []
 with open("asm/objects.asm", "w") as obj_asm:
     # traverse whole directory
     for root, dirs, files in os.walk(r"src"):
@@ -58,14 +60,18 @@ with open("asm/objects.asm", "w") as obj_asm:
                 out_obj = f"obj/{_o}"
                 if minigame is None:
                     obj_asm.write(f'.importobj "{out_obj}"\n')
+                elif minigame == "all":
+                    minigame_libs.append(out_obj)
                 else:
-                    print(os.getcwd())
                     os.makedirs(f"asm/minigames/{minigame}", exist_ok=True)
                     mode = "a" if minigame in genned_minigames else "w"
-                    with open(f"asm/minigames/{minigame}/objects.asm", mode) as obj_asm2:
+                    asm_f = f"asm/minigames/{minigame}/objects.asm"
+                    with open(asm_f, mode) as obj_asm2:
                         obj_asm2.write(f'.importobj "{out_obj}"\n')
                     if minigame not in genned_minigames:
                         genned_minigames.append(minigame)
+                    if asm_f not in minigame_asms:
+                        minigame_asms.append(asm_f)
                 reduced_optimization = False
                 if "\\" in pth:
                     if pth in strict_aliasing_avoids_backslash:
@@ -98,6 +104,10 @@ with open("asm/objects.asm", "w") as obj_asm:
                 )
                 shutil.move("./" + file.replace(".c", ".o"), "./obj/" + _o)
 
+for asm in minigame_asms:
+    with open(asm, "a") as fh:
+        for lib in minigame_libs:
+            fh.write(f'.importobj "{lib}"\n')
 print("✅ Compilation complete!")
 WRITE_ADDR = 0x80024390  # Arcade *can* be written earlier, but jetpac has some extra loader code that mandates a later write
 os.makedirs("minigame", exist_ok=True)

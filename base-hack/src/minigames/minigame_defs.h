@@ -29,4 +29,11 @@
 #include "../../include/pause.h"
 #include "../../include/previews.h"
 
+extern void renderText(Gfx **dl_ptr, const int x, const int y, const int red, const int green, const int blue, const int alpha, const char *str);
+extern void playSFXWrapper(int sfx);
+extern Gfx* drawScreenRect(Gfx* dl, int x1, int y1, int x2, int y2, int red, int green, int blue, int alpha);
+extern void gameVictory(void);
+extern void gameExit(void);
+extern void gameInit(void);
+
 #endif

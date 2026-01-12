@@ -1453,7 +1453,7 @@
         "countflagarray": 2155027112,
         "printdebugtext": 2155027744,
         "dumpreturns": 2155028824,
-        "playsfxarcade": 2155050552,
+        "_alsndpplay": 2155050552,
         "altersfxvolume": 2155051864,
         "adjustsfxtype_internal": 2155052064,
         "cspgetstate": 2155052592,
@@ -1604,6 +1604,7 @@
         "framelag": 2155261712,
         "compactsequenceplayers": 2155265824,
         "musicstorage": 2155265848,
+        "sfxsoundbank": 2155270648,
         "songinwriteslot": 2155283808,
         "apname": 2155753184,
         "transitionprogress": 2155793504,
@@ -3019,6 +3020,6 @@
         "check_terminator": 15
     },
     "minigames": {
-        "wordle.loop": 2147634484
+        "wordle.loop": 2147635200
     }
 }

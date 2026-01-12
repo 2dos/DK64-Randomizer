@@ -21,4 +21,4 @@
 .definelabel alCSPSetTempo, 0x80738320
 .definelabel getSongTempo, 0x807383B0
 .definelabel handleController, 0x8060AC7C
-.definelabel playSFXArcade, 0x80737638
+.definelabel _alSndpPlay, 0x80737638

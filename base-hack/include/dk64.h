@@ -472,7 +472,7 @@ extern int getTotalGBs(void);
 extern void displayPauseSpriteNumber(void* handler, int x, int y, int unk0, int unk1, int count, int unk2, int unk3);
 extern void headphonesCode(int unused, int enable); // Note: Only has parameters for *if* we're passing in an enabled state for the headphones fix qol change
 
-extern int getSpawnerIndexOfResolvedBonus(void* unk0, int unk1, int* map_storage);
+extern int getSpawnerIndexOfResolvedBonus(const void* unk0, int unk1, int* map_storage);
 extern void resolveBonus(short unk0, int unk1, int unk2, float unk3);
 extern void failBonus(int unk0, int unk1);
 extern void winBonus(int unk0, int unk1);
@@ -523,7 +523,8 @@ extern void endDL(Gfx * dl, int index, int* count, int unk0);
 extern void unkDLFunction1(void *unk0, void *camera_dl, int unk1, int unk2);
 extern Gfx *setColorFramebuffer(Gfx *dl);
 extern Controller *MinigameInput;
-extern void playSFXArcade(int unk0, int sfx, short unk2, int unk3, float unk4, int unk5, int unk6);
+extern void _alSndpPlay(void *unk0, short sfx, unsigned short vol, int pan, float pitch, unsigned char fxmix, void *unk6);
+extern void *SFXSoundbank;
 
 //vanilla data
 extern OSThread* __osActiveQueue;

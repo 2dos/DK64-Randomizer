@@ -97,7 +97,6 @@ for json_f in list(Path("minigame").rglob("*.json")):
     with open(str(json_f).replace(".json", "-symbols.sym"), "r") as fh:
         lines = fh.readlines()
         for line in lines:
-            print("ABCXYZ:", line)
             if " " in line:
                 sym_name = line.split(" ")[1].lower().strip()
                 addr_raw = line.split(" ")[0].strip()
