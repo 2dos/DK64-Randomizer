@@ -14,63 +14,6 @@ except ImportError:
     logger = logging.getLogger(__name__)
 
 
-def setup_passwordless_ptrace() -> bool:
-    """Set up sudoers rule to allow ptrace changes without password.
-
-    Returns:
-        True if successfully set up or already configured
-        False if setup failed
-    """
-    sudoers_file = "/etc/sudoers.d/dk64-ptrace"
-    tee_path = "/usr/bin/tee"
-    ptrace_scope_path = "/proc/sys/kernel/yama/ptrace_scope"
-
-    # Check if rule already exists
-    if os.path.exists(sudoers_file):
-        return True
-
-    # Create sudoers content (allows tee to ptrace_scope without password)
-    # Using %sudo and %wheel to cover common group names
-    sudoers_content = f"""# Allow DK64 Randomizer to modify ptrace scope without password
-%sudo ALL=(ALL) NOPASSWD: {tee_path} {ptrace_scope_path}
-%wheel ALL=(ALL) NOPASSWD: {tee_path} {ptrace_scope_path}
-"""
-
-    try:
-        logger.info("Setting up passwordless ptrace access (one-time setup)...")
-        logger.info("You may be prompted for your sudo password.")
-
-        # Write sudoers rule using visudo for safety
-        # First create temp file, then validate and move it
-        temp_file = "/tmp/dk64-ptrace-sudoers"
-        with open(temp_file, "w") as f:
-            f.write(sudoers_content)
-
-        # Validate the sudoers file
-        result = subprocess.run(["sudo", "visudo", "-c", "-f", temp_file], capture_output=True, timeout=30)
-
-        if result.returncode == 0:
-            # Valid, now move it
-            result = subprocess.run(["sudo", "cp", temp_file, sudoers_file], timeout=30)
-
-            if result.returncode == 0:
-                # Set proper permissions
-                subprocess.run(["sudo", "chmod", "0440", sudoers_file], timeout=5)
-                os.remove(temp_file)
-                logger.info("Successfully configured passwordless ptrace access.")
-                return True
-
-        # Cleanup temp file
-        if os.path.exists(temp_file):
-            os.remove(temp_file)
-
-        return False
-
-    except Exception as e:
-        logger.warning(f"Failed to setup passwordless ptrace: {e}")
-        return False
-
-
 def check_and_fix_ptrace_scope() -> bool:
     """Check if ptrace scope is restrictive and attempt to fix it.
 
@@ -103,10 +46,7 @@ def check_and_fix_ptrace_scope() -> bool:
         # Need to set ptrace scope to 0
         logger.info(f"Detected restrictive ptrace scope ({scope}). Attempting to enable memory access...")
 
-        # Try to set up passwordless access first (one-time)
-        setup_passwordless_ptrace()
-
-        # Try to set ptrace scope using sudo (no password if rule exists)
+        # Try to set ptrace scope using sudo
         try:
             result = subprocess.run(["sudo", "-n", "tee", ptrace_scope_path], input=b"0\n", capture_output=True, timeout=1)
             if result.returncode == 0:
