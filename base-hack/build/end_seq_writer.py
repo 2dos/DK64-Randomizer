@@ -86,7 +86,7 @@ user_credits = [
     CreditName("The Community", add_thanks="Untitled"),
     CreditName("Dahni", artist=True),
     CreditName("Adeleine64DS", add_thanks="Untitled2"),
-    CreditName("Enob", add_thanks="Untitled2"),
+    CreditName("SirEnobMort", add_thanks="Untitled2"),
     CreditName("SchwartzGandhi", add_thanks="Untitled2"),
     CreditName("gloomy", composer=True),
 ]
