@@ -154,6 +154,10 @@
         "link": "CustomLocationsKasplats"
     },
     {
+        "name": "Custom Locations: Miscellaneous",
+        "link": "CustomLocationsMiscellaneous"
+    },
+    {
         "name": "Plando Colors",
         "link": "PlandoColors"
     },
@@ -172,9 +176,5 @@
     {
         "name": "Random Settings: Standard",
         "link": "RandomSettingsStandard"
-    },
-    {
-        "name": "Custom Locations: Miscellaneous",
-        "link": "CustomLocationsMiscellaneous"
     }
 ]

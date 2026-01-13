@@ -729,7 +729,7 @@ with open("src/lib_items.c", "w") as fh:
         dtype_cast = ""
         if dtype in ("short*", "void*"):
             dtype_cast = f"({dtype})"
-        fh.write(f"\n{dtype} {sym}[] = {{\n\t" + ",\n\t".join([f'{dtype_cast}{getActorDefaultString(x)}' for x in actor_data[sym]]) + "\n};")
+        fh.write(f"\n{dtype} {sym}[] = {{\n\t" + ",\n\t".join([f"{dtype_cast}{getActorDefaultString(x)}" for x in actor_data[sym]]) + "\n};")
     with open("include/item_data.h", "a") as fg:
         fg.write(f"extern GBDictItem new_flag_mapping[{len(actor_data['new_flag_mapping'])}];\n")
         # File Size Calc (Just for base hack testing purposes)

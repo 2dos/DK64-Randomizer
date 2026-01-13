@@ -48,10 +48,7 @@ toolchain_gcc = os.path.join(N64_INST, "bin", "mips64-elf-gcc")
 # Clone source if missing
 if not os.path.exists(libdragon_dir):
     print("Cloning libdragon source from GitHub...")
-    subprocess.run(
-        ["git", "clone", "https://github.com/DragonMinded/libdragon.git", libdragon_dir],
-        check=True
-    )
+    subprocess.run(["git", "clone", "https://github.com/DragonMinded/libdragon.git", libdragon_dir], check=True)
 
 # Build toolchain if missing
 if not os.path.exists(toolchain_gcc):
@@ -73,10 +70,7 @@ print("✅ libdragon toolchain ready")
 
 if not os.path.exists(armips_dir):
     print("Cloning ARMIPS source from GitHub...")
-    subprocess.run(
-        ["git", "clone", "--recursive", "https://github.com/Kingcom/armips.git", armips_dir],
-        check=True
-    )
+    subprocess.run(["git", "clone", "--recursive", "https://github.com/Kingcom/armips.git", armips_dir], check=True)
 
 build_path = os.path.join(armips_dir, "build")
 os.makedirs(build_path, exist_ok=True)
@@ -84,16 +78,8 @@ os.makedirs(build_path, exist_ok=True)
 with open("include/build_os.h", "w") as fh:
     fh.write("#define IS_LINUX\n")
 
-subprocess.run(
-    ["cmake", "-DCMAKE_BUILD_TYPE=Release", ".."],
-    cwd=build_path,
-    check=True
-)
-subprocess.run(
-    ["cmake", "--build", "."],
-    cwd=build_path,
-    check=True
-)
+subprocess.run(["cmake", "-DCMAKE_BUILD_TYPE=Release", ".."], cwd=build_path, check=True)
+subprocess.run(["cmake", "--build", "."], cwd=build_path, check=True)
 
 armips_exe = os.path.join(build_path, "armips")
 if os.path.exists(armips_exe):
@@ -126,34 +112,25 @@ with open("asm/objects.asm", "w") as obj_asm:
                 if "//avoid" in first_line:
                     continue
 
-            obj_name = (
-                src_path
-                .replace("/", "_")
-                .replace("\\", "_")
-                .replace(".c", ".o")
-            )
+            obj_name = src_path.replace("/", "_").replace("\\", "_").replace(".c", ".o")
 
             out_obj = os.path.join("obj", obj_name)
             obj_asm.write(f'.importobj "{out_obj}"\n')
 
             flags = [
                 "-c",
-
                 # Optimization
                 "-O2",
-
                 # Warnings
                 "-Wall",
                 "-Wextra",
                 "-Wno-unused-parameter",
                 "-Wno-implicit-fallthrough",
-
                 # Freestanding / N64-specific
                 "-ffreestanding",
                 "-fno-builtin-memcpy",
                 "-fno-builtin-memset",
                 "-fomit-frame-pointer",
-
                 # Disable features that bloat code
                 "-fno-stack-protector",
                 "-fno-pic",
@@ -162,15 +139,12 @@ with open("asm/objects.asm", "w") as obj_asm:
                 "-mno-abicalls",
                 "-fno-asynchronous-unwind-tables",
                 "-fno-unwind-tables",
-
                 # CPU / ABI
                 "-march=vr4300",
                 "-mtune=vr4300",
                 "-mabi=32",
-
                 # Small data
                 "-G0",
-
                 # Include paths
                 "-I.",
                 "-Isrc",
@@ -178,7 +152,6 @@ with open("asm/objects.asm", "w") as obj_asm:
                 "-Iinclude2",
                 # Optional: "-I{N64_INST}/include",
                 # Optional: "-I{N64_INST}/mips64-elf/include",
-
                 # Defines
                 "-DTARGET_N64",
                 "-DF3DEX2_GBI",

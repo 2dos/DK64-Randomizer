@@ -743,10 +743,10 @@ int isTrapModel(void) {
 }
 
 void cancelIceTrapSong(int song, int unk0) {
-    if (isTrapModel()) {
-        song = SONG_FAKEFAIRYNEARBY;
-    }
-    cancelMusic(song, unk0);
+    // A more time efficient method is theorethically possible (read which song is playing in the channel)
+    // but we're talking like maybe half a microsecond here, and this is more readable imo
+    cancelMusic(SONG_FAIRYNEARBY, unk0);
+    cancelMusic(SONG_FAKEFAIRYNEARBY, unk0);
 }
 
 void playIceTrapSong(int song, float volume) {

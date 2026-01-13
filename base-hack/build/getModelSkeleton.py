@@ -98,7 +98,7 @@ def getSkeleton(model_index: int, model_file: str = None):
             os.mkdir("./skeleton/")
         file_name = f"./skeleton/model_{hex(model_index)}.png"
         if model_file is not None:
-            file_name = f"./skeleton/model_{model_file.replace('.bin','').replace('../','')}.png"
+            file_name = f"./skeleton/model_{model_file.replace('.bin', '').replace('../', '')}.png"
         image.save(file_name)
 
 

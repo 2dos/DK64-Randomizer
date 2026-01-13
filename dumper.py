@@ -143,7 +143,7 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
         os.mkdir(directory)
     output_file = f"{directory}/{name}.{format}"
     if format == "md":
-        output_file = f"{directory}/CustomLocations{name.title().replace('_','')}.{format.upper()}"
+        output_file = f"{directory}/CustomLocations{name.title().replace('_', '')}.{format.upper()}"
     with open(output_file, "w") as fh:
         if format == "json":
             if DISPLAY_TOTALS:
@@ -531,7 +531,7 @@ def dump_random_settings(format: str):
         print("Random Setting Data could not be established")
         return
     for file in data:
-        with open(f"{LIST_DIRECTORY}/RandomSettings{file['name'].title().replace(' ','')}.MD", "w") as fh:
+        with open(f"{LIST_DIRECTORY}/RandomSettings{file['name'].title().replace(' ', '')}.MD", "w") as fh:
             fh.write(f"{file['description']}\n")
             excluded_settings = ["name", "description"]
             included_settings = [x for x in list(file.keys()) if x not in excluded_settings]
