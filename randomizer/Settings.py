@@ -1804,7 +1804,10 @@ class Settings:
         self.allow_boss_duping = len(self.bosses_selected) < (7 + self.krool_phase_count)
         # Dupe phases so there's enough choice
         if len(phases) < self.krool_phase_count:
-            dupe_count = math.ceil(self.krool_phase_count / len(phases))
+            if len(phases) == 0:  # This will get caught by a SettingsIncompatibleException later, but this means we have no valid K. Rool options.
+                dupe_count = 0
+            else:
+                dupe_count = math.ceil(self.krool_phase_count / len(phases))
             init_phases = phases.copy()
             for _ in range(dupe_count):
                 phases.extend(init_phases)
@@ -1814,7 +1817,7 @@ class Settings:
                 phases = self.random.sample(phases, self.krool_phase_count)
             else:
                 phases = phases[: self.krool_phase_count]
-        if phases[-1] == Maps.GalleonBoss:
+        if len(phases) > 0 and phases[-1] == Maps.GalleonBoss:
             # Pufftoss can't be last. Pick something else
             if self.allow_boss_duping:
                 phases[-1] = self.random.choice([x for x in possible_phases if x != Maps.GalleonBoss])
