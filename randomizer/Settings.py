@@ -290,6 +290,13 @@ class Settings:
             else:
                 # The value is a basic type, so assign it directly.
                 setattr(self, k, v)
+        
+        # Sync homebrew_header values - if either is True, set both to True
+        if hasattr(self, 'homebrew_header_patch') and self.homebrew_header_patch:
+            self.homebrew_header = True
+        elif hasattr(self, 'homebrew_header') and self.homebrew_header:
+            if not hasattr(self, 'homebrew_header_patch'):
+                self.homebrew_header_patch = False
 
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
@@ -730,6 +737,7 @@ class Settings:
         self.disable_flavor_text = False
         self.head_balloons = False
         self.homebrew_header = False
+        self.homebrew_header_patch = False
         self.camera_is_follow = False
         self.sfx_volume = 100
         self.music_volume = 100

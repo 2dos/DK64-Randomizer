@@ -216,6 +216,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "holiday_setting",
         "holiday_setting_offseason",
         "homebrew_header",
+        "homebrew_header_patch",
         "dpad_display",
         "camera_is_follow",
         "sfx_volume",
