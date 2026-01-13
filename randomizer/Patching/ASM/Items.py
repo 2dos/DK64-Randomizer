@@ -432,7 +432,8 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeValue(ROM_COPY, 0x80681C16, Overlay.Static, 0xF, offset_dict)  # Disregard most special code from a bonus
     # Ice Trap Music
     writeFunction(ROM_COPY, 0x806C5F44, Overlay.Static, "playIceTrapSong", offset_dict)
-    writeFunction(ROM_COPY, 0x806C5F54, Overlay.Static, "cancelIceTrapSong", offset_dict)
+    writeFunction(ROM_COPY, 0x806C5F54, Overlay.Static, "cancelIceTrapSong", offset_dict)  # Picture taken
+    writeFunction(ROM_COPY, 0x80727E90, Overlay.Static, "cancelIceTrapSong", offset_dict)  # Out of range
     # Remove set flag for weird checks
     writeValue(ROM_COPY, 0x8002A490, Overlay.Race, 0, offset_dict, 4)  # Seal Race
     writeValue(ROM_COPY, 0x8002B8F0, Overlay.Race, 0, offset_dict, 4)  # Castle Car

@@ -169,7 +169,7 @@ def replaceROMFile(rom: BinaryIO, pointer_table_index: int, file_index: int, dat
     # Update the entry in the pointer table to point to the new data
     if file_index >= len(pointer_tables[pointer_table_index].entries):
         diff = file_index - len(pointer_tables[pointer_table_index].entries) + 1
-        print(f" - Appending {diff} extra entries to {pointer_tables[pointer_table_index].name} ({(file_index+1)-diff}->{file_index+1})")
+        print(f" - Appending {diff} extra entries to {pointer_tables[pointer_table_index].name} ({(file_index + 1) - diff}->{file_index + 1})")
         for _ in range(diff):
             pointer_tables[pointer_table_index].entries.append(TableEntry(file_index))
         rom.seek(main_pointer_table_offset + (4 * len(pointer_tables)) + (4 * pointer_table_index))
@@ -308,7 +308,7 @@ def writeModifiedPointerTablesToROM(fh: BinaryIO):
     # Recompute the pointer tables using the new file addresses and write them in the reserved space
     for x in reversed(pointer_tables):
         fh.seek(main_pointer_table_offset + (TableNames.UncompressedFileSizes * 4))
-        print(f"Pointer Table {x.index}. New Location: {hex(main_pointer_table_offset + int.from_bytes(fh.read(4),'big'))}. Write Location:")
+        print(f"Pointer Table {x.index}. New Location: {hex(main_pointer_table_offset + int.from_bytes(fh.read(4), 'big'))}. Write Location:")
         if not shouldWritePointerTable(x.index):
             continue
 

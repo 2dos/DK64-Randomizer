@@ -76,6 +76,8 @@ void SpeedUpMusic(void) {
         if (item_count != (win_con_count - 1)) {
             return;
         }
+    } else{
+        return;
     }
     for (int i = 0; i < 4; i++) {
         songs song = SongInWriteSlot[i];

@@ -29,7 +29,7 @@ def to_integer(x):
 
 def to_uint32(x):
     """Truncate a number to a 32-bit integer."""
-    return modulo(to_integer(x), 2 ** 32)
+    return modulo(to_integer(x), 2**32)
 
 
 def rol(i, b):
@@ -40,6 +40,7 @@ def rol(i, b):
 # ----------------------------
 # CRC32 TABLE
 # ----------------------------
+
 
 def _make_crc32_table():
     """Create the CRC32 table."""
@@ -105,9 +106,7 @@ def recalculate_checksum(file: BinaryIO):
 
         idx = 0x40 + 0x0710 + (n & 0xFF)
         file.seek(idx)
-        t1 = to_uint32(
-            t1 + (int.from_bytes(file.read(4), "big") ^ d)
-        )
+        t1 = to_uint32(t1 + (int.from_bytes(file.read(4), "big") ^ d))
 
         n += 4
 

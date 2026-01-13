@@ -204,6 +204,8 @@ void earlyFrame(void) {
 			PauseText = 1;
 		} else if (inShop(CurrentMap, 1)) {
 			PauseText = 1;
+		} else if (CurrentMap == MAP_JAPES) {
+			PauseText = 1;
 		}
 		if (CurrentMap == MAP_HELM) {
 			HelmInit(1);
