@@ -290,12 +290,12 @@ class Settings:
             else:
                 # The value is a basic type, so assign it directly.
                 setattr(self, k, v)
-        
+
         # Sync homebrew_header values - if either is True, set both to True
-        if hasattr(self, 'homebrew_header_patch') and self.homebrew_header_patch:
+        if hasattr(self, "homebrew_header_patch") and self.homebrew_header_patch:
             self.homebrew_header = True
-        elif hasattr(self, 'homebrew_header') and self.homebrew_header:
-            if not hasattr(self, 'homebrew_header_patch'):
+        elif hasattr(self, "homebrew_header") and self.homebrew_header:
+            if not hasattr(self, "homebrew_header_patch"):
                 self.homebrew_header_patch = False
 
     def update_progression_totals(self):
