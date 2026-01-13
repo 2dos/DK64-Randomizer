@@ -570,6 +570,8 @@ def apply_logic_and_barriers_settings(settings_dict: dict, options) -> None:
         "caves_igloo_pads": RemovedBarriersSelected.caves_igloo_pads,
         "caves_ice_walls": RemovedBarriersSelected.caves_ice_walls,
         "galleon_treasure_room": RemovedBarriersSelected.galleon_treasure_room,
+        "helm_star_gates": RemoveBarriersSelected.helm_star_gates,
+        "helm_punch_gates": RemoveBarriersSelected.helm_punch_gates,
     }
 
     for barrier in options.remove_barriers_selected:
