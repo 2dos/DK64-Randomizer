@@ -760,7 +760,7 @@ class Spoiler:
             for index, phase in enumerate(self.settings.kko_phase_order):
                 if index > 2:
                     continue
-                phase_names.append(f"Phase {phase+1}")
+                phase_names.append(f"Phase {phase + 1}")
             humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Phases"] = ", ".join(phase_names)
 
         if self.settings.bonus_barrels == MinigameBarrels.selected and len(self.settings.minigames_list_selected) > 0:

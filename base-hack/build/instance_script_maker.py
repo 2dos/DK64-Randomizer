@@ -140,7 +140,7 @@ def BuildInstanceScripts():
                                         script_data = new_data.copy()
                                         if script_data["ignore"] == 0:
                                             pre_message = f"    - Compiling"
-                                        print(f"{pre_message} {file.replace('.json','')} ({hex(script_data['id'])})")
+                                        print(f"{pre_message} {file.replace('.json', '')} ({hex(script_data['id'])})")
                                         resetCond(True)
                                         new_block_count = len(script_data["script"])
                                         for block in script_data["script"]:
@@ -190,7 +190,7 @@ def BuildInstanceScripts():
                                         pre_message = f"[x] - Ignoring"
                                         if script_data["ignore"] == 0:
                                             pre_message = f"    - Compiling"
-                                        print(f"{pre_message} {file.replace('.script','')} ({hex(script_data['id'])})")
+                                        print(f"{pre_message} {file.replace('.script', '')} ({hex(script_data['id'])})")
                                         if contains_code and code_start > -1:
                                             resetCond(True)
                                             for code_line in [x.split(COMMENT_TAG)[0].strip() for x in script_info[code_start:] if len(x.split(COMMENT_TAG)[0].strip()) > 0]:
@@ -256,7 +256,7 @@ def BuildInstanceScripts():
                                             script_list.append({"id": script_data["id"], "behav_9C": script_data["behav_9C"], "data": tp.read()})
                                         if os.path.exists(temp_file):
                                             os.remove(temp_file)
-                        with open(f"{f.replace('./','')}.raw", "wb") as new_raw:
+                        with open(f"{f.replace('./', '')}.raw", "wb") as new_raw:
                             new_raw.write(len(script_list).to_bytes(2, "big"))
                             for script in script_list:
                                 new_raw.write(script["data"])
