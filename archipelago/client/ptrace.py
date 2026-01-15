@@ -45,18 +45,9 @@ def check_and_fix_ptrace_scope() -> bool:
 
         # Need to set ptrace scope to 0
         logger.info(f"Detected restrictive ptrace scope ({scope}). Attempting to enable memory access...")
+        logger.info("You may be prompted for your sudo password.")
 
         # Try to set ptrace scope using sudo
-        try:
-            result = subprocess.run(["sudo", "-n", "tee", ptrace_scope_path], input=b"0\n", capture_output=True, timeout=1)
-            if result.returncode == 0:
-                logger.info("Successfully enabled ptrace access.")
-                return True
-        except (subprocess.TimeoutExpired, subprocess.SubprocessError):
-            pass
-
-        # -n failed, try interactive sudo (should only happen on first run)
-        logger.info("You may be prompted for your sudo password.")
         try:
             result = subprocess.run(["sudo", "tee", ptrace_scope_path], input=b"0\n", timeout=30)
             if result.returncode == 0:
