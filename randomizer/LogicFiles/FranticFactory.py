@@ -182,7 +182,7 @@ LogicRegions = {
     Regions.FactoryArcadePole: Region("Factory Arcade Upper Pole", HintRegion.Storage, Levels.FranticFactory, False, None, [], [], [
         TransitionFront(Regions.FactoryArcadeTunnel, lambda l: l.climbing),
         TransitionFront(Regions.BeyondHatch, lambda _: True, Transitions.FactoryArcadeToStorage)
-    ]),
+    ], Transitions.FactoryStorageToArcade),
 
     Regions.FactoryArcadeTunnel: Region("Arcade Tunnel", HintRegion.Storage, Levels.FranticFactory, False, None, [
         LocationLogic(Locations.NintendoCoin, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey and (l.GetCoins(Kongs.donkey) >= 2)),
