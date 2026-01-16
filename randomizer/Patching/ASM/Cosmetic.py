@@ -372,6 +372,8 @@ def cameraCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
 
 def jetpacCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     """Write cosmetic options related to jetpac."""
+    if settings.jetpac_custom_minigame is not None:
+        return
     # Jetpac colors
     JETPAC_RANDOM_COLORS = False
     if JETPAC_RANDOM_COLORS:

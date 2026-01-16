@@ -35,5 +35,6 @@ extern Gfx* drawScreenRect(Gfx* dl, int x1, int y1, int x2, int y2, int red, int
 extern void gameVictory(void);
 extern void gameExit(void);
 extern void gameInit(void);
+extern Gfx* drawImage(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity);
 
 #endif

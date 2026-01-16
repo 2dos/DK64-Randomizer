@@ -53,3 +53,8 @@
 .definelabel endDL, 0x805FE71C
 .definelabel unkDLFunction1, 0x805FE7B4
 .definelabel setColorFramebuffer, 0x805FE4D4
+.definelabel guSprite2DInit, 0x80005A90
+.definelabel spriteUnk, 0x8070E8F0
+.definelabel spriteSetParams, 0x8070F2C8
+.definelabel unkGuMacro, 0x80612CA0
+.definelabel unkGuMacro2, 0x80704444

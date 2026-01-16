@@ -1137,6 +1137,7 @@
         "getrnglower31": 2153847364,
         "determinezratiomovement": 2153850768,
         "determinexratiomovement": 2153850772,
+        "unkgumacro": 2153852064,
         "getactormodel": 2153852560,
         "setactormodel": 2153853332,
         "resetactordl": 2153853460,
@@ -1384,11 +1385,14 @@
         "getscreendist": 2154826468,
         "renderimage_internal": 2154832996,
         "recolorvertblocktext": 2154840728,
+        "unkgumacro2": 2154841156,
         "unkfadefunction": 2154841220,
         "refillhealth": 2154861668,
         "setintrostoryplaying": 2154869512,
         "gettextpointer_0": 2154879168,
         "gettextpointer": 2154882896,
+        "spriteunk": 2154883312,
+        "spritesetparams": 2154885832,
         "drawretrosprite": 2154885884,
         "initiatetransitionfade": 2154898616,
         "inithelmtimer": 2154898804,
@@ -3020,6 +3024,7 @@
         "check_terminator": 15
     },
     "minigames": {
-        "wordle.loop": 2147635200
+        "wordle.loop": 2147635200,
+        "minesweeper.loop": 2147636920
     }
 }

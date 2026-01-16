@@ -2849,14 +2849,18 @@ def GeneratePlaythrough(spoiler: Spoiler) -> None:
     PlaythroughLocations = GetAccessibleLocations(spoiler, [], SearchMode.GeneratePlaythrough)  # identify in the spheres where the win condition is met
     if not spoiler.LogicVariables.bananaHoard and spoiler.settings.logic_type not in (LogicType.nologic, LogicType.minimal):
         raise Ex.FillException("Woah, you hit an EXTREMELY rare error! Please post your settings string to the discord. It's probably a freak accident so you're safe to try again.")
+    js.postMessage("Paring Playthrough...")
     ParePlaythrough(spoiler, PlaythroughLocations)
     # Generate and display woth
+    js.postMessage("Paring WotH...")
     WothLocations = PareWoth(spoiler, PlaythroughLocations)
     # Write data to spoiler and return
     spoiler.UpdateLocations(spoiler.LocationList)
     if any(spoiler.settings.shuffled_location_types):
         ShuffleItems(spoiler)
+    js.postMessage("Updating playthrough...")
     spoiler.UpdatePlaythrough(spoiler.LocationList, PlaythroughLocations)
+    js.postMessage("Updating Woth...")
     spoiler.UpdateWoth(spoiler.LocationList, WothLocations)
 
 
@@ -3967,10 +3971,12 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     CorrectBossKongLocations(spoiler)
     GeneratePlaythrough(spoiler)
     compileMicrohints(spoiler)
+    js.postMessage("Compiled Microhints...")
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         compileHints(spoiler)
     if spoiler.settings.spoiler_hints != SpoilerHints.off:
         compileSpoilerHints(spoiler)
+    js.postMessage("Compiled Hints...")
     spoiler.Reset()
     ShuffleExits.Reset(spoiler)
     spoiler.createJson()

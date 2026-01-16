@@ -525,6 +525,11 @@ extern Gfx *setColorFramebuffer(Gfx *dl);
 extern Controller *MinigameInput;
 extern void _alSndpPlay(void *unk0, short sfx, unsigned short vol, int pan, float pitch, unsigned char fxmix, void *unk6);
 extern void *SFXSoundbank;
+extern void spriteUnk(Gfx **dl_ptr, void *sprite);
+extern void spriteSetParams(int unk0, int unk1, int unk2, int unk3);
+extern void guSprite2DInit(uSprite *SpritePointer, void *SourceImagePointer, void *TlutPointer, int Stride, int SubImageWidth, int SubImageHeight, int SourceImageType, int SourceImageBitSize, int SourceImageOffsetS, int SourceImageOffsetT);
+extern void unkGuMacro(void *mtx, float unk1);
+extern void unkGuMacro2(void *unk0, int unk1, int unk2, int unk3);
 
 //vanilla data
 extern OSThread* __osActiveQueue;

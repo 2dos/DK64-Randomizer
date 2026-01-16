@@ -122,7 +122,8 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
         writeValue(ROM_COPY, 0x8002437A, Overlay.Arcade, 0x12 + save_index_offset, offset_dict)  # Save to File - Arcade Hiscore Name 1
         writeValue(ROM_COPY, 0x80024396, Overlay.Arcade, 0x13 + save_index_offset, offset_dict)  # Save to File - Arcade Hiscore Name 2
         writeValue(ROM_COPY, 0x800243B2, Overlay.Arcade, 0x14 + save_index_offset, offset_dict)  # Save to File - Arcade Hiscore Name 3
-    writeValue(ROM_COPY, 0x80024A5E, Overlay.Jetpac, 0x11 + save_index_offset, offset_dict)  # Save to File - Jetpac Hiscore
+    if settings.jetpac_custom_minigame is None:
+        writeValue(ROM_COPY, 0x80024A5E, Overlay.Jetpac, 0x11 + save_index_offset, offset_dict)  # Save to File - Jetpac Hiscore
     writeValue(ROM_COPY, 0x8002D476, Overlay.Menu, 0x1E + save_index_offset, offset_dict)  # Save to File - Sound Type
     writeValue(ROM_COPY, 0x8002DAE6, Overlay.Menu, 0x1F + save_index_offset, offset_dict)  # Save to File - Language Type
     writeValue(ROM_COPY, 0x8002DB06, Overlay.Menu, 0x20 + save_index_offset, offset_dict)  # Save to File - Camera Type
@@ -155,8 +156,9 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
         writeValue(ROM_COPY, 0x8002445E, Overlay.Arcade, 0x12 + save_index_offset, offset_dict)  # Read from File - Arcade Hiscore Name 1
         writeValue(ROM_COPY, 0x80024476, Overlay.Arcade, 0x13 + save_index_offset, offset_dict)  # Read from File - Arcade Hiscore Name 2
         writeValue(ROM_COPY, 0x8002448E, Overlay.Arcade, 0x14 + save_index_offset, offset_dict)  # Read from File - Arcade Hiscore Name 3
-    writeValue(ROM_COPY, 0x80024C06, Overlay.Jetpac, 0x11 + save_index_offset, offset_dict)  # Read from File - Jetpac Hiscore
-    writeValue(ROM_COPY, 0x800251B2, Overlay.Jetpac, 0x11 + save_index_offset, offset_dict)  # Read from File - Jetpac Hiscore
+    if settings.jetpac_custom_minigame is None:
+        writeValue(ROM_COPY, 0x80024C06, Overlay.Jetpac, 0x11 + save_index_offset, offset_dict)  # Read from File - Jetpac Hiscore
+        writeValue(ROM_COPY, 0x800251B2, Overlay.Jetpac, 0x11 + save_index_offset, offset_dict)  # Read from File - Jetpac Hiscore
     writeValue(ROM_COPY, 0x8002886E, Overlay.Menu, 0x1E + save_index_offset, offset_dict)  # Read from File - Sound Type
     writeValue(ROM_COPY, 0x8002D462, Overlay.Menu, 0x1E + save_index_offset, offset_dict)  # Read from File - Sound Type
     writeValue(ROM_COPY, 0x8002ED26, Overlay.Menu, 0x19 + save_index_offset, offset_dict)  # Read from File - Rambi Hiscore

@@ -369,7 +369,7 @@ class Minigame8BitImage:
         self.jetpac_image = jetpac_image
 
 
-def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Items.NintendoCoin, jetpac_item: Items = Items.RarewareCoin):
+def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Items.NintendoCoin, jetpac_item: Items = Items.RarewareCoin, settings = None):
     """Alter the image that is displayed in DK Arcade/Jetpac for their respective rewards."""
     colorless_potions = (
         ItemPool.ImportantSharedMoves + ItemPool.JunkSharedMoves + ItemPool.TrainingBarrelAbilities() + ItemPool.ClimbingAbilities() + [Items.Shockwave, Items.Camera, Items.CameraAndShockwave]
@@ -447,6 +447,10 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
     }
     for minigame in im_data:
         if im_data[minigame] is None:
+            continue
+        if minigame == "arcade" and settings.arcade_custom_minigame is not None:
+            continue
+        if minigame == "jetpac" and settings.jetpac_custom_minigame is not None:
             continue
         dim = 20
         ovl = Overlay.Arcade
@@ -614,7 +618,7 @@ def patchAssembly(ROM_COPY, spoiler):
     ACTOR_DEF_START = getSym("actor_defs")
     ACTOR_MASTER_TYPE_START = getSym("actor_master_types")
 
-    alter8bitRewardImages(ROM_COPY, offset_dict, spoiler.arcade_item_reward, spoiler.jetpac_item_reward)
+    alter8bitRewardImages(ROM_COPY, offset_dict, spoiler.arcade_item_reward, spoiler.jetpac_item_reward, spoiler.settings)
     fixBossProperties(ROM_COPY, offset_dict, settings)
 
     writeValue(ROM_COPY, 0x8060E04C, Overlay.Static, 0, offset_dict, 4)  # Prevent moves overwrite
@@ -1178,7 +1182,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806BBB22, Overlay.Static, 5, offset_dict)  # Chunky toy box speedup
         writeActorHealth(ROM_COPY, 228, 12)  # Change BHDM Health (16 -> 12)
 
-    if isFasterCheckEnabled(spoiler, FasterChecksSelected.jetpac):
+    if isFasterCheckEnabled(spoiler, FasterChecksSelected.jetpac) and settings.jetpac_custom_minigame is None:
         writeValue(ROM_COPY, 0x80027DCA, Overlay.Jetpac, 2500, offset_dict)  # Jetpac score requirement
 
     if isFasterCheckEnabled(spoiler, FasterChecksSelected.forest_owl_race):
@@ -1352,7 +1356,7 @@ def patchAssembly(ROM_COPY, spoiler):
                 writeValue(ROM_COPY, 0x8004A788 + index, Overlay.Arcade, value, offset_dict, 1)
 
     # Jetpac Platforms
-    if settings.puzzle_rando_difficulty in (PuzzleRando.medium, PuzzleRando.hard, PuzzleRando.chaos):
+    if settings.puzzle_rando_difficulty in (PuzzleRando.medium, PuzzleRando.hard, PuzzleRando.chaos) and settings.jetpac_custom_minigame is None:
         # Move platforms
         writeValue(ROM_COPY, 0x80028C5E, Overlay.Jetpac, settings.jetpac_platform_data[0][0], offset_dict)
         writeValue(ROM_COPY, 0x80028C62, Overlay.Jetpac, settings.jetpac_platform_data[0][1], offset_dict)
@@ -1378,8 +1382,9 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x805FE954, Overlay.Static, "ArcadeMapCheck", offset_dict)
     if settings.arcade_custom_minigame is None:
         writeHook(ROM_COPY, 0x80024FD4, Overlay.Arcade, "ArcadeIntroCheck", offset_dict)
-    writeFunction(ROM_COPY, 0x800288FC, Overlay.Jetpac, "completeJetpac", offset_dict)
-    writeFunction(ROM_COPY, 0x80024BD0, Overlay.Jetpac, "exitJetpac", offset_dict)
+    if settings.jetpac_custom_minigame is None:
+        writeFunction(ROM_COPY, 0x800288FC, Overlay.Jetpac, "completeJetpac", offset_dict)
+        writeFunction(ROM_COPY, 0x80024BD0, Overlay.Jetpac, "exitJetpac", offset_dict)
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_picture_taking):
         # Fast Camera Photo
         writeValue(ROM_COPY, 0x80699454, Overlay.Static, 0x5000, offset_dict)  # Fast tick/no mega-slowdown on Biz
@@ -2141,9 +2146,10 @@ def patchAssembly(ROM_COPY, spoiler):
         for xi, x in enumerate(sequence):
             writeValue(ROM_COPY, 0x807482E8 + xi, Overlay.Static, x, offset_dict, 1)
 
-    shuffleJetpacEnemies(ROM_COPY, settings, offset_dict)
-    writeFunction(ROM_COPY, 0x80025034, Overlay.Jetpac, "loadJetpacSprites_handler", offset_dict)
-    writeValue(ROM_COPY, 0x800281AC, Overlay.Jetpac, 0x5000, offset_dict)  # Make Rareware Coin permanent once spawned until collected
+    if settings.jetpac_custom_minigame is None:
+        shuffleJetpacEnemies(ROM_COPY, settings, offset_dict)
+        writeFunction(ROM_COPY, 0x80025034, Overlay.Jetpac, "loadJetpacSprites_handler", offset_dict)
+        writeValue(ROM_COPY, 0x800281AC, Overlay.Jetpac, 0x5000, offset_dict)  # Make Rareware Coin permanent once spawned until collected
 
     writeValue(ROM_COPY, 0x806BA5A8, Overlay.Static, 0x1D800003, offset_dict, 4)  # Fix some health oversights by making death if health <= 0 instead of == 0
     writeValue(ROM_COPY, 0x806BA50E, Overlay.Static, 20, offset_dict)  # Change BHDM Cooldown

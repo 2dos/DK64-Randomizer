@@ -122,3 +122,18 @@ void gameVictory(void) {
     enable_reward = 1;
     gameExit();
 }
+
+Gfx* drawImage(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity) {
+	dl = initDisplayList(dl);
+	gDPSetRenderMode(dl++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+	gDPSetPrimColor(dl++, 0, 0, red, green, blue, opacity);
+	gDPSetCombineLERP(
+        dl++,
+        TEXEL0, 0, PRIMITIVE, 0,   // RGB = TEXEL0 * PRIMITIVE
+        TEXEL0, 0, PRIMITIVE, 0,   // Alpha = TEXEL0 * PRIMITIVE
+        TEXEL0, 0, PRIMITIVE, 0,
+        TEXEL0, 0, PRIMITIVE, 0
+    );
+	gDPSetTextureFilter(dl++, G_TF_POINT);
+	return displayImage(dl++, text_index, 0, codec_index, img_width, img_height, x, y, xScale, yScale, 0, 0.0f);
+}
