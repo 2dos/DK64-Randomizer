@@ -1424,7 +1424,10 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
                     "shuffled_locations": [
                         loc
                         for loc in locations
-                        if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing) and loc.item in itemTypesThatAreInShuffledPools and loc.item in regionCountHintableItems
+                        if loc.item is not None
+                        and loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing)
+                        and ItemList[loc.item].type in itemTypesThatAreInShuffledPools
+                        and loc.item in regionCountHintableItems
                     ],
                 }
             ]
@@ -1511,7 +1514,10 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
                             "shuffled_locations": [
                                 loc
                                 for loc in locations
-                                if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing) and loc.item in itemTypesThatAreInShuffledPools and loc.item in data["items"]
+                                if loc.item is not None
+                                and loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing)
+                                and ItemList[loc.item].type in itemTypesThatAreInShuffledPools
+                                and loc.item in data["items"]
                             ],
                         }
                     )

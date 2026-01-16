@@ -1808,6 +1808,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 continue
             region_name_to_hint = None
 
+            # Try to find a scouring-hintable region that actually contains useful info
+            valid_region_found = False
             if use_hint_score:
                 hintset.CalculateHintScores(spoiler, multipath_dict_goals)
                 # If we still have ugly unhinted locations, we should prioritize hinting those where possible
@@ -1827,8 +1829,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                             if candidate_region_name in hintable_region_names:
                                 region_name_to_hint = candidate_region_name
                                 hintable_region_names.remove(candidate_region_name)
-            # Try to find a scouring-hintable region that actually contains useful info
-            valid_region_found = False
+                                valid_region_found = True
+            # If we're not leveraging the score, we need to at least ensure the region has useful info
             while not valid_region_found:
                 # If we somehow run out, kick back to the start of the loop - it handles that case there (RARE)
                 if len(hintable_region_names) == 0:
