@@ -476,7 +476,7 @@ class Spoiler:
                 if key == "point_spread":
                     humanspoiler["Spoiler Hints Data"][key] = json.dumps(self.level_spoiler[key])
                 else:
-                    humanspoiler["Spoiler Hints Data"][key] = self.level_spoiler[key].toJSON()
+                    humanspoiler["Spoiler Hints Data"][key] = self.level_spoiler[key].toCleanJSON()
             humanspoiler["Spoiler Hints"] = self.level_spoiler_human_readable
         humanspoiler["Requirements"] = {}
         if self.settings.random_starting_region_new != RandomStartingRegion.off:

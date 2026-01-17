@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 import json
 from math import ceil, floor, sqrt
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Tuple, Union
@@ -99,7 +100,7 @@ class StartingSpoiler:
                 settings.level_order[8],
             ]
 
-    def toJSON(self):
+    def toCleanJSON(self):
         """Convert this object to JSON for the purposes of the spoiler log."""
         return json.dumps(self, default=lambda o: o.__dict__)
 
@@ -115,9 +116,11 @@ class LevelSpoiler:
         self.level_items = []
         self.woth_count = 0
 
-    def toJSON(self):
+    def toCleanJSON(self):
         """Convert this object to JSON for the purposes of the spoiler log."""
-        return json.dumps(self, default=lambda o: o.__dict__)
+        sanitized_copy = deepcopy(self)
+        sanitized_copy.level_items = []  # This info is far too detailed to be in a spoiler log
+        return json.dumps(sanitized_copy, default=lambda o: o.__dict__)
 
 
 # Hint distribution that will be adjusted based on settings
@@ -2437,7 +2440,7 @@ def CategorizeItem(item):
     elif item.type == Types.Key:
         return "Key"
     elif item.type == Types.Bean:
-        return "Bean"
+        return "Clear Vial"
     elif item.kong == Kongs.donkey:
         return "Yellow Vial"
     elif item.kong == Kongs.diddy:
