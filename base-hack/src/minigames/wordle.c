@@ -90,9 +90,9 @@ void handleState_title(Gfx **dl_ptr) {
     }
     renderText(&dl, 0x50, 0x50, 0XFF, 0xFF, 0xFF, 0xFF, "W   O   R   D   L   E");
     renderText(&dl, 0x18, 0x70, 0XFF, 0xFF, 0xFF, 0xFF, "P R E S S  S T A R T  T O  P L A Y");
-    if (MinigameInput->Buttons.start) {
+    if (p1PressedButtons & START_BUTTON) {
         game_state = GAMESTATE_NORMAL;
-    } else if (MinigameInput->Buttons.b) {
+    } else if (p1PressedButtons & B_BUTTON) {
         gameExit();
     }
     *dl_ptr = dl;
@@ -215,7 +215,7 @@ void handleState_normal(Gfx **dl_ptr) {
             }
         } else if (p1PressedButtons & A_BUTTON) {
             if ((selected_col == 6) && (selected_row == 3)) {
-                if (selected_letter_index == 5) {
+                if (selected_letter_index >= 5) {
                     // Submit Guess
                     int correct_counter = 0;
                     for (int i = 0; i < 5; i++) {
@@ -243,9 +243,9 @@ void handleState_normal(Gfx **dl_ptr) {
                 if (selected_letter_index < 5) {
                     guess[selected_letter_index * GUESS_CHAR_SPACING] = selected_letter_single;
                     playSFXWrapper(64);
+                    selected_letter_index++;
                 }
             }
-            selected_letter_index++;
         }
     } else {
         revealing_letters_timer--;

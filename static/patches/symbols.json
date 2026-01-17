@@ -3024,7 +3024,7 @@
         "check_terminator": 15
     },
     "minigames": {
-        "wordle.loop": 2147635200,
-        "minesweeper.loop": 2147636920
+        "wordle.loop": 2147635176,
+        "minesweeper.loop": 2147637192
     }
 }

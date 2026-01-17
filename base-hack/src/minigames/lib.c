@@ -31,6 +31,7 @@ Gfx* drawScreenRect(Gfx* dl, int x1, int y1, int x2, int y2, int red, int green,
 typedef struct MinigameSignalStruct {
     unsigned char main_map_id;
     unsigned char bonus_map_ids[MINIGAME_BONUS_MAP_COUNT];
+    unsigned char exit_map;
     unsigned short first_reward_perm_flag;
     unsigned short first_reward_temp_flag;
     unsigned short second_reward_perm_flag;
@@ -54,6 +55,7 @@ ROM_RODATA_NUM static const MinigameSignalStruct arcade_data = {
     .second_reward_perm_flag = FLAG_COLLECTABLE_NINTENDOCOIN,
     .second_reward_temp_flag = 0x11,
     .story_flag = 0x63,
+    .exit_map = 0,
 };
 ROM_RODATA_NUM static const MinigameSignalStruct jetpac_data = {
     .main_map_id = MAP_JETPAC,
@@ -66,6 +68,7 @@ ROM_RODATA_NUM static const MinigameSignalStruct jetpac_data = {
     .first_reward_perm_flag = FLAG_COLLECTABLE_RAREWARECOIN,
     .first_reward_temp_flag = 0x62,
     .story_flag = 0x61,
+    .exit_map = 5,
 };
 
 const MinigameSignalStruct *getMinigameSlot(void) {
@@ -87,6 +90,14 @@ void gameInit(void) {
 }
 
 ROM_RODATA_NUM static const short barrel_types[3] = {0x1C, 0x86, 0x6B};
+void exitMinigame(const MinigameSignalStruct *data) {
+    if (data->exit_map == 0) {
+        ExitFromBonus();
+    } else {
+        initiateTransition(data->exit_map, 0);
+    }
+}
+
 void gameExit(void) {
     if (game_exited) {
         return;
@@ -105,7 +116,7 @@ void gameExit(void) {
         if (!in_story) {
             initiateTransition(MAP_MAINMENU, 0);
         } else {
-            ExitFromBonus();
+            exitMinigame(ref_data);
         }
     } else {
         if ((enable_reward) && (in_story)) {
@@ -113,7 +124,7 @@ void gameExit(void) {
             int index = getSpawnerIndexOfResolvedBonus(&barrel_types, 3, &b);
             resolveBonus(b, index, 7, 2.0f);
         }
-        ExitFromBonus();
+        exitMinigame(ref_data);
     }
     game_exited = 1;
 }

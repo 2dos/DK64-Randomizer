@@ -23,6 +23,7 @@ typedef enum colorState {
     COLORSTATE_NUM7,
     COLORSTATE_NUM8,
     COLORSTATE_DIGGEDBORDER,
+    COLORSTATE_NUM0TILE,
 } colorState;
 
 typedef struct TileStruct {
@@ -42,8 +43,6 @@ ROM_DATA static unsigned char guess_count = 0;
 ROM_DATA static int selected_x = 0;
 ROM_DATA static int selected_y = 0;
 ROM_DATA static char change_slot = 0;
-ROM_DATA static char digging = 0;
-ROM_DATA static char flagging = 0;
 ROM_DATA static unsigned char ending_timer = 0;
 ROM_RODATA_NUM static const rgb game_colors[] = {
     { .red = 0x80, .green = 0x80, .blue = 0x80 }, // COLORSTATE_BORDER,
@@ -59,9 +58,11 @@ ROM_RODATA_NUM static const rgb game_colors[] = {
     { .red = 0x00, .green = 0x00, .blue = 0x00 }, // COLORSTATE_NUM7,
     { .red = 0x80, .green = 0x80, .blue = 0x80 }, // COLORSTATE_NUM8,
     { .red = 0xDB, .green = 0xDB, .blue = 0xDB }, // COLORSTATE_DIGGEDBORDER,
+    { .red = 0x70, .green = 0x70, .blue = 0x70 }, // COLORSTATE_NUM0TILE,
 };
 ROM_RODATA_NUM static const char title_text[] = "M\0I\0N\0E\0S\0W\0E\0E\0P\0E\0R\0";
-ROM_RODATA_NUM static const char title_subtext[] = "P\0R\0E\0S\0S\0 \0S\0T\0A\0R\0T\0";
+ROM_RODATA_NUM static const char title_subtext[] = "P\0L\0A\0Y\0";
+ROM_RODATA_NUM static const char title_subtext2[] = "E\0X\0I\0T\0";
 ROM_DATA static unsigned char frame_timer = 0;
 ROM_DATA static unsigned short second_timer = 0;
 ROM_DATA static char timer_text[4] = "000";
@@ -284,8 +285,12 @@ void renderBoard(Gfx **dl_ptr, int show_progress, int dimension_override) {
             cstate = COLORSTATE_SQUARE;
             if (show_progress) {
                 tile = &tiles[x][y];
-                if (tile->uncovered && tile->has_mine) {
-                    cstate = COLORSTATE_MINE;
+                if (tile->uncovered) {
+                    if (tile->has_mine) {
+                        cstate = COLORSTATE_MINE;
+                    } else if (tile->adjacent_mines == 0) {
+                        cstate = COLORSTATE_NUM0TILE;
+                    }
                 }
             }
             color = &game_colors[cstate];
@@ -355,13 +360,24 @@ void handleState_title(Gfx **dl_ptr) {
         int index = i & 7;
         const rgb *color = &game_colors[COLORSTATE_NUM1 + index];
         renderText(&dl, x0, y0, color->red, color->green, color->blue, 0xFF, &title_text[i << 1]);
-        color = &game_colors[COLORSTATE_NUM1 + (7 - index)];
-        renderText(&dl, x0, y0 + BOX_DIM, color->red, color->green, color->blue, 0xFF, &title_subtext[i << 1]);
+        if (i == 3) {
+	        gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+            dl = printText(dl, (x0 + 6) << 2, ((y0 - 2) + BOX_DIM) << 2, 0.65f, "g");
+	        gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+            dl = printText(dl, (x0 + 6) << 2, ((y0 - 2) + (2 * BOX_DIM)) << 2, 0.65f, "b");
+        } else if ((i > 3) && (i < 8)) {
+            color = &game_colors[COLORSTATE_NUM1 + (7 - index)];
+            renderText(&dl, x0, y0 + BOX_DIM, color->red, color->green, color->blue, 0xFF, &title_subtext[(i - 4) << 1]);
+            color = &game_colors[COLORSTATE_NUM1 + (index - 2)];
+            renderText(&dl, x0, y0 + (2 * BOX_DIM), color->red, color->green, color->blue, 0xFF, &title_subtext2[(i - 4) << 1]);
+        }
     }
-    if (MinigameInput->Buttons.start) {
+    if (p1PressedButtons & START_BUTTON) {
         resetGame();
         generateBoard();
         game_state = GAMESTATE_NORMAL;
+    } else if (p1PressedButtons & B_BUTTON) {
+        gameExit();
     }
     *dl_ptr = dl;
 }
@@ -413,23 +429,13 @@ void handleState_normal(Gfx **dl_ptr, gameStates state) {
     if (state == GAMESTATE_NORMAL) {
         // Controls
         changeSlot();
-        if (MinigameInput->Buttons.a) {
-            if (!digging) {
-                digCell();
-            }
-            digging = 1;
-        } else {
-            digging = 0;
+        if (p1PressedButtons & A_BUTTON) {
+            digCell();
         }
-        if (MinigameInput->Buttons.r) {
-            if (!flagging) {
-                tiles[selected_x][selected_y].flagged ^= 1;
-                playSFXWrapper(25);
-                checkWin();
-            }
-            flagging = 1;
-        } else {
-            flagging = 0;
+        if (p1PressedButtons & R_TRIG) {
+            tiles[selected_x][selected_y].flagged ^= 1;
+            playSFXWrapper(25);
+            checkWin();
         }
         frame_timer++;
         if (frame_timer > 59) {
