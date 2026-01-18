@@ -525,7 +525,7 @@ file_dict = [
         source_file="assets/hash/disco_shirt.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
-        target_size=32*32*2,
+        target_size=32 * 32 * 2,
     ),
     File(
         name="Disco Gloves",
@@ -534,7 +534,7 @@ file_dict = [
         source_file="assets/hash/disco_glove.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
-        target_size=32*32*2,
+        target_size=32 * 32 * 2,
     ),
     File(
         name="Bandit Image 0",
