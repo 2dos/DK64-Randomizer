@@ -1,6 +1,8 @@
 // minigame: all
 #include "minigame_defs.h"
 void renderText(Gfx **dl_ptr, const int x, const int y, const int red, const int green, const int blue, const int alpha, const char *str) {
+    // Renders a text string to the screen in the arcade font.
+    // Text is (mostly) monospaced
     Gfx *dl = *dl_ptr;
     gDPPipeSync(dl++);
     gDPSetCycleType(dl++, G_CYC_1CYCLE);
@@ -13,10 +15,14 @@ void renderText(Gfx **dl_ptr, const int x, const int y, const int red, const int
 }
 
 void playSFXWrapper(int sfx) {
+    // Plays a sound effect
+    // See: https://docs.google.com/spreadsheets/d/16uVSmToSKHN9DD8skOUoaxjWFm38xxq05cTKypfPGAU/edit?gid=0#gid=0
     _alSndpPlay(SFXSoundbank, sfx, 0x7FFF, 0x3F, 1.0f, 0, (void*)0);
 }
 
 Gfx* drawScreenRect(Gfx* dl, int x1, int y1, int x2, int y2, int red, int green, int blue, int alpha) {
+    // Draws a rectangle to the screen
+    // X and Y coordinates must be multiplied by 4
 	gDPPipeSync(dl++);
 	gDPSetCycleType(dl++, G_CYC_FILL);
 	gDPSetRenderMode(dl++, G_RM_NOOP, G_RM_NOOP2);
@@ -25,6 +31,32 @@ Gfx* drawScreenRect(Gfx* dl, int x1, int y1, int x2, int y2, int red, int green,
 	gDPSetScissor(dl++, G_SC_NON_INTERLACE, 10, 10, 309, 229);
 	gDPFillRectangle(dl++, x1 >> 2, y1 >> 2, x2 >> 2, y2 >> 2);
 	return dl;
+}
+
+Gfx *drawTriangleSeries(Gfx *dl, Vtx *vertex_write, short *coordinates, int red, int green, int blue, int point_count) {
+    // vertex_write must be a pointer to an array of {point_count} items
+    // coordinates must be a pointer to an array of {point_count} x and y coordinates
+    // Triangle series must be a convex polygon
+    // Point count cannot exceed 32 vertices
+    for (int i = 0; i < point_count; i++) {
+        vertex_write[i].v.cn[0] = red;
+        vertex_write[i].v.cn[1] = green;
+        vertex_write[i].v.cn[2] = blue;
+        vertex_write[i].v.cn[3] = 0xFF;
+        vertex_write[i].v.ob[0] = coordinates[i << 1];
+        vertex_write[i].v.ob[1] = coordinates[(i << 1) + 1];
+        vertex_write[i].v.ob[2] = 0;
+    }
+    gDPPipeSync(dl++);
+    gDPSetCycleType(dl++, G_CYC_1CYCLE);
+    gDPSetRenderMode(dl++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
+    gDPSetCombineMode(dl++, G_CC_SHADE, G_CC_SHADE);
+    gSPClearGeometryMode(dl++, G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR);
+    gSPVertex(dl++, vertex_write, point_count, 0);
+    for (int i = 0; i < (point_count - 2); i++) {
+        gSP1Triangle(dl++, 0, i + 1, i + 2, 0);
+    }
+    return dl;
 }
 
 #define MINIGAME_BONUS_MAP_COUNT 4
@@ -85,6 +117,8 @@ const MinigameSignalStruct *getMinigameSlot(void) {
 }
 
 void gameInit(void) {
+    // Initializes the game parameters.
+    // Put this in your initialization code, otherwise the game will not correctly respond to the Nin/RW Coin checks
     const MinigameSignalStruct *ref_data = getMinigameSlot();
     in_story = checkFlag(ref_data->story_flag, FLAGTYPE_TEMPORARY);
 }
@@ -99,6 +133,7 @@ void exitMinigame(const MinigameSignalStruct *data) {
 }
 
 void gameExit(void) {
+    // Exits the game. Call this for an exit from the game which does not yield the reward
     if (game_exited) {
         return;
     }
@@ -130,12 +165,16 @@ void gameExit(void) {
 }
 
 void gameVictory(void) {
+    // Mostly the same as gameExit(), but just gives the reward. Call this upon game victory
     enable_reward = 1;
     gameExit();
 }
 
 Gfx* drawImage(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity) {
-	dl = initDisplayList(dl);
+	// Draws an image to the screen
+    // Image provided is an image in table 14 (HUD Textures)
+    // See: https://docs.google.com/spreadsheets/d/18gBPArJ2abdR3P9BeQw3OD_PLAjITFaE3r82bWUdC8U/edit?gid=970976581#gid=970976581
+    dl = initDisplayList(dl);
 	gDPSetRenderMode(dl++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
 	gDPSetPrimColor(dl++, 0, 0, red, green, blue, opacity);
 	gDPSetCombineLERP(

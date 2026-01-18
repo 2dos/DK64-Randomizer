@@ -4,6 +4,7 @@
 .definelabel _guMtxF2L, 0x8000A6C0
 .definelabel _guMtxXFMF, 0x80008810
 .definelabel _guMtxXFML, 0x80008A20
+.definelabel guOrtho, 0x80006DE4
 .definelabel initDisplayList, 0x807132DC
 .definelabel initDisplayList_0, 0x806FEDB0
 .definelabel displayText, 0x806FC530

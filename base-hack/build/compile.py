@@ -75,19 +75,11 @@ for root, dirs, files in os.walk("src/minigames"):
                     with open(img_path.replace(".png", f".{img_format.lower()}"), "rb") as fh:
                         data = fh.read()
                         img_bytes = [x for x in data]
-                    md = len(img_bytes) % 8
-                    if md != 0:
-                        for x in range(8 - md):
-                            img_bytes.append(0)
-                    # img_bytes.extend([0xDF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
                     pre_amble = line.split("__LOAD_SPRITE(")[0]
                     lines[index] = pre_amble + "{" + ", ".join([hex(x) for x in img_bytes]) + "};\n"
         if modified:
             created_asm[src_path.replace(".c", "-translated.c")] = "".join(lines)
             source_asm.append(src_path)
-            with open(src_path, "w") as fh:
-                fh.write("//avoid\n")
-                fh.write("".join(original_lines))
 for name, text in created_asm.items():
     with open(name, "w") as fh:
         fh.write(text)
@@ -108,6 +100,8 @@ with open("asm/objects.asm", "w") as obj_asm:
                 with open(pth, "r") as fh:
                     first_line = fh.readlines()[0]
                     if "//avoid" in first_line:
+                        continue
+                    if src_path in source_asm:
                         continue
                     if "// minigame:" in first_line:
                         minigame = first_line.split("// minigame:")[1].strip()
@@ -174,6 +168,7 @@ for minigame in genned_minigames:
         asm.write(f".include \"asm/symbols.asm\" // Include dk64.asm to tell armips' linker where to find the game's function(s)\n")
         asm.write(f".headersize {hex(WRITE_ADDR)}\n")
         asm.write(f".org {hex(WRITE_ADDR)}\n")
+        asm.write(f".include \"asm/hookcode/displayImageCustom.asm\"\n")
         asm.write(f".include \"asm/minigames/{minigame}/objects.asm\"\n")
         asm.write(".close // Close the ROM file\n")
     BASE_DIR = os.getcwd()
@@ -190,9 +185,3 @@ os.remove("minigame/dummy.bin")
 for asm in created_asm:
     if os.path.exists(asm):
         os.remove(asm)
-for asm in source_asm:
-    lines = []
-    with open(asm, "r") as fh:
-        lines = fh.readlines()
-    with open(asm, "w") as fh:
-        fh.write("".join(lines[1:]))

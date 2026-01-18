@@ -36,5 +36,7 @@ extern void gameVictory(void);
 extern void gameExit(void);
 extern void gameInit(void);
 extern Gfx* drawImage(Gfx* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity);
+extern Gfx* displayImageCustom(Gfx* dl, const void *texture, int unk3, codecs codec_index, int width, int height, int x, int y, float xScale, float yScale, int unk11, float unk12);
+extern Gfx *drawTriangleSeries(Gfx *dl, Vtx *vertex_write, short *coordinates, int red, int green, int blue, int point_count);
 
 #endif

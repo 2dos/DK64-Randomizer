@@ -493,8 +493,8 @@ class Settings:
         self.free_trade_setting = False
 
         # Minigames
-        self.arcade_custom_minigame = "minesweeper"
-        self.jetpac_custom_minigame = "wordle"
+        self.arcade_custom_minigame = "hexagon"
+        self.jetpac_custom_minigame = "hexagon"
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
