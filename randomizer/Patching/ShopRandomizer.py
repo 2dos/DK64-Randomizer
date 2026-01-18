@@ -614,7 +614,7 @@ def ApplyShopRandomizer(spoiler, ROM_COPY: LocalROM):
                         for x in range(3):
                             coord_value = intf_to_float(int.from_bytes(ROM_COPY.readBytes(4), "big"))
                             delta = shop_coords[x] - coord_value
-                            delta_sum += (delta * delta)
+                            delta_sum += delta * delta
                         if closest_indicator_index is None or delta_sum < closest_indicator_dist:
                             closest_indicator_index = actor_index
                             closest_indicator_dist = delta_sum
