@@ -29,7 +29,6 @@ def set_rules(world: MultiWorld, player: int):
 
 def apply_minimal_logic_rules(world: MultiWorld, player: int, dk64_world):
     """Apply minimal logic rules to prevent invalid item placements."""
-
     spoiler = dk64_world.spoiler
 
     # Determine level 7 for Key 5 restriction
