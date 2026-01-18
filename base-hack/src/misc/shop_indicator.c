@@ -293,7 +293,7 @@ void newCounterCode(void) {
 			if (float_slot > -1) {
 				ModelTwoData* float_slot_object = &ObjectModel2Pointer[float_slot];
 				int float_slot_obj_type = float_slot_object->object_type;
-				for (int j = 0; j < 3; j++) {
+				for (int j = 0; j < 4; j++) {
 					if (shop_objects[j] == float_slot_obj_type) {
 						if (j == shop) {
 							CurrentActorPointer_0->yPos = float_slot_object->yPos + float_offsets[shop];
