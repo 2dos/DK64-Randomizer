@@ -51,7 +51,6 @@ from ui.plando_validation import (
     kong_options,
 )
 
-
 # Assemble sets of custom locations, for validation.
 customLocationSet = set()
 for level, locations in CustomLocations.items():

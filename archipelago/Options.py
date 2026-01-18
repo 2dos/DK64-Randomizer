@@ -13,7 +13,6 @@ from randomizer.Enums.Settings import SettingsStringDataType
 from randomizer.Enums.Settings import SettingsMap as DK64RSettingsMap
 from worlds.AutoWorld import World
 
-
 # DK64_TODO: Get Options from DK64R
 
 

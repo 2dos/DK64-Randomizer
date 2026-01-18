@@ -6,7 +6,6 @@ import typing
 from archipelago.Options import Goal, GoalQuantity
 from randomizer.Enums.Settings import WinConditionComplex
 
-
 # Goal mapping for wincon determination
 GOAL_MAPPING = {
     Goal.option_acquire_keys_3_and_8: WinConditionComplex.get_keys_3_and_8,
