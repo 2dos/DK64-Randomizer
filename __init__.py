@@ -279,7 +279,7 @@ if baseclasses_loaded:
 
         class EnableMinimalLogic(settings.Bool):
             """Enable minimal logic for DK64.
-            
+
             If disabled, any player YAML with minimal logic enabled will be forced to use glitchless logic instead.
             This allows hosts to disable the minimal logic option if they don't want it on their server.
             """
@@ -965,14 +965,15 @@ if baseclasses_loaded:
                     if world.options.logic_type.value == 4:  # 4 = minimal logic
                         affected_players.append(world.player_name)
                         world.options.logic_type.value = 1  # Force to glitchless
-                
+
                 if affected_players:
                     import logging
+
                     logging.warning(
                         f"DK64: Minimal logic is DISABLED in host.yaml. "
                         f"The following player(s) have tried to sneak Minimal Logic in: {', '.join(affected_players)}. As such, they have been forced to use glitchless logic."
                     )
-            
+
             # Handle seed group synchronization for custom LZR seed groups
             # We need to process ALL DK64 worlds to build/update seed groups before any player applies settings
             dk64_worlds: tuple[DK64World] = self.multiworld.get_game_worlds("Donkey Kong 64")

@@ -197,6 +197,7 @@ def create_region(
 
     # Check if minimal logic is enabled
     from randomizer.Enums.Settings import LogicType
+
     minimal_logic = logic_holder.settings.logic_type == LogicType.minimal
 
     # Two special cases - GameStart doesn't need any locations, as AP will handle starting items instead
@@ -526,9 +527,10 @@ def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, re
 def connect_regions(world: World, settings: Settings):
     """Connect the regions in the given world."""
     connect(world, "Menu", "GameStart")
-    
+
     # For minimal logic, connect all regions without any logic requirements
     from randomizer.Enums.Settings import LogicType
+
     if settings.logic_type == LogicType.minimal:
         # Connect all regions with no requirements for minimal logic
         for region_id, region_obj in all_logic_regions.items():
