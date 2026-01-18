@@ -195,6 +195,11 @@ def create_region(
     """Create a region for the given player's world."""
     new_region = Region(region_name, player, multiworld)
 
+    # Check if minimal logic is enabled
+    from randomizer.Enums.Settings import LogicType
+
+    minimal_logic = logic_holder.settings.logic_type == LogicType.minimal
+
     # Two special cases - GameStart doesn't need any locations, as AP will handle starting items instead
     if location_logics and region_name != "GameStart":
         # And Isles Medals locations aren't real unless the setting is enabled.
@@ -255,49 +260,68 @@ def create_region(
             except Exception:
                 pass
             # If we can, we can greatly simplify the logic at this location
-            if quick_success:
+            # For minimal logic, all locations are accessible
+            if minimal_logic or quick_success:
                 set_rule(location, lambda state: True)
             # Otherwise we have to work our way through the logic proper
             else:
                 set_rule(location, lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic))
             # Our Fill checks for Shockwave independent of the location's logic, so we must do the same
-            if location_obj.type == Types.RainbowCoin:
+            # Skip for minimal logic
+            if not minimal_logic and location_obj.type == Types.RainbowCoin:
                 add_rule(location, lambda state: state.has("Shockwave", player))
             # If this is a bonus barrel location, add logic to check that we can complete the bonus barrel.
+            # Skip for minimal logic
+            if not minimal_logic:
+                match location_logic.bonusBarrel:
+                    case MinigameType.BonusBarrel:
+                        if not logic_holder.settings.bonus_barrel_auto_complete:
+                            add_rule(location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic))
+                    case MinigameType.HelmBarrelFirst:
+                        if logic_holder.settings.helm_room_bonus_count > 0:
+                            add_rule(location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic))
+                    case MinigameType.HelmBarrelSecond:
+                        if logic_holder.settings.helm_room_bonus_count == 2:
+                            add_rule(location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic))
+            # Handle token locations for bonus completion win conditions
+            # These need to be created even in minimal logic to support those win conditions
             match location_logic.bonusBarrel:
                 case MinigameType.BonusBarrel:
-                    if not logic_holder.settings.bonus_barrel_auto_complete:
-                        add_rule(location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic))
-                        if logic_holder.settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
-                            token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
+                    if logic_holder.settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
+                        token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
+                        if minimal_logic:
+                            set_rule(token_location, lambda state: True)
+                        else:
                             set_rule(
                                 token_location,
                                 lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic) and canDoBonusBarrel(state, player, location_logic),
                             )
-                            token_location.place_locked_item(DK64Item("Bonus Completed", ItemClassification.progression_skip_balancing, None, player))
-                            new_region.locations.append(token_location)
+                        token_location.place_locked_item(DK64Item("Bonus Completed", ItemClassification.progression_skip_balancing, None, player))
+                        new_region.locations.append(token_location)
                 case MinigameType.HelmBarrelFirst:
-                    if logic_holder.settings.helm_room_bonus_count > 0:
-                        add_rule(location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic))
-                        if logic_holder.settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
-                            token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
+                    if logic_holder.settings.helm_room_bonus_count > 0 and logic_holder.settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
+                        token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
+                        if minimal_logic:
+                            set_rule(token_location, lambda state: True)
+                        else:
                             set_rule(
                                 token_location,
                                 lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic) and canDoBonusBarrel(state, player, location_logic),
                             )
-                            token_location.place_locked_item(DK64Item("Bonus Completed", ItemClassification.progression_skip_balancing, None, player))
-                            new_region.locations.append(token_location)
+                        token_location.place_locked_item(DK64Item("Bonus Completed", ItemClassification.progression_skip_balancing, None, player))
+                        new_region.locations.append(token_location)
                 case MinigameType.HelmBarrelSecond:
-                    if logic_holder.settings.helm_room_bonus_count == 2:
-                        add_rule(location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic))
-                        if logic_holder.settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
-                            token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
+                    if logic_holder.settings.helm_room_bonus_count == 2 and logic_holder.settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
+                        token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
+                        if minimal_logic:
+                            set_rule(token_location, lambda state: True)
+                        else:
                             set_rule(
                                 token_location,
                                 lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic) and canDoBonusBarrel(state, player, location_logic),
                             )
-                            token_location.place_locked_item(DK64Item("Bonus Completed", ItemClassification.progression_skip_balancing, None, player))
-                            new_region.locations.append(token_location)
+                        token_location.place_locked_item(DK64Item("Bonus Completed", ItemClassification.progression_skip_balancing, None, player))
+                        new_region.locations.append(token_location)
             # Item placement limitations! These only apply to items in your own world, as other worlds' items will be AP items, and those can be anywhere.
             # Fairy locations cannot have your own world's blueprints on them for technical reasons.
             if location_obj.type == Types.Fairy:
@@ -328,18 +352,23 @@ def create_region(
         except Exception:
             pass
         # If we can, we can greatly simplify the logic at this location
-        if quick_success:
+        # For minimal logic, all collectibles are accessible
+        if minimal_logic or quick_success:
             set_rule(location, lambda state: True)
         else:
             set_rule(location, lambda state, player=player, collectible=collectible: hasDK64RCollectible(state, player, collectible))
-        kong_name = name_for_kong[collectible.kong]
-        add_rule(location, lambda state, kong_name=kong_name: state.has(kong_name, player))
+        # Skip kong requirements for minimal logic
+        if not minimal_logic:
+            kong_name = name_for_kong[collectible.kong]
+            add_rule(location, lambda state, kong_name=kong_name: state.has(kong_name, player))
         quantity = collectible.amount
         if collectible.type == Collectibles.bunch:
             quantity *= 5
         elif collectible.type == Collectibles.balloon:
             quantity *= 10
-            add_rule(location, lambda state, collectible_kong=collectible.kong: state.has(gun_for_kong[collectible_kong], player))  # We need to be sure we check for gun access for this balloon
+            # Skip gun requirements for minimal logic
+            if not minimal_logic:
+                add_rule(location, lambda state, collectible_kong=collectible.kong: state.has(gun_for_kong[collectible_kong], player))  # We need to be sure we check for gun access for this balloon
         if collectible.type == Collectibles.coin:
             location.place_locked_item(DK64Item("Collectible Coins, " + collectible.kong.name + ", " + str(quantity), ItemClassification.progression_skip_balancing, None, player))
         else:
@@ -461,7 +490,8 @@ def create_region(
         except Exception:
             pass
         # If we can, we can greatly simplify the logic at this location
-        if quick_success:
+        # For minimal logic, all events are accessible
+        if minimal_logic or quick_success:
             set_rule(location, lambda state: True)
         else:
             set_rule(location, lambda state, player=player, event=event: hasDK64REvent(state, player, event))
@@ -512,6 +542,24 @@ def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, re
 def connect_regions(world: World, settings: Settings):
     """Connect the regions in the given world."""
     connect(world, "Menu", "GameStart")
+
+    # For minimal logic, connect all regions without any logic requirements
+    from randomizer.Enums.Settings import LogicType
+
+    if settings.logic_type == LogicType.minimal:
+        # Connect all regions with no requirements for minimal logic
+        for region_id, region_obj in all_logic_regions.items():
+            for exit in region_obj.exits:
+                destination_name = exit.dest.name
+                try:
+                    connect(world, region_id.name, destination_name, lambda state: True)
+                except Exception:
+                    # Region connection may already exist or have other issues, skip it
+                    pass
+        # Pre-activated Isles warps for V1
+        connect(world, "IslesMain", "IslesMainUpper", lambda state: True)
+        connect(world, "IslesMain", "KremIsleBeyondLift", lambda state: True)
+        return
 
     # # Example Region Connection
     # connect(

@@ -401,6 +401,7 @@ class LogicType(Choice):
     glitchless: Logic is designed to be completed without glitches, mostly as intended by the developers.
     advanced_glitchless: Logic is designed to be completed without glitches, but allows for advanced techniques. Add tricks you want to put in logic in tricks_selected.
     glitched: Logic is designed to be completed with glitches. Add tricks you want to put in logic in tricks_selected, AND add glitches you want to put in logic in glitches_selected.
+    minimal: Simplified logic with basic item placement rules. Key 5 won't be in level 7, Kongs won't be in their own shops/medals, and DK won't be in blast-locked locations.
     """
 
     display_name = "Logic Type"
@@ -408,6 +409,7 @@ class LogicType(Choice):
     option_glitchless = 1
     option_advanced_glitchless = 0
     option_glitched = 2
+    option_minimal = 4
     default = 1
 
 
