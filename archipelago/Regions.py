@@ -827,12 +827,9 @@ def canDoBonusBarrel(state: CollectionState, player: int, location: LocationLogi
     minigame = barrel_data.minigame
     minigame_obj = MinigameRequirements[minigame]
 
-    # Some bonus barrels don't allow tagging (e.g., Busy Barrel Barrage)
-    # For these, we need to check if we can complete them with only the kong that enters the barrel
-    # The kong_list on the minigame tells us which kongs are allowed
-    # If all 5 kongs are in the list, tag anywhere works fine
-    # If fewer kongs are in the list, we can't tag in that bonus barrel
-    if len(minigame_obj.kong_list) < 5:
+    # Busy Barrel Barrage doesn't allow tagging inside the bonus barrel
+    # We need to check if we can complete it with only the kong that enters the barrel
+    if minigame in (Minigames.BusyBarrelBarrageEasy, Minigames.BusyBarrelBarrageNormal, Minigames.BusyBarrelBarrageHard):
         # We can't tag in this bonus barrel
         # The barrel_data.kong tells us which kong is required to enter this specific barrel
         required_kong = barrel_data.kong
