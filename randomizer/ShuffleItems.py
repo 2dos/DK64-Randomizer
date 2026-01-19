@@ -1,7 +1,6 @@
 """Shuffles items for Item Rando."""
 
 import randomizer.Lists.Exceptions as Ex
-import randomizer.ItemPool as ItemPool
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -11,7 +10,7 @@ from randomizer.Enums.Settings import RandomPrices, ShuffleLoadingZones
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import ShopLocationReference
-from randomizer.Lists.ShufflableExit import LevelInfoList
+from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Patching.Library.ItemRando import LocationSelection
 
 
@@ -192,6 +191,8 @@ def ShuffleItems(spoiler):
     # we still need to add them to item_assignment for patching purposes
     if Types.Key not in spoiler.settings.shuffled_location_types:
         if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+            import randomizer.ItemPool as ItemPool
+
             vanilla_keys_assignment = []
             for level in LevelInfoList.values():
                 key_location = spoiler.LocationList[level.KeyLocation]
