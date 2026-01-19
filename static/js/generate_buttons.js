@@ -590,21 +590,22 @@ async function import_settings_string_internal(settingsString) {
                         let total_settings_list_items = [];
                         let total_settings_list_checks = [];
                         for (let i = 0; i < list_count; i++) {
-                            total_settings_list_items = total_settings_list_items.concat(settings[`${list_predicate}${i}`]);
-                            total_settings_list_checks = total_settings_list_checks.concat(settings[`${list_predicate}${i + list_count}`]);
+                            if (settings[`${list_predicate}${i}`] !== undefined) {
+                                total_settings_list_items = total_settings_list_items.concat(settings[`${list_predicate}${i}`]);
+                            }
+                            if (settings[`${list_predicate}${i + list_count}`] !== undefined) {
+                                total_settings_list_checks = total_settings_list_checks.concat(settings[`${list_predicate}${i + list_count}`]);
+                            }
                         }
-                        if ([...new Set(total_settings_list_items)].length != items_list.length) {
-                            valid = false;
-                        }
-                        if ([...new Set(total_settings_list_checks)].length != checks_list.length) {
-                            valid = false;
-                        }
-                        total_settings_list_items.forEach(value => {
+                        const unique_items = [...new Set(total_settings_list_items)];
+                        const unique_checks = [...new Set(total_settings_list_checks)];
+
+                        unique_items.forEach(value => {
                             if (items_list.filter(k => k.num_val == value).length == 0) {
                                 valid = false;
                             }
                         });
-                        total_settings_list_checks.forEach(value => {
+                        unique_checks.forEach(value => {
                             if (checks_list.filter(k => k.num_val == value).length == 0) {
                                 valid = false;
                             }
@@ -612,14 +613,18 @@ async function import_settings_string_internal(settingsString) {
                     } else {
                         let total_settings_list = [];
                         for (let i = 0; i < list_count; i++) {
-                            total_settings_list = total_settings_list.concat(settings[`${list_predicate}${i}`]);
-                        }
-                        valid = total_settings_list.length == items_list.length;
-                        total_settings_list.forEach(value => {
-                            if (items_list.filter(k => k.num_val == value).length == 0) {
-                                valid = false;
+                            if (settings[`${list_predicate}${i}`] !== undefined) {
+                                total_settings_list = total_settings_list.concat(settings[`${list_predicate}${i}`]);
                             }
-                        });
+                        }
+                        if (total_settings_list.length > 0) {
+                            valid = total_settings_list.length == items_list.length;
+                            total_settings_list.forEach(value => {
+                                if (items_list.filter(k => k.num_val == value).length == 0) {
+                                    valid = false;
+                                }
+                            });
+                        }
                     }
                     if (valid) {
                         selector.innerHTML = "";
@@ -692,6 +697,29 @@ async function import_settings_string_internal(settingsString) {
                         });
                     } else {
                         console.log("Invalid sortable during string import");
+                        console.log(`Key: ${key}, Predicate: ${list_predicate}, ListCount: ${list_count}`);
+                        if (list_predicate == "item_rando_list_") {
+                            let total_settings_list_items = [];
+                            let total_settings_list_checks = [];
+                            for (let i = 0; i < list_count; i++) {
+                                if (settings[`${list_predicate}${i}`] !== undefined) {
+                                    total_settings_list_items = total_settings_list_items.concat(settings[`${list_predicate}${i}`]);
+                                }
+                                if (settings[`${list_predicate}${i + list_count}`] !== undefined) {
+                                    total_settings_list_checks = total_settings_list_checks.concat(settings[`${list_predicate}${i + list_count}`]);
+                                }
+                            }
+                            console.log(`Items (unique): ${[...new Set(total_settings_list_items)].length}, Expected: ${items_list.length}`);
+                            console.log(`Checks (unique): ${[...new Set(total_settings_list_checks)].length}, Expected: ${checks_list.length}`);
+                        } else {
+                            let total_settings_list = [];
+                            for (let i = 0; i < list_count; i++) {
+                                if (settings[`${list_predicate}${i}`] !== undefined) {
+                                    total_settings_list = total_settings_list.concat(settings[`${list_predicate}${i}`]);
+                                }
+                            }
+                            console.log(`Total items: ${total_settings_list.length}, Expected: ${items_list.length}`);
+                        }
                     }
                     if (list_predicate == "item_rando_list_") {
                         updateCheckItemCounter(grandparent);
