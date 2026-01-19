@@ -188,14 +188,14 @@ def ShuffleItems(spoiler):
         [data for data in locations_needing_flags if data.new_flag is None]
         raise Ex.FillException("ERROR: Failed to create a valid flag assignment for this fill!")
 
-    # If Keys are not shuffled but are placed as constants (e.g., level_order with no key shuffle),
+    # If Keys are not shuffled but are placed as constants (e.g., SLO with no key shuffle),
     # we still need to add them to item_assignment for patching purposes
     if Types.Key not in spoiler.settings.shuffled_location_types:
         if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
             vanilla_keys_assignment = []
             for level in LevelInfoList.values():
                 key_location = spoiler.LocationList[level.KeyLocation]
-                # Only add if this location has a key placed in it
+
                 if key_location.item is not None and key_location.item in ItemPool.Keys():
                     placement_info = {}
                     if key_location.default_mapid_data:
@@ -227,7 +227,6 @@ def ShuffleItems(spoiler):
                     location_selection.new_flag = new_item.rando_flag
                     vanilla_keys_assignment.append(location_selection)
 
-            # Add vanilla keys to the item assignment list for patching
             locations_not_needing_flags.extend(vanilla_keys_assignment)
 
     spoiler.item_assignment = locations_needing_flags + locations_not_needing_flags
