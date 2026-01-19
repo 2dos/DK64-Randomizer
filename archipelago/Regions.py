@@ -822,4 +822,46 @@ def hasDK64REvent(state: CollectionState, player: int, event: Event):
 
 def canDoBonusBarrel(state: CollectionState, player: int, location: LocationLogic):
     """Check if we can complete the bonus barrel in the given state."""
-    return MinigameRequirements[state.dk64_logic_holder[player].spoiler.shuffled_barrel_data[location.id].minigame].logic(state.dk64_logic_holder[player])
+    logic_holder = state.dk64_logic_holder[player]
+    barrel_data = logic_holder.spoiler.shuffled_barrel_data[location.id]
+    minigame = barrel_data.minigame
+    minigame_obj = MinigameRequirements[minigame]
+
+    # Busy Barrel Barrage doesn't allow tagging inside the bonus barrel
+    # We need to check if we can complete it with only the kong that enters the barrel
+    if minigame in (Minigames.BusyBarrelBarrageEasy, Minigames.BusyBarrelBarrageNormal, Minigames.BusyBarrelBarrageHard):
+        # We can't tag in this bonus barrel
+        # The barrel_data.kong tells us which kong is required to enter this specific barrel
+        required_kong = barrel_data.kong
+
+        # Check if the required kong is even allowed in this minigame
+        if required_kong not in minigame_obj.kong_list:
+            return False
+
+        # Save the current "is*" state (tag anywhere assumption)
+        saved_isdonkey = logic_holder.isdonkey
+        saved_isdiddy = logic_holder.isdiddy
+        saved_islanky = logic_holder.islanky
+        saved_istiny = logic_holder.istiny
+        saved_ischunky = logic_holder.ischunky
+
+        # Temporarily set the logic holder to be only the required kong (disable tag anywhere)
+        logic_holder.isdonkey = required_kong == Kongs.donkey and logic_holder.donkey
+        logic_holder.isdiddy = required_kong == Kongs.diddy and logic_holder.diddy
+        logic_holder.islanky = required_kong == Kongs.lanky and logic_holder.lanky
+        logic_holder.istiny = required_kong == Kongs.tiny and logic_holder.tiny
+        logic_holder.ischunky = required_kong == Kongs.chunky and logic_holder.chunky
+
+        # Check if this kong can complete the minigame
+        can_complete = minigame_obj.logic(logic_holder)
+
+        # Restore the original "is*" state
+        logic_holder.isdonkey = saved_isdonkey
+        logic_holder.isdiddy = saved_isdiddy
+        logic_holder.islanky = saved_islanky
+        logic_holder.istiny = saved_istiny
+        logic_holder.ischunky = saved_ischunky
+
+        return can_complete
+    else:
+        return minigame_obj.logic(logic_holder)
