@@ -195,7 +195,7 @@ ice_trap_data = [
 ]
 
 
-def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
+def getItemPatchingData(item_type: Types, item: Items, kong_override: int = None) -> ItemPatchingInfo:
     """Get the data associated with how an item is patched into ROM from various attributes."""
     simple_types = {
         Types.Banana: ReqItems.GoldenBanana,
@@ -306,7 +306,9 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
             Items.FoolsArchipelagoItem,
             Items.TrapArchipelagoItem,
         )
-        return ItemPatchingInfo(ReqItems.ArchipelagoItem, arch_item_list.index(item))
+        # Use kong_override if provided to differentiate AP items in shops
+        kong_value = kong_override if kong_override is not None else 0
+        return ItemPatchingInfo(ReqItems.ArchipelagoItem, arch_item_list.index(item), kong_value)
     raise Exception(f"Invalid item for patching: {item_type.name}, {item}")
 
 
@@ -886,7 +888,14 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
         for item in item_data:
             if item.can_have_item:
                 # Write placement
-                item_properties = getItemPatchingData(item.new_type, item.new_item)
+                # For shop items, pass kong_override to differentiate AP items
+                kong_override = None
+                if item.is_shop and item.placement_index and len(item.placement_index) > 0:
+                    # Extract kong from placement index: kong = int((index % 40) / 8)
+                    first_placement = item.placement_index[0]
+                    if first_placement < 120:  # Regular shop slots (not shared/training)
+                        kong_override = int((first_placement % 40) / 8)
+                item_properties = getItemPatchingData(item.new_type, item.new_item, kong_override)
                 if item.is_shop:
                     # Write in placement index
                     movespaceOffset = spoiler.settings.move_location_data
@@ -1283,7 +1292,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     ROM_COPY.seek(start + 0x28)
                     item_obj_index = getPropFromItem(item_slot["subitem"], item_slot["obj"])
                     ROM_COPY.writeMultipleBytes(item_obj_index, 2)
-                    extra_data = getItemPatchingData(item_slot["obj"], item_slot["subitem"])
+                    extra_data = getItemPatchingData(item_slot["obj"], item_slot["subitem"], item_slot.get("kong"))
                     if extra_data is not None:
                         ROM_COPY.seek(start + 0x10)
                         ROM_COPY.writeMultipleBytes(extra_data.response_type, 1)

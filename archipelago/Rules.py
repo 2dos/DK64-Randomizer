@@ -17,10 +17,6 @@ def set_rules(world: MultiWorld, player: int):
     # Check if minimal logic is enabled
     dk64_world = world.worlds[player]
     if dk64_world.options.logic_type.value == LogicType.minimal:
-        import logging
-
-        logging.info(f"DK64: Using minimal logic for player {dk64_world.player_name} (skipping normal access rules)")
-        # With minimal logic, skip normal access rules and only apply forbid_item restrictions
         apply_minimal_logic_rules(world, player, dk64_world)
         return
 
