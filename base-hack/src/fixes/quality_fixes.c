@@ -115,7 +115,7 @@ int shouldDing(void) {
 	return 0;
 }
 
-Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, int width, int height, codecs codec) {
+Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, int width, int height, codecs codec, int red, int green, int blue) {
 	if (*timer == 0) {
 		return dl;
 	}
@@ -142,8 +142,14 @@ Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, i
 	}
 	dl = initDisplayList(dl);
 	gDPSetRenderMode(dl++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-	gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, alpha_i);
-	gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+	gDPSetPrimColor(dl++, 0, 0, red, green, blue, alpha_i);
+	gDPSetCombineLERP(
+        dl++,
+        TEXEL0, 0, PRIMITIVE, 0,
+        TEXEL0, 0, PRIMITIVE, 0,
+        TEXEL0, 0, PRIMITIVE, 0,
+        TEXEL0, 0, PRIMITIVE, 0
+    );
 	gDPSetTextureFilter(dl++, G_TF_POINT);
 	int p2 = 0;
 	if (codec == IA8) {
@@ -153,7 +159,7 @@ Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, i
 }
 
 Gfx* renderDingSprite(Gfx* dl) {
-	return renderIndicatorSprite(dl, 114, !hasEnoughCBs(), &ding_sprite_timer, 48, 42, RGBA16);
+	return renderIndicatorSprite(dl, 114, !hasEnoughCBs(), &ding_sprite_timer, 48, 42, RGBA16, 0xFF, 0xFF, 0xFF);
 }
 
 void initDingSprite(void) {
