@@ -186,7 +186,7 @@ void initProgressiveTimer(void) {
 }
 
 Gfx* renderProgressiveSprite(Gfx* dl) {
-    return renderIndicatorSprite(dl, 108, 0, &progressive_ding_timer, 48, 48, IA8);
+    return renderIndicatorSprite(dl, 108, 0, &progressive_ding_timer, 48, 48, IA8, 0xFF, 0xFF, 0xFF);
 }
 
 void playProgressiveDing(void) {
@@ -405,6 +405,36 @@ void initHintFlags(void) {
     for (int i = 0; i < GAME_HINT_COUNT; i++) {
         hint_clear_flags[i] = hint_clear_write[i];
         hint_item_regions[i] = hint_reg_write[i];
+    }
+}
+
+ROM_DATA static unsigned char dim_cache[5] = {};
+ROM_DATA static unsigned char dim_ding_timer = 0;
+
+void initDimTimer(void) {
+    dim_ding_timer = 52;
+}
+
+Gfx* renderDimSprite(Gfx* dl) {
+    return renderIndicatorSprite(dl, 0x44, 0, &dim_ding_timer, 64, 64, IA8, 0x00, 0xC0, 0x00);
+}
+
+void checkDimCache(void) {
+    for (int i = 0; i < 35; i++) {
+        int offset = i >> 3;
+        int shift = i & 7;
+        int assoc_flag = hint_clear_flags[i];
+        if (assoc_flag != -1) {
+            if (checkFlag(assoc_flag, FLAGTYPE_PERMANENT)) {
+                if ((dim_cache[offset] & (1 << shift)) == 0) {
+                    if ((CurrentMap != MAP_MAINMENU) && showHint(i)) {
+                        initDimTimer();
+                        playSFX(572);
+                    }
+                }
+                dim_cache[offset] |= (1 << shift);
+            }
+        }
     }
 }
 
