@@ -58,7 +58,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Switches import Switches
 from randomizer.Lists.Switches import SwitchInfo
-from archipelago.Options import Goal, SwitchSanity, SelectStartingKong, GalleonWaterLevel
+from archipelago.Options import Goal, SwitchSanity, SelectStartingKong, GalleonWaterLevel, ShopPrices
 from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity
 from archipelago.Logic import logic_item_name_to_id
 
@@ -271,6 +271,7 @@ def get_default_settings() -> dict:
         "random_crates": False,
         "random_fairies": False,
         "random_patches": False,
+        "random_prices": RandomPrices.free,
         "random_starting_region": False,
         "random_starting_region_new": RandomStartingRegion.off,
         "randomize_enemy_sizes": False,
@@ -328,6 +329,14 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     settings_dict["archipelago"] = True
     settings_dict["starting_kongs_count"] = options.starting_kong_count.value
     settings_dict["open_lobbies"] = options.open_lobbies.value
+    
+    shop_prices_map = {
+        ShopPrices.option_free: RandomPrices.free,
+        ShopPrices.option_low: RandomPrices.low,
+        ShopPrices.option_medium: RandomPrices.medium,
+        ShopPrices.option_high: RandomPrices.high,
+    }
+    settings_dict["random_prices"] = shop_prices_map.get(options.shop_prices.value, RandomPrices.high)
     if options.krool_in_boss_pool.value:
         settings_dict["krool_in_boss_pool_v2"] = KroolInBossPool.full_shuffle
     else:

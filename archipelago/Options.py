@@ -678,13 +678,6 @@ class ShopPrices(Choice):
     """Determines the cost of shop purchases.
 
     Shops uses the standalone Tooie Shops settings making it so purchases don't deduct your coins when making purchases.
-    Prices are randomized within difficulty-based budgets calculated from each kong's total available coins.
-
-    Difficulty Percentages:
-    - free (0%): All shops cost 0 coins
-    - low (35%): Lower coin requirements, casual gameplay
-    - medium (55%): Moderate coin requirements, balanced difficulty
-    - high (85%): High coin requirements, requires collecting most coins
     """
 
     display_name = "Shop Prices"
@@ -693,7 +686,6 @@ class ShopPrices(Choice):
     option_medium = 2
     option_high = 3
     default = 0
-
 
 class HelmKeyLock(DefaultOnToggle):
     """Determines if a key will be locked at the end of Helm."""
