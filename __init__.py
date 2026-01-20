@@ -1323,9 +1323,9 @@ if baseclasses_loaded:
                     else:
                         print(f"Location {ap_location.name} not found in DK64 location table.")
 
-                spoiler.settings.ice_trap_count = local_trap_count                
+                spoiler.settings.ice_trap_count = local_trap_count
                 determineFinalPriceAssortment(spoiler)
-                
+
                 ShuffleItems(spoiler)
 
                 spoiler.UpdateLocations(spoiler.LocationList)

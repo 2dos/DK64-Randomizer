@@ -687,6 +687,7 @@ class ShopPrices(Choice):
     option_high = 3
     default = 0
 
+
 class HelmKeyLock(DefaultOnToggle):
     """Determines if a key will be locked at the end of Helm."""
 

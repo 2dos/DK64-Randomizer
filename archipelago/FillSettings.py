@@ -329,7 +329,7 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     settings_dict["archipelago"] = True
     settings_dict["starting_kongs_count"] = options.starting_kong_count.value
     settings_dict["open_lobbies"] = options.open_lobbies.value
-    
+
     shop_prices_map = {
         ShopPrices.option_free: RandomPrices.free,
         ShopPrices.option_low: RandomPrices.low,
