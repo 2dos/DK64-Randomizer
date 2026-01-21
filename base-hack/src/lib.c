@@ -1542,6 +1542,7 @@ void exitBoss(void) {
 		initiateTransition(MAP_TROFFNSCOFF, 2);
 		return;
 	}
+	setFlag(0x5C, 1, FLAGTYPE_TEMPORARY);
 	initiateTransition(MAP_ISLES, 0xC);
 }
 

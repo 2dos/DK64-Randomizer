@@ -271,6 +271,12 @@ extern void spawnEnemyDrops(actorData* actor);
 extern void finalizeBeatGame(void);
 extern void exitTrapBubbleController(void);
 
+extern void helmTime_exitLevel(int world);
+extern void helmTime_exitRace(void);
+extern void helmTime_exitBonus(void);
+extern void QuitGame(void);
+extern void exitMap(maps map, int lobby_is_isles);
+
 extern void spawnActorWithFlagHandler(int object, float x, float y, float z, int unk0, int spawn_type, int flag, void *unk1, int item_level, int item_kong);
 
 extern int getFlagIndex_Corrected(int start, int level);
