@@ -666,7 +666,7 @@ def patching_response(spoiler):
     randomize_bananaport(spoiler, ROM_COPY)
     randomize_kasplat_locations(spoiler, ROM_COPY)
     randomize_enemies(spoiler, ROM_COPY)
-    apply_kongrando_cosmetic(spoiler, ROM_COPY)
+    apply_kongrando_cosmetic(ROM_COPY)
     randomize_setup(spoiler, ROM_COPY)
     randomize_puzzles(spoiler, ROM_COPY)
     randomize_cbs(spoiler, ROM_COPY)
