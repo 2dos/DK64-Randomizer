@@ -10,7 +10,7 @@ extern void initiateTransition_0(maps map, int exit, int unk0, int unk1);
 extern void WarpToParent(void);
 extern void ExitFromBonus(void);
 extern void ExitRace(void);
-extern void ExitFromLevel(void);
+extern void ExitFromLevel(int world);
 extern int* getFlagBlockAddress(char flagType);
 extern int isAddressActor(void* address);
 extern unsigned long long getTimestamp(void);
@@ -655,6 +655,7 @@ extern int ActorTimer;
 extern int EEPROMType;
 extern unsigned char ReverseMillLeverOrder[5];
 extern unsigned char ReverseCryptLeverOrder[3];
+extern unsigned char PauseType;
 
 extern map_properties_bitfield MapProperties;
 

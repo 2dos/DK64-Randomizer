@@ -56,12 +56,12 @@ void helmTime_exitRace(void) {
 	fixHelmTimerCorrection();
 }
 
-void helmTime_exitLevel(void) {
+void helmTime_exitLevel(int world) {
 	/**
 	 * @brief Instance of the correction code which overwrites the instruction to exit out of a level
 	 * 
 	 */
-	ExitFromLevel();
+	ExitFromLevel(world);
 	fixHelmTimerCorrection();
 }
 
@@ -91,15 +91,6 @@ void initHelmSetup(void) {
 		setPermFlag(FLAG_STORY_HELM); // Helm Story
 		if (setting == 2) {
 			setPermFlag(FLAG_MODIFIER_HELMBOM);
-		}
-	}
-	// Check barrier flags for gates
-	if (Rando.removed_barriers.helm_star_gates) {
-		setFlag(FLAG_HELM_ROMANDOORS_OPEN,1,FLAGTYPE_TEMPORARY); // Roman Numeral Doors
-	}
-	if (Rando.removed_barriers.helm_punch_gates) {
-		for (int j = 0; j < 4; j++) {
-			setFlag(FLAG_HELM_GATE_0 + j,1,FLAGTYPE_TEMPORARY); // Gates knocked down
 		}
 	}
 }
