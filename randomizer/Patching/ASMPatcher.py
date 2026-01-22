@@ -2197,6 +2197,8 @@ def patchAssembly(ROM_COPY, spoiler):
         RemovedBarriersSelected.caves_ice_walls: [266, 267, 265],  # Entrance, Snide, Giant Boulder
         RemovedBarriersSelected.galleon_treasure_room: [0xA2],
         RemovedBarriersSelected.aztec_tiny_temple_ice: [0x45],
+        RemovedBarriersSelected.helm_punch_gates: [0x2A2, 0x2A3, 0x2A4, 0x2A5],
+        RemovedBarriersSelected.helm_star_gates: [0x2A1],
     }
     for barrier in barrier_flags:
         if IsDDMSSelected(settings.remove_barriers_selected, barrier):

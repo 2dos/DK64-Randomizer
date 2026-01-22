@@ -93,15 +93,6 @@ void initHelmSetup(void) {
 			setPermFlag(FLAG_MODIFIER_HELMBOM);
 		}
 	}
-	// Check barrier flags for gates
-	if (Rando.removed_barriers.helm_star_gates) {
-		setPermFlag(FLAG_HELM_ROMAN_DOORS_OPEN); // Roman Numeral Doors
-	}
-	if (Rando.removed_barriers.helm_punch_gates) {
-		for (int j = 0; j < 4; j++) {
-			setPermFlag(FLAG_HELM_DK_PUNCH_GATE + j); // Gates knocked down
-		}
-	}
 }
 
 int getHelmExit(void) {
