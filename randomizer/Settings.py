@@ -499,6 +499,10 @@ class Settings:
         # In item rando, can any Kong collect any item?
         self.free_trade_setting = False
 
+        # Minigames
+        self.arcade_custom_minigame = "hexagon"
+        self.jetpac_custom_minigame = "hexagon"
+
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
         self.random.seed(self.seed)

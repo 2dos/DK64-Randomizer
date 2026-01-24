@@ -243,9 +243,10 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeFunction(ROM_COPY, 0x8069BDE8, Overlay.Static, "renderBoulderSparkles", offset_dict)
     writeFunction(ROM_COPY, 0x8067BDA0, Overlay.Static, "updateKegIDs", offset_dict)
     # Jetpac Reward Text
-    addr = getROMAddress(0x8002EABC, Overlay.Jetpac, offset_dict)
-    ROM_COPY.seek(addr)
-    ROM_COPY.writeBytes(bytes("REWARD COLLECTED\0", "ascii"))
+    if settings.jetpac_custom_minigame is None:
+        addr = getROMAddress(0x8002EABC, Overlay.Jetpac, offset_dict)
+        ROM_COPY.seek(addr)
+        ROM_COPY.writeBytes(bytes("REWARD COLLECTED\0", "ascii"))
     # Fairy count check
     writeValue(ROM_COPY, 0x806F8EBE, Overlay.Static, ReqItems.Fairy, offset_dict)
     writeFunction(ROM_COPY, 0x806F8EC4, Overlay.Static, "getItemCount_new", offset_dict)

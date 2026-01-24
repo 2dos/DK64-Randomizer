@@ -158,6 +158,7 @@ settings*.asm
 *.v64
 *.dkp
 *.bin
+!base-hack/minigame/*.bin
 *.bin.gz
 *.raw
 codeOutput.txt
@@ -234,6 +235,7 @@ base-hack/assets/vial_spin/f6.png
 base-hack/assets/vial_spin/f7.png
 base-hack/assets/vial_spin/f8.png
 base-hack/assets/vial_spin/*.py
+base-hack/asm/minigames/*
 *.apworld
 /dk64/
 *.rgba32

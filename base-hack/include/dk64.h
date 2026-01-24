@@ -472,7 +472,7 @@ extern int getTotalGBs(void);
 extern void displayPauseSpriteNumber(void* handler, int x, int y, int unk0, int unk1, int count, int unk2, int unk3);
 extern void headphonesCode(int unused, int enable); // Note: Only has parameters for *if* we're passing in an enabled state for the headphones fix qol change
 
-extern int getSpawnerIndexOfResolvedBonus(void* unk0, int unk1, int* map_storage);
+extern int getSpawnerIndexOfResolvedBonus(const void* unk0, int unk1, int* map_storage);
 extern void resolveBonus(short unk0, int unk1, int unk2, float unk3);
 extern void failBonus(int unk0, int unk1);
 extern void winBonus(int unk0, int unk1);
@@ -521,6 +521,15 @@ extern void handleController(void);
 extern Gfx *unkFadeFunction(Gfx *dl, int transition);
 extern void endDL(Gfx * dl, int index, int* count, int unk0);
 extern void unkDLFunction1(void *unk0, void *camera_dl, int unk1, int unk2);
+extern Gfx *setColorFramebuffer(Gfx *dl);
+extern Controller *MinigameInput;
+extern void _alSndpPlay(void *unk0, short sfx, unsigned short vol, int pan, float pitch, unsigned char fxmix, void *unk6);
+extern void *SFXSoundbank;
+extern void spriteUnk(Gfx **dl_ptr, void *sprite);
+extern void spriteSetParams(int unk0, int unk1, int unk2, int unk3);
+extern void guSprite2DInit(uSprite *SpritePointer, void *SourceImagePointer, void *TlutPointer, int Stride, int SubImageWidth, int SubImageHeight, int SourceImageType, int SourceImageBitSize, int SourceImageOffsetS, int SourceImageOffsetT);
+extern void unkGuMacro(void *mtx, float unk1);
+extern void unkGuMacro2(void *unk0, int unk1, int unk2, int unk3);
 
 //vanilla data
 extern OSThread* __osActiveQueue;

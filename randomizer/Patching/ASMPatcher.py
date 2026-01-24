@@ -369,7 +369,7 @@ class Minigame8BitImage:
         self.jetpac_image = jetpac_image
 
 
-def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Items.NintendoCoin, jetpac_item: Items = Items.RarewareCoin):
+def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Items.NintendoCoin, jetpac_item: Items = Items.RarewareCoin, settings = None):
     """Alter the image that is displayed in DK Arcade/Jetpac for their respective rewards."""
     colorless_potions = (
         ItemPool.ImportantSharedMoves + ItemPool.JunkSharedMoves + ItemPool.TrainingBarrelAbilities() + ItemPool.ClimbingAbilities() + [Items.Shockwave, Items.Camera, Items.CameraAndShockwave]
@@ -447,6 +447,10 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
     }
     for minigame in im_data:
         if im_data[minigame] is None:
+            continue
+        if minigame == "arcade" and settings.arcade_custom_minigame is not None:
+            continue
+        if minigame == "jetpac" and settings.jetpac_custom_minigame is not None:
             continue
         dim = 20
         ovl = Overlay.Arcade
@@ -571,6 +575,21 @@ def getModelTwoAllowances(ROM_COPY: LocalROM) -> dict:
     return output
 
 
+def loadBin(ROM_COPY: LocalROM, address: int, overlay: Overlay, bin_path: str, offset_dict: dict):
+    """Load binary blob into an address in RAM."""
+    rom_start = getROMAddress(address, overlay, offset_dict)
+    if rom_start is None:
+        raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
+    ROM_COPY.seek(rom_start)
+    data = js.getFile(bin_path)
+    if isinstance(data, (bytes, bytearray)):
+        file = bytes(data)
+    else:
+        file = io.BytesIO(bytes(data)).getvalue()
+    ROM_COPY.writeBytes(file)
+
+
+
 def patchAssembly(ROM_COPY, spoiler):
     """Patch all assembly instructions."""
     patchVersionStack(ROM_COPY, spoiler.settings)
@@ -589,10 +608,17 @@ def patchAssembly(ROM_COPY, spoiler):
         0x164,  # BBlast first time cutscene
     ]
 
+    if settings.arcade_custom_minigame is not None:
+        loadBin(ROM_COPY, 0x80024390, Overlay.Arcade, f"base-hack/minigame/{settings.arcade_custom_minigame}.bin", offset_dict)
+        writeFunction(ROM_COPY, 0x800242FC, Overlay.Arcade, f"{settings.arcade_custom_minigame}.loop", offset_dict, "minigames")
+    if settings.jetpac_custom_minigame is not None:
+        loadBin(ROM_COPY, 0x80024390, Overlay.Jetpac, f"base-hack/minigame/{settings.jetpac_custom_minigame}.bin", offset_dict)
+        writeFunction(ROM_COPY, 0x8002433C, Overlay.Jetpac, f"{settings.jetpac_custom_minigame}.loop", offset_dict, "minigames")
+
     ACTOR_DEF_START = getSym("actor_defs")
     ACTOR_MASTER_TYPE_START = getSym("actor_master_types")
 
-    alter8bitRewardImages(ROM_COPY, offset_dict, spoiler.arcade_item_reward, spoiler.jetpac_item_reward)
+    alter8bitRewardImages(ROM_COPY, offset_dict, spoiler.arcade_item_reward, spoiler.jetpac_item_reward, spoiler.settings)
     fixBossProperties(ROM_COPY, offset_dict, settings)
 
     writeValue(ROM_COPY, 0x8060E04C, Overlay.Static, 0, offset_dict, 4)  # Prevent moves overwrite
@@ -1156,7 +1182,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806BBB22, Overlay.Static, 5, offset_dict)  # Chunky toy box speedup
         writeActorHealth(ROM_COPY, 228, 12)  # Change BHDM Health (16 -> 12)
 
-    if isFasterCheckEnabled(spoiler, FasterChecksSelected.jetpac):
+    if isFasterCheckEnabled(spoiler, FasterChecksSelected.jetpac) and settings.jetpac_custom_minigame is None:
         writeValue(ROM_COPY, 0x80027DCA, Overlay.Jetpac, 2500, offset_dict)  # Jetpac score requirement
 
     if isFasterCheckEnabled(spoiler, FasterChecksSelected.forest_owl_race):
@@ -1325,11 +1351,12 @@ def patchAssembly(ROM_COPY, spoiler):
                 reg_value = chunky_face_puzzle_register_values[spoiler.chunky_face_puzzle[index]]
                 writeValue(ROM_COPY, address, Overlay.Static, reg_value, offset_dict, 1)
 
-        for index, value in enumerate(spoiler.arcade_order):
-            writeValue(ROM_COPY, 0x8004A788 + index, Overlay.Arcade, value, offset_dict, 1)
+        if settings.arcade_custom_minigame is None:
+            for index, value in enumerate(spoiler.arcade_order):
+                writeValue(ROM_COPY, 0x8004A788 + index, Overlay.Arcade, value, offset_dict, 1)
 
     # Jetpac Platforms
-    if settings.puzzle_rando_difficulty in (PuzzleRando.medium, PuzzleRando.hard, PuzzleRando.chaos):
+    if settings.puzzle_rando_difficulty in (PuzzleRando.medium, PuzzleRando.hard, PuzzleRando.chaos) and settings.jetpac_custom_minigame is None:
         # Move platforms
         writeValue(ROM_COPY, 0x80028C5E, Overlay.Jetpac, settings.jetpac_platform_data[0][0], offset_dict)
         writeValue(ROM_COPY, 0x80028C62, Overlay.Jetpac, settings.jetpac_platform_data[0][1], offset_dict)
@@ -1353,9 +1380,11 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFloatUpper(ROM_COPY, 0x800276F2, Overlay.Jetpac, py_1 - 16, offset_dict)
 
     writeHook(ROM_COPY, 0x805FE954, Overlay.Static, "ArcadeMapCheck", offset_dict)
-    writeHook(ROM_COPY, 0x80024FD4, Overlay.Arcade, "ArcadeIntroCheck", offset_dict)
-    writeFunction(ROM_COPY, 0x800288FC, Overlay.Jetpac, "completeJetpac", offset_dict)
-    writeFunction(ROM_COPY, 0x80024BD0, Overlay.Jetpac, "exitJetpac", offset_dict)
+    if settings.arcade_custom_minigame is None:
+        writeHook(ROM_COPY, 0x80024FD4, Overlay.Arcade, "ArcadeIntroCheck", offset_dict)
+    if settings.jetpac_custom_minigame is None:
+        writeFunction(ROM_COPY, 0x800288FC, Overlay.Jetpac, "completeJetpac", offset_dict)
+        writeFunction(ROM_COPY, 0x80024BD0, Overlay.Jetpac, "exitJetpac", offset_dict)
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_picture_taking):
         # Fast Camera Photo
         writeValue(ROM_COPY, 0x80699454, Overlay.Static, 0x5000, offset_dict)  # Fast tick/no mega-slowdown on Biz
@@ -1451,8 +1480,9 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806C5DD6, Overlay.Static, screen_y_center - screen_y_dist, offset_dict)  # Y Minimum
         writeValue(ROM_COPY, 0x806C5DDE, Overlay.Static, screen_y_center + screen_y_dist, offset_dict)  # Y Maximum
         writeValue(ROM_COPY, 0x806C5DE8, Overlay.Static, 0x240B0000 | fairy_range, offset_dict, 4)  # Force max acceptable dist to 1000
-    writeValue(ROM_COPY, 0x80032096, Overlay.Arcade, 0, offset_dict)  # Disable Nin 1981 flicker
-    writeValue(ROM_COPY, 0x8002672A, Overlay.Arcade, 0xFFFF, offset_dict)  # Disable Donkey Kong logo title flicker
+    if settings.arcade_custom_minigame is None:
+        writeValue(ROM_COPY, 0x80032096, Overlay.Arcade, 0, offset_dict)  # Disable Nin 1981 flicker
+        writeValue(ROM_COPY, 0x8002672A, Overlay.Arcade, 0xFFFF, offset_dict)  # Disable Donkey Kong logo title flicker
     if isQoLEnabled(spoiler, MiscChangesSelected.vanilla_bug_fixes):
         # Race Hoop 3D
         writeValue(ROM_COPY, 0x806C4DB4, Overlay.Static, 0x24050113, offset_dict, 4)  # Change model of race hoop
@@ -1699,6 +1729,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8060A32C, Overlay.Static, 0, offset_dict, 4)  # nop
     writeValue(ROM_COPY, 0x8060A31E, Overlay.Static, 0, offset_dict)
     writeValue(ROM_COPY, 0x8060A30A, Overlay.Static, 0, offset_dict)
+
 
     # Soundplayer Fix
     writeValue(ROM_COPY, 0x80735C9E, Overlay.Static, 0xFFFF, offset_dict)  # initSoundPlayer creates the event
@@ -2116,9 +2147,10 @@ def patchAssembly(ROM_COPY, spoiler):
         for xi, x in enumerate(sequence):
             writeValue(ROM_COPY, 0x807482E8 + xi, Overlay.Static, x, offset_dict, 1)
 
-    shuffleJetpacEnemies(ROM_COPY, settings, offset_dict)
-    writeFunction(ROM_COPY, 0x80025034, Overlay.Jetpac, "loadJetpacSprites_handler", offset_dict)
-    writeValue(ROM_COPY, 0x800281AC, Overlay.Jetpac, 0x5000, offset_dict)  # Make Rareware Coin permanent once spawned until collected
+    if settings.jetpac_custom_minigame is None:
+        shuffleJetpacEnemies(ROM_COPY, settings, offset_dict)
+        writeFunction(ROM_COPY, 0x80025034, Overlay.Jetpac, "loadJetpacSprites_handler", offset_dict)
+        writeValue(ROM_COPY, 0x800281AC, Overlay.Jetpac, 0x5000, offset_dict)  # Make Rareware Coin permanent once spawned until collected
 
     writeValue(ROM_COPY, 0x806BA5A8, Overlay.Static, 0x1D800003, offset_dict, 4)  # Fix some health oversights by making death if health <= 0 instead of == 0
     writeValue(ROM_COPY, 0x806BA50E, Overlay.Static, 20, offset_dict)  # Change BHDM Cooldown
@@ -2127,25 +2159,26 @@ def patchAssembly(ROM_COPY, spoiler):
     weakAnkles(ROM_COPY, settings, offset_dict)
 
     # Increase Arcade Lives
-    writeValue(ROM_COPY, 0x80024F10, Overlay.Arcade, 0x240E0005, offset_dict, 4)  # ADDIU $t6, $r0, 0x5 - Set Arcade Lives
-    writeValue(ROM_COPY, 0x80024F2A, Overlay.Arcade, 0xC71B, offset_dict)
-    writeValue(ROM_COPY, 0x80024F2C, Overlay.Arcade, 0xA0CEC71B, offset_dict, 4)  # SB $t6, 0xC71B ($a2)
-    writeValue(ROM_COPY, 0x80024688, Overlay.Arcade, 0x1000, offset_dict)  # Disable lives bonus for reaching 10k points
-    writeValue(ROM_COPY, 0x8002B7A4, Overlay.Arcade, 0, offset_dict, 4)  # Disable death removing lives
-    # Address of Nintendo Coin Image write: 0x8002E8B4/0x8002E8C0
-    writeFunction(ROM_COPY, 0x80024D5C, Overlay.Arcade, "arcadeExit", offset_dict)
-    writeFunction(ROM_COPY, 0x800257B4, Overlay.Arcade, "arcadeExit", offset_dict)
-    writeFunction(ROM_COPY, 0x8002B6D4, Overlay.Arcade, "arcadeExit", offset_dict)
-    writeFunction(ROM_COPY, 0x8002FA58, Overlay.Arcade, "arcadeExit", offset_dict)
-    # Fix arcade level setting logic
-    writeValue(ROM_COPY, 0x80024F24, Overlay.Arcade, 0, offset_dict, 4)  # Disable this only being present for story arcade
-    writeFunction(ROM_COPY, 0x80024F34, Overlay.Arcade, "determineArcadeLevel", offset_dict)  # Change log
-    writeValue(ROM_COPY, 0x80024F70, Overlay.Arcade, 0, offset_dict, 4)  # Prevent level set
-    writeValue(ROM_COPY, 0x80024F50, Overlay.Arcade, 0, offset_dict, 4)  # Prevent level set
-    # Arcade Level Order Rando
-    writeFunction(ROM_COPY, 0x8002F7BC, Overlay.Arcade, "HandleArcadeVictory", offset_dict)
-    writeFunction(ROM_COPY, 0x8002FA68, Overlay.Arcade, "HandleArcadeVictory", offset_dict)
-    writeValue(ROM_COPY, 0x8002FA24, Overlay.Arcade, 0x1000, offset_dict)
+    if settings.arcade_custom_minigame is None:
+        writeValue(ROM_COPY, 0x80024F10, Overlay.Arcade, 0x240E0005, offset_dict, 4)  # ADDIU $t6, $r0, 0x5 - Set Arcade Lives
+        writeValue(ROM_COPY, 0x80024F2A, Overlay.Arcade, 0xC71B, offset_dict)
+        writeValue(ROM_COPY, 0x80024F2C, Overlay.Arcade, 0xA0CEC71B, offset_dict, 4)  # SB $t6, 0xC71B ($a2)
+        writeValue(ROM_COPY, 0x80024688, Overlay.Arcade, 0x1000, offset_dict)  # Disable lives bonus for reaching 10k points
+        writeValue(ROM_COPY, 0x8002B7A4, Overlay.Arcade, 0, offset_dict, 4)  # Disable death removing lives
+        # Address of Nintendo Coin Image write: 0x8002E8B4/0x8002E8C0
+        writeFunction(ROM_COPY, 0x80024D5C, Overlay.Arcade, "arcadeExit", offset_dict)
+        writeFunction(ROM_COPY, 0x800257B4, Overlay.Arcade, "arcadeExit", offset_dict)
+        writeFunction(ROM_COPY, 0x8002B6D4, Overlay.Arcade, "arcadeExit", offset_dict)
+        writeFunction(ROM_COPY, 0x8002FA58, Overlay.Arcade, "arcadeExit", offset_dict)
+        # Fix arcade level setting logic
+        writeValue(ROM_COPY, 0x80024F24, Overlay.Arcade, 0, offset_dict, 4)  # Disable this only being present for story arcade
+        writeFunction(ROM_COPY, 0x80024F34, Overlay.Arcade, "determineArcadeLevel", offset_dict)  # Change log
+        writeValue(ROM_COPY, 0x80024F70, Overlay.Arcade, 0, offset_dict, 4)  # Prevent level set
+        writeValue(ROM_COPY, 0x80024F50, Overlay.Arcade, 0, offset_dict, 4)  # Prevent level set
+        # Arcade Level Order Rando
+        writeFunction(ROM_COPY, 0x8002F7BC, Overlay.Arcade, "HandleArcadeVictory", offset_dict)
+        writeFunction(ROM_COPY, 0x8002FA68, Overlay.Arcade, "HandleArcadeVictory", offset_dict)
+        writeValue(ROM_COPY, 0x8002FA24, Overlay.Arcade, 0x1000, offset_dict)
 
     writeLabelValue(ROM_COPY, 0x80748088, Overlay.Static, "CrownDoorCheck", offset_dict)  # Update check on Crown Door
 
@@ -2248,7 +2281,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8074482C + (12 * Maps.ForestSpider), Overlay.Static, 0x00000141, offset_dict, 4)
 
     # Remove troll flame in 75m
-    writeValue(ROM_COPY, 0x80028FE4, Overlay.Arcade, 0xAC800018, offset_dict, 4)  # sw $zero, 0x18 ($ao). Sets obj type to 0
+    if settings.arcade_custom_minigame is None:
+        writeValue(ROM_COPY, 0x80028FE4, Overlay.Arcade, 0xAC800018, offset_dict, 4)  # sw $zero, 0x18 ($ao). Sets obj type to 0
 
     # Replace ; with &
     writeValue(ROM_COPY, 0x80754AC2, Overlay.Static, 38, offset_dict, 1)  # Replace the character checking
