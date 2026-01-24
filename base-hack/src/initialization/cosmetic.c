@@ -396,6 +396,8 @@ ROM_RODATA_NUM static const unsigned char boss_ost[] = {
     SONG_FORESTSPIDER,
 };
 
+ROM_DATA static unsigned short current_boss_song = 0;
+
 int pickRandomFromPool(const unsigned char* pool, const int count) {
     int rng = getRNGLower31() & 0xFF;
     while (rng >= count) {
@@ -416,6 +418,7 @@ void playBonusSong(songs song, float volume) {
 void playBossSong(songs song, float volume) {
     if (Rando.boss_music_rando) {
         song = pickRandomFromPool(&boss_ost[0], sizeof(boss_ost));
+        current_boss_song = song;
     }
     playSong(song, volume);
 }
@@ -426,6 +429,24 @@ void playSongWCheck(songs song, float volume) {
     }
     if (Rando.boss_music_rando && inU8List(song, &boss_ost[0], sizeof(boss_ost))) {
         song = pickRandomFromPool(&boss_ost[0], sizeof(boss_ost));
+        current_boss_song = song;
     }
+    playSong(song, volume);
+}
+
+void stopBossSong(songs song, int unk0){
+    if(current_boss_song != 0){
+        cancelMusic(current_boss_song, 0);
+        current_boss_song = 0;
+    } else {
+        cancelMusic(song, 0);
+    }
+}
+
+void playNotBossSong(songs song, float volume){
+    if(current_boss_song != 0){
+        cancelMusic(current_boss_song, 0);
+        current_boss_song = 0;
+    } 
     playSong(song, volume);
 }
