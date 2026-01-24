@@ -363,3 +363,28 @@ Gfx* handleOutOfCounters(int x, int y, int top, int bottom, Gfx* dl, int unk0, i
     }
     return printOutOfCounter(x, y, top, bottom, dl, unk0, scale);
 }
+
+void exitMap(maps map, int lobby_is_isles) {
+    int world = getWorld(map, lobby_is_isles);
+    int helm_timer_enabled = (world == LEVEL_HELM) && HelmTimerShown;
+    *(char*)(0x807FC8B8) = 1;
+    switch (PauseType) {
+        case PAUSETYPE_DEFAULT:
+            if (inBossMap(map, 1, 1, 1)) {
+                exitBoss();
+                return;
+            }
+            if (helm_timer_enabled || (world == LEVEL_ISLES)) {
+                QuitGame();
+                return;
+            }
+            helmTime_exitLevel(world);
+            return;
+        case PAUSETYPE_RACE:
+            helmTime_exitRace();
+            return;
+        case PAUSETYPE_BONUS:
+            helmTime_exitBonus();
+            return;
+    }
+}
