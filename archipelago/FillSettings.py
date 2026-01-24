@@ -570,6 +570,8 @@ def apply_logic_and_barriers_settings(settings_dict: dict, options) -> None:
         "caves_igloo_pads": RemovedBarriersSelected.caves_igloo_pads,
         "caves_ice_walls": RemovedBarriersSelected.caves_ice_walls,
         "galleon_treasure_room": RemovedBarriersSelected.galleon_treasure_room,
+        "helm_star_gates": RemovedBarriersSelected.helm_star_gates,
+        "helm_punch_gates": RemovedBarriersSelected.helm_punch_gates,
     }
 
     for barrier in options.remove_barriers_selected:
@@ -833,6 +835,8 @@ def handle_fake_generation_settings(settings: Settings, multiworld) -> None:
                 settings.glitches_selected = passthrough["GlitchesSelected"]
                 settings.open_lobbies = passthrough["OpenLobbies"]
                 settings.starting_key_list = passthrough["StartingKeyList"]
+                settings.galleon_water = passthrough["GalleonWater"]
+                settings.galleon_water_internal = passthrough["GalleonWater"]
 
                 # There's multiple sources of truth for helm order.
                 settings.helm_donkey = 0 in settings.helm_order

@@ -525,6 +525,7 @@ file_dict = [
         source_file="assets/hash/disco_shirt.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
+        target_size=32 * 32 * 2,
     ),
     File(
         name="Disco Gloves",
@@ -533,6 +534,7 @@ file_dict = [
         source_file="assets/hash/disco_glove.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
+        target_size=32 * 32 * 2,
     ),
     File(
         name="Bandit Image 0",
@@ -747,7 +749,7 @@ for ci, coin in enumerate(["nin_coin", "rw_coin"]):
     for item in range(2):
         file_dict.append(
             File(
-                name=f"{coin.replace('_',' ').capitalize()} ({item})",
+                name=f"{coin.replace('_', ' ').capitalize()} ({item})",
                 pointer_table_index=TableNames.TexturesGeometry,
                 file_index=6015 + item + (2 * ci),
                 source_file=f"assets/hash/{coin}_{item}.png",
@@ -839,7 +841,7 @@ for face_index, face in enumerate(switch_faces):
 for ammo_index, ammo in enumerate(ammo_names):
     file_dict.append(
         File(
-            name=f"{ammo.replace('_',' ')} Image",
+            name=f"{ammo.replace('_', ' ')} Image",
             pointer_table_index=TableNames.TexturesHUD,
             file_index=188 + ammo_index,
             source_file=f"assets/displays/{ammo}.png",
@@ -866,7 +868,7 @@ for start in [4897, 4903, 4712, 4950, 4925]:
                 name=f"Shockwave Frame {start + offset}",
                 pointer_table_index=TableNames.TexturesGeometry,
                 file_index=start + offset,
-                source_file=f"shockwave_{start+offset}.bin",
+                source_file=f"shockwave_{start + offset}.bin",
                 target_compressed_size=32 * 32 * 4,
                 target_uncompressed_size=32 * 32 * 4,
             )
@@ -1001,7 +1003,7 @@ for x in instance_script_maps:
         expand_size = len(data) + SCRIPT_EXPANSION_SIZE
     file_dict.append(
         File(
-            name=f"{x['name'].replace('_',' ')} Instance Scripts",
+            name=f"{x['name'].replace('_', ' ')} Instance Scripts",
             pointer_table_index=TableNames.InstanceScripts,
             file_index=x["map"],
             source_file=script_file_name,
@@ -1170,7 +1172,7 @@ file_dict.append(
 for x in range(10):
     file_dict.append(
         File(
-            name=f"Tag Barrel Bottom Texture ({x+1})",
+            name=f"Tag Barrel Bottom Texture ({x + 1})",
             pointer_table_index=TableNames.TexturesGeometry,
             file_index=4749 + x,
             source_file="assets/tagbarrel/bottom_custom.png",
@@ -1216,7 +1218,7 @@ for x in range(5):
     for y in range(2):
         file_dict.append(
             File(
-                name=f"{barrel_faces[x]} Transform Barrel Shell ({y+1})",
+                name=f"{barrel_faces[x]} Transform Barrel Shell ({y + 1})",
                 pointer_table_index=TableNames.TexturesGeometry,
                 file_index=barrel_offsets[x] + y,
                 source_file=f"assets/tagbarrel/{barrel_faces[x]} barrel {y}a.png",
@@ -1749,7 +1751,7 @@ for x in range(2):
         if found_image != "":
             file_dict.append(
                 File(
-                    name=f"Portal Image {x+1} - {segment}",
+                    name=f"Portal Image {x + 1} - {segment}",
                     pointer_table_index=TableNames.TexturesUncompressed,
                     file_index=931 + (4 * x) + y,
                     source_file=found_image,
@@ -2570,7 +2572,7 @@ with open(newROMName, "r+b") as fh:
     for x in range(8):
         other_remove.append(f"displays/feather{x}.rgba5551")
     for x in range(8):
-        other_remove.append(f"file_screen/key{x+1}.png")
+        other_remove.append(f"file_screen/key{x + 1}.png")
     for x in range(12):
         other_remove.append(f"bean_spin/f{x + 1}a_64_32.png")
     other_remove.append("file_screen/tracker.png")

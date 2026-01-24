@@ -145,6 +145,7 @@
 .definelabel QueuedCutsceneFunctions, 0x807452A0
 .definelabel ActorTimer, 0x8076A068
 .definelabel EEPROMType, 0x807EDEAC
+.definelabel PauseType, 0x807505CC
 
 .definelabel ExitPointer, 0x807FC900
 .definelabel ExitCount, 0x807FC904

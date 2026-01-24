@@ -53,7 +53,7 @@ with open(H_FILE, "w") as fh:
             offset = index >> 3
             mask = 0x80 >> modulo
             txt_struct.append(f"\tunsigned char {data} : 1; // {hex(mask)} {f'(OFFSET {offset})' if modulo == 0 else ''}")
-            txt_enum.append(f"\t/* {index} */ {key.upper()}_ENUM_{data.upper().replace('_','')},")
+            txt_enum.append(f"\t/* {index} */ {key.upper()}_ENUM_{data.upper().replace('_', '')},")
         txt_struct.append(f"}} {key};")
         txt_enum.append(f"}} ENUM_{key};")
         fh.write("\n")

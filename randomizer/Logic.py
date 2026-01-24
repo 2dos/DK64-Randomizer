@@ -1242,7 +1242,7 @@ class LogicVarHolder:
         elif bossFight == Maps.KroolDiddyPhase:
             hasRequiredMoves = self.jetpack and self.peanut
         elif bossFight == Maps.KroolLankyPhase:
-            hasRequiredMoves = self.barrels and self.trombone
+            hasRequiredMoves = self.CanBeatLankyPhase()
         elif bossFight == Maps.KroolTinyPhase:
             hasRequiredMoves = self.mini and self.feather
         elif bossFight == Maps.KroolChunkyPhase:

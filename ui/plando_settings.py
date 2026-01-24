@@ -51,7 +51,6 @@ from ui.plando_validation import (
     kong_options,
 )
 
-
 # Assemble sets of custom locations, for validation.
 customLocationSet = set()
 for level, locations in CustomLocations.items():
@@ -382,7 +381,7 @@ def validate_fairy_position(fairy: dict, index: int) -> None:
     for level, i in fairyLevelIndexMap.items():
         if index < i:
             if fairy["level"] != level.name:
-                errString = f'The plandomizer file is invalid: fairy {index+1} needs to be assigned to {level.name}, but is assigned to {fairy["level"]}.'
+                errString = f'The plandomizer file is invalid: fairy {index + 1} needs to be assigned to {level.name}, but is assigned to {fairy["level"]}.'
                 raise_plando_validation_error(errString)
             return
 

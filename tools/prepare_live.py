@@ -100,7 +100,5 @@ shutil.copyfile("dist/dk64rando-1.0.0-py3-none-any.whl", "static/py_libraries/dk
 
 # Create the file Gemfile
 with open("Gemfile", "w") as file:
-    file.write(
-        """source 'https://rubygems.org'
-gem 'github-pages'"""
-    )
+    file.write("""source 'https://rubygems.org'
+gem 'github-pages'""")

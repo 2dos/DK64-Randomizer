@@ -476,7 +476,7 @@ class Spoiler:
                 if key == "point_spread":
                     humanspoiler["Spoiler Hints Data"][key] = json.dumps(self.level_spoiler[key])
                 else:
-                    humanspoiler["Spoiler Hints Data"][key] = self.level_spoiler[key].toJSON()
+                    humanspoiler["Spoiler Hints Data"][key] = self.level_spoiler[key].toCleanJSON()
             humanspoiler["Spoiler Hints"] = self.level_spoiler_human_readable
         humanspoiler["Requirements"] = {}
         if self.settings.random_starting_region_new != RandomStartingRegion.off:
@@ -760,7 +760,7 @@ class Spoiler:
             for index, phase in enumerate(self.settings.kko_phase_order):
                 if index > 2:
                     continue
-                phase_names.append(f"Phase {phase+1}")
+                phase_names.append(f"Phase {phase + 1}")
             humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Phases"] = ", ".join(phase_names)
 
         if self.settings.bonus_barrels == MinigameBarrels.selected and len(self.settings.minigames_list_selected) > 0:

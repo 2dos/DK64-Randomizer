@@ -1167,3 +1167,9 @@ typedef enum grabbables_internal_items {
 	/* 14 */ GRABBABLE_VASE_TRIANGLE,
 	/* 15 */ GRABBABLE_VASE_PLUS,
 } grabbables_internal_items;
+
+typedef enum PauseTypes {
+	/* 0 */ PAUSETYPE_DEFAULT,
+	/* 1 */ PAUSETYPE_RACE,
+	/* 2 */ PAUSETYPE_BONUS,
+} PauseTypes;

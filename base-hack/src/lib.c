@@ -1538,17 +1538,12 @@ purchase_struct* getShopData(vendors vendor, int kong, int level) {
 }
 
 void exitBoss(void) {
-	maps reference_map = CurrentMap;
-	if (reference_map == MAP_KROOLSHOE) {
-		reference_map = MAP_KROOLTINY;
+	if (getWorld(CurrentMap, 0) <= LEVEL_ISLES) {
+		initiateTransition(MAP_TROFFNSCOFF, 2);
+		return;
 	}
-	for (int i = 0; i < 5; i++) {
-		if (getWorld(CurrentMap, 0) > LEVEL_CASTLE) {
-			initiateTransition(MAP_ISLES, 0xC);
-			return;
-		}
-	}
-	initiateTransition(MAP_TROFFNSCOFF, 2);
+	setFlag(0x5C, 1, FLAGTYPE_TEMPORARY);
+	initiateTransition(MAP_ISLES, 0xC);
 }
 
 ROM_RODATA_NUM static const unsigned char krusha_adj_models[] = {KONGMODEL_KRUSHA, KONGMODEL_KROOL_CUTSCENE, KONGMODEL_KROOL_FIGHT};
@@ -1648,7 +1643,7 @@ int isDynFlag(int obj, maps map) {
 int getProjectileCount_modified(void *player, unsigned short int_bitfield, void* code) {
 	int count = 0;
 	int longest_life = ActorTimer - 50; // Has to be at least 50f old
-	void *actor_oldest = 0;
+	actorData *actor_oldest = 0;
 	for (int i = 0; i < LoadedActorCount; i++) {
 		actorData *actor = LoadedActorArray[i].actor;
 		if (player == actor->parent) {
@@ -1669,6 +1664,9 @@ int getProjectileCount_modified(void *player, unsigned short int_bitfield, void*
 	if (count == 4) {
 		if (actor_oldest) {
 			deleteActorContainer(actor_oldest);
+			if (actor_oldest->actorType == 41) {
+				*(char*)(0x80029FA0) = *(char*)(0x80029FA0) - 1;
+			}
 			return 3;
 		}
 	}

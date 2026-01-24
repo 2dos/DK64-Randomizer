@@ -83,7 +83,7 @@ typedef struct varspace {
 	/* 0x116 */ char cutscene_skip_setting; // 0 = Off, 1 = On Button Press, 2 = Automatic
 	/* 0x117 */ char unk_117[5];
 	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
-	/* 0x11D */ unsigned char win_condition; // See vars.h for enum
+	/* 0x11D */ unsigned char win_condition; // See common_enums.h for enum
 	/* 0x11E */ char tns_indicator;
 	/* 0x11F */ char unk_11F[7];
 	/* 0x126 */ char resolve_bonus; // Bitfield. 0000 0001 = auto-complete bonus barrels. 0000 0010 = auto-complete helm barrels. 0 = Off. 3 = Resolve Helm & Bonus Barrels

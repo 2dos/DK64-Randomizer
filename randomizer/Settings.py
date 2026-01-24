@@ -291,6 +291,13 @@ class Settings:
                 # The value is a basic type, so assign it directly.
                 setattr(self, k, v)
 
+        # Sync homebrew_header values - if either is True, set both to True
+        if hasattr(self, "homebrew_header_patch") and self.homebrew_header_patch:
+            self.homebrew_header = True
+        elif hasattr(self, "homebrew_header") and self.homebrew_header:
+            if not hasattr(self, "homebrew_header_patch"):
+                self.homebrew_header_patch = False
+
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
         # Assign weights to Troff n Scoff based on level order if not shuffling loading zones
@@ -734,6 +741,7 @@ class Settings:
         self.disable_flavor_text = False
         self.head_balloons = False
         self.homebrew_header = False
+        self.homebrew_header_patch = False
         self.camera_is_follow = False
         self.sfx_volume = 100
         self.music_volume = 100
@@ -1808,7 +1816,10 @@ class Settings:
         self.allow_boss_duping = len(self.bosses_selected) < (7 + self.krool_phase_count)
         # Dupe phases so there's enough choice
         if len(phases) < self.krool_phase_count:
-            dupe_count = math.ceil(self.krool_phase_count / len(phases))
+            if len(phases) == 0:  # This will get caught by a SettingsIncompatibleException later, but this means we have no valid K. Rool options.
+                dupe_count = 0
+            else:
+                dupe_count = math.ceil(self.krool_phase_count / len(phases))
             init_phases = phases.copy()
             for _ in range(dupe_count):
                 phases.extend(init_phases)
@@ -1818,7 +1829,7 @@ class Settings:
                 phases = self.random.sample(phases, self.krool_phase_count)
             else:
                 phases = phases[: self.krool_phase_count]
-        if phases[-1] == Maps.GalleonBoss:
+        if len(phases) > 0 and phases[-1] == Maps.GalleonBoss:
             # Pufftoss can't be last. Pick something else
             if self.allow_boss_duping:
                 phases[-1] = self.random.choice([x for x in possible_phases if x != Maps.GalleonBoss])

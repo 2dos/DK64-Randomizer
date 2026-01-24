@@ -94,11 +94,12 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     #     js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
     #     return
     elif from_patch_gen is True:
-        if (js.document.getElementById("download_patch_file").checked or js.document.getElementById("load_patch_file").checked) and js.document.getElementById(
-            "generate_seed"
-        ).value != "Download Seed":
+        if (
+            js.document.getElementById("download_patch_file").checked
+            and js.document.getElementById("generate_seed").value != "Download Seed"
+            and not js.document.getElementById("load_patch_file").checked
+        ):
             js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
-            await js.apply_patch(data)
         # gif_fairy = get_hash_images("browser", "loading-fairy")
         # gif_dead = get_hash_images("browser", "loading-dead")
         # js.document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0]

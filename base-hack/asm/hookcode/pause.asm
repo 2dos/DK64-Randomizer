@@ -97,3 +97,9 @@ PauseControl_Sprite:
     PauseControl_Sprite_Finish:
         j 0x806AB2C0
         nop
+
+ExitMapHook:
+    jal exitMap
+    addiu $a1, $zero, 1
+    j 0x806A8A20
+    nop

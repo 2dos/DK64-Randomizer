@@ -7,6 +7,7 @@ import glob
 from typing import Optional, Set, Tuple, List, Dict, Any
 from enum import IntEnum, auto
 from archipelago.client.common import DK64MemoryMap
+from archipelago.client.ptrace import check_and_fix_ptrace_scope
 
 try:
     from CommonClient import logger
@@ -177,11 +178,25 @@ class ProcessMemory:
                     if not self.process_handle:
                         raise Exception(f"Failed to open process {self.process_name}")
                 elif IS_LINUX:
-                    # On Linux, open /proc/pid/mem as a file descriptor for atomic pread/pwrite operations
+                    # On Linux, proactively check ptrace scope before attempting to attach
+                    check_and_fix_ptrace_scope()
+
+                    # Open /proc/pid/mem as a file descriptor for atomic pread/pwrite operations
                     try:
                         self.mem_fd = os.open(f"/proc/{self.process_id}/mem", os.O_RDWR)
                     except (OSError, IOError) as e:
-                        raise Exception(f"Failed to open memory file for process {self.process_name}: {e}")
+                        # Check if this is a permission issue (errno 1=EPERM, errno 13=EACCES)
+                        if e.errno in (1, 13):
+                            # Try one more time after fixing ptrace scope
+                            if check_and_fix_ptrace_scope():
+                                try:
+                                    self.mem_fd = os.open(f"/proc/{self.process_id}/mem", os.O_RDWR)
+                                except (OSError, IOError) as retry_e:
+                                    raise Exception(f"Failed to open memory file for process {self.process_name} after fixing ptrace: {retry_e}")
+                            else:
+                                raise Exception(f"Failed to open memory file for process {self.process_name}: {e}. Ptrace restrictions may be blocking access.")
+                        else:
+                            raise Exception(f"Failed to open memory file for process {self.process_name}: {e}")
                 return
         raise Exception(f"Process {self.process_name} not found")
 

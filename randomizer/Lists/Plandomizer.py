@@ -735,7 +735,7 @@ for level, locations in KasplatLocationToRewardMap.items():
 for i in range(0, 16):
     PlandomizerPanels["Locations"]["categories"]["DirtPatch"]["locations"].append(
         {
-            "name": f"Dirt Patch {i+1}",
+            "name": f"Dirt Patch {i + 1}",
             "vanilla_value": "",
             "location_id": f"plando_patch_{i}_location",
             "reward_id": f"plando_patch_{i}_location_reward",
@@ -758,7 +758,7 @@ for level, fairyLimit in fairyLevelCounts.items():
     for i in range(0, fairyLimit):
         PlandomizerPanels["Locations"]["categories"]["Fairy"]["locations"].append(
             {
-                "name": f"{GetLevelString(level)} Fairy {i+1}",
+                "name": f"{GetLevelString(level)} Fairy {i + 1}",
                 "level": level.name,
                 "vanilla_value": "",
                 "location_id": f"plando_fairy_{overallFairyCount}_location",
@@ -770,7 +770,7 @@ for level, fairyLimit in fairyLevelCounts.items():
 for i in range(0, 13):
     PlandomizerPanels["Locations"]["categories"]["MelonCrate"]["locations"].append(
         {
-            "name": f"Melon Crate {i+1}",
+            "name": f"Melon Crate {i + 1}",
             "vanilla_value": "",
             "location_id": f"plando_crate_{i}_location",
             "reward_id": f"plando_crate_{i}_location_reward",
@@ -996,7 +996,7 @@ for level, doorList in door_locations.items():
 for level, vanillaDoors in TnsVanillaMap.items():
     for index, vanillaDoor in enumerate(vanillaDoors):
         jsonValue = {
-            "name": f"{GetLevelString(Levels[level])} TnS Portal {index+1}",
+            "name": f"{GetLevelString(Levels[level])} TnS Portal {index + 1}",
             "level": level,
             "location_id": f"plando_{level}_{index}_tns_portal",
             "vanilla_value": vanillaDoor,

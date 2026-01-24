@@ -121,7 +121,7 @@ void WarpHandle(void) {
     if (CurrentMap == MAP_HELM) {
         if (Rando.fast_start_helm == 2) { // Skip All
             initiateTransition(MAP_HELM,4); // Crown Door
-        } else if (checkFlag(FLAG_HELM_ROMANDOORS_OPEN,FLAGTYPE_TEMPORARY) || checkFlag(FLAG_MODIFIER_HELMBOM,FLAGTYPE_PERMANENT)) { // Roman Doors Open or BoM off
+        } else if (checkFlag(FLAG_HELM_ROMAN_DOORS_OPEN, FLAGTYPE_PERMANENT) || checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT)) { // Roman Doors Open or BoM off
             initiateTransition(MAP_HELM,3); // Lever
         } else {
             initiateTransition(MAP_HELM,0); // Start

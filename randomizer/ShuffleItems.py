@@ -6,10 +6,11 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.VendorType import VendorType
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import RandomPrices
+from randomizer.Enums.Settings import RandomPrices, ShuffleLoadingZones
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import ShopLocationReference
+from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Patching.Library.ItemRando import LocationSelection
 
 
@@ -185,6 +186,50 @@ def ShuffleItems(spoiler):
     if any([data for data in locations_needing_flags if data.new_flag is None]):
         [data for data in locations_needing_flags if data.new_flag is None]
         raise Ex.FillException("ERROR: Failed to create a valid flag assignment for this fill!")
+
+    # If Keys are not shuffled but are placed as constants (e.g., SLO with no key shuffle),
+    # we still need to add them to item_assignment for patching purposes
+    if Types.Key not in spoiler.settings.shuffled_location_types:
+        if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+            import randomizer.ItemPool as ItemPool
+
+            vanilla_keys_assignment = []
+            for level in LevelInfoList.values():
+                key_location = spoiler.LocationList[level.KeyLocation]
+
+                if key_location.item is not None and key_location.item in ItemPool.Keys():
+                    placement_info = {}
+                    if key_location.default_mapid_data:
+                        for location in key_location.default_mapid_data:
+                            placement_info[location.map] = location.id
+                        old_flag = key_location.default_mapid_data[0].flag
+                        old_kong = key_location.default_mapid_data[0].kong
+                    else:
+                        old_flag = -1
+                        old_kong = Kongs.any
+
+                    location_selection = LocationSelection(
+                        vanilla_item=ItemList[key_location.default].type,
+                        flag=old_flag,
+                        placement_data=placement_info,
+                        is_reward_point=key_location.is_reward,
+                        is_shop=False,
+                        price=0,
+                        placement_index=[-1],
+                        kong=old_kong,
+                        location=level.KeyLocation,
+                        name=key_location.name,
+                    )
+                    # Set new item to the key that was placed
+                    new_item = ItemList[key_location.item]
+                    location_selection.new_type = new_item.type
+                    location_selection.new_kong = new_item.kong
+                    location_selection.new_item = key_location.item
+                    location_selection.new_flag = new_item.rando_flag
+                    vanilla_keys_assignment.append(location_selection)
+
+            locations_not_needing_flags.extend(vanilla_keys_assignment)
+
     spoiler.item_assignment = locations_needing_flags + locations_not_needing_flags
     # Generate human-readable version for debugging purposes
     # human_item_data = {}

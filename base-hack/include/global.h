@@ -37,6 +37,8 @@ extern int getFirstEmptySnideReward(int offset);
 
 extern void applyPaperMode(void);
 
+extern void checkDimCache(void);
+
 extern void resolveBonusContainer(void);
 
 extern enemy_item_db_item *getEnemyItem(int id);
@@ -183,9 +185,10 @@ extern void FakeKeyCode(void);
 extern void FakeFairyCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
-extern Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, int width, int height, codecs codec);
+extern Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, int width, int height, codecs codec, int red, int green, int blue);
 extern Gfx* renderDingSprite(Gfx* dl);
 extern Gfx* renderProgressiveSprite(Gfx* dl);
+extern Gfx* renderDimSprite(Gfx* dl);
 extern int getHintRequirement(int slot);
 extern void handleProgressiveIndicator(int allow_ding);
 extern void resetProgressive(void);
@@ -267,6 +270,12 @@ extern void spawnEnemyDrops(actorData* actor);
 
 extern void finalizeBeatGame(void);
 extern void exitTrapBubbleController(void);
+
+extern void helmTime_exitLevel(int world);
+extern void helmTime_exitRace(void);
+extern void helmTime_exitBonus(void);
+extern void QuitGame(void);
+extern void exitMap(maps map, int lobby_is_isles);
 
 extern void spawnActorWithFlagHandler(int object, float x, float y, float z, int unk0, int spawn_type, int flag, void *unk1, int item_level, int item_kong);
 

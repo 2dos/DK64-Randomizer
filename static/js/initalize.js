@@ -652,6 +652,24 @@ for (let el of form_sortable) {
   el.addEventListener("change", scheduleSave);
 }
 
+// Sync homebrew_header checkboxes between Normal Generation and Patch File tabs
+const homebrewHeaderNormal = document.getElementById("homebrew_header");
+const homebrewHeaderPatch = document.getElementById("homebrew_header_patch");
+
+if (homebrewHeaderNormal && homebrewHeaderPatch) {
+  homebrewHeaderNormal.addEventListener("change", function() {
+    if (homebrewHeaderPatch.checked !== this.checked) {
+      homebrewHeaderPatch.checked = this.checked;
+    }
+  });
+
+  homebrewHeaderPatch.addEventListener("change", function() {
+    if (homebrewHeaderNormal.checked !== this.checked) {
+      homebrewHeaderNormal.checked = this.checked;
+    }
+  });
+}
+
 let saveTimeout;
 function scheduleSave() {
   if (saveTimeout) {
@@ -1778,6 +1796,19 @@ function load_settings(json) {
   }
 
   requestAnimationFrame(processQueue);
+  
+  // Sync homebrew_header checkboxes after loading settings
+  const homebrewHeaderNormal = document.getElementById("homebrew_header");
+  const homebrewHeaderPatch = document.getElementById("homebrew_header_patch");
+  if (homebrewHeaderNormal && homebrewHeaderPatch) {
+    // If either checkbox has a value from saved settings, sync both
+    if (json["homebrew_header"] !== undefined) {
+      homebrewHeaderPatch.checked = homebrewHeaderNormal.checked;
+    } else if (json["homebrew_header_patch"] !== undefined) {
+      homebrewHeaderNormal.checked = homebrewHeaderPatch.checked;
+    }
+  }
+  
   // // Dispatch all the click events after the values have been set
   // // Batch dispatch click events to avoid performance issues
   // function batchDispatchClickEvents(elements) {

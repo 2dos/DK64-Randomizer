@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 import json
 from math import ceil, floor, sqrt
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Tuple, Union
@@ -99,7 +100,7 @@ class StartingSpoiler:
                 settings.level_order[8],
             ]
 
-    def toJSON(self):
+    def toCleanJSON(self):
         """Convert this object to JSON for the purposes of the spoiler log."""
         return json.dumps(self, default=lambda o: o.__dict__)
 
@@ -115,9 +116,11 @@ class LevelSpoiler:
         self.level_items = []
         self.woth_count = 0
 
-    def toJSON(self):
+    def toCleanJSON(self):
         """Convert this object to JSON for the purposes of the spoiler log."""
-        return json.dumps(self, default=lambda o: o.__dict__)
+        sanitized_copy = deepcopy(self)
+        sanitized_copy.level_items = []  # This info is far too detailed to be in a spoiler log
+        return json.dumps(sanitized_copy, default=lambda o: o.__dict__)
 
 
 # Hint distribution that will be adjusted based on settings
@@ -1808,6 +1811,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 continue
             region_name_to_hint = None
 
+            # Try to find a scouring-hintable region that actually contains useful info
+            valid_region_found = False
             if use_hint_score:
                 hintset.CalculateHintScores(spoiler, multipath_dict_goals)
                 # If we still have ugly unhinted locations, we should prioritize hinting those where possible
@@ -1827,8 +1832,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                             if candidate_region_name in hintable_region_names:
                                 region_name_to_hint = candidate_region_name
                                 hintable_region_names.remove(candidate_region_name)
-            # Try to find a scouring-hintable region that actually contains useful info
-            valid_region_found = False
+                                valid_region_found = True
+            # If we're not leveraging the score, we need to at least ensure the region has useful info
             while not valid_region_found:
                 # If we somehow run out, kick back to the start of the loop - it handles that case there (RARE)
                 if len(hintable_region_names) == 0:
@@ -2435,7 +2440,7 @@ def CategorizeItem(item):
     elif item.type == Types.Key:
         return "Key"
     elif item.type == Types.Bean:
-        return "Bean"
+        return "Clear Vial"
     elif item.kong == Kongs.donkey:
         return "Yellow Vial"
     elif item.kong == Kongs.diddy:

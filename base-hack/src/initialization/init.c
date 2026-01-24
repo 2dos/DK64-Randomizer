@@ -12,7 +12,7 @@
  */
 #include "../../include/common.h"
 
-ROM_DATA static char music_storage[MUSIC_SIZE];
+ROM_DATA static char music_storage[MUSIC_SIZE + 0xF];
 
 ROM_RODATA_NUM const char music_types[SONG_COUNT] = {
 	-1,
@@ -239,7 +239,7 @@ void initHack(int source) {
 	 */
 	if (LoadedHooks == 0) {
 		if ((source == 1) || (CurrentMap == MAP_NINTENDOLOGO)) {
-			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
+			*(int*)(0x8076BF38) = ((int)(&music_storage[0]) + 0xF) & 0xFFFFFFF0; // Increase music storage. Ensure it's 0x10 aligned
 			grab_lock_timer = -1;
 			bonusAutocomplete = Rando.resolve_bonus;
 			TextHoldOn = Rando.quality_of_life.textbox_hold;

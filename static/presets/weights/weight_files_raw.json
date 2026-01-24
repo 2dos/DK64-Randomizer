@@ -2228,7 +2228,7 @@
         "ice_trap_frequency": {
             "ignore": true
         },
-        "ice_trap_model": {
+        "ice_trap_model_v2": {
             "setting_type": "choice_single",
             "options": {
                 "easy": {

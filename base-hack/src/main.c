@@ -35,6 +35,7 @@ void cFuncLoop(void) {
 	qualityOfLife_shorteners();
 	overlay_changes();
 	replace_zones(0);
+	checkDimCache();
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, FLAGTYPE_TEMPORARY); // Clear K. Lumsy temp flag
 		setFlag(0x79, 0, FLAGTYPE_TEMPORARY); // Clear BFI Reward Cutscene temp flag
@@ -203,6 +204,8 @@ void earlyFrame(void) {
 		if (isLobby(CurrentMap)) {
 			PauseText = 1;
 		} else if (inShop(CurrentMap, 1)) {
+			PauseText = 1;
+		} else if (CurrentMap == MAP_JAPES) {
 			PauseText = 1;
 		}
 		if (CurrentMap == MAP_HELM) {
@@ -524,6 +527,7 @@ Gfx* displayListModifiers(Gfx* dl) {
 			dl = drawDPad(dl);
 			dl = renderDingSprite(dl);
 			dl = renderProgressiveSprite(dl);
+			dl = renderDimSprite(dl);
 			if (ammo_hud_timer) {
 				int ammo_x = 150;
 				int ammo_default_y = 850;

@@ -100,7 +100,7 @@ void completeBoss(void) {
 	if ((k_rool_phase == 4) || (Rando.k_rool_order[k_rool_phase + 1] == 0xFF)) {
 		// Ending phase
 		setPermFlag(FLAG_GAME_BEATEN);
-    save();
+    	save();
 		if (inU8List(CurrentMap, &maps_with_extended_end_cs[0], sizeof(maps_with_extended_end_cs))) {
 			playCutscene(CurrentActorPointer_0, 0x1A, 1);
 			renderingParamsData* render = (renderingParamsData*)Player->rendering_param_pointer;
