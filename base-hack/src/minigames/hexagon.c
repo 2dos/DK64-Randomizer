@@ -14,6 +14,8 @@
 
 typedef enum gameStates {
     GAMESTATE_INIT,
+    GAMESTATE_MUSICCORRECT_INIT,  // Used to allow music playing
+    GAMESTATE_MUSICCORRECT,  // Used to allow music playing
     GAMESTATE_TITLE,
     GAMESTATE_NORMAL,
     GAMESTATE_GAMEOVER,
@@ -87,11 +89,217 @@ ROM_DATA static unsigned char burst_timer = 0;
 ROM_DATA static unsigned char frame_counter = 0;
 ROM_DATA static unsigned short second_counter = 0;
 ROM_DATA static char timer_text[] = "0.00";
+ROM_RODATA_NUM const char music_types[SONG_COUNT] = {
+	-1,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	-1,
+	SONGTYPE_BGM,
+	SONGTYPE_EVENT,
+	SONGTYPE_EVENT,
+	SONGTYPE_EVENT,
+	SONGTYPE_EVENT,
+	SONGTYPE_EVENT,
+	SONGTYPE_BGM,
+	SONGTYPE_EVENT,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_MAJORITEM,
+	SONGTYPE_BGM,
+	SONGTYPE_MAJORITEM,
+	SONGTYPE_BGM,
+	SONGTYPE_MAJORITEM,
+	SONGTYPE_MINORITEM,
+	SONGTYPE_EVENT,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_MINORITEM,
+	SONGTYPE_MINORITEM,
+	SONGTYPE_BGM,
+	SONGTYPE_MINORITEM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	-1,
+	SONGTYPE_BGM,
+	SONGTYPE_EVENT,
+	-1,
+	SONGTYPE_EVENT,
+	-1,
+	-1,
+	-1,
+	SONGTYPE_MINORITEM,
+	SONGTYPE_MINORITEM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_EVENT,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_EVENT,
+	SONGTYPE_BGM,
+	-1,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_MINORITEM,
+	-1,
+	SONGTYPE_MINORITEM,
+	SONGTYPE_BGM,
+	SONGTYPE_MAJORITEM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	-1,
+	SONGTYPE_MAJORITEM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	-1,
+	SONGTYPE_EVENT,
+	SONGTYPE_EVENT,
+	-1,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	-1,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	-1,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_EVENT,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_MAJORITEM,
+	SONGTYPE_MAJORITEM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_MAJORITEM,
+	SONGTYPE_MAJORITEM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_EVENT,
+	SONGTYPE_MAJORITEM,
+	SONGTYPE_MAJORITEM,
+	SONGTYPE_MINORITEM,
+	SONGTYPE_MAJORITEM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_MAJORITEM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	SONGTYPE_BGM,
+	-1,
+	SONGTYPE_BGM,
+	SONGTYPE_EVENT,
+	-1,
+	SONGTYPE_BGM,
+	-1,
+};
 
+ROM_DATA static unsigned char current_song = 0;
+ROM_DATA static char music_init_timer = 2;
 #define CENTER_HEX_DIST 20
 #define CENTER_HEX_BORDER 2
+#define CENTER_HEX_POP_SIZE 7
 #define PLAYER_ANGLE_DIFF 10
 #define WALL_THICKNESS 10
+ROM_DATA static unsigned char hexagon_size = CENTER_HEX_DIST;
+
+
+void playRandomBGM(void) {
+    // playSong(SONG_HELMBOMON, 1.0f);
+    // current_song = SONG_HELMBOMON;
+    while (1) {
+        int song = getRNGLower31() & 0xFF;
+        if (song < SONG_COUNT) {
+            if (music_types[song] == SONGTYPE_BGM) {
+                int slot = getSongWriteSlot(song);
+                if (slot == 0) {
+                    playSong(song, 1.0f);
+                    current_song = song;
+                    return;
+                }
+            }
+        }
+    }
+}
+
+void cancelCurrentSong(void) {
+    // setBaseSlotVolume(0, 0.0f);
+    cancelMusic(current_song, 1);
+}
 
 void handleState_title(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
@@ -113,12 +321,39 @@ void resetGame(void) {
     }
 }
 
+void startGame(void) {
+    game_state = GAMESTATE_NORMAL;
+    playRandomBGM();
+    resetGame();
+}
+
 void handleState_init(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
-    game_state = GAMESTATE_NORMAL;
     resetGame();
     gameInit();
+    game_state = GAMESTATE_MUSICCORRECT_INIT;
+    // Play song & get music playing
+    setBaseSlotVolume(0, 1.0f);
+    setBaseSlotVolume(1, 1.0f);
+    setBaseSlotVolume(2, 1.0f);
+    *(float*)(0x8075DF88) = 0.0f;
     *dl_ptr = dl;
+}
+
+void handleState_musicCorrect_init(void) {
+    music_init_timer--;
+    if (music_init_timer == 1) {
+        preventSongPlaying = 1;
+        // playSong(SONG_KROOLTAKEOFF, 1.0f);
+        TransitionSpeed = 1.0f;
+    } else if (music_init_timer == 0) {
+        game_state = GAMESTATE_MUSICCORRECT;
+    }
+}
+
+void handleState_musicCorrect(void) {
+    startGame();
+    TransitionSpeed = -1.0f;
 }
 
 float angleAdd(float angle0, float angle1) {
@@ -198,8 +433,8 @@ void renderCenterHexagon(Gfx **dl_ptr) {
         center_hex[6 + i].v.cn[1] = hex_colors[COLORSTATE_BACK_0].green;
         center_hex[6 + i].v.cn[2] = hex_colors[COLORSTATE_BACK_0].blue;
         center_hex[6 + i].v.cn[3] = 0xFF;
-        getPoint(&center_hex[i].v.ob[0], CENTER_HEX_DIST, angle);
-        getPoint(&center_hex[6 + i].v.ob[0], CENTER_HEX_DIST - CENTER_HEX_BORDER, angle);
+        getPoint(&center_hex[i].v.ob[0], hexagon_size, angle);
+        getPoint(&center_hex[6 + i].v.ob[0], hexagon_size - CENTER_HEX_BORDER, angle);
         angle += 60;
     }
     gDPPipeSync(dl++);
@@ -416,6 +651,7 @@ void renderWalls(Gfx **dl_ptr) {
                             if (player_wall == ref_wall->wall_index) {
                                 playSFXWrapper(0x2D4);  // Laugh
                                 game_state = GAMESTATE_GAMEOVER;
+                                cancelCurrentSong();
                             }
                         }
                     }
@@ -445,6 +681,16 @@ void renderBoard(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
     renderBackdrop(&dl);
     renderWalls(&dl);
+    if (game_state == GAMESTATE_NORMAL) {
+        // Percussion Pop Mechanic
+        if (PercussionPlayed) {
+            hexagon_size = CENTER_HEX_DIST + CENTER_HEX_POP_SIZE;
+            PercussionPlayed = 0;
+        }
+        if (hexagon_size > CENTER_HEX_DIST) {
+            hexagon_size--;
+        }
+    }
     renderCenterHexagon(&dl);
     renderPlayer(&dl);
     renderTime(&dl);
@@ -454,6 +700,11 @@ void renderBoard(Gfx **dl_ptr) {
 void handleState_normal(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
     float applied_spin = rotation_speed;
+    if (p1PressedButtons & B_BUTTON) {
+        gameExit();
+    } else if (p1PressedButtons & A_BUTTON) {
+        playSong(SONG_KROOLTAKEOFF, 1.0f);
+    }
     if (burst_timer > 0) {
         burst_timer--;
         if (burst_timer > 6) {
@@ -517,8 +768,7 @@ void handleState_gameover(Gfx **dl_ptr) {
     angle_offset = angleAdd(angle_offset, 1.0f);
     renderBoard(&dl);
     if (p1PressedButtons & START_BUTTON) {
-        resetGame();
-        game_state = GAMESTATE_NORMAL;
+        startGame();
     }
     *dl_ptr = dl;
 }
@@ -528,6 +778,12 @@ void loop(Gfx **dl_ptr) {
     switch(game_state) {
         case GAMESTATE_INIT:
             handleState_init(&dl);
+            break;
+        case GAMESTATE_MUSICCORRECT_INIT:
+            handleState_musicCorrect_init();
+            break;
+        case GAMESTATE_MUSICCORRECT:
+            handleState_musicCorrect();
             break;
         case GAMESTATE_TITLE:
             handleState_title(&dl);
@@ -541,5 +797,7 @@ void loop(Gfx **dl_ptr) {
         default:
             break;
     }
+    handleMusic();
+    handleMusic2();
     *dl_ptr = dl;
 }

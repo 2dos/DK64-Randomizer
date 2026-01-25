@@ -614,6 +614,8 @@ def patchAssembly(ROM_COPY, spoiler):
     if settings.jetpac_custom_minigame is not None:
         loadBin(ROM_COPY, 0x80024390, Overlay.Jetpac, f"base-hack/minigame/{settings.jetpac_custom_minigame}.bin", offset_dict)
         writeFunction(ROM_COPY, 0x8002433C, Overlay.Jetpac, f"{settings.jetpac_custom_minigame}.loop", offset_dict, "minigames")
+    writeHook(ROM_COPY, 0x8073A544, Overlay.Static, "LogPercussion", offset_dict)
+    writeHook(ROM_COPY, 0x8073543C, Overlay.Static, "InstIndexStore", offset_dict)
 
     ACTOR_DEF_START = getSym("actor_defs")
     ACTOR_MASTER_TYPE_START = getSym("actor_master_types")

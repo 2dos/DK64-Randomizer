@@ -156,6 +156,9 @@ extern void spawnTextOverlayWrapper(int style, int x, int y, const char* str, in
 
 extern void regularFrameLoop(void);
 extern void handleMusicTransition(void);
+extern void handleMusic(void);
+extern void handleMusic2(void);
+extern void setBaseSlotVolume(int slot, float volume);
 
 extern void loadJetpacSprites(void);
 extern void updateGBCountHUD(int player);
@@ -893,10 +896,9 @@ extern purchase_struct FunkyMoves_New[5][8];
 extern purchase_struct TrainingMoves_New[4];
 extern purchase_struct BFIMove_New;
 extern purchase_struct FirstMove_New;
-extern settingsData StoredSettings;
 extern char bonusAutocomplete;
-extern void* StoredCounterTextures[7];
 extern char TextHoldOn;
+extern unsigned char PercussionPlayed;
 extern unsigned char PauseText;
 extern unsigned char ShorterBosses;
 extern char ForceStandardAmmo;
