@@ -1938,12 +1938,12 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806BBAC8, Overlay.Static, "playBossSong", offset_dict)
     writeFunction(ROM_COPY, 0x805FED60, Overlay.Static, "playSongWCheck", offset_dict)
     writeFunction(ROM_COPY, 0x8061E280, Overlay.Static, "playSongWCheck", offset_dict)
-    writeFunction(ROM_COPY, 0x80629014, Overlay.Static, "playSongWCheck", offset_dict)
+    writeFunction(ROM_COPY, 0x80629014, Overlay.Static, "playSongWCheck", offset_dict)  # also cancels Chunky Phase music
     writeFunction(ROM_COPY, 0x8064142C, Overlay.Static, "playSongWCheck", offset_dict)
     writeFunction(ROM_COPY, 0x8064143C, Overlay.Static, "playSongWCheck", offset_dict)
-    writeFunction(ROM_COPY, 0x80628E40, Overlay.Static, "stopBossSong", offset_dict)  # Dillo1, Pufftoss, Dogadon2
-    writeFunction(ROM_COPY, 0x80629014, Overlay.Static, "playNotBossSong", offset_dict)  # Dogadon1, Mad Jack, Dillo2, Chunky Phase
+    writeFunction(ROM_COPY, 0x80628E40, Overlay.Static, "stopBossSong", offset_dict)  # Dogadon1, Mad Jack, Dillo2, Dillo1, Pufftoss, Dogadon2
     writeFunction(ROM_COPY, 0x80032788, Overlay.Boss, "playNotBossSong", offset_dict)  # King Kut Out, because who needs consistency, right?
+    writeFunction(ROM_COPY, 0x80605600, Overlay.Static, "resetBossSong", offset_dict)  # Prevent assumption "current_boss_music != 0, so boss music is playing" from being incorrect
 
     writeHook(ROM_COPY, 0x806E563C, Overlay.Static, "AnyInsPadCheck", offset_dict)
 

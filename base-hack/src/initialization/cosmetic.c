@@ -417,17 +417,31 @@ void playBonusSong(songs song, float volume) {
 
 void playBossSong(songs song, float volume) {
     if (Rando.boss_music_rando) {
-        song = pickRandomFromPool(&boss_ost[0], sizeof(boss_ost));
-        current_boss_song = song;
+        if(current_boss_song != 0){
+            cancelMusic(current_boss_song, 0);
+            current_boss_song = 0;
+        } else {
+            song = pickRandomFromPool(&boss_ost[0], sizeof(boss_ost));
+            current_boss_song = song;
+        }
     }
     playSong(song, volume);
 }
 
 void playSongWCheck(songs song, float volume) {
+    if(song == 0xA7 && current_boss_song != 0){
+        // playing the K. Rool entrance theme after beating Chunky Phase
+        cancelMusic(current_boss_song, 0);
+        current_boss_song = 0;
+    } 
     if (Rando.bonus_music_rando && inU8List(song, &bonus_ost[0], sizeof(bonus_ost))) {
         song = pickRandomFromPool(&bonus_ost[0], sizeof(bonus_ost));
     }
     if (Rando.boss_music_rando && inU8List(song, &boss_ost[0], sizeof(boss_ost))) {
+        if (current_boss_song != 0){
+            // A boss song is already playing or I must have done something wrong
+            return;
+        }
         song = pickRandomFromPool(&boss_ost[0], sizeof(boss_ost));
         current_boss_song = song;
     }
@@ -435,12 +449,20 @@ void playSongWCheck(songs song, float volume) {
 }
 
 void stopBossSong(songs song, int unk0){
-    if(current_boss_song != 0){
+    if (current_boss_song != 0){
         cancelMusic(current_boss_song, 0);
         current_boss_song = 0;
     } else {
         cancelMusic(song, 0);
     }
+}
+
+int resetBossSong(){
+    // resets the current_boss_song variable, because otherwise bugs can happen
+    // because I wasn't planning on manually stopping boss music in the first 4 K. Rool phases
+    // because that already automatically happens, and I appreciate dk64 for that
+    current_boss_song = 0;
+    return checkIntroStoryPlaying();
 }
 
 void playNotBossSong(songs song, float volume){
