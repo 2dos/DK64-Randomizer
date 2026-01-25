@@ -429,7 +429,7 @@ void playBossSong(songs song, float volume) {
 }
 
 void playSongWCheck(songs song, float volume) {
-    if(song == 0xA7 && current_boss_song != 0){
+    if(song == SONG_KROOLENTRANCE && current_boss_song != 0){
         // playing the K. Rool entrance theme after beating Chunky Phase
         cancelMusic(current_boss_song, 0);
         current_boss_song = 0;
