@@ -385,7 +385,6 @@
 | Caves Donkey Igloo | Donkey igloo - Under the swords | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Caves Tiny Igloo | Tiny igloo - Back wall | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Crystal Caves | Near ice castle tag barrel | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Crystal Caves | Near Cranky | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Crystal Caves | Behind giant boulder ice wall | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Crystal Caves | Behind gorilla gone ice wall | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Caves Lanky Race | Starting room of beetle race | Wrinkly | `self.logic = lambda _: True` | 

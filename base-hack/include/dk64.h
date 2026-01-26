@@ -522,6 +522,8 @@ extern Gfx *unkFadeFunction(Gfx *dl, int transition);
 extern void endDL(Gfx * dl, int index, int* count, int unk0);
 extern void unkDLFunction1(void *unk0, void *camera_dl, int unk1, int unk2);
 
+extern int checkIntroStoryPlaying();
+
 //vanilla data
 extern OSThread* __osActiveQueue;
 extern float TransitionSpeed;

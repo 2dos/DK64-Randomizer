@@ -243,7 +243,7 @@ void earlyFrame(void) {
 	}
 	if (CurrentMap == MAP_GALLEONPUFFTOSS) { // Pufftoss
 		if ((CutsceneActive) && (CutsceneIndex == 20) && (CutsceneTimer == 2)) { // Short Intro Cutscene
-			if (Rando.music_rando_on) {
+			if (Rando.music_rando_on && MusicTrackChannels[0] == SONG_BOSSINTRODUCTION) {
 				MusicTrackChannels[0] = 0; // Disables boss intro music
 			}
 		}
