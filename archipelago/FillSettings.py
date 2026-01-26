@@ -835,8 +835,8 @@ def handle_fake_generation_settings(settings: Settings, multiworld) -> None:
                 settings.glitches_selected = passthrough["GlitchesSelected"]
                 settings.open_lobbies = passthrough["OpenLobbies"]
                 settings.starting_key_list = passthrough["StartingKeyList"]
-                settings.galleon_water = passthrough["GalleonWater"]
-                settings.galleon_water_internal = passthrough["GalleonWater"]
+                settings.galleon_water = GalleonWaterSetting[passthrough["GalleonWater"]]
+                settings.galleon_water_internal = GalleonWaterSetting[passthrough["GalleonWater"]]
 
                 # There's multiple sources of truth for helm order.
                 settings.helm_donkey = 0 in settings.helm_order
