@@ -1954,6 +1954,13 @@ if baseclasses_loaded:
                     if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and self.spoiler.shuffled_exit_data
                     else {}
                 ),
+                "KongModels": {
+                    "DK": self.spoiler.settings.kong_model_dk.name,
+                    "Diddy": self.spoiler.settings.kong_model_diddy.name,
+                    "Lanky": self.spoiler.settings.kong_model_lanky.name,
+                    "Tiny": self.spoiler.settings.kong_model_tiny.name,
+                    "Chunky": self.spoiler.settings.kong_model_chunky.name,
+                },
             }
             return slot_data
 
@@ -2301,6 +2308,12 @@ if baseclasses_loaded:
             # Added entrance randomization data
             entrance_rando = slot_data.get("EntranceRando", [])
 
+            # Added Krusha kong models
+            if self.version_check(version, "2.0.0"):
+                kong_models = slot_data.get("KongModels", {})
+            else:
+                kong_models = {}
+
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
             relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
@@ -2350,4 +2363,5 @@ if baseclasses_loaded:
             relevant_data["ShopPrices"] = shop_prices
             relevant_data["EntranceRando"] = entrance_rando
             relevant_data["GalleonWater"] = galleon_water
+            relevant_data["KongModels"] = kong_models
             return relevant_data
