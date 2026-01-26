@@ -369,7 +369,7 @@ class Minigame8BitImage:
         self.jetpac_image = jetpac_image
 
 
-def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Items.NintendoCoin, jetpac_item: Items = Items.RarewareCoin, settings = None):
+def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Items.NintendoCoin, jetpac_item: Items = Items.RarewareCoin, settings=None):
     """Alter the image that is displayed in DK Arcade/Jetpac for their respective rewards."""
     colorless_potions = (
         ItemPool.ImportantSharedMoves + ItemPool.JunkSharedMoves + ItemPool.TrainingBarrelAbilities() + ItemPool.ClimbingAbilities() + [Items.Shockwave, Items.Camera, Items.CameraAndShockwave]
@@ -587,7 +587,6 @@ def loadBin(ROM_COPY: LocalROM, address: int, overlay: Overlay, bin_path: str, o
     else:
         file = io.BytesIO(bytes(data)).getvalue()
     ROM_COPY.writeBytes(file)
-
 
 
 def patchAssembly(ROM_COPY, spoiler):
@@ -1731,7 +1730,6 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8060A32C, Overlay.Static, 0, offset_dict, 4)  # nop
     writeValue(ROM_COPY, 0x8060A31E, Overlay.Static, 0, offset_dict)
     writeValue(ROM_COPY, 0x8060A30A, Overlay.Static, 0, offset_dict)
-
 
     # Soundplayer Fix
     writeValue(ROM_COPY, 0x80735C9E, Overlay.Static, 0xFFFF, offset_dict)  # initSoundPlayer creates the event
