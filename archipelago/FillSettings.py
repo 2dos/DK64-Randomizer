@@ -58,7 +58,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Switches import Switches
 from randomizer.Lists.Switches import SwitchInfo
-from archipelago.Options import Goal, SwitchSanity, SelectStartingKong, GalleonWaterLevel, KrushaRandom, KroolShuffle
+from archipelago.Options import Goal, SwitchSanity, SelectStartingKong, GalleonWaterLevel, KrushaRandom, KroolShuffle, DKPortalLocationRando, RandomStartingLocation
 from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity
 from archipelago.Logic import logic_item_name_to_id
 
@@ -528,6 +528,30 @@ def apply_kong_settings(settings_dict: dict, options) -> None:
     # option_none: Do nothing, no Kongs become Krusha
 
 
+def apply_starting_region_settings(settings_dict: dict, options) -> None:
+    """Apply random starting region settings."""
+    from randomizer.Enums.Settings import RandomStartingRegion
+
+    region_mapping = {
+        RandomStartingLocation.option_off: RandomStartingRegion.off,
+        RandomStartingLocation.option_isles_only: RandomStartingRegion.isles_only,
+        RandomStartingLocation.option_all: RandomStartingRegion.all,
+    }
+
+    settings_dict["random_starting_region_new"] = region_mapping[options.random_starting_region.value]
+
+
+def apply_dk_portal_settings(settings_dict: dict, options) -> None:
+    """Apply DK Portal location randomization settings."""
+    portal_mapping = {
+        DKPortalLocationRando.option_off: DKPortalRando.off,
+        DKPortalLocationRando.option_main_only: DKPortalRando.main_only,
+        DKPortalLocationRando.option_all: DKPortalRando.on,
+    }
+
+    settings_dict["dk_portal_location_rando_v2"] = portal_mapping[options.dk_portal_location_rando.value]
+
+
 def apply_switchsanity_settings(settings_dict: dict, options) -> None:
     """Apply switchsanity settings."""
     settings_dict["switchsanity_enabled"] = options.switchsanity.value != SwitchSanity.option_off
@@ -951,6 +975,8 @@ def fillsettings(options, multiworld, random_obj):
     apply_item_randomization_settings(settings_dict, options)
     apply_hard_mode_settings(settings_dict, options)
     apply_kong_settings(settings_dict, options)
+    apply_starting_region_settings(settings_dict, options)
+    apply_dk_portal_settings(settings_dict, options)
     apply_switchsanity_settings(settings_dict, options)
     apply_logic_and_barriers_settings(settings_dict, options)
     apply_glitches_and_tricks_settings(settings_dict, options)
