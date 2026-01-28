@@ -1320,7 +1320,7 @@ if baseclasses_loaded:
         def connect_entrances(self) -> None:
             """Randomize and connect entrances if LZR is on."""
             LinkWarps(self.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
-            connect_regions(self, self.spoiler.settings)
+            connect_regions(self, self.spoiler.settings, self.spoiler)
 
             if (
                 self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]
@@ -1961,6 +1961,22 @@ if baseclasses_loaded:
                     "Tiny": self.spoiler.settings.kong_model_tiny.name,
                     "Chunky": self.spoiler.settings.kong_model_chunky.name,
                 },
+                "StartingRegion": (
+                    {
+                        "region": self.spoiler.settings.starting_region["region"].name if hasattr(self.spoiler.settings.starting_region["region"], "name") else str(self.spoiler.settings.starting_region["region"]),
+                        "map": self.spoiler.settings.starting_region["map"].name if hasattr(self.spoiler.settings.starting_region["map"], "name") else str(self.spoiler.settings.starting_region["map"]),
+                        "exit": self.spoiler.settings.starting_region["exit"],
+                        "region_name": self.spoiler.settings.starting_region["region_name"],
+                        "exit_name": self.spoiler.settings.starting_region["exit_name"],
+                    }
+                    if hasattr(self.spoiler.settings, "starting_region") and self.spoiler.settings.starting_region
+                    else {}
+                ),
+                "DKPortalLocations": (
+                    self.spoiler.human_entry_doors
+                    if hasattr(self.spoiler, "human_entry_doors") and self.spoiler.human_entry_doors
+                    else {}
+                ),
             }
             return slot_data
 
@@ -1980,6 +1996,16 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("Starting Kongs: " + ", ".join([kong.name for kong in self.spoiler.settings.starting_kong_list]))
             spoiler_handle.write("\n")
+            if hasattr(self.spoiler.settings, "starting_region") and self.spoiler.settings.starting_region:
+                spoiler_handle.write(f"Starting Region: {self.spoiler.settings.starting_region['region_name']} ({self.spoiler.settings.starting_region['exit_name']})")
+                spoiler_handle.write("\n")
+            if hasattr(self.spoiler, "human_entry_doors") and self.spoiler.human_entry_doors:
+                spoiler_handle.write("DK Portal Locations:")
+                spoiler_handle.write("\n")
+                for level, location in self.spoiler.human_entry_doors.items():
+                    if location != "Vanilla":
+                        spoiler_handle.write(f"  {level}: {location}")
+                        spoiler_handle.write("\n")
             spoiler_handle.write("Helm Order: " + ", ".join([Kongs(room).name for room in self.spoiler.settings.helm_order]))
             spoiler_handle.write("\n")
             spoiler_handle.write("K. Rool Order: " + ", ".join([phase.name for phase in self.spoiler.settings.krool_order]))
@@ -2314,6 +2340,10 @@ if baseclasses_loaded:
             else:
                 kong_models = {}
 
+            # Added starting region and DK portal locations
+            starting_region = slot_data.get("StartingRegion", {})
+            dk_portal_locations = slot_data.get("DKPortalLocations", {})
+
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
             relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
@@ -2364,4 +2394,6 @@ if baseclasses_loaded:
             relevant_data["EntranceRando"] = entrance_rando
             relevant_data["GalleonWater"] = galleon_water
             relevant_data["KongModels"] = kong_models
+            relevant_data["StartingRegion"] = starting_region
+            relevant_data["DKPortalLocations"] = dk_portal_locations
             return relevant_data

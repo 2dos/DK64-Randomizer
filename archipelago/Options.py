@@ -1404,6 +1404,38 @@ class SnideTurninsToThePool(DefaultOnToggle):
     display_name = "Add Snide Turnins to the Pool"
 
 
+class RandomStartingLocation(Choice):
+    """Determines if and where the game can start you.
+
+    - off: Start at the normal DK Isle location
+    - isles_only: Start at a random location within DK Isles
+    - all: Start at a random location in any level
+    """
+
+    display_name = "Random Starting Region"
+    option_off = 0
+    option_isles_only = 1
+    option_all = 2
+    default = 0
+
+
+class DKPortalLocationRando(Choice):
+    """Randomize the locations of DK Portals within levels.
+
+    DK Portals are the exits that return you from a level to its lobby.
+    
+    - off: DK Portals remain in their vanilla locations
+    - main_only: DK Portals can only appear in main level areas (not bonus barrels, buildings, etc.)
+    - all: DK Portals can appear anywhere in the level
+    """
+
+    display_name = "DK Portal Location Rando"
+    option_off = 0
+    option_main_only = 1
+    option_all = 2
+    default = 0
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -1500,6 +1532,8 @@ class DK64Options(PerGameCommonOptions):
     krusha_model_mode: KrushaRandom
     krusha_kongs: KrushaKongs
     allowed_bosses: AllowedBosses
+    random_starting_region: RandomStartingLocation
+    dk_portal_location_rando: DKPortalLocationRando
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1563,6 +1597,8 @@ dk64_option_groups: List[OptionGroup] = [
             RemoveBarriers,
             LoadingZoneRando,
             GalleonWaterLevel,
+            RandomStartingLocation,
+            DKPortalLocationRando,
         ],
     ),
     OptionGroup(
