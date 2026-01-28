@@ -285,6 +285,13 @@ void handleState_normal(Gfx **dl_ptr) {
 
 void loop(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
+    if (game_state != GAMESTATE_INIT) {
+        gDPPipeSync(dl++);
+        gDPSetCycleType(dl++, G_CYC_FILL);
+        gDPSetRenderMode(dl++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
+        gSPClearGeometryMode(dl++, G_ZBUFFER);
+        gDPSetScissor(dl++, G_SC_NON_INTERLACE, 0, 0, 319, 239);
+    }
     switch(game_state) {
         case GAMESTATE_INIT:
             handleState_init(&dl);
@@ -298,5 +305,5 @@ void loop(Gfx **dl_ptr) {
         default:
             break;
     }
-    *dl_ptr = &dl[-1];
+    *dl_ptr = dl;
 }

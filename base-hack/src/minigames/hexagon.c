@@ -40,11 +40,19 @@ typedef struct wallStruct {
     float dist;
 } wallStruct;
 
+
+#define WALL_BUFFER_COUNT 100
+#define PATTERN_COUNT 4
+
 ROM_DATA static gameStates game_state = GAMESTATE_INIT;
 ROM_DATA static unsigned char hue_shift_timer = 5;
-ROM_DATA static Vtx center_hex[12];
-ROM_DATA static Vtx background[24];
-ROM_DATA static Vtx player[3];
+__attribute__((aligned(8)))
+ROM_DATA static Vtx center_hex[2][12];
+ROM_DATA static Vtx background[2][24];
+ROM_DATA static Vtx player[2][3];
+ROM_DATA static Vtx hex_walls_vtx[2][WALL_BUFFER_COUNT * 4] = {};
+
+
 ROM_DATA static int identity_mtx[] = {
     0x00010000, 0x00000000,
     0x00000000, 0x00000000,
@@ -73,10 +81,7 @@ ROM_RODATA_NUM static const patternStruct patterns[] = {
     { .walls = { 0, 1, 0, 0, 1, 0 }, .starter = 1, .elements = 1}, // Opposite
     { .walls = { 0, 1, 0, 1, 1, 1 }, .starter = 1, .elements = 1}, // 2 gaps
 };
-#define WALL_BUFFER_COUNT 100
-#define PATTERN_COUNT 4
 ROM_DATA static wallStruct hex_walls[WALL_BUFFER_COUNT] = {};
-ROM_DATA static Vtx hex_walls_vtx[WALL_BUFFER_COUNT * 4] = {};
 ROM_DATA static patternStruct *last_wall = 0;
 ROM_DATA static unsigned char wall_element_counter = 0;
 ROM_DATA static unsigned char summon_timer = 0;
@@ -279,8 +284,6 @@ ROM_DATA static unsigned char hexagon_size = CENTER_HEX_DIST;
 
 
 void playRandomBGM(void) {
-    // playSong(SONG_HELMBOMON, 1.0f);
-    // current_song = SONG_HELMBOMON;
     while (1) {
         int song = getRNGLower31() & 0xFF;
         if (song < SONG_COUNT) {
@@ -297,7 +300,6 @@ void playRandomBGM(void) {
 }
 
 void cancelCurrentSong(void) {
-    // setBaseSlotVolume(0, 0.0f);
     cancelMusic(current_song, 1);
 }
 
@@ -336,8 +338,12 @@ void handleState_init(Gfx **dl_ptr) {
     setBaseSlotVolume(0, 1.0f);
     setBaseSlotVolume(1, 1.0f);
     setBaseSlotVolume(2, 1.0f);
-    *(float*)(0x8075DF88) = 0.0f;
+    *(float*)(0x8075DF88) = 0.0f; // Make LZFadeoutProgress insignificant to the output volume
     *dl_ptr = dl;
+}
+
+void fixFading(void) {
+    *(int*)(0x8075DF88) = 0x3D042108;  // Restore value back to original glory
 }
 
 void handleState_musicCorrect_init(void) {
@@ -372,9 +378,9 @@ void getPoint(short *output, float dist, float angle) {
     float rad = (angle / 180) * 3.1415926535f;
     output[0] = 160 + (dist * dk_cos(rad));
     output[1] = 140 + (dist * dk_sin(rad));
-    output[2] = 0;
 }
 
+ROM_DATA static short backdrop_coords[48] = {}; // Has to be outside function otherwise you get a memset error
 void renderBackdrop(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
     int angle = 0;
@@ -382,10 +388,6 @@ void renderBackdrop(Gfx **dl_ptr) {
     int vtx_offset = 0;
     for (int i = 0; i < 6;i++) {
         for (int j = 0; j < 4; j++) {
-            background[vtx_offset + j].v.cn[0] = hex_colors[COLORSTATE_BACK_0 + color_offset].red;
-            background[vtx_offset + j].v.cn[1] = hex_colors[COLORSTATE_BACK_0 + color_offset].green;
-            background[vtx_offset + j].v.cn[2] = hex_colors[COLORSTATE_BACK_0 + color_offset].blue;
-            background[vtx_offset + j].v.cn[3] = 0xFF;
             int dist = 1;
             if ((j > 0) && (j < 3)) {
                 dist = 300;
@@ -398,88 +400,58 @@ void renderBackdrop(Gfx **dl_ptr) {
                     vtx_angle = angle + 60;
                 }
             }
-            getPoint(&background[vtx_offset + j].v.ob[0], dist, vtx_angle);
+            getPoint(&backdrop_coords[(vtx_offset + j) << 1], dist, vtx_angle);
         }
-        color_offset ^= 1;
         vtx_offset += 4;
         angle += 60;
     }
-    gDPPipeSync(dl++);
-    gDPSetCycleType(dl++, G_CYC_1CYCLE);
-    gDPSetRenderMode(dl++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
-    gDPSetCombineMode(dl++, G_CC_SHADE, G_CC_SHADE);
-    gSPClearGeometryMode(dl++, G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR);
-    gSPVertex(dl++, background, 24, 0);
     for (int i = 0; i < 6; i++) {
-        int offset = i << 2;
-        gSP2Triangles(dl++,
-            offset, offset + 1, offset + 2, 0,
-            offset, offset + 2, offset + 3, 0
-        );
+        dl = drawTriangleSeries(dl, &background[(int)SelectedDLIndex][i << 2], &backdrop_coords[i << 3],
+            hex_colors[COLORSTATE_BACK_0 + color_offset].red,
+            hex_colors[COLORSTATE_BACK_0 + color_offset].green,
+            hex_colors[COLORSTATE_BACK_0 + color_offset].blue, 4);
+        color_offset ^= 1;
     }
-    gDPPipeSync(dl++);
     *dl_ptr = dl;
 }
 
 void renderCenterHexagon(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
+    short center_coords[12] = {};
+    short border_coords[12] = {};
     int angle = 0;
     for (int i = 0; i < 6;i++) {
-        center_hex[i].v.cn[0] = hex_colors[COLORSTATE_CENTERHEX_BORDER].red;
-        center_hex[i].v.cn[1] = hex_colors[COLORSTATE_CENTERHEX_BORDER].green;
-        center_hex[i].v.cn[2] = hex_colors[COLORSTATE_CENTERHEX_BORDER].blue;
-        center_hex[i].v.cn[3] = 0xFF;
-        center_hex[6 + i].v.cn[0] = hex_colors[COLORSTATE_BACK_0].red;
-        center_hex[6 + i].v.cn[1] = hex_colors[COLORSTATE_BACK_0].green;
-        center_hex[6 + i].v.cn[2] = hex_colors[COLORSTATE_BACK_0].blue;
-        center_hex[6 + i].v.cn[3] = 0xFF;
-        getPoint(&center_hex[i].v.ob[0], hexagon_size, angle);
-        getPoint(&center_hex[6 + i].v.ob[0], hexagon_size - CENTER_HEX_BORDER, angle);
+        getPoint(&border_coords[i << 1], hexagon_size, angle);
+        getPoint(&center_coords[i << 1], hexagon_size - CENTER_HEX_BORDER, angle);
         angle += 60;
     }
-    gDPPipeSync(dl++);
-    gDPSetCycleType(dl++, G_CYC_1CYCLE);
-    gDPSetRenderMode(dl++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
-    gDPSetCombineMode(dl++, G_CC_SHADE, G_CC_SHADE);
-    gSPClearGeometryMode(dl++, G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR);
-    gSPVertex(dl++, center_hex, 12, 0);
-    for (int i = 0; i < 2; i++) {
-        int offset = 6 * i;
-        gSP2Triangles(dl++,
-            offset, offset + 1, offset + 2, 0,
-            offset, offset + 2, offset + 3, 0
-        );
-        gSP2Triangles(dl++,
-            offset, offset + 3, offset + 4, 0,
-            offset, offset + 4, offset + 5, 0
-        );
-    }
-    gDPPipeSync(dl++);
+    dl = drawTriangleSeries(dl, &center_hex[(int)SelectedDLIndex][0], &border_coords[0],
+        hex_colors[COLORSTATE_CENTERHEX_BORDER].red,
+        hex_colors[COLORSTATE_CENTERHEX_BORDER].green,
+        hex_colors[COLORSTATE_CENTERHEX_BORDER].blue, 6);
+    dl = drawTriangleSeries(dl, &center_hex[(int)SelectedDLIndex][6], &center_coords[0],
+        hex_colors[COLORSTATE_BACK_0].red,
+        hex_colors[COLORSTATE_BACK_0].green,
+        hex_colors[COLORSTATE_BACK_0].blue, 6);
     *dl_ptr = dl;
 }
 
 void renderPlayer(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
+    short player_points[6] = {};
     int vtx_angle = -PLAYER_ANGLE_DIFF;
     for (int i = 0; i < 3; i++) {
-        player[i].v.cn[0] = hex_colors[COLORSTATE_PLAYER].red;
-        player[i].v.cn[1] = hex_colors[COLORSTATE_PLAYER].green;
-        player[i].v.cn[2] = hex_colors[COLORSTATE_PLAYER].blue;
-        player[i].v.cn[3] = 0xFF;
         int dist = 25;
         if (i == 1) {
             dist += 3;
         }
-        getPoint(&player[i].v.ob[0], dist, angleAdd(player_angle, vtx_angle));
+        getPoint(&player_points[i << 1], dist, angleAdd(player_angle, vtx_angle));
         vtx_angle += PLAYER_ANGLE_DIFF;
     }
-    gDPPipeSync(dl++);
-    gDPSetCycleType(dl++, G_CYC_1CYCLE);
-    gDPSetRenderMode(dl++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
-    gDPSetCombineMode(dl++, G_CC_SHADE, G_CC_SHADE);
-    gSPClearGeometryMode(dl++, G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR);
-    gSPVertex(dl++, player, 3, 0);
-    gSP1Triangle(dl++, 0, 1, 2, 0);
+    dl = drawTriangleSeries(dl, &player[(int)SelectedDLIndex][0], &player_points[0],
+        hex_colors[COLORSTATE_PLAYER].red,
+        hex_colors[COLORSTATE_PLAYER].green,
+        hex_colors[COLORSTATE_PLAYER].blue, 3);
     *dl_ptr = dl;
 }
 
@@ -616,11 +588,8 @@ void renderWalls(Gfx **dl_ptr) {
                 ref_wall->used = 0;
             } else {
                 // Calculate Verts
+                short border_coords[8] = {};
                 for (int j = 0; j < 4; j++) {
-                    hex_walls_vtx[(i << 2) + j].v.cn[0] = hex_colors[COLORSTATE_CENTERHEX_BORDER].red;
-                    hex_walls_vtx[(i << 2) + j].v.cn[1] = hex_colors[COLORSTATE_CENTERHEX_BORDER].green;
-                    hex_walls_vtx[(i << 2) + j].v.cn[2] = hex_colors[COLORSTATE_CENTERHEX_BORDER].blue;
-                    hex_walls_vtx[(i << 2) + j].v.cn[3] = 0xFF;
                     int angle = 60 * ref_wall->wall_index;
                     if (j > 1) {
                         if (angle == 300) {
@@ -633,15 +602,14 @@ void renderWalls(Gfx **dl_ptr) {
                     if ((j > 0) && (j < 3)) {
                         dist += WALL_THICKNESS;
                     }
-                    getPoint(&hex_walls_vtx[(i << 2) + j].v.ob[0], dist, angle);
+                    getPoint(&border_coords[j << 1], dist, angle);
                 }
-                gDPPipeSync(dl++);
-                gDPSetCycleType(dl++, G_CYC_1CYCLE);
-                gDPSetRenderMode(dl++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
-                gDPSetCombineMode(dl++, G_CC_SHADE, G_CC_SHADE);
-                gSPClearGeometryMode(dl++, G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR);
-                gSPVertex(dl++, &hex_walls_vtx[i << 2], 4, 0);
-                gSP2Triangles(dl++, 0, 1, 2, 0, 0, 2, 3, 0);
+                dl = drawTriangleSeries(dl,
+                    &hex_walls_vtx[(int)SelectedDLIndex][(i << 2)],
+                    &border_coords[0],
+                    hex_colors[COLORSTATE_CENTERHEX_BORDER].red, 
+                    hex_colors[COLORSTATE_CENTERHEX_BORDER].green, 
+                    hex_colors[COLORSTATE_CENTERHEX_BORDER].blue, 4);
                 // Collision Detection
                 if (game_state == GAMESTATE_NORMAL) {
                     int player_angle_int = player_angle;
@@ -697,13 +665,28 @@ void renderBoard(Gfx **dl_ptr) {
     *dl_ptr = dl;
 }
 
+int canMove(float angle, float delta) {
+    float test_angle = angleAdd(angle, delta);
+    int new_wall = test_angle / 60.0f;
+    for (int i = 0; i < WALL_BUFFER_COUNT; i++) {
+        wallStruct *ref_wall = &hex_walls[i];
+        if (ref_wall->used && (ref_wall->wall_index == new_wall)) {
+            if (ref_wall->dist <= (33)) {
+                if (ref_wall->dist > (30 - WALL_THICKNESS)) {
+                    return 0;
+                }
+            }
+        }
+    }
+    return 1;
+}
+
 void handleState_normal(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
     float applied_spin = rotation_speed;
     if (p1PressedButtons & B_BUTTON) {
+        fixFading();
         gameExit();
-    } else if (p1PressedButtons & A_BUTTON) {
-        playSong(SONG_KROOLTAKEOFF, 1.0f);
     }
     if (burst_timer > 0) {
         burst_timer--;
@@ -740,9 +723,13 @@ void handleState_normal(Gfx **dl_ptr) {
         }
     }
     if ((MinigameInput->stickX < -0x20) || (MinigameInput->Buttons.d_left)) {
-        player_angle = angleAdd(player_angle, 6.0f);
+        if (canMove(player_angle, 6.0f)) {
+            player_angle = angleAdd(player_angle, 6.0f);
+        }
     } else if ((MinigameInput->stickX > 0x20) || (MinigameInput->Buttons.d_right)) {
-        player_angle = angleAdd(player_angle, -6.0f);
+        if (canMove(player_angle, -6.0f)) {
+          player_angle = angleAdd(player_angle, -6.0f);
+        }
     }
     if (effect_timer > 0) {
         effect_timer--;
@@ -773,8 +760,23 @@ void handleState_gameover(Gfx **dl_ptr) {
     *dl_ptr = dl;
 }
 
+ROM_DATA static Vp viewport = {
+    .vp = {
+        .vscale = { 640, 480, 511, 0 }, // Scale (Screen size * 2)
+        .vtrans = { 640, 480, 511, 0 }, // Translation (Center of screen)
+    }
+};
+
 void loop(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
+   if (game_state != GAMESTATE_INIT) {
+        gDPPipeSync(dl++);
+        gDPSetCycleType(dl++, G_CYC_FILL);
+        gDPSetRenderMode(dl++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
+        gSPClearGeometryMode(dl++, G_ZBUFFER);
+        gDPSetScissor(dl++, G_SC_NON_INTERLACE, 0, 0, 319, 239);
+        gSPViewport(dl++, &viewport);
+    } 
     switch(game_state) {
         case GAMESTATE_INIT:
             handleState_init(&dl);

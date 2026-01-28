@@ -69,10 +69,10 @@ ROM_DATA static char timer_text[4] = "000";
 ROM_DATA static char mine_text[4] = "000";
 
 Gfx *setFillColor(Gfx *dl, int red, int green, int blue) {
-    gDPSetFillColor(dl++, (((red >> 3) & 0x1F) << 11) | (((green >> 3) & 0x1F) << 6) | (((blue >> 3) & 0x1F) << 1) | 1);
+    int color = GPACK_RGBA5551(red, green, blue, 1);
+    gDPSetFillColor(dl++, (color << 16) | color);
     return dl;
 }
-
 void placeMine(void) {
     while (1) {
         int x = ((getRNGLower31() >> 10) & 0xFF) % GRID_DIMENSIONS;
@@ -259,8 +259,10 @@ void renderBoard(Gfx **dl_ptr, int show_progress, int dimension_override) {
     int y_start = getYStart(dim);
     if (show_progress) {
         dl = setFillColor(dl, 0, 0, 0);
+        gDPSetCycleType(dl++, G_CYC_FILL);
         gDPFillRectangle(dl++, x_start, y_start - 14, x_start + 30, y_start - 4);
         int x_end = x_start + (BOX_DIM * GRID_DIMENSIONS);
+        gDPSetCycleType(dl++, G_CYC_FILL);
         gDPFillRectangle(dl++, x_end - 30, y_start - 14, x_end, y_start - 4);
     }
     for (int x = 0; x < dim; x++) {
@@ -280,6 +282,7 @@ void renderBoard(Gfx **dl_ptr, int show_progress, int dimension_override) {
             }
             color = &game_colors[cstate];
             dl = setFillColor(dl, color->red, color->green, color->blue);
+            gDPSetCycleType(dl++, G_CYC_FILL);
             gDPFillRectangle(dl++, x0, y0, x0 + BOX_DIM, y0 + BOX_DIM);
             // Center
             cstate = COLORSTATE_SQUARE;
@@ -295,13 +298,16 @@ void renderBoard(Gfx **dl_ptr, int show_progress, int dimension_override) {
             }
             color = &game_colors[cstate];
             dl = setFillColor(dl, color->red, color->green, color->blue);
+            gDPSetCycleType(dl++, G_CYC_FILL);
             gDPFillRectangle(dl++, x0 + BOX_BORDER, y0 + BOX_BORDER, x0 + (BOX_DIM - BOX_BORDER), y0 + (BOX_DIM - BOX_BORDER));
             if (show_progress) {
                 tile = &tiles[x][y];
                 if (tile->flagged) {
                     dl = setFillColor(dl, 0, 0, 0);
+                    gDPSetCycleType(dl++, G_CYC_FILL);
                     gDPFillRectangle(dl++, x0 + 7, y0 + 4, x0 + 8, y0 + 16);
                     dl = setFillColor(dl, 255, 0, 0);
+                    gDPSetCycleType(dl++, G_CYC_FILL);
                     gDPFillRectangle(dl++, x0 + 9, y0 + 4, x0 + 14, y0 + 8);
                 }
             }
@@ -361,9 +367,15 @@ void handleState_title(Gfx **dl_ptr) {
         const rgb *color = &game_colors[COLORSTATE_NUM1 + index];
         renderText(&dl, x0, y0, color->red, color->green, color->blue, 0xFF, &title_text[i << 1]);
         if (i == 3) {
+            // Start
 	        gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+            gSPTexture(dl++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
+            gDPSetTexturePersp(dl++, G_TP_NONE);
             dl = printText(dl, (x0 + 6) << 2, ((y0 - 2) + BOX_DIM) << 2, 0.65f, "g");
+            // B Button
 	        gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+            gSPTexture(dl++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
+            gDPSetTexturePersp(dl++, G_TP_NONE);
             dl = printText(dl, (x0 + 6) << 2, ((y0 - 2) + (2 * BOX_DIM)) << 2, 0.65f, "b");
         } else if ((i > 3) && (i < 8)) {
             color = &game_colors[COLORSTATE_NUM1 + (7 - index)];
@@ -468,10 +480,10 @@ void loop(Gfx **dl_ptr) {
     if (game_state != GAMESTATE_INIT) {
         gDPPipeSync(dl++);
         gDPSetCycleType(dl++, G_CYC_FILL);
-        gDPSetRenderMode(dl++, G_RM_NOOP, G_RM_NOOP2);
+        gDPSetRenderMode(dl++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
         gSPClearGeometryMode(dl++, G_ZBUFFER);
-        dl = setFillColor(dl, 0x80, 0x80, 0x80);
         gDPSetScissor(dl++, G_SC_NON_INTERLACE, 0, 0, 319, 239);
+        dl = setFillColor(dl, 0x80, 0x80, 0x80);
         gDPFillRectangle(dl++, 0, 0, 319, 239);
     }
     switch(game_state) {

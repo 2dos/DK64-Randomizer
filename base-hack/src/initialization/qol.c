@@ -20,6 +20,9 @@ void disableAntiAliasing(void) {
     } else if (FrameReal < 230) {
         disable_antialiasing = 1;
     }
+    if ((CutsceneActive == 3) || (CutsceneActive == 4)) {
+        disable_antialiasing = 1;
+    }
     if (disable_antialiasing) {
         *(int*)(0x8001013C) = 0x3216;
         *(int*)(0x8001016C) = 0x3216;

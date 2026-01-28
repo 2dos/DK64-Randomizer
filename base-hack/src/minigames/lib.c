@@ -27,7 +27,8 @@ Gfx* drawScreenRect(Gfx* dl, int x1, int y1, int x2, int y2, int red, int green,
 	gDPSetCycleType(dl++, G_CYC_FILL);
 	gDPSetRenderMode(dl++, G_RM_NOOP, G_RM_NOOP2);
 	gSPClearGeometryMode(dl++, G_ZBUFFER);
-	gDPSetFillColor(dl++, ((red & 0x1F) << 11) | ((green & 0x1F) << 6) | ((blue & 0x1F) << 1) | (alpha & 0x1));
+	int color = ((red & 0x1F) << 11) | ((green & 0x1F) << 6) | ((blue & 0x1F) << 1) | (alpha & 0x1);
+	gDPSetFillColor(dl++, (color << 16) | color);
 	gDPSetScissor(dl++, G_SC_NON_INTERLACE, 10, 10, 309, 229);
 	gDPFillRectangle(dl++, x1 >> 2, y1 >> 2, x2 >> 2, y2 >> 2);
 	return dl;
@@ -39,23 +40,43 @@ Gfx *drawTriangleSeries(Gfx *dl, Vtx *vertex_write, short *coordinates, int red,
     // Triangle series must be a convex polygon
     // Point count cannot exceed 32 vertices
     for (int i = 0; i < point_count; i++) {
+        // Coords
+        vertex_write[i].v.ob[0] = coordinates[i << 1];
+        vertex_write[i].v.ob[1] = coordinates[(i << 1) + 1];
+        vertex_write[i].v.ob[2] = 0;
+        // Misc
+        vertex_write[i].v.flag = 0;
+        vertex_write[i].v.tc[0] = 0;
+        vertex_write[i].v.tc[1] = 0;
+        // Color
         vertex_write[i].v.cn[0] = red;
         vertex_write[i].v.cn[1] = green;
         vertex_write[i].v.cn[2] = blue;
         vertex_write[i].v.cn[3] = 0xFF;
-        vertex_write[i].v.ob[0] = coordinates[i << 1];
-        vertex_write[i].v.ob[1] = coordinates[(i << 1) + 1];
-        vertex_write[i].v.ob[2] = 0;
     }
+    __osWritebackDCache(vertex_write, sizeof(Vtx) * point_count);
     gDPPipeSync(dl++);
     gDPSetCycleType(dl++, G_CYC_1CYCLE);
-    gDPSetRenderMode(dl++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
     gDPSetCombineMode(dl++, G_CC_SHADE, G_CC_SHADE);
-    gSPClearGeometryMode(dl++, G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR);
-    gSPVertex(dl++, vertex_write, point_count, 0);
-    for (int i = 0; i < (point_count - 2); i++) {
-        gSP1Triangle(dl++, 0, i + 1, i + 2, 0);
+    gDPSetRenderMode(dl++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
+    gSPClearGeometryMode(dl++, 0xFFFFFFFF);
+    gSPSetGeometryMode(dl++, G_SHADE | G_SHADING_SMOOTH);
+    gSPSegment(dl++, 0x0, 0x0);
+    gSPVertex(dl++, (int)(vertex_write) & 0x7FFFFFFF, point_count, 0);
+    int tri_count = point_count - 2;
+    int offset_index = 0;
+    while (tri_count > 0) {
+        // if (tri_count == 1) {
+            gSP1Triangle(dl++, 0, offset_index + 1, offset_index + 2, 0);
+            tri_count--;
+            offset_index++;
+        // } else {
+        //     gSP2Triangles(dl++, 0, offset_index + 1, offset_index + 2, 0, 0, offset_index + 2, offset_index + 3, 0);
+        //     tri_count -= 2;
+        //     offset_index += 2;
+        // }
     }
+    gDPPipeSync(dl++);
     return dl;
 }
 
