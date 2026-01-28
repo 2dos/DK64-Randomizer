@@ -1963,8 +1963,14 @@ if baseclasses_loaded:
                 },
                 "StartingRegion": (
                     {
-                        "region": self.spoiler.settings.starting_region["region"].name if hasattr(self.spoiler.settings.starting_region["region"], "name") else str(self.spoiler.settings.starting_region["region"]),
-                        "map": self.spoiler.settings.starting_region["map"].name if hasattr(self.spoiler.settings.starting_region["map"], "name") else str(self.spoiler.settings.starting_region["map"]),
+                        "region": (
+                            self.spoiler.settings.starting_region["region"].name
+                            if hasattr(self.spoiler.settings.starting_region["region"], "name")
+                            else str(self.spoiler.settings.starting_region["region"])
+                        ),
+                        "map": (
+                            self.spoiler.settings.starting_region["map"].name if hasattr(self.spoiler.settings.starting_region["map"], "name") else str(self.spoiler.settings.starting_region["map"])
+                        ),
                         "exit": self.spoiler.settings.starting_region["exit"],
                         "region_name": self.spoiler.settings.starting_region["region_name"],
                         "exit_name": self.spoiler.settings.starting_region["exit_name"],
@@ -1972,11 +1978,7 @@ if baseclasses_loaded:
                     if hasattr(self.spoiler.settings, "starting_region") and self.spoiler.settings.starting_region
                     else {}
                 ),
-                "DKPortalLocations": (
-                    self.spoiler.human_entry_doors
-                    if hasattr(self.spoiler, "human_entry_doors") and self.spoiler.human_entry_doors
-                    else {}
-                ),
+                "DKPortalLocations": (self.spoiler.human_entry_doors if hasattr(self.spoiler, "human_entry_doors") and self.spoiler.human_entry_doors else {}),
             }
             return slot_data
 

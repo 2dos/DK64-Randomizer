@@ -179,7 +179,7 @@ class StartingMoveCount(Range):
 
 class KroolShuffle(Choice):
     """Whether or not K. Rool can be fightable in T&S Bosses and vice versa.
-    
+
     "off": K. Rool can only appear in the final fight.
     "krool_only": K. Rool can appear in T&S bosses, but T&S can't appear in the final fight.
     "full_shuffle": K. Rool and T&S bosses can be shuffled between eachother.
@@ -193,6 +193,7 @@ class KroolShuffle(Choice):
 
     default = 0
 
+
 class AllowedBosses(OptionList):
     """Determines which bosses are in the pool. If not enough bosses are selected, it will fill the pool with duplicate bosses"""
 
@@ -200,6 +201,7 @@ class AllowedBosses(OptionList):
 
     valid_keys: {"Armydillo 1", "Dogadon 1", "Mad Jack", "Pufftoss", "Dogadon 2", "Armydillo 2", "Kutout", "DK phase", "Diddy Phase", "Lanky Phase", "Tiny Phase", "Chunky Phase"}
     default = ["Armydillo 1", "Dogadon 1", "Mad Jack", "Pufftoss", "Dogadon 2", "Armydillo 2", "Kutout", "DK phase", "Diddy Phase", "Lanky Phase", "Tiny Phase", "Chunky Phase"]
+
 
 class TrapFillPercentage(Range):
     """Replace a percentage of junk items in the item pool with random traps."""
@@ -1423,7 +1425,7 @@ class DKPortalLocationRando(Choice):
     """Randomize the locations of DK Portals within levels.
 
     DK Portals are the exits that return you from a level to its lobby.
-    
+
     - off: DK Portals remain in their vanilla locations
     - main_only: DK Portals can only appear in main level areas (not bonus barrels, buildings, etc.)
     - all: DK Portals can appear anywhere in the level
@@ -1615,7 +1617,7 @@ dk64_option_groups: List[OptionGroup] = [
             PuzzleRando,
             KrushaRandom,
             KrushaKongs,
-            AllowedBosses
+            AllowedBosses,
         ],
     ),
     OptionGroup(
