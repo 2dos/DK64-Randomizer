@@ -5,8 +5,8 @@ opentelemetry-instrumentation-requests
 opentelemetry-instrumentation-redis
 redis
 rq
-apscheduler==3.11.0
-flask-cors==6.0.1
+apscheduler==3.11.2
+flask-cors==6.0.2
 requests
 cryptography==45.0.7
 pyopenssl==25.3.0
