@@ -643,7 +643,9 @@ EMULATOR_CONFIGS = {
     Emulators.ParallelLauncher: EmulatorInfo(
         Emulators.ParallelLauncher, "Parallel Launcher", "retroarch", True, "parallel_n64_next_libretro.dll", True, 0x845000, 0xD56000, linux_dll_name="parallel_n64_next_libretro.so"
     ),
-    Emulators.ParallelLauncher903: EmulatorInfo(Emulators.ParallelLauncher903, "Parallel Launcher (9.0.3+)", "retroarch", True, "parallel_n64_next_libretro.dll", True, 0x1400000, 0x1800000, linux_dll_name="parallel_n64_next_libretro.so"),
+    Emulators.ParallelLauncher903: EmulatorInfo(
+        Emulators.ParallelLauncher903, "Parallel Launcher (9.0.3+)", "retroarch", True, "parallel_n64_next_libretro.dll", True, 0x1400000, 0x1800000, linux_dll_name="parallel_n64_next_libretro.so"
+    ),
     Emulators.RetroArch: EmulatorInfo(
         Emulators.RetroArch, "RetroArch", "retroarch", True, "mupen64plus_next_libretro.dll", True, 0, 0xFFFFFF, range_step=4, linux_dll_name="mupen64plus_next_libretro.so"
     ),
