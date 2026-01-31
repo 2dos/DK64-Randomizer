@@ -9,7 +9,7 @@ jobs:
     if: ${{ !contains(github.actor, '[bot]') }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup python
         uses: actions/setup-python@v6.0.0
