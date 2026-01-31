@@ -54,8 +54,6 @@ void qualityOfLife_fixes(void) {
 	}
 }
 
-int force_enable_diving_timer = 0;
-
 void dropWrapper(void* actor) {
 	clearTagSlide(actor);
 	force_enable_diving_timer = ObjectModel2Timer;
@@ -85,14 +83,14 @@ void playTransformationSong(songs song, float volume) {
 	playSong(song, volume);
 }
 
-static unsigned short previous_total_cbs = 0xFFFF;
-static unsigned char previous_world = 0xFF;
+ROM_DATA static unsigned short previous_total_cbs = 0xFFFF;
+ROM_DATA static unsigned char previous_world = 0xFF;
 
 #define SPRITE_ALPHA_OUT 8
 #define SPRITE_ALPHA_IN 44
 #define SPRITE_ALPHA_END 52
 
-static unsigned char ding_sprite_timer = 0;
+ROM_DATA static unsigned char ding_sprite_timer = 0;
 
 int hasEnoughCBs(void) {
 	int world = getWorld(CurrentMap, 1);
@@ -117,7 +115,7 @@ int shouldDing(void) {
 	return 0;
 }
 
-Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, int width, int height, codecs codec) {
+Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, int width, int height, codecs codec, int red, int green, int blue) {
 	if (*timer == 0) {
 		return dl;
 	}
@@ -144,8 +142,14 @@ Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, i
 	}
 	dl = initDisplayList(dl);
 	gDPSetRenderMode(dl++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-	gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, alpha_i);
-	gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+	gDPSetPrimColor(dl++, 0, 0, red, green, blue, alpha_i);
+	gDPSetCombineLERP(
+        dl++,
+        TEXEL0, 0, PRIMITIVE, 0,
+        TEXEL0, 0, PRIMITIVE, 0,
+        TEXEL0, 0, PRIMITIVE, 0,
+        TEXEL0, 0, PRIMITIVE, 0
+    );
 	gDPSetTextureFilter(dl++, G_TF_POINT);
 	int p2 = 0;
 	if (codec == IA8) {
@@ -155,7 +159,7 @@ Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, i
 }
 
 Gfx* renderDingSprite(Gfx* dl) {
-	return renderIndicatorSprite(dl, 114, !hasEnoughCBs(), &ding_sprite_timer, 48, 42, RGBA16);
+	return renderIndicatorSprite(dl, 114, !hasEnoughCBs(), &ding_sprite_timer, 48, 42, RGBA16, 0xFF, 0xFF, 0xFF);
 }
 
 void initDingSprite(void) {
@@ -343,7 +347,7 @@ void fixChimpyCamBug(void) {
 void movePelletWrapper(actorData* actor) {
 	if (!(CurrentActorPointer_0->obj_props_bitfield & 0x10)) {
 		if ((Player->control_state == 2) && (Player->was_gun_out == 1)) {
-			int dist = getScreenDist(screenCenterX >> 1, screenCenterY >> 1);
+			int dist = getScreenDist(screenWidth >> 1, screenHeight >> 1);
 			int cap = getDistanceCap(dist);
 			if ((cap == 0) || (cap == 996)) {
 				// Lets not get into a div-by-0 mess
@@ -367,14 +371,14 @@ void movePelletWrapper(actorData* actor) {
 	unkProjectileCode_2(actor);
 }
 
-static unsigned char good_gamemode_list[] = {
+ROM_RODATA_NUM static const unsigned char good_gamemode_list[] = {
 	GAMEMODE_ADVENTURE,
 	GAMEMODE_RAP,
 	GAMEMODE_SNIDEGAMES,
 };
 
 void fixHelmTimerDisable(void) {
-	if (inU8List(Gamemode, &good_gamemode_list, 3)) {
+	if (inU8List(Gamemode, &good_gamemode_list[0], 3)) {
 		return;
 	}
 	HelmTimerShown = 0;

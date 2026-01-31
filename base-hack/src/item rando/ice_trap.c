@@ -10,7 +10,6 @@
  */
 #include "../../include/common.h"
 
-ICE_TRAP_TYPES ice_trap_queued = ICETRAP_OFF;
 
 typedef enum ice_trap_map_state {
     ICETRAPREQ_BANNED,
@@ -18,7 +17,7 @@ typedef enum ice_trap_map_state {
     ICETRAPREQ_ALLOW,
 } ice_trap_map_state;
 
-static const char banned_trap_maps[] = {
+ROM_DATA static char banned_trap_maps[] = {
     /*.test_map =*/ ICETRAPREQ_ALLOW,
     /*.funkys_store =*/ ICETRAPREQ_BANNED, // Reason: Shop
     /*.dk_arcade =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
@@ -241,7 +240,7 @@ static const char banned_trap_maps[] = {
     /*.arcade_100m =*/ ICETRAPREQ_BANNED, // Reason: Arcade
     /*.jetpac_rocket = */ ICETRAPREQ_BANNED, // Reason: Jetpac
 };
-static const movement_bitfield banned_trap_movement = {
+ROM_DATA static movement_bitfield banned_trap_movement = {
     .null_state = 0,
     .idle_enemy = 0,
     .first_person_camera = 0,
@@ -423,8 +422,8 @@ void trapPlayer_New(void) {
     }
 }
 
-static const float bone_slow_scales[] = {0.4f, 0.38f, 0.3f};
-static const char bone_slow_bones[] = {1, 5, 6};
+ROM_DATA static float bone_slow_scales[] = {0.4f, 0.38f, 0.3f};
+ROM_DATA static char bone_slow_bones[] = {1, 5, 6};
 
 typedef struct button_ice_struct {
     /* 0x000 */ unsigned char ice_trap_type;
@@ -435,7 +434,7 @@ typedef struct button_ice_struct {
     /* 0x00A */ char padA[2];
 } button_ice_struct;
 
-static button_ice_struct button_ice_data[] = {
+ROM_DATA static button_ice_struct button_ice_data[] = {
     {.ice_trap_type = ICETRAP_DISABLEA, .button_btf = CONT_A, .button_sprite = (void*)0x80720CF0},
     {.ice_trap_type = ICETRAP_DISABLEB, .button_btf = CONT_B, .button_sprite = (void*)0x80720D14},
     {.ice_trap_type = ICETRAP_DISABLEZ, .button_btf = CONT_G, .button_sprite = (void*)0x80720D38},
@@ -463,7 +462,7 @@ void resetAnimalButtons(void) {
     cc_disabler_animals();
 }
 
-static ice_trap_timer_struct ice_trap_timers[] = {
+ROM_DATA static ice_trap_timer_struct ice_trap_timers[] = {
     {.timer = 0, .active=0, .disable_func=&resetScreenFlip}, // Flip
     {.timer = 0, .active=1, .disable_func=&cc_disabler_paper, .enable_func=&cc_enabler_paper}, // Paper
     {.timer = 0, .active=0, .disable_func=&cc_disabler_ice}, // Ice
@@ -473,10 +472,10 @@ static ice_trap_timer_struct ice_trap_timers[] = {
 };
 
 
-static unsigned short flip_timer = 0;
-static unsigned short slip_timers[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-static unsigned short ice_floor_timer = 0;
-static unsigned short paper_timer = 0;
+ROM_DATA static unsigned short flip_timer = 0;
+ROM_DATA static unsigned short slip_timers[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+ROM_DATA static unsigned short ice_floor_timer = 0;
+ROM_DATA static unsigned short paper_timer = 0;
 
 void renderSpritesOnPlayer(sprite_data_struct *sprite, int count, int duration) {
     float repeat_count = (float)duration / (float)sprite->image_count;
@@ -488,6 +487,19 @@ void renderSpritesOnPlayer(sprite_data_struct *sprite, int count, int duration) 
     }
 }
 
+void wipeReplenishibles(void) {
+    CollectableBase.Crystals = 0;
+    CollectableBase.Film = 0;
+    CollectableBase.HomingAmmo = 0;
+    CollectableBase.InstrumentEnergy = 0;
+    CollectableBase.Oranges = 0;
+    CollectableBase.StandardAmmo = 0;
+    for (int i = 0; i < 5; i++) {
+        MovesBase[i].instrument_energy = 0;
+    }
+    displaySpriteAtXYZ((void*)(0x8071FE08), 1.0f, Player->xPos, Player->yPos + 6.0f, Player->zPos);
+}
+
 void initIceTrap(void) {
     /**
      * @brief Initialize an ice trap
@@ -496,17 +508,17 @@ void initIceTrap(void) {
         case ICETRAP_BUBBLE:
         case ICETRAP_SUPERBUBBLE:
             trapPlayer_New();
-            Player->trap_bubble_timer = 200;
+            Player->trap_bubble_timer = SECONDS_TO_F(7);
             break;
         case ICETRAP_REVERSECONTROLS:
-            renderSpritesOnPlayer(0x807211D0, 3, 240);
+            renderSpritesOnPlayer((sprite_data_struct*)0x807211D0, 3, SECONDS_TO_F(8));
             Player->strong_kong_ostand_bitfield |= 0x80;
-            Player->trap_bubble_timer = 240;
+            Player->trap_bubble_timer = SECONDS_TO_F(8);
             break;
         case ICETRAP_SLOWED:
-            renderSpritesOnPlayer(0x80720E2C, 3, 240);
+            renderSpritesOnPlayer((sprite_data_struct*)0x80720E2C, 3, SECONDS_TO_F(8));
             Player->strong_kong_ostand_bitfield |= 0x08000000;
-            Player->trap_bubble_timer = 240;
+            Player->trap_bubble_timer = SECONDS_TO_F(8);
             break;
         case ICETRAP_DISABLEA:
         case ICETRAP_DISABLEB:
@@ -514,9 +526,9 @@ void initIceTrap(void) {
         case ICETRAP_DISABLECU:
             {
                 button_ice_struct *data = &button_ice_data[ice_trap_queued - ICETRAP_DISABLEA];
-                data->ice_trap_timer = 240;
+                data->ice_trap_timer = SECONDS_TO_F(8);
                 trap_enabled_buttons &= ~data->button_btf;
-                renderSpritesOnPlayer(data->button_sprite, 3, 240);
+                renderSpritesOnPlayer((sprite_data_struct*)data->button_sprite, 3, SECONDS_TO_F(8));
             }
             break;
         case ICETRAP_GETOUT:
@@ -525,28 +537,19 @@ void initIceTrap(void) {
             }
             break;
         case ICETRAP_DRY:
-            CollectableBase.Crystals = 0;
-            CollectableBase.Film = 0;
-            CollectableBase.HomingAmmo = 0;
-            CollectableBase.InstrumentEnergy = 0;
-            CollectableBase.Oranges = 0;
-            CollectableBase.StandardAmmo = 0;
-            for (int i = 0; i < 5; i++) {
-                MovesBase[i].instrument_energy = 0;
-            }
-            displaySpriteAtXYZ((void*)(0x8071FE08), 1.0f, Player->xPos, Player->yPos + 6.0f, Player->zPos);
+            wipeReplenishibles();
             break;
         case ICETRAP_FLIP:
             *(unsigned char*)(0x80010520) = 0xBF;
-            ice_trap_timers[0].timer = 240;
+            ice_trap_timers[0].timer = SECONDS_TO_F(8);
             break;
         case ICETRAP_ICEFLOOR:
             cc_enabler_ice();
-            ice_trap_timers[2].timer = 450;
+            ice_trap_timers[2].timer = SECONDS_TO_F(15);
             break;
         case ICETRAP_PAPER:
             cc_enabler_paper();
-            ice_trap_timers[1].timer = 450;
+            ice_trap_timers[1].timer = SECONDS_TO_F(15);
             break;
         case ICETRAP_SLIP:
         case ICETRAP_SLIP_INSTANT:
@@ -555,7 +558,7 @@ void initIceTrap(void) {
                     if (ice_trap_queued == ICETRAP_SLIP_INSTANT) {
                         slip_timers[i] = 1;
                     } else {
-                        slip_timers[i] = (getRNGLower31() & 0x3FF) + 150; // Some time between 5s and 39.1s
+                        slip_timers[i] = (getRNGLower31() & 0x3FF) + SECONDS_TO_F(5); // Some time between 5s and 39.1s
                     }
                     break;
                 }
@@ -563,24 +566,25 @@ void initIceTrap(void) {
             break;
         case ICETRAP_ANIMALS:
             cc_enabler_animals();
-            ice_trap_timers[3].timer = 450;
+            ice_trap_timers[3].timer = SECONDS_TO_F(15);
             if (Player->characterID == 8) {
                 // Rambi - trigger B button disable trap
                 button_ice_struct *data = &button_ice_data[1];
-                data->ice_trap_timer = 450;
+                data->ice_trap_timer = SECONDS_TO_F(15);
                 trap_enabled_buttons &= ~data->button_btf;
-                renderSpritesOnPlayer(data->button_sprite, 3, 450);
+                renderSpritesOnPlayer(data->button_sprite, 3, SECONDS_TO_F(15));
             }
             break;
         case ICETRAP_ROCKFALL:
-            ice_trap_timers[5].timer = 300;
+            ice_trap_timers[5].timer = SECONDS_TO_F(10);
             break;
         case ICETRAP_TAG:
             cc_enabler_tag();
             if (CCEffectData) {
                 CCEffectData->disable_tag_anywhere = CC_ENABLED;
             }
-            ice_trap_timers[4].timer = 450;
+            ice_trap_timers[4].timer = SECONDS_TO_F(15);
+        default:
             break;
     }
     playSFX(0x2D4); // K Rool Laugh
@@ -609,7 +613,7 @@ void slipPeelCode(void) {
 }
 
 void resetIceTrapButtons(void) {
-    for (int i = 0; i < sizeof(button_ice_data)/sizeof(button_ice_struct); i++) {
+    for (unsigned int i = 0; i < sizeof(button_ice_data)/sizeof(button_ice_struct); i++) {
         button_ice_data[i].ice_trap_timer = 0;
     }
     flip_timer = 0;
@@ -648,14 +652,26 @@ int canLoadIceTrap(ICE_TRAP_TYPES trap_type) {
         return 0;
     }
     // Check Control State
-    if (getBitArrayValue(&banned_trap_movement, Player->control_state)) {
+    if (getBitArrayValue((unsigned char*)&banned_trap_movement, Player->control_state)) {
         return 0;
+    }
+    if (trap_type == ICETRAP_GETOUT) {
+        if (CCEffectData) {
+            if (CCEffectData->get_out == CC_ENABLED) {
+                return 0;
+            }
+        }
+    }
+    if (trap_type == ICETRAP_ANIMALS) {
+        if (Player->characterID >= 6) {
+            return 0;
+        }
     }
     return 1;
 }
 
 void handleIceTrapButtons(void) {
-    for (int i = 0; i < sizeof(button_ice_data)/sizeof(button_ice_struct); i++) {
+    for (unsigned int i = 0; i < sizeof(button_ice_data)/sizeof(button_ice_struct); i++) {
         button_ice_struct *data = &button_ice_data[i];
         if (data->ice_trap_timer > 0) {
             data->ice_trap_timer--;
@@ -720,34 +736,24 @@ int isBannedTrapMap(maps map, ICE_TRAP_TYPES type) {
     return 1;
 }
 
-static short ice_trap_models[] = {0x103, 0x127, 0x128};
-
-void setFairyMusicSpeed(int slot, int is_trap) {
-    int tempo = 480000;
-    if (is_trap) {
-        tempo = 800000; // 480k (default) / 0.6
-    }
-    alCSPSetTempo(compactSequencePlayers[slot], tempo);
-}
+ROM_DATA static short ice_trap_models[] = {0x103, 0x127, 0x128};
 
 int isTrapModel(void) {
-    return inShortList(CurrentActorPointer_0->actor_model, &ice_trap_models, sizeof(ice_trap_models) >> 1);
+    return inShortList(CurrentActorPointer_0->actor_model, &ice_trap_models[0], sizeof(ice_trap_models) >> 1);
 }
 
 void cancelIceTrapSong(int song, int unk0) {
-    cancelMusic(song, unk0);
-    if (isTrapModel()) {
-        int slot = getSongWriteSlot(song);
-        setFairyMusicSpeed(slot, 0);
-    }
+    // A more time efficient method is theorethically possible (read which song is playing in the channel)
+    // but we're talking like maybe half a microsecond here, and this is more readable imo
+    cancelMusic(SONG_FAIRYNEARBY, unk0);
+    cancelMusic(SONG_FAKEFAIRYNEARBY, unk0);
 }
 
 void playIceTrapSong(int song, float volume) {
-    playSong(song, volume);
-    int slot = getSongWriteSlot(song);
     if (isTrapModel()) {
-        setFairyMusicSpeed(slot, 1);
+        song = SONG_FAKEFAIRYNEARBY;
     }
+    playSong(song, volume);
 }
 
 void callIceTrap(void) {

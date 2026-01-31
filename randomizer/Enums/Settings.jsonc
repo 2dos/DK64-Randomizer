@@ -229,6 +229,19 @@
   },
 
   /*
+    KroolInBossPool:
+    - Determines how K. Rool phases are shuffled with regular bosses.
+    - off: K. Rool phases remain in the final fight only. Regular bosses remain in T&S portals only.
+    - krool_only: K. Rool phases can appear as T&S bosses, but the final fight only has K. Rool phases.
+    - full_shuffle: K. Rool phases and regular bosses can be shuffled bidirectionally between T&S portals and the final fight.
+  */
+  "KroolInBossPool": {
+    "off": 0,
+    "krool_only": 1,
+    "full_shuffle": 2
+  },
+
+  /*
     ExcludedSongs:
     - Determines the types of songs excluded.
     - wrinkly: Excludes Wrinkly songs.
@@ -494,6 +507,23 @@
   },
 
   /*
+    IceTrapModel:
+      The Model type for Ice Traps
+    - Simple: Only GB Ice Traps will appear
+    - Complex: Any Ice Trap Model will appear
+    - Fair: All ice traps except keys will appear
+  */
+  "IceTrapModel": {
+    "simple": 0,
+    "complex": 1
+  },
+  "IceTrapModel2": {
+    "simple": 0,
+    "complex": 1,
+    "fair": 2
+  },
+
+  /*
     ItemRandoListSelected:
     - Item categories that may be randomized.
   */
@@ -544,7 +574,8 @@
     "dummyitem_halfmedal": 44,
     "racebanana": 45,
     "gauntletbanana": 46,
-    "blueprintbanana": 47
+    "blueprintbanana": 47,
+    "sniderewards": 48
   },
 
   "ItemRandoFiller": {
@@ -609,6 +640,18 @@
     "candy": 6,
     "funky": 7,
     "disco_donkey": 8
+  },
+
+  /*
+    KongModelMode:
+    - Model attribution mode for the Kongs.
+  */
+  "KongModelMode": {
+    "none": 0,
+    "manual": 1,
+    "random_one": 2,
+    "sometimes_one": 3,
+    "random_all": 4
   },
 
   /*
@@ -827,6 +870,15 @@
     "medium_random": 2,
     "hard_random": 3
   },
+  
+  /*
+    RandomStartingRegion:
+  */
+  "RandomStartingRegion": {
+    "off": 0,
+    "isles_only": 1,
+    "all": 2
+  },
 
   /*
     RemovedBarriersSelected:
@@ -849,7 +901,9 @@
     "caves_igloo_pads": 14,
     "caves_ice_walls": 15,
     "galleon_treasure_room": 16,
-    "aztec_tiny_temple_ice": 17
+    "aztec_tiny_temple_ice": 17,
+    "helm_star_gates": 18,
+    "helm_punch_gates": 19
   },
 
   /*
@@ -972,7 +1026,8 @@
     "lanky": 2,
     "tiny": 3,
     "chunky": 4,
-    "random": 5
+    "random": 5,
+    "any": 6
   },
 
   /*
@@ -1031,7 +1086,9 @@
     "dk_rap_items": 16,
     "req_bosses": 17,
     "req_bonuses": 18,
-    "krools_challenge": 19
+    "krools_challenge": 19,
+    "kill_the_rabbit": 20,
+    "get_keys_3_and_8": 21
   },
 
   /*
@@ -1363,7 +1420,15 @@
     "alt_minecart_mayhem": 286,
     "trap_weight_animal": 287,
     "trap_weight_rockfall": 288,
-    "trap_weight_disabletag": 289
+    "trap_weight_disabletag": 289,
+    "random_starting_region_new": 290,
+    "kong_model_mode": 291,
+    "win_condition_spawns_ship": 292,
+    "ice_trap_model": 293,
+    "krool_in_boss_pool_v2": 294,
+    "no_consumable_upgrades": 295,
+    "bosses_selected": 296,
+    "ice_trap_model_v2": 297
   },
   /*
     SettingsStringDataType:
@@ -1419,6 +1484,8 @@
     "helm_room_bonus_count": { "obj": "HelmBonuses" },
     "helm_setting": { "obj": "HelmSetting" },
     "ice_trap_frequency": { "obj": "IceTrapFrequency" },
+    "ice_trap_model": { "obj": "IceTrapModel" },
+    "ice_trap_model_v2": { "obj": "IceTrapModel2" },
     "item_rando_list_selected": { "obj": "ItemRandoListSelected" },
     "kasplat_rando_setting": { "obj": "KasplatRandoSetting" },
     "krusha_ui": { "obj": "KrushaUi" },
@@ -1429,6 +1496,7 @@
     "minigames_list_selected": { "obj": "MinigamesListSelected" },
     "cb_rando_list_selected": { "obj": "Levels" },
     "misc_changes_selected": { "obj": "MiscChangesSelected" },
+    "bosses_selected": { "obj": "Maps" },
     "more_cutscene_skips": { "obj": "ExtraCutsceneSkips" },
     "move_rando": { "obj": "MoveRando" },
     "music_filtering_selected": { "obj": "MusicFilters" },
@@ -1454,6 +1522,7 @@
     "pearl_mermaid_behavior": { "obj": "RandomRequirement" },
     "fairy_queen_behavior": { "obj": "RandomRequirement" },
     "cb_medal_behavior": { "obj": "RandomRequirement" },
+    "random_starting_region_new": { "obj": "RandomStartingRegion" },
     "cb_medal_behavior_new": { "obj": "CBRequirement" },
     "wrinkly_hints": { "obj": "WrinklyHints" },
     "spoiler_hints": { "obj": "SpoilerHints" },
@@ -1465,6 +1534,7 @@
     "kong_model_lanky": { "obj": "KongModels" },
     "kong_model_tiny": { "obj": "KongModels" },
     "kong_model_chunky": { "obj": "KongModels" },
+    "kong_model_mode": { "obj": "KongModelMode" },
     "chunky_phase_slam_req": { "obj": "SlamRequirement" },
     "puzzle_rando_difficulty": { "obj": "PuzzleRando" },
     "progressive_hint_item": { "obj": "ProgressiveHintItem" },
@@ -1516,7 +1586,8 @@
     "switchsanity_switch_japes_free_kong": { "obj": "SwitchsanityKong" },
     "switchsanity_switch_aztec_free_tiny": { "obj": "SwitchsanityKong" },
     "switchsanity_switch_aztec_free_lanky": { "obj": "SwitchsanityKong" },
-    "switchsanity_switch_factory_free_kong": { "obj": "SwitchsanityKong" }
+    "switchsanity_switch_factory_free_kong": { "obj": "SwitchsanityKong" },
+    "krool_in_boss_pool_v2": { "obj": "KroolInBossPool" }
   },
   // ALL SETTINGS NEED AN ENTRY HERE!
   // This maps settings to the data types that will be used to encode them in the
@@ -1721,8 +1792,10 @@
     "SettingsStringEnum.kong_model_lanky": { "obj": "KongModels" },
     "SettingsStringEnum.kong_model_tiny": { "obj": "KongModels" },
     "SettingsStringEnum.kong_model_chunky": { "obj": "KongModels" },
+    "SettingsStringEnum.kong_model_mode": { "obj": "KongModelMode" },
     "SettingsStringEnum.kong_rando": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.krool_access": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.win_condition_spawns_ship": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.krool_key_count": {
       "obj": "SettingsStringDataType.var_int"
     },
@@ -1758,6 +1831,9 @@
       "obj": "SettingsStringDataType.list"
     },
     "SettingsStringEnum.misc_changes_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.bosses_selected": {
       "obj": "SettingsStringDataType.list"
     },
     "SettingsStringEnum.more_cutscene_skips": { "obj": "ExtraCutsceneSkips" },
@@ -1856,6 +1932,7 @@
     "SettingsStringEnum.fairy_queen_behavior": { "obj": "RandomRequirement" },
     "SettingsStringEnum.cb_medal_behavior": { "obj": "RandomRequirement" },
     "SettingsStringEnum.cb_medal_behavior_new": { "obj": "CBRequirement" },
+    "SettingsStringEnum.random_starting_region_new": { "obj": "RandomStartingRegion" },
     "SettingsStringEnum.win_condition_count": {
       "obj": "SettingsStringDataType.u8"
     },
@@ -1979,6 +2056,8 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.ice_trap_frequency": { "obj": "IceTrapFrequency" },
+    "SettingsStringEnum.ice_trap_model": { "obj": "IceTrapModel" },
+    "SettingsStringEnum.ice_trap_model_v2": { "obj": "IceTrapModel2" },
     "SettingsStringEnum.ice_traps_damage": {
       "obj": "SettingsStringDataType.bool"
     },
@@ -2046,6 +2125,7 @@
     "SettingsStringEnum.shops_dont_cost": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.alt_minecart_mayhem": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.less_fragile_boulders": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.no_consumable_upgrades": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.prog_slam_level_1": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_2": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_3": { "obj": "SlamRequirement" },
@@ -2102,7 +2182,8 @@
     "SettingsStringEnum.total_fairies": { "obj": "SettingsStringDataType.u8" },
     "SettingsStringEnum.trap_weight_animal": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_rockfall": { "obj": "SettingsStringDataType.int8" },
-    "SettingsStringEnum.trap_weight_disabletag": { "obj": "SettingsStringDataType.int8" }
+    "SettingsStringEnum.trap_weight_disabletag": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.krool_in_boss_pool_v2": { "obj": "KroolInBossPool" }
   },
   // ALL LIST SETTINGS NEED AN ENTRY HERE!
   // Another map for list settings, for the underlying data type of the list.
@@ -2122,6 +2203,9 @@
     },
     "SettingsStringEnum.misc_changes_selected": {
       "obj": "MiscChangesSelected"
+    },
+    "SettingsStringEnum.bosses_selected": {
+      "obj": "Maps"
     },
     "SettingsStringEnum.starting_keys_list_selected": { "obj": "Items" },
     "SettingsStringEnum.warp_level_list_selected": { "obj": "Maps" },

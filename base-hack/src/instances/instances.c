@@ -37,6 +37,7 @@
 #define MILL_WARNINGLIGHTS 0xC
 #define MILL_CRUSHER 0x8
 #define MILL_TRIANGLEPAD 0x0
+#define MILLREAR_MINI_BOX 0x3
 #define GMUSH_BOARD 0xB
 #define CAVES_GBDOME 0x27
 #define CAVES_BOULDERDOME 0x2B
@@ -156,6 +157,7 @@
 
 #define FUNGI_SWITCH_NIGHT 0x4
 #define FUNGI_SWITCH_DAY 0x5
+#define FUNGI_SWITCH_LANKY_MUSHROOM 0XEB
 
 #define JAPES_CAVE_GATE 0x2B
 #define JAPES_PEANUT_MOUNTAIN 0x58
@@ -212,8 +214,8 @@
 #define FACTORY_CRUSHER_3 0x3
 #define FACTORY_CRUSHER_4 0x4
 
-static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
-static const unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
+ROM_DATA static unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
+ROM_DATA static unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
 	int world = getWorld(CurrentMap, 0);
@@ -387,7 +389,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if ((param2 == AZTEC_LLAMACOCONUT) || (param2 == AZTEC_LLAMAGRAPE) || (param2 == AZTEC_LLAMAFEATHER)) {
 					if ((index == 0) && (param2 == AZTEC_LLAMACOCONUT)) {
-						if (!Rando.quality_of_life.remove_cutscenes) {
+						if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
 							PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
 						}
 					} else if (index == 1) {
@@ -408,6 +410,16 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if ((param2 == FUNGI_SWITCH_DAY) || (param2 == FUNGI_SWITCH_NIGHT)) {
 					if (!Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->timer = 70;
+					}
+				} else if (param2 == FUNGI_SWITCH_LANKY_MUSHROOM) {
+					if (index == 0) {
+						if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
+							PlayCutsceneFromModelTwoScript(behaviour_pointer,12,1,0);
+						}
+					} else if (index == 1) {
+						setPermFlag(FLAG_LANKY_MUSH_OPEN);
+					} else if (index == 2) {
+						return checkFlag(FLAG_LANKY_MUSH_OPEN, FLAGTYPE_PERMANENT);
 					}
 				}
 				break;
@@ -495,19 +507,15 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == K_ROOL_SHIP) {
 					// Check access requirements based on ship spawn method
-					if (Rando.krool_ship_spawn_method == 1) {
-						// Collectible-based access
-						if (!canAccessKroolsChallenge()) {
+					if (Rando.win_condition_spawns_ship) {
+						// Win condition-based access
+						if (!canAccessWinCondition()) {
 							return 0;
 						}
 					} else {
 						// Key-based access
-						for (int i = 0; i < 8; i++) {
-							if (Rando.krool_requirements & (1 << i)) {
-								if (!getItemCount_new(REQITEM_KEY, i, 0)) {
-									return 0;
-								}
-							}
+						if (getItemCount_new(REQITEM_KEY, -1, 0) < 8) {
+							return 0;
 						}
 					}
 					return 1;
@@ -520,9 +528,12 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->next_state = 20;
 					}
 				} else if (param2 == LLAMA_BONGOPAD) {
+					if (Rando.free_source_llama == 5) {
+						return 1;
+					}
 					return Character == Rando.free_source_llama;
 				} else if (param2 == LLAMA_LAVAGATE) {
-					if (Rando.quality_of_life.remove_cutscenes) {
+					if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 						hideObject(behaviour_pointer);
 						behaviour_pointer->pause_state = 1;
 					}
@@ -540,6 +551,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 2) {
 						giveItemFromKongData(&kong_check_data[KONGCHECK_LLAMA], FLAG_KONG_LANKY);
 					} else if ((index >= 3) && (index <= 6)) {
+						if (Rando.free_source_llama == 5) {
+							int valid = 0;
+							for (int i = 0; i < 5; i++) {
+								valid |= getPressedSwitch(behaviour_pointer, kong_pellets[i], id);
+							}
+							return valid;
+						}
 						return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
 					}
 				} else if (param2 == LLAMA_GRAPE_SWITCH) {
@@ -565,7 +583,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					};
 					int head_sounds[] = {173,171,169,174,172,175,168,170};
 					int selection = -1;
-					for (int k = 0; k < sizeof(head_ids)/4; k++) {
+					for (unsigned int k = 0; k < sizeof(head_ids)/4; k++) {
 						if (param2 == head_ids[k]) {
 							selection = k / 2;
 						}
@@ -743,6 +761,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 1) {
 						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if ((index == 2) || (index == 3)) {
+						if (Rando.free_source_japes == 5) {
+							int valid = 0;
+							for (int i = 0; i < 5; i++) {
+								valid |= getPressedSwitch(behaviour_pointer, kong_pellets[i], id);
+							}
+							return valid;
+						}
 						return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
 					} else if (index == 4) {
 						return !Rando.quality_of_life.remove_cutscenes; // TODO(theballaam96): Retry this
@@ -788,7 +813,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (MovesBase[KONG_DIDDY].special_moves & MOVECHECK_CHARGE) {
 						return 1;
 					}
-					if (Rando.quality_of_life.remove_cutscenes) {
+					if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 						return 1;
 					}
 					return 0;
@@ -919,7 +944,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->current_state = 10;
 						unsigned char crusher_compontents[] = {1,3,8,9,4,10,11,12,13,2,5,6,7};
-						for (int component = 0; component < sizeof(crusher_compontents); component++) {
+						for (unsigned int component = 0; component < sizeof(crusher_compontents); component++) {
 							int index = convertIDToIndex(crusher_compontents[component]);
 							if (index > -1) {
 								behaviour_data* behaviour = ObjectModel2Pointer[index].behaviour_pointer;
@@ -969,6 +994,20 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == MILLREAR_CHUNKYCHECK_RATE) {
 					return Player->characterID == 6 || Rando.quality_of_life.vanilla_fixes;
+				} else if (param2 == MILLREAR_MINI_BOX) {
+					if (index == 0) {
+						if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
+							if (!checkFlag(223, FLAGTYPE_PERMANENT)) {
+								setPermFlag(223);
+							}
+							hideObject(behaviour_pointer);
+							behaviour_pointer->unk_70 = 0;
+							behaviour_pointer->unk_71 = 0;
+							setScriptRunState(behaviour_pointer, RUNSTATE_PAUSED, 0);
+						} else {
+							PlayCutsceneFromModelTwoScript(behaviour_pointer, 1,1,0);
+						}
+					}
 				}
 				break;
 			case MAP_FUNGIGIANTMUSHROOM:
@@ -1173,7 +1212,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 
 						//play grape switch cutscene
-						if (!Rando.quality_of_life.remove_cutscenes) {
+						if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
 							PlayCutsceneFromModelTwoScript(behaviour_pointer, 0, 1, 0);
 							behaviour_pointer->timer = 110;
 						}
@@ -1185,7 +1224,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					//activates the Goo Hands in Tiny's part of the Lanky/Tiny Crypt if all 6 of them are initialized
 					unsigned char hands[] = {6, 7, 9, 10, 11, 12};
 					//activates the hands
-					for(int hand = 0; hand < sizeof(hands); hand++){
+					for(unsigned int hand = 0; hand < sizeof(hands); hand++){
 						//obtain hand variables
 						// Get model two pointer of the Goo Hand in question
 						int slot = convertIDToIndex(hands[hand]);
@@ -1446,7 +1485,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	} else if (index == -14) {
 		return randomGunSwitchGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -15) {
-		return randomInstrumentGenericCode(behaviour_pointer, id, param2);
+		return randomInstrumentGenericCode(param2);
 	} else if (index == -16) {
 		hideObject(behaviour_pointer);
 	} else if (index == -17) {
@@ -1477,7 +1516,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		int snide_index = getFirstEmptySnideReward(0);
 		setPermFlag(FLAG_SNIDE_REWARD + snide_index);
 		giveItemFromPacket(&snide_rewards[snide_index].item, 0);
-		ItemInventory->turned_in_bp_count[Character]++;
+		ItemInventory->turned_in_bp_count[getKong(0)]++;
 	}
 	return 0;
 }

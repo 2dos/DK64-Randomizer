@@ -6,7 +6,7 @@ void writeWTI(int index) {
 	InitialPauseHeight = init_y - (0x28 * index);
 }
 
-static unsigned char isles_maps[] = {
+ROM_RODATA_NUM static const unsigned char isles_maps[] = {
 	MAP_ISLES,
 	MAP_FAIRYISLAND,
 	MAP_KLUMSY,
@@ -29,7 +29,7 @@ void handle_WTI(void) {
 	} else if ((CurrentMap == MAP_HELM) && (checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT))) {
 		// Helm (Only if BoM is off)
 		writeWTI(1);
-	} else if (inU8List(CurrentMap, &isles_maps, sizeof(isles_maps))) {
+	} else if (inU8List(CurrentMap, &isles_maps[0], sizeof(isles_maps))) {
 		// Isles, BFI, K. Lumsy, Snide Room
 		writeWTI(1);
 	} else {

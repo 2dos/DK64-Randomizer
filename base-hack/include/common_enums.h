@@ -313,6 +313,8 @@ typedef enum win_conditions {
 	/* 0x003 */ GOAL_CUSTOMITEM,
 	/* 0x004 */ GOAL_DKRAP,
 	/* 0x005 */ GOAL_KROOLS_CHALLENGE,
+	/* 0x006 */ GOAL_KILL_THE_RABBIT,
+	/* 0x007 */ GOAL_KEYS_3_AND_8,
 } win_conditions;
 
 typedef enum master_types_list {
@@ -948,6 +950,7 @@ typedef enum songs {
 	/* 0x0AC */ SONG_FINALCBGET,
 	/* 0x0AD */ SONG_KROOLDEFEAT,
 	/* 0x0AE */ SONG_NINTENDOLOGO,
+	/* 0x0AF */ SONG_FAKEFAIRYNEARBY,
 } songs;
 
 typedef enum level_indexes {
@@ -991,6 +994,7 @@ typedef enum requirement_item {
 	/* 0x014 */ REQITEM_SHOPKEEPER,
 	/* 0x015 */ REQITEM_AP,
 	/* 0x016 */ REQITEM_RACECOIN,
+	/* 0x017 */ REQITEM_BONUSES_NOHELM,
 } requirement_item;
 
 typedef enum item_ids { 
@@ -1163,3 +1167,9 @@ typedef enum grabbables_internal_items {
 	/* 14 */ GRABBABLE_VASE_TRIANGLE,
 	/* 15 */ GRABBABLE_VASE_PLUS,
 } grabbables_internal_items;
+
+typedef enum PauseTypes {
+	/* 0 */ PAUSETYPE_DEFAULT,
+	/* 1 */ PAUSETYPE_RACE,
+	/* 2 */ PAUSETYPE_BONUS,
+} PauseTypes;

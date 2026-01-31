@@ -38,17 +38,14 @@ typedef struct itemloc_data {
     /* 0x00A */ char pad[2];
 } itemloc_data;
 
-char hints_initialized = 0;
-char display_billboard_fix = 0;
-static char string_copy[STRING_MAX_SIZE] = "";
-static char mtx_counter = 0;
-static char* unk_string = "???";
-static short hint_clear_flags[35] = {};
-static short hint_item_regions[35] = {};
-static char hint_level = 0;
-static char item_subgroup = 0;
-static char level_hint_text[0x40] = "";
-static char item_loc_text[0x40] = "";
+ROM_DATA static char mtx_counter = 0;
+ROM_DATA static char* unk_string = "???";
+ROM_DATA static short hint_clear_flags[35] = {};
+ROM_DATA static short hint_item_regions[35] = {};
+ROM_DATA static char hint_level = 0;
+ROM_DATA static char item_subgroup = 0;
+ROM_DATA static char level_hint_text[0x40] = "";
+ROM_DATA static char item_loc_text[0x40] = "";
 
 short itemloc_flags[] = {
     // DK Moves
@@ -127,7 +124,7 @@ short itemloc_flags[] = {
     FLAG_COLLECTABLE_RAREWARECOIN,
 };
 
-static itemloc_data itemloc_textnames[] = {
+ROM_RODATA_NUM static const itemloc_data itemloc_textnames[] = {
     {
         .header="DONKEY MOVES",
         .lengths={1, 1, 1, 1, 1, -1}
@@ -182,14 +179,14 @@ static itemloc_data itemloc_textnames[] = {
     }, // 3
 };
 
-static unsigned char progressive_ding_timer = 0;
+ROM_DATA static unsigned char progressive_ding_timer = 0;
 
 void initProgressiveTimer(void) {
     progressive_ding_timer = 52;
 }
 
 Gfx* renderProgressiveSprite(Gfx* dl) {
-    return renderIndicatorSprite(dl, 108, 0, &progressive_ding_timer, 48, 48, IA8);
+    return renderIndicatorSprite(dl, 108, 0, &progressive_ding_timer, 48, 48, IA8, 0xFF, 0xFF, 0xFF);
 }
 
 void playProgressiveDing(void) {
@@ -197,7 +194,7 @@ void playProgressiveDing(void) {
     playSFX(0x2EA);
 }
 
-static int old_progressive_level = -1;
+ROM_DATA static int old_progressive_level = -1;
 
 void handleProgressiveIndicator(int allow_ding) {
     if (Rando.progressive_hint_gb_cap == 0) {
@@ -345,12 +342,11 @@ Gfx* drawSplitString(Gfx* dl, FastTextStruct * data, int x, int y, int y_sep, in
     return dl;
 }
 
-static unsigned char hints_per_screen = 5;
-static unsigned char hint_screen_count = 7;
-static unsigned char hint_offset = 140;
+ROM_DATA static unsigned char hints_per_screen = 5;
+ROM_DATA static unsigned char hint_screen_count = 7;
+ROM_DATA static unsigned char hint_offset = 140;
 
 int getHintRequirement(int slot) {
-    int cap = Rando.progressive_hint_gb_cap;
     int batch_index = 9;
     if (slot < 34) {
         batch_index = slot >> 2;
@@ -412,7 +408,37 @@ void initHintFlags(void) {
     }
 }
 
-const char* item_names[] = {
+ROM_DATA static unsigned char dim_cache[5] = {};
+ROM_DATA static unsigned char dim_ding_timer = 0;
+
+void initDimTimer(void) {
+    dim_ding_timer = 52;
+}
+
+Gfx* renderDimSprite(Gfx* dl) {
+    return renderIndicatorSprite(dl, 0x44, 0, &dim_ding_timer, 64, 64, IA8, 0x00, 0xC0, 0x00);
+}
+
+void checkDimCache(void) {
+    for (int i = 0; i < 35; i++) {
+        int offset = i >> 3;
+        int shift = i & 7;
+        int assoc_flag = hint_clear_flags[i];
+        if (assoc_flag != -1) {
+            if (checkFlag(assoc_flag, FLAGTYPE_PERMANENT)) {
+                if ((dim_cache[offset] & (1 << shift)) == 0) {
+                    if ((CurrentMap != MAP_MAINMENU) && showHint(i)) {
+                        initDimTimer();
+                        playSFX(572);
+                    }
+                }
+                dim_cache[offset] |= (1 << shift);
+            }
+        }
+    }
+}
+
+char* item_names[] = {
     "NOTHING",
     "KONG",
     "MOVE",
@@ -435,14 +461,14 @@ char item_name_plural[] = "COLORED BANANAS";
 char* getItemName(int item_index, int item_count) {
     if ((item_count == 1) || (item_index == 14)) {
         // Item index 14 is game percentage, avoid pluralizing
-        return item_names[item_index];
+        return (char*)item_names[item_index];
     }
     if (item_index == 5) {
         // We love grammar
         return "FAIRIES";
     }
-    dk_strFormat(&item_name_plural, "%s%c", item_names[item_index], 'S');
-    return &item_name_plural;
+    dk_strFormat((char*)&item_name_plural, "%s%c", item_names[item_index], 'S');
+    return (char*)&item_name_plural;
 }
 
 Gfx* drawHintScreen(Gfx* dl, int level_x) {

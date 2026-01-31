@@ -20,8 +20,8 @@ int isSharedMove(vendors shop_index, int level) {
 	for (int i = 1; i < 5; i++) {
 		purchase_struct* src = getShopData(shop_index, i, level);
 		if (src) {
-			unsigned char *src_arr = &src->item;
-			unsigned char *targ_arr = &targ->item;
+			unsigned char *src_arr = (unsigned char*)&src->item;
+			unsigned char *targ_arr = (unsigned char*)&targ->item;
 			for (int j = 0; j < 4; j++) {
 				if (src_arr[j] != targ_arr[j]) {
 					return 0;
@@ -75,8 +75,8 @@ int getMoveCountInShop(counter_paad* paad, vendors shop_index) {
 
 #define IMG_WIDTH 32
 
-static void* texture_data[SKIN_TERMINATOR] = {};
-static unsigned char texture_load[SKIN_TERMINATOR] = {};
+ROM_DATA static void* texture_data[SKIN_TERMINATOR] = {};
+ROM_DATA static unsigned char texture_load[SKIN_TERMINATOR] = {};
 
 void wipeCounterImageCache(void) {
 	for (int i = 0; i < SKIN_TERMINATOR; i++) {
@@ -121,10 +121,10 @@ void updateCounterDisplay(void) {
 	}
 }
 
-unsigned int getActorModelTwoDist(ModelTwoData* _object) {
-	int ax = CurrentActorPointer_0->xPos;
-	int ay = CurrentActorPointer_0->yPos;
-	int az = CurrentActorPointer_0->zPos;
+unsigned int getActorModelTwoDist(ModelTwoData* _object, float *pos_tuple) {
+	int ax = pos_tuple[0];
+	int ay = pos_tuple[1];
+	int az = pos_tuple[2];
 	int mx = _object->xPos;
 	int my = _object->yPos;
 	int mz = _object->zPos;
@@ -140,26 +140,21 @@ unsigned int getActorModelTwoDist(ModelTwoData* _object) {
 	Candy's Shop: 0x124
 	Snide's HQ: 0x79
 */
-static short shop_objects[] = {0x73, 0x7A, 0x124, 0x79};
+ROM_RODATA_NUM static const short shop_objects[] = {0x73, 0x7A, 0x124, 0x79};
 
-int getClosestShop(void) {
+int getClosestShop(float *pos_checker) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	int closest_dist = -1;
 	int closest_shop_index = -1;
 	paad->linked_behaviour = 0;
 	for (int i = 0; i < ObjectModel2Count; i++) {
 		ModelTwoData* _object = &ObjectModel2Pointer[i];
-		int local_idx = -1;
-		for (int j = 0; j < 4; j++) {
-			if (_object->object_type == shop_objects[j]) {
-				local_idx = j;
-			}
-		}
-		if (local_idx > -1) {
-			int temp_dist = getActorModelTwoDist(_object);
+		int local_idx = inShortList(_object->object_type, &shop_objects[0], 4);
+		if (local_idx) {
+			int temp_dist = getActorModelTwoDist(_object, pos_checker);
 			if ((closest_dist == -1) || (temp_dist < closest_dist)) {
 				closest_dist = temp_dist;
-				closest_shop_index = local_idx;
+				closest_shop_index = local_idx - 1;
 				paad->linked_behaviour = _object->behaviour_pointer;
 			}
 		}
@@ -190,9 +185,9 @@ float getShopScale(int index) {
 	return 1.0f;
 }
 
-static const short float_ids[] = {0x1F4, 0x36};
-static const float float_offsets[] = {51.0f, 45.0f, 45.0f, 47.5f};
-static const float h_factors[] = {60.0f, 60.0f, 62.0f, 120.6f};
+ROM_RODATA_NUM static const short float_ids[] = {0x1F4, 0x36};
+ROM_RODATA_NUM static const float float_offsets[] = {51.0f, 45.0f, 45.0f, 47.5f};
+ROM_RODATA_NUM static const float h_factors[] = {60.0f, 60.0f, 62.0f, 120.6f};
 
 void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
@@ -209,7 +204,7 @@ void newCounterCode(void) {
 				paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], SKIN_NULL, i);
 			}
 			CurrentActorPointer_0->rot_z = 3072; // Facing vertical
-			int closest_shop = getClosestShop();
+			int closest_shop = getClosestShop(&CurrentActorPointer_0->xPos);
 			if (closest_shop == SHOP_SNIDE) {
 				if (!Rando.snide_has_rewards) {
 					deleteActorContainer(CurrentActorPointer_0);
@@ -298,7 +293,7 @@ void newCounterCode(void) {
 			if (float_slot > -1) {
 				ModelTwoData* float_slot_object = &ObjectModel2Pointer[float_slot];
 				int float_slot_obj_type = float_slot_object->object_type;
-				for (int j = 0; j < 3; j++) {
+				for (int j = 0; j < 4; j++) {
 					if (shop_objects[j] == float_slot_obj_type) {
 						if (j == shop) {
 							CurrentActorPointer_0->yPos = float_slot_object->yPos + float_offsets[shop];

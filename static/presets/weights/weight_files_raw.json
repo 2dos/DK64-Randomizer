@@ -891,6 +891,26 @@
             },
             "qol_uses_hard": true
         },
+        "kong_model_mode": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "none": 50.0,
+                    "random_one": 50.0
+                },
+                "standard": {
+                    "none": 45.0,
+                    "random_one": 45.0,
+                    "random_all": 10.0
+                },
+                "difficult": {
+                    "none": 40.0,
+                    "random_one": 40.0,
+                    "random_all": 20.0
+                }
+            },
+            "qol_uses_hard": true
+        },
         "krool_access": {
             "setting_type": "bool",
             "options": {
@@ -900,23 +920,32 @@
             },
             "qol_uses_hard": true
         },
+        "win_condition_spawns_ship": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 30,
+                "standard": 50,
+                "difficult": 70
+            },
+            "qol_uses_hard": true
+        },
         "krool_key_count": {
             "setting_type": "range",
             "options": {
                 "easy": {
-                    "min": 1,
-                    "max": 5,
-                    "mean": 3
-                },
-                "standard": {
                     "min": 3,
                     "max": 7,
                     "mean": 5
                 },
+                "standard": {
+                    "min": 1,
+                    "max": 5,
+                    "mean": 3
+                },
                 "difficult": {
-                    "min": 4,
-                    "max": 8,
-                    "mean": 6
+                    "min": 0,
+                    "max": 4,
+                    "mean": 2
                 }
             },
             "qol_uses_hard": true
@@ -1244,6 +1273,55 @@
             },
             "qol_uses_hard": false
         },
+        "bosses_selected": {
+            "setting_type": "choice_multiple",
+            "min_selected": 3,
+            "options": {
+                "easy": {
+                    "JapesBoss": 80,
+                    "AztecBoss": 80,
+                    "FactoryBoss": 80,
+                    "GalleonBoss": 80,
+                    "FungiBoss": 80,
+                    "CavesBoss": 80,
+                    "CastleBoss": 80,
+                    "KroolDonkeyPhase": 80,
+                    "KroolDiddyPhase": 80,
+                    "KroolLankyPhase": 80,
+                    "KroolTinyPhase": 80,
+                    "KroolChunkyPhase": 80
+                },
+                "standard": {
+                    "JapesBoss": 80,
+                    "AztecBoss": 80,
+                    "FactoryBoss": 80,
+                    "GalleonBoss": 80,
+                    "FungiBoss": 80,
+                    "CavesBoss": 80,
+                    "CastleBoss": 80,
+                    "KroolDonkeyPhase": 80,
+                    "KroolDiddyPhase": 80,
+                    "KroolLankyPhase": 80,
+                    "KroolTinyPhase": 80,
+                    "KroolChunkyPhase": 80
+                },
+                "difficult": {
+                    "JapesBoss": 80,
+                    "AztecBoss": 80,
+                    "FactoryBoss": 80,
+                    "GalleonBoss": 80,
+                    "FungiBoss": 80,
+                    "CavesBoss": 80,
+                    "CastleBoss": 80,
+                    "KroolDonkeyPhase": 80,
+                    "KroolDiddyPhase": 80,
+                    "KroolLankyPhase": 80,
+                    "KroolTinyPhase": 80,
+                    "KroolChunkyPhase": 80
+                }
+            },
+            "qol_uses_hard": true
+        },
         "no_healing": {
             "setting_type": "bool",
             "options": {
@@ -1258,6 +1336,15 @@
             "options": {
                 "easy": 0,
                 "standard": 20,
+                "difficult": 50
+            },
+            "qol_uses_hard": true
+        },
+        "no_consumable_upgrades": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 25,
                 "difficult": 50
             },
             "qol_uses_hard": true
@@ -1341,12 +1428,20 @@
             },
             "qol_uses_hard": true
         },
-        "random_starting_region": {
-            "setting_type": "bool",
+        "random_starting_region_new": {
+            "setting_type": "choice_single",
             "options": {
-                "easy": 0,
-                "standard": 30,
-                "difficult": 60
+                "easy": {
+                    "off": 100.0
+                },
+                "standard": {
+                    "off": 70.0,
+                    "isles_only": 30.0
+                },
+                "difficult": {
+                    "off": 40.0,
+                    "isles_only": 60.0
+                }
             },
             "qol_uses_hard": true
         },
@@ -1769,7 +1864,9 @@
                     "forest_green_tunnel": 75.0,
                     "forest_yellow_tunnel": 75.0,
                     "caves_igloo_pads": 100,
-                    "caves_ice_walls": 100
+                    "caves_ice_walls": 100,
+                    "helm_star_gates": 100,
+                    "helm_punch_gates": 100
                 },
                 "standard": {
                     "japes_coconut_gates": 75.0,
@@ -1786,7 +1883,9 @@
                     "forest_green_tunnel": 75.0,
                     "forest_yellow_tunnel": 75.0,
                     "caves_igloo_pads": 80.0,
-                    "caves_ice_walls": 70.0
+                    "caves_ice_walls": 70.0,
+                    "helm_star_gates": 70.0,
+                    "helm_punch_gates": 70.0
                 },
                 "difficult": {
                     "japes_coconut_gates": 75.0,
@@ -1803,7 +1902,9 @@
                     "forest_green_tunnel": 75.0,
                     "forest_yellow_tunnel": 75.0,
                     "caves_igloo_pads": 80.0,
-                    "caves_ice_walls": 70.0
+                    "caves_ice_walls": 70.0,
+                    "helm_star_gates": 60.0,
+                    "helm_punch_gates": 60.0
                 },
                 "difficult_with_qol_shuffle": {
                     "japes_coconut_gates": 75.0,
@@ -1820,7 +1921,9 @@
                     "forest_green_tunnel": 75.0,
                     "forest_yellow_tunnel": 75.0,
                     "caves_igloo_pads": 80.0,
-                    "caves_ice_walls": 70.0
+                    "caves_ice_walls": 70.0,
+                    "helm_star_gates": 60.0,
+                    "helm_punch_gates": 60.0
                 }
             },
             "qol_uses_hard": true
@@ -1892,15 +1995,6 @@
                     "castle_car_race": 70.0,
                     "jetpac": 70.0
                 }
-            },
-            "qol_uses_hard": true
-        },
-        "k_rool_vanilla_requirement": {
-            "setting_type": "bool",
-            "options": {
-                "easy": 0,
-                "standard": 0,
-                "difficult": 0
             },
             "qol_uses_hard": true
         },
@@ -2081,12 +2175,24 @@
         "points_list_shopkeepers": {
             "ignore": true
         },
-        "krool_in_boss_pool": {
-            "setting_type": "bool",
+        "krool_in_boss_pool_v2": {
+            "setting_type": "choice_single",
             "options": {
-                "easy": 80,
-                "standard": 65,
-                "difficult": 50
+                "easy": {
+                    "off": 20.0,
+                    "krool_only": 30.0,
+                    "full_shuffle": 50.0
+                },
+                "standard": {
+                    "off": 35.0,
+                    "krool_only": 30.0,
+                    "full_shuffle": 35.0
+                },
+                "difficult": {
+                    "off": 25.0,
+                    "krool_only": 50.0,
+                    "full_shuffle": 25.0
+                }
             },
             "qol_uses_hard": true
         },
@@ -2121,6 +2227,28 @@
         },
         "ice_trap_frequency": {
             "ignore": true
+        },
+        "ice_trap_model_v2": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "simple": 50.0,
+                    "complex": 50.0
+                },
+                "standard": {
+                    "simple": 50.0,
+                    "complex": 50.0
+                },
+                "difficult": {
+                    "simple": 30.0,
+                    "complex": 70.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "simple": 30.0,
+                    "complex": 70.0
+                }
+            },
+            "qol_uses_hard": true
         },
         "ice_traps_damage": {
             "setting_type": "bool",

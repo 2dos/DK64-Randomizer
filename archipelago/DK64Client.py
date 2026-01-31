@@ -17,14 +17,13 @@ import time
 import traceback
 import typing
 
-from client.common import DK64MemoryMap, create_task_log_exception, check_version
-from client.emu_loader import EmuLoaderClient
-from client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
-from client.check_flag_locations import location_flag_to_name, location_name_to_flag
-from client.ap_check_ids import check_id_to_name, check_names_to_id
+from archipelago.client.common import DK64MemoryMap, create_task_log_exception, check_version, get_ap_version
+from archipelago.client.emu_loader import EmuLoaderClient
+from archipelago.client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
+from archipelago.client.check_flag_locations import location_flag_to_name, location_name_to_flag
+from archipelago.client.ap_check_ids import check_id_to_name, check_names_to_id
 from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop, ClientCommandProcessor
 from NetUtils import ClientStatus
-from ap_version import version as ap_version
 from randomizer.Patching.ItemRando import normalize_location_name
 
 # Constants
@@ -66,39 +65,12 @@ class MessageDisplayHandler:
 
     def should_display_item(self, item_data: dict, send_mode: int) -> bool:
         """Determine if an item should be displayed based on send mode."""
-        if send_mode == 7:
-            return False  # Send nothing
-        elif send_mode == 6:
+        if send_mode == 3:  # display_nothing
+            return False
+        elif send_mode == 2:  # display_only_progression
             return item_data.get("progression", False)
-        elif send_mode == 5:
-            return item_data.get("progression", False) or item_data.get("extended_whitelist", False)
-        else:
-            return item_data.get("progression", False) or item_data.get("extended_whitelist", False)
-
-    def calculate_speed(self, send_mode: int, item_data: dict, pending_count: int, index: int) -> int:
-        """Calculate appropriate text display speed."""
-        if send_mode in [5, 6, 7]:
-            return NORMAL_TEXT_SPEED
-
-        if send_mode == 4:
-            return FAST_TEXT_SPEED if item_data.get("extended_whitelist", False) else NORMAL_TEXT_SPEED
-
-        if send_mode == 3:
-            return FAST_TEXT_SPEED
-
-        # Modes 1 and 2: dynamic speed based on queue length
-        remaining_items = pending_count - index
-        if remaining_items <= MIN_ITEMS_FOR_SPEED_SCALING:
-            return NORMAL_TEXT_SPEED
-
-        speed = round(NORMAL_TEXT_SPEED - (80 / remaining_items))
-        return max(speed, FAST_TEXT_SPEED)
-
-    def update_speed_if_needed(self, new_speed: int):
-        """Update text speed if it has changed."""
-        if self.client.current_speed != new_speed:
-            self.client.current_speed = new_speed
-            self.client.set_speed(new_speed)
+        elif send_mode == 1:  # display_all_items
+            return True
 
 
 class IceTrapHandler:
@@ -307,6 +279,25 @@ class DK64Client:
         if not self.memory_pointer:
             self.memory_pointer = self.n64_client.read_u32(DK64MemoryMap.memory_pointer)
         self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.connection, 0xFF)
+        if self.n64_client.read_u8(DK64MemoryMap.eeprom_determined) == 1:
+            if self.n64_client.read_u32(DK64MemoryMap.save_type) != 2:
+                # Map emulator IDs to their setup guides
+                emulator_setup_guides = {
+                    "Project64": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Project-64",
+                    "Project64_v4": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Project-64",
+                    "RMG": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Rosalies-Mupen-GUI",
+                    "ParallelLauncher": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Parallel-Launcher",
+                    "RetroArch": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-RetroArch",
+                    "BizHawk": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-BizHawk-DK64-Edition",
+                    "Simple64": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Simple64",
+                }
+
+                emulator_id = self.n64_client.emulator_info.id.name
+                setup_guide = emulator_setup_guides.get(emulator_id, "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators")
+
+                logger.error(f"{self.n64_client.emulator_info.id.name} is not set up correctly! Please follow the appropriate setup guide to ensure the game works!")
+                logger.error(f"{setup_guide}")
+                raise Exception("Bad emulator setup")
 
     # ==================== MESSAGING METHODS ====================
 
@@ -366,8 +357,7 @@ class DK64Client:
 
         should_display = self._message_handler.should_display_item(item_data, self.send_mode)
         if should_display:
-            speed = self._message_handler.calculate_speed(self.send_mode, item_data, len(self.pending_checks), index)
-            self._message_handler.update_speed_if_needed(speed)
+            self.set_speed(FAST_TEXT_SPEED)
             self.send_message(item_name, from_player, "from")
 
     async def _process_item_data(self, item_data: dict, item_name: str):
@@ -671,11 +661,34 @@ class DK64Client:
     def getCheckStatus(self, check_type, flag_index=None, shop_index=None, level_index=None, kong_index=None) -> bool:
         """Get the status of a check."""
         if check_type == "shop" and shop_index is not None and level_index is not None and kong_index is not None:
-            # Calculate shop flag using the same formula as the C code
-            # FLAG_SHOPFLAG = 800 (0x320)
-            # Shop flag = FLAG_SHOPFLAG + (vendor * 40) + (level * 5) + kong
             FLAG_SHOPFLAG = 800
-            shop_flag = FLAG_SHOPFLAG + (shop_index * 40) + (level_index * 5) + kong_index
+            LEVEL_AZTEC = 1
+            LEVEL_GALLEON = 3
+            LEVEL_CAVES = 5
+            LEVEL_CASTLE = 6
+            SHOP_CRANKY = 0
+            SHOP_FUNKY = 1
+            SHOP_CANDY = 2
+
+            shop_flag = None
+
+            if shop_index == SHOP_CRANKY:
+                # Cranky: FLAG_SHOPFLAG + (level * 5) + kong
+                shop_flag = FLAG_SHOPFLAG + (level_index * 5) + kong_index
+            elif shop_index == SHOP_FUNKY and level_index < 7:
+                # Funky: FLAG_SHOPFLAG + ((level + 8) * 5) + kong
+                shop_flag = FLAG_SHOPFLAG + ((level_index + 8) * 5) + kong_index
+            elif shop_index == SHOP_CANDY:
+                # Candy has two ranges (Aztec-Galleon and Caves/Castle)
+                if LEVEL_AZTEC <= level_index <= LEVEL_GALLEON:
+                    candy_offset = level_index - LEVEL_AZTEC
+                    shop_flag = FLAG_SHOPFLAG + ((candy_offset + 15) * 5) + kong_index
+                elif LEVEL_CAVES <= level_index <= LEVEL_CASTLE:
+                    candy_offset = level_index - LEVEL_CAVES
+                    shop_flag = FLAG_SHOPFLAG + ((candy_offset + 18) * 5) + kong_index
+            if shop_flag is None:
+                return False
+
             return self.readFlag(shop_flag)
         else:
             return self.readFlag(flag_index)
@@ -1106,7 +1119,7 @@ class DK64Context(CommonContext):
             logging_pairs = [
                 ("Client", "Archipelago"),
             ]
-            base_title = f"Archipelago Donkey Kong 64 Client (Version {ap_version})"
+            base_title = f"Archipelago Donkey Kong 64 Client (Version {get_ap_version()})"
 
             def build(self):
                 b = super().build()
@@ -1117,8 +1130,10 @@ class DK64Context(CommonContext):
 
     async def send_checks(self):
         """Send the checks to the server."""
-        message = [{"cmd": "LocationChecks", "locations": self.found_checks}]
-        await self.send_msgs(message)
+        if self.found_checks:
+            message = [{"cmd": "LocationChecks", "locations": self.found_checks}]
+            await self.send_msgs(message)
+            self.found_checks = []
 
     had_invalid_slot_data: typing.Optional[bool] = None
 
@@ -1173,6 +1188,23 @@ class DK64Context(CommonContext):
             self.game = self.slot_info[self.slot].game
             self.slot_data = args.get("slot_data", {})
             self.setup_hint_locations()
+            if self.slot_data.get("Version"):
+                ap_version = get_ap_version()
+                server_ver = self.slot_data.get("Version")
+                server_major = server_ver.split(".")[0]
+                server_minor = server_ver.split(".")[1]
+                server_patch = server_ver.split(".")[2]
+                # Get the current version from the ap_version.py file
+                ap_major = ap_version.split(".")[0]
+                ap_minor = ap_version.split(".")[1]
+                ap_patch = ap_version.split(".")[2]
+                if server_major != ap_major or server_minor != ap_minor:
+                    logger.error("Your DK64 APworld does not match with the generated world.")
+                    logger.error(f"Your version: {ap_version} | Generated version: {server_ver}")
+                    raise Exception("Your DK64 APworld does not match with the generated world.\n" + f"Your version: {ap_version} | Generated version: {server_ver}")
+                if server_patch != ap_patch:
+                    logger.warning("Your DK64 APworld does not match with the generated world, but this should not be a breaking change.")
+                    logger.warning("While we try to maintain backwards compatibility on patch versions, be warned that something might break.")
             if self.slot_data.get("death_link"):
                 if "DeathLink" not in self.tags:
                     create_task_log_exception(self.update_death_link(True))

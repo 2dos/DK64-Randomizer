@@ -289,4 +289,6 @@ export enum Regions {
     SnideThirdGroup = 288,
     SnideFourthGroup = 289,
     SnideLastGroup = 290,
+    FactoryArcadePole = 291,
+    MushroomVeryTopExterior = 292,
 }

@@ -93,10 +93,12 @@ LogicRegions = {
     Regions.MushroomUpperExterior: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda _: True, None, 1),  # Upper Warp 5
         Collectible(Collectibles.banana, Kongs.diddy, lambda _: True, None, 10),
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.handstand, None, 1),  # Top of mushroom
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda _: True, None, 3),  # Around crown pad
         Collectible(Collectibles.coin, Kongs.chunky, lambda _: True, None, 3),  # On switch to face puzzle room
+    ],
+    Regions.MushroomVeryTopExterior: [
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda _: True, None, 1),  # Top of mushroom
     ],
     Regions.MushroomChunkyRoom: [
         Collectible(Collectibles.bunch, Kongs.chunky, lambda _: True, None, 1),

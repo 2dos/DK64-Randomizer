@@ -5,6 +5,9 @@ from randomizer.CompileHints import HintSet, replaceKongNameWithKrusha
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Types import BarrierItems
+from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import UpdateHint
 
 boss_names = {
@@ -139,6 +142,21 @@ def CompileArchipelagoHints(world, hint_data: list):
     hint_location_pairs.append((krool_hint, None))  # K. Rool hints don't have a specific location
     hints_remaining -= 1
 
+    # Isles to Helm transition hint (only if loading zone rando is enabled and Helm is shuffled)
+    if world.options.loading_zone_rando != 0 and world.options.shuffle_helm_level_order:
+        isles_to_helm_hint = parseIslesToHelmHint(world)
+        compiled_hints.append(isles_to_helm_hint)
+        hint_location_pairs.append((isles_to_helm_hint, None))  # Transition hints don't have a specific location
+        hints_remaining -= 1
+
+    # Helm Door hints (only if one or both doors were set to random)
+    if world.options.crown_door_item.value in [13, 2, 14] or world.options.coin_door_item.value in [13, 2, 14]:
+        helm_door_hints = parseHelmDoorHint(world)
+        for helm_door_hint in helm_door_hints:
+            compiled_hints.append(helm_door_hint)
+            hint_location_pairs.append((helm_door_hint, None))  # Helm door hints don't have a specific location
+            hints_remaining -= 1
+
     # Kong hints
     for kong_loc in kong_locations:
         kong_hint = parseKongHint(world, kong_loc)
@@ -194,7 +212,6 @@ def CompileArchipelagoHints(world, hint_data: list):
     # Sanity check that 35 hints were placed
     if hints_remaining > 0:
         # This part of the code should not be reached.
-        print("Not enough hints. Please wait. stage_generate_output might be crashing.")
         while hints_remaining > 0:
             filler_hint = "no hint, sorry...".upper()
             compiled_hints.append(filler_hint)
@@ -319,3 +336,90 @@ def parseKRoolHint(world):
         if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
             text = text.replace(letter, " ")
     return text
+
+
+def parseIslesToHelmHint(world):
+    """Write a hint for finding the transition that leads to Hideout Helm."""
+    text = ""
+    # Check if entrance randomization is enabled
+    if hasattr(world.spoiler, "shuffled_exit_data") and world.spoiler.shuffled_exit_data:
+        # Find which transition leads to Hideout Helm
+        source_transition = None
+        for transition, shuffled_back in world.spoiler.shuffled_exit_data.items():
+            # Check if this transition's destination is Hideout Helm
+            if shuffled_back.reverse == Transitions.HelmToIsles:
+                source_transition = transition
+                break
+
+        if source_transition and source_transition in ShufflableExits:
+            pathToHint = source_transition
+            # Don't hint entrances from connector rooms, follow the reverse pathway back until finding a non-connector
+            while ShufflableExits[pathToHint].category is None:
+                originPaths = [x for x, back in world.spoiler.shuffled_exit_data.items() if back.reverse == pathToHint]
+                # In a few cases, there is no reverse loading zone. In this case we must keep the original path to hint
+                if len(originPaths) == 0:
+                    break
+                pathToHint = originPaths[0]
+
+            source_name = ShufflableExits[pathToHint].name
+            text = f"Looking for \x04Hideout Helm\x04? Try going from \x08{source_name}\x08.".upper()
+
+    for letter in text:
+        if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
+            text = text.replace(letter, " ")
+    return text
+
+
+def parseHelmDoorHint(world):
+    """Write hints for the Helm door requirements if they're randomized."""
+    # Map BarrierItems to display names (singular)
+    item_names_singular = {
+        BarrierItems.GoldenBanana: "Golden Banana",
+        BarrierItems.Blueprint: "Blueprint",
+        BarrierItems.CompanyCoin: "Special Coin",
+        BarrierItems.Key: "Key",
+        BarrierItems.Medal: "Medal",
+        BarrierItems.Crown: "Crown",
+        BarrierItems.Fairy: "Fairy",
+        BarrierItems.RainbowCoin: "Rainbow Coin",
+        BarrierItems.Bean: "Bean",
+        BarrierItems.Pearl: "Pearl",
+    }
+
+    crown_door_item = world.spoiler.settings.crown_door_item
+    crown_door_count = world.spoiler.settings.crown_door_item_count
+    coin_door_item = world.spoiler.settings.coin_door_item
+    coin_door_count = world.spoiler.settings.coin_door_item_count
+
+    crown_door_randomized = world.options.crown_door_item.value in [13, 2, 14]  # easy, medium, hard random
+    coin_door_randomized = world.options.coin_door_item.value in [13, 2, 14]
+
+    hints = []
+
+    if crown_door_randomized:
+        crown_name = item_names_singular.get(crown_door_item, "item")
+        if crown_door_count > 1:
+            if crown_door_item == BarrierItems.Fairy:
+                crown_name = "Fairies"
+            else:
+                crown_name = crown_name + "s"
+        text = f"There lies a \x05gate in Hideout Helm\x05 that requires \x04{crown_door_count} {crown_name}\x04.".upper()
+        for letter in text:
+            if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
+                text = text.replace(letter, " ")
+        hints.append(text)
+
+    if coin_door_randomized:
+        coin_name = item_names_singular.get(coin_door_item, "item")
+        if coin_door_count > 1:
+            if coin_door_item == BarrierItems.Fairy:
+                coin_name = "Fairies"
+            else:
+                coin_name = coin_name + "s"
+        coin_text = f"There lies a \x05gate in Hideout Helm\x05 that requires \x04{coin_door_count} {coin_name}\x04.".upper()
+        for letter in coin_text:
+            if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
+                coin_text = coin_text.replace(letter, " ")
+        hints.append(coin_text)
+
+    return hints

@@ -252,7 +252,10 @@ def resetPkmnSnap():
 def setPkmnSnapEnemy(focused_enemy):
     """Set enemy to being spawned."""
     for enemy in pkmn_snap_enemies:
-        if enemy.enemy == focused_enemy:
+        ref_enemies = [enemy.enemy]
+        if enemy.enemy == Enemies.Guard:
+            ref_enemies = [Enemies.Guard, Enemies.GuardDisableA, Enemies.GuardDisableZ, Enemies.GuardTag, Enemies.GuardGetOut]
+        if focused_enemy in ref_enemies:
             enemy.addEnemy()
 
 
@@ -556,6 +559,14 @@ def writeEnemy(spoiler, ROM_COPY: LocalROM, cont_map_spawner_address: int, new_e
                     new_speed = 255
                 ROM_COPY.seek(cont_map_spawner_address + spawner.offset + speed_offset)
                 ROM_COPY.writeMultipleBytes(new_speed, 1)
+        # Cap Klobber Speed
+        if new_enemy_id in (Enemies.Klobber, Enemies.Kaboom):
+            for speed_offset in [0xC, 0xD]:
+                ROM_COPY.seek(cont_map_spawner_address + spawner.offset + speed_offset)
+                current_speed = int.from_bytes(ROM_COPY.readBytes(1), "big")
+                new_speed = max(1, int(current_speed * 0.6))
+                ROM_COPY.seek(cont_map_spawner_address + spawner.offset + speed_offset)
+                ROM_COPY.writeMultipleBytes(new_speed, 1)
     # Fix Tiny 5DI enemy to not respawn
     ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0x13)
     id = int.from_bytes(ROM_COPY.readBytes(1), "big")
@@ -601,6 +612,10 @@ krem_kap_mapping = {
     Enemies.FireballGlasses: Items.PhotoFireball,
     Enemies.Bug: Items.PhotoBug,
     Enemies.Guard: Items.PhotoKop,
+    Enemies.GuardDisableA: Items.PhotoKop,
+    Enemies.GuardDisableZ: Items.PhotoKop,
+    Enemies.GuardGetOut: Items.PhotoKop,
+    Enemies.GuardTag: Items.PhotoKop,
     Enemies.FairyQueen: Items.PhotoBFI,
     Enemies.IceTomato: Items.PhotoIceTomato,
     Enemies.Mermaid: Items.PhotoMermaid,

@@ -102,8 +102,8 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_CastleMainEnemy_LowTnS, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.LowerCave, lambda _: True, Transitions.CastleMainToLower),
-        TransitionFront(Regions.CastleGraveyardPlatform, lambda l: l.climbing),
-        TransitionFront(Regions.CreepyCastleMain, lambda l: l.climbing),
+        TransitionFront(Regions.CastleGraveyardPlatform, lambda l: l.climbing or (l.monkey_maneuvers and (l.isdiddy or l.istiny))),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: l.climbing or (l.monkey_maneuvers and (l.isdiddy or l.istiny))),
         TransitionFront(Regions.CastleBossLobby, lambda l: not l.settings.tns_location_rando)
     ]),
 
@@ -331,7 +331,7 @@ LogicRegions = {
     Regions.CastleMinecarts: Region("Castle Minecarts", HintRegion.CastleUnderground, Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleDonkeyMinecarts, lambda l: l.HasEnoughRaceCoins(Maps.CastleMinecarts, Kongs.donkey, not l.settings.free_trade_items)),
     ], [], [
-        TransitionFront(Regions.Crypt, lambda _: True, Transitions.CastleCartsToCrypt),
+        TransitionFront(Regions.CryptDonkeyRoom, lambda _: True, Transitions.CastleCartsToCrypt),
     ], Transitions.CastleCryptToCarts
     ),
 

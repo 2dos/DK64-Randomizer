@@ -20,3 +20,6 @@
 .definelabel wipeTurnedInArray, 0x806C7B00
 .definelabel alCSPSetTempo, 0x80738320
 .definelabel getSongTempo, 0x807383B0
+.definelabel handleController, 0x8060AC7C
+.definelabel alCSPPlay, 0x80737E50
+.definelabel alEvtqFlushType, 0x8073B490

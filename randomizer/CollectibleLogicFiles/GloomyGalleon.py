@@ -159,5 +159,6 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.tiny, lambda _: True, None, 2),
     ],
     Regions.TriangleShip: [
+        Collectible(Collectibles.coin, Kongs.chunky, lambda _: True, None, 3)
     ],
 }

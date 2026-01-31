@@ -193,7 +193,10 @@ def gen_mayhem_coins(settings, random):
         while placement_count > 0:
             band = random.randint(0, 3)
             band_lst = MAYHEM_BANDS[band]
-            start = random.randint(0, len(band_lst) - 1)
+            if band == 0:
+                start = random.randint(0, 1)
+            else:
+                start = random.randint(0, len(band_lst) - 1)
             end = start + 1
             if end == len(band_lst):
                 end = 0

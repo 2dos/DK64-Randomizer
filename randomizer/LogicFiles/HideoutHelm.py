@@ -8,7 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion
-from randomizer.Enums.Settings import HelmSetting
+from randomizer.Enums.Settings import HelmSetting, RemovedBarriersSelected
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
@@ -27,15 +27,16 @@ LogicRegions = {
         LocationLogic(Locations.HelmDiddy1, lambda l: not l.settings.helm_diddy or l.settings.helm_setting == HelmSetting.skip_all),
         LocationLogic(Locations.HelmDiddy2, lambda l: not l.settings.helm_diddy or l.settings.helm_setting == HelmSetting.skip_all),
     ], [
-        Event(Events.HelmDoorsOpened, lambda l: l.settings.helm_setting != HelmSetting.default),
-        Event(Events.HelmGatesPunched, lambda l: l.settings.helm_setting != HelmSetting.default),
+        Event(Events.HelmDoorsOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.helm_star_gates)),
+        Event(Events.HelmGatesPunched, lambda l: l.checkBarrier(RemovedBarriersSelected.helm_punch_gates) and Events.HelmDoorsOpened in l.Events),
         Event(Events.HelmFinished, lambda l: l.settings.helm_setting == HelmSetting.skip_all),
     ], [
         # These transitions route you to where the loading zone entering Helm will take you
         # If we must turn off the Blast-O-Matic, also prevent the fill from entering Helm without Snide
         TransitionFront(Regions.HideoutHelmStart, lambda l: l.settings.helm_setting == HelmSetting.default and l.canAccessHelm()),
         TransitionFront(Regions.HideoutHelmMain, lambda l: l.settings.helm_setting == HelmSetting.skip_start and l.canAccessHelm()),
-        TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: l.settings.helm_setting == HelmSetting.skip_all)
+        TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: l.settings.helm_setting == HelmSetting.skip_all),
+        TransitionFront(Regions.HideoutHelmLobbyPastVines, lambda l: Events.HelmFinished in l.Events, Transitions.HelmToIsles),
     ]),
 
     Regions.HideoutHelmStart: Region("Hideout Helm Start", HintRegion.Helm, Levels.HideoutHelm, True, None, [
@@ -44,7 +45,6 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_HelmMainEnemy_Start0, lambda l: l.camera),
         LocationLogic(Locations.KremKap_HelmMainEnemy_Start1, lambda l: l.camera),
     ], [], [
-        TransitionFront(Regions.HideoutHelmLobbyPastVines, lambda l: Events.HelmFinished in l.Events, Transitions.HelmToIsles),
         TransitionFront(Regions.HideoutHelmSwitchRoom, lambda l: (l.handstand and l.islanky) or l.slope_resets),
         TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: l.settings.helm_setting == HelmSetting.skip_all or Events.HelmFinished in l.Events),  # W1
     ]),

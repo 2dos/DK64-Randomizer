@@ -2048,7 +2048,7 @@ ColoredBananaGroupList = [
         name="On the headphones",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[[5, 1.0, 2580, 213, 806]],
+        locations=[[5, 1.0, 2580, 213, 1806]],
     ),
     ColoredBananaGroup(
         group=165,
@@ -2304,15 +2304,15 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=187,
         map_id=Maps.CavesRotatingCabin,
-        name="Back wall",
+        name="Front of puzzle",
         konglist=[Kongs.donkey],
         region=Regions.RotatingCabin,
         locations=[
-            [1, 1.0, 442, 130, 489],
-            [1, 1.0, 380, 124, 489],
-            [1, 1.0, 317, 118, 489],
-            [1, 1.0, 255, 124, 489],
-            [1, 1.0, 193, 130, 489],
+            [1, 1.0, 363, 127, 251],
+            [1, 1.0, 340, 127, 251],
+            [1, 1.0, 317, 127, 251],
+            [1, 1.0, 295, 127, 251],
+            [1, 1.0, 272, 127, 251],
         ],
     ),
     ColoredBananaGroup(
@@ -2934,7 +2934,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey],
         region=Regions.RotatingCabin,
-        points=[[317, 142, 295], [423, 242, 296], [217, 244, 292]],
+        points=[[317, 142, 285], [423, 242, 286], [217, 244, 282]],
     ),
     Balloon(
         id=60,

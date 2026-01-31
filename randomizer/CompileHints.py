@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 import json
 from math import ceil, floor, sqrt
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Tuple, Union
@@ -21,6 +22,7 @@ from randomizer.Enums.Settings import (
     BananaportRando,
     BLockerSetting,
     ClimbingStatus,
+    FasterChecksSelected,
     ProgressiveHintItem,
     ActivateAllBananaports,
     LogicType,
@@ -98,7 +100,7 @@ class StartingSpoiler:
                 settings.level_order[8],
             ]
 
-    def toJSON(self):
+    def toCleanJSON(self):
         """Convert this object to JSON for the purposes of the spoiler log."""
         return json.dumps(self, default=lambda o: o.__dict__)
 
@@ -111,11 +113,14 @@ class LevelSpoiler:
         self.level_name = level_name
         self.vial_colors = []
         self.points = 0
+        self.level_items = []
         self.woth_count = 0
 
-    def toJSON(self):
+    def toCleanJSON(self):
         """Convert this object to JSON for the purposes of the spoiler log."""
-        return json.dumps(self, default=lambda o: o.__dict__)
+        sanitized_copy = deepcopy(self)
+        sanitized_copy.level_items = []  # This info is far too detailed to be in a spoiler log
+        return json.dumps(sanitized_copy, default=lambda o: o.__dict__)
 
 
 # Hint distribution that will be adjusted based on settings
@@ -370,7 +375,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         # If K. Rool is live it is guaranteed a hint in this distribution if it is not hinted otherwise via spoiler hints
         if (
             (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random or getattr(spoiler.settings, "krool_in_boss_pool", False))
-            and spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge)
+            and spoiler.settings.win_condition_spawns_ship == 1
             and spoiler.settings.spoiler_hints == SpoilerHints.off
         ):
             valid_types.append(HintType.KRoolOrder)
@@ -514,11 +519,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             else:
                 valid_types.append(HintType.Entrance)
         # If K. Rool is live it can get one hint if it is not hinted otherwise via spoiler hints
-        if (
-            (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random)
-            and spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge)
-            and spoiler.settings.spoiler_hints == SpoilerHints.off
-        ):
+        if (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random) and spoiler.settings.win_condition_spawns_ship == 1 and spoiler.settings.spoiler_hints == SpoilerHints.off:
             valid_types.append(HintType.KRoolOrder)
             maxed_hint_types.append(HintType.KRoolOrder)
             # If the seed doesn't funnel you into helm, guarantee one K. Rool order hint
@@ -551,7 +552,7 @@ def compileHints(spoiler: Spoiler) -> bool:
 
                 valid_types.append(HintType.WothLocation)
                 # K. Rool seeds could use some help finding the last pesky moves
-                if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+                if spoiler.settings.win_condition_spawns_ship == 1:
                     valid_types.append(HintType.RequiredWinConditionHint)
                     # Count the number of non-trivial phases
                     hint_distribution[HintType.RequiredWinConditionHint] = len(
@@ -981,7 +982,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     location_to_hint = spoiler.settings.random.choice(location_options)
                     hinted_path_locations.append(location_to_hint)
         # If K. Rool is our goal, do the same with K. Rool phases
-        if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+        if spoiler.settings.win_condition_spawns_ship == 1:
             for kong in spoiler.krool_paths.keys():
                 # Determine if any location we're already hinting is on the path to this phase of K. Rool
                 hinted_locations_on_this_path = set(spoiler.krool_paths[kong]) & set(hinted_path_locations)
@@ -1155,7 +1156,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     # - Prevent 35 plando hints from causing problems here (I don't think it will, but double check it)
     if hintset.expectedDistribution[HintType.RequiredWinConditionHint] > 0:
         # To aid K. Rool goals create a number of path hints to help find items required specifically for K. Rool
-        if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+        if spoiler.settings.win_condition_spawns_ship == 1:
             path = spoiler.woth_paths[Locations.BananaHoard]
             already_chosen_krool_path_locations = []
             chosen_krool_path_location_cap = hintset.expectedDistribution[HintType.RequiredWinConditionHint]
@@ -1423,7 +1424,15 @@ def compileHints(spoiler: Spoiler) -> bool:
             Locations.JapesDiddyMountain: [Regions.Mine, Maps.JapesMountain],
             # Forest Diddy Winch naturally needs to find the Winch room very badly rather than Forest Main
             Locations.ForestDiddyCagedBanana: [Regions.WinchRoom, Maps.ForestWinchRoom],
+            # Forest Donkey Mill needs to find the Grinder Room rather than Forest Main
+            Locations.ForestDonkeyMill: [Regions.GrinderRoom, Maps.ForestMillFront],
         }
+        # If the Arcade GB isn't on the blast course, it's in the Arcade region and can be entrance hinted
+        if not spoiler.LogicVariables.checkFastCheck(FasterChecksSelected.factory_arcade_round_1):
+            location_exceptions[Locations.FactoryDonkeyDKArcade] = [Regions.FactoryArcadeTunnel, Maps.FranticFactory]
+        # If it is on, then it's on the blast course - this exception will make it unhintable
+        else:
+            location_exceptions[Locations.FactoryDonkeyDKArcade] = [Regions.FactoryBaboonBlast, Maps.FactoryBaboonBlast]
         region_exceptions = {
             # Most Galleon ships share a Map but have segmented sections. We want to be sure we're looking for the correct transition for each check.
             Regions.TinyShip: [Transitions.GalleonTinyToShipyard],
@@ -1436,6 +1445,8 @@ def compileHints(spoiler: Spoiler) -> bool:
             # The Castle Museum Map is segmented by glass walls. Different regions of the Museum care about different transitions.
             Regions.Museum: [Transitions.CastleMuseumToMain],
             Regions.MuseumBehindGlass: [Transitions.CastleMuseumToBallroom, Transitions.CastleMuseumToCarRace],
+            # The Arcade region doesn't contain the transition that leads into it because the transition needed dedicated climbing logic for the pole.
+            Regions.FactoryArcadeTunnel: [Transitions.FactoryArcadeToStorage],
         }
         # These are the maps we classify as "connectors" - they are regions with exactly two entrances
         connector_maps = {
@@ -1513,7 +1524,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 Maps.CrystalCaves,
                 Maps.CreepyCastle,
             )
-            if woth_map in main_level_maps:
+            # One exception: the Arcade is effectively an isolated loading zone within the main map of Factory
+            if woth_map in main_level_maps and region_id != Regions.FactoryArcadeTunnel:
                 continue
             # Blast maps all happen to be contained in the main map of the respective level
             if woth_map in (
@@ -1799,6 +1811,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 continue
             region_name_to_hint = None
 
+            # Try to find a scouring-hintable region that actually contains useful info
+            valid_region_found = False
             if use_hint_score:
                 hintset.CalculateHintScores(spoiler, multipath_dict_goals)
                 # If we still have ugly unhinted locations, we should prioritize hinting those where possible
@@ -1818,19 +1832,41 @@ def compileHints(spoiler: Spoiler) -> bool:
                             if candidate_region_name in hintable_region_names:
                                 region_name_to_hint = candidate_region_name
                                 hintable_region_names.remove(candidate_region_name)
-
-            if region_name_to_hint is None:
+                                valid_region_found = True
+            # If we're not leveraging the score, we need to at least ensure the region has useful info
+            while not valid_region_found:
+                # If we somehow run out, kick back to the start of the loop - it handles that case there (RARE)
+                if len(hintable_region_names) == 0:
+                    continue
+                # Start with a random one
                 region_name_to_hint = hintable_region_names.pop()
+                # If the region's hintable items are only in unshuffled locations, it's not an interesting hint
+                # Crucially, unshuffled locations still contribute to the count so as to not make the hints lie
+                for region_item in spoiler.region_hintable_count[region_name_to_hint].keys():
+                    region_item_data = spoiler.region_hintable_count[region_name_to_hint][region_item]
+                    if any(region_item_data["shuffled_locations"]):
+                        valid_region_found = True
+                        break
             hint_location = hintset.getRandomHintLocation(random=spoiler.settings.random)
             level_color = "\x05"
             for region_id in Regions:
                 if spoiler.RegionList[region_id].hint_name == region_name_to_hint:
                     level_color = level_colors[spoiler.RegionList[region_id].level]
                     break
-            plural = ""
-            if spoiler.region_hintable_count[region_name_to_hint] > 1:
-                plural = "s"
-            message = f"Scouring the {level_color}{HINT_REGION_PAIRING.get(region_name_to_hint, region_name_to_hint.name)}{level_color} will yield you \x0d{spoiler.region_hintable_count[region_name_to_hint]} potion{plural}\x0d."
+            region_items = list(spoiler.region_hintable_count[region_name_to_hint].keys())
+            max_item_name = None
+            max_plural = None
+            max_count = -1
+            for region_item in region_items:
+                region_item_data = spoiler.region_hintable_count[region_name_to_hint][region_item]
+                count = region_item_data["count"]
+                if count > max_count and len(region_item_data["shuffled_locations"]) > 0:
+                    # Find the item in the region with the most *stuff*. This is the most valuable
+                    max_count = count
+                    max_plural = region_item_data["plural"]
+                    max_item_name = region_item
+            displayed_item_name = max_plural if max_count > 1 else max_item_name
+            message = f"Scouring the {level_color}{HINT_REGION_PAIRING.get(region_name_to_hint, region_name_to_hint.name)}{level_color} will yield you \x0d{max_count} {displayed_item_name}\x0d."
             hint_location.hint_type = HintType.RegionItemCount
             hint_location.related_hint_region_id = region_name_to_hint
             UpdateHint(hint_location, message)
@@ -1900,6 +1936,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 Regions.ForestTopOfMill,
                 Regions.MillArea,
                 Regions.ThornvineArea,
+                Regions.MushroomVeryTopExterior,
             ],
             [Regions.CrystalCavesEntryHandler, Regions.CrystalCavesMain, Regions.IglooArea, Regions.CabinArea],
             [Regions.CreepyCastleEntryHandler, Regions.CreepyCastleMain, Regions.CastleWaterfall],
@@ -2301,7 +2338,15 @@ def compileSpoilerHints(spoiler):
                     starting_info.starting_moves_woth_count += 1
             else:
                 spoiler.level_spoiler[level_of_location].vial_colors.append(CategorizeItem(item_obj))
-                spoiler.level_spoiler[level_of_location].points += PointValueOfItem(spoiler.settings, location.item)
+                points = PointValueOfItem(spoiler.settings, location.item)
+                spoiler.level_spoiler[level_of_location].points += points
+                spoiler.level_spoiler[level_of_location].level_items.append(
+                    {
+                        "item": location.item,
+                        "points": points,
+                        "flag": location.location_flag,
+                    }
+                )
                 if location_id in spoiler.woth_locations:
                     spoiler.level_spoiler[level_of_location].woth_count += 1
     # Convert those spoiler hints to readable text
@@ -2395,7 +2440,7 @@ def CategorizeItem(item):
     elif item.type == Types.Key:
         return "Key"
     elif item.type == Types.Bean:
-        return "Bean"
+        return "Clear Vial"
     elif item.kong == Kongs.donkey:
         return "Yellow Vial"
     elif item.kong == Kongs.diddy:
@@ -2528,6 +2573,7 @@ def GenerateMultipathDict(
         relevant_goal_locations = []
         path_to_family = False
         path_to_bean = False
+        path_to_rabbit = False
         path_to_verses = [False] * 6
         has_path_to_verse = False
         verse_items = [
@@ -2569,11 +2615,15 @@ def GenerateMultipathDict(
                 if endpoint_item.type == Types.Kong:
                     path_to_family = True
         # Determine which K. Rool phases this is on the path to (if relevant)
-        if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+        if spoiler.settings.win_condition_spawns_ship == 1:
             for map_id in spoiler.krool_paths.keys():
                 if location in spoiler.krool_paths[map_id]:
                     path_to_krool_phases.append(boss_colors[map_id] + boss_names[map_id] + boss_colors[map_id])
                     relevant_goal_locations.append(Maps(map_id))
+        # If that wascally wabbit needs to be killed, determine if we're on the path to that.
+        if spoiler.settings.win_condition_item == WinConditionComplex.kill_the_rabbit and location in spoiler.rabbit_path:
+            path_to_rabbit = True
+            relevant_goal_locations.append(Locations(woth_loc))
         # Determine if this location is on the path to taking photos for certain win conditions
         if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             camera_location_id = None
@@ -2615,6 +2665,8 @@ def GenerateMultipathDict(
             hint_text_components.append("\x0cFree Kongs\x0c")
         if path_to_bean:
             hint_text_components.append("\x07The Bean\x07")
+        if path_to_rabbit:
+            hint_text_components.append("\x05The Rabbit\x05")
         if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
             all_verses = [xi for xi, x in enumerate(path_to_verses) if x]
             if len(all_verses) == 6:
@@ -2633,7 +2685,7 @@ def GenerateMultipathDict(
                         hint_text_components.append(f"{join_words(kong_names)} Verses")
                 if path_to_verses[5]:
                     hint_text_components.append(f"{verse_colors[5]}The Fridge{verse_colors[5]}")
-        if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0 or path_to_family or path_to_bean or has_path_to_verse:
+        if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0 or path_to_family or path_to_bean or has_path_to_verse or path_to_rabbit:
             multipath_dict_hints[location] = join_words(hint_text_components)
             multipath_dict_goals[location] = relevant_goal_locations
     return multipath_dict_hints, multipath_dict_goals

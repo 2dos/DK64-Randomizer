@@ -49,6 +49,28 @@ function getItemCap(item) {
   return null;
 }
 
+function isItemShuffled(item_type, is_dummy = false) {
+  let limit = 5;
+  if (document.getElementById("decouple_item_rando").checked) {
+    limit = 10;
+  }
+  for (let i = 0; i < limit; i++) {
+    if ((i == 0) || (i == 5)) {
+      continue;
+    }
+    if ((i < 5) && (is_dummy) && (limit == 10)) {
+      continue;
+    }
+    const list_items = document.getElementById(`item_rando_list_${i}`).getElementsByTagName("li");
+    for (let j = 0; j < list_items.length; j++) {
+      if (list_items[j].getAttribute("value") == "item_type") {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 // Attach the function as an event listener to the "change" event on the "logic_type" element
 document
   .getElementById("logic_type")
@@ -117,6 +139,27 @@ document
 document
   .getElementById("plando_place_tns")
   .addEventListener("click", plando_toggle_custom_locations_tab);
+
+// Toggle individual Kong switches for Model Swap
+function toggle_modelmode_selector() {
+  const kong_list = ["dk", "diddy", "lanky", "tiny", "chunky"];
+
+  for (let i = 0; i < 5; i++) {
+    const kongModelCustomization = document.getElementById(
+      "kong_model_" + kong_list[i]
+    );
+
+    if (document.getElementById("kong_model_mode").value == "manual") {
+      kongModelCustomization.removeAttribute("disabled");
+    } else {
+      kongModelCustomization.setAttribute("disabled", "disabled");
+    }
+  }
+}
+
+document
+  .getElementById("kong_model_mode")
+  .addEventListener("change", toggle_modelmode_selector);
 
 // Toggle custom arena locations
 function plando_toggle_custom_arena_locations() {
@@ -232,17 +275,7 @@ document
 
 // Enable or disable custom locations for battle arenas
 function plando_disable_arena_custom_locations() {
-  const itemRandoPool = document.getElementById(
-    "item_rando_list_selected"
-  ).options;
-  let crownsShuffled = false;
-
-  for (let option of itemRandoPool) {
-    if (option.value === "crown") {
-      crownsShuffled = option.selected;
-    }
-  }
-
+  let crownsShuffled = isItemShuffled("crown");
   const randomCrowns = document.getElementById("crown_placement_rando").checked;
   const customCrownsElem = document.getElementById("plando_place_arenas");
   let tooltip = "Allows the user to specify locations for each battle arena.";
@@ -268,17 +301,7 @@ document
 
 // Enable or disable custom locations for melon crates
 function plando_disable_crate_custom_locations() {
-  const itemRandoPool = document.getElementById(
-    "item_rando_list_selected"
-  ).options;
-  let cratesShuffled = false;
-
-  for (let option of itemRandoPool) {
-    if (option.value === "crateitem") {
-      cratesShuffled = option.selected;
-    }
-  }
-
+  let cratesShuffled = isItemShuffled("dummyitem_crateitem", true) || isItemShuffled("crateitem");
   const randomCrates = document.getElementById("random_crates").checked;
   const customCratesElem = document.getElementById("plando_place_crates");
   let tooltip = "Allows the user to specify locations for each melon crate.";
@@ -303,17 +326,7 @@ document
   .addEventListener("click", plando_disable_crate_custom_locations);
 
 function plando_disable_fairy_custom_locations() {
-  const itemRandoPool = document.getElementById(
-    "item_rando_list_selected"
-  ).options;
-  let fairiesShuffled = false;
-
-  for (let option of itemRandoPool) {
-    if (option.value === "fairy") {
-      fairiesShuffled = option.selected;
-    }
-  }
-
+  let fairiesShuffled = isItemShuffled("fairy");
   const randomFairies = document.getElementById("random_fairies").checked;
   const customFairiesElem = document.getElementById("plando_place_fairies");
   let tooltip = "Allows the user to specify locations for each banana fairy.";
@@ -339,17 +352,7 @@ document
 
 // Enable or disable custom locations for Kasplats
 function plando_disable_kasplat_custom_locations() {
-  const itemRandoPool = document.getElementById(
-    "item_rando_list_selected"
-  ).options;
-  let kasplatsShuffled = false;
-
-  for (let option of itemRandoPool) {
-    if (option.value === "blueprint") {
-      kasplatsShuffled = option.selected;
-    }
-  }
-
+  let kasplatsShuffled = isItemShuffled("blueprint");
   const kasplatShuffle = document.getElementById("kasplat_rando_setting").value;
   const customKasplatsElem = document.getElementById("plando_place_kasplats");
   let tooltip = "Allows the user to specify locations for each Kasplat.";
@@ -889,10 +892,10 @@ document.getElementById("cb_rando_enabled").addEventListener("change", plando_di
 
 // Disable K. Rool phases as bosses if they are not in the boss pool.
 function plando_disable_krool_phases_as_bosses(evt) {
-  const kroolInBossPool = document.getElementById("krool_in_boss_pool").checked;
+  const kroolInBossPool = document.getElementById("krool_in_boss_pool_v2").value;
   const tnsBossOptions = document.getElementsByClassName("plando-tns-boss");
 
-  if (kroolInBossPool) {
+  if (kroolInBossPool !== "off") {
     for (let option of tnsBossOptions) {
       option.removeAttribute("disabled");
     }
@@ -909,7 +912,7 @@ function plando_disable_krool_phases_as_bosses(evt) {
   }
 }
 
-document.getElementById("krool_in_boss_pool").addEventListener("click", plando_disable_krool_phases_as_bosses);
+document.getElementById("krool_in_boss_pool_v2").addEventListener("change", plando_disable_krool_phases_as_bosses);
 
 // Make changes to the plando tab based on other settings
 document
@@ -1071,6 +1074,7 @@ function unshuffled_pool_list_changed(evt) {
   let shopsInPool = true;
   let shockwaveInPool = true;
   let shopownersInPool = true;
+  let trainingMovesInPool = true;
 
   const unshuffled_pool = document.getElementById(`item_rando_list_0`);
     const types_in_pool = unshuffled_pool.getElementsByTagName("li");
@@ -1084,10 +1088,17 @@ function unshuffled_pool_list_changed(evt) {
         if (types_in_pool[i].getAttribute("value") == "shopowners") {
             shopownersInPool = false;
         }
+        if (types_in_pool[i].getAttribute("value") == "trainingmoves") {
+            trainingMovesInPool = false;
+        }
     }
 
   let camera_option = document.getElementById("starting_move_52");
   let shockwave_option = document.getElementById("starting_move_53");
+  let vines_option = document.getElementById("starting_move_8");
+  let swim_option = document.getElementById("starting_move_9");
+  let oranges_option = document.getElementById("starting_move_10");
+  let barrels_option = document.getElementById("starting_move_11");
   let cranky_option = document.getElementById("starting_move_92");
   let funky_option = document.getElementById("starting_move_93");
   let candy_option = document.getElementById("starting_move_94");
@@ -1103,6 +1114,18 @@ function unshuffled_pool_list_changed(evt) {
     else {
       camera_option.removeAttribute("hidden");
       shockwave_option.removeAttribute("hidden");
+    }
+    if (!trainingMovesInPool) {
+      vines_option.setAttribute("hidden", "hidden");
+      swim_option.setAttribute("hidden", "hidden");
+      oranges_option.setAttribute("hidden", "hidden");
+      barrels_option.setAttribute("hidden", "hidden");
+    }
+    else {
+      vines_option.removeAttribute("hidden");
+      swim_option.removeAttribute("hidden");
+      oranges_option.removeAttribute("hidden");
+      barrels_option.removeAttribute("hidden");
     }
     if (!shopownersInPool) {
       cranky_option.setAttribute("hidden", "hidden");
@@ -1126,14 +1149,14 @@ function unshuffled_pool_list_changed(evt) {
 
 // Validate Fast Start Status
 document
-  .getElementById("random_starting_region")
-  .addEventListener("click", validate_fast_start_status);
+  .getElementById("random_starting_region_new")
+  .addEventListener("change", validate_fast_start_status);
 
 function validate_fast_start_status(evt) {
   const loadingZoneStatus = document.getElementById("level_randomization");
   const isRandomStartingRegion = document.getElementById(
-    "random_starting_region"
-  ).checked;
+    "random_starting_region_new"
+  ).value != "off";
   const fastStart = document.getElementById("fast_start_beginning_of_game_dummy");
 
   if (
@@ -1442,25 +1465,45 @@ function update_win_con_num_access() {
     "easy_random",
     "medium_random",
     "hard_random",
-    "beat_krool",
     "get_key8",
+    "get_keys_3_and_8",
     "krem_kapture",
     "dk_rap_items",
     "krools_challenge",
+    "kill_the_rabbit",
   ];
   const KROOL_WIN_CONS = [
     "easy_random",
     "medium_random",
     "hard_random",
-    "beat_krool",
   ]
+  const KROOL_REQUIRED_WIN_CONS = ["krools_challenge"];
+  const KROOL_DISABLED_WIN_CONS = ["kill_the_rabbit"];
 
   const winConSelection = document.getElementById("win_condition_item");
   const winConContainer = document.getElementById("win_condition_container");
   const winConReq = document.getElementById("win_condition_count");
   const disabled = DISABLED_WIN_VALUES.includes(winConSelection.value);
   const kroolSection = document.getElementById("krool_section");
-  const isKRool = KROOL_WIN_CONS.includes(winConSelection.value);
+  const kroolShipSpawnMethod = document.getElementById("win_condition_spawns_ship");
+  
+  // Force enable checkbox for win conditions that require K. Rool
+  if (KROOL_REQUIRED_WIN_CONS.includes(winConSelection.value)) {
+    kroolShipSpawnMethod.checked = true;
+    kroolShipSpawnMethod.disabled = true;
+  }
+  // Force disable checkbox for win conditions incompatible with K. Rool requirement
+  else if (KROOL_DISABLED_WIN_CONS.includes(winConSelection.value)) {
+    kroolShipSpawnMethod.checked = false;
+    kroolShipSpawnMethod.disabled = true;
+  }
+  // Allow user control for other win conditions
+  else {
+    kroolShipSpawnMethod.disabled = false;
+  }
+  
+  // Show K. Rool section only when the "Require Beating K. Rool" checkbox is checked
+  const isKRool = kroolShipSpawnMethod && kroolShipSpawnMethod.checked;
 
   if (disabled) {
     winConContainer.classList.add("hide-input");
@@ -1487,10 +1530,43 @@ function update_win_con_num_access() {
       }
     }
   }
+
+  // Update tooltip for special win conditions
+  const TOOLTIP_WIN_CONS = {
+    "krools_challenge": "Beat K. Rool and collect all Keys, Blueprints, Bosses, and Bonus Barrels",
+    "dk_rap_items": "Acquire all items referenced in each verse of the DK Rap:<br><br><strong>Donkey verse</strong> : Coconuts, Strong Kong<br><strong>Diddy verse</strong> : Rocketbarrel, Peanuts, Guitar<br><strong>Lanky verse</strong> : Orangstand, Baboon Balloon, Trombone<br><strong>Tiny verse</strong> : Mini Monkey, Ponytail Twirl, Climbing<br><strong>Chunky verse</strong> : Barrel Throwing<br><strong>The Fridge</strong> : Cranky, Peanuts, Pineapple, Grape, Orange Throwing, Coconuts",
+    "kill_the_rabbit": "Kill the rabbit in Chunky's igloo in Caves. Turn it to Ash. Simple as that."
+  };
+
+  const infoIcon = document.getElementById("win_condition_info_icon");
+
+  // Always dispose existing tooltip first
+  $(infoIcon).tooltip('dispose');
+
+  if (TOOLTIP_WIN_CONS[winConSelection.value]) {
+    infoIcon.setAttribute("title", TOOLTIP_WIN_CONS[winConSelection.value]);
+    infoIcon.setAttribute("data-bs-original-title", TOOLTIP_WIN_CONS[winConSelection.value]);
+    infoIcon.classList.remove("hidden");
+    // Initialize Bootstrap tooltip
+    $(infoIcon).tooltip({
+      trigger: 'hover',
+      html: true,
+      placement: 'right',
+      customClass: 'win-condition-tooltip'
+    });
+  } else {
+    infoIcon.setAttribute("title", "");
+    infoIcon.setAttribute("data-bs-original-title", "");
+    infoIcon.classList.add("hidden");
+  }
 }
 
 document
   .getElementById("win_condition_item")
+  .addEventListener("change", update_win_con_num_access);
+
+document
+  .getElementById("win_condition_spawns_ship")
   .addEventListener("change", update_win_con_num_access);
 
 // Validate Door 1 input on loss of focus
@@ -2044,6 +2120,7 @@ function update_ui_states() {
   toggle_dos_door_rando();
   validate_fast_start_status(null);
   hide_irrelevant_details_coupled_item_rando();
+  toggle_modelmode_selector();
 
   const sliders = document.getElementsByClassName("pretty-slider");
   for (let s = 0; s < sliders.length; s++) {

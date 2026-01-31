@@ -506,13 +506,13 @@
 | On the lava pedestals first switch | 5 | `self.logic = lambda _: True` | 
 | Lower ledge of the pedestal switch platforms | 10 | `(l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.monkey_maneuvers))` | 
 | Passage towards Lanky's cage | 5 | `(((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase())` | 
-| In front of Lanky's cage | 5 | `(((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase())` | 
+| In front of Lanky's cage | 5 | `(Events.AztecLlamaSpit in l.Events and l.swim) or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) or l.CanPhase()` | 
 | Matching game room right side | Balloon | `self.logic = lambda _: True` | 
 | Above Llama | Balloon | `self.logic = lambda _: True` | 
 | Lava room | Balloon | `self.logic = lambda _: True` | 
 | Above lava/water (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| In Lanky's room (Lanky) | Balloon | `(((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase())` | 
-| In Lanky's room (Lanky) | Balloon | `(((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase())` | 
+| In Lanky's room (Lanky) | Balloon | `(Events.AztecLlamaSpit in l.Events and l.swim) or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) or l.CanPhase()` | 
+| In Lanky's room (Lanky) | Balloon | `(Events.AztecLlamaSpit in l.Events and l.swim) or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) or l.CanPhase()` | 
 | Entrance stairs | Balloon | `self.logic = lambda _: True` | 
 | Left side behind the llama | Balloon | `self.logic = lambda _: True` | 
 | Right side behind the llama | Balloon | `self.logic = lambda _: True` | 
@@ -1132,7 +1132,7 @@
 | Behind night ladder on top of giant mushroom | 5 | `self.logic = lambda _: True` | 
 | By battle arena on little outcrop | 5 | `self.logic = lambda _: True` | 
 | Around battle crown platform | 10 | `self.logic = lambda _: True` | 
-| Around Lanky switch on top of giant mushroom | 10 | `(l.handstand and l.islanky) or (l.jetpack and l.isdiddy)` | 
+| Around Lanky switch on top of giant mushroom | 10 | `logic=lambda _: True` | 
 | Path to Rabbit race (2 custom, 3 Lanky) | 5 | `self.logic = lambda _: True` | 
 | On Rabbit's home | 5 | `self.logic = lambda _: True` | 
 | On Guitar pad in W4 area | 5 | `self.logic = lambda _: True` | 
@@ -1169,7 +1169,7 @@
 | Around giant mushroom base (Lanky) | 10 | `self.logic = lambda _: True` | 
 | In entrance to Lanky's attic (Lanky) | 5 | `Events.Night in l.Events` | 
 | Over baboon balloon pad (Lanky) | 5 | `self.logic = lambda _: True` | 
-| On Giant mushroom top switch (Lanky) | 5 | `(l.jetpack and l.isdiddy) or (l.handstand and l.islanky)` | 
+| On Giant mushroom top switch (Lanky) | 5 | `logic=lambda _: True` | 
 | On Rabbit Race instrument pad (Lanky) | 5 | `self.logic = lambda _: True` | 
 | Green tunnel (Tiny) | 1 | `self.logic = lambda _: True` | 
 | Green tunnel (Tiny) | 4 | `l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.CanPhase() or l.CanPhaseswim()` | 
@@ -1219,8 +1219,8 @@
 | Near the ladder before the blast course | 5 | `self.logic = lambda _: True` | 
 | Near the ladder after the blast course | 5 | `self.logic = lambda _: True` | 
 | Near the mushroom night door | 5 | `self.logic = lambda _: True` | 
-| Top of mushroom to zinger bounce room | 5 | `l.handstand` | 
-| Top of mushroom to colored slam room | 5 | `l.handstand` | 
+| Top of mushroom to zinger bounce room | 5 | `logic=lambda _: True` | 
+| Top of mushroom to colored slam room | 5 | `logic=lambda _: True` | 
 | Mushroom rocketbarrel liftoff !! | 15 | `l.jetpack` | 
 | Around the top of mushroom bonus barrel | 10 | `l.jetpack` | 
 | Around the first stump in owl tree area | 10 | `self.logic = lambda _: True` | 
@@ -1688,7 +1688,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On puzzle (Donkey) | 5 | `self.logic = lambda _: True` | 
-| Back wall | 5 | `self.logic = lambda _: True` | 
+| Front of puzzle | 5 | `self.logic = lambda _: True` | 
 | Puzzles | Balloon | `self.logic = lambda _: True` | 
 ## Caves Diddy Lower Cabin
 | Name | Amount | Logic |
@@ -1864,7 +1864,7 @@
 | On monkeyport pad (Tiny) | 5 | `self.logic = lambda _: True` | 
 | On candles (Diddy) | 15 | `l.jetpack` | 
 | Entrance | 10 | `self.logic = lambda _: True` | 
-| Main room entrance | 10 | `self.logic = lambda _: True` | 
+| Main room entrance | 5 | `self.logic = lambda _: True` | 
 | Black spaces | 10 | `self.logic = lambda _: True` | 
 | White spaces | 10 | `self.logic = lambda _: True` | 
 | Near the monkeyport pad | 5 | `self.logic = lambda _: True` | 
@@ -2139,7 +2139,7 @@
 | Above Caves lobby | 15 | `self.logic = lambda _: True` | 
 | Forest lobby roof | 10 | `self.logic = lambda _: True` | 
 | Flower sniffing near Forest | 5 | `self.logic = lambda _: True` | 
-| In the peanut cage | 10 | `l.peanut or l.CanPhase()` | 
+| In the peanut cage | 10 | `l.peanut` | 
 | Waterfall upstream | 5 | `self.logic = lambda _: True` | 
 | Flower next to peanut cage | 5 | `self.logic = lambda _: True` | 
 | Waterfall freefall | 10 | `self.logic = lambda _: True` | 

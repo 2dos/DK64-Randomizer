@@ -18,7 +18,7 @@ typedef struct pad_refresh_struct {
     /* 0x006 */ unsigned short unk6;
 } pad_refresh_struct;
 
-static pad_refresh_struct pads[] = {
+ROM_DATA static pad_refresh_struct pads[] = {
     // BBlast Pads
     {
         .map = MAP_JAPES,

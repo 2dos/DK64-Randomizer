@@ -161,8 +161,9 @@ def writeKongColors(settings: Settings, ROM_COPY: ROM):
                 ]
         elif kong.kong_index == 0:
             if settings.kong_model_dk == KongModels.disco_donkey:
-                [
+                kong.palettes = [
                     KongPalette("fur", getBonusSkinOffset(ExtraTextures.DiscoDonkShirt), PaletteFillType.sparkle),
+                    KongPalette("tie", getBonusSkinOffset(ExtraTextures.DiscoDonkGlove), PaletteFillType.sparkle),
                     KongPalette("tie", 0x177D, PaletteFillType.block),
                     KongPalette("tie", 0xE8D, PaletteFillType.patch),
                 ]

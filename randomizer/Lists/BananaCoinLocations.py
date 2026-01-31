@@ -5274,8 +5274,8 @@ BananaCoinGroupList = {
             map_id=Maps.FungiForest,
             name="On the Giant Mushroom top",
             konglist=[Kongs.diddy, Kongs.lanky],
-            region=Regions.MushroomUpperExterior,
-            logic=lambda l: (l.jetpack and l.isdiddy) or (l.islanky and l.handstand),
+            region=Regions.MushroomVeryTopExterior,
+            logic=lambda _: True,
             locations=[
                 [1.0, 1078, 1432, 1177],
                 [1.0, 1142, 1429, 1034],
@@ -6484,9 +6484,9 @@ BananaCoinGroupList = {
             region=Regions.RotatingCabin,
             locations=[
                 [1.0, 440, 114, 104],
+                [1.0, 440, 124, 104],
                 [1.0, 191, 114, 103],
-                [1.0, 192, 114, 492],
-                [1.0, 444, 114, 489],
+                [1.0, 191, 124, 103],
             ],
         ),
         BananaCoinGroup(

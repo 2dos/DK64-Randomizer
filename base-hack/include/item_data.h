@@ -54,9 +54,13 @@ typedef enum new_custom_actors {
 	/* 0x181 */ NEWACTOR_FOOLSARCHIPELAGOITEM = 0x181, 
 	/* 0x182 */ NEWACTOR_TRAPARCHIPELAGOITEM = 0x182, 
 	/* 0x183 */ NEWACTOR_SPREADCOUNTER = 0x183, 
+	/* 0x184 */ NEWACTOR_GUARDDISABLEA = 0x184, 
+	/* 0x185 */ NEWACTOR_GUARDDISABLEZ = 0x185, 
+	/* 0x186 */ NEWACTOR_GUARDGETOUT = 0x186, 
+	/* 0x187 */ NEWACTOR_GUARDTAG = 0x187, 
 	/* ----- */ NEWACTOR_TERMINATOR, 
 } new_custom_actors;
-#define DROP_COUNT 36
+#define DROP_COUNT 40
 extern GBDictItem new_flag_mapping[122];
 #define FILE_INFO_SIZE 0x8e4
 #define GB_DICTIONARY_COUNT 122

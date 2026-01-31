@@ -1,12 +1,25 @@
 """Common classes and functions for the N64 client for DK64."""
 
-import asyncio
+from __future__ import annotations
+
+from asyncio import Task, create_task
+from typing import Any, Set, Coroutine
 import urllib.request
 import os
+import pkgutil
 import json
 import sys
-from ap_version import version as ap_version
 from Utils import get_settings
+
+
+def get_ap_version():
+    """Get the AP version from the manifest file."""
+    maybe_manifest = pkgutil.get_data("worlds.dk64", "archipelago.json")
+    if maybe_manifest:
+        apworld_manifest = json.loads(maybe_manifest.decode("utf-8"))
+        return apworld_manifest["world_version"]
+    else:
+        raise FileNotFoundError("Could not find the AP world manifest file.")
 
 
 class DK64MemoryMap:
@@ -26,6 +39,8 @@ class DK64MemoryMap:
     CurrentGamemode = 0x80755314
     NextGamemode = 0x80755318
     current_map = 0x8076A0A8
+    save_type = 0x807EDEAC
+    eeprom_determined = 0x807467E0
     safety_text_timer = 0x02A
     end_credits = 0x1B0
     send_death = 0x05C  # If donk player dies. Set this back to 0 upon receiving that the donk player has died
@@ -57,10 +72,10 @@ class DK64MemoryMap:
     count_struct_pointer = 0x807FFFB8  # Pointer to CountStruct containing item counts
 
 
-all_tasks = set()
+all_tasks: Set[Task[Any]] = set()
 
 
-def create_task_log_exception(awaitable) -> asyncio.Task:
+def create_task_log_exception(awaitable: Coroutine[Any, Any, None]) -> Task[Any]:
     """Create an asyncio task that logs any exceptions raised during its execution.
 
     Args:
@@ -72,17 +87,16 @@ def create_task_log_exception(awaitable) -> asyncio.Task:
     """
     from CommonClient import logger
 
-    async def _log_exception(awaitable):
+    async def _log_exception(awaitable: Coroutine[Any, Any, None]) -> None:
         try:
-            return await awaitable
+            await awaitable
         except Exception as e:
             logger.exception(e)
             pass
         finally:
             all_tasks.remove(task)
-        return
 
-    task = asyncio.create_task(_log_exception(awaitable))
+    task = create_task(_log_exception(awaitable))
     all_tasks.add(task)
     return task
 
@@ -125,6 +139,7 @@ def check_version():
             api_endpoint = f"https://api.github.com/repos/{repo}/releases/latest"
 
         request = urllib.request.Request(api_endpoint, headers={"User-Agent": "DK64Client/1.0"})
+        ap_version = get_ap_version()
         with urllib.request.urlopen(request) as response:
             data = json.load(response)
             latest_tag = data.get("tag_name")

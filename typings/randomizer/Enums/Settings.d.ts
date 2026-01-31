@@ -113,6 +113,12 @@ export enum DKPortalRando {
     on = 2,
 }
 
+export enum KroolInBossPool {
+    off = 0,
+    krool_only = 1,
+    full_shuffle = 2,
+}
+
 export enum ExcludedSongs {
     wrinkly = 1,
     transformation = 2,
@@ -265,6 +271,17 @@ export enum IceTrapFrequency {
     unlimited = 5,
 }
 
+export enum IceTrapModel {
+    simple = 0,
+    complex = 1,
+}
+
+export enum IceTrapModel2 {
+    simple = 0,
+    complex = 1,
+    fair = 2,
+}
+
 export enum ItemRandoListSelected {
     shop = 1,
     moves = 2,
@@ -313,6 +330,7 @@ export enum ItemRandoListSelected {
     racebanana = 45,
     gauntletbanana = 46,
     blueprintbanana = 47,
+    sniderewards = 48,
 }
 
 export enum ItemRandoFiller {
@@ -358,6 +376,14 @@ export enum KongModels {
     candy = 6,
     funky = 7,
     disco_donkey = 8,
+}
+
+export enum KongModelMode {
+    none = 0,
+    manual = 1,
+    random_one = 2,
+    sometimes_one = 3,
+    random_all = 4,
 }
 
 export enum LevelRandomization {
@@ -496,6 +522,12 @@ export enum RandomRequirement {
     hard_random = 3,
 }
 
+export enum RandomStartingRegion {
+    off = 0,
+    isles_only = 1,
+    all = 2,
+}
+
 export enum RemovedBarriersSelected {
     japes_coconut_gates = 1,
     japes_shellhive_gate = 2,
@@ -514,6 +546,8 @@ export enum RemovedBarriersSelected {
     caves_ice_walls = 15,
     galleon_treasure_room = 16,
     aztec_tiny_temple_ice = 17,
+    helm_star_gates = 18,
+    helm_punch_gates = 19,
 }
 
 export enum ShockwaveStatus {
@@ -574,6 +608,7 @@ export enum SwitchsanityKong {
     tiny = 3,
     chunky = 4,
     random = 5,
+    any = 6,
 }
 
 export enum TrainingBarrels {
@@ -612,6 +647,8 @@ export enum WinConditionComplex {
     req_bosses = 17,
     req_bonuses = 18,
     krools_challenge = 19,
+    kill_the_rabbit = 20,
+    get_keys_3_and_8 = 21,
 }
 
 export enum WrinklyHints {
@@ -919,6 +956,14 @@ export enum SettingsStringEnum {
     trap_weight_animal = 287,
     trap_weight_rockfall = 288,
     trap_weight_disabletag = 289,
+    random_starting_region_new = 290,
+    kong_model_mode = 291,
+    win_condition_spawns_ship = 292,
+    ice_trap_model = 293,
+    krool_in_boss_pool_v2 = 294,
+    no_consumable_upgrades = 295,
+    bosses_selected = 296,
+    ice_trap_model_v2 = 297,
 }
 
 export enum SettingsStringDataType {
@@ -966,6 +1011,8 @@ export const SettingsMap = {
     'helm_room_bonus_count': HelmBonuses,
     'helm_setting': HelmSetting,
     'ice_trap_frequency': IceTrapFrequency,
+    'ice_trap_model': IceTrapModel,
+    'ice_trap_model_v2': IceTrapModel2,
     'item_rando_list_selected': ItemRandoListSelected,
     'kasplat_rando_setting': KasplatRandoSetting,
     'krusha_ui': KrushaUi,
@@ -976,6 +1023,7 @@ export const SettingsMap = {
     'minigames_list_selected': MinigamesListSelected,
     'cb_rando_list_selected': Levels,
     'misc_changes_selected': MiscChangesSelected,
+    'bosses_selected': Maps,
     'more_cutscene_skips': ExtraCutsceneSkips,
     'move_rando': MoveRando,
     'music_filtering_selected': MusicFilters,
@@ -1001,6 +1049,7 @@ export const SettingsMap = {
     'pearl_mermaid_behavior': RandomRequirement,
     'fairy_queen_behavior': RandomRequirement,
     'cb_medal_behavior': RandomRequirement,
+    'random_starting_region_new': RandomStartingRegion,
     'cb_medal_behavior_new': CBRequirement,
     'wrinkly_hints': WrinklyHints,
     'spoiler_hints': SpoilerHints,
@@ -1012,6 +1061,7 @@ export const SettingsMap = {
     'kong_model_lanky': KongModels,
     'kong_model_tiny': KongModels,
     'kong_model_chunky': KongModels,
+    'kong_model_mode': KongModelMode,
     'chunky_phase_slam_req': SlamRequirement,
     'puzzle_rando_difficulty': PuzzleRando,
     'progressive_hint_item': ProgressiveHintItem,
@@ -1064,6 +1114,7 @@ export const SettingsMap = {
     'switchsanity_switch_aztec_free_tiny': SwitchsanityKong,
     'switchsanity_switch_aztec_free_lanky': SwitchsanityKong,
     'switchsanity_switch_factory_free_kong': SwitchsanityKong,
+    'krool_in_boss_pool_v2': KroolInBossPool,
 }
 
 export const SettingsStringTypeMap = {
@@ -1154,8 +1205,10 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.kong_model_lanky: KongModels,
     SettingsStringEnum.kong_model_tiny: KongModels,
     SettingsStringEnum.kong_model_chunky: KongModels,
+    SettingsStringEnum.kong_model_mode: KongModelMode,
     SettingsStringEnum.kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.krool_access: SettingsStringDataType.bool,
+    SettingsStringEnum.win_condition_spawns_ship: SettingsStringDataType.bool,
     SettingsStringEnum.krool_key_count: SettingsStringDataType.var_int,
     SettingsStringEnum.krool_phase_count: SettingsStringDataType.var_int,
     SettingsStringEnum.krool_phase_order_rando: SettingsStringDataType.bool,
@@ -1171,6 +1224,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.cb_rando_enabled: SettingsStringDataType.bool,
     SettingsStringEnum.cb_rando_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.misc_changes_selected: SettingsStringDataType.list,
+    SettingsStringEnum.bosses_selected: SettingsStringDataType.list,
     SettingsStringEnum.more_cutscene_skips: ExtraCutsceneSkips,
     SettingsStringEnum.move_rando: MoveRando,
     SettingsStringEnum.no_healing: SettingsStringDataType.bool,
@@ -1221,6 +1275,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.fairy_queen_behavior: RandomRequirement,
     SettingsStringEnum.cb_medal_behavior: RandomRequirement,
     SettingsStringEnum.cb_medal_behavior_new: CBRequirement,
+    SettingsStringEnum.random_starting_region_new: RandomStartingRegion,
     SettingsStringEnum.win_condition_count: SettingsStringDataType.u8,
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,
@@ -1268,6 +1323,8 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.krool_in_boss_pool: SettingsStringDataType.bool,
     SettingsStringEnum.enemy_kill_crown_timer: SettingsStringDataType.bool,
     SettingsStringEnum.ice_trap_frequency: IceTrapFrequency,
+    SettingsStringEnum.ice_trap_model: IceTrapModel,
+    SettingsStringEnum.ice_trap_model_v2: IceTrapModel2,
     SettingsStringEnum.ice_traps_damage: SettingsStringDataType.bool,
     SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
     SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,
@@ -1299,6 +1356,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.shops_dont_cost: SettingsStringDataType.bool,
     SettingsStringEnum.alt_minecart_mayhem: SettingsStringDataType.bool,
     SettingsStringEnum.less_fragile_boulders: SettingsStringDataType.bool,
+    SettingsStringEnum.no_consumable_upgrades: SettingsStringDataType.bool,
     SettingsStringEnum.prog_slam_level_1: SlamRequirement,
     SettingsStringEnum.prog_slam_level_2: SlamRequirement,
     SettingsStringEnum.prog_slam_level_3: SlamRequirement,
@@ -1356,6 +1414,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.trap_weight_animal: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_rockfall: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_disabletag: SettingsStringDataType.int8,
+    SettingsStringEnum.krool_in_boss_pool_v2: KroolInBossPool,
 }
 
 export const SettingsStringListTypeMap = {
@@ -1367,6 +1426,7 @@ export const SettingsStringListTypeMap = {
     SettingsStringEnum.minigames_list_selected: MinigamesListSelected,
     SettingsStringEnum.cb_rando_list_selected: Levels,
     SettingsStringEnum.misc_changes_selected: MiscChangesSelected,
+    SettingsStringEnum.bosses_selected: Maps,
     SettingsStringEnum.starting_keys_list_selected: Items,
     SettingsStringEnum.warp_level_list_selected: Maps,
     SettingsStringEnum.hard_mode_selected: HardModeSelected,

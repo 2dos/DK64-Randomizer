@@ -216,6 +216,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "holiday_setting",
         "holiday_setting_offseason",
         "homebrew_header",
+        "homebrew_header_patch",
         "dpad_display",
         "camera_is_follow",
         "sfx_volume",
@@ -236,10 +237,13 @@ def encrypt_settings_string_enum(dict_data: dict):
         "crosshair_outline",
         "custom_music_proportion",
         "fill_with_custom_music",
+        "pool_tracks",
+        "color_coded_powerups",
         "show_song_name",
         "delayed_spoilerlog_release",
         "shockwave_status",  # Deprecated with starting move selector rework - this is now derived in the settings constructor
         "music_disable_reverb",
+        "isles_cool_musical",
         "archipelago",
         "bonus_barrel_rando",  # Deprecated with dropdown multiselector rework
         "hard_mode",  # Deprecated with dropdown multiselector rework

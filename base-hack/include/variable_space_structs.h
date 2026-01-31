@@ -17,8 +17,8 @@ typedef struct varspace {
 	/* 0x048 */ char unk_48[4];
 	/* 0x04C */ ItemRequirement crown_door_requirement;
 	/* 0x04E */ ItemRequirement coin_door_requirement;
-	/* 0x050 */ unsigned char aztec_beetle_reward;
-	/* 0x051 */ unsigned char caves_beetle_reward;
+	/* 0x050 */ char bonus_music_rando; // Bonus Music picks from a pool of all bonus minigame songs
+	/* 0x051 */ char boss_music_rando; // Boss Music picks from a pool of all boss songs
 	/* 0x052 */ char disable_wrinkly_kong_requirement; // Disable Kongs being required to access a wrinkly door
 	/* 0x053 */ unsigned char ammo_belt_prices[2]; // Array of ammo belt prices: [1,2]. 1 item for each level of ammo belt
 	/* 0x055 */ unsigned char instrument_upgrade_prices[3]; // Array of instrument upgrade prices: [1,2,3]. 1st and 3rd items are the Upgrades 1 and 2 respectively. 2nd item is the 3rd melon cost
@@ -77,21 +77,21 @@ typedef struct varspace {
 	/* 0x110 */ unsigned char arcade_reward; // Reward Index for R2 of Arcade
 	/* 0x111 */ unsigned char jetpac_reward; // Reward Index for Jetpac 5000 Pts
 	/* 0x112 */ char rainbow_ammo;
-	/* 0x113 */ FreeTradeAgreement any_kong_items;
+	/* 0x113 */ char unk_113;
 	/* 0x114 */ char fix_lanky_tiny_prod;
 	/* 0x115 */ unsigned char progressive_hint_gb_cap; // 0 = Off, 1 or more = Hints are rewarded for collecting GBs, rather than hint doors, 35th hint is unlocked at x
 	/* 0x116 */ char cutscene_skip_setting; // 0 = Off, 1 = On Button Press, 2 = Automatic
 	/* 0x117 */ char unk_117[5];
 	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
-	/* 0x11D */ unsigned char win_condition; // See vars.h for enum
+	/* 0x11D */ unsigned char win_condition; // See common_enums.h for enum
 	/* 0x11E */ char tns_indicator;
 	/* 0x11F */ char unk_11F[7];
 	/* 0x126 */ char resolve_bonus; // Bitfield. 0000 0001 = auto-complete bonus barrels. 0000 0010 = auto-complete helm barrels. 0 = Off. 3 = Resolve Helm & Bonus Barrels
-	/* 0x127 */ char unk_127;
+	/* 0x127 */ char isles_cool_musical;
 	/* 0x128 */ char disable_drops; // 0 = Off. 1 = No Klump/Melon/Ammo Crate Drops
 	/* 0x129 */ unsigned char hash[5];
 	/* 0x12E */ char music_rando_on; // 0 = Off, 1 = Music Rando on, apply extra data shuffle
-	/* 0x12F */ char unk_12f;
+	/* 0x12F */ char spoiler_hints;
 	/* 0x130 */ LZREntrance ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x132 */ LZREntrance museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
 	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Only kong displayed, 2 = Both item and kong
@@ -131,14 +131,14 @@ typedef struct varspace {
 	/* 0x1B0 */ int password;
 	/* 0x1B4 */ char song_speed_near_win;
 	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
-	/* 0x1B6 */ unsigned char krool_ship_spawn_method; // 0 = Key Bases, 1 = Collectible Based
+	/* 0x1B6 */ unsigned char win_condition_spawns_ship; // 0 = Key Bases, 1 = Collectible Based
 	/* 0x1B7 */ DisabledMusicStruct disabled_music;
 	/* 0x1B8 */ unsigned char kong_models[5];
 	/* 0x1BD */ char unk_1bd[0x1C6 - 0x1BD];
 	/* 0x1C6 */ RandomSwitchesSetting switchsanity; // Size 0x15
 	/* 0x1DB */ unsigned char fungi_time_of_day_setting; // See fungi_time enum
 	/* 0x1DC */ unsigned char galleon_water_raised;
-	/* 0x1DD */ unsigned char krool_requirements; // K Rool bitfield 8765 4321
+	/* 0x1DD */ unsigned char unk_1dd;
 	/* 0x1DE */ RemovedBarriers removed_barriers; // Size: 2
 	/* 0x1E0 */ FasterChecks faster_checks; // Size: 1
 	/* 0x1E1 */ char big_head_mode; // 0 = off, 1 = on, 2 = small head

@@ -507,8 +507,8 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                     pushNewDKPortalScript(portal_map, dk_portal_ids, ROM_COPY)
                     exit_start = getPointerLocation(TableNames.Exits, portal_map)
                     exits_to_alter = [-1]
-                    if cont_map_id in LEVEL_MAIN_MAPS:
-                        exits_to_alter = PORTAL_MAP_EXIT_PAIRING[portal_map]
+                    if portal_map in LEVEL_MAIN_MAPS:
+                        exits_to_alter = [-1] + PORTAL_MAP_EXIT_PAIRING[portal_map]
                     for exit_index in exits_to_alter:
                         if exit_index >= 0:
                             ROM_COPY.seek(exit_start + 12 + (exit_index * 10))

@@ -28,6 +28,7 @@ from randomizer.Enums.Settings import (
     PuzzleRando,
     ProgressiveHintItem,
     RandomPrices,
+    RandomStartingRegion,
     ShockwaveStatus,
     ShuffleLoadingZones,
     ShufflePortLocations,
@@ -35,6 +36,7 @@ from randomizer.Enums.Settings import (
     TrainingBarrels,
     TroffSetting,
     WinConditionComplex,
+    WrinklyHints,
 )
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
@@ -51,7 +53,7 @@ from randomizer.Lists.Minigame import (
     TrainingMinigameLocations,
     MinigameSelector,
 )
-from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector, QoLSelector
+from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector, QoLSelector, BossesSelector
 from randomizer.Lists.EnemyTypes import EnemySelector, enemy_location_list
 from randomizer.Lists.WrinklyHints import HintSet
 from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
@@ -93,6 +95,7 @@ class Spoiler:
         self.woth_locations = {}
         self.woth_paths = {}
         self.krool_paths = {}
+        self.rabbit_path = []
         self.rap_win_con_paths = {}
         self.other_paths = {}
         self.shuffled_door_data = {}
@@ -401,13 +404,12 @@ class Spoiler:
         settings["Lanky Model"] = self.settings.kong_model_lanky.name
         settings["Tiny Model"] = self.settings.kong_model_tiny.name
         settings["Chunky Model"] = self.settings.kong_model_chunky.name
-
-        settings["Key 8 Required"] = self.settings.krool_access
-        settings["Vanilla K. Rool Requirement"] = self.settings.k_rool_vanilla_requirement
+        settings["Model Swap Mode"] = self.settings.kong_model_mode.name
+        settings["Don't Start with Key 8"] = self.settings.krool_access
         settings["Key 8 in Helm"] = self.settings.key_8_helm
         settings["Select Starting Keys"] = self.settings.select_keys
         if not self.settings.keys_random:
-            settings["Number of Keys Required"] = self.settings.krool_key_count
+            settings["Number of Keys Pregiven"] = self.settings.krool_key_count
         settings["Starting Moves Count"] = self.settings.starting_moves_count
         settings["Fast Start"] = self.settings.fast_start_beginning_of_game
         settings["Helm Setting"] = self.settings.helm_setting.name
@@ -417,6 +419,7 @@ class Spoiler:
         settings["Quality of Life"] = self.dumpMultiselector(self.settings.misc_changes_selected, QoLSelector)
         settings["Fast GBs"] = self.dumpMultiselector(self.settings.faster_checks_selected, FasterCheckSelector)
         settings["Barriers Removed"] = self.dumpMultiselector(self.settings.remove_barriers_selected, RemovedBarrierSelector)
+        settings["Bosses Selected"] = self.dumpMultiselector(self.settings.bosses_selected, BossesSelector)
         settings["Random Win Condition"] = self.settings.win_condition_random
         if not self.settings.win_condition_random:
             wc_count = self.settings.win_condition_count
@@ -427,6 +430,7 @@ class Spoiler:
                 WinConditionComplex.dk_rap_items: "Complete the Rap",
                 WinConditionComplex.req_bean: "Acquire the Bean",
                 WinConditionComplex.krools_challenge: "Beat K. Rool's Challenge",
+                WinConditionComplex.kill_the_rabbit: "Kill the Rabbit",
                 WinConditionComplex.req_bp: f"{wc_count} Blueprint{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_companycoins: f"{wc_count} Company Coin{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_crown: f"{wc_count} Crown{'s' if wc_count != 1 else ''}",
@@ -472,12 +476,11 @@ class Spoiler:
                 if key == "point_spread":
                     humanspoiler["Spoiler Hints Data"][key] = json.dumps(self.level_spoiler[key])
                 else:
-                    humanspoiler["Spoiler Hints Data"][key] = self.level_spoiler[key].toJSON()
+                    humanspoiler["Spoiler Hints Data"][key] = self.level_spoiler[key].toCleanJSON()
             humanspoiler["Spoiler Hints"] = self.level_spoiler_human_readable
         humanspoiler["Requirements"] = {}
-        if self.settings.random_starting_region:
+        if self.settings.random_starting_region_new != RandomStartingRegion.off:
             humanspoiler["Game Start"] = {}
-            humanspoiler["Game Start"]["Starting Kong List"] = startKongList
             humanspoiler["Game Start"]["Starting Region"] = self.settings.starting_region["region_name"]
             humanspoiler["Game Start"]["Starting Exit"] = self.settings.starting_region["exit_name"]
         # GB Counts
@@ -757,7 +760,7 @@ class Spoiler:
             for index, phase in enumerate(self.settings.kko_phase_order):
                 if index > 2:
                     continue
-                phase_names.append(f"Phase {phase+1}")
+                phase_names.append(f"Phase {phase + 1}")
             humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Phases"] = ", ".join(phase_names)
 
         if self.settings.bonus_barrels == MinigameBarrels.selected and len(self.settings.minigames_list_selected) > 0:
@@ -852,6 +855,11 @@ class Spoiler:
                     SwitchType.PadMove: "Gorilla Gone Pad",
                     SwitchType.PushableButton: "Punch Button",
                     SwitchType.GunInstrumentCombo: "Pineapple Switch and Triangle Pad",
+                },
+                Kongs.any: {
+                    SwitchType.GunSwitch: "Any Gun Switch",
+                    SwitchType.InstrumentPad: "Any Instrument Pad",
+                    SwitchType.GunInstrumentCombo: "Any Gun Switch and Any Instrument Pad",
                 },
             }
             for slot in self.settings.switchsanity_data.values():
@@ -1164,10 +1172,11 @@ class Spoiler:
                         if hint_info.is_last_woth_hint:
                             human_hint_list[hint_info.name] += "*"
             humanspoiler["Wrinkly Hints"] = human_hint_list
-            humanspoiler["Unhinted Score"] = self.unhinted_score
-            humanspoiler["Potentially Awful Locations"] = {}
-            for location_description in self.poor_scoring_locations:
-                humanspoiler["Potentially Awful Locations"][location_description] = self.poor_scoring_locations[location_description]
+            if self.settings.wrinkly_hints != WrinklyHints.off:
+                humanspoiler["Unhinted Score"] = self.unhinted_score
+                humanspoiler["Potentially Awful Locations"] = {}
+                for location_description in self.poor_scoring_locations:
+                    humanspoiler["Potentially Awful Locations"][location_description] = self.poor_scoring_locations[location_description]
         self.json = json.dumps(humanspoiler, indent=4)
 
     def UpdateKasplats(self, kasplat_map: Dict[Locations, Kongs]) -> None:

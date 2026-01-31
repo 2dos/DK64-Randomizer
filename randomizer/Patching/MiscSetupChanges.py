@@ -372,7 +372,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
                         if y_position < 0:
                             star_donut_boundaries = [230, 300.971]
                         else:
-                            star_donut_boundaries = [123.128, 235.971]
+                            star_donut_boundaries = [170.128, 235.971]
                         star_height_boundaries = [y_position, y_position]
                     elif cont_map_id == Maps.GalleonBoss:
                         star_donut_center = [1216, 1478]
@@ -649,8 +649,8 @@ def updateSwitchsanity(spoiler, ROM_COPY: LocalROM):
                 0x16A,
                 0x165,  # Chunky
             ],
-            SwitchType.GunSwitch: [0x129, 0x126, 0x128, 0x127, 0x125],
-            SwitchType.InstrumentPad: [0xA8, 0xA9, 0xAC, 0xAA, 0xAB],
+            SwitchType.GunSwitch: [0x129, 0x126, 0x128, 0x127, 0x125, 0x296],
+            SwitchType.InstrumentPad: [0xA8, 0xA9, 0xAC, 0xAA, 0xAB, 0x297],
             SwitchType.PadMove: [0x97, 0xD4, 0x10C, 0x10B, 0x10A],
             SwitchType.MiscActivator: [0x28, 0xC3],
             SwitchType.PushableButton: [None, 0xE3, None, None, 0x70],

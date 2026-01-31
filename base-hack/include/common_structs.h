@@ -400,10 +400,10 @@ typedef struct behaviour_data {
 	/* 0x03C */ char unk_3C[0x44-0x3C];
 	/* 0x044 */ unsigned short timer;
 	/* 0x046 */ unsigned short unk_46;
-	/* 0x048 */ unsigned char current_state;
+	/* 0x048 */ char current_state;
 	/* 0x049 */ char counter;
 	/* 0x04A */ char unk_4A;
-	/* 0x04B */ unsigned char next_state;
+	/* 0x04B */ char next_state;
 	/* 0x04C */ char counter_next;
 	/* 0x04D */ char unk_4D[0x54-0x4D];
 	/* 0x054 */ char pause_state;
@@ -623,7 +623,10 @@ typedef struct actorSpawnerData {
 
 typedef struct spawnerPacket {
 	/* 0x000 */ int model;
-	/* 0x004 */ char unk_4[0x18-4];
+	/* 0x004 */ int animation;
+	/* 0x008 */ float position[3];
+	/* 0x014 */ short y_rot;
+	/* 0x016 */ short unk_15c;
 	/* 0x018 */ void* extra_data;
 } spawnerPacket;
 
@@ -725,7 +728,7 @@ typedef struct hud_element {
 } hud_element;
 
 typedef struct hudData {
-	/* 0x000 */ hud_element item[0xE];
+	/* 0x000 */ hud_element item[0x1F];
 } hudData;
 
 typedef struct text_struct {
@@ -1466,6 +1469,17 @@ typedef struct charSpawnerActorInfo {
 	/* 0x00C */ char unk_C[0x18-0xC];
 } charSpawnerActorInfo;
 
+typedef struct spoiler_struct {
+    unsigned short flag;
+    unsigned char points;
+    unsigned char level;
+} spoiler_struct;
+
+typedef struct spoiler_tracker_struct {
+	unsigned short points;
+	unsigned short total;
+} spoiler_tracker_struct;
+
 typedef struct player_collision_info {
     /* 0x000 */ float x;
     /* 0x004 */ float y;
@@ -1617,7 +1631,10 @@ typedef struct buttons {
 } buttons;
 
 typedef struct Controller {
-	/* 0x000 */ buttons Buttons;
+	union {
+		/* 0x000 */ buttons Buttons;
+		/* 0x000 */ short Buttons_as_short;
+	};
 	/* 0x002 */ char stickX;
 	/* 0x003 */ char stickY;
 } Controller;
@@ -1775,17 +1792,6 @@ typedef struct ItemRequirement {
 	/* 0x000 */ unsigned char item;
 	/* 0x001 */ unsigned char count;
 } ItemRequirement;
-
-typedef struct FreeTradeAgreement {
-	unsigned char major_items : 1; // 0x80
-	unsigned char blueprints : 1; // 0x40
-	unsigned char coins_cbs : 1; // 0x20
-	unsigned char balloons : 1; // 0x10
-	unsigned char unk4 : 1; // 0x08
-	unsigned char unk5 : 1; // 0x04
-	unsigned char unk6 : 1; // 0x02
-	unsigned char unk7 : 1; // 0x01
-} FreeTradeAgreement;
 
 typedef struct LocationVisuals {
 	unsigned char crowns : 1; // 0x80
@@ -2326,8 +2332,8 @@ typedef struct collision_tree_struct {
 } collision_tree_struct;
 
 typedef struct move_overlay_paad {
-	/* 0x000 */ void* upper_text;
-	/* 0x004 */ void* lower_text;
+	/* 0x000 */ const void* upper_text;
+	/* 0x004 */ const void* lower_text;
 	/* 0x008 */ unsigned char opacity;
 	/* 0x009 */ unsigned char index;
 	/* 0x00A */ char unk_0A;
@@ -2397,3 +2403,7 @@ typedef struct coinHUDStruct {
 	/* 0x000 */ unsigned short map_id;
 	/* 0x004 */ unsigned short requirement;
 } coinHUDStruct;
+
+typedef struct DLArr {
+	/* 0x000 */ unsigned char unk0[0x11B0];
+} DLArr;

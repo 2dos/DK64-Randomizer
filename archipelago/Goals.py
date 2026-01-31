@@ -6,10 +6,9 @@ import typing
 from archipelago.Options import Goal, GoalQuantity
 from randomizer.Enums.Settings import WinConditionComplex
 
-
 # Goal mapping for wincon determination
 GOAL_MAPPING = {
-    Goal.option_beat_k_rool: WinConditionComplex.beat_krool,
+    Goal.option_acquire_keys_3_and_8: WinConditionComplex.get_keys_3_and_8,
     Goal.option_acquire_key_8: WinConditionComplex.get_key8,
     Goal.option_kremling_kapture: WinConditionComplex.krem_kapture,
     Goal.option_dk_rap: WinConditionComplex.dk_rap_items,
@@ -27,6 +26,7 @@ GOAL_MAPPING = {
     Goal.option_bonuses: WinConditionComplex.req_bonuses,
     Goal.option_treasure_hurry: WinConditionComplex.beat_krool,
     Goal.option_krools_challenge: WinConditionComplex.krools_challenge,
+    Goal.option_kill_the_rabbit: WinConditionComplex.kill_the_rabbit,
 }
 # List of goals that care about the quantity field
 QUANTITY_GOALS = {
@@ -69,6 +69,7 @@ def pp_wincon(win_condition_item, wc_count=0):
     win_con_name_table = {
         WinConditionComplex.beat_krool: "Beat K. Rool",
         WinConditionComplex.get_key8: "Acquire Key 8",
+        WinConditionComplex.get_keys_3_and_8: "Acquire Keys 3 and 8",
         WinConditionComplex.krem_kapture: "Kremling Kapture",
         WinConditionComplex.dk_rap_items: "Complete the Rap",
         WinConditionComplex.req_bean: "Acquire the Bean",
@@ -84,6 +85,7 @@ def pp_wincon(win_condition_item, wc_count=0):
         WinConditionComplex.req_bonuses: f"{wc_count} Bonus Barrel{'s' if wc_count != 1 else ''}",
         WinConditionComplex.req_bosses: f"{wc_count} Boss{'es' if wc_count != 1 else ''}",
         WinConditionComplex.krools_challenge: "Krool's Challenge",
+        WinConditionComplex.kill_the_rabbit: "Kill the Rabbit",
     }
     if win_condition_item in win_con_name_table:
         return win_con_name_table[win_condition_item]

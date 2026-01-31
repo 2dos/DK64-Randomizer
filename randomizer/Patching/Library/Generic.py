@@ -797,12 +797,12 @@ class Holidays(IntEnum):
 
 def sumChecks(spoiler, ownedItems, locations: list) -> int:
     """Sum the amount of checks in a list that have been checked."""
-    return sum(spoiler.LocationList[loc].inaccessible or spoiler.LocationList[loc].item in ownedItems for loc in locations)
+    return sum(spoiler.LocationList[loc].inaccessible or spoiler.LocationList[loc].item in [None, Items.NoItem] or spoiler.LocationList[loc].item in ownedItems for loc in locations)
 
 
 def getHolidaySetting(settings):
     """Get the holiday setting."""
-    is_offseason = False
+    is_offseason = True
     if is_offseason:
         return settings.holiday_setting_offseason
     return settings.holiday_setting
@@ -811,7 +811,7 @@ def getHolidaySetting(settings):
 def getHoliday(settings):
     """Get the holiday experienced."""
     if getHolidaySetting(settings):
-        return Holidays.Halloween
+        return Holidays.Christmas
     return Holidays.no_holiday
 
 

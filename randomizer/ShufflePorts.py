@@ -192,6 +192,7 @@ ONE_KONG_REGIONS = [
     Regions.CavesBlueprintCave,
     Regions.CavesBlueprintPillar,
     Regions.CavesBananaportSpire,
+    Regions.GiantKosha,
 ]
 
 warp_event_pairs = {}

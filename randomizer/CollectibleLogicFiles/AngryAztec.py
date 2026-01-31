@@ -26,7 +26,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 5),
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda _: True, None, 2),  # Llama cage
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: (l.coconut or l.CanPhase()) and l.strongKong, None, 3),  # DK BP room
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) or l.CanPhase()) and l.strongKong, None, 3),  # DK BP room
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # Oasis
         Collectible(Collectibles.coin, Kongs.diddy, lambda _: True, None, 5),  # W2
         Collectible(Collectibles.coin, Kongs.tiny, lambda _: True, None, 4),  # Oasis
@@ -141,7 +141,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.donkey, lambda _: True, None, 15),
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 6),
         Collectible(Collectibles.bunch, Kongs.lanky, lambda _: True, None, 1),  # Warp 1
-        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: (((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase()) and l.grape, None, 2),
+        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: ((Events.AztecLlamaSpit in l.Events and l.swim) or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) or l.CanPhase()) and l.grape, None, 2),
 
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
         Collectible(Collectibles.banana, Kongs.tiny, lambda _: True, None, 3),

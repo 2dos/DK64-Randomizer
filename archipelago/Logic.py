@@ -63,7 +63,7 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Patching.Library.Generic import getProgHintBarrierItem, sumChecks, getCompletableBonuses, IsDDMSSelected
-from randomizer.Prices import AnyKongCanBuy, CanBuy
+from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 from archipelago.Items import use_original_name_or_trap_name
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
@@ -105,7 +105,7 @@ class LogicVarHolder:
 
         # One Archipelago-specific exception - assuming infinite coins shortcuts a few price-related functions that we don't care about
         # In Archipelago, shops are free cause we're not tackling coin logic yet
-        self.assumeInfiniteCoins = True
+        self.assumeInfiniteCoins = False
 
         # Archipelago really wants the number of locations to match the number of items. Keep track of how many locations we've made here
         self.location_pool_size = 0
@@ -264,48 +264,11 @@ class LogicVarHolder:
         self.Photos = {}
 
         self.Events = []
-        # Galleon water needs slightly more care to account for the initial state of Galleon water
-        # dk64randomizer.com handles this with Events in Galleon, but AP needs a solution that doesn't litter event locations in the world
-        if self.settings.galleon_water_internal == GalleonWaterSetting.lowered:
-            self.AddEvent(Events.WaterLowered)
-        if self.settings.galleon_water_internal == GalleonWaterSetting.raised:
-            self.AddEvent(Events.WaterRaised)
 
         self.Hints = []
 
         # SpecialLocationsReached are only utilized for warp events for TA purposes, and can be therefore bypassed in Archipelago
         self.SpecialLocationsReached = [Locations.AztecDonkeyQuicksandCave, Locations.CavesTinyCaveBarrel, Locations.GalleonDiddyGoldTower, Locations.JapesDiddyMountain]
-
-        # Set key events for keys which are given to the player at start of game
-        keyEvents = [
-            Events.JapesKeyTurnedIn,
-            Events.AztecKeyTurnedIn,
-            Events.FactoryKeyTurnedIn,
-            Events.GalleonKeyTurnedIn,
-            Events.ForestKeyTurnedIn,
-            Events.CavesKeyTurnedIn,
-            Events.CastleKeyTurnedIn,
-            Events.HelmKeyTurnedIn,
-        ]
-        for keyEvent in keyEvents:
-            if keyEvent not in self.settings.krool_keys_required:
-                # This is horrifyingly bad to go keys -> events -> keys but the patcher is expecting events in krool_keys_required and I'm not touching the math there to fix it
-                if keyEvent == Events.JapesKeyTurnedIn:
-                    self.JapesKey = True
-                elif keyEvent == Events.AztecKeyTurnedIn:
-                    self.AztecKey = True
-                elif keyEvent == Events.FactoryKeyTurnedIn:
-                    self.FactoryKey = True
-                elif keyEvent == Events.GalleonKeyTurnedIn:
-                    self.GalleonKey = True
-                elif keyEvent == Events.ForestKeyTurnedIn:
-                    self.ForestKey = True
-                elif keyEvent == Events.CavesKeyTurnedIn:
-                    self.CavesKey = True
-                elif keyEvent == Events.CastleKeyTurnedIn:
-                    self.CastleKey = True
-                elif keyEvent == Events.HelmKeyTurnedIn:
-                    self.HelmKey = True
 
         activated_warp_maps = []
         if self.settings.activate_all_bananaports == ActivateAllBananaports.all:
@@ -375,6 +338,7 @@ class LogicVarHolder:
         self.Reset()
         ownedItems = []
         cbArchItems = []
+        coinArchItems = []
         eventArchItems = []
         bossesDefeated = 0
         bonusesCompleted = 0
@@ -382,6 +346,9 @@ class LogicVarHolder:
             if item_name.startswith("Collectible CBs"):
                 for i in range(item_count):
                     cbArchItems.append(item_name)
+            elif item_name.startswith("Collectible Coins"):
+                for i in range(item_count):
+                    coinArchItems.append(item_name)
             elif item_name.startswith("Event, "):
                 eventArchItems.append(item_name)
             elif item_name.startswith("Boss Defeated"):
@@ -424,6 +391,18 @@ class LogicVarHolder:
             colored_banana_counts[level][kong] += quantity
         self.ColoredBananas = colored_banana_counts
 
+        # Track coin collectibles
+        for item_name in coinArchItems:
+            # Coins are carefully named in the following format:
+            # index 0: "Collectible Coins" - needed to identify this as a coin collectible item
+            # index 1: the Kong's name, matching the Kongs enum
+            # index 2: the quantity of coins (as a string!)
+            item_data = item_name.split(", ")
+            kong = Kongs[item_data[1]]
+            quantity = int(item_data[2])
+            self.RegularCoins[kong] += quantity
+        self.UpdateCoins()
+
     def AddArchipelagoItem(self, ap_item):
         """Add an Archipelago item to the owned items list."""
         if ap_item.name.startswith("Collectible CBs"):
@@ -437,6 +416,16 @@ class LogicVarHolder:
             level = Levels[item_data[2]]
             quantity = int(item_data[3])
             self.ColoredBananas[level][kong] += quantity
+        elif ap_item.name.startswith("Collectible Coins"):
+            # Coins are carefully named in the following format:
+            # index 0: "Collectible Coins" - needed to identify this as a coin collectible item
+            # index 1: the Kong's name, matching the Kongs enum
+            # index 2: the quantity of coins (as a string!)
+            item_data = ap_item.name.split(", ")
+            kong = Kongs[item_data[1]]
+            quantity = int(item_data[2])
+            self.RegularCoins[kong] += quantity
+            self.UpdateCoins()
         elif ap_item.name.startswith("Event, "):
             # Event names are carefully named in the following format:
             # index 0: "Event" - needed to identify this as an Event item
@@ -669,11 +658,10 @@ class LogicVarHolder:
                     if corresponding_item_id >= Items.JapesDonkeyHint and corresponding_item_id <= Items.CastleChunkyHint:
                         self.Hints.append(corresponding_item_id)
                     if (corresponding_item_id >= Items.PhotoBat and corresponding_item_id <= Items.PhotoBug) or (corresponding_item_id >= Items.PhotoBFI and corresponding_item_id <= Items.PhotoSeal):
-                        self.Photos[corresponding_item_id] = 1
+                        self.Photos[corresponding_item_id] = self.Photos.get(corresponding_item_id, 0) + 1
 
     def RemoveArchipelagoItem(self, ap_item):
         """Add an Archipelago item to the owned items list."""
-        ownedItems = self.latest_owned_items.copy()  # Start with the current owned items list
         if ap_item.name.startswith("Collectible CBs"):
             # CBs are carefully named in the following format:
             # index 0: "Collectible CBs" - needed to identify this as a collectible item
@@ -685,23 +673,249 @@ class LogicVarHolder:
             level = Levels[item_data[2]]
             quantity = int(item_data[3])
             self.ColoredBananas[level][kong] -= quantity
+        elif ap_item.name.startswith("Collectible Coins"):
+            # Coins are carefully named in the following format:
+            # index 0: "Collectible Coins" - needed to identify this as a coin collectible item
+            # index 1: the Kong's name, matching the Kongs enum
+            # index 2: the quantity of coins (as a string!)
+            item_data = ap_item.name.split(", ")
+            kong = Kongs[item_data[1]]
+            quantity = int(item_data[2])
+            self.RegularCoins[kong] -= quantity
+            self.UpdateCoins()
         elif ap_item.name.startswith("Event, "):
             # Event names are carefully named in the following format:
             # index 0: "Event" - needed to identify this as an Event item
             # index 1: the Events enum name as a string
             item_data = ap_item.name.split(", ")
             event = Events[item_data[1]]
-            self.Events = [evt for evt in self.Events if evt != event]
+            if event in [Events.ForestEntered, Events.CastleEntered]:
+                self.homing = False
+            self.RemoveEvent(event)
         elif ap_item.name.startswith("Boss Defeated"):
             self.bosses_beaten -= 1
         elif ap_item.name.startswith("Bonus Completed"):
             self.bonuses_beaten -= 1
         else:
             corresponding_item_id = logic_item_name_to_id[ap_item.name]
-            if corresponding_item_id in ownedItems:
-                ownedItems.remove(corresponding_item_id)
-
-        self.Update(ownedItems)
+            self.latest_owned_items.remove(corresponding_item_id)
+            match corresponding_item_id:
+                case Items.Donkey:
+                    self.donkey = False
+                    self.isdonkey = False
+                    self.blast = False
+                    self.strongKong = False
+                    self.grab = False
+                    self.coconut = False
+                    self.bongos = False
+                    self._recalculateBlueprints()
+                case Items.Diddy:
+                    self.diddy = False
+                    self.isdiddy = False
+                    self.charge = False
+                    self.jetpack = False
+                    self.spring = False
+                    self.peanut = False
+                    self.guitar = False
+                    self._recalculateBlueprints()
+                case Items.Lanky:
+                    self.lanky = False
+                    self.islanky = False
+                    self.handstand = False
+                    self.balloon = False
+                    self.sprint = False
+                    self.grape = False
+                    self.trombone = False
+                    self._recalculateBlueprints()
+                case Items.Tiny:
+                    self.tiny = False
+                    self.istiny = False
+                    self.mini = False
+                    self.twirl = False
+                    self.monkeyport = False
+                    self.feather = False
+                    self.saxophone = False
+                    self._recalculateBlueprints()
+                case Items.Chunky:
+                    self.chunky = False
+                    self.ischunky = False
+                    self.hunkyChunky = False
+                    self.punch = False
+                    self.gorillaGone = False
+                    self.pineapple = False
+                    self.triangle = False
+                    self._recalculateBlueprints()
+                case Items.Climbing:
+                    self.climbing = False
+                case Items.Vines:
+                    self.vines = False
+                    self.can_use_vines = False
+                case Items.Swim:
+                    self.swim = False
+                case Items.Oranges:
+                    self.oranges = False
+                    self.adv_orange_usage = False
+                case Items.Barrels:
+                    self.barrels = False
+                case Items.BaboonBlast:
+                    self.blast = False
+                case Items.StrongKong:
+                    self.strongKong = False
+                case Items.GorillaGrab:
+                    self.grab = False
+                case Items.ChimpyCharge:
+                    self.charge = False
+                case Items.RocketbarrelBoost:
+                    self.jetpack = False
+                case Items.SimianSpring:
+                    self.spring = False
+                case Items.Orangstand:
+                    self.handstand = False
+                case Items.BaboonBalloon:
+                    self.balloon = False
+                case Items.OrangstandSprint:
+                    self.sprint = False
+                case Items.MiniMonkey:
+                    self.mini = False
+                case Items.PonyTailTwirl:
+                    self.twirl = False
+                case Items.Monkeyport:
+                    self.monkeyport = False
+                case Items.HunkyChunky:
+                    self.hunkyChunky = False
+                case Items.PrimatePunch:
+                    self.punch = False
+                case Items.GorillaGone:
+                    self.gorillaGone = False
+                case Items.Coconut:
+                    self.coconut = False
+                case Items.Peanut:
+                    self.peanut = False
+                case Items.Grape:
+                    self.grape = False
+                case Items.Feather:
+                    self.feather = False
+                case Items.Pineapple:
+                    self.pineapple = False
+                case Items.Bongos:
+                    self.bongos = False
+                    if self.Melons == 2 and not (self.guitar or self.trombone or self.saxophone or self.triangle or self.InstUpgrades > 0):
+                        self.Melons = 1
+                case Items.Guitar:
+                    self.guitar = False
+                    if self.Melons == 2 and not (self.bongos or self.trombone or self.saxophone or self.triangle or self.InstUpgrades > 0):
+                        self.Melons = 1
+                case Items.Trombone:
+                    self.trombone = False
+                    if self.Melons == 2 and not (self.bongos or self.guitar or self.saxophone or self.triangle or self.InstUpgrades > 0):
+                        self.Melons = 1
+                case Items.Saxophone:
+                    self.saxophone = False
+                    if self.Melons == 2 and not (self.bongos or self.guitar or self.trombone or self.triangle or self.InstUpgrades > 0):
+                        self.Melons = 1
+                case Items.Triangle:
+                    self.triangle = False
+                    if self.Melons == 2 and not (self.bongos or self.guitar or self.trombone or self.saxophone or self.InstUpgrades > 0):
+                        self.Melons = 1
+                case Items.Cranky:
+                    self.crankyAccess = False
+                case Items.Funky:
+                    self.funkyAccess = False
+                case Items.Candy:
+                    self.candyAccess = False
+                case Items.Snide:
+                    self.snideAccess = False
+                case Items.NintendoCoin:
+                    self.nintendoCoin = False
+                case Items.RarewareCoin:
+                    self.rarewareCoin = False
+                case Items.JungleJapesKey:
+                    self.JapesKey = False
+                case Items.AngryAztecKey:
+                    self.AztecKey = False
+                case Items.FranticFactoryKey:
+                    self.FactoryKey = False
+                case Items.GloomyGalleonKey:
+                    self.GalleonKey = False
+                case Items.FungiForestKey:
+                    self.ForestKey = False
+                case Items.CrystalCavesKey:
+                    self.CavesKey = False
+                case Items.CreepyCastleKey:
+                    self.CastleKey = False
+                case Items.HideoutHelmKey:
+                    self.HelmKey = False
+                case Items.HelmDonkey1:
+                    self.HelmDonkey1 = False
+                case Items.HelmDonkey2:
+                    self.HelmDonkey2 = False
+                case Items.HelmDiddy1:
+                    self.HelmDiddy1 = False
+                case Items.HelmDiddy2:
+                    self.HelmDiddy2 = False
+                case Items.HelmLanky1:
+                    self.HelmLanky1 = False
+                case Items.HelmLanky2:
+                    self.HelmLanky2 = False
+                case Items.HelmTiny1:
+                    self.HelmTiny1 = False
+                case Items.HelmTiny2:
+                    self.HelmTiny2 = False
+                case Items.HelmChunky1:
+                    self.HelmChunky1 = False
+                case Items.HelmChunky2:
+                    self.HelmChunky2 = False
+                case Items.ProgressiveSlam:
+                    self.Slam -= 1
+                    if self.Slam < 2:
+                        self.superSlam = False
+                    if self.Slam < 3:
+                        self.superDuperSlam = False
+                case Items.ProgressiveAmmoBelt:
+                    self.AmmoBelts -= 1
+                case Items.ProgressiveInstrumentUpgrade:
+                    self.InstUpgrades -= 1
+                    if self.InstUpgrades == 0 and not (self.bongos or self.guitar or self.trombone or self.saxophone or self.triangle):
+                        self.Melons = 1
+                    elif self.InstUpgrades < 2:
+                        self.Melons = 2
+                case Items.GoldenBanana | Items.FillerBanana:
+                    self.GoldenBananas -= 1
+                case Items.BananaFairy | Items.FillerFairy:
+                    self.BananaFairies -= 1
+                case Items.BananaMedal | Items.FillerMedal:
+                    self.BananaMedals -= 1
+                case Items.BattleCrown | Items.FillerCrown:
+                    self.BattleCrowns -= 1
+                case Items.RainbowCoin | Items.FillerRainbowCoin:
+                    self.RainbowCoins -= 1
+                    for x in range(5):
+                        self.Coins[x] -= 5
+                case Items.CameraAndShockwave:
+                    self.camera = False
+                    self.shockwave = False
+                case Items.Camera:
+                    self.camera = False
+                case Items.Shockwave:
+                    self.shockwave = False
+                case Items.SniperSight:
+                    self.scope = False
+                case Items.HomingAmmo:
+                    self.homing = False
+                case Items.Bean:
+                    self.Beans -= 1
+                case Items.Pearl | Items.FillerPearl:
+                    self.Pearls -= 1
+                case Items.BananaHoard:
+                    self.bananaHoard = False
+                case _:
+                    if corresponding_item_id >= Items.DonkeyBlueprint and corresponding_item_id <= Items.ChunkyBlueprint:
+                        # For generic blueprints, just recalculate totals since Update() handles the counting
+                        self._recalculateBlueprints()
+                    if corresponding_item_id >= Items.JapesDonkeyHint and corresponding_item_id <= Items.CastleChunkyHint:
+                        self.Hints.remove(corresponding_item_id)
+                    if (corresponding_item_id >= Items.PhotoBat and corresponding_item_id <= Items.PhotoBug) or (corresponding_item_id >= Items.PhotoBFI and corresponding_item_id <= Items.PhotoSeal):
+                        self.Photos[corresponding_item_id] = self.Photos.get(corresponding_item_id, 0) - 1
 
     def Update(self, ownedItems):
         """Update logic variables based on owned items."""
@@ -919,9 +1133,8 @@ class LogicVarHolder:
 
     def GetCoins(self, kong):
         """Get Coin Total for a kong."""
-        # In Archipelago, we will assume infinite coins in all worlds - the only snag *might* be Arcade Round 2, but there is an uninterrupted straight running line from the Arcade to 3 DK coins.
-        # self.UpdateCoins()
-        return 1000  # self.Coins[kong]
+        self.UpdateCoins()
+        return self.Coins[kong]
 
     def CanSlamSwitch(self, level: Levels, default_requirement_level: int):
         """Determine whether the player can operate the necessary slam operation.
@@ -1023,15 +1236,21 @@ class LogicVarHolder:
             return kong_data and misc_abilities[data.kong]
         elif data.switch_type == SwitchType.GunSwitch:
             gun_abilities = [self.coconut, self.peanut, self.grape, self.feather, self.pineapple]
+            if data.kong == Kongs.any:
+                return self.HasGun(Kongs.any)
             return kong_data and gun_abilities[data.kong]
         elif data.switch_type == SwitchType.InstrumentPad:
             instrument_abilities = [self.bongos, self.guitar, self.trombone, self.saxophone, self.triangle]
+            if data.kong == Kongs.any:
+                return self.HasInstrument(Kongs.any)
             return kong_data and instrument_abilities[data.kong]
         elif data.switch_type == SwitchType.SlamSwitch:
             return kong_data and self.CanSlamSwitch(level, default_slam_level)
         elif data.switch_type == SwitchType.GunInstrumentCombo:
             gun_abilities = [self.coconut, self.peanut, self.grape, self.feather, self.pineapple]
             instrument_abilities = [self.bongos, self.guitar, self.trombone, self.saxophone, self.triangle]
+            if data.kong == Kongs.any:
+                return self.HasGun(Kongs.any) and self.HasInstrument(Kongs.any)
             return kong_data and gun_abilities[data.kong] and instrument_abilities[data.kong]
         elif data.switch_type == SwitchType.PushableButton:
             if data.kong == Kongs.diddy:
@@ -1094,6 +1313,11 @@ class LogicVarHolder:
     def AddEvent(self, event):
         """Add an event to events list so it can be checked for logically."""
         self.Events.append(event)
+
+    def RemoveEvent(self, event):
+        """Remove an event from the events list."""
+        if event in self.Events:
+            self.Events.remove(event)
 
     def GetKongs(self):
         """Return all owned kongs."""
@@ -1314,7 +1538,7 @@ class LogicVarHolder:
             return self.IsKong(self.settings.chunky_freeing_kong) or self.settings.free_trade_items
         # Otherwise you need the right slam level (usually 1)
         else:
-            return self.hasMoveSwitchsanity(Switches.FactoryFreeKong, level=Levels.FranticFactory, default_slam_level=1) and (self.slope_resets or self.handstand)
+            return self.hasMoveSwitchsanity(Switches.FactoryFreeKong, level=Levels.FranticFactory, default_slam_level=1)
 
     def CanOpenForestLobbyGoneDoor(self):
         """Check if the player can open the door to the gone pad in forest lobby."""
@@ -1349,23 +1573,14 @@ class LogicVarHolder:
 
     def PurchaseShopItem(self, location_id):
         """Purchase from this location and subtract price from logical coin counts."""
-        # In Archipelago, all shops are free - we're not touching coin logic with a 12000000 ft pole
+        location = self.spoiler.LocationList[location_id]
+        price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
+        if price is None:  # This shouldn't happen but it's probably harmless
+            return  # TODO: solve this
+        if self.settings.shops_dont_cost:
+            # If shops don't cost anything, then don't deduct this cost
+            return
         return
-        # location = self.spoiler.LocationList[location_id]
-        # price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
-        # if price is None:  # This shouldn't happen but it's probably harmless
-        #     return  # TODO: solve this
-        # # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
-        # if location.kong == Kongs.any:
-        #     for kong in range(0, 5):
-        #         self.Coins[kong] -= price
-        #         self.SpentCoins[kong] += price
-        #     return
-        # # If kong specific move, just that kong paid for it
-        # else:
-        #     self.Coins[location.kong] -= price
-        #     self.SpentCoins[location.kong] += price
-        #     return
 
     def TimeAccess(self, region, time):
         """Check if a certain region has the given time of day access for current kong."""
@@ -1393,32 +1608,104 @@ class LogicVarHolder:
             return self.chunky and (location.kong == Kongs.chunky or (self.donkey and self.grab))
         return self.HasKong(location.kong)
 
-    # V1 LIMITATION: Shops must be free to avoid being locked out by coin logic - undoing this will require substantial safeguards or a great deal of caution
-    # The current workaround also needs to check if you own the right shopkeeper
-    def CanBuy(self, location, buy_empty=False):
+    def CanBuy(self, location, buy_empty=True):
         """Check if there are enough coins to purchase this location."""
+        # Check shopkeeper access first
         if self.spoiler.LocationList[location].vendor == VendorType.Cranky:
-            return self.crankyAccess
+            if not self.crankyAccess:
+                return False
         elif self.spoiler.LocationList[location].vendor == VendorType.Funky:
-            return self.funkyAccess
+            if not self.funkyAccess:
+                return False
         elif self.spoiler.LocationList[location].vendor == VendorType.Candy:
-            return self.candyAccess
-        return False
-        # return CanBuy(self.spoiler, location, self, buy_empty)
+            if not self.candyAccess:
+                return False
+        return CanBuy(self.spoiler, location, self, buy_empty)
 
-    def AnyKongCanBuy(self, location, buy_empty=False):
+    def AnyKongCanBuy(self, location, buy_empty=True):
         """Check if there are enough coins for any owned kong to purchase this location."""
+        # Check shopkeeper access first
         if self.spoiler.LocationList[location].vendor == VendorType.Cranky:
-            return self.crankyAccess
+            if not self.crankyAccess:
+                return False
         elif self.spoiler.LocationList[location].vendor == VendorType.Funky:
-            return self.funkyAccess
+            if not self.funkyAccess:
+                return False
         elif self.spoiler.LocationList[location].vendor == VendorType.Candy:
-            return self.candyAccess
-        return False
-        # return AnyKongCanBuy(self.spoiler, location, self, buy_empty)
+            if not self.candyAccess:
+                return False
+        return AnyKongCanBuy(self.spoiler, location, self, buy_empty)
 
     def CanAccessKRool(self):
-        """Make sure that each required key has been turned in."""
+        """Make sure that each required key has been turned in, or if ship spawn method is win condition-based, check if win condition items are obtained."""
+        # If using win condition-based ship spawning, check if win condition item requirements are met
+        if self.settings.win_condition_spawns_ship:
+            condition = self.settings.win_condition_item
+            if condition == WinConditionComplex.krem_kapture:
+                for subject in self.spoiler.valid_photo_items:
+                    if subject in (
+                        Items.PhotoKasplatDK,
+                        Items.PhotoKasplatDiddy,
+                        Items.PhotoKasplatLanky,
+                        Items.PhotoKasplatTiny,
+                        Items.PhotoKasplatChunky,
+                    ):
+                        continue
+                    if self.Photos.get(subject, 0) == 0:
+                        return False
+                return self.camera
+            elif condition == WinConditionComplex.get_key8:
+                return self.HelmKey
+            elif condition == WinConditionComplex.dk_rap_items:
+                dk_rap_items = [
+                    self.donkey,
+                    self.diddy,
+                    self.lanky,
+                    self.tiny,
+                    self.chunky,
+                    self.coconut,
+                    self.peanut,
+                    self.grape,
+                    self.pineapple,
+                    self.guitar,
+                    self.trombone,
+                    self.strongKong,
+                    self.jetpack,
+                    self.handstand,
+                    self.balloon,
+                    self.mini,
+                    self.twirl,
+                    self.barrels,
+                    self.oranges,
+                    self.climbing,
+                    self.crankyAccess,
+                ]
+                return all(dk_rap_items)
+            elif condition == WinConditionComplex.kill_the_rabbit:
+                return Events.KilledRabbit in self.Events
+            elif condition == WinConditionComplex.req_bonuses:
+                return self.bonuses_beaten >= self.settings.win_condition_count
+            elif condition == WinConditionComplex.req_bosses:
+                return self.bosses_beaten >= self.settings.win_condition_count
+            else:
+                # Item-based win conditions
+                win_con_table = {
+                    WinConditionComplex.req_bean: BarrierItems.Bean,
+                    WinConditionComplex.req_bp: BarrierItems.Blueprint,
+                    WinConditionComplex.req_companycoins: BarrierItems.CompanyCoin,
+                    WinConditionComplex.req_crown: BarrierItems.Crown,
+                    WinConditionComplex.req_fairy: BarrierItems.Fairy,
+                    WinConditionComplex.req_key: BarrierItems.Key,
+                    WinConditionComplex.req_gb: BarrierItems.GoldenBanana,
+                    WinConditionComplex.req_medal: BarrierItems.Medal,
+                    WinConditionComplex.req_pearl: BarrierItems.Pearl,
+                    WinConditionComplex.req_rainbowcoin: BarrierItems.RainbowCoin,
+                }
+                if condition in win_con_table:
+                    return self.ItemCheck(win_con_table[condition], self.settings.win_condition_count)
+                return True
+
+        # Otherwise use key-based access
         required_base_keys = [
             Events.JapesKeyTurnedIn,
             Events.AztecKeyTurnedIn,
@@ -1429,7 +1716,7 @@ class LogicVarHolder:
             Events.CastleKeyTurnedIn,
             Events.HelmKeyTurnedIn,
         ]
-        if self.settings.k_rool_vanilla_requirement:
+        if self.settings.win_condition_item == WinConditionComplex.get_keys_3_and_8:
             required_base_keys = [
                 Events.FactoryKeyTurnedIn,
                 Events.HelmKeyTurnedIn,
@@ -1510,7 +1797,7 @@ class LogicVarHolder:
         elif bossFight == Maps.KroolDiddyPhase:
             hasRequiredMoves = self.jetpack and self.peanut
         elif bossFight == Maps.KroolLankyPhase:
-            hasRequiredMoves = self.barrels and self.trombone
+            hasRequiredMoves = self.CanBeatLankyPhase()
         elif bossFight == Maps.KroolTinyPhase:
             hasRequiredMoves = self.mini and self.feather and (self.climbing or self.twirl)
         elif bossFight == Maps.KroolChunkyPhase:
@@ -1632,10 +1919,14 @@ class LogicVarHolder:
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
+        condition = self.settings.win_condition_item
+        # When using win condition-based ship spawning, always require K. Rool defeat in addition to win condition items
+        krool_complete = not self.settings.win_condition_spawns_ship or Events.KRoolDefeated in self.Events
+
         # Special Win Cons
-        if self.settings.win_condition_item == WinConditionComplex.beat_krool:
+        if condition == WinConditionComplex.beat_krool:
             return Events.KRoolDefeated in self.Events
-        elif self.settings.win_condition_item == WinConditionComplex.krem_kapture:
+        elif condition == WinConditionComplex.krem_kapture:
             for subject in self.spoiler.valid_photo_items:
                 if subject in (
                     Items.PhotoKasplatDK,
@@ -1646,11 +1937,17 @@ class LogicVarHolder:
                 ):
                     continue
                 if self.Photos.get(subject, 0) == 0:
+                    # print(f"Could not reach {subject.name}")
                     return False
-            return self.camera
-        elif self.settings.win_condition_item == WinConditionComplex.get_key8:
-            return self.HelmKey
-        elif self.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+            result = self.camera
+            return result and krool_complete
+        elif condition == WinConditionComplex.get_key8:
+            result = self.HelmKey
+            return result and krool_complete
+        elif condition == WinConditionComplex.get_keys_3_and_8:
+            result = self.FactoryKey and self.HelmKey
+            return result and krool_complete
+        elif condition == WinConditionComplex.dk_rap_items:
             dk_rap_items = [
                 self.donkey,
                 self.diddy,
@@ -1681,14 +1978,20 @@ class LogicVarHolder:
             for k in dk_rap_items:
                 if not k:
                     return False
-            return True
-        elif self.settings.win_condition_item == WinConditionComplex.krools_challenge:
+            result = True
+            return result and krool_complete
+        elif condition == WinConditionComplex.krools_challenge:
             # Krool's Challenge: Beat K. Rool + collect all Keys, Blueprints, Bosses, and Bonus Barrels
             return Events.KRoolDefeated in self.Events and self.ItemCheck(BarrierItems.Key, 8) and self.ItemCheck(BarrierItems.Blueprint, 40) and self.bosses_beaten >= 7 and self.bonuses_beaten >= 43
-        elif self.settings.win_condition_item == WinConditionComplex.req_bosses:
-            return self.bosses_beaten >= self.settings.win_condition_count
-        elif self.settings.win_condition_item == WinConditionComplex.req_bonuses:
-            return self.bonuses_beaten >= self.settings.win_condition_count
+        elif condition == WinConditionComplex.kill_the_rabbit:
+            result = Events.KilledRabbit in self.Events
+            return result and krool_complete
+        elif condition == WinConditionComplex.req_bonuses:
+            result = self.bonuses_beaten >= self.settings.win_condition_count
+            return result and krool_complete
+        elif condition == WinConditionComplex.req_bosses:
+            result = self.bosses_beaten >= self.settings.win_condition_count
+            return result and krool_complete
         # Get X amount of Y item win cons
         win_con_table = {
             WinConditionComplex.req_bean: BarrierItems.Bean,
@@ -1702,9 +2005,10 @@ class LogicVarHolder:
             WinConditionComplex.req_pearl: BarrierItems.Pearl,
             WinConditionComplex.req_rainbowcoin: BarrierItems.RainbowCoin,
         }
-        if self.settings.win_condition_item not in win_con_table:
+        if condition not in win_con_table:
             raise Exception(f"Invalid Win Condition {self.settings.win_condition_item.name}")
-        return self.ItemCheck(win_con_table[self.settings.win_condition_item], self.settings.win_condition_count)
+        result = self.ItemCheck(win_con_table[condition], self.settings.win_condition_count)
+        return result and krool_complete
 
     def CanGetRarewareCoin(self):
         """Check if you meet the logical requirements to obtain the Rareware Coin."""

@@ -103,9 +103,9 @@ const requirement_data = {
             new Requirement(10, [[Moves.AztecTunnelDoor]]), // 1 bunch, 5 bananas in AngryAztecMain
             new Requirement(25, [[Moves.ClimbingCheck, Moves.AztecTunnelDoor]]), // 5 bunches in AngryAztecMain
             new Requirement(14, [[Moves.Diving, Moves.Grape, Moves.TinyTempleIce]]), // 1 bunch, 9 bananas in TempleVultureRoom
-            new Requirement(20, [[Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama]]), // 2 balloons in LlamaTemple
             new Requirement(10, [[Moves.Grape, Moves.AztecTunnelDoor, Moves.Aztec5DT]]), // 1 balloon in LankyTemple
             new Requirement(5, [[Moves.Vines, Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama]]), // 1 bunch in LlamaTempleMatching
+            new Requirement(20, [[Moves.Diving, Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama]]), // 2 balloons in LlamaTemple
             new Requirement(11, [ // 1 bunch, 6 bananas in LlamaTemple
                 [Moves.Coconut, Moves.AztecTunnelDoor, Moves.AztecLlama],
                 [Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama],
@@ -222,7 +222,6 @@ const requirement_data = {
         ],
         "Lanky": [
             new Requirement(5, [[Moves.Moveless]]), // 5 bananas in GloomyGalleonStart
-            new Requirement(5, [[Moves.GalleonPeanut]]), // 1 bunch in Shipyard
             new Requirement(25, [[Moves.Diving, Moves.GalleonLighthouse]]), // 4 bunches, 5 bananas in LighthouseUnderwater
             new Requirement(5, [[Moves.Diving, Moves.GalleonPeanut]]), // 1 bunch in ShipyardUnderwater
             new Requirement(20, [[Moves.Grape, Moves.Punch]]), // 2 balloons in GloomyGalleonStart
@@ -230,6 +229,10 @@ const requirement_data = {
             new Requirement(10, [[Moves.Diving, Moves.LevelSlam, Moves.GalleonPeanut]]), // 1 bunch, 5 bananas in LankyShip
             new Requirement(15, [[Moves.Diving, Moves.Trombone, Moves.LoweredWater, Moves.GalleonPeanut]]), // 3 bunches in TromboneShip
             new Requirement(1, [[Moves.Diving, Moves.RaisedWater, Moves.GalleonPeanut, Moves.GalleonTreasure]]), // 1 banana in TreasureRoom
+            new Requirement(5, [ // 1 bunch in Shipyard
+                [Moves.Diving, Moves.GalleonPeanut],
+                [Moves.LoweredWater, Moves.GalleonPeanut],
+            ]),
             new Requirement(4, [[Moves.Diving, Moves.Balloon, Moves.RaisedWater, Moves.GalleonPeanut, Moves.GalleonTreasure]]), // 4 bananas in TreasureRoom
         ],
         "Tiny": [
@@ -309,14 +312,14 @@ const requirement_data = {
                 [Moves.Rocket, Moves.Grape],
                 [Moves.Grape, Moves.CheckOfLegends],
             ]),
-            new Requirement(5, [ // 1 bunch in MushroomUpperExterior
+            new Requirement(5, [ // 1 bunch in MushroomVeryTopExterior
                 [Moves.ClimbingCheck, Moves.Orangstand],
                 [Moves.Rocket, Moves.Orangstand],
                 [Moves.Orangstand, Moves.CheckOfLegends],
             ]),
             new Requirement(15, [ // 1 bunch in MushroomLankyMushroomsRoom; 2 bunches in MushroomLankyZingersRoom
+                [Moves.LevelSlam, Moves.Rocket],
                 [Moves.ClimbingCheck, Moves.LevelSlam, Moves.Orangstand],
-                [Moves.LevelSlam, Moves.Rocket, Moves.Orangstand],
                 [Moves.LevelSlam, Moves.Orangstand, Moves.CheckOfLegends],
             ]),
         ],

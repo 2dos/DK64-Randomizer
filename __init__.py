@@ -13,8 +13,7 @@ import pkgutil
 import shutil
 import sys
 import tempfile
-from typing import Any
-
+from typing import Any, TypedDict
 
 baseclasses_loaded = False
 try:
@@ -83,6 +82,7 @@ if baseclasses_loaded:
             sys.path.insert(0, temp_dir)
 
     platform_type = sys.platform
+    python_version = f"{sys.version_info.major}{sys.version_info.minor}"
     baseclasses_path = os.path.dirname(os.path.dirname(BaseClasses.__file__))
     if not baseclasses_path.endswith("lib"):
         baseclasses_path = os.path.join(baseclasses_path, "lib")
@@ -106,10 +106,23 @@ if baseclasses_loaded:
         zip_path = "vendor/windows.zip"  # Path inside the package
         copy_dependencies(zip_path, "windows.zip")
     elif platform_type == "linux":
-        zip_path = "vendor/linux.zip"
-        copy_dependencies(zip_path, "linux.zip")
+        # Try version-specific zip first, fall back to generic
+        version_zip = f"vendor/linux_{python_version}.zip"
+        generic_zip = "vendor/linux.zip"
+        try:
+            copy_dependencies(version_zip, f"linux_{python_version}.zip")
+        except (FileNotFoundError, KeyError):
+            try:
+                copy_dependencies(generic_zip, "linux.zip")
+            except (FileNotFoundError, KeyError):
+                raise Exception(f"Could not find vendor dependencies for Linux Python {python_version}")
     else:
         raise Exception(f"Unsupported platform: {platform_type}")
+
+    # Add paths for APWorld context - use __file__ to get the correct base path
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    if current_dir not in sys.path:
+        sys.path.insert(0, current_dir)
 
     sys.path.append("worlds/dk64/")
     sys.path.append("worlds/dk64/archipelago/")
@@ -117,16 +130,17 @@ if baseclasses_loaded:
     sys.path.append("custom_worlds/dk64.apworld/dk64/archipelago/")
     from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, CollectionState
     from BaseClasses import Location, LocationProgressType
-    from worlds.dk64.ap_version import version as ap_version
+    from entrance_rando import randomize_entrances, EntranceRandomizationError, disconnect_entrance_for_randomization
     import settings
+    import logging
 
     import randomizer.ItemPool as DK64RItemPool
 
     from randomizer.Enums.Items import Items as DK64RItems
     from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity, pp_wincon
     from archipelago.Items import DK64Item, full_item_table, setup_items
-    from archipelago.Options import DK64Options, Goal, SwitchSanity, SelectStartingKong, dk64_option_groups
-    from archipelago.Regions import all_locations, create_regions, connect_regions
+    from archipelago.Options import DK64Options, Goal, SwitchSanity, SelectStartingKong, dk64_option_groups, LoadingZoneRando
+    from archipelago.Regions import all_locations, create_regions, connect_regions, connect_exit_level_and_deathwarp, connect_glitch_transitions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
     from worlds.AutoWorld import WebWorld, World, AutoLogicRegister
@@ -152,16 +166,19 @@ if baseclasses_loaded:
         Enemies,
         GlitchesSelected,
         Items,
+        LevelRandomization,
         Kongs,
         MicrohintsEnabled,
         ShuffleLoadingZones,
         TricksSelected,
+        SlamRequirement,
     )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
     from randomizer.Enums.EnemySubtypes import EnemySubtype
     from randomizer.Lists import Item as DK64RItem
     from randomizer.Lists.Location import ShopLocationReference
+    from randomizer.Lists.ShufflableExit import ShufflableExits
     from randomizer.Lists.Switches import SwitchInfo
     from randomizer.Lists.EnemyTypes import EnemyLoc, EnemyMetaData
     from worlds.LauncherComponents import Component, SuffixIdentifier, components, Type, icon_paths
@@ -259,7 +276,15 @@ if baseclasses_loaded:
             If you want a specific version, you can set it to a AP version number eg: v1.0.45
             """
 
+        class EnableMinimalLogic(settings.Bool):
+            """Enable minimal logic for DK64.
+
+            If disabled, any player YAML with minimal logic enabled will be forced to use glitchless logic instead.
+            This allows hosts to disable the minimal logic option if they don't want it on their server.
+            """
+
         release_branch: ReleaseVersion = ReleaseVersion("master")
+        enable_minimal_logic_dk64: EnableMinimalLogic | bool = False
 
     class DK64Web(WebWorld):
         """WebWorld for DK64."""
@@ -270,6 +295,20 @@ if baseclasses_loaded:
 
         tutorials = [setup_en]
         option_groups = dk64_option_groups
+
+    class LZRSeedGroup(TypedDict):
+        """Type definition for Loading Zone Randomizer seed groups."""
+
+        shuffle_helm_level_order: bool  # whether helm level order is shuffled
+        enable_chaos_blockers: bool  # whether chaos blockers are enabled (disabled if any player has it off)
+        randomize_blocker_required_amounts: bool  # whether to randomize B. Lockers
+        blocker_max: int  # maximum B. Locker value
+        maximize_helm_blocker: bool  # whether to maximize Helm B. Locker (enabled if any player has it on)
+        level_blockers: typing.Dict[str, int]  # manual B. Locker values (if not randomized)
+        generated_blockers: typing.Optional[typing.List[int]]  # actual blocker values after generation (shared across group)
+        logic_type: int  # logic type: 1=glitchless, 0=advanced_glitchless, 2=glitched
+        tricks_selected: typing.Set[str]  # intersection of tricks enabled by all players
+        glitches_selected: typing.Set[str]  # intersection of glitches enabled by all players
 
     class DK64World(World):
         """Donkey Kong 64 is a 3D collectathon platforming game.
@@ -282,6 +321,7 @@ if baseclasses_loaded:
         options: DK64Options
         topology_present = False
         settings: typing.ClassVar[DK64Settings]
+        seed_groups: typing.ClassVar[dict[str, LZRSeedGroup]] = {}
 
         item_name_to_id = {name: data.code for name, data in full_item_table.items()}
         location_name_to_id = all_locations
@@ -614,6 +654,8 @@ if baseclasses_loaded:
             self.hint_data_available = threading.Event()
             self.hint_compilation_complete = threading.Event()
             super().__init__(multiworld, player)
+            self.ap_version = json.loads(pkgutil.get_data(__name__, "archipelago.json").decode("utf-8"))["world_version"]
+            self.entrance_connections: dict[str, str] = {}
 
         @classmethod
         def stage_assert_generate(cls, multiworld: MultiWorld):
@@ -651,22 +693,546 @@ if baseclasses_loaded:
                 # "death_link": self.options.death_link.value,
             }
 
+        def _get_shared_shop_vendors(self, Kongs, Types):
+            """Identify vendor/level combinations that have shared shops."""
+            from randomizer.Lists.Location import SharedShopLocations
+
+            shared_shop_vendors = set()
+
+            if not self.options.enable_shared_shops.value:
+                if not hasattr(self.spoiler.settings, "selected_shared_shops"):
+                    self.spoiler.settings.selected_shared_shops = set()
+                return shared_shop_vendors, set()
+
+            # Get or create the set of available shared shops
+            if hasattr(self.spoiler.settings, "selected_shared_shops") and self.spoiler.settings.selected_shared_shops:
+                available_shared_shops = self.spoiler.settings.selected_shared_shops
+            else:
+                all_shared_shops = list(SharedShopLocations)
+                self.random.shuffle(all_shared_shops)
+                available_shared_shops = set(all_shared_shops[:10])
+                self.spoiler.settings.selected_shared_shops = available_shared_shops
+
+            # Build set of vendor/level combinations
+            for location_id, location in self.spoiler.LocationList.items():
+                if location.type == Types.Shop and location.kong == Kongs.any:
+                    if location_id in available_shared_shops:
+                        shared_shop_vendors.add((location.level, location.vendor))
+
+            return shared_shop_vendors, available_shared_shops
+
+        def _categorize_shop_locations(self, shared_shop_vendors, available_shared_shops, Kongs, Types):
+            """Categorize shops into included and excluded based on settings."""
+            shop_locations = []
+            excluded_shop_locations = []
+            shops_per_kong = {kong: 0 for kong in Kongs}
+
+            for location_id, location in self.spoiler.LocationList.items():
+                if location.type != Types.Shop:
+                    continue
+
+                # Check if shop is excluded by smaller_shops setting
+                if hasattr(location, "smallerShopsInaccessible") and location.smallerShopsInaccessible and self.options.smaller_shops.value:
+                    excluded_shop_locations.append(location_id)
+                    continue
+
+                # Check if shared shop is excluded
+                if location.kong == Kongs.any:
+                    if not self.options.enable_shared_shops.value or location_id not in available_shared_shops:
+                        excluded_shop_locations.append(location_id)
+                        continue
+
+                # Check if kong shop is blocked by a shared shop at same vendor/level
+                if location.kong != Kongs.any and self.options.enable_shared_shops.value:
+                    if (location.level, location.vendor) in shared_shop_vendors:
+                        excluded_shop_locations.append(location_id)
+                        continue
+
+                # Shop is included
+                shop_locations.append(location_id)
+                if location.kong != Kongs.any:
+                    shops_per_kong[location.kong] += 1
+
+            return shop_locations, excluded_shop_locations, shops_per_kong
+
+        def _calculate_kong_averages(self, shops_per_kong, max_coins, percentage, min_max_coins, Kongs):
+            """Calculate average price per shop for each kong."""
+            avg_prices_per_kong = {}
+
+            for kong in Kongs:
+                if kong == Kongs.any or shops_per_kong[kong] == 0:
+                    continue
+
+                # Calculate budget based on max coins available to this kong
+                kong_budget = max_coins[kong] * percentage
+
+                # Use higher safety margins: 80% for easy/medium, 95% for hard mode
+                safety_margin = 0.80 if percentage < 0.85 else 0.95
+                target = max(1, kong_budget * safety_margin)
+                avg_prices_per_kong[kong] = target / shops_per_kong[kong]
+
+            return avg_prices_per_kong
+
+        def _generate_individual_prices(self, shop_locations, avg_prices_per_kong, progressive_avg_price, progressive_stddev, shopprices, DK64RItems, Kongs):
+            """Generate random individual prices for shops and progressive items."""
+            individual_prices = {}
+
+            # Generate shop prices
+            for location_id in shop_locations:
+                location = self.spoiler.LocationList[location_id]
+
+                if shopprices == 0:
+                    individual_prices[location_id] = 0
+                    continue
+
+                # Determine average and stddev for this shop
+                if location.kong == Kongs.any:
+                    kong_avg = progressive_avg_price
+                    kong_stddev = progressive_stddev
+                else:
+                    kong_avg = avg_prices_per_kong.get(location.kong, progressive_avg_price)
+                    kong_stddev = kong_avg * 0.3
+
+                price = round(self.random.normalvariate(kong_avg, kong_stddev))
+                price = max(1, min(price, int(kong_avg * 2)))
+                individual_prices[location_id] = price
+
+            progressive_moves = {
+                DK64RItems.ProgressiveSlam: 3,
+                DK64RItems.ProgressiveAmmoBelt: 2,
+                DK64RItems.ProgressiveInstrumentUpgrade: 3,
+            }
+
+            for item, count in progressive_moves.items():
+                individual_prices[item] = []
+                for _ in range(count):
+                    if shopprices == 0:
+                        individual_prices[item].append(0)
+                    else:
+                        price = round(self.random.normalvariate(progressive_avg_price, progressive_stddev))
+                        price = max(1, min(price, int(progressive_avg_price * 2)))
+                        individual_prices[item].append(price)
+
+            return individual_prices
+
+        def _convert_to_cumulative_prices(self, individual_prices, shop_locations, max_cumulative_per_kong, Kongs):
+            """Convert individual prices to cumulative running totals per kong.
+
+            This mimics the logic from determineFinalPriceAssortment:
+            - Progressive items add to all kongs' totals, price stored is average of all totals
+            - Kong-specific shops add to that kong's total only
+            - Cumulative prices are capped at max_cumulative_per_kong to ensure accessibility
+            """
+            price_assignment = []
+
+            # Build list of price assignments
+            for key, value in individual_prices.items():
+                if isinstance(value, list):
+                    # Progressive move - add multiple entries
+                    for price in value:
+                        price_assignment.append({"is_prog": True, "cost": price, "item": key, "kong": Kongs.any})
+                elif key in shop_locations:
+                    # Shop location
+                    location = self.spoiler.LocationList[key]
+                    price_assignment.append({"is_prog": False, "cost": value, "item": key, "kong": location.kong})
+
+            # Shuffle and calculate cumulative prices
+            self.random.shuffle(price_assignment)
+            total_cost = [0] * 5
+            cumulative_prices = {}
+
+            for assignment in price_assignment:
+                kong = assignment["kong"]
+                written_price = assignment["cost"]
+
+                if kong == Kongs.any:
+                    # Progressive item - add to all kongs, price is average of current totals
+                    current_kong_total = 0
+                    for kong_index in range(5):
+                        current_kong_total += total_cost[kong_index]
+                        total_cost[kong_index] += written_price
+                        # Cap at maximum affordable amount
+                        total_cost[kong_index] = min(total_cost[kong_index], max_cumulative_per_kong[kong_index])
+                    written_price = int(current_kong_total / 5)
+                else:
+                    # Kong-specific shop - add to that kong's total
+                    total_cost[kong] += written_price
+                    # Cap at maximum affordable amount
+                    total_cost[kong] = min(total_cost[kong], max_cumulative_per_kong[kong])
+                    written_price = total_cost[kong]
+
+                # Store cumulative price
+                key = assignment["item"]
+                if assignment["is_prog"]:
+                    if key not in cumulative_prices:
+                        cumulative_prices[key] = []
+                    cumulative_prices[key].append(written_price)
+                else:
+                    cumulative_prices[key] = written_price
+
+            return cumulative_prices
+
+        def _generate_archipelago_prices(self):
+            """Generate custom shop prices for Archipelago.
+
+            Generates individual prices for each shop and progressive item, then converts them
+            to cumulative prices (running totals) per kong. Excluded shops are set to 0 cost.
+            """
+            from randomizer.Enums.Items import Items as DK64RItems
+            from randomizer.Lists.Item import ItemList as DK64RItemList
+            from randomizer.Enums.Kongs import Kongs
+
+            # Constants
+            MAX_COINS = {
+                Kongs.donkey: 179,
+                Kongs.diddy: 183,
+                Kongs.lanky: 190,
+                Kongs.tiny: 198,
+                Kongs.chunky: 224,
+            }
+
+            PRICE_PERCENTAGES = {
+                0: 0.0,  # free
+                1: 0.35,  # easy
+                2: 0.55,  # medium
+                3: 0.85,  # hard
+            }
+
+            # Get settings
+            shopprices = self.options.shop_prices.value
+            percentage = PRICE_PERCENTAGES[shopprices]
+            min_max_coins = min(MAX_COINS.values())
+            # Cap cumulative prices at actual max coins (rainbow coins are tracked separately as collectibles)
+            max_cumulative_per_kong = {kong: MAX_COINS[kong] for kong in MAX_COINS}
+
+            # Categorize shops
+            shared_shop_vendors, available_shared_shops = self._get_shared_shop_vendors(Kongs, Types)
+            shop_locations, excluded_shop_locations, shops_per_kong = self._categorize_shop_locations(shared_shop_vendors, available_shared_shops, Kongs, Types)
+
+            # Calculate pricing averages
+            avg_prices_per_kong = self._calculate_kong_averages(shops_per_kong, MAX_COINS, percentage, min_max_coins, Kongs)
+            # Progressive items use 25% of budget, divided among 8 total progressive items
+            progressive_avg_price = (min_max_coins * percentage * 0.25) / 8 if shopprices > 0 else 0
+            progressive_stddev = progressive_avg_price * 0.3
+
+            # Generate individual prices
+            individual_prices = self._generate_individual_prices(shop_locations, avg_prices_per_kong, progressive_avg_price, progressive_stddev, shopprices, DK64RItems, Kongs)
+
+            # Add 0 prices for non-shop items and excluded shops
+            for item_id in DK64RItemList.keys():
+                if item_id not in individual_prices:
+                    individual_prices[item_id] = 0
+
+            for location_id in excluded_shop_locations:
+                individual_prices[location_id] = 0
+
+            # Store and finalize prices
+            self.spoiler.settings.original_prices = individual_prices.copy()
+
+            if shopprices > 0:
+                # Convert to cumulative prices
+                cumulative_prices = self._convert_to_cumulative_prices(individual_prices, shop_locations, max_cumulative_per_kong, Kongs)
+
+                # Add 0 prices for items not in shops
+                for item_id in DK64RItemList.keys():
+                    if item_id not in cumulative_prices:
+                        cumulative_prices[item_id] = 0
+
+                # Add 0 prices for all location IDs not already priced
+                for location_id in self.spoiler.LocationList.keys():
+                    if location_id not in cumulative_prices:
+                        cumulative_prices[location_id] = 0
+
+                for location_id in excluded_shop_locations:
+                    cumulative_prices[location_id] = 0
+
+                self.spoiler.settings.prices = cumulative_prices
+            else:
+                # Free prices - ensure all locations exist with 0 cost
+                for location_id in self.spoiler.LocationList.keys():
+                    if location_id not in individual_prices:
+                        individual_prices[location_id] = 0
+                self.spoiler.settings.prices = individual_prices.copy()
+
         def generate_early(self):
             """Generate the world."""
+            # Check host setting for minimal logic and force glitchless if disabled
+            if not self.settings.enable_minimal_logic_dk64:
+                dk64_worlds_for_minimal_check: tuple[DK64World] = self.multiworld.get_game_worlds("Donkey Kong 64")
+                affected_players = []
+                for world in dk64_worlds_for_minimal_check:
+                    if world.options.logic_type.value == 4:  # 4 = minimal logic
+                        affected_players.append(world.player_name)
+                        world.options.logic_type.value = 1  # Force to glitchless
+
+                if affected_players:
+                    import logging
+
+                    logging.warning(
+                        f"DK64: Minimal logic is DISABLED in host.yaml. "
+                        f"The following player(s) have tried to sneak Minimal Logic in: {', '.join(affected_players)}. As such, they have been forced to use glitchless logic."
+                    )
+
+            # Handle seed group synchronization for custom LZR seed groups
+            # We need to process ALL DK64 worlds to build/update seed groups before any player applies settings
+            dk64_worlds: tuple[DK64World] = self.multiworld.get_game_worlds("Donkey Kong 64")
+            for world in dk64_worlds:
+                if world.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+                    # Only process custom seed group strings, not standard numeric option values
+                    if isinstance(world.options.loading_zone_rando.value, str):
+                        group = world.options.loading_zone_rando.value
+                        # if this is the first world in the group, set the rules equal to its rules
+                        if group not in self.seed_groups:
+                            helm_value = bool(world.options.shuffle_helm_level_order.value)
+                            self.seed_groups[group] = LZRSeedGroup(
+                                shuffle_helm_level_order=helm_value,
+                                enable_chaos_blockers=bool(world.options.enable_chaos_blockers.value),
+                                randomize_blocker_required_amounts=bool(world.options.randomize_blocker_required_amounts.value),
+                                blocker_max=int(world.options.blocker_max.value),
+                                maximize_helm_blocker=bool(world.options.maximize_level8_blocker.value),
+                                level_blockers={
+                                    "level_1": int(world.options.level_blockers.value.get("level_1", 0)),
+                                    "level_2": int(world.options.level_blockers.value.get("level_2", 0)),
+                                    "level_3": int(world.options.level_blockers.value.get("level_3", 0)),
+                                    "level_4": int(world.options.level_blockers.value.get("level_4", 0)),
+                                    "level_5": int(world.options.level_blockers.value.get("level_5", 0)),
+                                    "level_6": int(world.options.level_blockers.value.get("level_6", 0)),
+                                    "level_7": int(world.options.level_blockers.value.get("level_7", 0)),
+                                    "level_8": int(world.options.level_blockers.value.get("level_8", 64)),
+                                },
+                                generated_blockers=None,  # will be filled after first player generates
+                                logic_type=int(world.options.logic_type.value),
+                                tricks_selected=set(world.options.tricks_selected.value),
+                                glitches_selected=set(world.options.glitches_selected.value),
+                            )
+                        else:
+                            # Group already exists - update with more permissive/restrictive rules
+                            # shuffle_helm_level_order: if any player has it enabled, enable it for the group
+                            if world.options.shuffle_helm_level_order.value:
+                                self.seed_groups[group]["shuffle_helm_level_order"] = True
+
+                            # chaos_blockers: if any player has it disabled, disable it for the group
+                            if not world.options.enable_chaos_blockers.value:
+                                self.seed_groups[group]["enable_chaos_blockers"] = False
+
+                            # randomize_blockers: if any player has it disabled, disable it for the group
+                            if not world.options.randomize_blocker_required_amounts.value:
+                                self.seed_groups[group]["randomize_blocker_required_amounts"] = False
+
+                            # blocker_max: use the lowest value in the group
+                            self.seed_groups[group]["blocker_max"] = min(self.seed_groups[group]["blocker_max"], int(world.options.blocker_max.value))
+
+                            # maximize_helm_blocker: if any player has it enabled, enable it for the group
+                            if world.options.maximize_level8_blocker.value:
+                                self.seed_groups[group]["maximize_helm_blocker"] = True
+
+                            # level blockers: use the lowest value in the group for each
+                            for level_num in range(1, 9):
+                                blocker_key = f"level_{level_num}"
+                                option_key = "level_blockers"
+                                self.seed_groups[group][option_key][blocker_key] = min(self.seed_groups[group][option_key][blocker_key], int(getattr(world.options, option_key)[blocker_key]))
+
+                            # logic_type: use most restrictive (glitchless=1 > advanced_glitchless=0 > glitched=2)
+                            # Priority order: glitchless (1) is most restrictive, then advanced_glitchless (0), then glitched (2)
+                            current_logic = self.seed_groups[group]["logic_type"]
+                            new_logic = int(world.options.logic_type.value)
+
+                            # If current is glitched (2) and new is anything else, use new (more restrictive)
+                            if current_logic == 2 and new_logic != 2:
+                                self.seed_groups[group]["logic_type"] = new_logic
+                            # If current is advanced_glitchless (0) and new is glitchless (1), use glitchless
+                            elif current_logic == 0 and new_logic == 1:
+                                self.seed_groups[group]["logic_type"] = 1
+                            # If current is glitchless (1), keep it (most restrictive)
+                            # If new is glitched (2), keep current (more restrictive)
+
+                            # tricks_selected: intersection of all players' tricks (only tricks ALL players have)
+                            self.seed_groups[group]["tricks_selected"] = self.seed_groups[group]["tricks_selected"].intersection(set(world.options.tricks_selected.value))
+
+                            # glitches_selected: intersection of all players' glitches (only glitches ALL players have)
+                            self.seed_groups[group]["glitches_selected"] = self.seed_groups[group]["glitches_selected"].intersection(set(world.options.glitches_selected.value))
+
+            # Apply seed group settings and create group random if using a custom seed group BEFORE fillsettings
+            self.group_random = None
+            self.original_random = None
+            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+                # Only apply seed group settings for custom string values, not standard numeric options
+                if isinstance(self.options.loading_zone_rando.value, str):
+                    group = self.options.loading_zone_rando.value
+                    if group in self.seed_groups:
+                        # Override player's options with seed group settings
+                        self.options.shuffle_helm_level_order.value = int(self.seed_groups[group]["shuffle_helm_level_order"])
+                        self.options.enable_chaos_blockers.value = int(self.seed_groups[group]["enable_chaos_blockers"])
+                        self.options.randomize_blocker_required_amounts.value = int(self.seed_groups[group]["randomize_blocker_required_amounts"])
+                        self.options.blocker_max.value = self.seed_groups[group]["blocker_max"]
+                        self.options.maximize_level8_blocker.value = int(self.seed_groups[group]["maximize_helm_blocker"])
+                        self.options.level_blockers.value = self.seed_groups[group]["level_blockers"]
+
+                        # Create group random for LZR seed synchronization and replace self.random
+                        combined_seed = f"{self.multiworld.seed}_{group}"
+                        from hashlib import sha256
+
+                        seed_hash = int(sha256(combined_seed.encode()).hexdigest()[:16], 16)
+                        from random import Random
+
+                        self.group_random = Random(seed_hash)
+                        self.original_random = self.random
+                        self.random = self.group_random
+
             # Use the fillsettings function to configure all settings
             settings = fillsettings(self.options, self.multiworld, self.random)
+            # Enable entrance randomization if the option is set (any value other than no/off/false/0)
+            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+                settings.level_randomization = LevelRandomization.loadingzone
+                settings.shuffle_loading_zones = ShuffleLoadingZones.all
+            else:
+                settings.level_randomization = LevelRandomization.level_order_complex
+                settings.shuffle_loading_zones = ShuffleLoadingZones.levels
             self.spoiler = Spoiler(settings)
             # Undo any changes to this location's name, until we find a better way to prevent this from confusing the tracker and the AP code that is responsible for sending out items
             self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
             self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
 
             Generate_Spoiler(self.spoiler)
+
+            # Store/retrieve blocker values for seed group synchronization
+            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+                if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
+                    group = self.options.loading_zone_rando.value
+                    if group in self.seed_groups:
+                        # If this is the first player to generate, store the blocker values
+                        if self.seed_groups[group]["generated_blockers"] is None:
+                            blocker_values = [
+                                self.spoiler.settings.blocker_0,
+                                self.spoiler.settings.blocker_1,
+                                self.spoiler.settings.blocker_2,
+                                self.spoiler.settings.blocker_3,
+                                self.spoiler.settings.blocker_4,
+                                self.spoiler.settings.blocker_5,
+                                self.spoiler.settings.blocker_6,
+                                self.spoiler.settings.blocker_7,
+                            ]
+                            self.seed_groups[group]["generated_blockers"] = blocker_values
+                        else:
+                            # Use the stored blocker values from the first player
+                            blocker_values = self.seed_groups[group]["generated_blockers"]
+                            self.spoiler.settings.blocker_0 = blocker_values[0]
+                            self.spoiler.settings.blocker_1 = blocker_values[1]
+                            self.spoiler.settings.blocker_2 = blocker_values[2]
+                            self.spoiler.settings.blocker_3 = blocker_values[3]
+                            self.spoiler.settings.blocker_4 = blocker_values[4]
+                            self.spoiler.settings.blocker_5 = blocker_values[5]
+                            self.spoiler.settings.blocker_6 = blocker_values[6]
+                            self.spoiler.settings.blocker_7 = blocker_values[7]
+
+                            # randomize_blockers: if any player has it disabled, disable it for the group
+                            if not world.options.randomize_blocker_required_amounts.value:
+                                self.seed_groups[group]["randomize_blocker_required_amounts"] = False
+
+                            # blocker_max: use the lowest value in the group
+                            self.seed_groups[group]["blocker_max"] = min(self.seed_groups[group]["blocker_max"], int(world.options.blocker_max.value))
+
+                            # maximize_helm_blocker: if any player has it enabled, enable it for the group
+                            if world.options.maximize_level8_blocker.value:
+                                self.seed_groups[group]["maximize_helm_blocker"] = True
+
+                            # level blockers: use the lowest value in the group for each
+                            for level_num in range(1, 9):
+                                blocker_key = f"level_{level_num}"
+                                option_key = "level_blockers"
+                                self.seed_groups[group][option_key][blocker_key] = min(self.seed_groups[group][option_key][blocker_key], int(getattr(world.options, option_key)[blocker_key]))
+
+            # Apply seed group settings and create group random if using a custom seed group BEFORE fillsettings
+            self.group_random = None
+            self.original_random = None
+            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+                if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
+                    group = self.options.loading_zone_rando.value
+                    if group in self.seed_groups:
+                        # Override player's options with seed group settings
+                        self.options.shuffle_helm_level_order.value = int(self.seed_groups[group]["shuffle_helm_level_order"])
+                        self.options.enable_chaos_blockers.value = int(self.seed_groups[group]["enable_chaos_blockers"])
+                        self.options.randomize_blocker_required_amounts.value = int(self.seed_groups[group]["randomize_blocker_required_amounts"])
+                        self.options.blocker_max.value = self.seed_groups[group]["blocker_max"]
+                        self.options.maximize_level8_blocker.value = int(self.seed_groups[group]["maximize_helm_blocker"])
+                        self.options.level_blockers.value = self.seed_groups[group]["level_blockers"]
+
+                        # Apply synchronized logic and glitch settings
+                        self.options.logic_type.value = self.seed_groups[group]["logic_type"]
+                        self.options.tricks_selected.value = list(self.seed_groups[group]["tricks_selected"])
+                        self.options.glitches_selected.value = list(self.seed_groups[group]["glitches_selected"])
+
+                        # Create group random for LZR seed synchronization and replace self.random
+                        from random import Random
+
+                        self.group_random = Random(group)
+                        self.original_random = self.random
+                        self.random = self.group_random
+
+            # Use the fillsettings function to configure all settings
+            settings = fillsettings(self.options, self.multiworld, self.random)
+            # Enable entrance randomization if the option is set (any value other than no/off/false/0)
+            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+                settings.level_randomization = LevelRandomization.loadingzone
+                settings.shuffle_loading_zones = ShuffleLoadingZones.all
+            else:
+                settings.level_randomization = LevelRandomization.level_order_complex
+                settings.shuffle_loading_zones = ShuffleLoadingZones.levels
+            self.spoiler = Spoiler(settings)
+            # Undo any changes to this location's name, until we find a better way to prevent this from confusing the tracker and the AP code that is responsible for sending out items
+            self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
+            self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
+
+            Generate_Spoiler(self.spoiler)
+
+            # Store/retrieve blocker values for seed group synchronization
+            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+                if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
+                    group = self.options.loading_zone_rando.value
+                    if group in self.seed_groups:
+                        # If this is the first player to generate, store the blocker values
+                        if self.seed_groups[group]["generated_blockers"] is None:
+                            blocker_values = [
+                                self.spoiler.settings.blocker_0,
+                                self.spoiler.settings.blocker_1,
+                                self.spoiler.settings.blocker_2,
+                                self.spoiler.settings.blocker_3,
+                                self.spoiler.settings.blocker_4,
+                                self.spoiler.settings.blocker_5,
+                                self.spoiler.settings.blocker_6,
+                                self.spoiler.settings.blocker_7,
+                            ]
+                            self.seed_groups[group]["generated_blockers"] = blocker_values
+                        else:
+                            # Use the stored blocker values from the first player
+                            blocker_values = self.seed_groups[group]["generated_blockers"]
+                            self.spoiler.settings.blocker_0 = blocker_values[0]
+                            self.spoiler.settings.blocker_1 = blocker_values[1]
+                            self.spoiler.settings.blocker_2 = blocker_values[2]
+                            self.spoiler.settings.blocker_3 = blocker_values[3]
+                            self.spoiler.settings.blocker_4 = blocker_values[4]
+                            self.spoiler.settings.blocker_5 = blocker_values[5]
+                            self.spoiler.settings.blocker_6 = blocker_values[6]
+                            self.spoiler.settings.blocker_7 = blocker_values[7]
+
+            if self.options.enable_shared_shops.value:
+                from randomizer.Lists.Location import SharedShopLocations
+
+                all_shared_shops = list(SharedShopLocations)
+                self.random.shuffle(all_shared_shops)
+                self.spoiler.settings.selected_shared_shops = set(all_shared_shops[:10])
+            else:
+                self.spoiler.settings.selected_shared_shops = set()
+
+            self._generate_archipelago_prices()
             # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
             if self.spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
-                # UT should not reshuffle the level order, but should update the exits
-                if not hasattr(self.multiworld, "generation_is_fake"):
-                    ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
-                self.spoiler.UpdateExits()
+                if self.spoiler.settings.level_randomization != LevelRandomization.loadingzone:
+                    # UT should not reshuffle the level order, but should update the exits
+                    if not hasattr(self.multiworld, "generation_is_fake"):
+                        ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
+                    self.spoiler.UpdateExits()
+                # else: LZR shuffling happens in connect_entrances()
 
             # Repopulate any spoiler-related stuff at this point from slot data
             if hasattr(self.multiworld, "generation_is_fake"):
@@ -682,6 +1248,17 @@ if baseclasses_loaded:
                         if passthrough["JunkedLocations"]:
                             for loc in passthrough["JunkedLocations"]:
                                 del self.location_name_to_id[loc]
+                        if passthrough.get("ShopPrices"):
+                            # Restore shop prices from slot data (shop locations only)
+                            restored_prices = {}
+                            for location_name, price in passthrough["ShopPrices"].items():
+                                # Convert location name string back to enum
+                                try:
+                                    location_id = DK64RLocations[location_name]
+                                    restored_prices[location_id] = price
+                                except (KeyError, AttributeError):
+                                    print(f"Warning: Could not restore price for location {location_name}")
+                            self.spoiler.settings.prices = restored_prices
 
             # Handle hint preparation by initiating some variables
             self.hint_data = {
@@ -738,10 +1315,106 @@ if baseclasses_loaded:
 
         def generate_basic(self):
             """Generate the basic world."""
+            self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("Banana Hoard", ItemClassification.progression_skip_balancing, 0xD64060, self.player))  # TEMP?
+
+        def connect_entrances(self) -> None:
+            """Randomize and connect entrances if LZR is on."""
             LinkWarps(self.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
             connect_regions(self, self.spoiler.settings)
 
-            self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("Banana Hoard", ItemClassification.progression_skip_balancing, 0xD64060, self.player))  # TEMP?
+            if (
+                self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]
+                and self.spoiler.settings.level_randomization == LevelRandomization.loadingzone
+                and not hasattr(self.multiworld, "generation_is_fake")
+            ):
+                # Reset shuffle state for all exits to ensure clean state between players
+                # This prevents state contamination when multiple DK64 players have different helm shuffle settings
+                for exit in ShufflableExits.values():
+                    exit.toBeShuffled = False
+                    exit.shuffled = False
+                    exit.shuffledId = None
+
+                ap_entrance_to_transition = {}
+                for transition_enum, shufflable_exit in ShufflableExits.items():
+                    # TODO: Make this configurable with DLZR
+                    if shufflable_exit.back.reverse is None:
+                        continue
+                    ap_entrance_to_transition[shufflable_exit.name] = transition_enum
+
+                # Store entrance connections for ROM patching
+                def store_entrance_connections(state, exits, entrances):
+                    """Store entrance randomization results in the spoiler."""
+                    for source_exit, target_entrance in zip(exits, entrances):
+                        exit_name = source_exit.name
+                        source_transition = ap_entrance_to_transition.get(exit_name)
+                        if not source_transition:
+                            continue
+
+                        target_transition = ap_entrance_to_transition.get(target_entrance.name)
+                        if not target_transition:
+                            continue
+
+                        target_reverse = ShufflableExits[target_transition].back.reverse
+                        if target_reverse is None:
+                            continue
+
+                        ShufflableExits[source_transition].shuffledId = target_reverse
+                        ShufflableExits[source_transition].shuffled = True
+
+                # Store initial entrance/exit state before randomization attempts
+                initial_entrance_states = {}
+                for region in self.multiworld.get_regions(self.player):
+                    for entrance in region.entrances:
+                        if not entrance.parent_region:  # This is an ER target
+                            initial_entrance_states[entrance] = entrance.connected_region
+
+                initial_exit_states = {}
+                for region in self.multiworld.get_regions(self.player):
+                    for exit in region.exits:
+                        if not exit.connected_region:  # This is a randomizable exit
+                            initial_exit_states[exit] = (region, exit.parent_region)
+
+                # Retry entrance randomization if it fails (similar to Crystalis implementation)
+                DK64_MAX_ER_ATTEMPTS = 20
+                for attempt in range(DK64_MAX_ER_ATTEMPTS):
+                    try:
+                        self.er_placement_state = randomize_entrances(self, True, {0: [0]}, on_connect=store_entrance_connections)
+                        break
+                    except EntranceRandomizationError as error:
+                        if attempt >= DK64_MAX_ER_ATTEMPTS - 1:
+                            raise EntranceRandomizationError(f"DK64: failed entrance randomization after {DK64_MAX_ER_ATTEMPTS} " f"attempts. Final error:\n\n{error}")
+                        logging.warning(f"DK64: Entrance randomization attempt {attempt + 1} failed, retrying...")
+
+                        # Restore entrance/exit state for retry
+                        # First, disconnect all exits that were connected during failed attempt
+                        for region in self.multiworld.get_regions(self.player):
+                            for exit in list(region.exits):
+                                if exit.connected_region and exit in initial_exit_states:
+                                    exit.connected_region = None
+
+                        # Restore ER targets to their original regions
+                        for entrance, original_region in initial_entrance_states.items():
+                            # Remove entrance from wherever it ended up
+                            if entrance.connected_region:
+                                if entrance in entrance.connected_region.entrances:
+                                    entrance.connected_region.entrances.remove(entrance)
+                            # Restore to original region
+                            entrance.connected_region = original_region
+                            if entrance not in original_region.entrances:
+                                original_region.entrances.append(entrance)
+
+                # Handle exit level and deathwarp
+                connect_exit_level_and_deathwarp(self, self.er_placement_state)
+
+                # Handle glitch transitions
+                connect_glitch_transitions(self, self.er_placement_state)
+
+                # After randomization, update the spoiler's exit data
+                self.spoiler.UpdateExits()
+
+                # Restore original random if we replaced it with group random
+                if self.original_random:
+                    self.random = self.original_random
 
         def get_archipelago_item_type_by_classification(self, item_classification: ItemClassification) -> DK64RItems:
             """Get the appropriate DK64R Archipelago item type based on the ItemClassification."""
@@ -887,25 +1560,25 @@ if baseclasses_loaded:
                     else:
                         instruments = []
                     hinted_slams = []
-                    if DK64RItems.ProgressiveSlam in self.foreignMicroHints.keys() and DK64RItems.ProgressiveSlam in self.spoiler.microhints:
+                    if DK64RItems.ProgressiveSlam in self.foreignMicroHints.keys() and DK64RItem.ItemList[DK64RItems.ProgressiveSlam].name in self.spoiler.microhints.keys():
                         # Break down the slam hint to retrieve raw data
                         text1 = "Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in "
-                        hinted_slams = self.spoiler.microhints[DK64RItems.ProgressiveSlam].replace(text1, "")
-                        hinted_slams.replace(" for the elusive slam.", "")
-                        hinted_slams.split(" or ")
+                        local_hinted_slams = self.spoiler.microhints[DK64RItem.ItemList[DK64RItems.ProgressiveSlam].name].replace(text1.upper(), "")
+                        local_hinted_slams = local_hinted_slams.replace(" for the elusive slam.".upper(), "")
+                        hinted_slams = local_hinted_slams.split(" or ".upper())
                     for hintedItem in self.foreignMicroHints.keys():
                         text = ""
                         if hintedItem in helm_prog_items and self.options.microhints.value in [1, 2]:
-                            text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][1]}\x07 for this.".upper()
+                            text = f"\x07{self.foreignMicroHints[hintedItem][0][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][0][1]}\x07 for this.".upper()
                         elif hintedItem in instruments and self.options.microhints.value == 2:
-                            text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][1]}\x07 for this.".upper()
+                            text = f"\x07{self.foreignMicroHints[hintedItem][0][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][0][1]}\x07 for this.".upper()
                         elif hintedItem == DK64RItems.ProgressiveSlam:
                             for slam in self.foreignMicroHints[DK64RItems.ProgressiveSlam]:
                                 hinted_slams.append(f"\x07{slam[0]}: {slam[1]}\x07")
                             slam_text = " or ".join(hinted_slams)
                             text = f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
                         elif self.options.shopkeeper_hints.value and hintedItem in shopkeepers:
-                            text = f"{hintedItem.name} has gone on a space mission to \x07{self.foreignMicroHints[hintedItem][0]}'s\x07 \x0d{self.foreignMicroHints[hintedItem][1]}\x0d.".upper()
+                            text = f"{hintedItem.name} has gone on a space mission to \x07{self.foreignMicroHints[hintedItem][0][0]}'s\x07 \x0d{self.foreignMicroHints[hintedItem][0][1]}\x0d.".upper()
 
                         # Only create microhint if we have text to display
                         if text:
@@ -917,6 +1590,8 @@ if baseclasses_loaded:
                 spoiler.majorItems = IdentifyMajorItems(spoiler)
                 if ap_item_is_major_item and ap_major_item_type is not None:
                     spoiler.majorItems.append(ap_major_item_type)
+
+                # Generate patch with cumulative prices (what players see in-game)
                 patch_data, _ = patching_response(spoiler)
                 lanky = self.update_seed_results(patch_data, spoiler, self.player)
 
@@ -924,7 +1599,7 @@ if baseclasses_loaded:
                     "patch_data": lanky,
                     "player": self.player,
                     "player_name": self.player_name,
-                    "version": ap_version,
+                    "version": self.ap_version,
                     "seed": self.multiworld.seed_name,
                 }
 
@@ -989,11 +1664,8 @@ if baseclasses_loaded:
                 # Locations that could get a "deep locations" hint:
                 deep_location_names = [
                     "Returning the Banana Fairies",
-                    "Japes Diddy Minecart",
-                    "Aztec Diddy Vulture Race",
                     "Aztec Tiny Beetle Race",
                     "Factory Donkey DK Arcade Round 1",
-                    "Forest Chunky Minecart",
                     "Forest Donkey Baboon Blast",
                     "Forest Diddy Owl Race",
                     "Forest Lanky Rabbit Race",
@@ -1013,14 +1685,11 @@ if baseclasses_loaded:
                     "Helm Fairy (Key 8 Room (2))",
                     "Galleon Diddy Mechfish",
                     "Jetpac",
-                    "Aztec Tiny Llama Temple Lava Pedestals",
                     "Galleon Chunky Cannon Game",
                     "Galleon Tiny Medal",
                     "Factory Chunky Toy Monster",
-                    "Castle Tiny Car Race",
                     "Caves Dirt: Giant Kosha",
                     "Castle Lanky Tower",
-                    "Castle Donkey Tree Sniping",
                     "Japes Boss Defeated",
                     "Aztec Boss Defeated",
                     "Factory Boss Defeated",
@@ -1052,9 +1721,9 @@ if baseclasses_loaded:
                     if (microhints_enabled or shopkeepers_enabled) and is_microhintable:
                         if player != loc.player:
                             if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
-                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name[:80]])
+                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append((multiworld.get_player_name(loc.player), loc.name[:80]))
                             else:
-                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name[:80]]
+                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [(multiworld.get_player_name(loc.player), loc.name[:80])]
 
                     # Bail if hints are disabled at this point
                     if (is_donk_item and autoworld.options.hint_style == 0) and not is_donk_location:
@@ -1129,6 +1798,16 @@ if baseclasses_loaded:
             if not (self.options.smaller_shops.value and Types.Shop in self.spoiler.settings.shuffled_location_types):
                 return {}
 
+            # Build set of vendor/level combinations that have shared shops
+            shared_shop_vendors = set()
+            if self.options.enable_shared_shops.value:
+                available_shared_shops = getattr(self.spoiler.settings, "selected_shared_shops", set())
+                for location_id in available_shared_shops:
+                    if location_id in self.spoiler.LocationList:
+                        location = self.spoiler.LocationList[location_id]
+                        if location.type == Types.Shop and location.kong == Kongs.any:
+                            shared_shop_vendors.add((location.level, location.vendor))
+
             smaller_shops_data = {}
             for level_enum, vendor_data in ShopLocationReference.items():
                 level_name = level_enum.name
@@ -1141,14 +1820,24 @@ if baseclasses_loaded:
 
                     for i, location_id in enumerate(location_list):
                         location_obj = self.spoiler.LocationList[location_id]
+
                         # Create key like "IslesCrankyDonkey"
                         if i < 5:  # Kong-specific locations
                             key = f"{level_name}{vendor_name}{kong_names[i]}"
-                        else:  # We shouldn't need this
+
+                            # Kong shops are inaccessible if:
+                            # 1. Blocked by smaller_shops setting, OR
+                            # 2. A shared shop exists at this vendor/level
+                            is_accessible = not location_obj.smallerShopsInaccessible and (level_enum, vendor_enum) not in shared_shop_vendors
+                        else:  # Shared shop location
                             key = f"{level_name}{vendor_name}Shared"
 
-                        # Set 1 if accessible, 0 if blocked by smaller shops
-                        smaller_shops_data[key] = 0 if location_obj.smallerShopsInaccessible else 1
+                            # Shared shops are accessible if:
+                            # 1. Not blocked by smaller_shops setting, AND
+                            # 2. This vendor/level has a shared shop enabled
+                            is_accessible = not location_obj.smallerShopsInaccessible and (level_enum, vendor_enum) in shared_shop_vendors
+
+                        smaller_shops_data[key] = 1 if is_accessible else 0
 
             return smaller_shops_data
 
@@ -1214,11 +1903,22 @@ if baseclasses_loaded:
                 "TricksSelected": ", ".join([trick.name for trick in self.spoiler.settings.tricks_selected]),
                 "GlitchesSelected": ", ".join([glitch.name for glitch in self.spoiler.settings.glitches_selected]),
                 "StartingKeyList": ", ".join([key.name for key in self.spoiler.settings.starting_key_list]),
+                "ProgressiveSwitchStrength": self.spoiler.settings.alter_switch_allocation,
+                "SlamLevels": (
+                    ", ".join(
+                        [
+                            f"{['JungleJapes', 'AngryAztec', 'FranticFactory', 'GloomyGalleon', 'FungiForest', 'CrystalCaves', 'CreepyCastle', 'HideoutHelm'][i]}: {slam_req.name}"
+                            for i, slam_req in enumerate(self.spoiler.settings.switch_allocation)
+                        ]
+                    )
+                    if self.spoiler.settings.alter_switch_allocation
+                    else ""
+                ),
                 "Junk": self.junked_locations,
                 "HintsInPool": self.options.hints_in_item_pool.value,
                 "BouldersInPool": self.options.boulders_in_pool.value,
                 "Dropsanity": self.options.dropsanity.value,
-                "Version": ap_version,
+                "Version": self.ap_version,
                 "EnemyData": (
                     {
                         location_id.name: {"map": enemy_loc.map.name, "enemy": enemy_loc.enemy.name}
@@ -1233,9 +1933,27 @@ if baseclasses_loaded:
                 "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
                 "Autocomplete": self.options.auto_complete_bonus_barrels.value,
                 "HelmBarrelCount": self.options.helm_room_bonus_count.value,
+                "CrownDoorItem": self.spoiler.settings.crown_door_item.name,
+                "CrownDoorItemCount": self.spoiler.settings.crown_door_item_count,
+                "CoinDoorItem": self.spoiler.settings.coin_door_item.name,
+                "CoinDoorItemCount": self.spoiler.settings.coin_door_item_count,
                 "SmallerShopsData": self.get_smaller_shops_data(),
+                "ShopPrices": (
+                    {
+                        (location_id.name if hasattr(location_id, "name") else str(location_id)): price
+                        for location_id, price in self.spoiler.settings.prices.items()
+                        if location_id in self.spoiler.LocationList and self.spoiler.LocationList[location_id].type == Types.Shop
+                    }
+                    if hasattr(self.spoiler.settings, "prices")
+                    else {}
+                ),
                 "HintLocationMapping": hint_mapping,
                 "hints": {str(location): hint_data for location, hint_data in dynamic_hints.items()},
+                "EntranceRando": (
+                    {source_exit: target_entrance for source_exit, target_entrance in self.er_placement_state.pairings}
+                    if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and self.spoiler.shuffled_exit_data
+                    else {}
+                ),
             }
             return slot_data
 
@@ -1293,7 +2011,73 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("Randomizer Version: " + self.spoiler.settings.version)
             spoiler_handle.write("\n")
-            spoiler_handle.write("APWorld Version: " + ap_version)
+            spoiler_handle.write("APWorld Version: " + self.ap_version)
+            spoiler_handle.write("\n")
+
+            # Write entrance randomization data if LZR is enabled
+            if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and self.spoiler.shuffled_exit_data:
+                from randomizer.Lists.ShufflableExit import ShufflableExits
+
+                spoiler_handle.write("\n")
+                spoiler_handle.write("=== Entrance Randomization (Loading Zone Randomizer) ===\n")
+                # Sort by transition name for readability
+                sorted_exits = sorted(self.spoiler.shuffled_exit_data.items(), key=lambda x: x[0].name)
+                for transition_enum, shuffled_back in sorted_exits:
+                    source_exit = ShufflableExits[transition_enum]
+                    # Find the ShufflableExit that contains this TransitionBack to get the full descriptive name
+                    dest_exit_name = shuffled_back.name  # Fallback to short name
+                    for other_transition, other_exit in ShufflableExits.items():
+                        if other_exit.back == shuffled_back:
+                            dest_exit_name = other_exit.name
+                            break
+                    spoiler_handle.write(f"{source_exit.name} -> {dest_exit_name}\n")
+                spoiler_handle.write("\n")
+
+            # Write shop prices
+            spoiler_handle.write("\n")
+            spoiler_handle.write("=== Shop Prices ===\n")
+
+            # Get price shopprices name
+            price_shopprices_names = {0: "Free", 1: "Easy", 2: "Medium", 3: "Hard"}
+            shopprices_name = price_shopprices_names.get(self.options.shop_prices.value, "Unknown")
+            spoiler_handle.write(f"Price Difficulty: {shopprices_name}\n")
+            spoiler_handle.write("\n")
+
+            # Progressive moves
+            from randomizer.Enums.Items import Items as DK64RItems
+
+            progressive_moves = {
+                DK64RItems.ProgressiveSlam: "Progressive Slam",
+                DK64RItems.ProgressiveAmmoBelt: "Progressive Ammo Belt",
+                DK64RItems.ProgressiveInstrumentUpgrade: "Progressive Instrument Upgrade",
+            }
+
+            spoiler_handle.write("Progressive Move Prices:\n")
+            for item_id, item_name in progressive_moves.items():
+                if item_id in self.spoiler.settings.prices:
+                    prices = self.spoiler.settings.prices[item_id]
+                    if isinstance(prices, list):
+                        price_str = ", ".join([str(p) for p in prices])
+                        spoiler_handle.write(f"  {item_name}: [{price_str}]\n")
+
+            spoiler_handle.write("\n")
+            spoiler_handle.write("Shop Location Prices:\n")
+
+            # Organize shop locations by vendor and level
+            from randomizer.Enums.Locations import Locations as DK64RLocations
+
+            shop_prices_by_location = []
+            for location_id, location in self.spoiler.LocationList.items():
+                if location.type == Types.Shop and location_id in self.spoiler.settings.prices:
+                    price = self.spoiler.settings.prices[location_id]
+                    shop_prices_by_location.append((location.name, price))
+
+            # Sort alphabetically by location name
+            shop_prices_by_location.sort(key=lambda x: x[0])
+
+            for location_name, price in shop_prices_by_location:
+                spoiler_handle.write(f"  {location_name}: {price} coins\n")
+
             spoiler_handle.write("\n")
 
         def create_item(self, name: str, force_non_progression=False) -> Item:
@@ -1400,6 +2184,27 @@ if baseclasses_loaded:
                     state.dk64_logic_holder[self.player].UpdateFromArchipelagoItems(state)
             return change
 
+        def remove(self, state: CollectionState, item: Item) -> bool:
+            """Remove the item."""
+            change = super().remove(state, item)
+            if change:
+                if self.player in state.dk64_logic_holder.keys():
+                    state.dk64_logic_holder[self.player].RemoveArchipelagoItem(item)
+                elif hasattr(self, "spoiler"):
+                    state.dk64_logic_holder[self.player] = LogicVarHolder(self.spoiler, self.player)  # If the CollectionState dodged the creation of a logic_holder object, fix it here
+                    state.dk64_logic_holder[self.player].UpdateFromArchipelagoItems(state)
+            return change
+
+        def _update_entrance_connections(self, state: CollectionState) -> None:
+            """Update the entrance_connections dictionary with all reachable connected entrances."""
+            self.entrance_connections.clear()
+            if self.player in state.reachable_regions:
+                regions_copy = list(state.reachable_regions[self.player])
+                for region in regions_copy:
+                    for entrance in region.exits:
+                        if entrance.can_reach(state) and entrance.connected_region is not None:
+                            self.entrance_connections[entrance.name] = entrance.connected_region.name
+
         def version_check(self, version: str, req_version: str) -> bool:
             """Check if the current version is greater than or equal to the one required for this slot data."""
             req_major = req_version.split(".")[0]
@@ -1416,8 +2221,8 @@ if baseclasses_loaded:
             """Parse slot data for any logical bits that need to match the real generation. Used by Universal Tracker."""
             # Parse the string data
             version = slot_data["Version"]
-            if version != ap_version:
-                print(f"Version mismatch: {version} != {ap_version}. You may experience unexpected behavior.")
+            if version != self.ap_version:
+                print(f"Version mismatch: {version} != {self.ap_version}. You may experience unexpected behavior.")
 
             level_order = slot_data["LevelOrder"].split(", ")
             starting_kongs = slot_data["StartingKongs"].split(", ")
@@ -1434,10 +2239,13 @@ if baseclasses_loaded:
             logic_type = slot_data["LogicType"]
             glitches_selected = slot_data["GlitchesSelected"].split(", ")
             starting_key_list = slot_data["StartingKeyList"].split(", ")
+            progressive_switch_strength = slot_data.get("ProgressiveSwitchStrength", False)
+            slam_levels_str = slot_data.get("SlamLevels", "")
             junk = slot_data["Junk"]
             blocker_data = list(map(lambda original_string: original_string[original_string.find(":") + 2 :], slot_data["BLockerValues"].split(", ")))
             blocker_item_type = list(map(lambda data: data.split(" ")[1], blocker_data))
             blocker_item_quantity = list(map(lambda data: int(data.split(" ")[0]), blocker_data))
+            galleon_water = slot_data.get("GalleonWater", "lowered")
 
             if self.version_check(version, "1.1.0"):
                 tricks_selected = slot_data.get("TricksSelected", []).split(", ")
@@ -1466,11 +2274,32 @@ if baseclasses_loaded:
                 autocomplete = True
                 helm_barrel_count = 0
 
+            # Added helm door settings
+            if self.version_check(version, "1.4.16"):
+                crown_door_item = slot_data.get("CrownDoorItem", "opened")
+                crown_door_item_count = slot_data.get("CrownDoorItemCount", 1)
+                coin_door_item = slot_data.get("CoinDoorItem", "opened")
+                coin_door_item_count = slot_data.get("CoinDoorItemCount", 1)
+            else:
+                crown_door_item = "opened"
+                crown_door_item_count = 1
+                coin_door_item = "opened"
+                coin_door_item_count = 1
+
             # Added smaller shops data visibility
             if self.version_check(version, "1.1.14"):
                 smaller_shops_data = slot_data.get("SmallerShopsData", {})
             else:
                 smaller_shops_data = {}
+
+            # Added shop prices for UT
+            if self.version_check(version, "1.4.11"):
+                shop_prices = slot_data.get("ShopPrices", {})
+            else:
+                shop_prices = {}
+
+            # Added entrance randomization data
+            entrance_rando = slot_data.get("EntranceRando", [])
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -1491,6 +2320,16 @@ if baseclasses_loaded:
             relevant_data["TricksSelected"] = [TricksSelected[trick] for trick in tricks_selected if trick != ""]
             relevant_data["GlitchesSelected"] = [GlitchesSelected[glitch] for glitch in glitches_selected if glitch != ""]
             relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list if key != ""]
+            relevant_data["ProgressiveSwitchStrength"] = progressive_switch_strength
+            if progressive_switch_strength and slam_levels_str:
+                slam_levels_list = []
+                for level_slam in slam_levels_str.split(", "):
+                    if ": " in level_slam:
+                        slam_name = level_slam.split(": ")[1]
+                        slam_levels_list.append(SlamRequirement[slam_name])
+                relevant_data["SlamLevels"] = slam_levels_list
+            else:
+                relevant_data["SlamLevels"] = []
             relevant_data["JunkedLocations"] = junk
             relevant_data["BLockerEntryItems"] = [BarrierItems[item] for item in blocker_item_type]
             relevant_data["BLockerEntryCount"] = blocker_item_quantity
@@ -1502,6 +2341,13 @@ if baseclasses_loaded:
             relevant_data["MinigameData"] = minigame_data
             relevant_data["Autocomplete"] = autocomplete
             relevant_data["HelmBarrelCount"] = helm_barrel_count
+            relevant_data["CrownDoorItem"] = crown_door_item
+            relevant_data["CrownDoorItemCount"] = crown_door_item_count
+            relevant_data["CoinDoorItem"] = coin_door_item
+            relevant_data["CoinDoorItemCount"] = coin_door_item_count
             relevant_data["HalfMedals"] = half_medals
             relevant_data["SmallerShopsData"] = smaller_shops_data
+            relevant_data["ShopPrices"] = shop_prices
+            relevant_data["EntranceRando"] = entrance_rando
+            relevant_data["GalleonWater"] = galleon_water
             return relevant_data

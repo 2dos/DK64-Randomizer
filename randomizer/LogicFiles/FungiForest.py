@@ -100,6 +100,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomUpperMidExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.MushroomNightExterior, lambda l: l.jetpack and l.isdiddy),
+        TransitionFront(Regions.MushroomVeryTopExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.HollowTreeArea, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel) or Events.HollowTreeGateOpened in l.Events or l.CanPhaseswim() or l.CanPhase() or l.CanOStandTBSNoclip() or l.CanSkew(True)),
         TransitionFront(Regions.Anthill, lambda l: l.CanSkew(True), Transitions.ForestTreeToAnthill, isGlitchTransition=True),
         TransitionFront(Regions.CrankyForest, lambda l: l.crankyAccess),
@@ -209,21 +210,30 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_NearFacePuzzle, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_NearCrown, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_NearHighWarp5, lambda _: True),
-        LocationLogic(Locations.ForestMainEnemy_TopOfMushroom, lambda l: (l.jetpack and l.isdiddy) or (l.handstand and l.islanky)),
         LocationLogic(Locations.KremKap_ForestMainEnemy_NearFacePuzzle, lambda l: l.camera),
         LocationLogic(Locations.KremKap_ForestMainEnemy_NearCrown, lambda l: l.camera),
         LocationLogic(Locations.KremKap_ForestMainEnemy_NearHighWarp5, lambda l: l.camera),
-        LocationLogic(Locations.KremKap_ForestMainEnemy_TopOfMushroom, lambda l: l.camera and ((l.jetpack and l.isdiddy) or (l.handstand and l.islanky))),
     ], [
         Event(Events.ForestW5aTagged, lambda _: True),
     ], [
         TransitionFront(Regions.MushroomUpper, lambda _: True, Transitions.ForestUpperExteriorToUpperMushroom),
         TransitionFront(Regions.MushroomNightExterior, lambda l: (l.istiny and l.twirl) or not l.IsHardFallDamage()),
         TransitionFront(Regions.GiantMushroomArea, lambda _: True),
+        TransitionFront(Regions.MushroomVeryTopExterior, lambda l: (l.handstand and l.islanky) or (l.slope_resets and l.isdiddy)),
         TransitionFront(Regions.MushroomChunkyRoom, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.ischunky) or l.CanPhase() or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToChunky),
-        TransitionFront(Regions.MushroomLankyZingersRoom, lambda l: (l.handstand and l.CanSlamSwitch(Levels.FungiForest, 2) and l.islanky) or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToZingers),
-        TransitionFront(Regions.MushroomLankyMushroomsRoom, lambda l: (l.handstand and l.CanSlamSwitch(Levels.FungiForest, 2) and l.islanky) or l.CanPhase() or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToMushrooms),
+        TransitionFront(Regions.MushroomLankyZingersRoom, lambda l: Events.LankyMushroomSlamSwitch in l.Events or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToZingers),
+        TransitionFront(Regions.MushroomLankyMushroomsRoom, lambda l: Events.LankyMushroomSlamSwitch in l.Events or l.CanPhase() or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToMushrooms),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
+    ]),
+
+    Regions.MushroomVeryTopExterior: Region("Very Top of Mushroom", HintRegion.MushroomExterior, Levels.FungiForest, False, -1, [
+        LocationLogic(Locations.ForestMainEnemy_TopOfMushroom, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_TopOfMushroom, lambda l: l.camera),
+
+    ], [
+        Event(Events.LankyMushroomSlamSwitch, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.islanky)
+    ], [
+        TransitionFront(Regions.MushroomUpperExterior, lambda _: True),
     ]),
 
     Regions.MushroomChunkyRoom: Region("Mushroom Chunky Room", HintRegion.MushroomInterior, Levels.FungiForest, False, -1, [

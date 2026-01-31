@@ -64,17 +64,25 @@
                         </option>
                     </select>
                 </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
+                <div class="item-select">
+                    <p class="select-title">Random Starting Location</p>
+                    <select name="random_starting_region_new"
+                            id="random_starting_region_new"
+                            display_name="Random Starting Location"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
                             title="Randomizes the location you spawn in when starting a new file and when selecting the 'Exit to Spawn' option.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="random_starting_region"
-                                id="random_starting_region"
-                                display_name="Random Starting Location"
-                                value="True"/>
-                        Random Starting Location
-                    </label>
+                        <option id="off" selected value="off">
+                            Off
+                        </option>
+                        <option id="isles_only" value="isles_only" title="Will only spawn you in the Isles Main map.">
+                            Isles Main Only
+                        </option>
+                        <option id="all" value="all" title="Will spawn you from any map.">
+                            On
+                        </option>
+                    </select>
                 </div>
                 {% include "complex-options/kong-models.html" %}
             </div>
@@ -184,18 +192,28 @@
             <h2 class="title">BOSSES</h2>
             <div class="flex-container">
                 {{ toggle_input("boss_location_rando", "Shuffle Boss Location", "The boss you can get in a level is different than normal.") }}
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="K. Rool phases can be found in the T&S, and T&S bosses can be encountered as an endgame phase.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="krool_in_boss_pool"
-                                id="krool_in_boss_pool"
-                                display_name="Shuffle Boss Kong Required"
-                                value="True"/>
-                        K Rool Phases as Bosses
-                    </label>
+                <div class="spacer"></div>
+                <div class="item-select">
+                    <p class="select-title">K. Rool in Boss Pool</p>
+                    <select name="krool_in_boss_pool_v2"
+                            id="krool_in_boss_pool_v2"
+                            display_name="K. Rool in Boss Pool"
+                            class="form-select"
+                            aria-label="K. Rool Boss Pool"
+                            data-toggle="tooltip"
+                            title="Determines how K. Rool phases are shuffled with regular bosses.&#10;-Off: K. Rool phases remain in the final fight only. Regular bosses remain as T&S bosses only.&#10;-K. Rool Only: K. Rool phases can appear as T&S bosses, but the final fight only has K. Rool phases.&#10;-Full Shuffle: K. Rool phases and regular bosses can be shuffled between each other.">
+                        <option selected id="off" value="off">
+                            Off
+                        </option>
+                        <option id="krool_only" value="krool_only">
+                            K. Rool Only
+                        </option>
+                        <option id="full_shuffle" value="full_shuffle">
+                            Full Shuffle
+                        </option>
+                    </select>
                 </div>
+                {{ dropdown_multiselector(bosses, "bosses", "Allowed Bosses", "This will open a popup that will let you customize what bosses are allowed to appear in your seed.&#10;This defaults to All options.", 12, 1) }}
             </div>
         </div>
         <div class="col border panel">
@@ -336,7 +354,18 @@
                     </label>
                     {{ properties_selector(helm_hurry_items, "helmhurry_list", "HELM HURRY SELECTOR", "This will open a popup that will let you customize what how much time each item will give you.") }}
                 {# Remove end </div> as it's included in the macro for formatting #}
-                <div class="spacer"></div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                    title="Prevents consumable upgrades (Ammo Belts, Instrument Upgrades) from being placed in the game. You can still start with them.">
+                        <input class="form-check-input"
+                        type="checkbox"
+                        name="no_consumable_upgrades"
+                        id="no_consumable_upgrades"
+                        display_name="No Consumable Upgrades"
+                        value="True"/>
+                        No Consumable Upgrades
+                    </label>
+                </div>
             </div>
             <div class="flex-container">
                 {{ dropdown_multiselector(hard_mode, "hard_mode", "Hard Mode", "This will open a dropdown that will let you customize what hard mode Options are active.", 10) }}

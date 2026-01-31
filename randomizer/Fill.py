@@ -33,11 +33,13 @@ from randomizer.Enums.Settings import (
     HardModeSelected,
     HelmBonuses,
     ItemRandoFiller,
+    KroolInBossPool,
     LogicType,
     MinigameBarrels,
     MoveRando,
     ProgressiveHintItem,
     RandomPrices,
+    RandomStartingRegion,
     RandomRequirement,
     RemovedBarriersSelected,
     ShockwaveStatus,
@@ -418,7 +420,7 @@ def GetAccessibleLocations(
                             if levelExitTransitionId not in spoiler.playthroughTransitionOrder:
                                 spoiler.playthroughTransitionOrder.append(levelExitTransitionId)
                 # If loading zones are not shuffled but you have a random starting location, you may need to exit level to escape some regions
-                elif settings.random_starting_region and region.level != Levels.DKIsles and region.level != Levels.Shops and region.restart is None:
+                elif settings.random_starting_region_new == RandomStartingRegion.all and region.level != Levels.DKIsles and region.level != Levels.Shops and region.restart is None:
                     levelLobby = GetLobbyOfRegion(region.level)
                     if levelLobby is not None and levelLobby not in kongAccessibleRegions[kong]:
                         exits.append(TransitionFront(levelLobby, lambda _: True))
@@ -431,6 +433,8 @@ def GetAccessibleLocations(
                     if is_shuffled:
                         shuffled_exit = ShuffleExits.ShufflableExits[shuffle_id]
                         if shuffled_exit.shuffled:
+                            if not shuffled_exit.shuffledId:
+                                print(shuffled_exit.__dict__)
                             destination = ShuffleExits.ShufflableExits[shuffled_exit.shuffledId].back.regionId
                         elif shuffled_exit.toBeShuffled:
                             continue
@@ -441,7 +445,7 @@ def GetAccessibleLocations(
 
                     # Handle water/lava restrictions
                     is_lava_water = spoiler.LogicVariables.IsLavaWater()
-                    if is_lava_water and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
+                    if is_lava_water and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region_new != RandomStartingRegion.off):
                         if destination in UnderwaterRegions and spoiler.LogicVariables.Melons < 3:
                             continue
                         if destination in SurfaceWaterRegions and spoiler.LogicVariables.Melons < 2:
@@ -549,36 +553,61 @@ def GetAccessibleLocations(
 
 def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
     """Verify a world in the context of minimal logic."""
-    # Key 5 not in Level 7 with non-LZR
     level_7 = None
+    level_7_lobby_map = None
     if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:  # Non-LZR
-        level_7 = Levels.CreepyCastle
         if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
-            level_7 = spoiler.settings.level_order[6]
+            # In level shuffle, check level 7
+            level_7 = spoiler.settings.level_order[7]
+        else:
+            # Vanilla Order
+            level_7 = Levels.CreepyCastle
 
-    # Kongs not in shops tied to them
-    kong_shop_locations = [
-        [],  # DK
-        [],  # Diddy
-        [],  # Lanky
-        [],  # Tiny
-        [],  # Chunky
-    ]
-    for level, shop_level_data in ShopLocationReference.items():
-        for vendor, shop_vendor_data in shop_level_data.items():
-            for kong_idx, kong_loc in enumerate(shop_vendor_data):
-                if kong_idx < 5:
-                    kong_shop_locations[kong_idx].append(kong_loc)
+        # Map the level to its lobby map
+        lobby_map_dict = {
+            Levels.JungleJapes: Maps.JungleJapesLobby,
+            Levels.AngryAztec: Maps.AngryAztecLobby,
+            Levels.FranticFactory: Maps.FranticFactoryLobby,
+            Levels.GloomyGalleon: Maps.GloomyGalleonLobby,
+            Levels.FungiForest: Maps.FungiForestLobby,
+            Levels.CrystalCaves: Maps.CrystalCavesLobby,
+            Levels.CreepyCastle: Maps.CreepyCastleLobby,
+        }
+        level_7_lobby_map = lobby_map_dict.get(level_7)
+    level_7_items = []
+
     kong_items = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
     for loc, data in spoiler.LocationList.items():
-        if level_7 is not None:
-            if data.level == level_7 and data.item == Items.FungiForestKey:
-                print("Placement invalid because of Key 5 being in Level 7")
+
+        # Track items in Level 7
+        if level_7 is not None and data.level == level_7 and data.item is not None:
+            level_7_items.append(data.item)
+
+        # Key 5 cannot be in Level 7 or its lobby
+        if level_7 is not None and data.item == Items.FungiForestKey:
+            # Check if in the level itself
+            if data.level == level_7:
+                print(f"Placement invalid because of Key 5 being in Level 7 at {data.name}")
                 return False
-        for kong_index, kong_locs in enumerate(kong_shop_locations):
-            if loc in kong_locs and data.item == kong_items[kong_index]:
-                print("Placement invalid due to shop in shop location")
+            # Check if in the level's lobby
+            if level_7_lobby_map is not None and data.default_mapid_data is not None:
+                for map_data in data.default_mapid_data:
+                    if map_data.map == level_7_lobby_map:
+                        print(f"Placement invalid because of Key 5 being in Level 7 lobby at {data.name}")
+                        return False
+
+        # Kongs cannot be locked behind shops that require that specific Kong to access
+        if data.type == Types.Shop and data.kong < 5:
+            if data.item == kong_items[data.kong]:
+                print(f"Placement invalid: {kong_items[data.kong].name} is locked behind their own shop at {data.name}")
                 return False
+
+        # Kongs cannot be on their own banana medal or half-medal locations
+        if data.type in (Types.Medal, Types.HalfMedal) and data.kong < 5:
+            if data.item == kong_items[data.kong]:
+                print(f"Placement invalid: {kong_items[data.kong].name} is on their own medal location at {data.name}")
+                return False
+
     # Blasts/Arcade R2 can't contain DK
     non_dk_locations = [
         Locations.JapesDonkeyBaboonBlast,
@@ -1152,9 +1181,12 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             ordered_interesting_locations.append(locationId)
 
     # If K. Rool is the win condition, prepare phase-specific paths as well
-    if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+    if spoiler.settings.win_condition_spawns_ship == 1:
         for phase in spoiler.settings.krool_order:
             spoiler.krool_paths[phase] = []
+    # If the Rabbit is the win condition, prepare a path for him.
+    if spoiler.settings.win_condition_item == WinConditionComplex.kill_the_rabbit:
+        spoiler.rabbit_path = []
     for locationId in ordered_interesting_locations:
         # Remove the item from the location
         location = spoiler.LocationList[locationId]
@@ -1176,7 +1208,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             if other_location not in accessible:
                 spoiler.other_paths[other_location].append(locationId)
         # If the win condition is K. Rool, also add this location to those paths as applicable
-        if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+        if spoiler.settings.win_condition_spawns_ship == 1:
             final_boss_associated_event = {
                 Maps.JapesBoss: Events.KRoolDillo1,
                 Maps.AztecBoss: Events.KRoolDog1,
@@ -1194,6 +1226,9 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             for map_id in final_boss_associated_event:
                 if map_id in spoiler.settings.krool_order and final_boss_associated_event[map_id] not in spoiler.LogicVariables.Events:
                     spoiler.krool_paths[map_id].append(locationId)
+        if spoiler.settings.win_condition_item == WinConditionComplex.kill_the_rabbit:
+            if Events.KilledRabbit not in spoiler.LogicVariables.Events:
+                spoiler.rabbit_path.append(locationId)
         elif spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
             rap_assoc_name = {
                 "Donkey Verse": Events.DonkeyVerse,
@@ -1346,6 +1381,23 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
         # Disable hinting this if CBs aren't in Isles. Obviously Isles CBs would be foolish if there's no CBs to get
         nonHintableNames.add(HintRegion.IslesCBs)
     spoiler.region_hintable_count = {}
+
+    # Some item pool analysis needs to be done to refine our potential hints
+    # Foolish regions need to contain at least one location that could have a major item in order to give any information
+    majorItemTypes = [ItemList[item].type for item in MajorItems]
+    locationTypesThatCouldHaveMajorItems = set()
+    # Scouring hints should not point to regions with entirely unshuffled major items, so we need to track what item types are shuffled
+    itemTypesThatAreInShuffledPools = set()
+    regionsWithAShuffledItem = set()
+    for item_pool in spoiler.settings.item_pool_info:
+        # If this pool could shuffle major items into it...
+        if any([item_type in majorItemTypes for item_type in item_pool.item_types]):
+            # Then all locations in this pool could have major items
+            locationTypesThatCouldHaveMajorItems.update(item_pool.location_types)
+        # If this pool contained shuffled items...
+        if item_pool.is_shuffled:
+            # Then all items in this pool should be treated as shuffled for the purposes of scouring hints
+            itemTypesThatAreInShuffledPools.update(item_pool.item_types)
     bossLocations = [location for id, location in spoiler.LocationList.items() if location.type == Types.Key]
     # In order for a region to be foolish, it can contain none of these Major Items
     for id, region in spoiler.RegionList.items():
@@ -1358,18 +1410,135 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
             bossLocation = [location for location in bossLocations if location.level == region.level][0]  # Matches only one
             if bossLocation.item in MajorItems:
                 nonHintableNames.add(region.hint_name)
+        # If this region has a location that could contain major items, it's eligible to be hinted foolish - note that down for later
+        if any([loc for loc in locations if loc.type in locationTypesThatCouldHaveMajorItems]):
+            regionsWithAShuffledItem.add(region.hint_name)
         # Ban shops from region count hinting. These are significantly worse regions to hint than any others.
         if not region.isShopRegion() and region.hint_name not in neverHintableNames:
             # Count the number of region count hintable items in the region (again, ignore training moves)
-            regionItemCount = sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing) and loc.item in regionCountHintableItems)
-            if regionItemCount > 0:
-                # If we need to create a new entry due to this region, do so
-                if region.hint_name not in spoiler.region_hintable_count.keys():
-                    spoiler.region_hintable_count[region.hint_name] = 0
-                # Keep a running tally of found vials in each region
-                spoiler.region_hintable_count[region.hint_name] += regionItemCount
+            region_items = [
+                {
+                    "name": "Potion",
+                    "plural": "Potions",
+                    "count": sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing) and loc.item in regionCountHintableItems),
+                    "shuffled_locations": [
+                        loc
+                        for loc in locations
+                        if loc.item is not None
+                        and loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing)
+                        and ItemList[loc.item].type in itemTypesThatAreInShuffledPools
+                        and loc.item in regionCountHintableItems
+                    ],
+                }
+            ]
+            win_con_items = {
+                WinConditionComplex.krools_challenge: [
+                    {
+                        "name": "Blueprint",
+                        "plural": "Blueprints",
+                        "items": [Items.DonkeyBlueprint, Items.DiddyBlueprint, Items.LankyBlueprint, Items.TinyBlueprint, Items.ChunkyBlueprint],
+                    }
+                ],
+                WinConditionComplex.req_bean: [
+                    {
+                        "name": "Bean",
+                        "plural": "Beans",
+                        "items": [Items.Bean],
+                    }
+                ],
+                WinConditionComplex.req_bp: [
+                    {
+                        "name": "Blueprint",
+                        "plural": "Blueprints",
+                        "items": [Items.DonkeyBlueprint, Items.DiddyBlueprint, Items.LankyBlueprint, Items.TinyBlueprint, Items.ChunkyBlueprint],
+                    }
+                ],
+                WinConditionComplex.req_companycoins: [
+                    {
+                        "name": "Company Coin",
+                        "plural": "Company Coins",
+                        "items": [Items.NintendoCoin, Items.RarewareCoin],
+                    }
+                ],
+                WinConditionComplex.req_crown: [
+                    {
+                        "name": "Crown",
+                        "plural": "Crowns",
+                        "items": [Items.BattleCrown, Items.FillerCrown],
+                    }
+                ],
+                WinConditionComplex.req_fairy: [
+                    {
+                        "name": "Fairy",
+                        "plural": "Fairies",
+                        "items": [Items.BananaFairy, Items.FillerFairy],
+                    }
+                ],
+                WinConditionComplex.req_gb: [
+                    {
+                        "name": "Golden Banana",
+                        "plural": "Golden Bananas",
+                        "items": [Items.GoldenBanana, Items.FillerBanana],
+                    }
+                ],
+                WinConditionComplex.req_medal: [
+                    {
+                        "name": "Medal",
+                        "plural": "Medals",
+                        "items": [Items.BananaMedal, Items.FillerMedal],
+                    }
+                ],
+                WinConditionComplex.req_pearl: [
+                    {
+                        "name": "Pearl",
+                        "plural": "Pearls",
+                        "items": [Items.Pearl, Items.FillerPearl],
+                    }
+                ],
+                WinConditionComplex.req_rainbowcoin: [
+                    {
+                        "name": "Rainbow Coin",
+                        "plural": "Rainbow Coins",
+                        "items": [Items.RainbowCoin, Items.FillerRainbowCoin],
+                    }
+                ],
+            }
+            if spoiler.settings.win_condition_item in win_con_items:
+                win_con_data = win_con_items[spoiler.settings.win_condition_item]
+                for data in win_con_data:
+                    region_items.append(
+                        {
+                            "name": data["name"],
+                            "plural": data["plural"],
+                            "count": sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing) and loc.item in data["items"]),
+                            "shuffled_locations": [
+                                loc
+                                for loc in locations
+                                if loc.item is not None
+                                and loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing)
+                                and ItemList[loc.item].type in itemTypesThatAreInShuffledPools
+                                and loc.item in data["items"]
+                            ],
+                        }
+                    )
+            for region_item in region_items:
+                if region_item["count"] > 0:
+                    # If we need to create a new entry due to this region, do so
+                    if region.hint_name not in spoiler.region_hintable_count.keys():
+                        spoiler.region_hintable_count[region.hint_name] = {region_item["name"]: {"plural": region_item["plural"], "count": 0, "shuffled_locations": []}}
+                    if region_item["name"] not in spoiler.region_hintable_count[region.hint_name]:
+                        spoiler.region_hintable_count[region.hint_name][region_item["name"]] = {
+                            "plural": region_item["plural"],
+                            "count": 0,
+                            "shuffled_locations": [],
+                        }
+                    # Keep a running tally of found vials in each region as well as their locations
+                    spoiler.region_hintable_count[region.hint_name][region_item["name"]]["count"] += region_item["count"]
+                    spoiler.region_hintable_count[region.hint_name][region_item["name"]]["shuffled_locations"].extend(region_item["shuffled_locations"])
     # The regions that are foolish are all regions not in this list (that have locations in them!)
-    spoiler.foolish_region_names = list(set([region.hint_name for id, region in spoiler.RegionList.items() if any(region.locations) and region.hint_name not in nonHintableNames]))
+    spoiler.foolish_region_names = list(
+        set([region.hint_name for id, region in spoiler.RegionList.items() if any(region.locations) and region.hint_name not in nonHintableNames and region.hint_name in regionsWithAShuffledItem])
+    )
 
     # If any Snide region is not foolish, none of the Snide regions preceding it can be foolish
     if HintRegion.SnideLastGroup not in spoiler.foolish_region_names:
@@ -1458,6 +1627,15 @@ def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool = Fals
         spoiler.settings.random.shuffle(itemEmpty)
         locationId = itemEmpty.pop()
         spoiler.LocationList[locationId].PlaceItem(spoiler, item)
+
+        # In minimal logic, verify placement doesn't violate minimal logic rules
+        if settings.logic_type == LogicType.minimal:
+            if not VerifyMinimalLogic(spoiler):
+                # Placement violated minimal logic, unplace and try another location
+                spoiler.LocationList[locationId].UnplaceItem(spoiler)
+                itemsToPlace.append(item)
+                continue
+
         empty.remove(locationId)
         if locationId in SharedShopLocations:
             settings.placed_shared_shops += 1
@@ -1972,12 +2150,15 @@ def FillBossLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
     if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
         placed_types.append(Types.Hint)
     # Rig the valid_locations for all relevant items to only be able to place things on bosses
+    cannot_be_on_bosses = []
     for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops would already be placed
         # Any item eligible to be on a boss can be on any boss
         if typ in spoiler.settings.valid_locations:
             empty_boss_local_list = [x for x in spoiler.settings.valid_locations[typ] if x in empty_boss_locations]
             if len(empty_boss_local_list) > 0:
                 spoiler.settings.valid_locations[typ] = empty_boss_local_list
+            else:
+                cannot_be_on_bosses.append(typ)
     # Now we get the full list of items we could place here
     unplaced_items = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types)
     # Checkless can be on bosses, but we need shops in the pool in order to have room to do this reliably
@@ -1987,8 +2168,8 @@ def FillBossLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
         if item in unplaced_items:
             unplaced_items.remove(item)
     debug_failed_to_place_items = []
-    possible_items = [item for item in unplaced_items]
-    spoiler.settings.random.shuffle(unplaced_items)
+    possible_items = [item for item in unplaced_items if ItemList[item].type not in cannot_be_on_bosses]
+    spoiler.settings.random.shuffle(possible_items)
     # Until we have placed enough items...
     while len(placed_on_bosses) < len(empty_boss_locations):
         if len(possible_items) == 0:
@@ -2010,6 +2191,55 @@ def FillBossLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
     spoiler.settings.update_valid_locations(spoiler)
     # Return all items we placed, all future methods must consider these when placing (and assuming) items
     return placed_on_bosses
+
+
+def FillSnideRewards(spoiler: Spoiler, placed_types: List[Types], placed_items: List[Items]) -> List[Items]:
+    """Fill all currently empty Snide Reward locations with eligible unplaced items."""
+    placed_in_snide_rewards = []
+    # Get all the empty Snide Reward locations
+    empty_snide_reward_locations = [loc_id for loc_id in spoiler.LocationList.keys() if spoiler.LocationList[loc_id].type == Types.BlueprintBanana and spoiler.LocationList[loc_id].item is None]
+    # Make sure hints don't get placed, if progressive hints are enabled
+    if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
+        placed_types.append(Types.Hint)
+    # Rig the valid_locations for all relevant items to only be able to place things in Snide Rewards
+    cannot_be_in_snide_rewards = []
+    for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # At least shops should already be placed
+        # Any item eligible to be in a Snide Reward can be in any Snide Reward
+        if typ in spoiler.settings.valid_locations:
+            empty_snide_reward_local_list = [x for x in spoiler.settings.valid_locations[typ] if x in empty_snide_reward_locations]
+            if len(empty_snide_reward_local_list) > 0:
+                spoiler.settings.valid_locations[typ] = empty_snide_reward_local_list
+            else:
+                cannot_be_in_snide_rewards.append(typ)
+    # Now we get the full list of items we could place
+    unplaced_items = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types)
+    for item in placed_items:
+        if item in unplaced_items:
+            unplaced_items.remove(item)
+    debug_failed_to_place_items = []
+    possible_items = [item for item in unplaced_items if ItemList[item].type not in cannot_be_in_snide_rewards]
+    spoiler.settings.random.shuffle(possible_items)
+    # Until we have placed enough items...
+    while len(placed_in_snide_rewards) < len(empty_snide_reward_locations):
+        if len(possible_items) == 0:
+            spoiler.settings.update_valid_locations(spoiler)
+            raise Ex.FillException("Unable to find all locations during the fill. Error code: SR-1")
+        # Grab the next one from the pile and attempt to place it
+        item_to_attempt_placement = possible_items.pop()
+        unplaced_items.remove(item_to_attempt_placement)
+        spoiler.Reset()
+        unplaced = PlaceItems(spoiler, FillAlgorithm.forward, [item_to_attempt_placement], unplaced_items)
+        # If we succeed, mark this item as being placed on Snide
+        if unplaced == 0:
+            placed_in_snide_rewards.append(item_to_attempt_placement)
+        # If we failed, go again. This would be really surprising to ever happen, as the item in question would have to lock a *lot* of blueprints
+        else:
+            debug_failed_to_place_items.append(item_to_attempt_placement)  # Apparently the item we failed to place is important earlier, so we need to assume it going forward
+            unplaced_items.append(item_to_attempt_placement)
+    # Very important - we have to reset valid_locations to the correct state after this
+    spoiler.settings.update_valid_locations(spoiler)
+    # Return all items we placed, all future methods must consider these when placing (and assuming) items
+    return placed_in_snide_rewards
 
 
 def Fill(spoiler: Spoiler) -> None:
@@ -2066,7 +2296,8 @@ def Fill(spoiler: Spoiler) -> None:
         bigListOfItemsToPlace = []
         if Types.Shop in spoiler.settings.shuffled_location_types:
             bigListOfItemsToPlace.extend(ItemPool.ImportantSharedMoves.copy())
-            bigListOfItemsToPlace.extend(ItemPool.JunkSharedMoves.copy())
+            if not spoiler.settings.no_consumable_upgrades:
+                bigListOfItemsToPlace.extend(ItemPool.JunkSharedMoves.copy())
             bigListOfItemsToPlace.extend(ItemPool.DonkeyMoves)
             bigListOfItemsToPlace.extend(ItemPool.DiddyMoves)
             bigListOfItemsToPlace.extend(ItemPool.LankyMoves)
@@ -2092,6 +2323,12 @@ def Fill(spoiler: Spoiler) -> None:
         if Types.Snide in spoiler.settings.shuffled_location_types:
             placed_types.append(Types.Snide)
             bigListOfItemsToPlace.extend(ItemPool.SnideItems())
+        if Types.Bean in spoiler.settings.shuffled_location_types:
+            placed_types.append(Types.Bean)
+            bigListOfItemsToPlace.extend(ItemPool.BeanItems())
+        if Types.Pearl in spoiler.settings.shuffled_location_types:
+            placed_types.append(Types.Pearl)
+            bigListOfItemsToPlace.extend(ItemPool.PearlItems(spoiler.settings))
         # If we have Snide rewards, Blueprints become much more logically important and need to be placed in the big fill so as to not bias towards those locations, especially if there's a large cap
         if Types.BlueprintBanana in spoiler.settings.shuffled_location_types and Types.Blueprint in spoiler.settings.shuffled_location_types:
             placed_types.append(Types.Blueprint)
@@ -2156,45 +2393,45 @@ def Fill(spoiler: Spoiler) -> None:
                 "Keys",
             )
 
-    # Then place the bean
-    if Types.Bean in spoiler.settings.shuffled_location_types:
-        placed_types.append(Types.Bean)
-        spoiler.Reset()
-        miscItemsToPlace = ItemPool.BeanItems().copy()
-        for item in preplaced_items:
-            if item in miscItemsToPlace:
-                miscItemsToPlace.remove(item)
-        miscUnplaced = PlaceItems(
-            spoiler,
-            spoiler.settings.algorithm,
-            miscItemsToPlace,
-            ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items),
-        )
-        if miscUnplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: MI-" + str(miscUnplaced))
+        # Then place the bean
+        if Types.Bean in spoiler.settings.shuffled_location_types:
+            placed_types.append(Types.Bean)
+            spoiler.Reset()
+            miscItemsToPlace = ItemPool.BeanItems().copy()
+            for item in preplaced_items:
+                if item in miscItemsToPlace:
+                    miscItemsToPlace.remove(item)
+            miscUnplaced = PlaceItems(
+                spoiler,
+                spoiler.settings.algorithm,
+                miscItemsToPlace,
+                ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items),
+            )
+            if miscUnplaced > 0:
+                raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: MI-" + str(miscUnplaced))
 
-    # Then place the pearls
-    if Types.Pearl in spoiler.settings.shuffled_location_types:
-        placed_types.append(Types.Pearl)
-        spoiler.Reset()
-        miscItemsToPlace = ItemPool.PearlItems(spoiler.settings).copy()
-        for item in preplaced_items:
-            if item in miscItemsToPlace:
-                miscItemsToPlace.remove(item)
-        miscUnplaced = PlaceItems(
-            spoiler,
-            spoiler.settings.algorithm,
-            miscItemsToPlace,
-            ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items),
-        )
-        if miscUnplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: MI-" + str(miscUnplaced))
-    if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(
-            spoiler,
-            ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items),
-            "Miscellaneous Items",
-        )
+        # Then place the pearls
+        if Types.Pearl in spoiler.settings.shuffled_location_types:
+            placed_types.append(Types.Pearl)
+            spoiler.Reset()
+            miscItemsToPlace = ItemPool.PearlItems(spoiler.settings).copy()
+            for item in preplaced_items:
+                if item in miscItemsToPlace:
+                    miscItemsToPlace.remove(item)
+            miscUnplaced = PlaceItems(
+                spoiler,
+                spoiler.settings.algorithm,
+                miscItemsToPlace,
+                ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items),
+            )
+            if miscUnplaced > 0:
+                raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: MI-" + str(miscUnplaced))
+        if spoiler.settings.extreme_debugging:
+            DebugCheckAllReachable(
+                spoiler,
+                ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items),
+                "Miscellaneous Items",
+            )
 
     # # Now we place the (generally) filler items
     # # If Helm is having locations shuffled and we're shuffling GBs, we have to fill Helm now.
@@ -2209,8 +2446,8 @@ def Fill(spoiler: Spoiler) -> None:
     # if spoiler.settings.extreme_debugging:
     #     DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "things in Helm")
 
-    # If keys are shuffled in the pool we want to ensure an item is on every boss
-    # This is to support broader settings that rely on boss kills and to enable reads on the boss fill algorithm
+    # If keys are shuffled in the pool we want to ensure an item is on every boss - if a boss doesn't have an item, the T&S portal doesn't exist
+    # Ensuring this both supports broader settings that rely on boss kills and to enable reads on the boss fill algorithm via T&S values
     if Types.Key in spoiler.settings.shuffled_location_types:
         preplaced_items.extend(FillBossLocations(spoiler, placed_types.copy(), preplaced_items))
     if spoiler.settings.extreme_debugging:
@@ -2218,6 +2455,16 @@ def Fill(spoiler: Spoiler) -> None:
             spoiler,
             ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items),
             "things on Bosses",
+        )
+
+    # If Blueprint rewards are shuffled, we need to ensure an item is on every reward - it's a problem if Snide hands you a NoItem
+    if Types.BlueprintBanana in spoiler.settings.shuffled_location_types:
+        preplaced_items.extend(FillSnideRewards(spoiler, placed_types.copy(), preplaced_items))
+    if spoiler.settings.extreme_debugging:
+        DebugCheckAllReachable(
+            spoiler,
+            ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items),
+            "Snide Rewards",
         )
 
     # Then place Blueprints - these are moderately restrictive in their placement (so much so that we may have to place them earlier than this)
@@ -2412,18 +2659,13 @@ def Fill(spoiler: Spoiler) -> None:
         Types.FillerPearl,
         Types.FillerMedal,
         Types.FillerRainbowCoin,
+        Types.JunkItem,
     ]
     filler_types_in_pool = [x for x in filler_types if x in spoiler.settings.shuffled_location_types]
     if len(filler_types_in_pool) > 0:
         placed_types.extend(filler_types_in_pool)
         spoiler.Reset()
         PlaceItems(spoiler, FillAlgorithm.random, ItemPool.FillerItems(spoiler.settings), [])
-    # Fill in junk items
-    if Types.JunkItem in spoiler.settings.shuffled_location_types:
-        placed_types.append(Types.JunkItem)
-        spoiler.Reset()
-        PlaceItems(spoiler, FillAlgorithm.random, ItemPool.JunkItems(), [])
-        # Don't raise exception if unplaced junk items
     if Types.CrateItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.CrateItem)
         # Crates hold nothing, so leave this one empty
@@ -2588,19 +2830,20 @@ def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: 
     )
     if importantSharedUnplaced > 0:
         raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(importantSharedUnplaced) + " shared important items.")
-    junkSharedToPlace = ItemPool.JunkSharedMoves.copy()
-    for item in placedMoves:
-        if item in junkSharedToPlace:
-            junkSharedToPlace.remove(item)
-    placedMoves.extend(junkSharedToPlace)
-    junkSharedUnplaced = PlaceItems(
-        spoiler,
-        FillAlgorithm.random,
-        junkSharedToPlace,
-        [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes) if x not in junkSharedToPlace],
-    )
-    if junkSharedUnplaced > 0:
-        raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(junkSharedUnplaced) + " shared junk items.")
+    if not spoiler.settings.no_consumable_upgrades:
+        junkSharedToPlace = ItemPool.JunkSharedMoves.copy()
+        for item in placedMoves:
+            if item in junkSharedToPlace:
+                junkSharedToPlace.remove(item)
+        placedMoves.extend(junkSharedToPlace)
+        junkSharedUnplaced = PlaceItems(
+            spoiler,
+            FillAlgorithm.random,
+            junkSharedToPlace,
+            [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes) if x not in junkSharedToPlace],
+        )
+        if junkSharedUnplaced > 0:
+            raise Ex.ItemPlacementException("Unable to find enough locations to place " + str(junkSharedUnplaced) + " shared junk items.")
 
 
 def GeneratePlaythrough(spoiler: Spoiler) -> None:
@@ -2986,7 +3229,7 @@ def FillWorld(spoiler: Spoiler) -> None:
             # Every 3rd fill, retry more aggressively by reshuffling level order, move prices, and starting location as applicable
             if retries % 3 == 0:
                 js.postMessage("Retrying fill really hard. Tries: " + str(retries))
-                if spoiler.settings.random_starting_region:
+                if spoiler.settings.random_starting_region_new != RandomStartingRegion.off:
                     spoiler.settings.RandomizeStartingLocation(spoiler)
                 if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:  # TODO: Reshuffling LZR doesn't work yet, but it might be nice? Not sure how necessary it is
                     ShuffleExits.ShuffleExits(spoiler)
@@ -3999,10 +4242,12 @@ def ValidateFixedHints(settings: Settings) -> None:
 def CheckForIncompatibleSettings(settings: Settings) -> None:
     """Check for known settings conflicts and throw an exception immediately."""
     found_incompatibilities = ""
+    if settings.shops_dont_cost and settings.random_prices == RandomPrices.vanilla:
+        found_incompatibilities += "Cannot turn on Tooie-Style Shops with Vanilla Prices. "
     if not settings.fast_start_beginning_of_game:
         if settings.shuffle_loading_zones == ShuffleLoadingZones.all:
             found_incompatibilities += "Cannot turn off Fast Start with Loading Zones Randomized. "
-        if settings.random_starting_region:
+        if settings.random_starting_region_new != RandomStartingRegion.off:
             found_incompatibilities += "Cannot turn off Fast Start with a Random Starting Location. "
         if not settings.start_with_slam:
             found_incompatibilities += "Cannot turn off Fast Start unless you are guaranteed to start with a Progressive Slam. "
@@ -4018,13 +4263,12 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
     if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.water_is_lava):
         if settings.no_healing:
             found_incompatibilities += "Cannot turn on 'Water is Lava' whilst disabling healing. "
+        if settings.no_consumable_upgrades and not settings.start_with_3rd_melon:
+            found_incompatibilities += "Cannot turn on 'Water is Lava' without access to 3 Melons of health. "
     if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.angry_caves):
         if settings.perma_death or settings.wipe_file_on_death:
             if settings.damage_amount == DamageAmount.quad or settings.damage_amount == DamageAmount.ohko:
                 found_incompatibilities += "Cannot turn on 'Angry Caves' with a damage modifier higher than double damage with Irondonk enabled. "
-    if settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
-        if settings.bonus_barrel_auto_complete:
-            found_incompatibilities += "Autocomplete Bonus Barrels cannot be enabled when the win condition requires completing bonus barrels. "
     trap_weights = [
         settings.trap_weight_bubble,
         settings.trap_weight_reverse,
@@ -4144,6 +4388,15 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
         found_incompatibilities += "Item pool is not a valid combination of items and cannot successfully fill the world. "
     if settings.krool_access and Items.HideoutHelmKey in settings.starting_keys_list_selected:
         found_incompatibilities += "Cannot start with Key 8 and guarantee Key 8 to be required at the same time. "
+    if len(settings.bosses_selected) == 0:
+        found_incompatibilities += "Cannot fill a seed with 0 bosses. "
+    if len(settings.bosses_selected) == 1 and settings.bosses_selected[0] == Maps.GalleonBoss:
+        found_incompatibilities += "Galleon Boss cannot be the only boss in the pool due to technical reasons. "
+    krool_maps = (Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase)
+    if settings.krool_in_boss_pool_v2 == KroolInBossPool.off and len([x for x in settings.bosses_selected if x not in krool_maps]) == 0:
+        found_incompatibilities += "No non-K Rool bosses selected with K. Rool banned from T&S. "
+    if settings.krool_in_boss_pool_v2 != KroolInBossPool.full_shuffle and len([x for x in settings.bosses_selected if x in krool_maps]) == 0:
+        found_incompatibilities += "No K Rool bosses selected with regular bosses banned from final boss sequence. "
     if found_incompatibilities != "":
         raise Ex.SettingsIncompatibleException(found_incompatibilities)
 

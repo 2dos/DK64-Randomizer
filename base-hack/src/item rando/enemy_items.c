@@ -12,9 +12,8 @@
 
 #define ENEMY_ITEM_MAP_CAP 128
 
-static enemy_item_db_item current_map_items[ENEMY_ITEM_MAP_CAP] = {};
-unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE] = {};
-static char enemy_db_populated = 0;
+ROM_DATA static enemy_item_db_item current_map_items[ENEMY_ITEM_MAP_CAP] = {};
+ROM_DATA static char enemy_db_populated = 0;
 
 void setEnemyDBPopulation(int value) {
     enemy_db_populated = value;
@@ -109,6 +108,27 @@ float getRNGWithinRange(float min, float max) {
     return min + offset;
 }
 
+void renderSparkles(float scale) {
+    *(char*)(0x807FDB18) = 1; // Adjust Z-Indexing
+    *(short*)(0x807FDB36) = 4; // Fix rendering
+    float x_offset = getRNGWithinRange(-20.f, 20.0f);
+    float y_offset = getRNGWithinRange(5.0f, 25.0f);
+    float z_offset = getRNGWithinRange(-20.f, 20.0f);
+    x_offset *= scale;
+    y_offset *= scale;
+    z_offset *= scale;
+    int sprite = 0x5E;
+    if (getRNGLower31() & 1) {
+        sprite = 0x69;
+    }
+    displaySpriteAtXYZ(
+        sprite_table[sprite],
+        0.6f,
+        CurrentActorPointer_0->xPos + x_offset,
+        CurrentActorPointer_0->yPos + y_offset,
+        CurrentActorPointer_0->zPos + z_offset);
+}
+
 void indicateCollectionStatus(void) {
     *(char*)(0x807F94AE) = 0;
     *(char*)(0x807F94AF) = 0;
@@ -125,21 +145,7 @@ void indicateCollectionStatus(void) {
     if (!canSpawnEnemyReward()) {
         return;
     }
-    *(char*)(0x807FDB18) = 1; // Adjust Z-Indexing
-    *(short*)(0x807FDB36) = 4; // Fix rendering
-    float x_offset = getRNGWithinRange(-20.f, 20.0f);
-    float y_offset = getRNGWithinRange(5.0f, 25.0f);
-    float z_offset = getRNGWithinRange(-20.f, 20.0f);
-    int sprite = 0x5E;
-    if (getRNGLower31() & 1) {
-        sprite = 0x69;
-    }
-    displaySpriteAtXYZ(
-        sprite_table[sprite],
-        0.6f,
-        CurrentActorPointer_0->xPos + x_offset,
-        CurrentActorPointer_0->yPos + y_offset,
-        CurrentActorPointer_0->zPos + z_offset);
+    renderSparkles(1.0f);
 }
 
 

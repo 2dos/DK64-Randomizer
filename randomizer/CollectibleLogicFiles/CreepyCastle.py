@@ -142,7 +142,7 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()) and l.trombone and l.balloon, None, 1),  # Lanky's room (far)
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: (l.punch or l.CanPhase() or l.generalclips) and l.pineapple, None, 2),  # In cells by Diddy's door
 
-        Collectible(Collectibles.coin, Kongs.donkey, lambda _: True, None, 3),  # Around DK switch
+        Collectible(Collectibles.coin, Kongs.donkey, lambda _: True, None, 4),  # Around DK switch
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()) and l.trombone and l.balloon, None, 3),  # In Lanky's room
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch or l.CanPhase(), None, 3),  # In a cell by Diddy's room
     ],

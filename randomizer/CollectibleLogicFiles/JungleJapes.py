@@ -41,6 +41,8 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.climbing, None, 1),  # Treetop by Snide's
         Collectible(Collectibles.bunch, Kongs.lanky, lambda _: True, None, 1),  # Next to Snide's
         Collectible(Collectibles.bunch, Kongs.chunky, lambda _: True, None, 2),  # On Funky's store
+
+        Collectible(Collectibles.coin, Kongs.lanky, lambda _: True, None, 5),  # By Snide's
     ],
     Regions.JapesCannonPlatform: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.climbing, None, 1),  # Tree by cannon
@@ -50,7 +52,6 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.donkey, lambda _: True, None, 1),  # W3
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.climbing, None, 2),  # Treetops, Painting room side
 
-        Collectible(Collectibles.coin, Kongs.lanky, lambda _: True, None, 5),  # By Snide's
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny) or l.CanMoonkick() or ((l.generalclips or l.CanPhase()) and (l.istiny or l.isdiddy))), None, 1),  # Rainbow coin
     ],
     Regions.JapesPaintingRoomHill: [

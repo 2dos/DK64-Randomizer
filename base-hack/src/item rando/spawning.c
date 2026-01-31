@@ -19,7 +19,7 @@ typedef struct actorSpawnStruct {
     unsigned char item_kong;  // Non-standard, but just to prevent float conversion issues
 } actorSpawnStruct;
 
-void spawnActorWithFlagHandler(int object, float x, float y, float z, int unk0, int spawn_type, int flag, int unk1, int item_level, int item_kong) {
+void spawnActorWithFlagHandler(int object, float x, float y, float z, int unk0, int spawn_type, int flag, void* unk1, int item_level, int item_kong) {
     actorSpawnStruct data;
     float temp = *(float*)(0x8075A9A0);
     if (*(int*)(0x807FBB68) & 0x10) {
@@ -47,7 +47,7 @@ void spawnWeirdReward(int index, int flag) {
     );
 }
 
-void spawnWeirdReward0(int index, float x, float y, float z, int unk0, int spawn_type, int flag, int unk1) {
+void spawnWeirdReward0(int index, float x, float y, float z, int unk0, int spawn_type, int flag, void *unk1) {
     actor_spawn_packet *def = &extra_actor_spawns[index];
     spawnActorWithFlagHandler(def->actor,
         x, y, z, unk0, spawn_type, flag, unk1,
@@ -55,7 +55,7 @@ void spawnWeirdReward0(int index, float x, float y, float z, int unk0, int spawn
     );
 }
 
-void spawnBonusReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1) {
+void spawnBonusReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, void *unk1) {
     /**
      * @brief Spawn bonus reward
      * 
@@ -120,7 +120,7 @@ void spawnMinecartReward(int object, int flag) {
     }
 }
 
-void spawnCrownReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1) {
+void spawnCrownReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, void *unk1) {
     /**
      * @brief Spawn Crown Reward
      * 
@@ -143,7 +143,7 @@ void spawnCrownReward(int object, float x, float y, float z, int unk0, int cutsc
     }
 }
 
-void spawnBossReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1) {
+void spawnBossReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, void *unk1) {
     /**
      * @brief Spawn boss reward
      * 
@@ -183,7 +183,7 @@ void spawnBossReward(int object, float x, float y, float z, int unk0, int cutsce
     }
 }
 
-void spawnDirtPatchReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1) {
+void spawnDirtPatchReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, void *unk1) {
     /**
      * @brief Spawn dirt patch reward
      * 
@@ -209,7 +209,7 @@ void spawnDirtPatchReward(int object, float x, float y, float z, int unk0, int c
     }
 }
 
-static const unsigned char pair_data[] = {
+ROM_DATA static unsigned char pair_data[] = {
 	MAP_JAPES,
 	MAP_AZTECLLAMATEMPLE,
 	MAP_AZTECTINYTEMPLE,
@@ -281,7 +281,7 @@ typedef struct steel_keg_struct {
     unsigned char spawner_id;
 } steel_keg_struct;
 
-static steel_keg_struct SteelKegMapping[] = {
+ROM_DATA static steel_keg_struct SteelKegMapping[] = {
     {.map = MAP_FUNGIMILLFRONT, .grabbable_id = GRABBABLE_MILL_FRONT_NEAR, .spawner_id = 4},
     {.map = MAP_FUNGIMILLFRONT, .grabbable_id = GRABBABLE_MILL_FRONT_FAR, .spawner_id = 6},
     {.map = MAP_FUNGIMILLREAR, .grabbable_id = GRABBABLE_MILL_REAR, .spawner_id = 6},
@@ -300,23 +300,28 @@ void* updateKegIDs(int actor, float x, float y, float z) {
     return spawnActorAtXYZ(actor, x, y, z);
 }
 
-void spawnBoulderObject(actorData *actor) {
-    int index = getBoulderIndex();
+int isValidBoulderObject(int index) {
     if (index < 0) {
-        return;
+        return 0;
     }
     if (HoldableSpawnBitfield & (1 << index)) {
-        return;
+        return 0;
     }
     int flag = FLAG_GRABBABLES_DESTROYED + index;
     if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
-        return;
+        return 0;
     }
     int item = getBoulderItem(index);
-    if (!item) {
-        return;
-    }
     if (item == NEWACTOR_NULL) {
+        return 0;
+    }
+    return item;
+}
+
+void spawnBoulderObject(actorData *actor) {
+    int index = getBoulderIndex();
+    int item = isValidBoulderObject(index);
+    if (!item) {
         return;
     }
     int cutscene = 1;
@@ -328,8 +333,26 @@ void spawnBoulderObject(actorData *actor) {
         actor->yPos,
         actor->zPos,
         0, cutscene,
-        flag, 0,
+        FLAG_GRABBABLES_DESTROYED + index, 0,
         boulder_item_table[index].level,
         boulder_item_table[index].kong);
     HoldableSpawnBitfield |= (1 << index);
+}
+
+void renderBoulderSparkles(actorData *actor) {
+    unkBonusFunction(actor);
+    int index = getBoulderIndex();
+    int item = isValidBoulderObject(index);
+    if (!item) {
+        return;
+    }
+    int timer = ObjectModel2Timer + (index * 5);
+    if (timer % 10) {
+        return;
+    }
+    float scale = 1.0f;
+    if (index == GRABBABLE_CAVES_LARGE) {
+        scale = 3.0f;
+    }
+    renderSparkles(scale);
 }
