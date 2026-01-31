@@ -38,7 +38,7 @@
     "dependencies": {
         "node-static": "^0.7.11",
         "nunjucks": "^3.2.4",
-        "purgecss": "^7.0.2"
+        "purgecss": "^8.0.0"
     },
     "devDependencies": {
         "electron": "^40.1.0",
