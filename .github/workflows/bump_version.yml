@@ -27,7 +27,7 @@ jobs:
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
           git config --global user.email "bump2version@dk64randomizer.com"
           git config --global user.name "Bump2Version"
-          git config --unset-all http.https://github.com/.extraheader
+          git config --unset-all http.https://github.com/.extraheader || true
           echo "Branch: $BRANCH_NAME, Commit Message: $COMMIT_MESSAGE"
           if [[ "$BRANCH_NAME" == "dev" ]]; then
               if [[ "$COMMIT_MESSAGE" == *"Major Release"* ]]; then
