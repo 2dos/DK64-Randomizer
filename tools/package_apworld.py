@@ -24,10 +24,6 @@ for file in files_to_copy:
         # Make the directory if it doesn't exist
         os.makedirs(os.path.join(dk64_folder, os.path.dirname(file)), exist_ok=True)
         shutil.copy(file, os.path.join(dk64_folder, file))
-        if file == "archipelago.json":
-            # There's probably a better way to do this
-            os.makedirs(os.path.join(dk64_folder, "archipelago/client"), exist_ok=True)
-            shutil.copy(file, os.path.join(os.path.join(dk64_folder, "archipelago/client"), file))
 
 # Copy specified folders
 for folder in folders_to_copy:
@@ -41,24 +37,32 @@ os.makedirs(vendor_folder, exist_ok=True)
 
 
 # Function to install dependencies into a specific folder
-def install_dependencies(target_folder, platform):
+def install_dependencies(target_folder: str, platform: str, python_version: str = None):
     """Install dependencies into a specific folder."""
-    subprocess.run([sys.executable, "-m", "pip", "install", "-r", requirements_file, "--target", target_folder, "--platform", platform, "--only-binary=:all:"], check=True)
+    cmd = [sys.executable, "-m", "pip", "install", "-r", requirements_file, "--target", target_folder, "--platform", platform, "--only-binary=:all:"]
+    if python_version:
+        cmd.extend(["--python-version", python_version])
+    subprocess.run(cmd, check=True)
 
 
 # Install Windows dependencies
 windows_vendor = os.path.join(vendor_folder, "windows")
 os.makedirs(windows_vendor, exist_ok=True)
-install_dependencies(windows_vendor, "win_amd64")
+install_dependencies(windows_vendor, "win_amd64", "3.13")
 
-# Install Linux dependencies
-linux_vendor = os.path.join(vendor_folder, "linux")
-os.makedirs(linux_vendor, exist_ok=True)
-install_dependencies(linux_vendor, "manylinux2014_x86_64")
+# Install Linux dependencies for Python 3.12
+linux_vendor_312 = os.path.join(vendor_folder, "linux_312")
+os.makedirs(linux_vendor_312, exist_ok=True)
+install_dependencies(linux_vendor_312, "manylinux2014_x86_64", "3.12")
+
+# Install Linux dependencies for Python 3.13
+linux_vendor_313 = os.path.join(vendor_folder, "linux_313")
+os.makedirs(linux_vendor_313, exist_ok=True)
+install_dependencies(linux_vendor_313, "manylinux2014_x86_64", "3.13")
 
 
 # Function to zip a folder
-def zip_folder(folder_path, zip_name, preserve_root=False):
+def zip_folder(folder_path: str, zip_name: str, preserve_root: bool = False):
     """Zip a folder."""
     with zipfile.ZipFile(zip_name, "w", zipfile.ZIP_DEFLATED) as zipf:
         folder_basename = os.path.basename(folder_path)  # "dk64"
@@ -77,25 +81,14 @@ def zip_folder(folder_path, zip_name, preserve_root=False):
 zip_folder(windows_vendor, "dk64/vendor/windows.zip")
 # Delete the folder
 shutil.rmtree(windows_vendor)
-# Zip Linux dependencies
-zip_folder(linux_vendor, "dk64/vendor/linux.zip")
+# Zip Linux dependencies for Python 3.12
+zip_folder(linux_vendor_312, "dk64/vendor/linux_312.zip")
 # Delete the folder
-shutil.rmtree(linux_vendor)
-
-# # Test move, dk64/vendor/windows to the root
-# # Move all files and folders
-# for item in os.listdir(windows_vendor):
-#     src_path = os.path.join(windows_vendor, item)
-#     dst_path = os.path.join(dk64_folder, item)
-
-#     # If destination already exists, you can choose to overwrite or skip
-#     if os.path.exists(dst_path):
-#         print(f"Skipping '{dst_path}' (already exists)")
-#         continue
-
-#     shutil.move(src_path, dst_path)
-#     print(f"Moved '{src_path}' to '{dst_path}'")
-
+shutil.rmtree(linux_vendor_312)
+# Zip Linux dependencies for Python 3.13
+zip_folder(linux_vendor_313, "dk64/vendor/linux_313.zip")
+# Delete the folder
+shutil.rmtree(linux_vendor_313)
 
 # Zip dk64 directory
 zip_folder(dk64_folder, "dk64.apworld", preserve_root=True)

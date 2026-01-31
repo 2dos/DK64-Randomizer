@@ -1249,7 +1249,7 @@ ColoredBananaGroupList = [
         region=Regions.Prison,
         logic=lambda l: l.IsKLumsyFree(),
         locations=[
-            [1, 1.0, 1077, 50, 139],
+            [1, 1.0, 1077, 50, 1139],
             [1, 1.0, 1130, 50, 1100],
             [1, 1.0, 1163, 50, 1044],
             [1, 1.0, 1169, 50, 979],

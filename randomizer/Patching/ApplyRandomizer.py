@@ -62,7 +62,7 @@ from randomizer.Patching.EntranceRando import (
     placeLevelOrder,
 )
 from randomizer.Patching.FairyPlacer import PlaceFairies
-from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements, calculateInitFileScreen
+from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements, calculateInitFileScreen, place_spoiler_hint_data
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.Library.Generic import setItemReferenceName, addNewScript, IsItemSelected, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected
@@ -296,17 +296,6 @@ def patching_response(spoiler):
         ROM_COPY.seek(sav + 0xD5 + offset)
         ROM_COPY.writeMultipleBytes(value, 1)
 
-    # Free Trade Agreement
-    if spoiler.settings.free_trade_items:
-        ROM_COPY.seek(sav + 0x113)
-        old = int.from_bytes(ROM_COPY.readBytes(1), "big")
-        ROM_COPY.seek(sav + 0x113)
-        ROM_COPY.write(old | 0x80)
-    if spoiler.settings.free_trade_blueprints:
-        ROM_COPY.seek(sav + 0x113)
-        old = int.from_bytes(ROM_COPY.readBytes(1), "big")
-        ROM_COPY.seek(sav + 0x113)
-        ROM_COPY.write(old | 0x40)
     writeMultiselector(
         spoiler.settings.misc_changes_selected,
         QoLSelector,
@@ -360,12 +349,6 @@ def patching_response(spoiler):
         old = int.from_bytes(ROM_COPY.readBytes(1), "big")
         ROM_COPY.seek(sav + 0x0C6)
         ROM_COPY.write(old | 0x4)
-
-    keys = 0xFF
-    if spoiler.settings.k_rool_vanilla_requirement:
-        keys = 0x84  # 8765 4321 bitfield, only enable the keys 3 and 8 bits, meaning 0b1000 0100, which is 0x84
-    ROM_COPY.seek(sav + 0x1DD)
-    ROM_COPY.write(keys)
 
     # Damage amount
     damage_multipliers = {
@@ -461,6 +444,9 @@ def patching_response(spoiler):
         },
         WinConditionComplex.get_key8: {
             "index": 1,
+        },
+        WinConditionComplex.get_keys_3_and_8: {
+            "index": 7,
         },
         WinConditionComplex.krem_kapture: {
             "index": 2,
@@ -608,8 +594,8 @@ def patching_response(spoiler):
 
     # Set K. Rool ship spawn method
     ROM_COPY.seek(sav + 0x1B6)
-    krool_ship_spawn_method = 1 if spoiler.settings.win_condition_item == WinConditionComplex.krools_challenge else 0
-    ROM_COPY.writeMultipleBytes(krool_ship_spawn_method, 1)
+    # Write the user's setting directly - beat_krool/krools_challenge will use key-based spawning unless this is explicitly enabled
+    ROM_COPY.writeMultipleBytes(spoiler.settings.win_condition_spawns_ship, 1)
 
     # Mill Levers
     if spoiler.settings.mill_levers[0] > 0:
@@ -680,19 +666,19 @@ def patching_response(spoiler):
     randomize_bananaport(spoiler, ROM_COPY)
     randomize_kasplat_locations(spoiler, ROM_COPY)
     randomize_enemies(spoiler, ROM_COPY)
-    apply_kongrando_cosmetic(spoiler, ROM_COPY)
+    apply_kongrando_cosmetic(ROM_COPY)
     randomize_setup(spoiler, ROM_COPY)
     randomize_puzzles(spoiler, ROM_COPY)
     randomize_cbs(spoiler, ROM_COPY)
     randomize_coins(spoiler, ROM_COPY)
     place_mayhem_coins(spoiler, ROM_COPY)
     ApplyShopRandomizer(spoiler, ROM_COPY)
-    showWinCondition(spoiler.settings, ROM_COPY)
     remove5DSCameraPoint(spoiler, ROM_COPY)
     alterTextboxRequirements(spoiler)
     spoiler.arcade_item_reward = Items.NintendoCoin
     spoiler.jetpac_item_reward = Items.RarewareCoin
     place_randomized_items(spoiler, ROM_COPY)  # Has to be after kong rando cosmetic and moves
+    place_spoiler_hint_data(sav, spoiler, ROM_COPY)
     # Arcade detection for colorblind mode
     arcade_item_index = 0
     potion_pools = [
@@ -742,6 +728,7 @@ def patching_response(spoiler):
         applyKongModelSwaps(spoiler.settings, ROM_COPY)
         updateHelmFaces(spoiler.settings, ROM_COPY)
         updateSnidePanel(spoiler.settings, ROM_COPY)
+        showWinCondition(spoiler.settings, ROM_COPY)
 
         patchAssembly(ROM_COPY, spoiler)
         ApplyMirrorMode(spoiler.settings, ROM_COPY)

@@ -10,20 +10,20 @@
  */
 #include "../../include/common.h"
 
-const collision_tree_struct fixed_shockwave_collision[3] = {
+collision_tree_struct fixed_shockwave_collision[3] = {
     {.actor_interaction = -1, .target_interaction=COLBTF_SHOCKWAVE, .collision_type=1, .unk9=2, .force_break=1}, // If you're shockwaving, treat as immune
     {.actor_interaction = -1, .target_interaction=-1, .function=(void*)0x80676C10, .collision_type=1, .unk9=2, .force_break=2},
     {.actor_interaction = -1, .target_interaction=-1, .collision_type=4, .unk9=5},
 };
 
-const collision_tree_struct fixed_scarab_collision[4] = {
+collision_tree_struct fixed_scarab_collision[4] = {
     {.actor_interaction = -1, .target_interaction=COLBTF_RAMBI_ENGUARDEBATTACK, .collision_type=6, .unk9=10, .force_break=2}, // Rambi kills enemy
     {.actor_interaction=0x1, .target_interaction=0xFE8, .collision_type=0x4, .force_break=0x2},
     {.actor_interaction=0x2, .target_interaction=-1, .function=&stompHandler, .collision_type=0x9, .unk9=0x3, .force_break=0x2},
     {.actor_interaction=-1, .target_interaction=-1, .collision_type=0x1, .unk9=0x5},
 };
 
-const collision_tree_struct fixed_dice_collision[12] = {
+collision_tree_struct fixed_dice_collision[12] = {
     {.actor_interaction = 1, .target_interaction=COLBTF_RAMBI_ENGUARDEBATTACK, .collision_type=6, .unk9=10, .force_break=2}, // Rambi kills enemy
     {.actor_interaction=0x1, .target_interaction=0xa00, .function=(void*)0x8067641c, .collision_type=0x6, .unk9=0x2, .force_break=0x2},
     {.actor_interaction=0x1, .target_interaction=0x80, .function=(void*)0x806764d8, .collision_type=0x6, .unk9=0x2, .force_break=0x2},
@@ -38,7 +38,7 @@ const collision_tree_struct fixed_dice_collision[12] = {
     {.actor_interaction=-1, .target_interaction=-1, .collision_type=0x1, .unk9=0x5},
 };
 
-const collision_tree_struct fixed_klap_collision[8] = {
+collision_tree_struct fixed_klap_collision[8] = {
     {.actor_interaction = 1, .target_interaction=COLBTF_RAMBI_ENGUARDEBATTACK, .collision_type=6, .unk9=10, .force_break=2}, // Rambi kills enemy
     {.actor_interaction=-1, .target_interaction=0x4, .function=(void*)0x80676540, .collision_type=0x6, .unk9=0x3, .force_break=0x2},
     {.actor_interaction=-1, .target_interaction=0x8, .collision_type=0x6, .unk9=0x8, .force_break=0x2},
@@ -49,7 +49,7 @@ const collision_tree_struct fixed_klap_collision[8] = {
     {.actor_interaction=-1, .target_interaction=-1, .collision_type=0x1, .unk9=0x5},
 };
 
-const collision_tree_struct fixed_bug_collision[2] = {
+collision_tree_struct fixed_bug_collision[2] = {
     {.actor_interaction = -1, .target_interaction=COLBTF_SHOCKWAVE, .collision_type=1, .unk9=2, .force_break=1}, // If you're shockwaving, treat as immune
     {.actor_interaction=-1, .target_interaction=-1, .collision_type=0x1, .unk9=0x5},
 };
@@ -70,7 +70,7 @@ void setActorDamage(int actor, int new_damage) {
     actor_health_damage[actor].damage_applied = new_damage;
 }
 
-static unsigned char kremling_krossbone_maps[] = {
+ROM_DATA static unsigned char kremling_krossbone_maps[] = {
     MAP_BARRAGE_EASY,
     MAP_BARRAGE_NORMAL,
     MAP_BARRAGE_HARD,
@@ -83,7 +83,7 @@ void swapKremlingModel(void) {
         return;
     }
     int kremling_model = 0x31;
-    if (inU8List(CurrentMap, &kremling_krossbone_maps, sizeof(kremling_krossbone_maps))) {
+    if (inU8List(CurrentMap, &kremling_krossbone_maps[0], sizeof(kremling_krossbone_maps))) {
         kremling_model = 0x42;
     }
     CharSpawnerActorData[59].model = kremling_model;

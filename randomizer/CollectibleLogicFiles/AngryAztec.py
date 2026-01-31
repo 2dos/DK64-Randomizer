@@ -141,7 +141,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.donkey, lambda _: True, None, 15),
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 6),
         Collectible(Collectibles.bunch, Kongs.lanky, lambda _: True, None, 1),  # Warp 1
-        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: (((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase()) and l.grape, None, 2),
+        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: ((Events.AztecLlamaSpit in l.Events and l.swim) or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) or l.CanPhase()) and l.grape, None, 2),
 
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
         Collectible(Collectibles.banana, Kongs.tiny, lambda _: True, None, 3),

@@ -11,6 +11,33 @@ from randomizer.Enums.VendorType import VendorType
 from randomizer.Enums.Maps import Maps
 
 
+def placement_index_to_flag(index: int) -> int:
+    """Convert the placement index to a flag."""
+    if index < 120:
+        vendor = int(index / 40)
+        kong = int((index % 40) / 8)
+        level = index % 8
+        if vendor == VendorType.Cranky:
+            return 0x320 + (level * 5) + kong
+        elif vendor == VendorType.Funky:
+            return 0x320 + ((8 + level) * 5) + kong
+        elif vendor == VendorType.Candy:
+            candy_index = {
+                Levels.AngryAztec: 0,
+                Levels.FranticFactory: 1,
+                Levels.GloomyGalleon: 2,
+                Levels.CrystalCaves: 3,
+                Levels.CreepyCastle: 4,
+            }
+            return 0x320 + ((15 + candy_index[level]) * 5) + kong
+        return 0
+    flags = [386, 388, 389, 387, 377]
+    offset = index - 120
+    if offset > 4:
+        return 0
+    return flags[index - 120]
+
+
 class MapIDCombo:
     """A combination of a map and an associated item ID. If id == -1 and map == 0, has no model 2 item, ignore those."""
 
@@ -39,6 +66,7 @@ class Location:
         self.map_id_list = None
         self.level = level
         self.kong = kong
+        self.location_flag = 0
         self.logically_relevant = logically_relevant  # This is True if this location is needed to derive the logic for another location
         self.placement_index = None
         self.inaccessible = False
@@ -58,34 +86,42 @@ class Location:
             else:
                 for kong_index in range(5):
                     lst.append((self.vendor * 40) + (kong_index * 8) + lvl_index)
+            self.location_flag = placement_index_to_flag(lst[0])
             self.placement_index = lst
             self.is_shop = True
         elif self.type in (Types.TrainingBarrel, Types.Shockwave):
+            self.location_flag = placement_index_to_flag(data[0])
             self.placement_index = [data[0]]
         elif self.type == Types.Blueprint:
             self.map = data[0]
             level_index = int(self.level)
             if self.level in (Levels.DKIsles, Levels.HideoutHelm):
                 level_index = 7
-            self.map_id_list = [MapIDCombo(0, -1, 469 + self.kong + (5 * level_index), self.kong)]
+            self.location_flag = 469 + self.kong + (5 * level_index)
+            self.map_id_list = [MapIDCombo(0, -1, self.location_flag, self.kong)]
         elif self.type in [Types.Medal, Types.IslesMedal, Types.HalfMedal] and self.level != Levels.HideoutHelm:
             level_index = int(self.level)
             if self.type == Types.HalfMedal:
                 if self.level == Levels.DKIsles:
                     level_index = 7
-                self.map_id_list = [MapIDCombo(0, -1, 0x3D6 + (5 * level_index) + self.kong)]
+                self.location_flag = 0x3D6 + (5 * level_index) + self.kong
+                self.map_id_list = [MapIDCombo(0, -1, self.location_flag)]
             else:
                 if self.level == Levels.DKIsles:
-                    self.map_id_list = [MapIDCombo(0, -1, 0x3C6 + self.kong, self.kong)]
+                    self.location_flag = 0x3C6 + self.kong
+                    self.map_id_list = [MapIDCombo(0, -1, self.location_flag, self.kong)]
                 else:
-                    self.map_id_list = [MapIDCombo(0, -1, 549 + self.kong + (5 * level_index), self.kong)]
+                    self.location_flag = 549 + self.kong + (5 * level_index)
+                    self.map_id_list = [MapIDCombo(0, -1, self.location_flag, self.kong)]
         elif self.type == Types.Hint:
             level_index = int(self.level)
-            self.map_id_list = [MapIDCombo(0, -1, 0x384 + self.kong + (5 * level_index), self.kong)]
-        elif self.type in (Types.Banana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.BoulderItem, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
+            self.location_flag = 0x384 + self.kong + (5 * level_index)
+            self.map_id_list = [MapIDCombo(0, -1, self.location_flag, self.kong)]
+        elif self.type in (Types.Banana, Types.BlueprintBanana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.BoulderItem, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
             if data is None:
                 self.map_id_list = []
             else:
+                self.location_flag = data[0].flag
                 self.map_id_list = data
         self.default_mapid_data = self.map_id_list
         # "Reward" locations are locations that require an actor to exist for the location's item - something not all items have
@@ -653,46 +689,46 @@ LocationListOriginal = {
     Locations.ChunkyIslesPotion: Location(Levels.DKIsles, "Isles Cranky Chunky", Items.NoItem, Types.Shop, Kongs.chunky, [MoveTypes.Moves, 0, VendorType.Cranky]),
 
     # Blueprints
-    Locations.TurnInJungleJapesDonkeyBlueprint: Location(Levels.Snide, "Turning In 1 Blueprint", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x3fe)]),
-    Locations.TurnInJungleJapesDiddyBlueprint: Location(Levels.Snide, "Turning In 2 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x3ff)]),
-    Locations.TurnInJungleJapesLankyBlueprint: Location(Levels.Snide, "Turning In 3 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x400)]),
-    Locations.TurnInJungleJapesTinyBlueprint: Location(Levels.Snide, "Turning In 4 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x401)]),
-    Locations.TurnInJungleJapesChunkyBlueprint: Location(Levels.Snide, "Turning In 5 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x402)]),
-    Locations.TurnInAngryAztecDonkeyBlueprint: Location(Levels.Snide, "Turning In 6 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x403)]),
-    Locations.TurnInAngryAztecDiddyBlueprint: Location(Levels.Snide, "Turning In 7 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x404)]),
-    Locations.TurnInAngryAztecLankyBlueprint: Location(Levels.Snide, "Turning In 8 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x405)]),
-    Locations.TurnInAngryAztecTinyBlueprint: Location(Levels.Snide, "Turning In 9 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x406)]),
-    Locations.TurnInAngryAztecChunkyBlueprint: Location(Levels.Snide, "Turning In 10 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x407)]),
-    Locations.TurnInFranticFactoryDonkeyBlueprint: Location(Levels.Snide, "Turning In 11 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x408)]),
-    Locations.TurnInFranticFactoryDiddyBlueprint: Location(Levels.Snide, "Turning In 12 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x409)]),
-    Locations.TurnInFranticFactoryLankyBlueprint: Location(Levels.Snide, "Turning In 13 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x40a)]),
-    Locations.TurnInFranticFactoryTinyBlueprint: Location(Levels.Snide, "Turning In 14 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x40b)]),
-    Locations.TurnInFranticFactoryChunkyBlueprint: Location(Levels.Snide, "Turning In 15 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x40c)]),
-    Locations.TurnInGloomyGalleonDonkeyBlueprint: Location(Levels.Snide, "Turning In 16 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x40d)]),
-    Locations.TurnInGloomyGalleonDiddyBlueprint: Location(Levels.Snide, "Turning In 17 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x40e)]),
-    Locations.TurnInGloomyGalleonLankyBlueprint: Location(Levels.Snide, "Turning In 18 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x40f)]),
-    Locations.TurnInGloomyGalleonTinyBlueprint: Location(Levels.Snide, "Turning In 19 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x410)]),
-    Locations.TurnInGloomyGalleonChunkyBlueprint: Location(Levels.Snide, "Turning In 20 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x411)]),
-    Locations.TurnInFungiForestDonkeyBlueprint: Location(Levels.Snide, "Turning In 21 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x412)]),
-    Locations.TurnInFungiForestDiddyBlueprint: Location(Levels.Snide, "Turning In 22 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x413)]),
-    Locations.TurnInFungiForestLankyBlueprint: Location(Levels.Snide, "Turning In 23 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x414)]),
-    Locations.TurnInFungiForestTinyBlueprint: Location(Levels.Snide, "Turning In 24 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x415)]),
-    Locations.TurnInFungiForestChunkyBlueprint: Location(Levels.Snide, "Turning In 25 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x416)]),
-    Locations.TurnInCrystalCavesDonkeyBlueprint: Location(Levels.Snide, "Turning In 26 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x417)]),
-    Locations.TurnInCrystalCavesDiddyBlueprint: Location(Levels.Snide, "Turning In 27 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x418)]),
-    Locations.TurnInCrystalCavesLankyBlueprint: Location(Levels.Snide, "Turning In 28 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x419)]),
-    Locations.TurnInCrystalCavesTinyBlueprint: Location(Levels.Snide, "Turning In 29 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x41a)]),
-    Locations.TurnInCrystalCavesChunkyBlueprint: Location(Levels.Snide, "Turning In 30 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x41b)]),
-    Locations.TurnInCreepyCastleDonkeyBlueprint: Location(Levels.Snide, "Turning In 31 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x41c)]),
-    Locations.TurnInCreepyCastleDiddyBlueprint: Location(Levels.Snide, "Turning In 32 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x41d)]),
-    Locations.TurnInCreepyCastleLankyBlueprint: Location(Levels.Snide, "Turning In 33 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x41e)]),
-    Locations.TurnInCreepyCastleTinyBlueprint: Location(Levels.Snide, "Turning In 34 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x41f)]),
-    Locations.TurnInCreepyCastleChunkyBlueprint: Location(Levels.Snide, "Turning In 35 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x420)]),
-    Locations.TurnInDKIslesDonkeyBlueprint: Location(Levels.Snide, "Turning In 36 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x421)]),
-    Locations.TurnInDKIslesDiddyBlueprint: Location(Levels.Snide, "Turning In 37 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x422)]),
-    Locations.TurnInDKIslesLankyBlueprint: Location(Levels.Snide, "Turning In 38 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x423)]),
-    Locations.TurnInDKIslesTinyBlueprint: Location(Levels.Snide, "Turning In 39 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x424)]),
-    Locations.TurnInDKIslesChunkyBlueprint: Location(Levels.Snide, "Turning In 40 Blueprints", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(0, -1, 0x425)]),
+    Locations.TurnInJungleJapesDonkeyBlueprint: Location(Levels.Snide, "Turning In 1 Blueprint", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x3fe)]),
+    Locations.TurnInJungleJapesDiddyBlueprint: Location(Levels.Snide, "Turning In 2 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x3ff)]),
+    Locations.TurnInJungleJapesLankyBlueprint: Location(Levels.Snide, "Turning In 3 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x400)]),
+    Locations.TurnInJungleJapesTinyBlueprint: Location(Levels.Snide, "Turning In 4 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x401)]),
+    Locations.TurnInJungleJapesChunkyBlueprint: Location(Levels.Snide, "Turning In 5 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x402)]),
+    Locations.TurnInAngryAztecDonkeyBlueprint: Location(Levels.Snide, "Turning In 6 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x403)]),
+    Locations.TurnInAngryAztecDiddyBlueprint: Location(Levels.Snide, "Turning In 7 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x404)]),
+    Locations.TurnInAngryAztecLankyBlueprint: Location(Levels.Snide, "Turning In 8 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x405)]),
+    Locations.TurnInAngryAztecTinyBlueprint: Location(Levels.Snide, "Turning In 9 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x406)]),
+    Locations.TurnInAngryAztecChunkyBlueprint: Location(Levels.Snide, "Turning In 10 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x407)]),
+    Locations.TurnInFranticFactoryDonkeyBlueprint: Location(Levels.Snide, "Turning In 11 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x408)]),
+    Locations.TurnInFranticFactoryDiddyBlueprint: Location(Levels.Snide, "Turning In 12 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x409)]),
+    Locations.TurnInFranticFactoryLankyBlueprint: Location(Levels.Snide, "Turning In 13 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x40a)]),
+    Locations.TurnInFranticFactoryTinyBlueprint: Location(Levels.Snide, "Turning In 14 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x40b)]),
+    Locations.TurnInFranticFactoryChunkyBlueprint: Location(Levels.Snide, "Turning In 15 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x40c)]),
+    Locations.TurnInGloomyGalleonDonkeyBlueprint: Location(Levels.Snide, "Turning In 16 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x40d)]),
+    Locations.TurnInGloomyGalleonDiddyBlueprint: Location(Levels.Snide, "Turning In 17 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x40e)]),
+    Locations.TurnInGloomyGalleonLankyBlueprint: Location(Levels.Snide, "Turning In 18 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x40f)]),
+    Locations.TurnInGloomyGalleonTinyBlueprint: Location(Levels.Snide, "Turning In 19 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x410)]),
+    Locations.TurnInGloomyGalleonChunkyBlueprint: Location(Levels.Snide, "Turning In 20 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x411)]),
+    Locations.TurnInFungiForestDonkeyBlueprint: Location(Levels.Snide, "Turning In 21 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x412)]),
+    Locations.TurnInFungiForestDiddyBlueprint: Location(Levels.Snide, "Turning In 22 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x413)]),
+    Locations.TurnInFungiForestLankyBlueprint: Location(Levels.Snide, "Turning In 23 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x414)]),
+    Locations.TurnInFungiForestTinyBlueprint: Location(Levels.Snide, "Turning In 24 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x415)]),
+    Locations.TurnInFungiForestChunkyBlueprint: Location(Levels.Snide, "Turning In 25 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x416)]),
+    Locations.TurnInCrystalCavesDonkeyBlueprint: Location(Levels.Snide, "Turning In 26 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x417)]),
+    Locations.TurnInCrystalCavesDiddyBlueprint: Location(Levels.Snide, "Turning In 27 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x418)]),
+    Locations.TurnInCrystalCavesLankyBlueprint: Location(Levels.Snide, "Turning In 28 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x419)]),
+    Locations.TurnInCrystalCavesTinyBlueprint: Location(Levels.Snide, "Turning In 29 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x41a)]),
+    Locations.TurnInCrystalCavesChunkyBlueprint: Location(Levels.Snide, "Turning In 30 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x41b)]),
+    Locations.TurnInCreepyCastleDonkeyBlueprint: Location(Levels.Snide, "Turning In 31 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x41c)]),
+    Locations.TurnInCreepyCastleDiddyBlueprint: Location(Levels.Snide, "Turning In 32 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x41d)]),
+    Locations.TurnInCreepyCastleLankyBlueprint: Location(Levels.Snide, "Turning In 33 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x41e)]),
+    Locations.TurnInCreepyCastleTinyBlueprint: Location(Levels.Snide, "Turning In 34 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x41f)]),
+    Locations.TurnInCreepyCastleChunkyBlueprint: Location(Levels.Snide, "Turning In 35 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x420)]),
+    Locations.TurnInDKIslesDonkeyBlueprint: Location(Levels.Snide, "Turning In 36 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x421)]),
+    Locations.TurnInDKIslesDiddyBlueprint: Location(Levels.Snide, "Turning In 37 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x422)]),
+    Locations.TurnInDKIslesLankyBlueprint: Location(Levels.Snide, "Turning In 38 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x423)]),
+    Locations.TurnInDKIslesTinyBlueprint: Location(Levels.Snide, "Turning In 39 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x424)]),
+    Locations.TurnInDKIslesChunkyBlueprint: Location(Levels.Snide, "Turning In 40 Blueprints", Items.GoldenBanana, Types.BlueprintBanana, Kongs.any, [MapIDCombo(0, -1, 0x425)]),
 
     # Hint Doors
     Locations.JapesDonkeyDoor: Location(Levels.JungleJapes, "Japes Donkey Hint Door", Items.JapesDonkeyHint, Types.Hint, Kongs.donkey),

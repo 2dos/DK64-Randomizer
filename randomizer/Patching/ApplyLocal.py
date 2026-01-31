@@ -29,6 +29,7 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Library.Generic import recalculatePointerJSON, camelCaseToWords, getHoliday, Holidays, IsColorOptionSelected
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, writeText
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic, disableDynamicReverb, fixLankyIncompatibility
+from randomizer.Patching.MirrorMode import truncateFiles
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings, ExcludedSongs, DPadDisplays, KongModels
@@ -93,11 +94,12 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     #     js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
     #     return
     elif from_patch_gen is True:
-        if (js.document.getElementById("download_patch_file").checked or js.document.getElementById("load_patch_file").checked) and js.document.getElementById(
-            "generate_seed"
-        ).value != "Download Seed":
+        if (
+            js.document.getElementById("download_patch_file").checked
+            and js.document.getElementById("generate_seed").value != "Download Seed"
+            and not js.document.getElementById("load_patch_file").checked
+        ):
             js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
-            await js.apply_patch(data)
         # gif_fairy = get_hash_images("browser", "loading-fairy")
         # gif_dead = get_hash_images("browser", "loading-dead")
         # js.document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0]
@@ -126,6 +128,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             f"This patch was generated with version {patch_major}.{patch_minor}.{patch_patch} of the randomizer, but you are using version {major}.{minor}.{patch}. Cosmetic packs have been disabled for this patch."
         )
         fixLankyIncompatibility(ROM_COPY)
+        truncateFiles(ROM_COPY)
     elif from_patch_gen is True:
         sav = settings.rom_data
         if from_patch_gen:
@@ -297,6 +300,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 BooleanProperties(settings.disable_flavor_text, 0xAF),  # Disable Flavor Text
                 BooleanProperties(settings.rainbow_ammo, 0x112),  # Rainbow Ammo
                 BooleanProperties(settings.isles_cool_musical, 0x127),  # DK Isles always plays music
+                BooleanProperties(settings.pool_tracks, 0x50),  # Bonus Music
+                BooleanProperties(settings.pool_tracks, 0x51),  # Boss Music
             ]
 
             for prop in boolean_props:
@@ -334,6 +339,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 ROM_COPY.seek(sav + 0x1ED)
                 ROM_COPY.write(1)
 
+            truncateFiles(ROM_COPY)
             spoiler = updateJSONCosmetics(spoiler, settings, music_data, int(unix), head_sizes)
 
         # Apply Hash

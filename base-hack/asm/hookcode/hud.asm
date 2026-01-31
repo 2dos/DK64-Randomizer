@@ -301,3 +301,4 @@ loadPauseHUDFunction:
     addiu $a0, $a0, 0xC07C
     j 0x806AB530
     nop
+

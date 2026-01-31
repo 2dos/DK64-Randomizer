@@ -20,9 +20,9 @@ IF NOT DEFINED python_ver (set python_ver="python")
 IF DEFINED test_on (echo "Building patch file" >> rom/build.log)  ELSE (set test_on="")
 echo.
 if %test_on% == --test (
-	echo 0 > Build/BuildingBPS.txt
+	echo 0 > build/BuildingBPS.txt
 ) else (
-	echo 1 > Build/BuildingBPS.txt
+	echo 1 > build/BuildingBPS.txt
 )
 call :runscript "Pulling actor data from ROM", "build\getDefaultData.py"
 call :runscript "Building Item Previews File", "build\dump_previews.py"

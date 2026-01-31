@@ -28,7 +28,7 @@ int wonArena(void) {
     return paad->internal_score <= 0;
 }
 
-static short barrel_types[3] = {0x1C, 0x86, 0x6B};
+ROM_DATA static short barrel_types[3] = {0x1C, 0x86, 0x6B};
 
 void resolveBonusContainer(void) {
     int b = 0;

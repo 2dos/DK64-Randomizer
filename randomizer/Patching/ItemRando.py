@@ -5,7 +5,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import ItemRandoListSelected, MicrohintsEnabled, TrainingBarrels
+from randomizer.Enums.Settings import ItemRandoListSelected, MicrohintsEnabled, TrainingBarrels, SpoilerHints
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Library.DataTypes import intf_to_float
@@ -25,6 +25,7 @@ from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, C
 from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay, writeValue, patchBonus, getBonusIndex
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
+from randomizer.Lists.WrinklyHints import kong_list
 import randomizer.ItemPool as ItemPool
 import unicodedata
 
@@ -194,7 +195,7 @@ ice_trap_data = [
 ]
 
 
-def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
+def getItemPatchingData(item_type: Types, item: Items, kong_override: int = None) -> ItemPatchingInfo:
     """Get the data associated with how an item is patched into ROM from various attributes."""
     simple_types = {
         Types.Banana: ReqItems.GoldenBanana,
@@ -285,11 +286,12 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
             elif item == Items.Shockwave:
                 visual_index = 5
             return ItemPatchingInfo(ReqItems.Move, 10, idx, visual_index)
-        if item == Items.CameraAndShockwave:
-            return ItemPatchingInfo(ReqItems.Move, 10, 4, 4)
         # Climbing
         if item == Items.Climbing:
             return ItemPatchingInfo(ReqItems.Move, 11, 0, 1)
+        # Camera Combo
+        if item == Items.CameraAndShockwave:
+            return ItemPatchingInfo(ReqItems.Move, 12, 0, 1)
         raise Exception("Could not find valid move")
     elif item is None or item == Items.NoItem or item_type is None or item_type == Types.NoItem:
         return ItemPatchingInfo(0)
@@ -304,7 +306,9 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
             Items.FoolsArchipelagoItem,
             Items.TrapArchipelagoItem,
         )
-        return ItemPatchingInfo(ReqItems.ArchipelagoItem, arch_item_list.index(item))
+        # Use kong_override if provided to differentiate AP items in shops
+        kong_value = kong_override if kong_override is not None else 0
+        return ItemPatchingInfo(ReqItems.ArchipelagoItem, arch_item_list.index(item), kong_value)
     raise Exception(f"Invalid item for patching: {item_type.name}, {item}")
 
 
@@ -884,7 +888,14 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
         for item in item_data:
             if item.can_have_item:
                 # Write placement
-                item_properties = getItemPatchingData(item.new_type, item.new_item)
+                # For shop items, pass kong_override to differentiate AP items
+                kong_override = None
+                if item.is_shop and item.placement_index and len(item.placement_index) > 0:
+                    # Extract kong from placement index: kong = int((index % 40) / 8)
+                    first_placement = item.placement_index[0]
+                    if first_placement < 120:  # Regular shop slots (not shared/training)
+                        kong_override = int((first_placement % 40) / 8)
+                item_properties = getItemPatchingData(item.new_type, item.new_item, kong_override)
                 if item.is_shop:
                     # Write in placement index
                     movespaceOffset = spoiler.settings.move_location_data
@@ -1180,6 +1191,22 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                 data |= or_data[x]
             ROM_COPY.seek(sav + 0x1EC)
             ROM_COPY.writeMultipleBytes(data, 1)
+
+        # Update Diddy Cage text to the actual Freeing Kong rather than Funky
+        kong_name = kong_list[spoiler.settings.diddy_freeing_kong].upper()
+
+        if 3 not in spoiler.text_changes:
+            spoiler.text_changes[3] = []
+
+        spoiler.text_changes[3].append(
+            {
+                "textbox_index": 2,
+                "mode": "replace",
+                "search": "FUNKY'S HELP",
+                "target": kong_name + "'S HELP",
+            }
+        )
+
         # Text stuff
         if spoiler.settings.item_reward_previews:
             for textbox in textboxes:
@@ -1265,7 +1292,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     ROM_COPY.seek(start + 0x28)
                     item_obj_index = getPropFromItem(item_slot["subitem"], item_slot["obj"])
                     ROM_COPY.writeMultipleBytes(item_obj_index, 2)
-                    extra_data = getItemPatchingData(item_slot["obj"], item_slot["subitem"])
+                    extra_data = getItemPatchingData(item_slot["obj"], item_slot["subitem"], item_slot.get("kong"))
                     if extra_data is not None:
                         ROM_COPY.seek(start + 0x10)
                         ROM_COPY.writeMultipleBytes(extra_data.response_type, 1)
@@ -1307,3 +1334,39 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     ROM_COPY.writeMultipleBytes(2, 1)  # Double the speed at this path point
                 offset += 6
                 offset += point_count * 10
+
+
+def place_spoiler_hint_data(sav, spoiler, ROM_COPY: LocalROM):
+    """Place the array data for spoiler hints."""
+    if spoiler.settings.spoiler_hints == SpoilerHints.off:
+        return
+    ROM_COPY.seek(sav + 0x12F)
+    ROM_COPY.writeMultipleBytes(spoiler.settings.spoiler_hints, 1)
+    # Compute & Write Table
+    base_addr = getROMAddress(getSym("spoiler_items"), Overlay.Custom, populateOverlayOffsets(ROM_COPY))
+    level_index_mapping = {
+        Levels.JungleJapes: 0,
+        Levels.AngryAztec: 1,
+        Levels.FranticFactory: 2,
+        Levels.GloomyGalleon: 3,
+        Levels.FungiForest: 4,
+        Levels.CrystalCaves: 5,
+        Levels.CreepyCastle: 6,
+        Levels.DKIsles: 7,
+        Levels.HideoutHelm: 8,
+    }
+    ROM_COPY.seek(base_addr)
+    for level, local_spoiler in spoiler.level_spoiler.items():
+        if level in ("starting_info", "point_spread"):
+            continue
+        for item in local_spoiler.level_items:
+            points = item["points"]
+            if points == 0:
+                continue
+            flag = item["flag"]
+            if flag == 0:
+                continue
+            level_index = level_index_mapping.get(level, 9)
+            ROM_COPY.writeMultipleBytes(flag, 2)
+            ROM_COPY.writeMultipleBytes(points, 1)
+            ROM_COPY.writeMultipleBytes(level_index, 1)

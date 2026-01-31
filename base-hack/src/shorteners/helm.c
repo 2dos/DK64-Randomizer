@@ -2,14 +2,14 @@
 
 #define TRIGGER_ELEMENT_SIZE 0x3A
 
-static const short minigame_0_flags[] = {0x3C,0x3F,0x3E,0x40,0x3D};
-static const short minigame_1_flags[] = {0x41,0x44,0x43,0x45,0x42};
+ROM_RODATA_NUM static const short minigame_0_flags[] = {0x3C,0x3F,0x3E,0x40,0x3D};
+ROM_RODATA_NUM static const short minigame_1_flags[] = {0x41,0x44,0x43,0x45,0x42};
 
-static const short item_setstate[] = {17,22,23,27,30};
-static const short item_medallook[] = {61,62,63,64,65};
-static const short item_laserlook[] = {16,19,20,26,29};
-static const short item_padset[] = {42,33,34,35,36};
-static const short item_padlook[] = {1,76,77,78,79};
+ROM_RODATA_NUM static const short item_setstate[] = {17,22,23,27,30};
+ROM_RODATA_NUM static const short item_medallook[] = {61,62,63,64,65};
+ROM_RODATA_NUM static const short item_laserlook[] = {16,19,20,26,29};
+ROM_RODATA_NUM static const short item_padset[] = {42,33,34,35,36};
+ROM_RODATA_NUM static const short item_padlook[] = {1,76,77,78,79};
 
 /*
 	CS 4:
@@ -91,7 +91,7 @@ void HelmInit(int init_stage) {
 	}
 }
 
-static const short HelmMinigamePermFlags[] = {
+ROM_RODATA_NUM static const short HelmMinigamePermFlags[] = {
 	FLAG_HELM_MINIGAMES + 0,
 	FLAG_HELM_MINIGAMES + 5,
 	FLAG_HELM_MINIGAMES + 1,

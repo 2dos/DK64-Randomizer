@@ -1,6 +1,6 @@
 #include "../../include/common.h"
 
-static unsigned char game_beat_countdown = 0;
+ROM_DATA static unsigned char game_beat_countdown = 0;
 
 void beatGame(void) {
     if (isGamemode(GAMEMODE_ADVENTURE, 1)) {
@@ -26,7 +26,7 @@ void finalizeBeatGame(void) {
 
 // Pkmn Snap Spreadsheet: https://docs.google.com/spreadsheets/d/1nTZYi36dFaTB1XCgB7dJJffMsaKz-wOFmP5nDo8l3Uo/edit?usp=sharing
 
-static const short poke_snap_actors[] = {
+ROM_RODATA_NUM static const short poke_snap_actors[] = {
     175, // Kaboom
     178, // Blue Beaver
     181, // Book
@@ -79,8 +79,7 @@ typedef struct move_kong_pairs {
     unsigned char level;
 } move_kong_pairs;
 
-static const unsigned char required_guns[] = {KONG_DK, KONG_DIDDY, KONG_LANKY, KONG_CHUNKY};
-static const move_kong_pairs moves_for_rap[] = {
+ROM_RODATA_NUM static const move_kong_pairs moves_for_rap[] = {
     {.move_type = 0, .kong = KONG_DK, .level=1},  // Strong Kong
     {.move_type = 2, .kong = KONG_DK, .level=0},  // Coconut
     {.move_type = 0, .kong = KONG_DIDDY, .level=1},  // Rocket
@@ -94,7 +93,7 @@ static const move_kong_pairs moves_for_rap[] = {
     {.move_type = 0, .kong = KONG_TINY, .level=1},  // Twirl
     {.move_type = 2, .kong = KONG_CHUNKY, .level=0},  // Pineapple
 };
-static const short rap_flags[] = {FLAG_TBARREL_BARREL, FLAG_TBARREL_ORANGE, FLAG_ABILITY_CLIMBING, FLAG_ITEM_CRANKY};
+ROM_RODATA_NUM static const short rap_flags[] = {FLAG_TBARREL_BARREL, FLAG_TBARREL_ORANGE, FLAG_ABILITY_CLIMBING, FLAG_ITEM_CRANKY};
 
 int hasBeatenDKRapWinCon(void) {
     if (getItemCount_new(REQITEM_KONG, -1, -1) != 5) {
@@ -118,60 +117,68 @@ int hasBeatenDKRapWinCon(void) {
     return 1;
 }
 
-int canAccessKroolsChallenge(void) {
-    // Check all 8 Keys
-    if (getItemCountReq(REQITEM_KEY) < 8) {
-        return 0;
+int canAccessWinCondition(void) {
+    // Check if the win condition requirements are met
+    switch(Rando.win_condition) {
+        case GOAL_KEY8:
+            // Key 8 win condition - check for key 8
+            return getItemCount_new(REQITEM_KEY, 7, 0);
+        
+        case GOAL_KEYS_3_AND_8:
+            // Keys 3 and 8 win condition - check for both keys (vanilla K. Rool requirement)
+            return getItemCount_new(REQITEM_KEY, 2, 0) && getItemCount_new(REQITEM_KEY, 7, 0);
+        
+        case GOAL_POKESNAP:
+            // Pokemon Snap - check if all required photos are taken
+            for (unsigned int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
+                int offset = i >> 3;
+                int shift = i & 7;
+                if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
+                    if (!checkFlag(FLAG_PKMNSNAP_PICTURES + i, FLAGTYPE_PERMANENT)) {
+                        return 0;
+                    }
+                }
+            }
+            return 1;
+        
+        case GOAL_DKRAP:
+            // DK Rap - check for DK Rap completion
+            return hasBeatenDKRapWinCon();
+        
+        case GOAL_KROOLS_CHALLENGE:
+            // Krool's Challenge - check if all required items are collected
+            if (getItemCountReq(REQITEM_KEY) < 8) {
+                return 0;
+            }
+            if (getItemCountReq(REQITEM_BLUEPRINT) < 40) {
+                return 0;
+            }
+            if (getItemCountReq(REQITEM_BOSSES) < 7) {
+                return 0;
+            }
+            if (getItemCountReq(REQITEM_BONUSES_NOHELM) < 43) {
+                return 0;
+            }
+            return 1;
+        case GOAL_CUSTOMITEM:
+            // Custom item requirement - check the specified item count
+            return isItemRequirementSatisfied(&Rando.win_condition_extra);
+        
+        default:
+            // For beat K. Rool and other win conditions, return 0 so they use normal key-based spawning
+            // Only return 1 if explicitly using win_condition_spawns_ship
+            return 0;
     }
-    
-    // Check all 40 Blueprints  
-    if (getItemCountReq(REQITEM_BLUEPRINT) < 40) {
-        return 0;
-    }
-    
-    // Check all 7 Bosses
-    if (getItemCountReq(REQITEM_BOSSES) < 7) {
-        return 0;
-    }
-    
-    // Check all 43 Bonus Barrels
-    if (getItemCountReq(REQITEM_BONUSES) < 43) {
-        return 0;
-    }
-    
-    return 1;
 }
 
 void checkSeedVictory(void) {
     if (!checkFlag(FLAG_GAME_BEATEN, FLAGTYPE_PERMANENT)) {
-        switch(Rando.win_condition) {
-            case GOAL_KEY8:
-                if (getItemCount_new(REQITEM_KEY, 7, 0)) {
-                    beatGame();
-                }
-                break;
-            case GOAL_POKESNAP:
-                for (int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
-                    int offset = i >> 3;
-                    int shift = i & 7;
-                    if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
-                        if (!checkFlag(FLAG_PKMNSNAP_PICTURES + i, FLAGTYPE_PERMANENT)) {
-                            return;
-                        }
-                    }
-                }
-                beatGame();
-                break;
-            case GOAL_DKRAP:
-                if (hasBeatenDKRapWinCon()) {
-                    beatGame();
-                }
-                break;
-            case GOAL_CUSTOMITEM:
-                if (isItemRequirementSatisfied(&Rando.win_condition_extra)) {
-                    beatGame();
-                }
-            break;
+        // If win_condition_spawns_ship is enabled, don't trigger victory on win condition items - only when K. Rool is defeated
+        if (Rando.win_condition_spawns_ship) {
+            return;
+        }
+        if (canAccessWinCondition()) {
+            beatGame();
         }
     }
 }
@@ -193,7 +200,7 @@ void checkVictory_flaghook(int flag) {
     checkSeedVictory();
 }
 
-static unsigned short extra_kops[] = {
+ROM_RODATA_NUM static const unsigned short extra_kops[] = {
     NEWACTOR_GUARDDISABLEA,
     NEWACTOR_GUARDDISABLEZ,
     NEWACTOR_GUARDGETOUT,
@@ -206,10 +213,10 @@ int isSnapEnemyInRange(int set) {
         actorData* actor = LoadedActorArray[i].actor;
         if (actor) {
             int ref_actor = actor->actorType;
-            if (inShortList(ref_actor, &extra_kops, 4)) {
+            if (inShortList(ref_actor, (const short*)&extra_kops[0], 4)) {
                 ref_actor = 259;
             }
-            int index = inShortList(ref_actor, &poke_snap_actors, sizeof(poke_snap_actors) >> 1);
+            int index = inShortList(ref_actor, &poke_snap_actors[0], sizeof(poke_snap_actors) >> 1);
             if (index) {
                 int j = index - 1;
                 if (!checkFlag(FLAG_PKMNSNAP_PICTURES + j, FLAGTYPE_PERMANENT)) {
@@ -239,9 +246,9 @@ int isSnapEnemyInRange(int set) {
     return updated;
 }
 
-static unsigned char pkmn_snap_frames = 0;
-static unsigned char pkmn_snap_current = 0;
-static unsigned char pkmn_snap_total = 0;
+ROM_DATA static unsigned char pkmn_snap_frames = 0;
+ROM_DATA static unsigned char pkmn_snap_current = 0;
+ROM_DATA static unsigned char pkmn_snap_total = 0;
 
 int getPkmnSnapData(int* frames, int* current, int* total) {
     if (pkmn_snap_frames != 0) {
@@ -260,7 +267,7 @@ void pokemonSnapMode(void) {
     if (isSnapEnemyInRange(1)) {
         int captured_count = 0;
         int total_count = 0;
-        for (int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
+        for (unsigned int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
             captured_count += checkFlag(FLAG_PKMNSNAP_PICTURES + i, FLAGTYPE_PERMANENT);
             int offset = i >> 3;
             int shift = i & 7;

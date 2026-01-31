@@ -15,7 +15,7 @@
 void alterParentLocationTNS(int id) {
 	for (int i = 0; i < 17; i++) {
 		if (parentData[i].in_submap) {
-			if ((parentData[i].map == CurrentMap) && (parentData[i].transition_properties_bitfield == 3)) {
+			if (((maps)parentData[i].map == CurrentMap) && (parentData[i].transition_properties_bitfield == 3)) {
 				int index = convertIDToIndex(id);
 				ModelTwoData* tied_object = &ObjectModel2Pointer[index];
 				model_struct* model = tied_object->model_pointer;

@@ -700,13 +700,31 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
         new_key_crown_color = []
         for _ in range(3):
             new_key_crown_color.append(settings.random.randint(0, 0xFF))
-        for img_index in (0xC6F, 0xBAB, 0x132D):
+        for img_index in (0xC6F, 0xBAB, 0x132D, getBonusSkinOffset(ExtraTextures.MedalRim), 0xBAA):
             dim = 32
-            if img_index == 0xC6F:
+            if img_index in (0xC6F, 0xBAA):
                 dim = 4
             shine_img = getImageFile(ROM_COPY, 25, img_index, True, dim, dim, TextureFormat.RGBA5551)
             shine_img = maskImageWithColor(shine_img, tuple(new_key_crown_color))
             writeColorImageToROM(shine_img, 25, img_index, dim, dim, False, TextureFormat.RGBA5551, ROM_COPY)
+        min_rgb = min(new_key_crown_color[0], new_key_crown_color[1], new_key_crown_color[2])
+        max_rgb = max(new_key_crown_color[0], new_key_crown_color[1], new_key_crown_color[2])
+        is_greyscale = (max_rgb - min_rgb) < 50
+        fake_item_color = list(hueShiftColor(tuple(new_key_crown_color), 60, 1750))
+        delta_mag = 80
+        if is_greyscale:
+            delta = -delta_mag
+            if max_rgb < 128:
+                delta = delta_mag
+            for x in range(3):
+                fake_item_color[x] = new_key_crown_color[x] + delta
+        for img_index in (ExtraTextures.FakeKey, ExtraTextures.FakeKeyPalette):
+            dim = 32
+            if img_index == ExtraTextures.FakeKeyPalette:
+                dim = 4
+            shine_img = getImageFile(ROM_COPY, 25, getBonusSkinOffset(img_index), True, dim, dim, TextureFormat.RGBA5551)
+            shine_img = maskImageWithColor(shine_img, tuple(fake_item_color))
+            writeColorImageToROM(shine_img, 25, getBonusSkinOffset(img_index), dim, dim, False, TextureFormat.RGBA5551, ROM_COPY)
     if IsColorOptionSelected(settings, ColorOptions.barrels_and_boulders):
         boulder_shift = getRandomHueShift()
         hueShiftImageContainer(25, 0x12F4, 1, 1372, TextureFormat.RGBA5551, boulder_shift, ROM_COPY)

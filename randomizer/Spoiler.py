@@ -53,7 +53,7 @@ from randomizer.Lists.Minigame import (
     TrainingMinigameLocations,
     MinigameSelector,
 )
-from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector, QoLSelector
+from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector, QoLSelector, BossesSelector
 from randomizer.Lists.EnemyTypes import EnemySelector, enemy_location_list
 from randomizer.Lists.WrinklyHints import HintSet
 from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
@@ -404,13 +404,12 @@ class Spoiler:
         settings["Lanky Model"] = self.settings.kong_model_lanky.name
         settings["Tiny Model"] = self.settings.kong_model_tiny.name
         settings["Chunky Model"] = self.settings.kong_model_chunky.name
-
-        settings["Key 8 Required"] = self.settings.krool_access
-        settings["Vanilla K. Rool Requirement"] = self.settings.k_rool_vanilla_requirement
+        settings["Model Swap Mode"] = self.settings.kong_model_mode.name
+        settings["Don't Start with Key 8"] = self.settings.krool_access
         settings["Key 8 in Helm"] = self.settings.key_8_helm
         settings["Select Starting Keys"] = self.settings.select_keys
         if not self.settings.keys_random:
-            settings["Number of Keys Required"] = self.settings.krool_key_count
+            settings["Number of Keys Pregiven"] = self.settings.krool_key_count
         settings["Starting Moves Count"] = self.settings.starting_moves_count
         settings["Fast Start"] = self.settings.fast_start_beginning_of_game
         settings["Helm Setting"] = self.settings.helm_setting.name
@@ -420,6 +419,7 @@ class Spoiler:
         settings["Quality of Life"] = self.dumpMultiselector(self.settings.misc_changes_selected, QoLSelector)
         settings["Fast GBs"] = self.dumpMultiselector(self.settings.faster_checks_selected, FasterCheckSelector)
         settings["Barriers Removed"] = self.dumpMultiselector(self.settings.remove_barriers_selected, RemovedBarrierSelector)
+        settings["Bosses Selected"] = self.dumpMultiselector(self.settings.bosses_selected, BossesSelector)
         settings["Random Win Condition"] = self.settings.win_condition_random
         if not self.settings.win_condition_random:
             wc_count = self.settings.win_condition_count
@@ -476,7 +476,7 @@ class Spoiler:
                 if key == "point_spread":
                     humanspoiler["Spoiler Hints Data"][key] = json.dumps(self.level_spoiler[key])
                 else:
-                    humanspoiler["Spoiler Hints Data"][key] = self.level_spoiler[key].toJSON()
+                    humanspoiler["Spoiler Hints Data"][key] = self.level_spoiler[key].toCleanJSON()
             humanspoiler["Spoiler Hints"] = self.level_spoiler_human_readable
         humanspoiler["Requirements"] = {}
         if self.settings.random_starting_region_new != RandomStartingRegion.off:
@@ -760,7 +760,7 @@ class Spoiler:
             for index, phase in enumerate(self.settings.kko_phase_order):
                 if index > 2:
                     continue
-                phase_names.append(f"Phase {phase+1}")
+                phase_names.append(f"Phase {phase + 1}")
             humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Phases"] = ", ".join(phase_names)
 
         if self.settings.bonus_barrels == MinigameBarrels.selected and len(self.settings.minigames_list_selected) > 0:
@@ -855,6 +855,11 @@ class Spoiler:
                     SwitchType.PadMove: "Gorilla Gone Pad",
                     SwitchType.PushableButton: "Punch Button",
                     SwitchType.GunInstrumentCombo: "Pineapple Switch and Triangle Pad",
+                },
+                Kongs.any: {
+                    SwitchType.GunSwitch: "Any Gun Switch",
+                    SwitchType.InstrumentPad: "Any Instrument Pad",
+                    SwitchType.GunInstrumentCombo: "Any Gun Switch and Any Instrument Pad",
                 },
             }
             for slot in self.settings.switchsanity_data.values():

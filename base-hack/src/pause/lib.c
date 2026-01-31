@@ -10,8 +10,25 @@
  */
 #include "../../include/common.h"
 
-static char igt_text[20] = "IGT: 0000:00:00";
-static int stored_igt = 0;
+ROM_DATA static char igt_text[20] = "IGT: 0000:00:00";
+ROM_DATA static char points_text[21] = "420l801 POINTS LEFT";
+ROM_DATA static int stored_igt = 0;
+
+void getLevelPoints(int level, unsigned short *points, unsigned short *total_points) {
+    int points_left = 0;
+    int points_total = 0;
+    for (int i = 0; i < SPOILER_COUNT; i++) {
+        spoiler_struct *info = &spoiler_items[i];
+        if (info->level == level) {
+            if (!checkFlag(info->flag, FLAGTYPE_PERMANENT)) {
+                points_left += info->points;
+            }
+            points_total += info->points;
+        }
+    }
+    *points = points_left;
+    *total_points = points_total;
+}
 
 Gfx* printLevelIGT(Gfx* dl, int x, int y, float scale, char* str) {
     /**
@@ -24,23 +41,31 @@ Gfx* printLevelIGT(Gfx* dl, int x, int y, float scale, char* str) {
             level_index = i;
         }
     }
-    int igt_data = 0;
-    if (level_index < 9) {
-        igt_data = ReadFile(DATA_IGT_JAPES + level_index, 0, 0, FileIndex);
-    }
-    int igt_h = igt_data / 3600;
-    int igt_m = (igt_data / 60) % 60;
-    int igt_s = igt_data % 60;
-    if (igt_data < 3600) {
-        dk_strFormat(igt_text, "TIME: %02d:%02d", igt_m, igt_s);
+    if (Rando.spoiler_hints == 2) {
+        unsigned short left = 0;
+        unsigned short total = 0;
+        getLevelPoints(level_index, &left, &total);
+        dk_strFormat(points_text, "%dl%d POINTS LEFT", left, total);
+        dl = printText(dl, x, y + 0x38, 0.5f, (char*)points_text);
     } else {
-        dk_strFormat(igt_text, "TIME: %d:%02d:%02d", igt_h, igt_m, igt_s);
+        int igt_data = 0;
+        if (level_index < 9) {
+            igt_data = ReadFile(DATA_IGT_JAPES + level_index, 0, 0, FileIndex);
+        }
+        int igt_h = igt_data / 3600;
+        int igt_m = (igt_data / 60) % 60;
+        int igt_s = igt_data % 60;
+        if (igt_data < 3600) {
+            dk_strFormat(igt_text, "TIME: %02d:%02d", igt_m, igt_s);
+        } else {
+            dk_strFormat(igt_text, "TIME: %d:%02d:%02d", igt_h, igt_m, igt_s);
+        }
+        dl = printText(dl, x, y + 0x38, 0.5f, (char*)igt_text);
     }
-    dl = printText(dl, x, y + 0x38, 0.5f, (char*)igt_text);
     return dl;
 }
 
-static char* items[] = {
+ROM_RODATA_PTR static const char* items[] = {
     "GOLDEN BANANAS",
     "CROWN PADS",
     "BOSSES AND FINAL KEY",
@@ -57,7 +82,7 @@ static char* items[] = {
     "MELON CRATES",
     "SHOPS",
 };
-static char* raw_items[] = {
+ROM_RODATA_PTR static const char* raw_items[] = {
     "GOLDEN BANANAS",
     "BATTLE CROWNS",
     "BOSS KEYS",
@@ -75,8 +100,8 @@ static char* raw_items[] = {
     "MOVES",
 };
 
-static char check_level = 0;
-static char level_check_text[0x18] = "";
+ROM_DATA static char check_level = 0;
+ROM_DATA static char level_check_text[0x18] = "";
 
 typedef struct CheckDataLevelStruct {
     unsigned char level[9];
@@ -92,7 +117,7 @@ typedef struct CheckDataStruct {
 } CheckDataStruct;
 
 // 7 main levels, isles, helm
-static CheckDataStruct check_data = {
+ROM_DATA static CheckDataStruct check_data = {
     .denominator = {
         .type[CHECK_GB] =      {.level = {20, 20, 20, 20, 20, 20, 20, 21, 0}},
         .type[CHECK_CROWN] =   {.level = {1, 1, 1, 1, 1, 1, 1, 2, 1}},
@@ -153,7 +178,7 @@ void checkItemDB(void) {
             check_data.numerator.type[i].level[j] = 0;
         }
         // Check FLUT
-        for (int k = 0; k < (sizeof(item_db) / sizeof(check_struct)); k++) {
+        for (unsigned int k = 0; k < (sizeof(item_db) / sizeof(check_struct)); k++) {
             if (item_db[k].type == i) {
                 int lvl = item_db[k].associated_level;
                 check_data.numerator.type[i].level[lvl] += checkFlag(item_db[k].flag, FLAGTYPE_PERMANENT);
@@ -236,7 +261,7 @@ Gfx* pauseScreen3And4Header(Gfx* dl) {
     return dl;
 }
 
-static char teststr[5] = "";
+ROM_DATA static char teststr[5] = "";
 
 Gfx* drawTextPointers(Gfx* dl) {
     if ((TBVoidByte & 2) && (display_billboard_fix)) {
@@ -339,10 +364,27 @@ Gfx* handleOutOfCounters(int x, int y, int top, int bottom, Gfx* dl, int unk0, i
     return printOutOfCounter(x, y, top, bottom, dl, unk0, scale);
 }
 
-void initPauseMenu(void) {
-    /**
-     * @brief Initialize the pause menu changes for Rando
-     */
-    
-    initHintFlags();
+void exitMap(maps map, int lobby_is_isles) {
+    int world = getWorld(map, lobby_is_isles);
+    int helm_timer_enabled = (world == LEVEL_HELM) && HelmTimerShown;
+    *(char*)(0x807FC8B8) = 1;
+    switch (PauseType) {
+        case PAUSETYPE_DEFAULT:
+            if (inBossMap(map, 1, 1, 1)) {
+                exitBoss();
+                return;
+            }
+            if (helm_timer_enabled || (world == LEVEL_ISLES)) {
+                QuitGame();
+                return;
+            }
+            helmTime_exitLevel(world);
+            return;
+        case PAUSETYPE_RACE:
+            helmTime_exitRace();
+            return;
+        case PAUSETYPE_BONUS:
+            helmTime_exitBonus();
+            return;
+    }
 }

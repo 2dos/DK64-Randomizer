@@ -68,7 +68,7 @@ def CompleteVanillaPrices():
             VanillaPrices[item_id] = 0
 
 
-def GetPriceWeights(weight):
+def GetPriceWeights(weight: RandomPrices, tooie_shops: bool):
     """Get the parameters for the price distribution."""
     # Each kong can buy up to 14 items
     # Vanilla: Can spend up to 74 coins, avg. price per item 5.2857
@@ -92,13 +92,16 @@ def GetPriceWeights(weight):
         avg = 11
         stddev = 2
         upperLimit = 15
+    if tooie_shops:
+        avg *= 0.75
+        upperLimit - int(upperLimit * 0.75)
     return (avg, stddev, upperLimit)
 
 
 def RandomizePrices(spoiler, weight):
     """Generate randomized prices for each shop location."""
     prices = {}
-    parameters = GetPriceWeights(weight)
+    parameters = GetPriceWeights(weight, spoiler.settings.shops_dont_cost)
     shopLocations = [location_id for location_id, location in spoiler.LocationList.items() if location.type == Types.Shop]
     for location in shopLocations:
         prices[location] = GenerateRandomPrice(spoiler.settings.random, weight, parameters[0], parameters[1], parameters[2])

@@ -11,9 +11,9 @@
 
 #include "../../include/common.h"
 
-static archipelago_data ap_info;
-static char main_title[0x30];
-static char sub_title[0x30];
+ROM_DATA static archipelago_data ap_info;
+ROM_DATA static char main_title[0x30];
+ROM_DATA static char sub_title[0x30];
 
 int isAPEnabled(void) {
     if (Rando.rom_flags.archipelago) {
@@ -46,7 +46,7 @@ void sendTrap(ICE_TRAP_TYPES trap_type) {
     giveItem(REQITEM_ICETRAP, 0, trap_type, (giveItemConfig){.display_item_text = 0, .apply_ice_trap = 1});
 }
 
-static unsigned char ice_trap_feds[] = {
+ROM_DATA static unsigned char ice_trap_feds[] = {
     TRANSFER_ITEM_FAKEITEM,
     TRANSFER_ITEM_FAKEITEM_REVERSE,
     TRANSFER_ITEM_FAKEITEM_SLOW,
@@ -92,7 +92,7 @@ void handleSentItem(void) {
         case TRANSFER_ITEM_FAKEITEM_ANIMAL:
         case TRANSFER_ITEM_FAKEITEM_ROCKFALL:
         case TRANSFER_ITEM_FAKEITEM_DISABLETAG:
-            for (int i = 0; i < sizeof(ice_trap_feds); i++) {
+            for (unsigned int i = 0; i < sizeof(ice_trap_feds); i++) {
                 if (ice_trap_feds[i] == FedItem) {
                     sendTrap(ICETRAP_BUBBLE + i);
                 } 
@@ -148,6 +148,7 @@ void handleSentItem(void) {
             break;
         case TRANSFER_ITEM_INSTRUMENTUPGRADE:
             giveItem(REQITEM_MOVE, 9, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+        default:
             break;
     }
 }
@@ -172,6 +173,31 @@ int canReceiveShopkeeperItem(void) {
         return 0;
     }
     return canReceiveItem();
+}
+
+int canDie(void) {
+    // Check if the spawn kop CC effect can be triggered to simulate death without issues
+    if(ObjectModel2Timer < 31){
+        return 0;
+    }
+    if(!cc_allower_generic()){
+        // No cc effects in general would be allowed
+        return 0;
+    }
+    int level = levelIndexMapping[CurrentMap];
+    if(level == LEVEL_BONUS || level == LEVEL_SHARED){
+        // In a bonus/shared map
+        return 0;
+    }
+    if(!cc_allower_spawnkop()){
+        // This cc effect is already active or a transition isn't quite finished yet
+        return 0;
+    }
+    if ((TBVoidByte & 0x30) == 0) {
+        // In a tag barrel. Kops hate this one trick.
+        return 0;
+    }
+    return 1;
 }
 
 void handleArchipelagoFeed(void) {
@@ -200,12 +226,12 @@ void handleArchipelagoFeed(void) {
             }
             ap_info.safety_text_timer = ap_info.text_timer + 50;
             // Main Title
-            text_overlay_data[vacant_spot].string = &main_title;
+            text_overlay_data[vacant_spot].string = (char*)&main_title;
             dk_memcpy(text_overlay_data[vacant_spot].string, &ap_info.fed_string, 0x21);
             ap_info.fed_string[0] = 0;
             if (ap_info.fed_subtitle[0]) {
                 // Subtitle
-                text_overlay_data[vacant_spot].subtitle = &sub_title;
+                text_overlay_data[vacant_spot].subtitle = (char*)&sub_title;
                 dk_memcpy(text_overlay_data[vacant_spot].subtitle, &ap_info.fed_subtitle, 0x21);
                 ap_info.fed_subtitle[0] = 0;
             }
@@ -252,31 +278,6 @@ void handleArchipelagoFeed(void) {
     ap_info.can_receive_shopkeeper = canReceiveShopkeeperItem();
 }
 
-int canDie(void) {
-    // Check if the spawn kop CC effect can be triggered to simulate death without issues
-    if(ObjectModel2Timer < 31){
-        return 0;
-    }
-    if(!cc_allower_generic()){
-        // No cc effects in general would be allowed
-        return 0;
-    }
-    int level = levelIndexMapping[CurrentMap];
-    if(level == LEVEL_BONUS || level == LEVEL_SHARED){
-        // In a bonus/shared map
-        return 0;
-    }
-    if(!cc_allower_spawnkop()){
-        // This cc effect is already active or a transition isn't quite finished yet
-        return 0;
-    }
-    if ((TBVoidByte & 0x30) == 0) {
-        // In a tag barrel. Kops hate this one trick.
-        return 0;
-    }
-    return 1;
-}
-
 void sendDeath(void) {
     if (isAPEnabled()) {
         if (!isActorLoaded(NEWACTOR_KOPDUMMY)) {
@@ -285,7 +286,7 @@ void sendDeath(void) {
     }
 }
 
-static char *ap_strings[] = {
+ROM_DATA static char *ap_strings[] = {
     "APCLIENT CONNECTED",
     "APCLIENT DISCONNECTED"
 };

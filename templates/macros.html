@@ -329,6 +329,17 @@
                             {% endif %}
                         </option>
                     {% endif %}
+                    {% if subtype != "free_tiny" and subtype != "mport_to_helm" and subtype != "kong" %}
+                        <option id="any" {% if default == "any" %}selected{% endif %} value="any">
+                            {% if subtype == "guns" %}Any Gun
+                            {% elif subtype == "instruments" %}Any Instrument
+                            {% elif subtype == "kong" %}You should not see this
+                            {% elif subtype == "mport_to_helm" %}You should not see this
+                            {% elif subtype == "free_lanky" %}Any Instrument + Any Gun
+                            {% elif subtype == "free_tiny" %}You should not see this
+                            {% endif %}
+                        </option>
+                    {% endif %}
                 {% else %}
                     <option id="bongos" {% if default == "bongos" %}selected{% endif %} value="bongos">Bongos</option>
                     <option id="guitar" {% if default == "guitar" %}selected{% endif %} value="guitar">Guitar</option>

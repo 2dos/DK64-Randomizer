@@ -16,7 +16,6 @@ from worker.worker import api as worker_api  # noqa
 from controller.app import ALLOWED_REFERRERS, API_KEYS, api  # noqa
 from controller.app import admin_portal  # noqa
 
-
 app = Flask(__name__, static_folder="", template_folder="templates")
 flask_api_doc(app, config_path="./controller/swagger.yaml", url_prefix="/api/doc", title="API doc")
 app.register_blueprint(api)

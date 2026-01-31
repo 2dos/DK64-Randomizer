@@ -82,3 +82,4 @@
 .definelabel handleRaisedGalleonWater, 0x806C9658
 .definelabel performEEPROMAction, 0x8060B8F8
 .definelabel getControllerContainer, 0x8060AC34
+.definelabel checkIntroStoryPlaying, 0x8070B318

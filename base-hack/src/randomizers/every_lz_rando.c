@@ -35,7 +35,7 @@ void replace_zones(int init_flag) {
 	}
 }
 
-static const unsigned char vanilla_blast_maps[] = {
+ROM_RODATA_NUM static const unsigned char vanilla_blast_maps[] = {
 	MAP_JAPESBBLAST,
 	MAP_AZTECBBLAST,
 	MAP_FACTORYBBLAST,

@@ -240,6 +240,7 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeLabelValue(ROM_COPY, 0x80747EB0, Overlay.Static, "melonCrateItemHandler", offset_dict)
     # Grabbable Item Rando
     writeHook(ROM_COPY, 0x8069C210, Overlay.Static, "spawnHoldableObject", offset_dict)
+    writeFunction(ROM_COPY, 0x8069BDE8, Overlay.Static, "renderBoulderSparkles", offset_dict)
     writeFunction(ROM_COPY, 0x8067BDA0, Overlay.Static, "updateKegIDs", offset_dict)
     # Jetpac Reward Text
     addr = getROMAddress(0x8002EABC, Overlay.Jetpac, offset_dict)
@@ -298,7 +299,9 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeValue(ROM_COPY, 0x806F6F76, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Film Refill
     writeFunction(ROM_COPY, 0x806F6F78, Overlay.Static, "hasFlagMove", offset_dict)
     writeValue(ROM_COPY, 0x806F916A, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Film max
-    writeFunction(ROM_COPY, 0x806F916C, Overlay.Static, "hasFlagMove", offset_dict)
+    # writeFunction(ROM_COPY, 0x806F916C, Overlay.Static, "hasFlagMove", offset_dict)
+    writeValue(ROM_COPY, 0x806F916C, Overlay.Static, 0x00000000, offset_dict, 4)  # NOP (Skip this check, as the line below will render it obsolete)
+    writeValue(ROM_COPY, 0x806F9174, Overlay.Static, 0x00000000, offset_dict, 4)  # NOP (Skip setting film count to 0, to prevent that from happening)
     # Shockwave
     writeFunction(ROM_COPY, 0x806CA308, Overlay.Static, "hasFlagMove", offset_dict)
     writeFunction(ROM_COPY, 0x806F6EBC, Overlay.Static, "hasFlagMove", offset_dict)
@@ -429,7 +432,8 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeValue(ROM_COPY, 0x80681C16, Overlay.Static, 0xF, offset_dict)  # Disregard most special code from a bonus
     # Ice Trap Music
     writeFunction(ROM_COPY, 0x806C5F44, Overlay.Static, "playIceTrapSong", offset_dict)
-    writeFunction(ROM_COPY, 0x806C5F54, Overlay.Static, "cancelIceTrapSong", offset_dict)
+    writeFunction(ROM_COPY, 0x806C5F54, Overlay.Static, "cancelIceTrapSong", offset_dict)  # Picture taken
+    writeFunction(ROM_COPY, 0x80727E90, Overlay.Static, "cancelIceTrapSong", offset_dict)  # Out of range
     # Remove set flag for weird checks
     writeValue(ROM_COPY, 0x8002A490, Overlay.Race, 0, offset_dict, 4)  # Seal Race
     writeValue(ROM_COPY, 0x8002B8F0, Overlay.Race, 0, offset_dict, 4)  # Castle Car

@@ -142,8 +142,8 @@ LogicRegions = {
     ]),
 
     Regions.BeyondHatch: Region("Beyond Hatch", HintRegion.Storage, Levels.FranticFactory, True, -1, [
-        LocationLogic(Locations.ChunkyKong, lambda l: l.CanFreeChunky()),
-        LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: l.CanFreeChunky()),
+        LocationLogic(Locations.ChunkyKong, lambda l: Events.ChunkyFreed in l.Events),
+        LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: Events.ChunkyFreed in l.Events),
         LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: ((l.punch and l.chunky) or l.CanPhase()) and ((l.punch and l.CanSlamSwitch(Levels.FranticFactory, 1)) or l.generalclips) and l.ischunky),
         LocationLogic(Locations.RainbowCoin_Location02, lambda l: (l.punch and l.chunky) or l.CanPhase()),
         LocationLogic(Locations.FactoryKasplatStorage, lambda l: not l.settings.kasplat_rando),
@@ -173,7 +173,7 @@ LogicRegions = {
     ]),
 
     Regions.FactoryStoragePipe: Region("Factory Storage Pipe", HintRegion.Storage, Levels.FranticFactory, False, None, [], [
-        # If we were to move the switch to Chunky's cage back up this pipe, the event would go here.
+        Event(Events.ChunkyFreed, lambda l: l.CanFreeChunky())
     ], [
         TransitionFront(Regions.BeyondHatch, lambda _: True),
     ]),
@@ -182,7 +182,7 @@ LogicRegions = {
     Regions.FactoryArcadePole: Region("Factory Arcade Upper Pole", HintRegion.Storage, Levels.FranticFactory, False, None, [], [], [
         TransitionFront(Regions.FactoryArcadeTunnel, lambda l: l.climbing),
         TransitionFront(Regions.BeyondHatch, lambda _: True, Transitions.FactoryArcadeToStorage)
-    ]),
+    ], Transitions.FactoryStorageToArcade),
 
     Regions.FactoryArcadeTunnel: Region("Arcade Tunnel", HintRegion.Storage, Levels.FranticFactory, False, None, [
         LocationLogic(Locations.NintendoCoin, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey and (l.GetCoins(Kongs.donkey) >= 2)),
@@ -255,7 +255,7 @@ LogicRegions = {
 
     Regions.UpperCore: Region("Upper Core", HintRegion.ProductionRoom, Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryDiddyProductionRoom, lambda l: Events.DiddyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and l.spring and l.diddy),
-        LocationLogic(Locations.FactoryLankyProductionRoom, lambda l: Events.LankyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and (l.handstand and l.lanky) or (l.tiny and l.settings.free_trade_items and l.slope_resets)),
+        LocationLogic(Locations.FactoryLankyProductionRoom, lambda l: Events.LankyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and ((l.handstand and l.lanky) or (l.tiny and l.settings.free_trade_items and l.slope_resets))),
         LocationLogic(Locations.FactoryTinyProductionRoom, lambda l: Events.TinyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and l.twirl and l.istiny, MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryKasplatProductionTop, lambda l: not l.settings.kasplat_rando)
     ], [], [

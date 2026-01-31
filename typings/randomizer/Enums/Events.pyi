@@ -209,3 +209,5 @@ class Events(IntEnum):
     HelmLobbyW1aTagged = 206
     HelmLobbyW1bTagged = 207
     KilledRabbit = 208
+    LankyMushroomSlamSwitch = 209
+    ChunkyFreed = 210

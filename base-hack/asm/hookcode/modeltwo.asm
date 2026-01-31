@@ -99,3 +99,13 @@ ModelTwoToSetupState:
     lbu $t9, 0x8F ($t8)
     j 0x8063BA0C
     sb $t9, 0x12 ($v1)
+
+AnyInsPadCheck:
+    addiu $a1, $zero, 0x297  ; Any instrument pad
+    beq $a1, $v0, AnyInsPadCheck_finish
+    addiu $v1, $zero, 1
+    or $v1, $zero, $zero
+
+    AnyInsPadCheck_finish:
+        j 0x806E5644
+        sltiu $at, $t7, 5

@@ -10,7 +10,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Random Helm Length
 - Ice Traps Damage Player
 - Item Reward Previews
-- Randomize Keys Required to Beat K. Rool
+- Randomize Amount of Starting Keys
 - Random K. Rool Phase Count
 - Troff n Scoff Portal Numbers
 - Quality Of Life
@@ -26,7 +26,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 # Always Off
 - Dim Solved Hints
 - Enable Plandomizer
-- Vanilla K. Rool Key Requirement
 - Irondonk
 - Guaranteed Starting Keys
 - No Joke Hints
@@ -50,6 +49,19 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Auto Complete Bonus Barrels: 10%
 - Bonus Barrel Rando: 70%
 - Boss Location Rando: 80%
+- Bosses Selected: 
+	- Japesboss: 80%
+	- Aztecboss: 80%
+	- Factoryboss: 80%
+	- Galleonboss: 80%
+	- Fungiboss: 80%
+	- Cavesboss: 80%
+	- Castleboss: 80%
+	- Krooldonkeyphase: 80%
+	- Krooldiddyphase: 80%
+	- Kroollankyphase: 80%
+	- Krooltinyphase: 80%
+	- Kroolchunkyphase: 80%
 - Randomize CB Locations: 60%
 - Cb Rando List Selected: 
 	- Junglejapes: 90%
@@ -173,6 +185,9 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Common: 40%
 	- Frequent: 10%
 	- Pain: 5%
+- Ice Trap Model: 
+	- Simple: 30%
+	- Complex: 70%
 - Item Rando List Selected: 
 	- Shop: 95%
 	- Banana: 95%
@@ -207,10 +222,18 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Default: 100%
 - Kong Model Lanky: 
 	- Default: 100%
+- Kong Model Mode: 
+	- None: 40%
+	- Random One: 40%
+	- Random All: 20%
 - Kong Model Tiny: 
 	- Default: 100%
-- Key 8 Required: 70%
-- Shuffle Boss Kong Required: 50%
+- Don't Start with Key 8: 70%
+- Require Beating K. Rool: 70%
+- K. Rool in Boss Pool: 
+	- Off: 25%
+	- Krool Only: 50%
+	- Full Shuffle: 25%
 - Shuffle K. Rool Phases: 80%
 - Entrance Randomizer: 
 	- Vanilla: 20%
@@ -297,6 +320,8 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Forest Yellow Tunnel: 75%
 	- Caves Igloo Pads: 80%
 	- Caves Ice Walls: 70%
+	- Helm Star Gates: 60%
+	- Helm Punch Gates: 60%
 - Shorten Boss Fights: 80%
 - Shuffle Helm Location / Include Helm: 70%
 - Shuffle Shops: 70%

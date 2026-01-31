@@ -2660,16 +2660,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Ballroom,
         locations=[
-            [1, 1.0, 496, 120, 1250],
-            [1, 1.0, 496, 130, 1250],
-            [1, 1.0, 496, 140, 1250],
-            [1, 1.0, 496, 150, 1250],
-            [1, 1.0, 496, 160, 1250],
-            [1, 1.0, 605, 120, 1250],
-            [1, 1.0, 605, 130, 1250],
-            [1, 1.0, 605, 140, 1250],
-            [1, 1.0, 605, 150, 1250],
-            [1, 1.0, 605, 160, 1250],
+            [5, 1.0, 550, 133, 1265],
         ],
     ),
     ColoredBananaGroup(

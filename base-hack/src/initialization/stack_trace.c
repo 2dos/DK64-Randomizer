@@ -36,7 +36,7 @@ typedef struct crash_handler_info {
     /* 0x130 */ int float_registers[32]; // float type, but will be represented as int on stack trace
 } crash_handler_info;
 
-static char* general_text[] = {
+ROM_RODATA_NUM static const char* general_text[] = {
     "V0:%08X\tV1:%08X\tA0:%08X\n",
     "A1:%08X\tA2:%08X\tA3:%08X\n",
     "T0:%08X\tT1:%08X\tT2:%08X\n",
@@ -49,7 +49,7 @@ static char* general_text[] = {
     "RA:%08X\tLO:%08X\tHI:%08X\n",
 };
 
-static char* float_text[] = {
+ROM_RODATA_NUM static const char* float_text[] = {
     "F00:%08X\tF01:%08X\tF02:%08X\n",
     "F03:%08X\tF04:%08X\tF05:%08X\n",
     "F06:%08X\tF07:%08X\tF08:%08X\n",
@@ -63,7 +63,7 @@ static char* float_text[] = {
     "F30:%08X\tF31:%08X\n",
 };
 
-static char* general_causes[] = {
+ROM_RODATA_NUM static const char* general_causes[] = {
     "INTERRUPT",
     "TLB MODIFICATION", 
     "TLB EXCEPTION ON LOAD", 
@@ -84,7 +84,7 @@ static char* general_causes[] = {
     "VIRTUAL COHERENCY ON DATA"
 };
 
-static char* float_causes[] = {
+ROM_RODATA_NUM static const char* float_causes[] = {
     "UNIMPLEMENTED OPERATION", 
     "INVALID OPERATION", 
     "DIVISION BY ZERO", 
@@ -124,13 +124,13 @@ void CrashHandler(crash_handler_info* info) {
     printDebugText("GENERAL EXCEPTION: %s\n", (int)general_causes[cause_index], 0, 0, 0);
     // Float Exception
     int flag = FPCSR_CE;
-    for (int i = 0; i < sizeof(float_causes)/4; i++) {
+    for (unsigned int i = 0; i < sizeof(float_causes)/4; i++) {
         if (info->fcsr & flag) {
             printDebugText("FLOAT EXCEPTION: %s\n", (int)float_causes[i], 0, 0, 0);
         }
         flag >>= 1;
     }
-    printDebugText("PC:%08X\tFCSR:%08X\tTHREAD:%d\n", (int)info->pc, (int)info->fcsr, __osGetThreadId(info), 0);
+    printDebugText("PC:%08X\tFCSR:%08X\tTHREAD:%d\n", (int)info->pc, (int)info->fcsr, __osGetThreadId((OSThread*)info), 0);
     for (int i = 0; i < 10; i++) {
         int reg_start = 3 * i;
         int v1 = info->general_registers[reg_start][1];

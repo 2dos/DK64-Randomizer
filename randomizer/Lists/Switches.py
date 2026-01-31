@@ -114,6 +114,10 @@ SwitchNameDict = {
         SwitchType.PadMove: "Gorilla Gone (Chunky)",
         SwitchType.SlamSwitch: "Chunky",
     },
+    Kongs.any: {
+        SwitchType.GunSwitch: "Any Gun",
+        SwitchType.InstrumentPad: "Any Instrument",
+    },
 }
 
 

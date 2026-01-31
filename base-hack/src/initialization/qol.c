@@ -71,7 +71,7 @@ void quickWrinklyTextboxes(void) {
     unkTextFunction(CurrentActorPointer_0);
 }
 
-static char boot_speedup_done = 0;
+ROM_DATA static char boot_speedup_done = 0;
 void bootSpeedup(void) {
     /**
      * @brief Speed up the boot process by reducing the amount of setups the game is loading
@@ -141,8 +141,8 @@ void initQoL_FastWarp(void) {
     }
 }
 
-static const char exittoisles[] = "EXIT TO ISLES";
-static const char exittospawn[] = "EXIT TO SPAWN";
+ROM_RODATA_NUM static const char exittoisles[] = "EXIT TO ISLES";
+ROM_RODATA_NUM static const char exittospawn[] = "EXIT TO SPAWN";
 
 void writeSpawn(int map, int exit) {
     *(short*)(0x8071454A) = map;

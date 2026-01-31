@@ -3758,15 +3758,15 @@ door_locations = {
         #     location=[1562.4, 166, 1983, 284],  # It is not possible to properly rotate this door to match the slope, due to how DK64 works.
         #     group=8,
         # ),
-        DoorData(
-            name="Near Cranky",
-            map=Maps.CrystalCaves,
-            logicregion=Regions.CrystalCavesMain,
-            location=[1027, 294, 1640, 58.25],
-            rx=-11,
-            rz=-12,
-            group=8,
-        ),
+        # DoorData(
+        #     name="Near Cranky",
+        #     map=Maps.CrystalCaves,
+        #     logicregion=Regions.CrystalCavesMain,
+        #     location=[1027, 294, 1640, 58.25],
+        #     rx=-11,
+        #     rz=-12,
+        #     group=8,
+        # ),
         DoorData(
             name="Behind giant boulder ice wall",
             map=Maps.CrystalCaves,

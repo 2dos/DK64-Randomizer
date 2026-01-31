@@ -16,7 +16,7 @@ from randomizer.Lists.Songs import song_data, song_idx_list
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
 from randomizer.Patching.Library.Generic import Overlay, IsDDMSSelected
-from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
+from randomizer.Patching.Library.Assets import TableNames, writeRawFile
 from randomizer.Patching.Library.ASM import writeValue, populateOverlayOffsets, getROMAddress
 
 storage_banks = {
@@ -458,9 +458,7 @@ def insertUploaded(
                 song.output_name = new_song.name
                 song.output_name_short = new_song.name_short
                 song.shuffled = True
-                ROM_COPY.seek(getPointerLocation(TableNames.MusicMIDI, song.mem_idx))
-                zipped_data = gzip.compress(new_song_data, compresslevel=9)
-                ROM_COPY.writeBytes(zipped_data)
+                writeRawFile(TableNames.MusicMIDI, song.mem_idx, False, new_song_data, ROM_COPY)
 
 
 ENABLE_CHAOS = False  # Enable DK Rap everywhere
@@ -655,10 +653,10 @@ def randomize_music(settings: Settings, ROM_COPY: ROM):
                 ROM_COPY.seek(song["pointing_to"])
                 ROM_COPY.writeBytes(stored_data)
                 # Update the uncompressed data table to have our new size.
-                ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(song)))
-                new_bytes = ROM_COPY.readBytes(4)
-                ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(rap)))
-                ROM_COPY.writeBytes(new_bytes)
+                # ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(song)))
+                # new_bytes = ROM_COPY.readBytes(4)
+                # ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(rap)))
+                # ROM_COPY.writeBytes(new_bytes)
                 # Update data
                 writeSongMemory(ROM_COPY, song["index"], rap_song_data.memory)
 
@@ -749,9 +747,9 @@ def shuffle_music(ROM_COPY: ROM, settings, music_data, music_names, pool_to_shuf
         stored_data = ROM_COPY.readBytes(song["compressed_size"])
         stored_song_data[song["index"]] = stored_data
         # Update the uncompressed data table to have our new size.
-        ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
-        new_bytes = ROM_COPY.readBytes(4)
-        stored_song_sizes[song["index"]] = new_bytes
+        # ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
+        # new_bytes = ROM_COPY.readBytes(4)
+        # stored_song_sizes[song["index"]] = new_bytes
 
     for song, shuffled_song in zip(pool_to_shuffle, shuffled_list):
         # If we are inserting an assigned vanilla song, we should write the
@@ -765,19 +763,17 @@ def shuffle_music(ROM_COPY: ROM, settings, music_data, music_names, pool_to_shuf
             songs = song_rom_data[shuffled_song["index"]]["data"]
             song_name = song_rom_data[shuffled_song["index"]]["name"]
             song_short_name = song_name
-            song_size = song_rom_data[shuffled_song["index"]]["size"]
             song_memory = song_rom_data[shuffled_song["index"]]["memory"]
         else:
             songs = stored_song_data[shuffled_song["index"]]
             song_name = song_idx_list[shuffledIndex].output_name
             song_short_name = song_idx_list[shuffledIndex].output_name_short
-            song_size = stored_song_sizes[shuffled_song["index"]]
             song_memory = song_idx_list[shuffledIndex].memory
         ROM_COPY.seek(song["pointing_to"])
         ROM_COPY.writeBytes(songs)
         # Update the uncompressed data table to have our new size.
-        ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
-        ROM_COPY.writeBytes(song_size)
+        # ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
+        # ROM_COPY.writeBytes(song_size)
         writeSongMemory(ROM_COPY, originalIndex, song_memory)
         music_names[originalIndex] = song_short_name
         if song_idx_list[originalIndex].type == SongType.BGM:

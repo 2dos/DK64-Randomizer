@@ -13,17 +13,17 @@
 #define ORANGE_GUN_SFX 400
 #define ORANGE_GUN_VARIANCE 5
 
-static const char* krool_name = "K. ROOL";
-static const char* cranky_name = "CRANKY";
-static const char* candy_name = "CANDY";
-static const char* funky_name = "FUNKY";
+ROM_RODATA_PTR static const char* krool_name = "K. ROOL";
+ROM_RODATA_PTR static const char* cranky_name = "CRANKY";
+ROM_RODATA_PTR static const char* candy_name = "CANDY";
+ROM_RODATA_PTR static const char* funky_name = "FUNKY";
 
 typedef struct kongmodel_recolor_data {
     /* 0x000 */ unsigned char kong;
     /* 0x001 */ unsigned char model;
 } kongmodel_recolor_data;
 
-static const kongmodel_recolor_data kongmodel_rc[] = {
+ROM_RODATA_NUM static const kongmodel_recolor_data kongmodel_rc[] = {
     {.kong = KONG_DK, .model=KONGMODEL_CRANKY},
     {.kong = KONG_TINY, .model=KONGMODEL_CANDY},
     {.kong = KONG_DIDDY, .model=KONGMODEL_FUNKY},
@@ -31,7 +31,7 @@ static const kongmodel_recolor_data kongmodel_rc[] = {
 
 void* updateKongTB(int malloc_size) {
     unsigned short* paad = CurrentActorPointer_0->paad;
-    for (int k = 0; k < sizeof(kongmodel_rc)/sizeof(kongmodel_recolor_data); k++) {
+    for (unsigned int k = 0; k < sizeof(kongmodel_rc)/sizeof(kongmodel_recolor_data); k++) {
         int kong_index = kongmodel_rc[k].kong;
         if (*paad == (2 + kong_index)) {
             if (Rando.kong_models[kong_index] == kongmodel_rc[k].model) {
@@ -75,7 +75,7 @@ void updateActorHandStates(actorData* actor, int type) {
     handleCutsceneKong(actor, type);
 }
 
-static const char tied_model_actors[] = {
+ROM_RODATA_NUM static const char tied_model_actors[] = {
     -1, 3, 3, 3, // 0-3
     2, 2, 4, 4, // 4-7
     4, 5, 5, 5, // 8-11
@@ -200,20 +200,20 @@ void initModelChanges(void) {
             case KONGMODEL_KROOL_CUTSCENE:
             case KONGMODEL_KROOL_FIGHT:
                 if (Rando.kong_models[i] != KONGMODEL_KRUSHA) {
-                    KongTextNames[i] = krool_name;
+                    KongTextNames[i] = (char*)krool_name;
                 }
                 break;
             case KONGMODEL_CRANKY:
                 KongTagNames[i] = 8;
-                KongTextNames[i] = cranky_name;
+                KongTextNames[i] = (char*)cranky_name;
                 break;
             case KONGMODEL_CANDY:
                 KongTagNames[i] = 9;
-                KongTextNames[i] = candy_name;
+                KongTextNames[i] = (char*)candy_name;
                 break;
             case KONGMODEL_FUNKY:
                 KongTagNames[i] = 10;
-                KongTextNames[i] = funky_name;
+                KongTextNames[i] = (char*)funky_name;
                 break;
             default:
                 break;
@@ -245,7 +245,7 @@ int determineShockwaveColor(actorData* shockwave) {
     return model;
 }
 
-static FogMapping fog_data[] = {
+ROM_DATA static FogMapping fog_data[] = {
     {.rgb.red = 0x8A, .rgb.green = 0x52, .rgb.blue = 0x16, .map_index = MAP_AZTEC, .fog_entry=990, .fog_cap = 999},
     {.rgb.red = 0, .rgb.green = 0, .rgb.blue = 0, .map_index = MAP_CAVES, .fog_entry=990, .fog_cap = 999},
     {.rgb.red = 0, .rgb.green = 0, .rgb.blue = 0, .map_index = MAP_CASTLE, .fog_entry=990, .fog_cap = 999},
@@ -333,7 +333,7 @@ void updateSpriteColor(sprite_info *sprite) {
 void colorRainbowAmmo(void* actor, float x, float y, float z, int unk0) {
     allocateBone(actor, x, y, z, unk0);
     if (Rando.rainbow_ammo) {
-        loadSpriteFunction(&updateSpriteColor);
+        loadSpriteFunction((int)&updateSpriteColor);
     }
 }
 
@@ -353,19 +353,122 @@ void colorRainbowAmmoHUD_0(sprite_info *sprite) {
 
 void setHUDUpdateFunction(void* function, int item_index) {
     if ((item_index == 2) || (item_index == 3)) {
-        loadSpriteFunction(&colorRainbowAmmoHUD);
+        loadSpriteFunction((int)&colorRainbowAmmoHUD);
     } else {
-        loadSpriteFunction(function);
+        loadSpriteFunction((int)function);
     }
 }
+
 void setHUDUpdateFunction_0(void* function, int item_index, int control_type) {
     if ((item_index == 2) || (item_index == 3)) {
-        loadSpriteFunction(&colorRainbowAmmoHUD_0);
+        loadSpriteFunction((int)&colorRainbowAmmoHUD_0);
     } else if (control_type == 16) {
         loadSpriteFunction((int)&totalsSprite);
     } else if (control_type == 17) {
         loadSpriteFunction((int)&checksSprite);
     } else {
-        loadSpriteFunction(function);
+        loadSpriteFunction((int)function);
     }
+}
+
+ROM_RODATA_NUM static const unsigned char bonus_ost[] = {
+    SONG_MINIGAMES,
+    SONG_STEALTHYSNOOP,
+    SONG_BATTLEARENA,
+    SONG_MADMAZEMAUL,
+    SONG_MINECARTMAYHEM,
+    SONG_MONKEYSMASH,
+    SONG_HELMBONUS,
+    SONG_ENGUARDE,
+    SONG_RAMBI,
+};
+
+ROM_RODATA_NUM static const unsigned char boss_ost[] = {
+    SONG_JAPESDILLO,
+    SONG_AZTECDOGADON,
+    SONG_FACTORYJACK,
+    SONG_GALLEONPUFFTOSS,
+    SONG_FORESTDOGADON,
+    SONG_CAVESDILLO,
+    SONG_CASTLEKUTOUT,
+    SONG_KROOLBATTLE,
+    SONG_MINIBOSS,
+    SONG_FORESTSPIDER,
+};
+
+ROM_DATA static unsigned short current_boss_song = 0;
+
+int pickRandomFromPool(const unsigned char* pool, const int count) {
+    int rng = getRNGLower31() & 0xFF;
+    while (rng >= count) {
+        // Yes, I know rng % count is better, but if I don't do this, Wii U will crash
+        // What an A tier console....
+        rng -= count;
+    }
+    return pool[rng];
+}
+
+void playBonusSong(songs song, float volume) {
+    if (Rando.bonus_music_rando) {
+        song = pickRandomFromPool(&bonus_ost[0], sizeof(bonus_ost));
+    }
+    playSong(song, volume);
+}
+
+void playBossSong(songs song, float volume) {
+    if (Rando.boss_music_rando) {
+        if(current_boss_song != 0){
+            cancelMusic(current_boss_song, 0);
+            current_boss_song = 0;
+        } else {
+            song = pickRandomFromPool(&boss_ost[0], sizeof(boss_ost));
+            current_boss_song = song;
+        }
+    }
+    playSong(song, volume);
+}
+
+void playSongWCheck(songs song, float volume) {
+    if(song == SONG_KROOLENTRANCE && current_boss_song != 0){
+        // playing the K. Rool entrance theme after beating Chunky Phase
+        cancelMusic(current_boss_song, 0);
+        current_boss_song = 0;
+    } 
+    if (Rando.bonus_music_rando && inU8List(song, &bonus_ost[0], sizeof(bonus_ost))) {
+        song = pickRandomFromPool(&bonus_ost[0], sizeof(bonus_ost));
+    }
+    if (Rando.boss_music_rando && inU8List(song, &boss_ost[0], sizeof(boss_ost))) {
+        if (current_boss_song != 0){
+            // A boss song is already playing or I must have done something wrong
+            return;
+        }
+        song = pickRandomFromPool(&boss_ost[0], sizeof(boss_ost));
+        current_boss_song = song;
+    }
+    playSong(song, volume);
+}
+
+void stopBossSong(songs song, int unk0){
+    if (current_boss_song != 0){
+        cancelMusic(current_boss_song, 0);
+        current_boss_song = 0;
+    } else {
+        cancelMusic(song, 0);
+    }
+}
+
+int resetBossSong(){
+    // resets the current_boss_song variable, because otherwise bugs can happen
+    // because I wasn't planning on manually stopping boss music in the first 4 K. Rool phases
+    // because that already automatically happens, and I appreciate dk64 for that
+    current_boss_song = 0;
+    return checkIntroStoryPlaying();
+}
+
+void playNotBossSong(songs song, float volume){
+    if(current_boss_song != 0){
+        cancelMusic(current_boss_song, 0);
+        current_boss_song = 0;
+    } 
+    playSong(song, volume);
 }

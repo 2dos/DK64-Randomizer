@@ -86,8 +86,8 @@ KLAPTRAPS_IN_SEARCHLIGHT_SEEK = 1
 CAMERA_RESET_REDUCTION = True
 PAL_DOGADON_REMATCH_FIRE = True
 REMOVE_CS_BARS = False
-JP_TEXTBOX_SIZES = False  # Temp
-FRAMEBUFFER_STORE_FIX = False  # Temp
+JP_TEXTBOX_SIZES = True
+FRAMEBUFFER_STORE_FIX = True
 BLOCK_FILE_DELETION_ON_CHECKSUM_MISMATCH = False
 HARDER_CRUSHERS = True
 BOULDERS_DONT_DESTROY = True
@@ -635,8 +635,6 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x80663D30, Overlay.Static, 0x240B1F40, offset_dict, 4)
         writeValue(ROM_COPY, 0x8062F09C, Overlay.Static, 0x240F1F40, offset_dict, 4)
 
-    adjustKongModelHandlers(ROM_COPY, settings, offset_dict)
-    krushaChanges(ROM_COPY, settings, offset_dict)
     writeHook(ROM_COPY, 0x8061A4C8, Overlay.Static, "AlterHeadSize", offset_dict)
     writeHook(ROM_COPY, 0x806198D4, Overlay.Static, "AlterHeadSize_0", offset_dict)
 
@@ -872,6 +870,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8002845A, Overlay.Menu, 11 + 1, offset_dict)  # Set cap to 12
 
     grabUpdates(ROM_COPY, settings, offset_dict, spoiler)
+    adjustKongModelHandlers(ROM_COPY, settings, offset_dict)
+    krushaChanges(ROM_COPY, settings, offset_dict)
     raceCoinRandoASMChanges(ROM_COPY, settings, offset_dict, spoiler)
     if settings.fast_warps:
         writeValue(ROM_COPY, 0x806EE692, Overlay.Static, 0x54, offset_dict)
@@ -1491,6 +1491,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806A89C4, Overlay.Static, "helmTime_exitLevel", offset_dict)  # Modify Function Call
     writeFunction(ROM_COPY, 0x806A89B4, Overlay.Static, "helmTime_exitBoss", offset_dict)  # Modify Function Call
     writeFunction(ROM_COPY, 0x806A8988, Overlay.Static, "helmTime_exitKRool", offset_dict)  # Modify Function Call
+    writeHook(ROM_COPY, 0x806A88C8, Overlay.Static, "ExitMapHook", offset_dict)
     if isQoLEnabled(spoiler, MiscChangesSelected.hint_textbox_hold):
         writeHook(ROM_COPY, 0x8070E83C, Overlay.Static, "TextHandler", offset_dict)
     if isQoLEnabled(spoiler, MiscChangesSelected.brighten_mad_maze_maul_enemies):
@@ -1693,6 +1694,15 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x80600DA2, Overlay.Static, 0x38, offset_dict)
     writeValue(ROM_COPY, 0x80600DA6, Overlay.Static, 0x70, offset_dict)
 
+    # Make music uncompressed
+    writeValue(ROM_COPY, 0x8060A2A8, Overlay.Static, 0x00001025, offset_dict, 4)  # or v0, zero, zero
+    writeValue(ROM_COPY, 0x8060A32C, Overlay.Static, 0, offset_dict, 4)  # nop
+    writeValue(ROM_COPY, 0x8060A31E, Overlay.Static, 0, offset_dict)
+    writeValue(ROM_COPY, 0x8060A30A, Overlay.Static, 0, offset_dict)
+
+    # Make music not interrupt itself
+    writeFunction(ROM_COPY, 0x8060A378, Overlay.Static, "playMusicDontStop", offset_dict)
+
     # Soundplayer Fix
     writeValue(ROM_COPY, 0x80735C9E, Overlay.Static, 0xFFFF, offset_dict)  # initSoundPlayer creates the event
     writeValue(ROM_COPY, 0x80735D0E, Overlay.Static, 0xFFFF, offset_dict)  # __sndpVoiceHandler checks for the event
@@ -1705,6 +1715,18 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Fix Null Lag Boost
     writeHook(ROM_COPY, 0x806CCA90, Overlay.Static, "fixNullLagBoost", offset_dict)
+
+    if settings.win_condition_spawns_ship and not (settings.helm_hurry and settings.archipelago):
+        writeValue(ROM_COPY, 0x80029706, Overlay.Menu, getHiSym("k_rool_text"), offset_dict)
+        writeValue(ROM_COPY, 0x8002970A, Overlay.Menu, getLoSym("k_rool_text"), offset_dict)
+        writeFloatUpper(ROM_COPY, 0x800296D2, Overlay.Menu, 280, offset_dict)
+        writeFloatUpper(ROM_COPY, 0x800296D6, Overlay.Menu, 192, offset_dict)
+        writeValue(ROM_COPY, 0x8002974E, Overlay.Menu, 0x3ECC, offset_dict)
+        writeValue(ROM_COPY, 0x80029752, Overlay.Menu, 0xCCCD, offset_dict)
+        writeFloat(ROM_COPY, 0x80033CA4, Overlay.Menu, 1, offset_dict)
+    else:
+        writeValue(ROM_COPY, 0x8002975C, Overlay.Menu, 0x02401025, offset_dict, 4)
+        writeValue(ROM_COPY, 0x80029760, Overlay.Menu, 0, offset_dict, 4)
 
     if settings.less_fragile_boulders:
         # Thrown boulders/vases/etc require getting thrown at a wall to destroy
@@ -1899,8 +1921,46 @@ def patchAssembly(ROM_COPY, spoiler):
         boss_kong = settings.boss_kongs[i]
         writeValue(ROM_COPY, 0x80744700 + (i * 2), Overlay.Static, boss_map, offset_dict)
         writeValue(ROM_COPY, 0x807446F0 + i, Overlay.Static, boss_kong, offset_dict, 1)
-        writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, i, offset_dict, 1)
+    for boss_map in boss_maps:
+        writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, 0xD, offset_dict, 1)  # Set map as a shared map
 
+    # Music Writes
+    writeFunction(ROM_COPY, 0x80024AE0, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x80025B6C, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x80027EBC, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x80028468, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x80029B5C, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x8002AA64, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x8002B6F8, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x8002C6D8, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x80025300, Overlay.Minecart, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x8002936C, Overlay.Critter, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x806BBAC8, Overlay.Static, "playBossSong", offset_dict)
+    writeFunction(ROM_COPY, 0x805FED60, Overlay.Static, "playSongWCheck", offset_dict)
+    writeFunction(ROM_COPY, 0x8061E280, Overlay.Static, "playSongWCheck", offset_dict)
+    writeFunction(ROM_COPY, 0x80629014, Overlay.Static, "playSongWCheck", offset_dict)  # also cancels Chunky Phase music
+    writeFunction(ROM_COPY, 0x8064142C, Overlay.Static, "playSongWCheck", offset_dict)
+    writeFunction(ROM_COPY, 0x8064143C, Overlay.Static, "playSongWCheck", offset_dict)
+    writeFunction(ROM_COPY, 0x80628E40, Overlay.Static, "stopBossSong", offset_dict)  # Dogadon1, Mad Jack, Dillo2, Dillo1, Pufftoss, Dogadon2
+    writeFunction(ROM_COPY, 0x80032788, Overlay.Boss, "playNotBossSong", offset_dict)  # King Kut Out, because who needs consistency, right?
+    writeFunction(ROM_COPY, 0x80605600, Overlay.Static, "resetBossSong", offset_dict)  # Prevent assumption "current_boss_music != 0, so boss music is playing" from being incorrect
+
+    writeHook(ROM_COPY, 0x806E563C, Overlay.Static, "AnyInsPadCheck", offset_dict)
+
+    # Adding Fairy slow pitch variant
+    writeValue(ROM_COPY, 0x8074564E, Overlay.Static, 0x7FFF, offset_dict)
+    writeValue(ROM_COPY, 0x807457B6, Overlay.Static, 0x925, offset_dict)
+    MUSIC_MIDI_OFFSET = 0x807FFA00
+    SONG_COUNT = 176
+    writeValue(ROM_COPY, 0x8060A2B6, Overlay.Static, getHi(MUSIC_MIDI_OFFSET), offset_dict)
+    writeValue(ROM_COPY, 0x8060A2BA, Overlay.Static, getLo(MUSIC_MIDI_OFFSET), offset_dict)
+    writeValue(ROM_COPY, 0x806010B2, Overlay.Static, getHi(MUSIC_MIDI_OFFSET), offset_dict)
+    writeValue(ROM_COPY, 0x806010BA, Overlay.Static, getLo(MUSIC_MIDI_OFFSET), offset_dict)
+    writeValue(ROM_COPY, 0x806010DA, Overlay.Static, getHi(MUSIC_MIDI_OFFSET), offset_dict)
+    writeValue(ROM_COPY, 0x806010DE, Overlay.Static, getLo(MUSIC_MIDI_OFFSET), offset_dict)
+    writeValue(ROM_COPY, 0x806010EE, Overlay.Static, (SONG_COUNT + 1) * 4, offset_dict)
+
+    #
     writeHook(ROM_COPY, 0x806C3260, Overlay.Static, "fixLankyPhaseHandState", offset_dict)  # Ensures K Rool has a head in the end cutscene if in Lanky Phase
     writeFunction(ROM_COPY, 0x80628034, Overlay.Static, "exitBoss", offset_dict)
 
@@ -2143,6 +2203,8 @@ def patchAssembly(ROM_COPY, spoiler):
         RemovedBarriersSelected.caves_ice_walls: [266, 267, 265],  # Entrance, Snide, Giant Boulder
         RemovedBarriersSelected.galleon_treasure_room: [0xA2],
         RemovedBarriersSelected.aztec_tiny_temple_ice: [0x45],
+        RemovedBarriersSelected.helm_punch_gates: [0x2A2, 0x2A3, 0x2A4, 0x2A5],
+        RemovedBarriersSelected.helm_star_gates: [0x2A1],
     }
     for barrier in barrier_flags:
         if IsDDMSSelected(settings.remove_barriers_selected, barrier):

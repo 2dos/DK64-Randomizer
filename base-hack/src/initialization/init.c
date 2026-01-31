@@ -12,10 +12,9 @@
  */
 #include "../../include/common.h"
 
-static char music_storage[MUSIC_SIZE];
-unsigned char HeadSize[MODEL_COUNT];
+ROM_DATA static char music_storage[MUSIC_SIZE + 0xF];
 
-char music_types[SONG_COUNT] = {
+ROM_RODATA_NUM const char music_types[SONG_COUNT] = {
 	-1,
 	SONGTYPE_BGM,
 	SONGTYPE_BGM,
@@ -194,10 +193,6 @@ char music_types[SONG_COUNT] = {
 	-1,
 };
 
-typedef struct musicInfo {
-	/* 0x000 */ short data[0xB0];
-} musicInfo;
-
 void fixMusicRando(void) {
 	/**
 	 * @brief Initialize Music Rando so that the data for each song is correct.
@@ -205,7 +200,7 @@ void fixMusicRando(void) {
 	 */
 	if (Rando.music_rando_on) {
 		// Type indexes
-		*(short*)(0x806CA97E) = 0x560 | ((songData[0x6B] >> 1) & 3); // Baboon Balloon
+		*(short*)(0x806CA97E) = 0x560 | ((songData[SONG_BABOONBALLOON] >> 1) & 3); // Baboon Balloon
 	}
 }
 
@@ -244,7 +239,7 @@ void initHack(int source) {
 	 */
 	if (LoadedHooks == 0) {
 		if ((source == 1) || (CurrentMap == MAP_NINTENDOLOGO)) {
-			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
+			*(int*)(0x8076BF38) = ((int)(&music_storage[0]) + 0xF) & 0xFFFFFFF0; // Increase music storage. Ensure it's 0x10 aligned
 			grab_lock_timer = -1;
 			bonusAutocomplete = Rando.resolve_bonus;
 			TextHoldOn = Rando.quality_of_life.textbox_hold;
@@ -306,7 +301,7 @@ void initHack(int source) {
 			style128Mtx[0xF] = 100;
 			writeEndSequence();
 			
-			initPauseMenu(); // Changes to enable more items
+			initHintFlags(); // Changes to enable more items
 			fixCutsceneModels();
 			if (Rando.hard_mode.lava_water) {
 				// Dynamic Textures
@@ -356,5 +351,3 @@ void quickInit(void) {
 	Gamemode = GAMEMODE_MAINMENU;
 	Mode = GAMEMODE_MAINMENU;
 }
-
-int balloon_path_pointers[PATH_CAP];

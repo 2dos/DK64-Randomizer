@@ -11,10 +11,10 @@
 
 #include "../../include/common.h"
 
-static unsigned char display_timer = 0;
-static short displayed_text_offset = -1;
-static short storedMusicTrackChannel[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-static char storedTrackState[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+ROM_DATA static unsigned char display_timer = 0;
+ROM_DATA static short displayed_text_offset = -1;
+ROM_DATA static short storedMusicTrackChannel[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+ROM_DATA static char storedTrackState[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 void resetDisplayedMusic(void) {
     DisplayedSongNamePointer = 0; // Uses a static address for autotrackers
@@ -62,29 +62,22 @@ void SpeedUpMusic(void) {
         return;
     }
     win_conditions win_con = Rando.win_condition;
-    if (win_con == GOAL_KROOLS_CHALLENGE) {
-        if (!canAccessKroolsChallenge()) {
+    if (Rando.win_condition_spawns_ship) {
+        if (!canAccessWinCondition()) {
             return;
         }
-    } else {
-        requirement_item win_con_item = Rando.win_condition_extra.item;
+    } else if (win_con == GOAL_CUSTOMITEM)  {
         int win_con_count = Rando.win_condition_extra.count;
-        // Checking items
-        if (win_con == GOAL_KROOL) {
-            win_con_item = REQITEM_KEY;
-            win_con_count = 9; // Triggers upon picking up the 8th key
-        } else if (win_con != GOAL_CUSTOMITEM) {
-            // Goal is ineligible for speed up
-            return;
-        }
         if (win_con_count < 2) {
             // Doesn't work for 1-item win conditions
             return;
         }
-        int item_count = getItemCountReq(win_con_item);
+        int item_count = getItemCountReq(Rando.win_condition_extra.item);
         if (item_count != (win_con_count - 1)) {
             return;
         }
+    } else{
+        return;
     }
     for (int i = 0; i < 4; i++) {
         songs song = SongInWriteSlot[i];
@@ -163,3 +156,10 @@ Gfx* displaySongNameHandler(Gfx* dl) {
     }
     return dl;
 }   
+
+void playMusicDontStop(ALCSPlayer* seq_p){
+    ALEventQueue* evtq = &seq_p->evtq;
+    alEvtqFlushType(evtq, 0x10);
+    alEvtqFlushType(evtq, 0x11);
+    alCSPPlay(seq_p);
+}

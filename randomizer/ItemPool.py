@@ -657,9 +657,9 @@ def DistributeItems(items: list, count: int, distro: list[int] = None) -> list:
 
 
 def FakeItems(settings):
-    """Return a list of Fake Items to be placed."""
+    """Return a copy of the list of Fake Items to be placed."""
     # This order of items helps ensure that with low ice trap counts, you see models other than GBs
-    return settings.trap_assortment
+    return [item for item in settings.trap_assortment]
 
 
 def FillerItems(settings):

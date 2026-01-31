@@ -2541,7 +2541,7 @@ BalloonList = [
         konglist=[Kongs.diddy],
         region=Regions.Testing,
         logic=lambda l: l.spring or l.CanMoontail(),
-        points=[[2259, 180, 1241], [2259, 1795, 1241]],
+        points=[[2259, 1800, 1241], [2259, 1795, 1241]],
     ),
     Balloon(
         id=59,

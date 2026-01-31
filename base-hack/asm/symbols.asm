@@ -145,12 +145,14 @@
 .definelabel QueuedCutsceneFunctions, 0x807452A0
 .definelabel ActorTimer, 0x8076A068
 .definelabel EEPROMType, 0x807EDEAC
+.definelabel PauseType, 0x807505CC
 
 .definelabel ExitPointer, 0x807FC900
 .definelabel ExitCount, 0x807FC904
+.definelabel CheatBitfield, 0x80744544
 
-.definelabel screenCenterX, 0x80744490
-.definelabel screenCenterY, 0x80744494
+.definelabel screenWidth, 0x80744490
+.definelabel screenHeight, 0x80744494
 .definelabel collisionPos, 0x807F621C
 .definelabel FileIndex, 0x807467C8
 .definelabel LockStackCount, 0x807F5A68
@@ -281,3 +283,7 @@
 
 .definelabel EnvironmentFog, 0x807F7360
 .definelabel RaceCoinCount, 0x80750AC4
+
+.definelabel DLPointers, 0x8076A050
+.definelabel CameraDL, 0x8076A048
+.definelabel DLArray, 0x80767CE8
