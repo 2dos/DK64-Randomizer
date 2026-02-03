@@ -314,6 +314,8 @@ def get_default_settings() -> dict:
         "wrinkly_available": True,
         "wrinkly_hints": WrinklyHints.standard,
         "wrinkly_location_rando": False,
+        "cb_rando_enabled": False,
+        "cb_rando_list_selected": [],
     }
 
 
@@ -357,14 +359,14 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     elif options.galleon_water_level == GalleonWaterLevel.option_raised:
         settings_dict["galleon_water"] = GalleonWaterSetting.raised
     else:
-        settings_dict["galleon_water"] = GalleonWaterSetting.vanilla
+        settings_dict["galleon_water"] = GalleonWaterSetting.lowered
     settings_dict["no_consumable_upgrades"] = options.remove_bait_potions.value
 
     # Custom location settings
     settings_dict["crown_placement_rando"] = options.crown_placement_rando.value
     settings_dict["random_crates"] = options.random_crates.value
     settings_dict["random_patches"] = options.random_patches.value
-    settings_dict["cb_rando_enabled"] = options.cb_rando_enabled.value
+    # settings_dict["cb_rando_enabled"] = options.cb_rando_enabled.value
 
 
 def apply_blocker_settings(settings_dict: dict, options) -> None:
@@ -906,6 +908,10 @@ def handle_fake_generation_settings(settings: Settings, multiworld) -> None:
                 passthrough = multiworld.re_gen_passthrough["Donkey Kong 64"]
                 settings.level_order = passthrough["LevelOrder"]
 
+                # Store custom location names for later restoration (after spoiler is created)
+                if passthrough.get("CustomLocationNames"):
+                    settings.ut_custom_location_names = passthrough["CustomLocationNames"]
+
                 # Switch logic lifted out of level shuffle due to static levels for UT
                 if settings.alter_switch_allocation:
                     for x in range(8):
@@ -964,6 +970,31 @@ def handle_fake_generation_settings(settings: Settings, multiworld) -> None:
                     settings.shuffled_location_types.append(Types.Funky)
                     settings.shuffled_location_types.append(Types.Candy)
                     settings.shuffled_location_types.append(Types.Snide)
+
+                # Restore starting region
+                if passthrough.get("StartingRegion"):
+                    from randomizer.Enums.Regions import Regions
+                    from randomizer.Enums.Maps import Maps as DK64Maps
+                    
+                    starting_region_data = passthrough["StartingRegion"]
+                    # Ensure all fields exist and are not None
+                    if all(key in starting_region_data and starting_region_data[key] is not None 
+                           for key in ["region", "map", "exit", "region_name", "exit_name"]):
+                        try:
+                            settings.starting_region = {
+                                "region": Regions[starting_region_data["region"]],
+                                "map": DK64Maps[starting_region_data["map"]],
+                                "exit": starting_region_data["exit"],
+                                "region_name": starting_region_data["region_name"],
+                                "exit_name": starting_region_data["exit_name"],
+                            }
+                        except (KeyError, TypeError) as e:
+                            # If there's an error converting the data, just skip it
+                            pass
+
+                # Store DK Portal locations for later restoration (after spoiler is created)
+                if passthrough.get("DKPortalLocations"):
+                    settings.ut_dk_portal_locations = passthrough["DKPortalLocations"]
 
 
 def fillsettings(options, multiworld, random_obj):

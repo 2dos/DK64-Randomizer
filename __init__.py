@@ -162,6 +162,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Maps import Maps
     from randomizer.Enums.Minigames import Minigames
     from randomizer.Enums.Locations import Locations as DK64RLocations
+    from randomizer.Enums.Regions import Regions
     from randomizer.Enums.Settings import (
         Enemies,
         GlitchesSelected,
@@ -885,6 +886,42 @@ if baseclasses_loaded:
 
             return cumulative_prices
 
+        def _restore_custom_location_names(self, custom_location_names: dict):
+            """Restore custom location names from slot data for UT regeneration."""
+            from randomizer.Lists.Location import LocationListOriginal as VanillaLocationList
+            from archipelago.Regions import BASE_ID
+            
+            if not custom_location_names:
+                return
+            
+            print(f"[DK64 UT] Restoring {len(custom_location_names)} custom location names")
+            
+            # Build enum_to_index mapping
+            enum_to_index = {location: index for index, location in enumerate(VanillaLocationList)}
+            # Build reverse mapping: location_id -> location_enum
+            index_to_enum = {index: location for location, index in enum_to_index.items()}
+            
+            restored_count = 0
+            sample_names = []
+            for loc_id_str, data in custom_location_names.items():
+                loc_id = int(loc_id_str)
+                # Calculate the enum from the location ID
+                index = loc_id - BASE_ID
+                if index in index_to_enum:
+                    location_enum = index_to_enum[index]
+                    if location_enum in self.spoiler.LocationList:
+                        # Restore the custom name
+                        if isinstance(data, dict) and "name" in data:
+                            new_name = data["name"]
+                            self.spoiler.LocationList[location_enum].name = new_name
+                            restored_count += 1
+                            if restored_count <= 5:
+                                sample_names.append(f"  {new_name}")
+            
+            print(f"[DK64 UT] Restored {restored_count} names, samples:")
+            for name in sample_names:
+                print(name)
+
         def _generate_archipelago_prices(self):
             """Generate custom shop prices for Archipelago.
 
@@ -1106,6 +1143,10 @@ if baseclasses_loaded:
             self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
             self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
 
+            # For UT regeneration, restore DK portal locations
+            if hasattr(settings, "ut_dk_portal_locations"):
+                self.spoiler.human_entry_doors = settings.ut_dk_portal_locations
+
             # Handle custom location shuffling BEFORE regions are created
             # This needs to happen early so the logic system knows about the new locations
             from randomizer.Lists.CustomLocations import resetCustomLocations
@@ -1115,6 +1156,9 @@ if baseclasses_loaded:
 
             resetCustomLocations(self.spoiler)
 
+            # Check if this is a UT regeneration
+            is_ut_regen = hasattr(settings, "ut_custom_location_names")
+            
             # Store custom location flags
             do_crown_shuffle = self.spoiler.settings.crown_placement_rando
             do_patch_shuffle = self.spoiler.settings.random_patches
@@ -1132,21 +1176,23 @@ if baseclasses_loaded:
             self.spoiler.settings.random_patches = do_patch_shuffle
             self.spoiler.settings.random_crates = do_crate_shuffle
 
-            # Now run custom location shuffles
-            if do_crown_shuffle:
-                crown_replacements = {}
-                crown_human_replacements = {}
-                ShuffleCrowns(self.spoiler, crown_replacements, crown_human_replacements)
-                self.spoiler.crown_locations = crown_replacements
-                self.spoiler.human_crowns = dict(sorted(crown_human_replacements.items()))
+            # For UT regeneration, skip custom location shuffles (will restore from passthrough later)
+            if not is_ut_regen:
+                # Normal generation - run custom location shuffles
+                if do_crown_shuffle:
+                    crown_replacements = {}
+                    crown_human_replacements = {}
+                    ShuffleCrowns(self.spoiler, crown_replacements, crown_human_replacements)
+                    self.spoiler.crown_locations = crown_replacements
+                    self.spoiler.human_crowns = dict(sorted(crown_human_replacements.items()))
 
-            if do_patch_shuffle:
-                human_patches = {}
-                self.spoiler.human_patches = ShufflePatches(self.spoiler, human_patches).copy()
+                if do_patch_shuffle:
+                    human_patches = {}
+                    self.spoiler.human_patches = ShufflePatches(self.spoiler, human_patches).copy()
 
-            if do_crate_shuffle:
-                human_crates = {}
-                self.spoiler.human_crates = ShuffleMelonCrates(self.spoiler, human_crates).copy()
+                if do_crate_shuffle:
+                    human_crates = {}
+                    self.spoiler.human_crates = ShuffleMelonCrates(self.spoiler, human_crates).copy()
 
             # Store/retrieve blocker values for seed group synchronization
             if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
@@ -1237,6 +1283,13 @@ if baseclasses_loaded:
             self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
 
             Generate_Spoiler(self.spoiler)
+            
+            # For UT: Restore custom location names after Generate_Spoiler
+            if hasattr(self.multiworld, "generation_is_fake") and hasattr(self.multiworld, "re_gen_passthrough"):
+                if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
+                    passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
+                    custom_location_names = passthrough.get("CustomLocationNames", {})
+                    self._restore_custom_location_names(custom_location_names)
 
             # Store/retrieve blocker values for seed group synchronization
             if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
@@ -1312,6 +1365,9 @@ if baseclasses_loaded:
                                 except (KeyError, AttributeError):
                                     print(f"Warning: Could not restore price for location {location_name}")
                             self.spoiler.settings.prices = restored_prices
+                        if passthrough.get("DKPortalLocations") and passthrough["DKPortalLocations"]:
+                            # Restore DK Portal locations
+                            self.spoiler.human_entry_doors = passthrough["DKPortalLocations"]
 
             # Handle hint preparation by initiating some variables
             self.hint_data = {
@@ -1927,20 +1983,12 @@ if baseclasses_loaded:
 
             custom_location_ids = set(battle_arena_locations) | set(dirt_range) | set(crate_range)
 
-            print(f"[DK64 get_custom_location_names] Checking {len(custom_location_ids)} potential custom locations")
-
             # Build a mapping from enum to index in LocationListOriginal
             enum_to_index = {location: index for index, location in enumerate(VanillaLocationList)}
 
             for location_enum in custom_location_ids:
                 if location_enum in self.spoiler.LocationList:
                     location_obj = self.spoiler.LocationList[location_enum]
-                    # Get the vanilla name to compare
-                    vanilla_name = VanillaLocationList[location_enum].name if location_enum in VanillaLocationList else None
-
-                    # Debug: Print info about Battle Arena locations
-                    if location_enum in battle_arena_locations:
-                        print(f"[DK64] Battle Arena enum {location_enum}: name='{location_obj.name}', vanilla='{vanilla_name}'")
 
                     # Include all custom locations, even if names haven't changed
                     # This is necessary because flags can be shuffled even if names stay the same
@@ -1948,7 +1996,6 @@ if baseclasses_loaded:
                         # Calculate the AP location ID using the INDEX, not the enum value
                         index = enum_to_index.get(location_enum)
                         if index is None:
-                            print(f"[DK64] WARNING: Could not find index for location enum {location_enum}")
                             continue
                         location_id = BASE_ID + index
                         # Get the flag ID from the location's default_mapid_data
@@ -1956,14 +2003,7 @@ if baseclasses_loaded:
                         if location_obj.default_mapid_data and len(location_obj.default_mapid_data) > 0:
                             flag_id = location_obj.default_mapid_data[0].flag
                         custom_locations[location_id] = {"name": location_obj.name, "flag": flag_id}
-                        # Debug: print first few
-                        if len(custom_locations) <= 3:
-                            print(f"  Found custom location: {location_obj.name} (ID: {location_id}, Enum: {location_enum}, Index: {index}, Flag: {flag_id}, was: {vanilla_name})")
-                else:
-                    if location_enum in battle_arena_locations:
-                        print(f"[DK64] WARNING: Battle Arena enum {location_enum} NOT in spoiler.LocationList!")
 
-            print(f"[DK64 get_custom_location_names] Found {len(custom_locations)} custom locations total")
             return custom_locations
 
         def fill_slot_data(self) -> dict:
@@ -2111,7 +2151,7 @@ if baseclasses_loaded:
             custom_locs = slot_data.get("CustomLocationNames", {})
             if custom_locs:
                 print(f"[DK64 Generation] Sending {len(custom_locs)} custom locations in slot_data")
-                for i, (loc_id, data) in enumerate(list(custom_locs.items())[:3]):
+                for i, (loc_id, data) in enumerate(list(custom_locs.items())[:5]):
                     if isinstance(data, dict):
                         print(f"  Location {loc_id}: {data.get('name')} (flag: {data.get('flag')})")
                     else:
@@ -2482,6 +2522,9 @@ if baseclasses_loaded:
             # Added starting region and DK portal locations
             starting_region = slot_data.get("StartingRegion", {})
             dk_portal_locations = slot_data.get("DKPortalLocations", {})
+            
+            # Custom location names for UT regeneration
+            custom_location_names = slot_data.get("CustomLocationNames", {})
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -2535,4 +2578,5 @@ if baseclasses_loaded:
             relevant_data["KongModels"] = kong_models
             relevant_data["StartingRegion"] = starting_region
             relevant_data["DKPortalLocations"] = dk_portal_locations
+            relevant_data["CustomLocationNames"] = custom_location_names
             return relevant_data

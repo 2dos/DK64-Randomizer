@@ -1158,12 +1158,10 @@ class DK64Context(CommonContext):
     def update_custom_location_names(self):
         """Update the check_id_to_name dictionary with custom location names from slot_data."""
         custom_location_data = self.slot_data.get("CustomLocationNames", {})
-        logger.info(f"CustomLocationNames in slot_data: {len(custom_location_data)} entries")
         if custom_location_data:
             # Convert string keys back to integers and extract both name and flag
             self.custom_check_id_to_name = {}
             self.custom_check_id_to_flag = {}
-            self.custom_flag_to_check_id = {}  # Reverse mapping for flag -> location ID
             for id_str, data in custom_location_data.items():
                 loc_id = int(id_str)
                 if isinstance(data, dict):
@@ -1171,8 +1169,6 @@ class DK64Context(CommonContext):
                     if data.get("flag") is not None:
                         flag_id = data.get("flag")
                         self.custom_check_id_to_flag[loc_id] = flag_id
-                        # Build reverse mapping: flag_id -> location_id
-                        self.custom_flag_to_check_id[flag_id] = loc_id
                 else:
                     # Backwards compatibility: if data is just a string (old format)
                     self.custom_check_id_to_name[loc_id] = data
@@ -1180,12 +1176,10 @@ class DK64Context(CommonContext):
             # Also update the client's dictionaries
             self.client.custom_check_id_to_name = self.custom_check_id_to_name
             self.client.custom_check_id_to_flag = self.custom_check_id_to_flag
-            self.client.custom_flag_to_check_id = self.custom_flag_to_check_id
 
             # Update the location_names lookup used by Archipelago's notification system
             # We need to inject custom names so they take priority over base names
             if hasattr(self, "location_names") and self.location_names:
-                logger.info(f"Updating location_names with {len(self.custom_check_id_to_name)} custom location names")
                 try:
                     # Get the game's location store ChainMap
                     if self.game in self.location_names._game_store:
@@ -1198,26 +1192,8 @@ class DK64Context(CommonContext):
                         # This modifies the ChainMap in place and ensures any existing references see the update
                         updated_chain = game_store.new_child(custom_names_dict)
                         self.location_names._game_store[self.game] = updated_chain
-
-                        logger.info(f"Successfully injected {len(custom_names_dict)} custom location names")
-
-                        # Verify a few
-                        for loc_id in list(custom_names_dict.keys())[:3]:
-                            verified_name = self.location_names.lookup_in_game(loc_id, self.game)
-                            logger.info(f"  Verified location {loc_id}: '{verified_name}'")
-                    else:
-                        logger.warning(f"Game '{self.game}' not found in location_names._game_store")
                 except Exception as e:
                     logger.error(f"Failed to update location_names: {e}", exc_info=True)
-            else:
-                logger.warning(f"location_names not available for update")
-
-            logger.info(f"Loaded {len(self.custom_check_id_to_name)} custom location names from slot_data")
-            logger.info(f"Built reverse mapping with {len(self.custom_flag_to_check_id)} flag->location_id entries")
-            # Debug: print first few custom locations
-            for i, (loc_id, name) in enumerate(list(self.custom_check_id_to_name.items())[:3]):
-                flag = self.custom_check_id_to_flag.get(loc_id)
-                logger.info(f"  Custom location {loc_id}: {name} (flag: {flag})")
 
     def event_invalid_slot(self):
         """Handle an invalid slot event."""

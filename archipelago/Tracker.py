@@ -4,8 +4,9 @@ from typing import Any
 
 
 def dk64_map_to_tab_index(data: Any) -> int:
-    # TODO: Make a map mapping for UT
-    pass
+    """Map DK64 data to a tab index for the tracker."""
+    # TODO: Implement proper map mapping for UT when map tabs are needed
+    return -1
 
 
 # PopTracker section name to Archipelago location ID mapping
