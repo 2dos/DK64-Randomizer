@@ -113,9 +113,7 @@ def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler, option
 
     # Build location table from spoiler's LocationList (which may have custom locations)
     all_locations_dynamic = {
-        spoiler.LocationList[location].name: (BASE_ID + index)
-        for index, location in enumerate(DK64RLocation.LocationListOriginal)
-        if spoiler.LocationList[location].type != Types.EnemyPhoto
+        spoiler.LocationList[location].name: (BASE_ID + index) for index, location in enumerate(DK64RLocation.LocationListOriginal) if spoiler.LocationList[location].type != Types.EnemyPhoto
     }
     all_locations_dynamic.update({"Victory": 0x00})  # Temp for generating goal location
 
@@ -513,7 +511,9 @@ def create_region(
 
 
 # CURRENTLY UNUSED - for some reason some Lanky shops are inaccessible??
-def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, region_obj: DK64Region, location_logics: typing.List[LocationLogic], settings: Settings, all_locations_dynamic: typing.Dict[str, int]) -> Region:
+def create_shop_region(
+    multiworld: MultiWorld, player: int, region_name: str, region_obj: DK64Region, location_logics: typing.List[LocationLogic], settings: Settings, all_locations_dynamic: typing.Dict[str, int]
+) -> Region:
     """Create a region for the given player's world."""
     # Shop regions have relatively straightforward logic that can be streamlined for performance purposes
     new_region = Region(region_name, player, multiworld)
@@ -630,7 +630,7 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
         # 1. Random starting region: modifies GameStart's exits to point to starting region
         # 2. DK Portal location rando: modifies entry handler exits to point to randomized portal locations
         if spoiler:
-            if region_id == Regions.GameStart and hasattr(settings, 'starting_region') and settings.starting_region:
+            if region_id == Regions.GameStart and hasattr(settings, "starting_region") and settings.starting_region:
                 region_obj = spoiler.RegionList[Regions.GameStart]
             elif settings.dk_portal_location_rando_v2 != DKPortalRando.off:
                 # Entry handler regions have their "exit level" transition (exit[1]) modified by DK portal rando
@@ -645,7 +645,7 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
                 }
                 if region_id in entry_handler_regions:
                     region_obj = spoiler.RegionList[region_id]
-        
+
         for exit in region_obj.exits:
             destination_name = exit.dest.name
 
@@ -723,10 +723,10 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
     if spoiler and settings.starting_region:
         starting_region_id = settings.starting_region.get("region")
         starting_region_obj = all_logic_regions.get(starting_region_id)
-        
+
         if starting_region_obj:
             starting_level = starting_region_obj.level
-            
+
             # Map each level to its exit transition
             level_exit_transitions = {
                 Levels.JungleJapes: Transitions.JapesToIsles,
@@ -737,12 +737,12 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
                 Levels.CrystalCaves: Transitions.CavesToIsles,
                 Levels.CreepyCastle: Transitions.CastleToIsles,
             }
-            
+
             # Only create exit level connection for non-Isles levels
             if starting_level in level_exit_transitions:
                 exit_transition_id = level_exit_transitions[starting_level]
-                starting_region_name = starting_region_id.name if hasattr(starting_region_id, 'name') else str(starting_region_id)
-                
+                starting_region_name = starting_region_id.name if hasattr(starting_region_id, "name") else str(starting_region_id)
+
                 # Find the exit transition in the level's entry handler region
                 # Entry handlers have the "exit level" transition defined in their exits
                 level_to_entry_handler = {
@@ -754,11 +754,11 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
                     Levels.CrystalCaves: Regions.CrystalCavesEntryHandler,
                     Levels.CreepyCastle: Regions.CreepyCastleEntryHandler,
                 }
-                
+
                 if starting_level in level_to_entry_handler:
                     entry_handler_region = level_to_entry_handler[starting_level]
                     entry_handler_obj = all_logic_regions.get(entry_handler_region)
-                    
+
                     if entry_handler_obj:
                         # Find the exit transition in the entry handler's exits
                         exit_transition = None
@@ -766,7 +766,7 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
                             if exit.exitShuffleId == exit_transition_id:
                                 exit_transition = exit
                                 break
-                        
+
                         # Create connection using the exit transition's logic
                         if exit_transition:
                             target_region_name = exit_transition.dest.name
@@ -776,7 +776,7 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
                                 starting_region_name,
                                 target_region_name,
                                 lambda state, player=world.player, exit=exit_transition: hasDK64RTransition(state, player, exit),
-                                "Exit Level from spawn: " + starting_region_name
+                                "Exit Level from spawn: " + starting_region_name,
                             )
 
     # For tracker regeneration with LZR, also handle deathwarps and exit level connections

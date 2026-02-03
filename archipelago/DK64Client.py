@@ -704,10 +704,10 @@ class DK64Client:
         for id in checks_to_read:
             # Get location name (prefer custom name if available)
             name = self.custom_check_id_to_name.get(id, check_id_to_name.get(id))
-            
+
             # Determine which flag to check for this location
             check = None
-            
+
             # For custom locations (crowns, dirt, crates), ONLY use the custom flag
             # Do not fall back to location_name_to_flag as that would use vanilla flags
             if id in self.custom_check_id_to_flag:
@@ -715,7 +715,7 @@ class DK64Client:
             else:
                 # For non-custom locations, use the vanilla flag mapping
                 check = location_name_to_flag.get(name)
-            
+
             if check:
                 # Check if this flag is set in memory
                 check_status = self.getCheckStatus("location", check)
@@ -1167,40 +1167,40 @@ class DK64Context(CommonContext):
             for id_str, data in custom_location_data.items():
                 loc_id = int(id_str)
                 if isinstance(data, dict):
-                    self.custom_check_id_to_name[loc_id] = data.get('name')
-                    if data.get('flag') is not None:
-                        flag_id = data.get('flag')
+                    self.custom_check_id_to_name[loc_id] = data.get("name")
+                    if data.get("flag") is not None:
+                        flag_id = data.get("flag")
                         self.custom_check_id_to_flag[loc_id] = flag_id
                         # Build reverse mapping: flag_id -> location_id
                         self.custom_flag_to_check_id[flag_id] = loc_id
                 else:
                     # Backwards compatibility: if data is just a string (old format)
                     self.custom_check_id_to_name[loc_id] = data
-            
+
             # Also update the client's dictionaries
             self.client.custom_check_id_to_name = self.custom_check_id_to_name
             self.client.custom_check_id_to_flag = self.custom_check_id_to_flag
             self.client.custom_flag_to_check_id = self.custom_flag_to_check_id
-            
+
             # Update the location_names lookup used by Archipelago's notification system
             # We need to inject custom names so they take priority over base names
-            if hasattr(self, 'location_names') and self.location_names:
+            if hasattr(self, "location_names") and self.location_names:
                 logger.info(f"Updating location_names with {len(self.custom_check_id_to_name)} custom location names")
                 try:
                     # Get the game's location store ChainMap
                     if self.game in self.location_names._game_store:
                         game_store = self.location_names._game_store[self.game]
-                        
+
                         # Create our custom names dict
                         custom_names_dict = {loc_id: name for loc_id, name in self.custom_check_id_to_name.items() if name}
-                        
+
                         # Use new_child() to prepend our custom names to the existing ChainMap
                         # This modifies the ChainMap in place and ensures any existing references see the update
                         updated_chain = game_store.new_child(custom_names_dict)
                         self.location_names._game_store[self.game] = updated_chain
-                        
+
                         logger.info(f"Successfully injected {len(custom_names_dict)} custom location names")
-                        
+
                         # Verify a few
                         for loc_id in list(custom_names_dict.keys())[:3]:
                             verified_name = self.location_names.lookup_in_game(loc_id, self.game)
@@ -1211,7 +1211,7 @@ class DK64Context(CommonContext):
                     logger.error(f"Failed to update location_names: {e}", exc_info=True)
             else:
                 logger.warning(f"location_names not available for update")
-            
+
             logger.info(f"Loaded {len(self.custom_check_id_to_name)} custom location names from slot_data")
             logger.info(f"Built reverse mapping with {len(self.custom_flag_to_check_id)} flag->location_id entries")
             # Debug: print first few custom locations

@@ -286,11 +286,12 @@ if baseclasses_loaded:
 
         class UTPackPath(settings.UserFilePath):
             """Path to external Universal Tracker pack .zip file.
-            
+
             Download the DK64 tracker pack from https://github.com/UmedMuzl/dk64pt/releases
             and point this setting to the downloaded .zip file to enable map tracking in Universal Tracker.
             Leave empty to disable map tracking.
             """
+
             description = "Universal Tracker Pack Path (Optional)"
 
         release_branch: ReleaseVersion = ReleaseVersion("master")
@@ -1111,26 +1112,26 @@ if baseclasses_loaded:
             from randomizer.ShuffleCrowns import ShuffleCrowns
             from randomizer.ShuffleCrates import ShuffleMelonCrates
             from randomizer.ShufflePatches import ShufflePatches
-            
+
             resetCustomLocations(self.spoiler)
-            
+
             # Store custom location flags
             do_crown_shuffle = self.spoiler.settings.crown_placement_rando
             do_patch_shuffle = self.spoiler.settings.random_patches
             do_crate_shuffle = self.spoiler.settings.random_crates
-            
+
             # Temporarily disable custom locations so Generate_Spoiler doesn't run them
             self.spoiler.settings.crown_placement_rando = False
             self.spoiler.settings.random_patches = False
             self.spoiler.settings.random_crates = False
-            
+
             Generate_Spoiler(self.spoiler)
-            
+
             # Restore settings
             self.spoiler.settings.crown_placement_rando = do_crown_shuffle
-            self.spoiler.settings.random_patches = do_patch_shuffle  
+            self.spoiler.settings.random_patches = do_patch_shuffle
             self.spoiler.settings.random_crates = do_crate_shuffle
-            
+
             # Now run custom location shuffles
             if do_crown_shuffle:
                 crown_replacements = {}
@@ -1138,11 +1139,11 @@ if baseclasses_loaded:
                 ShuffleCrowns(self.spoiler, crown_replacements, crown_human_replacements)
                 self.spoiler.crown_locations = crown_replacements
                 self.spoiler.human_crowns = dict(sorted(crown_human_replacements.items()))
-            
+
             if do_patch_shuffle:
                 human_patches = {}
                 self.spoiler.human_patches = ShufflePatches(self.spoiler, human_patches).copy()
-            
+
             if do_crate_shuffle:
                 human_crates = {}
                 self.spoiler.human_crates = ShuffleMelonCrates(self.spoiler, human_crates).copy()
@@ -1895,7 +1896,7 @@ if baseclasses_loaded:
 
         def get_custom_location_names(self) -> dict:
             """Get the mapping of location IDs to custom location data.
-            
+
             Returns a dictionary mapping location ID to a dict containing:
             - 'name': the actual custom name assigned during shuffle
             - 'flag': the flag ID used for checking completion in-game
@@ -1904,9 +1905,9 @@ if baseclasses_loaded:
             from randomizer.Enums.Locations import Locations as DK64RLocations
             from randomizer.Lists.Location import LocationListOriginal as VanillaLocationList
             from archipelago.Regions import BASE_ID
-            
+
             custom_locations = {}
-            
+
             # Get all custom location IDs
             # Battle Arenas are not in a contiguous range, so list them explicitly
             battle_arena_locations = [
@@ -1923,24 +1924,24 @@ if baseclasses_loaded:
             ]
             dirt_range = range(DK64RLocations.RainbowCoin_Location00, DK64RLocations.RainbowCoin_Location15 + 1)
             crate_range = range(DK64RLocations.MelonCrate_Location00, DK64RLocations.MelonCrate_Location12 + 1)
-            
+
             custom_location_ids = set(battle_arena_locations) | set(dirt_range) | set(crate_range)
-            
+
             print(f"[DK64 get_custom_location_names] Checking {len(custom_location_ids)} potential custom locations")
-            
+
             # Build a mapping from enum to index in LocationListOriginal
             enum_to_index = {location: index for index, location in enumerate(VanillaLocationList)}
-            
+
             for location_enum in custom_location_ids:
                 if location_enum in self.spoiler.LocationList:
                     location_obj = self.spoiler.LocationList[location_enum]
                     # Get the vanilla name to compare
                     vanilla_name = VanillaLocationList[location_enum].name if location_enum in VanillaLocationList else None
-                    
+
                     # Debug: Print info about Battle Arena locations
                     if location_enum in battle_arena_locations:
                         print(f"[DK64] Battle Arena enum {location_enum}: name='{location_obj.name}', vanilla='{vanilla_name}'")
-                    
+
                     # Include all custom locations, even if names haven't changed
                     # This is necessary because flags can be shuffled even if names stay the same
                     if location_obj.name:
@@ -1954,17 +1955,14 @@ if baseclasses_loaded:
                         flag_id = None
                         if location_obj.default_mapid_data and len(location_obj.default_mapid_data) > 0:
                             flag_id = location_obj.default_mapid_data[0].flag
-                        custom_locations[location_id] = {
-                            'name': location_obj.name,
-                            'flag': flag_id
-                        }
+                        custom_locations[location_id] = {"name": location_obj.name, "flag": flag_id}
                         # Debug: print first few
                         if len(custom_locations) <= 3:
                             print(f"  Found custom location: {location_obj.name} (ID: {location_id}, Enum: {location_enum}, Index: {index}, Flag: {flag_id}, was: {vanilla_name})")
                 else:
                     if location_enum in battle_arena_locations:
                         print(f"[DK64] WARNING: Battle Arena enum {location_enum} NOT in spoiler.LocationList!")
-            
+
             print(f"[DK64 get_custom_location_names] Found {len(custom_locations)} custom locations total")
             return custom_locations
 
@@ -2090,8 +2088,14 @@ if baseclasses_loaded:
                 },
                 "StartingRegion": (
                     {
-                        "region": self.spoiler.settings.starting_region["region"].name if hasattr(self.spoiler.settings.starting_region["region"], "name") else str(self.spoiler.settings.starting_region["region"]),
-                        "map": self.spoiler.settings.starting_region["map"].name if hasattr(self.spoiler.settings.starting_region["map"], "name") else str(self.spoiler.settings.starting_region["map"]),
+                        "region": (
+                            self.spoiler.settings.starting_region["region"].name
+                            if hasattr(self.spoiler.settings.starting_region["region"], "name")
+                            else str(self.spoiler.settings.starting_region["region"])
+                        ),
+                        "map": (
+                            self.spoiler.settings.starting_region["map"].name if hasattr(self.spoiler.settings.starting_region["map"], "name") else str(self.spoiler.settings.starting_region["map"])
+                        ),
                         "exit": self.spoiler.settings.starting_region["exit"],
                         "region_name": self.spoiler.settings.starting_region["region_name"],
                         "exit_name": self.spoiler.settings.starting_region["exit_name"],
@@ -2099,14 +2103,10 @@ if baseclasses_loaded:
                     if hasattr(self.spoiler.settings, "starting_region") and self.spoiler.settings.starting_region
                     else {}
                 ),
-                "DKPortalLocations": (
-                    self.spoiler.human_entry_doors
-                    if hasattr(self.spoiler, "human_entry_doors") and self.spoiler.human_entry_doors
-                    else {}
-                ),
+                "DKPortalLocations": (self.spoiler.human_entry_doors if hasattr(self.spoiler, "human_entry_doors") and self.spoiler.human_entry_doors else {}),
                 "CustomLocationNames": self.get_custom_location_names(),
             }
-            
+
             # Debug logging for custom locations
             custom_locs = slot_data.get("CustomLocationNames", {})
             if custom_locs:
@@ -2116,7 +2116,7 @@ if baseclasses_loaded:
                         print(f"  Location {loc_id}: {data.get('name')} (flag: {data.get('flag')})")
                     else:
                         print(f"  Location {loc_id}: {data}")
-            
+
             return slot_data
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
