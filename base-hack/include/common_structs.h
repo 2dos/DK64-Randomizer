@@ -821,6 +821,15 @@ typedef struct fileExtraStorage {
 	/* 0x004 */ unsigned int level_igt[9];
 } fileExtraStorage;
 
+typedef struct PauseItemStruct {
+    union {
+        const int sprite_index;
+        const void *sprite_pointer;
+    };
+    unsigned short item_cap;
+    unsigned short item_count;
+} PauseItemStruct;
+
 typedef struct settingsData {
 	/* 0x000 */ fileExtraStorage file_extra;
 } settingsData;

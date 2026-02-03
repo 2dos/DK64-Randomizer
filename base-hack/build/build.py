@@ -1295,6 +1295,25 @@ for x in range(12):
             texture_format=TextureFormat.RGBA5551,
         )
     )
+for x in range(8):
+    file_dict.append(
+        File(
+            name=f"Boulder Bounce Frame {x + 1}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.BoulderBounce01 + x),
+            source_file=f"assets/boulder_bounce/f{x}.png",
+            texture_format=TextureFormat.RGBA5551,
+        )
+    )
+    file_dict.append(
+        File(
+            name=f"Half Medal Frame {x + 1}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.HalfMedal01 + x),
+            source_file=f"assets/displays/half_medal_spin_{x}.png",
+            texture_format=TextureFormat.RGBA5551,
+        )
+    )
 
 for x in range(9):
     file_dict.append(
@@ -2573,6 +2592,8 @@ with open(newROMName, "r+b") as fh:
         other_remove.append(f"displays/feather{x}.rgba5551")
     for x in range(8):
         other_remove.append(f"file_screen/key{x + 1}.png")
+        other_remove.append(f"boulder_bounce/f{x}.png")
+        other_remove.append(f"displays/half_medal_spin_{x}.png")
     for x in range(12):
         other_remove.append(f"bean_spin/f{x + 1}a_64_32.png")
     other_remove.append("file_screen/tracker.png")

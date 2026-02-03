@@ -287,7 +287,6 @@ void newCounterCode(void) {
 		}
 	}
 	if (CurrentMap == MAP_GALLEON) {
-		int shop = paad->shop;
 		for (int i = 0; i < 2; i++) {
 			int float_slot = convertIDToIndex(float_ids[i]);
 			if (float_slot > -1) {

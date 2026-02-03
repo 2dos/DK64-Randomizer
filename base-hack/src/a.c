@@ -30,12 +30,6 @@ ROM_DATA unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE] = {};
 ROM_DATA ICE_TRAP_TYPES ice_trap_queued = ICETRAP_OFF;
 ROM_DATA char enable_skip_check = 0;
 ROM_DATA unsigned short GameStats[STAT_TERMINATOR] = {0};
-ROM_DATA short file_items[16] = {
-    0, 0, 0, 0, // GBs, Crowns, Keys, Medals
-    0, 0, 0, 0, // RW, Fairy, Nintendo, BP
-    0, 0, 0, 0, // Kongs, Beans, Pearls, Rainbow
-    0, 0, 0, 0, // Hints, Crates, Shops
-};
 ROM_DATA char hints_initialized = 0;
 ROM_DATA char display_billboard_fix = 0;
 ROM_DATA spoiler_struct spoiler_items[SPOILER_COUNT] = {
