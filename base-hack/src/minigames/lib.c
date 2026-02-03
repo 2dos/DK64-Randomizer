@@ -208,3 +208,22 @@ Gfx* drawImage(Gfx* dl, int text_index, codecs codec_index, int img_width, int i
 	gDPSetTextureFilter(dl++, G_TF_POINT);
 	return displayImage(dl++, text_index, 0, codec_index, img_width, img_height, x, y, xScale, yScale, 0, 0.0f);
 }
+
+Gfx *setFillColor(Gfx *dl, int red, int green, int blue) {
+    int color = GPACK_RGBA5551(red, green, blue, 1);
+    gDPSetFillColor(dl++, (color << 16) | color);
+    return dl;
+}
+
+Gfx *minigame_dl_init(Gfx *dl, int render_background, int red, int green, int blue) {
+    gDPPipeSync(dl++);
+    gDPSetCycleType(dl++, G_CYC_FILL);
+    gDPSetRenderMode(dl++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
+    gSPClearGeometryMode(dl++, G_ZBUFFER);
+    gDPSetScissor(dl++, G_SC_NON_INTERLACE, 0, 0, 319, 239);
+    if (render_background) {
+        dl = setFillColor(dl, red, green, blue);
+        gDPFillRectangle(dl++, 0, 0, 319, 239);
+    }
+    return dl;
+}

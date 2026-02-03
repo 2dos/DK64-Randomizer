@@ -1981,6 +1981,8 @@ for tex, index in pad_data.items():
 # Force all geo files to not be compressed
 expanded_tables = {
     TableNames.MapGeometry: list(range(216)),
+    # TableNames.MapFloors: list(range(216)),
+    # TableNames.MapWalls: list(range(216)),
     TableNames.ActorGeometry: list(range(0xEC)),
     TableNames.ModelTwoGeometry: list(range(0x2B7)),
 }
@@ -2006,11 +2008,16 @@ with open(ROMName, "rb") as fh:
                 data_len = 1
                 if not is_ref_file:
                     fh.seek(0x101C50 + (start & 0x7FFFFFFF))
-                    print("Checking uncompressed size of", tbl, file)
-                    data = zlib.decompress(fh.read(size), (15 + 32))
-                    data_len = len(data)
-                    if data_len == 0:
-                        print("Ignoring ptr file", tbl, file)
+                    indic = int.from_bytes(fh.read(2), "big")
+                    if indic == 0x1F8B:
+                        fh.seek(0x101C50 + (start & 0x7FFFFFFF))
+                        print("Checking uncompressed size of", tbl, file)
+                        data = zlib.decompress(fh.read(size), (15 + 32))
+                        data_len = len(data)
+                        if data_len == 0:
+                            print("Ignoring ptr file", tbl, file)
+                    else:
+                        data_len = 0
                 if data_len > 0:
                     file_dict.append(File(name=f"Expanded Table {tbl} file {file}", pointer_table_index=tbl, file_index=file, source_file=f"exptbl{tbl}f{file}.bin", buffer_compression=True))
 
@@ -2119,9 +2126,12 @@ with open(newROMName, "r+b") as fh:
                 compressed_size = len(precomp)
                 if x.target_compressed_size is None:
                     x.target_compressed_size = compressed_size
+                # TODO (Ballaam): When I work on Mirror mode again, I needed to buff these sizes to 0x200
                 buffer_size = 0x80
                 if x.pointer_table_index == TableNames.MapGeometry and x.file_index == 82:
                     buffer_size = 0x100
+                # elif x.pointer_table_index in (TableNames.MapWalls, TableNames.MapFloors):
+                #     buffer_size = 0xC00
                 x.target_compressed_size += buffer_size
                 if x.pointer_table_index == TableNames.ModelTwoGeometry:
                     print("Expanding buffer compression ", x.pointer_table_index, x.file_index, hex(x.target_compressed_size), hex(compressed_size), hex(uncompressed_size))

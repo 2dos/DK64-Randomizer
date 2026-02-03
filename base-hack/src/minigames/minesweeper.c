@@ -68,11 +68,6 @@ ROM_DATA static unsigned short second_timer = 0;
 ROM_DATA static char timer_text[4] = "000";
 ROM_DATA static char mine_text[4] = "000";
 
-Gfx *setFillColor(Gfx *dl, int red, int green, int blue) {
-    int color = GPACK_RGBA5551(red, green, blue, 1);
-    gDPSetFillColor(dl++, (color << 16) | color);
-    return dl;
-}
 void placeMine(void) {
     while (1) {
         int x = ((getRNGLower31() >> 10) & 0xFF) % GRID_DIMENSIONS;
@@ -478,13 +473,7 @@ void handleState_normal(Gfx **dl_ptr, gameStates state) {
 void loop(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
     if (game_state != GAMESTATE_INIT) {
-        gDPPipeSync(dl++);
-        gDPSetCycleType(dl++, G_CYC_FILL);
-        gDPSetRenderMode(dl++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
-        gSPClearGeometryMode(dl++, G_ZBUFFER);
-        gDPSetScissor(dl++, G_SC_NON_INTERLACE, 0, 0, 319, 239);
-        dl = setFillColor(dl, 0x80, 0x80, 0x80);
-        gDPFillRectangle(dl++, 0, 0, 319, 239);
+        dl = minigame_dl_init(dl, 1, 0x80, 0x80, 0x80);
     }
     switch(game_state) {
         case GAMESTATE_INIT:

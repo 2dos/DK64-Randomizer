@@ -11,7 +11,7 @@ from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Items import Items
-from randomizer.Patching.MirrorMode import truncateFiles
+from randomizer.Patching.MirrorMode import truncateFiles, ApplyMirrorModeNew
 
 print("Building Test Instance")
 APPLY_VARIABLES = True
@@ -334,6 +334,7 @@ with open(ROM_FILE, "r+b") as rom:
     patchAssemblyCosmetic(ROM_COPY, settings, False)
     rom.seek(0x1FF3000)
     rom.write(b"BALLAAM\x00")
+    # ApplyMirrorModeNew(ROM_COPY)
     truncateFiles(ROM_COPY)
     if ROM_HEADER:
         # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM

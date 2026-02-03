@@ -5,9 +5,14 @@
     Note: This game currently only works when placed in Jetpac.
     This is due to a missing guOrtho call in the wrapper code for Arcade.
     This will be solved by the time 6.0 comes out (hopefully).
+
     For those reading this making their own games with Tri rendering, you may
     experience issues with your game unless you place it in the Jetpac slot
     for this same reason.
+
+    For those reading this, this also only works on slightly inaccurate emulators
+    due to assumptions with the RSP with tri rendering. This will be eventually 
+    fixed.
 
     Also incomplete
 */
@@ -770,11 +775,7 @@ ROM_DATA static Vp viewport = {
 void loop(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
    if (game_state != GAMESTATE_INIT) {
-        gDPPipeSync(dl++);
-        gDPSetCycleType(dl++, G_CYC_FILL);
-        gDPSetRenderMode(dl++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
-        gSPClearGeometryMode(dl++, G_ZBUFFER);
-        gDPSetScissor(dl++, G_SC_NON_INTERLACE, 0, 0, 319, 239);
+        dl = minigame_dl_init(dl, 0, 0, 0, 0);
         gSPViewport(dl++, &viewport);
     } 
     switch(game_state) {

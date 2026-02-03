@@ -3044,7 +3044,8 @@
     "minigames": {
         "flappy_bird.loop": 2147633760,
         "hexagon.loop": 2147637688,
-        "minesweeper.loop": 2147637596,
-        "wordle.loop": 2147635320
+        "minesweeper.loop": 2147637488,
+        "wordle.loop": 2147635320,
+        "arkanoid.loop": 2147637476
     }
 }
