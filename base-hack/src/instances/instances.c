@@ -1004,6 +1004,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							behaviour_pointer->unk_70 = 0;
 							behaviour_pointer->unk_71 = 0;
 							setScriptRunState(behaviour_pointer, RUNSTATE_PAUSED, 0);
+							delayedObjectModel2Change(MAP_FUNGI, 0x2D, 20);
 						} else {
 							PlayCutsceneFromModelTwoScript(behaviour_pointer, 1,1,0);
 						}

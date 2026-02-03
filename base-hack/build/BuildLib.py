@@ -15,8 +15,8 @@ music_size = 24000
 music_sizes_fine = {
     MusicTypes.BGM: 24000,
     MusicTypes.Event: 7000,
-    MusicTypes.MajorItem: 3000,
-    MusicTypes.MinorItem: 1500,
+    MusicTypes.MajorItem: 5000,
+    MusicTypes.MinorItem: 3000,
 }
 music_type_mapping = {
     Song.TrainingGrounds: MusicTypes.BGM,
