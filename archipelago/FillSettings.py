@@ -99,7 +99,6 @@ def get_default_settings() -> dict:
         "boss_location_rando": True,
         "cannons_require_blast": True,
         "cb_medal_behavior_new": CBRequirement.pre_selected,
-        "cb_rando_enabled": False,
         "chunky_phase_slam_req": SlamRequirement.green,
         "coin_door_item": HelmDoorItem.opened,
         "coin_door_item_count": 1,
@@ -107,7 +106,6 @@ def get_default_settings() -> dict:
         "crown_door_item": HelmDoorItem.opened,
         "crown_door_item_count": 1,
         "crown_enemy_difficulty": CrownEnemyDifficulty.easy,
-        "crown_placement_rando": False,
         "damage_amount": DamageAmount.default,
         "decouple_item_rando": False,
         "dim_solved_hints": False,
@@ -268,9 +266,7 @@ def get_default_settings() -> dict:
         "progressive_hint_item": ProgressiveHintItem.off,
         "puzzle_rando_difficulty": PuzzleRando.medium,
         "race_coin_rando": False,
-        "random_crates": False,
         "random_fairies": False,
-        "random_patches": False,
         "random_starting_region": False,
         "random_starting_region_new": RandomStartingRegion.off,
         "randomize_enemy_sizes": False,
@@ -363,6 +359,12 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     else:
         settings_dict["galleon_water"] = GalleonWaterSetting.vanilla
     settings_dict["no_consumable_upgrades"] = options.remove_bait_potions.value
+
+    # Custom location settings
+    settings_dict["crown_placement_rando"] = options.crown_placement_rando.value
+    settings_dict["random_crates"] = options.random_crates.value
+    settings_dict["random_patches"] = options.random_patches.value
+    settings_dict["cb_rando_enabled"] = options.cb_rando_enabled.value
 
 
 def apply_blocker_settings(settings_dict: dict, options) -> None:
