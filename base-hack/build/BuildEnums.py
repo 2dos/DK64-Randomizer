@@ -934,6 +934,22 @@ class ExtraTextures(IntEnum):
     AnyGunFront = auto()
     AnyInsLeft = auto()
     AnyInsRight = auto()
+    BoulderBounce01 = auto()
+    BoulderBounce02 = auto()
+    BoulderBounce03 = auto()
+    BoulderBounce04 = auto()
+    BoulderBounce05 = auto()
+    BoulderBounce06 = auto()
+    BoulderBounce07 = auto()
+    BoulderBounce08 = auto()
+    HalfMedal01 = auto()
+    HalfMedal02 = auto()
+    HalfMedal03 = auto()
+    HalfMedal04 = auto()
+    HalfMedal05 = auto()
+    HalfMedal06 = auto()
+    HalfMedal07 = auto()
+    HalfMedal08 = auto()
 
 
 class MoveTypes(IntEnum):

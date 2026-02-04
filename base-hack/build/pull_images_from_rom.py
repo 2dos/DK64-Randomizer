@@ -158,6 +158,8 @@ for x in range(7):
     elif x == 6:
         size = 0x560
     images.append(ImageData(f"beetle_img_{0xFC3 + x}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xFC3 + x, size >> 1, 1, False, False))
+for x in range(8):
+    images.append(ImageData(f"medal_spin_{x}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x1568 + x, 0x2C, 0x2C, False, False))
 
 if not os.path.exists("assets/hash"):
     os.mkdir("assets/hash")

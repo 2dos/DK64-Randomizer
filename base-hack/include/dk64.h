@@ -534,6 +534,8 @@ extern void guSprite2DInit(uSprite *SpritePointer, void *SourceImagePointer, voi
 extern void unkGuMacro(void *mtx, float unk1);
 extern void unkGuMacro2(void *unk0, int unk1, int unk2, int unk3);
 
+extern int checkIntroStoryPlaying();
+
 //vanilla data
 extern OSThread* __osActiveQueue;
 extern float TransitionSpeed;

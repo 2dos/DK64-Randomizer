@@ -813,6 +813,15 @@ typedef struct enemy_drop_struct {
 	/* 0x005 */ unsigned char drop_count;
 } enemy_drop_struct;
 
+typedef struct PauseItemStruct {
+    union {
+        const int sprite_index;
+        const void *sprite_pointer;
+    };
+    unsigned short item_cap;
+    unsigned short item_count;
+} PauseItemStruct;
+
 typedef struct model_struct {
 	/* 0x000 */ float x;
 	/* 0x004 */ float y;

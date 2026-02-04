@@ -917,6 +917,19 @@ fool_im.paste(ex_im, (34, 0), ex_im)
 fool_im = fool_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 fool_im.save(f"{disp_dir}fool_overlay.png")
 
+boulder_dir = getDir("assets/boulder_bounce/")
+for x in range(8):
+    im = Image.open(f"{boulder_dir}boulder{x}.png")
+    im = im.resize((32, 32)).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    im.save(f"{boulder_dir}f{x}.png")
+    mdl_im = Image.open(f"{hash_dir}medal_spin_{x}.png")
+    temp_im = mdl_im.crop((22, 0, 44, 44))
+    r, g, b, a = mdl_im.split()
+    r = r.point(lambda v: v // 2)
+    mdl_im = Image.merge("RGBA", (r, r, r, a)).convert("LA").convert("RGBA")
+    mdl_im.paste(temp_im, (22, 0), temp_im)
+    mdl_im.save(f"{disp_dir}half_medal_spin_{x}.png")
+
 
 def alterWood(image):
     """Alter the wood color to our dark red color."""
@@ -1007,6 +1020,14 @@ rmve = [
     "w2_pad_left.png",
     "w2_pad_right.png",
     "gun_face_base.png",
+    "medal_spin_0.png",
+    "medal_spin_1.png",
+    "medal_spin_2.png",
+    "medal_spin_3.png",
+    "medal_spin_4.png",
+    "medal_spin_5.png",
+    "medal_spin_6.png",
+    "medal_spin_7.png",
 ]
 for kong in kongs:
     for x in range(2):
