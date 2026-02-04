@@ -11,17 +11,7 @@
             ],
             "executions": [
                 {"function":69,"parameters":[1,0,255]},
-                {"function":70,"parameters":[0,0,0]},
-                {"function":38,"parameters":[2,0,0]}
-            ]
-        },
-        {
-            "conditions": [
-                {"function":1,"inverted":false,"parameters":[0,0,0]},
-                {"function":45,"inverted":true,"parameters":[223,0,0]}
-            ],
-            "executions": [
-                {"function":38,"parameters":[2,0,0]}
+                {"function":70,"parameters":[0,0,0]}
             ]
         },
         {
@@ -52,16 +42,6 @@
                 {"function":38,"parameters":[2,0,0]},
                 {"function":93,"parameters":[0,0,0]},
                 {"function":49,"parameters":[62,0,0]}
-            ]
-        },
-        {
-            "conditions": [
-                {"function":1,"inverted":false,"parameters":[20,0,0]}
-            ],
-            "executions": [
-                {"function":70,"parameters":[0,0,0]},
-                {"function":69,"parameters":[1,0,255]},
-                {"function":38,"parameters":[2,0,0]}
             ]
         }
     ]

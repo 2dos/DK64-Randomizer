@@ -4288,6 +4288,8 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
         settings.trap_weight_disabletag,
     ]
     if IsDDMSSelected(settings.filler_items_selected, ItemRandoFiller.icetraps) and not settings.archipelago:
+        if settings.ice_trap_count == 0:
+            found_incompatibilities += "You have Ice Traps enabled as filler, but with an ice trap frequency of 0. Either disable ice traps as filler or increase the ice trap frequency. "
         all_zero_weights = True
         for val in trap_weights:
             if val > 0:
