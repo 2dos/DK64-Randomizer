@@ -1,3 +1,5 @@
+"""Log the dropsanity level data."""
+
 from randomizer.Lists.Location import LocationListOriginal, Location
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Levels import Levels
@@ -17,7 +19,7 @@ LEVEL_MAPPING = {
     Levels.DKIsles: 7,
 }
 
-count = ((END_LOC - START_LOC) + 1)
+count = (END_LOC - START_LOC) + 1
 if (count & 1) == 1:
     count += 1
 print(count >> 1)
@@ -36,7 +38,7 @@ if directory != "base-hack":
     path = f"base-hack/{path}"
 with open(path, "w") as fh:
     warning = [
-        "#include \"../include/common.h\"",
+        '#include "../include/common.h"',
         "",
         "/*",
         "\tThis file is automatically written to by dropsanity_logger.py",
