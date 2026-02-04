@@ -156,3 +156,10 @@ Gfx* displaySongNameHandler(Gfx* dl) {
     }
     return dl;
 }   
+
+void playMusicDontStop(ALCSPlayer* seq_p){
+    ALEventQueue* evtq = &seq_p->evtq;
+    alEvtqFlushType(evtq, 0x10);
+    alEvtqFlushType(evtq, 0x11);
+    alCSPPlay(seq_p);
+}

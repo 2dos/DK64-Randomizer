@@ -1142,6 +1142,50 @@ ROM_RODATA_NUM const sprite_data_struct potion_sprite = {
 	},
 };
 
+ROM_RODATA_NUM const sprite_data_struct boulder_sprite = {
+	.unk0 = 0xCB,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = RGBA16,
+	.unk8 = -1,
+	.table = TABLE_25,
+	.width = 32,
+	.height = 32,
+	.image_count = 8,
+	.images = {
+		BOULDERBOUNCE_SPRITE_START + 0,
+		BOULDERBOUNCE_SPRITE_START + 1,
+		BOULDERBOUNCE_SPRITE_START + 2,
+		BOULDERBOUNCE_SPRITE_START + 3,
+		BOULDERBOUNCE_SPRITE_START + 4,
+		BOULDERBOUNCE_SPRITE_START + 5,
+		BOULDERBOUNCE_SPRITE_START + 6,
+		BOULDERBOUNCE_SPRITE_START + 7,
+	},
+};
+
+ROM_RODATA_NUM const sprite_data_struct halfmedal_sprite = {
+	.unk0 = 0xCC,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = RGBA16,
+	.unk8 = -1,
+	.table = TABLE_25,
+	.width = 44,
+	.height = 44,
+	.image_count = 8,
+	.images = {
+		HALFMEDAL_SPRITE_START + 0,
+		HALFMEDAL_SPRITE_START + 1,
+		HALFMEDAL_SPRITE_START + 2,
+		HALFMEDAL_SPRITE_START + 3,
+		HALFMEDAL_SPRITE_START + 4,
+		HALFMEDAL_SPRITE_START + 5,
+		HALFMEDAL_SPRITE_START + 6,
+		HALFMEDAL_SPRITE_START + 7,
+	},
+};
+
 void giveGB() {
 	changeCollectableCount(8, 0, 1);
 	displayItemOnHUD(8, 0, 0);

@@ -68,7 +68,7 @@ user_credits = [
     CreditName("KnownAsChuck", dev_status="Assistant"),
     CreditName("Mittenz", dev_status="Assistant"),
     CreditName("Naramgamjan", dev_status="Assistant"),
-    CreditName("OnlySpaghettiCode", dev_status="Assistant"),
+    CreditName("OnlySpaghettiCode", dev_status="Assistant", artist=True),
     CreditName("Plessy", dev_status="Assistant"),
     CreditName("Porygone", dev_status="Assistant"),
     CreditName("Rain", dev_status="Assistant"),

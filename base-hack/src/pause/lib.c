@@ -81,6 +81,10 @@ ROM_RODATA_PTR static const char* items[] = {
     "WRINKLY DOORS",
     "MELON CRATES",
     "SHOPS",
+    "SNIDE REWARDS",
+    "HOLDABLES",
+    "ENEMY DROPS",
+    "HALF-MEDALS",
 };
 ROM_RODATA_PTR static const char* raw_items[] = {
     "GOLDEN BANANAS",
@@ -98,6 +102,10 @@ ROM_RODATA_PTR static const char* raw_items[] = {
     "HINTS",
     "JUNK ITEMS",
     "MOVES",
+    "SNIDE REWARDS",
+    "HOLDABLES",
+    "ENEMY DROPS",
+    "HALF-MEDALS",
 };
 
 ROM_DATA static char check_level = 0;
@@ -119,27 +127,40 @@ typedef struct CheckDataStruct {
 // 7 main levels, isles, helm
 ROM_DATA static CheckDataStruct check_data = {
     .denominator = {
-        .type[CHECK_GB] =      {.level = {20, 20, 20, 20, 20, 20, 20, 21, 0}},
-        .type[CHECK_CROWN] =   {.level = {1, 1, 1, 1, 1, 1, 1, 2, 1}},
-        .type[CHECK_KEY] =     {.level = {1, 1, 1, 1, 1, 1, 1, 0, 1}},
-        .type[CHECK_MEDAL] =   {.level = {5, 5, 5, 5, 5, 5, 5, 0, 5}},
-        .type[CHECK_RWCOIN] =  {.level = {1, 0, 0, 0, 0, 0, 0, 0, 0}},
-        .type[CHECK_FAIRY] =   {.level = {2, 2, 2, 2, 2, 2, 2, 4, 2}},
-        .type[CHECK_NINCOIN] = {.level = {1, 0, 0, 0, 0, 0, 0, 0, 0}},
-        .type[CHECK_BP] =      {.level = {5, 5, 5, 5, 5, 5, 5, 5, 0}},
-        .type[CHECK_KONG] =    {.level = {5, 0, 0, 0, 0, 0, 0, 0, 0}},
-        .type[CHECK_BEAN] =    {.level = {0, 0, 0, 0, 1, 0, 0, 0, 0}},
-        .type[CHECK_PEARLS] =  {.level = {0, 0, 0, 5, 0, 0, 0, 0, 0}},
-        .type[CHECK_RAINBOW] = {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
-        .type[CHECK_HINTS] =   {.level = {5, 5, 5, 5, 5, 5, 5, 0, 0}},
-        .type[CHECK_CRATE] =   {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
-        .type[CHECK_SHOPS] =   {.level = {10, 15, 15, 15, 10, 15, 15, 5, 0}},
+        .type[CHECK_GB] =           {.level = {20, 20, 20, 20, 20, 20, 20, 21, 0}},
+        .type[CHECK_CROWN] =        {.level = {1, 1, 1, 1, 1, 1, 1, 2, 1}},
+        .type[CHECK_KEY] =          {.level = {1, 1, 1, 1, 1, 1, 1, 0, 1}},
+        .type[CHECK_MEDAL] =        {.level = {5, 5, 5, 5, 5, 5, 5, 0, 5}},
+        .type[CHECK_RWCOIN] =       {.level = {1, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_FAIRY] =        {.level = {2, 2, 2, 2, 2, 2, 2, 4, 2}},
+        .type[CHECK_NINCOIN] =      {.level = {1, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_BP] =           {.level = {5, 5, 5, 5, 5, 5, 5, 5, 0}},
+        .type[CHECK_KONG] =         {.level = {5, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_BEAN] =         {.level = {0, 0, 0, 0, 1, 0, 0, 0, 0}},
+        .type[CHECK_PEARLS] =       {.level = {0, 0, 0, 5, 0, 0, 0, 0, 0}},
+        .type[CHECK_RAINBOW] =      {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_HINTS] =        {.level = {5, 5, 5, 5, 5, 5, 5, 0, 0}},
+        .type[CHECK_CRATE] =        {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_SHOPS] =        {.level = {10, 15, 15, 15, 10, 15, 15, 5, 0}},
+        .type[CHECK_SNIDE] =        {.level = {5, 5, 5, 5, 5, 5, 5, 5, 0}},
+        .type[CHECK_BOULDERS] =     {.level = {0, 5, 0, 0, 3, 2, 1, 5, 0}},
+        .type[CHECK_ENEMIES] =      {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_HALFMEDALS] =   {.level = {5, 5, 5, 5, 5, 5, 5, 0, 0}},
     }
 };
+
+int getLevelOfDropsanity(int offset) {
+    int value = dropsanity_levels[offset >> 1];
+    if ((offset & 1) == 0) {
+        value >>= 4;
+    }
+    return value & 0xF;
+}
 
 void initItemCheckDenominators(void) {
     if (Rando.isles_cb_rando) {
         check_data.denominator.type[CHECK_MEDAL].level[LEVEL_ISLES] = 5;
+        check_data.denominator.type[CHECK_HALFMEDALS].level[LEVEL_ISLES] = 5;
     }
     for (int lvl = 0; lvl < 9; lvl++) {
         int rainbow_count = 0;
@@ -156,8 +177,40 @@ void initItemCheckDenominators(void) {
         }
         check_data.denominator.type[CHECK_RAINBOW].level[lvl] = rainbow_count;
         check_data.denominator.type[CHECK_CRATE].level[lvl] = crate_count;
+        check_data.denominator.type[CHECK_ENEMIES].level[lvl] = 0;
+        
+        if (!Rando.include_half_medals) {
+            check_data.denominator.type[CHECK_HALFMEDALS].level[lvl] = 0;
+        }
+    }
+    if (Rando.enemy_item_rando) {
+        for (unsigned int i = 0; i < sizeof(dropsanity_levels) << 1; i++) {
+            int lvl = getLevelOfDropsanity(i);
+            if (lvl != 9) {
+                check_data.denominator.type[CHECK_ENEMIES].level[lvl]++;
+            }
+        }
     }
 }
+
+ROM_RODATA_NUM static const unsigned char holdable_levels[] = {
+    LEVEL_ISLES, // GRABBABLE_ISLES_NEARAZTEC
+    LEVEL_ISLES, // GRABBABLE_ISLES_NEARCAVES
+    LEVEL_AZTEC, // GRABBABLE_AZTEC_BOULDER
+    LEVEL_CAVES, // GRABBABLE_CAVES_SMALL
+    LEVEL_CAVES, // GRABBABLE_CAVES_LARGE
+    LEVEL_CASTLE, // GRABBABLE_MUSEUM_BOULDER
+    LEVEL_ISLES, // GRABBABLE_JAPES_LOBBY
+    LEVEL_ISLES, // GRABBABLE_CASTLE_LOBBY
+    LEVEL_ISLES, // GRABBABLE_CAVES_LOBBY
+    LEVEL_FUNGI, // GRABBABLE_MILL_FRONT_NEAR
+    LEVEL_FUNGI, // GRABBABLE_MILL_FRONT_FAR
+    LEVEL_FUNGI, // GRABBABLE_MILL_REAR
+    LEVEL_AZTEC, // GRABBABLE_VASE_CIRCLE
+    LEVEL_AZTEC, // GRABBABLE_VASE_COLON
+    LEVEL_AZTEC, // GRABBABLE_VASE_TRIANGLE
+    LEVEL_AZTEC, // GRABBABLE_VASE_PLUS
+};
 
 void checkItemDB(void) {
     /**
@@ -209,6 +262,35 @@ void checkItemDB(void) {
             }
             for (int kong = 0; kong < 5; kong++) {
                 check_data.numerator.type[CHECK_SHOPS].level[level] += isShopEmpty(vendor, level, kong);
+            }
+        }
+    }
+    for (int i = 0; i < 16; i++) {
+        int item = isValidBoulderObject(i);
+        if ((!item) || (checkFlag(FLAG_GRABBABLES_DESTROYED + i, FLAGTYPE_PERMANENT))) {
+            int lvl = holdable_levels[i];
+            check_data.numerator.type[CHECK_BOULDERS].level[lvl]++;
+        }
+    }
+    for (int i = 0; i < 40; i++) {
+        int lvl = i / 5;
+        check_data.numerator.type[CHECK_SNIDE].level[lvl] += checkFlag(FLAG_SNIDE_REWARD + i, FLAGTYPE_PERMANENT);
+    }
+    if (Rando.enemy_item_rando) {
+        for (unsigned int i = 0; i < sizeof(dropsanity_levels) << 1; i++) {
+            int lvl = getLevelOfDropsanity(i);
+            if (lvl != 9) {
+                if (checkFlag(FLAG_ENEMY_KILLED_0 + i, FLAGTYPE_PERMANENT)) {
+                    check_data.numerator.type[CHECK_ENEMIES].level[lvl]++;
+                }
+            }
+        }
+    }
+    if (Rando.include_half_medals) {
+        for (int i = 0; i < 40; i++) {
+            if ((i < 35) || (Rando.isles_cb_rando)) {
+                int lvl = i / 5;
+                check_data.numerator.type[CHECK_HALFMEDALS].level[lvl] += checkFlag(FLAG_HALF_MEDAL_JAPES_DK + i, FLAGTYPE_PERMANENT);
             }
         }
     }

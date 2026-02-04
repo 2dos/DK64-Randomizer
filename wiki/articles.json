@@ -142,10 +142,6 @@
         "link": "CustomLocationsColoredBananas"
     },
     {
-        "name": "Custom Locations: Doors",
-        "link": "CustomLocationsDoors"
-    },
-    {
         "name": "Custom Locations: Fairies",
         "link": "CustomLocationsFairies"
     },
@@ -176,5 +172,9 @@
     {
         "name": "Custom Locations: Miscellaneous",
         "link": "CustomLocationsMiscellaneous"
+    },
+    {
+        "name": "Custom Locations: Doors",
+        "link": "CustomLocationsDoors"
     }
 ]
