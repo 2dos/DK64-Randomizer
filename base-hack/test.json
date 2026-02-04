@@ -195,7 +195,7 @@
    "fast_gbs":1,
    "remove_high_requirements":1,
    "auto_keys":0,
-   "starting_map":34,
+   "starting_map":2,
    "starting_exit":0,
    "disco_chunky":1,
    "required_helm_minigames":1,
@@ -237,11 +237,7 @@
       255
    ],
    "helm_hurry_mode":0,
-   "win_condition":3,
-   "win_condition_extra": {
-      "item": 3,
-      "count": 255
-   },
+   "win_condition":5,
    "version":2,
    "item_rando":1,
    "remove_oscillation_effects":1,

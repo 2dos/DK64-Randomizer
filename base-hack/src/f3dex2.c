@@ -59,7 +59,8 @@ Gfx* drawScreenRect(Gfx* dl, int x1, int y1, int x2, int y2, int red, int green,
 	gDPSetCycleType(dl++, G_CYC_FILL);
 	gDPSetRenderMode(dl++, G_RM_NOOP, G_RM_NOOP2);
 	gSPClearGeometryMode(dl++, G_ZBUFFER);
-	gDPSetFillColor(dl++, ((red & 0x1F) << 11) | ((green & 0x1F) << 6) | ((blue & 0x1F) << 1) | (alpha & 0x1));
+	int color = ((red & 0x1F) << 11) | ((green & 0x1F) << 6) | ((blue & 0x1F) << 1) | (alpha & 0x1);
+	gDPSetFillColor(dl++, (color << 16) | color);
 	gDPSetScissor(dl++, G_SC_NON_INTERLACE, 10, 10, 309, 229);
 	gDPFillRectangle(dl++, x1 >> 2, y1 >> 2, x2 >> 2, y2 >> 2);
 	return dl;

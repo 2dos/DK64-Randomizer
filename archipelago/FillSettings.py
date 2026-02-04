@@ -58,7 +58,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Switches import Switches
 from randomizer.Lists.Switches import SwitchInfo
-from archipelago.Options import Goal, SwitchSanity, SelectStartingKong, GalleonWaterLevel
+from archipelago.Options import Goal, SwitchSanity, SelectStartingKong, GalleonWaterLevel, KrushaRandom, KroolShuffle, DKPortalLocationRando, RandomStartingLocation
 from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity
 from archipelago.Logic import logic_item_name_to_id
 
@@ -328,10 +328,12 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     settings_dict["archipelago"] = True
     settings_dict["starting_kongs_count"] = options.starting_kong_count.value
     settings_dict["open_lobbies"] = options.open_lobbies.value
-    if options.krool_in_boss_pool.value:
-        settings_dict["krool_in_boss_pool_v2"] = KroolInBossPool.full_shuffle
-    else:
+    if options.krool_in_boss_pool.value == KroolShuffle.option_off:
         settings_dict["krool_in_boss_pool_v2"] = KroolInBossPool.off
+    elif options.krool_in_boss_pool.value == KroolShuffle.option_krool_only:
+        settings_dict["krool_in_boss_pool_v2"] = KroolInBossPool.krool_only
+    elif options.krool_in_boss_pool.value == KroolShuffle.option_full_shuffle:
+        settings_dict["krool_in_boss_pool_v2"] == KroolInBossPool.full_shuffle
     settings_dict["helm_phase_count"] = options.helm_phase_count.value
     settings_dict["krool_phase_count"] = options.krool_phase_count.value
     settings_dict["level_randomization"] = LevelRandomization.loadingzone if options.loading_zone_rando.value else LevelRandomization.level_order_complex
@@ -452,6 +454,9 @@ def apply_hard_mode_settings(settings_dict: dict, options) -> None:
         "strict_helm_timer": HardModeSelected.strict_helm_timer,
         "donk_in_the_dark_world": HardModeSelected.donk_in_the_dark_world,
         "donk_in_the_sky": HardModeSelected.donk_in_the_sky,
+        "angry_caves": HardModeSelected.angry_caves,
+        "fast_balloons": HardModeSelected.fast_balloons,
+        "lower_max_refill_amounts": HardModeSelected.lower_max_refill_amounts,
     }
 
     for hard in options.hard_mode_selected:
@@ -476,6 +481,75 @@ def apply_kong_settings(settings_dict: dict, options) -> None:
     }
 
     settings_dict["starting_kong"] = kong_mapping[options.select_starting_kong.value]
+
+    # Apply Krusha based on krusha_model_mode setting
+    krusha_kong_mapping = {
+        "dk": "kong_model_dk",
+        "diddy": "kong_model_diddy",
+        "lanky": "kong_model_lanky",
+        "tiny": "kong_model_tiny",
+        "chunky": "kong_model_chunky",
+    }
+
+    # Handle different krusha randomization modes
+    import random
+
+    if options.krusha_model_mode.value == KrushaRandom.option_manual:
+        # Manual: Use krusha_kongs list to select which Kongs are Krusha
+        for kong in options.krusha_kongs.value:
+            if kong in krusha_kong_mapping:
+                kong_model_key = krusha_kong_mapping[kong]
+                # Only apply Krusha if the kong model hasn't been customized
+                if settings_dict[kong_model_key] == KongModels.default:
+                    settings_dict[kong_model_key] = KongModels.krusha
+    elif options.krusha_model_mode.value == KrushaRandom.option_random_1:
+        # Random 1: Exactly one Kong becomes Krusha
+        available_kongs = [key for key, model_key in krusha_kong_mapping.items() if settings_dict[model_key] == KongModels.default]
+        if available_kongs:
+            selected_kong = random.choice(list(krusha_kong_mapping.keys()))
+            kong_model_key = krusha_kong_mapping[selected_kong]
+            if settings_dict[kong_model_key] == KongModels.default:
+                settings_dict[kong_model_key] = KongModels.krusha
+    elif options.krusha_model_mode.value == KrushaRandom.option_sometimes_1:
+        # Sometimes 1: Maybe one Kong becomes Krusha (50% chance)
+        if random.random() < 0.5:
+            available_kongs = [key for key, model_key in krusha_kong_mapping.items() if settings_dict[model_key] == KongModels.default]
+            if available_kongs:
+                selected_kong = random.choice(list(krusha_kong_mapping.keys()))
+                kong_model_key = krusha_kong_mapping[selected_kong]
+                if settings_dict[kong_model_key] == KongModels.default:
+                    settings_dict[kong_model_key] = KongModels.krusha
+    elif options.krusha_model_mode.value == KrushaRandom.option_random_all:
+        # Random All: Each Kong has a 50% chance to become Krusha
+        for kong, kong_model_key in krusha_kong_mapping.items():
+            if settings_dict[kong_model_key] == KongModels.default:
+                if random.random() < 0.5:
+                    settings_dict[kong_model_key] = KongModels.krusha
+    # option_none: Do nothing, no Kongs become Krusha
+
+
+def apply_starting_region_settings(settings_dict: dict, options) -> None:
+    """Apply random starting region settings."""
+    from randomizer.Enums.Settings import RandomStartingRegion
+
+    region_mapping = {
+        RandomStartingLocation.option_off: RandomStartingRegion.off,
+        RandomStartingLocation.option_isles_only: RandomStartingRegion.isles_only,
+        RandomStartingLocation.option_all: RandomStartingRegion.all,
+    }
+
+    settings_dict["random_starting_region_new"] = region_mapping[options.random_starting_region.value]
+
+
+def apply_dk_portal_settings(settings_dict: dict, options) -> None:
+    """Apply DK Portal location randomization settings."""
+    portal_mapping = {
+        DKPortalLocationRando.option_off: DKPortalRando.off,
+        DKPortalLocationRando.option_main_only: DKPortalRando.main_only,
+        DKPortalLocationRando.option_all: DKPortalRando.on,
+    }
+
+    settings_dict["dk_portal_location_rando_v2"] = portal_mapping[options.dk_portal_location_rando.value]
 
 
 def apply_switchsanity_settings(settings_dict: dict, options) -> None:
@@ -667,6 +741,29 @@ def apply_boss_and_key_settings(settings_dict: dict, options) -> None:
     # Starting keys configuration
     settings_dict["starting_keys_list_selected"] = []
 
+    # Allowed bosses mapping
+    boss_mapping = {
+        "Armydillo 1": Maps.JapesBoss,
+        "Dogadon 1": Maps.AztecBoss,
+        "Mad Jack": Maps.FactoryBoss,
+        "Pufftoss": Maps.GalleonBoss,
+        "Dogadon 2": Maps.FungiBoss,
+        "Armydillo 2": Maps.CavesBoss,
+        "Kutout": Maps.CastleBoss,
+        "DK phase": Maps.KroolDonkeyPhase,
+        "Diddy Phase": Maps.KroolDiddyPhase,
+        "Lanky Phase": Maps.KroolLankyPhase,
+        "Tiny Phase": Maps.KroolTinyPhase,
+        "Chunky Phase": Maps.KroolChunkyPhase,
+    }
+
+    # Apply allowed bosses if specified
+    if hasattr(options, "allowed_bosses") and options.allowed_bosses.value:
+        settings_dict["bosses_selected"] = []
+        for boss in options.allowed_bosses.value:
+            if boss in boss_mapping:
+                settings_dict["bosses_selected"].append(boss_mapping[boss])
+
     # Hard Boss mapping
     hard_boss_mapping = {
         "fast_mad_jack": HardBossesSelected.fast_mad_jack,
@@ -830,6 +927,15 @@ def handle_fake_generation_settings(settings: Settings, multiworld) -> None:
                 settings.boss_kongs = passthrough["BossKongs"]
                 settings.lanky_freeing_kong = passthrough["LankyFreeingKong"]
                 settings.helm_order = passthrough["HelmOrder"]
+
+                # Krusha kong models
+                if "KongModels" in passthrough:
+                    kong_models = passthrough["KongModels"]
+                    settings.kong_model_dk = KongModels[kong_models.get("DK", "default")]
+                    settings.kong_model_diddy = KongModels[kong_models.get("Diddy", "default")]
+                    settings.kong_model_lanky = KongModels[kong_models.get("Lanky", "default")]
+                    settings.kong_model_tiny = KongModels[kong_models.get("Tiny", "default")]
+                    settings.kong_model_chunky = KongModels[kong_models.get("Chunky", "default")]
                 settings.logic_type = LogicType[passthrough["LogicType"]]
                 settings.tricks_selected = passthrough["TricksSelected"]
                 settings.glitches_selected = passthrough["GlitchesSelected"]
@@ -869,6 +975,8 @@ def fillsettings(options, multiworld, random_obj):
     apply_item_randomization_settings(settings_dict, options)
     apply_hard_mode_settings(settings_dict, options)
     apply_kong_settings(settings_dict, options)
+    apply_starting_region_settings(settings_dict, options)
+    apply_dk_portal_settings(settings_dict, options)
     apply_switchsanity_settings(settings_dict, options)
     apply_logic_and_barriers_settings(settings_dict, options)
     apply_glitches_and_tricks_settings(settings_dict, options)

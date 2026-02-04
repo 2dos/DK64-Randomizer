@@ -813,14 +813,6 @@ typedef struct enemy_drop_struct {
 	/* 0x005 */ unsigned char drop_count;
 } enemy_drop_struct;
 
-typedef struct fileExtraStorage {
-	/* 0x000 */ unsigned char location_sss_purchased; // 0lll 0pss. l = level (0-7), p = purchased (0-1), s = shop (0-2. Cranky, Funky, Candy)
-	/* 0x001 */ unsigned char location_ab1_purchased;
-	/* 0x002 */ unsigned char location_ug1_purchased;
-	/* 0x003 */ unsigned char location_mln_purchased;
-	/* 0x004 */ unsigned int level_igt[9];
-} fileExtraStorage;
-
 typedef struct PauseItemStruct {
     union {
         const int sprite_index;
@@ -829,10 +821,6 @@ typedef struct PauseItemStruct {
     unsigned short item_cap;
     unsigned short item_count;
 } PauseItemStruct;
-
-typedef struct settingsData {
-	/* 0x000 */ fileExtraStorage file_extra;
-} settingsData;
 
 typedef struct model_struct {
 	/* 0x000 */ float x;

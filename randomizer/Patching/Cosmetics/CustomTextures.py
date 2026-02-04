@@ -490,6 +490,8 @@ def hasCustomArcadeSprite(address: int) -> bool:
 
 def writeCustomArcadeSprites(settings: Settings, ROM_COPY: ROM) -> None:
     """Write a custom series of arcade sprites to ROM."""
+    if settings.arcade_custom_minigame is not None:
+        return
     if js.cosmetics is None:
         return
     if js.cosmetics.arcade_sprites is None:
