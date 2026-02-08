@@ -224,6 +224,7 @@ def check_version():
                         archipelago_dir = os.path.dirname(commonlient_dir)
                         potential_paths.insert(0, os.path.join(archipelago_dir, "custom_worlds", "dk64.apworld"))
                     except Exception:
+                        # CommonClient module not available or path resolution failed, skip this location
                         pass
 
                     apworld_output = None
