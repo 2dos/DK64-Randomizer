@@ -15,23 +15,23 @@ from Utils import get_settings
 
 def get_system_ca_bundle():
     """Find the system's CA certificate bundle.
-    
+
     Tries common locations for CA certificates on Linux systems.
     Returns the path if found, None otherwise.
     """
     ca_bundle_paths = [
         "/etc/ssl/certs/ca-certificates.crt",  # Debian/Ubuntu/Gentoo
-        "/etc/pki/tls/certs/ca-bundle.crt",    # RedHat/CentOS/Fedora
-        "/etc/ssl/ca-bundle.pem",              # OpenSUSE
-        "/etc/ssl/cert.pem",                   # OpenBSD/Alpine
+        "/etc/pki/tls/certs/ca-bundle.crt",  # RedHat/CentOS/Fedora
+        "/etc/ssl/ca-bundle.pem",  # OpenSUSE
+        "/etc/ssl/cert.pem",  # OpenBSD/Alpine
         "/usr/local/share/certs/ca-root-nss.crt",  # FreeBSD
-        "/etc/pki/tls/cert.pem",               # RedHat alternative
+        "/etc/pki/tls/cert.pem",  # RedHat alternative
     ]
-    
+
     for path in ca_bundle_paths:
         if os.path.isfile(path):
             return path
-    
+
     return None
 
 
@@ -215,26 +215,27 @@ def check_version():
                         os.path.expanduser("~/.local/share/Archipelago/custom_worlds/dk64.apworld"),  # Linux user install
                         os.path.join(os.path.dirname(sys.executable), "custom_worlds", "dk64.apworld"),
                     ]
-                    
+
                     # Add the path relative to the CommonClient module if available
                     try:
                         import CommonClient
+
                         commonlient_dir = os.path.dirname(os.path.abspath(CommonClient.__file__))
                         archipelago_dir = os.path.dirname(commonlient_dir)
                         potential_paths.insert(0, os.path.join(archipelago_dir, "custom_worlds", "dk64.apworld"))
                     except Exception:
                         pass
-                    
+
                     apworld_output = None
                     for path in potential_paths:
                         if os.path.exists(path):
                             apworld_output = path
                             break
-                    
+
                     if not apworld_output:
                         logger.warning("New version of DK64 Rando available, but no APWorld file found. Please update manually.")
                         return
-                    
+
                     if os.path.exists(apworld_output):
                         should_install = ask_yes_no_cancel("Update Available", "A new version of DK64 Rando is available. Would you like to install it?")
                         if not should_install:
