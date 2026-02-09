@@ -975,11 +975,10 @@ def handle_fake_generation_settings(settings: Settings, multiworld) -> None:
                 if passthrough.get("StartingRegion"):
                     from randomizer.Enums.Regions import Regions
                     from randomizer.Enums.Maps import Maps as DK64Maps
-                    
+
                     starting_region_data = passthrough["StartingRegion"]
                     # Ensure all fields exist and are not None
-                    if all(key in starting_region_data and starting_region_data[key] is not None 
-                           for key in ["region", "map", "exit", "region_name", "exit_name"]):
+                    if all(key in starting_region_data and starting_region_data[key] is not None for key in ["region", "map", "exit", "region_name", "exit_name"]):
                         try:
                             settings.starting_region = {
                                 "region": Regions[starting_region_data["region"]],

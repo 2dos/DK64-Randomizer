@@ -890,17 +890,17 @@ if baseclasses_loaded:
             """Restore custom location names from slot data for UT regeneration."""
             from randomizer.Lists.Location import LocationListOriginal as VanillaLocationList
             from archipelago.Regions import BASE_ID
-            
+
             if not custom_location_names:
                 return
-            
+
             print(f"[DK64 UT] Restoring {len(custom_location_names)} custom location names")
-            
+
             # Build enum_to_index mapping
             enum_to_index = {location: index for index, location in enumerate(VanillaLocationList)}
             # Build reverse mapping: location_id -> location_enum
             index_to_enum = {index: location for location, index in enum_to_index.items()}
-            
+
             restored_count = 0
             sample_names = []
             for loc_id_str, data in custom_location_names.items():
@@ -917,7 +917,7 @@ if baseclasses_loaded:
                             restored_count += 1
                             if restored_count <= 5:
                                 sample_names.append(f"  {new_name}")
-            
+
             print(f"[DK64 UT] Restored {restored_count} names, samples:")
             for name in sample_names:
                 print(name)
@@ -1159,7 +1159,7 @@ if baseclasses_loaded:
             # Check if this is a UT regeneration - use generation_is_fake flag
             is_ut_regen = hasattr(self.multiworld, "generation_is_fake")
             print(f"[DK64] Is UT regen: {is_ut_regen}, has generation_is_fake: {hasattr(self.multiworld, 'generation_is_fake')}")
-            
+
             # Store custom location flags
             do_crown_shuffle = self.spoiler.settings.crown_placement_rando
             do_patch_shuffle = self.spoiler.settings.random_patches
@@ -1177,7 +1177,7 @@ if baseclasses_loaded:
             self.spoiler.settings.crown_placement_rando = do_crown_shuffle
             self.spoiler.settings.random_patches = do_patch_shuffle
             self.spoiler.settings.random_crates = do_crate_shuffle
-            
+
             if not is_ut_regen:
                 # Normal generation - run custom location shuffles
                 if do_crown_shuffle:
@@ -1287,7 +1287,7 @@ if baseclasses_loaded:
             self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
 
             Generate_Spoiler(self.spoiler)
-            
+
             # For UT: Restore custom location names after Generate_Spoiler
             if hasattr(self.multiworld, "generation_is_fake") and hasattr(self.multiworld, "re_gen_passthrough"):
                 if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
@@ -1349,7 +1349,7 @@ if baseclasses_loaded:
                 if hasattr(self.multiworld, "re_gen_passthrough"):
                     if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
                         passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
-                        
+
                         # Restore enemy, minigame, shop, and portal data
                         if passthrough["EnemyData"]:
                             for location, data in passthrough["EnemyData"].items():
@@ -1374,13 +1374,13 @@ if baseclasses_loaded:
                         if passthrough.get("DKPortalLocations") and passthrough["DKPortalLocations"]:
                             # Restore DK Portal locations
                             self.spoiler.human_entry_doors = passthrough["DKPortalLocations"]
-                            
+
                             # Update entry handler region exits to point to the restored DK Portal locations
                             # This matches the behavior in DoorData.assignDKPortal()
                             from randomizer.Enums.Levels import Levels
                             from randomizer.Lists.DoorLocations import door_locations, LEVEL_ENTRY_HANDLER_REGIONS
                             from randomizer.LogicClasses import TransitionFront
-                            
+
                             level_name_to_enum = {
                                 "Jungle Japes": Levels.JungleJapes,
                                 "Angry Aztec": Levels.AngryAztec,
@@ -1390,7 +1390,7 @@ if baseclasses_loaded:
                                 "Crystal Caves": Levels.CrystalCaves,
                                 "Creepy Castle": Levels.CreepyCastle,
                             }
-                            
+
                             for level_name, door_name in self.spoiler.human_entry_doors.items():
                                 if door_name != "Vanilla":
                                     level_enum = level_name_to_enum.get(level_name)
@@ -1400,22 +1400,20 @@ if baseclasses_loaded:
                                             if door_data.name == door_name:
                                                 # Update the entry handler region's exit to point to this door's logic region
                                                 placement_region = LEVEL_ENTRY_HANDLER_REGIONS[level_enum]
-                                                self.spoiler.RegionList[placement_region].exits[1] = TransitionFront(
-                                                    door_data.logicregion, lambda _: True
-                                                )
+                                                self.spoiler.RegionList[placement_region].exits[1] = TransitionFront(door_data.logicregion, lambda _: True)
                                                 break
-                        
+
                         # Restore entrance randomization connections for yamlless generation
                         if passthrough.get("EntranceRando") and passthrough["EntranceRando"]:
                             # Store entrance connections for later restoration
                             # These will be applied in connect_entrances when we detect yamlless generation
                             self.saved_entrance_connections = passthrough["EntranceRando"]
-                        
+
                         # Restore starting region for yamlless generation
                         if passthrough.get("StartingRegion") and passthrough["StartingRegion"]:
                             from randomizer.Enums.Regions import Regions
                             from randomizer.Enums.Maps import Maps
-                            
+
                             starting_region_data = passthrough["StartingRegion"]
                             # Reconstruct the starting_region dictionary
                             self.spoiler.settings.starting_region = {
@@ -1469,7 +1467,7 @@ if baseclasses_loaded:
             # Exclude the locations using Archipelago's exclude_locations mechanism
             if excluded_locations:
                 exclude_locations(excluded_locations)
-            
+
             # AFTER all regions are created, restore custom location shuffles for UT
             # This must happen here (not in generate_early) to override default placements
             if hasattr(self.multiworld, "generation_is_fake") and hasattr(self.multiworld, "re_gen_passthrough"):
@@ -2080,13 +2078,13 @@ if baseclasses_loaded:
             print(f"  has crown_locations: {hasattr(self.spoiler, 'crown_locations')}")
             print(f"  has dirt_patch_placement: {hasattr(self.spoiler, 'dirt_patch_placement')}")
             print(f"  has meloncrate_placement: {hasattr(self.spoiler, 'meloncrate_placement')}")
-            if hasattr(self.spoiler, 'crown_locations'):
+            if hasattr(self.spoiler, "crown_locations"):
                 print(f"  crown_locations length: {len(self.spoiler.crown_locations) if self.spoiler.crown_locations else 0}")
-            if hasattr(self.spoiler, 'dirt_patch_placement'):
+            if hasattr(self.spoiler, "dirt_patch_placement"):
                 print(f"  dirt_patch_placement length: {len(self.spoiler.dirt_patch_placement) if self.spoiler.dirt_patch_placement else 0}")
-            if hasattr(self.spoiler, 'meloncrate_placement'):
+            if hasattr(self.spoiler, "meloncrate_placement"):
                 print(f"  meloncrate_placement length: {len(self.spoiler.meloncrate_placement) if self.spoiler.meloncrate_placement else 0}")
-            
+
             # If hints are enabled, wait for hint compilation to complete
             if hasattr(self, "options") and self.options.hint_style > 0:
                 self.hint_compilation_complete.wait()
@@ -2599,10 +2597,10 @@ if baseclasses_loaded:
             # Added starting region and DK portal locations
             starting_region = slot_data.get("StartingRegion", {})
             dk_portal_locations = slot_data.get("DKPortalLocations", {})
-            
+
             # Custom location names for UT regeneration
             custom_location_names = slot_data.get("CustomLocationNames", {})
-            
+
             # Custom location shuffle data for UT regeneration
             crown_shuffle_data = slot_data.get("CrownShuffleData", None)
             patch_shuffle_data = slot_data.get("PatchShuffleData", None)

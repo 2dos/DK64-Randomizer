@@ -116,7 +116,7 @@ def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler, option
         spoiler.LocationList[location].name: (BASE_ID + index) for index, location in enumerate(DK64RLocation.LocationListOriginal) if spoiler.LocationList[location].type != Types.EnemyPhoto
     }
     all_locations_dynamic.update({"Victory": 0x00})  # Temp for generating goal location
-    
+
     # Debug: check for custom location names
     custom_names = [name for name in all_locations_dynamic.keys() if "Battle Arena" in name or "Melon Crate" in name or "Dirt:" in name]
     if custom_names and len(custom_names) > 0:

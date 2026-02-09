@@ -1572,7 +1572,11 @@ CustomLocations = {
             z=2385,
             max_size=64,
             logic_region=Regions.LlamaTemple,
-            logic=lambda l: Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or l.isdonkey or l.isdiddy or l.islanky or l.ischunky),
+            logic=lambda l: Events.AztecLlamaSpit in l.Events
+            and l.HasGun(Kongs.any)
+            and l.swim
+            and l.scope
+            and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or l.isdonkey or l.isdiddy or l.islanky or l.ischunky),
             group=4,
             banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),

@@ -5,13 +5,13 @@ from typing import Any
 
 def dk64_map_to_tab_index(data: Any) -> int:
     """Map DK64 game map ID to flat sub-area index for UT navigation.
-    
+
     Returns the flat index across ALL sub-areas in map_page_groups.
     """
     # Handle empty or None data
     if data is None or data == "" or data == b"":
         return 0
-    
+
     # Convert to int if needed
     try:
         if isinstance(data, str):
@@ -21,11 +21,14 @@ def dk64_map_to_tab_index(data: Any) -> int:
         map_id = int(data) if not isinstance(data, int) else data
     except (ValueError, TypeError):
         return 0
-    
+
     map_to_flat_index = {
         # DK Isles (indices 0-10)
-        34: 0, 189: 0, 97: 0,  # isles
-        176: 1, 171: 1,  # training
+        34: 0,
+        189: 0,
+        97: 0,  # isles
+        176: 1,
+        171: 1,  # training
         169: 2,  # japeslobby
         173: 3,  # azteclobby
         175: 4,  # factorylobby
@@ -35,15 +38,26 @@ def dk64_map_to_tab_index(data: Any) -> int:
         193: 8,  # castlelobby
         170: 9,  # helmlobby
         195: 10,  # snidelobby
-        203: 0, 204: 0, 205: 0, 206: 0, 207: 0, 214: 0,  # K. Rool phases -> isles
+        203: 0,
+        204: 0,
+        205: 0,
+        206: 0,
+        207: 0,
+        214: 0,  # K. Rool phases -> isles
         15: 10,  # Snide's -> snidelobby
         # Jungle Japes (indices 11-14)
-        7: 11, 12: 11, 13: 11, 37: 11,  # japes main area (beehive, painting room, blast)
+        7: 11,
+        12: 11,
+        13: 11,
+        37: 11,  # japes main area (beehive, painting room, blast)
         33: 12,  # japesunder
-        4: 13, 6: 13,  # japesmountain (includes minecarts)
+        4: 13,
+        6: 13,  # japesmountain (includes minecarts)
         # shellhive (14) - no specific map ID, part of main japes
         # Angry Aztec (indices 15-22)
-        38: 15, 14: 15, 41: 15,  # aztec main area
+        38: 15,
+        14: 15,
+        41: 15,  # aztec main area
         16: 16,  # tinytemple
         20: 17,  # llamatemple
         19: 18,  # dk5dt
@@ -52,31 +66,79 @@ def dk64_map_to_tab_index(data: Any) -> int:
         22: 21,  # tiny5dt
         24: 22,  # chunky5dt
         # Frantic Factory (index 23)
-        26: 23, 27: 23, 29: 23, 36: 23, 110: 23,  # factory
+        26: 23,
+        27: 23,
+        29: 23,
+        36: 23,
+        110: 23,  # factory
         # Gloomy Galleon (index 24)
-        30: 24, 49: 24, 45: 24, 31: 24, 39: 24, 44: 24, 179: 24,  # galleon
-        51: 24, 46: 24, 43: 24, 47: 24, 54: 24,
+        30: 24,
+        49: 24,
+        45: 24,
+        31: 24,
+        39: 24,
+        44: 24,
+        179: 24,  # galleon
+        51: 24,
+        46: 24,
+        43: 24,
+        47: 24,
+        54: 24,
         # Fungi Forest (indices 25-28)
-        48: 25, 55: 25, 64: 25, 71: 25, 70: 25, 63: 25, 52: 25,  # forest main
-        56: 25, 57: 25, 58: 25, 188: 25,
+        48: 25,
+        55: 25,
+        64: 25,
+        71: 25,
+        70: 25,
+        63: 25,
+        52: 25,  # forest main
+        56: 25,
+        57: 25,
+        58: 25,
+        188: 25,
         61: 26,  # frontmill
-        62: 27, 60: 27,  # rearmill
+        62: 27,
+        60: 27,  # rearmill
         59: 28,  # barn
         # Crystal Caves (index 29)
-        72: 29, 82: 29, 98: 29, 86: 29, 100: 29, 85: 29, 84: 29,  # caves
-        95: 29, 89: 29, 91: 29, 92: 29, 200: 29, 94: 29, 93: 29, 90: 29, 186: 29,
+        72: 29,
+        82: 29,
+        98: 29,
+        86: 29,
+        100: 29,
+        85: 29,
+        84: 29,  # caves
+        95: 29,
+        89: 29,
+        91: 29,
+        92: 29,
+        200: 29,
+        94: 29,
+        93: 29,
+        90: 29,
+        186: 29,
         # Creepy Castle (indices 30-36)
-        87: 30, 164: 30, 114: 30, 105: 30, 168: 30, 167: 30, 166: 30, 187: 30,  # castle exterior
+        87: 30,
+        164: 30,
+        114: 30,
+        105: 30,
+        168: 30,
+        167: 30,
+        166: 30,
+        187: 30,  # castle exterior
         151: 31,  # dungeontunnel
         163: 32,  # dungeon
-        183: 33, 108: 33,  # crypthub
-        112: 34, 106: 34,  # crypt
+        183: 33,
+        108: 33,  # crypthub
+        112: 34,
+        106: 34,  # crypt
         88: 35,  # ballroom
-        113: 36, 185: 36,  # museum
+        113: 36,
+        185: 36,  # museum
         # Hideout Helm (index 37)
         17: 37,  # helm
     }
-    
+
     flat_index = map_to_flat_index.get(map_id, 0)
     return flat_index
 
