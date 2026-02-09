@@ -1156,13 +1156,15 @@ if baseclasses_loaded:
 
             resetCustomLocations(self.spoiler)
 
-            # Check if this is a UT regeneration
-            is_ut_regen = hasattr(settings, "ut_custom_location_names")
+            # Check if this is a UT regeneration - use generation_is_fake flag
+            is_ut_regen = hasattr(self.multiworld, "generation_is_fake")
+            print(f"[DK64] Is UT regen: {is_ut_regen}, has generation_is_fake: {hasattr(self.multiworld, 'generation_is_fake')}")
             
             # Store custom location flags
             do_crown_shuffle = self.spoiler.settings.crown_placement_rando
             do_patch_shuffle = self.spoiler.settings.random_patches
             do_crate_shuffle = self.spoiler.settings.random_crates
+            print(f"[DK64] Shuffle flags - Crowns: {do_crown_shuffle}, Patches: {do_patch_shuffle}, Crates: {do_crate_shuffle}")
 
             # Temporarily disable custom locations so Generate_Spoiler doesn't run them
             self.spoiler.settings.crown_placement_rando = False
@@ -1175,8 +1177,7 @@ if baseclasses_loaded:
             self.spoiler.settings.crown_placement_rando = do_crown_shuffle
             self.spoiler.settings.random_patches = do_patch_shuffle
             self.spoiler.settings.random_crates = do_crate_shuffle
-
-            # For UT regeneration, skip custom location shuffles (will restore from passthrough later)
+            
             if not is_ut_regen:
                 # Normal generation - run custom location shuffles
                 if do_crown_shuffle:
@@ -1185,14 +1186,17 @@ if baseclasses_loaded:
                     ShuffleCrowns(self.spoiler, crown_replacements, crown_human_replacements)
                     self.spoiler.crown_locations = crown_replacements
                     self.spoiler.human_crowns = dict(sorted(crown_human_replacements.items()))
+                    print(f"[DK64] Shuffled {len([c for crowns in crown_replacements.values() for c in crowns])} battle arenas")
 
                 if do_patch_shuffle:
                     human_patches = {}
                     self.spoiler.human_patches = ShufflePatches(self.spoiler, human_patches).copy()
+                    print(f"[DK64] Shuffled {len(self.spoiler.dirt_patch_placement)} dirt patches")
 
                 if do_crate_shuffle:
                     human_crates = {}
                     self.spoiler.human_crates = ShuffleMelonCrates(self.spoiler, human_crates).copy()
+                    print(f"[DK64] Shuffled {len(self.spoiler.meloncrate_placement)} melon crates")
 
             # Store/retrieve blocker values for seed group synchronization
             if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
@@ -1345,6 +1349,8 @@ if baseclasses_loaded:
                 if hasattr(self.multiworld, "re_gen_passthrough"):
                     if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
                         passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
+                        
+                        # Restore enemy, minigame, shop, and portal data
                         if passthrough["EnemyData"]:
                             for location, data in passthrough["EnemyData"].items():
                                 self.spoiler.enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], 0, [], False)
@@ -1368,6 +1374,61 @@ if baseclasses_loaded:
                         if passthrough.get("DKPortalLocations") and passthrough["DKPortalLocations"]:
                             # Restore DK Portal locations
                             self.spoiler.human_entry_doors = passthrough["DKPortalLocations"]
+                            
+                            # Update entry handler region exits to point to the restored DK Portal locations
+                            # This matches the behavior in DoorData.assignDKPortal()
+                            from randomizer.Enums.Levels import Levels
+                            from randomizer.Lists.DoorLocations import door_locations, LEVEL_ENTRY_HANDLER_REGIONS
+                            from randomizer.LogicClasses import TransitionFront
+                            
+                            level_name_to_enum = {
+                                "Jungle Japes": Levels.JungleJapes,
+                                "Angry Aztec": Levels.AngryAztec,
+                                "Frantic Factory": Levels.FranticFactory,
+                                "Gloomy Galleon": Levels.GloomyGalleon,
+                                "Fungi Forest": Levels.FungiForest,
+                                "Crystal Caves": Levels.CrystalCaves,
+                                "Creepy Castle": Levels.CreepyCastle,
+                            }
+                            
+                            for level_name, door_name in self.spoiler.human_entry_doors.items():
+                                if door_name != "Vanilla":
+                                    level_enum = level_name_to_enum.get(level_name)
+                                    if level_enum is not None:
+                                        # Find the door with this name in the door_locations list
+                                        for door_data in door_locations[level_enum]:
+                                            if door_data.name == door_name:
+                                                # Update the entry handler region's exit to point to this door's logic region
+                                                placement_region = LEVEL_ENTRY_HANDLER_REGIONS[level_enum]
+                                                self.spoiler.RegionList[placement_region].exits[1] = TransitionFront(
+                                                    door_data.logicregion, lambda _: True
+                                                )
+                                                break
+                        
+                        # Restore entrance randomization connections for yamlless generation
+                        if passthrough.get("EntranceRando") and passthrough["EntranceRando"]:
+                            # Store entrance connections for later restoration
+                            # These will be applied in connect_entrances when we detect yamlless generation
+                            self.saved_entrance_connections = passthrough["EntranceRando"]
+                        
+                        # Restore starting region for yamlless generation
+                        if passthrough.get("StartingRegion") and passthrough["StartingRegion"]:
+                            from randomizer.Enums.Regions import Regions
+                            from randomizer.Enums.Maps import Maps
+                            
+                            starting_region_data = passthrough["StartingRegion"]
+                            # Reconstruct the starting_region dictionary
+                            self.spoiler.settings.starting_region = {
+                                "region": Regions[starting_region_data["region"]],
+                                "map": Maps[starting_region_data["map"]],
+                                "exit": starting_region_data["exit"],
+                                "region_name": starting_region_data["region_name"],
+                                "exit_name": starting_region_data["exit_name"],
+                            }
+                            # Update GameStart region exits to point to the restored starting region
+                            # This matches the behavior in Settings.RandomizeStartingLocation()
+                            for x in range(2):
+                                self.spoiler.RegionList[Regions.GameStart].exits[x + 1].dest = self.spoiler.settings.starting_region["region"]
 
             # Handle hint preparation by initiating some variables
             self.hint_data = {
@@ -1408,6 +1469,12 @@ if baseclasses_loaded:
             # Exclude the locations using Archipelago's exclude_locations mechanism
             if excluded_locations:
                 exclude_locations(excluded_locations)
+            
+            # AFTER all regions are created, restore custom location shuffles for UT
+            # This must happen here (not in generate_early) to override default placements
+            if hasattr(self.multiworld, "generation_is_fake") and hasattr(self.multiworld, "re_gen_passthrough"):
+                if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
+                    self._restore_shuffled_custom_locations()
 
         def create_items(self) -> None:
             """Create the items."""
@@ -2008,6 +2075,18 @@ if baseclasses_loaded:
 
         def fill_slot_data(self) -> dict:
             """Fill the slot data."""
+            # Debug: Check if shuffle attributes exist
+            print(f"[DK64 fill_slot_data START] Checking spoiler attributes:")
+            print(f"  has crown_locations: {hasattr(self.spoiler, 'crown_locations')}")
+            print(f"  has dirt_patch_placement: {hasattr(self.spoiler, 'dirt_patch_placement')}")
+            print(f"  has meloncrate_placement: {hasattr(self.spoiler, 'meloncrate_placement')}")
+            if hasattr(self.spoiler, 'crown_locations'):
+                print(f"  crown_locations length: {len(self.spoiler.crown_locations) if self.spoiler.crown_locations else 0}")
+            if hasattr(self.spoiler, 'dirt_patch_placement'):
+                print(f"  dirt_patch_placement length: {len(self.spoiler.dirt_patch_placement) if self.spoiler.dirt_patch_placement else 0}")
+            if hasattr(self.spoiler, 'meloncrate_placement'):
+                print(f"  meloncrate_placement length: {len(self.spoiler.meloncrate_placement) if self.spoiler.meloncrate_placement else 0}")
+            
             # If hints are enabled, wait for hint compilation to complete
             if hasattr(self, "options") and self.options.hint_style > 0:
                 self.hint_compilation_complete.wait()
@@ -2433,8 +2512,6 @@ if baseclasses_loaded:
             """Parse slot data for any logical bits that need to match the real generation. Used by Universal Tracker."""
             # Parse the string data
             version = slot_data["Version"]
-            if version != self.ap_version:
-                print(f"Version mismatch: {version} != {self.ap_version}. You may experience unexpected behavior.")
 
             level_order = slot_data["LevelOrder"].split(", ")
             starting_kongs = slot_data["StartingKongs"].split(", ")
@@ -2525,6 +2602,11 @@ if baseclasses_loaded:
             
             # Custom location names for UT regeneration
             custom_location_names = slot_data.get("CustomLocationNames", {})
+            
+            # Custom location shuffle data for UT regeneration
+            crown_shuffle_data = slot_data.get("CrownShuffleData", None)
+            patch_shuffle_data = slot_data.get("PatchShuffleData", None)
+            crate_shuffle_data = slot_data.get("CrateShuffleData", None)
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -2579,4 +2661,10 @@ if baseclasses_loaded:
             relevant_data["StartingRegion"] = starting_region
             relevant_data["DKPortalLocations"] = dk_portal_locations
             relevant_data["CustomLocationNames"] = custom_location_names
+            if crown_shuffle_data is not None:
+                relevant_data["CrownShuffleData"] = crown_shuffle_data
+            if patch_shuffle_data is not None:
+                relevant_data["PatchShuffleData"] = patch_shuffle_data
+            if crate_shuffle_data is not None:
+                relevant_data["CrateShuffleData"] = crate_shuffle_data
             return relevant_data

@@ -235,6 +235,9 @@ def create_region(
             # Dropsanity would otherwise flood the world with irrelevant locked locations, greatly slowing seed gen
             if location_obj.type == Types.Enemies and Types.Enemies not in logic_holder.settings.shuffled_location_types:
                 continue
+            # Skip boulder/holdable items if not shuffled
+            if location_obj.type == Types.BoulderItem and Types.BoulderItem not in logic_holder.settings.shuffled_location_types:
+                continue
             # Skip shared shops that are not in the available pool
             if location_obj.type == Types.Shop and location_obj.kong == Kongs.any:
                 if location_logic.id not in logic_holder.available_shared_shops:
