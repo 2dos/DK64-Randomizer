@@ -5,6 +5,7 @@ from randomizer.Lists.Item import ItemList as DK64RItemList
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Location import SharedShopLocations
+from archipelago.Options import ShopPrices
 
 
 class PriceGenerator:
@@ -25,15 +26,14 @@ class PriceGenerator:
 
     def _get_price_weights(self, shop_prices_value):
         """Get the parameters for the price distribution."""
-        match shop_prices_value:
-            case 3:  # Hard
-                return (6.5, 3, 12)
-            case 2:  # Medium
-                return (4.5, 2, 9)
-            case 1:  # Easy
-                return (2.5, 1, 6)
-            case _:  # Free
-                return (0, 0, 0)
+        if shop_prices_value == ShopPrices.option_high:
+            return (6.5, 3, 12)
+        elif shop_prices_value == ShopPrices.option_medium:
+            return (4.5, 2, 9)
+        elif shop_prices_value == ShopPrices.option_low:
+            return (2.5, 1, 6)
+        elif shop_prices_value == ShopPrices.option_free:
+            return (0, 0, 0)
 
     def _generate_random_price(self, avg, stddev, upper_limit):
         """Generate a random price using normal distribution."""
@@ -45,7 +45,6 @@ class PriceGenerator:
 
     def _get_shared_shop_vendors(self, Kongs, Types):
         """Identify vendor/level combinations that have shared shops."""
-
         shared_shop_vendors = set()
 
         if not self.options.enable_shared_shops.value:
