@@ -326,6 +326,9 @@ def create_region(
             # Bosses and Crowns cannot have Junk due to technical reasons
             if location_obj.type in (Types.Key, Types.Crown):
                 add_item_rule(location, lambda item: not (item.player == player and "Junk" in item.name))
+            # Fairies cannot have blueprints due to crashes
+            if location_obj.type == Types.Fairy:
+                add_item_rule(location, lambda item: not (item.player == player and "Blueprint" in item.name))
             # Shops cannot have shopkeepers or Rainbow Coins due to technical issues
             if location_obj.type == Types.Shop:
                 add_item_rule(location, lambda item: not (item.player == player and item.name in ["Cranky", "Funky", "Candy", "Snide", "Rainbow"]))
