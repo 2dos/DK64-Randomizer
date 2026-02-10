@@ -989,7 +989,7 @@ if baseclasses_loaded:
                                 enable_chaos_blockers=bool(world.options.enable_chaos_blockers.value),
                                 randomize_blocker_required_amounts=bool(world.options.randomize_blocker_required_amounts.value),
                                 blocker_max=int(world.options.blocker_max.value),
-                                maximize_helm_blocker=bool(world.options.maximize_helm_blocker.value),
+                                maximize_helm_blocker=bool(world.options.maximize_level8_blocker.value),
                                 level_blockers={
                                     "level_1": int(world.options.level_blockers.value.get("level_1", 0)),
                                     "level_2": int(world.options.level_blockers.value.get("level_2", 0)),
@@ -1023,14 +1023,14 @@ if baseclasses_loaded:
                             self.seed_groups[group]["blocker_max"] = min(self.seed_groups[group]["blocker_max"], int(world.options.blocker_max.value))
 
                             # maximize_helm_blocker: if any player has it enabled, enable it for the group
-                            if world.options.maximize_helm_blocker.value:
+                            if world.options.maximize_level8_blocker.value:
                                 self.seed_groups[group]["maximize_helm_blocker"] = True
 
                             # level blockers: use the lowest value in the group for each
                             for level_num in range(1, 9):
-                                blocker_key = f"level{level_num}_blocker"
-                                option_key = blocker_key
-                                self.seed_groups[group][blocker_key] = min(self.seed_groups[group][blocker_key], int(getattr(world.options, option_key).value))
+                                blocker_key = f"level_{level_num}"
+                                option_key = "level_blockers"
+                                self.seed_groups[group][option_key][blocker_key] = min(self.seed_groups[group][option_key][blocker_key], int(getattr(world.options, option_key)[blocker_key]))
 
                             # logic_type: use most restrictive (glitchless=1 > advanced_glitchless=0 > glitched=2)
                             # Priority order: glitchless (1) is most restrictive, then advanced_glitchless (0), then glitched (2)
@@ -1065,7 +1065,7 @@ if baseclasses_loaded:
                         self.options.enable_chaos_blockers.value = int(self.seed_groups[group]["enable_chaos_blockers"])
                         self.options.randomize_blocker_required_amounts.value = int(self.seed_groups[group]["randomize_blocker_required_amounts"])
                         self.options.blocker_max.value = self.seed_groups[group]["blocker_max"]
-                        self.options.maximize_helm_blocker.value = int(self.seed_groups[group]["maximize_helm_blocker"])
+                        self.options.maximize_level8_blocker.value = int(self.seed_groups[group]["maximize_helm_blocker"])
                         self.options.level_blockers.value = self.seed_groups[group]["level_blockers"]
 
                         # Create group random for LZR seed synchronization and replace self.random
@@ -1133,14 +1133,14 @@ if baseclasses_loaded:
                             self.seed_groups[group]["blocker_max"] = min(self.seed_groups[group]["blocker_max"], int(world.options.blocker_max.value))
 
                             # maximize_helm_blocker: if any player has it enabled, enable it for the group
-                            if world.options.maximize_helm_blocker.value:
+                            if world.options.maximize_level8_blocker.value:
                                 self.seed_groups[group]["maximize_helm_blocker"] = True
 
                             # level blockers: use the lowest value in the group for each
                             for level_num in range(1, 9):
-                                blocker_key = f"level{level_num}_blocker"
-                                option_key = blocker_key
-                                self.seed_groups[group][blocker_key] = min(self.seed_groups[group][blocker_key], int(getattr(world.options, option_key).value))
+                                blocker_key = f"level_{level_num}"
+                                option_key = "level_blockers"
+                                self.seed_groups[group][option_key][blocker_key] = min(self.seed_groups[group][option_key][blocker_key], int(getattr(world.options, option_key)[blocker_key]))
 
             # Apply seed group settings and create group random if using a custom seed group BEFORE fillsettings
             self.group_random = None
@@ -1154,7 +1154,7 @@ if baseclasses_loaded:
                         self.options.enable_chaos_blockers.value = int(self.seed_groups[group]["enable_chaos_blockers"])
                         self.options.randomize_blocker_required_amounts.value = int(self.seed_groups[group]["randomize_blocker_required_amounts"])
                         self.options.blocker_max.value = self.seed_groups[group]["blocker_max"]
-                        self.options.maximize_helm_blocker.value = int(self.seed_groups[group]["maximize_helm_blocker"])
+                        self.options.maximize_level8_blocker.value = int(self.seed_groups[group]["maximize_helm_blocker"])
                         self.options.level_blockers.value = self.seed_groups[group]["level_blockers"]
 
                         # Apply synchronized logic and glitch settings
