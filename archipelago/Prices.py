@@ -6,6 +6,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Location import SharedShopLocations
 
+
 class PriceGenerator:
     """Generates custom shop prices for Archipelago DK64."""
 
