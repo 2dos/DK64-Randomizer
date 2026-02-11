@@ -102,22 +102,23 @@ if baseclasses_loaded:
     except Exception as e:
         pass
 
-    if platform_type == "win32":
-        zip_path = "vendor/windows.zip"  # Path inside the package
-        copy_dependencies(zip_path, "windows.zip")
-    elif platform_type == "linux":
-        # Try version-specific zip first, fall back to generic
-        version_zip = f"vendor/linux_{python_version}.zip"
-        generic_zip = "vendor/linux.zip"
-        try:
-            copy_dependencies(version_zip, f"linux_{python_version}.zip")
-        except (FileNotFoundError, KeyError):
+    match platform_type:
+        case "win32":
+            zip_path = "vendor/windows.zip"
+            copy_dependencies(zip_path, "windows.zip")
+        case "linux":
+            # Try version-specific zip first, fall back to generic
+            version_zip = f"vendor/linux_{python_version}.zip"
+            generic_zip = "vendor/linux.zip"
             try:
-                copy_dependencies(generic_zip, "linux.zip")
+                copy_dependencies(version_zip, f"linux_{python_version}.zip")
             except (FileNotFoundError, KeyError):
-                raise Exception(f"Could not find vendor dependencies for Linux Python {python_version}")
-    else:
-        raise Exception(f"Unsupported platform: {platform_type}")
+                try:
+                    copy_dependencies(generic_zip, "linux.zip")
+                except (FileNotFoundError, KeyError):
+                    raise Exception(f"Could not find vendor dependencies for Linux Python {python_version}")
+        case _:
+            raise Exception(f"Unsupported platform: {platform_type}")
 
     # Add paths for APWorld context - use __file__ to get the correct base path
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -140,6 +141,7 @@ if baseclasses_loaded:
     from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity, pp_wincon
     from archipelago.Items import DK64Item, full_item_table, setup_items
     from archipelago.Options import DK64Options, Goal, SwitchSanity, SelectStartingKong, dk64_option_groups, LoadingZoneRando
+    from archipelago.Prices import generate_prices
     from archipelago.Regions import all_locations, create_regions, connect_regions, connect_exit_level_and_deathwarp, connect_glitch_transitions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
@@ -654,12 +656,6 @@ if baseclasses_loaded:
             "Bosses": boss_locations(),
         }
 
-        # with open("donklocations.txt", "w") as f:
-        #     print(location_name_to_id, file=f)
-
-        # with open("donkitems.txt", "w") as f:
-        #     print(item_name_to_id, file=f)
-
         web = DK64Web()
 
         def __init__(self, multiworld: MultiWorld, player: int):
@@ -707,185 +703,6 @@ if baseclasses_loaded:
                 # "death_link": self.options.death_link.value,
             }
 
-        def _get_shared_shop_vendors(self, Kongs, Types):
-            """Identify vendor/level combinations that have shared shops."""
-            from randomizer.Lists.Location import SharedShopLocations
-
-            shared_shop_vendors = set()
-
-            if not self.options.enable_shared_shops.value:
-                if not hasattr(self.spoiler.settings, "selected_shared_shops"):
-                    self.spoiler.settings.selected_shared_shops = set()
-                return shared_shop_vendors, set()
-
-            # Get or create the set of available shared shops
-            if hasattr(self.spoiler.settings, "selected_shared_shops") and self.spoiler.settings.selected_shared_shops:
-                available_shared_shops = self.spoiler.settings.selected_shared_shops
-            else:
-                all_shared_shops = list(SharedShopLocations)
-                self.random.shuffle(all_shared_shops)
-                available_shared_shops = set(all_shared_shops[:10])
-                self.spoiler.settings.selected_shared_shops = available_shared_shops
-
-            # Build set of vendor/level combinations
-            for location_id, location in self.spoiler.LocationList.items():
-                if location.type == Types.Shop and location.kong == Kongs.any:
-                    if location_id in available_shared_shops:
-                        shared_shop_vendors.add((location.level, location.vendor))
-
-            return shared_shop_vendors, available_shared_shops
-
-        def _categorize_shop_locations(self, shared_shop_vendors, available_shared_shops, Kongs, Types):
-            """Categorize shops into included and excluded based on settings."""
-            shop_locations = []
-            excluded_shop_locations = []
-            shops_per_kong = {kong: 0 for kong in Kongs}
-
-            for location_id, location in self.spoiler.LocationList.items():
-                if location.type != Types.Shop:
-                    continue
-
-                # Check if shop is excluded by smaller_shops setting
-                if hasattr(location, "smallerShopsInaccessible") and location.smallerShopsInaccessible and self.options.smaller_shops.value:
-                    excluded_shop_locations.append(location_id)
-                    continue
-
-                # Check if shared shop is excluded
-                if location.kong == Kongs.any:
-                    if not self.options.enable_shared_shops.value or location_id not in available_shared_shops:
-                        excluded_shop_locations.append(location_id)
-                        continue
-
-                # Check if kong shop is blocked by a shared shop at same vendor/level
-                if location.kong != Kongs.any and self.options.enable_shared_shops.value:
-                    if (location.level, location.vendor) in shared_shop_vendors:
-                        excluded_shop_locations.append(location_id)
-                        continue
-
-                # Shop is included
-                shop_locations.append(location_id)
-                if location.kong != Kongs.any:
-                    shops_per_kong[location.kong] += 1
-
-            return shop_locations, excluded_shop_locations, shops_per_kong
-
-        def _calculate_kong_averages(self, shops_per_kong, max_coins, percentage, min_max_coins, Kongs):
-            """Calculate average price per shop for each kong."""
-            avg_prices_per_kong = {}
-
-            for kong in Kongs:
-                if kong == Kongs.any or shops_per_kong[kong] == 0:
-                    continue
-
-                # Calculate budget based on max coins available to this kong
-                kong_budget = max_coins[kong] * percentage
-
-                # Use higher safety margins: 80% for easy/medium, 95% for hard mode
-                safety_margin = 0.80 if percentage < 0.85 else 0.95
-                target = max(1, kong_budget * safety_margin)
-                avg_prices_per_kong[kong] = target / shops_per_kong[kong]
-
-            return avg_prices_per_kong
-
-        def _generate_individual_prices(self, shop_locations, avg_prices_per_kong, progressive_avg_price, progressive_stddev, shopprices, DK64RItems, Kongs):
-            """Generate random individual prices for shops and progressive items."""
-            individual_prices = {}
-
-            # Generate shop prices
-            for location_id in shop_locations:
-                location = self.spoiler.LocationList[location_id]
-
-                if shopprices == 0:
-                    individual_prices[location_id] = 0
-                    continue
-
-                # Determine average and stddev for this shop
-                if location.kong == Kongs.any:
-                    kong_avg = progressive_avg_price
-                    kong_stddev = progressive_stddev
-                else:
-                    kong_avg = avg_prices_per_kong.get(location.kong, progressive_avg_price)
-                    kong_stddev = kong_avg * 0.3
-
-                price = round(self.random.normalvariate(kong_avg, kong_stddev))
-                price = max(1, min(price, int(kong_avg * 2)))
-                individual_prices[location_id] = price
-
-            progressive_moves = {
-                DK64RItems.ProgressiveSlam: 3,
-                DK64RItems.ProgressiveAmmoBelt: 2,
-                DK64RItems.ProgressiveInstrumentUpgrade: 3,
-            }
-
-            for item, count in progressive_moves.items():
-                individual_prices[item] = []
-                for _ in range(count):
-                    if shopprices == 0:
-                        individual_prices[item].append(0)
-                    else:
-                        price = round(self.random.normalvariate(progressive_avg_price, progressive_stddev))
-                        price = max(1, min(price, int(progressive_avg_price * 2)))
-                        individual_prices[item].append(price)
-
-            return individual_prices
-
-        def _convert_to_cumulative_prices(self, individual_prices, shop_locations, max_cumulative_per_kong, Kongs):
-            """Convert individual prices to cumulative running totals per kong.
-
-            This mimics the logic from determineFinalPriceAssortment:
-            - Progressive items add to all kongs' totals, price stored is average of all totals
-            - Kong-specific shops add to that kong's total only
-            - Cumulative prices are capped at max_cumulative_per_kong to ensure accessibility
-            """
-            price_assignment = []
-
-            # Build list of price assignments
-            for key, value in individual_prices.items():
-                if isinstance(value, list):
-                    # Progressive move - add multiple entries
-                    for price in value:
-                        price_assignment.append({"is_prog": True, "cost": price, "item": key, "kong": Kongs.any})
-                elif key in shop_locations:
-                    # Shop location
-                    location = self.spoiler.LocationList[key]
-                    price_assignment.append({"is_prog": False, "cost": value, "item": key, "kong": location.kong})
-
-            # Shuffle and calculate cumulative prices
-            self.random.shuffle(price_assignment)
-            total_cost = [0] * 5
-            cumulative_prices = {}
-
-            for assignment in price_assignment:
-                kong = assignment["kong"]
-                written_price = assignment["cost"]
-
-                if kong == Kongs.any:
-                    # Progressive item - add to all kongs, price is average of current totals
-                    current_kong_total = 0
-                    for kong_index in range(5):
-                        current_kong_total += total_cost[kong_index]
-                        total_cost[kong_index] += written_price
-                        # Cap at maximum affordable amount
-                        total_cost[kong_index] = min(total_cost[kong_index], max_cumulative_per_kong[kong_index])
-                    written_price = int(current_kong_total / 5)
-                else:
-                    # Kong-specific shop - add to that kong's total
-                    total_cost[kong] += written_price
-                    # Cap at maximum affordable amount
-                    total_cost[kong] = min(total_cost[kong], max_cumulative_per_kong[kong])
-                    written_price = total_cost[kong]
-
-                # Store cumulative price
-                key = assignment["item"]
-                if assignment["is_prog"]:
-                    if key not in cumulative_prices:
-                        cumulative_prices[key] = []
-                    cumulative_prices[key].append(written_price)
-                else:
-                    cumulative_prices[key] = written_price
-
-            return cumulative_prices
-
         def _restore_custom_location_names(self, custom_location_names: dict):
             """Restore custom location names from slot data for UT regeneration."""
             from randomizer.Lists.Location import LocationListOriginal as VanillaLocationList
@@ -922,87 +739,6 @@ if baseclasses_loaded:
             for name in sample_names:
                 print(name)
 
-        def _generate_archipelago_prices(self):
-            """Generate custom shop prices for Archipelago.
-
-            Generates individual prices for each shop and progressive item, then converts them
-            to cumulative prices (running totals) per kong. Excluded shops are set to 0 cost.
-            """
-            from randomizer.Enums.Items import Items as DK64RItems
-            from randomizer.Lists.Item import ItemList as DK64RItemList
-            from randomizer.Enums.Kongs import Kongs
-
-            # Constants
-            MAX_COINS = {
-                Kongs.donkey: 179,
-                Kongs.diddy: 183,
-                Kongs.lanky: 190,
-                Kongs.tiny: 198,
-                Kongs.chunky: 224,
-            }
-
-            PRICE_PERCENTAGES = {
-                0: 0.0,  # free
-                1: 0.35,  # easy
-                2: 0.55,  # medium
-                3: 0.85,  # hard
-            }
-
-            # Get settings
-            shopprices = self.options.shop_prices.value
-            percentage = PRICE_PERCENTAGES[shopprices]
-            min_max_coins = min(MAX_COINS.values())
-            # Cap cumulative prices at actual max coins (rainbow coins are tracked separately as collectibles)
-            max_cumulative_per_kong = {kong: MAX_COINS[kong] for kong in MAX_COINS}
-
-            # Categorize shops
-            shared_shop_vendors, available_shared_shops = self._get_shared_shop_vendors(Kongs, Types)
-            shop_locations, excluded_shop_locations, shops_per_kong = self._categorize_shop_locations(shared_shop_vendors, available_shared_shops, Kongs, Types)
-
-            # Calculate pricing averages
-            avg_prices_per_kong = self._calculate_kong_averages(shops_per_kong, MAX_COINS, percentage, min_max_coins, Kongs)
-            # Progressive items use 25% of budget, divided among 8 total progressive items
-            progressive_avg_price = (min_max_coins * percentage * 0.25) / 8 if shopprices > 0 else 0
-            progressive_stddev = progressive_avg_price * 0.3
-
-            # Generate individual prices
-            individual_prices = self._generate_individual_prices(shop_locations, avg_prices_per_kong, progressive_avg_price, progressive_stddev, shopprices, DK64RItems, Kongs)
-
-            # Add 0 prices for non-shop items and excluded shops
-            for item_id in DK64RItemList.keys():
-                if item_id not in individual_prices:
-                    individual_prices[item_id] = 0
-
-            for location_id in excluded_shop_locations:
-                individual_prices[location_id] = 0
-
-            # Store and finalize prices
-            self.spoiler.settings.original_prices = individual_prices.copy()
-
-            if shopprices > 0:
-                # Convert to cumulative prices
-                cumulative_prices = self._convert_to_cumulative_prices(individual_prices, shop_locations, max_cumulative_per_kong, Kongs)
-
-                # Add 0 prices for items not in shops
-                for item_id in DK64RItemList.keys():
-                    if item_id not in cumulative_prices:
-                        cumulative_prices[item_id] = 0
-
-                # Add 0 prices for all location IDs not already priced
-                for location_id in self.spoiler.LocationList.keys():
-                    if location_id not in cumulative_prices:
-                        cumulative_prices[location_id] = 0
-
-                for location_id in excluded_shop_locations:
-                    cumulative_prices[location_id] = 0
-
-                self.spoiler.settings.prices = cumulative_prices
-            else:
-                # Free prices - ensure all locations exist with 0 cost
-                for location_id in self.spoiler.LocationList.keys():
-                    if location_id not in individual_prices:
-                        individual_prices[location_id] = 0
-                self.spoiler.settings.prices = individual_prices.copy()
 
         def generate_early(self):
             """Generate the world."""
@@ -1087,14 +823,17 @@ if baseclasses_loaded:
                             current_logic = self.seed_groups[group]["logic_type"]
                             new_logic = int(world.options.logic_type.value)
 
-                            # If current is glitched (2) and new is anything else, use new (more restrictive)
-                            if current_logic == 2 and new_logic != 2:
-                                self.seed_groups[group]["logic_type"] = new_logic
-                            # If current is advanced_glitchless (0) and new is glitchless (1), use glitchless
-                            elif current_logic == 0 and new_logic == 1:
-                                self.seed_groups[group]["logic_type"] = 1
-                            # If current is glitchless (1), keep it (most restrictive)
-                            # If new is glitched (2), keep current (more restrictive)
+                            # Determine most restrictive logic type
+                            match (current_logic, new_logic):
+                                case (2, n) if n != 2:
+                                    # Current is glitched and new is not - use new (more restrictive)
+                                    self.seed_groups[group]["logic_type"] = new_logic
+                                case (0, 1):
+                                    # Current is advanced_glitchless and new is glitchless - use glitchless
+                                    self.seed_groups[group]["logic_type"] = 1
+                                case _:
+                                    # Current is glitchless (keep it) or new is glitched (keep current)
+                                    pass
 
                             # tricks_selected: intersection of all players' tricks (only tricks ALL players have)
                             self.seed_groups[group]["tricks_selected"] = self.seed_groups[group]["tricks_selected"].intersection(set(world.options.tricks_selected.value))
@@ -1334,7 +1073,7 @@ if baseclasses_loaded:
             else:
                 self.spoiler.settings.selected_shared_shops = set()
 
-            self._generate_archipelago_prices()
+            generate_prices(self.spoiler, self.options, self.random)
             # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
             if self.spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
                 if self.spoiler.settings.level_randomization != LevelRandomization.loadingzone:
@@ -1468,12 +1207,6 @@ if baseclasses_loaded:
             if excluded_locations:
                 exclude_locations(excluded_locations)
 
-            # AFTER all regions are created, restore custom location shuffles for UT
-            # This must happen here (not in generate_early) to override default placements
-            if hasattr(self.multiworld, "generation_is_fake") and hasattr(self.multiworld, "re_gen_passthrough"):
-                if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
-                    self._restore_shuffled_custom_locations()
-
         def create_items(self) -> None:
             """Create the items."""
             itempool: typing.List[DK64Item] = setup_items(self)
@@ -1592,20 +1325,27 @@ if baseclasses_loaded:
 
         def get_archipelago_item_type_by_classification(self, item_classification: ItemClassification) -> DK64RItems:
             """Get the appropriate DK64R Archipelago item type based on the ItemClassification."""
-            if item_classification in [ItemClassification.progression, ItemClassification.progression_skip_balancing]:
-                return DK64RItems.ArchipelagoItem
-            elif item_classification == ItemClassification.useful:
-                return DK64RItems.SpecialArchipelagoItem
-            elif item_classification == ItemClassification.trap:
-                return DK64RItems.TrapArchipelagoItem
-            elif item_classification == ItemClassification.filler:
-                return DK64RItems.ArchipelagoItem.FoolsArchipelagoItem
-            else:
-                return DK64RItems.ArchipelagoItem
+            match item_classification:
+                case ItemClassification.progression | ItemClassification.progression_skip_balancing:
+                    return DK64RItems.ArchipelagoItem
+                case ItemClassification.useful:
+                    return DK64RItems.SpecialArchipelagoItem
+                case ItemClassification.trap:
+                    return DK64RItems.TrapArchipelagoItem
+                case ItemClassification.filler:
+                    return DK64RItems.ArchipelagoItem.FoolsArchipelagoItem
+                case _:
+                    return DK64RItems.ArchipelagoItem
 
         def generate_output(self, output_directory: str):
             """Generate the output."""
             try:
+                # Write location and item mappings to files for debugging
+                with open(os.path.join(output_directory, f"donklocations_{self.player}.txt"), "w") as f:
+                    print(self.location_name_to_id, file=f)
+                with open(os.path.join(output_directory, f"donkitems_{self.player}.txt"), "w") as f:
+                    print(self.item_name_to_id, file=f)
+                
                 spoiler = self.spoiler
                 spoiler.settings.archipelago = True
                 spoiler.settings.random = self.random
@@ -1723,16 +1463,19 @@ if baseclasses_loaded:
                         shopkeepers = [DK64RItems.Candy, DK64RItems.Cranky, DK64RItems.Funky, DK64RItems.Snide]
                     else:
                         shopkeepers = []
-                    # Define helm_prog_items only when microhints is "some" or "all"
-                    if self.options.microhints.value in [1, 2]:  # some or all
-                        helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
-                    else:
-                        helm_prog_items = []
-                    # Define instruments only when microhints is "all"
-                    if self.options.microhints.value == 2:  # all
-                        instruments = [DK64RItems.Bongos, DK64RItems.Guitar, DK64RItems.Trombone, DK64RItems.Saxophone, DK64RItems.Triangle]
-                    else:
-                        instruments = []
+
+                    # Define items based on microhints level
+                    match self.options.microhints.value:
+                        case 2:  # all
+                            helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
+                            instruments = [DK64RItems.Bongos, DK64RItems.Guitar, DK64RItems.Trombone, DK64RItems.Saxophone, DK64RItems.Triangle]
+                        case 1:  # some
+                            helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
+                            instruments = []
+                        case _:
+                            helm_prog_items = []
+                            instruments = []
+
                     hinted_slams = []
                     if DK64RItems.ProgressiveSlam in self.foreignMicroHints.keys() and DK64RItem.ItemList[DK64RItems.ProgressiveSlam].name in self.spoiler.microhints.keys():
                         # Break down the slam hint to retrieve raw data

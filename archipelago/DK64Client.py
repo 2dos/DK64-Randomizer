@@ -20,6 +20,10 @@ import typing
 from archipelago.client.common import DK64MemoryMap, create_task_log_exception, check_version, get_ap_version
 from archipelago.client.emu_loader import EmuLoaderClient
 from archipelago.client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
+from archipelago.client.ap_item_packets import (
+    APItemPacket, get_packet_from_fed_id, ICE_TRAP_TYPES,
+    REQITEM_ICETRAP, CONFIG_APPLY_HELM_HURRY, CONFIG_APPLY_ICE_TRAP
+)
 from archipelago.client.check_flag_locations import location_flag_to_name, location_name_to_flag
 from archipelago.client.ap_check_ids import check_id_to_name, check_names_to_id
 from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop, ClientCommandProcessor
@@ -76,26 +80,6 @@ class MessageDisplayHandler:
 class IceTrapHandler:
     """Handles ice trap logic and mappings."""
 
-    # Ice trap type to fed ID mapping
-    ICE_TRAP_MAPPINGS = {
-        "bubble": 0x018,  # TRANSFER_ITEM_FAKEITEM
-        "reverse": 0x041,  # TRANSFER_ITEM_FAKEITEM_REVERSE
-        "slow": 0x040,  # TRANSFER_ITEM_FAKEITEM_SLOW
-        "disable_a": 0x042,  # TRANSFER_ITEM_FAKEITEM_DISABLEA
-        "disable_b": 0x043,  # TRANSFER_ITEM_FAKEITEM_DISABLEB
-        "disable_z": 0x044,  # TRANSFER_ITEM_FAKEITEM_DISABLEZ
-        "disable_c_up": 0x045,  # TRANSFER_ITEM_FAKEITEM_DISABLECU
-        "get_out": 0x046,  # TRANSFER_ITEM_FAKEITEM_GETOUT
-        "dry": 0x047,  # TRANSFER_ITEM_FAKEITEM_DRY
-        "flip": 0x048,  # TRANSFER_ITEM_FAKEITEM_FLIP
-        "icefloor": 0x049,  # TRANSFER_ITEM_FAKEITEM_ICEFLOOR
-        "paper": 0x04A,  # TRANSFER_ITEM_FAKEITEM_PAPER
-        "slip": 0x04B,  # TRANSFER_ITEM_FAKEITEM_SLIP
-        "animal": 0x04C,  # TRANSFER_ITEM_FAKEITEM_ANIMAL
-        "rockfall": 0x04D,  # TRANSFER_ITEM_FAKEITEM_ROCKFALL
-        "disabletag": 0x04E,  # TRANSFER_ITEM_FAKEITEM_DISABLETAG
-    }
-
     @classmethod
     async def handle_ice_trap(cls, client, count_data: dict):
         """Handle ice trap processing."""
@@ -109,10 +93,18 @@ class IceTrapHandler:
         current_value = client.n64_client.read_u16(address)
         client.n64_client.write_u16(address, current_value + 1)
 
-        # Trigger the actual ice trap effect
+        # Trigger the actual ice trap effect using new packet system
         ice_trap_type = count_data.get("ice_trap_type", "bubble")
-        fed_id = cls.ICE_TRAP_MAPPINGS.get(ice_trap_type, 0x018)  # Default to bubble
-        await client.writeFedData(fed_id)
+        trap_kong = ICE_TRAP_TYPES.get(ice_trap_type, 1)  # Default to bubble
+        
+        # Create packet for ice trap
+        packet = APItemPacket(
+            item_type=REQITEM_ICETRAP,
+            level=0,
+            kong=trap_kong,
+            config_flags=CONFIG_APPLY_ICE_TRAP
+        )
+        await client.writeAPPacket(packet)
 
         return 0x056  # TRANSFER_ITEM_HELM_HURRY_FAKEITEM
 
@@ -369,22 +361,58 @@ class DK64Client:
             flag_id = item_data.get("flag_id")
             self.setFlag(flag_id)
         elif item_data.get("fed_id") is not None:
-            await self.writeFedData(item_data.get("fed_id"))
+            # Legacy fed_id system - convert to packet
+            fed_id = item_data.get("fed_id")
+            packet = get_packet_from_fed_id(fed_id)
+            if packet:
+                await self.writeAPPacket(packet)
+            else:
+                logger.warning(f"Unknown fed_id {fed_id} for item {item_name}")
         elif item_data.get("count_id") is not None:
             await self.writeCountData(item_data.get("count_id"))
         else:
             logger.warning(f"Item {item_name} has no flag, fed, or count id")
 
-    async def writeFedData(self, fed_item):
-        """Write the fed item data to the game."""
+    async def writeAPPacket(self, packet: APItemPacket):
+        """Write an AP item packet to the game.
+        
+        This replaces the old writeFedData function with a generic packet-based approach.
+        The packet contains all parameters needed for giveItem in C code.
+        
+        Args:
+            packet: APItemPacket containing item_type, level, kong, and config_flags
+        """
         current_fed_item = self.n64_client.read_u32(self.memory_pointer + DK64MemoryMap.arch_items)
-        # If item is being processed, don't update
+        # If item is being processed, wait
         while current_fed_item != 0:
             current_fed_item = self.n64_client.read_u32(self.memory_pointer + DK64MemoryMap.arch_items)
             await asyncio.sleep(0.1)
             if current_fed_item == 0:
                 break
-        self.n64_client.write_u8(self.memory_pointer + 0x7, fed_item)
+        
+        # Write the packet as 4 bytes starting at offset 0x4 (fed_item field)
+        # The C code will cast this to ap_item_packet* and read all 4 bytes
+        packet_u32 = packet.to_u32()
+        self.n64_client.write_u32(self.memory_pointer + 0x4, packet_u32)
+
+    async def writeFedData(self, fed_item):
+        """Write the fed item data to the game (DEPRECATED - use writeAPPacket).
+        
+        This is kept for backward compatibility with any remaining fed_id usage.
+        """
+        # Convert fed_id to packet if possible
+        packet = get_packet_from_fed_id(fed_item)
+        if packet:
+            await self.writeAPPacket(packet)
+        else:
+            # Fallback to old behavior for unmapped fed_ids
+            current_fed_item = self.n64_client.read_u32(self.memory_pointer + DK64MemoryMap.arch_items)
+            while current_fed_item != 0:
+                current_fed_item = self.n64_client.read_u32(self.memory_pointer + DK64MemoryMap.arch_items)
+                await asyncio.sleep(0.1)
+                if current_fed_item == 0:
+                    break
+            self.n64_client.write_u8(self.memory_pointer + 0x7, fed_item)
 
     async def writeCountData(self, count_data):
         """Write count data directly to the CountStruct system."""
@@ -573,28 +601,53 @@ class DK64Client:
             self.n64_client.write_u8(address, new_value)
 
         elif count_data.get("item") is not None and count_data.get("level") is not None:
-            # These are fed items with level/tier information (like progression slams, etc.)
+            # These are items with level/tier information (moves, slams, etc.)
+            # Use the new packet system
             item_id = count_data.get("item")
-
-            # Map requirement item IDs to transfer item IDs based on the type
-            # REQITEM_MOVE (2) with level 3 should be TRANSFER_ITEM_SLAMUPGRADE (0x033 = 51)
-            if item_id == 2:  # REQITEM_MOVE
-                # For slam upgrades, use TRANSFER_ITEM_SLAMUPGRADE
-                fed_id = 0x033  # TRANSFER_ITEM_SLAMUPGRADE
+            level = count_data.get("level")
+            kong = count_data.get("kong", 0)
+            
+            # Create packet for this item
+            # item_id here is actually a move/item index, need special handling
+            # For now, use REQITEM_MOVE for most items
+            if item_id == 2:  # Moves
+                # Special handling for slam upgrades
+                if level == 3:
+                    # This is a slam upgrade - use level 10 to indicate slam
+                    packet = APItemPacket(
+                        item_type=0x02,  # REQITEM_MOVE
+                        level=10,  # Special level for slam
+                        kong=0,
+                        config_flags=CONFIG_APPLY_HELM_HURRY
+                    )
+                else:
+                    packet = APItemPacket(
+                        item_type=0x02,  # REQITEM_MOVE
+                        level=level,
+                        kong=kong,
+                        config_flags=CONFIG_APPLY_HELM_HURRY
+                    )
+                await self.writeAPPacket(packet)
+                helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
             else:
+                # Other item types - for now fall back to old behavior
+                # These items likely need more specific mapping
                 fed_id = item_id
-
-            await self.writeFedData(fed_id)
-            # Most fed items with levels are moves, so they should trigger Helm Hurry
-            helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
+                await self.writeFedData(fed_id)
+                helm_hurry_item_type = 0x04C
 
         elif count_data.get("item") is not None and count_data.get("level") is None:
-            # These are requirement_item enum values that map to archipelago_items
-            fed_id = count_data.get("item")
-            await self.writeFedData(fed_id)
-            # These could be various types, but most are moves or other progression items
-            # For now, assume they're moves unless we have better classification
-            helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
+            # These are requirement_item enum values
+            # Convert to packet
+            item_id = count_data.get("item")
+            packet = APItemPacket(
+                item_type=item_id,
+                level=0,
+                kong=0,
+                config_flags=CONFIG_APPLY_HELM_HURRY
+            )
+            await self.writeAPPacket(packet)
+            helm_hurry_item_type = 0x04C
 
         else:
             logger.warning(f"Unknown count_data field: {count_data}")
@@ -720,6 +773,7 @@ class DK64Client:
                 # Check if this flag is set in memory
                 check_status = self.getCheckStatus("location", check)
                 if check_status:
+                    logger.debug(f"Location found: ID={id}, Name={name}, Flag={check}")
                     self.remaining_checks.remove(id)
                     new_checks.append(id)
                     if self.locations_scouted.get(id):
@@ -1307,8 +1361,8 @@ class DK64Context(CommonContext):
                     # If the location is in the list, remove it
                     player_name = self.player_names.get(location.player)
                     location_id = location.location
-                    # Always use DK64's game context to get the correct item name for items in DK64 locations
-                    item_name = self.item_names.lookup_in_game(location.item, self.game)
+                    # Look up item name from the item's actual game, not forced to DK64
+                    item_name = self.item_names.lookup_in_slot(location.item, location.player)
                     self.client.locations_scouted[location_id] = {"player": player_name, "item_name": item_name}
         if isinstance(args, dict) and isinstance(args.get("data", {}), dict):
             source_name = args.get("data", {}).get("source", None)
