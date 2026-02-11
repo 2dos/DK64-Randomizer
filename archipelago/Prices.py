@@ -1,14 +1,17 @@
 """Shop price generation functionality for Archipelago DK64."""
 
 from random import Random
-from typing import Any
 
-from randomizer.Enums.Items import Items as DK64RItems
-from randomizer.Lists.Item import ItemList as DK64RItemList
+from randomizer import Spoiler
+from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
+from randomizer.Enums.VendorType import VendorType
+from randomizer.Lists.Item import ItemList as DK64RItemList
 from randomizer.Lists.Location import SharedShopLocations
-from archipelago.Options import ShopPrices
+from archipelago.Options import DK64Options, ShopPrices
 
 # Progressive moves configuration (item: count)
 PROGRESSIVE_MOVES = {
@@ -39,9 +42,9 @@ def _generate_random_price(random: Random, avg: float, stddev: float, upper_limi
     return max(1, min(price, upper_limit))
 
 
-def _get_shared_shop_vendors(spoiler: Any, options: Any, random: Random) -> tuple[set[tuple[Any, Any]], set[Any]]:
+def _get_shared_shop_vendors(spoiler: Spoiler, options: DK64Options, random: Random) -> tuple[set[tuple[Levels, VendorType]], set[Locations]]:
     """Identify vendor/level combinations that have shared shops."""
-    shared_shop_vendors = set()
+    shared_shop_vendors: set[tuple[Levels, VendorType]] = set()
 
     if not options.enable_shared_shops.value:
         if not hasattr(spoiler.settings, "selected_shared_shops"):
@@ -50,7 +53,7 @@ def _get_shared_shop_vendors(spoiler: Any, options: Any, random: Random) -> tupl
 
     # Get or create the set of available shared shops
     if hasattr(spoiler.settings, "selected_shared_shops") and spoiler.settings.selected_shared_shops:
-        available_shared_shops = spoiler.settings.selected_shared_shops
+        available_shared_shops: set[Locations] = spoiler.settings.selected_shared_shops
     else:
         all_shared_shops = list(SharedShopLocations)
         random.shuffle(all_shared_shops)
@@ -66,11 +69,11 @@ def _get_shared_shop_vendors(spoiler: Any, options: Any, random: Random) -> tupl
     return shared_shop_vendors, available_shared_shops
 
 
-def _categorize_shop_locations(spoiler: Any, options: Any, shared_shop_vendors: set[tuple[Any, Any]], available_shared_shops: set[Any]) -> tuple[list[Any], list[Any], dict[Any, int]]:
+def _categorize_shop_locations(spoiler: Spoiler, options: DK64Options, shared_shop_vendors: set[tuple[Levels, VendorType]], available_shared_shops: set[Locations]) -> tuple[list[Locations], list[Locations], dict[Kongs, int]]:
     """Categorize shops into included and excluded based on settings."""
-    shop_locations = []
-    excluded_shop_locations = []
-    shops_per_kong = {kong: 0 for kong in Kongs}
+    shop_locations: list[Locations] = []
+    excluded_shop_locations: list[Locations] = []
+    shops_per_kong: dict[Kongs, int] = {kong: 0 for kong in Kongs}
 
     for location_id, location in spoiler.LocationList.items():
         if location.type != Types.Shop:
@@ -101,9 +104,9 @@ def _categorize_shop_locations(spoiler: Any, options: Any, shared_shop_vendors: 
     return shop_locations, excluded_shop_locations, shops_per_kong
 
 
-def _generate_individual_prices(random: Random, shop_locations: list[Any], avg: float, stddev: float, upper_limit: int) -> dict[Any, int | list[int]]:
+def _generate_individual_prices(random: Random, shop_locations: list[Locations], avg: float, stddev: int, upper_limit: int) -> dict[Items | Locations, int | list[int]]:
     """Generate random individual prices for shops and progressive items."""
-    individual_prices = {}
+    individual_prices: dict[Items | Locations, int | list[int]] = {}
 
     # Generate shop prices - simple random price per shop
     for location_id in shop_locations:
@@ -111,7 +114,7 @@ def _generate_individual_prices(random: Random, shop_locations: list[Any], avg: 
 
     # Progressive items get their own price list
     for item_name, count in PROGRESSIVE_MOVES.items():
-        item_enum = getattr(DK64RItems, item_name)
+        item_enum = getattr(Items, item_name)
         individual_prices[item_enum] = []
         for _ in range(count):
             individual_prices[item_enum].append(_generate_random_price(random, avg, stddev, upper_limit))
@@ -119,7 +122,7 @@ def _generate_individual_prices(random: Random, shop_locations: list[Any], avg: 
     return individual_prices
 
 
-def _convert_to_cumulative_prices(spoiler: Any, random: Random, individual_prices: dict[Any, int | list[int]], shop_locations: list[Any]) -> dict[Any, int | list[int]]:
+def _convert_to_cumulative_prices(spoiler: Spoiler, random: Random, individual_prices: dict[Items | Locations, int | list[int]], shop_locations: list[Locations]) -> dict[Items | Locations, int | list[int]]:
     """Convert individual prices to cumulative running totals per kong."""
     price_assignment = []
 
@@ -167,7 +170,7 @@ def _convert_to_cumulative_prices(spoiler: Any, random: Random, individual_price
     return cumulative_prices
 
 
-def generate_prices(spoiler: Any, options: Any, random: Random) -> None:
+def generate_prices(spoiler: Spoiler, options: DK64Options, random: Random) -> None:
     """Generate custom shop prices for Archipelago."""
     # Get price distribution parameters (matches standalone)
     shopprices = options.shop_prices.value
