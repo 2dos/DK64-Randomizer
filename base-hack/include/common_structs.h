@@ -97,7 +97,9 @@ typedef struct actorData {
 	/* 0x07C */ float xPos;
 	/* 0x080 */ float yPos;
 	/* 0x084 */ float zPos;
-	/* 0x088 */ char unk_80[0xB8-0x88];
+	/* 0x088 */ char unk_80[0xA4-0x88];
+	/* 0x0A4 */ float floor;
+	/* 0x0A8 */ char unk_a8[0xB8-0xA8];
 	/* 0x0B8 */ float hSpeed;
 	/* 0x0BC */ char unk_BC[0xC0-0xBC];
 	/* 0x0C0 */ float yVelocity;
@@ -290,7 +292,8 @@ typedef struct playerData {
 	/* 0x325 */ char unk_324[0x328 - 0x325];
 	/* 0x328 */ actorData* krool_timer_pointer;
 	/* 0x32C */ actorData* held_actor;
-	/* 0x330 */ char unk_330[0x340 - 0x330];
+	/* 0x330 */ actorData* held_destroy_actor;
+	/* 0x334 */ char unk_334[0x340 - 0x334];
 	/* 0x340 */ float scale[6];
 	/* 0x358 */ char unk_358[0x368 - 0x358];
 	/* 0x368 */ unsigned int state_bitfield;
@@ -761,15 +764,6 @@ typedef struct trigger {
 	/* 0x038 */ char not_in_zone;
 	/* 0x039 */ char active;
 } trigger;
-
-typedef struct cannon {
-	/* 0x000 */ char unk_00[0x376];
-	/* 0x376 */ short source_map;
-	/* 0x378 */ short destination_map;
-	/* 0x37A */ short destination_exit;
-} cannon;
-
-
 
 typedef struct blocker_cheat {
 	/* 0x000 */ unsigned char gb_count;

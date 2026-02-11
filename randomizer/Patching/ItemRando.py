@@ -222,6 +222,10 @@ def getItemPatchingData(item_type: Types, item: Items, kong_override: int = None
     elif item_type == Types.Key:
         key_index = getItemPatchingFromList(ItemPool.Keys(), item, "Key")
         return ItemPatchingInfo(ReqItems.Key, key_index)
+    elif item_type == Types.FungiTime:
+        if item == Items.Day:
+            return ItemPatchingInfo(ReqItems.FungiTime, 0, 0)
+        return ItemPatchingInfo(ReqItems.FungiTime, 0, 1)
     elif item_type == Types.FakeItem:
         for effect_index, idx_lst in enumerate(ice_trap_data):
             if item in idx_lst:
@@ -492,6 +496,8 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
         Locations.ShopOwner_Location01: Items.Funky,
         Locations.ShopOwner_Location02: Items.Candy,
         Locations.ShopOwner_Location03: Items.Snide,
+        Locations.TimeLocationDay: Items.Day,
+        Locations.TimeLocationNight: Items.Night,
     }
     if (not spoiler.settings.fast_start_beginning_of_game) or spoiler.settings.archipelago:
         del OTHER_STARTING_ITEMS[Locations.IslesVinesTrainingBarrel]
@@ -509,10 +515,13 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
         if spoiler.LocationList[Locations.IslesBarrelsTrainingBarrel].inaccessible:
             del OTHER_STARTING_ITEMS[Locations.IslesBarrelsTrainingBarrel]
     found_shopkeeper = False
+    found_time = False
     if spoiler.settings.shuffle_items:
         for item in spoiler.item_assignment:
             if item.location >= Locations.ShopOwner_Location00 and item.location <= Locations.ShopOwner_Location03:
                 found_shopkeeper = True
+            if item.location in (Locations.TimeLocationDay, Locations.TimeLocationNight):
+                found_time = True
             if item.can_have_item:
                 if item.location in list(OTHER_STARTING_ITEMS.keys()):
                     OTHER_STARTING_ITEMS[item.location] = item.new_item
@@ -521,6 +530,9 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
         OTHER_STARTING_ITEMS[Locations.ShopOwner_Location01] = Items.NoItem
         OTHER_STARTING_ITEMS[Locations.ShopOwner_Location02] = Items.NoItem
         OTHER_STARTING_ITEMS[Locations.ShopOwner_Location03] = Items.NoItem
+    if not found_time and ItemRandoListSelected.fungitime in spoiler.settings.item_rando_list_selected:
+        OTHER_STARTING_ITEMS[Locations.TimeLocationDay] = Items.NoItem
+        OTHER_STARTING_ITEMS[Locations.TimeLocationNight] = Items.NoItem
     starting_slam_level = 0
     starting_belt_level = 0
     starting_ins_upg_level = 0

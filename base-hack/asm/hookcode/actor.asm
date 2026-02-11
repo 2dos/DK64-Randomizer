@@ -723,3 +723,21 @@ fixBLockerRange:
     fixBLockerRange_finish:
         j 0x800275C4
         lui $at, 0x8003
+
+boulderExtraCode:
+    jal boulderTSCode
+    nop
+    j 0x8069C938
+    nop
+
+boulderSpinCode:
+    addiu $at, $zero, 8
+    lbu $t7, 0x154 ($s0)
+    beq $t7, $at, boulderSpinCode_spin
+    addiu $at, $zero, 3
+    j 0x8069CC24
+    nop
+
+    boulderSpinCode_spin:
+        j 0x8069CC2C
+        nop

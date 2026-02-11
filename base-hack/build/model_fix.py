@@ -538,6 +538,40 @@ with open(ROMName, "rb") as rom:
         os.remove("temp.bin")
     with open("fake_item_actor.bin", "wb") as fh:
         fh.write(data)
+    # Duplicate Day/Night Items
+    fungi_time = {
+        "day": 0xD07,
+        "night": 0xD08,
+    }
+    for name, index in fungi_time.items():
+        rom.seek(modeltwo_table + (0x1CA << 2))
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        indic = int.from_bytes(rom.read(2), "big")
+        rom.seek(model_start)
+        data = rom.read(model_size)
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        with open(f"{name}_item_om2.bin", "wb") as fh:
+            fh.write(data)
+        with open(f"{name}_item_om2.bin", "r+b") as fh:
+            # Rotate
+            # for x in range(24):
+            #     vert_start = 0x1D0 + (x * 8)
+            #     fh.seek(vert_start)
+            #     coords = []
+            #     for y in range(3):
+            #         v = int.from_bytes(fh.read(2), "big")
+            #         coords.append(v)
+            #     fh.seek(vert_start)
+            #     for y in range(3):
+            #         fh.write(coords[(y + 1) % 3].to_bytes(2, "big"))
+            # Replace Image
+            fh.seek(0xDC)
+            fh.write(index.to_bytes(4, "big"))
+                    
     # Multiplayer Pad
     rom.seek(modeltwo_table + (0x214 << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")

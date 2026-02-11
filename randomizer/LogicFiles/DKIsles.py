@@ -26,6 +26,9 @@ LogicRegions = {
         LocationLogic(Locations.ShopOwner_Location01, lambda _: True),
         LocationLogic(Locations.ShopOwner_Location02, lambda _: True),
         LocationLogic(Locations.ShopOwner_Location03, lambda _: True),
+        # Starting Time
+        LocationLogic(Locations.TimeLocationDay, lambda _: True),
+        LocationLogic(Locations.TimeLocationNight, lambda _: True),
         # Starting Moves
         LocationLogic(Locations.IslesFirstMove, lambda l: l.settings.fast_start_beginning_of_game),
         LocationLogic(Locations.IslesClimbing, lambda _: True),
@@ -77,8 +80,8 @@ LogicRegions = {
         Event(Events.CavesKeyTurnedIn, lambda l: l.settings.auto_keys and l.CavesKey and l.HasFillRequirementsForLevel(l.settings.level_order[7])),
         Event(Events.CastleKeyTurnedIn, lambda l: l.settings.auto_keys and l.CastleKey and l.HasFillRequirementsForLevel(l.settings.level_order[7])),
         Event(Events.HelmKeyTurnedIn, lambda l: l.settings.auto_keys and l.HelmKey),
-        Event(Events.Night, lambda l: l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
-        Event(Events.Day, lambda l: l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
+        Event(Events.Night, lambda l: l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive) and l.nightAccess),
+        Event(Events.Day, lambda l: l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive) and l.dayAccess),
         Event(Events.AztecIceMelted, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice)),
         Event(Events.TestingGateOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_testing_gate)),
         Event(Events.MainCoreActivated, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_production_room)),

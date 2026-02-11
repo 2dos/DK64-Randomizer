@@ -94,6 +94,8 @@ BOULDERS_DONT_DESTROY = True
 CAN_THROW_KEGS = True
 CAN_THROW_APPLES = True
 DISABLE_LONG_JUMP = False
+TS = False
+TEST_HUNKY_FIX = False
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -433,6 +435,16 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
             MinigameImageLoader(None, 25, 0x172E, 64, 32, TextureFormat.RGBA5551),
             MinigameImageLoader("kong"),
         ),
+        Minigame8BitImage(
+            [Items.Day],
+            MinigameImageLoader("time_day"),
+            MinigameImageLoader("time_day"),
+        ),
+        Minigame8BitImage(
+            [Items.Night],
+            MinigameImageLoader("time_night"),
+            MinigameImageLoader("time_night"),
+        ),
     ]
     arcade_image_data = None
     jetpac_image_data = None
@@ -606,6 +618,13 @@ def patchAssembly(ROM_COPY, spoiler):
         0x18C,  # FLAG_FIRST_COIN_COLLECTION
         0x164,  # BBlast first time cutscene
     ]
+
+    writeHook(ROM_COPY, 0x805FBDEC, Overlay.Static, "initCode", offset_dict)
+    writeValue(ROM_COPY, 0x8072E76C, Overlay.Static, 0x24070001, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8068ABEA, Overlay.Static, getHiSym("replacement_lobbies_array"), offset_dict)
+    writeValue(ROM_COPY, 0x8068ABEE, Overlay.Static, getLoSym("replacement_lobbies_array"), offset_dict)
+    writeValue(ROM_COPY, 0x8060005A, Overlay.Static, getHiSym("replacement_lobbies_array"), offset_dict)
+    writeValue(ROM_COPY, 0x8060006E, Overlay.Static, getLoSym("replacement_lobbies_array"), offset_dict)
 
     if settings.arcade_custom_minigame is not None:
         loadBin(ROM_COPY, 0x80024390, Overlay.Arcade, f"base-hack/minigame/{settings.arcade_custom_minigame}.bin", offset_dict)
@@ -1220,7 +1239,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if settings.shuffle_items:
         for item in spoiler.item_assignment:
-            if item.can_have_item and not item.is_shop and item.old_item not in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
+            if item.can_have_item and not item.is_shop and item.old_item not in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide, Types.FungiTime):
                 if item.location < Locations.TurnInDKIslesDonkeyBlueprint or item.location > Locations.TurnInCreepyCastleChunkyBlueprint:
                     if item.new_type is None or item.new_type == Types.NoItem:
                         file_init_flags.append(item.old_flag)
@@ -1991,6 +2010,23 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806010DE, Overlay.Static, getLo(MUSIC_MIDI_OFFSET), offset_dict)
     writeValue(ROM_COPY, 0x806010EE, Overlay.Static, (SONG_COUNT + 1) * 4, offset_dict)
 
+    if TS:
+        writeValue(ROM_COPY, 0x8074B00C, Overlay.Static, -1, offset_dict, 2, True)  # Allow any kongs to pick up boulders
+        for x in range(5):
+            writeFloat(ROM_COPY, 0x807532D4 + (4 * x), Overlay.Static, 140, offset_dict)  # Speed up carry speed
+        writeLabelValue(ROM_COPY, 0x80751EC0, Overlay.Static, "enterTS", offset_dict)
+        writeLabelValue(ROM_COPY, 0x80750F70, Overlay.Static, "TSHandler", offset_dict)
+        writeLabelValue(ROM_COPY, 0x8075A390, Overlay.Static, "boulderExtraCode", offset_dict)
+        writeHook(ROM_COPY, 0x8069CC1C, Overlay.Static, "boulderSpinCode", offset_dict)
+        # CSC 90
+        writeValue(ROM_COPY, 0x807527F0, Overlay.Static, 0x806E04E0, offset_dict, 4)
+        writeLabelValue(ROM_COPY, 0x807527F4, Overlay.Static, "TSJump", offset_dict)
+        writeLabelValue(ROM_COPY, 0x8075280C, Overlay.Static, "TSSpeed", offset_dict)
+        writeLabelValue(ROM_COPY, 0x807527FC, Overlay.Static, "TSDrop", offset_dict)
+    if TEST_HUNKY_FIX:
+        writeValue(ROM_COPY, 0x8067185A, Overlay.Static, 0x64, offset_dict)
+        writeValue(ROM_COPY, 0x80671814, Overlay.Static, 0, offset_dict, 4)
+
     #
     writeHook(ROM_COPY, 0x806C3260, Overlay.Static, "fixLankyPhaseHandState", offset_dict)  # Ensures K Rool has a head in the end cutscene if in Lanky Phase
     writeFunction(ROM_COPY, 0x80628034, Overlay.Static, "exitBoss", offset_dict)
@@ -2127,6 +2163,13 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8002DAE2, Overlay.Menu, getLoSym("InvertedControls"), offset_dict)  # Save to global
     writeValue(ROM_COPY, 0x8002DA88, Overlay.Menu, 0x1000, offset_dict)  # Prevent Language Update
     writeFunction(ROM_COPY, 0x8002DEC4, Overlay.Menu, "displayInverted", offset_dict)  # Modify Function Call
+    # File Screen
+    writeHook(ROM_COPY, 0x8002937C, Overlay.Menu, "FileScreenDLCode", offset_dict)
+    writeHook(ROM_COPY, 0x80028E90, Overlay.Menu, "FileSelectDLCode", offset_dict)
+    writeHook(ROM_COPY, 0x800298B8, Overlay.Menu, "KongUnlockCorrectCode", offset_dict)
+    writeValue(ROM_COPY, 0x800337DC, Overlay.Menu, 0xFFD700FF, offset_dict, 4)
+    # Bonus
+    writeHook(ROM_COPY, 0x800295D4, Overlay.Bonus, "RemoveKrazyKKLagImpact", offset_dict)
 
     # Mill and Crypt Levers
     # Mill Levers
@@ -2306,7 +2349,8 @@ def patchAssembly(ROM_COPY, spoiler):
     if not settings.disable_racing_patches:
         writeValue(ROM_COPY, 0x806D0328, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
         writeValue(ROM_COPY, 0x806CBE04, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
-        writeFloat(ROM_COPY, 0x807532E4, Overlay.Static, 90, offset_dict)  # Set Chunky pickup speed to 90 (instead of 100)
+        if not TS:
+            writeFloat(ROM_COPY, 0x807532E4, Overlay.Static, 90, offset_dict)  # Set Chunky pickup speed to 90 (instead of 100)
         writeValue(ROM_COPY, 0x806BEB76, Overlay.Static, 0x3FE8, offset_dict)  # Tone down the rabbit race 1 speed to 0.75x rather than 1.0x
 
     # Expand Path Allocation

@@ -68,6 +68,8 @@ class ReqItems(IntEnum):
     Shopkeeper = auto()
     ArchipelagoItem = auto()
     RaceCoin = auto()
+    BonusesNoHelm = auto()
+    FungiTime = auto()
 
 
 class MenuTexture:
@@ -274,6 +276,70 @@ def getNextFreeID(ROM_COPY: LocalROM, cont_map_id: Union[Maps, int], ignore: Lis
         return min(vacant_ids)
     return 0  # Shouldn't ever hit this. This is a case if there's no vacant IDs in range [0,599]
 
+def replaceScriptLines(ROM_COPY: LocalROM, cont_map_id: Union[Maps, int], item_ids: List[int], replacement_mapping: dict) -> None:
+    """Replace a script line with another."""
+    script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
+    ROM_COPY.seek(script_table)
+    script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+    good_scripts = []
+    # Construct good pre-existing scripts
+    file_offset = 2
+    for script_item in range(script_count):
+        ROM_COPY.seek(script_table + file_offset)
+        script_start = script_table + file_offset
+        script_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        block_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        file_offset += 6
+        for block_item in range(block_count):
+            ROM_COPY.seek(script_table + file_offset)
+            cond_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            file_offset += 2
+            for cond in range(cond_count):
+                func = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                params = []
+                for _ in range(3):
+                    params.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+                if script_id in item_ids:
+                    constructed = f"COND{'INV' if func & 0x8000 else ''} {func & 0x7FFF} | {params[0]} {params[1]} {params[2]}"
+                    if constructed in replacement_mapping:
+                        new_output = replacement_mapping[constructed]
+                        segs = new_output.split(" ")
+                        func = 0x8000 if "CONDINV" in new_output else 0
+                        func |= int(segs[1])
+                        params = [
+                            int(segs[3]),
+                            int(segs[4]),
+                            int(segs[5]),
+                        ]
+                        ROM_COPY.seek(script_table + file_offset)
+                        ROM_COPY.writeMultipleBytes(func, 2)
+                        for p in params:
+                            ROM_COPY.writeMultipleBytes(p, 2)
+                file_offset += 8
+            ROM_COPY.seek(script_table + file_offset)
+            exec_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            file_offset += 2
+            for exec in range(exec_count):
+                func = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                params = []
+                for _ in range(3):
+                    params.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+                if script_id in item_ids:
+                    constructed = f"EXEC {func} | {params[0]} {params[1]} {params[2]}"
+                    if constructed in replacement_mapping:
+                        new_output = replacement_mapping[constructed]
+                        segs = new_output.split(" ")
+                        func = int(segs[1])
+                        params = [
+                            int(segs[3]),
+                            int(segs[4]),
+                            int(segs[5]),
+                        ]
+                        ROM_COPY.seek(script_table + file_offset)
+                        ROM_COPY.writeMultipleBytes(func, 2)
+                        for p in params:
+                            ROM_COPY.writeMultipleBytes(p, 2)
+                file_offset += 8
 
 def addNewScript(ROM_COPY: LocalROM, cont_map_id: Union[Maps, int], item_ids: List[int], type: ScriptTypes) -> None:
     """Append a new script to the script database. Has to be just 1 execution and 1 endblock."""
@@ -565,6 +631,7 @@ def getItemNumberString(count: int, item_type: Types) -> str:
         Types.IslesMedal: "Medal",
         Types.ProgressiveHint: "Hint",
         Types.ArchipelagoItem: "Archipelago Item",
+        Types.FungiTime: "Fungi Time",
     }
     name = names.get(item_type, item_type.name)
     if count != 1:

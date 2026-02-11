@@ -331,6 +331,7 @@ export enum ItemRandoListSelected {
     gauntletbanana = 46,
     blueprintbanana = 47,
     sniderewards = 48,
+    fungitime = 49,
 }
 
 export enum ItemRandoFiller {

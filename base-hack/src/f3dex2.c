@@ -9,26 +9,6 @@ Gfx* drawImage(Gfx* dl, int text_index, codecs codec_index, int img_width, int i
 	return displayImage(dl++, text_index, 0, codec_index, img_width, img_height, x, y, xScale, yScale, 0, 0.0f);
 }
 
-Gfx* drawTri(Gfx* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha) {
-	dl = initDisplayList(dl);
-	gDPSetCombineLERP(dl++, NOISE, TEXEL0, 0, COMBINED, TEXEL1, COMBINED, LOD_FRACTION, COMBINED, COMBINED, COMBINED, SHADE, PRIMITIVE, COMBINED, 1, PRIMITIVE, SHADE);
-	gSPMatrix(dl++, 0x02000180, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-	gSPMatrix(dl++, 0x02000080, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-	// Vertex 0
-	gSPModifyVertex(dl++, 0, G_MWO_POINT_XYSCREEN, (x1 << 16) | y1);
-	gSPModifyVertex(dl++, 0, G_MWO_POINT_RGBA, 0xFFFFFFFF);
-	// Vertex 1
-	gSPModifyVertex(dl++, 1, G_MWO_POINT_XYSCREEN, (x2 << 16) | y2);
-	gSPModifyVertex(dl++, 1, G_MWO_POINT_RGBA, 0xFFFFFFFF);
-	// Vertex 2
-	gSPModifyVertex(dl++, 2, G_MWO_POINT_XYSCREEN, (x3 << 16) | y3);
-	gSPModifyVertex(dl++, 2, G_MWO_POINT_RGBA, 0xFFFFFFFF);
-	gDPSetPrimColor(dl++, 0, 0, red, green, blue, alpha);
-	// Draw Tri
-	gSP1Triangle(dl++, 0, 1, 2, 0);
-	return dl;
-}
-
 __attribute__((noinline))
 Gfx* drawPixelText(Gfx* dl, int x, int y, const char* str, int red, int green, int blue, int alpha) {
 	gDPPipeSync(dl++);
@@ -111,13 +91,6 @@ ROM_DATA static unsigned char char_opacity_data[CHAR_LIMIT];
 void setCharacterRecoloring(int output, char* stored_str) {
 	use_character_recoloring = output;
 	character_recoloring_str = stored_str;
-}
-
-void wipeTextColorData(void) {
-	for (int i = 0; i < CHAR_LIMIT; i++) {
-		char_color_data[i] = 0;
-		char_opacity_data[i] = 0xFF;
-	}
 }
 
 void setCharacterColor(int index, int value, int opacity) {

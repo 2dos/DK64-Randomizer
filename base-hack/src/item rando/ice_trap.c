@@ -444,29 +444,27 @@ typedef struct ice_trap_timer_struct {
     /* 0x000 */ unsigned short timer;
     /* 0x002 */ char active;
     /* 0x003 */ char unk3;
-    /* 0x004 */ void *disable_func;
-    /* 0x008 */ void *enable_func;
+    /* 0x004 */ int (*disable_func)(void);
+    /* 0x008 */ int (*enable_func)(void);
 } ice_trap_timer_struct;
 
-void resetScreenFlip(void) {
+int resetScreenFlip(void) {
     *(unsigned char*)(0x80010520) = 0x3F;
+    return 1;
 }
 
-void resetTagAnywhere(void) {
+int resetTagAnywhere(void) {
     if (CCEffectData) {
         CCEffectData->disable_tag_anywhere = CC_READY;
     }
-}
-
-void resetAnimalButtons(void) {
-    cc_disabler_animals();
+    return 1;
 }
 
 ROM_DATA static ice_trap_timer_struct ice_trap_timers[] = {
     {.timer = 0, .active=0, .disable_func=&resetScreenFlip}, // Flip
     {.timer = 0, .active=1, .disable_func=&cc_disabler_paper, .enable_func=&cc_enabler_paper}, // Paper
     {.timer = 0, .active=0, .disable_func=&cc_disabler_ice}, // Ice
-    {.timer = 0, .active=0, .disable_func=&resetAnimalButtons}, // Animals (resets buttons, then cc_disabler_animals is called separately)
+    {.timer = 0, .active=0, .disable_func=&cc_disabler_animals}, // Animals
     {.timer = 0, .active=0, .disable_func=&resetTagAnywhere}, // Tag
     {.timer = 0, .active=1, .enable_func=&cc_enabler_rockfall}, // Rockfall
 };
@@ -704,10 +702,10 @@ void handleIceTrapButtons(void) {
             data->timer--;
             if (data->timer == 0) {
                 if (data->disable_func) {
-                    callFunc(data->disable_func, 0);
+                    data->disable_func();
                 }
             } else if (data->active) {
-                callFunc(data->enable_func, 0);
+                data->enable_func();
             }
         }
     }

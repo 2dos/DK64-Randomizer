@@ -1489,21 +1489,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	} else if (index == -16) {
 		hideObject(behaviour_pointer);
 	} else if (index == -17) {
-		if (Rando.fungi_time_of_day_setting == TIME_DUSK) {
-			return 1;
-		} else {
-			if (param2 == 1) {
-				if (Player->strong_kong_ostand_bitfield & FUNGI_NIGHT_CHECK) {
-					return 1;
-				}
-				return 0;
-			} else {
-				if ((Player->strong_kong_ostand_bitfield & FUNGI_NIGHT_CHECK) == 0) {
-					return 1;
-				}
-				return 0;
-			}
-		}
+		return isTimeOfDay(param2);
 	} else if (index == -18) {
 		return (Player->strong_kong_ostand_bitfield & 0x20) || (!Rando.sprint_barrel_requires_sprint);
 	} else if (index == -19) {
