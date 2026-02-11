@@ -184,7 +184,7 @@ if baseclasses_loaded:
     from worlds.LauncherComponents import Component, SuffixIdentifier, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
     from archipelago.FillSettings import fillsettings
-    from archipelago.Prices import PriceGenerator
+    from archipelago.Prices import generate_prices
     from Utils import open_filename
     import shutil
     import zlib
@@ -959,8 +959,7 @@ if baseclasses_loaded:
                 self.spoiler.settings.selected_shared_shops = set()
 
             # Generate custom shop prices for Archipelago
-            price_generator = PriceGenerator(self.spoiler, self.options, self.random)
-            price_generator.generate_prices()
+            generate_prices(self.spoiler, self.options, self.random)
 
             # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
             if self.spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
