@@ -44,8 +44,6 @@ extern int* getOtherSpritePointer();
 extern void alterSize(void* object, int size);
 extern void unkSizeFunction(void* object);
 extern void spawnRocketbarrel(void* object, int unk);
-extern void* getObjectArrayAddr(void* init_address, int common_object_size, int index);
-extern short getFloatUpper(float value);
 extern void playSong(songs songIndex, float volume);
 extern void restartSong(int write_slot, int song, float volume);
 extern int getSongTempo(void *player);
@@ -139,8 +137,6 @@ extern void warpActorToParent(void *actor, void *parent, float scale);
 extern void updateCamera(void* mtx_i);
 extern void spawnKeyTwinklies(void *actor);
 extern void getControllerContainer(void *cont);
-
-extern int callFunc(void* func, int arg);
 
 extern void cutsceneDiddyCode(void);
 extern void cutsceneLankyCode(void);

@@ -920,8 +920,7 @@ void cancelCutscene(int enable_movement) {
 		if (CutsceneActive) {
 			if (CutsceneTypePointer) {
 				if (CutsceneTypePointer->cutscene_databank) {
-					int* databank = (int *)(CutsceneTypePointer->cutscene_databank);
-					short cam_state = *(short *)(getObjectArrayAddr(databank,0xC,CutsceneIndex));
+					short cam_state = CutsceneTypePointer->cutscene_databank[CutsceneIndex].num_points;
 					// short cam_state = *( short*)(cs_databank + (0xC * CutsceneIndex));
 					CurrentCameraState = cam_state;
 					PreviousCameraState = cam_state;
@@ -937,17 +936,13 @@ void cancelCutscene(int enable_movement) {
 
 void modifyCutscenePoint(int bank, int cutscene, int point, int new_item) {
 	if (CutsceneBanks[bank].cutscene_databank) {
-		void* databank = CutsceneBanks[bank].cutscene_databank;
-		cutscene_item_data* data = (cutscene_item_data*)getObjectArrayAddr(databank,0xC,cutscene);
-		short* write_spot = (short*)getObjectArrayAddr(data->point_array,2,point);
-		*(short*)write_spot = new_item;
+		CutsceneBanks[bank].cutscene_databank[cutscene].point_array[point] = new_item;
 	}
 }
 
 void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int new_param3) {
 	if (CutsceneBanks[bank].cutscene_funcbank) {
-		void* funcbank = CutsceneBanks[bank].cutscene_funcbank;
-		cutscene_item* data = (cutscene_item*)getObjectArrayAddr(funcbank,0x14,item);
+		cutscene_item* data = &CutsceneBanks[bank].cutscene_funcbank[item];
 		data->command = 0xD;
 		data->params[0] = new_param1;
 		data->params[1] = new_param2;
@@ -1698,7 +1693,7 @@ int isDynFlag(int obj, maps map) {
 	return 0;
 }
 
-int getProjectileCount_modified(void *player, unsigned short int_bitfield, void* code) {
+int getProjectileCount_modified(void *player, unsigned short int_bitfield, int (*code)(actorData *)) {
 	int count = 0;
 	int longest_life = ActorTimer - 50; // Has to be at least 50f old
 	actorData *actor_oldest = 0;
@@ -1706,7 +1701,7 @@ int getProjectileCount_modified(void *player, unsigned short int_bitfield, void*
 		actorData *actor = LoadedActorArray[i].actor;
 		if (player == actor->parent) {
 			if (actor->interaction_bitfield == int_bitfield) {
-				if ((!code) || callFunc(code, (int)actor)) {
+				if ((!code) || code(actor)) {
 					count += 1;
 					int *paad = actor->paad;
 					if (paad) {

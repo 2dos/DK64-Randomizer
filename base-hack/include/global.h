@@ -373,7 +373,7 @@ extern void saveItemsToFile(void);
 extern void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index);
 
 extern void loadWrinklyTextWrapper(actorData* actor, int file, int index);
-extern int getProjectileCount_modified(void *player, unsigned short int_bitfield, void* code);
+extern int getProjectileCount_modified(void *player, unsigned short int_bitfield, int (*code)(actorData *));
 extern void applyButtonBansInternals(void *cont);
 extern void *getTextData(data_indexes table_index, int file_index, int unk0, int unk1);
 
@@ -424,7 +424,7 @@ extern int cc_enabler_paper(void);
 extern int cc_disabler_paper(void);
 extern int cc_enabler_animals(void);
 extern int cc_disabler_animals(void);
-extern void *cc_enabler_rockfall(void);
+extern int cc_enabler_rockfall(void);
 extern int cc_enabler_tag(void);
 
 extern void initMMayhem(actorData *actor, int cutscene, int type);

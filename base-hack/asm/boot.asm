@@ -8,93 +8,65 @@
 START:
 	displacedBootCode:
 		// Load Variable Space
-		LUI a0, hi(dataStart)
-		LUI a1, hi(dataStart + 0x200)
-		ADDIU a1, a1, lo(dataStart + 0x200)
-		ADDIU a0, a0, lo(dataStart)
-		LUI a2, 0x807F
-		JAL dmaFileTransfer
-		ORI a2, a2, 0xF800 //RAM location to copy to
-		// Boot image
-		// LUI a0, 0x8060
-		// JAL 0x805FB7E4 // Render Nintendo Logo
-		// SW r0, 0xBBCC (a0)
+		lui $a0, hi(dataStart)
+		lui $a1, hi(dataStart + 0x200)
+		addiu $a1, $a1, lo(dataStart + 0x200)
+		addiu $a0, $a0, lo(dataStart)
+		lui $a2, 0x807F
+		jal dmaFileTransfer
+		ori $a2, $a2, 0xF800 //RAM location to copy to
+		
 		// Load item data
-		LUI a0, hi(itemROM)
-		LUI a1, hi(itemROM + itemdatasize)
-		ADDIU a1, a1, lo(itemROM + itemdatasize)
-		ADDIU a0, a0, lo(itemROM)
-		LUI a2, hi(APName)
-		JAL dmaFileTransfer
-		ADDIU a2, a2, lo(APName)
+		lui $a0, hi(itemROM)
+		lui $a1, hi(itemROM + itemdatasize)
+		addiu $a1, $a1, lo(itemROM + itemdatasize)
+		addiu $a0, $a0, lo(itemROM)
+		lui $a2, hi(APName)
+		jal dmaFileTransfer
+		addiu $a2, $a2, lo(APName)
     
 		//
-		LUI v0, 0x8001
-		ADDIU v0, v0, 0xDCC4
+		lui $v0, 0x8001
+		addiu $v0, $v0, 0xDCC4
 
-		LUI t3, 0
-		LUI t4, 1
-		LUI t5, static_code_upper
-		LUI t9, static_data_upper
-		LUI t8, multi_code_upper
-		J 0x80000784
-		LUI t6, multi_data_upper
+		lui $t3, 0
+		lui $t4, 1
+		lui $t5, static_code_upper
+		lui $t9, static_data_upper
+		lui $t8, multi_code_upper
+		j 0x80000784
+		lui $t6, multi_data_upper
 		//end of boot code
 		/////////////////////////////////////////////////////
 
 LobbyReplaceCode1:
-	LUI t7, hi(ReplacementLobbiesArray)
-	ADDIU t7, t7, lo(ReplacementLobbiesArray)
+	lui $t7, hi(ReplacementLobbiesArray)
+	addiu $t7, $t7, lo(ReplacementLobbiesArray)
 LobbyReplaceCode2:
-	LUI a0, hi(ReplacementLobbiesArray)
-	LHU a0, lo(ReplacementLobbiesArray) (a0)
+	lui $a0, hi(ReplacementLobbiesArray)
+	lhu $a0, lo(ReplacementLobbiesArray) ($a0)
 
 loadExtraHooks:	
-	LUI t3, hi(LobbyReplaceCode1)
-	LW t3, lo(LobbyReplaceCode1) (t3)
-	LUI t4, 0x8069
-	SW t3, 0xABE8 (t4)
-	LUI t3, hi(LobbyReplaceCode1)
-	ADDIU t3, t3, 4
-	LW t3, lo(LobbyReplaceCode1) (t3)
-	SW t3, 0xABEC (t4)
+	lui $t3, hi(LobbyReplaceCode1)
+	lw $t3, lo(LobbyReplaceCode1) ($t3)
+	lui $t4, 0x8069
+	sw $t3, 0xABE8 ($t4)
+	lui $t3, hi(LobbyReplaceCode1)
+	addiu $t3, $t3, 4
+	lw $t3, lo(LobbyReplaceCode1) ($t3)
+	sw $t3, 0xABEC ($t4)
 
-	LUI t3, hi(LobbyReplaceCode2)
-	LW t3, lo(LobbyReplaceCode2) (t3)
-	LUI t4, 0x8060
-	SW t3, 0x0058 (t4)
-	LUI t3, hi(LobbyReplaceCode2)
-	ADDIU t3, t3, 4
-	LW t3, lo(LobbyReplaceCode2) (t3)
-	SW t3, 0x006C (t4)
+	lui $t3, hi(LobbyReplaceCode2)
+	lw $t3, lo(LobbyReplaceCode2) ($t3)
+	lui $t4, 0x8060
+	sw $t3, 0x0058 ($t4)
+	lui $t3, hi(LobbyReplaceCode2)
+	addiu $t3, $t3, 4
+	lw $t3, lo(LobbyReplaceCode2) ($t3)
+	sw $t3, 0x006C ($t4)
 
-	JR ra
-	NOP
-
-getObjectArrayAddr:
-	// a0 = initial address
-	// a1 = common object size
-	// a2 = index
-	MULTU 	a1, a2
-	MFLO	a1
-	JR 		ra
-	ADD 	v0, a0, a1
-
-getFloatUpper:
-	; f12 = Float Value
-	mfc1 	$v0, $f12
-	sra 	$v0, $v0, 16
-	JR 		ra
-	andi 	$v0, $v0, 0xFFFF
-
-callFunc:
-	addi $sp, $sp, -8
-	sw $ra, 0x4 ($sp)
-	jalr $a0
-	or $a0, $a1, $zero
-	lw $ra, 0x4 ($sp)
 	jr $ra
-	addiu $sp, $sp, 8
+	nop
 	
 .align 0x10
 END:
