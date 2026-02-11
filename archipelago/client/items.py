@@ -188,6 +188,8 @@ item_ids: Dict[int, Dict[str, Any]] = {
     14041692: {"name": "Factory Crate: Near Funky", "count_id": None, "flag_id": 0x3AF},
     14041693: {"name": "Factory Crate: Near Candy", "count_id": None, "flag_id": 0x3B0},
     14041694: {"name": "Galleon Crate: Near Cactus", "count_id": None, "flag_id": 0x3B1},
+    14041381: {"name": "Day", "count_id": None, "flag_id": 666},
+    14041382: {"name": "Night", "count_id": None, "flag_id": 667},
 }
 
 

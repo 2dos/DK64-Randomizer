@@ -18,6 +18,13 @@ typedef struct purchase_struct {
 	/* 0x005 */ unsigned char price;
 } purchase_struct;
 
+typedef struct ap_item_packet {
+	/* 0x000 */ unsigned char item_type;    // requirement_item enum value
+	/* 0x001 */ unsigned char level;         // Level/tier parameter for giveItem
+	/* 0x002 */ unsigned char kong;          // Kong index or other context param
+	/* 0x003 */ unsigned char config_flags;  // Packed giveItemConfig flags
+} ap_item_packet;
+
 typedef struct CountSpecialStruct {
     unsigned char nintendo_coin : 1; // 0x80
     unsigned char rareware_coin : 1; // 0x40
