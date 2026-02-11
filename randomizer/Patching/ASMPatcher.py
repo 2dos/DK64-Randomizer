@@ -621,6 +621,10 @@ def patchAssembly(ROM_COPY, spoiler):
 
     writeHook(ROM_COPY, 0x805FBDEC, Overlay.Static, "initCode", offset_dict)
     writeValue(ROM_COPY, 0x8072E76C, Overlay.Static, 0x24070001, offset_dict, 4)
+    writeValue(ROM_COPY, 0x8068ABEA, Overlay.Static, getHiSym("replacement_lobbies_array"), offset_dict)
+    writeValue(ROM_COPY, 0x8068ABEE, Overlay.Static, getLoSym("replacement_lobbies_array"), offset_dict)
+    writeValue(ROM_COPY, 0x8060005A, Overlay.Static, getHiSym("replacement_lobbies_array"), offset_dict)
+    writeValue(ROM_COPY, 0x8060006E, Overlay.Static, getLoSym("replacement_lobbies_array"), offset_dict)
 
     if settings.arcade_custom_minigame is not None:
         loadBin(ROM_COPY, 0x80024390, Overlay.Arcade, f"base-hack/minigame/{settings.arcade_custom_minigame}.bin", offset_dict)

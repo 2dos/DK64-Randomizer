@@ -85,13 +85,13 @@ DynamicCodeFixes:
     lui $t1, 0x8074
 
 getLobbyExit:
-    lui $a1, hi(ReplacementLobbyExitsArray)
+    lui $a1, hi(replacement_lobby_exits_array)
     sll $t7, $t6, 1
     addu $a1, $a1, $t7
-    lhu $a1, lo(ReplacementLobbyExitsArray) ($a1)
+    lhu $a1, lo(replacement_lobby_exits_array) ($a1)
     addu $a0, $a0, $t7
     jal 0x805FF378
-    lhu $a0, lo(ReplacementLobbiesArray) ($a0)
+    lhu $a0, lo(replacement_lobbies_array) ($a0)
     jal resetMapContainer
     nop
     j 0x80600070

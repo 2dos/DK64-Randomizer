@@ -852,13 +852,6 @@ void* findActorWithType(int search_actor_type) {
 	return 0;
 }
 
-int isRDRAM(void* address) {
-	if (((unsigned int)address >= 0x80000000) && ((unsigned int)address < 0x80800000)) {
-		return 1;
-	}
-	return 0;
-}
-
 void createCollisionObjInstance(collision_types subtype, int map, int exit) {
 	createCollision(0,Player,subtype,map,exit,collisionPos[0],collisionPos[1],collisionPos[2]);
 }

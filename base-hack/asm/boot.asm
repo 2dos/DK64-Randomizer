@@ -38,35 +38,6 @@ START:
 		lui $t6, multi_data_upper
 		//end of boot code
 		/////////////////////////////////////////////////////
-
-LobbyReplaceCode1:
-	lui $t7, hi(ReplacementLobbiesArray)
-	addiu $t7, $t7, lo(ReplacementLobbiesArray)
-LobbyReplaceCode2:
-	lui $a0, hi(ReplacementLobbiesArray)
-	lhu $a0, lo(ReplacementLobbiesArray) ($a0)
-
-loadExtraHooks:	
-	lui $t3, hi(LobbyReplaceCode1)
-	lw $t3, lo(LobbyReplaceCode1) ($t3)
-	lui $t4, 0x8069
-	sw $t3, 0xABE8 ($t4)
-	lui $t3, hi(LobbyReplaceCode1)
-	addiu $t3, $t3, 4
-	lw $t3, lo(LobbyReplaceCode1) ($t3)
-	sw $t3, 0xABEC ($t4)
-
-	lui $t3, hi(LobbyReplaceCode2)
-	lw $t3, lo(LobbyReplaceCode2) ($t3)
-	lui $t4, 0x8060
-	sw $t3, 0x0058 ($t4)
-	lui $t3, hi(LobbyReplaceCode2)
-	addiu $t3, $t3, 4
-	lw $t3, lo(LobbyReplaceCode2) ($t3)
-	sw $t3, 0x006C ($t4)
-
-	jr $ra
-	nop
 	
 .align 0x10
 END:
