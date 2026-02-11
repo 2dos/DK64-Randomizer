@@ -1,7 +1,6 @@
 /**
  * @file turf.c
  * @author Ballaam
- * @brief Implement Turf Surf into DK64
  * @version 0.1
  * @date 2026-02-06
  * 

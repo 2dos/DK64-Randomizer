@@ -2003,7 +2003,6 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806010DE, Overlay.Static, getLo(MUSIC_MIDI_OFFSET), offset_dict)
     writeValue(ROM_COPY, 0x806010EE, Overlay.Static, (SONG_COUNT + 1) * 4, offset_dict)
 
-    # Turf Surf
     if TS:
         writeValue(ROM_COPY, 0x8074B00C, Overlay.Static, -1, offset_dict, 2, True)  # Allow any kongs to pick up boulders
         for x in range(5):
