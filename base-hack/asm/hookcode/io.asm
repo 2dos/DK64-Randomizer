@@ -282,10 +282,6 @@ LogPercussion:
             nop
 
         LogPercussion_note:
-            ;
-            lui $t3, hi(TestVariable)
-            sw $t4, lo(TestVariable) ($t3)
-            ;
             addiu $t3, $zero, 1
             sb $t3, lo(PercussionPlayed) ($t2)
 

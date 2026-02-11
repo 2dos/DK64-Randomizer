@@ -46,6 +46,7 @@ export enum Types {
     RaceBanana = 45,
     GauntletBanana = 46,
     FillerRainbowCoin = 47,
+    FungiTime = 48,
 }
 
 export enum BarrierItems {

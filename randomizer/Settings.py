@@ -196,6 +196,7 @@ class Settings:
             ItemRandoListSelected.crateitem: [0, 13],
             ItemRandoListSelected.halfmedal: [0, 40],
             ItemRandoListSelected.shopowners: [0, 0],  # Max is 4, calculated during post-processing
+            ItemRandoListSelected.fungitime: [0, 0],
             ItemRandoListSelected.hint: [35, 0],
             ItemRandoListSelected.wrinkly: [0, 35],
             ItemRandoListSelected.boulderitem: [0, 16],
@@ -1594,6 +1595,7 @@ class Settings:
                 ItemRandoListSelected.anthillreward: (Types.Bean, Types.Bean, True),
                 ItemRandoListSelected.crateitem: (Types.CrateItem, Types.CrateItem, True),
                 ItemRandoListSelected.shopowners: (Types.Cranky, Types.Cranky, False),
+                ItemRandoListSelected.fungitime: (Types.FungiTime, Types.FungiTime, False),
                 ItemRandoListSelected.hint: (Types.Hint, Types.Hint, False),
                 ItemRandoListSelected.wrinkly: (Types.Hint, Types.Hint, True),
                 ItemRandoListSelected.boulderitem: (Types.BoulderItem, Types.BoulderItem, True),
@@ -2632,6 +2634,9 @@ class Settings:
             spoiler.LocationList[Locations.ShopOwner_Location02].inaccessible = True
         if Types.Snide in self.shuffled_location_types:
             spoiler.LocationList[Locations.ShopOwner_Location03].inaccessible = True
+        if Types.FungiTime in self.shuffled_location_types:
+            spoiler.LocationList[Locations.TimeLocationDay].inaccessible = True
+            spoiler.LocationList[Locations.TimeLocationNight].inaccessible = True
 
         # Designate the Rock GB as a location for the starting kong
         spoiler.LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong
@@ -2648,7 +2653,7 @@ class Settings:
             shuffledLocations = [
                 location
                 for location in spoiler.LocationList
-                if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
+                if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime)
             ]
             shuffledLocationsShopOwner = [
                 location
@@ -2742,6 +2747,7 @@ class Settings:
                 Types.FillerCrown,
                 Types.FillerFairy,
                 Types.FillerPearl,
+                Types.FungiTime,
             )
             for item in regular_items:
                 if item in self.shuffled_location_types:
@@ -3122,6 +3128,7 @@ class Settings:
             self.item_check_counts[ItemRandoListSelected.medal_checks] = [0, 40]
         self.item_check_counts[ItemRandoListSelected.kong][0] = 5 - len(self.starting_kong_list)
         self.item_check_counts[ItemRandoListSelected.shopowners][0] = 0  # Reset it back to a default state every time
+        self.item_check_counts[ItemRandoListSelected.fungitime][0] = 0  # Reset it back to a default state every time
         if Types.Cranky in self.shuffled_location_types:
             self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
         if Types.Funky in self.shuffled_location_types:
@@ -3130,6 +3137,8 @@ class Settings:
             self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
         if Types.Snide in self.shuffled_location_types:
             self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
+        if Types.FungiTime in self.shuffled_location_types:
+            self.item_check_counts[ItemRandoListSelected.fungitime][0] += 2
         self.item_check_counts[ItemRandoListSelected.medal][0] = self.total_medals
         self.item_check_counts[ItemRandoListSelected.banana][0] = self.total_gbs - 40  # Blueprint GBs are their own category for item pool calculations
         self.item_check_counts[ItemRandoListSelected.fairy][0] = self.total_fairies
@@ -3171,6 +3180,9 @@ class Settings:
                 return False
         if Types.Snide in self.shuffled_location_types:
             if len(self.valid_locations[Types.Snide]) <= 0:
+                return False
+        if Types.FungiTime in self.shuffled_location_types:
+            if len(self.valid_locations[Types.FungiTime]) <= 0:
                 return False
 
         def check_distribution(liquids, buckets):

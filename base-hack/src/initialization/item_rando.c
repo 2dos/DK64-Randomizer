@@ -619,6 +619,8 @@ ROM_RODATA_NUM static const barrel_skin_tie bonus_skins[] = {
     {.actor = NEWACTOR_SPECIALARCHIPELAGOITEM,  .reqitem=REQITEM_AP,                .level= 1, .kong=-1, .skin=SKIN_AP_USEFUL},
     {.actor = NEWACTOR_FOOLSARCHIPELAGOITEM,    .reqitem=REQITEM_AP,                .level= 2, .kong=-1, .skin=SKIN_AP_JUNK},
     {.actor = NEWACTOR_TRAPARCHIPELAGOITEM,     .reqitem=REQITEM_AP,                .level= 3, .kong=-1, .skin=SKIN_AP_TRAP},
+    {.actor = NEWACTOR_DAYITEM,                 .reqitem=REQITEM_FUNGITIME,         .level=-1, .kong= 0, .skin=SKIN_DAY},
+    {.actor = NEWACTOR_NIGHTITEM,               .reqitem=REQITEM_FUNGITIME,         .level=-1, .kong= 1, .skin=SKIN_NIGHT},
 };
 
 enum_bonus_skin getBarrelSkinIndex(int actor) {

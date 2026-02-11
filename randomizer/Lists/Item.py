@@ -348,6 +348,8 @@ ItemList = {
     Items.SpecialArchipelagoItem: Item("Special Archipelago Item", False, Types.ArchipelagoItem, Kongs.any),
     Items.FoolsArchipelagoItem: Item("Junk Archipelago Item", False, Types.ArchipelagoItem, Kongs.any),
     Items.TrapArchipelagoItem: Item("Trap Archipelago Item", False, Types.ArchipelagoItem, Kongs.any),
+    Items.Day: Item("Day", True, Types.FungiTime, Kongs.any),
+    Items.Night: Item("Night", True, Types.FungiTime, Kongs.any),
     Items.BananaHoard: Item("Banana Hoard", True, Types.Constant, Kongs.any),
     Items.PhotoBeaverBlue: Item("Photo (Beaver Blue)", False, Types.EnemyPhoto, Kongs.any),
     Items.PhotoBook: Item("Photo (Book)", False, Types.EnemyPhoto, Kongs.any),

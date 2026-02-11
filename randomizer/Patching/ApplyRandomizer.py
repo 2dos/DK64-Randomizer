@@ -65,7 +65,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements, calculateInitFileScreen, place_spoiler_hint_data
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.Library.Generic import setItemReferenceName, addNewScript, IsItemSelected, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected
+from randomizer.Patching.Library.Generic import setItemReferenceName, addNewScript, replaceScriptLines, IsItemSelected, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected
 from randomizer.Patching.Library.Assets import CompTextFiles, ItemPreview
 from randomizer.Patching.MiscSetupChanges import (
     randomize_setup,
@@ -522,13 +522,15 @@ def patching_response(spoiler):
     # Fungi Time of Day
     fungi_times = (FungiTimeSetting.day, FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)
     progressive_removals = [5, 4]  # Day Switch, Night Switch
-    dusk_removals = {
+    day_script = {
         Maps.FungiForest: [
-            5,  # Day Switch
-            4,  # Night Switch
             0xC,  # Day Gate - Mill Front Entry
             0xE,  # Day Gate - Punch Door
             0x12,  # Day Gate - Snide Area
+        ],
+    }
+    night_script = {
+        Maps.FungiForest: [
             8,  # Night Gate - Mill Lanky Attic
             0xB,  # Night Gate - Mill Winch Attic
             0xD,  # Night Gate - Dark Attic
@@ -550,11 +552,18 @@ def patching_response(spoiler):
     if time_val in fungi_times:
         ROM_COPY.seek(sav + 0x1DB)
         ROM_COPY.write(fungi_times.index(time_val))
-        if time_val == FungiTimeSetting.progressive:
+        if time_val in (FungiTimeSetting.progressive, FungiTimeSetting.dusk):
             addNewScript(ROM_COPY, Maps.FungiForest, progressive_removals, ScriptTypes.DeleteItem)
-        elif time_val == FungiTimeSetting.dusk:
-            for map_val in dusk_removals:
-                addNewScript(ROM_COPY, map_val, dusk_removals[map_val], ScriptTypes.DeleteItem)
+    for map_id, changes in day_script.items():
+        replaceScriptLines(ROM_COPY, map_id, changes, {
+            "CONDINV 38 | 16 0 0": "COND 6 | 7 65519 0",
+            "COND 38 | 16 0 0": "CONDINV 6 | 7 65519 0",
+        })
+    for map_id, changes in night_script.items():
+        replaceScriptLines(ROM_COPY, map_id, changes, {
+            "COND 38 | 16 0 0": "COND 6 | 7 65519 1",
+            "CONDINV 38 | 16 0 0": "CONDINV 6 | 7 65519 1",
+        })
 
     # Galleon Water Level
     if spoiler.settings.galleon_water_internal == GalleonWaterSetting.raised:

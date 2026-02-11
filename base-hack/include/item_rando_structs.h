@@ -22,8 +22,8 @@ typedef struct CountSpecialStruct {
     unsigned char nintendo_coin : 1; // 0x80
     unsigned char rareware_coin : 1; // 0x40
     unsigned char bean : 1; // 0x20
-    unsigned char unk3 : 1;
-    unsigned char unk4 : 1;
+    unsigned char unk3 : 1; // 0x10
+    unsigned char unk4 : 1; // 0x08
     unsigned char unk5 : 1;
     unsigned char unk6 : 1;
     unsigned char unk7 : 1;

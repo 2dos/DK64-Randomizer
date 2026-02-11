@@ -580,6 +580,8 @@ skins = {
     "ap_useful": ("ap_logo_useful", None, "displays"),
     "ap_junk": ("ap_logo_junk", None, "displays"),
     "ap_trap": ("ap_logo_trap", None, "displays"),
+    "time_day": ("time_day", None, "displays"),
+    "time_night": ("time_night", None, "displays"),
 }
 BARREL_BASE_IS_HELM = True
 BASE_SIZE = 32

@@ -416,6 +416,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 all_hintable_moves.append(Items.Candy)
             if Types.Snide in spoiler.settings.shuffled_location_types:
                 all_hintable_moves.append(Items.Snide)
+            if Types.FungiTime in spoiler.settings.shuffled_location_types:
+                all_hintable_moves.extend([Items.Day, Items.Night])
         optional_hintable_locations = []
         slam_locations = []
         # Loop through all locations, finding the location of all of these hintable moves
@@ -424,7 +426,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             if location.item == Items.ProgressiveSlam:
                 slam_locations.append(id)
             # Never hint training moves for obvious reasons
-            if location.type in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
+            if location.type in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime):
                 continue
             # If it's a woth item, it must be hinted so put it in the list
             if id in spoiler.woth_locations:
@@ -888,6 +890,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                     item_name = "training moves"
                 elif item.type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
                     item_name = "shopkeepers"
+                elif item.type == Types.FungiTime:
+                    item_name = "time items"
                 elif item.type == Types.Shop:
                     if item.kong == Kongs.any:
                         item_name = "shared kong moves"
@@ -1506,6 +1510,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     Types.Funky,
                     Types.Candy,
                     Types.Snide,
+                    Types.FungiTime,
                     Types.Constant,
                     Types.IslesMedal,
                     Types.Climbing,
@@ -2326,13 +2331,13 @@ def compileSpoilerHints(spoiler):
             # 2. Training barrel locations are only pre-given if fast start is on
             # 3. The exception: IslesFirstMove (the Simian Slam location) is only pre-given if fast start is on
             if (
-                (location.type in (Types.Climbing, Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide) and location_id != Locations.IslesFirstMove)
+                (location.type in (Types.Climbing, Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide, Types.FungiTime) and location_id != Locations.IslesFirstMove)
                 or (spoiler.settings.fast_start_beginning_of_game and location.type == (Types.TrainingBarrel))
                 or (location_id == Locations.IslesFirstMove and spoiler.settings.fast_start_beginning_of_game)
             ):
                 starting_info.starting_moves.append(item_obj.name)
                 # Starting shopkeepers are never hintable
-                if location.type in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
+                if location.type in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide, Types.FungiTime):
                     starting_info.starting_moves_not_hintable.append(item_obj.name)
                 if location_id in spoiler.woth_locations:
                     starting_info.starting_moves_woth_count += 1

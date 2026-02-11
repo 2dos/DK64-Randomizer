@@ -313,6 +313,30 @@ file_dict = [
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
     ),
+    File(
+        name="Day Icon",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.DayIcon),
+        source_file="assets/displays/time_day.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="Night Icon",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.NightIcon),
+        source_file="assets/displays/time_night.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="AP Icon",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.APIcon),
+        source_file="assets/displays/ap32.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=605, source_file="fake_item_0.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Melon Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=606, source_file="melon_3d_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Sprint Switch", pointer_table_index=TableNames.ModelTwoGeometry, file_index=611, source_file="assets/Gong/sprint_switch.bin", do_not_extract=True, do_not_delete_source=True),
@@ -517,6 +541,8 @@ file_dict = [
     File(name="Fake Bean Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x264, source_file="fake_bean_0.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Key Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x265, source_file="fake_key_0.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Fairy Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x299, source_file="fake_fairy_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Day Item (OM2)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29A, source_file="day_item_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Night Item (OM2)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29B, source_file="night_item_om2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Animation Code", pointer_table_index=TableNames.Unknown13, file_index=0, source_file="animation_code.bin", do_not_delete_source=True),
     File(
         name="Disco Shirt",
@@ -1608,6 +1634,8 @@ shrinkModel(True, "archi_om1.bin", 0, 1 / 0.15, "shrink_archi.bin", False)
 shrinkModel(True, "special_archi_om1.bin", 0, 1 / 0.15, "shrink_special_archi.bin", False)
 shrinkModel(True, "fools_archi_om1.bin", 0, 1 / 0.15, "shrink_fools_archi.bin", False)
 shrinkModel(True, "trap_archi_om1.bin", 0, 1 / 0.15, "shrink_trap_archi.bin", False)
+shrinkModel(True, "day_item_om1.bin", 0, 1 / 0.15, "shrink_day_item.bin", False)
+shrinkModel(True, "night_item_om1.bin", 0, 1 / 0.15, "shrink_night_item.bin", False)
 FINAL_RACE_HOOP = "shrink_race_hoop.bin"
 shrinkModel(True, "race_hoop_om1.bin", 0, 1 / 0.15, FINAL_RACE_HOOP, False)
 
@@ -1720,10 +1748,13 @@ model_changes = [
     ModelChange(0x136, "shrink_trap_archi.bin"),
     ModelChange(0x137, "trap_archi_om1.bin"),
     ModelChange(0x138, "counter_spread.bin"),
-    # Test
     ModelChange(0x139, "kop_get_out.bin"),
     ModelChange(0x13A, "kop_disable_buttons.bin"),
     ModelChange(0x13B, "kop_disable_tag.bin"),
+    ModelChange(0x13C, "day_item_om1.bin"),
+    ModelChange(0x13D, "night_item_om1.bin"),
+    ModelChange(0x13E, "shrink_day_item.bin"),
+    ModelChange(0x13F, "shrink_night_item.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 

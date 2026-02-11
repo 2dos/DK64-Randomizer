@@ -297,6 +297,7 @@ class Spoiler:
             Types.Candy: "Shop Owners",
             Types.Snide: "Shop Owners",
             Types.Hint: "Hints",
+            Types.FungiTime: "Fungi Time",
         }
         if item_type in type_dict:
             return type_dict[item_type]
@@ -613,6 +614,7 @@ class Spoiler:
             "Hints": {},
             "Enemy Drops": {},
             "Shop Owners": {},
+            "Fungi Time": {},
             "Photos": {},
             "Empty": {},
             "Unknown": {},
@@ -657,6 +659,7 @@ class Spoiler:
                 Types.Candy,
                 Types.Funky,
                 Types.Snide,
+                Types.FungiTime,
             ) and location.item in (None, Items.NoItem):
                 continue
             if location.type == Types.HalfMedal and Types.HalfMedal not in self.settings.shuffled_location_types:
@@ -696,6 +699,7 @@ class Spoiler:
                     Types.Funky,
                     Types.Candy,
                     Types.Snide,
+                    Types.FungiTime,
                 ):
                     level = "DK Isles"
                 elif "Japes" in location.name:

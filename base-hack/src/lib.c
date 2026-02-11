@@ -915,20 +915,6 @@ int getCenter(int style, const char* str) {
 	return (screenWidth + 100 - (getCenterOffset(style,str))) * 0.5f;
 }
 
-int getLo(void* addr) {
-    return ((int)addr) & 0xFFFF;
-}
-
-int getHi(void* addr) {
-    int addr_0 = (int)addr;
-    int hi = (addr_0 >> 16) & 0xFFFF;
-    int lo = getLo(addr);
-    if (lo & 0x8000) {
-        hi += 1;
-    }
-    return hi;
-}
-
 void cancelCutscene(int enable_movement) {
 	if ((TBVoidByte & 2) == 0) {
 		if (CutsceneActive) {
@@ -1186,6 +1172,51 @@ ROM_RODATA_NUM const sprite_data_struct halfmedal_sprite = {
 	},
 };
 
+ROM_RODATA_NUM const sprite_data_struct day_overlay_sprite = {
+	.unk0 = 0xCD,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = RGBA16,
+	.unk8 = -1,
+	.table = TABLE_25,
+	.width = 32,
+	.height = 32,
+	.image_count = 1,
+	.images = {
+		DAY_SPRITE_START,
+	},
+};
+
+ROM_RODATA_NUM const sprite_data_struct night_overlay_sprite = {
+	.unk0 = 0xCE,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = RGBA16,
+	.unk8 = -1,
+	.table = TABLE_25,
+	.width = 32,
+	.height = 32,
+	.image_count = 1,
+	.images = {
+		NIGHT_SPRITE_START,
+	},
+};
+
+ROM_RODATA_NUM const sprite_data_struct ap_overlay_sprite = {
+	.unk0 = 0xCF,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = RGBA16,
+	.unk8 = -1,
+	.table = TABLE_25,
+	.width = 32,
+	.height = 32,
+	.image_count = 1,
+	.images = {
+		AP_SPRITE_START,
+	},
+};
+
 void giveGB() {
 	changeCollectableCount(8, 0, 1);
 	displayItemOnHUD(8, 0, 0);
@@ -1200,19 +1231,6 @@ int getTotalCBCount(void) {
 		}
 	}
 	return count;
-}
-
-void giveAmmo(void) {
-	changeCollectableCount(2, 0, 5);
-}
-
-void giveOrange(void) {
-	playSound(0x147, 0x7FFF, 63.0f, 1.0f, 5, 0);
-	changeCollectableCount(4, 0, 1);
-}
-
-void giveMelon(void) {
-	applyDamageMask(0, 1);
 }
 
 int inShortList(const int target, const short* list, const int count) {
@@ -1231,10 +1249,6 @@ int inU8List(const int target, const unsigned char* list, const int count) {
 		}
 	}
 	return 0;
-}
-
-void giveCrystal(void) {
-	changeCollectableCount(5, 0, 150);
 }
 
 int spawnItemOverlay(requirement_item type, int level, int kong, int force) {

@@ -161,6 +161,9 @@ class ExtraTextures(IntEnum):
     HalfMedal06 = auto()
     HalfMedal07 = auto()
     HalfMedal08 = auto()
+    DayIcon = auto()
+    NightIcon = auto()
+    APIcon = auto()
 
 
 barrel_skins = (
@@ -198,6 +201,8 @@ barrel_skins = (
     "ap_useful",
     "ap_junk",
     "ap_trap",
+    "time_day",
+    "time_night",
 )
 
 

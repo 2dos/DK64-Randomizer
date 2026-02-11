@@ -28,3 +28,4 @@
 .definelabel BackflipVelArray, 0x8075371C
 .definelabel SnideRewardIDs, 0x800330A4
 .definelabel SFXSoundbank, 0x8076D1F8
+.definelabel Input, 0x807FD63C

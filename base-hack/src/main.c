@@ -274,7 +274,6 @@ void earlyFrame(void) {
 		auto_turn_keys();
 		wipeHintCache();
 		if (CurrentMap == MAP_MAINMENU) {
-			FileScreenDLCode_Write();
 			initTracker();
 			if (Player) {
 				// Remove DK's shadow in the main menu
