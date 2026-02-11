@@ -32,18 +32,6 @@ START:
 		LUI v0, 0x8001
 		ADDIU v0, v0, 0xDCC4
 
-		LUI t3, 0x2407
-		ADDIU t3, t3, 1
-		LUI t4, 0x8073
-		SW t3, 0xE76C (t4)
-
-		// Write Init Hook
-		LUI t3, hi(initHook)
-		LW t3, lo(initHook) (t3)
-		LUI t4, 0x8060
-		SW t3, 0xBDEC (t4) // Store Hook
-		SW r0, 0xBDF0 (t4) // Store NOP
-
 		LUI t3, 0
 		LUI t4, 1
 		LUI t5, static_code_upper
@@ -60,9 +48,6 @@ LobbyReplaceCode1:
 LobbyReplaceCode2:
 	LUI a0, hi(ReplacementLobbiesArray)
 	LHU a0, lo(ReplacementLobbiesArray) (a0)
-initHook:
-	J 	initCode
-	NOP
 
 loadExtraHooks:	
 	LUI t3, hi(LobbyReplaceCode1)

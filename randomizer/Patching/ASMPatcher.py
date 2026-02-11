@@ -619,6 +619,9 @@ def patchAssembly(ROM_COPY, spoiler):
         0x164,  # BBlast first time cutscene
     ]
 
+    writeHook(ROM_COPY, 0x805FBDEC, Overlay.Static, "initCode", offset_dict)
+    writeValue(ROM_COPY, 0x8072E76C, Overlay.Static, 0x24070001, offset_dict, 4)
+
     if settings.arcade_custom_minigame is not None:
         loadBin(ROM_COPY, 0x80024390, Overlay.Arcade, f"base-hack/minigame/{settings.arcade_custom_minigame}.bin", offset_dict)
         writeFunction(ROM_COPY, 0x800242FC, Overlay.Arcade, f"{settings.arcade_custom_minigame}.loop", offset_dict, "minigames")
