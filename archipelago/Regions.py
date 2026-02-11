@@ -331,7 +331,7 @@ def create_region(
                 add_item_rule(location, lambda item: not (item.player == player and "Blueprint" in item.name))
             # Shops cannot have shopkeepers or Rainbow Coins due to technical issues
             if location_obj.type == Types.Shop:
-                add_item_rule(location, lambda item: not (item.player == player and item.name in ["Cranky", "Funky", "Candy", "Snide", "Rainbow"]))
+                add_item_rule(location, lambda item: not (item.player == player and item.name in ["Cranky", "Funky", "Candy", "Snide", "Rainbow Coin"]))
             if location_obj.type == Types.Key and logic_holder.settings.win_condition_item in (WinConditionComplex.req_bosses, WinConditionComplex.krools_challenge):
                 token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
                 set_rule(token_location, lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic))
