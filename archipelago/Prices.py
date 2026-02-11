@@ -69,7 +69,9 @@ def _get_shared_shop_vendors(spoiler: Spoiler, options: DK64Options, random: Ran
     return shared_shop_vendors, available_shared_shops
 
 
-def _categorize_shop_locations(spoiler: Spoiler, options: DK64Options, shared_shop_vendors: set[tuple[Levels, VendorType]], available_shared_shops: set[Locations]) -> tuple[list[Locations], list[Locations], dict[Kongs, int]]:
+def _categorize_shop_locations(
+    spoiler: Spoiler, options: DK64Options, shared_shop_vendors: set[tuple[Levels, VendorType]], available_shared_shops: set[Locations]
+) -> tuple[list[Locations], list[Locations], dict[Kongs, int]]:
     """Categorize shops into included and excluded based on settings."""
     shop_locations: list[Locations] = []
     excluded_shop_locations: list[Locations] = []
@@ -122,7 +124,9 @@ def _generate_individual_prices(random: Random, shop_locations: list[Locations],
     return individual_prices
 
 
-def _convert_to_cumulative_prices(spoiler: Spoiler, random: Random, individual_prices: dict[Items | Locations, int | list[int]], shop_locations: list[Locations]) -> dict[Items | Locations, int | list[int]]:
+def _convert_to_cumulative_prices(
+    spoiler: Spoiler, random: Random, individual_prices: dict[Items | Locations, int | list[int]], shop_locations: list[Locations]
+) -> dict[Items | Locations, int | list[int]]:
     """Convert individual prices to cumulative running totals per kong."""
     price_assignment = []
 
