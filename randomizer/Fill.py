@@ -971,8 +971,8 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
         # Don't want constant locations in woth and we can filter out some types of items as not being essential to the woth
         for loc in [
             loc
-            for loc in sphere.locations  # If Keys are constant, we may still want path hints for them.
-            if (not spoiler.LocationList[loc].constant or ItemList[spoiler.LocationList[loc].item].type == Types.Key or IsBeanLocWithBeanWincon(spoiler, loc))
+            for loc in sphere.locations  # If Kongs or Keys are constant, we may still want path hints for them. They are critical enough to still potentially be WotH (as well as their prerequisites!)
+            if (not spoiler.LocationList[loc].constant or ItemList[spoiler.LocationList[loc].item].type in (Types.Kong, Types.Key) or IsBeanLocWithBeanWincon(spoiler, loc))
             and ItemList[spoiler.LocationList[loc].item].type
             not in (
                 Types.Banana,
