@@ -257,19 +257,6 @@ void initHack(int source) {
 			for (int i = 0; i < 7; i++) {
 				SwitchLevel[i] = Rando.slam_level[i];
 			}
-			if (Rando.fairy_rando_on) {
-				// Fairy Location Table
-				int fairy_size = 20<<2;
-				fairy_location_item* fairy_write = getFile(fairy_size, 0x1FFC000);
-				for (int i = 0; i < (fairy_size >> 2); i++) {
-					for (int j = 0; j < 0x1F; j++) {
-						if (charspawnerflags[j].tied_flag == fairy_write[i].flag) {
-							charspawnerflags[j].map = fairy_write[i].map;
-							charspawnerflags[j].spawner_id = fairy_write[i].id;
-						}
-					}
-				}
-			}
 			// Kong Rando
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();

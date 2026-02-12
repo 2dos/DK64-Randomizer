@@ -651,11 +651,6 @@ void initItemRando(void) {
      * @brief Initialize Item Rando functionality
      */
         
-    // Checks Screen
-    pausescreenlist screen_count = PAUSESCREEN_TERMINATOR; // 4 screens vanilla + hint screen + check screen + move tracker
-    *(short*)(0x806A8672) = screen_count - 1; // Screen decrease cap
-    *(short*)(0x806A8646) = screen_count; // Screen increase cap
-
     // Head Size - It shouldn't be here, but haha funny game crash if placed in base init
     int load_size = 0xED;
     unsigned char* head_write = getFile(load_size, 0x1FEE800);

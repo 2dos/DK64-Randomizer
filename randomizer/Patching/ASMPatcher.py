@@ -725,6 +725,10 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     writeValue(ROM_COPY, 0x8060005A, Overlay.Static, getHiSym("replacement_lobbies_array"), offset_dict)
     writeValue(ROM_COPY, 0x8060006E, Overlay.Static, getLoSym("replacement_lobbies_array"), offset_dict)
 
+    pause_screen_count = getEnum("PAUSESCREEN_TERMINATOR")
+    writeValue(ROM_COPY, 0x806A8672, Overlay.Static, pause_screen_count - 1, offset_dict)  # Screen decrease cap
+    writeValue(ROM_COPY, 0x806A8646, Overlay.Static, pause_screen_count, offset_dict)  # Screen increase cap
+
     if settings.arcade_custom_minigame is not None:
         loadBin(ROM_COPY, 0x80024390, Overlay.Arcade, f"base-hack/minigame/{settings.arcade_custom_minigame}.bin", offset_dict)
         writeFunction(ROM_COPY, 0x800242FC, Overlay.Arcade, f"{settings.arcade_custom_minigame}.loop", offset_dict, "minigames")
