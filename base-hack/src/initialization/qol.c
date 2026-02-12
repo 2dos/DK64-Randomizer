@@ -81,54 +81,6 @@ void bootSpeedup(void) {
      */
     if (!boot_speedup_done) {
 		boot_speedup_done = 1;
-		int balloon_patch_count = 0;
-		for (int j = 0; j < 8; j++) {
-			coloredBananaCounts[j] = 0;
-		}
-		int patch_index = 0;
-        int crate_index = 0;
-		for (int i = 0; i < 221; i++) {
-			balloonPatchCounts[i] = balloon_patch_count;
-			int* setup = getMapData(TABLE_MAP_SETUPS,i,1,1);
-			char* modeltwo_setup = 0;
-			char* actor_setup = 0;
-			if (setup) {
-				int world = getWorld(i,1);
-				getModel2AndActorInfo(setup,(int**)&modeltwo_setup,(int**)&actor_setup);
-				int model2_count = *(int*)(modeltwo_setup);
-				int actor_count = *(int*)(actor_setup);
-				char* focused_actor = (char*)(actor_setup + 4);
-				char* focused_model2 = (char*)(modeltwo_setup + 4);
-                int subworld = LEVEL_ISLES;
-                if (!isLobby(i)) {
-                    subworld = levelIndexMapping[i];
-                }
-				if (actor_count > 0) {
-					for (int j = 0; j < actor_count; j++) {
-						int actor = *(short*)((int)focused_actor + 0x32) + 0x10;
-						balloon_patch_count += isBalloonOrPatch(actor);
-						if (actor == 139) {
-                            populatePatchItem(*(short*)((int)focused_actor + 0x34), i, patch_index, subworld);
-							patch_index += 1;
-						}
-						focused_actor += 0x38;
-					}
-				}
-				if (model2_count > 0) {
-					for (int j = 0; j < model2_count; j++) {
-                        unsigned short m2_obj_type = *(unsigned short*)(focused_model2 + 0x28);
-						coloredBananaCounts[world] += isDynFlag(m2_obj_type, i);
-                        if (m2_obj_type == 181) {
-                            populateCrateItem(*(short*)((int)focused_model2 + 0x2A), i, crate_index, subworld);
-                            crate_index += 1;
-                        }
-						focused_model2 += 0x30;
-					}
-				}
-				enableComplexFree();
-				complexFreeWrapper(setup);
-			}
-		}
         initItemCheckDenominators();
 	}
 }

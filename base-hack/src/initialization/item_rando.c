@@ -411,6 +411,8 @@ snide_packet snide_rewards[40] = {
     {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
     {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
 };
+ROM_DATA unsigned short actor_cb_counts[221] = {};
+ROM_DATA short m2_cb_coin_counts[8] = {};
 
 int getCrownIndex(maps map) {
     /**
@@ -420,12 +422,7 @@ int getCrownIndex(maps map) {
      * 
      * @return Actor Index of the reward
      */
-	for (int i = 0; i < 10; i++) {
-		if (map == crown_maps[i]) {
-			return i;
-		}
-	}
-	return 0;
+    return inU8List(map, &crown_maps[0], 10) - 1;
 }
 
 int getKeyIndex(int old_flag) {
@@ -436,12 +433,7 @@ int getKeyIndex(int old_flag) {
      * 
      * @return Actor Index of the reward
      */
-	for (int i = 0; i < 8; i++) {
-		if (old_flag == normal_key_flags[i]) {
-			return i;
-		}
-	}
-	return 0;
+    return inShortList(old_flag, &normal_key_flags[0], 8) - 1;
 }
 
 int getPatchFlag(int id) {
@@ -500,34 +492,6 @@ int getCrateWorld(int index) {
      * @return World index of the crate
      */
 	return crate_flags[index].world;
-}
-
-void populatePatchItem(int id, int map, int index, int world) {
-    /**
-     * @brief Populate the patch table with a dirt patch
-     * 
-     * @param id Patch ID
-     * @param map Patch Map
-     * @param index Index inside the patch table
-     * @param world World where the patch is
-     */
-    patch_flags[index].id = id;
-    patch_flags[index].map = map;
-    patch_flags[index].world = world;
-}
-
-void populateCrateItem(int id, int map, int index, int world) {
-    /**
-     * @brief Populate the Crate table with a Melon Crate
-     * 
-     * @param id Crate ID
-     * @param map Crate Map
-     * @param index Index inside the Crate table
-     * @param world World where the Crate is
-     */
-    crate_flags[index].id = id;
-    crate_flags[index].map = map;
-    crate_flags[index].world = world;
 }
 
 int getBonusFlag(int index) {

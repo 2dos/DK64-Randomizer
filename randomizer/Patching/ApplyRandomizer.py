@@ -87,7 +87,7 @@ from randomizer.Patching.UpdateHints import (
     PushHelpfulHints,
     PushHintTiedRegions,
 )
-from randomizer.Patching.ASMPatcher import patchAssembly
+from randomizer.Patching.ASMPatcher import patchAssembly, precalcBoot
 from randomizer.Patching.MirrorMode import ApplyMirrorMode
 from randomizer.CompileHints import getHelmOrderHint
 
@@ -743,6 +743,7 @@ def patching_response(spoiler):
         ApplyMirrorMode(spoiler.settings, ROM_COPY)
 
     calculateInitFileScreen(spoiler, ROM_COPY)
+    precalcBoot(ROM_COPY, spoiler)  # Needs to be done after any updates to setup for CBs, patches and crates
 
     # Apply Hash
     order = 0

@@ -309,8 +309,6 @@ extern void initItemCheckDenominators(void);
 extern void initItemRando(void);
 extern void initQoL(void);
 extern void initCosmetic(void);
-extern void populatePatchItem(int id, int map, int index, int world);
-extern void populateCrateItem(int id, int map, int index, int world);
 
 extern void insertROMMessages(void);
 extern int isFlagInRange(int test_flag, int start_flag, int count);
@@ -531,3 +529,5 @@ extern spoiler_struct spoiler_items[SPOILER_COUNT];
 extern char k_rool_text[9];
 extern const unsigned short replacement_lobbies_array[9];
 extern const unsigned short replacement_lobby_exits_array[9];
+extern unsigned short actor_cb_counts[221];
+extern short m2_cb_coin_counts[8];

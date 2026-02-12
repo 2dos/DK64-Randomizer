@@ -85,7 +85,6 @@ def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int 
                 exit_id += 0x10000
             ROM_COPY.writeMultipleBytes(map_id, 2)
             ROM_COPY.writeMultipleBytes(exit_id & 0xFFFF, 2)
-            print("Written Lvl 7 entrance at ", hex(read_location + 8 - isles_cutscenes))
             break
         segment_index += 1
         count_copy -= 1
@@ -109,7 +108,6 @@ def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int 
         else:
             read_location += 4
             count_copy += 1  # Not important cutscene
-    print("Exited while loop")
 
 def writeEntrance(ROM_COPY: LocalROM, spoiler, transition: Transitions, offset: int, vanilla_map: Maps, vanilla_exit: int):
     """Write LZREntrance struct to ROM."""

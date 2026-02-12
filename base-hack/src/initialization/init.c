@@ -288,10 +288,6 @@ void initHack(int source) {
 			style6Mtx[0xF] = 100;
 			style6Mtx[0x8] = 0xEA00;
 			style6Mtx[0x9] = 0xFD00;
-			base_mtx = 12;
-			style2Mtx[0x0] = base_mtx;
-			style2Mtx[0x5] = base_mtx;
-			style2Mtx[0xF] = 10;
 			base_mtx = 50;
 			style128Mtx[0x0] = base_mtx;
 			style128Mtx[0x5] = base_mtx;

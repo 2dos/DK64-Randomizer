@@ -67,8 +67,6 @@ Gfx* drawText(Gfx* dl, int style, float x, float y, const char* str, int red, in
 		gDPSetCombineMode(dl++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 		if (short_style == 6) {
 			gSPMatrix(dl++, (int)&style6Mtx[0], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-		} else if (short_style == 2) {
-			gSPMatrix(dl++, (int)&style2Mtx[0], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 		}
 		gDPSetPrimColor(dl++, 0, 0, red, green, blue, opacity);
 	}
