@@ -276,12 +276,12 @@ class HintSet:
                 # Training barrel locations don't matter if they're hinted or not because you start with them
                 if node.node_location_id in TrainingBarrelLocations or node.node_location_id in PreGivenLocations:
                     node.score_multiplier *= 0
-                # If this location is hinted or isn't on the path to any goals, bail before giving it a flat score - this makes the location's final score always 0
-                if node.path_hinted or node.woth_hinted or len(node.goals) == 0:
+                # If this location is hinted, bail before giving it a flat score - this makes the location's final score always 0
+                if node.path_hinted or node.woth_hinted or node.score_multiplier == 0:
                     continue
                 # The baseline unhinted score for a node is inversely proportional to the number of goals this location is on the path to
                 # If something is on the path to a lot of goals, it's often found early and usually less disastrous to be missed
-                node.unhinted_score += sqrt(1.0 / len(node.goals))
+                node.unhinted_score += sqrt(1.0 / max(1, len(node.goals)))  # If something is on the path to 0 goals, it's probably a "diving for level 4" situation, and those are quite dicey
                 for parent_loc_id in node.parents:
                     parent_node = hint_tree[parent_loc_id]
                     # If this is the only child of this parent and the parent is directly hinted, this is the only location that can resolve that hint.
