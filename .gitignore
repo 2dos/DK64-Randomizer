@@ -244,3 +244,4 @@ base-hack/asm/minigames/*
 *.ia4
 *.i8
 *.ia8
+base-hack/modelling/*.obj

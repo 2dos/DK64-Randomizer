@@ -37,32 +37,33 @@
                                     <option value="krusha">
                                         Krusha
                                     </option>
-                                    {#
-                                        {% if kong == "DK" %}
-                                            <option value="cranky">
-                                                Cranky
+                                    {% if kong == "DK" %}
+                                        <option value="cranky">
+                                            Cranky
+                                        </option>
+                                    {% elif kong == "Tiny" %}
+                                        <option value="candy">
+                                            Candy
+                                        </option>
+                                    {% elif kong == "Diddy" %}
+                                        <option value="funky">
+                                            Funky
+                                        </option>
+                                    {% elif kong == "Lanky" %}
+                                        <option value="robokrem">
+                                            Robo-Kremling
+                                        </option>
+                                    {% endif %}
+                                    {% if kong != "Chunky" %} <!-- Can't punch K Rool in Chunky Phase -->
+                                        {% if kong != "Lanky" %} <!-- Can't punch switches in Lanky Phase -->
+                                            <option value="krool_fight">
+                                                K. Rool (Fight Gear)
                                             </option>
-                                        {% elif kong == "Tiny" %}
-                                            <option value="candy">
-                                                Candy
-                                            </option>
-                                        {% elif kong == "Diddy" %}
-                                            <option value="funky">
-                                                Funky
+                                            <option value="krool_cutscene">
+                                                K. Rool (Cutscene Gear)
                                             </option>
                                         {% endif %}
-                                        
-                                        {% if kong != "Chunky" %}
-                                            {% if kong != "Lanky" %}
-                                                <option value="krool_fight">
-                                                    K. Rool (Fight Gear)
-                                                </option>
-                                                <option value="krool_cutscene">
-                                                    K. Rool (Cutscene Gear)
-                                                </option>
-                                            {% endif %}
-                                        {% endif %}
-                                    #}
+                                    {% endif %}
                                 </select>
                             </div>
                         {% endfor %}

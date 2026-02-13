@@ -531,3 +531,8 @@ extern const unsigned short replacement_lobbies_array[9];
 extern const unsigned short replacement_lobby_exits_array[9];
 extern unsigned short actor_cb_counts[221];
 extern short m2_cb_coin_counts[8];
+extern const char* krool_name;
+extern const char* cranky_name;
+extern const char* candy_name;
+extern const char* funky_name;
+extern const char* robokrem_name;

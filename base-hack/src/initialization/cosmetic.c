@@ -13,31 +13,23 @@
 #define ORANGE_GUN_SFX 400
 #define ORANGE_GUN_VARIANCE 5
 
-ROM_RODATA_PTR static const char* krool_name = "K. ROOL";
-ROM_RODATA_PTR static const char* cranky_name = "CRANKY";
-ROM_RODATA_PTR static const char* candy_name = "CANDY";
-ROM_RODATA_PTR static const char* funky_name = "FUNKY";
+ROM_RODATA_PTR const char* krool_name = "K. ROOL";
+ROM_RODATA_PTR const char* cranky_name = "CRANKY";
+ROM_RODATA_PTR const char* candy_name = "CANDY";
+ROM_RODATA_PTR const char* funky_name = "FUNKY";
+ROM_RODATA_PTR const char* robokrem_name = "RICARDO";
 
-typedef struct kongmodel_recolor_data {
-    /* 0x000 */ unsigned char kong;
-    /* 0x001 */ unsigned char model;
-} kongmodel_recolor_data;
-
-ROM_RODATA_NUM static const kongmodel_recolor_data kongmodel_rc[] = {
-    {.kong = KONG_DK, .model=KONGMODEL_CRANKY},
-    {.kong = KONG_TINY, .model=KONGMODEL_CANDY},
-    {.kong = KONG_DIDDY, .model=KONGMODEL_FUNKY},
+ROM_RODATA_NUM static const unsigned char kongmodels_color[] = {
+    KONGMODEL_CRANKY,
+    KONGMODEL_CANDY,
+    KONGMODEL_FUNKY,
+    KONGMODEL_ROBOKREM,
 };
 
 void* updateKongTB(int malloc_size) {
     unsigned short* paad = CurrentActorPointer_0->paad;
-    for (unsigned int k = 0; k < sizeof(kongmodel_rc)/sizeof(kongmodel_recolor_data); k++) {
-        int kong_index = kongmodel_rc[k].kong;
-        if (*paad == (2 + kong_index)) {
-            if (Rando.kong_models[kong_index] == kongmodel_rc[k].model) {
-                CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF;
-            }
-        }
+    if (inU8List(Rando.kong_models[*paad - 2], &kongmodels_color[0], sizeof(kongmodels_color))) {
+        CurrentActorPointer_0->obj_props_bitfield &= ~0x1000;
     }
     return dk_malloc(malloc_size);
 } 
@@ -188,39 +180,6 @@ void pullOutGunHandler(actorData* actor) {
         }
     }
 }
-
-void initModelChanges(void) {
-    for (int i = 0; i < 5; i++) {
-        custom_kong_models model = Rando.kong_models[i];
-        if (model == KONGMODEL_DEFAULT) {
-            continue;
-        }
-        switch (model) {
-            case KONGMODEL_KRUSHA:
-            case KONGMODEL_KROOL_CUTSCENE:
-            case KONGMODEL_KROOL_FIGHT:
-                if (Rando.kong_models[i] != KONGMODEL_KRUSHA) {
-                    KongTextNames[i] = (char*)krool_name;
-                }
-                break;
-            case KONGMODEL_CRANKY:
-                KongTagNames[i] = 8;
-                KongTextNames[i] = (char*)cranky_name;
-                break;
-            case KONGMODEL_CANDY:
-                KongTagNames[i] = 9;
-                KongTextNames[i] = (char*)candy_name;
-                break;
-            case KONGMODEL_FUNKY:
-                KongTagNames[i] = 10;
-                KongTextNames[i] = (char*)funky_name;
-                break;
-            default:
-                break;
-        }
-    }
-}
-
 typedef struct shockwave_paad {
     /* 0x000 */ char unk_00[0x10];
     /* 0x010 */ rgb light_rgb;
@@ -257,7 +216,6 @@ void initCosmetic(void) {
      * @brief Initialize all cosmetic functionality
      * 
      */
-    initModelChanges();
     for (int i = 0; i < 3; i++) {
         int red = Rando.fog[i].red;
         int green = Rando.fog[i].green;
