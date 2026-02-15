@@ -731,9 +731,8 @@ def patching_response(spoiler):
         showWinCondition(spoiler.settings, ROM_COPY)
 
         patchAssembly(ROM_COPY, spoiler)
+        calculateInitFileScreen(spoiler, ROM_COPY)
         ApplyMirrorMode(spoiler.settings, ROM_COPY)
-
-    calculateInitFileScreen(spoiler, ROM_COPY)
 
     # Apply Hash
     order = 0
