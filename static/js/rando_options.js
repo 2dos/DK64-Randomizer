@@ -63,7 +63,7 @@ function isItemShuffled(item_type, is_dummy = false) {
     }
     const list_items = document.getElementById(`item_rando_list_${i}`).getElementsByTagName("li");
     for (let j = 0; j < list_items.length; j++) {
-      if (list_items[j].getAttribute("value") == "item_type") {
+      if (list_items[j].getAttribute("value") == item_type) {
         return true;
       }
     }
