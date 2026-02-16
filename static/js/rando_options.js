@@ -868,27 +868,33 @@ document
 
 // Hide plando options for Isles medal locations if medal CBs aren't shuffled
 function plando_disable_isles_medals(evt) {
-  const cbShuffle = document.getElementById("cb_rando_enabled").value;
+  const cbShuffled = document.getElementById("cb_rando_enabled").checked;
+  const cbShuffledLevels = document.getElementById("cb_rando_list_selected").selectedOptions;
+  // If no levels are selected, or Isles is selected, this bool is true.
+  let islesShuffled = cbShuffledLevels.length === 0;
+  for (const shuffledLevel of cbShuffledLevels) {
+    if (shuffledLevel.value === "DKIsles") {
+      islesShuffled = true;
+    }
+  }
   const kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"];
 
-  if (cbShuffle !== "on_with_isles") {
-    for (const kong of kongs) {
-      const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
+  for (const kong of kongs) {
+    const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
+    if (cbShuffled && islesShuffled) {
+      kongIsleElem.removeAttribute("disabled");
+      kongIsleElem.parentElement.setAttribute("data-bs-original-title", "");
+    } else {
       kongIsleElem.setAttribute("disabled", "disabled");
       kongIsleElem.value = "";
       const tooltip = "To assign a reward here, Isles CBs must be shuffled.";
       kongIsleElem.parentElement.setAttribute("data-bs-original-title", tooltip);
     }
-  } else {
-    for (const kong of kongs) {
-      const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
-      kongIsleElem.removeAttribute("disabled");
-      kongIsleElem.parentElement.setAttribute("data-bs-original-title", "");
-    }
   }
 }
 
 document.getElementById("cb_rando_enabled").addEventListener("change", plando_disable_isles_medals);
+document.getElementById("cb_rando_list_selected").addEventListener("click", plando_disable_isles_medals);
 
 // Disable K. Rool phases as bosses if they are not in the boss pool.
 function plando_disable_krool_phases_as_bosses(evt) {
