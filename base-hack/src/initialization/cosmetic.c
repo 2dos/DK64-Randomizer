@@ -464,6 +464,10 @@ void stopBossSong(songs song, int unk0){
     } else {
         cancelMusic(song, 0);
     }
+    if(CurrentMap == MAP_AZTECTINYTEMPLE && MusicTrackChannels[0] != SONG_AZTECTEMPLE){
+        // TinyTemple song can be overwritten by boss song
+        playSong(SONG_AZTECTEMPLE, 1.0f);
+    }
 }
 
 int resetBossSong(){
@@ -471,6 +475,7 @@ int resetBossSong(){
     // because I wasn't planning on manually stopping boss music in the first 4 K. Rool phases
     // because that already automatically happens, and I appreciate dk64 for that
     current_boss_song = 0;
+    canceled_transformation_music = 0;
     return checkIntroStoryPlaying();
 }
 
