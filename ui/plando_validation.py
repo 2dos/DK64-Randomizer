@@ -65,7 +65,6 @@ class ValidationError(IntEnum):
     random_custom_location = auto()
     duplicate_custom_location = auto()
     duplicate_custom_door = auto()
-    switchsanity_not_enabled = auto()
 
 
 # This dictionary stores all elements that have either been disabled or marked
@@ -1058,7 +1057,6 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
     plando_form_data = {}
     item_objects = []
     shop_cost_objects = []
-    switch_objects = []
     minigame_objects = []
     hint_objects = []
     custom_location_objects = []
@@ -1111,9 +1109,6 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             continue
         elif obj.name.endswith("_item"):
             item_objects.append(obj)
-            continue
-        elif obj.name.endswith("_switch"):
-            switch_objects.append(obj)
             continue
         elif obj.name.endswith("_minigame"):
             minigame_objects.append(obj)

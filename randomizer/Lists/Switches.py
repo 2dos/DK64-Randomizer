@@ -119,10 +119,3 @@ SwitchNameDict = {
         SwitchType.InstrumentPad: "Any Instrument",
     },
 }
-
-
-def GetSwitchName(switchType: SwitchType, kong: Kongs) -> str:
-    """Derive a readable name for a Kong/switch type combination."""
-    if kong in SwitchNameDict and switchType in SwitchNameDict[kong]:
-        return SwitchNameDict[kong][switchType]
-    return None
