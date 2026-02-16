@@ -214,8 +214,28 @@
 #define FACTORY_CRUSHER_3 0x3
 #define FACTORY_CRUSHER_4 0x4
 
-ROM_DATA static unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
-ROM_DATA static unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
+ROM_RODATA_NUM static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
+ROM_RODATA_NUM static const unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
+ROM_RODATA_NUM static const unsigned char hands[] = {6, 7, 9, 10, 11, 12};
+ROM_RODATA_NUM static const int head_ids[] = {
+	LLAMA_MATCHING_HEAD_SOUND0_0,
+	LLAMA_MATCHING_HEAD_SOUND0_1,
+	LLAMA_MATCHING_HEAD_SOUND1_0,
+	LLAMA_MATCHING_HEAD_SOUND1_1,
+	LLAMA_MATCHING_HEAD_SOUND2_0,
+	LLAMA_MATCHING_HEAD_SOUND2_1,
+	LLAMA_MATCHING_HEAD_SOUND3_0,
+	LLAMA_MATCHING_HEAD_SOUND3_1,
+	LLAMA_MATCHING_HEAD_SOUND4_0,
+	LLAMA_MATCHING_HEAD_SOUND4_1,
+	LLAMA_MATCHING_HEAD_SOUND5_0,
+	LLAMA_MATCHING_HEAD_SOUND5_1,
+	LLAMA_MATCHING_HEAD_SOUND6_0,
+	LLAMA_MATCHING_HEAD_SOUND6_1,
+	LLAMA_MATCHING_HEAD_SOUND7_0,
+	LLAMA_MATCHING_HEAD_SOUND7_1,
+};
+ROM_RODATA_NUM static const int head_sounds[] = {173,171,169,174,172,175,168,170};
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
 	int world = getWorld(CurrentMap, 0);
@@ -437,11 +457,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					giveItemFromPacket(&company_coin_table[1], 0);
 				}
 				break;
-			case MAP_KROOLCHUNKY:
-				if (param2 == K_ROOL_CHUNKY_PHASE_SLAM) {
-					return hasChunkyPhaseSlam();
-				}
-				break;
 			case MAP_CASTLEMUSEUM:
 				if (param2 == MUSEUM_WARP_MONKEYPORT) {
 					if (Rando.randomize_more_loading_zones == 1) {
@@ -500,7 +515,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (param2 == ISLES_LOWMONKEYPORT) {
 					IslesMonkeyportCode(behaviour_pointer, id);
 				} else if (param2 == ISLES_HIGHMONKEYPORT) {
-					if (Rando.switchsanity.isles.monkeyport != 0) {
+					if (Rando.switchsanity_monkeyport != 0) {
 						hideObject(behaviour_pointer);
 						behaviour_pointer->current_state = 21;
 						behaviour_pointer->next_state = 21;
@@ -563,25 +578,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (param2 == LLAMA_GRAPE_SWITCH) {
 					return !Rando.tag_anywhere;
 				} else {
-					int head_ids[] = {
-						LLAMA_MATCHING_HEAD_SOUND0_0,
-						LLAMA_MATCHING_HEAD_SOUND0_1,
-						LLAMA_MATCHING_HEAD_SOUND1_0,
-						LLAMA_MATCHING_HEAD_SOUND1_1,
-						LLAMA_MATCHING_HEAD_SOUND2_0,
-						LLAMA_MATCHING_HEAD_SOUND2_1,
-						LLAMA_MATCHING_HEAD_SOUND3_0,
-						LLAMA_MATCHING_HEAD_SOUND3_1,
-						LLAMA_MATCHING_HEAD_SOUND4_0,
-						LLAMA_MATCHING_HEAD_SOUND4_1,
-						LLAMA_MATCHING_HEAD_SOUND5_0,
-						LLAMA_MATCHING_HEAD_SOUND5_1,
-						LLAMA_MATCHING_HEAD_SOUND6_0,
-						LLAMA_MATCHING_HEAD_SOUND6_1,
-						LLAMA_MATCHING_HEAD_SOUND7_0,
-						LLAMA_MATCHING_HEAD_SOUND7_1,
-					};
-					int head_sounds[] = {173,171,169,174,172,175,168,170};
 					int selection = -1;
 					for (unsigned int k = 0; k < sizeof(head_ids)/4; k++) {
 						if (param2 == head_ids[k]) {
@@ -790,7 +786,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 						return 0;
 					}
-					if (param2 == JAPES_CAVE_GATE && Rando.switchsanity.japes.diddy_cave) {
+					if (param2 == JAPES_CAVE_GATE) {
 						return 0;
 					}
 					return !Rando.tag_anywhere;
@@ -1222,7 +1218,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == CRYPT_LT_SIMIAN_SWITCH) {
 					//activates the Goo Hands in Tiny's part of the Lanky/Tiny Crypt if all 6 of them are initialized
-					unsigned char hands[] = {6, 7, 9, 10, 11, 12};
 					//activates the hands
 					for(unsigned int hand = 0; hand < sizeof(hands); hand++){
 						//obtain hand variables
@@ -1482,10 +1477,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		return 1;
 	} else if (index == -13) {
 		MelonCrateGenericCode(behaviour_pointer, id, param2);
-	} else if (index == -14) {
-		return randomGunSwitchGenericCode(behaviour_pointer, id, param2);
-	} else if (index == -15) {
-		return randomInstrumentGenericCode(param2);
 	} else if (index == -16) {
 		hideObject(behaviour_pointer);
 	} else if (index == -17) {

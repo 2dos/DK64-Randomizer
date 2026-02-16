@@ -2421,10 +2421,6 @@ with open(newROMName, "r+b") as fh:
     for x in range(6):
         fh.write(values[x].to_bytes(1, "big"))
 
-    # Chunky Phase Slam
-    fh.seek(ROM_DATA_OFFSET + 0x1E3)
-    fh.write((2).to_bytes(1, "big"))
-
     # Head Size
     fh.seek(0x1FEE800)
     for _ in range(0x100):

@@ -1709,49 +1709,6 @@ typedef struct sprite_info {
 	/* 0x36D */ unsigned char alpha;
 } sprite_info;
 
-typedef struct RandomSwitchesIsles {
-	/* 0x000 */ unsigned char monkeyport; // 0 = monkeyport, 1 = blast, 2 = balloon
-	/* 0x001 */ unsigned char gone; // 0 = gone, 1-5 = instrument
-	/* 0x002 */ unsigned char aztec_lobby_feather;
-	/* 0x003 */ unsigned char fungi_lobby_feather;
-	/* 0x004 */ unsigned char spawn_rocketbarrel;
-} RandomSwitchesIsles;
-
-typedef struct RandomSwitchesJapes {
-	/* 0x000 */ unsigned char feather;
-	/* 0x001 */ unsigned char rambi;
-	/* 0x002 */ unsigned char painting;
-	/* 0x003 */ unsigned char diddy_cave;
-} RandomSwitchesJapes;
-
-typedef struct RandomSwitchesAztec {
-	/* 0x000 */ unsigned char bp_door;
-	/* 0x001 */ unsigned char llama_switches[3];
-	/* 0x004 */ unsigned char snoop_switch;
-	/* 0x005 */ unsigned char guitar;
-} RandomSwitchesAztec;
-
-typedef struct RandomSwitchesGalleon {
-	/* 0x000 */ unsigned char lighthouse;
-	/* 0x001 */ unsigned char shipwreck;
-	/* 0x002 */ unsigned char cannongame;
-} RandomSwitchesGalleon;
-
-typedef struct RandomSwitchesFungi {
-	/* 0x000 */ unsigned char yellow;
-	/* 0x001 */ unsigned char green_feather;
-	/* 0x002 */ unsigned char green_pineapple;
-} RandomSwitchesFungi;
-
-// Any 0s are treated as default
-typedef struct RandomSwitchesSetting {
-	/* 0x000 */ RandomSwitchesIsles isles;
-	/* 0x005 */ RandomSwitchesJapes japes;
-	/* 0x009 */ RandomSwitchesAztec aztec;
-	/* 0x00F */ RandomSwitchesGalleon galleon;
-	/* 0x012 */ RandomSwitchesFungi fungi;
-} RandomSwitchesSetting;
-
 typedef struct LZREntrance {
 	/* 0x000 */ unsigned char map;
 	/* 0x001 */ char exit;
