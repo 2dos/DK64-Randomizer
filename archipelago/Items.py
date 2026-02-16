@@ -128,7 +128,10 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
         ap_item = DK64Item(name, ItemClassification.progression, full_item_table[name].code, world.player)
         match dk64r_item.type:
             case DK64RTypes.Banana:
-                num_bananas = 201
+                if world.options.snide_turnins_to_pool:
+                    num_bananas = 201
+                else:
+                    num_bananas = 161
                 if world.options.goal != Goal.option_golden_bananas and BarrierItems.GoldenBanana not in helm_door_required_types:
                     ap_item.classification = ItemClassification.progression_deprioritized
                 for _ in range(num_bananas):

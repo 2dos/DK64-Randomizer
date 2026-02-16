@@ -469,6 +469,7 @@ extern int renderGetWrapper(void);
 
 extern void renderSpritesOnPlayer(sprite_data_struct *sprite, int count, int duration);
 extern void wipeReplenishibles(void);
+extern int isValidBoulderObject(int index);
 
 extern void renderKopLightHandler(float x, float y, float z, float x2, float y2, float z2, float radius, int unk0, int red, int green, int blue);
 extern void playBonusSong(songs song, float volume);
@@ -478,6 +479,7 @@ extern void playBossSong(songs song, float volume);
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];
+extern const unsigned char dropsanity_levels[214];
 extern const short tbarrel_flags[4];
 extern const short bfi_move_flags[2];
 extern const short tnsportal_flags[7];
@@ -496,6 +498,8 @@ extern const sprite_data_struct feather_gun_sprite;
 extern const sprite_data_struct fool_overlay_sprite;
 extern const sprite_data_struct company_coin_sprite;
 extern const sprite_data_struct potion_sprite;
+extern const sprite_data_struct boulder_sprite;
+extern const sprite_data_struct halfmedal_sprite;
 
 extern actor_behaviour_def actor_defs[DEFS_LIMIT];
 extern void* actor_functions[ACTOR_LIMIT];
@@ -528,9 +532,7 @@ extern move_text_overlay_struct text_overlay_data[TEXT_OVERLAY_BUFFER];;
 // DON'T REMOVE UNLESS YOU KNOW WHAT YOU'RE DOING
 extern int balloon_path_pointers[PATH_CAP];
 extern drop_item drops[DROP_COUNT];
-extern int file_sprites[17];
-extern short file_items[16];
-extern short file_item_caps[16];
+extern PauseItemStruct pause_items[CHECK_TERMINATOR];
 extern short file_info_expansion;
 extern ICE_TRAP_TYPES ice_trap_queued;
 extern collision_tree_struct fixed_shockwave_collision[3];

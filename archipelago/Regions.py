@@ -323,15 +323,15 @@ def create_region(
                         token_location.place_locked_item(DK64Item("Bonus Completed", ItemClassification.progression_skip_balancing, None, player))
                         new_region.locations.append(token_location)
             # Item placement limitations! These only apply to items in your own world, as other worlds' items will be AP items, and those can be anywhere.
-            # Fairy locations cannot have your own world's blueprints on them for technical reasons.
-            if location_obj.type == Types.Fairy:
-                add_item_rule(location, lambda item: not (item.player == player and "Blueprint" in item.name))
             # Bosses and Crowns cannot have Junk due to technical reasons
             if location_obj.type in (Types.Key, Types.Crown):
                 add_item_rule(location, lambda item: not (item.player == player and "Junk" in item.name))
-            # Shops cannot have shopkeepers for the time being due to funny haha display bug
+            # Fairies cannot have blueprints due to crashes
+            if location_obj.type == Types.Fairy:
+                add_item_rule(location, lambda item: not (item.player == player and "Blueprint" in item.name))
+            # Shops cannot have shopkeepers or Rainbow Coins due to technical issues
             if location_obj.type == Types.Shop:
-                add_item_rule(location, lambda item: not (item.player == player and item.name in ["Cranky", "Funky", "Candy", "Snide"]))
+                add_item_rule(location, lambda item: not (item.player == player and item.name in ["Cranky", "Funky", "Candy", "Snide", "Rainbow Coin"]))
             if location_obj.type == Types.Key and logic_holder.settings.win_condition_item in (WinConditionComplex.req_bosses, WinConditionComplex.krools_challenge):
                 token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
                 set_rule(token_location, lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic))

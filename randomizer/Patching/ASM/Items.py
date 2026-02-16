@@ -554,14 +554,24 @@ def pauseUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     writeValue(ROM_COPY, 0x806A9C80, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
     writeValue(ROM_COPY, 0x806A9E54, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
     # Pause Sprite Expansion / Carousel Init Functions
-    writeValue(ROM_COPY, 0x806AB35A, Overlay.Static, getHiSym("file_sprites"), offset_dict)
-    writeValue(ROM_COPY, 0x806AB35E, Overlay.Static, getLoSym("file_sprites"), offset_dict)
-    writeValue(ROM_COPY, 0x806AB2CA, Overlay.Static, getHiSym("file_items"), offset_dict)
-    writeValue(ROM_COPY, 0x806AB2DA, Overlay.Static, getLoSym("file_items"), offset_dict)
-    writeValue(ROM_COPY, 0x806A9FC2, Overlay.Static, getHiSym("file_items"), offset_dict)
-    writeValue(ROM_COPY, 0x806AA036, Overlay.Static, getLoSym("file_items"), offset_dict)
-    writeValue(ROM_COPY, 0x806AA00E, Overlay.Static, getHiSym("file_item_caps"), offset_dict)
-    writeValue(ROM_COPY, 0x806AA032, Overlay.Static, getLoSym("file_item_caps"), offset_dict)
+    # Sprites
+    writeValue(ROM_COPY, 0x806AB35A, Overlay.Static, getHiSym("pause_items"), offset_dict)
+    writeValue(ROM_COPY, 0x806AB35E, Overlay.Static, getLoSym("pause_items"), offset_dict)
+    writeValue(ROM_COPY, 0x806AB364, Overlay.Static, 0x0010C8C0, offset_dict, 4)  # << 3 instead of << 2
+    #
+    writeValue(ROM_COPY, 0x806AB2CA, Overlay.Static, getHiSym("pause_items"), offset_dict)
+    writeValue(ROM_COPY, 0x806AB2DA, Overlay.Static, getLoSym("pause_items"), offset_dict)
+    writeValue(ROM_COPY, 0x806AB2DE, Overlay.Static, 6, offset_dict)  # Offset of count in struct
+    writeValue(ROM_COPY, 0x806AB2E2, Overlay.Static, 8, offset_dict)  # strict size
+    item_count_addr = getSym("pause_items") + 6
+    writeValue(ROM_COPY, 0x806A9FC2, Overlay.Static, getHi(item_count_addr), offset_dict)
+    writeValue(ROM_COPY, 0x806AA036, Overlay.Static, getLo(item_count_addr), offset_dict)
+    #
+    item_cap_addr = getSym("pause_items") + 4
+    writeValue(ROM_COPY, 0x806AA00E, Overlay.Static, getHi(item_cap_addr), offset_dict)
+    writeValue(ROM_COPY, 0x806AA032, Overlay.Static, getLo(item_cap_addr), offset_dict)
+    writeValue(ROM_COPY, 0x806AA024, Overlay.Static, 0x000258C0, offset_dict, 4)  # << 3 instead of << 1
+    #
     writeFunction(ROM_COPY, 0x806AB3C4, Overlay.Static, "updatePauseScreenWheel", offset_dict)  # Change Wheel to scroller
     writeValue(ROM_COPY, 0x806AB3B4, Overlay.Static, 0xAFB00018, offset_dict, 4)  # SW $s0, 0x18 ($sp). Change last param to index
     writeValue(ROM_COPY, 0x806AB3A0, Overlay.Static, 0xAFA90014, offset_dict, 4)  # SW $t1, 0x14 ($sp). Change 2nd-to-last param to local index

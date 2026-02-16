@@ -903,16 +903,65 @@ function plando_disable_krool_phases_as_bosses(evt) {
     for (let option of tnsBossOptions) {
       option.setAttribute("disabled", "disabled");
     }
+  }
+  if (kroolInBossPool !== "full_shuffle") {
     for (let i = 0; i < 5; i++) {
       const kroolPhase = document.getElementById(`plando_krool_order_${i}`);
       if (kroolPhase.value.includes("Boss")) {
         kroolPhase.value = "";
+      }
+      for (const kroolOpt of kroolPhase.options) {
+        if (kroolOpt.value && kroolOpt.value.includes("Boss")) {
+          kroolOpt.setAttribute("disabled", "disabled");
+        }
       }
     }
   }
 }
 
 document.getElementById("krool_in_boss_pool_v2").addEventListener("change", plando_disable_krool_phases_as_bosses);
+
+// Ensure Pufftoss cannot be the final boss.
+function plando_disable_pufftoss_as_final_boss(evt) {
+  const kroolInBossPool = document.getElementById("krool_in_boss_pool_v2").value;
+  // If TnS bosses aren't allowed on K. Rool, exit early.
+  if (kroolInBossPool !== "full_shuffle") {
+    return;
+  }
+  const kroolPhaseCount = parseInt(
+    document.getElementById("krool_phase_count").value
+  );
+  // If the number of K. Rool phases is random, we can't safely put
+  // Pufftoss anywhere.
+  const kroolRandom = document.getElementById("krool_random").checked;
+
+  for (let i = 0; i < 5; i++) {
+    const allowPufftoss = !kroolRandom && (i + 1 !== kroolPhaseCount);
+    const kroolPhase = document.getElementById(`plando_krool_order_${i}`);
+    if (!allowPufftoss && kroolPhase.value === "GalleonBoss") {
+      kroolPhase.value = "";
+    }
+    for (const kroolOpt of kroolPhase.options) {
+      if (kroolOpt.value === "GalleonBoss") {
+        if (allowPufftoss) {
+          kroolOpt.removeAttribute("disabled");
+        } else {
+          kroolOpt.setAttribute("disabled", "disabled");
+        }
+      }
+    }
+  }
+}
+
+document
+  .getElementById("krool_in_boss_pool_v2")
+  .addEventListener("change", plando_disable_pufftoss_as_final_boss);
+document
+  .getElementById("krool_random")
+  .addEventListener("click", plando_disable_pufftoss_as_final_boss);
+document
+  .getElementById("krool_phase_count")
+  .addEventListener("change", plando_disable_pufftoss_as_final_boss);
 
 // Make changes to the plando tab based on other settings
 document
@@ -936,6 +985,7 @@ document
     plando_disable_tns_custom_locations(evt);
     plando_disable_isles_medals(evt);
     plando_disable_krool_phases_as_bosses(evt);
+    plando_disable_pufftoss_as_final_boss(evt);
 });
 
 // Randomize all non-cosmetic settings.

@@ -10,31 +10,26 @@
  */
 #include "../../include/common.h"
 
-
-int file_sprites[17] = {
-    0x9, // GB
-    0x807210EC, // Crown
-    0x807210B8, // Key
-    0xA, // Medals
-    0x80721110, // RW
-    0x80721094, // Fairies
-    0x80721134, // Nintendo
-    0xC, // BP
-    0x807214A0, // Kong
-    (int)&bean_sprite, // Bean
-    (int)&pearl_sprite, // Pearls
-    0x80721378, // Rainbow Coins
-    0x80721530, // Hint
-    0x80720710, // Crate
-    (int)&potion_sprite, // Shops
-    0,
-    0, // Null Item, Leave Empty
-};
-short file_item_caps[16] = {
-    201, 10, 8, 40,
-    1, 20, 1, 40,
-    5, 1, 5, 16,
-    35, 0, 42, 0, // Second here is Junk Items
+PauseItemStruct pause_items[CHECK_TERMINATOR] = {
+    { .sprite_index = 9,                        .item_cap = 201 }, // GB
+    { .sprite_pointer = (void*)0x807210EC,      .item_cap = 10 }, // Crown
+    { .sprite_pointer = (void*)0x807210B8,      .item_cap = 8 }, // Key
+    { .sprite_index = 0xA,                      .item_cap = 40 }, // Medals
+    { .sprite_pointer = (void*)0x80721110,      .item_cap = 1 }, // RW
+    { .sprite_pointer = (void*)0x80721094,      .item_cap = 20 }, // Fairies
+    { .sprite_pointer = (void*)0x80721134,      .item_cap = 1 }, // Nintendo
+    { .sprite_index = 0xC,                      .item_cap = 40 }, // BP
+    { .sprite_pointer = (void*)0x807214A0,      .item_cap = 5 }, // Kong
+    { .sprite_pointer = &bean_sprite,           .item_cap = 1 }, // Bean
+    { .sprite_pointer = &pearl_sprite,          .item_cap = 5 }, // Pearls
+    { .sprite_pointer = (void*)0x80721378,      .item_cap = 16 }, // Rainbow Coins
+    { .sprite_pointer = (void*)0x80721530,      .item_cap = 35 }, // Hint
+    { .sprite_pointer = (void*)0x80720710,      .item_cap = 0 }, // Crate
+    { .sprite_pointer = &potion_sprite,         .item_cap = 42 }, // Shops
+    { .sprite_pointer = (void*)0x80721238,      .item_cap = 0 }, // Snide Rewards
+    { .sprite_pointer = &boulder_sprite,        .item_cap = 0 }, // Holdables
+    { .sprite_pointer = (void*)0x8071FFD4,      .item_cap = 0 }, // Enemy Drops
+    { .sprite_pointer = &halfmedal_sprite,        .item_cap = 0 }, // Half-Medals
 };
 
 void updatePauseScreenWheel(pause_paad* write_location, void* sprite, int x, int y, float scale, int local_index, int index) {
@@ -152,14 +147,14 @@ void checksSprite(sprite_struct* sprite, char* render) {
 
 void initCarousel_onPause(void) {
     for (int i = 0; i < 8; i++) {
-        file_items[i] = FileVariables[i];
+        pause_items[i].item_count = FileVariables[i];
     }
-    file_items[CHECK_PEARLS] = getItemCount_new(REQITEM_PEARL, 0, 0);
-    file_items[CHECK_RAINBOW] = getItemCount_new(REQITEM_RAINBOWCOIN, 0, 0);
-    file_items[CHECK_HINTS] = getItemCount_new(REQITEM_HINT, -1, -1);
-    file_items[CHECK_BEAN] = getItemCount_new(REQITEM_BEAN, 0, 0);
-    file_items[CHECK_KONG] = getItemCount_new(REQITEM_KONG, -1, -1);
-    file_items[CHECK_CRATE] = getItemCount_new(REQITEM_JUNK, 0, 0);
-    file_items[CHECK_SHOPS] = getTotalMoveCount();
-    file_items[CHECK_KEY] = getItemCount_new(REQITEM_KEY, -1, -1);
+    pause_items[CHECK_PEARLS].item_count = getItemCount_new(REQITEM_PEARL, 0, 0);
+    pause_items[CHECK_RAINBOW].item_count = getItemCount_new(REQITEM_RAINBOWCOIN, 0, 0);
+    pause_items[CHECK_HINTS].item_count = getItemCount_new(REQITEM_HINT, -1, -1);
+    pause_items[CHECK_BEAN].item_count = getItemCount_new(REQITEM_BEAN, 0, 0);
+    pause_items[CHECK_KONG].item_count = getItemCount_new(REQITEM_KONG, -1, -1);
+    pause_items[CHECK_CRATE].item_count = getItemCount_new(REQITEM_JUNK, 0, 0);
+    pause_items[CHECK_SHOPS].item_count = getTotalMoveCount();
+    pause_items[CHECK_KEY].item_count = getItemCount_new(REQITEM_KEY, -1, -1);
 }

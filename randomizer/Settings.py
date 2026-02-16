@@ -1526,6 +1526,8 @@ class Settings:
         trap_limit = self.ice_trap_count
         if self.archipelago:
             trap_limit = 0
+        elif trap_limit > 0 and ItemRandoFiller.icetraps not in self.filler_items_selected:
+            self.filler_items_selected.append(ItemRandoFiller.icetraps)
         for _ in range(trap_limit):
             chosen_effect = self.random.choices(list(effects.keys()), list(effects.values()), k=1)[0]
             chosen_model = self.random.choices(list(models_chance.keys()), list(models_chance.values()), k=1)[0]

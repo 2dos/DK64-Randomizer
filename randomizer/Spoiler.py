@@ -1175,6 +1175,9 @@ class Spoiler:
             if self.settings.wrinkly_hints != WrinklyHints.off:
                 humanspoiler["Unhinted Score"] = self.unhinted_score
                 humanspoiler["Potentially Awful Locations"] = {}
+                humanspoiler["Potentially Awful Locations"][
+                    "HOW TO INTERPRET THIS"
+                ] = "A score of 1 or higher has a high probability of being unhinted. Anything under that is expected to have some indirect information."
                 for location_description in self.poor_scoring_locations:
                     humanspoiler["Potentially Awful Locations"][location_description] = self.poor_scoring_locations[location_description]
         self.json = json.dumps(humanspoiler, indent=4)

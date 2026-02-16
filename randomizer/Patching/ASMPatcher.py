@@ -1844,7 +1844,7 @@ def patchAssembly(ROM_COPY, spoiler):
     # Pause Carousel
     check_term = getEnum("CHECK_TERMINATOR")
     writeValue(ROM_COPY, 0x806AB3F6, Overlay.Static, check_term, offset_dict)
-    file_item_end = getSym("file_items") + (2 * check_term)
+    file_item_end = getSym("pause_items") + (8 * (check_term - 1)) + 6
     writeValue(ROM_COPY, 0x806AB2CE, Overlay.Static, getHi(file_item_end), offset_dict)
     writeValue(ROM_COPY, 0x806AB2D6, Overlay.Static, getLo(file_item_end), offset_dict)
 
