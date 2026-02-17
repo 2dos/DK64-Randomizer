@@ -255,11 +255,11 @@ def patching_response(spoiler):
         for slot in spoiler.settings.switchsanity_data:
             slot_data = spoiler.settings.switchsanity_data[slot]
             rom_offset = slot_data.rom_offset
+            pad_kong = slot_data.kong
+            pad_type = slot_data.switch_type
             if rom_offset is not None:
                 # ROM Write
                 ROM_COPY.seek(sav + rom_offset)
-                pad_kong = slot_data.kong
-                pad_type = slot_data.switch_type
                 if slot == Switches.IslesMonkeyport:
                     if pad_kong == Kongs.lanky:
                         ROM_COPY.writeMultipleBytes(2, 1)
@@ -302,7 +302,7 @@ def patching_response(spoiler):
     replaceScriptLines(ROM_COPY, Maps.KroolChunkyPhase, [0xA], {
         "COND 37 | 2 0 0": f"COND 37 | {req_val} 0 0"
     })
-    ROM_COPY.seek(0x1E3)
+    ROM_COPY.seek(sav + 0x1E3)
     ROM_COPY.write(req_val)
 
     # Camera unlocked
