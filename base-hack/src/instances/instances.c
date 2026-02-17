@@ -542,11 +542,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->current_state = 20;
 						behaviour_pointer->next_state = 20;
 					}
-				} else if (param2 == LLAMA_BONGOPAD) {
-					if (Rando.free_source_llama == 5) {
-						return 1;
-					}
-					return Character == Rando.free_source_llama;
 				} else if (param2 == LLAMA_LAVAGATE) {
 					if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 						hideObject(behaviour_pointer);
@@ -557,23 +552,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						return checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
 						return !checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
-					}
-				} else if (param2 == LLAMA_GUNSWITCH) {
-					if (index == 0) {
-						return checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
-					} else if (index == 2) {
-						giveItemFromKongData(&kong_check_data[KONGCHECK_LLAMA], FLAG_KONG_LANKY);
-					} else if ((index >= 3) && (index <= 6)) {
-						if (Rando.free_source_llama == 5) {
-							int valid = 0;
-							for (int i = 0; i < 5; i++) {
-								valid |= getPressedSwitch(behaviour_pointer, kong_pellets[i], id);
-							}
-							return valid;
-						}
-						return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
 					}
 				} else if (param2 == LLAMA_GRAPE_SWITCH) {
 					return !Rando.tag_anywhere;
@@ -751,23 +729,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 2) {
 						giveItemFromKongData(&kong_check_data[KONGCHECK_JAPES], FLAG_KONG_DIDDY);
 					}
-				} else if ((param2 == JAPES_GUNSWITCH0) || (param2 == JAPES_GUNSWITCH1) || (param2 == JAPES_GUNSWITCH2)) {
-					if (index == 0) {
-						return checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
-					} else if ((index == 2) || (index == 3)) {
-						if (Rando.free_source_japes == 5) {
-							int valid = 0;
-							for (int i = 0; i < 5; i++) {
-								valid |= getPressedSwitch(behaviour_pointer, kong_pellets[i], id);
-							}
-							return valid;
-						}
-						return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
-					} else if (index == 4) {
-						return !Rando.quality_of_life.remove_cutscenes; // TODO(theballaam96): Retry this
-					}
 				} else if ((param2 == JAPES_GATE0) || (param2 == JAPES_GATE1) || (param2 == JAPES_GATE2)) {
 					if (Rando.removed_barriers.japes_coconut_gates) {
 						behaviour_pointer->current_state = 20;
@@ -854,15 +815,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->next_state = 20;
 					}
 				} else if (param2 == FACTORY_FREESWITCH) {
-					if (index == 0) {
-						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
-					} else if (index == 2) {
-						return Character == Rando.free_source_factory;
-					} else if (index == 3) {
-						giveItemFromKongData(&kong_check_data[KONGCHECK_FACTORY], FLAG_KONG_CHUNKY);
-					}
+					giveItemFromKongData(&kong_check_data[KONGCHECK_FACTORY], FLAG_KONG_CHUNKY);
 				} else if (param2 == FACTORY_CAGE) {
 					if (index == 0) {
 						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
@@ -1151,16 +1104,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 1) {
 						giveItemFromKongData(&kong_check_data[KONGCHECK_ICETEMPLE], FLAG_KONG_TINY);
 					}
-				} else if (param2 == TTEMPLE_CHARGESWITCH) {
-					if (index == 0) {
-						return checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
-					} else if (index == 2) {
-						return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
-					}
-				} else if ((param2 == TTEMPLE_KONGLETTER0) || (param2 == TTEMPLE_KONGLETTER1) || (param2 == TTEMPLE_KONGLETTER2) || (param2 == TTEMPLE_KONGLETTER3)) {
-					return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
 				}
 				break;
 			case MAP_CASTLECRYPTLANKYTINY:

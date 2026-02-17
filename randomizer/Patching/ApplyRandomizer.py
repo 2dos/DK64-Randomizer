@@ -37,7 +37,6 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.ScriptTypes import ScriptTypes
-from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
 from randomizer.Lists.HardMode import HardSelector
 from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector
 from randomizer.Patching.BananaPlacer import randomize_cbs
@@ -280,14 +279,53 @@ def patching_response(spoiler):
             else:
                 # Only modify the instance script
                 if pad_type == SwitchType.GunSwitch:
-                    KONG_PELLETS = [48, 36, 42, 43, 38]
-                    replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
-                        f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": f"COND 24 | {KONG_PELLETS[pad_kong]} 1 0"
-                    })
+                    if pad_kong == Kongs.any:
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                            f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": "COND 16 | 4 1 0"
+                        })
+                    else:
+                        KONG_PELLETS = [48, 36, 42, 43, 38]
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                            f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": f"COND 24 | {KONG_PELLETS[pad_kong]} 1 0"
+                        })
                 elif pad_type in (SwitchType.InstrumentPad, SwitchType.SlamSwitch):
+                    if pad_kong == Kongs.any:
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                            f"COND 25 | {slot_data.default_kong + 2} 0 0": "COND 0 | 0 0 0"
+                        })
+                    else:
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                            f"COND 25 | {slot_data.default_kong + 2} 0 0": f"COND 25 | {pad_kong + 2} 0 0"
+                        })
+                elif pad_type == SwitchType.PushableButton:
+                    control_states = [
+                        [0, 0],
+                        [0x2E, 1],  # Chimpy Charge
+                        [0, 0],
+                        [0, 0],
+                        [0x24, 2], # Primate Punch
+                    ]
+                    source_cstate = " ".join([str(x) for x in control_states[slot_data.default_kong]])
+                    target_cstate = " ".join([str(x) for x in control_states[pad_kong]])
                     replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
-                        f"COND 25 | {slot_data.default_kong + 2} 0 0": f"COND 25 | {pad_kong + 2} 0 0"
+                        f"COND 23 | {source_cstate} 0": f"COND 23 | {target_cstate} 0"
                     })
+                elif pad_type == SwitchType.GunInstrumentCombo:
+                    if pad_kong == Kongs.any:
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[0]], {
+                            f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": "COND 16 | 4 1 0"
+                        })
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[1]], {
+                            f"COND 25 | {slot_data.default_kong + 2} 0 0": "COND 0 | 0 0 0"
+                        })
+                    else:
+                        KONG_PELLETS = [48, 36, 42, 43, 38]
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[0]], {
+                            f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": f"COND 24 | {KONG_PELLETS[pad_kong]} 1 0"
+                        })
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[1]], {
+                            f"COND 25 | {slot_data.default_kong + 2} 0 0": f"COND 25 | {pad_kong + 2} 0 0"
+                        })
 
     slam_req_values = {
         SlamRequirement.green: 1,
