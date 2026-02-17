@@ -45,6 +45,7 @@ def getEntranceDict(spoiler, transition: Transitions, vanilla_map: Maps, vanilla
         "exit": getFilteredExit(spoiler.settings, vanilla_map, vanilla_exit),
     }
 
+
 def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int = None, exit_id_override: int = None):
     """Write the castle cannon entrance to ROM."""
     isles_cutscenes = getPointerLocation(TableNames.Cutscenes, Maps.Isles)
@@ -55,14 +56,14 @@ def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int 
         header_end += 0x12 * count
     ROM_COPY.seek(header_end)
     count = int.from_bytes(ROM_COPY.readBytes(2), "big")
-    header_end += (2 + (0x1C * count))
+    header_end += 2 + (0x1C * count)
     ROM_COPY.seek(header_end)
     cutscene_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     read_location = header_end + 2
     for _ in range(cutscene_count):
         ROM_COPY.seek(read_location)
         point_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
-        read_location += (2 + (4 * point_count))
+        read_location += 2 + (4 * point_count)
     ROM_COPY.seek(read_location)
     item_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     read_location += 2
@@ -99,9 +100,9 @@ def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int 
             ROM_COPY.seek(read_location + 4)
             inner_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             if command == 4:
-                read_location += (0x20 + (inner_count * 0xE))
+                read_location += 0x20 + (inner_count * 0xE)
             elif command == 5:
-                read_location += (0x14 + (inner_count * 0x8))
+                read_location += 0x14 + (inner_count * 0x8)
         elif command in (10, 15, 16):
             read_location += 18
         elif command == 12:
@@ -110,6 +111,7 @@ def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int 
             read_location += 4
             count_copy += 1  # Not important cutscene
     print("Exited while loop")
+
 
 def writeEntrance(ROM_COPY: LocalROM, spoiler, transition: Transitions, offset: int, vanilla_map: Maps, vanilla_exit: int):
     """Write LZREntrance struct to ROM."""
