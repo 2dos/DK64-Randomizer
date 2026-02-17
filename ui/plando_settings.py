@@ -168,7 +168,7 @@ async def import_plando_options(jsonString):
         elif option == "plando_tns_portals":
             for level, doorList in value.items():
                 for i, door in enumerate(doorList):
-                    locationValue = door
+                    locationValue = f"{level};{door}"
                     if door == "Randomize":
                         locationValue = ""
                     elif door == "":
@@ -181,7 +181,8 @@ async def import_plando_options(jsonString):
                     js.document.getElementById(elemName).value = "none"
         elif option == "plando_wrinkly_doors":
             for enumLocation, doorLocation in value.items():
-                locationValue = "" if doorLocation == "Randomize" else doorLocation
+                level = LocationList[Locations[enumLocation]].level.name
+                locationValue = "" if doorLocation == "Randomize" else f"{level};{doorLocation}"
                 elemName = f"plando_{enumLocation}_wrinkly_door"
                 js.document.getElementById(elemName).value = locationValue
         # Process hints.

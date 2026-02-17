@@ -1262,7 +1262,7 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             door_location = get_plando_value(Locations[location_name])
             location_value = get_plando_value(PlandoItems.Randomize)
             if door.value != "":
-                location_value = door.value
+                _, location_value = door.value.split(";")
             wrinkly_doors_map[door_location] = location_value
     plando_form_data["plando_wrinkly_doors"] = wrinkly_doors_map
 
@@ -1285,7 +1285,10 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             portal_num = int(re_obj[2])
             location = get_plando_value(PlandoItems.Randomize)
             if portal.value != "":
-                location = portal.value
+                try:
+                    _, location = portal.value.split(";")
+                except ValueError:
+                    location = portal.value
             tns_portal_map[level][portal_num] = location
         # Whittle down the lists to remove "none" portals.
         for level, doorList in tns_portal_map.items():

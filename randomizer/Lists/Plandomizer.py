@@ -954,8 +954,9 @@ for wrinklyDoor in WrinklyDoorEnumList:
     }
     for door in door_locations[doorLocation.level]:
         if door.placed == DoorType.wrinkly and door.default_kong == doorLocation.kong:
-            WrinklyVanillaMap[wrinklyDoor.name] = door.name
-            jsonValue["vanilla_value"] = door.name
+            vanillaDoor = f"{doorLocation.level.name};{door.name}"
+            WrinklyVanillaMap[wrinklyDoor.name] = vanillaDoor
+            jsonValue["vanilla_value"] = vanillaDoor
             break
     PlandomizerPanels["Locations"]["categories"]["WrinklyDoor"]["locations"].append(jsonValue)
 
@@ -973,13 +974,14 @@ TnsVanillaMap = {
 # Derive the list of vanilla locations.
 for level, doorList in door_locations.items():
     for door in doorList:
+        jsonValue = f"{level.name};{door.name}"
         if door.placed == DoorType.boss:
             # There is one vanilla TnS portal that cannot be used in TnS portal
             # rando for DK64 reasons.
             if DoorType.boss not in door.door_type:
                 TnsVanillaMap[level.name].append("")
             else:
-                TnsVanillaMap[level.name].append(door.name)
+                TnsVanillaMap[level.name].append(jsonValue)
     # If there are fewer than five vanilla locations, fill out the rest of the
     # list with "none".
     while len(TnsVanillaMap[level.name]) < 5:
@@ -1030,10 +1032,12 @@ for level, doorList in door_locations.items():
         # Right now, users cannot place other doors on the vanilla portal.
         if door.placed == DoorType.dk_portal:
             continue
+        jsonValue = f"{level.name};{door.name}"
+        doorObj = {"name": door.name, "value": jsonValue}
         if DoorType.wrinkly in door.door_type:
             for kong in door.kongs:
-                WrinklyDoorLocationOptions[level.name][kong.name].append(door.name)
+                WrinklyDoorLocationOptions[level.name][kong.name].append(doorObj)
         if DoorType.boss in door.door_type:
-            TnsDoorLocationOptions[level.name].append(door.name)
+            TnsDoorLocationOptions[level.name].append(doorObj)
 PlannableCustomLocations["WrinklyDoor"] = WrinklyDoorLocationOptions
 PlannableCustomLocations["TnsPortal"] = TnsDoorLocationOptions
