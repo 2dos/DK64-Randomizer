@@ -284,13 +284,9 @@ def patching_response(spoiler):
                     replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
                         f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": f"COND 24 | {KONG_PELLETS[pad_kong]} 1 0"
                     })
-                elif pad_type == SwitchType.InstrumentPad:
+                elif pad_type in (SwitchType.InstrumentPad, SwitchType.SlamSwitch):
                     replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
                         f"COND 25 | {slot_data.default_kong + 2} 0 0": f"COND 25 | {pad_kong + 2} 0 0"
-                    })
-                elif pad_type == SwitchType.SlamSwitch:
-                    replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
-                        f"COND 17 | {slot_data.default_kong + 2} 1 0": f"COND 17 | {pad_kong + 2} 1 0"
                     })
 
     slam_req_values = {
