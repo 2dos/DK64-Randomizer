@@ -589,6 +589,11 @@ def patchAssembly(ROM_COPY, spoiler):
         0x164,  # BBlast first time cutscene
     ]
 
+    writeValue(ROM_COPY, 0x8068ABEA, Overlay.Static, getHiSym("replacement_lobbies_array"), offset_dict)
+    writeValue(ROM_COPY, 0x8068ABEE, Overlay.Static, getLoSym("replacement_lobbies_array"), offset_dict)
+    writeValue(ROM_COPY, 0x8060005A, Overlay.Static, getHiSym("replacement_lobbies_array"), offset_dict)
+    writeValue(ROM_COPY, 0x8060006E, Overlay.Static, getLoSym("replacement_lobbies_array"), offset_dict)
+
     ACTOR_DEF_START = getSym("actor_defs")
     ACTOR_MASTER_TYPE_START = getSym("actor_master_types")
 
@@ -1942,7 +1947,6 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x8064142C, Overlay.Static, "playSongWCheck", offset_dict)
     writeFunction(ROM_COPY, 0x8064143C, Overlay.Static, "playSongWCheck", offset_dict)
     writeFunction(ROM_COPY, 0x80628E40, Overlay.Static, "stopBossSong", offset_dict)  # Dogadon1, Mad Jack, Dillo2, Dillo1, Pufftoss, Dogadon2
-    writeFunction(ROM_COPY, 0x80641450, Overlay.Static, "stopBossSong", offset_dict)  # Tiny Temple Klaptrap Room, Diddy R&D, Lanky Attic
     writeFunction(ROM_COPY, 0x80032788, Overlay.Boss, "playNotBossSong", offset_dict)  # King Kut Out, because who needs consistency, right?
     writeFunction(ROM_COPY, 0x80605600, Overlay.Static, "resetBossSong", offset_dict)  # Prevent assumption "current_boss_music != 0, so boss music is playing" from being incorrect
 
