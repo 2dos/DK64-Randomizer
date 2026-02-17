@@ -1033,10 +1033,7 @@ for level, doorList in door_locations.items():
         if door.placed == DoorType.dk_portal:
             continue
         jsonValue = f"{level.name};{door.name}"
-        doorObj = {
-            "name": door.name,
-            "value": jsonValue
-        }
+        doorObj = {"name": door.name, "value": jsonValue}
         if DoorType.wrinkly in door.door_type:
             for kong in door.kongs:
                 WrinklyDoorLocationOptions[level.name][kong.name].append(doorObj)
