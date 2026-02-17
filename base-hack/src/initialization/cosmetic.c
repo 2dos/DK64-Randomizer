@@ -397,6 +397,7 @@ ROM_RODATA_NUM static const unsigned char boss_ost[] = {
 };
 
 ROM_DATA static unsigned short current_boss_song = 0;
+ROM_DATA static unsigned short canceled_transformation_music = 0;
 
 int pickRandomFromPool(const unsigned char* pool, const int count) {
     int rng = getRNGLower31() & 0xFF;
@@ -429,8 +430,12 @@ void playBossSong(songs song, float volume) {
 }
 
 void playSongWCheck(songs song, float volume) {
-    if(song == SONG_KROOLENTRANCE && current_boss_song != 0){
-        // playing the K. Rool entrance theme after beating Chunky Phase
+    if(MusicTrackChannels[3] == SONG_MINIMONKEY){
+        canceled_transformation_music = SONG_MINIMONKEY;
+        cancelMusic(SONG_MINIMONKEY, 0);
+    }
+    if((song == SONG_KROOLENTRANCE || song == SONG_FORESTMUSHROOM) && current_boss_song != 0){
+        // playing the K. Rool entrance theme after beating Chunky Phase, same for Spider Boss (yeah it plays mushroom music)
         cancelMusic(current_boss_song, 0);
         current_boss_song = 0;
     } 
@@ -449,11 +454,19 @@ void playSongWCheck(songs song, float volume) {
 }
 
 void stopBossSong(songs song, int unk0){
+    if(canceled_transformation_music != 0){
+        playSong(canceled_transformation_music, 1.0f);
+        canceled_transformation_music = 0;
+    }
     if (current_boss_song != 0){
         cancelMusic(current_boss_song, 0);
         current_boss_song = 0;
     } else {
         cancelMusic(song, 0);
+    }
+    if(CurrentMap == MAP_AZTECTINYTEMPLE && MusicTrackChannels[0] != SONG_AZTECTEMPLE){
+        // TinyTemple song can be overwritten by boss song
+        playSong(SONG_AZTECTEMPLE, 1.0f);
     }
 }
 
@@ -462,6 +475,7 @@ int resetBossSong(){
     // because I wasn't planning on manually stopping boss music in the first 4 K. Rool phases
     // because that already automatically happens, and I appreciate dk64 for that
     current_boss_song = 0;
+    canceled_transformation_music = 0;
     return checkIntroStoryPlaying();
 }
 
