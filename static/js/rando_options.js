@@ -737,6 +737,12 @@ const switchsanity_defaults = {
   "switchsanity_switch_japes_free_kong": "donkey",
   "switchsanity_switch_aztec_free_tiny": "diddy",
   "switchsanity_switch_aztec_free_lanky": "donkey",
+  "switchsanity_switch_factory_dark_grate": "chunky",
+  "switchsanity_switch_factory_bonus_grate": "chunky",
+  "switchsanity_switch_factory_monster_grate": "chunky",
+  "switchsanity_switch_caves_gone_cave": "chunky",
+  "switchsanity_switch_caves_snide_cave": "chunky",
+  "switchsanity_switch_caves_boulder_cave": "chunky",
 }
 function switchsanity_reset_default() {
   Object.keys(switchsanity_defaults).forEach(key => {

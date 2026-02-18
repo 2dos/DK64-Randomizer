@@ -899,6 +899,12 @@ class SettingsStringEnum(IntEnum):
     no_consumable_upgrades = 295
     bosses_selected = 296
     ice_trap_model_v2 = 297
+    switchsanity_switch_factory_dark_grate = 298
+    switchsanity_switch_factory_bonus_grate = 299
+    switchsanity_switch_factory_monster_grate = 300
+    switchsanity_switch_caves_gone_cave = 301
+    switchsanity_switch_caves_snide_cave = 302
+    switchsanity_switch_caves_boulder_cave = 303
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1047,6 +1053,12 @@ SettingsMap: dict = {
     'switchsanity_switch_aztec_free_tiny': SwitchsanityKong,
     'switchsanity_switch_aztec_free_lanky': SwitchsanityKong,
     'switchsanity_switch_factory_free_kong': SwitchsanityKong,
+    'switchsanity_switch_factory_dark_grate': SwitchsanityKong,
+    'switchsanity_switch_factory_bonus_grate': SwitchsanityKong,
+    'switchsanity_switch_factory_monster_grate': SwitchsanityKong,
+    'switchsanity_switch_caves_gone_cave': SwitchsanityKong,
+    'switchsanity_switch_caves_snide_cave': SwitchsanityKong,
+    'switchsanity_switch_caves_boulder_cave': SwitchsanityKong,
     'krool_in_boss_pool_v2': KroolInBossPool,
 }
 
@@ -1325,6 +1337,12 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.switchsanity_switch_aztec_free_tiny: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_aztec_free_lanky: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_factory_free_kong: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_dark_grate: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_bonus_grate: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_monster_grate: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_gone_cave: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_snide_cave: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_boulder_cave: SwitchsanityKong,
     SettingsStringEnum.trap_weight_bubble: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_reverse: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_slow: SettingsStringDataType.int8,

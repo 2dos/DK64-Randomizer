@@ -543,6 +543,10 @@ file_dict = [
     File(name="Fake Fairy Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x299, source_file="fake_fairy_om2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Day Item (OM2)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29A, source_file="day_item_om2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Night Item (OM2)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29B, source_file="night_item_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Punch Grate (Diddy)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29C, source_file="punch_gate_diddy.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Punch Grate (Chunky)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29D, source_file="punch_gate_chunky.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Ice Wall (Diddy)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29E, source_file="ice_wall_diddy.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Ice Wall (Chunky)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29F, source_file="ice_wall_chunky.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Animation Code", pointer_table_index=TableNames.Unknown13, file_index=0, source_file="animation_code.bin", do_not_delete_source=True),
     File(
         name="Disco Shirt",
@@ -598,6 +602,10 @@ file_dict = [
         do_not_delete_source=True,
         target_size=32 * 48 * 2,
     ),
+    File(name="Diddy Ice Palette 0", pointer_table_index=TableNames.TexturesGeometry, file_index=getBonusSkinOffset(ExtraTextures.DiddyIcePalette0), source_file="assets/displays/diddy_ice_palette_0.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True),
+    File(name="Diddy Ice Palette 1", pointer_table_index=TableNames.TexturesGeometry, file_index=getBonusSkinOffset(ExtraTextures.DiddyIcePalette1), source_file="assets/displays/diddy_ice_palette_1.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True),
+    File(name="Chunky Ice Palette 0", pointer_table_index=TableNames.TexturesGeometry, file_index=getBonusSkinOffset(ExtraTextures.ChunkyIcePalette0), source_file="assets/displays/chunky_ice_palette_0.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True),
+    File(name="Chunky Ice Palette 1", pointer_table_index=TableNames.TexturesGeometry, file_index=getBonusSkinOffset(ExtraTextures.ChunkyIcePalette1), source_file="assets/displays/chunky_ice_palette_1.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True),
 ]
 
 cutscene_scripts = buildScripts()
@@ -2621,6 +2629,10 @@ with open(newROMName, "r+b") as fh:
         "any_gun",
         "any_ins_left",
         "any_ins_right",
+        "diddy_ice_palette_0",
+        "diddy_ice_palette_1",
+        "chunky_ice_palette_0",
+        "chunky_ice_palette_1",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}", f"shop_{b}"])

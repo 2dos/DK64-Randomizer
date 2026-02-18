@@ -297,7 +297,7 @@ def patching_response(spoiler):
                         replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
                             f"COND 25 | {slot_data.default_kong + 2} 0 0": f"COND 25 | {pad_kong + 2} 0 0"
                         })
-                elif pad_type == SwitchType.PushableButton:
+                elif pad_type in (SwitchType.PushableButton, SwitchType.PunchGrate, SwitchType.IceWall):
                     control_states = [
                         [0, 0],
                         [0x2E, 1],  # Chimpy Charge
@@ -305,10 +305,14 @@ def patching_response(spoiler):
                         [0, 0],
                         [0x24, 2], # Primate Punch
                     ]
-                    source_cstate = " ".join([str(x) for x in control_states[slot_data.default_kong]])
-                    target_cstate = " ".join([str(x) for x in control_states[pad_kong]])
                     replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
-                        f"COND 23 | {source_cstate} 0": f"COND 23 | {target_cstate} 0"
+                        f"COND 23 | {control_states[slot_data.default_kong][0]} 0 0": f"COND 23 | {control_states[pad_kong][0]} 0 0"
+                    })
+                    replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                        f"COND 33 | {control_states[slot_data.default_kong][1]} 0 0": f"COND 33 | {control_states[pad_kong][1]} 0 0"
+                    })
+                    replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                        f"COND 24 | {slot_data.default_kong + 2} 1 0": f"COND 24 | {pad_kong + 2} 1 0"
                     })
                 elif pad_type == SwitchType.GunInstrumentCombo:
                     if pad_kong == Kongs.any:

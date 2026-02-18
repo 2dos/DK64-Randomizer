@@ -80,6 +80,12 @@ SwitchData = {
         [0x1A, 0x1B],
         [Switches.FungiGreenFeather],
     ),
+    Switches.FactoryDarkRoomGrate: SwitchInfo("Factory Grate to Dark Room", Kongs.chunky, SwitchType.PunchGrate, None, Maps.FranticFactory, [0x13C]),
+    Switches.FactoryArcadeTunnelGrate: SwitchInfo("Factory Grate to Tunnel Bonus", Kongs.chunky, SwitchType.PunchGrate, None, Maps.FranticFactory, [0x15]),
+    Switches.FactoryToyMonsterGrate: SwitchInfo("Factory Grate to Toy Monster", Kongs.chunky, SwitchType.PunchGrate, None, Maps.FranticFactory, [0x3C]),
+    Switches.CavesGoneCave: SwitchInfo("Caves Gone Cave", Kongs.chunky, SwitchType.IceWall, None, Maps.CrystalCaves, [0x1E]),
+    Switches.CavesSnideCave: SwitchInfo("Caves Snide Cave", Kongs.chunky, SwitchType.IceWall, None, Maps.CrystalCaves, [0x1D]),
+    Switches.CavesBoulderCave: SwitchInfo("Caves Boulder Cave", Kongs.chunky, SwitchType.IceWall, None, Maps.CrystalCaves, [0x1F]),
 }
 
 SwitchNameDict = {

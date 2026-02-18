@@ -1430,7 +1430,13 @@
     "krool_in_boss_pool_v2": 294,
     "no_consumable_upgrades": 295,
     "bosses_selected": 296,
-    "ice_trap_model_v2": 297
+    "ice_trap_model_v2": 297,
+    "switchsanity_switch_factory_dark_grate": 298,
+    "switchsanity_switch_factory_bonus_grate": 299,
+    "switchsanity_switch_factory_monster_grate": 300,
+    "switchsanity_switch_caves_gone_cave": 301,
+    "switchsanity_switch_caves_snide_cave": 302,
+    "switchsanity_switch_caves_boulder_cave": 303
   },
   /*
     SettingsStringDataType:
@@ -1589,6 +1595,12 @@
     "switchsanity_switch_aztec_free_tiny": { "obj": "SwitchsanityKong" },
     "switchsanity_switch_aztec_free_lanky": { "obj": "SwitchsanityKong" },
     "switchsanity_switch_factory_free_kong": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_factory_dark_grate": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_factory_bonus_grate": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_factory_monster_grate": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_caves_gone_cave": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_caves_snide_cave": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_caves_boulder_cave": { "obj": "SwitchsanityKong" },
     "krool_in_boss_pool_v2": { "obj": "KroolInBossPool" }
   },
   // ALL SETTINGS NEED AN ENTRY HERE!
@@ -2163,6 +2175,12 @@
     "SettingsStringEnum.switchsanity_switch_aztec_free_tiny": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.switchsanity_switch_aztec_free_lanky": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.switchsanity_switch_factory_free_kong": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_factory_dark_grate": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_factory_bonus_grate": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_factory_monster_grate": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_caves_gone_cave": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_caves_snide_cave": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_caves_boulder_cave": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.trap_weight_bubble": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_reverse": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_slow": { "obj": "SettingsStringDataType.int8" },

@@ -3598,7 +3598,7 @@ BananaCoinGroupList = {
             name="In Chunky R&D Room",
             konglist=[Kongs.chunky],
             region=Regions.RandDUpper,
-            logic=lambda l: (l.punch and l.triangle and l.ischunky) or l.CanAccessRNDRoom(),
+            logic=lambda l: (l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.ischunky) or l.CanAccessRNDRoom(),
             locations=[
                 [1.0, 4570, 1336, 1400],
                 [1.0, 4525, 1336, 1366],
@@ -3974,7 +3974,7 @@ BananaCoinGroupList = {
             name="Around Arcade Tunnel Bonus",
             konglist=[Kongs.chunky],
             region=Regions.FactoryArcadeTunnel,
-            logic=lambda l: (l.punch and l.ischunky) or l.CanPhase(),
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryArcadeTunnelGrate, False) or l.CanPhase(),
             locations=[
                 [1.0, 1343.939208984375, 1106.5, 1885.8740234375],
                 [1.0, 1178.9105224609375, 1106.5, 1893.6072998046875],
