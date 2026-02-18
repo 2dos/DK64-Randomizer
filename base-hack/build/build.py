@@ -29,7 +29,7 @@ from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from cutscene_builder import buildScripts
 from end_seq_writer import createSquishFile, createTextFile
-from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch, fixFactoryDoor, modifyOtherWrinklyDoors, buildAnyKongSwitches
+from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch, fixFactoryDoor, modifyOtherWrinklyDoors, buildAnyKongSwitches, buildGongs
 from helm_doors import getHelmDoorModel
 from instance_script_maker import BuildInstanceScripts
 from model_shrink import shrinkModel
@@ -70,6 +70,7 @@ generateSprintSwitch()
 fixFactoryDoor()
 buildAnyKongSwitches()
 generateIceMaze()
+buildGongs()
 
 getHelmDoorModel(6022, 6023, "crown_door.bin")
 getHelmDoorModel(6024, 6025, "coin_door.bin")
@@ -99,7 +100,8 @@ file_dict = [
         texture_format=TextureFormat.RGBA5551,
         target_compressed_size=64 * 32 * 2,
     ),
-    File(name="Gong Geometry", pointer_table_index=TableNames.ModelTwoGeometry, file_index=195, source_file="assets/Gong/gong_geometry.bin", bps_file="assets/Gong/gong_geometry.bps"),
+    File(name="Gong (Diddy)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=195, source_file="assets/Gong/diddy_gong.bin", do_not_delete_source=True),
+    File(name="Gong (Chunky)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A0, source_file="assets/Gong/chunky_gong.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="End Sequence Credits", pointer_table_index=TableNames.Unknown19, file_index=7, source_file="assets/credits/credits.bin", do_not_delete_source=True),
     File(
         name="DK Wrinkly Door",

@@ -15,3 +15,4 @@ class SwitchType(IntEnum):
     GunInstrumentCombo = auto()
     PunchGrate = auto()
     IceWall = auto()
+    Gong = auto()

@@ -297,7 +297,7 @@ def patching_response(spoiler):
                         replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
                             f"COND 25 | {slot_data.default_kong + 2} 0 0": f"COND 25 | {pad_kong + 2} 0 0"
                         })
-                elif pad_type in (SwitchType.PushableButton, SwitchType.PunchGrate, SwitchType.IceWall):
+                elif pad_type in (SwitchType.PushableButton, SwitchType.PunchGrate, SwitchType.IceWall, SwitchType.Gong):
                     control_states = [
                         [0, 0],
                         [0x2E, 1],  # Chimpy Charge

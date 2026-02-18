@@ -838,6 +838,7 @@ class Spoiler:
                     SwitchType.PushableButton: "Charge Button",
                     SwitchType.PunchGrate: "Charge Grate",
                     SwitchType.IceWall: "Charge Wall",
+                    SwitchType.Gong: "Charge Gong",
                     SwitchType.GunInstrumentCombo: "Peanut Switch and Guitar Pad",
                 },
                 Kongs.lanky: {
@@ -862,6 +863,7 @@ class Spoiler:
                     SwitchType.PushableButton: "Punch Button",
                     SwitchType.PunchGrate: "Punch Grate",
                     SwitchType.IceWall: "Punch Wall",
+                    SwitchType.Gong: "Punch Gong",
                     SwitchType.GunInstrumentCombo: "Pineapple Switch and Triangle Pad",
                 },
                 Kongs.any: {

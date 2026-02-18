@@ -656,6 +656,7 @@ def updateSwitchsanity(spoiler, ROM_COPY: LocalROM):
             SwitchType.PushableButton: [None, 0xE3, None, None, 0x70],
             SwitchType.PunchGrate: [None, 0x29C, None, None, 0x29D],
             SwitchType.IceWall: [None, 0x29E, None, None, 0x29F],
+            SwitchType.Gong: [None, 0xC3, None, None, 0x2A0]
         }
         switchsanity_maps = []
         # Get list of maps which contain a switch affected by switchsanity, to reduce references to pointer table

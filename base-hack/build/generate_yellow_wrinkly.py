@@ -13,6 +13,8 @@ switch_file = "assets/Gong/sprint_switch.bin"
 door_file = "assets/Gong/factory_door.bin"
 any_gun_file = "assets/Gong/any_gun.bin"
 any_ins_file = "assets/Gong/any_ins.bin"
+diddy_gong_file = "assets/Gong/diddy_gong.bin"
+chunky_gong_file = "assets/Gong/chunky_gong.bin"
 
 image_offsets = {
     Kong.DK: 0xF0,
@@ -203,3 +205,20 @@ def buildAnyKongSwitches():
             tri_start = floor_start + 0x10 + (0x18 * x)
             pad_f.seek(tri_start + 0x15)
             pad_f.write((2).to_bytes(1, "big"))
+
+def buildGongs():
+    with open(ROMName, "rb") as fh:
+        gong_f = ROMPointerFile(fh, TableNames.ModelTwoGeometry, 195)
+        fh.seek(gong_f.start)
+        dec = zlib.decompress(fh.read(gong_f.size), 15 + 32)
+        with open(diddy_gong_file, "wb") as fg:
+            fg.write(dec)
+    with open(diddy_gong_file, "r+b") as fh:
+        fh.seek(0x7BC)
+        fh.write((0xFFFFFFFF).to_bytes(4, "big"))
+    shutil.copyfile(diddy_gong_file, chunky_gong_file)
+    with open(chunky_gong_file, "r+b") as fh:
+        fh.seek(0x8B4)  # 27a
+        fh.write((0x274).to_bytes(4, "big"))
+        fh.seek(0x944)  # 279
+        fh.write((0x273).to_bytes(4, "big"))

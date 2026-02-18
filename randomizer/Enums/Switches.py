@@ -37,3 +37,7 @@ class Switches(IntEnum):
     CavesGoneCave = auto()
     CavesSnideCave = auto()
     CavesBoulderCave = auto()
+    CavesLobbyBP = auto()
+    CavesLobbyLava = auto()
+    AztecGongTower = auto()
+    AztecLobbyGong = auto()

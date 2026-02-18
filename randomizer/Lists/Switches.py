@@ -86,6 +86,10 @@ SwitchData = {
     Switches.CavesGoneCave: SwitchInfo("Caves Gone Cave", Kongs.chunky, SwitchType.IceWall, None, Maps.CrystalCaves, [0x1E]),
     Switches.CavesSnideCave: SwitchInfo("Caves Snide Cave", Kongs.chunky, SwitchType.IceWall, None, Maps.CrystalCaves, [0x1D]),
     Switches.CavesBoulderCave: SwitchInfo("Caves Boulder Cave", Kongs.chunky, SwitchType.IceWall, None, Maps.CrystalCaves, [0x1F]),
+    Switches.CavesLobbyBP: SwitchInfo("Caves Lobby Boulder Side", Kongs.chunky, SwitchType.IceWall, None, Maps.CrystalCavesLobby, [0x0]),
+    Switches.CavesLobbyLava: SwitchInfo("Caves Lobby Lava Side", Kongs.chunky, SwitchType.IceWall, None, Maps.CrystalCavesLobby, [0x1]),
+    Switches.AztecGongTower: SwitchInfo("Aztec Gong Tower", Kongs.diddy, SwitchType.Gong, None, Maps.AngryAztec, [0x1A, 0x1B, 0x1C, 0x1D]),
+    Switches.AztecLobbyGong: SwitchInfo("Aztec Lobby Gongs", Kongs.diddy, SwitchType.Gong, None, Maps.AngryAztecLobby, [0x13, 0x14]),
 }
 
 SwitchNameDict = {

@@ -743,6 +743,10 @@ const switchsanity_defaults = {
   "switchsanity_switch_caves_gone_cave": "chunky",
   "switchsanity_switch_caves_snide_cave": "chunky",
   "switchsanity_switch_caves_boulder_cave": "chunky",
+  "switchsanity_switch_caves_lobby_blueprint": "chunky",
+  "switchsanity_switch_caves_lobby_lava": "chunky",
+  "switchsanity_switch_aztec_gong_tower": "diddy",
+  "switchsanity_switch_aztec_lobby_gong": "diddy",
 }
 function switchsanity_reset_default() {
   Object.keys(switchsanity_defaults).forEach(key => {
