@@ -73,6 +73,8 @@ def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int 
         ROM_COPY.seek(read_location + 1)
         command = int.from_bytes(ROM_COPY.readBytes(1), "big")
         if segment_index == 44:
+            exit_id = 0  # I trust that this line will never be needed, but codeQL panicked
+            map_id = 0  # Same for this variable. codeQL thinks it can be used before being initialized
             ROM_COPY.seek(read_location + 8)
             if map_id_override is not None or exit_id_override is not None:
                 data = getEntranceDict(spoiler, Transitions.IslesMainToCastleLobby, Maps.CreepyCastleLobby, 0)
