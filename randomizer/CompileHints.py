@@ -2753,7 +2753,7 @@ def getNumberOfCutoffCharacters(message, number):
 def AssociateHintsWithFlags(spoiler, hintset):
     """Associate hints with the related flag at their related location as applicable."""
     for hint in hintset.hints:
-        if hint.related_location is not None:
+        if hint.related_location is not None and hint.related_location not in TrainingBarrelLocations and hint.related_location not in PreGivenLocations:
             for location_selection in spoiler.item_assignment:
                 if location_selection.location == hint.related_location:
                     hint.related_flag = location_selection.old_flag

@@ -368,7 +368,7 @@ class Settings:
         }
 
         if self.blocker_selection_behavior == BLockerSetting.chaos:
-            self.blocker_text = self.blocker_text / 100.0
+            self.blocker_text = min(self.blocker_text, 100) / 100.0  # Clamp value at 100%
             locked_blocker_items = []
             for slot in range(8):
                 item = self.random.choice([key for key in self.blocker_limits.keys() if key not in locked_blocker_items])
