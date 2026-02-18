@@ -13,6 +13,7 @@ import socket
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from opentelemetry import metrics
 from opentelemetry.exporter.otlp.proto.http.metric_exporter import OTLPMetricExporter
+from opentelemetry.exporter.otlp.proto.http._log_exporter import OTLPLogExporter
 from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
@@ -21,6 +22,7 @@ from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry._logs import set_logger_provider
 from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
+from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Enums.Types import ItemRandoSelector, KeySelector, ItemRandoFillerSelector
@@ -93,8 +95,16 @@ if __name__ == "__main__" and os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     logger_provider = LoggerProvider(resource=resource)
     # set the providers
     set_logger_provider(logger_provider)
+
+    # Configure OTLP Log Exporter for sending logs to the collector
+    otlp_log_exporter = OTLPLogExporter(endpoint="http://host.docker.internal:4318/v1/logs")
+    logger_provider.add_log_record_processor(BatchLogRecordProcessor(otlp_log_exporter))
+
     handler = LoggingHandler(level=logging.DEBUG, logger_provider=logger_provider)
     logger.addHandler(handler)
+
+    # Test log message to verify OTLP logging is working
+    logger.info("Worker started with OTLP logging enabled")
 
 
 @api.route("/get_selector_info", methods=["GET"])
