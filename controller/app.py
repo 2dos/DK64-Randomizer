@@ -73,7 +73,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 # check the args we started the script with
-if __name__ == "__main__":
+if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     # create the providers
     logger_provider = LoggerProvider(resource=resource)
     # set the providers
