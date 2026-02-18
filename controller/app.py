@@ -97,14 +97,14 @@ if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     RequestsInstrumentor().instrument()
     RedisInstrumentor().instrument()
     FlaskInstrumentor().instrument_app(app)
-    
+
     # Configure OTLP Log Exporter for sending logs to the collector
     otlp_log_exporter = OTLPLogExporter(endpoint="http://host.docker.internal:4318/v1/logs")
     logger_provider.add_log_record_processor(BatchLogRecordProcessor(otlp_log_exporter))
-    
+
     handler = LoggingHandler(level=logging.DEBUG, logger_provider=logger_provider)
     logger.addHandler(handler)
-    
+
     # Test log message to verify OTLP logging is working
     logger.info("Controller application started with OTLP logging enabled")
 
