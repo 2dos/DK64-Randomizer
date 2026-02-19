@@ -363,6 +363,4 @@ def placeLevelOrder(spoiler, order: list, ROM_COPY: LocalROM):
     level_7_lobby = lobbies[order[6]]
     ROM_COPY.seek(varspaceOffset + 0x5D)
     ROM_COPY.write(2)
-    ROM_COPY.seek(varspaceOffset + 0x74)
-    ROM_COPY.write(level_7_lobby)
-    ROM_COPY.write(0)
+    writeCastleCannonEntrance(ROM_COPY, spoiler, level_7_lobby, 0)
