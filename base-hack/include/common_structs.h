@@ -762,15 +762,6 @@ typedef struct trigger {
 	/* 0x039 */ char active;
 } trigger;
 
-typedef struct cannon {
-	/* 0x000 */ char unk_00[0x376];
-	/* 0x376 */ short source_map;
-	/* 0x378 */ short destination_map;
-	/* 0x37A */ short destination_exit;
-} cannon;
-
-
-
 typedef struct blocker_cheat {
 	/* 0x000 */ unsigned char gb_count;
 	/* 0x001 */ char kong_index;

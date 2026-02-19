@@ -30,10 +30,7 @@ typedef struct varspace {
 	/* 0x069 */ char snide_has_rewards;
 	/* 0x06A */ LZREntrance seasick_ship_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x06C */ LZREntrance fungi_minecart_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x06E */ char unk_6E[6];
-	/* 0x074 */ LZREntrance castle_lobby_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x076 */ char unk_76[2];
-	/* 0x078 */ LZREntrance exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
+	/* 0x06E */ char unk_6E[0x88 - 0x6E];
 	/* 0x088 */ rgb fog[3]; // Order: Aztec, Caves, Castle
 	/* 0x091 */ char disable_race_patches;
 	/* 0x092 */ char unk_91[0x94 - 0x92];

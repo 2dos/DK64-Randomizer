@@ -34,7 +34,6 @@ void cFuncLoop(void) {
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();
 	overlay_changes();
-	replace_zones(0);
 	checkDimCache();
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, FLAGTYPE_TEMPORARY); // Clear K. Lumsy temp flag

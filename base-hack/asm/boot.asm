@@ -54,36 +54,8 @@ START:
 		//end of boot code
 		/////////////////////////////////////////////////////
 
-LobbyReplaceCode1:
-	LUI t7, hi(ReplacementLobbiesArray)
-	ADDIU t7, t7, lo(ReplacementLobbiesArray)
-LobbyReplaceCode2:
-	LUI a0, hi(ReplacementLobbiesArray)
-	LHU a0, lo(ReplacementLobbiesArray) (a0)
 initHook:
 	J 	initCode
-	NOP
-
-loadExtraHooks:	
-	LUI t3, hi(LobbyReplaceCode1)
-	LW t3, lo(LobbyReplaceCode1) (t3)
-	LUI t4, 0x8069
-	SW t3, 0xABE8 (t4)
-	LUI t3, hi(LobbyReplaceCode1)
-	ADDIU t3, t3, 4
-	LW t3, lo(LobbyReplaceCode1) (t3)
-	SW t3, 0xABEC (t4)
-
-	LUI t3, hi(LobbyReplaceCode2)
-	LW t3, lo(LobbyReplaceCode2) (t3)
-	LUI t4, 0x8060
-	SW t3, 0x0058 (t4)
-	LUI t3, hi(LobbyReplaceCode2)
-	ADDIU t3, t3, 4
-	LW t3, lo(LobbyReplaceCode2) (t3)
-	SW t3, 0x006C (t4)
-
-	JR ra
 	NOP
 
 getObjectArrayAddr:

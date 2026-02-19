@@ -276,9 +276,7 @@ void initHack(int source) {
 			initCosmetic();
 			initTextChanges();
 
-			replace_zones(1);
 			loadHooks();
-			loadExtraHooks();
 			// Place Move Data
 			moveTransplant();
 			

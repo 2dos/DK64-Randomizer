@@ -1,39 +1,15 @@
 #include "../../include/common.h"
 
-void replace_zones(int init_flag) {
-	int more_lz_byte = Rando.randomize_more_loading_zones;
-	if (more_lz_byte) {
-		if (init_flag) {
-			if (more_lz_byte == 1) {
-				for (int i = 0; i < 8; i++) {
-					ReplacementLobbiesArray[i] = Rando.exit_levels[i].map;
-					ReplacementLobbyExitsArray[i] = Rando.exit_levels[i].exit;
-					ReplacementLobbiesArray[8] = ReplacementLobbiesArray[7];
-					ReplacementLobbyExitsArray[8] = ReplacementLobbyExitsArray[7];
-				}
-			}
-		} else {
-			if (TransitionSpeed < 0) {
-				if (CurrentMap == MAP_ISLES) {
-					if (isRDRAM(CastleCannonPointer)) {
-						if (CastleCannonPointer->source_map == MAP_ISLES) {
-							CastleCannonPointer->destination_map = Rando.castle_lobby_enter.map;
-							CastleCannonPointer->destination_exit = Rando.castle_lobby_enter.exit;
-						}
-					}
-				}
-			}
-		}
-	}
-	if ((more_lz_byte == 0) || (more_lz_byte == 2)) {
-		if (init_flag) {
-			for (int i = 0; i < 9; i++) {
-				ReplacementLobbiesArray[i] = LobbiesArray[i];
-				ReplacementLobbyExitsArray[i] = 1;
-			}
-		}
-	}
-}
+ROM_RODATA_NUM const unsigned short replacement_lobbies_array[9] = {
+	0xA9, 0xAD, 0xAF,
+	0xAE, 0xB2, 0xC2,
+	0xC1, 0xAA, 0xAA,
+};
+ROM_RODATA_NUM const unsigned short replacement_lobby_exits_array[9] = {
+	1, 1, 1,
+	1, 1, 1,
+	1, 1, 1,
+};
 
 ROM_RODATA_NUM static const unsigned char vanilla_blast_maps[] = {
 	MAP_JAPESBBLAST,

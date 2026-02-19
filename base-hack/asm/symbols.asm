@@ -165,7 +165,6 @@
 
 .definelabel TriggerArray, 0x807FDCB4
 .definelabel TriggerSize, 0x807FDCB0
-.definelabel CastleCannonPointer, 0x807F5BE8
 .definelabel KongFlagArray, 0x807505B0
 .definelabel MainMenuMoves, 0x80033938
 .definelabel DataIsCompressed, 0x80748E18
