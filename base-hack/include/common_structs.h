@@ -1276,7 +1276,7 @@ typedef struct quality_options {
 	unsigned char reduce_lag : 1;
 	unsigned char remove_cutscenes : 1; // 1
 	unsigned char mountain_bridge_extended : 1;
-	unsigned char unused_3 : 1; // 3
+	unsigned char no_wrinkly_puzzles : 1; // 3
 	unsigned char dance_skip : 1;
 	unsigned char fast_boot : 1; // 5
 	unsigned char no_ship_timers : 1;
