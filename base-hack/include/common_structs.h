@@ -762,15 +762,6 @@ typedef struct trigger {
 	/* 0x039 */ char active;
 } trigger;
 
-typedef struct cannon {
-	/* 0x000 */ char unk_00[0x376];
-	/* 0x376 */ short source_map;
-	/* 0x378 */ short destination_map;
-	/* 0x37A */ short destination_exit;
-} cannon;
-
-
-
 typedef struct blocker_cheat {
 	/* 0x000 */ unsigned char gb_count;
 	/* 0x001 */ char kong_index;
@@ -1285,7 +1276,7 @@ typedef struct quality_options {
 	unsigned char reduce_lag : 1;
 	unsigned char remove_cutscenes : 1; // 1
 	unsigned char mountain_bridge_extended : 1;
-	unsigned char unused_3 : 1; // 3
+	unsigned char no_wrinkly_puzzles : 1; // 3
 	unsigned char dance_skip : 1;
 	unsigned char fast_boot : 1; // 5
 	unsigned char no_ship_timers : 1;

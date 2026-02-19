@@ -230,9 +230,11 @@ void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk
 		setPermFlag(flag);
 		giveItem(REQITEM_HINT, world, kong, (giveItemConfig){.apply_helm_hurry = 1});
 	}
-	// Display hint tick
-	displayImageOnObject(index, 1, 2, 0);
-	displayImageOnObject(index, 2, 2, 0);
+	if ((CurrentMap != MAP_FUNGILOBBY) || (Rando.quality_of_life.no_wrinkly_puzzles)) {
+		// Display hint tick
+		displayImageOnObject(index, 1, 2, 0);
+		displayImageOnObject(index, 2, 2, 0);
+	}
 	//
 	spawnWrinkly(behaviour, index, kong, unk0);
 }

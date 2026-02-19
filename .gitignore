@@ -236,6 +236,7 @@ base-hack/assets/vial_spin/f8.png
 base-hack/assets/vial_spin/*.py
 base-hack/asm/minigames/*/main.asm
 base-hack/asm/minigames/*/objects.asm
+base-hack/instance_scripts_data.json
 base-hack/modelling/*.obj
 *.apworld
 /dk64/

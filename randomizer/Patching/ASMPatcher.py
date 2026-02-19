@@ -589,6 +589,11 @@ def patchAssembly(ROM_COPY, spoiler):
         0x164,  # BBlast first time cutscene
     ]
 
+    writeValue(ROM_COPY, 0x8068ABEA, Overlay.Static, getHiSym("replacement_lobbies_array"), offset_dict)
+    writeValue(ROM_COPY, 0x8068ABEE, Overlay.Static, getLoSym("replacement_lobbies_array"), offset_dict)
+    writeValue(ROM_COPY, 0x8060005A, Overlay.Static, getHiSym("replacement_lobbies_array"), offset_dict)
+    writeValue(ROM_COPY, 0x8060006E, Overlay.Static, getLoSym("replacement_lobbies_array"), offset_dict)
+
     ACTOR_DEF_START = getSym("actor_defs")
     ACTOR_MASTER_TYPE_START = getSym("actor_master_types")
 

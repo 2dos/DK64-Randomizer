@@ -50,7 +50,6 @@ extern void playSong(songs songIndex, float volume);
 extern void restartSong(int write_slot, int song, float volume);
 extern int getSongTempo(void *player);
 extern void playLevelMusic(void);
-extern void loadExtraHooks();
 extern void playCutscene(void* actor, int cutscene_index, int cutscene_type);
 extern void playBonusCutsceneWrapper(void* actor, int unk0, int cutscene_index, int unk1);
 extern int isCutsceneActive(void);
@@ -689,7 +688,6 @@ extern short ActorInteractionArray[345];
 
 extern trigger* TriggerArray;
 extern short TriggerSize;
-extern cannon* CastleCannonPointer;
 extern short TroffNScoffReqArray[8]; // u16 item size
 extern unsigned short TroffNScoffTurnedArray[8]; // u16 item size
 extern short BLockerDefaultArray[8]; // u16 item size
@@ -868,8 +866,6 @@ extern int TestVariable;
 extern char LoadedHooks;
 extern varspace Rando;
 extern short StoredLag;
-extern short ReplacementLobbiesArray[9];
-extern short ReplacementLobbyExitsArray[9];
 extern unsigned char DamageMultiplier;
 extern char LobbiesOpen;
 extern char* PauseSlot3TextPointer;
