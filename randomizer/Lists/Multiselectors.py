@@ -47,7 +47,7 @@ QoLItems = [
     ),
     MultiselectorItem(
         "Remove Wrinkly Puzzles",
-        -1,
+        3,
         "Removes the Wrinkly Puzzles from the Angry Aztec, Fungi Forest and Crystal Caves lobbies",
     ),
     MultiselectorItem(

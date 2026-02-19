@@ -150,6 +150,8 @@ else
 fi
 
 runscript "Removing unnecessary files" "build/cleanup.py"
+rm -f assets/hash/bonus_skin.png
+rm -f build/BuildingBPS.txt
 
 echo
 echo "Completed: $(date)" >> rom/build.log
