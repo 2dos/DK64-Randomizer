@@ -86,7 +86,7 @@ async function generate_seed_from_patch(event) {
             }
             $("#lankyModal").modal("show");
             // Apply the patch
-            await apply_patch(loaded_patch, true);
+            await apply_patch(window.loaded_patch, true);
             $("#lankyModal").modal("hide");
          }
     }
