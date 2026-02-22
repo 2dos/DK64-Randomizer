@@ -1179,26 +1179,26 @@ ROM_RODATA_NUM const sprite_data_struct halfmedal_sprite = {
 	},
 };
 
-void getMinGB(unsigned char *kong, unsigned char *level) {
+short *getMinGB(void) {
+	short *loc = &MovesBase[0].gb_count[0];
 	int min_gb = 99999;
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 9; j++) {
-			int att_gb = MovesBase[i].gb_count[j];
+			short *temp = &MovesBase[i].gb_count[j];
+			int att_gb = *temp;
 			if (att_gb < min_gb) {
-				*kong = i;
-				*level = j;
+				loc = temp;
 				min_gb = att_gb;
 			}
 		}
 	}
+	return loc;
 }
 
 void giveGB(int balanced_distribution) {
 	if (balanced_distribution) {
-		unsigned char min_kong = 0;
-		unsigned char min_level = 0;
-		getMinGB(&min_kong, &min_level);
-		MovesBase[(int)min_kong].gb_count[(int)min_level]++;
+		short *loc = getMinGB();
+		*loc = *loc + 1;
 		updateGBCountHUD(0);
 	} else {
 		changeCollectableCount(8, 0, 1);
