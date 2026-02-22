@@ -276,8 +276,7 @@ class DK64Client:
 
     async def validate_client_connection(self):
         """Validate the client connection."""
-        if not self.memory_pointer:
-            self.memory_pointer = self.n64_client.read_u32(DK64MemoryMap.memory_pointer)
+        self.memory_pointer = self.n64_client.read_u32(DK64MemoryMap.memory_pointer)
         self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.connection, 0xFF)
         if self.n64_client.read_u8(DK64MemoryMap.eeprom_determined) == 1:
             if self.n64_client.read_u32(DK64MemoryMap.save_type) != 2:
