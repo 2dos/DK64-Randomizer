@@ -76,7 +76,7 @@ def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int 
             exit_id = 0  # I trust that this line will never be needed, but codeQL panicked
             map_id = 0  # Same for this variable. codeQL thinks it can be used before being initialized
             ROM_COPY.seek(read_location + 8)
-            if map_id_override is not None or exit_id_override is not None:
+            if map_id_override is None or exit_id_override is None:
                 data = getEntranceDict(spoiler, Transitions.IslesMainToCastleLobby, Maps.CreepyCastleLobby, 0)
                 map_id = data["map"]
                 exit_id = data["exit"]
@@ -88,7 +88,6 @@ def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int 
                 exit_id += 0x10000
             ROM_COPY.writeMultipleBytes(map_id, 2)
             ROM_COPY.writeMultipleBytes(exit_id & 0xFFFF, 2)
-            print("Written Lvl 7 entrance at ", hex(read_location + 8 - isles_cutscenes))
             break
         segment_index += 1
         count_copy -= 1
