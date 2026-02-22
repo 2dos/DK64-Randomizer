@@ -358,11 +358,10 @@ Gfx* pauseScreen3And4ItemName(Gfx* dl, int x, int y, float scale, char* text) {
      * @brief Changes the item name depending on the screen you're on
      */
     pause_paad* paad = CurrentActorPointer_0->paad;
-    int item_index = MenuActivatedItems[ViewedPauseItem];
     if (paad->screen == PAUSESCREEN_TOTALS) {
-        return printText(dl, x, y, scale, raw_items[item_index]);
+        return printText(dl, x, y, scale, raw_items[(int)ViewedPauseItem]);
     } else if (paad->screen == PAUSESCREEN_CHECKS) {
-        return printText(dl, x, y, scale, items[item_index]);
+        return printText(dl, x, y, scale, items[(int)ViewedPauseItem]);
     }
     return dl;
 }
@@ -375,7 +374,7 @@ Gfx* pauseScreen3And4Counter(int x, int y, int top, int bottom, Gfx* dl, int unk
     if (paad->screen == PAUSESCREEN_TOTALS) {
         return printOutOfCounter(x, y, top, bottom, dl, unk0, scale);
     } else if (paad->screen == PAUSESCREEN_CHECKS) {
-        int item_index = MenuActivatedItems[ViewedPauseItem];
+        int item_index = ViewedPauseItem;
         int top_num = 0;
         int bottom_num = 0;
         if (check_level == 0) {
