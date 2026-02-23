@@ -63,7 +63,7 @@ function isItemShuffled(item_type, is_dummy = false) {
     }
     const list_items = document.getElementById(`item_rando_list_${i}`).getElementsByTagName("li");
     for (let j = 0; j < list_items.length; j++) {
-      if (list_items[j].getAttribute("value") == "item_type") {
+      if (list_items[j].getAttribute("value") == item_type) {
         return true;
       }
     }
@@ -878,27 +878,33 @@ document
 
 // Hide plando options for Isles medal locations if medal CBs aren't shuffled
 function plando_disable_isles_medals(evt) {
-  const cbShuffle = document.getElementById("cb_rando_enabled").value;
+  const cbShuffled = document.getElementById("cb_rando_enabled").checked;
+  const cbShuffledLevels = document.getElementById("cb_rando_list_selected").selectedOptions;
+  // If no levels are selected, or Isles is selected, this bool is true.
+  let islesShuffled = cbShuffledLevels.length === 0;
+  for (const shuffledLevel of cbShuffledLevels) {
+    if (shuffledLevel.value === "DKIsles") {
+      islesShuffled = true;
+    }
+  }
   const kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"];
 
-  if (cbShuffle !== "on_with_isles") {
-    for (const kong of kongs) {
-      const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
+  for (const kong of kongs) {
+    const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
+    if (cbShuffled && islesShuffled) {
+      kongIsleElem.removeAttribute("disabled");
+      kongIsleElem.parentElement.setAttribute("data-bs-original-title", "");
+    } else {
       kongIsleElem.setAttribute("disabled", "disabled");
       kongIsleElem.value = "";
       const tooltip = "To assign a reward here, Isles CBs must be shuffled.";
       kongIsleElem.parentElement.setAttribute("data-bs-original-title", tooltip);
     }
-  } else {
-    for (const kong of kongs) {
-      const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
-      kongIsleElem.removeAttribute("disabled");
-      kongIsleElem.parentElement.setAttribute("data-bs-original-title", "");
-    }
   }
 }
 
 document.getElementById("cb_rando_enabled").addEventListener("change", plando_disable_isles_medals);
+document.getElementById("cb_rando_list_selected").addEventListener("click", plando_disable_isles_medals);
 
 // Disable K. Rool phases as bosses if they are not in the boss pool.
 function plando_disable_krool_phases_as_bosses(evt) {
@@ -913,16 +919,65 @@ function plando_disable_krool_phases_as_bosses(evt) {
     for (let option of tnsBossOptions) {
       option.setAttribute("disabled", "disabled");
     }
+  }
+  if (kroolInBossPool !== "full_shuffle") {
     for (let i = 0; i < 5; i++) {
       const kroolPhase = document.getElementById(`plando_krool_order_${i}`);
       if (kroolPhase.value.includes("Boss")) {
         kroolPhase.value = "";
+      }
+      for (const kroolOpt of kroolPhase.options) {
+        if (kroolOpt.value && kroolOpt.value.includes("Boss")) {
+          kroolOpt.setAttribute("disabled", "disabled");
+        }
       }
     }
   }
 }
 
 document.getElementById("krool_in_boss_pool_v2").addEventListener("change", plando_disable_krool_phases_as_bosses);
+
+// Ensure Pufftoss cannot be the final boss.
+function plando_disable_pufftoss_as_final_boss(evt) {
+  const kroolInBossPool = document.getElementById("krool_in_boss_pool_v2").value;
+  // If TnS bosses aren't allowed on K. Rool, exit early.
+  if (kroolInBossPool !== "full_shuffle") {
+    return;
+  }
+  const kroolPhaseCount = parseInt(
+    document.getElementById("krool_phase_count").value
+  );
+  // If the number of K. Rool phases is random, we can't safely put
+  // Pufftoss anywhere.
+  const kroolRandom = document.getElementById("krool_random").checked;
+
+  for (let i = 0; i < 5; i++) {
+    const allowPufftoss = !kroolRandom && (i + 1 !== kroolPhaseCount);
+    const kroolPhase = document.getElementById(`plando_krool_order_${i}`);
+    if (!allowPufftoss && kroolPhase.value === "GalleonBoss") {
+      kroolPhase.value = "";
+    }
+    for (const kroolOpt of kroolPhase.options) {
+      if (kroolOpt.value === "GalleonBoss") {
+        if (allowPufftoss) {
+          kroolOpt.removeAttribute("disabled");
+        } else {
+          kroolOpt.setAttribute("disabled", "disabled");
+        }
+      }
+    }
+  }
+}
+
+document
+  .getElementById("krool_in_boss_pool_v2")
+  .addEventListener("change", plando_disable_pufftoss_as_final_boss);
+document
+  .getElementById("krool_random")
+  .addEventListener("click", plando_disable_pufftoss_as_final_boss);
+document
+  .getElementById("krool_phase_count")
+  .addEventListener("change", plando_disable_pufftoss_as_final_boss);
 
 // Make changes to the plando tab based on other settings
 document
@@ -946,6 +1001,7 @@ document
     plando_disable_tns_custom_locations(evt);
     plando_disable_isles_medals(evt);
     plando_disable_krool_phases_as_bosses(evt);
+    plando_disable_pufftoss_as_final_boss(evt);
 });
 
 // Randomize all non-cosmetic settings.

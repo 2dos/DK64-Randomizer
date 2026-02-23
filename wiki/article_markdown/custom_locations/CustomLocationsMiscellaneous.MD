@@ -520,7 +520,7 @@
 | Frantic Factory Lobby | Factory Lobby: Above Portal |  | `((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny)))` | 
 | Gloomy Galleon Lobby | Galleon Lobby: Right of Portal |  | `self.logic = lambda _: True` | 
 | Gloomy Galleon Lobby | Galleon Lobby: Left of Portal |  | `self.logic = lambda _: True` | 
-| Gloomy Galleon Lobby | Galleon Lobby: Mini room | CrownPad | `((l.mini and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.istiny and l.chunky and l.swim) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3)` | 
+| Gloomy Galleon Lobby | Galleon Lobby: Mini room | CrownPad | `((l.mini and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.istiny and l.chunky and l.swim and l.twirl) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3)` | 
 | Fungi Forest Lobby | Forest Lobby: On Tag Crate | MelonCrate | `self.logic = lambda _: True` | 
 | Crystal Caves Lobby | Caves Lobby: On the Lava | CrownPad | `((l.punch and l.strongKong and l.isdonkey) or l.CanPhase() or l.ledgeclip)` | 
 | Crystal Caves Lobby | Caves Lobby: Right of Portal |  | `self.logic = lambda _: True` | 

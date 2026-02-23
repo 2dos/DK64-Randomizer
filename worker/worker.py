@@ -30,7 +30,7 @@ from randomizer.Lists.Item import CustomStartingMoveSelector, HHItemSelector
 from randomizer.Lists.Logic import GlitchSelector, TrickSelector
 from randomizer.Lists.Minigame import MinigameSelector
 from randomizer.Lists.Multiselectors import FasterCheckSelector, QoLSelector, RemovedBarrierSelector, CBRandoSelector, RandomColorSelector, BossesSelector
-from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableCustomLocations, PlannableItems, PlannableKroolPhases, PlannableMinigames, PlannableSpawns, PlannableSwitches
+from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableCustomLocations, PlannableItems, PlannableKroolPhases, PlannableMinigames, PlannableSpawns
 from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectionPanel, PlannableSongs, SongFilteringSelector
 from randomizer.Lists.Warps import VanillaBananaportSelector
 from randomizer.Lists.WrinklyHints import PointSpreadSelector
@@ -123,7 +123,6 @@ def get_selector_info():
         "plando_panels": PlandomizerPanels,
         "plando_phases": PlannableKroolPhases,
         "plando_spawns": PlannableSpawns,
-        "plando_switches": PlannableSwitches,
         "points_spread": PointSpreadSelector,
         "custom_starting_moves": CustomStartingMoveSelector,
         "select_song_panel": MusicSelectionPanel,

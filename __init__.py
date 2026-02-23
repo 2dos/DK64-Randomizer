@@ -188,6 +188,7 @@ if baseclasses_loaded:
     import randomizer.ShuffleExits as ShuffleExits
     from archipelago.FillSettings import fillsettings
     from archipelago import Tracker
+    from archipelago.Prices import generate_prices
     from Utils import open_filename
     import shutil
     import zlib
@@ -739,7 +740,6 @@ if baseclasses_loaded:
             for name in sample_names:
                 print(name)
 
-
         def generate_early(self):
             """Generate the world."""
             # Check host setting for minimal logic and force glitchless if disabled
@@ -1073,6 +1073,7 @@ if baseclasses_loaded:
             else:
                 self.spoiler.settings.selected_shared_shops = set()
 
+            # Generate custom shop prices for Archipelago
             generate_prices(self.spoiler, self.options, self.random)
             # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
             if self.spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:

@@ -48,7 +48,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             display_text = 1;
             break;
         case REQITEM_GOLDENBANANA:
-            giveGB();
+            giveGB(0);
             break;
         case REQITEM_BLUEPRINT:
             current_item_data.bp_count[kong]++;

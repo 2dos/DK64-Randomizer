@@ -141,13 +141,13 @@ hint_distribution_default = {
     HintType.RequiredKeyHint: -1,  # Fixed number based on the number of keys to be obtained over the seed
     HintType.RequiredWinConditionHint: 0,  # Fixed number based on what K. Rool phases you must defeat
     HintType.RequiredHelmDoorHint: 0,  # Fixed number based on how many Helm doors have random requirements
-    HintType.WothLocation: 8,
+    HintType.WothLocation: 7,
     HintType.FullShopWithItems: 8,
     # HintType.FoolishMove: 0,  # Used to be 2, added to FoolishRegion when it was removed
     HintType.FoolishRegion: 3,
     HintType.ForeseenPathless: 0,
     HintType.Multipath: 0,
-    HintType.RegionItemCount: 2,  # Also known as scouring hints
+    HintType.RegionItemCount: 3,  # Also known as scouring hints
     HintType.ItemHinting: 0,
     HintType.Plando: 0,
     HintType.RequiredSlamHint: 1,  # Essentially the slam microhint placed on a door
@@ -2168,6 +2168,8 @@ def compileHints(spoiler: Spoiler) -> bool:
         if score > 0.25:
             location = spoiler.LocationList[loc_id]
             spoiler.poor_scoring_locations[location.name + " (" + ItemList[location.item].name + ")"] = score
+    if hintset.expectedDistribution[HintType.Multipath] <= 0:
+        spoiler.poor_scoring_locations = {"Non-multipath hints are not scored": 0}
 
     # Dim hints - these are only useful (and doable) if item rando is on
     if spoiler.settings.dim_solved_hints and spoiler.settings.shuffle_items:
@@ -2756,7 +2758,7 @@ def getNumberOfCutoffCharacters(message, number):
 def AssociateHintsWithFlags(spoiler, hintset):
     """Associate hints with the related flag at their related location as applicable."""
     for hint in hintset.hints:
-        if hint.related_location is not None:
+        if hint.related_location is not None and hint.related_location not in TrainingBarrelLocations and hint.related_location not in PreGivenLocations:
             for location_selection in spoiler.item_assignment:
                 if location_selection.location == hint.related_location:
                     hint.related_flag = location_selection.old_flag

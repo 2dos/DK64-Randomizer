@@ -801,11 +801,11 @@ def patching_response(spoiler):
         showWinCondition(spoiler.settings, ROM_COPY)
 
         patchAssembly(ROM_COPY, spoiler)
+        calculateInitFileScreen(spoiler, ROM_COPY)
         ApplyMirrorMode(spoiler.settings, ROM_COPY)
 
-    calculateInitFileScreen(spoiler, ROM_COPY)
     precalcBoot(ROM_COPY, spoiler)  # Needs to be done after any updates to setup for CBs, patches and crates
-
+    
     # Apply Hash
     order = 0
     for count in spoiler.settings.seed_hash:

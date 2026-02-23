@@ -280,7 +280,7 @@ extern void initHints(void);
 extern void initHintFlags(void);
 
 extern void initTextChanges(void);
-extern void giveGB();
+extern void giveGB(int balanced_distribution);
 extern int inShortList(const int target, const short* list, const int count);
 extern int inU8List(const int target, const unsigned char* list, const int count);
 
@@ -454,6 +454,7 @@ extern const unsigned char crown_maps[10];
 extern const unsigned char regular_boss_maps[7];
 extern const char* levels[10];
 extern unsigned int dark_mode_colors[10];
+extern const unsigned char helm_entry_points[3];
 
 extern const sprite_data_struct bean_sprite;
 extern const sprite_data_struct pearl_sprite;

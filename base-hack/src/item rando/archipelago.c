@@ -66,7 +66,7 @@ void handleSentItem(void) {
     switch (item_type) {
         case REQITEM_GOLDENBANANA:
             // GB has its own function
-            giveGB();
+            giveGB(1);
             break;
         case REQITEM_ICETRAP:
             // Ice traps use kong field as trap_type

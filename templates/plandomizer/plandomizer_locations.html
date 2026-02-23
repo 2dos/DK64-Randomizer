@@ -51,16 +51,16 @@
                                     {% endfor %}
                                 {% elif categoryName == "WrinklyDoor" %}
                                     {% for selectLocation in plando_custom_locations[categoryName][location["level"]][location["kong"]] %}
-                                        <option value="{{selectLocation}}"
-                                            {% if selectLocation == location["vanilla_value"] %}selected{% endif %}>
-                                            {{selectLocation}}
+                                        <option value="{{selectLocation["value"]}}"
+                                            {% if selectLocation["value"] == location["vanilla_value"] %}selected{% endif %}>
+                                            {{selectLocation["name"]}}
                                         </option>
                                     {% endfor %}
                                 {% elif categoryName == "TnsPortal" %}
                                     {% for selectLocation in plando_custom_locations[categoryName][location["level"]] %}
-                                        <option value="{{selectLocation}}"
-                                            {% if selectLocation == location["vanilla_value"] %}selected{% endif %}>
-                                            {{selectLocation}}
+                                        <option value="{{selectLocation["value"]}}"
+                                            {% if selectLocation["value"] == location["vanilla_value"] %}selected{% endif %}>
+                                            {{selectLocation["name"]}}
                                         </option>
                                     {% endfor %}
                                 {% else %}

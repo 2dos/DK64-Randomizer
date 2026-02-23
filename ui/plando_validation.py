@@ -53,7 +53,6 @@ class ValidationError(IntEnum):
     invalid_shop_cost = auto()
     invalid_starting_kong_count = auto()
     level_order_duplicates = auto()
-    krool_order_duplicates = auto()
     helm_order_duplicates = auto()
     assigned_shop_when_shuffled = auto()
     assigned_dirt_patch_when_shuffled = auto()
@@ -66,7 +65,6 @@ class ValidationError(IntEnum):
     random_custom_location = auto()
     duplicate_custom_location = auto()
     duplicate_custom_door = auto()
-    switchsanity_not_enabled = auto()
 
 
 # This dictionary stores all elements that have either been disabled or marked
@@ -550,41 +548,6 @@ def validate_level_order_no_duplicates(evt):
                 selectElem = js.document.getElementById(select)
                 errString = "The same level cannot be used twice in the level order."
                 mark_option_invalid(selectElem, ValidationError.level_order_duplicates, errString)
-
-
-@bind("change", "plando_krool_order_", 5)
-@bind("change", "plando_boss_order_", 7)
-def validate_krool_order_no_duplicates(evt):
-    """Raise an error if the same boss is chosen twice in the K. Rool or Boss order."""
-    battleDict = {}
-    # Count the instances of each boss battle.
-    for i in range(0, 5):
-        kroolElemName = f"plando_krool_order_{i}"
-        kroolOrderElem = js.document.getElementById(kroolElemName)
-        battle = kroolOrderElem.value
-        if battle in battleDict:
-            battleDict[battle].append(kroolElemName)
-        else:
-            battleDict[battle] = [kroolElemName]
-    for i in range(0, 7):
-        tnsElemName = f"plando_boss_order_{i}"
-        tnsOrderElem = js.document.getElementById(tnsElemName)
-        battle = tnsOrderElem.value
-        if battle in battleDict:
-            battleDict[battle].append(tnsElemName)
-        else:
-            battleDict[battle] = [tnsElemName]
-    # Invalidate any selects that re-use the same battle.
-    for battle, selects in battleDict.items():
-        if battle == "" or len(selects) == 1:
-            for select in selects:
-                selectElem = js.document.getElementById(select)
-                mark_option_valid(selectElem, ValidationError.krool_order_duplicates)
-        else:
-            for select in selects:
-                selectElem = js.document.getElementById(select)
-                errString = "The same boss battle cannot be used twice in the K. Rool order."
-                mark_option_invalid(selectElem, ValidationError.krool_order_duplicates, errString)
 
 
 @bind("change", "plando_helm_order_", 5)
@@ -1094,7 +1057,6 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
     plando_form_data = {}
     item_objects = []
     shop_cost_objects = []
-    switch_objects = []
     minigame_objects = []
     hint_objects = []
     custom_location_objects = []
@@ -1147,9 +1109,6 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             continue
         elif obj.name.endswith("_item"):
             item_objects.append(obj)
-            continue
-        elif obj.name.endswith("_switch"):
-            switch_objects.append(obj)
             continue
         elif obj.name.endswith("_minigame"):
             minigame_objects.append(obj)
@@ -1303,7 +1262,7 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             door_location = get_plando_value(Locations[location_name])
             location_value = get_plando_value(PlandoItems.Randomize)
             if door.value != "":
-                location_value = door.value
+                _, location_value = door.value.split(";")
             wrinkly_doors_map[door_location] = location_value
     plando_form_data["plando_wrinkly_doors"] = wrinkly_doors_map
 
@@ -1326,7 +1285,10 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             portal_num = int(re_obj[2])
             location = get_plando_value(PlandoItems.Randomize)
             if portal.value != "":
-                location = portal.value
+                try:
+                    _, location = portal.value.split(";")
+                except ValueError:
+                    location = portal.value
             tns_portal_map[level][portal_num] = location
         # Whittle down the lists to remove "none" portals.
         for level, doorList in tns_portal_map.items():
@@ -1472,29 +1434,6 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
             break
         else:
             levelOrderSet.add(level)
-
-    # Ensure that no boss battle was selected more than once in the K. Rool or boss order.
-    bossOrderSet = set()
-    for i in range(0, 5):
-        battle = plando_dict[f"plando_krool_order_{i}"]
-        if battle == PlandoItems.Randomize:
-            continue
-        if battle in bossOrderSet:
-            errString = "The same boss battle cannot be used twice."
-            errList.append(errString)
-            break
-        else:
-            bossOrderSet.add(battle)
-    for i in range(0, 7):
-        battle = plando_dict[f"plando_boss_order_{i}"]
-        if battle == PlandoItems.Randomize:
-            continue
-        if battle in bossOrderSet:
-            errString = "The same boss battle cannot be used twice."
-            errList.append(errString)
-            break
-        else:
-            bossOrderSet.add(battle)
 
     # Ensure that no Kong was selected more than once in the Helm order.
     helmOrderSet = set()
