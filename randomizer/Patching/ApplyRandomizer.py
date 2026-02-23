@@ -305,12 +305,17 @@ def patching_response(spoiler):
                         [0, 0],
                         [0x24, 2], # Primate Punch
                     ]
-                    replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
-                        f"COND 23 | {control_states[slot_data.default_kong][0]} 0 0": f"COND 23 | {control_states[pad_kong][0]} 0 0"
-                    })
-                    replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
-                        f"COND 33 | {control_states[slot_data.default_kong][1]} 0 0": f"COND 33 | {control_states[pad_kong][1]} 0 0"
-                    })
+                    if pad_type == SwitchType.Gong:
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                            f"COND 23 | {control_states[slot_data.default_kong][0]} {control_states[slot_data.default_kong][1]} 0": f"COND 23 | {control_states[pad_kong][0]} {control_states[pad_kong][1]} 0"
+                        })
+                    else:
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                            f"COND 23 | {control_states[slot_data.default_kong][0]} 0 0": f"COND 23 | {control_states[pad_kong][0]} 0 0"
+                        })
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                            f"COND 33 | {control_states[slot_data.default_kong][1]} 0 0": f"COND 33 | {control_states[pad_kong][1]} 0 0"
+                        })
                     replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
                         f"COND 24 | {slot_data.default_kong + 2} 1 0": f"COND 24 | {pad_kong + 2} 1 0"
                     })
