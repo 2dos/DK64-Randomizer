@@ -314,7 +314,7 @@ def GetAccessibleLocations(
                         sphere.locations = [locationId]
                         break
                     # The starting shop owner locations are not eligible for the playthrough
-                    if location.type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
+                    if location.type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime):
                         sphere.locations.append(locationId)
                 # If we're looking for one item and we find it, we're done
                 elif searchType == SearchMode.CheckSpecificItemReachable and location.item == targetItemId:
@@ -1046,6 +1046,8 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
         majorItems.extend(ItemPool.CandyItems())
     if Types.Snide in spoiler.settings.shuffled_location_types:
         majorItems.extend(ItemPool.SnideItems())
+    if Types.FungiTime in spoiler.settings.shuffled_location_types:
+        majorItems.extend(ItemPool.TimeItems())
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         majorItems.extend(ItemPool.TrainingBarrelAbilities())
     if spoiler.settings.climbing_status != ClimbingStatus.normal:
@@ -1169,6 +1171,10 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
         interesting_locations.remove(Locations.ShopOwner_Location02)
     if Locations.ShopOwner_Location03 in interesting_locations:
         interesting_locations.remove(Locations.ShopOwner_Location03)
+    if Locations.TimeLocationDay in interesting_locations:
+        interesting_locations.remove(Locations.TimeLocationDay)
+    if Locations.TimeLocationNight in interesting_locations:
+        interesting_locations.remove(Locations.TimeLocationNight)
 
     ordered_interesting_locations = []
     # Prep the dictionaries that will contain the paths to our interesting locations
@@ -2323,6 +2329,9 @@ def Fill(spoiler: Spoiler) -> None:
         if Types.Snide in spoiler.settings.shuffled_location_types:
             placed_types.append(Types.Snide)
             bigListOfItemsToPlace.extend(ItemPool.SnideItems())
+        if Types.FungiTime in spoiler.settings.shuffled_location_types:
+            placed_types.append(Types.FungiTime)
+            bigListOfItemsToPlace.extend(ItemPool.TimeItems())
         if Types.Bean in spoiler.settings.shuffled_location_types:
             placed_types.append(Types.Bean)
             bigListOfItemsToPlace.extend(ItemPool.BeanItems())
@@ -2687,6 +2696,10 @@ def Fill(spoiler: Spoiler) -> None:
     for x in range(4):
         if spoiler.LocationList[Locations.ShopOwner_Location00 + x].item is None:
             spoiler.LocationList[Locations.ShopOwner_Location00 + x].PlaceItem(spoiler, Items.NoItem)
+    if spoiler.LocationList[Locations.TimeLocationDay].item is None:
+        spoiler.LocationList[Locations.TimeLocationDay].PlaceItem(spoiler, Items.NoItem)
+    if spoiler.LocationList[Locations.TimeLocationNight].item is None:
+        spoiler.LocationList[Locations.TimeLocationNight].PlaceItem(spoiler, Items.NoItem)
 
     # Finally, check if game is beatable
     spoiler.Reset()
@@ -2760,6 +2773,16 @@ def FillTrainingMoves(spoiler: Spoiler, preplacedMoves: List[Items]):
         spoiler.LocationList[Locations.ShopOwner_Location03].inaccessible = False
         placedMoves.append(Items.Snide)
         movesToPlace.remove(Items.Snide)
+    if Items.Day in movesToPlace:
+        spoiler.LocationList[Locations.TimeLocationDay].PlaceItem(spoiler, Items.Day)
+        spoiler.LocationList[Locations.TimeLocationDay].inaccessible = False
+        placedMoves.append(Items.Day)
+        movesToPlace.remove(Items.Day)
+    if Items.Night in movesToPlace:
+        spoiler.LocationList[Locations.TimeLocationNight].PlaceItem(spoiler, Items.Night)
+        spoiler.LocationList[Locations.TimeLocationNight].inaccessible = False
+        placedMoves.append(Items.Night)
+        movesToPlace.remove(Items.Night)
     if len(movesToPlace) > 0:
         # We can expect that all locations in this region are starting move locations, Training Barrels, or starting shopkeeper locations
         for locationLogic in spoiler.RegionList[Regions.GameStart].locations:
@@ -2767,7 +2790,7 @@ def FillTrainingMoves(spoiler: Spoiler, preplacedMoves: List[Items]):
             if location.type == Types.TrainingBarrel and spoiler.settings.training_barrels == TrainingBarrels.normal:
                 # Patching expects these locations to be empty to fill in all the training moves
                 continue
-            if location.item is None and location.type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide):  # Don't put moves in shopkeeper locations!
+            if location.item is None and location.type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime):  # Don't put moves in shopkeeper locations!
                 placedMove = movesToPlace.pop()
                 location.inaccessible = False
                 location.PlaceItem(spoiler, placedMove)
@@ -2855,14 +2878,18 @@ def GeneratePlaythrough(spoiler: Spoiler) -> None:
     PlaythroughLocations = GetAccessibleLocations(spoiler, [], SearchMode.GeneratePlaythrough)  # identify in the spheres where the win condition is met
     if not spoiler.LogicVariables.bananaHoard and spoiler.settings.logic_type not in (LogicType.nologic, LogicType.minimal):
         raise Ex.FillException("Woah, you hit an EXTREMELY rare error! Please post your settings string to the discord. It's probably a freak accident so you're safe to try again.")
+    js.postMessage("Paring Playthrough...")
     ParePlaythrough(spoiler, PlaythroughLocations)
     # Generate and display woth
+    js.postMessage("Paring WotH...")
     WothLocations = PareWoth(spoiler, PlaythroughLocations)
     # Write data to spoiler and return
     spoiler.UpdateLocations(spoiler.LocationList)
     if any(spoiler.settings.shuffled_location_types):
         ShuffleItems(spoiler)
+    js.postMessage("Updating playthrough...")
     spoiler.UpdatePlaythrough(spoiler.LocationList, PlaythroughLocations)
+    js.postMessage("Updating Woth...")
     spoiler.UpdateWoth(spoiler.LocationList, WothLocations)
 
 
@@ -3117,6 +3144,7 @@ def FillKongsAndMoves(spoiler: Spoiler, placedTypes: List[Types], placedItems: L
         Types.Funky: ItemPool.FunkyItems(),
         Types.Candy: ItemPool.CandyItems(),
         Types.Snide: ItemPool.SnideItems(),
+        Types.FungiTime: ItemPool.TimeItems(),
     }
     for item_type in shop_owner_items:
         if item_type in spoiler.settings.shuffled_location_types:
@@ -3973,10 +4001,12 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     CorrectBossKongLocations(spoiler)
     GeneratePlaythrough(spoiler)
     compileMicrohints(spoiler)
+    js.postMessage("Compiled Microhints...")
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         compileHints(spoiler)
     if spoiler.settings.spoiler_hints != SpoilerHints.off:
         compileSpoilerHints(spoiler)
+    js.postMessage("Compiled Hints...")
     spoiler.Reset()
     ShuffleExits.Reset(spoiler)
     spoiler.createJson()

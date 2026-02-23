@@ -124,7 +124,7 @@
 | Aztec Llama Temple | Llama Temple: Vanilla Far Warp 1 |  | `self.logic = lambda _: True` | 
 | Aztec Llama Temple | Llama Temple: Vanilla Lava Warp 2 |  | `self.logic = lambda _: True` | 
 | Aztec Llama Temple | Llama Temple: Vanilla Close Warp 2 |  | `self.logic = lambda _: True` | 
-| Aztec Llama Temple | In the Water | CrownPad, DirtPatch, Bananaport | `Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))` | 
+| Aztec Llama Temple | In the Water | CrownPad, DirtPatch, Bananaport | `Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or l.isdonkey or l.isdiddy or l.islanky or l.ischunky)` | 
 | Aztec Llama Temple | Llama Temple: DK Switch |  | `self.logic = lambda _: True` | 
 | Aztec Llama Temple | Llama Temple: Lava Room |  | `self.logic = lambda _: True` | 
 
@@ -333,7 +333,7 @@
 | Crystal Caves | On igloo Pillar | MelonCrate | `(l.jetpack and l.isdiddy) or (l.twirl and l.istiny and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
 | Crystal Caves | On top of the Igloo | CrownPad, MelonCrate | `self.logic = lambda _: True` | 
 | Crystal Caves | Under tag barrel near igloo | MelonCrate | `self.logic = lambda _: True` | 
-| Crystal Caves | In front of Igloo | CrownPad, DirtPatch, Bananaport | `(l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))) or l.Slam` | 
+| Crystal Caves | In front of Igloo | CrownPad, DirtPatch, Bananaport | `(l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or l.isdonkey or l.isdiddy or l.islanky or l.ischunky)) or l.Slam` | 
 | Crystal Caves | In the mini cave |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Near ice wall to boulder |  | `self.logic = lambda _: True` | 
 | Crystal Caves | In Giant Boulder Room |  | `self.logic = lambda _: True` | 
@@ -538,7 +538,7 @@
 | Training Grounds | Training Grounds: Near Mountain |  | `l.climbing and ((l.twirl and l.istiny) or (l.monkey_maneuvers and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
 | Training Grounds | Training Grounds: Rear Cave |  | `self.logic = lambda _: True` | 
 | Training Grounds | Training Grounds: Banana Hoard (back) |  | `(l.can_use_vines or l.CanMoonkick()) and l.climbing` | 
-| Training Grounds | Training Grounds: Underwater | CrownPad, DirtPatch | `l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny)) and l.swim and l.scope` | 
+| Training Grounds | Training Grounds: Underwater | CrownPad, DirtPatch | `l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or l.isdonkey or l.isdiddy or l.islanky or l.ischunky) and l.swim and l.scope` | 
 | Training Grounds | Training Grounds: Near Pool |  | `self.logic = lambda _: True` | 
 | Treehouse | Treehouse: back |  | `self.logic = lambda _: True` | 
 | Banana Fairy Room | Banana Fairy Room: Right of Queen |  | `self.logic = lambda _: True` | 

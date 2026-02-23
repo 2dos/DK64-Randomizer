@@ -621,6 +621,8 @@ move_names = [
     MoveName("Snide", MoveTypes.flag),  # 92
     MoveName("Hint", MoveTypes.flag),  # 93
     MoveName("Climbing", MoveTypes.flag),  # 94
+    MoveName("Day", MoveTypes.flag),  # 95
+    MoveName("Night", MoveTypes.flag),  # 96
 ]
 
 move_names_arr = []
@@ -769,6 +771,8 @@ text_enum = [
     "ITEMTEXT_SNIDEITEM",  # 0x05C
     "ITEMTEXT_HINTITEM",  # 0x05D
     "ITEMTEXT_CLIMBING",  # 0x05E
+    "ITEMTEXT_DAY",  # 0x05F
+    "ITEMTEXT_NIGHT",  # 0x060
 ]
 
 
@@ -982,6 +986,7 @@ kongname_text.append([{"text": ["K. ROOL"]}])
 kongname_text.append([{"text": ["CRANKY"]}])
 kongname_text.append([{"text": ["CANDY"]}])
 kongname_text.append([{"text": ["FUNKY"]}])
+kongname_text.append([{"text": ["RICARDO"]}])
 writeText("kongname_text.bin", kongname_text)
 
 fairy_text = grabText(40)
@@ -1047,6 +1052,7 @@ wrinkly_item_text = [
     "Ooooo... This item feels... out of place, ~. Are you sure it belongs in our jungle?",  # REQITEM_AP,
     YOU_SHOULD_NOT_SEE_THIS,  # REQITEM_RACECOIN,
     YOU_SHOULD_NOT_SEE_THIS,  # REQITEM_BONUSES_NOHELM,
+    "Ooooo... I feel some barriers are opening up in that mushroom place. Perhaps you should check it out",  # REQITEM_FUNGITIME
 ]
 
 vanilla_track_names = [

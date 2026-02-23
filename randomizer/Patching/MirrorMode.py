@@ -24,13 +24,32 @@ def FlipDisplayList(ROM_COPY: LocalROM, data: bytearray, start: int, end: int, t
     writeRawFile(table, file, True, data, ROM_COPY)
 
 
-def readDataFromBytestream(data: bytearray, offset: int, size: int) -> int:
+def readDataFromBytestream(data: bytearray, offset: int, size: int, signed: bool = False) -> int:
     """Read data from a byte stream and output an int."""
     value = 0
     for x in range(size):
         value <<= 8
         value += data[offset + x]
+    if signed:
+        if value >= (1 << ((8 * size) - 1)):
+            value = (1 << (8 * size)) - value
     return value
+
+
+def writeValueToBytestream(data: bytearray, value: int, offset: int, size: int) -> bytearray:
+    """Write data to a byte stream."""
+    values = [0] * size
+    value = int(value)
+    if value < 0:
+        value += 1 << (size * 8)
+    for x in range(size):
+        values[(size - x) - 1] = value & 0xFF
+        value >>= 8
+        if value == 0:
+            break
+    for x in range(size):
+        data[offset + x] = values[x]
+    return data
 
 
 def ApplyMirrorMode(settings: Settings, ROM_COPY: LocalROM):
@@ -54,6 +73,146 @@ def ApplyMirrorMode(settings: Settings, ROM_COPY: LocalROM):
                 dl_start = readDataFromBytestream(data, 0x40, 4)
                 dl_end = readDataFromBytestream(data, 0x48, 4)
             FlipDisplayList(ROM_COPY, data, dl_start, dl_end, tbl, file_index)
+
+
+MISC_SCALES = {
+    0: 1,  # Test Map
+    29: 1,  # Power Shed
+    31: 1,  # K Rool's ship
+    37: 1,  # Japes Blast
+    41: 1,  # Aztec Blast
+    44: 1,  # Treasure Chest
+    45: 1,  # Mermaid Palace
+    54: 1,  # Galleon Blast
+    89: 1,  # Rotating Room
+    171: 1,  # DK's House
+    188: 1,  # Fungi Blast
+}
+
+
+def applyCoordTransform(value: float, map_index: int = 0, apply_scaling: bool = False):
+    """Apply the flipping coordinate transform."""
+    offset = 3000
+    if apply_scaling:
+        offset *= MISC_SCALES.get(map_index, 3)
+    return offset - value
+
+
+def ApplyMirrorModeNew(ROM_COPY: LocalROM):
+    """Apply all Mirror Mode changes (testing)."""
+    for map_index in range(216):
+        map_geo = bytearray(getRawFile(ROM_COPY, TableNames.MapGeometry, map_index, True))
+        print("Flipping Map ", map_index)
+        walls_compressed = False
+        floors_compressed = False
+        walls_count = 0
+        floors_count = 0
+        if len(map_geo) > 0:
+            # Get compression data
+            compression_byte = map_geo[9]
+            walls_compressed = (compression_byte & 1) != 0
+            floors_compressed = (compression_byte & 2) != 0
+            walls_count = readDataFromBytestream(map_geo, 0x10, 2) * readDataFromBytestream(map_geo, 0x12, 2)
+            floors_count = readDataFromBytestream(map_geo, 0x18, 2) * readDataFromBytestream(map_geo, 0x1A, 2)
+            # Invert verts
+            vert_start = readDataFromBytestream(map_geo, 0x38, 4)
+            vert_end = readDataFromBytestream(map_geo, 0x40, 4)
+            vert_count = int((vert_end - vert_start) / 0x10)
+            for x in range(vert_count):
+                local_vert_start = vert_start + (0x10 * x)
+                val = readDataFromBytestream(map_geo, local_vert_start, 2, True)
+                map_geo = writeValueToBytestream(map_geo, applyCoordTransform(val, map_index, True), local_vert_start, 2)
+            # Invert Map Void
+            void_min_x = readDataFromBytestream(map_geo, 0x26, 2, True)
+            void_max_x = readDataFromBytestream(map_geo, 0x2A, 2, True)
+            map_geo = writeValueToBytestream(map_geo, applyCoordTransform(void_max_x, map_index), 0x26, 2)
+            map_geo = writeValueToBytestream(map_geo, applyCoordTransform(void_min_x, map_index), 0x2A, 2)
+            # Invert Chunks
+            chunk_start = readDataFromBytestream(map_geo, 0x64, 4)
+            chunk_count = readDataFromBytestream(map_geo, chunk_start, 4)
+            for x in range(chunk_count):
+                local_header = chunk_start + 4 + (0xC * x)
+                location = chunk_start + readDataFromBytestream(map_geo, local_header, 4)
+                x_min = readDataFromBytestream(map_geo, local_header + 0x4, 2, True) / 6
+                x_max = readDataFromBytestream(map_geo, local_header + 0x8, 2, True) / 6
+                new_x_min = applyCoordTransform(x_max, map_index) * 6
+                new_x_max = applyCoordTransform(x_min, map_index) * 6
+                map_geo = writeValueToBytestream(map_geo, new_x_min, local_header + 0x4, 2)
+                map_geo = writeValueToBytestream(map_geo, new_x_max, local_header + 0x8, 2)
+                location0 = chunk_start + readDataFromBytestream(map_geo, local_header + 0xC, 4)
+                count = int((location0 - location) / 0x14)
+                for y in range(count):
+                    local_header_0 = location + (y * 0x14)
+                    for z in range(3):
+                        value = readDataFromBytestream(map_geo, local_header_0 + (2 * z), 2, True) / 6
+                        new_value = applyCoordTransform(value, map_index) * 6
+                        map_geo = writeValueToBytestream(map_geo, new_value, local_header_0 + 0x4 - (2 * z), 2)
+            # Invert all map coord stuff
+            # Flip Tri Render Order
+            dl_start = readDataFromBytestream(map_geo, 0x34, 4)
+            FlipDisplayList(ROM_COPY, map_geo, dl_start, vert_start, TableNames.MapGeometry, map_index)
+        collision_data = [
+            {
+                "table": TableNames.MapFloors,
+                "comp": floors_compressed,
+                "count": floors_count,
+                "divisor": 6,
+            },
+            {
+                "table": TableNames.MapWalls,
+                "comp": walls_compressed,
+                "count": walls_count,
+                "divisor": 1,
+            },
+        ]
+        for coldata in collision_data:
+            tbl = coldata["table"]
+            compressed = coldata["comp"]
+            file_data = bytearray(getRawFile(ROM_COPY, tbl, map_index, compressed))
+            if len(file_data) > 0:
+                print("Processing ", tbl.name, " in map ", hex(map_index), " with count ", coldata["count"], " with length ", hex(len(file_data)), ". Compression: ", compressed)
+                start = 8
+                for x in range(coldata["count"]):
+                    print(hex(start))
+                    if start >= len(file_data):
+                        continue
+                    ref = start - 4
+                    block_end = readDataFromBytestream(file_data, ref, 4)
+                    ref += 4
+                    block_count = int((block_end - start) / 0x18)
+                    print(
+                        hex(block_end),
+                        hex(block_count),
+                    )
+                    for _ in range(block_count):
+                        div = coldata["divisor"]
+                        for cs in range(3):
+                            if tbl == TableNames.MapFloors:
+                                value = readDataFromBytestream(file_data, ref, 2, True) / div
+                                new_value = applyCoordTransform(value, map_index) * div
+                                file_data = writeValueToBytestream(file_data, new_value, ref, 2)
+                                ref += 6
+                            elif tbl == TableNames.MapWalls:
+                                value = readDataFromBytestream(file_data, ref, 2, True) / div
+                                new_value = applyCoordTransform(value, map_index) * div
+                                file_data = writeValueToBytestream(file_data, new_value, ref, 2)
+                                ref += 2
+                                if cs == 2:
+                                    ref += 12  # Skip Y and Z
+                        ref += 6
+                    start = block_end + 4
+                writeRawFile(tbl, map_index, compressed, file_data, ROM_COPY)
+        map_exits = bytearray(getRawFile(ROM_COPY, TableNames.Exits, map_index, False))
+        if len(map_exits) > 0:
+            exit_count = readDataFromBytestream(map_exits, 10, 2)
+            offsets = [0]
+            for x in range(exit_count):
+                offsets.append(12 + (10 * x))
+            for offset in offsets:
+                value = readDataFromBytestream(map_exits, offset, 2, True)
+                new_value = applyCoordTransform(value, map_index)
+                map_exits = writeValueToBytestream(map_exits, new_value, offset, 2)
+            writeRawFile(TableNames.Exits, map_index, False, map_exits, ROM_COPY)
 
 
 def trimData(data: bytes, alignment: int = 0x10) -> bytes:

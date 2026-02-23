@@ -1498,7 +1498,7 @@ door_locations = {
             kong_lst=[Kongs.chunky],
             group=4,
             moveless=False,
-            logic=lambda l: (l.ischunky and l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
+            logic=lambda l: (l.ischunky and l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
             door_type=[DoorType.wrinkly],
         ),
         DoorData(
@@ -1778,7 +1778,7 @@ door_locations = {
             kong_lst=[Kongs.chunky],
             group=6,
             moveless=False,
-            logic=lambda l: (l.chunky and l.punch) or l.CanPhase() or l.generalclips,
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase() or l.generalclips,
             door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(

@@ -48,6 +48,7 @@ class Types(IntEnum):
     RaceBanana = 45
     GauntletBanana = 46
     FillerRainbowCoin = 47
+    FungiTime = 48
 
 class BarrierItems(IntEnum):
     Nothing = 0

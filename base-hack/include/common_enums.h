@@ -271,6 +271,8 @@ typedef enum item_purchase_text {
 	/* 0x05C */ ITEMTEXT_SNIDEITEM,
 	/* 0x05D */ ITEMTEXT_HINTITEM,
 	/* 0x05E */ ITEMTEXT_CLIMBING,
+	/* 0x05F */ ITEMTEXT_DAY,
+	/* 0x060 */ ITEMTEXT_NIGHT,
 } item_purchase_text;
 
 typedef enum pausescreenlist {
@@ -995,6 +997,7 @@ typedef enum requirement_item {
 	/* 0x015 */ REQITEM_AP,
 	/* 0x016 */ REQITEM_RACECOIN,
 	/* 0x017 */ REQITEM_BONUSES_NOHELM,
+	/* 0x018 */ REQITEM_FUNGITIME,
 } requirement_item;
 
 typedef enum item_ids { 
@@ -1076,6 +1079,8 @@ typedef enum enum_bonus_skin {
 	/* 0x01F */ SKIN_AP_USEFUL,
 	/* 0x020 */ SKIN_AP_JUNK,
 	/* 0x021 */ SKIN_AP_TRAP,
+	/* 0x022 */ SKIN_DAY,
+	/* 0x023 */ SKIN_NIGHT,
     /* ----- */ SKIN_TERMINATOR,
 } enum_bonus_skin;
 
@@ -1101,6 +1106,7 @@ typedef enum custom_kong_models {
 	/* 0x00B */ KONGMODEL_CANDY,
 	/* 0x00C */ KONGMODEL_FUNKY,
 	/* 0x00D */ KONGMODEL_DISCODONKEY,
+	/* 0x00E */ KONGMODEL_ROBOKREM,
 } custom_kong_models;
 
 typedef enum dynamic_flag_icetrap_junk {

@@ -208,6 +208,8 @@ class CustomActors(IntEnum):
     GuardDisableZ = auto()
     GuardGetOut = auto()
     GuardTag = auto()
+    DayItem = auto()
+    NightItem = auto()
 
 
 class GraphicOverlay(IntEnum):
@@ -283,6 +285,8 @@ class ArcadeRewards(IntEnum):
     BPTiny = auto()
     BPChunky = auto()
     APItem = auto()
+    DayItem = auto()
+    NightItem = auto()
 
 
 class JetpacRewards(IntEnum):
@@ -309,6 +313,8 @@ class JetpacRewards(IntEnum):
     Snide = auto()
     Hint = auto()
     APItem = auto()
+    DayItem = auto()
+    NightItem = auto()
 
 
 class BuyText(IntEnum):
@@ -963,6 +969,20 @@ item_db = {
         special_preview_text={
             Locations.GalleonDonkeySealRace: ["ANOTHER MAN'S TREASURE", "ANOTHER PIRATE'S EYEPATCH", "ONE MAN'S TRASH", "ONE MAN'S TREESURE"],
             Locations.ForestDiddyOwlRace: ["A RABBIT'S FOOT", "A PENNY", "A BLACK CAT", "A RABBTI'S FOOT"],
+        },
+    ),
+    Types.FungiTime: ItemPlacementData(
+        model_index=[0x13D, 0x13E],
+        model_two_index=[0x29A, 0x29B],
+        actor_index=[CustomActors.DayItem, CustomActors.NightItem],
+        arcade_reward_index=[ArcadeRewards.DayItem, ArcadeRewards.NightItem],
+        jetpac_reward_index=[JetpacRewards.DayItem, JetpacRewards.NightItem],
+        overlay=[GraphicOverlay.Hint] * 2,
+        index_getter= lambda item: [Items.Day, Items.Night].index(item),
+        preview_text=["DAY", "NIGHT"],
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "YE CLOCK OF THE WAVES",
+            Locations.ForestDiddyOwlRace: "TURNING OF LIGHT",
         },
     ),
 }

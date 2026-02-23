@@ -538,6 +538,40 @@ with open(ROMName, "rb") as rom:
         os.remove("temp.bin")
     with open("fake_item_actor.bin", "wb") as fh:
         fh.write(data)
+    # Duplicate Day/Night Items
+    fungi_time = {
+        "day": 0xD07,
+        "night": 0xD08,
+    }
+    for name, index in fungi_time.items():
+        rom.seek(modeltwo_table + (0x1CA << 2))
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        indic = int.from_bytes(rom.read(2), "big")
+        rom.seek(model_start)
+        data = rom.read(model_size)
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        with open(f"{name}_item_om2.bin", "wb") as fh:
+            fh.write(data)
+        with open(f"{name}_item_om2.bin", "r+b") as fh:
+            # Rotate
+            # for x in range(24):
+            #     vert_start = 0x1D0 + (x * 8)
+            #     fh.seek(vert_start)
+            #     coords = []
+            #     for y in range(3):
+            #         v = int.from_bytes(fh.read(2), "big")
+            #         coords.append(v)
+            #     fh.seek(vert_start)
+            #     for y in range(3):
+            #         fh.write(coords[(y + 1) % 3].to_bytes(2, "big"))
+            # Replace Image
+            fh.seek(0xDC)
+            fh.write(index.to_bytes(4, "big"))
+                    
     # Multiplayer Pad
     rom.seek(modeltwo_table + (0x214 << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
@@ -717,6 +751,61 @@ with open(ROMName, "rb") as rom:
             for x in range(5):
                 fh.write(tex.to_bytes(2, "big"))
             fh.write((0).to_bytes(2, "big"))
+    # Punch Grates
+    color_mapping = {
+        "diddy": (0xFF, 0x00, 0x00),
+        "chunky": (0x41, 0xFF, 0x25),
+    }
+    obj_mapping = {
+        "punch_gate": 114
+    }
+    PUNCH_GRATE_FACE_DELTA = 8
+    for obj_name, obj_id in obj_mapping.items():
+        for name, color in color_mapping.items():
+            rom.seek(modeltwo_table + (obj_id << 2))
+            model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+            model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+            model_size = model_end - model_start
+            rom.seek(model_start)
+            indic = int.from_bytes(rom.read(2), "big")
+            rom.seek(model_start)
+            data = rom.read(model_size)
+            if indic == 0x1F8B:
+                data = zlib.decompress(data, (15 + 32))        
+            with open(f"{obj_name}_{name}.bin", "wb") as fh:
+                fh.write(data)
+            with open(f"{obj_name}_{name}.bin", "r+b") as fh:
+                fh.seek(0x48)
+                vert_start = int.from_bytes(fh.read(4), "big")
+                vert_end = int.from_bytes(fh.read(4), "big")
+                vert_count = int((vert_end - vert_start) / 0x10)
+                for x in range(vert_count):
+                    fh.seek(vert_start + 0xC + (x * 0x10))
+                    for c in color:
+                        fh.write(c.to_bytes(1, "big"))
+    # Ice Wall
+    texture_mapping = {
+        "diddy": (getBonusSkinOffset(ExtraTextures.DiddyIcePalette0), getBonusSkinOffset(ExtraTextures.DiddyIcePalette1)),
+        "chunky": (getBonusSkinOffset(ExtraTextures.ChunkyIcePalette0), getBonusSkinOffset(ExtraTextures.ChunkyIcePalette1)),
+    }
+    for name, textures in texture_mapping.items():
+        rom.seek(modeltwo_table + (510 << 2))
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        indic = int.from_bytes(rom.read(2), "big")
+        rom.seek(model_start)
+        data = rom.read(model_size)
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))        
+        with open(f"ice_wall_{name}.bin", "wb") as fh:
+            fh.write(data)
+        with open(f"ice_wall_{name}.bin", "r+b") as fh:
+            fh.seek(0x234)
+            fh.write(textures[0].to_bytes(4, "big"))
+            fh.seek(0x144)
+            fh.write(textures[1].to_bytes(4, "big"))
     # Fake Fairies
     rom.seek(actor_table + (0x3C << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")

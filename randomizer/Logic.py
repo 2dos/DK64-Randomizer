@@ -204,6 +204,8 @@ class LogicVarHolder:
         self.funkyAccess = False
         self.candyAccess = False
         self.snideAccess = False
+        self.dayAccess = False
+        self.nightAccess = False
 
         self.HelmDonkey1 = False
         self.HelmDonkey2 = False
@@ -410,6 +412,8 @@ class LogicVarHolder:
         self.funkyAccess = self.funkyAccess or Items.Funky in ownedItems
         self.candyAccess = self.candyAccess or Items.Candy in ownedItems
         self.snideAccess = self.snideAccess or Items.Snide in ownedItems
+        self.dayAccess = self.dayAccess or Items.Day in ownedItems
+        self.nightAccess = self.nightAccess or Items.Night in ownedItems
 
         self.nintendoCoin = self.nintendoCoin or Items.NintendoCoin in ownedItems
         self.rarewareCoin = self.rarewareCoin or Items.RarewareCoin in ownedItems
@@ -671,7 +675,7 @@ class LogicVarHolder:
             if data.kong == Kongs.any:
                 return self.HasGun(Kongs.any) and self.HasInstrument(Kongs.any)
             return kong_data and gun_abilities[data.kong] and instrument_abilities[data.kong]
-        elif data.switch_type == SwitchType.PushableButton:
+        elif data.switch_type in (SwitchType.PushableButton, SwitchType.PunchGrate, SwitchType.IceWall, SwitchType.Gong):
             if data.kong == Kongs.diddy:
                 return kong_data and self.charge
             if data.kong == Kongs.chunky:

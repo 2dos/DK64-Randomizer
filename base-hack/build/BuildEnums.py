@@ -950,6 +950,13 @@ class ExtraTextures(IntEnum):
     HalfMedal06 = auto()
     HalfMedal07 = auto()
     HalfMedal08 = auto()
+    DayIcon = auto()
+    NightIcon = auto()
+    APIcon = auto()
+    DiddyIcePalette0 = auto()
+    DiddyIcePalette1 = auto()
+    ChunkyIcePalette0 = auto()
+    ChunkyIcePalette1 = auto()
 
 
 class MoveTypes(IntEnum):
@@ -1073,6 +1080,8 @@ class CustomActors(IntEnum):
     GuardDisableZ = auto()
     GuardGetOut = auto()
     GuardTag = auto()
+    DayItem = auto()
+    NightItem = auto()
 
 
 class MusicTypes(IntEnum):

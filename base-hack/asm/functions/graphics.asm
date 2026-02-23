@@ -4,6 +4,7 @@
 .definelabel _guMtxF2L, 0x8000A6C0
 .definelabel _guMtxXFMF, 0x80008810
 .definelabel _guMtxXFML, 0x80008A20
+.definelabel guOrtho, 0x80006DE4
 .definelabel initDisplayList, 0x807132DC
 .definelabel initDisplayList_0, 0x806FEDB0
 .definelabel displayText, 0x806FC530
@@ -52,3 +53,9 @@
 .definelabel unkFadeFunction, 0x80704484
 .definelabel endDL, 0x805FE71C
 .definelabel unkDLFunction1, 0x805FE7B4
+.definelabel setColorFramebuffer, 0x805FE4D4
+.definelabel guSprite2DInit, 0x80005A90
+.definelabel spriteUnk, 0x8070E8F0
+.definelabel spriteSetParams, 0x8070F2C8
+.definelabel unkGuMacro, 0x80612CA0
+.definelabel unkGuMacro2, 0x80704444

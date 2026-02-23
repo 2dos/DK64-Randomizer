@@ -63,30 +63,6 @@ int isBonus(maps map) {
 	return (level == LEVEL_BONUS) || (level == LEVEL_SHARED);
 }
 
-int checkControlState(int target_control_state) {
-	/**
-	 * @brief Check control state of the player to see if player is making the correct contact with the item
-	 * 
-	 * @param target_control_state Control state which the player is required to be in
-	 * 
-	 * @return Is the correct control state and control state progress
-	 */
-	if (Player) {
-		if (Player->control_state == target_control_state) {
-			if (target_control_state == 0x24) {
-				if (Player->control_state_progress == 2) {
-					return 1;
-				}
-			} else {
-				if (Player->control_state_progress == 1) {
-					return 1;
-				}
-			}
-		}
-	}
-	return 0;
-}
-
 int standingOnM2Object(int index) {
 	return (Player->touching_object == 1) && (Player->standing_on_index == index);
 }
@@ -130,26 +106,4 @@ void playSFXContainer(int id, int vanilla_sfx, int new_sfx) {
 		sfx_played = vanilla_sfx;
 	}
 	playSFXFromObject(index,sfx_played,-1,127,0,0,0.3f);
-}
-
-int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, int ID) {
-	/**
-	 * @brief Detect if switch is being hit by a bullet of a certain type
-	 * 
-	 * @param behaviour_pointer Behaviour Pointer of Object
-	 * @param bullet_type Actor Type of bullet that is expected to be made contact with
-	 * @param ID Switch Object ID
-	 * 
-	 * @return Switch is being pressed
-	 */
-	if (behaviour_pointer->switch_pressed == 1) {
-		if (behaviour_pointer->contact_actor_type == bullet_type) {
-			if (canHitSwitch()) {
-				int index = convertSubIDToIndex(ID);
-				setSomeTimer(ObjectModel2Pointer[index].object_type);
-				return 1;
-			}
-		}
-	}
-	return 0;
 }

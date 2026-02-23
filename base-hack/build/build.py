@@ -29,7 +29,7 @@ from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from cutscene_builder import buildScripts
 from end_seq_writer import createSquishFile, createTextFile
-from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch, fixFactoryDoor, modifyOtherWrinklyDoors, buildAnyKongSwitches
+from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch, fixFactoryDoor, modifyOtherWrinklyDoors, buildAnyKongSwitches, buildGongs
 from helm_doors import getHelmDoorModel
 from instance_script_maker import BuildInstanceScripts
 from model_shrink import shrinkModel
@@ -70,6 +70,7 @@ generateSprintSwitch()
 fixFactoryDoor()
 buildAnyKongSwitches()
 generateIceMaze()
+buildGongs()
 
 getHelmDoorModel(6022, 6023, "crown_door.bin")
 getHelmDoorModel(6024, 6025, "coin_door.bin")
@@ -99,7 +100,8 @@ file_dict = [
         texture_format=TextureFormat.RGBA5551,
         target_compressed_size=64 * 32 * 2,
     ),
-    File(name="Gong Geometry", pointer_table_index=TableNames.ModelTwoGeometry, file_index=195, source_file="assets/Gong/gong_geometry.bin", bps_file="assets/Gong/gong_geometry.bps"),
+    File(name="Gong (Diddy)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=195, source_file="assets/Gong/diddy_gong.bin", do_not_delete_source=True),
+    File(name="Gong (Chunky)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A0, source_file="assets/Gong/chunky_gong.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="End Sequence Credits", pointer_table_index=TableNames.Unknown19, file_index=7, source_file="assets/credits/credits.bin", do_not_delete_source=True),
     File(
         name="DK Wrinkly Door",
@@ -313,6 +315,30 @@ file_dict = [
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
     ),
+    File(
+        name="Day Icon",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.DayIcon),
+        source_file="assets/displays/time_day.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="Night Icon",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.NightIcon),
+        source_file="assets/displays/time_night.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="AP Icon",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.APIcon),
+        source_file="assets/displays/ap32.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=605, source_file="fake_item_0.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Melon Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=606, source_file="melon_3d_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Sprint Switch", pointer_table_index=TableNames.ModelTwoGeometry, file_index=611, source_file="assets/Gong/sprint_switch.bin", do_not_extract=True, do_not_delete_source=True),
@@ -517,6 +543,12 @@ file_dict = [
     File(name="Fake Bean Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x264, source_file="fake_bean_0.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Key Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x265, source_file="fake_key_0.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Fairy Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x299, source_file="fake_fairy_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Day Item (OM2)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29A, source_file="day_item_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Night Item (OM2)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29B, source_file="night_item_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Punch Grate (Diddy)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29C, source_file="punch_gate_diddy.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Punch Grate (Chunky)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29D, source_file="punch_gate_chunky.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Ice Wall (Diddy)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29E, source_file="ice_wall_diddy.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Ice Wall (Chunky)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29F, source_file="ice_wall_chunky.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Animation Code", pointer_table_index=TableNames.Unknown13, file_index=0, source_file="animation_code.bin", do_not_delete_source=True),
     File(
         name="Disco Shirt",
@@ -572,6 +604,10 @@ file_dict = [
         do_not_delete_source=True,
         target_size=32 * 48 * 2,
     ),
+    File(name="Diddy Ice Palette 0", pointer_table_index=TableNames.TexturesGeometry, file_index=getBonusSkinOffset(ExtraTextures.DiddyIcePalette0), source_file="assets/displays/diddy_ice_palette_0.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True),
+    File(name="Diddy Ice Palette 1", pointer_table_index=TableNames.TexturesGeometry, file_index=getBonusSkinOffset(ExtraTextures.DiddyIcePalette1), source_file="assets/displays/diddy_ice_palette_1.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True),
+    File(name="Chunky Ice Palette 0", pointer_table_index=TableNames.TexturesGeometry, file_index=getBonusSkinOffset(ExtraTextures.ChunkyIcePalette0), source_file="assets/displays/chunky_ice_palette_0.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True),
+    File(name="Chunky Ice Palette 1", pointer_table_index=TableNames.TexturesGeometry, file_index=getBonusSkinOffset(ExtraTextures.ChunkyIcePalette1), source_file="assets/displays/chunky_ice_palette_1.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True),
 ]
 
 cutscene_scripts = buildScripts()
@@ -1609,6 +1645,8 @@ shrinkModel(True, "archi_om1.bin", 0, 1 / 0.15, "shrink_archi.bin", False)
 shrinkModel(True, "special_archi_om1.bin", 0, 1 / 0.15, "shrink_special_archi.bin", False)
 shrinkModel(True, "fools_archi_om1.bin", 0, 1 / 0.15, "shrink_fools_archi.bin", False)
 shrinkModel(True, "trap_archi_om1.bin", 0, 1 / 0.15, "shrink_trap_archi.bin", False)
+shrinkModel(True, "day_item_om1.bin", 0, 1 / 0.15, "shrink_day_item.bin", False)
+shrinkModel(True, "night_item_om1.bin", 0, 1 / 0.15, "shrink_night_item.bin", False)
 FINAL_RACE_HOOP = "shrink_race_hoop.bin"
 shrinkModel(True, "race_hoop_om1.bin", 0, 1 / 0.15, FINAL_RACE_HOOP, False)
 
@@ -1721,10 +1759,15 @@ model_changes = [
     ModelChange(0x136, "shrink_trap_archi.bin"),
     ModelChange(0x137, "trap_archi_om1.bin"),
     ModelChange(0x138, "counter_spread.bin"),
-    # Test
     ModelChange(0x139, "kop_get_out.bin"),
     ModelChange(0x13A, "kop_disable_buttons.bin"),
     ModelChange(0x13B, "kop_disable_tag.bin"),
+    ModelChange(0x13C, "day_item_om1.bin"),
+    ModelChange(0x13D, "night_item_om1.bin"),
+    ModelChange(0x13E, "shrink_day_item.bin"),
+    ModelChange(0x13F, "shrink_night_item.bin"),
+    ModelChange(0x140, "ricardo_model.bin"),
+    ModelChange(0x141, "klump_model.bin"),  # Just as a terminator
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 
@@ -2001,6 +2044,8 @@ for tex, index in pad_data.items():
 # Force all geo files to not be compressed
 expanded_tables = {
     TableNames.MapGeometry: list(range(216)),
+    # TableNames.MapFloors: list(range(216)),
+    # TableNames.MapWalls: list(range(216)),
     TableNames.ActorGeometry: list(range(0xEC)),
     TableNames.ModelTwoGeometry: list(range(0x2B7)),
 }
@@ -2026,11 +2071,16 @@ with open(ROMName, "rb") as fh:
                 data_len = 1
                 if not is_ref_file:
                     fh.seek(0x101C50 + (start & 0x7FFFFFFF))
-                    print("Checking uncompressed size of", tbl, file)
-                    data = zlib.decompress(fh.read(size), (15 + 32))
-                    data_len = len(data)
-                    if data_len == 0:
-                        print("Ignoring ptr file", tbl, file)
+                    indic = int.from_bytes(fh.read(2), "big")
+                    if indic == 0x1F8B:
+                        fh.seek(0x101C50 + (start & 0x7FFFFFFF))
+                        print("Checking uncompressed size of", tbl, file)
+                        data = zlib.decompress(fh.read(size), (15 + 32))
+                        data_len = len(data)
+                        if data_len == 0:
+                            print("Ignoring ptr file", tbl, file)
+                    else:
+                        data_len = 0
                 if data_len > 0:
                     file_dict.append(File(name=f"Expanded Table {tbl} file {file}", pointer_table_index=tbl, file_index=file, source_file=f"exptbl{tbl}f{file}.bin", buffer_compression=True))
 
@@ -2139,9 +2189,12 @@ with open(newROMName, "r+b") as fh:
                 compressed_size = len(precomp)
                 if x.target_compressed_size is None:
                     x.target_compressed_size = compressed_size
+                # TODO (Ballaam): When I work on Mirror mode again, I needed to buff these sizes to 0x200
                 buffer_size = 0x80
                 if x.pointer_table_index == TableNames.MapGeometry and x.file_index == 82:
                     buffer_size = 0x100
+                # elif x.pointer_table_index in (TableNames.MapWalls, TableNames.MapFloors):
+                #     buffer_size = 0xC00
                 x.target_compressed_size += buffer_size
                 if x.pointer_table_index == TableNames.ModelTwoGeometry:
                     print("Expanding buffer compression ", x.pointer_table_index, x.file_index, hex(x.target_compressed_size), hex(compressed_size), hex(uncompressed_size))
@@ -2379,10 +2432,6 @@ with open(newROMName, "r+b") as fh:
     for x in range(6):
         fh.write(values[x].to_bytes(1, "big"))
 
-    # Chunky Phase Slam
-    fh.seek(ROM_DATA_OFFSET + 0x1E3)
-    fh.write((2).to_bytes(1, "big"))
-
     # Head Size
     fh.seek(0x1FEE800)
     for _ in range(0x100):
@@ -2583,6 +2632,10 @@ with open(newROMName, "r+b") as fh:
         "any_gun",
         "any_ins_left",
         "any_ins_right",
+        "diddy_ice_palette_0",
+        "diddy_ice_palette_1",
+        "chunky_ice_palette_0",
+        "chunky_ice_palette_1",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}", f"shop_{b}"])

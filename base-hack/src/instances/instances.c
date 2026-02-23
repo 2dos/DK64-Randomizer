@@ -214,8 +214,28 @@
 #define FACTORY_CRUSHER_3 0x3
 #define FACTORY_CRUSHER_4 0x4
 
-ROM_DATA static unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
-ROM_DATA static unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
+ROM_RODATA_NUM static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
+ROM_RODATA_NUM static const unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
+ROM_RODATA_NUM static const unsigned char hands[] = {6, 7, 9, 10, 11, 12};
+ROM_RODATA_NUM static const int head_ids[] = {
+	LLAMA_MATCHING_HEAD_SOUND0_0,
+	LLAMA_MATCHING_HEAD_SOUND0_1,
+	LLAMA_MATCHING_HEAD_SOUND1_0,
+	LLAMA_MATCHING_HEAD_SOUND1_1,
+	LLAMA_MATCHING_HEAD_SOUND2_0,
+	LLAMA_MATCHING_HEAD_SOUND2_1,
+	LLAMA_MATCHING_HEAD_SOUND3_0,
+	LLAMA_MATCHING_HEAD_SOUND3_1,
+	LLAMA_MATCHING_HEAD_SOUND4_0,
+	LLAMA_MATCHING_HEAD_SOUND4_1,
+	LLAMA_MATCHING_HEAD_SOUND5_0,
+	LLAMA_MATCHING_HEAD_SOUND5_1,
+	LLAMA_MATCHING_HEAD_SOUND6_0,
+	LLAMA_MATCHING_HEAD_SOUND6_1,
+	LLAMA_MATCHING_HEAD_SOUND7_0,
+	LLAMA_MATCHING_HEAD_SOUND7_1,
+};
+ROM_RODATA_NUM static const int head_sounds[] = {173,171,169,174,172,175,168,170};
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
 	int world = getWorld(CurrentMap, 0);
@@ -439,11 +459,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					giveItemFromPacket(&company_coin_table[1], 0);
 				}
 				break;
-			case MAP_KROOLCHUNKY:
-				if (param2 == K_ROOL_CHUNKY_PHASE_SLAM) {
-					return hasChunkyPhaseSlam();
-				}
-				break;
 			case MAP_CASTLEMUSEUM:
 				if (param2 == MUSEUM_WARP_MONKEYPORT) {
 					if (Rando.randomize_more_loading_zones == 1) {
@@ -502,7 +517,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (param2 == ISLES_LOWMONKEYPORT) {
 					IslesMonkeyportCode(behaviour_pointer, id);
 				} else if (param2 == ISLES_HIGHMONKEYPORT) {
-					if (Rando.switchsanity.isles.monkeyport != 0) {
+					if (Rando.switchsanity_monkeyport != 0) {
 						hideObject(behaviour_pointer);
 						behaviour_pointer->current_state = 21;
 						behaviour_pointer->next_state = 21;
@@ -529,11 +544,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->current_state = 20;
 						behaviour_pointer->next_state = 20;
 					}
-				} else if (param2 == LLAMA_BONGOPAD) {
-					if (Rando.free_source_llama == 5) {
-						return 1;
-					}
-					return Character == Rando.free_source_llama;
 				} else if (param2 == LLAMA_LAVAGATE) {
 					if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 						hideObject(behaviour_pointer);
@@ -545,45 +555,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 1) {
 						return !checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					}
-				} else if (param2 == LLAMA_GUNSWITCH) {
-					if (index == 0) {
-						return checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
-					} else if (index == 2) {
-						giveItemFromKongData(&kong_check_data[KONGCHECK_LLAMA], FLAG_KONG_LANKY);
-					} else if ((index >= 3) && (index <= 6)) {
-						if (Rando.free_source_llama == 5) {
-							int valid = 0;
-							for (int i = 0; i < 5; i++) {
-								valid |= getPressedSwitch(behaviour_pointer, kong_pellets[i], id);
-							}
-							return valid;
-						}
-						return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
-					}
 				} else if (param2 == LLAMA_GRAPE_SWITCH) {
 					return !Rando.tag_anywhere;
 				} else {
-					int head_ids[] = {
-						LLAMA_MATCHING_HEAD_SOUND0_0,
-						LLAMA_MATCHING_HEAD_SOUND0_1,
-						LLAMA_MATCHING_HEAD_SOUND1_0,
-						LLAMA_MATCHING_HEAD_SOUND1_1,
-						LLAMA_MATCHING_HEAD_SOUND2_0,
-						LLAMA_MATCHING_HEAD_SOUND2_1,
-						LLAMA_MATCHING_HEAD_SOUND3_0,
-						LLAMA_MATCHING_HEAD_SOUND3_1,
-						LLAMA_MATCHING_HEAD_SOUND4_0,
-						LLAMA_MATCHING_HEAD_SOUND4_1,
-						LLAMA_MATCHING_HEAD_SOUND5_0,
-						LLAMA_MATCHING_HEAD_SOUND5_1,
-						LLAMA_MATCHING_HEAD_SOUND6_0,
-						LLAMA_MATCHING_HEAD_SOUND6_1,
-						LLAMA_MATCHING_HEAD_SOUND7_0,
-						LLAMA_MATCHING_HEAD_SOUND7_1,
-					};
-					int head_sounds[] = {173,171,169,174,172,175,168,170};
 					int selection = -1;
 					for (unsigned int k = 0; k < sizeof(head_ids)/4; k++) {
 						if (param2 == head_ids[k]) {
@@ -757,23 +731,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 2) {
 						giveItemFromKongData(&kong_check_data[KONGCHECK_JAPES], FLAG_KONG_DIDDY);
 					}
-				} else if ((param2 == JAPES_GUNSWITCH0) || (param2 == JAPES_GUNSWITCH1) || (param2 == JAPES_GUNSWITCH2)) {
-					if (index == 0) {
-						return checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
-					} else if ((index == 2) || (index == 3)) {
-						if (Rando.free_source_japes == 5) {
-							int valid = 0;
-							for (int i = 0; i < 5; i++) {
-								valid |= getPressedSwitch(behaviour_pointer, kong_pellets[i], id);
-							}
-							return valid;
-						}
-						return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
-					} else if (index == 4) {
-						return !Rando.quality_of_life.remove_cutscenes; // TODO(theballaam96): Retry this
-					}
 				} else if ((param2 == JAPES_GATE0) || (param2 == JAPES_GATE1) || (param2 == JAPES_GATE2)) {
 					if (Rando.removed_barriers.japes_coconut_gates) {
 						behaviour_pointer->current_state = 20;
@@ -792,7 +749,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 						return 0;
 					}
-					if (param2 == JAPES_CAVE_GATE && Rando.switchsanity.japes.diddy_cave) {
+					if (param2 == JAPES_CAVE_GATE) {
 						return 0;
 					}
 					return !Rando.tag_anywhere;
@@ -860,15 +817,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->next_state = 20;
 					}
 				} else if (param2 == FACTORY_FREESWITCH) {
-					if (index == 0) {
-						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
-					} else if (index == 2) {
-						return Character == Rando.free_source_factory;
-					} else if (index == 3) {
-						giveItemFromKongData(&kong_check_data[KONGCHECK_FACTORY], FLAG_KONG_CHUNKY);
-					}
+					giveItemFromKongData(&kong_check_data[KONGCHECK_FACTORY], FLAG_KONG_CHUNKY);
 				} else if (param2 == FACTORY_CAGE) {
 					if (index == 0) {
 						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
@@ -1157,16 +1106,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 1) {
 						giveItemFromKongData(&kong_check_data[KONGCHECK_ICETEMPLE], FLAG_KONG_TINY);
 					}
-				} else if (param2 == TTEMPLE_CHARGESWITCH) {
-					if (index == 0) {
-						return checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
-					} else if (index == 2) {
-						return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
-					}
-				} else if ((param2 == TTEMPLE_KONGLETTER0) || (param2 == TTEMPLE_KONGLETTER1) || (param2 == TTEMPLE_KONGLETTER2) || (param2 == TTEMPLE_KONGLETTER3)) {
-					return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
 				}
 				break;
 			case MAP_CASTLECRYPTLANKYTINY:
@@ -1224,7 +1163,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == CRYPT_LT_SIMIAN_SWITCH) {
 					//activates the Goo Hands in Tiny's part of the Lanky/Tiny Crypt if all 6 of them are initialized
-					unsigned char hands[] = {6, 7, 9, 10, 11, 12};
 					//activates the hands
 					for(unsigned int hand = 0; hand < sizeof(hands); hand++){
 						//obtain hand variables
@@ -1484,28 +1422,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		return 1;
 	} else if (index == -13) {
 		MelonCrateGenericCode(behaviour_pointer, id, param2);
-	} else if (index == -14) {
-		return randomGunSwitchGenericCode(behaviour_pointer, id, param2);
-	} else if (index == -15) {
-		return randomInstrumentGenericCode(param2);
 	} else if (index == -16) {
 		hideObject(behaviour_pointer);
 	} else if (index == -17) {
-		if (Rando.fungi_time_of_day_setting == TIME_DUSK) {
-			return 1;
-		} else {
-			if (param2 == 1) {
-				if (Player->strong_kong_ostand_bitfield & FUNGI_NIGHT_CHECK) {
-					return 1;
-				}
-				return 0;
-			} else {
-				if ((Player->strong_kong_ostand_bitfield & FUNGI_NIGHT_CHECK) == 0) {
-					return 1;
-				}
-				return 0;
-			}
-		}
+		return isTimeOfDay(param2);
 	} else if (index == -18) {
 		return (Player->strong_kong_ostand_bitfield & 0x20) || (!Rando.sprint_barrel_requires_sprint);
 	} else if (index == -19) {
