@@ -1625,7 +1625,7 @@ CustomLocations = {
             max_size=64,
             vanilla_patch=True,
             logic_region=Regions.BeyondHatch,
-            logic=lambda l: ((l.punch and l.chunky) or l.CanPhase()),
+            logic=lambda l: (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()),
             group=4,
         ),
         CustomLocation(
@@ -1807,7 +1807,7 @@ CustomLocations = {
             z=525,
             max_size=72,
             logic_region=Regions.BeyondHatch,
-            logic=lambda l: (l.punch and l.chunky) or l.phasewalk,
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.phasewalk,
             group=4,
         ),
         CustomLocation(map=Maps.FranticFactory, name="Arcade Room Bench", x=1922, y=1143, z=1515, max_size=40, logic_region=Regions.FactoryArcadeTunnel, group=4),
@@ -2010,7 +2010,7 @@ CustomLocations = {
             z=1350,
             max_size=64,
             logic_region=Regions.RandDUpper,
-            logic=lambda l: (l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom(),
+            logic=lambda l: (l.triangle and l.climbing and l.chunky and l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False)) or l.CanAccessRNDRoom(),
             group=3,
             banned_types=[
                 LocationTypes.CrownPad,
@@ -2026,7 +2026,7 @@ CustomLocations = {
             rot_y=2654,
             max_size=64,
             logic_region=Regions.RandDUpper,
-            logic=lambda l: ((l.punch and l.climbing and l.ischunky) or l.CanAccessRNDRoom()),
+            logic=lambda l: ((l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.climbing and l.triangle and l.ischunky) or l.CanAccessRNDRoom()),
             group=3,
             banned_types=[
                 LocationTypes.CrownPad,

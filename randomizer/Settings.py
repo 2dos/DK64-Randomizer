@@ -476,6 +476,16 @@ class Settings:
         self.switchsanity_switch_fungi_yellow_tunnel = SwitchsanityKong.lanky
         self.switchsanity_switch_fungi_green_tunnel_near = SwitchsanityKong.tiny
         self.switchsanity_switch_fungi_green_tunnel_far = SwitchsanityKong.chunky
+        self.switchsanity_switch_factory_dark_grate = SwitchsanityKong.chunky
+        self.switchsanity_switch_factory_bonus_grate = SwitchsanityKong.chunky
+        self.switchsanity_switch_factory_monster_grate = SwitchsanityKong.chunky
+        self.switchsanity_switch_caves_gone_cave = SwitchsanityKong.chunky
+        self.switchsanity_switch_caves_snide_cave = SwitchsanityKong.chunky
+        self.switchsanity_switch_caves_boulder_cave = SwitchsanityKong.chunky
+        self.switchsanity_switch_caves_lobby_blueprint = SwitchsanityKong.chunky
+        self.switchsanity_switch_caves_lobby_lava = SwitchsanityKong.chunky
+        self.switchsanity_switch_aztec_gong_tower = SwitchsanityKong.diddy
+        self.switchsanity_switch_aztec_lobby_gong = SwitchsanityKong.diddy
         self.diddy_freeing_kong = Kongs.donkey
         self.lanky_freeing_kong = Kongs.donkey
         self.tiny_freeing_kong = Kongs.diddy
@@ -1148,6 +1158,16 @@ class Settings:
                 Switches.FungiYellow: self.switchsanity_switch_fungi_yellow_tunnel,
                 Switches.FungiGreenFeather: self.switchsanity_switch_fungi_green_tunnel_near,
                 Switches.FungiGreenPineapple: self.switchsanity_switch_fungi_green_tunnel_far,
+                Switches.FactoryDarkRoomGrate: self.switchsanity_switch_factory_dark_grate,
+                Switches.FactoryArcadeTunnelGrate: self.switchsanity_switch_factory_bonus_grate,
+                Switches.FactoryToyMonsterGrate: self.switchsanity_switch_factory_monster_grate,
+                Switches.CavesGoneCave: self.switchsanity_switch_caves_gone_cave,
+                Switches.CavesSnideCave: self.switchsanity_switch_caves_snide_cave,
+                Switches.CavesBoulderCave: self.switchsanity_switch_caves_boulder_cave,
+                Switches.CavesLobbyBP: self.switchsanity_switch_caves_lobby_blueprint,
+                Switches.CavesLobbyLava: self.switchsanity_switch_caves_lobby_lava,
+                Switches.AztecGongTower: self.switchsanity_switch_aztec_gong_tower,
+                Switches.AztecLobbyGong: self.switchsanity_switch_aztec_lobby_gong,
             }
 
             kongs = GetKongs()
@@ -1180,6 +1200,8 @@ class Settings:
                         SwitchsanityKong.any: Kongs.any,
                     }
                     bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
+                    if self.switchsanity_data[slot].switch_type in (SwitchType.PunchGrate, SwitchType.IceWall, SwitchType.Gong):
+                        bad_kongs.extend([SwitchsanityKong.donkey, SwitchsanityKong.lanky, SwitchsanityKong.tiny])
                     options = [
                         SwitchsanityKong.donkey,
                         SwitchsanityKong.diddy,

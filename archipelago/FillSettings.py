@@ -643,6 +643,16 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
                     "switchsanity_switch_fungi_yellow_tunnel": SwitchsanityKong.random,
                     "switchsanity_switch_fungi_green_tunnel_near": SwitchsanityKong.random,
                     "switchsanity_switch_fungi_green_tunnel_far": SwitchsanityKong.random,
+                    "switchsanity_switch_factory_dark_grate": SwitchsanityKong.random,
+                    "switchsanity_switch_factory_bonus_grate": SwitchsanityKong.random,
+                    "switchsanity_switch_factory_monster_grate": SwitchsanityKong.random,
+                    "switchsanity_switch_caves_gone_cave": SwitchsanityKong.random,
+                    "switchsanity_switch_caves_snide_cave": SwitchsanityKong.random,
+                    "switchsanity_switch_caves_boulder_cave": SwitchsanityKong.random,
+                    "switchsanity_switch_caves_lobby_blueprint": SwitchsanityKong.random,
+                    "switchsanity_switch_caves_lobby_lava": SwitchsanityKong.random,
+                    "switchsanity_switch_aztec_gong_tower": SwitchsanityKong.random,
+                    "switchsanity_switch_aztec_lobby_gong": SwitchsanityKong.random,
                 }
             )
         case SwitchSanity.option_helm_access:
@@ -673,6 +683,16 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
                     "switchsanity_switch_fungi_yellow_tunnel": SwitchsanityKong.lanky,
                     "switchsanity_switch_fungi_green_tunnel_near": SwitchsanityKong.tiny,
                     "switchsanity_switch_fungi_green_tunnel_far": SwitchsanityKong.chunky,
+                    "switchsanity_switch_factory_dark_grate": SwitchsanityKong.chunky,
+                    "switchsanity_switch_factory_bonus_grate": SwitchsanityKong.chunky,
+                    "switchsanity_switch_factory_monster_grate": SwitchsanityKong.chunky,
+                    "switchsanity_switch_caves_gone_cave": SwitchsanityKong.chunky,
+                    "switchsanity_switch_caves_snide_cave": SwitchsanityKong.chunky,
+                    "switchsanity_switch_caves_boulder_cave": SwitchsanityKong.chunky,
+                    "switchsanity_switch_caves_lobby_blueprint": SwitchsanityKong.chunky,
+                    "switchsanity_switch_caves_lobby_lava": SwitchsanityKong.chunky,
+                    "switchsanity_switch_aztec_gong_tower": SwitchsanityKong.diddy,
+                    "switchsanity_switch_aztec_lobby_gong": SwitchsanityKong.diddy,
                 }
             )
         case SwitchSanity.option_off:

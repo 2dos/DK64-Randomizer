@@ -919,6 +919,17 @@ fool_im.paste(ex_im, (34, 0), ex_im)
 fool_im = fool_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 fool_im.save(f"{disp_dir}fool_overlay.png")
 
+# Palettes
+shifts = {
+    "diddy": 120,
+    "chunky": 300,
+}
+for kong, shift in shifts.items():
+    for x in range(2):
+        im = Image.open(f"{hash_dir}ice_palette_{x}.png")
+        im = hueShift(im, shift)
+        im.save(f"{disp_dir}{kong}_ice_palette_{x}.png")
+
 boulder_dir = getDir("assets/boulder_bounce/")
 for x in range(8):
     im = Image.open(f"{boulder_dir}boulder{x}.png")
@@ -1030,6 +1041,8 @@ rmve = [
     "medal_spin_5.png",
     "medal_spin_6.png",
     "medal_spin_7.png",
+    "ice_palette_0.png",
+    "ice_palette_1.png",
 ]
 for kong in kongs:
     for x in range(2):

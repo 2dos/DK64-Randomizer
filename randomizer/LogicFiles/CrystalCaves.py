@@ -9,6 +9,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion
+from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
@@ -55,20 +56,20 @@ LogicRegions = {
         Event(Events.CavesW1aTagged, lambda _: True),
         Event(Events.CavesW2aTagged, lambda _: True),
     ], [
-        TransitionFront(Regions.CavesGGRoom, lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
+        TransitionFront(Regions.CavesGGRoom, lambda l: l.hasMoveSwitchsanity(Switches.CavesGoneCave, False) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
         TransitionFront(Regions.CavesBlueprintCave, lambda l: (l.mini and l.twirl and l.istiny) or l.CanPhase() or l.CanSkew(True)),
         TransitionFront(Regions.CavesBonusCave, lambda l: (l.mini and l.istiny) or l.CanPhase() or l.CanSkew(True)),
         TransitionFront(Regions.CavesBlueprintPillar, lambda l: (l.jetpack and l.isdiddy) or (l.monkey_maneuvers and ((l.balloon and l.islanky) or ((not l.settings.shuffle_shops) and l.twirl and l.istiny)))),
         TransitionFront(Regions.CavesBananaportSpire, lambda l: (l.jetpack and l.isdiddy) or l.monkey_maneuvers),
-        TransitionFront(Regions.BoulderCave, lambda l: (l.punch and l.chunky) or l.CanSkew(True) or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
+        TransitionFront(Regions.BoulderCave, lambda l: l.hasMoveSwitchsanity(Switches.CavesBoulderCave, False) or l.CanSkew(True) or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
         TransitionFront(Regions.CavesLankyRace, lambda l: (l.CanSlamSwitch(Levels.CrystalCaves, 2) and (l.balloon or l.monkey_maneuvers) and l.islanky) or l.CanPhase() or l.CanSkew(True), Transitions.CavesMainToRace),
         TransitionFront(Regions.FrozenCastle, lambda l: (l.CanSlamSwitch(Levels.CrystalCaves, 2) and l.islanky) or l.CanSkew(True), Transitions.CavesMainToCastle),
         TransitionFront(Regions.IglooArea, lambda _: True),
         TransitionFront(Regions.CabinArea, lambda _: True),
         TransitionFront(Regions.FunkyCaves, lambda l: l.funkyAccess),
         TransitionFront(Regions.CrankyCaves, lambda l: l.crankyAccess),
-        TransitionFront(Regions.CavesSnideArea, lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
-        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and ((l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls))),
+        TransitionFront(Regions.CavesSnideArea, lambda l: l.hasMoveSwitchsanity(Switches.CavesSnideCave, False) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
+        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls))),
         TransitionFront(Regions.CavesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.CavesMainToBBlast)
     ]),
 
