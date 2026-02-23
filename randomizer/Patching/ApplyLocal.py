@@ -335,8 +335,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 ROM_COPY.seek(sav + 0x1ED)
                 ROM_COPY.write(1)
 
-            truncateFiles(ROM_COPY)
             spoiler = updateJSONCosmetics(spoiler, settings, music_data, int(unix), head_sizes)
+        truncateFiles(ROM_COPY)
 
         # Apply Hash
         order = 0
