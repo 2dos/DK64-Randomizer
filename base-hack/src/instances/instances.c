@@ -1387,10 +1387,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		}
 	} else if (index == -3) {
 		TNSIndicatorGenericCode(behaviour_pointer, id, param2);
-	} else if (index == -5) {
-		CrownPadGenericCode(behaviour_pointer, id, param2, 0);
-	} else if (index == -6) {
-		CrownPadGenericCode(behaviour_pointer, id, param2, 1);
 	} else if (index == -7) {
 		return getItemCount_new(REQITEM_KONG, 0, param2) || Rando.disable_wrinkly_kong_requirement;
 	} else if (index == -8) {

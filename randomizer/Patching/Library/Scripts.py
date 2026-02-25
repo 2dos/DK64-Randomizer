@@ -236,6 +236,13 @@ level_portal_flag_mapping = {
     Levels.CreepyCastle: 0x160,
 }
 
+def getLevel(map_id: Maps, source: str) -> Levels:
+    """Get the level associated with a map."""
+    for lvl, map_ids in level_map_mapping.items():
+        if map_id in map_ids:
+            return lvl
+    raise Exception(f"Invalid level for {source}")
+
 def getTroffPortalScript(map_id: Maps, item_id: int, exit_id: int) -> list[int]:
     """Get the instance script for a troff and scoff portal."""
     level_id: Levels = None
@@ -244,11 +251,7 @@ def getTroffPortalScript(map_id: Maps, item_id: int, exit_id: int) -> list[int]:
     portal_range = 90
     if map_id != Maps.TroffNScoff:
         portal_range = 60
-        for lvl, map_ids in level_map_mapping.items():
-            if map_id in map_ids:
-                level_id = lvl
-        if level_id is None:
-            raise Exception("Invalid level for portal")
+        level_id = getLevel(map_id, "portal")
         portal_flag = level_portal_flag_mapping[level_id]
         boss_flag = level_key_flag_mapping[level_id]
     return compileInstanceScript(item_id, [
@@ -352,8 +355,7 @@ def getTroffPortalScript(map_id: Maps, item_id: int, exit_id: int) -> list[int]:
         ScriptBlock([
             FunctionData(1, [1, 0, 0]),
             FunctionData(35, [0, 0, 0]),
-        ],
-        [
+        ], [
             FunctionData(1, [2, 0, 0]),
         ], lambda m: m == Maps.TroffNScoff),
         ScriptBlock([
@@ -403,25 +405,115 @@ def getTroffPortalScript(map_id: Maps, item_id: int, exit_id: int) -> list[int]:
         ]),
     ], map_id)
 
+level_crown_map_mapping = {
+    Levels.JungleJapes: [Maps.JapesCrown],
+    Levels.AngryAztec: [Maps.AztecCrown],
+    Levels.FranticFactory: [Maps.FactoryCrown],
+    Levels.GloomyGalleon: [Maps.GalleonCrown],
+    Levels.FungiForest: [Maps.ForestCrown],
+    Levels.CrystalCaves: [Maps.CavesCrown],
+    Levels.CreepyCastle: [Maps.CastleCrown],
+    Levels.HideoutHelm: [Maps.HelmCrown],
+    Levels.DKIsles: [Maps.LobbyCrown, Maps.SnidesCrown],
+}
+level_crown_flag_mapping = {
+    Levels.JungleJapes: [0x261],
+    Levels.AngryAztec: [0x262],
+    Levels.FranticFactory: [0x263],
+    Levels.GloomyGalleon: [0x264],
+    Levels.FungiForest: [0x265],
+    Levels.CrystalCaves: [0x268],
+    Levels.CreepyCastle: [0x269],
+    Levels.HideoutHelm: [0x26A],
+    Levels.DKIsles: [0x266, 0x267],
+}
+
+def getCrownScript(container_map_id: Maps, item_id: int, isIsles2: bool = False) -> list[int]:
+    """Get the instance script for the battle crown pad."""
+    level_id = getLevel(container_map_id, "crown pad")
+    map_list = level_crown_map_mapping[level_id]
+    flag_list = level_crown_flag_mapping[level_id]
+    crown_target_map = Maps.JapesCrown
+    flag_id = 0
+    if isIsles2:
+        crown_target_map = map_list[1]
+        flag_id = flag_list[1]
+    else:
+        crown_target_map = map_list[0]
+        flag_id = flag_list[0]
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(38, [3, 900, 0]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(45, [flag_id, 0, 0]),
+        ], [
+            FunctionData(71, [0, 0, 0]),
+            FunctionData(69, [1, 0, 255]),
+            FunctionData(38, [2, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(18, [4, 2, 0]),
+            FunctionData(29, [1, 0, 0]),
+        ], [
+            FunctionData(73, [7, crown_target_map, 2]),
+        ]),
+        ScriptBlock([
+            FunctionData(18, [3, 2, 0]),
+            FunctionData(29, [1, 0, 0]),
+        ], [
+            FunctionData(73, [7, crown_target_map, 2]),
+        ]),
+        ScriptBlock([
+            FunctionData(18, [2, 2, 0]),
+            FunctionData(29, [1, 0, 0]),
+        ], [
+            FunctionData(73, [7, crown_target_map, 2]),
+        ]),
+        ScriptBlock([
+            FunctionData(18, [5, 2, 0]),
+            FunctionData(29, [1, 0, 0]),
+        ], [
+            FunctionData(73, [7, crown_target_map, 2]),
+        ]),
+        ScriptBlock([
+            FunctionData(18, [6, 2, 0]),
+            FunctionData(29, [1, 0, 0]),
+        ], [
+            FunctionData(73, [7, crown_target_map, 2]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(13, [2, 0, 0]),
+            FunctionData(45, [358, 0, 0], True),
+        ], [
+            FunctionData(107, [358, 1, 0]),
+            FunctionData(110, [1, 0, 0]),
+            FunctionData(37, [24, 1, 0]),
+            FunctionData(1, [2, 0, 0]),
+        ]),   
+    ])
+
 def replaceScriptLines(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], replacement_mapping: dict) -> None:
     """Replace a script line with another."""
     script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
     ROM_COPY.seek(script_table)
     script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
-    good_scripts = []
     # Construct good pre-existing scripts
     file_offset = 2
-    for script_item in range(script_count):
+    for _ in range(script_count):
         ROM_COPY.seek(script_table + file_offset)
-        script_start = script_table + file_offset
         script_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
         block_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
         file_offset += 6
-        for block_item in range(block_count):
+        for _ in range(block_count):
             ROM_COPY.seek(script_table + file_offset)
             cond_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             file_offset += 2
-            for cond in range(cond_count):
+            for _ in range(cond_count):
                 func = int.from_bytes(ROM_COPY.readBytes(2), "big")
                 params = []
                 for _ in range(3):
@@ -446,7 +538,7 @@ def replaceScriptLines(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int]
             ROM_COPY.seek(script_table + file_offset)
             exec_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             file_offset += 2
-            for exec in range(exec_count):
+            for _ in range(exec_count):
                 func = int.from_bytes(ROM_COPY.readBytes(2), "big")
                 params = []
                 for _ in range(3):
@@ -468,7 +560,7 @@ def replaceScriptLines(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int]
                             ROM_COPY.writeMultipleBytes(p, 2)
                 file_offset += 8
 
-def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], type: ScriptTypes, extra_data: dict = {}) -> None:
+def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], stype: ScriptTypes, extra_data: dict = {}) -> None:
     """Append a new script to the script database. Has to be just 1 execution and 1 endblock."""
     script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
     ROM_COPY.seek(script_table)
@@ -476,13 +568,13 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], type
     good_scripts = []
     # Construct good pre-existing scripts
     file_offset = 2
-    for script_item in range(script_count):
+    for _ in range(script_count):
         ROM_COPY.seek(script_table + file_offset)
         script_start = script_table + file_offset
         script_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
         block_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
         file_offset += 6
-        for block_item in range(block_count):
+        for _ in range(block_count):
             ROM_COPY.seek(script_table + file_offset)
             cond_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             file_offset += 2 + (8 * cond_count)
@@ -499,19 +591,17 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], type
     # Get new script data
     for item_id in item_ids:
         subscript = None
-        if type == ScriptTypes.Bananaport:
+        if stype == ScriptTypes.Bananaport:
             subscript = getCScript(-1, item_id)
-        elif type == ScriptTypes.Wrinkly:
+        elif stype == ScriptTypes.Wrinkly:
             subscript = getCScript(-2, item_id)
-        elif type == ScriptTypes.TnsPortal:
+        elif stype == ScriptTypes.TnsPortal:
             subscript = getTroffPortalScript(cont_map_id, item_id, extra_data[item_id]["exit_id"])
-        elif type == ScriptTypes.CrownMain:
-            subscript = getCScript(-5, item_id)
-        elif type == ScriptTypes.CrownIsles2:
-            subscript = getCScript(-6, item_id)
-        elif type == ScriptTypes.MelonCrate:
+        elif stype in (ScriptTypes.CrownMain, ScriptTypes.CrownIsles2):
+            subscript = getCrownScript(cont_map_id, item_id, stype == ScriptTypes.CrownIsles2)
+        elif stype == ScriptTypes.MelonCrate:
             subscript = getCScript(-13, item_id)
-        elif type == ScriptTypes.DeleteItem:
+        elif stype == ScriptTypes.DeleteItem:
             subscript = getCScript(-16, item_id)
         if subscript is not None:
             good_scripts.append(subscript)

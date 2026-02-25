@@ -47,7 +47,6 @@ extern int determineShockwaveColor(actorData* shockwave);
 
 extern int getTotalMoveCount(void);
 
-extern int hasChunkyPhaseSlam(void);
 extern void fixKRoolKong(void);
 
 extern void unlockMoves(void);
@@ -336,7 +335,6 @@ extern int isDynFlag(int obj, maps map);
 extern void hideObject(behaviour_data* behaviour_pointer);
 extern void bananaportGenericCode(behaviour_data* behaviour, int index, int id);
 extern void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id);
-extern void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown_level_index);
 extern void MelonCrateGenericCode(behaviour_data* behaviour, int index, int id);
 extern int isBonus(maps map);
 extern int checkSlamLocation(int kong, int key, int id);
