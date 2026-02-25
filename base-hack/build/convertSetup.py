@@ -299,35 +299,35 @@ def modify(file_name, map_index):
             byte_stream = byte_read[read_location : read_location + 0x30]
             _type = int.from_bytes(byte_read[read_location + 0x28 : read_location + 0x2A], "big")
             _id = int.from_bytes(byte_read[read_location + 0x2A : read_location + 0x2C], "big")
-            if _type == 0x2AC and map_index != Maps.TroffNScoff:
-                _y = int.from_bytes(byte_read[read_location + 4 : read_location + 8], "big")
-                _yf = getPortalIndicatorY(intf_to_float(_y))
-                if map_index == Maps.Japes and _id == 0x11A:
-                    changes.append(ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, new_id=getNewID(map_index), x=805.6618, y=_yf, z=2226.797, obj_type=0x2AB, scale=0.35))
-                else:
-                    if map_index == Maps.Caves and not added_caves_portal:
-                        changes.append(
-                            ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, x=120.997, y=50.167, z=1182.974, rx=0, ry=75.146, rz=0, new_id=0x170)
-                        )  # Caves 5DI Portal
-                        changes.append(
-                            ObjectChange(
-                                ObjectTypes.modeltwo,
-                                ObjectChangeType.add,
-                                map_index,
-                                _id,
-                                obj_type=0x2AB,
-                                x=120.997,
-                                y=getPortalIndicatorY(50.167),
-                                z=1182.974,
-                                rx=0,
-                                ry=75.146,
-                                rz=0,
-                                new_id=getNewID(Maps.Caves),
-                                scale=0.35,
-                            )
-                        )  # Caves 5DI Portal Indicator
-                        added_caves_portal = True
-                    changes.append(ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, new_id=getNewID(map_index), y=_yf, obj_type=0x2AB, scale=0.35))
+            # if _type == 0x2AC and map_index != Maps.TroffNScoff:
+            #     _y = int.from_bytes(byte_read[read_location + 4 : read_location + 8], "big")
+            #     _yf = getPortalIndicatorY(intf_to_float(_y))
+            #     if map_index == Maps.Japes and _id == 0x11A:
+            #         changes.append(ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, new_id=getNewID(map_index), x=805.6618, y=_yf, z=2226.797, obj_type=0x2AB, scale=0.35))
+            #     else:
+            #         if map_index == Maps.Caves and not added_caves_portal:
+            #             changes.append(
+            #                 ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, x=120.997, y=50.167, z=1182.974, rx=0, ry=75.146, rz=0, new_id=0x170)
+            #             )  # Caves 5DI Portal
+            #             changes.append(
+            #                 ObjectChange(
+            #                     ObjectTypes.modeltwo,
+            #                     ObjectChangeType.add,
+            #                     map_index,
+            #                     _id,
+            #                     obj_type=0x2AB,
+            #                     x=120.997,
+            #                     y=getPortalIndicatorY(50.167),
+            #                     z=1182.974,
+            #                     rx=0,
+            #                     ry=75.146,
+            #                     rz=0,
+            #                     new_id=getNewID(Maps.Caves),
+            #                     scale=0.35,
+            #                 )
+            #             )  # Caves 5DI Portal Indicator
+            #             added_caves_portal = True
+            #         changes.append(ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, new_id=getNewID(map_index), y=_yf, obj_type=0x2AB, scale=0.35))
             # Parse changes
             instance_changes = [y for y in changes if (y.source_obj_id == _id or y.source_obj_id is None) and y.obj_master_type == ObjectTypes.modeltwo]
             deleting = False

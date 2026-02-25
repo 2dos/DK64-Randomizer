@@ -7,7 +7,6 @@ extern int convertIDToIndex(short obj_index);
 extern void* findActorWithType(int search_actor_type);
 extern void initHack(int source);
 extern void callParentMapFilter(void);
-extern void shiftBrokenJapesPortal(void);
 extern void quickInit(void);
 extern int getCenter(int style, const char* str);
 extern int spawnItemOverlay(requirement_item type, int level, int kong, int force);
@@ -57,7 +56,6 @@ extern void qualityOfLife_fixes(void);
 extern void qualityOfLife_shorteners(void);
 extern void overlay_changes(void);
 extern void handleKRoolSaveProgress(void);
-extern void displayNumberOnTns(void);
 extern void moveTransplant(void);
 
 extern int getInstrumentLevel(void);
@@ -337,7 +335,6 @@ extern int isDynFlag(int obj, maps map);
 
 extern void hideObject(behaviour_data* behaviour_pointer);
 extern void bananaportGenericCode(behaviour_data* behaviour, int index, int id);
-extern void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id);
 extern void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id);
 extern void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown_level_index);
 extern void MelonCrateGenericCode(behaviour_data* behaviour, int index, int id);

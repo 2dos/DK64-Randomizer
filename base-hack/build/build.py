@@ -19,7 +19,6 @@ from model_port import loadNewModels
 
 # Patcher functions for the extracted files
 from patch_text import writeNoExpPakMessages
-import portal_instance_script
 from adjust_exits import adjustExits, addMechFishLZ
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
@@ -209,6 +208,7 @@ file_dict = [
     File(name="Special AP Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x292, source_file="special_archi_om2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fools AP Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x293, source_file="fools_archi_om2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Trap AP Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x294, source_file="trap_archi_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Troff 'n' Scoff Portal", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2AC, source_file="troff_portal.bin", do_not_delete_source=True, do_not_extract=True),
     # File(name="K. Rool (Cutscenes) Model", pointer_table_index=TableNames.ActorGeometry, file_index=0x48, source_file="k_rool_cutscenes_om1.bin", do_not_delete_source=True),
     File(
         name="Snow Texture",
@@ -1028,11 +1028,11 @@ for ki, kong in enumerate(switches):
 with open("./instance_scripts_data.json", "r") as json_f:
     instance_script_maps = json.load(json_f)
 maps_to_expand = list(range(0, 216))
-SCRIPT_EXPANSION_SIZE = 0x2000
+SCRIPT_EXPANSION_SIZE = 0x4000
 for x in instance_script_maps:
     maps_to_expand.remove(x["map"])
     script_file_name = f"{x['name']}.raw"
-    expand_size = 0x3000
+    expand_size = 0x5000
     with open(script_file_name, "rb") as script_f:
         data = script_f.read()
         compress = gzip.compress(data, compresslevel=9)
@@ -1826,6 +1826,22 @@ for x in range(2):
 with open("empty_race.bin", "wb") as fh:
     temp = 1
     # fh.write((0).to_bytes(0x10, "big"))
+
+with open("empty_num.bin", "wb") as fh:
+    for x in range(32):
+        for y in range(32):
+            fh.write((0).to_bytes(2, "big"))
+file_dict.append(
+    File(
+        name="Empty Number",
+        pointer_table_index=TableNames.TexturesUncompressed,
+        file_index=993,
+        source_file="empty_num.bin",
+        do_not_compress=True,
+        do_not_delete_source=True,
+        do_not_extract=True,
+    )
+)
 
 # Race Checkpoints
 races = [0xE, 0x27, 0x52, 0xB9]

@@ -38,9 +38,6 @@ void cFuncLoop(void) {
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, FLAGTYPE_TEMPORARY); // Clear K. Lumsy temp flag
 		setFlag(0x79, 0, FLAGTYPE_TEMPORARY); // Clear BFI Reward Cutscene temp flag
-		if ((!Rando.tns_portal_rando_on) && (Rando.tns_indicator)) {
-			shiftBrokenJapesPortal();
-		}
 		if (isKrushaAdjacentModel(3)) {
 			if (CurrentMap == MAP_KROOLSHOE) {
 				setActorDamage(43, 1);
@@ -86,7 +83,6 @@ void cFuncLoop(void) {
 		}
 		callIceTrap();
 	}
-	// displayNumberOnTns();
 	if (Rando.music_rando_on) {
 		if (CurrentMap == MAP_NINTENDOLOGO) {
 			if (ObjectModel2Timer == 5) {
