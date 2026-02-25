@@ -1386,8 +1386,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			}
 		}
 	} else if (index == -3) {
-		TNSPortalGenericCode(behaviour_pointer, id, param2);
-	} else if (index == -4) {
 		TNSIndicatorGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -5) {
 		CrownPadGenericCode(behaviour_pointer, id, param2, 0);

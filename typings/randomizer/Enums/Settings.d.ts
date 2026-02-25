@@ -972,6 +972,10 @@ export enum SettingsStringEnum {
     switchsanity_switch_caves_gone_cave = 301,
     switchsanity_switch_caves_snide_cave = 302,
     switchsanity_switch_caves_boulder_cave = 303,
+    switchsanity_switch_caves_lobby_blueprint = 304,
+    switchsanity_switch_caves_lobby_lava = 305,
+    switchsanity_switch_aztec_gong_tower = 306,
+    switchsanity_switch_aztec_lobby_gong = 307,
 }
 
 export enum SettingsStringDataType {
@@ -1128,6 +1132,10 @@ export const SettingsMap = {
     'switchsanity_switch_caves_gone_cave': SwitchsanityKong,
     'switchsanity_switch_caves_snide_cave': SwitchsanityKong,
     'switchsanity_switch_caves_boulder_cave': SwitchsanityKong,
+    'switchsanity_switch_caves_lobby_blueprint': SwitchsanityKong,
+    'switchsanity_switch_aztec_gong_tower': SwitchsanityKong,
+    'switchsanity_switch_aztec_lobby_gong': SwitchsanityKong,
+    'switchsanity_switch_caves_lobby_lava': SwitchsanityKong,
     'krool_in_boss_pool_v2': KroolInBossPool,
 }
 
@@ -1412,6 +1420,10 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.switchsanity_switch_caves_gone_cave: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_caves_snide_cave: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_caves_boulder_cave: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_lobby_blueprint: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_lobby_lava: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_gong_tower: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_lobby_gong: SwitchsanityKong,
     SettingsStringEnum.trap_weight_bubble: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_reverse: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_slow: SettingsStringDataType.int8,

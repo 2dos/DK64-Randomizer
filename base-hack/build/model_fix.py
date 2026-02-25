@@ -806,6 +806,89 @@ with open(ROMName, "rb") as rom:
             fh.write(textures[0].to_bytes(4, "big"))
             fh.seek(0x144)
             fh.write(textures[1].to_bytes(4, "big"))
+    # New T&S Portal
+    rom.seek(modeltwo_table + (0x2AC << 2))
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    rom.seek(model_start)
+    indic = int.from_bytes(rom.read(2), "big")
+    rom.seek(model_start)
+    portal_data = rom.read(model_size)
+    if indic == 0x1F8B:
+        portal_data = zlib.decompress(portal_data, (15 + 32))
+    rom.seek(modeltwo_table + (0x2AB << 2))
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    rom.seek(model_start)
+    indic = int.from_bytes(rom.read(2), "big")
+    rom.seek(model_start)
+    number_data = rom.read(model_size)
+    if indic == 0x1F8B:
+        number_data = zlib.decompress(number_data, (15 + 32))
+    portal_data = bytearray(portal_data)
+    number_data = bytearray(number_data)
+    portal_data[0x233F] = 7  # Increase Dyntex count
+    # Shift references to verts
+    vert_offset = 0x14D0 - 0x860
+    dl_offset = 0x9E
+    original_val = (number_data[dl_offset] << 8) | number_data[dl_offset + 1]
+    new_val = original_val + vert_offset
+    number_data[dl_offset] = (new_val >> 8) & 0xFF
+    number_data[dl_offset + 1] = new_val & 0xFF
+    # Move Verts
+    for x in range(12):
+        for c in range(3):
+            local_offset = 0x1F0 + (x * 0x10) + (2 * c)
+            val = (number_data[local_offset] << 8) | number_data[local_offset + 1]
+            if val > 0x7FFF:
+                val -= 0x10000
+            mults = [0.35, 0.35, 0.11]
+            val = int(val * mults[c])
+            if c == 1:
+                val -= 30
+            if val < 0:
+                val += 0x10000
+            number_data[local_offset] = (val >> 8) & 0xFF
+            number_data[local_offset + 1] = val & 0xFF
+    # Add dyntexs
+    for x in range(3):
+        local_offset = 0x30A + (0x84 * x)
+        num_offset = 0x2E3 + (0x84 * x)
+        null_tex = 993
+        number_data[num_offset] = 11
+        number_data[local_offset] = (null_tex >> 8) & 0xFF
+        number_data[local_offset + 1] = null_tex & 0xFF
+    with open("troff_portal.bin", "wb") as fh:
+        fh.write(portal_data[:0x758])
+        fh.write((0xFA000000).to_bytes(4, "big"))
+        fh.write((0xFFFFFFFF).to_bytes(4, "big"))
+        fh.write(number_data[0x78:0x1D8])
+        fh.write(portal_data[0x760:0x14D0])
+        fh.write(number_data[0x1F0:0x2B0])
+        fh.write(portal_data[0x14D0:])
+        fh.write(number_data[0x2D4:])
+    with open("troff_portal.bin", "r+b") as fh:
+        dl_1_add = 0x1D8 - 0x78
+        vert_add = 0x2b0 - 0x1F0
+        dyntex_add = 0x460 - 0x2D4
+        total_offset = 0
+        for x in range(12):
+            fh.seek(0x44 + (x * 4))
+            original_val = int.from_bytes(fh.read(4), "big")
+            if x == 0:
+                total_offset += dl_1_add
+            elif x == 2:
+                total_offset += vert_add
+            elif x == 11:
+                total_offset += dyntex_add
+            new_val = original_val + total_offset
+            fh.seek(0x44 + (x * 4))
+            fh.write(new_val.to_bytes(4, "big"))
+    with open("temp_portal.bin", "wb") as fh:
+        with open("troff_portal.bin", "rb") as fg:
+            fh.write(fg.read())
     # Fake Fairies
     rom.seek(actor_table + (0x3C << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")

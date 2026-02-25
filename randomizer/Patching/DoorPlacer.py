@@ -10,7 +10,8 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
-from randomizer.Patching.Library.Generic import addNewScript, getNextFreeID, IsDDMSSelected
+from randomizer.Patching.Library.Generic import getNextFreeID, IsDDMSSelected
+from randomizer.Patching.Library.Scripts import addNewScript
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
@@ -431,37 +432,26 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                                 item_data.append(1 << 16)
                                 retained_model2.append(item_data)
                         elif door_type == DoorType.boss and spoiler.settings.tns_location_rando:
-                            lim = 2
-                            if not spoiler.settings.portal_numbers:
-                                lim = 1
-                            for k in range(lim):
-                                item_data = []
-                                default_scale = door.scale
-                                if door.default_placed == DoorType.dk_portal:
-                                    default_scale = 2
-                                for coord_index in range(3):
-                                    if k == 1 and coord_index == 1:
-                                        y_offset = 30 * default_scale
-                                        item_data.append(int(float_to_hex(door.location[coord_index] - y_offset), 16))  # y
-                                    else:
-                                        item_data.append(int(float_to_hex(door.location[coord_index]), 16))  # x y z
-                                item_data.append(int(float_to_hex([default_scale, 0.35 * default_scale][k]), 16))  # Scale
-                                item_data.append(0xFFFEFEFF)
-                                item_data.append(0x001BFFE1)
-                                item_data.append(int(float_to_hex(door.rx), 16))  # rx
-                                item_data.append(int(float_to_hex(door.location[3]), 16))  # ry
-                                item_data.append(int(float_to_hex(door.rz), 16))  # rz
-                                item_data.append(0)
-                                id = getNextFreeID(ROM_COPY, cont_map_id, door_ids)
-                                portal_indicator_ids.append(id)
-                                door_ids.append(id)
-                                if k == 0:
-                                    portal_ids.append(id)
-                                else:
-                                    indicator_ids.append(id)
-                                item_data.append(([0x2AC, 0x2AB][k] << 16) | id)
-                                item_data.append(1 << 16)
-                                retained_model2.append(item_data)
+                            item_data = []
+                            default_scale = door.scale
+                            if door.default_placed == DoorType.dk_portal:
+                                default_scale = 2
+                            for coord_index in range(3):
+                                item_data.append(int(float_to_hex(door.location[coord_index]), 16))  # x y z
+                            item_data.append(int(float_to_hex(default_scale), 16))  # Scale
+                            item_data.append(0xFFFEFEFF)
+                            item_data.append(0x001BFFE1)
+                            item_data.append(int(float_to_hex(door.rx), 16))  # rx
+                            item_data.append(int(float_to_hex(door.location[3]), 16))  # ry
+                            item_data.append(int(float_to_hex(door.rz), 16))  # rz
+                            item_data.append(0)
+                            id = getNextFreeID(ROM_COPY, cont_map_id, door_ids)
+                            portal_indicator_ids.append(id)
+                            door_ids.append(id)
+                            portal_ids.append(id)
+                            item_data.append((0x2AC << 16) | id)
+                            item_data.append(1 << 16)
+                            retained_model2.append(item_data)
                         elif door_type == DoorType.dk_portal and spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off and door.default_placed != DoorType.dk_portal:
                             item_data = []
                             for coord_index in range(3):
@@ -491,8 +481,6 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                 addNewScript(ROM_COPY, cont_map_id, map_wrinkly_ids, ScriptTypes.Wrinkly)
             if len(portal_ids) > 0:
                 addNewScript(ROM_COPY, cont_map_id, portal_ids, ScriptTypes.TnsPortal)
-            if len(indicator_ids) > 0:
-                addNewScript(ROM_COPY, cont_map_id, indicator_ids, ScriptTypes.TnsIndicator)
             # Reconstruct setup file
             ROM_COPY.seek(setup_table)
             ROM_COPY.writeMultipleBytes(len(retained_model2), 4)

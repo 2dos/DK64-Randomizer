@@ -215,13 +215,20 @@ def ApplyMirrorModeNew(ROM_COPY: LocalROM):
             writeRawFile(TableNames.Exits, map_index, False, map_exits, ROM_COPY)
 
 
-def trimData(data: bytes, alignment: int = 0x10) -> bytes:
+def trimData(data: bytes, alignment: int = 0x10, grouping: int = 1) -> bytes:
     """Trim a bytes object to remove trailing null bytes, and then align the size of the object to a certain modulo."""
     if alignment <= 0:
         raise ValueError("alignment must be positive")
 
     i = len(data) - 1
-    while i >= 0 and data[i] == 0:
+    while i >= (grouping - 1) and data[i] == 0:
+        non_zero_in_grouping = False
+        if grouping > 1:
+            for x in range(grouping):
+                if data[i - x]:
+                    non_zero_in_grouping = True
+            if non_zero_in_grouping:
+                break
         i -= 1
     if i < 0:
         return b""
@@ -242,7 +249,7 @@ def truncateFiles(ROM_COPY: ROM):
         TableNames.TexturesUncompressed,
         TableNames.Cutscenes,
         TableNames.Setups,
-        TableNames.InstanceScripts,
+        # TableNames.InstanceScripts,
         TableNames.Text,
         TableNames.Spawners,
         TableNames.Triggers,
@@ -283,6 +290,9 @@ def truncateFiles(ROM_COPY: ROM):
                     please_shift = True
             elif table_id == TableNames.MusicMIDI:
                 truncated_data = trimData(data, 0x10)
+                please_shift = True
+            elif table_id == TableNames.InstanceScripts:
+                truncated_data = trimData(data, 0x10, 0x10)
                 please_shift = True
             else:
                 truncated_data = data
