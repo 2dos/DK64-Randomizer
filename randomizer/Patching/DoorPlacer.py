@@ -310,7 +310,7 @@ def pushExit(ROM_COPY: LocalROM, cont_map_id: Maps, coords: list[int], angle: in
     ROM_COPY.writeMultipleBytes(exit_count + 1, 2)
     ROM_COPY.seek(exit_table + 12 + (exit_count * 10))
     for c in coords:
-        val = c
+        val = int(c)
         if val < 0:
             val += 0x10000
         ROM_COPY.writeMultipleBytes(val, 2)

@@ -290,14 +290,14 @@ def getTroffPortalScript(map_id: Maps, item_id: int, exit_id: int) -> list[int]:
             FunctionData(3, [60, 0, 0], inclusion_lambda = lambda m: m != Maps.TroffNScoff),
             FunctionData(3, [0, 60, 0], inclusion_lambda = lambda m: m == Maps.TroffNScoff),
             FunctionData(7, [116, 0, 1]),
-            FunctionData(110, [1, 0, 0]),
-            FunctionData(37, [29, 0, 15]),
         ]),
         ScriptBlock([
             FunctionData(1, [1, 0, 0]),
             FunctionData(19, [portal_range, 0, 0]),
             FunctionData(35, [0, 0, 0], True, lambda m: m == Maps.TroffNScoff),
         ], [
+            FunctionData(110, [1, 0, 0]),
+            FunctionData(37, [29, 0, 15]),
             FunctionData(25, [90, 0, 0]),
             FunctionData(1, [100, 0, 0]),
         ]),
@@ -345,7 +345,7 @@ def getTroffPortalScript(map_id: Maps, item_id: int, exit_id: int) -> list[int]:
         ], lambda m: m != Maps.TroffNScoff),
         ScriptBlock([
             FunctionData(1, [1, 0, 0]),
-            FunctionData(19, [portal_range, 0, 0], True),
+            FunctionData(19, [60, 0, 0], True),
         ], [
             FunctionData(1, [2, 0, 0]),
         ]),
