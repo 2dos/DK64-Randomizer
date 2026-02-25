@@ -335,7 +335,6 @@ extern int isDynFlag(int obj, maps map);
 extern void hideObject(behaviour_data* behaviour_pointer);
 extern void bananaportGenericCode(behaviour_data* behaviour, int index, int id);
 extern void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id);
-extern void MelonCrateGenericCode(behaviour_data* behaviour, int index, int id);
 extern int isBonus(maps map);
 extern int checkSlamLocation(int kong, int key, int id);
 extern void playSFXContainer(int id, int vanilla_sfx, int new_sfx);

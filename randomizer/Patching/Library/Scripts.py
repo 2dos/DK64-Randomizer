@@ -497,6 +497,90 @@ def getCrownScript(container_map_id: Maps, item_id: int, isIsles2: bool = False)
         ]),   
     ])
 
+def getCrateScript(item_id: int) -> list[int]:
+    """Get the instance script for a melon crate."""
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(90, [50, 50, 50]),
+            FunctionData(61, [4, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(20, [1, 255, 0]),
+            FunctionData(17, [1, 65535, 0]),
+            FunctionData(38, [3, 500, 0]),
+        ]
+        ),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(24, [1, 1, 0]),
+            FunctionData(1, [1, 0, 0]),
+        ]
+        ),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(1, [0, 1, 0]),
+            FunctionData(55, [1, 18, 0]),
+        ], [
+            FunctionData(15, [757, 20, 12880]),
+            FunctionData(1, [1, 1, 0]),
+        ]
+        ),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(1, [0, 1, 0]),
+            FunctionData(55, [1, 19, 0]),
+        ], [
+            FunctionData(15, [757, 20, 12870]),
+            FunctionData(1, [1, 1, 0]),
+        ]
+        ),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(1, [1, 1, 0]),
+            FunctionData(55, [1, 18, 0], True),
+            FunctionData(55, [1, 19, 0], True),
+        ], [
+            FunctionData(1, [0, 1, 0]),
+        ]
+        ),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(16, [4, 1, 0]),
+        ], [
+            FunctionData(1, [2, 0, 0]),
+        ]
+        ),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(23, [28, 0, 0]),
+            FunctionData(2, [0, 0, 0]),
+        ], [
+            FunctionData(1, [2, 0, 0]),
+        ]
+        ),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(16, [1, 1, 0]),
+            FunctionData(57, [2040, 0, 0]),
+        ], [
+            FunctionData(1, [2, 0, 0]),
+        ]
+        ),
+        ScriptBlock([
+            FunctionData(1, [2, 0, 0]),
+        ], [
+            FunctionData(97, [47, 0, 0]),
+            FunctionData(15, [35, 0, 0]),
+            FunctionData(7, [16, 0, 0]),
+            FunctionData(79, [65534, 0, 0]),
+        ]),
+    ])
+
 def replaceScriptLines(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], replacement_mapping: dict) -> None:
     """Replace a script line with another."""
     script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
@@ -600,7 +684,7 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
         elif stype in (ScriptTypes.CrownMain, ScriptTypes.CrownIsles2):
             subscript = getCrownScript(cont_map_id, item_id, stype == ScriptTypes.CrownIsles2)
         elif stype == ScriptTypes.MelonCrate:
-            subscript = getCScript(-13, item_id)
+            subscript = getCrateScript(item_id)
         elif stype == ScriptTypes.DeleteItem:
             subscript = getCScript(-16, item_id)
         if subscript is not None:

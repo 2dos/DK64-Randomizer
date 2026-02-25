@@ -1414,8 +1414,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			}
 		}
 		return 1;
-	} else if (index == -13) {
-		MelonCrateGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -16) {
 		hideObject(behaviour_pointer);
 	} else if (index == -17) {

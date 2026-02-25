@@ -21,7 +21,6 @@
 .importobj "obj/src_initialization_qol.o"
 .importobj "obj/src_instances_bananaport.o"
 .importobj "obj/src_instances_cannon.o"
-.importobj "obj/src_instances_melon_crate.o"
 .importobj "obj/src_instances_instance_lib.o"
 .importobj "obj/src_instances_misc_pads.o"
 .importobj "obj/src_instances_boss_portal.o"
