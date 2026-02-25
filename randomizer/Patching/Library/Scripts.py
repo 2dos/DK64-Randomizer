@@ -64,6 +64,8 @@ class ScriptBlock:
 
     def compile(self, val: int) -> list[int]:
         """Compile into a block for a script."""
+        if not self.include(val):
+            return []
         active_conds = self.getActiveConditions(val)
         active_execs = self.getActiveExecutions(val)
         output_bin = [len(active_conds)]
@@ -84,8 +86,9 @@ def compileInstanceScript(item_id, script: list[ScriptBlock], val: int = None) -
     block_count = 0
     for block in script:
         if len(block.getActiveConditions(val)) > 0 or len(block.getActiveExecutions(val)) > 0:
-            block_count += 1
-            output_bin.extend(block.compile(val))
+            if block.include(val):
+                block_count += 1
+                output_bin.extend(block.compile(val))
     output_bin[1] = block_count
     return output_bin
 
@@ -233,13 +236,12 @@ level_portal_flag_mapping = {
     Levels.CreepyCastle: 0x160,
 }
 
-def getTroffPortalScript(map_id: Maps, item_id: int) -> list[int]:
+def getTroffPortalScript(map_id: Maps, item_id: int, exit_id: int) -> list[int]:
     """Get the instance script for a troff and scoff portal."""
     level_id: Levels = None
     boss_flag = level_key_flag_mapping[Levels.JungleJapes]
     portal_flag = level_portal_flag_mapping[Levels.JungleJapes]
     portal_range = 90
-    exit_id = 3  # TODO: Configure this
     if map_id != Maps.TroffNScoff:
         portal_range = 60
         for lvl, map_ids in level_map_mapping.items():
@@ -466,7 +468,7 @@ def replaceScriptLines(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int]
                             ROM_COPY.writeMultipleBytes(p, 2)
                 file_offset += 8
 
-def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], type: ScriptTypes) -> None:
+def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], type: ScriptTypes, extra_data: dict = {}) -> None:
     """Append a new script to the script database. Has to be just 1 execution and 1 endblock."""
     script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
     ROM_COPY.seek(script_table)
@@ -502,7 +504,7 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], type
         elif type == ScriptTypes.Wrinkly:
             subscript = getCScript(-2, item_id)
         elif type == ScriptTypes.TnsPortal:
-            subscript = getTroffPortalScript(cont_map_id, item_id)
+            subscript = getTroffPortalScript(cont_map_id, item_id, extra_data[item_id]["exit_id"])
         elif type == ScriptTypes.CrownMain:
             subscript = getCScript(-5, item_id)
         elif type == ScriptTypes.CrownIsles2:
