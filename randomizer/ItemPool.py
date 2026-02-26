@@ -677,7 +677,7 @@ def FillerItems(settings):
         Items.FillerBanana: {
             # Don't think we need to worry about the 8 bit limit, but just to be safe
             "count": 255 - settings.total_gbs,
-            "weight": 10,
+            "weight": 5,
         },
         Items.FillerCrown: {
             "count": 255 - settings.total_crowns,
@@ -685,7 +685,7 @@ def FillerItems(settings):
         },
         Items.FillerFairy: {
             "count": 255 - settings.total_fairies,
-            "weight": 4,
+            "weight": 3,
         },
         Items.FillerPearl: {
             "count": 255 - settings.total_pearls,
@@ -693,13 +693,13 @@ def FillerItems(settings):
         },
         Items.FillerMedal: {
             "count": 255 - settings.total_medals,
-            "weight": 6,
+            "weight": 4,
         },
         Items.FillerRainbowCoin: {
             "count": 255 - settings.total_rainbow_coins,
             "weight": 3,
         },
-        Items.JunkMelon: {"count": 1000, "weight": 2},
+        Items.JunkMelon: {"count": 1000, "weight": 4},
     }
     max_weight = max([x["weight"] for x in list(filler_mapping_allowances.values())])
     filler_types_in_pool = [x for x in list(filler_mapping.keys()) if x in settings.shuffled_location_types]
