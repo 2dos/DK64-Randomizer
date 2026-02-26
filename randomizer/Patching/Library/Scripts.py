@@ -1,6 +1,7 @@
 """Instance Script library functions and classes."""
 
 from randomizer.Enums.ScriptTypes import ScriptTypes
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Levels import Levels
 from randomizer.Patching.Library.DataTypes import short_to_ushort
@@ -236,8 +237,21 @@ level_portal_flag_mapping = {
     Levels.CreepyCastle: 0x160,
 }
 
-def getLevel(map_id: Maps, source: str) -> Levels:
+def getLevel(map_id: Maps, source: str, lobby_is_isles: bool = True) -> Levels:
     """Get the level associated with a map."""
+    if not lobby_is_isles:
+        lobby_mapping = {
+            Maps.JungleJapesLobby: Levels.JungleJapes,
+            Maps.AngryAztecLobby: Levels.AngryAztec,
+            Maps.FranticFactoryLobby: Levels.FranticFactory,
+            Maps.GloomyGalleonLobby: Levels.GloomyGalleon,
+            Maps.FungiForestLobby: Levels.FungiForest,
+            Maps.CrystalCavesLobby: Levels.CrystalCaves,
+            Maps.CreepyCastleLobby: Levels.CreepyCastle,
+            Maps.HideoutHelmLobby: Levels.HideoutHelm,
+        }
+        if map_id in lobby_mapping:
+            return lobby_mapping[map_id]
     for lvl, map_ids in level_map_mapping.items():
         if map_id in map_ids:
             return lvl
@@ -512,15 +526,13 @@ def getCrateScript(item_id: int) -> list[int]:
             FunctionData(20, [1, 255, 0]),
             FunctionData(17, [1, 65535, 0]),
             FunctionData(38, [3, 500, 0]),
-        ]
-        ),
+        ]),
         ScriptBlock([
             FunctionData(1, [0, 0, 0]),
         ], [
             FunctionData(24, [1, 1, 0]),
             FunctionData(1, [1, 0, 0]),
-        ]
-        ),
+        ]),
         ScriptBlock([
             FunctionData(1, [1, 0, 0]),
             FunctionData(1, [0, 1, 0]),
@@ -528,8 +540,7 @@ def getCrateScript(item_id: int) -> list[int]:
         ], [
             FunctionData(15, [757, 20, 12880]),
             FunctionData(1, [1, 1, 0]),
-        ]
-        ),
+        ]),
         ScriptBlock([
             FunctionData(1, [1, 0, 0]),
             FunctionData(1, [0, 1, 0]),
@@ -537,8 +548,7 @@ def getCrateScript(item_id: int) -> list[int]:
         ], [
             FunctionData(15, [757, 20, 12870]),
             FunctionData(1, [1, 1, 0]),
-        ]
-        ),
+        ]),
         ScriptBlock([
             FunctionData(1, [1, 0, 0]),
             FunctionData(1, [1, 1, 0]),
@@ -546,31 +556,27 @@ def getCrateScript(item_id: int) -> list[int]:
             FunctionData(55, [1, 19, 0], True),
         ], [
             FunctionData(1, [0, 1, 0]),
-        ]
-        ),
+        ]),
         ScriptBlock([
             FunctionData(1, [1, 0, 0]),
             FunctionData(16, [4, 1, 0]),
         ], [
             FunctionData(1, [2, 0, 0]),
-        ]
-        ),
+        ]),
         ScriptBlock([
             FunctionData(1, [1, 0, 0]),
             FunctionData(23, [28, 0, 0]),
             FunctionData(2, [0, 0, 0]),
         ], [
             FunctionData(1, [2, 0, 0]),
-        ]
-        ),
+        ]),
         ScriptBlock([
             FunctionData(1, [1, 0, 0]),
             FunctionData(16, [1, 1, 0]),
             FunctionData(57, [2040, 0, 0]),
         ], [
             FunctionData(1, [2, 0, 0]),
-        ]
-        ),
+        ]),
         ScriptBlock([
             FunctionData(1, [2, 0, 0]),
         ], [
@@ -578,6 +584,234 @@ def getCrateScript(item_id: int) -> list[int]:
             FunctionData(15, [35, 0, 0]),
             FunctionData(7, [16, 0, 0]),
             FunctionData(79, [65534, 0, 0]),
+        ]),
+    ])
+
+def getHelmLobbyGrabScript(item_id: int) -> list[int]:
+    """Get the instance script for the Helm Lobby activator if it is a lever."""
+    microhints = True
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(24, [1, 1, 0]),
+            FunctionData(39, [1, 0, 0]),
+            FunctionData(62, [0, 0, 0]),
+            FunctionData(7, [125, short_to_ushort(-4), 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(20, [1, 85, 0]),
+            FunctionData(22, [1, 1, 0]),
+            FunctionData(40, [1, 0, 0]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(18, [2, 2, 0]),
+            FunctionData(6, [3, 0, 0]),
+            FunctionData(52, [2, 3, 0]),
+        ], [
+            FunctionData(120, [1, 0, 0]),
+            FunctionData(73, [8, 0, 0]),
+            FunctionData(1, [1, 1, 0]),
+            FunctionData(3, [0, 5, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(18, [2, 2, 0]),
+            FunctionData(52, [2, 3, 0], True),
+        ], [
+            FunctionData(1, [7, 0, 0]),
+        ], inclusion_lambda=lambda m: m),
+        ScriptBlock([
+            FunctionData(1, [1, 1, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(1, [0, 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [1, 1, 0]),
+            FunctionData(4, [0, 0, 0], True),
+            FunctionData(23, [120, 0, 0]),
+        ], [
+            FunctionData(38, [1, 0, 0]),
+            FunctionData(1, [2, 0, 0]),
+            FunctionData(1, [0, 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [2, 0, 0]),
+            FunctionData(51, [0, 114, 0]),
+        ], [
+            FunctionData(40, [1, 1, 0]),
+            FunctionData(17, [1, 1, 0]),
+            FunctionData(15, [459, 0, 0]),
+            FunctionData(1, [3, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [3, 0, 0]),
+            FunctionData(51, [0, 155, 0]),
+        ], [
+            FunctionData(7, [125, short_to_ushort(-6), 0]),
+            FunctionData(3, [0, 50, 0]),
+            FunctionData(1, [4, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [4, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(5, [13, 10, 0]),
+            FunctionData(84, [13, 1, 0]),
+            FunctionData(3, [0, 180, 0]),
+            FunctionData(1, [5, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(107, [397, 1, 0]),
+            FunctionData(38, [2, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(29, [1, 1, 0]),
+            FunctionData(29, [0, 4, 0]),
+            FunctionData(23, [120, 0, 0], True),
+        ], [
+            FunctionData(40, [1, 0, 0]),
+            FunctionData(26, [1, 0, 0]),
+            FunctionData(21, [1, 0, 0]),
+            FunctionData(20, [1, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(29, [1, 1, 0]),
+            FunctionData(29, [0, 4, 0]),
+            FunctionData(23, [120, 0, 0], True),
+        ], [
+            FunctionData(17, [1, 1, 0]),
+            FunctionData(1, [10, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [10, 0, 0]),
+        ], [
+            FunctionData(18, [1, 0, 0]),
+            FunctionData(1, [0, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [7, 0, 0]),
+            FunctionData(52, [2, 3, 0]),
+        ], [
+            FunctionData(1, [1, 0, 0]),
+        ], inclusion_lambda=lambda m: m),
+        ScriptBlock([
+            FunctionData(1, [7, 0, 0]),
+            FunctionData(52, [2, 3, 0], True),
+            FunctionData(6, [7, short_to_ushort(-5), 0], True),
+        ], [
+            FunctionData(37, [3, 1, 0]),
+            FunctionData(1, [8, 0, 0]),
+        ], inclusion_lambda=lambda m: m),
+        ScriptBlock([
+            FunctionData(1, [8, 0, 0]),
+            FunctionData(18, [2, 2, 0], True),
+            FunctionData(35, [0, 0, 0], True),
+        ], [
+            FunctionData(1, [7, 0, 0]),
+        ], inclusion_lambda=lambda m: m),
+    ], microhints)
+
+def getObjectHideScript(item_id: int) -> list[int]:
+    """Get the instance script associated with instantly hiding an object."""
+    return compileInstanceScript(item_id, [
+        ScriptBlock([], [
+            FunctionData(69, [1, 0, 255 ]),
+            FunctionData(70, [0, 0, 0]),
+            FunctionData(71, [0, 0, 0 ]),
+            FunctionData(38, [2, 0, 0 ]),
+        ]),
+    ])
+
+def getWrinklyScript(map_id: Maps, kong: Kongs, item_id: int) -> list[int]:
+    """Get the instance script associated with a wrinkly door."""
+    level_id = getLevel(map_id, "crown pad", False)
+    view_flag = 0x384 + (level_id * 5) + kong
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(39, [1, 0, 0]),
+            FunctionData(39, [2, 0, 0]),
+            FunctionData(40, [1, 1, 0]),
+            FunctionData(40, [2, 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(22, [1, 1, 0]),
+            FunctionData(20, [1, 10, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(6, [7, short_to_ushort(-7), 0], True),
+        ], [
+            FunctionData(1, [20, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(6, [7, short_to_ushort(-7), 0]),
+            FunctionData(45, [view_flag, 0, 0]),
+        ], [
+            FunctionData(40, [1, 2, 0]),
+            FunctionData(40, [2, 2, 0]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(6, [7, short_to_ushort(-7), 0]),
+            FunctionData(45, [view_flag, 0, 0], True),
+        ], [
+            FunctionData(40, [1, 0, 0]),
+            FunctionData(40, [2, 0, 0]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(19, [40, 0, 0]),
+            FunctionData(6, [18, 0, 0]),
+        ], [
+            FunctionData(17, [1, 1, 0]),
+            FunctionData(7, [105, kong, 0]),
+            FunctionData(15, [19, 20, 0]),
+            FunctionData(1, [2, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(19, [40, 0, 0]),
+            FunctionData(6, [18, 0, 0]),
+        ], [
+            FunctionData(7, [125, short_to_ushort(-16), 1]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [2, 0, 0]),
+            FunctionData(6, [12, 0, 0]),
+        ], [
+            FunctionData(17, [1, 1, 0]),
+            FunctionData(15, [19, 20, 0]),
+            FunctionData(1, [3, 0, 0]),
+            FunctionData(7, [125, short_to_ushort(-16), 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [3, 0, 0]),
+            FunctionData(21, [1, 0, 0], True),
+        ], [
+            FunctionData(15, [50, 0, 60]),
+            FunctionData(1, [4, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [4, 0, 0]),
+            FunctionData(19, [60, 0, 0], True),
+        ], [
+            FunctionData(1, [1, 0, 0]),
         ]),
     ])
 
@@ -678,7 +912,7 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
         if stype == ScriptTypes.Bananaport:
             subscript = getCScript(-1, item_id)
         elif stype == ScriptTypes.Wrinkly:
-            subscript = getCScript(-2, item_id)
+            subscript = getWrinklyScript(cont_map_id, extra_data[item_id]["kong_id"], item_id)
         elif stype == ScriptTypes.TnsPortal:
             subscript = getTroffPortalScript(cont_map_id, item_id, extra_data[item_id]["exit_id"])
         elif stype in (ScriptTypes.CrownMain, ScriptTypes.CrownIsles2):
@@ -686,7 +920,9 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
         elif stype == ScriptTypes.MelonCrate:
             subscript = getCrateScript(item_id)
         elif stype == ScriptTypes.DeleteItem:
-            subscript = getCScript(-16, item_id)
+            subscript = getObjectHideScript(item_id)
+        elif stype == ScriptTypes.HelmLobbyPadGrab:
+            subscript = getHelmLobbyGrabScript(item_id)
         if subscript is not None:
             good_scripts.append(subscript)
     # Reconstruct File

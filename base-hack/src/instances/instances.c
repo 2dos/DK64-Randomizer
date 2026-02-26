@@ -1318,75 +1318,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			WarpData = getFile(size, 0x1FF0000);
 		}
 		bananaportGenericCode(behaviour_pointer, id, param2);
-	} else if (index == -2) {
-		// Wrinkly Generic Code
-		short* cached_data = behaviour_pointer->extra_data;
-		int kong = 0;
-		if (!cached_data) {
-			cached_data = dk_malloc(2);
-			int wrinkly_index = convertIDToIndex(param2);
-			int wrinkly_doors[] = {0xF0, 0xF2, 0xEF, 0x67, 0xF1};
-			if (wrinkly_index > -1) {
-				ModelTwoData* _object = &ObjectModel2Pointer[wrinkly_index];
-				for (int i = 0; i < 5; i++) {
-					if (_object->object_type == wrinkly_doors[i]) {
-						kong = i;
-					}
-				}
-			}
-			*cached_data = kong;
-			behaviour_pointer->extra_data = cached_data;
-		} else {
-			kong = *cached_data;
-		}
-		if (behaviour_pointer->current_state == 0) {
-			unkObjFunction7(id,1,0);
-			unkObjFunction7(id,2,0);
-			displayImageOnObject(id, 1, 1, 0);
-			displayImageOnObject(id, 2, 1, 0);
-			unkObjFunction0(id, 1, 1);
-			unkObjFunction1(id, 1, 10);
-			if ((!getItemCount_new(REQITEM_KONG, 0, kong)) && (!Rando.disable_wrinkly_kong_requirement)) {
-				behaviour_pointer->next_state = 20;
-			} else {
-				int world = getWorld(CurrentMap, 0);
-				int image = 0;
-				if (checkFlag(FLAG_WRINKLYVIEWED + (5 * world) + kong, FLAGTYPE_PERMANENT)) {
-					image = 2;
-				}
-				displayImageOnObject(id, 1, image, 0);
-				displayImageOnObject(id, 2, image, 0);
-				behaviour_pointer->next_state = 1;
-			}
-		} else if (behaviour_pointer->current_state == 1) {
-			if (isPlayerInRangeOfObject(40)) {
-				if (getPlayerObjectDistance()) {
-					unkObjFunction2(id, 1, 1);
-					PauseText = 1;
-					spawnWrinklyWrapper(behaviour_pointer, id, kong, 0);
-					playSFXFromObject(id, 19, 255, 127, 20, 0, 0.3f);
-					behaviour_pointer->next_state = 2;
-				}
-			}
-		} else if (behaviour_pointer->current_state == 2) {
-			if (isWrinklySpawned()) {
-				unkObjFunction2(id, 1, 1);
-				playSFXFromObject(id, 19, 255, 127, 20, 0, 0.3f);
-				PauseText = 0;
-				behaviour_pointer->next_state = 3;
-			}
-		} else if (behaviour_pointer->current_state == 3) {
-			if (unkObjFunction8(id, 1) == 0) {
-				playSFXFromObject(id, 50, 255, 127, 0, 60, 0.3f);
-				behaviour_pointer->next_state = 4;
-			}
-		} else if (behaviour_pointer->current_state == 4) {
-			if (isPlayerInRangeOfObject(60) == 0) {
-				behaviour_pointer->next_state = 1;
-			}
-		}
 	} else if (index == -3) {
 		TNSIndicatorGenericCode(behaviour_pointer, id, param2);
+	} else if (index == -4) {
+		// Helm Lobby - Init
+		bonus_shown = 0;
+	} else if (index == -5) {
+		// Helm Lobby - Can access micro
+		return canOpenSpecificBLocker(7);
+	} else if (index == -6) {
+		// Helm Lobby Show
+		activateGonePad();
 	} else if (index == -7) {
 		return getItemCount_new(REQITEM_KONG, 0, param2) || Rando.disable_wrinkly_kong_requirement;
 	} else if (index == -8) {
@@ -1415,7 +1357,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		}
 		return 1;
 	} else if (index == -16) {
-		hideObject(behaviour_pointer);
+		PauseText = param2;
 	} else if (index == -17) {
 		return isTimeOfDay(param2);
 	} else if (index == -18) {

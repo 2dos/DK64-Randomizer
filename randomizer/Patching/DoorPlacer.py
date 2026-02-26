@@ -470,9 +470,8 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
             map_wrinkly_ids = []
             portal_indicator_ids = []
             portal_ids = []
-            portal_data = {
-
-            }
+            portal_data = {}
+            wrinkly_data = {}
             indicator_ids = []
             for level in spoiler.shuffled_door_data:
                 for data in spoiler.shuffled_door_data[level]:
@@ -517,6 +516,9 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                                 item_data.append(0)
                                 id = getNextFreeID(ROM_COPY, cont_map_id, door_ids)
                                 map_wrinkly_ids.append(id)
+                                wrinkly_data[id] = {
+                                    "kong_id": kong
+                                }
                                 door_ids.append(id)
                                 item_data.append((wrinkly_doors[kong] << 16) | id)
                                 item_data.append(1 << 16)
@@ -572,7 +574,7 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                             item_data.append(1 << 16)
                             retained_model2.append(item_data)
             if len(map_wrinkly_ids) > 0:
-                addNewScript(ROM_COPY, cont_map_id, map_wrinkly_ids, ScriptTypes.Wrinkly)
+                addNewScript(ROM_COPY, cont_map_id, map_wrinkly_ids, ScriptTypes.Wrinkly, wrinkly_data)
             if len(portal_ids) > 0:
                 extra_data = {}
                 for pid in portal_ids:
