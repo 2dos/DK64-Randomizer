@@ -837,7 +837,7 @@ def replaceScriptLines(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int]
                 for _ in range(3):
                     params.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
                 if script_id in item_ids:
-                    constructed = f"COND{'INV' if func & 0x8000 else ''} {func & 0x7FFF} | {params[0]} {params[1]} {params[2]}"
+                    constructed = f"{'CONDINV' if func & 0x8000 else 'COND'} {func & 0x7FFF} | {params[0]} {params[1]} {params[2]}"
                     if constructed in replacement_mapping:
                         new_output = replacement_mapping[constructed]
                         segs = new_output.split(" ")
@@ -960,7 +960,6 @@ def setProgSlamStrength(ROM_COPY: LocalROM, settings):
     for map_id, obj_ids in slammable_switches.items():
         level_id = getLevel(map_id, "slam switches", False)
         slam_strength = settings.switch_allocation[level_id]
-        print(map_id.name, slam_strength)
         if slam_strength > 0:
             for x in range(4):
                 replaceScriptLines(ROM_COPY, map_id, obj_ids, {

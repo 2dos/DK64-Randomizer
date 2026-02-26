@@ -282,7 +282,6 @@ extern int inShortList(const int target, const short* list, const int count);
 extern int inU8List(const int target, const unsigned char* list, const int count);
 
 extern int CrownDoorCheck(void);
-extern int CoinDoorCheck(void);
 
 extern void alterChunkData(void* data);
 extern void shineLight(actorData* actor, int kongType);

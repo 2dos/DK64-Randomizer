@@ -420,8 +420,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 						return checkFlag(FLAG_MODIFIER_LLAMAFREE, FLAGTYPE_PERMANENT);
 					}
-				} else if (param2 == AZTEC_CHUNKY_CAGE) {
-					return !Rando.tag_anywhere;
 				}
 				break;
 			case MAP_FUNGI:
@@ -512,8 +510,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						unkObjFunction2(id,2,1);
 						unkObjFunction2(id,3,1);
 					}
-				} else if ((param2 == ISLES_SWITCH_COCONUT) || (param2 == ISLES_SWITCH_PEANUT) || (param2 == ISLES_SWITCH_GRAPE) || (param2 == ISLES_SWITCH_FEATHER) || (param2 == ISLES_SWITCH_PINEAPPLE)) {
-					return !Rando.tag_anywhere;
 				} else if (param2 == ISLES_LOWMONKEYPORT) {
 					IslesMonkeyportCode(behaviour_pointer, id);
 				} else if (param2 == ISLES_HIGHMONKEYPORT) {
@@ -555,8 +551,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 1) {
 						return !checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					}
-				} else if (param2 == LLAMA_GRAPE_SWITCH) {
-					return !Rando.tag_anywhere;
 				} else {
 					int selection = -1;
 					for (unsigned int k = 0; k < sizeof(head_ids)/4; k++) {
@@ -905,8 +899,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							}
 						}
 					}
-				} else if ((param2 == FACTORY_SNATCH_GRATE) || (param2 == FACTORY_PAD_GUITAR) || (param2 == FACTORY_PAD_TRIANGLE) || (param2 == FACTORY_PAD_TROMBONE)) {
-					return !Rando.tag_anywhere;
 				} else if (((param2 >= FACTORY_BLOCKELEVATOR_0) && (param2 <= FACTORY_BLOCKELEVATOR_4)) || (param2 == FACTORY_BLOCKELEVATOR_5) || (param2 == FACTORY_BLOCKELEVATOR_6)) {
 					behaviour_pointer->timer = (RNG & 63) + 15;
 				} else if (param2 == ITEM_NINTENDO_COIN) {
@@ -1183,21 +1175,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case MAP_CASTLECRYPTDKDIDDYCHUNKY:
-				if ((param2 == CRYPT_DDC_D) || (param2 == CRYPT_DDC_E) || (param2 == CRYPT_DDC_F)) {
-					return !Rando.tag_anywhere;
-				}
-				break;
-			case MAP_CASTLEBASEMENT:
-				if ((param2 == DUNGEON_SLAM_DK) || (param2 == DUNGEON_SLAM_DIDDY) || (param2 == DUNGEON_SLAM_LANKY)) {
-					return !Rando.tag_anywhere;
-				}
-				break;
-			case MAP_CASTLETREE:
-				if ((param2 == TREE_DOOR_DK) || (param2 == TREE_DOOR_CHUNKY)) {
-					return !Rando.tag_anywhere;
-				}
-				break;
 			case MAP_HELM:
 				{
 					int slot = -1;
@@ -1209,7 +1186,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					switch(param2) {
 						case HELM_COIN_DOOR:
 							if (index == 0) {
-								return CoinDoorCheck();
+								return isItemRequirementSatisfied(&Rando.coin_door_requirement);
 							} else if (index == 1) {
 								return checkFlag(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
 							} else if (index == 2) {

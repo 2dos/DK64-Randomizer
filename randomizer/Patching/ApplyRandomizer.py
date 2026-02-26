@@ -350,6 +350,22 @@ def patching_response(spoiler):
     ROM_COPY.seek(sav + 0x1E3)
     ROM_COPY.write(req_val)
 
+    if spoiler.settings.enable_tag_anywhere:
+        ta_blocks = {
+            Maps.AngryAztec: [0x24],
+            Maps.CastleCrypt: [0xD, 0xE, 0xF],
+            Maps.CastleDungeon: [0x4, 0x5, 0x6],
+            Maps.CastleTree: [0x1, 0x9],
+            Maps.FranticFactory: [0x15, 0x38, 0x37, 0x3B],
+            Maps.AztecLlamaTemple: [0x6B],
+            Maps.Isles: [0x32, 0x2A, 0x27, 0x29, 0x28],
+        }
+        for map_id, obj_ids in ta_blocks.items():
+            for x in range(5):
+                replaceScriptLines(ROM_COPY, map_id, obj_ids, {
+                    f"CONDINV 25 | {x + 2} 0 0": "COND 25 | 0 0 0"
+                })
+
     # Camera unlocked
     given_moves = []
     if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
