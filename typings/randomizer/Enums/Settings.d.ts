@@ -573,6 +573,7 @@ export enum ShufflePortLocations {
 }
 
 export enum SlamRequirement {
+    no_slam = 0,
     green = 1,
     blue = 2,
     red = 3,

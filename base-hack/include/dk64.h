@@ -912,8 +912,6 @@ extern unsigned char ItemRandoOn;
 extern unsigned char KasplatSpawnBitfield;
 extern unsigned short HoldableSpawnBitfield;
 extern char KrushaSlot;
-extern unsigned char RandomSwitches;
-extern unsigned char SwitchLevel[7];
 extern int ExtraSaveData[0x100];
 extern char* DisplayedSongNamePointer;
 extern unsigned char RandomizerVersion;

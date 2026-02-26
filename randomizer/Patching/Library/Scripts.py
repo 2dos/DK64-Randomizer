@@ -733,7 +733,7 @@ def getObjectHideScript(item_id: int) -> list[int]:
 
 def getWrinklyScript(map_id: Maps, kong: Kongs, item_id: int) -> list[int]:
     """Get the instance script associated with a wrinkly door."""
-    level_id = getLevel(map_id, "crown pad", False)
+    level_id = getLevel(map_id, "wrinkly", False)
     view_flag = 0x384 + (level_id * 5) + kong
     return compileInstanceScript(item_id, [
         ScriptBlock([
@@ -931,3 +931,50 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
     for script in good_scripts:
         for x in script:
             ROM_COPY.writeMultipleBytes(x, 2)
+
+slammable_switches = {
+    Maps.JungleJapes: [0x1A, 0x40, 0x41, 0x3F, 0x3E, 0x3D],
+    Maps.JapesMountain: [0xB, 0xA, 0x6],
+    Maps.JapesTinyHive: [0x2, 0x3],
+    Maps.AngryAztec: [0x28],
+    Maps.AztecLlamaTemple: [0x69, 0x29, 0xE, 0xF, 0x10],
+    Maps.AztecTinyTemple: [0x0, 0x1A],
+    Maps.FranticFactory: [0x79, 0x31, 0x7A, 0x24, 0x30, 0x3D, 0x2F, 0x80, 0x2E, 0x61],
+    Maps.GloomyGalleon: [0x2A, 0x1D, 0x1C, 0x27],
+    Maps.GloomyGalleonLobby: [0xA],
+    Maps.FungiForest: [0xEC, 0x10, 0xF, 0xEB],
+    Maps.ForestThornvineBarn: [0x0],
+    Maps.ForestMillFront: [0x1, 0x2],
+    Maps.ForestGiantMushroom: [0x1, 0x0],
+    Maps.ForestMillAttic: [0x0],
+    Maps.ForestChunkyFaceRoom: [0x1],
+    Maps.CrystalCaves: [0xD, 0x144],
+    Maps.CreepyCastle: [0x12, 0x17, 0x16, 0xF, 0x19],
+    Maps.CastleDungeon: [0x5, 0x4, 0x6],
+    Maps.CastleMausoleum: [0x4],
+    Maps.CastleLibrary: [0x4],
+}
+
+def setProgSlamStrength(ROM_COPY: LocalROM, settings):
+    """Update the instance scripts for all slam switches impacted by prog slam strength."""
+    for map_id, obj_ids in slammable_switches.items():
+        level_id = getLevel(map_id, "slam switches", False)
+        slam_strength = settings.switch_allocation[level_id]
+        print(map_id.name, slam_strength)
+        if slam_strength > 0:
+            for x in range(4):
+                replaceScriptLines(ROM_COPY, map_id, obj_ids, {
+                    f"COND 37 | {x} 0 0": f"COND 37 | {slam_strength} 0 0",
+                })
+        else:
+            for x in range(4):
+                replaceScriptLines(ROM_COPY, map_id, obj_ids, {
+                    f"COND 37 | {x} 0 0": "COND 0 | 0 0 0",
+                })
+            for x in range(5):
+                replaceScriptLines(ROM_COPY, map_id, obj_ids, {
+                    f"COND 25 | {x + 2} 0 0": "COND 0 | 0 0 0",
+                })
+            replaceScriptLines(ROM_COPY, map_id, obj_ids, {
+                "COND 23 | 28 0 0": "COND 0 | 0 0 0",
+            })

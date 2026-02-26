@@ -4,7 +4,6 @@ extern void checkFlag_ItemRando(void);
 extern void setFlag_ItemRando(void);
 extern void VineCode(void);
 extern void VineShowCode(void);
-extern void HandleSlamCheck(void);
 extern void ModifyCameraColor(void);
 extern void SkipCutscenePans(void);
 extern void ShopImageHandler(void);

@@ -354,11 +354,9 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
     mode = settings.colorblind_mode
     sav = settings.rom_data
     galleon_switch_value = None
-    ROM_COPY.seek(sav + 0x103)
-    switch_rando_on = int.from_bytes(ROM_COPY.readBytes(1), "big") != 0
+    switch_rando_on = settings.alter_switch_allocation
     if switch_rando_on:
-        ROM_COPY.seek(sav + 0x104 + 3)
-        galleon_switch_value = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        galleon_switch_value = settings.switch_allocation[3]
     if mode != ColorblindMode.off:
         if mode in (ColorblindMode.prot, ColorblindMode.deut):
             recolorBells(ROM_COPY)
@@ -451,6 +449,8 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
                 new_color = [0xFF, 0x00, 0x00]
                 if galleon_switch_value == 2:
                     new_color = [0x26, 0xA3, 0xE9]
+                elif galleon_switch_value == 0:
+                    new_color = [0xFF, 0xFF, 0xFF]
                 recolorKRoolShipSwitch(new_color, ROM_COPY)
     if settings.head_balloons:
         for kong in range(5):

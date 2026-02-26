@@ -279,7 +279,6 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeValue(ROM_COPY, 0x80731672, Overlay.Static, flag_map_count, offset_dict)
     writeHook(ROM_COPY, 0x8069840C, Overlay.Static, "VineCode", offset_dict)
     writeHook(ROM_COPY, 0x80698420, Overlay.Static, "VineShowCode", offset_dict)
-    writeHook(ROM_COPY, 0x8063ED7C, Overlay.Static, "HandleSlamCheck", offset_dict)
     writeHook(ROM_COPY, 0x80648364, Overlay.Static, "ShopImageHandler", offset_dict)
     writeHook(ROM_COPY, 0x806F6EA0, Overlay.Static, "BarrelMovesFixes", offset_dict)
     writeHook(ROM_COPY, 0x806E4930, Overlay.Static, "ChimpyChargeFix", offset_dict)

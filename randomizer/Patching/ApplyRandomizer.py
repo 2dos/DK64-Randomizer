@@ -64,7 +64,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements, calculateInitFileScreen, place_spoiler_hint_data
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.Library.Scripts import addNewScript, replaceScriptLines
+from randomizer.Patching.Library.Scripts import addNewScript, replaceScriptLines, setProgSlamStrength
 from randomizer.Patching.Library.Generic import setItemReferenceName, IsItemSelected, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected
 from randomizer.Patching.Library.Assets import CompTextFiles, ItemPreview
 from randomizer.Patching.MiscSetupChanges import (
@@ -710,11 +710,7 @@ def patching_response(spoiler):
             exit_val = 0xFF
         ROM_COPY.write(exit_val)
     if spoiler.settings.alter_switch_allocation:
-        ROM_COPY.seek(sav + 0x103)
-        ROM_COPY.write(1)
-        for x in range(7):  # Shouldn't need index 8 since Helm has no slam switches in it
-            ROM_COPY.seek(sav + 0x104 + x)
-            ROM_COPY.write(spoiler.settings.switch_allocation[x])
+        setProgSlamStrength(ROM_COPY, spoiler.settings)
     # Dartboard order
     ROM_COPY.seek(sav + 0x173)
     for x in range(6):

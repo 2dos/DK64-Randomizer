@@ -516,6 +516,7 @@ class ShufflePortLocations(IntEnum):
     on = 4
 
 class SlamRequirement(IntEnum):
+    no_slam = 0
     green = 1
     blue = 2
     red = 3

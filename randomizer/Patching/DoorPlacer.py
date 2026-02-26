@@ -366,7 +366,7 @@ vanilla_tns_data = {
         { "obj_id": 0x0C, "exit_id": 3 },
         { "obj_id": 0x0B, "exit_id": 6 },
     ],
-    Maps.CastleCrypt: [
+    Maps.CastleLowerCave: [
         { "obj_id": 0x02, "exit_id": 2 },
     ],
     Maps.CastleUpperCave: [

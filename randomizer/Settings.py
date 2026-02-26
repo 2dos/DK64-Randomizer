@@ -2078,7 +2078,7 @@ class Settings:
         if self.level_randomization == LevelRandomization.vanilla:
             self.alter_switch_allocation = False
         if self.alter_switch_allocation:
-            slams = [SlamRequirement.green, SlamRequirement.blue, SlamRequirement.red]
+            slams = [SlamRequirement.no_slam, SlamRequirement.green, SlamRequirement.blue, SlamRequirement.red]
             if self.prog_slam_level_1 == SlamRequirement.random:
                 self.prog_slam_level_1 = self.random.choice(slams)
             if self.prog_slam_level_2 == SlamRequirement.random:

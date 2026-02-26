@@ -248,15 +248,11 @@ void initHack(int source) {
 			ShorterBosses = Rando.short_bosses;
 			ItemRandoOn = Rando.item_rando;
 			KrushaSlot = Rando.krusha_slot;
-			RandomSwitches = Rando.random_switches;
 			DamageMultiplier = Rando.damage_multiplier; // Keep for Crowd Control. Needs it to know what to set damage mult back to
 			initItemRandoPointer();
 			initAP();
 			RandomizerVersion = 5;
 			RandomizerSubVersion = 1;  // Use this for tracker changes
-			for (int i = 0; i < 7; i++) {
-				SwitchLevel[i] = Rando.slam_level[i];
-			}
 			// Kong Rando
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
