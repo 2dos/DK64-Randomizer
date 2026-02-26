@@ -269,28 +269,6 @@ void loadWrinklyTextWrapper(actorData* actor, int file, int index) {
 
 #define MILL_CRUSHER_PROGRESS 1
 
-void setCrusher(void) {
-	/**
-	 * @brief Set the Crusher in the Fungi Mill to be the correct object state
-	 */
-	if (CurrentMap == MAP_FUNGIMILLFRONT) {
-		if ((ObjectModel2Timer < 10) && (ObjectModel2Timer > 5)) {
-			int crusher_index = convertIDToIndex(8);
-			if (crusher_index > -1) {
-				ModelTwoData* _object = &ObjectModel2Pointer[crusher_index];
-				if (_object) {
-					behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
-					if (behaviour) {
-						if (behaviour->counter == 0) {
-							behaviour->counter = MILL_CRUSHER_PROGRESS;
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
 void initiateLZRTransition(LZREntrance* entrance, maps vanilla_map, int exit) {
 	if (Rando.randomize_more_loading_zones == 1) {
 		int exit = entrance->exit;
@@ -545,12 +523,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						hideObject(behaviour_pointer);
 						behaviour_pointer->pause_state = 1;
 					}
-				} else if (param2 == LLAMA_BAMBOOGATE) {
-					if (index == 0) {
-						return checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
-					}
 				} else {
 					int selection = -1;
 					for (unsigned int k = 0; k < sizeof(head_ids)/4; k++) {
@@ -718,23 +690,11 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						setPermFlag(JAPESMOUNTAINSPAWNED);
 					}
 				} else if (param2 == JAPES_DIDDYBAMBOOGATE) {
-					if (index == 0) {
-						return checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
-					} else if (index == 2) {
-						giveItemFromKongData(&kong_check_data[KONGCHECK_JAPES], FLAG_KONG_DIDDY);
-					}
+					giveItemFromKongData(&kong_check_data[KONGCHECK_JAPES], FLAG_KONG_DIDDY);
 				} else if ((param2 == JAPES_GATE0) || (param2 == JAPES_GATE1) || (param2 == JAPES_GATE2)) {
 					if (Rando.removed_barriers.japes_coconut_gates) {
 						behaviour_pointer->current_state = 20;
 						behaviour_pointer->next_state = 20;
-					}
-				} else if (param2 == JAPES_DIDDYFREEGB) {
-					if (index == 0) {
-						return checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					}
 				} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
 					if ((param2 == JAPES_PEANUT_MOUNTAIN) && (index == 1)) {
@@ -812,18 +772,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == FACTORY_FREESWITCH) {
 					giveItemFromKongData(&kong_check_data[KONGCHECK_FACTORY], FLAG_KONG_CHUNKY);
-				} else if (param2 == FACTORY_CAGE) {
-					if (index == 0) {
-						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
-					}
-				} else if (param2 == FACTORY_FREEGB) {
-					if (index == 0) {
-						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
-					}
 				} else if (param2 == FACTORY_PIANO) {
 					if (index < 7) {
 						// Kremling appears
@@ -906,12 +854,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case MAP_FUNGIMILLFRONT:
-				if (param2 == MILL_WARNINGLIGHTS) {
-					if (checkFlag(FUNGICRUSHERON, FLAGTYPE_PERMANENT)) {
-						behaviour_pointer->current_state = MILL_CRUSHER_PROGRESS * 2;
-						behaviour_pointer->next_state = MILL_CRUSHER_PROGRESS * 2;
-					}
-				} else if (param2 == MILL_CRUSHER) {
+				if (param2 == MILL_CRUSHER) {
 					if (index == 0) {
 						if (checkFlag(FUNGICRUSHERON, FLAGTYPE_PERMANENT)) {
 							if (!checkFlag(FLAG_COLLECTABLE_FUNGI_CHUNKY_KEGGB, FLAGTYPE_PERMANENT)) { // If GB not acquired
@@ -925,7 +868,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 					} else if (index == 1) {
 						setPermFlag(FUNGICRUSHERON);
-						behaviour_pointer->counter = MILL_CRUSHER_PROGRESS;
 					}
 				}
 				break;
@@ -1007,23 +949,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case MAP_TRAININGGROUNDS:
-				if (param2 == TGROUNDS_SWITCH) {
-					if (index == 0) {
-						return checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
-					} else if (index == 2) {
-						setPermFlag(FLAG_ESCAPE);
-					}
-				} else if (param2 == TGROUNDS_BAMBOOGATE) {
-					if (index == 0) {
-						return checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						return !checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT);
-					}
-				}
-				break;
 			case MAP_CAVESROTATINGROOM:
 				if (param2 == ROTATING_ROOM_OBJ) {
 					if (index == 0) {
@@ -1088,16 +1013,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case MAP_AZTECTINYTEMPLE:
-				if (param2 == TTEMPLE_SWITCH) {
-					return Character == 1;
-				} else if (param2 == TTEMPLE_GUITARPAD) {
-					return Character == 1;
-				} else if (param2 == TTEMPLE_BAMBOOGATE) {
-					if (index == 0) {
-						return checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
-					} else if (index == 1) {
-						giveItemFromKongData(&kong_check_data[KONGCHECK_ICETEMPLE], FLAG_KONG_TINY);
-					}
+				if (param2 == TTEMPLE_BAMBOOGATE) {
+					giveItemFromKongData(&kong_check_data[KONGCHECK_ICETEMPLE], FLAG_KONG_TINY);
 				}
 				break;
 			case MAP_CASTLECRYPTLANKYTINY:
