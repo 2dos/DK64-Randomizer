@@ -970,10 +970,6 @@ def setProgSlamStrength(ROM_COPY: LocalROM, settings):
                 replaceScriptLines(ROM_COPY, map_id, obj_ids, {
                     f"COND 37 | {x} 0 0": "COND 0 | 0 0 0",
                 })
-            for x in range(5):
-                replaceScriptLines(ROM_COPY, map_id, obj_ids, {
-                    f"COND 25 | {x + 2} 0 0": "COND 0 | 0 0 0",
-                })
             replaceScriptLines(ROM_COPY, map_id, obj_ids, {
                 "COND 23 | 28 0 0": "COND 0 | 0 0 0",
             })

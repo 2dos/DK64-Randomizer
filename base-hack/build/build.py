@@ -101,6 +101,11 @@ file_dict = [
     ),
     File(name="Gong (Diddy)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=195, source_file="assets/Gong/diddy_gong.bin", do_not_delete_source=True),
     File(name="Gong (Chunky)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A0, source_file="assets/Gong/chunky_gong.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="White SWitch (DK)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A1, source_file="white_switch_dk.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="White SWitch (Diddy)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A4, source_file="white_switch_diddy.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="White SWitch (Lanky)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A5, source_file="white_switch_lanky.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="White SWitch (Tiny)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A6, source_file="white_switch_tiny.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="White SWitch (Chunky)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A8, source_file="white_switch_chunky.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="End Sequence Credits", pointer_table_index=TableNames.Unknown19, file_index=7, source_file="assets/credits/credits.bin", do_not_delete_source=True),
     File(
         name="DK Wrinkly Door",

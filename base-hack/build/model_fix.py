@@ -886,9 +886,33 @@ with open(ROMName, "rb") as rom:
             new_val = original_val + total_offset
             fh.seek(0x44 + (x * 4))
             fh.write(new_val.to_bytes(4, "big"))
-    with open("temp_portal.bin", "wb") as fh:
-        with open("troff_portal.bin", "rb") as fg:
-            fh.write(fg.read())
+    # White Slam Switches
+    switch_models = {
+        "dk": 0x94,
+        "diddy": 0x93,
+        "lanky": 0x95,
+        "tiny": 0x96,
+        "chunky": 0xB8,
+    }
+    for kong, obj_id in switch_models.items():
+        rom.seek(modeltwo_table + (obj_id << 2))
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        indic = int.from_bytes(rom.read(2), "big")
+        rom.seek(model_start)
+        data = rom.read(model_size)
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        with open(f"white_switch_{kong}.bin", "wb") as fh:
+            fh.write(data)
+        with open(f"white_switch_{kong}.bin", "r+b") as fh:
+            color_offsets = [0x724, 0x734, 0x744, 0x754, 0x764, 0x774]
+            for offset in color_offsets:
+                fh.seek(offset)
+                for _ in range(3):
+                    fh.write((0xFF).to_bytes(1, "big"))
     # Fake Fairies
     rom.seek(actor_table + (0x3C << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
