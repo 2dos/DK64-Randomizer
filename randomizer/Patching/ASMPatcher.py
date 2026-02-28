@@ -1670,6 +1670,8 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     updateActorFunctionInt(ROM_COPY, 212, 0x806AD54C)  # Set Gold Beaver as Blue Beaver Code
     writeLabelValue(ROM_COPY, 0x80748064, Overlay.Static, "change_object_scripts", offset_dict)  # Object Instance Scripts
 
+    writeValue(ROM_COPY, 0x8064A572, Overlay.Static, 0, offset_dict)  # Only allow 1 solution to Chunky face puzzle
+
     writeFunction(ROM_COPY, 0x806A8844, Overlay.Static, "helmTime_restart", offset_dict)  # Modify Function Call
     writeFunction(ROM_COPY, 0x806A89E8, Overlay.Static, "helmTime_exitBonus", offset_dict)  # Modify Function Call
     writeFunction(ROM_COPY, 0x806A89F8, Overlay.Static, "helmTime_exitRace", offset_dict)  # Modify Function Call

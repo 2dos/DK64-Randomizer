@@ -1990,6 +1990,17 @@ for index, text in enumerate(comptext_files):
         data.setTargetSize(text.change_expansion)
     file_dict.append(data)
 
+for x in range(36):
+    if (x & 3) == 3:
+        continue
+    file_dict.append(File(
+        name=f"Face Puzzle Image {x}",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=0xD71 + x,
+        source_file=f"assets/displays/facepuzzle_{hex(0xD71 + x)}.png",
+        texture_format=TextureFormat.RGBA5551,
+    ))
+
 addMechFishLZ()
 with open(ROMName, "rb") as fh:
     adjustExits(fh)
@@ -2658,27 +2669,6 @@ with open(newROMName, "r+b") as fh:
         "chunky_ice_palette_0",
         "chunky_ice_palette_1",
     ]
-    for b in barrel_skins:
-        displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}", f"shop_{b}"])
-    for disp in displays:
-        for ext in [".png", ".rgba32", ".rgba5551"]:
-            other_remove.append(f"displays/{disp}{ext}")
-    for x in range(8):
-        other_remove.append(f"displays/feather{x}.rgba5551")
-    for x in range(8):
-        other_remove.append(f"file_screen/key{x + 1}.png")
-        other_remove.append(f"boulder_bounce/f{x}.png")
-        other_remove.append(f"displays/half_medal_spin_{x}.png")
-    for x in range(12):
-        other_remove.append(f"bean_spin/f{x + 1}a_64_32.png")
-    other_remove.append("file_screen/tracker.png")
-    for x in other_remove:
-        pth = f"assets/{x}"
-        if os.path.exists(pth):
-            os.remove(pth)
-    dpad_path = "assets/displays/dpad.rgba5551"
-    if os.path.exists(dpad_path):
-        os.remove(dpad_path)
     hash_items = [
         "dk_tie_palette",
         "homing_crate_0",
@@ -2752,6 +2742,32 @@ with open(newROMName, "r+b") as fh:
         "bandit_melon",
         "bandit_grape",
     ]
+    for x in range(36):
+        hash_items.append(f"facepuzzle_{hex(0xD71 + x)}")
+        if (x & 3) == 3:
+            continue
+        displays.append(f"facepuzzle_{hex(0xD71 + x)}")
+    for b in barrel_skins:
+        displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}", f"shop_{b}"])
+    for disp in displays:
+        for ext in [".png", ".rgba32", ".rgba5551"]:
+            other_remove.append(f"displays/{disp}{ext}")
+    for x in range(8):
+        other_remove.append(f"displays/feather{x}.rgba5551")
+    for x in range(8):
+        other_remove.append(f"file_screen/key{x + 1}.png")
+        other_remove.append(f"boulder_bounce/f{x}.png")
+        other_remove.append(f"displays/half_medal_spin_{x}.png")
+    for x in range(12):
+        other_remove.append(f"bean_spin/f{x + 1}a_64_32.png")
+    other_remove.append("file_screen/tracker.png")
+    for x in other_remove:
+        pth = f"assets/{x}"
+        if os.path.exists(pth):
+            os.remove(pth)
+    dpad_path = "assets/displays/dpad.rgba5551"
+    if os.path.exists(dpad_path):
+        os.remove(dpad_path)
     tagbarrel_removals = ["plain_shell", "shell", "cannon_support", "cannon_base", "cannon_left", "cannon_right", "barrel_base"]
     for face in barrel_faces:
         tagbarrel_removals.extend([f"{face} barrel 0a", f"{face} barrel 1a"])
