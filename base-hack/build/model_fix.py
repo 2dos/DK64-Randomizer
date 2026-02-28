@@ -913,6 +913,45 @@ with open(ROMName, "rb") as rom:
                 fh.seek(offset)
                 for _ in range(3):
                     fh.write((0xFF).to_bytes(1, "big"))
+    # Face Puzzle Boards
+    kong_and = {
+        "dk": 2,
+        "chunky": 0
+    }
+    for kong, and_offset in kong_and.items():
+        rom.seek(modeltwo_table + (448 << 2))
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        indic = int.from_bytes(rom.read(2), "big")
+        rom.seek(model_start)
+        data = rom.read(model_size)
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        with open(f"puzzle_board_{kong}.bin", "wb") as fh:
+            fh.write(data)
+        with open(f"puzzle_board_{kong}.bin", "r+b") as fh:
+            for x in range(0x268):
+                dl_ins_start = 0x78 + (x * 8)
+                fh.seek(dl_ins_start)
+                instruction = int.from_bytes(fh.read(1), "big")
+                if instruction != 0xFD:
+                    continue
+                fh.seek(dl_ins_start + 4)
+                texture = int.from_bytes(fh.read(4), "big")
+                delta = texture - 0xD71
+                if delta < 0 or delta > 35:
+                    continue
+                if (delta & 3) != and_offset:
+                    continue
+                slot_offset = int(delta / 4)
+                fh.seek(dl_ins_start + 4)
+                new_tex_start = ExtraTextures.FacePuzzleChunky0
+                if kong == "dk":
+                    new_tex_start = ExtraTextures.FacePuzzleDK0
+                new_tex = getBonusSkinOffset(new_tex_start + slot_offset)
+                fh.write(new_tex.to_bytes(4, "big"))
     # Fake Fairies
     rom.seek(actor_table + (0x3C << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")

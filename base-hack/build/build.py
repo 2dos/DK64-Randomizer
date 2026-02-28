@@ -101,6 +101,8 @@ file_dict = [
     ),
     File(name="Gong (Diddy)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=195, source_file="assets/Gong/diddy_gong.bin", do_not_delete_source=True),
     File(name="Gong (Chunky)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A0, source_file="assets/Gong/chunky_gong.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Puzzle Board (DK)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=448, source_file="puzzle_board_dk.bin", do_not_delete_source=True),
+    File(name="Puzzle Board (Chunky)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A9, source_file="puzzle_board_chunky.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="White SWitch (DK)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A1, source_file="white_switch_dk.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="White SWitch (Diddy)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A4, source_file="white_switch_diddy.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="White SWitch (Lanky)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A5, source_file="white_switch_lanky.bin", do_not_delete_source=True, do_not_extract=True),
@@ -1990,6 +1992,8 @@ for index, text in enumerate(comptext_files):
         data.setTargetSize(text.change_expansion)
     file_dict.append(data)
 
+chunky_counter = 0
+dk_counter = 0
 for x in range(36):
     if (x & 3) == 3:
         continue
@@ -2000,6 +2004,32 @@ for x in range(36):
         source_file=f"assets/displays/facepuzzle_{hex(0xD71 + x)}.png",
         texture_format=TextureFormat.RGBA5551,
     ))
+    kong = x & 3
+    if kong == 0:
+        # Chunky
+        file_dict.append(File(
+            name=f"Face Puzzle Dupe Chunky Image {chunky_counter}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.FacePuzzleChunky0 + chunky_counter),
+            source_file=f"assets/displays/dupepuzzle_{hex(0xD71 + x)}.png",
+            texture_format=TextureFormat.RGBA5551,
+            do_not_extract=True,
+            target_size=32*32*2,
+        ))
+        chunky_counter += 1
+    elif kong == 2:
+        # DK
+        file_dict.append(File(
+            name=f"Face Puzzle Dupe DK Image {dk_counter}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.FacePuzzleDK0 + dk_counter),
+            source_file=f"assets/displays/dupepuzzle_{hex(0xD71 + x)}.png",
+            texture_format=TextureFormat.RGBA5551,
+            do_not_extract=True,
+            target_size=32*32*2,
+        ))
+        dk_counter += 1
+
 
 addMechFishLZ()
 with open(ROMName, "rb") as fh:
@@ -2747,6 +2777,7 @@ with open(newROMName, "r+b") as fh:
         if (x & 3) == 3:
             continue
         displays.append(f"facepuzzle_{hex(0xD71 + x)}")
+        displays.append(f"dupepuzzle_{hex(0xD71 + x)}")
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}", f"shop_{b}"])
     for disp in displays:

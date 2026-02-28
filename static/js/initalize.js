@@ -370,6 +370,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let arcade_promises = [];
       let reel_promises = [];
       let item_promises = [];
+      let puzzle_promises = [];
 
       for (var filename of Object.keys(new_zip.files)) {
         if (validFilename(filename, "bgm/")) {
@@ -392,6 +393,8 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
           reel_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/items/", ".png")) {
           item_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "textures/facepuzzle/", "image")) {
+          puzzle_promises.push(createMusicLoadPromise(new_zip, filename));
         }
       }
 
@@ -409,6 +412,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let arcade_files = await Promise.all(arcade_promises);
       let reel_files = await Promise.all(reel_promises);
       let item_files = await Promise.all(item_promises);
+      let puzzle_files = await Promise.all(puzzle_promises);
 
       let has_music = bgm_files.length > 0 || event_files.length > 0 || majoritem_files.length > 0 || minoritem_files.length > 0;
 
@@ -423,6 +427,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         arcade_sprites: arcade_files.map((x) => x.file),
         reel_sprites: reel_files.map((x) => x.file),
         item_sprites: item_files.map((x) => x.file),
+        face_puzzles: puzzle_files.map((x) => x.file),
       };
       cosmetic_names = {
         bgm: bgm_files.map((x) => x.name),
@@ -435,6 +440,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         arcade_sprites: arcade_files.map((x) => x.name),
         reel_sprites: reel_files.map((x) => x.name),
         item_sprites: item_files.map((x) => x.name),
+        face_puzzles: puzzle_files.map((x) => x.name),
       };
       cosmetic_extensions = {
         bgm: bgm_files.map((x) => x.extension),

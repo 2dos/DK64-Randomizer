@@ -977,6 +977,7 @@ for kong_local_index, kong in enumerate(["chunky", "tiny", "dk"]):
             image_index = 0xD71 + kong_local_index + (((y * 3) + x) * 4)
             slot_image = puzzle_im.crop((32 * x, 32 * y, 32 * (x + 1), 32 * (y + 1)))
             slot_image.save(f"{disp_dir}facepuzzle_{hex(image_index)}.png")
+            slot_image.save(f"{disp_dir}dupepuzzle_{hex(image_index)}.png")
             
 def alterWood(image):
     """Alter the wood color to our dark red color."""

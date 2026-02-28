@@ -203,6 +203,7 @@ def getObjectModifications(target_map: Maps) -> list:
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CD, y=178.5), # Factory Spring Coins
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CE, y=178.5), # Factory Spring Coins
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CF, y=178.5), # Factory Spring Coins
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.FungiShootingGame, 0, obj_type=0x2A9),  # Face Puzzle Board
         ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Japes, 0x0, new_id=0x100, x=1839.1, y=680, z=2863, obj_type=112, rx=0, ry=0, rz=0, scale=0.25),  # Japes Headphones
         ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.Galleon, 23, x=1296, y=1600, z=2028),  # Galleon Chunky 2DS Balloon
         ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.Galleon, 25, y=1600),  # Galleon Lanky 5DS Balloon
