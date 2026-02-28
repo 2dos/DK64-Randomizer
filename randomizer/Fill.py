@@ -4301,10 +4301,6 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
                 all_zero_weights = False
         if all_zero_weights:
             found_incompatibilities += "All Ice Traps have a zero weight, meaning it can't place anything. "
-    total_item_counts = settings.total_gbs + settings.total_crowns + settings.total_fairies + settings.total_medals + settings.total_pearls + settings.total_rainbow_coins
-    max_item_counts = 201 + 10 + 20 + 45 + 5 + 16
-    if total_item_counts > max_item_counts:
-        found_incompatibilities += f"Total amounts of GBs, Crowns, Fairies, Medals, Pearls, and Rainbow coins exceeds {max_item_counts}. "
     custom_item_count_data = {
         "Golden Bananas": {
             "value": settings.total_gbs,

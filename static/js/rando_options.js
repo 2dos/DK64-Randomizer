@@ -2121,10 +2121,14 @@ function getTotalItemCounts() {
         total += local_value;
     }
     const notifier = document.getElementById("item_count_collective");
-    if (total < 298) {
+    const notif_alert = document.getElementById("item_count_collective_alert");
+    notifier.textContent = `Current Total: ${total} (Vanilla is 298)`;
+    if (total <= 298) {
         notifier.style.color = "white";
+        notif_alert.setAttribute("hidden", "hidden");
     } else {
         notifier.style.color = "red";
+        notif_alert.removeAttribute("hidden");
     }
 }
 for (let a = 0; a < alterers.length; a++) {
