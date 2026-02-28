@@ -283,7 +283,7 @@ challenge_type getMemoryChallengeType(maps map) {
     return CHALLENGE_SKY;
 }
 
-ROM_RODATA_NUM static const unsigned char blast_maps[] = {
+ROM_RODATA_NUM const unsigned char blast_maps[] = {
     MAP_JAPESBBLAST,
     MAP_AZTECBBLAST,
     MAP_FACTORYBBLAST,

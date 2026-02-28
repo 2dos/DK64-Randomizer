@@ -123,11 +123,7 @@ void cFuncLoop(void) {
 	if (CurrentMap == MAP_CASTLEKUTOUT) {
 		if (TransitionSpeed > 0.0f) {
 			if (LZFadeoutProgress == 30.0f) {
-				for (int i = 0; i < 7; i++) {
-					if (BossMapArray[i] == MAP_CASTLEKUTOUT) {
-						Character = BossKongArray[i];
-					}
-				}
+				Character = KutOutKongArray[0];
 			}
 		}
 	}

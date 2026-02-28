@@ -135,7 +135,7 @@ extern void spawnWeirdReward(int index, int flag);
 extern void spawnWeirdReward0(int index, float x, float y, float z, int unk0, int spawn_type, int flag, void *unk1);
 extern void updatePercentageKongStat(void);
 
-extern int getTagAnywhereKong(int direction);
+extern int getTagAnywhereKong(int starting_kong, int direction);
 extern int getTAState(void);
 extern int hasAccessToKong(int kong);
 extern void changeKong(int next_character);
@@ -514,6 +514,7 @@ extern const unsigned short replacement_lobbies_array[9];
 extern const unsigned short replacement_lobby_exits_array[9];
 extern unsigned short actor_cb_counts[221];
 extern short m2_cb_coin_counts[8];
+extern const unsigned char blast_maps[7];
 extern const char* krool_name;
 extern const char* cranky_name;
 extern const char* candy_name;

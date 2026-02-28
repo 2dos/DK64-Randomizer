@@ -326,19 +326,18 @@ int cc_allower_tag(void) {
 }
 
 int cc_enabler_tag(void) {
-    int change_counter = getRNGLower31() & 7;
-    for (int j = 0; j < 8; j++) { // Not a while, but a for just in case we get stuck in an inf loop
-        for (int i = 0; i < 5; i++) {
-            if ((i != Character) && (hasAccessToKong(i))) {
-                change_counter--;
-                if (change_counter <= 0) {
-                    changeKong(i);
-                    return 1;
-                }
-            }
+    int change_counter = getRNGLower31() & 0xF;
+    int kong = Character;
+    for (int i = 0; i < change_counter; i++) {
+        int output_kong = getTagAnywhereKong(kong, 1);
+        if (kong == output_kong) {
+            // Player has no other kongs
+            return 0;
         }
+        kong = output_kong;
     }
-    return 0;
+    changeKong(kong);
+    return 1;
 }
 
 int cc_enabler_doabackflip(void) {
