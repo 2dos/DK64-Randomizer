@@ -120,19 +120,12 @@ void cFuncLoop(void) {
 		}
 		new_picture = picture_bitfield;
 	}
-	if (Rando.perma_lose_kongs) {
-		preventBossCheese();
-		kong_has_died();
-		fixGraceCheese();
-		forceBossKong();
-	} else {
-		if (CurrentMap == MAP_CASTLEKUTOUT) {
-			if (TransitionSpeed > 0.0f) {
-				if (LZFadeoutProgress == 30.0f) {
-					for (int i = 0; i < 7; i++) {
-						if (BossMapArray[i] == MAP_CASTLEKUTOUT) {
-							Character = BossKongArray[i];
-						}
+	if (CurrentMap == MAP_CASTLEKUTOUT) {
+		if (TransitionSpeed > 0.0f) {
+			if (LZFadeoutProgress == 30.0f) {
+				for (int i = 0; i < 7; i++) {
+					if (BossMapArray[i] == MAP_CASTLEKUTOUT) {
+						Character = BossKongArray[i];
 					}
 				}
 			}

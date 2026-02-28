@@ -79,14 +79,6 @@ extern void createCollisionObjInstance(collision_types subtype, int map, int exi
 extern int spawnCannonWrapper(void);
 extern void disableDiddyRDDoors(void);
 
-extern void preventBossCheese(void);
-extern void determineStartKong_PermaLossMode(void);
-extern void kong_has_died(void);
-extern int curseRemoved(void);
-extern void forceBossKong(void);
-extern int hasPermaLossGrace(maps map);
-extern void fixGraceCheese(void);
-
 extern void resetMapContainer(void);
 extern void correctDKPortal(void);
 extern int canSaveHelmHurry(void);

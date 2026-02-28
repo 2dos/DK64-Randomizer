@@ -99,8 +99,7 @@ typedef struct varspace {
 	/* 0x13B */ char short_bosses; // 0 = Vanilla fights, 1 = Short fights
 	/* 0x13C */ char unk_13c[0x14C - 0x13C];
 	/* 0x14C */ unsigned char lobbies_open_bitfield; // hccf gfaj
-	/* 0x14D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
-	/* 0x14E */ char unk_14E[2];
+	/* 0x14D */ char unk_14D[3];
 	/* 0x150 */ char ice_traps_damage;
 	/* 0x151 */ char starting_kong; // Kong you start as upon file init
 	/* 0x152 */ char unk_152[0x15A - 0x152];

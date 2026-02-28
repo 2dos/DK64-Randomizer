@@ -71,9 +71,9 @@ int ableToUseMonkeyport(int id) {
                 int mport_kong = Rando.switchsanity_monkeyport;
                 if (mport_kong == 0) {
                     // Set Monkeyport thing
-                    return (Player->characterID == 5) || (Rando.perma_lose_kongs);
+                    return Player->characterID == KONG_TINY;
                 } else {
-                    if (((unsigned int)Player->characterID == monkeyport_kongs[mport_kong] + 2) || (Rando.perma_lose_kongs)) {
+                    if (((unsigned int)Player->characterID == monkeyport_kongs[mport_kong] + 2)) {
                         if (mport_kong == 1) {
                             // Blast
                             createCollisionObjInstance(COLLISION_BBLAST, MAP_ISLES, 0);

@@ -1070,7 +1070,6 @@ void startFile(void) {
 	} else {
 		// Dirty File
 		Character = Rando.starting_kong;
-		determineStartKong_PermaLossMode();
 		giveCollectables();
 	}
 	initAPCounter();

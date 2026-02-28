@@ -47,7 +47,6 @@
 .importobj "obj/src_misc_helm_hurry.o"
 .importobj "obj/src_misc_hud.o"
 .importobj "obj/src_misc_item_db.o"
-.importobj "obj/src_misc_perma_kong_loss.o"
 .importobj "obj/src_misc_stats.o"
 .importobj "obj/src_misc_warp_to_isles.o"
 .importobj "obj/src_misc_win_condition.o"
