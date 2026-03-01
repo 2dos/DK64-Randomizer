@@ -217,8 +217,12 @@ def randomize_entrances(spoiler, ROM_COPY: LocalROM):
                 shuffledBack = spoiler.shuffled_exit_data[transition]
                 map_id = GetMapId(spoiler.settings, shuffledBack.regionId)
                 exit_id = getFilteredExit(spoiler.settings, map_id, getOneByteExit(shuffledBack))
-            writeValue(ROM_COPY, sym_maps + (index * 2), Overlay.Custom, map_id, offset_dict)
-            writeValue(ROM_COPY, sym_exits + (index * 2), Overlay.Custom, exit_id, offset_dict)
+            indexes = [index]
+            if index == 7:
+                indexes.append(8)
+            for idx in indexes:
+                writeValue(ROM_COPY, sym_maps + (idx * 2), Overlay.Custom, map_id, offset_dict)
+                writeValue(ROM_COPY, sym_exits + (idx * 2), Overlay.Custom, exit_id, offset_dict)
         # /* 0x088 */ unsigned short enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         for world_index, transition in enumerate(enter_transitions):
             shuffledBack = spoiler.shuffled_exit_data[transition]
