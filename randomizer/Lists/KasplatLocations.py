@@ -923,7 +923,7 @@ KasplatLocationList = {
             vanilla=True,
         ),
         KasplatLocation(
-            name="Forest Kasplat: Giant Mushroom Middle Mesh",
+            name="Forest Kasplat: Inside Giant Mushroom",
             map_id=Maps.ForestGiantMushroom,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[329, 534, 402],
