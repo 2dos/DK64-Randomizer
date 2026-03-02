@@ -783,7 +783,7 @@ fairy_locations = {
             spawn_y=355,
         ),
         FairyData(
-            name="Mini monkey cave",
+            name="Mini bonus cave",
             map=Maps.CrystalCaves,
             region=Regions.CavesBonusCave,
             fence=Fence(419, 2342, 532, 2609),
