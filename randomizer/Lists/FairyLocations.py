@@ -327,21 +327,21 @@ fairy_locations = {
         ),
         FairyData(
             # Is technically in a different region, but can be accessed pretty easily from the lowest point of production
-            name="Production Room (Low)",
+            name="Lower Production Room",
             map=Maps.FranticFactory,
             region=Regions.LowerCore,
             fence=Fence(537, 1445, 734, 1679),
             spawn_y=282,
         ),
         FairyData(
-            name="Production Room (Middle)",
+            name="Middle Production Room",
             map=Maps.FranticFactory,
             region=Regions.SpinningCore,
             fence=Fence(524, 986, 767, 1251),
             spawn_y=453,
         ),
         FairyData(
-            name="Production Room (High)",
+            name="Upper Production Room",
             map=Maps.FranticFactory,
             region=Regions.UpperCore,
             fence=Fence(455, 1047, 756, 1652),
@@ -928,7 +928,7 @@ fairy_locations = {
             spawn_y=1997,
         ),
         FairyData(
-            name="Near Tower",
+            name="Near Wind Tower",
             map=Maps.CreepyCastle,
             region=Regions.CreepyCastleMain,
             fence=Fence(1207, 1224, 1433, 1586),
@@ -959,7 +959,7 @@ fairy_locations = {
             logic=lambda l: l.camera and ((l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.CanPhase()),
         ),
         FairyData(
-            name="Above Mausoleum",
+            name="Above Mausoleum entrance",
             map=Maps.CastleLowerCave,
             region=Regions.LowerCave,
             fence=Fence(1613, 1228, 1768, 1385),
@@ -973,14 +973,14 @@ fairy_locations = {
             spawn_y=300,
         ),
         FairyData(
-            name="Above Crypt",
+            name="Above Crypt entrance",
             map=Maps.CastleLowerCave,
             region=Regions.LowerCave,
             fence=Fence(134, 1173, 702, 1293),
             spawn_y=309,
         ),
         FairyData(
-            name="In the Tower",
+            name="Wind Tower",
             map=Maps.CastleTower,
             region=Regions.Tower,
             fence=Fence(378, 149, 392, 630),
@@ -1004,7 +1004,7 @@ fairy_locations = {
             natural_index=2,
         ),
         FairyData(
-            name="Top of Krem Isle",
+            name="Upper Krem Isle",
             map=Maps.Isles,
             region=Regions.KremIsleTopLevel,
             is_vanilla=True,
@@ -1059,21 +1059,21 @@ fairy_locations = {
             spawn_y=647,
         ),
         FairyData(
-            name="Above K. Lumsy Prison",
+            name="Above the Prison",
             map=Maps.Isles,
             region=Regions.KremIsle,
             fence=Fence(3279, 3310, 3409, 3528),
             spawn_y=747,
         ),
         FairyData(
-            name="Near Factory entrance",
+            name="Near Lobby 3 entrance",
             map=Maps.Isles,
             region=Regions.KremIsleBeyondLift,
             fence=Fence(2608, 3054, 2895, 3373),
             spawn_y=1309,
         ),
         FairyData(
-            name="Inside Fairy Isle",
+            name="Inside Banana Fairy Isle",
             map=Maps.BananaFairyRoom,
             region=Regions.BananaFairyRoom,
             fence=Fence(506, 457, 722, 604),
