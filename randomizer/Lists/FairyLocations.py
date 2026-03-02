@@ -355,7 +355,7 @@ fairy_locations = {
             spawn_y=189,
         ),
         FairyData(
-            name="Storage shops",
+            name="Storage Shops",
             map=Maps.FranticFactory,
             region=Regions.BeyondHatch,
             fence=Fence(285, 534, 466, 909),
@@ -469,7 +469,7 @@ fairy_locations = {
             spawn_y=1653,
         ),
         FairyData(
-            name="Cavern mast",
+            name="Cavern Mast",
             map=Maps.GloomyGalleon,
             region=Regions.GloomyGalleonStart,
             fence=Fence(2903, 2917, 3146, 3149),
@@ -602,14 +602,14 @@ fairy_locations = {
             logic=lambda l: l.camera and (((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy)),
         ),
         FairyData(
-            name="Near Baboon Blast pad",
+            name="Near Baboon Blast Pad",
             map=Maps.FungiForest,
             region=Regions.MushroomBlastLevelExterior,
             fence=Fence(126, 941, 545, 1020),
             spawn_y=764,
         ),
         FairyData(
-            name="Near Battle Arena platform",
+            name="Near Battle Arena Platform",
             map=Maps.FungiForest,
             region=Regions.MushroomUpperMidExterior,
             fence=Fence(652, 1516, 1169, 1623),
@@ -637,7 +637,7 @@ fairy_locations = {
             spawn_y=367,
         ),
         FairyData(
-            name="Owl tree area clearing",
+            name="Owl Tree Area Clearing",
             map=Maps.FungiForest,
             region=Regions.HollowTreeArea,
             fence=Fence(367, 3608, 818, 4085),
@@ -679,7 +679,7 @@ fairy_locations = {
             spawn_y=67,
         ),
         FairyData(
-            name="Front mill room",
+            name="Front Mill Room",
             map=Maps.ForestMillFront,
             region=Regions.GrinderRoom,
             fence=Fence(27, 313, 374, 476),
@@ -707,7 +707,7 @@ fairy_locations = {
             spawn_y=72,
         ),
         FairyData(
-            name="Back mill room",
+            name="Back Mill Room",
             map=Maps.ForestMillBack,
             region=Regions.MillChunkyTinyArea,
             fence=Fence(114, 533, 343, 652),
@@ -748,7 +748,7 @@ fairy_locations = {
             spawn_y=95,
         ),
         FairyData(
-            name="Gorilla Gone cave",
+            name="Gorilla Gone Cave",
             map=Maps.CrystalCaves,
             region=Regions.CavesGGRoom,
             fence=Fence(2461, 402, 2684, 542),
@@ -776,14 +776,14 @@ fairy_locations = {
             spawn_y=332,
         ),
         FairyData(
-            name="Giant Boulder cave",
+            name="Giant Boulder Cave",
             map=Maps.CrystalCaves,
             region=Regions.BoulderCave,
             fence=Fence(1679, 2385, 2071, 2641),
             spawn_y=355,
         ),
         FairyData(
-            name="Mini bonus cave",
+            name="Mini Bonus Cave",
             map=Maps.CrystalCaves,
             region=Regions.CavesBonusCave,
             fence=Fence(419, 2342, 532, 2609),
@@ -811,7 +811,7 @@ fairy_locations = {
             spawn_y=363,
         ),
         FairyData(
-            name="Near the cabins",
+            name="Near the Cabins",
             map=Maps.CrystalCaves,
             region=Regions.CabinArea,
             fence=Fence(3275, 1535, 3645, 1857),
@@ -832,7 +832,7 @@ fairy_locations = {
             spawn_y=260,
         ),
         FairyData(
-            name="Tomato game room",
+            name="Tomato Game Room",
             map=Maps.CavesFrozenCastle,
             region=Regions.FrozenCastle,
             fence=Fence(106, 246, 420, 344),
@@ -921,7 +921,7 @@ fairy_locations = {
             spawn_y=1553,
         ),
         FairyData(
-            name="Above highest shop",
+            name="Above Highest Shop",
             map=Maps.CreepyCastle,
             region=Regions.CreepyCastleMain,
             fence=Fence(650, 1207, 845, 1509),
@@ -935,7 +935,7 @@ fairy_locations = {
             spawn_y=1902,
         ),
         FairyData(
-            name="Ballroom high",
+            name="Ballroom High",
             map=Maps.CastleBallroom,
             region=Regions.Ballroom,
             fence=Fence(265, 251, 798, 924),
@@ -959,21 +959,21 @@ fairy_locations = {
             logic=lambda l: l.camera and ((l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.CanPhase()),
         ),
         FairyData(
-            name="Above Mausoleum entrance",
+            name="Above Mausoleum Entrance",
             map=Maps.CastleLowerCave,
             region=Regions.LowerCave,
             fence=Fence(1613, 1228, 1768, 1385),
             spawn_y=439,
         ),
         FairyData(
-            name="Lower cave shop",
+            name="Lower Cave Shop",
             map=Maps.CastleLowerCave,
             region=Regions.LowerCave,
             fence=Fence(1362, 299, 1512, 551),
             spawn_y=300,
         ),
         FairyData(
-            name="Above Crypt entrance",
+            name="Above Crypt Entrance",
             map=Maps.CastleLowerCave,
             region=Regions.LowerCave,
             fence=Fence(134, 1173, 702, 1293),
@@ -1066,7 +1066,7 @@ fairy_locations = {
             spawn_y=747,
         ),
         FairyData(
-            name="Near Lobby 3 entrance",
+            name="Near Lobby 3 Entrance",
             map=Maps.Isles,
             region=Regions.KremIsleBeyondLift,
             fence=Fence(2608, 3054, 2895, 3373),
