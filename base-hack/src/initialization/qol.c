@@ -112,10 +112,6 @@ void initSpawn(void) {
     PauseSlot3TextPointer = (char*)&exittoisles;
     if (Rando.starting_map == 0) {
         // Default
-        if ((!Rando.fast_start_beginning) && (Rando.randomize_more_loading_zones == 2)) {
-            // No fast start beginning, with LZR
-            writeSpawn(MAP_TRAININGGROUNDS, 1);
-        }
         Rando.starting_map = MAP_ISLES;
         Rando.starting_exit = 0;
     } else {

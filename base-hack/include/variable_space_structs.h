@@ -5,7 +5,7 @@ typedef struct varspace {
 	/* 0x02F */ char sprint_barrel_requires_sprint;
 	/* 0x030 */ char tag_anywhere; // 0 = Tag Anywhere buttons not enabled. 1 = Enabled
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
-	/* 0x032 */ LZREntrance mech_fish_exit;
+	/* 0x032 */ char unk_32[2];
 	/* 0x034 */ char item_rando; // 0 = Off, 1 = On
 	/* 0x035 */ char crown_timer_reduction;
 	/* 0x036 */ char rareware_gb_fairies; // Fairy requirement to access Rareware GB
@@ -23,14 +23,11 @@ typedef struct varspace {
 	/* 0x053 */ unsigned char ammo_belt_prices[2]; // Array of ammo belt prices: [1,2]. 1 item for each level of ammo belt
 	/* 0x055 */ unsigned char instrument_upgrade_prices[3]; // Array of instrument upgrade prices: [1,2,3]. 1st and 3rd items are the Upgrades 1 and 2 respectively. 2nd item is the 3rd melon cost
 	/* 0x058 */ unsigned char k_rool_order[5]; // Order of K. Rool phases: [0,1,2,3,4] dictates DK->Diddy->Lanky->Tiny->Chunky. If K. Rool is being shortened to less than 5 phases, put the unused phases as -1
-	/* 0x05D */ char randomize_more_loading_zones; // 0 = Not randomizing loading zones inside levels. 1 = On, 2 = Just Castle Cannon
-	/* 0x05E */ LZREntrance aztec_beetle_enter; // Map and exit replacing the loading zone which normally bring you to Aztec Beetle Race from Aztec. First byte is map, second byte is exit value. Same logic applies until (and including) "enter_levels[7]"
+	/* 0x05D */ char unk_5D[3];
 	/* 0x060 */ char cb_medal_requirement[8]; 
 	/* 0x068 */ char include_half_medals; // Medals have a corresponding check for collecting 1/2 the bananas of the standard requirement
 	/* 0x069 */ char snide_has_rewards;
-	/* 0x06A */ LZREntrance seasick_ship_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x06C */ LZREntrance fungi_minecart_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x06E */ char unk_6E[0x88 - 0x6E];
+	/* 0x06A */ char unk_6A[0x88 - 0x6A];
 	/* 0x088 */ rgb fog[3]; // Order: Aztec, Caves, Castle
 	/* 0x091 */ char disable_race_patches;
 	/* 0x092 */ char unk_91[0x94 - 0x92];
@@ -88,8 +85,7 @@ typedef struct varspace {
 	/* 0x129 */ unsigned char hash[5];
 	/* 0x12E */ char music_rando_on; // 0 = Off, 1 = Music Rando on, apply extra data shuffle
 	/* 0x12F */ char spoiler_hints;
-	/* 0x130 */ LZREntrance ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x132 */ LZREntrance museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
+	/* 0x130 */ char unk_130[4];
 	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Only kong displayed, 2 = Both item and kong
 	/* 0x135 */ char warp_to_isles_enabled; // 0 = Off, 1 = Add Warp to Isles option
 	/* 0x136 */ char unk_136[2];

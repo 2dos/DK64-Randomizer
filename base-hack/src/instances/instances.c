@@ -269,18 +269,6 @@ void loadWrinklyTextWrapper(actorData* actor, int file, int index) {
 
 #define MILL_CRUSHER_PROGRESS 1
 
-void initiateLZRTransition(LZREntrance* entrance, maps vanilla_map, int exit) {
-	if (Rando.randomize_more_loading_zones == 1) {
-		int exit = entrance->exit;
-		if (entrance->map == MAP_HELM) {
-			exit = getHelmExit();
-		}
-		initiateTransition_0(entrance->map, exit, 0, 0);
-	} else {
-		initiateTransition_0(vanilla_map, exit, 0, 0);
-	}
-}
-
 void portalWarpFix(maps map, int exit) {
 	if (map == MAP_HELM) {
 		exit = getHelmExit();
@@ -301,9 +289,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				{
 					int gate_flag = 0;
 					switch (param2) {
-						case SEASICK_SHIP:
-							initiateLZRTransition(&Rando.seasick_ship_enter, MAP_GALLEONSEASICKSHIP, 0);
-							break;
 						case GALLEON_DKSTAR:
 							{
 								int progress = 1;
@@ -373,9 +358,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case MAP_AZTEC:
-				if (param2 == AZTEC_BEETLE_GRATE) {
-					initiateLZRTransition(&Rando.aztec_beetle_enter, MAP_AZTECBEETLE, 0);
-				} else if (param2 == AZTEC_SNOOPDOOR) {
+				if (param2 == AZTEC_SNOOPDOOR) {
 					if (index == 0) {
 						// Flag Check
 						if (checkFlag(SNOOPDOOR_OPEN, FLAGTYPE_PERMANENT)) {
@@ -401,9 +384,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case MAP_FUNGI:
-				if (param2 == FUNGI_MINECART_GRATE) {
-					initiateLZRTransition(&Rando.fungi_minecart_enter, MAP_FUNGIMINECART, 0);
-				} else if (param2 == FUNGI_BEANCONTROLLER) {
+				if (param2 == FUNGI_BEANCONTROLLER) {
 					return getItemCount_new(REQITEM_BEAN, 0, 0);
 				} else if ((param2 == FUNGI_SWITCH_DAY) || (param2 == FUNGI_SWITCH_NIGHT)) {
 					if (!Rando.quality_of_life.vanilla_fixes) {
@@ -421,27 +402,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case MAP_CASTLEBALLROOM:
-				if (param2 == BALLROOM_MONKEYPORT) {
-					if (Rando.randomize_more_loading_zones == 1) {
-						createCollisionObjInstance(COLLISION_MAPWARP, Rando.ballroom_to_museum.map, Rando.ballroom_to_museum.exit);
-					} else {
-						createCollisionObjInstance(COLLISION_MAPWARP,113,2);
-					}
-				}
-				break;
 			case MAP_CRANKY:
 				if (param2 == ITEM_RAREWARE_COIN) {
 					giveItemFromPacket(&company_coin_table[1], 0);
-				}
-				break;
-			case MAP_CASTLEMUSEUM:
-				if (param2 == MUSEUM_WARP_MONKEYPORT) {
-					if (Rando.randomize_more_loading_zones == 1) {
-						createCollisionObjInstance(COLLISION_MAPWARP, Rando.museum_to_ballroom.map, Rando.museum_to_ballroom.exit);
-					} else {
-						createCollisionObjInstance(COLLISION_MAPWARP,88,1);
-					}
 				}
 				break;
 			case MAP_ISLES:
@@ -968,8 +931,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						fish_state = 5;
 					}
 					behaviour_pointer->next_state = fish_state;
-				} else if (param2 == FISH_WARP_CONTROLLER) {
-					initiateLZRTransition(&Rando.mech_fish_exit, MAP_GALLEON, 34);
 				}
 				break;
 			case MAP_FACTORYBBLAST:
