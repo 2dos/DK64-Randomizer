@@ -253,7 +253,7 @@ LocationListOriginal = {
     Locations.IslesChunkyInstrumentPad: Location(Levels.DKIsles, "Isles Chunky Triangle Pad", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(0, -1, 424, Kongs.chunky)]),
     Locations.IslesChunkyPoundtheX: Location(Levels.DKIsles, "Isles Chunky Pound the X", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.Isles, 0x56, 431, Kongs.chunky)]),
     Locations.IslesBananaFairyIsland: Location(Levels.DKIsles, "Isles Fairy (Small Island)", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.Isles, -1, 606)]),
-    Locations.IslesBananaFairyCrocodisleIsle: Location(Levels.DKIsles, "Isles Fairy (Top of Krem Isle)", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.Isles, -1, 607)]),
+    Locations.IslesBananaFairyCrocodisleIsle: Location(Levels.DKIsles, "Isles Fairy (Upper Krem Isle)", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.Isles, -1, 607)]),
     Locations.IslesLankyPrisonOrangsprint: Location(Levels.DKIsles, "Isles Lanky Sprint Cage", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.KLumsy, 0x3, 429, Kongs.lanky)]),
     Locations.CameraAndShockwave: Location(Levels.DKIsles, "The Banana Fairy's Gift", Items.CameraAndShockwave, Types.Shockwave, Kongs.tiny, [124]),
     Locations.RarewareBanana: Location(Levels.DKIsles, "Returning the Banana Fairies", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.BananaFairyRoom, 0x1E, 301, Kongs.tiny)]),
