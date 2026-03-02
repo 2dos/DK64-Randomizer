@@ -1160,7 +1160,7 @@ KasplatLocationList = {
             vanilla=True,
         ),
         KasplatLocation(
-            name="Caves Kasplat: Cabins area pillar",
+            name="Caves Kasplat: Cabins Central Rise",
             map_id=Maps.CrystalCaves,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[2911, 379, 1858],
