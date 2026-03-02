@@ -564,7 +564,7 @@ KasplatLocationList = {
         #     additional_logic=lambda l: Events.MainCoreActivated in l.Events,
         # ),
         KasplatLocation(
-            name="Factory Kasplat: Window shopping", # SNEVIN !!
+            name="Factory Kasplat: Window shopping",  # SNEVIN !!
             map_id=Maps.FranticFactory,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1579, 811, 2197],
@@ -677,7 +677,7 @@ KasplatLocationList = {
             vanilla=True,
         ),
         KasplatLocation(
-            name="Galleon Kasplat: Lighthouse Alcove", # KEVIN !!
+            name="Galleon Kasplat: Lighthouse Alcove",  # KEVIN !!
             map_id=Maps.GloomyGalleon,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[699, 1564, 4093],
@@ -745,7 +745,7 @@ KasplatLocationList = {
             region=Regions.GloomyGalleonStart,
         ),
         KasplatLocation(
-            name="Galleon Kasplat: Atop Whomp's Lighthouse", # name too iconic to change imo
+            name="Galleon Kasplat: Atop Whomp's Lighthouse",  # name too iconic to change imo
             map_id=Maps.GalleonLighthouse,
             kong_lst=[Kongs.donkey],
             coords=[448, 721, 514],
