@@ -97,7 +97,9 @@ typedef struct actorData {
 	/* 0x07C */ float xPos;
 	/* 0x080 */ float yPos;
 	/* 0x084 */ float zPos;
-	/* 0x088 */ char unk_80[0xB8-0x88];
+	/* 0x088 */ char unk_80[0xA4-0x88];
+	/* 0x0A4 */ float floor;
+	/* 0x0A8 */ char unk_a8[0xB8-0xA8];
 	/* 0x0B8 */ float hSpeed;
 	/* 0x0BC */ char unk_BC[0xC0-0xBC];
 	/* 0x0C0 */ float yVelocity;
@@ -290,7 +292,8 @@ typedef struct playerData {
 	/* 0x325 */ char unk_324[0x328 - 0x325];
 	/* 0x328 */ actorData* krool_timer_pointer;
 	/* 0x32C */ actorData* held_actor;
-	/* 0x330 */ char unk_330[0x340 - 0x330];
+	/* 0x330 */ actorData* held_destroy_actor;
+	/* 0x334 */ char unk_334[0x340 - 0x334];
 	/* 0x340 */ float scale[6];
 	/* 0x358 */ char unk_358[0x368 - 0x358];
 	/* 0x368 */ unsigned int state_bitfield;
@@ -804,14 +807,6 @@ typedef struct enemy_drop_struct {
 	/* 0x005 */ unsigned char drop_count;
 } enemy_drop_struct;
 
-typedef struct fileExtraStorage {
-	/* 0x000 */ unsigned char location_sss_purchased; // 0lll 0pss. l = level (0-7), p = purchased (0-1), s = shop (0-2. Cranky, Funky, Candy)
-	/* 0x001 */ unsigned char location_ab1_purchased;
-	/* 0x002 */ unsigned char location_ug1_purchased;
-	/* 0x003 */ unsigned char location_mln_purchased;
-	/* 0x004 */ unsigned int level_igt[9];
-} fileExtraStorage;
-
 typedef struct PauseItemStruct {
     union {
         const int sprite_index;
@@ -820,10 +815,6 @@ typedef struct PauseItemStruct {
     unsigned short item_cap;
     unsigned short item_count;
 } PauseItemStruct;
-
-typedef struct settingsData {
-	/* 0x000 */ fileExtraStorage file_extra;
-} settingsData;
 
 typedef struct model_struct {
 	/* 0x000 */ float x;
@@ -1639,6 +1630,17 @@ typedef struct Controller {
 	/* 0x003 */ char stickY;
 } Controller;
 
+typedef struct InputHandlerContainer {
+	/* 0x000 */ Controller cont;
+	/* 0x004 */ short unk4;
+} InputHandlerContainer;
+
+typedef struct button_swap_struct {
+	/* 0x000 */ unsigned short target_bit;
+	/* 0x002 */ unsigned short output_bit;
+	/* 0x004 */ unsigned short timer;
+} button_swap_struct;
+
 typedef struct Border {
 	/* 0x000 */ char player_count;
 	/* 0x001 */ char unk1;
@@ -1717,49 +1719,6 @@ typedef struct sprite_info {
 	/* 0x36C */ unsigned char blue;
 	/* 0x36D */ unsigned char alpha;
 } sprite_info;
-
-typedef struct RandomSwitchesIsles {
-	/* 0x000 */ unsigned char monkeyport; // 0 = monkeyport, 1 = blast, 2 = balloon
-	/* 0x001 */ unsigned char gone; // 0 = gone, 1-5 = instrument
-	/* 0x002 */ unsigned char aztec_lobby_feather;
-	/* 0x003 */ unsigned char fungi_lobby_feather;
-	/* 0x004 */ unsigned char spawn_rocketbarrel;
-} RandomSwitchesIsles;
-
-typedef struct RandomSwitchesJapes {
-	/* 0x000 */ unsigned char feather;
-	/* 0x001 */ unsigned char rambi;
-	/* 0x002 */ unsigned char painting;
-	/* 0x003 */ unsigned char diddy_cave;
-} RandomSwitchesJapes;
-
-typedef struct RandomSwitchesAztec {
-	/* 0x000 */ unsigned char bp_door;
-	/* 0x001 */ unsigned char llama_switches[3];
-	/* 0x004 */ unsigned char snoop_switch;
-	/* 0x005 */ unsigned char guitar;
-} RandomSwitchesAztec;
-
-typedef struct RandomSwitchesGalleon {
-	/* 0x000 */ unsigned char lighthouse;
-	/* 0x001 */ unsigned char shipwreck;
-	/* 0x002 */ unsigned char cannongame;
-} RandomSwitchesGalleon;
-
-typedef struct RandomSwitchesFungi {
-	/* 0x000 */ unsigned char yellow;
-	/* 0x001 */ unsigned char green_feather;
-	/* 0x002 */ unsigned char green_pineapple;
-} RandomSwitchesFungi;
-
-// Any 0s are treated as default
-typedef struct RandomSwitchesSetting {
-	/* 0x000 */ RandomSwitchesIsles isles;
-	/* 0x005 */ RandomSwitchesJapes japes;
-	/* 0x009 */ RandomSwitchesAztec aztec;
-	/* 0x00F */ RandomSwitchesGalleon galleon;
-	/* 0x012 */ RandomSwitchesFungi fungi;
-} RandomSwitchesSetting;
 
 typedef struct LZREntrance {
 	/* 0x000 */ unsigned char map;

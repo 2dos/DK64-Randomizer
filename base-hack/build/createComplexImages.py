@@ -580,6 +580,8 @@ skins = {
     "ap_useful": ("ap_logo_useful", None, "displays"),
     "ap_junk": ("ap_logo_junk", None, "displays"),
     "ap_trap": ("ap_logo_trap", None, "displays"),
+    "time_day": ("time_day", None, "displays"),
+    "time_night": ("time_night", None, "displays"),
 }
 BARREL_BASE_IS_HELM = True
 BASE_SIZE = 32
@@ -917,6 +919,17 @@ fool_im.paste(ex_im, (34, 0), ex_im)
 fool_im = fool_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 fool_im.save(f"{disp_dir}fool_overlay.png")
 
+# Palettes
+shifts = {
+    "diddy": 120,
+    "chunky": 300,
+}
+for kong, shift in shifts.items():
+    for x in range(2):
+        im = Image.open(f"{hash_dir}ice_palette_{x}.png")
+        im = hueShift(im, shift)
+        im.save(f"{disp_dir}{kong}_ice_palette_{x}.png")
+
 boulder_dir = getDir("assets/boulder_bounce/")
 for x in range(8):
     im = Image.open(f"{boulder_dir}boulder{x}.png")
@@ -930,7 +943,42 @@ for x in range(8):
     mdl_im.paste(temp_im, (22, 0), temp_im)
     mdl_im.save(f"{disp_dir}half_medal_spin_{x}.png")
 
+# Face puzzle data
+face_puzzle_data = {
+    "dk": 246,
+    "tiny": 50,
+    "chunky": 286,
+}
 
+for kong_local_index, kong in enumerate(["chunky", "tiny", "dk"]):
+    puzzle_im = Image.new(mode="RGBA", size=((96, 96)))
+    for x in range(3):
+        for y in range(3):
+            image_index = 0xD71 + kong_local_index + (((y * 3) + x) * 4)
+            slot_image = Image.open(f"{hash_dir}facepuzzle_{hex(image_index)}.png")
+            puzzle_im.paste(slot_image, (32 * x, 32 * y), slot_image)
+    puzzle_im = hueShift(puzzle_im, face_puzzle_data[kong])
+    face_im = Image.new(mode="RGBA", size=((64, 64)))
+    for x in range(2):
+        local_offset = x
+        if kong in ("tiny", "dk"):
+            local_offset = 1 - x
+        half_im = Image.open(f"{hash_dir}{kong}_face_{local_offset}_noflip.png")
+        face_im.paste(half_im, (32 * x, 0), half_im)
+    face_im = face_im.resize((96, 96))
+    face_offset = (0, 0)
+    if kong == "dk":
+        face_offset = (1, 1)
+    if kong == "tiny":
+        face_offset = (1, 0)
+    puzzle_im.paste(face_im, face_offset, face_im)
+    for x in range(3):
+        for y in range(3):
+            image_index = 0xD71 + kong_local_index + (((y * 3) + x) * 4)
+            slot_image = puzzle_im.crop((32 * x, 32 * y, 32 * (x + 1), 32 * (y + 1)))
+            slot_image.save(f"{disp_dir}facepuzzle_{hex(image_index)}.png")
+            slot_image.save(f"{disp_dir}dupepuzzle_{hex(image_index)}.png")
+            
 def alterWood(image):
     """Alter the wood color to our dark red color."""
     output = hueShift(image, 315)
@@ -1028,6 +1076,8 @@ rmve = [
     "medal_spin_5.png",
     "medal_spin_6.png",
     "medal_spin_7.png",
+    "ice_palette_0.png",
+    "ice_palette_1.png",
 ]
 for kong in kongs:
     for x in range(2):

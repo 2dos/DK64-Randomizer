@@ -5,6 +5,7 @@ from randomizer.Lists.FairyLocations import fairy_locations, relocated_5ds_fairy
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
+from randomizer.Patching.Library.ASM import populateOverlayOffsets, readValue, writeValue, Overlay
 
 
 def ReplaceShipFairy(ROM_COPY: LocalROM):
@@ -128,6 +129,14 @@ def ReplaceShipFairy(ROM_COPY: LocalROM):
         for y in x:
             ROM_COPY.writeMultipleBytes(y, 1)
 
+def updateSpawnFlag(flag: int, map_id: int, spawner_id: int, ROM_COPY: LocalROM, offset_dict: dict):
+    """Update the spawn flag entry for a fairy."""
+    for x in range(0x1F):
+        slot_head = 0x80755DA8 + (8 * x)
+        ingame_flag = readValue(ROM_COPY, slot_head + 6, Overlay.Static, offset_dict)
+        if ingame_flag == flag:
+            writeValue(ROM_COPY, slot_head + 0, Overlay.Static, map_id, offset_dict, 1)
+            writeValue(ROM_COPY, slot_head + 2, Overlay.Static, spawner_id, offset_dict)
 
 def PlaceFairies(spoiler, ROM_COPY: LocalROM):
     """Write Fairies to ROM."""
@@ -135,6 +144,7 @@ def PlaceFairies(spoiler, ROM_COPY: LocalROM):
     sav = spoiler.settings.rom_data
     ROM_COPY.seek(sav + 0xE0)
     ROM_COPY.writeMultipleBytes(0, 2)
+    offset_dict = populateOverlayOffsets(ROM_COPY)
     if spoiler.settings.random_fairies:
         action_maps = [
             Maps.JungleJapes,
@@ -318,13 +328,10 @@ def PlaceFairies(spoiler, ROM_COPY: LocalROM):
         ROM_COPY.write(1)
         # Array construction
         write_data = [255, 255]
-        for index, item in enumerate(spoiler.fairy_data_table):
-            ROM_COPY.seek(0x1FFC000 + (4 * index))
-            ROM_COPY.writeMultipleBytes(item["flag"], 2)
+        for item in spoiler.fairy_data_table:
             item_level = item["level"]
             item_map = fairy_locations[item_level][item["fairy_index"]].map
-            ROM_COPY.writeMultipleBytes(item_map, 1)
-            ROM_COPY.writeMultipleBytes(item["id"], 1)  # Get Spawner ID
+            updateSpawnFlag(item["flag"], item_map, item["id"], ROM_COPY, offset_dict)
             if item["shift"] >= 0:
                 offset = int(item["shift"] >> 3)
                 check = int(item["shift"] % 8)

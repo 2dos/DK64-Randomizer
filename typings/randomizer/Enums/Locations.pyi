@@ -1573,3 +1573,5 @@ class Locations(IntEnum):
     KremKap_GalleonNPC_Mermaid = 1570
     KremKap_CavesNPC_IceTomato = 1571
     KremKap_IslesNPC_BFIQueen = 1572
+    TimeLocationDay = 1573
+    TimeLocationNight = 1574

@@ -538,6 +538,40 @@ with open(ROMName, "rb") as rom:
         os.remove("temp.bin")
     with open("fake_item_actor.bin", "wb") as fh:
         fh.write(data)
+    # Duplicate Day/Night Items
+    fungi_time = {
+        "day": 0xD07,
+        "night": 0xD08,
+    }
+    for name, index in fungi_time.items():
+        rom.seek(modeltwo_table + (0x1CA << 2))
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        indic = int.from_bytes(rom.read(2), "big")
+        rom.seek(model_start)
+        data = rom.read(model_size)
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        with open(f"{name}_item_om2.bin", "wb") as fh:
+            fh.write(data)
+        with open(f"{name}_item_om2.bin", "r+b") as fh:
+            # Rotate
+            # for x in range(24):
+            #     vert_start = 0x1D0 + (x * 8)
+            #     fh.seek(vert_start)
+            #     coords = []
+            #     for y in range(3):
+            #         v = int.from_bytes(fh.read(2), "big")
+            #         coords.append(v)
+            #     fh.seek(vert_start)
+            #     for y in range(3):
+            #         fh.write(coords[(y + 1) % 3].to_bytes(2, "big"))
+            # Replace Image
+            fh.seek(0xDC)
+            fh.write(index.to_bytes(4, "big"))
+                    
     # Multiplayer Pad
     rom.seek(modeltwo_table + (0x214 << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
@@ -717,6 +751,207 @@ with open(ROMName, "rb") as rom:
             for x in range(5):
                 fh.write(tex.to_bytes(2, "big"))
             fh.write((0).to_bytes(2, "big"))
+    # Punch Grates
+    color_mapping = {
+        "diddy": (0xFF, 0x00, 0x00),
+        "chunky": (0x41, 0xFF, 0x25),
+    }
+    obj_mapping = {
+        "punch_gate": 114
+    }
+    PUNCH_GRATE_FACE_DELTA = 8
+    for obj_name, obj_id in obj_mapping.items():
+        for name, color in color_mapping.items():
+            rom.seek(modeltwo_table + (obj_id << 2))
+            model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+            model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+            model_size = model_end - model_start
+            rom.seek(model_start)
+            indic = int.from_bytes(rom.read(2), "big")
+            rom.seek(model_start)
+            data = rom.read(model_size)
+            if indic == 0x1F8B:
+                data = zlib.decompress(data, (15 + 32))        
+            with open(f"{obj_name}_{name}.bin", "wb") as fh:
+                fh.write(data)
+            with open(f"{obj_name}_{name}.bin", "r+b") as fh:
+                fh.seek(0x48)
+                vert_start = int.from_bytes(fh.read(4), "big")
+                vert_end = int.from_bytes(fh.read(4), "big")
+                vert_count = int((vert_end - vert_start) / 0x10)
+                for x in range(vert_count):
+                    fh.seek(vert_start + 0xC + (x * 0x10))
+                    for c in color:
+                        fh.write(c.to_bytes(1, "big"))
+    # Ice Wall
+    texture_mapping = {
+        "diddy": (getBonusSkinOffset(ExtraTextures.DiddyIcePalette0), getBonusSkinOffset(ExtraTextures.DiddyIcePalette1)),
+        "chunky": (getBonusSkinOffset(ExtraTextures.ChunkyIcePalette0), getBonusSkinOffset(ExtraTextures.ChunkyIcePalette1)),
+    }
+    for name, textures in texture_mapping.items():
+        rom.seek(modeltwo_table + (510 << 2))
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        indic = int.from_bytes(rom.read(2), "big")
+        rom.seek(model_start)
+        data = rom.read(model_size)
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))        
+        with open(f"ice_wall_{name}.bin", "wb") as fh:
+            fh.write(data)
+        with open(f"ice_wall_{name}.bin", "r+b") as fh:
+            fh.seek(0x234)
+            fh.write(textures[0].to_bytes(4, "big"))
+            fh.seek(0x144)
+            fh.write(textures[1].to_bytes(4, "big"))
+    # New T&S Portal
+    rom.seek(modeltwo_table + (0x2AC << 2))
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    rom.seek(model_start)
+    indic = int.from_bytes(rom.read(2), "big")
+    rom.seek(model_start)
+    portal_data = rom.read(model_size)
+    if indic == 0x1F8B:
+        portal_data = zlib.decompress(portal_data, (15 + 32))
+    rom.seek(modeltwo_table + (0x2AB << 2))
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    rom.seek(model_start)
+    indic = int.from_bytes(rom.read(2), "big")
+    rom.seek(model_start)
+    number_data = rom.read(model_size)
+    if indic == 0x1F8B:
+        number_data = zlib.decompress(number_data, (15 + 32))
+    portal_data = bytearray(portal_data)
+    number_data = bytearray(number_data)
+    portal_data[0x233F] = 7  # Increase Dyntex count
+    # Shift references to verts
+    vert_offset = 0x14D0 - 0x860
+    dl_offset = 0x9E
+    original_val = (number_data[dl_offset] << 8) | number_data[dl_offset + 1]
+    new_val = original_val + vert_offset
+    number_data[dl_offset] = (new_val >> 8) & 0xFF
+    number_data[dl_offset + 1] = new_val & 0xFF
+    # Move Verts
+    for x in range(12):
+        for c in range(3):
+            local_offset = 0x1F0 + (x * 0x10) + (2 * c)
+            val = (number_data[local_offset] << 8) | number_data[local_offset + 1]
+            if val > 0x7FFF:
+                val -= 0x10000
+            mults = [0.35, 0.35, 0.11]
+            val = int(val * mults[c])
+            if c == 1:
+                val -= 30
+            if val < 0:
+                val += 0x10000
+            number_data[local_offset] = (val >> 8) & 0xFF
+            number_data[local_offset + 1] = val & 0xFF
+    # Add dyntexs
+    for x in range(3):
+        local_offset = 0x30A + (0x84 * x)
+        num_offset = 0x2E3 + (0x84 * x)
+        null_tex = 993
+        number_data[num_offset] = 11
+        number_data[local_offset] = (null_tex >> 8) & 0xFF
+        number_data[local_offset + 1] = null_tex & 0xFF
+    with open("troff_portal.bin", "wb") as fh:
+        fh.write(portal_data[:0x758])
+        fh.write((0xFA000000).to_bytes(4, "big"))
+        fh.write((0xFFFFFFFF).to_bytes(4, "big"))
+        fh.write(number_data[0x78:0x1D8])
+        fh.write(portal_data[0x760:0x14D0])
+        fh.write(number_data[0x1F0:0x2B0])
+        fh.write(portal_data[0x14D0:])
+        fh.write(number_data[0x2D4:])
+    with open("troff_portal.bin", "r+b") as fh:
+        dl_1_add = 0x1D8 - 0x78
+        vert_add = 0x2b0 - 0x1F0
+        dyntex_add = 0x460 - 0x2D4
+        total_offset = 0
+        for x in range(12):
+            fh.seek(0x44 + (x * 4))
+            original_val = int.from_bytes(fh.read(4), "big")
+            if x == 0:
+                total_offset += dl_1_add
+            elif x == 2:
+                total_offset += vert_add
+            elif x == 11:
+                total_offset += dyntex_add
+            new_val = original_val + total_offset
+            fh.seek(0x44 + (x * 4))
+            fh.write(new_val.to_bytes(4, "big"))
+    # White Slam Switches
+    switch_models = {
+        "dk": 0x94,
+        "diddy": 0x93,
+        "lanky": 0x95,
+        "tiny": 0x96,
+        "chunky": 0xB8,
+    }
+    for kong, obj_id in switch_models.items():
+        rom.seek(modeltwo_table + (obj_id << 2))
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        indic = int.from_bytes(rom.read(2), "big")
+        rom.seek(model_start)
+        data = rom.read(model_size)
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        with open(f"white_switch_{kong}.bin", "wb") as fh:
+            fh.write(data)
+        with open(f"white_switch_{kong}.bin", "r+b") as fh:
+            color_offsets = [0x724, 0x734, 0x744, 0x754, 0x764, 0x774]
+            for offset in color_offsets:
+                fh.seek(offset)
+                for _ in range(3):
+                    fh.write((0xFF).to_bytes(1, "big"))
+    # Face Puzzle Boards
+    kong_and = {
+        "dk": 2,
+        "chunky": 0
+    }
+    for kong, and_offset in kong_and.items():
+        rom.seek(modeltwo_table + (448 << 2))
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        indic = int.from_bytes(rom.read(2), "big")
+        rom.seek(model_start)
+        data = rom.read(model_size)
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        with open(f"puzzle_board_{kong}.bin", "wb") as fh:
+            fh.write(data)
+        with open(f"puzzle_board_{kong}.bin", "r+b") as fh:
+            for x in range(0x268):
+                dl_ins_start = 0x78 + (x * 8)
+                fh.seek(dl_ins_start)
+                instruction = int.from_bytes(fh.read(1), "big")
+                if instruction != 0xFD:
+                    continue
+                fh.seek(dl_ins_start + 4)
+                texture = int.from_bytes(fh.read(4), "big")
+                delta = texture - 0xD71
+                if delta < 0 or delta > 35:
+                    continue
+                if (delta & 3) != and_offset:
+                    continue
+                slot_offset = int(delta / 4)
+                fh.seek(dl_ins_start + 4)
+                new_tex_start = ExtraTextures.FacePuzzleChunky0
+                if kong == "dk":
+                    new_tex_start = ExtraTextures.FacePuzzleDK0
+                new_tex = getBonusSkinOffset(new_tex_start + slot_offset)
+                fh.write(new_tex.to_bytes(4, "big"))
     # Fake Fairies
     rom.seek(actor_table + (0x3C << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")

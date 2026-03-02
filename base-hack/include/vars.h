@@ -34,11 +34,11 @@
 // Other
 #define static_expansion_size 0x100
 
-#define COLLISION_LIMIT 76
-#define DEFS_LIMIT 164
+#define COLLISION_LIMIT 78
+#define DEFS_LIMIT 166
 #define ACTOR_LIMIT (345 + NEWACTOR_TERMINATOR)
 
-#define KONG_LOCKED_START 0x2E8
+// 0x2E8 - 0x2ec (inc) unused
 #define SNOOPDOOR_OPEN 0x2ED
 #define DKJAPESCAGEGB_OPEN 0x2EF
 #define JAPESMOUNTAINSPAWNED 0x2F0
@@ -62,8 +62,8 @@
 
 // Unused 0x297, 0x298
 #define FLAG_LANKY_MUSH_OPEN 0x299
-#define FLAG_ITEM_BELT_0 0x29A
-#define FLAG_ITEM_BELT_1 0x29B
+#define FLAG_ITEM_DAY 0x29A
+#define FLAG_ITEM_NIGHT 0x29B
 #define FLAG_ITEM_INS_0 0x29C
 #define FLAG_ITEM_INS_1 0x29D
 #define FLAG_ITEM_INS_2 0x29E

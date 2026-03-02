@@ -84,21 +84,11 @@ def modelCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     writeValue(ROM_COPY, 0x8075575A, Overlay.Static, settings.funky_cutscene_model + 1, offset_dict)
     writeValue(ROM_COPY, 0x8075578C, Overlay.Static, settings.boot_cutscene_model + 1, offset_dict)
 
-    kong_model_setting_values = [
-        settings.kong_model_dk,
-        settings.kong_model_diddy,
-        settings.kong_model_lanky,
-        settings.kong_model_tiny,
-        settings.kong_model_chunky,
-    ]
-    for kong_index, value in enumerate(kong_model_setting_values):
-        if value in (KongModels.cranky, KongModels.candy, KongModels.funky):
-            writeValue(ROM_COPY, 0x8075C410 + (kong_index * 0x10) + 0xC, Overlay.Static, 0, offset_dict, 4)
-        elif value == KongModels.disco_chunky and kong_index == Kongs.chunky:
-            writeValue(ROM_COPY, 0x806CF37C, Overlay.Static, 0, offset_dict, 4)  # Fix object holding
-            writeValue(ROM_COPY, 0x806F1274, Overlay.Static, 0, offset_dict, 4)  # Prevent model change for GGone
-            writeValue(ROM_COPY, 0x806CBB84, Overlay.Static, 0, offset_dict, 4)  # Enable opacity filter GGone
-            writeValue(ROM_COPY, 0x8075BF3E, Overlay.Static, 0x2F5C, offset_dict)  # Make CS Model Behave normally
+    if settings.kong_model_chunky == KongModels.disco_chunky:
+        writeValue(ROM_COPY, 0x806CF37C, Overlay.Static, 0, offset_dict, 4)  # Fix object holding
+        writeValue(ROM_COPY, 0x806F1274, Overlay.Static, 0, offset_dict, 4)  # Prevent model change for GGone
+        writeValue(ROM_COPY, 0x806CBB84, Overlay.Static, 0, offset_dict, 4)  # Enable opacity filter GGone
+        writeValue(ROM_COPY, 0x8075BF3E, Overlay.Static, 0x2F5C, offset_dict)  # Make CS Model Behave normally
     if settings.beetle_model == Model.Rabbit:
         writeValue(ROM_COPY, 0x8075ECD2, Overlay.Static, 0x47, offset_dict)  # Model
         writeValue(ROM_COPY, 0x8075ECD4, Overlay.Static, 0x309, offset_dict)
@@ -258,6 +248,8 @@ def musicCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
 
 def arcadeCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     """Write cosmetic options related to arcade."""
+    if settings.arcade_custom_minigame is not None:
+        return
     if IsColorOptionSelected(settings, ColorOptions.enemies):
         dk_addresses = [
             0x8003E9F0,
@@ -370,6 +362,8 @@ def cameraCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
 
 def jetpacCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     """Write cosmetic options related to jetpac."""
+    if settings.jetpac_custom_minigame is not None:
+        return
     # Jetpac colors
     JETPAC_RANDOM_COLORS = False
     if JETPAC_RANDOM_COLORS:

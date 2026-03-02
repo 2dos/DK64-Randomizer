@@ -21,22 +21,22 @@ ROM_DATA static kongs monkeyport_kongs[] = {KONG_TINY, KONG_DK, KONG_LANKY, KONG
 int hasHelmProgMove(helm_prog_enum sub_id) {
     // 0 = Monkeyport pad, 1 = Gone Pad
     if (sub_id == HELMPROG_MONKEYPORT) {
-        if (Rando.switchsanity.isles.monkeyport == 0) {
+        if (Rando.switchsanity_monkeyport == 0) {
             return MovesBase[KONG_TINY].special_moves & MOVECHECK_MONKEYPORT;
-        } else if (Rando.switchsanity.isles.monkeyport == 1) {
+        } else if (Rando.switchsanity_monkeyport == 1) {
             return MovesBase[KONG_DK].special_moves & MOVECHECK_BLAST;
-        } else if (Rando.switchsanity.isles.monkeyport == 2) {
+        } else if (Rando.switchsanity_monkeyport == 2) {
             return MovesBase[KONG_LANKY].special_moves & MOVECHECK_BALLOON;
         }
     } else if (sub_id == HELMPROG_GONE) {
-        if (Rando.switchsanity.isles.gone == 0) {
+        if (Rando.switchsanity_gone == 0) {
             return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_GONE;
-        } else if (Rando.switchsanity.isles.gone == 6) {
+        } else if (Rando.switchsanity_gone == 6) {
             return MovesBase[KONG_DK].special_moves & MOVECHECK_GRAB;
-        } else if (Rando.switchsanity.isles.gone == 7) {
+        } else if (Rando.switchsanity_gone == 7) {
             return MovesBase[KONG_DIDDY].special_moves & MOVECHECK_CHARGE;
         } else {
-            return MovesBase[Rando.switchsanity.isles.gone - 1].instrument_bitfield & 1;
+            return MovesBase[Rando.switchsanity_gone - 1].instrument_bitfield & 1;
         }
     }
     return 0;
@@ -68,12 +68,12 @@ int ableToUseMonkeyport(int id) {
     if (Player) {
         if ((Player->obj_props_bitfield & 0x2000) == 0) {
             if (standingOnM2Object(id)) {
-                int mport_kong = Rando.switchsanity.isles.monkeyport;
+                int mport_kong = Rando.switchsanity_monkeyport;
                 if (mport_kong == 0) {
                     // Set Monkeyport thing
-                    return (Player->characterID == 5) || (Rando.perma_lose_kongs);
+                    return Player->characterID == KONG_TINY;
                 } else {
-                    if (((unsigned int)Player->characterID == monkeyport_kongs[mport_kong] + 2) || (Rando.perma_lose_kongs)) {
+                    if (((unsigned int)Player->characterID == monkeyport_kongs[mport_kong] + 2)) {
                         if (mport_kong == 1) {
                             // Blast
                             createCollisionObjInstance(COLLISION_BBLAST, MAP_ISLES, 0);
@@ -137,7 +137,7 @@ void IslesMonkeyportCode(behaviour_data* behaviour_pointer, int index) {
 }
 
 int getHelmLobbyGoneReqKong(void) {
-    int sub_type = Rando.switchsanity.isles.gone;
+    int sub_type = Rando.switchsanity_gone;
     if (sub_type == 0) {
         return KONG_CHUNKY + 2;
     }
@@ -376,7 +376,7 @@ void HelmLobbyGoneGongCode(behaviour_data* behaviour_pointer, int index) {
 }
 
 void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
-    int sub_type = Rando.switchsanity.isles.gone;
+    int sub_type = Rando.switchsanity_gone;
     if (sub_type == 6) {
         HelmLobbyGoneLeverCode(behaviour_pointer, index);
         return;

@@ -204,6 +204,8 @@ class LogicVarHolder:
         self.funkyAccess = False
         self.candyAccess = False
         self.snideAccess = False
+        self.dayAccess = False
+        self.nightAccess = False
 
         self.HelmDonkey1 = False
         self.HelmDonkey2 = False
@@ -410,6 +412,8 @@ class LogicVarHolder:
         self.funkyAccess = self.funkyAccess or Items.Funky in ownedItems
         self.candyAccess = self.candyAccess or Items.Candy in ownedItems
         self.snideAccess = self.snideAccess or Items.Snide in ownedItems
+        self.dayAccess = self.dayAccess or Items.Day in ownedItems
+        self.nightAccess = self.nightAccess or Items.Night in ownedItems
 
         self.nintendoCoin = self.nintendoCoin or Items.NintendoCoin in ownedItems
         self.rarewareCoin = self.rarewareCoin or Items.RarewareCoin in ownedItems
@@ -568,11 +572,13 @@ class LogicVarHolder:
         slam_req = default_requirement_level
         if self.settings.alter_switch_allocation:
             slam_req = self.settings.switch_allocation[level]
-        if slam_req == 2:
+        if slam_req == 1:
+            return self.Slam
+        elif slam_req == 2:
             return self.superSlam
         elif slam_req == 3:
             return self.superDuperSlam
-        return self.Slam
+        return True
 
     @lru_cache(maxsize=None)
     def IsLavaWater(self) -> bool:
@@ -671,7 +677,7 @@ class LogicVarHolder:
             if data.kong == Kongs.any:
                 return self.HasGun(Kongs.any) and self.HasInstrument(Kongs.any)
             return kong_data and gun_abilities[data.kong] and instrument_abilities[data.kong]
-        elif data.switch_type == SwitchType.PushableButton:
+        elif data.switch_type in (SwitchType.PushableButton, SwitchType.PunchGrate, SwitchType.IceWall, SwitchType.Gong):
             if data.kong == Kongs.diddy:
                 return kong_data and self.charge
             if data.kong == Kongs.chunky:

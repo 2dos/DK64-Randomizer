@@ -13,7 +13,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, ColorblindMode, KongModels, WinConditionComplex
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems
-from randomizer.Patching.Cosmetics.CustomTextures import writeTransition, writeCustomPaintings, writeCustomPortal, writeCustomArcadeSprites, writeCustomReels, writeCustomItemSprites
+from randomizer.Patching.Cosmetics.CustomTextures import writeTransition, writeCustomPaintings, writeCustomPortal, writeCustomArcadeSprites, writeCustomReels, writeCustomItemSprites, writeCustomFacePuzzle
 from randomizer.Patching.Cosmetics.Krusha import placeKrushaHead, fixBaboonBlasts, kong_index_mapping, fixModelSmallKongCollision
 from randomizer.Patching.Cosmetics.Colorblind import (
     recolorKlaptraps,
@@ -143,6 +143,7 @@ def apply_cosmetic_colors(settings: Settings, ROM_COPY: ROM):
         writeCustomReels(settings, ROM_COPY)
         writeCustomArcadeSprites(settings, ROM_COPY)
         writeCustomItemSprites(settings, ROM_COPY)
+        writeCustomFacePuzzle(settings, ROM_COPY)
         settings.gb_colors = CharacterColors[js.document.getElementById("gb_colors").value]
         settings.gb_custom_color = js.document.getElementById("gb_custom_color").value
     else:
@@ -354,11 +355,9 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
     mode = settings.colorblind_mode
     sav = settings.rom_data
     galleon_switch_value = None
-    ROM_COPY.seek(sav + 0x103)
-    switch_rando_on = int.from_bytes(ROM_COPY.readBytes(1), "big") != 0
+    switch_rando_on = settings.alter_switch_allocation
     if switch_rando_on:
-        ROM_COPY.seek(sav + 0x104 + 3)
-        galleon_switch_value = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        galleon_switch_value = settings.switch_allocation[3]
     if mode != ColorblindMode.off:
         if mode in (ColorblindMode.prot, ColorblindMode.deut):
             recolorBells(ROM_COPY)
@@ -451,6 +450,8 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
                 new_color = [0xFF, 0x00, 0x00]
                 if galleon_switch_value == 2:
                     new_color = [0x26, 0xA3, 0xE9]
+                elif galleon_switch_value == 0:
+                    new_color = [0xFF, 0xFF, 0xFF]
                 recolorKRoolShipSwitch(new_color, ROM_COPY)
     if settings.head_balloons:
         for kong in range(5):
@@ -473,6 +474,7 @@ model_index_mapping = {
     KongModels.candy: (0x116, 0x116),
     KongModels.funky: (0x117, 0x117),
     KongModels.disco_donkey: (0x129, 0x129),
+    KongModels.robokrem: (0x140, 0x140),
 }
 
 LIME_COLORS = {

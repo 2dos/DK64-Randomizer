@@ -596,11 +596,11 @@ def updateRandomSwitches(spoiler, ROM_COPY: LocalROM):
     """Update setup to account for random switch placement."""
     if spoiler.settings.alter_switch_allocation:
         switches = {
-            Kongs.donkey: [0x94, 0x16C, 0x167],
-            Kongs.diddy: [0x93, 0x16B, 0x166],
-            Kongs.lanky: [0x95, 0x16D, 0x168],
-            Kongs.tiny: [0x96, 0x16E, 0x169],
-            Kongs.chunky: [0xB8, 0x16A, 0x165],
+            Kongs.donkey: [0x2A1, 0x94, 0x16C, 0x167],
+            Kongs.diddy: [0x2A4, 0x93, 0x16B, 0x166],
+            Kongs.lanky: [0x2A5, 0x95, 0x16D, 0x168],
+            Kongs.tiny: [0x2A6, 0x96, 0x16E, 0x169],
+            Kongs.chunky: [0x2A8, 0xB8, 0x16A, 0x165],
         }
         all_switches = []
         for kong in switches:
@@ -608,8 +608,6 @@ def updateRandomSwitches(spoiler, ROM_COPY: LocalROM):
         for level in LevelMapTable:
             if level not in (Levels.DKIsles, Levels.HideoutHelm):
                 switch_level = spoiler.settings.switch_allocation[level]
-                if switch_level > 0:
-                    switch_level -= 1
                 acceptable_maps = LevelMapTable[level].copy()
                 if level == Levels.GloomyGalleon:
                     acceptable_maps.append(Maps.GloomyGalleonLobby)  # Galleon lobby internally in the game is galleon, but isn't in rando files. Quick fix for this
@@ -654,6 +652,9 @@ def updateSwitchsanity(spoiler, ROM_COPY: LocalROM):
             SwitchType.PadMove: [0x97, 0xD4, 0x10C, 0x10B, 0x10A],
             SwitchType.MiscActivator: [0x28, 0xC3],
             SwitchType.PushableButton: [None, 0xE3, None, None, 0x70],
+            SwitchType.PunchGrate: [None, 0x29C, None, None, 0x29D],
+            SwitchType.IceWall: [None, 0x29E, None, None, 0x29F],
+            SwitchType.Gong: [None, 0xC3, None, None, 0x2A0]
         }
         switchsanity_maps = []
         # Get list of maps which contain a switch affected by switchsanity, to reduce references to pointer table

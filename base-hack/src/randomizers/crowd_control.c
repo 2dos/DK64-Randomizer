@@ -13,9 +13,9 @@ ROM_DATA static cc_effects effect_data;
 */
 
 typedef struct cc_effect_data {
-    /* 0x000 */ void* enabler; // Enabling function
-    /* 0x004 */ void* disabler; // Disabling function
-    /* 0x008 */ void* allower; // Function which checks if the function is allowed to run
+    /* 0x000 */ int (*enabler)(void); // Enabling function
+    /* 0x004 */ int (*disabler)(void); // Disabling function
+    /* 0x008 */ int (*allower)(void); // Function which checks if the function is allowed to run
     /* 0x00C */ char restart_upon_map_entry; // Restart effect upon map entry (usually happens if the func has a disabler)
     /* 0x00D */ char active; // Run the enabler function whilst active
     /* 0x00E */ char auto_disable; // Disable once enabled (usually for fixed-length events)
@@ -217,7 +217,7 @@ int cc_allower_rockfall(void) {
     return LoadedActorCount < 50; // Not safe to add it
 }
 
-void *cc_enabler_rockfall(void) {
+int cc_enabler_rockfall(void) {
     if (ObjectModel2Timer % 20) {
         return 0;
     }
@@ -227,7 +227,7 @@ void *cc_enabler_rockfall(void) {
     float y = Player->yPos + 200.0f;
     float z = Player->zPos + z_offset;
     actor_init_data unk; // 0x48 -> 0x67
-    return spawnActorSpawnerContainer(0x5C, x, y, z, 0, 0.5f, 0, &unk);
+    return (int)spawnActorSpawnerContainer(0x5C, x, y, z, 0, 0.5f, 0, &unk);
 }
 
 void dummyGuardCode(void) {
@@ -326,19 +326,18 @@ int cc_allower_tag(void) {
 }
 
 int cc_enabler_tag(void) {
-    int change_counter = getRNGLower31() & 7;
-    for (int j = 0; j < 8; j++) { // Not a while, but a for just in case we get stuck in an inf loop
-        for (int i = 0; i < 5; i++) {
-            if ((i != Character) && (hasAccessToKong(i))) {
-                change_counter--;
-                if (change_counter <= 0) {
-                    changeKong(i);
-                    return 1;
-                }
-            }
+    int change_counter = getRNGLower31() & 0xF;
+    int kong = Character;
+    for (int i = 0; i < change_counter; i++) {
+        int output_kong = getTagAnywhereKong(kong, 1);
+        if (kong == output_kong) {
+            // Player has no other kongs
+            return 0;
         }
+        kong = output_kong;
     }
-    return 0;
+    changeKong(kong);
+    return 1;
 }
 
 int cc_enabler_doabackflip(void) {
@@ -452,18 +451,18 @@ int cc_allower_boulder(void) {
     return LoadedActorCount < 30; // Not safe to add it
 }
 
-void *cc_enabler_boulder(void) {
+int cc_enabler_boulder(void) {
     actor_init_data unk;
-    return spawnActorSpawnerContainer(61, Player->xPos, Player->yPos, Player->zPos, 0, 1.0f, 0, &unk);
+    return (int)spawnActorSpawnerContainer(61, Player->xPos, Player->yPos, Player->zPos, 0, 1.0f, 0, &unk);
 }
 
 int cc_allower_crate(void) {
     return cc_allower_boulder() && (Player->grounded_bitfield & 1);
 }
 
-void *cc_enabler_crate(void) {
+int cc_enabler_crate(void) {
     actor_init_data unk;
-    return spawnActorSpawnerContainer(21, Player->xPos, Player->yPos, Player->zPos, 0, 1.0f, 0, &unk);
+    return (int)spawnActorSpawnerContainer(21, Player->xPos, Player->yPos, Player->zPos, 0, 1.0f, 0, &unk);
 }
 
 ROM_RODATA_NUM static const short ignored_paper_types[] = {
@@ -613,7 +612,7 @@ void cc_effect_handler(void) {
             case CC_LOCKED:
                 if (cc_allower_generic()) {
                     if (cc_funcs[i].allower) {
-                        if (!callFunc(cc_funcs[i].allower, 0)) {
+                        if (!cc_funcs[i].allower()) {
                             *eff_data = CC_LOCKED;
                             break;
                         }
@@ -631,9 +630,9 @@ void cc_effect_handler(void) {
                 if (cc_funcs[i].active) {
                     if (cc_allower_generic()) {
                         if (cc_funcs[i].allower) {
-                            if (callFunc(cc_funcs[i].allower, 0)) {
+                            if (cc_funcs[i].allower()) {
                                 if (cc_funcs[i].enabler) {
-                                    callFunc(cc_funcs[i].enabler, 0);
+                                    cc_funcs[i].enabler();
                                 }
                             }
                         }
@@ -652,7 +651,7 @@ void cc_effect_handler(void) {
                     break;
                 }
                 if (cc_funcs[i].enabler) {
-                    if (callFunc(cc_funcs[i].enabler, 0)) {
+                    if (cc_funcs[i].enabler()) {
                         *eff_data = CC_ENABLED;
                     }
                     break;
@@ -661,13 +660,13 @@ void cc_effect_handler(void) {
                 break;
             case CC_DISABLING:
                 if (cc_funcs[i].disabler) {
-                    if (!callFunc(cc_funcs[i].disabler, 0)) {
+                    if (!cc_funcs[i].disabler()) {
                         return;
                     }
                 }
                 if (cc_allower_generic()) {
                     if (cc_funcs[i].allower) {
-                        if (!callFunc(cc_funcs[i].allower, 0)) {
+                        if (!cc_funcs[i].allower()) {
                             *eff_data = CC_LOCKED;
                             break;
                         }

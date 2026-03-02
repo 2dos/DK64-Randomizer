@@ -515,62 +515,32 @@ int getTAState(void) {
 }
 
 int hasAccessToKong(int kong) {
-    if (getItemCount_new(REQITEM_KONG, 0, kong)) {
-        if (!Rando.perma_lose_kongs) {
-            return 1;   
-        }
-        if (!checkFlag(KONG_LOCKED_START + kong, FLAGTYPE_PERMANENT)) {
-            return 1;
-        }
-        if (curseRemoved()) {
-            return 1;
-        }
-        if (hasPermaLossGrace(CurrentMap)) {
-            return 1;
-        }
-    }
-    return 0;
+    return getItemCount_new(REQITEM_KONG, 0, kong);
 }
 
-int getTagAnywhereKong(int direction) {
+int getTagAnywhereKong(int starting_kong, int direction) {
     /**
      * @brief Get the next TA Kong in a certain direction
      * 
+     * @param starting_kong Starting kong for the search
      * @param direction Direction of change (+1 for next, -1 for previous)
      * 
      * @return kong index
      */
-    int next_character = Character + direction;
-    if (next_character < 0) {
-        next_character = TAG_ANYWHERE_KONG_LIMIT - 1;
-    } else if (next_character >= TAG_ANYWHERE_KONG_LIMIT) {
-        next_character = 0;
-    }
-    int i = 0;
-    int reached_limit = 0;
-    while (i < TAG_ANYWHERE_KONG_LIMIT) {
-        if (hasAccessToKong(next_character)) {
-            break;
-        } else {
-            if ((i + 1) == TAG_ANYWHERE_KONG_LIMIT) {
-                reached_limit = 1;
-                return Character;
-            } else {
-                next_character = next_character + direction;
-                if (next_character < 0) {
-                    next_character = TAG_ANYWHERE_KONG_LIMIT - 1;
-                } else if (next_character >= TAG_ANYWHERE_KONG_LIMIT) {
-                    next_character = 0;
-                }
-            }
+
+    int next_character = starting_kong;
+    for (int i = 0; i < TAG_ANYWHERE_KONG_LIMIT; i++) {
+        next_character += direction;
+        if (next_character < 0) {
+            next_character = TAG_ANYWHERE_KONG_LIMIT - 1;
+        } else if (next_character >= TAG_ANYWHERE_KONG_LIMIT) {
+            next_character = 0;
         }
-        i++;
+        if (hasAccessToKong(next_character)) {
+            return next_character;
+        }
     }
-    if (reached_limit) {
-        return Character;
-    } else {
-        return next_character;
-    }
+    return starting_kong;
 }
 
 ROM_RODATA_NUM static const unsigned char important_huds[] = {0,1};
@@ -710,7 +680,7 @@ void tagAnywhere(void) {
                     can_tag_left = 0;
                     can_tag_right = 0;
 
-                    int next_character = getTagAnywhereKong(change);
+                    int next_character = getTagAnywhereKong(Character, change);
 					if (next_character != Character) {
                         changeKong(next_character);
 					}

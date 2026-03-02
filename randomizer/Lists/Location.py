@@ -117,7 +117,7 @@ class Location:
             level_index = int(self.level)
             self.location_flag = 0x384 + self.kong + (5 * level_index)
             self.map_id_list = [MapIDCombo(0, -1, self.location_flag, self.kong)]
-        elif self.type in (Types.Banana, Types.BlueprintBanana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.BoulderItem, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
+        elif self.type in (Types.Banana, Types.BlueprintBanana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.BoulderItem, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide, Types.FungiTime):
             if data is None:
                 self.map_id_list = []
             else:
@@ -239,6 +239,9 @@ LocationListOriginal = {
     Locations.ShopOwner_Location01: Location(Levels.DKIsles, "Pre-Given Shop (1)", Items.Funky, Types.Funky, Kongs.any, [MapIDCombo(0, -1, 0x3C3, Kongs.any)]),
     Locations.ShopOwner_Location02: Location(Levels.DKIsles, "Pre-Given Shop (2)", Items.Candy, Types.Candy, Kongs.any, [MapIDCombo(0, -1, 0x3C4, Kongs.any)]),
     Locations.ShopOwner_Location03: Location(Levels.DKIsles, "Pre-Given Shop (3)", Items.Snide, Types.Snide, Kongs.any, [MapIDCombo(0, -1, 0x3C5, Kongs.any)]),
+    # Time Locations (Dummy Locations)
+    Locations.TimeLocationDay: Location(Levels.DKIsles, "Pre-Given Time (0)", Items.Day, Types.FungiTime, Kongs.any, [MapIDCombo(0, -1, 0x29A, Kongs.any)]),
+    Locations.TimeLocationNight: Location(Levels.DKIsles, "Pre-Given Time (1)", Items.Night, Types.FungiTime, Kongs.any, [MapIDCombo(0, -1, 0x29B, Kongs.any)]),
     # DK Isles locations
     Locations.IslesDonkeyMedal: Location(Levels.DKIsles, "Isles Donkey Medal", Items.BananaMedal, Types.IslesMedal, Kongs.donkey),
     Locations.IslesDiddyMedal: Location(Levels.DKIsles, "Isles Diddy Medal", Items.BananaMedal, Types.IslesMedal, Kongs.diddy),

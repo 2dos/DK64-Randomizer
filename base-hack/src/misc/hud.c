@@ -495,8 +495,8 @@ Gfx* drawDPad(Gfx* dl) {
         dl = drawImage(dl, IMAGE_DPAD, RGBA16, 32, 32, dpad_x_pos + 75, DPAD_Y + 70, DPAD_SCALE, DPAD_SCALE, 0xC0);
         if ((Rando.tag_anywhere) && (Character < 5)) {
             // Tag Anywhere Faces
-            int kong_left = getTagAnywhereKong(-1);
-            int kong_right = getTagAnywhereKong(1);
+            int kong_left = getTagAnywhereKong(Character, -1);
+            int kong_right = getTagAnywhereKong(Character, 1);
             int can_ta = getTAState();
             int ta_opacity = 0x80;
             if (can_ta) {

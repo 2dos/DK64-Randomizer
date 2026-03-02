@@ -102,22 +102,23 @@ if baseclasses_loaded:
     except Exception as e:
         pass
 
-    if platform_type == "win32":
-        zip_path = "vendor/windows.zip"  # Path inside the package
-        copy_dependencies(zip_path, "windows.zip")
-    elif platform_type == "linux":
-        # Try version-specific zip first, fall back to generic
-        version_zip = f"vendor/linux_{python_version}.zip"
-        generic_zip = "vendor/linux.zip"
-        try:
-            copy_dependencies(version_zip, f"linux_{python_version}.zip")
-        except (FileNotFoundError, KeyError):
+    match platform_type:
+        case "win32":
+            zip_path = "vendor/windows.zip"
+            copy_dependencies(zip_path, "windows.zip")
+        case "linux":
+            # Try version-specific zip first, fall back to generic
+            version_zip = f"vendor/linux_{python_version}.zip"
+            generic_zip = "vendor/linux.zip"
             try:
-                copy_dependencies(generic_zip, "linux.zip")
+                copy_dependencies(version_zip, f"linux_{python_version}.zip")
             except (FileNotFoundError, KeyError):
-                raise Exception(f"Could not find vendor dependencies for Linux Python {python_version}")
-    else:
-        raise Exception(f"Unsupported platform: {platform_type}")
+                try:
+                    copy_dependencies(generic_zip, "linux.zip")
+                except (FileNotFoundError, KeyError):
+                    raise Exception(f"Could not find vendor dependencies for Linux Python {python_version}")
+        case _:
+            raise Exception(f"Unsupported platform: {platform_type}")
 
     # Add paths for APWorld context - use __file__ to get the correct base path
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -140,6 +141,7 @@ if baseclasses_loaded:
     from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity, pp_wincon
     from archipelago.Items import DK64Item, full_item_table, setup_items
     from archipelago.Options import DK64Options, Goal, SwitchSanity, SelectStartingKong, dk64_option_groups, LoadingZoneRando
+    from archipelago.Prices import generate_prices
     from archipelago.Regions import all_locations, create_regions, connect_regions, connect_exit_level_and_deathwarp, connect_glitch_transitions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
@@ -162,6 +164,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Maps import Maps
     from randomizer.Enums.Minigames import Minigames
     from randomizer.Enums.Locations import Locations as DK64RLocations
+    from randomizer.Enums.Regions import Regions
     from randomizer.Enums.Settings import (
         Enemies,
         GlitchesSelected,
@@ -184,6 +187,7 @@ if baseclasses_loaded:
     from worlds.LauncherComponents import Component, SuffixIdentifier, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
     from archipelago.FillSettings import fillsettings
+    from archipelago import Tracker
     from archipelago.Prices import generate_prices
     from Utils import open_filename
     import shutil
@@ -284,8 +288,19 @@ if baseclasses_loaded:
             This allows hosts to disable the minimal logic option if they don't want it on their server.
             """
 
+        class UTPackPath(settings.UserFilePath):
+            """Path to external Universal Tracker pack .zip file.
+
+            Download the DK64 tracker pack from https://github.com/UmedMuzl/dk64pt/releases
+            and point this setting to the downloaded .zip file to enable map tracking in Universal Tracker.
+            Leave empty to disable map tracking.
+            """
+
+            description = "Universal Tracker Pack Path (Optional)"
+
         release_branch: ReleaseVersion = ReleaseVersion("master")
         enable_minimal_logic_dk64: EnableMinimalLogic | bool = False
+        ut_pack_path: typing.Union[UTPackPath, str] = UTPackPath("")
 
     class DK64Web(WebWorld):
         """WebWorld for DK64."""
@@ -326,6 +341,7 @@ if baseclasses_loaded:
 
         item_name_to_id = {name: data.code for name, data in full_item_table.items()}
         location_name_to_id = all_locations
+        tracker_world: typing.ClassVar = Tracker.tracker_world
 
         def blueprint_item_group() -> str:
             """Item group for blueprints."""
@@ -641,12 +657,6 @@ if baseclasses_loaded:
             "Bosses": boss_locations(),
         }
 
-        # with open("donklocations.txt", "w") as f:
-        #     print(location_name_to_id, file=f)
-
-        # with open("donkitems.txt", "w") as f:
-        #     print(item_name_to_id, file=f)
-
         web = DK64Web()
 
         def __init__(self, multiworld: MultiWorld, player: int):
@@ -687,6 +697,48 @@ if baseclasses_loaded:
                     print("Invalid DK64 ROM file, please make sure your ROM is big endian.")
                     raise FileNotFoundError("Invalid DK64 ROM file, please make sure your ROM is a vanilla DK64 file in big endian.")
             check_version()
+
+        def _get_slot_data(self):
+            """Get the slot data."""
+            return {
+                # "death_link": self.options.death_link.value,
+            }
+
+        def _restore_custom_location_names(self, custom_location_names: dict):
+            """Restore custom location names from slot data for UT regeneration."""
+            from randomizer.Lists.Location import LocationListOriginal as VanillaLocationList
+            from archipelago.Regions import BASE_ID
+
+            if not custom_location_names:
+                return
+
+            print(f"[DK64 UT] Restoring {len(custom_location_names)} custom location names")
+
+            # Build enum_to_index mapping
+            enum_to_index = {location: index for index, location in enumerate(VanillaLocationList)}
+            # Build reverse mapping: location_id -> location_enum
+            index_to_enum = {index: location for location, index in enum_to_index.items()}
+
+            restored_count = 0
+            sample_names = []
+            for loc_id_str, data in custom_location_names.items():
+                loc_id = int(loc_id_str)
+                # Calculate the enum from the location ID
+                index = loc_id - BASE_ID
+                if index in index_to_enum:
+                    location_enum = index_to_enum[index]
+                    if location_enum in self.spoiler.LocationList:
+                        # Restore the custom name
+                        if isinstance(data, dict) and "name" in data:
+                            new_name = data["name"]
+                            self.spoiler.LocationList[location_enum].name = new_name
+                            restored_count += 1
+                            if restored_count <= 5:
+                                sample_names.append(f"  {new_name}")
+
+            print(f"[DK64 UT] Restored {restored_count} names, samples:")
+            for name in sample_names:
+                print(name)
 
         def generate_early(self):
             """Generate the world."""
@@ -771,14 +823,17 @@ if baseclasses_loaded:
                             current_logic = self.seed_groups[group]["logic_type"]
                             new_logic = int(world.options.logic_type.value)
 
-                            # If current is glitched (2) and new is anything else, use new (more restrictive)
-                            if current_logic == 2 and new_logic != 2:
-                                self.seed_groups[group]["logic_type"] = new_logic
-                            # If current is advanced_glitchless (0) and new is glitchless (1), use glitchless
-                            elif current_logic == 0 and new_logic == 1:
-                                self.seed_groups[group]["logic_type"] = 1
-                            # If current is glitchless (1), keep it (most restrictive)
-                            # If new is glitched (2), keep current (more restrictive)
+                            # Determine most restrictive logic type
+                            match (current_logic, new_logic):
+                                case (2, n) if n != 2:
+                                    # Current is glitched and new is not - use new (more restrictive)
+                                    self.seed_groups[group]["logic_type"] = new_logic
+                                case (0, 1):
+                                    # Current is advanced_glitchless and new is glitchless - use glitchless
+                                    self.seed_groups[group]["logic_type"] = 1
+                                case _:
+                                    # Current is glitchless (keep it) or new is glitched (keep current)
+                                    pass
 
                             # tricks_selected: intersection of all players' tricks (only tricks ALL players have)
                             self.seed_groups[group]["tricks_selected"] = self.seed_groups[group]["tricks_selected"].intersection(set(world.options.tricks_selected.value))
@@ -827,7 +882,60 @@ if baseclasses_loaded:
             self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
             self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
 
+            # For UT regeneration, restore DK portal locations
+            if hasattr(settings, "ut_dk_portal_locations"):
+                self.spoiler.human_entry_doors = settings.ut_dk_portal_locations
+
+            # Handle custom location shuffling BEFORE regions are created
+            # This needs to happen early so the logic system knows about the new locations
+            from randomizer.Lists.CustomLocations import resetCustomLocations
+            from randomizer.ShuffleCrowns import ShuffleCrowns
+            from randomizer.ShuffleCrates import ShuffleMelonCrates
+            from randomizer.ShufflePatches import ShufflePatches
+
+            resetCustomLocations(self.spoiler)
+
+            # Check if this is a UT regeneration - use generation_is_fake flag
+            is_ut_regen = hasattr(self.multiworld, "generation_is_fake")
+            print(f"[DK64] Is UT regen: {is_ut_regen}, has generation_is_fake: {hasattr(self.multiworld, 'generation_is_fake')}")
+
+            # Store custom location flags
+            do_crown_shuffle = self.spoiler.settings.crown_placement_rando
+            do_patch_shuffle = self.spoiler.settings.random_patches
+            do_crate_shuffle = self.spoiler.settings.random_crates
+            print(f"[DK64] Shuffle flags - Crowns: {do_crown_shuffle}, Patches: {do_patch_shuffle}, Crates: {do_crate_shuffle}")
+
+            # Temporarily disable custom locations so Generate_Spoiler doesn't run them
+            self.spoiler.settings.crown_placement_rando = False
+            self.spoiler.settings.random_patches = False
+            self.spoiler.settings.random_crates = False
+
             Generate_Spoiler(self.spoiler)
+
+            # Restore settings
+            self.spoiler.settings.crown_placement_rando = do_crown_shuffle
+            self.spoiler.settings.random_patches = do_patch_shuffle
+            self.spoiler.settings.random_crates = do_crate_shuffle
+
+            if not is_ut_regen:
+                # Normal generation - run custom location shuffles
+                if do_crown_shuffle:
+                    crown_replacements = {}
+                    crown_human_replacements = {}
+                    ShuffleCrowns(self.spoiler, crown_replacements, crown_human_replacements)
+                    self.spoiler.crown_locations = crown_replacements
+                    self.spoiler.human_crowns = dict(sorted(crown_human_replacements.items()))
+                    print(f"[DK64] Shuffled {len([c for crowns in crown_replacements.values() for c in crowns])} battle arenas")
+
+                if do_patch_shuffle:
+                    human_patches = {}
+                    self.spoiler.human_patches = ShufflePatches(self.spoiler, human_patches).copy()
+                    print(f"[DK64] Shuffled {len(self.spoiler.dirt_patch_placement)} dirt patches")
+
+                if do_crate_shuffle:
+                    human_crates = {}
+                    self.spoiler.human_crates = ShuffleMelonCrates(self.spoiler, human_crates).copy()
+                    print(f"[DK64] Shuffled {len(self.spoiler.meloncrate_placement)} melon crates")
 
             # Store/retrieve blocker values for seed group synchronization
             if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
@@ -919,6 +1027,13 @@ if baseclasses_loaded:
 
             Generate_Spoiler(self.spoiler)
 
+            # For UT: Restore custom location names after Generate_Spoiler
+            if hasattr(self.multiworld, "generation_is_fake") and hasattr(self.multiworld, "re_gen_passthrough"):
+                if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
+                    passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
+                    custom_location_names = passthrough.get("CustomLocationNames", {})
+                    self._restore_custom_location_names(custom_location_names)
+
             # Store/retrieve blocker values for seed group synchronization
             if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
                 if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
@@ -960,7 +1075,6 @@ if baseclasses_loaded:
 
             # Generate custom shop prices for Archipelago
             generate_prices(self.spoiler, self.options, self.random)
-
             # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
             if self.spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
                 if self.spoiler.settings.level_randomization != LevelRandomization.loadingzone:
@@ -975,6 +1089,8 @@ if baseclasses_loaded:
                 if hasattr(self.multiworld, "re_gen_passthrough"):
                     if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
                         passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
+
+                        # Restore enemy, minigame, shop, and portal data
                         if passthrough["EnemyData"]:
                             for location, data in passthrough["EnemyData"].items():
                                 self.spoiler.enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], 0, [], False)
@@ -995,6 +1111,62 @@ if baseclasses_loaded:
                                 except (KeyError, AttributeError):
                                     print(f"Warning: Could not restore price for location {location_name}")
                             self.spoiler.settings.prices = restored_prices
+                        if passthrough.get("DKPortalLocations") and passthrough["DKPortalLocations"]:
+                            # Restore DK Portal locations
+                            self.spoiler.human_entry_doors = passthrough["DKPortalLocations"]
+
+                            # Update entry handler region exits to point to the restored DK Portal locations
+                            # This matches the behavior in DoorData.assignDKPortal()
+                            from randomizer.Enums.Levels import Levels
+                            from randomizer.Lists.DoorLocations import door_locations, LEVEL_ENTRY_HANDLER_REGIONS
+                            from randomizer.LogicClasses import TransitionFront
+
+                            level_name_to_enum = {
+                                "Jungle Japes": Levels.JungleJapes,
+                                "Angry Aztec": Levels.AngryAztec,
+                                "Frantic Factory": Levels.FranticFactory,
+                                "Gloomy Galleon": Levels.GloomyGalleon,
+                                "Fungi Forest": Levels.FungiForest,
+                                "Crystal Caves": Levels.CrystalCaves,
+                                "Creepy Castle": Levels.CreepyCastle,
+                            }
+
+                            for level_name, door_name in self.spoiler.human_entry_doors.items():
+                                if door_name != "Vanilla":
+                                    level_enum = level_name_to_enum.get(level_name)
+                                    if level_enum is not None:
+                                        # Find the door with this name in the door_locations list
+                                        for door_data in door_locations[level_enum]:
+                                            if door_data.name == door_name:
+                                                # Update the entry handler region's exit to point to this door's logic region
+                                                placement_region = LEVEL_ENTRY_HANDLER_REGIONS[level_enum]
+                                                self.spoiler.RegionList[placement_region].exits[1] = TransitionFront(door_data.logicregion, lambda _: True)
+                                                break
+
+                        # Restore entrance randomization connections for yamlless generation
+                        if passthrough.get("EntranceRando") and passthrough["EntranceRando"]:
+                            # Store entrance connections for later restoration
+                            # These will be applied in connect_entrances when we detect yamlless generation
+                            self.saved_entrance_connections = passthrough["EntranceRando"]
+
+                        # Restore starting region for yamlless generation
+                        if passthrough.get("StartingRegion") and passthrough["StartingRegion"]:
+                            from randomizer.Enums.Regions import Regions
+                            from randomizer.Enums.Maps import Maps
+
+                            starting_region_data = passthrough["StartingRegion"]
+                            # Reconstruct the starting_region dictionary
+                            self.spoiler.settings.starting_region = {
+                                "region": Regions[starting_region_data["region"]],
+                                "map": Maps[starting_region_data["map"]],
+                                "exit": starting_region_data["exit"],
+                                "region_name": starting_region_data["region_name"],
+                                "exit_name": starting_region_data["exit_name"],
+                            }
+                            # Update GameStart region exits to point to the restored starting region
+                            # This matches the behavior in Settings.RandomizeStartingLocation()
+                            for x in range(2):
+                                self.spoiler.RegionList[Regions.GameStart].exits[x + 1].dest = self.spoiler.settings.starting_region["region"]
 
             # Handle hint preparation by initiating some variables
             self.hint_data = {
@@ -1056,7 +1228,7 @@ if baseclasses_loaded:
         def connect_entrances(self) -> None:
             """Randomize and connect entrances if LZR is on."""
             LinkWarps(self.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
-            connect_regions(self, self.spoiler.settings)
+            connect_regions(self, self.spoiler.settings, self.spoiler)
 
             if (
                 self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]
@@ -1154,20 +1326,27 @@ if baseclasses_loaded:
 
         def get_archipelago_item_type_by_classification(self, item_classification: ItemClassification) -> DK64RItems:
             """Get the appropriate DK64R Archipelago item type based on the ItemClassification."""
-            if item_classification in [ItemClassification.progression, ItemClassification.progression_skip_balancing]:
-                return DK64RItems.ArchipelagoItem
-            elif item_classification == ItemClassification.useful:
-                return DK64RItems.SpecialArchipelagoItem
-            elif item_classification == ItemClassification.trap:
-                return DK64RItems.TrapArchipelagoItem
-            elif item_classification == ItemClassification.filler:
-                return DK64RItems.ArchipelagoItem.FoolsArchipelagoItem
-            else:
-                return DK64RItems.ArchipelagoItem
+            match item_classification:
+                case ItemClassification.progression | ItemClassification.progression_skip_balancing:
+                    return DK64RItems.ArchipelagoItem
+                case ItemClassification.useful:
+                    return DK64RItems.SpecialArchipelagoItem
+                case ItemClassification.trap:
+                    return DK64RItems.TrapArchipelagoItem
+                case ItemClassification.filler:
+                    return DK64RItems.ArchipelagoItem.FoolsArchipelagoItem
+                case _:
+                    return DK64RItems.ArchipelagoItem
 
         def generate_output(self, output_directory: str):
             """Generate the output."""
             try:
+                # Write location and item mappings to files for debugging
+                with open(os.path.join(output_directory, f"donklocations_{self.player}.txt"), "w") as f:
+                    print(self.location_name_to_id, file=f)
+                with open(os.path.join(output_directory, f"donkitems_{self.player}.txt"), "w") as f:
+                    print(self.item_name_to_id, file=f)
+                
                 spoiler = self.spoiler
                 spoiler.settings.archipelago = True
                 spoiler.settings.random = self.random
@@ -1285,16 +1464,19 @@ if baseclasses_loaded:
                         shopkeepers = [DK64RItems.Candy, DK64RItems.Cranky, DK64RItems.Funky, DK64RItems.Snide]
                     else:
                         shopkeepers = []
-                    # Define helm_prog_items only when microhints is "some" or "all"
-                    if self.options.microhints.value in [1, 2]:  # some or all
-                        helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
-                    else:
-                        helm_prog_items = []
-                    # Define instruments only when microhints is "all"
-                    if self.options.microhints.value == 2:  # all
-                        instruments = [DK64RItems.Bongos, DK64RItems.Guitar, DK64RItems.Trombone, DK64RItems.Saxophone, DK64RItems.Triangle]
-                    else:
-                        instruments = []
+
+                    # Define items based on microhints level
+                    match self.options.microhints.value:
+                        case 2:  # all
+                            helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
+                            instruments = [DK64RItems.Bongos, DK64RItems.Guitar, DK64RItems.Trombone, DK64RItems.Saxophone, DK64RItems.Triangle]
+                        case 1:  # some
+                            helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
+                            instruments = []
+                        case _:
+                            helm_prog_items = []
+                            instruments = []
+
                     hinted_slams = []
                     if DK64RItems.ProgressiveSlam in self.foreignMicroHints.keys() and DK64RItem.ItemList[DK64RItems.ProgressiveSlam].name in self.spoiler.microhints.keys():
                         # Break down the slam hint to retrieve raw data
@@ -1577,8 +1759,76 @@ if baseclasses_loaded:
 
             return smaller_shops_data
 
+        def get_custom_location_names(self) -> dict:
+            """Get the mapping of location IDs to custom location data.
+
+            Returns a dictionary mapping location ID to a dict containing:
+            - 'name': the actual custom name assigned during shuffle
+            - 'flag': the flag ID used for checking completion in-game
+            Only includes locations whose names differ from the base location name.
+            """
+            from randomizer.Enums.Locations import Locations as DK64RLocations
+            from randomizer.Lists.Location import LocationListOriginal as VanillaLocationList
+            from archipelago.Regions import BASE_ID
+
+            custom_locations = {}
+
+            # Get all custom location IDs
+            # Battle Arenas are not in a contiguous range, so list them explicitly
+            battle_arena_locations = [
+                DK64RLocations.IslesBattleArena1,
+                DK64RLocations.IslesBattleArena2,
+                DK64RLocations.JapesBattleArena,
+                DK64RLocations.AztecBattleArena,
+                DK64RLocations.FactoryBattleArena,
+                DK64RLocations.GalleonBattleArena,
+                DK64RLocations.ForestBattleArena,
+                DK64RLocations.CavesBattleArena,
+                DK64RLocations.CastleBattleArena,
+                DK64RLocations.HelmBattleArena,
+            ]
+            dirt_range = range(DK64RLocations.RainbowCoin_Location00, DK64RLocations.RainbowCoin_Location15 + 1)
+            crate_range = range(DK64RLocations.MelonCrate_Location00, DK64RLocations.MelonCrate_Location12 + 1)
+
+            custom_location_ids = set(battle_arena_locations) | set(dirt_range) | set(crate_range)
+
+            # Build a mapping from enum to index in LocationListOriginal
+            enum_to_index = {location: index for index, location in enumerate(VanillaLocationList)}
+
+            for location_enum in custom_location_ids:
+                if location_enum in self.spoiler.LocationList:
+                    location_obj = self.spoiler.LocationList[location_enum]
+
+                    # Include all custom locations, even if names haven't changed
+                    # This is necessary because flags can be shuffled even if names stay the same
+                    if location_obj.name:
+                        # Calculate the AP location ID using the INDEX, not the enum value
+                        index = enum_to_index.get(location_enum)
+                        if index is None:
+                            continue
+                        location_id = BASE_ID + index
+                        # Get the flag ID from the location's default_mapid_data
+                        flag_id = None
+                        if location_obj.default_mapid_data and len(location_obj.default_mapid_data) > 0:
+                            flag_id = location_obj.default_mapid_data[0].flag
+                        custom_locations[location_id] = {"name": location_obj.name, "flag": flag_id}
+
+            return custom_locations
+
         def fill_slot_data(self) -> dict:
             """Fill the slot data."""
+            # Debug: Check if shuffle attributes exist
+            print(f"[DK64 fill_slot_data START] Checking spoiler attributes:")
+            print(f"  has crown_locations: {hasattr(self.spoiler, 'crown_locations')}")
+            print(f"  has dirt_patch_placement: {hasattr(self.spoiler, 'dirt_patch_placement')}")
+            print(f"  has meloncrate_placement: {hasattr(self.spoiler, 'meloncrate_placement')}")
+            if hasattr(self.spoiler, "crown_locations"):
+                print(f"  crown_locations length: {len(self.spoiler.crown_locations) if self.spoiler.crown_locations else 0}")
+            if hasattr(self.spoiler, "dirt_patch_placement"):
+                print(f"  dirt_patch_placement length: {len(self.spoiler.dirt_patch_placement) if self.spoiler.dirt_patch_placement else 0}")
+            if hasattr(self.spoiler, "meloncrate_placement"):
+                print(f"  meloncrate_placement length: {len(self.spoiler.meloncrate_placement) if self.spoiler.meloncrate_placement else 0}")
+
             # If hints are enabled, wait for hint compilation to complete
             if hasattr(self, "options") and self.options.hint_style > 0:
                 self.hint_compilation_complete.wait()
@@ -1690,7 +1940,44 @@ if baseclasses_loaded:
                     if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and self.spoiler.shuffled_exit_data
                     else {}
                 ),
+                "KongModels": {
+                    "DK": self.spoiler.settings.kong_model_dk.name,
+                    "Diddy": self.spoiler.settings.kong_model_diddy.name,
+                    "Lanky": self.spoiler.settings.kong_model_lanky.name,
+                    "Tiny": self.spoiler.settings.kong_model_tiny.name,
+                    "Chunky": self.spoiler.settings.kong_model_chunky.name,
+                },
+                "StartingRegion": (
+                    {
+                        "region": (
+                            self.spoiler.settings.starting_region["region"].name
+                            if hasattr(self.spoiler.settings.starting_region["region"], "name")
+                            else str(self.spoiler.settings.starting_region["region"])
+                        ),
+                        "map": (
+                            self.spoiler.settings.starting_region["map"].name if hasattr(self.spoiler.settings.starting_region["map"], "name") else str(self.spoiler.settings.starting_region["map"])
+                        ),
+                        "exit": self.spoiler.settings.starting_region["exit"],
+                        "region_name": self.spoiler.settings.starting_region["region_name"],
+                        "exit_name": self.spoiler.settings.starting_region["exit_name"],
+                    }
+                    if hasattr(self.spoiler.settings, "starting_region") and self.spoiler.settings.starting_region
+                    else {}
+                ),
+                "DKPortalLocations": (self.spoiler.human_entry_doors if hasattr(self.spoiler, "human_entry_doors") and self.spoiler.human_entry_doors else {}),
+                "CustomLocationNames": self.get_custom_location_names(),
             }
+
+            # Debug logging for custom locations
+            custom_locs = slot_data.get("CustomLocationNames", {})
+            if custom_locs:
+                print(f"[DK64 Generation] Sending {len(custom_locs)} custom locations in slot_data")
+                for i, (loc_id, data) in enumerate(list(custom_locs.items())[:5]):
+                    if isinstance(data, dict):
+                        print(f"  Location {loc_id}: {data.get('name')} (flag: {data.get('flag')})")
+                    else:
+                        print(f"  Location {loc_id}: {data}")
+
             return slot_data
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
@@ -1709,6 +1996,16 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("Starting Kongs: " + ", ".join([kong.name for kong in self.spoiler.settings.starting_kong_list]))
             spoiler_handle.write("\n")
+            if hasattr(self.spoiler.settings, "starting_region") and self.spoiler.settings.starting_region:
+                spoiler_handle.write(f"Starting Region: {self.spoiler.settings.starting_region['region_name']} ({self.spoiler.settings.starting_region['exit_name']})")
+                spoiler_handle.write("\n")
+            if hasattr(self.spoiler, "human_entry_doors") and self.spoiler.human_entry_doors:
+                spoiler_handle.write("DK Portal Locations:")
+                spoiler_handle.write("\n")
+                for level, location in self.spoiler.human_entry_doors.items():
+                    if location != "Vanilla":
+                        spoiler_handle.write(f"  {level}: {location}")
+                        spoiler_handle.write("\n")
             spoiler_handle.write("Helm Order: " + ", ".join([Kongs(room).name for room in self.spoiler.settings.helm_order]))
             spoiler_handle.write("\n")
             spoiler_handle.write("K. Rool Order: " + ", ".join([phase.name for phase in self.spoiler.settings.krool_order]))
@@ -1957,8 +2254,6 @@ if baseclasses_loaded:
             """Parse slot data for any logical bits that need to match the real generation. Used by Universal Tracker."""
             # Parse the string data
             version = slot_data["Version"]
-            if version != self.ap_version:
-                print(f"Version mismatch: {version} != {self.ap_version}. You may experience unexpected behavior.")
 
             level_order = slot_data["LevelOrder"].split(", ")
             starting_kongs = slot_data["StartingKongs"].split(", ")
@@ -2037,6 +2332,24 @@ if baseclasses_loaded:
             # Added entrance randomization data
             entrance_rando = slot_data.get("EntranceRando", [])
 
+            # Added Krusha kong models
+            if self.version_check(version, "2.0.0"):
+                kong_models = slot_data.get("KongModels", {})
+            else:
+                kong_models = {}
+
+            # Added starting region and DK portal locations
+            starting_region = slot_data.get("StartingRegion", {})
+            dk_portal_locations = slot_data.get("DKPortalLocations", {})
+
+            # Custom location names for UT regeneration
+            custom_location_names = slot_data.get("CustomLocationNames", {})
+
+            # Custom location shuffle data for UT regeneration
+            crown_shuffle_data = slot_data.get("CrownShuffleData", None)
+            patch_shuffle_data = slot_data.get("PatchShuffleData", None)
+            crate_shuffle_data = slot_data.get("CrateShuffleData", None)
+
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
             relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
@@ -2086,4 +2399,14 @@ if baseclasses_loaded:
             relevant_data["ShopPrices"] = shop_prices
             relevant_data["EntranceRando"] = entrance_rando
             relevant_data["GalleonWater"] = galleon_water
+            relevant_data["KongModels"] = kong_models
+            relevant_data["StartingRegion"] = starting_region
+            relevant_data["DKPortalLocations"] = dk_portal_locations
+            relevant_data["CustomLocationNames"] = custom_location_names
+            if crown_shuffle_data is not None:
+                relevant_data["CrownShuffleData"] = crown_shuffle_data
+            if patch_shuffle_data is not None:
+                relevant_data["PatchShuffleData"] = patch_shuffle_data
+            if crate_shuffle_data is not None:
+                relevant_data["CrateShuffleData"] = crate_shuffle_data
             return relevant_data

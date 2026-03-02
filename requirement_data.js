@@ -70,11 +70,15 @@ const requirement_data = {
             new Requirement(10, [[Moves.Coconut, Moves.Strong]]), // 2 bunches in AngryAztecOasis
             new Requirement(30, [[Moves.Coconut, Moves.AztecTunnelDoor]]), // 1 balloon, 2 balloons in AngryAztecMain
             new Requirement(15, [ // 15 bananas in LlamaTemple
+                [Moves.Mini, Moves.AztecTunnelDoor],
                 [Moves.Coconut, Moves.AztecTunnelDoor, Moves.AztecLlama],
                 [Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama],
                 [Moves.Feather, Moves.AztecTunnelDoor, Moves.AztecLlama],
             ]),
             new Requirement(20, [ // 4 bunches in AztecDonkeyQuicksandCave
+                [Moves.LevelSlam, Moves.Strong, Moves.Diddy, Moves.AztecTunnelDoor],
+                [Moves.LevelSlam, Moves.Strong, Moves.Tiny, Moves.AztecTunnelDoor],
+                [Moves.LevelSlam, Moves.Strong, Moves.Chunky, Moves.AztecTunnelDoor],
                 [Moves.LevelSlam, Moves.Coconut, Moves.Strong, Moves.AztecTunnelDoor, Moves.AztecLlama],
                 [Moves.LevelSlam, Moves.Strong, Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama],
                 [Moves.LevelSlam, Moves.Strong, Moves.Feather, Moves.AztecTunnelDoor, Moves.AztecLlama],
@@ -92,11 +96,7 @@ const requirement_data = {
                 [Moves.ClimbingCheck, Moves.AztecTunnelDoor],
                 [Moves.Rocket, Moves.AztecTunnelDoor],
             ]),
-            new Requirement(10, [ // 1 balloon in AztecDonkeyQuicksandCave
-                [Moves.LevelSlam, Moves.Coconut, Moves.Strong, Moves.Peanut, Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.AztecW5Bonus],
-                [Moves.LevelSlam, Moves.Strong, Moves.Peanut, Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.AztecW5Bonus],
-                [Moves.LevelSlam, Moves.Strong, Moves.Peanut, Moves.Feather, Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.AztecW5Bonus],
-            ]),
+            new Requirement(10, [[Moves.LevelSlam, Moves.Strong, Moves.Peanut, Moves.AztecTunnelDoor, Moves.AztecW5Bonus]]), // 1 balloon in AztecDonkeyQuicksandCave
         ],
         "Lanky": [
             new Requirement(5, [[Moves.Moveless]]), // 5 bananas in AngryAztecOasis
@@ -104,37 +104,34 @@ const requirement_data = {
             new Requirement(25, [[Moves.ClimbingCheck, Moves.AztecTunnelDoor]]), // 5 bunches in AngryAztecMain
             new Requirement(14, [[Moves.Diving, Moves.Grape, Moves.TinyTempleIce]]), // 1 bunch, 9 bananas in TempleVultureRoom
             new Requirement(10, [[Moves.Grape, Moves.AztecTunnelDoor, Moves.Aztec5DT]]), // 1 balloon in LankyTemple
-            new Requirement(5, [[Moves.Vines, Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama]]), // 1 bunch in LlamaTempleMatching
-            new Requirement(20, [[Moves.Diving, Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama]]), // 2 balloons in LlamaTemple
+            new Requirement(20, [ // 2 balloons in LlamaTemple
+                [Moves.Diving, Moves.Grape, Moves.Mini, Moves.AztecTunnelDoor],
+                [Moves.Diving, Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama],
+            ]),
             new Requirement(11, [ // 1 bunch, 6 bananas in LlamaTemple
+                [Moves.Mini, Moves.AztecTunnelDoor],
                 [Moves.Coconut, Moves.AztecTunnelDoor, Moves.AztecLlama],
                 [Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama],
                 [Moves.Feather, Moves.AztecTunnelDoor, Moves.AztecLlama],
             ]),
+            new Requirement(5, [ // 1 bunch in LlamaTempleMatching
+                [Moves.Vines, Moves.Grape, Moves.Mini, Moves.AztecTunnelDoor],
+                [Moves.Vines, Moves.Grape, Moves.IsDiddy, Moves.AztecTunnelDoor],
+                [Moves.Vines, Moves.Grape, Moves.IsTiny, Moves.AztecTunnelDoor],
+                [Moves.Vines, Moves.Grape, Moves.IsChunky, Moves.AztecTunnelDoor],
+                [Moves.Vines, Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama],
+            ]),
         ],
         "Tiny": [
-            new Requirement(25, [[Moves.AztecTunnelDoor]]), // 1 bunch, 1 bunch, 10 bananas, 5 bananas in AngryAztecMain
+            new Requirement(28, [[Moves.AztecTunnelDoor]]), // 1 bunch, 1 bunch, 10 bananas, 5 bananas in AngryAztecMain; 3 bananas in LlamaTemple
+            new Requirement(10, [[Moves.Feather, Moves.AztecTunnelDoor]]), // 1 balloon in LlamaTemple
+            new Requirement(2, [[Moves.Mini, Moves.AztecTunnelDoor]]), // 2 bananas in LlamaTempleBack
             new Requirement(20, [[Moves.Diving, Moves.Feather, Moves.TinyTempleIce]]), // 2 balloons in TempleKONGRoom
-            new Requirement(10, [[Moves.Feather, Moves.AztecTunnelDoor, Moves.AztecLlama]]), // 1 balloon in LlamaTemple
+            new Requirement(10, [[Moves.LevelSlam, Moves.Mini, Moves.AztecTunnelDoor]]), // 2 bunches in LlamaTempleBack
             new Requirement(5, [[Moves.Diving, Moves.Feather, Moves.Mini, Moves.TinyTempleIce]]), // 5 bananas in TempleUnderwater
             new Requirement(25, [ // 5 bunches in AngryAztecMain
                 [Moves.ClimbingCheck, Moves.AztecTunnelDoor],
                 [Moves.Twirl, Moves.AztecTunnelDoor],
-            ]),
-            new Requirement(3, [ // 3 bananas in LlamaTemple
-                [Moves.Coconut, Moves.AztecTunnelDoor, Moves.AztecLlama],
-                [Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama],
-                [Moves.Feather, Moves.AztecTunnelDoor, Moves.AztecLlama],
-            ]),
-            new Requirement(2, [ // 2 bananas in LlamaTempleBack
-                [Moves.Coconut, Moves.Mini, Moves.AztecTunnelDoor, Moves.AztecLlama],
-                [Moves.Grape, Moves.Mini, Moves.AztecTunnelDoor, Moves.AztecLlama],
-                [Moves.Feather, Moves.Mini, Moves.AztecTunnelDoor, Moves.AztecLlama],
-            ]),
-            new Requirement(10, [ // 2 bunches in LlamaTempleBack
-                [Moves.LevelSlam, Moves.Coconut, Moves.Mini, Moves.AztecTunnelDoor, Moves.AztecLlama],
-                [Moves.LevelSlam, Moves.Grape, Moves.Mini, Moves.AztecTunnelDoor, Moves.AztecLlama],
-                [Moves.LevelSlam, Moves.Feather, Moves.Mini, Moves.AztecTunnelDoor, Moves.AztecLlama],
             ]),
         ],
         "Chunky": [

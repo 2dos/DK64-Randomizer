@@ -277,6 +277,8 @@ def AllItems(settings):
         allItems.extend(CandyItems())
     if Types.Snide in settings.shuffled_location_types:
         allItems.extend(SnideItems())
+    if Types.FungiTime in settings.shuffled_location_types:
+        allItems.extend(TimeItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems(settings))
     filler_types = [
@@ -349,6 +351,8 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(CandyItems())
     if Types.Snide in settings.shuffled_location_types:
         allItems.extend(SnideItems())
+    if Types.FungiTime in settings.shuffled_location_types:
+        allItems.extend(TimeItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems(settings))
     filler_types = [
@@ -796,6 +800,12 @@ def HintItems():
         Items.CastleChunkyHint,
     ]
 
+def TimeItems():
+    """Return a list of time items to be placed."""
+    return [
+        Items.Day,
+        Items.Night,
+    ]
 
 def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
     """Return a list of all items that will be assumed for immediate item placement."""
@@ -849,6 +859,8 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(CandyItems())
     if Types.Snide in unplacedTypes:
         itemPool.extend(SnideItems())
+    if Types.FungiTime in unplacedTypes:
+        itemPool.extend(TimeItems())
     # Never logic-affecting items
     # if Types.FakeItem in unplacedTypes:
     #     itemPool.extend(FakeItems())

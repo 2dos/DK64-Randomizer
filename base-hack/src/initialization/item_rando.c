@@ -411,6 +411,8 @@ snide_packet snide_rewards[40] = {
     {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
     {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
 };
+ROM_DATA unsigned short actor_cb_counts[221] = {};
+ROM_DATA short m2_cb_coin_counts[8] = {};
 
 int getCrownIndex(maps map) {
     /**
@@ -420,12 +422,7 @@ int getCrownIndex(maps map) {
      * 
      * @return Actor Index of the reward
      */
-	for (int i = 0; i < 10; i++) {
-		if (map == crown_maps[i]) {
-			return i;
-		}
-	}
-	return 0;
+    return inU8List(map, &crown_maps[0], 10) - 1;
 }
 
 int getKeyIndex(int old_flag) {
@@ -436,12 +433,7 @@ int getKeyIndex(int old_flag) {
      * 
      * @return Actor Index of the reward
      */
-	for (int i = 0; i < 8; i++) {
-		if (old_flag == normal_key_flags[i]) {
-			return i;
-		}
-	}
-	return 0;
+    return inShortList(old_flag, &normal_key_flags[0], 8) - 1;
 }
 
 int getPatchFlag(int id) {
@@ -500,34 +492,6 @@ int getCrateWorld(int index) {
      * @return World index of the crate
      */
 	return crate_flags[index].world;
-}
-
-void populatePatchItem(int id, int map, int index, int world) {
-    /**
-     * @brief Populate the patch table with a dirt patch
-     * 
-     * @param id Patch ID
-     * @param map Patch Map
-     * @param index Index inside the patch table
-     * @param world World where the patch is
-     */
-    patch_flags[index].id = id;
-    patch_flags[index].map = map;
-    patch_flags[index].world = world;
-}
-
-void populateCrateItem(int id, int map, int index, int world) {
-    /**
-     * @brief Populate the Crate table with a Melon Crate
-     * 
-     * @param id Crate ID
-     * @param map Crate Map
-     * @param index Index inside the Crate table
-     * @param world World where the Crate is
-     */
-    crate_flags[index].id = id;
-    crate_flags[index].map = map;
-    crate_flags[index].world = world;
 }
 
 int getBonusFlag(int index) {
@@ -619,6 +583,8 @@ ROM_RODATA_NUM static const barrel_skin_tie bonus_skins[] = {
     {.actor = NEWACTOR_SPECIALARCHIPELAGOITEM,  .reqitem=REQITEM_AP,                .level= 1, .kong=-1, .skin=SKIN_AP_USEFUL},
     {.actor = NEWACTOR_FOOLSARCHIPELAGOITEM,    .reqitem=REQITEM_AP,                .level= 2, .kong=-1, .skin=SKIN_AP_JUNK},
     {.actor = NEWACTOR_TRAPARCHIPELAGOITEM,     .reqitem=REQITEM_AP,                .level= 3, .kong=-1, .skin=SKIN_AP_TRAP},
+    {.actor = NEWACTOR_DAYITEM,                 .reqitem=REQITEM_FUNGITIME,         .level=-1, .kong= 0, .skin=SKIN_DAY},
+    {.actor = NEWACTOR_NIGHTITEM,               .reqitem=REQITEM_FUNGITIME,         .level=-1, .kong= 1, .skin=SKIN_NIGHT},
 };
 
 enum_bonus_skin getBarrelSkinIndex(int actor) {
@@ -685,11 +651,6 @@ void initItemRando(void) {
      * @brief Initialize Item Rando functionality
      */
         
-    // Checks Screen
-    pausescreenlist screen_count = PAUSESCREEN_TERMINATOR; // 4 screens vanilla + hint screen + check screen + move tracker
-    *(short*)(0x806A8672) = screen_count - 1; // Screen decrease cap
-    *(short*)(0x806A8646) = screen_count; // Screen increase cap
-
     // Head Size - It shouldn't be here, but haha funny game crash if placed in base init
     int load_size = 0xED;
     unsigned char* head_write = getFile(load_size, 0x1FEE800);

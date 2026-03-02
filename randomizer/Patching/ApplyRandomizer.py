@@ -37,7 +37,6 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.ScriptTypes import ScriptTypes
-from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
 from randomizer.Lists.HardMode import HardSelector
 from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector
 from randomizer.Patching.BananaPlacer import randomize_cbs
@@ -53,7 +52,7 @@ from randomizer.Patching.CosmeticColors import (
 )
 from randomizer.Patching.CratePlacer import randomize_melon_crate
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
-from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators, alterStoryCutsceneWarps
+from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators, alterStoryCutsceneWarps, placeVanillaTNSScripts
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import (
     enableTriggerText,
@@ -65,7 +64,8 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements, calculateInitFileScreen, place_spoiler_hint_data
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.Library.Generic import setItemReferenceName, addNewScript, IsItemSelected, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected
+from randomizer.Patching.Library.Scripts import addNewScript, replaceScriptLines, setProgSlamStrength
+from randomizer.Patching.Library.Generic import setItemReferenceName, IsItemSelected, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected
 from randomizer.Patching.Library.Assets import CompTextFiles, ItemPreview
 from randomizer.Patching.MiscSetupChanges import (
     randomize_setup,
@@ -87,7 +87,7 @@ from randomizer.Patching.UpdateHints import (
     PushHelpfulHints,
     PushHintTiedRegions,
 )
-from randomizer.Patching.ASMPatcher import patchAssembly
+from randomizer.Patching.ASMPatcher import patchAssembly, precalcBoot
 from randomizer.Patching.MirrorMode import ApplyMirrorMode
 from randomizer.CompileHints import getHelmOrderHint
 
@@ -158,6 +158,7 @@ def patching_response(spoiler):
 
     # Starting index for our settings
     sav = spoiler.settings.rom_data
+    placeVanillaTNSScripts(ROM_COPY)
 
     # Shuffle Levels
     if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
@@ -199,7 +200,6 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.no_melons, 0x128),  # No Melon Drops
         BooleanProperties(spoiler.settings.bonus_barrel_auto_complete, 0x126),  # Auto-Complete Bonus Barrels
         BooleanProperties(spoiler.settings.warp_to_isles, 0x135),  # Warp to Isles
-        BooleanProperties(spoiler.settings.perma_death, 0x14D),  # Permadeath
         BooleanProperties(spoiler.settings.ice_traps_damage, 0x150),  # Enable Ice Trap Damage
         BooleanProperties(spoiler.settings.shorten_boss, 0x13B),  # Shorten Boss Fights
         BooleanProperties(spoiler.settings.fast_warps, 0x13A),  # Fast Warps
@@ -253,34 +253,117 @@ def patching_response(spoiler):
     ]
     if spoiler.settings.switchsanity_enabled:
         for slot in spoiler.settings.switchsanity_data:
-            ROM_COPY.seek(sav + spoiler.settings.switchsanity_data[slot].rom_offset)
-            pad_kong = spoiler.settings.switchsanity_data[slot].kong
-            pad_type = spoiler.settings.switchsanity_data[slot].switch_type
-            if slot == Switches.IslesMonkeyport:
-                if pad_kong == Kongs.lanky:
-                    ROM_COPY.writeMultipleBytes(2, 1)
-                elif pad_kong == Kongs.donkey:
-                    ROM_COPY.writeMultipleBytes(1, 1)
-            elif slot == Switches.IslesHelmLobbyGone:
-                if pad_type == SwitchType.MiscActivator:
-                    if pad_kong == Kongs.donkey:
-                        ROM_COPY.writeMultipleBytes(6, 1)
-                    elif pad_kong == Kongs.diddy:
-                        ROM_COPY.writeMultipleBytes(7, 1)
-                elif pad_type != SwitchType.PadMove:
+            slot_data = spoiler.settings.switchsanity_data[slot]
+            rom_offset = slot_data.rom_offset
+            pad_kong = slot_data.kong
+            pad_type = slot_data.switch_type
+            if rom_offset is not None:
+                # ROM Write
+                ROM_COPY.seek(sav + rom_offset)
+                if slot == Switches.IslesMonkeyport:
+                    if pad_kong == Kongs.lanky:
+                        ROM_COPY.writeMultipleBytes(2, 1)
+                    elif pad_kong == Kongs.donkey:
+                        ROM_COPY.writeMultipleBytes(1, 1)
+                elif slot == Switches.IslesHelmLobbyGone:
+                    if pad_type == SwitchType.MiscActivator:
+                        if pad_kong == Kongs.donkey:
+                            ROM_COPY.writeMultipleBytes(6, 1)
+                        elif pad_kong == Kongs.diddy:
+                            ROM_COPY.writeMultipleBytes(7, 1)
+                    elif pad_type != SwitchType.PadMove:
+                        ROM_COPY.writeMultipleBytes(int(pad_kong) + 1, 1)
+                elif slot in kong_free_switches:
+                    ROM_COPY.writeMultipleBytes(int(pad_kong), 1)
+                else:
                     ROM_COPY.writeMultipleBytes(int(pad_kong) + 1, 1)
-            elif slot in kong_free_switches:
-                ROM_COPY.writeMultipleBytes(int(pad_kong), 1)
             else:
-                ROM_COPY.writeMultipleBytes(int(pad_kong) + 1, 1)
+                # Only modify the instance script
+                if pad_type == SwitchType.GunSwitch:
+                    if pad_kong == Kongs.any:
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                            f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": "COND 16 | 4 1 0"
+                        })
+                    else:
+                        KONG_PELLETS = [48, 36, 42, 43, 38]
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                            f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": f"COND 24 | {KONG_PELLETS[pad_kong]} 1 0"
+                        })
+                elif pad_type in (SwitchType.InstrumentPad, SwitchType.SlamSwitch):
+                    if pad_kong == Kongs.any:
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                            f"COND 25 | {slot_data.default_kong + 2} 0 0": "COND 0 | 0 0 0"
+                        })
+                    else:
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                            f"COND 25 | {slot_data.default_kong + 2} 0 0": f"COND 25 | {pad_kong + 2} 0 0"
+                        })
+                elif pad_type in (SwitchType.PushableButton, SwitchType.PunchGrate, SwitchType.IceWall, SwitchType.Gong):
+                    control_states = [
+                        [0, 0],
+                        [0x2E, 1],  # Chimpy Charge
+                        [0, 0],
+                        [0, 0],
+                        [0x24, 2], # Primate Punch
+                    ]
+                    if pad_type == SwitchType.Gong:
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                            f"COND 23 | {control_states[slot_data.default_kong][0]} {control_states[slot_data.default_kong][1]} 0": f"COND 23 | {control_states[pad_kong][0]} {control_states[pad_kong][1]} 0"
+                        })
+                    else:
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                            f"COND 23 | {control_states[slot_data.default_kong][0]} 0 0": f"COND 23 | {control_states[pad_kong][0]} 0 0"
+                        })
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                            f"COND 33 | {control_states[slot_data.default_kong][1]} 0 0": f"COND 33 | {control_states[pad_kong][1]} 0 0"
+                        })
+                    replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
+                        f"COND 24 | {slot_data.default_kong + 2} 1 0": f"COND 24 | {pad_kong + 2} 1 0"
+                    })
+                elif pad_type == SwitchType.GunInstrumentCombo:
+                    if pad_kong == Kongs.any:
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[0]], {
+                            f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": "COND 16 | 4 1 0"
+                        })
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[1]], {
+                            f"COND 25 | {slot_data.default_kong + 2} 0 0": "COND 0 | 0 0 0"
+                        })
+                    else:
+                        KONG_PELLETS = [48, 36, 42, 43, 38]
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[0]], {
+                            f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": f"COND 24 | {KONG_PELLETS[pad_kong]} 1 0"
+                        })
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[1]], {
+                            f"COND 25 | {slot_data.default_kong + 2} 0 0": f"COND 25 | {pad_kong + 2} 0 0"
+                        })
 
     slam_req_values = {
         SlamRequirement.green: 1,
         SlamRequirement.blue: 2,
         SlamRequirement.red: 3,
     }
+    req_val = slam_req_values[spoiler.settings.chunky_phase_slam_req_internal]
+    replaceScriptLines(ROM_COPY, Maps.KroolChunkyPhase, [0xA], {
+        "COND 37 | 2 0 0": f"COND 37 | {req_val} 0 0"
+    })
     ROM_COPY.seek(sav + 0x1E3)
-    ROM_COPY.write(slam_req_values[spoiler.settings.chunky_phase_slam_req_internal])
+    ROM_COPY.write(req_val)
+
+    if spoiler.settings.enable_tag_anywhere:
+        ta_blocks = {
+            Maps.AngryAztec: [0x24],
+            Maps.CastleCrypt: [0xD, 0xE, 0xF],
+            Maps.CastleDungeon: [0x4, 0x5, 0x6],
+            Maps.CastleTree: [0x1, 0x9],
+            Maps.FranticFactory: [0x15, 0x38, 0x37, 0x3B],
+            Maps.AztecLlamaTemple: [0x6B],
+            Maps.Isles: [0x32, 0x2A, 0x27, 0x29, 0x28],
+        }
+        for map_id, obj_ids in ta_blocks.items():
+            for x in range(5):
+                replaceScriptLines(ROM_COPY, map_id, obj_ids, {
+                    f"CONDINV 25 | {x + 2} 0 0": "COND 25 | 0 0 0"
+                })
 
     # Camera unlocked
     given_moves = []
@@ -522,13 +605,15 @@ def patching_response(spoiler):
     # Fungi Time of Day
     fungi_times = (FungiTimeSetting.day, FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)
     progressive_removals = [5, 4]  # Day Switch, Night Switch
-    dusk_removals = {
+    day_script = {
         Maps.FungiForest: [
-            5,  # Day Switch
-            4,  # Night Switch
             0xC,  # Day Gate - Mill Front Entry
             0xE,  # Day Gate - Punch Door
             0x12,  # Day Gate - Snide Area
+        ],
+    }
+    night_script = {
+        Maps.FungiForest: [
             8,  # Night Gate - Mill Lanky Attic
             0xB,  # Night Gate - Mill Winch Attic
             0xD,  # Night Gate - Dark Attic
@@ -550,11 +635,18 @@ def patching_response(spoiler):
     if time_val in fungi_times:
         ROM_COPY.seek(sav + 0x1DB)
         ROM_COPY.write(fungi_times.index(time_val))
-        if time_val == FungiTimeSetting.progressive:
+        if time_val in (FungiTimeSetting.progressive, FungiTimeSetting.dusk):
             addNewScript(ROM_COPY, Maps.FungiForest, progressive_removals, ScriptTypes.DeleteItem)
-        elif time_val == FungiTimeSetting.dusk:
-            for map_val in dusk_removals:
-                addNewScript(ROM_COPY, map_val, dusk_removals[map_val], ScriptTypes.DeleteItem)
+    for map_id, changes in day_script.items():
+        replaceScriptLines(ROM_COPY, map_id, changes, {
+            "CONDINV 38 | 16 0 0": "COND 6 | 7 65519 0",
+            "COND 38 | 16 0 0": "CONDINV 6 | 7 65519 0",
+        })
+    for map_id, changes in night_script.items():
+        replaceScriptLines(ROM_COPY, map_id, changes, {
+            "COND 38 | 16 0 0": "COND 6 | 7 65519 1",
+            "CONDINV 38 | 16 0 0": "CONDINV 6 | 7 65519 1",
+        })
 
     # Galleon Water Level
     if spoiler.settings.galleon_water_internal == GalleonWaterSetting.raised:
@@ -633,11 +725,7 @@ def patching_response(spoiler):
             exit_val = 0xFF
         ROM_COPY.write(exit_val)
     if spoiler.settings.alter_switch_allocation:
-        ROM_COPY.seek(sav + 0x103)
-        ROM_COPY.write(1)
-        for x in range(7):  # Shouldn't need index 8 since Helm has no slam switches in it
-            ROM_COPY.seek(sav + 0x104 + x)
-            ROM_COPY.write(spoiler.settings.switch_allocation[x])
+        setProgSlamStrength(ROM_COPY, spoiler.settings)
     # Dartboard order
     ROM_COPY.seek(sav + 0x173)
     for x in range(6):
@@ -734,6 +822,8 @@ def patching_response(spoiler):
         calculateInitFileScreen(spoiler, ROM_COPY)
         ApplyMirrorMode(spoiler.settings, ROM_COPY)
 
+    precalcBoot(ROM_COPY, spoiler)  # Needs to be done after any updates to setup for CBs, patches and crates
+    
     # Apply Hash
     order = 0
     for count in spoiler.settings.seed_hash:

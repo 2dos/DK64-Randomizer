@@ -62,7 +62,7 @@ FileInfoSizes = [
 ]
 
 
-def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, offset_dict: dict):
+def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, offset_dict: dict, settings):
     """Expand Save file."""
     expansion = static_expansion + actor_count
     flag_block_size = 0x320 + expansion
@@ -117,11 +117,13 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     # Shift save indexes
     save_index_offset = len(FileInfoSizes) - 5
     writeValue(ROM_COPY, 0x8060C386, Overlay.Static, 0x11 + save_index_offset, offset_dict)  # Check for index when reading params
-    writeValue(ROM_COPY, 0x80024362, Overlay.Arcade, 0x15 + save_index_offset, offset_dict)  # Save to File - Arcade Hiscore
-    writeValue(ROM_COPY, 0x8002437A, Overlay.Arcade, 0x12 + save_index_offset, offset_dict)  # Save to File - Arcade Hiscore Name 1
-    writeValue(ROM_COPY, 0x80024396, Overlay.Arcade, 0x13 + save_index_offset, offset_dict)  # Save to File - Arcade Hiscore Name 2
-    writeValue(ROM_COPY, 0x800243B2, Overlay.Arcade, 0x14 + save_index_offset, offset_dict)  # Save to File - Arcade Hiscore Name 3
-    writeValue(ROM_COPY, 0x80024A5E, Overlay.Jetpac, 0x11 + save_index_offset, offset_dict)  # Save to File - Jetpac Hiscore
+    if settings.arcade_custom_minigame is None:
+        writeValue(ROM_COPY, 0x80024362, Overlay.Arcade, 0x15 + save_index_offset, offset_dict)  # Save to File - Arcade Hiscore
+        writeValue(ROM_COPY, 0x8002437A, Overlay.Arcade, 0x12 + save_index_offset, offset_dict)  # Save to File - Arcade Hiscore Name 1
+        writeValue(ROM_COPY, 0x80024396, Overlay.Arcade, 0x13 + save_index_offset, offset_dict)  # Save to File - Arcade Hiscore Name 2
+        writeValue(ROM_COPY, 0x800243B2, Overlay.Arcade, 0x14 + save_index_offset, offset_dict)  # Save to File - Arcade Hiscore Name 3
+    if settings.jetpac_custom_minigame is None:
+        writeValue(ROM_COPY, 0x80024A5E, Overlay.Jetpac, 0x11 + save_index_offset, offset_dict)  # Save to File - Jetpac Hiscore
     writeValue(ROM_COPY, 0x8002D476, Overlay.Menu, 0x1E + save_index_offset, offset_dict)  # Save to File - Sound Type
     writeValue(ROM_COPY, 0x8002DAE6, Overlay.Menu, 0x1F + save_index_offset, offset_dict)  # Save to File - Language Type
     writeValue(ROM_COPY, 0x8002DB06, Overlay.Menu, 0x20 + save_index_offset, offset_dict)  # Save to File - Camera Type
@@ -149,12 +151,14 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     writeValue(ROM_COPY, 0x8060CB12, Overlay.Static, 0x1E + save_index_offset, offset_dict)  # Save to File - Sound Type
     writeValue(ROM_COPY, 0x8060CB36, Overlay.Static, 0x1F + save_index_offset, offset_dict)  # Save to File - Language
     writeValue(ROM_COPY, 0x8060D046, Overlay.Static, 0x1F + save_index_offset, offset_dict)  # Save to File - Language
-    writeValue(ROM_COPY, 0x8002444A, Overlay.Arcade, 0x15 + save_index_offset, offset_dict)  # Read from File - Arcade Hiscore
-    writeValue(ROM_COPY, 0x8002445E, Overlay.Arcade, 0x12 + save_index_offset, offset_dict)  # Read from File - Arcade Hiscore Name 1
-    writeValue(ROM_COPY, 0x80024476, Overlay.Arcade, 0x13 + save_index_offset, offset_dict)  # Read from File - Arcade Hiscore Name 2
-    writeValue(ROM_COPY, 0x8002448E, Overlay.Arcade, 0x14 + save_index_offset, offset_dict)  # Read from File - Arcade Hiscore Name 3
-    writeValue(ROM_COPY, 0x80024C06, Overlay.Jetpac, 0x11 + save_index_offset, offset_dict)  # Read from File - Jetpac Hiscore
-    writeValue(ROM_COPY, 0x800251B2, Overlay.Jetpac, 0x11 + save_index_offset, offset_dict)  # Read from File - Jetpac Hiscore
+    if settings.arcade_custom_minigame is None:
+        writeValue(ROM_COPY, 0x8002444A, Overlay.Arcade, 0x15 + save_index_offset, offset_dict)  # Read from File - Arcade Hiscore
+        writeValue(ROM_COPY, 0x8002445E, Overlay.Arcade, 0x12 + save_index_offset, offset_dict)  # Read from File - Arcade Hiscore Name 1
+        writeValue(ROM_COPY, 0x80024476, Overlay.Arcade, 0x13 + save_index_offset, offset_dict)  # Read from File - Arcade Hiscore Name 2
+        writeValue(ROM_COPY, 0x8002448E, Overlay.Arcade, 0x14 + save_index_offset, offset_dict)  # Read from File - Arcade Hiscore Name 3
+    if settings.jetpac_custom_minigame is None:
+        writeValue(ROM_COPY, 0x80024C06, Overlay.Jetpac, 0x11 + save_index_offset, offset_dict)  # Read from File - Jetpac Hiscore
+        writeValue(ROM_COPY, 0x800251B2, Overlay.Jetpac, 0x11 + save_index_offset, offset_dict)  # Read from File - Jetpac Hiscore
     writeValue(ROM_COPY, 0x8002886E, Overlay.Menu, 0x1E + save_index_offset, offset_dict)  # Read from File - Sound Type
     writeValue(ROM_COPY, 0x8002D462, Overlay.Menu, 0x1E + save_index_offset, offset_dict)  # Read from File - Sound Type
     writeValue(ROM_COPY, 0x8002ED26, Overlay.Menu, 0x19 + save_index_offset, offset_dict)  # Read from File - Rambi Hiscore
@@ -175,7 +179,7 @@ def saveUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     static_expansion = 0x140
     if settings.enemy_drop_rando:
         static_expansion += 428  # Total Enemies
-    expandSaveFile(ROM_COPY, static_expansion, balloon_patch_count, offset_dict)
+    expandSaveFile(ROM_COPY, static_expansion, balloon_patch_count, offset_dict, settings)
     # 1-File Fixes
     writeValue(ROM_COPY, 0x8060CF34, Overlay.Static, 0x240E0001, offset_dict, 4)  # Slot 1
     writeValue(ROM_COPY, 0x8060CF38, Overlay.Static, 0x240F0002, offset_dict, 4)  # Slot 2

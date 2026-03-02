@@ -154,3 +154,6 @@
 .definelabel cutsceneTinyCode, 0x806C1B50
 .definelabel cutsceneChunkyCode, 0x806C1CCC
 .definelabel warpActorToParent, 0x8067B238
+.definelabel inVehicleMovement, 0x806CC970
+.definelabel unkVehicleFunc, 0x806D2378
+.definelabel isBoulderMakingCollision, 0x8069B85C

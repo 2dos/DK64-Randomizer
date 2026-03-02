@@ -177,10 +177,30 @@ class StartingMoveCount(Range):
     default = 0
 
 
-class KroolInBossPool(Toggle):
-    """Whether or not K. Rool can be fightable in T&S Bosses and vice versa."""
+class KroolShuffle(Choice):
+    """Whether or not K. Rool can be fightable in T&S Bosses and vice versa.
+
+    "off": K. Rool can only appear in the final fight.
+    "krool_only": K. Rool can appear in T&S bosses, but T&S can't appear in the final fight.
+    "full_shuffle": K. Rool and T&S bosses can be shuffled between eachother.
+    """
 
     display_name = "K. Rool In Boss Pool"
+
+    option_off = 0
+    option_krool_only = 1
+    option_full_shuffle = 2
+
+    default = 0
+
+
+class AllowedBosses(OptionList):
+    """Determines which bosses are in the pool. If not enough bosses are selected, it will fill the pool with duplicate bosses"""
+
+    display_name = "Allowed Bosses"
+
+    valid_keys: {"Armydillo 1", "Dogadon 1", "Mad Jack", "Pufftoss", "Dogadon 2", "Armydillo 2", "Kutout", "DK phase", "Diddy Phase", "Lanky Phase", "Tiny Phase", "Chunky Phase"}
+    default = ["Armydillo 1", "Dogadon 1", "Mad Jack", "Pufftoss", "Dogadon 2", "Armydillo 2", "Kutout", "DK phase", "Diddy Phase", "Lanky Phase", "Tiny Phase", "Chunky Phase"]
 
 
 class TrapFillPercentage(Range):
@@ -393,6 +413,34 @@ class SwitchSanity(Choice):
     default = 0
 
 
+class CrownPlacementRando(Toggle):
+    """Randomizes the locations of Battle Arena crown pads to alternate positions throughout the levels."""
+
+    display_name = "Crown Placement Randomization"
+
+
+class RandomCrates(Toggle):
+    """Randomizes the locations of Melon Crates to alternate positions throughout the levels."""
+
+    display_name = "Random Melon Crates"
+
+
+class RandomPatches(Toggle):
+    """Randomizes the locations of Dirt Patches (Rainbow Coins) to alternate positions throughout the levels."""
+
+    display_name = "Random Dirt Patches"
+
+
+## TODO: Figure this out
+# class CBRando(Toggle):
+#     """Randomizes the locations of Colored Bananas throughout the levels.
+
+#     This does NOT make individual bananas checks - they remain collectibles that count toward medals.
+#     """
+
+#     display_name = "Colored Banana Randomization"
+
+
 class LogicType(Choice):
     """Determines what type of logic is needed to beat the seed.
 
@@ -495,6 +543,9 @@ class HardModeSelected(OptionList):
     "strict_helm_timer": Helm Timer starts at 0:00 requiring blueprints to turn in
     "donk_in_the_dark_world: All maps are pitch black, with only a light to help you path your way to the end of the game. Mixing this with 'Donk in the Sky' will convert the challenge into 'Memory Challenge' instead.
     "donk_in_the_sky": Collision Geometry is disabled. Mixing this with 'Donk in the Dark World' will convert the challenge into 'Memory Challenge' instead.
+    "faster_balloons": Balloons will now move at super speed.
+    "angry_caves": Stalactites will rain down upon you in Caves at super speed.
+    "lower_max_refill_amount": Halves your replenishable items.
     """
 
     display_name = "Hard Mode Options"
@@ -505,6 +556,9 @@ class HardModeSelected(OptionList):
         "strict_helm_timer",
         "donk_in_the_dark_world",
         "donk_in_the_sky",
+        "faster_balloons",
+        "angry_caves",
+        "lower_max_refill_amount",
     }
 
 
@@ -1084,6 +1138,51 @@ class SelectStartingKong(Choice):
     default = 5
 
 
+class KrushaKongs(OptionList):
+    """Determines which Kong slots will be replaced with Krusha.
+
+    You can select multiple Kongs or all of them to be replaced with Krusha.
+    If individual Kong Model settings are customized, they will take priority over this setting.
+
+    Valid Keys:
+    "dk"
+    "diddy"
+    "lanky"
+    "tiny"
+    "chunky"
+    """
+
+    display_name = "Krusha Kongs"
+
+    valid_keys = {
+        "dk",
+        "diddy",
+        "lanky",
+        "tiny",
+        "chunky",
+    }
+
+
+class KrushaRandom(Choice):
+    """Determines which random kong is chosen to be Krusha.
+
+    This will overwrite whatever's chosen in KrushaKongs.
+    "none": Kongs will be their vanilla model
+    "manual": Use krusha_kongs to plando your Kong Model
+    "random_1": One Kong will be randomly replaced with Krusha
+    "sometimes_1": Maybe one Kong will be randomly replaced with Krusha
+    "random_all": Each Kong has a chance to be replaced with Krusha
+    """
+
+    display_name = "Random Krusha"
+
+    option_none = 0
+    option_manual = 1
+    option_random_1 = 2
+    option_sometimes_1 = 3
+    option_random_all = 4
+
+
 class IceFloorWeight(BaseTrapWeight):
     """Likelihood of receiving a trap which turns the floor slippery."""
 
@@ -1335,6 +1434,38 @@ class SnideTurninsToThePool(DefaultOnToggle):
     display_name = "Add Snide Turnins to the Pool"
 
 
+class RandomStartingLocation(Choice):
+    """Determines if and where the game can start you.
+
+    - off: Start at the normal DK Isle location
+    - isles_only: Start at a random location within DK Isles
+    - all: Start at a random location in any level
+    """
+
+    display_name = "Random Starting Region"
+    option_off = 0
+    option_isles_only = 1
+    option_all = 2
+    default = 0
+
+
+class DKPortalLocationRando(Choice):
+    """Randomize the locations of DK Portals within levels.
+
+    DK Portals are the exits that return you from a level to its lobby.
+
+    - off: DK Portals remain in their vanilla locations
+    - main_only: DK Portals can only appear in main level areas (not bonus barrels, buildings, etc.)
+    - all: DK Portals can appear anywhere in the level
+    """
+
+    display_name = "DK Portal Location Rando"
+    option_off = 0
+    option_main_only = 1
+    option_all = 2
+    default = 0
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -1350,7 +1481,7 @@ class DK64Options(PerGameCommonOptions):
     shuffle_helm_level_order: ShuffleHelmLevel
     krool_phase_count: KroolPhaseCount
     helm_phase_count: HelmPhaseCount
-    krool_in_boss_pool: KroolInBossPool
+    krool_in_boss_pool: KroolShuffle
     remove_barriers_selected: RemoveBarriers
     cbs_required_for_medal: MedalColorBananaRequirement
     medal_distribution: MedalDistribution
@@ -1365,6 +1496,10 @@ class DK64Options(PerGameCommonOptions):
     level_blockers: LevelBlockers
     open_lobbies: OpenLobbies
     switchsanity: SwitchSanity
+    crown_placement_rando: CrownPlacementRando
+    random_crates: RandomCrates
+    random_patches: RandomPatches
+    # cb_rando_enabled: CBRando
     climbing_shuffle: ClimbingShuffle
     starting_kong_count: StartingKongCount
     starting_move_count: StartingMoveCount
@@ -1428,6 +1563,11 @@ class DK64Options(PerGameCommonOptions):
     galleon_water_level: GalleonWaterLevel
     remove_bait_potions: RemoveBaitPotions
     snide_turnins_to_pool: SnideTurninsToThePool
+    krusha_model_mode: KrushaRandom
+    krusha_kongs: KrushaKongs
+    allowed_bosses: AllowedBosses
+    random_starting_region: RandomStartingLocation
+    dk_portal_location_rando: DKPortalLocationRando
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1443,7 +1583,7 @@ dk64_option_groups: List[OptionGroup] = [
             HelmDoor2Item,
             HelmDoorItemCount,
             KroolPhaseCount,
-            KroolInBossPool,
+            KroolShuffle,
         ],
     ),
     OptionGroup(
@@ -1491,6 +1631,17 @@ dk64_option_groups: List[OptionGroup] = [
             RemoveBarriers,
             LoadingZoneRando,
             GalleonWaterLevel,
+            RandomStartingLocation,
+            DKPortalLocationRando,
+        ],
+    ),
+    OptionGroup(
+        "Custom Locations",
+        [
+            CrownPlacementRando,
+            RandomCrates,
+            RandomPatches,
+            # CBRando,
         ],
     ),
     OptionGroup(
@@ -1505,6 +1656,9 @@ dk64_option_groups: List[OptionGroup] = [
             RarewareGBRequirement,
             JetpacRequirement,
             PuzzleRando,
+            KrushaRandom,
+            KrushaKongs,
+            AllowedBosses,
         ],
     ),
     OptionGroup(

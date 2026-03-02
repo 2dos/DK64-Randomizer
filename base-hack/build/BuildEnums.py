@@ -950,6 +950,31 @@ class ExtraTextures(IntEnum):
     HalfMedal06 = auto()
     HalfMedal07 = auto()
     HalfMedal08 = auto()
+    DayIcon = auto()
+    NightIcon = auto()
+    APIcon = auto()
+    DiddyIcePalette0 = auto()
+    DiddyIcePalette1 = auto()
+    ChunkyIcePalette0 = auto()
+    ChunkyIcePalette1 = auto()
+    FacePuzzleDK0 = auto()
+    FacePuzzleDK1 = auto()
+    FacePuzzleDK2 = auto()
+    FacePuzzleDK3 = auto()
+    FacePuzzleDK4 = auto()
+    FacePuzzleDK5 = auto()
+    FacePuzzleDK6 = auto()
+    FacePuzzleDK7 = auto()
+    FacePuzzleDK8 = auto()
+    FacePuzzleChunky0 = auto()
+    FacePuzzleChunky1 = auto()
+    FacePuzzleChunky2 = auto()
+    FacePuzzleChunky3 = auto()
+    FacePuzzleChunky4 = auto()
+    FacePuzzleChunky5 = auto()
+    FacePuzzleChunky6 = auto()
+    FacePuzzleChunky7 = auto()
+    FacePuzzleChunky8 = auto()
 
 
 class MoveTypes(IntEnum):
@@ -1073,6 +1098,8 @@ class CustomActors(IntEnum):
     GuardDisableZ = auto()
     GuardGetOut = auto()
     GuardTag = auto()
+    DayItem = auto()
+    NightItem = auto()
 
 
 class MusicTypes(IntEnum):

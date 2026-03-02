@@ -231,6 +231,9 @@ class LogicVarHolder:
         self.candyAccess = Types.Candy not in self.settings.shuffled_location_types
         self.snideAccess = Types.Snide not in self.settings.shuffled_location_types
 
+        self.dayAccess = Types.FungiTime not in self.settings.shuffled_location_types
+        self.nightAccess = Types.FungiTime not in self.settings.shuffled_location_types
+
         self.HelmDonkey1 = False
         self.HelmDonkey2 = False
         self.HelmDiddy1 = False
@@ -568,6 +571,10 @@ class LogicVarHolder:
                     self.candyAccess = True
                 case Items.Snide:
                     self.snideAccess = True
+                case Items.Day:
+                    self.dayAccess = True
+                case Items.Night:
+                    self.nightAccess = True
                 case Items.NintendoCoin:
                     self.nintendoCoin = True
                 case Items.RarewareCoin:
@@ -825,6 +832,10 @@ class LogicVarHolder:
                     self.candyAccess = False
                 case Items.Snide:
                     self.snideAccess = False
+                case Items.Day:
+                    self.dayAccess = False
+                case Items.Night:
+                    self.nightAccess = False
                 case Items.NintendoCoin:
                     self.nintendoCoin = False
                 case Items.RarewareCoin:
@@ -988,6 +999,8 @@ class LogicVarHolder:
         self.funkyAccess = self.funkyAccess or Items.Funky in ownedItems
         self.candyAccess = self.candyAccess or Items.Candy in ownedItems
         self.snideAccess = self.snideAccess or Items.Snide in ownedItems
+        self.dayAccess = self.dayAccess or Items.Day in ownedItems
+        self.nightAccess = self.nightAccess or Items.Night in ownedItems
 
         self.nintendoCoin = self.nintendoCoin or Items.NintendoCoin in ownedItems
         self.rarewareCoin = self.rarewareCoin or Items.RarewareCoin in ownedItems
@@ -1146,11 +1159,13 @@ class LogicVarHolder:
         slam_req = default_requirement_level
         if self.settings.alter_switch_allocation:
             slam_req = self.settings.switch_allocation[level]
-        if slam_req == 2:
+        if slam_req == 1:
+            return self.Slam
+        elif slam_req == 2:
             return self.superSlam
         elif slam_req == 3:
             return self.superDuperSlam
-        return self.Slam
+        return True
 
     @lru_cache(maxsize=None)
     def IsLavaWater(self) -> bool:
@@ -1252,7 +1267,7 @@ class LogicVarHolder:
             if data.kong == Kongs.any:
                 return self.HasGun(Kongs.any) and self.HasInstrument(Kongs.any)
             return kong_data and gun_abilities[data.kong] and instrument_abilities[data.kong]
-        elif data.switch_type == SwitchType.PushableButton:
+        elif data.switch_type in (SwitchType.PushableButton, SwitchType.PunchGrate, SwitchType.IceWall, SwitchType.Gong):
             if data.kong == Kongs.diddy:
                 return kong_data and self.charge
             if data.kong == Kongs.chunky:
