@@ -832,7 +832,7 @@ fairy_locations = {
             spawn_y=260,
         ),
         FairyData(
-            name="Inside rotating cabin",
+            name="Tomato game room",
             map=Maps.CavesFrozenCastle,
             region=Regions.FrozenCastle,
             fence=Fence(106, 246, 420, 344),
