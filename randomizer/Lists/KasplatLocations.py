@@ -564,7 +564,7 @@ KasplatLocationList = {
         #     additional_logic=lambda l: Events.MainCoreActivated in l.Events,
         # ),
         KasplatLocation(
-            name="Factory Kasplat: Near Snide's", # SNEVIN !!
+            name="Factory Kasplat: Window shopping", # SNEVIN !!
             map_id=Maps.FranticFactory,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1579, 811, 2197],
