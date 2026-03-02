@@ -171,7 +171,7 @@ KasplatLocationList = {
             additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)),
         ),
         KasplatLocation(
-            name="Japes Kasplat: Near Stormy shop",
+            name="Japes Kasplat: Near Rambi",
             map_id=Maps.JungleJapes,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1675, 280, 4197],
@@ -395,7 +395,7 @@ KasplatLocationList = {
             vanilla=True,
         ),
         KasplatLocation(
-            name="Aztec Kasplat: Behind the gongs area",
+            name="Aztec Kasplat: Behind the gongs",
             map_id=Maps.AngryAztec,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[4458, 81, 2924],
@@ -710,7 +710,7 @@ KasplatLocationList = {
             vanilla=True,
         ),
         KasplatLocation(
-            name="Galleon Kasplat: In Battle Arena wreck",
+            name="Galleon Kasplat: Punch wreck under shop",
             map_id=Maps.GloomyGalleon,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[3323, 1680, 2387],
@@ -734,7 +734,7 @@ KasplatLocationList = {
         #     region=Regions.GalleonBeyondPineappleGate,
         # ),
         KasplatLocation(
-            name="Galleon Kasplat: On the shop wreck",
+            name="Galleon Kasplat: On the cavern shop wreck",
             map_id=Maps.GloomyGalleon,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[3314, 1792, 2498],
@@ -859,7 +859,7 @@ KasplatLocationList = {
             region=Regions.WormArea,
         ),
         KasplatLocation(
-            name="Forest Kasplat: By Mushroom Rocketbarrel",
+            name="Forest Kasplat: By Giant Mushroom Rocketbarrel",
             map_id=Maps.FungiForest,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[183, 241, 756],
@@ -923,7 +923,7 @@ KasplatLocationList = {
             vanilla=True,
         ),
         KasplatLocation(
-            name="Forest Kasplat: Giant Mushroom vine mesh",
+            name="Forest Kasplat: Giant Mushroom middle mesh",
             map_id=Maps.ForestGiantMushroom,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[329, 534, 402],
@@ -977,7 +977,7 @@ KasplatLocationList = {
             region=Regions.GrinderRoom,
         ),
         KasplatLocation(
-            name="Forest Kasplat: Mushroom Moat",
+            name="Forest Kasplat: Giant Mushroom Moat",
             map_id=Maps.FungiForest,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1009, 100, 576],
@@ -1080,7 +1080,7 @@ KasplatLocationList = {
             region=Regions.CavesSnideArea,
         ),
         KasplatLocation(
-            name="Caves Kasplat: Mini monkey cave",
+            name="Caves Kasplat: Mini bonus cave",
             map_id=Maps.CrystalCaves,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[485, 181, 2495],
@@ -1103,7 +1103,7 @@ KasplatLocationList = {
             additional_logic=lambda l: Events.CavesLargeBoulderButton in l.Events or (l.generalclips and l.ischunky),
         ),
         KasplatLocation(
-            name="Caves Kasplat: Near the cabins",
+            name="Caves Kasplat: Near 5-door cabin",
             map_id=Maps.CrystalCaves,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[3645, 343, 1865],
@@ -1300,7 +1300,7 @@ KasplatLocationList = {
             region=Regions.Dungeon,
         ),
         KasplatLocation(
-            name="Castle Kasplat: Lowest back ledge",
+            name="Castle Kasplat: Lowest back small tree",
             map_id=Maps.CreepyCastle,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1655, 371, 2048],
@@ -1374,7 +1374,7 @@ KasplatLocationList = {
             vanilla=True,
         ),
         KasplatLocation(
-            name="Castle Kasplat: Pond near Tree",
+            name="Castle Kasplat: Sewers near Tree",
             map_id=Maps.CreepyCastle,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[845, 330, 235],
