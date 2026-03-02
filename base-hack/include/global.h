@@ -352,7 +352,7 @@ extern void updateItemTotalsHandler(int player, int obj_type, int is_homing, int
 
 extern void loadWrinklyTextWrapper(actorData* actor, int file, int index);
 extern int getProjectileCount_modified(void *player, unsigned short int_bitfield, int (*code)(actorData *));
-extern void applyButtonBansInternals(void *cont);
+extern void applyButtonBansInternals(InputHandlerContainer *cont);
 extern void *getTextData(data_indexes table_index, int file_index, int unk0, int unk1);
 
 extern void handleCrownTimerInternal(void);
@@ -515,6 +515,7 @@ extern const unsigned short replacement_lobby_exits_array[9];
 extern unsigned short actor_cb_counts[221];
 extern short m2_cb_coin_counts[8];
 extern const unsigned char blast_maps[7];
+extern button_swap_struct button_swaps[8];
 extern const char* krool_name;
 extern const char* cranky_name;
 extern const char* candy_name;

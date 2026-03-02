@@ -1630,6 +1630,17 @@ typedef struct Controller {
 	/* 0x003 */ char stickY;
 } Controller;
 
+typedef struct InputHandlerContainer {
+	/* 0x000 */ Controller cont;
+	/* 0x004 */ short unk4;
+} InputHandlerContainer;
+
+typedef struct button_swap_struct {
+	/* 0x000 */ unsigned short target_bit;
+	/* 0x002 */ unsigned short output_bit;
+	/* 0x004 */ unsigned short timer;
+} button_swap_struct;
+
 typedef struct Border {
 	/* 0x000 */ char player_count;
 	/* 0x001 */ char unk1;

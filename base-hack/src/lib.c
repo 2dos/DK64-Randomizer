@@ -1741,12 +1741,33 @@ int getProjectileCount_modified(void *player, unsigned short int_bitfield, int (
 	return count;
 }
 
-unsigned short enabled_buttons = 0xFFFF;
-unsigned short cc_enabled_buttons = 0xFFFF;
-unsigned short trap_enabled_buttons = 0xFFFF;
-unsigned short guard_enabled_buttons = 0xFFFF;
+ROM_DATA button_swap_struct button_swaps[8] = {};
 
-void applyButtonBansInternals(void *cont) {
+ROM_DATA unsigned short enabled_buttons = 0xFFFF;
+ROM_DATA unsigned short cc_enabled_buttons = 0xFFFF;
+ROM_DATA unsigned short trap_enabled_buttons = 0xFFFF;
+ROM_DATA unsigned short guard_enabled_buttons = 0xFFFF;
+
+void applyButtonBansInternals(InputHandlerContainer *cont) {
 	getControllerContainer(cont);
+	unsigned short original = cont->cont.Buttons_as_short;
+	unsigned short result = original;
+
+	for (int j = 0; j < 8; j++) {
+		button_swap_struct *swap = &button_swaps[j];
+		if (swap->timer > 0) {
+			if (original & swap->target_bit) {
+				result &= ~swap->target_bit;
+				result |= swap->output_bit;
+			}
+			swap->timer--;
+			if (swap->timer == 0) {
+				swap->target_bit = 0;
+			}
+		}
+
+	}
+
+	cont->cont.Buttons_as_short = result;
 	enabled_buttons = ButtonsEnabledBitfield & cc_enabled_buttons & trap_enabled_buttons & guard_enabled_buttons;
 }
