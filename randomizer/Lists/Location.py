@@ -441,7 +441,7 @@ LocationListOriginal = {
     Locations.ForestDonkeyBaboonBlast: Location(Levels.FungiForest, "Forest Donkey Baboon Blast", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.FungiForest, 0x39, 254, Kongs.donkey)]),
     Locations.ForestKasplatLowerMushroomExterior: Location(Levels.FungiForest, "Forest Kasplat: Mushroom Exterior Lower Floor", Items.TinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.FungiForest]),
     Locations.ForestDonkeyMushroomCannons: Location(Levels.FungiForest, "Forest Donkey Mushroom Cannons", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.ForestGiantMushroom, 0x3, 228, Kongs.donkey)]),
-    Locations.ForestKasplatInsideMushroom: Location(Levels.FungiForest, "Forest Kasplat: Giant Mushroom Middle Mesh", Items.DiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.ForestGiantMushroom]),
+    Locations.ForestKasplatInsideMushroom: Location(Levels.FungiForest, "Forest Kasplat: Inside Giant Mushroom", Items.DiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.ForestGiantMushroom]),
     Locations.ForestKasplatUpperMushroomExterior: Location(Levels.FungiForest, "Forest Kasplat: Mushroom Exterior Night Door", Items.ChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.FungiForest]),
     Locations.ForestBattleArena: Location(Levels.FungiForest, "Forest Battle Arena (Giant Mushroom High Ladder Platform)", Items.BattleCrown, Types.Crown, Kongs.any, [MapIDCombo(Maps.ForestCrown, -1, 613)]),
     Locations.ForestChunkyFacePuzzle: Location(Levels.FungiForest, "Forest Chunky Face Puzzle", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.ForestChunkyFaceRoom, 0x2, 225, Kongs.chunky)]),
