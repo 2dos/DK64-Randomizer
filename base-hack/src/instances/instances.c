@@ -896,27 +896,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case MAP_CAVESROTATINGROOM:
-				if (param2 == ROTATING_ROOM_OBJ) {
-					if (index == 0) {
-						if (!Rando.disable_rotating_crown) {
-							return checkFlag(FLAG_CROWN_CAVES, FLAGTYPE_PERMANENT);
-						}
-						return 1;
-					} else if (index == 1) {
-						return !checkFlag(FLAG_COLLECTABLE_ROTATINGGB, FLAGTYPE_PERMANENT);
-					}
-				}
-				break;
-			case MAP_GALLEONMECHFISH:
-				if ((param2 == FISH_SHIELD1) || (param2 == FISH_SHIELD2) || (param2 == FISH_SHIELD3)) {
-					int fish_state = 1;
-					if (Rando.faster_checks.mech_fish) {
-						fish_state = 5;
-					}
-					behaviour_pointer->next_state = fish_state;
-				}
-				break;
 			case MAP_FACTORYBBLAST:
 				if (param2 == FACTORY_BBLAST_STAR) {
 					if (Rando.faster_checks.arcade_first_round) {
@@ -1170,31 +1149,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		activateGonePad();
 	} else if (index == -7) {
 		return getItemCount_new(REQITEM_KONG, 0, param2) || Rando.disable_wrinkly_kong_requirement;
-	} else if (index == -8) {
-		// Fairy check
-		if (Rando.fairy_rando_on) {
-			switch (param2) {
-				case 0:
-					return !Rando.fairy_triggers_disabled.japes_painting; // Japes Painting: ID 5
-				case 1:
-					return !Rando.fairy_triggers_disabled.factory_funky; // Factory Funky: ID 0x109
-				case 2:
-					return !Rando.fairy_triggers_disabled.galleon_chest; // Galleon Chest: ID 0x45
-				case 3:
-					return !Rando.fairy_triggers_disabled.fungi_dark_attic; // Fungi Dark Attic: ID 0x0
-				case 4:
-					return !Rando.fairy_triggers_disabled.fungi_thornvine_barn; // Fungi Thornvine: ID 0x24
-				case 5:
-					return !Rando.fairy_triggers_disabled.caves_igloo; // Caves Igloo: ID 0x0
-				case 6:
-					return !Rando.fairy_triggers_disabled.caves_cabin; // Caves Cabin: ID 0x5
-				case 7:
-					return !Rando.fairy_triggers_disabled.isles_factory_lobby; // Isles Factory Lobby: ID 0xE
-				case 8:
-					return !Rando.fairy_triggers_disabled.isles_fungi_lobby; // Isles Fungi Lobby: ID 0x5
-			}
-		}
-		return 1;
 	} else if (index == -16) {
 		PauseText = param2;
 	} else if (index == -17) {

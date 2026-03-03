@@ -751,6 +751,10 @@ def patching_response(spoiler):
         replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {
             f"CONDINV 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 1": f"CONDINV 24 | 43 {index + 1} 0",
         })
+    if IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.galleon_mech_fish):
+        replaceScriptLines(ROM_COPY, Maps.GalleonMechafish, [0x3, 0x4, 0x5], {
+            "EXEC 1 | 1 0 0": "EXEC 1 | 5 0 0"
+        })
 
     ROM_COPY.seek(sav + 0x060)
     for x in spoiler.settings.medal_cb_req_level:

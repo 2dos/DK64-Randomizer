@@ -54,11 +54,10 @@ typedef struct varspace {
 	/* 0x0CD */ char unk_cd[8];
 	/* 0x0D5 */ moves_pregiven_bitfield moves_pregiven; // Bitfield, Size 0x6
 	/* 0x0DB */ unsigned char seasonal_changes; // 0 = None, 1 = Halloween, 2 = Christmas
-	/* 0x0DC */ char unk_DC[4];
-	/* 0x0E0 */ fairy_activations fairy_triggers_disabled;
+	/* 0x0DC */ char unk_DC[0xE2 - 0xDC];
 	/* 0x0E2 */ unsigned short helm_hurry_start;
 	/* 0x0E4 */ short helm_hurry_bonuses[0xE];
-	/* 0x100 */ char fairy_rando_on;
+	/* 0x100 */ char unk_100;
 	/* 0x101 */ LocationVisuals location_visuals; // Bitfield for visual hints of what is inside a location.
 	/* 0x102 */ char microhints; // 0 = Off, 1 = GGone/Monkeyport, 2 = GGone/MPort, Instruments in Helm
 	/* 0x103 */ char unk_103[8];
@@ -67,8 +66,7 @@ typedef struct varspace {
 	/* 0x10D */ unsigned char starting_exit;
 	/* 0x10E */ char unk_10e;
 	/* 0x10F */ unsigned char remove_oscillation_effects; // Removes water oscillation + Seasick Ship interior rocking
-	/* 0x110 */ unsigned char arcade_reward; // Reward Index for R2 of Arcade
-	/* 0x111 */ unsigned char jetpac_reward; // Reward Index for Jetpac 5000 Pts
+	/* 0x110 */ char unk_110[2];
 	/* 0x112 */ char rainbow_ammo;
 	/* 0x113 */ char unk_113;
 	/* 0x114 */ char fix_lanky_tiny_prod;
@@ -105,7 +103,7 @@ typedef struct varspace {
 	/* 0x17E */ unsigned char b_locker_requirements[8];
 	/* 0x186 */ char unk_186[0x190-0x186];
 	/* 0x190 */ char helm_order[5]; // Each item is a place in the order. -1 for an empty slot. For each item, 0 = DK, 1 = Chunky, 2 = Tiny, 3 = Lanky, 4 = Diddy. DK has to either be first or not present.
-	/* 0x195 */ char disable_rotating_crown; // 0 = Checks flag, 1 = Disabled
+	/* 0x195 */ char unk_195;
 	/* 0x196 */ unsigned char enabled_pkmnsnap_enemies[6]; // Bitfield
 	/* 0x19C */ unsigned char unk_19C[0x1A2 - 0x19C];
 	/* 0x1A2 */ LZREntrance blast_entrances[7];

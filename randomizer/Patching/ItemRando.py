@@ -994,8 +994,6 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         db_item = getItemDBEntry(item.new_type)
                         db_index = db_item.index_getter(item.new_item)
                         arcade_reward_index = db_item.arcade_reward_index[db_index]
-                        ROM_COPY.seek(sav + 0x110)
-                        ROM_COPY.write(arcade_reward_index)
                         addr = getItemTableWriteAddress(ROM_COPY, Types.NintendoCoin, 0, offset_dict)
                         ROM_COPY.seek(addr)
                         ROM_COPY.write(item_properties.response_type)
@@ -1007,8 +1005,6 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         db_item = getItemDBEntry(item.new_type)
                         db_index = db_item.index_getter(item.new_item)
                         jetpac_reward_index = db_item.jetpac_reward_index[db_index]
-                        ROM_COPY.seek(sav + 0x111)
-                        ROM_COPY.write(jetpac_reward_index)
                         addr = getItemTableWriteAddress(ROM_COPY, Types.RarewareCoin, 1, offset_dict)
                         ROM_COPY.seek(addr)
                         ROM_COPY.write(item_properties.response_type)
