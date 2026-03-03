@@ -247,17 +247,17 @@ def randomize_entrances(spoiler, ROM_COPY: LocalROM):
         ROM_COPY.write(1)
         # Aztec Beetle Entry
         map_id, exit_id = getEntranceOutput(spoiler, Transitions.AztecMainToRace, Maps.AztecTinyRace, 0)
-        replaceScriptLines(ROM_COPY, Maps.AngryAztec, 0x1E, {
+        replaceScriptLines(ROM_COPY, Maps.AngryAztec, [0x1E], {
             "EXEC 49 | 14 0 0": f"EXEC 49 | {map_id} {short_to_ushort(exit_id)} 0"
         })
         # Seasick Ship Entry
         map_id, exit_id = getEntranceOutput(spoiler, Transitions.GalleonLighthouseAreaToSickBay, Maps.GalleonSickBay, 0)
-        replaceScriptLines(ROM_COPY, Maps.GloomyGalleon, 0x27, {
+        replaceScriptLines(ROM_COPY, Maps.GloomyGalleon, [0x27], {
             "EXEC 49 | 31 0 0": f"EXEC 49 | {map_id} {short_to_ushort(exit_id)} 0"
         })
         # Forest Minecart Entry
         map_id, exit_id = getEntranceOutput(spoiler, Transitions.ForestMainToCarts, Maps.ForestMinecarts, 0)
-        replaceScriptLines(ROM_COPY, Maps.FungiForest, 0x22, {
+        replaceScriptLines(ROM_COPY, Maps.FungiForest, [0x22], {
             "EXEC 49 | 55 0 0": f"EXEC 49 | {map_id} {short_to_ushort(exit_id)} 0"
         })
         # Write Castle Lobby entrance
@@ -313,19 +313,19 @@ def randomize_entrances(spoiler, ROM_COPY: LocalROM):
             }
         # Ballroom to Museum
         map_id, exit_id = getEntranceOutput(spoiler, Transitions.CastleBallroomToMuseum, Maps.CastleMuseum, 2)
-        replaceScriptLines(ROM_COPY, Maps.CastleBallroom, 0x5, {
+        replaceScriptLines(ROM_COPY, Maps.CastleBallroom, [0x5], {
             "EXEC 73 | 10 113 2": f"EXEC 73 | 10 {map_id} {short_to_ushort(exit_id)}"
         })
         # Museum to Ballroom
         map_id, exit_id = getEntranceOutput(spoiler, Transitions.CastleMuseumToBallroom, Maps.CastleBallroom, 1)
-        replaceScriptLines(ROM_COPY, Maps.CastleMuseum, 0x8, {
+        replaceScriptLines(ROM_COPY, Maps.CastleMuseum, [0x8], {
             "EXEC 73 | 10 88 1": f"EXEC 73 | 10 {map_id} {short_to_ushort(exit_id)}"
         })
         # Mech Fish Entrance
         spoiler.settings.mech_fish_entrance = getEntranceDict(spoiler, Transitions.GalleonShipyardToMechFish, Maps.GalleonMechafish, 0)
         # Mech Fish Exit
         map_id, exit_id = getEntranceOutput(spoiler, Transitions.GalleonMechFishToShipyard, Maps.GloomyGalleon, 34)
-        replaceScriptLines(ROM_COPY, Maps.GalleonMechafish, 0xE, {
+        replaceScriptLines(ROM_COPY, Maps.GalleonMechafish, [0xE], {
             "EXEC 48 | 30 0 0": f"EXEC 49 | {map_id} {short_to_ushort(exit_id)} 0"
         })
 

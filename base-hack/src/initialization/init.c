@@ -245,9 +245,7 @@ void initHack(int source) {
 			TextHoldOn = Rando.quality_of_life.textbox_hold;
 			ToggleAmmoOn = Rando.quality_of_life.ammo_swap;
 			LobbiesOpen = Rando.lobbies_open_bitfield;
-			ShorterBosses = Rando.short_bosses;
 			ItemRandoOn = Rando.item_rando;
-			KrushaSlot = Rando.krusha_slot;
 			DamageMultiplier = Rando.damage_multiplier; // Keep for Crowd Control. Needs it to know what to set damage mult back to
 			initItemRandoPointer();
 			initAP();

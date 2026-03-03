@@ -727,9 +727,30 @@ def patching_response(spoiler):
     if spoiler.settings.alter_switch_allocation:
         setProgSlamStrength(ROM_COPY, spoiler.settings)
     # Dartboard order
-    ROM_COPY.seek(sav + 0x173)
+    DARTBOARD_IMAGES = [3, 1, 2, 0, 5, 4, 6, 7]
+    DARTBOARD_DEFAULT_ORDER = [4, 2, 3, 1, 6, 5]
     for x in range(6):
-        ROM_COPY.writeMultipleBytes(spoiler.settings.dartboard_order[x], 1)
+        # Conversion to prevent repeated overwrites
+        replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {
+            f"EXEC 40 | 1 {x} 0": f"EXEC 40 | 1 {x} 1"  
+        })
+        replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {
+            f"COND 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 0": f"COND 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 1",
+        })
+        replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {
+            f"CONDINV 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 0": f"CONDINV 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 1",
+        })
+    for x in range(6):
+        index = spoiler.settings.dartboard_order[x]
+        replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {
+            f"EXEC 40 | 1 {x} 1": f"EXEC 40 | 1 {DARTBOARD_IMAGES[index]} 0"
+        })
+        replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {
+            f"COND 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 1": f"COND 24 | 43 {index + 1} 0",
+        })
+        replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {
+            f"CONDINV 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 1": f"CONDINV 24 | 43 {index + 1} 0",
+        })
 
     ROM_COPY.seek(sav + 0x060)
     for x in spoiler.settings.medal_cb_req_level:

@@ -780,22 +780,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							setScriptRunState(behaviour_pointer, RUNSTATE_PAUSED, 0);
 						}
 					}
-				} else if (param2 == FACTORY_DARTBOARD) {
-					if (index < 6) {
-						if (behaviour_pointer->switch_pressed == (Rando.dartboard_order[index] + 1)) {
-							if (behaviour_pointer->contact_actor_type == 43) {
-								if (canHitSwitch()) {
-									int index = convertSubIDToIndex(id);
-									setSomeTimer(ObjectModel2Pointer[index].object_type);
-									return 1;
-								}
-							}
-						}
-						return 0;
-					} else if (index < 12) {
-						int img_index = Rando.dartboard_order[index - 6];
-						displayImageOnObject(id, 1, dartboard_images[img_index], 0);
-					}
 				} else if (param2 == FACTORY_LARGEMETALSECTION) {
 					if (Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->current_state = 10;

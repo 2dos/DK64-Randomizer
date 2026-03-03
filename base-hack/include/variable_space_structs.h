@@ -65,7 +65,7 @@ typedef struct varspace {
 	/* 0x10B */ char isles_cb_rando; // Gives 5 extra medals and handles appropriately
 	/* 0x10C */ unsigned char starting_map; // 0 = Isles - from escape
 	/* 0x10D */ unsigned char starting_exit;
-	/* 0x10E */ unsigned char tns_portal_rando_on;
+	/* 0x10E */ char unk_10e;
 	/* 0x10F */ unsigned char remove_oscillation_effects; // Removes water oscillation + Seasick Ship interior rocking
 	/* 0x110 */ unsigned char arcade_reward; // Reward Index for R2 of Arcade
 	/* 0x111 */ unsigned char jetpac_reward; // Reward Index for Jetpac 5000 Pts
@@ -74,11 +74,9 @@ typedef struct varspace {
 	/* 0x114 */ char fix_lanky_tiny_prod;
 	/* 0x115 */ unsigned char progressive_hint_gb_cap; // 0 = Off, 1 or more = Hints are rewarded for collecting GBs, rather than hint doors, 35th hint is unlocked at x
 	/* 0x116 */ char cutscene_skip_setting; // 0 = Off, 1 = On Button Press, 2 = Automatic
-	/* 0x117 */ char unk_117[5];
-	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
+	/* 0x117 */ char unk_117[6];
 	/* 0x11D */ unsigned char win_condition; // See common_enums.h for enum
-	/* 0x11E */ char tns_indicator;
-	/* 0x11F */ char unk_11F[7];
+	/* 0x11E */ char unk_11E[8];
 	/* 0x126 */ char resolve_bonus; // Bitfield. 0000 0001 = auto-complete bonus barrels. 0000 0010 = auto-complete helm barrels. 0 = Off. 3 = Resolve Helm & Bonus Barrels
 	/* 0x127 */ char isles_cool_musical;
 	/* 0x128 */ char disable_drops; // 0 = Off. 1 = No Klump/Melon/Ammo Crate Drops
@@ -103,8 +101,7 @@ typedef struct varspace {
 	/* 0x15B */ char auto_keys; // 0 = Vanilla, 1 = Keys turn in as soon as you get them
 	/* 0x15C */ short matching_game_sounds[8]; // Sound effect 0 is treated as "sound not randomized"
 	/* 0x16C */ char piano_game_order[7]; // Each item denotes a key, normally CBCDECA (2123420). A = 0, 1 = B, 2 = C, 3 = D, 4 = E, 5 = F
-	/* 0x173 */ char dartboard_order[6]; // Each item denotes a picture. 0 = Crystal, 1 = Melon, 2 = Banana, 3 = Orange, 4 = Ammo Crate, 5 = Medal, 6 = Coin, 7 = Film
-	/* 0x179 */ char unk_179[0x17E - 0x179];
+	/* 0x173 */ char unk_173[0x17E - 0x173];
 	/* 0x17E */ unsigned char b_locker_requirements[8];
 	/* 0x186 */ char unk_186[0x190-0x186];
 	/* 0x190 */ char helm_order[5]; // Each item is a place in the order. -1 for an empty slot. For each item, 0 = DK, 1 = Chunky, 2 = Tiny, 3 = Lanky, 4 = Diddy. DK has to either be first or not present.
@@ -127,7 +124,7 @@ typedef struct varspace {
 	/* 0x1DD */ unsigned char unk_1dd;
 	/* 0x1DE */ RemovedBarriers removed_barriers; // Size: 2
 	/* 0x1E0 */ FasterChecks faster_checks; // Size: 1
-	/* 0x1E1 */ char big_head_mode; // 0 = off, 1 = on, 2 = small head
+	/* 0x1E1 */ char unk_1e1;
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
 	/* 0x1E3 */ unsigned char chunky_phase_krool_slam_req; // Slam level required for Chunky Phase
   	/* 0x1E4 */ unsigned char pause_hints_colored;
