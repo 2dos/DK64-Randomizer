@@ -144,25 +144,25 @@ LEGACY_FED_ID_TO_PACKET = {
     
     # Special Moves (Baboon Blast through Gorilla Gone)
     # DK (0-2)
-    0x019: APItemPacket(REQITEM_MOVE, 1, 0, CONFIG_APPLY_HELM_HURRY),  # Baboon Blast
-    0x01A: APItemPacket(REQITEM_MOVE, 2, 0, CONFIG_APPLY_HELM_HURRY),  # Strong Kong
-    0x01B: APItemPacket(REQITEM_MOVE, 3, 0, CONFIG_APPLY_HELM_HURRY),  # Gorilla Grab
+    0x019: APItemPacket(REQITEM_MOVE, 0, 0, CONFIG_APPLY_HELM_HURRY),  # Baboon Blast
+    0x01A: APItemPacket(REQITEM_MOVE, 1, 0, CONFIG_APPLY_HELM_HURRY),  # Strong Kong
+    0x01B: APItemPacket(REQITEM_MOVE, 2, 0, CONFIG_APPLY_HELM_HURRY),  # Gorilla Grab
     # Diddy (3-5)
-    0x01C: APItemPacket(REQITEM_MOVE, 1, 1, CONFIG_APPLY_HELM_HURRY),  # Chimpy Charge
-    0x01D: APItemPacket(REQITEM_MOVE, 2, 1, CONFIG_APPLY_HELM_HURRY),  # Rocketbarrel
-    0x01E: APItemPacket(REQITEM_MOVE, 3, 1, CONFIG_APPLY_HELM_HURRY),  # Simian Spring
+    0x01C: APItemPacket(REQITEM_MOVE, 0, 1, CONFIG_APPLY_HELM_HURRY),  # Chimpy Charge
+    0x01D: APItemPacket(REQITEM_MOVE, 1, 1, CONFIG_APPLY_HELM_HURRY),  # Rocketbarrel Boost
+    0x01E: APItemPacket(REQITEM_MOVE, 2, 1, CONFIG_APPLY_HELM_HURRY),  # Simian Spring
     # Lanky (6-8)
-    0x01F: APItemPacket(REQITEM_MOVE, 1, 2, CONFIG_APPLY_HELM_HURRY),  # Orangstand
-    0x020: APItemPacket(REQITEM_MOVE, 2, 2, CONFIG_APPLY_HELM_HURRY),  # Baboon Balloon
-    0x021: APItemPacket(REQITEM_MOVE, 3, 2, CONFIG_APPLY_HELM_HURRY),  # Orangstand Sprint
+    0x01F: APItemPacket(REQITEM_MOVE, 0, 2, CONFIG_APPLY_HELM_HURRY),  # Orangstand
+    0x020: APItemPacket(REQITEM_MOVE, 1, 2, CONFIG_APPLY_HELM_HURRY),  # Baboon Balloon
+    0x021: APItemPacket(REQITEM_MOVE, 2, 2, CONFIG_APPLY_HELM_HURRY),  # Orangstand Sprint
     # Tiny (9-11)
-    0x022: APItemPacket(REQITEM_MOVE, 1, 3, CONFIG_APPLY_HELM_HURRY),  # Mini Monkey
-    0x023: APItemPacket(REQITEM_MOVE, 2, 3, CONFIG_APPLY_HELM_HURRY),  # Twirl
-    0x024: APItemPacket(REQITEM_MOVE, 3, 3, CONFIG_APPLY_HELM_HURRY),  # Monkeyport
+    0x022: APItemPacket(REQITEM_MOVE, 0, 3, CONFIG_APPLY_HELM_HURRY),  # Mini Monkey
+    0x023: APItemPacket(REQITEM_MOVE, 1, 3, CONFIG_APPLY_HELM_HURRY),  # Pony Tail Twirl
+    0x024: APItemPacket(REQITEM_MOVE, 2, 3, CONFIG_APPLY_HELM_HURRY),  # Monkeyport
     # Chunky (12-14)
-    0x025: APItemPacket(REQITEM_MOVE, 1, 4, CONFIG_APPLY_HELM_HURRY),  # Hunky Chunky
-    0x026: APItemPacket(REQITEM_MOVE, 2, 4, CONFIG_APPLY_HELM_HURRY),  # Primate Punch
-    0x027: APItemPacket(REQITEM_MOVE, 3, 4, CONFIG_APPLY_HELM_HURRY),  # Gorilla Gone
+    0x025: APItemPacket(REQITEM_MOVE, 0, 4, CONFIG_APPLY_HELM_HURRY),  # Hunky Chunky
+    0x026: APItemPacket(REQITEM_MOVE, 1, 4, CONFIG_APPLY_HELM_HURRY),  # Primate Punch
+    0x027: APItemPacket(REQITEM_MOVE, 2, 4, CONFIG_APPLY_HELM_HURRY),  # Gorilla Gone
     
     # Instruments (level 8)
     0x028: APItemPacket(REQITEM_MOVE, 8, 0, CONFIG_APPLY_HELM_HURRY),  # Bongos
