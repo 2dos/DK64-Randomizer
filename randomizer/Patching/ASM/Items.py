@@ -588,6 +588,7 @@ def pauseUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     writeFunction(ROM_COPY, 0x806A8D20, Overlay.Static, "changeSelectedLevel", offset_dict)  # Change selected level on checks screen
     writeFunction(ROM_COPY, 0x806A84F8, Overlay.Static, "checkItemDB", offset_dict)  # Populate Item Databases
     writeFunction(ROM_COPY, 0x806A9978, Overlay.Static, "displayHintRegion", offset_dict)  # Display hint region
+    writeValue(ROM_COPY, 0x806AA018, Overlay.Static, 0x01E01025, offset_dict, 4)  # Remove MenuActivatedItems
     writeValue(ROM_COPY, 0x806A94CC, Overlay.Static, 0x2C610003, offset_dict, 4)  # SLTIU $at, $v1, 0x3 (Changes render check for <3 rather than == 3)
     writeValue(ROM_COPY, 0x806A94D0, Overlay.Static, 0x10200298, offset_dict, 4)  # BEQZ $at, 0x298 (Changes render check for <3 rather than == 3)
     writeValue(ROM_COPY, 0x806A932A, Overlay.Static, 12500, offset_dict)  # Increase memory allocated for displaying the Pause menu (fixes hints corrupting the heap)
@@ -609,6 +610,7 @@ def pauseUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     # Disable Item Checks
     writeValue(ROM_COPY, 0x806AB2E8, Overlay.Static, 0, offset_dict, 4)
     writeValue(ROM_COPY, 0x806AB360, Overlay.Static, 0, offset_dict, 4)
+    writeValue(ROM_COPY, 0x806AB3E4, Overlay.Static, 0, offset_dict, 4)
     # Check blueprint count
     writeValue(ROM_COPY, 0x806ABFCE, Overlay.Static, ReqItems.Blueprint, offset_dict)
     writeValue(ROM_COPY, 0x806ABFD2, Overlay.Static, -1, offset_dict, 2, True)  # All levels

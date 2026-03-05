@@ -76,7 +76,7 @@ def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int 
             exit_id = 0  # I trust that this line will never be needed, but codeQL panicked
             map_id = 0  # Same for this variable. codeQL thinks it can be used before being initialized
             ROM_COPY.seek(read_location + 8)
-            if map_id_override is not None or exit_id_override is not None:
+            if map_id_override is None or exit_id_override is None:
                 data = getEntranceDict(spoiler, Transitions.IslesMainToCastleLobby, Maps.CreepyCastleLobby, 0)
                 map_id = data["map"]
                 exit_id = data["exit"]
@@ -88,7 +88,6 @@ def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int 
                 exit_id += 0x10000
             ROM_COPY.writeMultipleBytes(map_id, 2)
             ROM_COPY.writeMultipleBytes(exit_id & 0xFFFF, 2)
-            print("Written Lvl 7 entrance at ", hex(read_location + 8 - isles_cutscenes))
             break
         segment_index += 1
         count_copy -= 1
@@ -218,8 +217,12 @@ def randomize_entrances(spoiler, ROM_COPY: LocalROM):
                 shuffledBack = spoiler.shuffled_exit_data[transition]
                 map_id = GetMapId(spoiler.settings, shuffledBack.regionId)
                 exit_id = getFilteredExit(spoiler.settings, map_id, getOneByteExit(shuffledBack))
-            writeValue(ROM_COPY, sym_maps + (index * 2), Overlay.Custom, map_id, offset_dict)
-            writeValue(ROM_COPY, sym_exits + (index * 2), Overlay.Custom, exit_id, offset_dict)
+            indexes = [index]
+            if index == 7:
+                indexes.append(8)
+            for idx in indexes:
+                writeValue(ROM_COPY, sym_maps + (idx * 2), Overlay.Custom, map_id, offset_dict)
+                writeValue(ROM_COPY, sym_exits + (idx * 2), Overlay.Custom, exit_id, offset_dict)
         # /* 0x088 */ unsigned short enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         for world_index, transition in enumerate(enter_transitions):
             shuffledBack = spoiler.shuffled_exit_data[transition]

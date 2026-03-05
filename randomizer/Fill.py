@@ -1613,10 +1613,10 @@ def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool = Fals
             empty.append(id)
     # Place item in random locations
     while len(itemsToPlace) > 0:
-        item = itemsToPlace.pop()
+        item = itemsToPlace.pop(0)
         validLocations = settings.GetValidLocationsForItem(item)
-        itemEmpty = [x for x in empty if x in validLocations and spoiler.LocationList[x].item is None and not spoiler.LocationList[x].inaccessible]
-        if len(itemEmpty) == 0:
+        itemEmpty = [x for x in empty if spoiler.LocationList[x].item is None and not spoiler.LocationList[x].inaccessible]
+        if len(itemEmpty) == 0:  # If we're entirely out of empty locations, mission accomplished
             if settings.extreme_debugging:
                 # Debugging variables: they are unaccessed but certainly useful. Do not touch!
                 invalid_empty_reachable = [x for x in itemEmpty if x not in validLocations]
@@ -1624,8 +1624,13 @@ def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool = Fals
                 accessible_empty_locations = [x for x in empty_locations if not x.inaccessible]
                 noitem_locations = [x for x in spoiler.LocationList.values() if x.type != Types.Shop and x.item is Items.NoItem]
             return len(itemsToPlace) + 1
-        spoiler.settings.random.shuffle(itemEmpty)
-        locationId = itemEmpty.pop()
+        validItemEmpty = [x for x in itemEmpty if x in validLocations]
+        if len(validItemEmpty) == 0:  # If this item can't be put in any of these locations, we can skip it and try again
+            # Remove all copies of this item from the list of items to be placed to avoid repeatedly trying to place it again
+            itemsToPlace = [x for x in itemsToPlace if x != item]
+            continue
+        spoiler.settings.random.shuffle(validItemEmpty)
+        locationId = validItemEmpty.pop()
         spoiler.LocationList[locationId].PlaceItem(spoiler, item)
 
         # In minimal logic, verify placement doesn't violate minimal logic rules
@@ -2665,7 +2670,7 @@ def Fill(spoiler: Spoiler) -> None:
     if len(filler_types_in_pool) > 0:
         placed_types.extend(filler_types_in_pool)
         spoiler.Reset()
-        PlaceItems(spoiler, FillAlgorithm.random, ItemPool.FillerItems(spoiler.settings), [])
+        PlaceItems(spoiler, FillAlgorithm.random, ItemPool.FillerItems(spoiler.settings), [], inOrder=True)
     if Types.CrateItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.CrateItem)
         # Crates hold nothing, so leave this one empty
@@ -4296,10 +4301,6 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
                 all_zero_weights = False
         if all_zero_weights:
             found_incompatibilities += "All Ice Traps have a zero weight, meaning it can't place anything. "
-    total_item_counts = settings.total_gbs + settings.total_crowns + settings.total_fairies + settings.total_medals + settings.total_pearls + settings.total_rainbow_coins
-    max_item_counts = 201 + 10 + 20 + 45 + 5 + 16
-    if total_item_counts > max_item_counts:
-        found_incompatibilities += f"Total amounts of GBs, Crowns, Fairies, Medals, Pearls, and Rainbow coins exceeds {max_item_counts}. "
     custom_item_count_data = {
         "Golden Bananas": {
             "value": settings.total_gbs,

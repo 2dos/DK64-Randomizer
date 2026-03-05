@@ -185,13 +185,13 @@ def getNewID(map: Maps) -> int:
 
 def getObjectModifications(target_map: Maps) -> list:
     """Get list of object modifications that need to be made."""
-    MODEL_TWO_INDEXES = {}
     obj_modifications = [
         # Static modifications
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x1A, obj_type=0xCE),  # Japes starting switch
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.TrainingGrounds, 0x39, obj_type=0xCE),  # TGrounds Switch
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x52, x=1648.095, y=990, z=2431.953),  # Japes Mountain GB
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x68, scale=0.15),  # Stump GB
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Fungi, 0x28, scale=0.2),  # Winch GB
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x13E, scale=0.2),  # Nintendo Coin
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Cranky, 0x2, scale=0.2),  # Rareware Coin
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x24, x=1455.853, y=6.5, z=522.716, ry=0),  # Free Chunky Switch

@@ -102,10 +102,12 @@ void spawnEnemyDrops(actorData* actor) {
             }
         }
     }
-    float drop_rotation_divisor = 0xFFF;
-    drop_rotation_divisor /= drop_count;
-    for (int i = 0; i < drop_count; i++) {
-        int drop_rotation = i * drop_rotation_divisor;
-        spawnActorWithFlagHandler(drop_type, actor->xPos, actor->yPos, actor->zPos, drop_rotation, drop_arg, flag, 0, drop_type_level, drop_type_kong);
+    if (drop_count > 0) {
+        float drop_rotation_divisor = 0xFFF;
+        drop_rotation_divisor /= drop_count;
+        for (int i = 0; i < drop_count; i++) {
+            int drop_rotation = i * drop_rotation_divisor;
+            spawnActorWithFlagHandler(drop_type, actor->xPos, actor->yPos, actor->zPos, drop_rotation, drop_arg, flag, 0, drop_type_level, drop_type_kong);
+        }
     }
 }

@@ -116,7 +116,7 @@ int getItemRequiredKong(maps map, int id) {
     return 0;
 }
 
-ROM_DATA static short spherical_items[] = {
+ROM_RODATA_NUM static const short spherical_items[] = {
     // CB Single
     0x0A,
     0x0D,
