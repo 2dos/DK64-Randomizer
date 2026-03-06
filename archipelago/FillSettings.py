@@ -471,7 +471,7 @@ def apply_kong_settings(settings_dict: dict, options) -> None:
         SelectStartingKong.option_diddy: Kongs.diddy,
         SelectStartingKong.option_lanky: Kongs.lanky,
         SelectStartingKong.option_tiny: Kongs.tiny,
-        SelectStartingKong.option_chunky: Kongs.diddy,
+        SelectStartingKong.option_chunky: Kongs.chunky,
         SelectStartingKong.option_any: Kongs.any,
     }
 
