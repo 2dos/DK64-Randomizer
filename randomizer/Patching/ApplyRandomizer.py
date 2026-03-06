@@ -370,14 +370,6 @@ def patching_response(spoiler):
     if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
         given_moves.extend([39, 40])  # 39 = Camera, 40 = Shockwave
         setItemReferenceName(spoiler, Items.CameraAndShockwave, 0, "Extra Training", 0)
-    move_bitfields = [0] * 6
-    for move in given_moves:
-        offset = int(move >> 3)
-        check = int(move % 8)
-        move_bitfields[offset] |= 0x80 >> check
-    for offset, value in enumerate(move_bitfields):
-        ROM_COPY.seek(sav + 0xD5 + offset)
-        ROM_COPY.writeMultipleBytes(value, 1)
 
     writeMultiselector(
         spoiler.settings.misc_changes_selected,

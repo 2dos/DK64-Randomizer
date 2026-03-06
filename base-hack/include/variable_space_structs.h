@@ -51,8 +51,7 @@ typedef struct varspace {
 	/* 0x0C8 */ char unk_C8[3];
 	/* 0x0CB */ unsigned char default_camera_type; // 0 = Free, 1 = Follow
 	/* 0x0CC */ unsigned char default_camera_mode; // 0 = Inverted, 1 = Non-Inverted
-	/* 0x0CD */ char unk_cd[8];
-	/* 0x0D5 */ moves_pregiven_bitfield moves_pregiven; // Bitfield, Size 0x6
+	/* 0x0CD */ char unk_cd[0xDB - 0xCD];
 	/* 0x0DB */ unsigned char seasonal_changes; // 0 = None, 1 = Halloween, 2 = Christmas
 	/* 0x0DC */ char unk_DC[0xE2 - 0xDC];
 	/* 0x0E2 */ unsigned short helm_hurry_start;

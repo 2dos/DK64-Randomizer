@@ -76,7 +76,6 @@ extern void handleTimeOfDay(time_of_day_calls call);
 extern int convertSubIDToIndex(short obj_index);
 extern int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2);
 extern void createCollisionObjInstance(collision_types subtype, int map, int exit);
-extern int spawnCannonWrapper(void);
 extern void disableDiddyRDDoors(void);
 
 extern void resetMapContainer(void);

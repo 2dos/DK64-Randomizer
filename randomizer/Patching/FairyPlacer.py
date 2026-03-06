@@ -328,7 +328,6 @@ def PlaceFairies(spoiler, ROM_COPY: LocalROM):
         ROM_COPY.seek(sav + 0x100)
         ROM_COPY.write(1)
         # Array construction
-        write_data = [255, 255]
         for item in spoiler.fairy_data_table:
             item_level = item["level"]
             item_map = fairy_locations[item_level][item["fairy_index"]].map

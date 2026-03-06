@@ -880,7 +880,6 @@ extern char LoadedHooks;
 extern varspace Rando;
 extern short StoredLag;
 extern unsigned char DamageMultiplier;
-extern char LobbiesOpen;
 extern char* PauseSlot3TextPointer;
 extern char ExpandPauseMenu;
 extern unsigned short InitialPauseHeight;

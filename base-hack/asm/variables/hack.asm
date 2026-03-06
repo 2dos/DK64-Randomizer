@@ -10,7 +10,6 @@
 .definelabel HoldableSpawnBitfield, 0x807FFFEC // u16
 .definelabel bonusAutocomplete, 0x807FFFE9 // u8
 .definelabel TextHoldOn, 0x807FFFE8 // u8
-.definelabel LobbiesOpen, 0x807FFFE7 // u8
 .definelabel Rando, 0x807FF800 // 0x200
 .definelabel CCButtons, 0x807FFFB0 // 0x4
 .definelabel CCEffectData, 0x807FFFB4 // 0x4

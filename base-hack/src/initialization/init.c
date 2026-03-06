@@ -244,7 +244,6 @@ void initHack(int source) {
 			bonusAutocomplete = Rando.resolve_bonus;
 			TextHoldOn = Rando.quality_of_life.textbox_hold;
 			ToggleAmmoOn = Rando.quality_of_life.ammo_swap;
-			LobbiesOpen = Rando.lobbies_open_bitfield;
 			ItemRandoOn = Rando.item_rando;
 			DamageMultiplier = Rando.damage_multiplier; // Keep for Crowd Control. Needs it to know what to set damage mult back to
 			initItemRandoPointer();

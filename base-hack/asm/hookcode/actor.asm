@@ -252,17 +252,7 @@ CannonForceCode:
     j 0x8067B694
     nop
 
-    CannonForceCode_CheckFlag:
-        jal 0x8067B450
-        or $a0, $s0, $zero
-        j 0x8067B68C
-        nop
-
     CannonForceCode_IsIsles:
-        lui $a0, hi(LobbiesOpen)
-        lbu $a0, lo(LobbiesOpen) ($a0)
-        beqz $a0, CannonForceCode_CheckFlag
-        nop
         j 0x8067B6CC
         nop
 

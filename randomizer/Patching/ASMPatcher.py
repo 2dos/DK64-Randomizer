@@ -96,6 +96,7 @@ CAN_THROW_APPLES = True
 DISABLE_LONG_JUMP = False
 TS = False
 TEST_HUNKY_FIX = False
+BETTER_JUMPS = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -833,7 +834,8 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     writeHook(ROM_COPY, 0x806F3E74, Overlay.Static, "AutowalkFix", offset_dict)
     writeHook(ROM_COPY, 0x80610948, Overlay.Static, "DynamicCodeFixes", offset_dict)
     writeHook(ROM_COPY, 0x806BD328, Overlay.Static, "KeyCompressionCode", offset_dict)
-    writeHook(ROM_COPY, 0x8067B684, Overlay.Static, "CannonForceCode", offset_dict)
+    if settings.open_lobbies:
+        writeHook(ROM_COPY, 0x8067B684, Overlay.Static, "CannonForceCode", offset_dict)
     writeHook(ROM_COPY, 0x806F9F88, Overlay.Static, "HUDDisplayCode", offset_dict)
     writeHook(ROM_COPY, 0x806E22B0, Overlay.Static, "HomingDisable", offset_dict)
     writeHook(ROM_COPY, 0x806EB574, Overlay.Static, "HomingHUDHandle", offset_dict)
@@ -2157,7 +2159,8 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     if TEST_HUNKY_FIX:
         writeValue(ROM_COPY, 0x8067185A, Overlay.Static, 0x64, offset_dict)
         writeValue(ROM_COPY, 0x80671814, Overlay.Static, 0, offset_dict, 4)
-
+    if BETTER_JUMPS:
+        writeValue(ROM_COPY, 0x806E1C6C, Overlay.Static, 0, offset_dict, 4)
     #
     writeHook(ROM_COPY, 0x806C3260, Overlay.Static, "fixLankyPhaseHandState", offset_dict)  # Ensures K Rool has a head in the end cutscene if in Lanky Phase
     writeFunction(ROM_COPY, 0x80628034, Overlay.Static, "exitBoss", offset_dict)
