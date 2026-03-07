@@ -16,7 +16,7 @@ typedef enum helm_prog_enum {
     /* 1 */ HELMPROG_GONE,
 } helm_prog_enum;
 
-static const kongs monkeyport_kongs[] = {KONG_TINY, KONG_DK, KONG_LANKY, KONG_TINY, KONG_TINY}; // Kongs used for the switchsanity setting for lower monkeyport in Isles
+ROM_DATA static kongs monkeyport_kongs[] = {KONG_TINY, KONG_DK, KONG_LANKY, KONG_TINY, KONG_TINY}; // Kongs used for the switchsanity setting for lower monkeyport in Isles
 
 int hasHelmProgMove(helm_prog_enum sub_id) {
     // 0 = Monkeyport pad, 1 = Gone Pad
@@ -73,7 +73,7 @@ int ableToUseMonkeyport(int id) {
                     // Set Monkeyport thing
                     return (Player->characterID == 5) || (Rando.perma_lose_kongs);
                 } else {
-                    if ((Player->characterID == monkeyport_kongs[mport_kong] + 2) || (Rando.perma_lose_kongs)) {
+                    if (((unsigned int)Player->characterID == monkeyport_kongs[mport_kong] + 2) || (Rando.perma_lose_kongs)) {
                         if (mport_kong == 1) {
                             // Blast
                             createCollisionObjInstance(COLLISION_BBLAST, MAP_ISLES, 0);
@@ -105,9 +105,7 @@ void IslesMonkeyportCode(behaviour_data* behaviour_pointer, int index) {
             setObjectScriptState(55, 20, 0);
             int tied_index = convertIDToIndex(55);
             if (tied_index > -1) {
-                int* m2location = (int*)ObjectModel2Pointer;
-                ModelTwoData* tied_object = getObjectArrayAddr(m2location,0x90,tied_index);
-                behaviour_data* tied_behaviour = (behaviour_data*)tied_object->behaviour_pointer;
+                behaviour_data* tied_behaviour = ObjectModel2Pointer[tied_index].behaviour_pointer;
                 if (tied_behaviour) {
                     setScriptRunState(tied_behaviour, RUNSTATE_RUNNING, 0);
                 }
@@ -146,19 +144,6 @@ int getHelmLobbyGoneReqKong(void) {
     return sub_type + 1;
 }
 
-static char bonus_shown = 0;
-
-void blastWarpContainer(maps map, int wrongCSEnabled) {
-    int exit = 0;
-    if (map == MAP_ISLES) {
-        exit = 23;
-    }
-    if (wrongCSEnabled) {
-        setIntroStoryPlaying(2);
-        setNextTransitionType(0);
-    }
-    initiateTransition_0(map, exit, 0, 0);
-}
 
 void activateGonePad(void) {
     actorSpawnerData* spawner = ActorSpawnerPointer;
@@ -488,18 +473,5 @@ void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
             behaviour_pointer->timer = 15;
             behaviour_pointer->next_state = 2;
         }
-    }
-}
-
-void initSwitchsanityChanges(void) {
-    if (Rando.switchsanity.isles.gone != 0) {
-        *(short*)(0x80680E3A) = getHi(&bonus_shown);
-        *(int*)(0x80680E3C) = 0x91EF0000 | getLo(&bonus_shown); // lbu $t7, lo(bonus_shown) ($t7)
-        *(int*)(0x80680E48) = 0; // nop
-        *(int*)(0x80680E54) = 0x51E00009; // beql $t7, $zero, 0x9
-    }
-    if (Rando.switchsanity.isles.monkeyport == 1) {
-        *(short*)(0x806E5A4A) = getHi(&blastWarpContainer);
-        *(short*)(0x806E5A4E) = getLo(&blastWarpContainer);
     }
 }

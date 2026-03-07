@@ -10,52 +10,6 @@
  */
 #include "../../include/common.h"
 
-static unsigned char replenlishable_drops[] = {
-    0x2F, // Watermelon
-    0x34, // Orange
-    0x33, // Ammo Crate
-    0x79, // Crystal
-};
-
-int isReplenishableDrop(int drop_object) {
-    /**
-     * @brief Is item that is dropped a replenishable item.
-     * In other words, once a player has picked up the item, will it cause problems
-     * if they pick it up again from the same instance of an enemy?
-     * 
-     * @param drop_object Actor index of dropped item
-     * 
-     * @return Is replenishable
-     */
-    for (int i = 0; i < sizeof(replenlishable_drops); i++) {
-        if (drop_object == replenlishable_drops[i]) {
-            return 1;
-        }   
-    }
-    return 0;
-}
-
-void buildItemDrops(void) {
-    /**
-     * @brief Build the item drops table to handle randomizer information
-     */
-    if ((Rando.disable_drops) && (!Rando.enemy_item_rando)) {
-        for (int i = 0; i < DROP_COUNT; i++) {
-            if (drops[i].source_object != 0) {
-                if (isReplenishableDrop(drops[i].dropped_object)) {
-                    drops[i].source_object = 3;
-                }
-            }
-        }
-    }
-}
-
-static drop_item default_drop = {
-    .dropped_object = 0x2F,
-    .drop_count = 1,
-    .drop_music = SONG_MELONSLICEDROP,
-};
-
 void spawnEnemyDrops(actorData* actor) {
     /**
      * @brief Handle the spawning of enemy drops. Based on a vanilla function with the same name.
@@ -91,6 +45,8 @@ void spawnEnemyDrops(actorData* actor) {
     }
     int drop_count = item_data->drop_count;
     int drop_type = item_data->dropped_object;
+    int drop_type_level = 0;
+    int drop_type_kong = 0;
     if (drop_count <= 0) {
         return;
     }
@@ -103,7 +59,10 @@ void spawnEnemyDrops(actorData* actor) {
         if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
             return;
         } else if (Rando.item_rando) {
-            drop_type = getBPItem(flag - 469);
+            int idx = flag - 469;
+            drop_type = bp_item_table[idx].actor;
+            drop_type_level = bp_item_table[idx].item_level;
+            drop_type_kong = bp_item_table[idx].item_kong;
             drop_count = 1;
             if (isBounceObject(drop_type)) {
                 drop_arg = 2;
@@ -118,35 +77,37 @@ void spawnEnemyDrops(actorData* actor) {
         if (TiedCharacterSpawner) {
             int spawner_id = TiedCharacterSpawner->spawn_trigger;
             flag = getEnemyFlag(spawner_id);
-            if ((canSpawnEnemyReward()) && (Rando.item_rando)) {
-                int proposition = getEnemyItem(spawner_id);
-                if ((proposition != -1) && (proposition != (CUSTOM_ACTORS_START + NEWACTOR_NULL))) {
-                    drop_type = proposition;
-                    drop_count = 1;
+            if (canSpawnEnemyReward()) {
+                if (Rando.item_rando) {
+                    enemy_item_db_item *proposition = getEnemyItem(spawner_id);
+                    if (proposition) {
+                        int actor = proposition->spawn.actor;
+                        if (actor != NEWACTOR_NULL) {
+                            drop_type = actor;
+                            drop_type_level = proposition->item_level;
+                            drop_type_kong = proposition->item_kong;
+                            drop_count = 1;
+                        }
+                    }
+                    if (isBounceObject(drop_type)) {
+                        drop_arg = 2;
+                    }
+                    setSpawnBitfield(spawner_id, 1);
                 }
-                if (isBounceObject(drop_type)) {
-                    drop_arg = 2;
-                }
-                setSpawnBitfield(spawner_id, 1);
-            }
-            if (!canSpawnEnemyReward()) {
+            } else {
+                flag = -1;
                 if ((drop_type == 0x2F) && (Rando.disable_drops)) {
                     return;
                 }
             }
         }
     }
-    float drop_rotation_divisor = 0xFFF;
-    drop_rotation_divisor /= drop_count;
-    for (int i = 0; i < drop_count; i++) {
-        int drop_rotation = i * drop_rotation_divisor;
-        spawnActorWithFlag(drop_type, actor->xPos, actor->yPos, actor->zPos, drop_rotation, drop_arg, flag, 0);
+    if (drop_count > 0) {
+        float drop_rotation_divisor = 0xFFF;
+        drop_rotation_divisor /= drop_count;
+        for (int i = 0; i < drop_count; i++) {
+            int drop_rotation = i * drop_rotation_divisor;
+            spawnActorWithFlagHandler(drop_type, actor->xPos, actor->yPos, actor->zPos, drop_rotation, drop_arg, flag, 0, drop_type_level, drop_type_kong);
+        }
     }
-}
-
-void initItemDropTable(void) {
-    /**
-     * @brief Initialize the item drop data at ROM Boot
-     */
-    buildItemDrops();
 }

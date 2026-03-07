@@ -10,138 +10,20 @@
  */
 #include "../../include/common.h"
 
-static short pellets[] = {48, 36, 42, 43, 38};
-
 #define ORANGE_GUN_SFX 400
 #define ORANGE_GUN_VARIANCE 5
-#define ENABLE_ORANGE_GUN 1
 
-static const char* krool_name = "K. ROOL";
-static const char* cranky_name = "CRANKY";
-static const char* candy_name = "CANDY";
-static const char* funky_name = "FUNKY";
-
-void initKrusha(int slot) {
-    /**
-     * @brief Initialize the Krusha Cosmetic/Gameplay feature
-     * 
-     */
-    writeFunction(0x80677E94, &adjustAnimationTables); // Give Krusha animations to slot
-    writeFunction(0x806C32B8, &updateCutsceneModels); // Fix cutscene models
-    RollingSpeeds[slot] = 175; // Increase Krusha slide speed to 175
-    if (Rando.kong_models[slot] == KONGMODEL_KRUSHA) {
-        KongTextNames[slot] = KongTextNames[5];
-        KongTagNames[slot] = 6; // Change kong name in Tag Barrel
-    } else {
-        KongTextNames[slot] = krool_name;
-        KongTagNames[slot] = 7; // Change kong name in Tag Barrel
-    }
-    LedgeHangY[slot] = LedgeHangY[5];
-    LedgeHangY_0[slot] = LedgeHangY_0[5];
-    *(short*)(0x8074AB5A) = 0x0040; // Enables Krusha's spin attack to knock kasplats down
-    PotionAnimations[slot] = PotionAnimations[4];
-    actor_functions[2 + slot] = (void*)0x806C9F44; // Replace Kong Code w/ Krusha Code
-    if (ENABLE_ORANGE_GUN) {
-        // Gun Stuff
-        int focused_pellet = pellets[slot];
-        actor_functions[focused_pellet] = &OrangeGunCode;
-        setActorDamage(focused_pellet, 3);
-        *(int*)(0x8071AAC4) = 0;
-        *(int*)(0x8075DBB4 + (slot << 2)) = 0x806FAE0C;
-        *(short*)(0x806E240A) = 0x3E80;
-    }
-    switch (slot) {
-        case 0:
-            // DK
-            *(short*)(0x806F0AFE) = 0; // Remove gun from hands in Tag Barrel
-            *(int*)(0x806F0AF0) = 0x24050001; // Fix Hand State
-            *(int*)(0x806D5EC4) = 0; // Prevent Moving Ground Attack pop up
-            *(short*)(0x8064AF5E) = 5; // Reduce slam range for DK Dungeon GB Slam
-            if (ENABLE_ORANGE_GUN) {
-                *(short*)(0x806E2AA2) = ORANGE_GUN_SFX; // SFX
-                *(short*)(0x806E2AA6) = ORANGE_GUN_VARIANCE; // Variance
-            }
-            break;
-        case 1:
-            // Diddy
-            *(int*)(0x806F0A6C) = 0x0C1A29D9; // Replace hand state call
-            *(int*)(0x806F0A78) = 0; // Replace hand state call
-            *(int*)(0x806E4938) = 0; // Always run adapt code
-            *(int*)(0x806E4940) = 0; // NOP Animation calls
-            *(int*)(0x806E4950) = 0; // NOP Animation calls
-            *(int*)(0x806E4958) = 0; // NOP Animation calls
-            writeFunction(0x806E495C, &adaptKrushaZBAnimation_Charge); // Allow Krusha to use slide move if fast enough (Charge)
-            *(int*)(0x806E499C) = 0; // NOP Animation calls
-            *(int*)(0x806E49C8) = 0; // NOP Animation calls
-            *(int*)(0x806E49F0) = 0; // NOP Animation calls
-            *(short*)(0x806CF5F0) = 0x5000; // Prevent blink special cases
-            *(int*)(0x806CF76C) = 0; // Prevent blink special cases
-            *(int*)(0x806832B8) = 0; // Prevent tag blinking
-            *(int*)(0x806C1050) = 0; // Prevent Cutscene Kong blinking
-            *(unsigned char*)(0x8075D19F) = 0xA0; // Fix Gun Firing
-            writeFunction(0x806141B4, &DiddySwimFix); // Fix Diddy's Swim Animation
-            *(short*)(0x80749764) = 10; // Fix Diddy Swimming (A)
-            *(short*)(0x80749758) = 10; // Fix Diddy Swimming (B)
-            *(short*)(0x8074974C) = 10; // Fix Diddy Swimming (Z/First Person)
-            writeFunction(0x806E903C, &MinecartJumpFix); // Fix Diddy Minecart Jump
-            writeFunction(0x806D259C, &MinecartJumpFix_0); // Fix Diddy Minecart Jump
-            if (ENABLE_ORANGE_GUN) {
-                *(short*)(0x806E2AB2) = ORANGE_GUN_SFX; // SFX
-            }
-            break;
-        case 2:
-            // Lanky
-            /*
-                Issues:
-                    Lanky Phase arm extension has a poly tri not correctly aligned
-            */
-            *(short*)(0x806F0ABE) = 0; // Remove gun from hands in Tag Barrel
-            writeFunction(0x806E48BC, &adaptKrushaZBAnimation_PunchOStand); // Allow Krusha to use slide move if fast enough (OStand)
-            *(int*)(0x806E48B4) = 0; // Always run `adaptKrushaZBAnimation`
-            *(int*)(0x806F0AB0) = 0x24050001; // Fix Hand State
-            *(short*)(0x80749C74) = 10; // Fix Lanky Swimming (A)
-            *(short*)(0x80749C80) = 10; // Fix Lanky Swimming (B)
-            *(short*)(0x80749CA4) = 10; // Fix Lanky Swimming (Z/First Person)
-            writeFunction(0x806141B4, &DiddySwimFix); // Fix Lanky's Swim Animation
-            if (ENABLE_ORANGE_GUN) {
-                *(short*)(0x806E2A7E) = ORANGE_GUN_SFX; // SFX
-                *(short*)(0x806E2A86) = ORANGE_GUN_VARIANCE; // Variance
-            }
-            break;
-        case 3:
-            // Tiny
-            *(short*)(0x806F0ADE) = 0; // Remove gun from hands in Tag Barrel
-            *(int*)(0x806E47F8) = 0; // Prevent slide bounce
-            *(short*)(0x806CF784) = 0x5000; // Prevent blink special cases
-            *(short*)(0x806832C0) = 0x5000; // Prevent tag blinking
-            *(int*)(0x806C1058) = 0; // Prevent Cutscene Kong blinking
-            *(int*)(0x806F0AD0) = 0x24050001; // Fix Hand State
-            if (ENABLE_ORANGE_GUN) {
-                changeFeatherToSprite();
-                *(short*)(0x806E2A8A) = ORANGE_GUN_SFX; // SFX
-                *(int*)(0x806E2A90) = 0x24030000 | ORANGE_GUN_VARIANCE; // Variance
-                *(float*)(0x80753E38) = 350.0f;
-            }
-            break;
-        case 4:
-            // Chunky
-            *(int*)(0x806CF37C) = 0; // Fix object holding
-            *(int*)(0x806F1274) = 0; // Prevent model change for GGone
-            *(int*)(0x806CBB84) = 0; // Enable opacity filter GGone
-            writeFunction(0x806E4900, &adaptKrushaZBAnimation_PunchOStand); // Allow Krusha to use slide move if fast enough (PPunch)
-            *(int*)(0x806E48F8) = 0; // Always run `adaptKrushaZBAnimation`
-            *(short*)(0x806F0A9E) = 0; // Remove gun from hands in Tag Barrel
-            *(int*)(0x806F0A90) = 0x24050001; // Fix Hand State
-        break;
-    }
-}
+ROM_RODATA_PTR static const char* krool_name = "K. ROOL";
+ROM_RODATA_PTR static const char* cranky_name = "CRANKY";
+ROM_RODATA_PTR static const char* candy_name = "CANDY";
+ROM_RODATA_PTR static const char* funky_name = "FUNKY";
 
 typedef struct kongmodel_recolor_data {
     /* 0x000 */ unsigned char kong;
     /* 0x001 */ unsigned char model;
 } kongmodel_recolor_data;
 
-static const kongmodel_recolor_data kongmodel_rc[] = {
+ROM_RODATA_NUM static const kongmodel_recolor_data kongmodel_rc[] = {
     {.kong = KONG_DK, .model=KONGMODEL_CRANKY},
     {.kong = KONG_TINY, .model=KONGMODEL_CANDY},
     {.kong = KONG_DIDDY, .model=KONGMODEL_FUNKY},
@@ -149,7 +31,7 @@ static const kongmodel_recolor_data kongmodel_rc[] = {
 
 void* updateKongTB(int malloc_size) {
     unsigned short* paad = CurrentActorPointer_0->paad;
-    for (int k = 0; k < sizeof(kongmodel_rc)/sizeof(kongmodel_recolor_data); k++) {
+    for (unsigned int k = 0; k < sizeof(kongmodel_rc)/sizeof(kongmodel_recolor_data); k++) {
         int kong_index = kongmodel_rc[k].kong;
         if (*paad == (2 + kong_index)) {
             if (Rando.kong_models[kong_index] == kongmodel_rc[k].model) {
@@ -193,7 +75,7 @@ void updateActorHandStates(actorData* actor, int type) {
     handleCutsceneKong(actor, type);
 }
 
-static const char tied_model_actors[] = {
+ROM_RODATA_NUM static const char tied_model_actors[] = {
     -1, 3, 3, 3, // 0-3
     2, 2, 4, 4, // 4-7
     4, 5, 5, 5, // 8-11
@@ -317,27 +199,21 @@ void initModelChanges(void) {
             case KONGMODEL_KRUSHA:
             case KONGMODEL_KROOL_CUTSCENE:
             case KONGMODEL_KROOL_FIGHT:
-                initKrusha(i);
+                if (Rando.kong_models[i] != KONGMODEL_KRUSHA) {
+                    KongTextNames[i] = (char*)krool_name;
+                }
                 break;
             case KONGMODEL_CRANKY:
                 KongTagNames[i] = 8;
-                KongTextNames[i] = cranky_name;
+                KongTextNames[i] = (char*)cranky_name;
                 break;
             case KONGMODEL_CANDY:
                 KongTagNames[i] = 9;
-                KongTextNames[i] = candy_name;
+                KongTextNames[i] = (char*)candy_name;
                 break;
             case KONGMODEL_FUNKY:
                 KongTagNames[i] = 10;
-                KongTextNames[i] = funky_name;
-                break;
-            case KONGMODEL_DISCOCHUNKY:
-                if (i == 4) {
-                    *(int*)(0x806CF37C) = 0; // Fix object holding
-                    *(int*)(0x806F1274) = 0; // Prevent model change for GGone
-                    *(int*)(0x806CBB84) = 0; // Enable opacity filter GGone
-                    *(short*)(0x8075BF3E) = 0x2F5C; // Make CS Model Behave normally
-                }
+                KongTextNames[i] = (char*)funky_name;
                 break;
             default:
                 break;
@@ -369,7 +245,7 @@ int determineShockwaveColor(actorData* shockwave) {
     return model;
 }
 
-static FogMapping fog_data[] = {
+ROM_DATA static FogMapping fog_data[] = {
     {.rgb.red = 0x8A, .rgb.green = 0x52, .rgb.blue = 0x16, .map_index = MAP_AZTEC, .fog_entry=990, .fog_cap = 999},
     {.rgb.red = 0, .rgb.green = 0, .rgb.blue = 0, .map_index = MAP_CAVES, .fog_entry=990, .fog_cap = 999},
     {.rgb.red = 0, .rgb.green = 0, .rgb.blue = 0, .map_index = MAP_CASTLE, .fog_entry=990, .fog_cap = 999},
@@ -407,4 +283,206 @@ void setFog(int enabled) {
             return;
         }
     }
+}
+
+void getRainbowAmmoColor(rgba *color) {
+    int pos = FrameReal % 1536;
+    int step = pos >> 8;
+    switch (step) {
+        case 0:
+            // 0 <= pos <= 255
+            color->red = 255;
+            color->green = pos;
+            break;
+        case 1:
+            // 255 < pos <= 511
+            color->red = 511 - pos;
+            color->green = 255;
+            break;
+        case 2:
+            // 511 < pos <= 767
+            color->green = 255;
+            color->blue = pos - 512;
+            break;
+        case 3:
+            // 767 < pos <= 1023
+            color->green = 1023 - pos;
+            color->blue = 255;
+            break;
+        case 4:
+            // 1023 < pos <= 1279
+            color->red = pos - 1024;
+            color->blue = 255;
+            break;
+        default:
+            // 1280 < pos <= 1535
+            color->red = 255;
+            color->blue = 1535 - pos;
+            break;
+    }
+}
+
+void updateSpriteColor(sprite_info *sprite) {
+    rgba temp = {.alpha = 0xFF};
+    getRainbowAmmoColor(&temp);
+    sprite->red = temp.red;
+    sprite->green = temp.green;
+    sprite->blue = temp.blue;
+}
+
+void colorRainbowAmmo(void* actor, float x, float y, float z, int unk0) {
+    allocateBone(actor, x, y, z, unk0);
+    if (Rando.rainbow_ammo) {
+        loadSpriteFunction((int)&updateSpriteColor);
+    }
+}
+
+void colorRainbowAmmoHUD(sprite_info *sprite) {
+    HUDSpriteUpdate(sprite);
+    if (Rando.rainbow_ammo) {
+        updateSpriteColor(sprite);
+    }
+}
+
+void colorRainbowAmmoHUD_0(sprite_info *sprite) {
+    PauseSpriteUpdate(sprite);
+    if (Rando.rainbow_ammo) {
+        updateSpriteColor(sprite);
+    }
+}
+
+void setHUDUpdateFunction(void* function, int item_index) {
+    if ((item_index == 2) || (item_index == 3)) {
+        loadSpriteFunction((int)&colorRainbowAmmoHUD);
+    } else {
+        loadSpriteFunction((int)function);
+    }
+}
+
+void setHUDUpdateFunction_0(void* function, int item_index, int control_type) {
+    if ((item_index == 2) || (item_index == 3)) {
+        loadSpriteFunction((int)&colorRainbowAmmoHUD_0);
+    } else if (control_type == 16) {
+        loadSpriteFunction((int)&totalsSprite);
+    } else if (control_type == 17) {
+        loadSpriteFunction((int)&checksSprite);
+    } else {
+        loadSpriteFunction((int)function);
+    }
+}
+
+ROM_RODATA_NUM static const unsigned char bonus_ost[] = {
+    SONG_MINIGAMES,
+    SONG_STEALTHYSNOOP,
+    SONG_BATTLEARENA,
+    SONG_MADMAZEMAUL,
+    SONG_MINECARTMAYHEM,
+    SONG_MONKEYSMASH,
+    SONG_HELMBONUS,
+    SONG_ENGUARDE,
+    SONG_RAMBI,
+};
+
+ROM_RODATA_NUM static const unsigned char boss_ost[] = {
+    SONG_JAPESDILLO,
+    SONG_AZTECDOGADON,
+    SONG_FACTORYJACK,
+    SONG_GALLEONPUFFTOSS,
+    SONG_FORESTDOGADON,
+    SONG_CAVESDILLO,
+    SONG_CASTLEKUTOUT,
+    SONG_KROOLBATTLE,
+    SONG_MINIBOSS,
+    SONG_FORESTSPIDER,
+};
+
+ROM_DATA static unsigned short current_boss_song = 0;
+ROM_DATA static unsigned short canceled_transformation_music = 0;
+
+int pickRandomFromPool(const unsigned char* pool, const int count) {
+    int rng = getRNGLower31() & 0xFF;
+    while (rng >= count) {
+        // Yes, I know rng % count is better, but if I don't do this, Wii U will crash
+        // What an A tier console....
+        rng -= count;
+    }
+    return pool[rng];
+}
+
+void playBonusSong(songs song, float volume) {
+    if (Rando.bonus_music_rando) {
+        song = pickRandomFromPool(&bonus_ost[0], sizeof(bonus_ost));
+    }
+    playSong(song, volume);
+}
+
+void playBossSong(songs song, float volume) {
+    if (Rando.boss_music_rando) {
+        if(current_boss_song != 0){
+            cancelMusic(current_boss_song, 0);
+            current_boss_song = 0;
+        } else {
+            song = pickRandomFromPool(&boss_ost[0], sizeof(boss_ost));
+            current_boss_song = song;
+        }
+    }
+    playSong(song, volume);
+}
+
+void playSongWCheck(songs song, float volume) {
+    if(MusicTrackChannels[3] == SONG_MINIMONKEY){
+        canceled_transformation_music = SONG_MINIMONKEY;
+        cancelMusic(SONG_MINIMONKEY, 0);
+    }
+    if((song == SONG_KROOLENTRANCE || song == SONG_FORESTMUSHROOM) && current_boss_song != 0){
+        // playing the K. Rool entrance theme after beating Chunky Phase, same for Spider Boss (yeah it plays mushroom music)
+        cancelMusic(current_boss_song, 0);
+        current_boss_song = 0;
+    } 
+    if (Rando.bonus_music_rando && inU8List(song, &bonus_ost[0], sizeof(bonus_ost))) {
+        song = pickRandomFromPool(&bonus_ost[0], sizeof(bonus_ost));
+    }
+    if (Rando.boss_music_rando && inU8List(song, &boss_ost[0], sizeof(boss_ost))) {
+        if (current_boss_song != 0){
+            // A boss song is already playing or I must have done something wrong
+            return;
+        }
+        song = pickRandomFromPool(&boss_ost[0], sizeof(boss_ost));
+        current_boss_song = song;
+    }
+    playSong(song, volume);
+}
+
+void stopBossSong(songs song, int unk0){
+    if(canceled_transformation_music != 0){
+        playSong(canceled_transformation_music, 1.0f);
+        canceled_transformation_music = 0;
+    }
+    if (current_boss_song != 0){
+        cancelMusic(current_boss_song, 0);
+        current_boss_song = 0;
+    } else {
+        cancelMusic(song, 0);
+    }
+    if(CurrentMap == MAP_AZTECTINYTEMPLE && MusicTrackChannels[0] != SONG_AZTECTEMPLE){
+        // TinyTemple song can be overwritten by boss song
+        playSong(SONG_AZTECTEMPLE, 1.0f);
+    }
+}
+
+int resetBossSong(){
+    // resets the current_boss_song variable, because otherwise bugs can happen
+    // because I wasn't planning on manually stopping boss music in the first 4 K. Rool phases
+    // because that already automatically happens, and I appreciate dk64 for that
+    current_boss_song = 0;
+    canceled_transformation_music = 0;
+    return checkIntroStoryPlaying();
+}
+
+void playNotBossSong(songs song, float volume){
+    if(current_boss_song != 0){
+        cancelMusic(current_boss_song, 0);
+        current_boss_song = 0;
+    } 
+    playSong(song, volume);
 }

@@ -1,0 +1,13 @@
+Dynamic Model 2 textures follow the following structure.
+- Pointer at 0x6C into model file
+- Textures are always from Ptr Table 7
+- First 4 bytes is the dyn texture count
+- For each dyn texture block:
+    - Bytes 0x01 - 0x04: Default Texture
+    - Bytes 0x05 - 0x08: 0
+    - Bytes 0x09 - 0x0C: Count 1
+        - Unsure on purpose of this, boss door number has this set to 1, wrinkly set to 2
+    - Bytes 0x0D - 0x10: Texture Count
+        - Texture 1 is always the default, so it should be subseq arr count + 1
+    - Bytes 0x11 - 0x84: Textures
+- Each block is capped at 0x84 in size, so can't hold more than 30 textures

@@ -31,7 +31,7 @@ const createWindow = () => {
       pathname: "127.0.0.1:9990/randomizer.html",
       protocol: "http:",
       slashes: true,
-    })
+    });
   );
   mainWindow.setMenuBarVisibility(false);
   mainWindow.on("closed", () => {

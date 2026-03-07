@@ -11,7 +11,7 @@
 
 #include "../../include/common.h"
 
-static const int crown_maps_flags[] = {
+ROM_DATA static int crown_maps_flags[] = {
 	MAP_BATTLEARENA_BEAVERBRAWL, // Japes
 	MAP_BATTLEARENA_KRITTERKARNAGE, // Aztec
 	MAP_BATTLEARENA_ARENAAMBUSH, // Factory

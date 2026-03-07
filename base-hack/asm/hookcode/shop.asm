@@ -187,3 +187,26 @@ CrankyCoconutDonation:
     CrankyCoconutDonation_Funky:
         j 0x80026F18
         addiu $t5, $zero, 0x2
+
+HandleSnideEndReward:
+    ; $s3: Character Addr
+    ; Free regs: $t6, $t7, $t8, $t9, $a0, $a1, $a2, $s2
+    lbu $a2, 0x0 ($s3)
+    addiu $a0, $zero, 4  ; REQITEM_BLUEPRINT
+    jal getItemCount_new
+    or $a1, $zero, $zero
+    or $s2, $v0, $zero  ; Store Kong BP count to s2 reg
+    lui $t4, hi(ItemInventory)
+    lw $t4, lo(ItemInventory) ($t4)
+    lbu $a0, 0x0 ($s3)
+    addu $t4, $t4, $a0
+    lbu $a1, 0x19 ($t4)
+    subu $a2, $s2, $a1  ; BPs unturned
+    sb $s2, 0x19 ($t4)  ; Update BP Turned count
+    addiu $a0, $zero, 8  ; GB
+    jal changeCollectableCount
+    or $a1, $zero, $zero
+
+HandleSnideEndReward_finish:
+    j 0x800248D4
+    nop

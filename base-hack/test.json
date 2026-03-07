@@ -10,7 +10,6 @@
       8,
       9
    ],
-   "unlock_kongs":31,
    "fast_start_beginning":1,
    "tag_anywhere":1,
    "fast_start_helm":1,
@@ -19,7 +18,6 @@
    "pppanic_fairy_model":73,
    "cutscene_skip_setting":1,
    "show_music_name":1,
-   "balloon_sound":1,
    "quality_of_life":{
       "reduce_lag":true,
       "remove_cutscenes":true,
@@ -161,7 +159,7 @@
    "disable_drops":0,
    "shop_indicator_on":2,
    "warp_to_isles_enabled":1,
-   "lobbies_open_bitfield":255,
+   "lobbies_open_bitfield":0,
    "perma_lose_kongs":0,
    "jetpac_medal_requirement":1,
    "free_target_llama":255,
@@ -230,11 +228,6 @@
       48,
       0
    ],
-   "kut_out_phases":[
-      3,
-      2,
-      0
-   ],
    "dpad_visual_enabled":2,
    "helm_order":[
       2,
@@ -244,10 +237,13 @@
       255
    ],
    "helm_hurry_mode":0,
-   "win_condition":5,
+   "win_condition":3,
+   "win_condition_extra": {
+      "item": 3,
+      "count": 255
+   },
    "version":2,
    "item_rando":1,
-   "medal_cb_req":5,
    "remove_oscillation_effects":1,
    "rareware_gb_fairies":1,
    "call_parent_filter":0,

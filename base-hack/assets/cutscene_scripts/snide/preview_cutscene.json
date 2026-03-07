@@ -12,8 +12,8 @@
                 "sub_command": 24,
                 "params": [
                     0,
-                    19,
-                    38,
+                    "enums.CompTextFiles.PreviewsFlavor",
+                    "enums.ItemPreview.SnideMicro",
                     0
                 ]
             },

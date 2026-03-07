@@ -2,7 +2,6 @@
 
 from setuptools import find_packages, setup
 
-
 setup(
     name="dk64-randobot",
     description="racetime.gg bot for generating DK64R seeds.",

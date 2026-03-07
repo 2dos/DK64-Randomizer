@@ -152,6 +152,13 @@
                                                                         {% endif %}
                                                                         {% if spoiler[item][sub_group][item2] | isIterable %}
                                                                             <td>{{ spoiler[item][sub_group][item2]|join("<br>")|safe }}</td>
+                                                                        {% elif sub_group == "Wrinkly Hints" %}
+                                                                            <td>
+                                                                                {{ spoiler[item][sub_group][item2]|getHintText }}
+                                                                                <div style="font-size: 0.9em; color: #BBB">
+                                                                                    {{ spoiler[item][sub_group][item2]|getHintLocation }}
+                                                                                </div>
+                                                                            </td>
                                                                         {% else %}
                                                                             <td>
                                                                                 {{ spoiler[item][sub_group][item2] }}

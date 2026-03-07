@@ -37,6 +37,7 @@
 #define MILL_WARNINGLIGHTS 0xC
 #define MILL_CRUSHER 0x8
 #define MILL_TRIANGLEPAD 0x0
+#define MILLREAR_MINI_BOX 0x3
 #define GMUSH_BOARD 0xB
 #define CAVES_GBDOME 0x27
 #define CAVES_BOULDERDOME 0x2B
@@ -156,6 +157,7 @@
 
 #define FUNGI_SWITCH_NIGHT 0x4
 #define FUNGI_SWITCH_DAY 0x5
+#define FUNGI_SWITCH_LANKY_MUSHROOM 0XEB
 
 #define JAPES_CAVE_GATE 0x2B
 #define JAPES_PEANUT_MOUNTAIN 0x58
@@ -182,6 +184,9 @@
 #define TREE_DOOR_DK 0x1
 #define TREE_DOOR_CHUNKY 0x9
 
+#define ITEM_NINTENDO_COIN 0x13E
+#define ITEM_RAREWARE_COIN 0x2
+
 #define TNS_NUMBER 0x15
 #define TNS_ITEMINDICATOR 0xF
 
@@ -205,20 +210,41 @@
 
 #define K_ROOL_CHUNKY_PHASE_SLAM 0xA
 
-static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
+#define FACTORY_CRUSHER_2 0x2
+#define FACTORY_CRUSHER_3 0x3
+#define FACTORY_CRUSHER_4 0x4
+
+ROM_DATA static unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
+ROM_DATA static unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
-	int wrinkly_index = kong + (5 * getWorld(CurrentMap, 0));
+	int world = getWorld(CurrentMap, 0);
+	int wrinkly_index = kong + (5 * world);
 	int flag = FLAG_WRINKLYVIEWED + wrinkly_index;
 	if (Rando.hints_are_items) {
 		if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
-			int item_type = getWrinklyItem(wrinkly_index);
-			displayMedalOverlay(flag, item_type);
+			item_packet *item_send = &wrinkly_item_table[wrinkly_index];
+			displayMedalOverlay(flag, item_send);
 		}
 	} else {
 		setPermFlag(flag);
+		giveItem(REQITEM_HINT, world, kong, (giveItemConfig){.apply_helm_hurry = 1});
 	}
+	if ((CurrentMap != MAP_FUNGILOBBY) || (Rando.quality_of_life.no_wrinkly_puzzles)) {
+		// Display hint tick
+		displayImageOnObject(index, 1, 2, 0);
+		displayImageOnObject(index, 2, 2, 0);
+	}
+	//
 	spawnWrinkly(behaviour, index, kong, unk0);
+}
+
+void loadWrinklyTextWrapper(actorData* actor, int file, int index) {
+	if (Rando.hints_are_items) {
+		index = wrinkly_item_table[index - 1].item_type;
+		file = 47;
+	}
+	getTextPointer_0(actor, file, index);
 }
 
 #define MILL_CRUSHER_PROGRESS 1
@@ -230,9 +256,8 @@ void setCrusher(void) {
 	if (CurrentMap == MAP_FUNGIMILLFRONT) {
 		if ((ObjectModel2Timer < 10) && (ObjectModel2Timer > 5)) {
 			int crusher_index = convertIDToIndex(8);
-			int* m2location = (int*)ObjectModel2Pointer;
 			if (crusher_index > -1) {
-				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,crusher_index);
+				ModelTwoData* _object = &ObjectModel2Pointer[crusher_index];
 				if (_object) {
 					behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
 					if (behaviour) {
@@ -276,8 +301,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		switch(CurrentMap) {
 			case MAP_GALLEON:
 				{
-					int gate_index = -1;
-					int gate_flag = -1;
+					int gate_flag = 0;
 					switch (param2) {
 						case SEASICK_SHIP:
 							initiateLZRTransition(&Rando.seasick_ship_enter, MAP_GALLEONSEASICKSHIP, 0);
@@ -309,36 +333,29 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							}
 							break;
 						case GALLEON_DK_5DSDOOR:
-							gate_index = 0;
 							gate_flag = GALLEON_5DSOPEN_DK;
 						case GALLEON_DIDDY_5DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 1;
+							if (!gate_flag) {
 								gate_flag = GALLEON_5DSOPEN_DIDDY;
 							}
 						case GALLEON_LANKY_5DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 2;
+							if (!gate_flag) {
 								gate_flag = GALLEON_5DSOPEN_LANKY;
 							}
 						case GALLEON_TINY_5DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 3;
+							if (!gate_flag) {
 								gate_flag = GALLEON_5DSOPEN_TINY;
 							}
 						case GALLEON_CHUNKY_5DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 4;
+							if (!gate_flag) {
 								gate_flag = GALLEON_5DSOPEN_CHUNKY;
 							}
 						case GALLEON_LANKY_2DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 5;
+							if (!gate_flag) {
 								gate_flag = GALLEON_2DSOPEN_LANKY;
 							}
 						case GALLEON_TINY_2DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 6;
+							if (!gate_flag) {
 								gate_flag = GALLEON_2DSOPEN_TINY;
 							}
 							if (index == 0) {
@@ -374,7 +391,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if ((param2 == AZTEC_LLAMACOCONUT) || (param2 == AZTEC_LLAMAGRAPE) || (param2 == AZTEC_LLAMAFEATHER)) {
 					if ((index == 0) && (param2 == AZTEC_LLAMACOCONUT)) {
-						if (!Rando.quality_of_life.remove_cutscenes) {
+						if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
 							PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
 						}
 					} else if (index == 1) {
@@ -391,10 +408,20 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				if (param2 == FUNGI_MINECART_GRATE) {
 					initiateLZRTransition(&Rando.fungi_minecart_enter, MAP_FUNGIMINECART, 0);
 				} else if (param2 == FUNGI_BEANCONTROLLER) {
-					return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
+					return getItemCount_new(REQITEM_BEAN, 0, 0);
 				} else if ((param2 == FUNGI_SWITCH_DAY) || (param2 == FUNGI_SWITCH_NIGHT)) {
 					if (!Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->timer = 70;
+					}
+				} else if (param2 == FUNGI_SWITCH_LANKY_MUSHROOM) {
+					if (index == 0) {
+						if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
+							PlayCutsceneFromModelTwoScript(behaviour_pointer,12,1,0);
+						}
+					} else if (index == 1) {
+						setPermFlag(FLAG_LANKY_MUSH_OPEN);
+					} else if (index == 2) {
+						return checkFlag(FLAG_LANKY_MUSH_OPEN, FLAGTYPE_PERMANENT);
 					}
 				}
 				break;
@@ -405,6 +432,11 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,113,2);
 					}
+				}
+				break;
+			case MAP_CRANKY:
+				if (param2 == ITEM_RAREWARE_COIN) {
+					giveItemFromPacket(&company_coin_table[1], 0);
 				}
 				break;
 			case MAP_KROOLCHUNKY:
@@ -441,11 +473,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (Rando.lobbies_open_bitfield & 4) {
 						hideObject(behaviour_pointer);
 					}
-				} else if (param2 == ISLES_FACTORYDOORCOLLISION) {
-					if ((Rando.lobbies_open_bitfield & 4) || (checkFlag(FLAG_KEYIN_KEY2, FLAGTYPE_PERMANENT) || ((CutsceneIndex == 7) && (CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)))) {
-						hideObject(behaviour_pointer);
-						behaviour_pointer->next_state = 1;
-					}
 				} else if (param2 == ISLES_GALLEONBARS) {
 					if (Rando.lobbies_open_bitfield & 8) {
 						hideObject(behaviour_pointer);
@@ -481,12 +508,16 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->next_state = 21;
 					}
 				} else if (param2 == K_ROOL_SHIP) {
-					for (int i = 0; i < 8; i++) {
-						if (Rando.krool_requirements & (1 << i)) {
-							if (!checkFlag(FLAG_KEYIN_KEY1 + i, FLAGTYPE_PERMANENT)) {
-								return 0;
-							}
-
+					// Check access requirements based on ship spawn method
+					if (Rando.win_condition_spawns_ship) {
+						// Win condition-based access
+						if (!canAccessWinCondition()) {
+							return 0;
+						}
+					} else {
+						// Key-based access
+						if (getItemCount_new(REQITEM_KEY, -1, 0) < 8) {
+							return 0;
 						}
 					}
 					return 1;
@@ -499,26 +530,36 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->next_state = 20;
 					}
 				} else if (param2 == LLAMA_BONGOPAD) {
+					if (Rando.free_source_llama == 5) {
+						return 1;
+					}
 					return Character == Rando.free_source_llama;
 				} else if (param2 == LLAMA_LAVAGATE) {
-					if (Rando.quality_of_life.remove_cutscenes) {
+					if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 						hideObject(behaviour_pointer);
 						behaviour_pointer->pause_state = 1;
 					}
 				} else if (param2 == LLAMA_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_llama), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_llama), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					}
 				} else if (param2 == LLAMA_GUNSWITCH) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_llama), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_llama), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
-						setPermFlag(getKongFlag(Rando.free_target_llama));
+						giveItemFromKongData(&kong_check_data[KONGCHECK_LLAMA], FLAG_KONG_LANKY);
 					} else if ((index >= 3) && (index <= 6)) {
+						if (Rando.free_source_llama == 5) {
+							int valid = 0;
+							for (int i = 0; i < 5; i++) {
+								valid |= getPressedSwitch(behaviour_pointer, kong_pellets[i], id);
+							}
+							return valid;
+						}
 						return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
 					}
 				} else if (param2 == LLAMA_GRAPE_SWITCH) {
@@ -544,7 +585,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					};
 					int head_sounds[] = {173,171,169,174,172,175,168,170};
 					int selection = -1;
-					for (int k = 0; k < sizeof(head_ids)/4; k++) {
+					for (unsigned int k = 0; k < sizeof(head_ids)/4; k++) {
 						if (param2 == head_ids[k]) {
 							selection = k / 2;
 						}
@@ -585,7 +626,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						float x = 730.0f;
 						float y = 267.0f;
 						float z = 728.0f;
-						short actor = getCrownItem(CurrentMap);
+						short crown_index = getCrownIndex(CurrentMap);
+						short actor = crown_item_table[crown_index].actor;
 						short item = -1;
 						float scale = 0.0f;
 						if (actor != 0) {
@@ -626,7 +668,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						int world = getWorld(CurrentMap, 0);
 						if (world < 7) {
 							int flag = normal_key_flags[world];
-							getModelTwoItemFromActor(getKeyItem(flag), &item, &scale);
+							int key_index = getKeyIndex(flag);
+							getModelTwoItemFromActor(key_item_table[key_index].actor, &item, &scale);
 							if (item >= 0) {
 								spawnModelTwo(item, x, y, z, scale, 0x16);
 								int i = 0;
@@ -682,8 +725,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if(index == 1){
 						// Obtain bamboo gate variables
 						int bambooGateIndex = convertIDToIndex(64);
-						int* m2location = (int*)ObjectModel2Pointer;
-						ModelTwoData* gateModelTwoPointer = getObjectArrayAddr(m2location,0x90,bambooGateIndex);
+						ModelTwoData* gateModelTwoPointer = &ObjectModel2Pointer[bambooGateIndex];
 						if (gateModelTwoPointer) {
 							// If pointer exists with that id, check behaviour
 							behaviour_data* bambooGateBehaviour = gateModelTwoPointer->behaviour_pointer;
@@ -709,18 +751,25 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == JAPES_DIDDYBAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
-						setPermFlag(getKongFlag(Rando.free_target_japes));
+						giveItemFromKongData(&kong_check_data[KONGCHECK_JAPES], FLAG_KONG_DIDDY);
 					}
 				} else if ((param2 == JAPES_GUNSWITCH0) || (param2 == JAPES_GUNSWITCH1) || (param2 == JAPES_GUNSWITCH2)) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if ((index == 2) || (index == 3)) {
+						if (Rando.free_source_japes == 5) {
+							int valid = 0;
+							for (int i = 0; i < 5; i++) {
+								valid |= getPressedSwitch(behaviour_pointer, kong_pellets[i], id);
+							}
+							return valid;
+						}
 						return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
 					} else if (index == 4) {
 						return !Rando.quality_of_life.remove_cutscenes; // TODO(theballaam96): Retry this
@@ -732,9 +781,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == JAPES_DIDDYFREEGB) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					}
 				} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
 					if ((param2 == JAPES_PEANUT_MOUNTAIN) && (index == 1)) {
@@ -766,7 +815,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (MovesBase[KONG_DIDDY].special_moves & MOVECHECK_CHARGE) {
 						return 1;
 					}
-					if (Rando.quality_of_life.remove_cutscenes) {
+					if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 						return 1;
 					}
 					return 0;
@@ -777,7 +826,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (index == 0) {
 						return checkFlag(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						setFlag(FLAG_COLLECTABLE_BEAN, 1, FLAGTYPE_PERMANENT);
+						setPermFlag(FLAG_COLLECTABLE_BEAN);
 					}
 				}
 				break;
@@ -812,25 +861,25 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == FACTORY_FREESWITCH) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
 						return Character == Rando.free_source_factory;
 					} else if (index == 3) {
-						setPermFlag(getKongFlag(Rando.free_target_factory));
+						giveItemFromKongData(&kong_check_data[KONGCHECK_FACTORY], FLAG_KONG_CHUNKY);
 					}
 				} else if (param2 == FACTORY_CAGE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					}
 				} else if (param2 == FACTORY_FREEGB) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					}
 				} else if (param2 == FACTORY_PIANO) {
 					if (index < 7) {
@@ -861,9 +910,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 1) {
 						// Check if GB is in a state >= 3, this means it was spawned.
 						int index = convertIDToIndex(96);
-						int* m2location = (int*)ObjectModel2Pointer;
 						if (index > -1) {
-							ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+							ModelTwoData* _object = &ObjectModel2Pointer[index];
 							behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
 							if (_object && behaviour) {
 								if(behaviour->current_state <= 3) {
@@ -884,25 +932,24 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if (behaviour_pointer->contact_actor_type == 43) {
 								if (canHitSwitch()) {
 									int index = convertSubIDToIndex(id);
-									int* m2location = (int*)ObjectModel2Pointer;
-									ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
-									setSomeTimer(_object->object_type);
+									setSomeTimer(ObjectModel2Pointer[index].object_type);
 									return 1;
 								}
 							}
 						}
 						return 0;
+					} else if (index < 12) {
+						int img_index = Rando.dartboard_order[index - 6];
+						displayImageOnObject(id, 1, dartboard_images[img_index], 0);
 					}
 				} else if (param2 == FACTORY_LARGEMETALSECTION) {
 					if (Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->current_state = 10;
 						unsigned char crusher_compontents[] = {1,3,8,9,4,10,11,12,13,2,5,6,7};
-						int* m2location = (int*)ObjectModel2Pointer;
-						for (int component = 0; component < sizeof(crusher_compontents); component++) {
+						for (unsigned int component = 0; component < sizeof(crusher_compontents); component++) {
 							int index = convertIDToIndex(crusher_compontents[component]);
 							if (index > -1) {
-								ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
-								behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
+								behaviour_data* behaviour = ObjectModel2Pointer[index].behaviour_pointer;
 								if (behaviour) {
 									behaviour->next_state = 10;
 								}
@@ -913,6 +960,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return !Rando.tag_anywhere;
 				} else if (((param2 >= FACTORY_BLOCKELEVATOR_0) && (param2 <= FACTORY_BLOCKELEVATOR_4)) || (param2 == FACTORY_BLOCKELEVATOR_5) || (param2 == FACTORY_BLOCKELEVATOR_6)) {
 					behaviour_pointer->timer = (RNG & 63) + 15;
+				} else if (param2 == ITEM_NINTENDO_COIN) {
+					giveItemFromPacket(&company_coin_table[0], 0);
 				}
 				break;
 			case MAP_FUNGIMILLFRONT:
@@ -947,6 +996,20 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == MILLREAR_CHUNKYCHECK_RATE) {
 					return Player->characterID == 6 || Rando.quality_of_life.vanilla_fixes;
+				} else if (param2 == MILLREAR_MINI_BOX) {
+					if (index == 0) {
+						if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
+							if (!checkFlag(223, FLAGTYPE_PERMANENT)) {
+								setPermFlag(223);
+							}
+							hideObject(behaviour_pointer);
+							behaviour_pointer->unk_70 = 0;
+							behaviour_pointer->unk_71 = 0;
+							setScriptRunState(behaviour_pointer, RUNSTATE_PAUSED, 0);
+						} else {
+							PlayCutsceneFromModelTwoScript(behaviour_pointer, 1,1,0);
+						}
+					}
 				}
 				break;
 			case MAP_FUNGIGIANTMUSHROOM:
@@ -1074,9 +1137,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if ((behaviour_pointer->contact_actor_type >= 2) && (behaviour_pointer->contact_actor_type <= 6)) { // isKong
 								if (canHitSwitch()) {
 									int index = convertSubIDToIndex(id);
-									int* m2location = (int*)ObjectModel2Pointer;
-									ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
-									setSomeTimer(_object->object_type);
+									setSomeTimer(ObjectModel2Pointer[index].object_type);
 									return 1;
 								}
 							}
@@ -1092,15 +1153,15 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return Character == 1;
 				} else if (param2 == TTEMPLE_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_ttemple), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						setPermFlag(getKongFlag(Rando.free_target_ttemple));
+						giveItemFromKongData(&kong_check_data[KONGCHECK_ICETEMPLE], FLAG_KONG_TINY);
 					}
 				} else if (param2 == TTEMPLE_CHARGESWITCH) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_ttemple), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_ttemple), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
 						return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
 					}
@@ -1116,9 +1177,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						//obtain gate variables
 						int id_needed = 1;
 						int gateIndex = convertIDToIndex(id_needed);
-						int* m2location = (int*)ObjectModel2Pointer;
 						int gateSlot = convertIDToIndex(1);
-						ModelTwoData* gateModelTwoPointer = getObjectArrayAddr(m2location,0x90,gateSlot);
+						ModelTwoData* gateModelTwoPointer = &ObjectModel2Pointer[gateSlot];
 						if (gateModelTwoPointer) {
 							// If pointer exists with that id, check behaviour
 							behaviour_data* gateBehaviour = gateModelTwoPointer->behaviour_pointer;
@@ -1137,7 +1197,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						int grape_switch_id_needed = 17;
 						int grapeSlot = convertIDToIndex(17);
 						int grapeIndex = convertIDToIndex(grape_switch_id_needed);
-						ModelTwoData* grapeSwitchModelTwoPointer = getObjectArrayAddr(m2location,0x90,grapeSlot);
+						ModelTwoData* grapeSwitchModelTwoPointer = &ObjectModel2Pointer[grapeSlot];
 						if (grapeSwitchModelTwoPointer) {
 							// If pointer exists with that id, check behaviour
 							behaviour_data* grapeSwitchBehaviour = grapeSwitchModelTwoPointer->behaviour_pointer;
@@ -1154,7 +1214,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 
 						//play grape switch cutscene
-						if (!Rando.quality_of_life.remove_cutscenes) {
+						if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
 							PlayCutsceneFromModelTwoScript(behaviour_pointer, 0, 1, 0);
 							behaviour_pointer->timer = 110;
 						}
@@ -1166,12 +1226,11 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					//activates the Goo Hands in Tiny's part of the Lanky/Tiny Crypt if all 6 of them are initialized
 					unsigned char hands[] = {6, 7, 9, 10, 11, 12};
 					//activates the hands
-					for(int hand = 0; hand < sizeof(hands); hand++){
+					for(unsigned int hand = 0; hand < sizeof(hands); hand++){
 						//obtain hand variables
 						// Get model two pointer of the Goo Hand in question
-						int* m2location = (int*)ObjectModel2Pointer;
 						int slot = convertIDToIndex(hands[hand]);
-						ModelTwoData* handModelTwoPointer = getObjectArrayAddr(m2location,0x90,slot);
+						ModelTwoData* handModelTwoPointer = &ObjectModel2Pointer[slot];
 						if (handModelTwoPointer) {
 							// If pointer exists with that id, check behaviour
 							behaviour_data* behaviour = handModelTwoPointer->behaviour_pointer;
@@ -1214,7 +1273,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if (index == 0) {
 								return CoinDoorCheck();
 							} else if (index == 1) {
-								return checkFlagDuplicate(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
+								return checkFlag(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
 							} else if (index == 2) {
 								// Disable coin door text
 								return 1;
@@ -1266,7 +1325,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 										if ((next_slot == -1) && (current_slot > -1)) {
 											// Helm Complete
 											PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
-											setFlag(FLAG_MODIFIER_HELMBOM, 1, FLAGTYPE_PERMANENT);
+											setPermFlag(FLAG_MODIFIER_HELMBOM);
 											setFlag(0x50,1,FLAGTYPE_TEMPORARY);
 										} else if (next_slot > -1) {
 											// Move to next
@@ -1328,10 +1387,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		if (!cached_data) {
 			cached_data = dk_malloc(2);
 			int wrinkly_index = convertIDToIndex(param2);
-			int* m2location = (int*)ObjectModel2Pointer;
 			int wrinkly_doors[] = {0xF0, 0xF2, 0xEF, 0x67, 0xF1};
 			if (wrinkly_index > -1) {
-				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,wrinkly_index);
+				ModelTwoData* _object = &ObjectModel2Pointer[wrinkly_index];
 				for (int i = 0; i < 5; i++) {
 					if (_object->object_type == wrinkly_doors[i]) {
 						kong = i;
@@ -1350,11 +1408,16 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			displayImageOnObject(id, 2, 1, 0);
 			unkObjFunction0(id, 1, 1);
 			unkObjFunction1(id, 1, 10);
-			if ((!checkFlag(kong_flags[kong], FLAGTYPE_PERMANENT)) && (!Rando.disable_wrinkly_kong_requirement)) {
+			if ((!getItemCount_new(REQITEM_KONG, 0, kong)) && (!Rando.disable_wrinkly_kong_requirement)) {
 				behaviour_pointer->next_state = 20;
 			} else {
-				displayImageOnObject(id, 1, 0, 0);
-				displayImageOnObject(id, 2, 0, 0);
+				int world = getWorld(CurrentMap, 0);
+				int image = 0;
+				if (checkFlag(FLAG_WRINKLYVIEWED + (5 * world) + kong, FLAGTYPE_PERMANENT)) {
+					image = 2;
+				}
+				displayImageOnObject(id, 1, image, 0);
+				displayImageOnObject(id, 2, image, 0);
 				behaviour_pointer->next_state = 1;
 			}
 		} else if (behaviour_pointer->current_state == 1) {
@@ -1393,7 +1456,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	} else if (index == -6) {
 		CrownPadGenericCode(behaviour_pointer, id, param2, 1);
 	} else if (index == -7) {
-		return checkFlag(kong_flags[param2], FLAGTYPE_PERMANENT) || Rando.disable_wrinkly_kong_requirement;
+		return getItemCount_new(REQITEM_KONG, 0, param2) || Rando.disable_wrinkly_kong_requirement;
 	} else if (index == -8) {
 		// Fairy check
 		if (Rando.fairy_rando_on) {
@@ -1419,20 +1482,12 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			}
 		}
 		return 1;
-	} else if (index == -9) {
-		// shopGenericCode(behaviour_pointer, id, param2, SHOP_CRANKY);
-	} else if (index == -10) {
-		// shopGenericCode(behaviour_pointer, id, param2, SHOP_FUNKY);
-	} else if (index == -11) {
-		// shopGenericCode(behaviour_pointer, id, param2, SHOP_CANDY);
-	} else if (index == -12) {
-		// shopGenericCode(behaviour_pointer, id, param2, SHOP_SNIDE);
 	} else if (index == -13) {
 		MelonCrateGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -14) {
 		return randomGunSwitchGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -15) {
-		return randomInstrumentGenericCode(behaviour_pointer, id, param2);
+		return randomInstrumentGenericCode(param2);
 	} else if (index == -16) {
 		hideObject(behaviour_pointer);
 	} else if (index == -17) {
@@ -1453,6 +1508,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		}
 	} else if (index == -18) {
 		return (Player->strong_kong_ostand_bitfield & 0x20) || (!Rando.sprint_barrel_requires_sprint);
+	} else if (index == -19) {
+		int world = getWorld(CurrentMap, 0);
+		return checkFlag(FLAG_WRINKLYVIEWED + (5 * world) + param2, FLAGTYPE_PERMANENT);
+	} else if (index == -20) {
+		if (param2 == 0) {
+			setScriptRunState(behaviour_pointer, 2, 0);
+		}
+		int snide_index = getFirstEmptySnideReward(0);
+		setPermFlag(FLAG_SNIDE_REWARD + snide_index);
+		giveItemFromPacket(&snide_rewards[snide_index].item, 0);
+		ItemInventory->turned_in_bp_count[getKong(0)]++;
 	}
 	return 0;
 }
@@ -1464,9 +1530,7 @@ void disableDiddyRDDoors(void) {
 	 */
 	for(int i = 63; i < 66; ++i) {
 		int index = convertIDToIndex(i);
-		int* m2location = (int*)ObjectModel2Pointer;
-		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
-		behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
+		behaviour_data* behaviour = ObjectModel2Pointer[index].behaviour_pointer;
 		if (behaviour) {
 			setScriptRunState(behaviour, RUNSTATE_PAUSED, 0);
 		}

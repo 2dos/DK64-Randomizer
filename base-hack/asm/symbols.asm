@@ -145,12 +145,14 @@
 .definelabel QueuedCutsceneFunctions, 0x807452A0
 .definelabel ActorTimer, 0x8076A068
 .definelabel EEPROMType, 0x807EDEAC
+.definelabel PauseType, 0x807505CC
 
 .definelabel ExitPointer, 0x807FC900
 .definelabel ExitCount, 0x807FC904
+.definelabel CheatBitfield, 0x80744544
 
-.definelabel screenCenterX, 0x80744490
-.definelabel screenCenterY, 0x80744494
+.definelabel screenWidth, 0x80744490
+.definelabel screenHeight, 0x80744494
 .definelabel collisionPos, 0x807F621C
 .definelabel FileIndex, 0x807467C8
 .definelabel LockStackCount, 0x807F5A68
@@ -163,7 +165,6 @@
 
 .definelabel TriggerArray, 0x807FDCB4
 .definelabel TriggerSize, 0x807FDCB0
-.definelabel CastleCannonPointer, 0x807F5BE8
 .definelabel KongFlagArray, 0x807505B0
 .definelabel MainMenuMoves, 0x80033938
 .definelabel DataIsCompressed, 0x80748E18
@@ -205,6 +206,7 @@
 .definelabel SongInWriteSlot, 0x80770560
 .definelabel songVolumes, 0x807454F0
 .definelabel compactSequencePlayers, 0x8076BF20
+.definelabel musicStorage, 0x8076BF38
 .definelabel MusicTrackChannels, 0x807458DC
 .definelabel BoatSpeeds, 0x8075A04C
 .definelabel textParameter, 0x80750AC8
@@ -264,6 +266,8 @@
 .definelabel chunk_count, 0x807F6C28
 .definelabel chunkArray, 0x807F6C18
 
+.definelabel SpriteRGBA, 0x807FDB0C
+
 .definelabel BlueprintLargeImageColors, 0x80033228
 
 .definelabel SFXVolume, 0x8074583C
@@ -277,3 +281,8 @@
 .definelabel StoredOrangeCount, 0x80029FA4
 
 .definelabel EnvironmentFog, 0x807F7360
+.definelabel RaceCoinCount, 0x80750AC4
+
+.definelabel DLPointers, 0x8076A050
+.definelabel CameraDL, 0x8076A048
+.definelabel DLArray, 0x80767CE8

@@ -14,7 +14,7 @@
 
 #define TAG_ANYWHERE_KONG_LIMIT 5 // Amount of kongs in the TA Loop
 
-static const map_bitfield banned_map_btf = {
+ROM_RODATA_NUM static const map_bitfield banned_map_btf = {
     // Bitfield on whether a tag is enabled in a map. Each property is a boolean
 
     .test_map = 0,
@@ -233,9 +233,14 @@ static const map_bitfield banned_map_btf = {
     .k_lumsy_ending = 1, // Reason: Cutscene Map
     .k_rools_shoe = 1, // Reason: Boss Map
     .k_rools_arena = 1, // Reason: Cutscene Map
+    .arcade_25m = 1, // Reason: Minigame.
+    .arcade_50m = 1, // Reason: Minigame.
+    .arcade_75m = 1, // Reason: Minigame.
+    .arcade_100m = 1, // Reason: Minigame.
+    .jetpac_rocket = 1, // Reason: Minigame.
 };
 
-static const movement_bitfield banned_movement_btf = {
+ROM_DATA static movement_bitfield banned_movement_btf = {
     // Bitfield on whether a tag is enabled during a certain control state. Each property is a boolean
 
     .null_state = 0,
@@ -377,8 +382,8 @@ static const movement_bitfield banned_movement_btf = {
     .exiting_portal = 1, // Reason: Locked Movement
 };
 
-static unsigned char tag_countdown = 0; // Global variable preventing tags within a few frames of a recent tag in some situations
-static char can_tag_anywhere = 0; // Global variable documenting whether TA can be performed, reducing the amount of checks
+ROM_DATA static unsigned char tag_countdown = 0; // Global variable preventing tags within a few frames of a recent tag in some situations
+ROM_DATA static char can_tag_anywhere = 0; // Global variable documenting whether TA can be performed, reducing the amount of checks
 
 int inTransform(void) {
     /**
@@ -420,6 +425,9 @@ int canTagAnywhere(void) {
         if (CCEffectData->mini == CC_ENABLED) {
             return 0;
         }
+    }
+    if (guard_tag_timer > 0) {
+        return 0;
     }
     if (Player->strong_kong_ostand_bitfield & 0x100) {
         // Seasick
@@ -480,13 +488,14 @@ int canTagAnywhere(void) {
         return 0;
     }
     if (CurrentMap != MAP_HELMBARREL_FLOORISLAVA) {
-        if (getBitArrayValue(&banned_map_btf, CurrentMap)) {
+        if (getBitArrayValue((unsigned char*)&banned_map_btf, CurrentMap)) {
             return 0;
         }
     } else if (!Rando.disable_race_patches) {
+        // Disable TA in floor is lava mini
         return 0;
     }
-    if (getBitArrayValue(&banned_movement_btf, Player->control_state)) {
+    if (getBitArrayValue((unsigned char*)&banned_movement_btf, Player->control_state)) {
         return 0;
     }
     return 1;
@@ -506,19 +515,19 @@ int getTAState(void) {
 }
 
 int hasAccessToKong(int kong) {
-    if (checkFlag(kong_flags[kong], FLAGTYPE_PERMANENT)) {
-        if (Rando.perma_lose_kongs) {
-            if (!checkFlag(KONG_LOCKED_START + kong, FLAGTYPE_PERMANENT)) {
-                return 1;
-            }
-            if (curseRemoved()) {
-                return 1;
-            }
-            if (hasPermaLossGrace(CurrentMap)) {
-                return 1;
-            }
+    if (getItemCount_new(REQITEM_KONG, 0, kong)) {
+        if (!Rando.perma_lose_kongs) {
+            return 1;   
         }
-        return 1;
+        if (!checkFlag(KONG_LOCKED_START + kong, FLAGTYPE_PERMANENT)) {
+            return 1;
+        }
+        if (curseRemoved()) {
+            return 1;
+        }
+        if (hasPermaLossGrace(CurrentMap)) {
+            return 1;
+        }
     }
     return 0;
 }
@@ -564,11 +573,11 @@ int getTagAnywhereKong(int direction) {
     }
 }
 
-static const unsigned char important_huds[] = {0,1};
-static unsigned char important_huds_changed[] = {0,0};
+ROM_RODATA_NUM static const unsigned char important_huds[] = {0,1};
+ROM_DATA static unsigned char important_huds_changed[] = {0,0};
 
-static char can_tag_left = 0;
-static char can_tag_right = 0;
+ROM_DATA static char can_tag_left = 0;
+ROM_DATA static char can_tag_right = 0;
 
 void changeKong(int next_character) {
     // Fix hand state
@@ -589,7 +598,7 @@ void changeKong(int next_character) {
             HUD->item[0].hud_state = 0;
         }
     } else {
-        for (int i = 0; i < sizeof(important_huds); i++) {
+        for (unsigned int i = 0; i < sizeof(important_huds); i++) {
             important_huds_changed[i] = 0;
             if (HUD) {
                 int hud_st = HUD->item[(int)important_huds[i]].hud_state;
@@ -605,7 +614,7 @@ void changeKong(int next_character) {
     // Cancel anything
     if (Player->strong_kong_ostand_bitfield & 0x40) {
         // Gorilla Gone
-        cancelMusic(0x6C, 0);
+        cancelMusic(SONG_GORILLAGONE, 0);
         Player->obj_props_bitfield |= 0x8000;
         removeGorillaGone(Player);
     }
@@ -656,13 +665,13 @@ void tagAnywhere(void) {
                 }
             } else {
                 if (tag_countdown == 2) {
-                    for (int i = 0; i < sizeof(important_huds); i++) {
+                    for (unsigned int i = 0; i < sizeof(important_huds); i++) {
                         if (important_huds_changed[i]) {
                             HUD->item[(int)important_huds[i]].hud_state = 0;
                         }
                     }
                 } else if (tag_countdown == 1) {
-                    for (int i = 0; i < sizeof(important_huds); i++) {
+                    for (unsigned int i = 0; i < sizeof(important_huds); i++) {
                         if (important_huds_changed[i]) {
                             HUD->item[(int)important_huds[i]].hud_state = 1;
                         }
@@ -679,9 +688,7 @@ void tagAnywhere(void) {
                     if (can_tag_left){
                         change -= 1;      
                     }                  
-                }
-                else
-                {
+                } else {
                     can_tag_left = 1;
                 }                
 
@@ -689,9 +696,7 @@ void tagAnywhere(void) {
                     if (can_tag_right){                    
                         change += 1;                        
                     }
-                }
-                else
-                {
+                } else {
                     can_tag_right = 1;
                 }                
 
@@ -715,12 +720,12 @@ void tagAnywhere(void) {
 	}
 }
 
-void tagAnywhereInit(int is_homing, int model2_id, int obj) {
+void tagAnywhereInit(int is_homing, int model2_id, int obj, int id) {
     /**
      * @brief Initialize certain aspects of Tag Anywhere
      */
     assessFlagMapping(CurrentMap, model2_id);
-    coinCBCollectHandle(0, obj, is_homing);
+    updateItemTotalsHandler(0, obj, is_homing, id);
 }
 
 typedef struct sfx_cache_item {
@@ -735,7 +740,7 @@ typedef struct sfx_cache_item {
 } sfx_cache_item;
 
 #define SFX_CACHE_SIZE 16
-static sfx_cache_item sfx_cache_array[SFX_CACHE_SIZE];
+ROM_DATA static sfx_cache_item sfx_cache_array[SFX_CACHE_SIZE];
 
 void populateSFXCache(int sfx, int noise_buffer, int sfx_count, int sfx_delay, int id, int init_delay) {
     /**
@@ -780,7 +785,7 @@ void handleSFXCache(void) {
         if (sfx_cache_array[i].map_initiated != CurrentMap) {
             sfx_cache_array[i].used = 0;
         }
-        if ((sfx_cache_array[i].used) && (ObjectModel2Timer >= (sfx_cache_array[i].last_played_f + sfx_cache_array[i].sfx_delay))) {
+        if ((sfx_cache_array[i].used) && ((unsigned int)ObjectModel2Timer >= (sfx_cache_array[i].last_played_f + sfx_cache_array[i].sfx_delay))) {
             playSFXFromObject(sfx_cache_array[i].id,sfx_cache_array[i].sfx,-1,127,0,sfx_cache_array[i].noise_buffer,0.3f);
             sfx_cache_array[i].sfx_count -= 1;
             sfx_cache_array[i].last_played_f = ObjectModel2Timer;
@@ -796,7 +801,7 @@ void tagAnywhereAmmo(int player, int obj, int is_homing) {
      * This function handles these changes
      * 
      */
-    coinCBCollectHandle(player, obj, is_homing);
+    updateItemTotalsHandler(player, obj, is_homing, -1);
     int id = 0;
     if (LatestCollectedObject) {
         id = LatestCollectedObject->id;
@@ -815,7 +820,7 @@ void tagAnywhereBunch(int player, int obj, int player_index) {
      * This function handles these changes
      * 
      */
-    coinCBCollectHandle(player, obj, player_index);
+    updateItemTotalsHandler(player, obj, player_index, -1);
     int id = 0;
     if (LatestCollectedObject) {
         id = LatestCollectedObject->id;
@@ -850,12 +855,19 @@ void handleLedgeLock(void) {
         return;
     }
     if (!Rando.disable_race_patches) {
+        // Disable ledge grabbing in dungeon as Tiny
         if ((CurrentMap == MAP_CASTLEDUNGEON) && (Character != KONG_TINY)) {
-            // Even Spike wants this trick patched
             return;
         }
     }
     handleLedgeGrabbing();
+}
+
+void handlePushLock(int action, void* actor, int player_index) {
+    if ((grab_lock_timer >= 0) && (grab_lock_timer < 2)) {
+        return;
+    }
+    setAction(action, actor, player_index);
 }
 
 void handleActionSet(int action, void* actor, int player_index) {

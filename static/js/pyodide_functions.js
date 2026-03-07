@@ -42,10 +42,47 @@ async function plando_import_filebox() {
   input.click();
 }
 
+function isValidBase64(str) {
+  try {
+    return btoa(atob(str)) === str;
+  } catch (err) {
+    return false;
+  }
+}
+
 async function apply_patch(data, run_async) {
-  // Base64 decode the response
-  event_response_data = data;
-  var decodedData = base64ToArrayBuffer(data);
+  // Check if this is an .chunky file
+  let ischunkyFile = window.loaded_patch_filename && window.loaded_patch_filename.toLowerCase().endsWith('.chunky');
+  var extracted_data = data;
+
+  if (ischunkyFile) {
+    // .chunky is a zip containing "patch_data" (base64 text, newline-wrapped by
+    // Python's codecs.encode) and "archipelago.json".
+    var chunkyZip = new JSZip();
+    try {
+      const chunkyZipFile = await chunkyZip.loadAsync(data);
+
+      const patchDataEntry = chunkyZipFile.file("patch_data");
+      if (patchDataEntry) {
+        const patchDataRaw = await patchDataEntry.async("string");
+        // Python's codecs.encode adds newlines every 76 chars; strip them so
+        // atob() inside base64ToArrayBuffer doesn't throw.
+        extracted_data = patchDataRaw.replace(/\s/g, "");
+        // Clear the filename so recursive calls from patching_response don't
+        // attempt to re-process the already-extracted data as a .chunky file.
+        window.loaded_patch_filename = null;
+      } else {
+        throw new Error("patch_data not found in .chunky archive");
+      }
+    } catch (error) {
+      console.error("Error processing .chunky file:", error);
+      throw error;
+    }
+  }
+
+  // Decode base64 to binary for zip processing
+  decodedData = base64ToArrayBuffer(extracted_data);
+
   zip = new JSZip();
 
   try {
@@ -72,7 +109,12 @@ async function apply_patch(data, run_async) {
                 console.log("Applying Xdelta Patch");
                 apply_conversion();
                 apply_xdelta(fileContent);
-                window["event_response_data"] = data;
+                if (ischunkyFile) {
+                  window["event_response_data"] = extracted_data;
+                }
+                else {
+                  window["event_response_data"] = data;
+                }
                 // Return the promise for pyodide.runPythonAsync
                 return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
 try:
@@ -171,7 +213,7 @@ async function shared_url_ui(data) {
       document.getElementById("hashdiv").innerHTML =
         "No ROM Cached, No Hash Images Loaded.";
     }
-    document.getElementById("nav-settings-tab").style.display = "";
+    document.getElementById("nav-settings-tab").removeAttribute("hidden");
     document.getElementById("spoiler_log_block").style.display = "";
     document.getElementById("generated_seed_id").innerHTML = seed_id;
 

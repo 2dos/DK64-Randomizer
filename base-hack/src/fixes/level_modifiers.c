@@ -23,9 +23,8 @@ void load_object_script(int obj_instance_id) {
 		scriptsLoaded = script_index + 1;
 		scriptLoadedArray[script_index] = obj_instance_id;
 		int obj_idx = convertIDToIndex(obj_instance_id);
-		int* m2location = (int*)ObjectModel2Pointer;
-		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,obj_idx);
-		int* behav = _object->behaviour_pointer;
+		ModelTwoData* _object = &ObjectModel2Pointer[obj_idx];
+		behaviour_data* behav = _object->behaviour_pointer;
 		updateObjectScript(behav);
 		executeBehaviourScript(behav, _object->sub_id);
 	}
@@ -43,7 +42,7 @@ void adjust_level_modifiers(void) {
 			if (checkFlag(FLAG_MODIFIER_GALLEONWATER,FLAGTYPE_PERMANENT)) {
 				// Adjust water height in all chunks if water is raised
 				for (int i = 0; i < 20; i++) {
-					setWaterHeight(i,55.0f,1000.0f);
+					setWaterHeight(i, 55.0f, 1000.0f);
 				}
 			}
 		} else if (CurrentMap == MAP_AZTEC) {
@@ -61,8 +60,8 @@ void adjust_level_modifiers(void) {
 
 #define FUNGI_TOD_LENGTH 4500 // 2.5 * 60 * 30 (2.5 minutes)
 #define FUNGI_SEG_LENGTH 1500
-static short progressive_time_of_day = FUNGI_SEG_LENGTH;
-static float subseg_brightnesses[6] = {
+ROM_DATA static short progressive_time_of_day = FUNGI_SEG_LENGTH;
+ROM_RODATA_NUM static const float subseg_brightnesses[6] = {
 	0.77f,
 	1.00f, // Peak Daytime
 	0.77f,
@@ -75,7 +74,13 @@ void handleTimeOfDay(time_of_day_calls call) {
 	fungi_time time = Rando.fungi_time_of_day_setting;
 	if (time == TIME_NIGHT) {
 		if (call == TODCALL_INITFILE) {
-			setFlag(FLAG_MODIFIER_FUNGINIGHT, 1, FLAGTYPE_PERMANENT);
+			setPermFlag(FLAG_MODIFIER_FUNGINIGHT);
+		}
+	} else if (time == TIME_DUSK) {
+		if (call == TODCALL_FUNGIACTIVE && (!Rando.hard_mode.dark_world && !Rando.hard_mode.memory_challenge)) {
+			for (int i = 0; i < chunk_count; i++) {
+				setChunkLighting(0.6f, 0.6f, 0.3f, i);
+			}
 		}
 	} else if (time == TIME_PROGRESSIVE) {
 		if (call == TODCALL_FUNGIACTIVE) {
@@ -101,7 +106,7 @@ void handleTimeOfDay(time_of_day_calls call) {
 				}
 			}
 			if ((prev_tod_subseg != tod_subseg) || (force_update)) {
-				if (tod_subseg < 6) {
+				if ((tod_subseg < 6) && (!Rando.hard_mode.dark_world && !Rando.hard_mode.memory_challenge)) {
 					// Handle skylight
 					float brightness = subseg_brightnesses[tod_subseg];
 					float blueness = 1.0f - ((1.0f - brightness) / 2);

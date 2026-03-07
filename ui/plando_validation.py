@@ -6,14 +6,11 @@ import re
 
 import js
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Settings import KasplatRandoSetting
-from randomizer.Enums.Switches import Switches
-from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.Plandomizer import (
     CrownLocationEnumList,
@@ -35,15 +32,12 @@ from randomizer.Lists.Plandomizer import (
     PlannableItemLimits,
     ShopLocationKongMap,
     ShopLocationList,
-    SwitchVanillaMap,
     TnsPortalLocationList,
     TnsVanillaMap,
     WrinklyDoorEnumList,
     WrinklyVanillaMap,
 )
-from randomizer.Lists.Switches import SwitchData
 from randomizer.Patching.Library.Generic import plando_colors
-from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
 
@@ -59,7 +53,6 @@ class ValidationError(IntEnum):
     invalid_shop_cost = auto()
     invalid_starting_kong_count = auto()
     level_order_duplicates = auto()
-    krool_order_duplicates = auto()
     helm_order_duplicates = auto()
     assigned_shop_when_shuffled = auto()
     assigned_dirt_patch_when_shuffled = auto()
@@ -72,7 +65,6 @@ class ValidationError(IntEnum):
     random_custom_location = auto()
     duplicate_custom_location = auto()
     duplicate_custom_door = auto()
-    switchsanity_not_enabled = auto()
 
 
 # This dictionary stores all elements that have either been disabled or marked
@@ -558,41 +550,6 @@ def validate_level_order_no_duplicates(evt):
                 mark_option_invalid(selectElem, ValidationError.level_order_duplicates, errString)
 
 
-@bind("change", "plando_krool_order_", 5)
-@bind("change", "plando_boss_order_", 7)
-def validate_krool_order_no_duplicates(evt):
-    """Raise an error if the same boss is chosen twice in the K. Rool or Boss order."""
-    battleDict = {}
-    # Count the instances of each boss battle.
-    for i in range(0, 5):
-        kroolElemName = f"plando_krool_order_{i}"
-        kroolOrderElem = js.document.getElementById(kroolElemName)
-        battle = kroolOrderElem.value
-        if battle in battleDict:
-            battleDict[battle].append(kroolElemName)
-        else:
-            battleDict[battle] = [kroolElemName]
-    for i in range(0, 7):
-        tnsElemName = f"plando_boss_order_{i}"
-        tnsOrderElem = js.document.getElementById(tnsElemName)
-        battle = tnsOrderElem.value
-        if battle in battleDict:
-            battleDict[battle].append(tnsElemName)
-        else:
-            battleDict[battle] = [tnsElemName]
-    # Invalidate any selects that re-use the same battle.
-    for battle, selects in battleDict.items():
-        if battle == "" or len(selects) == 1:
-            for select in selects:
-                selectElem = js.document.getElementById(select)
-                mark_option_valid(selectElem, ValidationError.krool_order_duplicates)
-        else:
-            for select in selects:
-                selectElem = js.document.getElementById(select)
-                errString = "The same boss battle cannot be used twice in the K. Rool order."
-                mark_option_invalid(selectElem, ValidationError.krool_order_duplicates, errString)
-
-
 @bind("change", "plando_helm_order_", 5)
 def validate_helm_order_no_duplicates(evt):
     """Raise an error if the same Kong is chosen twice in the Helm order."""
@@ -885,49 +842,11 @@ def validate_custom_crate_locations(evt):
             mark_option_enabled(locElem, ValidationError.only_available_as_custom_location)
 
 
-def enable_switch_plando():
-    """Enable or disable placing switches based on the Switchsanity setting."""
-    switchsanity = js.document.getElementById("switchsanity").value
-    for switchEnum in SwitchData.keys():
-        switchElem = js.document.getElementById(f"plando_{switchEnum.name}_switch")
-        if switchsanity == "all":
-            mark_option_enabled(switchElem, ValidationError.switchsanity_not_enabled)
-        elif switchEnum in [Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport]:
-            if switchsanity == "helm_access":
-                mark_option_enabled(switchElem, ValidationError.switchsanity_not_enabled)
-            else:
-                errString = 'To set this switch, Switchsanity must be set to "All" or "Helm Access Only".'
-                mark_option_disabled(switchElem, ValidationError.switchsanity_not_enabled, errString, SwitchVanillaMap[switchEnum.name])
-        else:
-            errString = 'To set this Switch, Switchsanity must be set to "All".'
-            mark_option_disabled(switchElem, ValidationError.switchsanity_not_enabled, errString, SwitchVanillaMap[switchEnum.name])
-
-
-@bind("change", "switchsanity")
-def set_plando_switches(evt):
-    """Set values and enable switches based on the Switchsanity setting."""
-    enable_switch_plando()
-    switchsanity = js.document.getElementById("switchsanity").value
-    for switchEnum in SwitchData.keys():
-        switchElem = js.document.getElementById(f"plando_{switchEnum.name}_switch")
-        if switchsanity == "all":
-            # If this switch is currently set to its vanilla value, change it
-            # to "Randomize".
-            if switchElem.value == SwitchVanillaMap[switchEnum.name]:
-                switchElem.value = ""
-        elif switchEnum in [Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport]:
-            if switchsanity == "helm_access":
-                # If this switch is currently set to its vanilla value, change
-                # it to "Randomize".
-                if switchElem.value == SwitchVanillaMap[switchEnum.name]:
-                    switchElem.value = ""
-
-
 @bind("click", "key_8_helm")
 def lock_key_8_in_helm(evt):
     """If key 8 is locked in Helm, force that location to hold key 8."""
     helm_is_shuffled = js.document.getElementById("shuffle_helm_location").checked
-    is_level_order = js.document.getElementById("level_randomization").value in ["level_order", "level_order_complex"]
+    is_level_order = js.document.getElementById("level_randomization").value in ["level_order", "level_order_complex", "level_order_moderate"]
     helm_key_lock = js.document.getElementById("key_8_helm").checked
     end_of_helm = js.document.getElementById("plando_HelmKey_item")
     # If the settings require Key 8 to be at the End of Helm...
@@ -975,7 +894,6 @@ def perform_setting_conflict_validation(evt):
     js.plando_toggle_custom_tns_locations(evt)
     js.plando_toggle_custom_wrinkly_locations(evt)
     js.plando_toggle_custom_locations_tab(evt)
-    enable_switch_plando()
     # This is a fallback for errors with Bootstrap sliders.
     validate_starting_kong_count(evt)
 
@@ -1075,10 +993,6 @@ def reset_plando_options_no_prompt() -> None:
         hint_element.value = ""
         remove_all_errors_from_option(hint_element)
 
-    for switchEnum, _ in SwitchData.items():
-        elem = js.document.getElementById(f"plando_{switchEnum.name}_switch")
-        elem.value = SwitchVanillaMap[switchEnum.name]
-
     # These maps are string:string.
     locations = [DirtPatchVanillaLocationMap, FairyVanillaLocationMap, MelonCrateVanillaLocationMap]
     for locationMap in locations:
@@ -1143,7 +1057,6 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
     plando_form_data = {}
     item_objects = []
     shop_cost_objects = []
-    switch_objects = []
     minigame_objects = []
     hint_objects = []
     custom_location_objects = []
@@ -1180,6 +1093,8 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
 
     def is_plando_input(inputName: str) -> bool:
         """Determine if an input is a plando input."""
+        if not isinstance(inputName, str):
+            return False
         return inputName is not None and inputName.startswith("plando_")
 
     # Process all the plando-related inputs.
@@ -1194,9 +1109,6 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             continue
         elif obj.name.endswith("_item"):
             item_objects.append(obj)
-            continue
-        elif obj.name.endswith("_switch"):
-            switch_objects.append(obj)
             continue
         elif obj.name.endswith("_minigame"):
             minigame_objects.append(obj)
@@ -1281,29 +1193,6 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             minigames_map[location] = get_plando_value(Minigames[minigame.value])
     plando_form_data["plando_bonus_barrels"] = minigames_map
 
-    switches_map = {}
-    switchsanity = js.document.getElementById("switchsanity").value
-    if switchsanity != "off":
-        for switch in switch_objects:
-            # Extract the switch location name.
-            location_name = re.search("^plando_(.+)_switch$", switch.name)[1]
-            if switchsanity == "helm_access" and location_name not in [
-                Switches.IslesHelmLobbyGone.name,
-                Switches.IslesMonkeyport.name,
-            ]:
-                continue
-            location = get_plando_value(Switches[location_name])
-            if switch.value != "":
-                if ";" in switch.value:
-                    kong, switch_type = switch.value.split(";")
-                    switches_map[location] = {
-                        "kong": get_plando_value(Kongs[kong]),
-                        "switch_type": get_plando_value(SwitchType[switch_type]),
-                    }
-                else:
-                    switches_map[location] = {"kong": get_plando_value(Kongs[switch.value])}
-    plando_form_data["plando_switchsanity"] = switches_map
-
     battle_arenas_map = {}
     dirt_patches_list = []
     fairies_list = []
@@ -1373,7 +1262,7 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             door_location = get_plando_value(Locations[location_name])
             location_value = get_plando_value(PlandoItems.Randomize)
             if door.value != "":
-                location_value = door.value
+                _, location_value = door.value.split(";")
             wrinkly_doors_map[door_location] = location_value
     plando_form_data["plando_wrinkly_doors"] = wrinkly_doors_map
 
@@ -1396,7 +1285,10 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             portal_num = int(re_obj[2])
             location = get_plando_value(PlandoItems.Randomize)
             if portal.value != "":
-                location = portal.value
+                try:
+                    _, location = portal.value.split(";")
+                except ValueError:
+                    location = portal.value
             tns_portal_map[level][portal_num] = location
         # Whittle down the lists to remove "none" portals.
         for level, doorList in tns_portal_map.items():
@@ -1542,29 +1434,6 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
             break
         else:
             levelOrderSet.add(level)
-
-    # Ensure that no boss battle was selected more than once in the K. Rool or boss order.
-    bossOrderSet = set()
-    for i in range(0, 5):
-        battle = plando_dict[f"plando_krool_order_{i}"]
-        if battle == PlandoItems.Randomize:
-            continue
-        if battle in bossOrderSet:
-            errString = "The same boss battle cannot be used twice."
-            errList.append(errString)
-            break
-        else:
-            bossOrderSet.add(battle)
-    for i in range(0, 7):
-        battle = plando_dict[f"plando_boss_order_{i}"]
-        if battle == PlandoItems.Randomize:
-            continue
-        if battle in bossOrderSet:
-            errString = "The same boss battle cannot be used twice."
-            errList.append(errString)
-            break
-        else:
-            bossOrderSet.add(battle)
 
     # Ensure that no Kong was selected more than once in the Helm order.
     helmOrderSet = set()

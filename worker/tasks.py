@@ -69,6 +69,8 @@ def cleanup_settings(settings):
             if type(v) is list:
                 values = []
                 for val in v:
+                    if val is None:
+                        continue
                     if type(val) is int:
                         values.append(SettingsMap[k](val))
                     else:

@@ -247,7 +247,7 @@
                         $("#total_generated_seeds").html("<strong>Total Generated Seeds:</strong> " + data.total_seeds);
                         $("#last_seed_generated").html("<strong>Last Seed Generated:</strong> " + time_since_generated);
                     }
-                })
+                });
             }
             setInterval(function () {
                 query_stats();
@@ -299,7 +299,6 @@
                   var all_seeds = seed_store.getAll();
                   all_seeds.onsuccess = function () {
                     try {
-                      var arrayLength = all_seeds.result.length;
                       var sorted_array = all_seeds.result;
                       sorted_array.sort(function (a, b) {
                         return new Date(b.date) - new Date(a.date);
@@ -339,7 +338,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function render_page(page) {
-        xmlhttp = new XMLHttpRequest();
+        var xmlhttp = new XMLHttpRequest();
         xmlhttp.open("GET", page + ".html", false);
         xmlhttp.send();
         var data = xmlhttp.responseText;
@@ -357,8 +356,8 @@
     $(function() {
         $('[data-toggle="tooltip"]').tooltip({
             trigger: 'hover'
-        })
-    })
+        });
+    });
     async function fetchVersion(url) {
       try {
           // Fetch the contents of the file

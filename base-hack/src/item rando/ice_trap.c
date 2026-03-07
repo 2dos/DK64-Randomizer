@@ -10,7 +10,6 @@
  */
 #include "../../include/common.h"
 
-ICE_TRAP_TYPES ice_trap_queued = ICETRAP_OFF;
 
 typedef enum ice_trap_map_state {
     ICETRAPREQ_BANNED,
@@ -18,7 +17,7 @@ typedef enum ice_trap_map_state {
     ICETRAPREQ_ALLOW,
 } ice_trap_map_state;
 
-static const char banned_trap_maps[] = {
+ROM_DATA static char banned_trap_maps[] = {
     /*.test_map =*/ ICETRAPREQ_ALLOW,
     /*.funkys_store =*/ ICETRAPREQ_BANNED, // Reason: Shop
     /*.dk_arcade =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
@@ -235,8 +234,13 @@ static const char banned_trap_maps[] = {
     /*.k_lumsy_ending =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
     /*.k_rools_shoe =*/ ICETRAPREQ_SUPER, // Reason: Boss Map
     /*.k_rools_arena =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
+    /*.arcade_25m =*/ ICETRAPREQ_BANNED, // Reason: Arcade
+    /*.arcade_50m =*/ ICETRAPREQ_BANNED, // Reason: Arcade
+    /*.arcade_75m =*/ ICETRAPREQ_BANNED, // Reason: Arcade
+    /*.arcade_100m =*/ ICETRAPREQ_BANNED, // Reason: Arcade
+    /*.jetpac_rocket = */ ICETRAPREQ_BANNED, // Reason: Jetpac
 };
-static const movement_bitfield banned_trap_movement = {
+ROM_DATA static movement_bitfield banned_trap_movement = {
     .null_state = 0,
     .idle_enemy = 0,
     .first_person_camera = 0,
@@ -418,41 +422,305 @@ void trapPlayer_New(void) {
     }
 }
 
-static const float bone_slow_scales[] = {0.4f, 0.38f, 0.3f};
-static const char bone_slow_bones[] = {1, 5, 6};
+ROM_DATA static float bone_slow_scales[] = {0.4f, 0.38f, 0.3f};
+ROM_DATA static char bone_slow_bones[] = {1, 5, 6};
+
+typedef struct button_ice_struct {
+    /* 0x000 */ unsigned char ice_trap_type;
+    /* 0x001 */ unsigned char pad1;
+    /* 0x002 */ unsigned short button_btf;
+    /* 0x004 */ void *button_sprite;
+    /* 0x008 */ unsigned short ice_trap_timer;
+    /* 0x00A */ char padA[2];
+} button_ice_struct;
+
+ROM_DATA static button_ice_struct button_ice_data[] = {
+    {.ice_trap_type = ICETRAP_DISABLEA, .button_btf = CONT_A, .button_sprite = (void*)0x80720CF0},
+    {.ice_trap_type = ICETRAP_DISABLEB, .button_btf = CONT_B, .button_sprite = (void*)0x80720D14},
+    {.ice_trap_type = ICETRAP_DISABLEZ, .button_btf = CONT_G, .button_sprite = (void*)0x80720D38},
+    {.ice_trap_type = ICETRAP_DISABLECU, .button_btf = CONT_E, .button_sprite = (void*)0x80720D80},
+};
+typedef struct ice_trap_timer_struct {
+    /* 0x000 */ unsigned short timer;
+    /* 0x002 */ char active;
+    /* 0x003 */ char unk3;
+    /* 0x004 */ void *disable_func;
+    /* 0x008 */ void *enable_func;
+} ice_trap_timer_struct;
+
+void resetScreenFlip(void) {
+    *(unsigned char*)(0x80010520) = 0x3F;
+}
+
+void resetTagAnywhere(void) {
+    if (CCEffectData) {
+        CCEffectData->disable_tag_anywhere = CC_READY;
+    }
+}
+
+void resetAnimalButtons(void) {
+    cc_disabler_animals();
+}
+
+ROM_DATA static ice_trap_timer_struct ice_trap_timers[] = {
+    {.timer = 0, .active=0, .disable_func=&resetScreenFlip}, // Flip
+    {.timer = 0, .active=1, .disable_func=&cc_disabler_paper, .enable_func=&cc_enabler_paper}, // Paper
+    {.timer = 0, .active=0, .disable_func=&cc_disabler_ice}, // Ice
+    {.timer = 0, .active=0, .disable_func=&resetAnimalButtons}, // Animals (resets buttons, then cc_disabler_animals is called separately)
+    {.timer = 0, .active=0, .disable_func=&resetTagAnywhere}, // Tag
+    {.timer = 0, .active=1, .enable_func=&cc_enabler_rockfall}, // Rockfall
+};
+
+
+ROM_DATA static unsigned short flip_timer = 0;
+ROM_DATA static unsigned short slip_timers[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+ROM_DATA static unsigned short ice_floor_timer = 0;
+ROM_DATA static unsigned short paper_timer = 0;
+
+void renderSpritesOnPlayer(sprite_data_struct *sprite, int count, int duration) {
+    float repeat_count = (float)duration / (float)sprite->image_count;
+    for (int i = 0; i < count; i++) {
+        unkSpriteRenderFunc(repeat_count);
+        unkSpriteRenderFunc_1(1);
+        loadSpriteFunction(0x8071F758);
+        attachSpriteToBone(sprite, bone_slow_scales[i], Player, bone_slow_bones[i], 2);
+    }
+}
+
+void wipeReplenishibles(void) {
+    CollectableBase.Crystals = 0;
+    CollectableBase.Film = 0;
+    CollectableBase.HomingAmmo = 0;
+    CollectableBase.InstrumentEnergy = 0;
+    CollectableBase.Oranges = 0;
+    CollectableBase.StandardAmmo = 0;
+    for (int i = 0; i < 5; i++) {
+        MovesBase[i].instrument_energy = 0;
+    }
+    displaySpriteAtXYZ((void*)(0x8071FE08), 1.0f, Player->xPos, Player->yPos + 6.0f, Player->zPos);
+}
 
 void initIceTrap(void) {
     /**
      * @brief Initialize an ice trap
      */
-    if ((ice_trap_queued == ICETRAP_BUBBLE) || (ice_trap_queued == ICETRAP_SUPERBUBBLE)) {
-        trapPlayer_New();
-        Player->trap_bubble_timer = 200;
-    } else if (ice_trap_queued == ICETRAP_REVERSECONTROLS) {
-        Player->strong_kong_ostand_bitfield |= 0x80;
-        Player->trap_bubble_timer = 240;
-    } else if (ice_trap_queued == ICETRAP_SLOWED) {
-        for (int i = 0; i < 3; i++) {
-            unkSpriteRenderFunc(0xF0);
-            unkSpriteRenderFunc_1(1);
-            loadSpriteFunction(0x8071F758);
-            attachSpriteToBone((void*)0x80720E2C, bone_slow_scales[i], Player, bone_slow_bones[i], 2);
-        }
-        Player->strong_kong_ostand_bitfield |= 0x08000000;
-        Player->trap_bubble_timer = 240;
+    switch (ice_trap_queued) {
+        case ICETRAP_BUBBLE:
+        case ICETRAP_SUPERBUBBLE:
+            trapPlayer_New();
+            Player->trap_bubble_timer = SECONDS_TO_F(7);
+            break;
+        case ICETRAP_REVERSECONTROLS:
+            renderSpritesOnPlayer((sprite_data_struct*)0x807211D0, 3, SECONDS_TO_F(8));
+            Player->strong_kong_ostand_bitfield |= 0x80;
+            Player->trap_bubble_timer = SECONDS_TO_F(8);
+            break;
+        case ICETRAP_SLOWED:
+            renderSpritesOnPlayer((sprite_data_struct*)0x80720E2C, 3, SECONDS_TO_F(8));
+            Player->strong_kong_ostand_bitfield |= 0x08000000;
+            Player->trap_bubble_timer = SECONDS_TO_F(8);
+            break;
+        case ICETRAP_DISABLEA:
+        case ICETRAP_DISABLEB:
+        case ICETRAP_DISABLEZ:
+        case ICETRAP_DISABLECU:
+            {
+                button_ice_struct *data = &button_ice_data[ice_trap_queued - ICETRAP_DISABLEA];
+                data->ice_trap_timer = SECONDS_TO_F(8);
+                trap_enabled_buttons &= ~data->button_btf;
+                renderSpritesOnPlayer((sprite_data_struct*)data->button_sprite, 3, SECONDS_TO_F(8));
+            }
+            break;
+        case ICETRAP_GETOUT:
+            if (CCEffectData) {
+                CCEffectData->get_out = CC_ENABLING;
+            }
+            break;
+        case ICETRAP_DRY:
+            wipeReplenishibles();
+            break;
+        case ICETRAP_FLIP:
+            *(unsigned char*)(0x80010520) = 0xBF;
+            ice_trap_timers[0].timer = SECONDS_TO_F(8);
+            break;
+        case ICETRAP_ICEFLOOR:
+            cc_enabler_ice();
+            ice_trap_timers[2].timer = SECONDS_TO_F(15);
+            break;
+        case ICETRAP_PAPER:
+            cc_enabler_paper();
+            ice_trap_timers[1].timer = SECONDS_TO_F(15);
+            break;
+        case ICETRAP_SLIP:
+        case ICETRAP_SLIP_INSTANT:
+            for (int i = 0; i < 8; i++) {
+                if (slip_timers[i] == 0) {
+                    if (ice_trap_queued == ICETRAP_SLIP_INSTANT) {
+                        slip_timers[i] = 1;
+                    } else {
+                        slip_timers[i] = (getRNGLower31() & 0x3FF) + SECONDS_TO_F(5); // Some time between 5s and 39.1s
+                    }
+                    break;
+                }
+            }
+            break;
+        case ICETRAP_ANIMALS:
+            cc_enabler_animals();
+            ice_trap_timers[3].timer = SECONDS_TO_F(15);
+            if (Player->characterID == 8) {
+                // Rambi - trigger B button disable trap
+                button_ice_struct *data = &button_ice_data[1];
+                data->ice_trap_timer = SECONDS_TO_F(15);
+                trap_enabled_buttons &= ~data->button_btf;
+                renderSpritesOnPlayer(data->button_sprite, 3, SECONDS_TO_F(15));
+            }
+            break;
+        case ICETRAP_ROCKFALL:
+            ice_trap_timers[5].timer = SECONDS_TO_F(10);
+            break;
+        case ICETRAP_TAG:
+            cc_enabler_tag();
+            if (CCEffectData) {
+                CCEffectData->disable_tag_anywhere = CC_ENABLED;
+            }
+            ice_trap_timers[4].timer = SECONDS_TO_F(15);
+        default:
+            break;
     }
     playSFX(0x2D4); // K Rool Laugh
+    GameStats[STAT_TRAPPED]++;
     if (Rando.ice_traps_damage) {
         customDamageCode();
     }
     ice_trap_queued = ICETRAP_OFF;
 }
 
-void queueIceTrap(ICE_TRAP_TYPES trap_type) {
+void slipPeelCode(void) {
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        CurrentActorPointer_0->control_state_progress = 45;
+        CurrentActorPointer_0->noclip_byte = 1;
+    }
+    if (CurrentActorPointer_0->control_state_progress > 0) {
+        CurrentActorPointer_0->control_state_progress--;
+    } else {
+        CurrentActorPointer_0->obj_props_bitfield &= 0xFFFF7FFF;
+        CurrentActorPointer_0->shadow_intensity -= 10;
+        if (CurrentActorPointer_0->shadow_intensity < 0) {
+            deleteActorContainer(CurrentActorPointer_0);
+        }
+    }
+    renderActor(CurrentActorPointer_0, 0);
+}
+
+void resetIceTrapButtons(void) {
+    for (unsigned int i = 0; i < sizeof(button_ice_data)/sizeof(button_ice_struct); i++) {
+        button_ice_data[i].ice_trap_timer = 0;
+    }
+    flip_timer = 0;
+    ice_floor_timer = 0;
+    paper_timer = 0;
+    trap_enabled_buttons = 0xFFFF;
+    resetScreenFlip();
+}
+
+int canLoadIceTrap(ICE_TRAP_TYPES trap_type) {
+    if (!Player) {
+        return 0;
+    }
+    if (Player->collision_queue_pointer) {
+        // Crashes
+        return 0;
+    }
+    if (ObjectModel2Timer < 5) {
+        return 0;
+    }
+    if (LZFadeoutProgress > 15.0f) {
+        return 0;
+    }
+    if (Player->strong_kong_ostand_bitfield & 0x100) {
+        // Seasick
+        return 0;
+    }
+    if (IsAutowalking) {
+        return 0;
+    }
+    if (Player->shockwave_timer != -1) {
+        return 0;
+    }
+    // Check Map
+    if (isBannedTrapMap(CurrentMap, trap_type)) {
+        return 0;
+    }
+    // Check Control State
+    if (getBitArrayValue((unsigned char*)&banned_trap_movement, Player->control_state)) {
+        return 0;
+    }
+    if (trap_type == ICETRAP_GETOUT) {
+        if (CCEffectData) {
+            if (CCEffectData->get_out == CC_ENABLED) {
+                return 0;
+            }
+        }
+    }
+    if (trap_type == ICETRAP_ANIMALS) {
+        if (Player->characterID >= 6) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void handleIceTrapButtons(void) {
+    for (unsigned int i = 0; i < sizeof(button_ice_data)/sizeof(button_ice_struct); i++) {
+        button_ice_struct *data = &button_ice_data[i];
+        if (data->ice_trap_timer > 0) {
+            data->ice_trap_timer--;
+            if (data->ice_trap_timer == 0) {
+                trap_enabled_buttons |= data->button_btf;
+            }
+        }
+    }
+    if (flip_timer > 0) {
+        flip_timer--;
+        if (flip_timer == 0) {
+            resetScreenFlip();
+        }
+    }
+    for (int i = 0; i < 8; i++) {
+        if (slip_timers[i] > 1) {
+            slip_timers[i]--;
+        } else if (slip_timers[i] == 1) {
+            if (canLoadIceTrap(ICETRAP_SLIP) && (ice_trap_queued == ICETRAP_OFF)) {
+                spawnActor(NEWACTOR_SLIPPEEL, 0xE5);
+                warpActorToParent(LastSpawnedActor, Player, 0.05f);
+                cc_enabler_slip();
+                slip_timers[i] = 0;
+            }
+        }
+    }
+    for (int i = 0; i < 6; i++) {
+        ice_trap_timer_struct *data = &ice_trap_timers[i];
+        if (data->timer > 0) {
+            data->timer--;
+            if (data->timer == 0) {
+                if (data->disable_func) {
+                    callFunc(data->disable_func, 0);
+                }
+            } else if (data->active) {
+                callFunc(data->enable_func, 0);
+            }
+        }
+    }
+}
+
+void queueIceTrap(ICE_TRAP_TYPES trap_type, int send_trap) {
     /**
      * @brief Call the ice trap queue-ing system
      */
     ice_trap_queued = trap_type;
+    if (send_trap) {
+        sendTrapLink(trap_type);
+    }
 }
 
 int isBannedTrapMap(maps map, ICE_TRAP_TYPES type) {
@@ -461,44 +729,36 @@ int isBannedTrapMap(maps map, ICE_TRAP_TYPES type) {
         return 0;
     }
     if (ban_state == ICETRAPREQ_SUPER) {
-        if (type == ICETRAP_SUPERBUBBLE) {
+        if ((type == ICETRAP_SUPERBUBBLE) || (type == ICETRAP_SLIP)) {
             return 0;
         }
     }
     return 1;
 }
 
+ROM_DATA static short ice_trap_models[] = {0x103, 0x127, 0x128};
+
+int isTrapModel(void) {
+    return inShortList(CurrentActorPointer_0->actor_model, &ice_trap_models[0], sizeof(ice_trap_models) >> 1);
+}
+
+void cancelIceTrapSong(int song, int unk0) {
+    // A more time efficient method is theorethically possible (read which song is playing in the channel)
+    // but we're talking like maybe half a microsecond here, and this is more readable imo
+    cancelMusic(SONG_FAIRYNEARBY, unk0);
+    cancelMusic(SONG_FAKEFAIRYNEARBY, unk0);
+}
+
+void playIceTrapSong(int song, float volume) {
+    if (isTrapModel()) {
+        song = SONG_FAKEFAIRYNEARBY;
+    }
+    playSong(song, volume);
+}
+
 void callIceTrap(void) {
     if (ice_trap_queued) {
-        if (Player) {
-            if (Player->collision_queue_pointer) {
-                // Crashes
-                return;
-            }
-            if (ObjectModel2Timer < 5) {
-                return;
-            }
-            if (LZFadeoutProgress > 15.0f) {
-                return;
-            }
-            if (Player->strong_kong_ostand_bitfield & 0x100) {
-                // Seasick
-                return;
-            }
-            if (IsAutowalking) {
-                return;
-            }
-            if (Player->shockwave_timer != -1) {
-                return;
-            }
-            // Check Map
-            if (isBannedTrapMap(CurrentMap, ice_trap_queued)) {
-                return;
-            }
-            // Check Control State
-            if (getBitArrayValue(&banned_trap_movement, Player->control_state)) {
-                return;
-            }
+        if (canLoadIceTrap(ice_trap_queued)) {
             initIceTrap();
         }
     }

@@ -1,0 +1,257 @@
+.fa-2x {
+    font-size: 2em;
+}
+.svg-inline--fa {
+    position: relative;
+    display: table-cell;
+    width: 60px;
+    height: 36px;
+    text-align: center;
+    vertical-align: middle;
+    font-size:20px;
+}
+
+
+#nav-tab-list:hover,#nav-tab-list.expanded {
+    width:250px;
+    overflow:visible;
+}
+
+#nav-tab-list {
+    background:rgb(33, 37, 41);
+    border-right:1px solid rgba(255, 255, 255, 0.15);
+    position:fixed;
+    top:0;
+    bottom:0;
+    height:100%;
+    left:0;
+    width:60px;
+    overflow:hidden;
+    -webkit-transition:width .05s linear;
+    transition:width .05s linear;
+    -webkit-transform:translateZ(0) scale(1,1);
+    z-index:1000;
+}
+
+#nav-tab-list>ul {
+    margin:7px 0;
+}
+
+#nav-tab-list li {
+    position:relative;
+    display:block;
+    width:249px;
+}
+
+#nav-tab-list li>a {
+    position:relative;
+    border-collapse:collapse;
+    border-spacing:0;
+    color:#999;
+    display: flex;
+    flex-wrap: nowrap;
+    font-family: arial;
+    font-size: 14px;
+    text-decoration:none;
+    -webkit-transform:translateZ(0) scale(1,1);
+    -webkit-transition:all .1s linear;
+    transition:all .1s linear;
+}
+
+#nav-tab-list .nav-icon {
+    position:relative;
+    display:table-cell;
+    width:60px;
+    height:36px;
+    text-align:center;
+    vertical-align:middle;
+    font-size:18px;
+}
+
+#nav-tab-list .nav-text {
+    position:relative;
+    display:table-cell;
+    vertical-align:middle;
+    width:190px;
+}
+
+.no-touch .scrollable.hover {
+    overflow-y:hidden;
+}
+
+.no-touch .scrollable.hover:hover {
+    overflow-y:auto;
+    overflow:visible;
+}
+
+a:hover,a:focus {
+    text-decoration:none;
+}
+
+#nav-tab-list {
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    -o-user-select:none;
+    user-select:none;
+}
+
+#nav-tab-list ul,
+#nav-tab-list li {
+    outline:0;
+    margin:0;
+    padding:0;
+}
+
+#nav-tab-list li:hover>a,
+#nav-tab-list li>a.active {
+    color:#fff;
+    background-color:#000000;
+}
+#rando_tabs {
+    margin-top: 70px !important;
+}
+
+/* Mobile responsive styles */
+@media only screen and (max-width: 767px) {
+    /* Move sidebar to top on mobile */
+    #nav-tab-list {
+        position: fixed !important;
+        top: 70px;
+        left: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translateX(-50%);
+        width: auto !important;
+        max-width: 100% !important;
+        height: 70px !important;
+        max-height: 70px !important;
+        border-right: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+        overflow-x: visible !important;
+        overflow-y: hidden !important;
+        white-space: nowrap;
+        z-index: 999;
+        -webkit-overflow-scrolling: touch;
+        display: inline-flex !important;
+        align-items: stretch !important;
+        transition: top 0.35s ease;
+    }
+    
+    /* Push sidebar down when navbar is expanded */
+    .navbar-collapse.show ~ body #nav-tab-list,
+    .navbar-collapse.collapsing ~ body #nav-tab-list {
+        top: 200px !important;
+    }
+    
+    #nav-tab-list > ul {
+        display: inline-flex !important;
+        flex-direction: row !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        list-style: none !important;
+        height: 100% !important;
+        align-items: stretch !important;
+        width: auto !important;
+    }
+    
+    #nav-tab-list li {
+        display: inline-flex !important;
+        width: 70px !important;
+        min-width: 70px !important;
+        max-width: 70px !important;
+        flex-shrink: 0 !important;
+        height: 100% !important;
+        position: relative !important;
+    }
+    
+    /* Completely remove tabs with hidden links from layout */
+    #nav-tab-list li:has(> a[hidden]) {
+        display: none !important;
+        width: 0 !important;
+        min-width: 0 !important;
+        max-width: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    #nav-tab-list li[hidden] {
+        display: none !important;
+        width: 0 !important;
+        min-width: 0 !important;
+        max-width: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    #nav-tab-list li > a[hidden] {
+        display: none !important;
+    }
+    
+    #nav-tab-list li > a {
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 6px 10px !important;
+        height: 100% !important;
+        width: 70px !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+    
+    #nav-tab-list .nav-icon,
+    #nav-tab-list .svg-inline--fa,
+    #nav-tab-list i,
+    #nav-tab-list .fa {
+        position: static !important;
+        width: 24px !important;
+        height: 24px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 auto 4px auto !important;
+        font-size: 20px !important;
+        line-height: 1 !important;
+        flex-shrink: 0 !important;
+    }
+    
+    #nav-tab-list .nav-text {
+        position: static !important;
+        width: 100% !important;
+        font-size: 9px !important;
+        text-align: center !important;
+        display: block !important;
+        line-height: 1.1 !important;
+        margin: 0 !important;
+    }
+    
+    #nav-tab-list .nav-text > div {
+        position: static !important;
+        transform: none !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+    }
+    
+    /* Adjust main content to account for top nav */
+    #rando_tabs {
+        margin-top: 140px !important;
+    }
+    
+    img[style*="margin-top: 70px"] {
+        margin-top: 140px !important;
+    }
+}
+
+/* Tablet: Allow manual toggle but enable scrolling */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    #nav-tab-list {
+        overflow-y: auto;
+        max-height: 100vh;
+    }
+    
+    #nav-tab-list.expanded {
+        overflow-y: auto;
+    }
+}

@@ -17,13 +17,12 @@ void freeDK(void) {
 	 */
 	cancelCutscene(0); // Cancel cutscene
 	// Delete cutscene DK
-	actorData* cutscene_dk = (actorData*)findActorWithType(196);
-	SpawnerInfo* spawner = cutscene_dk->tied_character_spawner;
+	SpawnerInfo* spawner = CurrentActorPointer_0->tied_character_spawner;
 	spawner->spawn_state = 0;
-	deleteActorContainer(cutscene_dk);
+	deleteActorContainer(CurrentActorPointer_0);
 }
 
-static char jumping_started = 0; // Global variable indicating that the jumping sequence has started
+ROM_DATA static char jumping_started = 0; // Global variable indicating that the jumping sequence has started
 
 void cutsceneDKCode(void) {
 	/**
@@ -62,9 +61,9 @@ void cutsceneDKCode(void) {
 		unkCutsceneKongFunction_1(0);
 		DisplayTextFlagCheck(6,1,temp_flag);
 	}
-	// Define jump as having an animation timer > 80.0f
+	// Define jump as having an animation timer > 80
 	int anim_timer = getAnimationTimer(CurrentActorPointer_0);
-	if (anim_timer > 80.0f) {
+	if (anim_timer > 80) {
 		jumping_started = 1;
 	}
 	if (jumping_started) {
@@ -81,4 +80,42 @@ void cutsceneDKCode(void) {
 		}
 	}
 	renderActor(CurrentActorPointer_0,0);
+}
+
+ROM_RODATA_NUM static const unsigned char pair_data[] = {
+	MAP_JAPES,
+	MAP_AZTECLLAMATEMPLE,
+	MAP_AZTECTINYTEMPLE,
+	MAP_FACTORY,
+};
+
+void charSpawnerItemCode(void) {
+	int check_index = inU8List(CurrentMap, &pair_data[0], sizeof(pair_data)) - 1;
+	int model = kong_check_data[check_index].model;
+	if (model == 0) {
+		return;
+	}
+	int initialized = CurrentActorPointer_0->obj_props_bitfield & 0x10;
+	switch (model) {
+		case 4:
+			cutsceneDKCode();
+			return;
+		case 1:
+			cutsceneDiddyCode();
+			return;
+		case 6:
+			cutsceneLankyCode();
+			return;
+		case 0xC:
+			cutsceneChunkyCode();
+			return;
+	}
+	// Item code will leech off Tiny's code
+	cutsceneTinyCode();
+	if (!initialized) {
+		if (kong_check_data[check_index].has_no_textures) {
+			CurrentActorPointer_0->obj_props_bitfield &= ~0x1000;
+		}
+
+	}
 }

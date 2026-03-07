@@ -39,7 +39,6 @@
 .definelabel setScriptRunState, 0x8064199C
 .definelabel checkContactSublocation, 0x8064AB1C
 .definelabel setWaterHeight, 0x80661398
-.definelabel updateModelScales, 0x807248B0
 .definelabel spawnModelTwo, 0x80632630
 .definelabel refreshItemVisibility, 0x8062D1A8
 .definelabel isObjectTangible, 0x8063C2A8
@@ -50,3 +49,4 @@
 .definelabel displayShopIcon, 0x8064826C
 .definelabel hideShop, 0x8064C9F8
 .definelabel checkLeverAngle, 0x8064BBD8
+.definelabel isModelTwoTiedFlagSet, 0x807315D4

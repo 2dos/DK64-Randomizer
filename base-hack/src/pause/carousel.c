@@ -10,36 +10,26 @@
  */
 #include "../../include/common.h"
 
-short file_items[16] = {
-    0, 0, 0, 0, // GBs, Crowns, Keys, Medals
-    0, 0, 0, 0, // RW, Fairy, Nintendo, BP
-    0, 0, 0, 0, // Kongs, Beans, Pearls, Rainbow
-    0, 0, 0, 0, // Hints, Crates
-};
-
-int file_sprites[17] = {
-    0x9, // GB
-    0x807210EC, // Crown
-    0x807210B8, // Key
-    0xA, // Medals
-    0x80721110, // RW
-    0x80721094, // Fairies
-    0x80721134, // Nintendo
-    0xC, // BP
-    0x807214A0, // Kong
-    (int)&bean_sprite, // Bean
-    (int)&pearl_sprite, // Pearls
-    0x80721378, // Rainbow Coins
-    0x80721530, // Hint
-    0x80720710, // Crate
-    0, 0,
-    0, // Null Item, Leave Empty
-};
-short file_item_caps[16] = {
-    201, 10, 8, 40,
-    1, 20, 1, 40,
-    5, 1, 5, 16,
-    35, 0, 0, 0, // Second here is Junk Items
+PauseItemStruct pause_items[CHECK_TERMINATOR] = {
+    { .sprite_index = 9,                        .item_cap = 201 }, // GB
+    { .sprite_pointer = (void*)0x807210EC,      .item_cap = 10 }, // Crown
+    { .sprite_pointer = (void*)0x807210B8,      .item_cap = 8 }, // Key
+    { .sprite_index = 0xA,                      .item_cap = 40 }, // Medals
+    { .sprite_pointer = (void*)0x80721110,      .item_cap = 1 }, // RW
+    { .sprite_pointer = (void*)0x80721094,      .item_cap = 20 }, // Fairies
+    { .sprite_pointer = (void*)0x80721134,      .item_cap = 1 }, // Nintendo
+    { .sprite_index = 0xC,                      .item_cap = 40 }, // BP
+    { .sprite_pointer = (void*)0x807214A0,      .item_cap = 5 }, // Kong
+    { .sprite_pointer = &bean_sprite,           .item_cap = 1 }, // Bean
+    { .sprite_pointer = &pearl_sprite,          .item_cap = 5 }, // Pearls
+    { .sprite_pointer = (void*)0x80721378,      .item_cap = 16 }, // Rainbow Coins
+    { .sprite_pointer = (void*)0x80721530,      .item_cap = 35 }, // Hint
+    { .sprite_pointer = (void*)0x80720710,      .item_cap = 0 }, // Crate
+    { .sprite_pointer = &potion_sprite,         .item_cap = 42 }, // Shops
+    { .sprite_pointer = (void*)0x80721238,      .item_cap = 0 }, // Snide Rewards
+    { .sprite_pointer = &boulder_sprite,        .item_cap = 0 }, // Holdables
+    { .sprite_pointer = (void*)0x8071FFD4,      .item_cap = 0 }, // Enemy Drops
+    { .sprite_pointer = &halfmedal_sprite,        .item_cap = 0 }, // Half-Medals
 };
 
 void updatePauseScreenWheel(pause_paad* write_location, void* sprite, int x, int y, float scale, int local_index, int index) {
@@ -155,66 +145,16 @@ void checksSprite(sprite_struct* sprite, char* render) {
     newPauseSpriteCode(sprite, render, 0);
 }
 
-void handleSpriteCode(int control_type) {
-    /**
-     * @brief Changes sprite code to be the carousel effect if the index is greater than 16
-     * 
-     * @param control_type Type of sprite that's being displayed and the controls you have access to
-     */
-    if (control_type < 16) {
-        loadSpriteFunction(0x806AC07C);
-    } else if (control_type == 16) {
-        loadSpriteFunction((int)&totalsSprite);
-    } else if (control_type == 17) {
-        loadSpriteFunction((int)&checksSprite);
-    }
-}
-
-typedef struct CarouselBoundStruct {
-    /* 0x000 */ unsigned char check_type;
-    /* 0x001 */ unsigned char flag_count;
-    /* 0x002 */ short starting_flag;
-} CarouselBoundStruct;
-
-static CarouselBoundStruct carousel_bounds[] = {
-    {.check_type = CHECK_CRATE, .flag_count = ENEMIES_TOTAL, .starting_flag = FLAG_ENEMY_KILLED_0}, // Make sure this is always first
-    {.check_type = CHECK_PEARLS, .flag_count = 5, .starting_flag = FLAG_PEARL_0_COLLECTED},
-    {.check_type = CHECK_RAINBOW, .flag_count = 16, .starting_flag = FLAG_RAINBOWCOIN_0},
-    {.check_type = CHECK_HINTS, .flag_count = 35, .starting_flag = FLAG_WRINKLYVIEWED},
-    {.check_type = CHECK_BEAN, .flag_count = 1, .starting_flag = FLAG_COLLECTABLE_BEAN},
-};
-
 void initCarousel_onPause(void) {
     for (int i = 0; i < 8; i++) {
-        file_items[i] = FileVariables[i];
+        pause_items[i].item_count = FileVariables[i];
     }
-    if (!Rando.enemy_item_rando) {
-        carousel_bounds[0].flag_count = 0;
-    }
-    file_items[CHECK_KONG] = 0;
-    for (int i = 0; i < 5; i++) {
-        int check_type = carousel_bounds[i].check_type;
-        int start_flag = carousel_bounds[i].starting_flag;
-        int count = carousel_bounds[i].flag_count;
-        file_items[check_type] = 0;
-        for (int j = 0; j < count; j++) {
-            file_items[check_type] += checkFlagDuplicate(start_flag + j, FLAGTYPE_PERMANENT);
-        }
-        file_items[CHECK_KONG] += checkFlagDuplicate(kong_flags[i], FLAGTYPE_PERMANENT);
-    }
-    for (int i = 0; i < 100; i++) {
-        // Junk Item Check
-        if (isIceTrapFlag(FLAG_JUNKITEM + i) == DYNFLAG_JUNK) {
-            file_items[CHECK_CRATE] += checkFlagDuplicate(FLAG_JUNKITEM + i, FLAGTYPE_PERMANENT);
-        }
-    }
-}
-
-void initCarousel_onBoot(void) {
-    if (Rando.isles_cb_rando) {
-        file_item_caps[3] = 45;
-    }
-    *(short*)(0x806AB2CE) = getHi(&file_items[CHECK_TERMINATOR]);
-    *(short*)(0x806AB2D6) = getLo(&file_items[CHECK_TERMINATOR]);
-    *(short*)(0x806AB3F6) = CHECK_TERMINATOR;
+    pause_items[CHECK_PEARLS].item_count = getItemCount_new(REQITEM_PEARL, 0, 0);
+    pause_items[CHECK_RAINBOW].item_count = getItemCount_new(REQITEM_RAINBOWCOIN, 0, 0);
+    pause_items[CHECK_HINTS].item_count = getItemCount_new(REQITEM_HINT, -1, -1);
+    pause_items[CHECK_BEAN].item_count = getItemCount_new(REQITEM_BEAN, 0, 0);
+    pause_items[CHECK_KONG].item_count = getItemCount_new(REQITEM_KONG, -1, -1);
+    pause_items[CHECK_CRATE].item_count = getItemCount_new(REQITEM_JUNK, 0, 0);
+    pause_items[CHECK_SHOPS].item_count = getTotalMoveCount();
+    pause_items[CHECK_KEY].item_count = getItemCount_new(REQITEM_KEY, -1, -1);
 }

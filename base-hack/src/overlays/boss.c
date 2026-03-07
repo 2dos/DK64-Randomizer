@@ -34,9 +34,4 @@ void overlay_mod_boss(void) {
 			*(int*)(0x8002FFE8) = 0; // Control State progress patch
 		}
 	}
-	if (Rando.music_rando_on) {
-		// Lower Crowd SFX Volume
-		*(short*)(0x80028F3E) = CROWD_VOLUME;
-		*(short*)(0x8002904E) = CROWD_VOLUME;
-	}
 }

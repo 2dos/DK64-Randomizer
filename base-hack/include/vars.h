@@ -1,4 +1,6 @@
-#define NULL 0
+#ifndef IS_LINUX
+    #define NULL 0
+#endif
 
 // SFX Index
 #define Banana 0x2A0
@@ -32,12 +34,9 @@
 // Other
 #define static_expansion_size 0x100
 
-#define GB_DICTIONARY_COUNT 120
-#define ACTOR_VANILLA_LIMIT 345
-#define COLLISION_LIMIT 72
-#define DEFS_LIMIT 159
+#define COLLISION_LIMIT 76
+#define DEFS_LIMIT 164
 #define ACTOR_LIMIT (345 + NEWACTOR_TERMINATOR)
-#define CUSTOM_ACTORS_START 345
 
 #define KONG_LOCKED_START 0x2E8
 #define SNOOPDOOR_OPEN 0x2ED
@@ -59,24 +58,25 @@
 #define GALLEON_2DSOPEN_LANKY 0x2FE
 #define GALLEON_2DSOPEN_TINY 0x2FF
 #define FLAG_COLLECTABLE_BEAN 0x300
-#define FLAG_PKMNSNAP_PICTURES 0x26B // 0x26B -> 0x28D (inc.) (35 flags)
+#define FLAG_PKMNSNAP_PICTURES 0x26B // 0x26B -> 0x296 (inc.) (44 flags)
 
-// Unused 0x290, 0x291
-#define FLAG_ITEM_BELT_0 0x292
-#define FLAG_ITEM_BELT_1 0x293
-#define FLAG_ITEM_INS_0 0x294
-#define FLAG_ITEM_INS_1 0x295
-#define FLAG_ITEM_INS_2 0x296
-#define FLAG_ABILITY_CLIMBING 0x297
-#define FLAG_LANKYPROD_SPAWNED 0x298
-#define FLAG_SHOPMOVE_BELT_0 0x299
-#define FLAG_SHOPMOVE_BELT_1 0x29A
-#define FLAG_SHOPMOVE_INS_0 0x29B
-#define FLAG_SHOPMOVE_INS_1 0x29C
-#define FLAG_SHOPMOVE_INS_2 0x29D
-#define FLAG_RAINBOWCOIN_0 0x29E // 0x29E -> 0x2AD (inc.) (16 flags)
-#define FLAG_FAKEITEM 0x2AE // 0x2AE -> 0x2BD (inc.) (16 flags)
-#define FLAG_JUNKITEM 0x320 // 0x320 -> 0x383 (inc.) (100 flags)
+// Unused 0x297, 0x298
+#define FLAG_LANKY_MUSH_OPEN 0x299
+#define FLAG_ITEM_BELT_0 0x29A
+#define FLAG_ITEM_BELT_1 0x29B
+#define FLAG_ITEM_INS_0 0x29C
+#define FLAG_ITEM_INS_1 0x29D
+#define FLAG_ITEM_INS_2 0x29E
+#define FLAG_ABILITY_CLIMBING 0x29F
+#define FLAG_LANKYPROD_SPAWNED 0x2A0
+#define FLAG_HELM_ROMAN_DOORS_OPEN 0x2A1
+#define FLAG_HELM_DK_PUNCH_GATE 0x2A2
+#define FLAG_HELM_CHUNKY_PUNCH_GATE 0x2A3
+#define FLAG_HELM_TINY_PUNCH_GATE 0x2A4
+#define FLAG_HELM_LANKY_PUNCH_GATE 0x2A5
+#define FLAG_RAINBOWCOIN_0 0x2A6 // 0x2A6 -> 0x2B5 (inc.) (16 flags)
+#define FLAG_GRABBABLES_DESTROYED 0x2B6 // 0x2B6 -> 0x2C5 (inc.) (16 flags)
+#define FLAG_SHOPFLAG 0x320 // 0x320 -> 0x383 (inc.) (100 flags)
 #define FLAG_WRINKLYVIEWED 0x384 // 0x384 -> 0x3A6 (inc.) (35 flags)
 #define FLAG_KROOL_ENTERED 0x3A7 // 0x3A7 = DK, 0x3A8 = Diddy, 0x3A9 = Lanky, 0x3AA = Tiny, 0x3AB = Chunky
 #define FLAG_MELONCRATE_0 0x3AC // 0x3AC -> 0x3BB (inc.) (16 flags)
@@ -92,7 +92,10 @@
 #define FLAG_ITEM_SNIDE 0x3C5
 #define FLAG_MEDAL_ISLES_DK 0x3C6 // 0x3C6, 0x3C7, 0x3C8, 0x3C9, 0x3CA
 #define FLAG_HELM_HURRY_DISABLED 0x3CB
-#define FLAG_ENEMY_KILLED_0 0x3CC // 0x3CC -> 0x575 (inc.) (426 flags)
+#define FLAG_HELM_MINIGAMES 0x3CC // 0x3CC -> 0x3D5 (inc.)
+#define FLAG_HALF_MEDAL_JAPES_DK 0x3D6 // 0x3D6 -> 0x3FD (inc.) - 40 flags
+#define FLAG_SNIDE_REWARD 0x3FE // 0x3FE -> 0x425 (inc.) - 40 flags
+#define FLAG_ENEMY_KILLED_0 0x426 // 0x426 -> 0x5C6 (inc.) (428 flags)
 
 #define MODEL_COUNT 0xED
 
@@ -137,5 +140,5 @@
 #define CROWD_VOLUME 10000
 
 #define PATH_CAP 64
-#define BONUS_DATA_COUNT 99
 #define TEXT_OVERLAY_BUFFER 4
+#define SPOILER_COUNT 70

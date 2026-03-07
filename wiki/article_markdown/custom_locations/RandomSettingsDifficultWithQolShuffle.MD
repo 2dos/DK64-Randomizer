@@ -2,25 +2,23 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 
 # Always On
 - DK Phase requires Baboon Blast
-- Faster Checks
+- Faster Checks Enabled
 - Fast Start - Beginning of Game
 - Random Helm Length
 - Ice Traps Damage Player
-- Randomize Keys Required to Beat K. Rool
-- Kong Rando
+- Randomize Amount of Starting Keys
 - Random K. Rool Phase Count
-- Misc Changes
-- Randomize Medals for Rareware Coin
-- Random B. Locker Amounts
-- Randomize CB Required Amounts
-- Remove Barriers
-- Item Randomizer
+- Quality Of Life
+- Random Medal Requirement
+- Randomize Blocker Required Amounts
+- Randomize Cb Required Amounts
+- Remove Barriers Enabled
+- Shuffle Items
 - Randomize number of starting Kongs
 
 # Always Off
 - Dim Solved Hints
 - Enable Plandomizer
-- Vanilla K. Rool Requirement
 - Irondonk
 - Guaranteed Starting Keys
 - No Joke Hints
@@ -30,7 +28,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Off: 60%
 	- All: 20%
 	- Isles: 20%
-- Progressive Switch Strength: 80%
+- Alter Switch Allocation: 80%
 - Auto Key Turn Ins: 50%
 - Random Bananaport Locations: 
 	- Off: 20%
@@ -41,11 +39,23 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Off: 80%
 	- Crossmap Coupled: 10%
 	- Crossmap Decoupled: 10%
-- B. Locker Max: Between 50 and 140, usually close to 80
+- B. Locker Count: Between 50 and 140, usually close to 80
 - Auto Complete Bonus Barrels: 10%
-- Shuffle Bonus Barrels: 70%
-- Shuffle Boss Kong Required: 50%
+- Bonus Barrel Rando: 70%
 - Boss Location Rando: 80%
+- Bosses Selected: 
+	- Japesboss: 80%
+	- Aztecboss: 80%
+	- Factoryboss: 80%
+	- Galleonboss: 80%
+	- Fungiboss: 80%
+	- Cavesboss: 80%
+	- Castleboss: 80%
+	- Krooldonkeyphase: 80%
+	- Krooldiddyphase: 80%
+	- Kroollankyphase: 80%
+	- Krooltinyphase: 80%
+	- Kroolchunkyphase: 80%
 - Randomize CB Locations: 60%
 - Cb Rando List Selected: 
 	- Junglejapes: 90%
@@ -56,7 +66,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Crystalcaves: 90%
 	- Creepycastle: 90%
 	- Dkisles: 50%
-- Chaos B. Lockers: 60%
+- Chaos Blockers: 60%
 - Chaos Ratio: Between 25 and 70, usually close to 40
 - Chunky Phase Slam Requirement: 
 	- Blue: 70%
@@ -93,8 +103,8 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Enable Progressive Hints: 50%
 - Enable Shop Hints: 50%
 - Enable Tag Anywhere: 90%
-- Dropsanity: 60%
-- Shuffle Enemies: 95%
+- Enemy Drop Rando: 60%
+- Enemy Rando: 95%
 - Enemy Speed Rando: 70%
 - Randomize Enemy Sizes: 90%
 - Faster Checks Selected: 
@@ -113,7 +123,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Castle Car Race: 70%
 	- Jetpac: 70%
 - Fast Warps: 80%
-- Free Trade Agreement: 
+- Free Trade Setting: 
 	- None: 20%
 	- Not Blueprints: 30%
 	- Major Collectibles: 50%
@@ -125,9 +135,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Progressive: 15%
 - Galleon Water: 
 	- Random: 100%
-- Glitches Selected: 
-	- Advanced Platforming: 100%
-- Hard B. Lockers: 60%
 - Hard Bosses: 60%
 - Hard Bosses Selected: 
 	- Fast Mad Jack: 80%
@@ -146,7 +153,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Donk In The Dark World: 0%
 	- Donk In The Sky: 0%
 - Hard Shooting: 50%
-- Hard Troff n' Scoff: 50%
+- Hard Troff N Scoff: 50%
 - Helm Hurry Mode: 5%
 - Shuffle Helm Rooms: 80%
 - Helm Room Bonus Count: 
@@ -174,10 +181,15 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Common: 40%
 	- Frequent: 10%
 	- Pain: 5%
+- Ice Trap Model: 
+	- Simple: 30%
+	- Complex: 70%
 - Item Rando List Selected: 
 	- Shop: 95%
 	- Banana: 95%
-	- Toughbanana: 95%
+	- Racebanana: 95%
+	- Gauntletbanana: 95%
+	- Blueprintbanana: 20%
 	- Crown: 70%
 	- Blueprint: 70%
 	- Key: 85%
@@ -191,6 +203,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Fakeitem: 70%
 	- Junkitem: 70%
 	- Crateitem: 70%
+	- Halfmedal: 70%
 	- Shopowners: 30%
 - Item Reward Previews: 75%
 - Random Kasplat Locations: 
@@ -206,21 +219,30 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Default: 100%
 - Kong Model Lanky: 
 	- Default: 100%
+- Kong Model Mode: 
+	- None: 40%
+	- Random One: 40%
+	- Random All: 20%
 - Kong Model Tiny: 
 	- Default: 100%
-- Key 8 Required: 70%
+- Don't Start with Key 8: 70%
+- Require Beating K. Rool: 70%
+- K. Rool in Boss Pool: 
+	- Off: 25%
+	- Krool Only: 50%
+	- Full Shuffle: 25%
 - Shuffle K. Rool Phases: 80%
 - Entrance Randomizer: 
 	- Vanilla: 20%
 	- Level Order: 40%
 	- Loadingzone: 30%
 	- Loadingzonesdecoupled: 10%
-- Logic: 
+- Logic Type: 
 	- Glitchless: 80%
-	- Glitch: 20%
-- Maximize Helm B. Locker: 50%
-- Randomize Medal CB Requirement: Between 35 and 90, usually close to 60
-- Pearls for Mermaid GB: Between 2 and 5, usually close to 4
+	- Advanced Glitchless: 20%
+- Maximize Helm Blocker: 50%
+- Medal Cb Req: Between 35 and 90, usually close to 60
+- Mermaid Gb Pearls: Between 2 and 5, usually close to 4
 - Extra Hints: 
 	- Off: 30%
 	- Base: 35%
@@ -256,7 +278,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Remove Enemy Cabin Timer: 50%
 	- Remove Galleon Ship Timers: 90%
 	- Japes Bridge Permanently Extended: 50%
-- Move Randomizer: 
+- Move Rando: 
 	- On: 30%
 	- Cross Purchase: 70%
 - No Heals: 50%
@@ -279,7 +301,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Extreme: 10%
 - Random Starting Location: 60%
 - Randomize Pickups: 60%
-- Fairies for Rareware GB: Between 1 and 20, usually close to 20
+- Rareware Gb Fairies: Between 1 and 20, usually close to 20
 - Remove Barriers Selected: 
 	- Japes Coconut Gates: 75%
 	- Japes Shellhive Gate: 75%
@@ -296,10 +318,12 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Forest Yellow Tunnel: 75%
 	- Caves Igloo Pads: 80%
 	- Caves Ice Walls: 70%
+	- Helm Star Gates: 60%
+	- Helm Punch Gates: 60%
 - Shop Indicator: 50%
 - Shorten Boss Fights: 80%
 - Shuffle Helm Location / Include Helm: 70%
-- Shuffle Shop Locations: 70%
+- Shuffle Shops: 70%
 - Smaller Shops: 50%
 - Starting Kong: 
 	- Any: 100%
@@ -307,12 +331,8 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Move Count: 
 	- Min: 0%
 	- Max: 0%
-- Switchsanity: 
-	- Off: 50%
-	- Helm Access: 40%
-	- All: 10%
 - Tns Location Rando: 50%
-- Troff n' Scoff Max: Between 150 and 450, usually close to 300
+- Troff 'n' Scoff Count: Between 150 and 450, usually close to 300
 - Vanilla Door Rando: 60%
 - Warp to Isles menu option: 90%
 - Win Condition: 

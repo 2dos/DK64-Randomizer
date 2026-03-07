@@ -26,7 +26,7 @@ typedef enum dpad_visual_enum {
     /* 2 */ DPADVISIBLE_MINIMAL,
 } dpad_visual_enum;
 
-static unsigned char race_maps[] = {
+ROM_RODATA_NUM static const unsigned char race_maps[] = {
     MAP_JAPESMINECART,
     MAP_FUNGIMINECART,
     MAP_CASTLEMINECART,
@@ -48,9 +48,9 @@ typedef struct hud_element_definition {
     /* 0x013 */ unsigned char sprite_index[5]; // One per kong
 } hud_element_definition;
 
-static short hud_counts[(ITEMID_TERMINATOR - ITEMID_CHAOSBLOCKER_KONG)] = {};
+ROM_DATA static short hud_counts[(ITEMID_TERMINATOR - ITEMID_CHAOSBLOCKER_KONG)] = {};
 
-static const hud_element_definition elements[] = {
+ROM_DATA static hud_element_definition elements[] = {
     {
         // CB (T&S)
         .x = 0x1E, .y=0x26, .unk0 = 15.5f, .unk1=26.0f,
@@ -120,7 +120,7 @@ static const hud_element_definition elements[] = {
     {
         // Race Coin
         .x = 0x122, .y=0x26, .unk0 = 16.5f, .unk1=-19.0f,
-        .cheat=0, .counter=(short*)0x80750AC4, .run_allocation=1,
+        .cheat=0, .counter=(short*)&RaceCoinCount, .run_allocation=1,
         .sprite_index={73, 73, 73, 73, 73},
     },
     {
@@ -330,7 +330,6 @@ void initHUDDirection(placementData* hud_data, int item) {
 }
 
 void allocateHUD(int reallocate) {
-    int cheat_bitfield = 0; // TODO: Hook this up
     int world = getWorld(CurrentMap, 1);
     if (reallocate) {
         HUD = dk_malloc(ITEMID_TERMINATOR * 0x30);
@@ -356,8 +355,8 @@ void allocateHUD(int reallocate) {
         int written_cheat = 0;
         // Write Stuff, normally in switch case
         if (element_def->cheat) {
-            if (cheat_bitfield & element_def->cheat) {
-                *(element->item_count_pointer) = correctRefillCap(i, 0);
+            if (CheatBitfield & element_def->cheat) {
+                *(element_def->counter) = correctRefillCap(i, 0);
                 written_cheat = 1;
             }
         }
@@ -398,7 +397,7 @@ void allocateHUD(int reallocate) {
     }
 }
 
-void* getHUDSprite_Complex(item_ids item) {
+const void* getHUDSprite_Complex(item_ids item) {
     int kong = getKong(0);
     if (item == ITEMID_CBS_0) {
         kong = *(int*)(0x80745288); // T&S Hover
@@ -410,6 +409,8 @@ void* getHUDSprite_Complex(item_ids item) {
         return &bean_sprite;
     } else if (item == ITEMID_CHAOSBLOCKER_PEARL) {
         return &pearl_sprite;
+    } else if (item == ITEMID_CHAOSBLOCKER_MOVE) {
+        return &potion_sprite;
     } else if (item == ITEMID_CHAOSBLOCKER_COMPANYCOIN) {
         return &company_coin_sprite;
     } else if ((item == ITEMID_STANDARDAMMO) || (item == ITEMID_HOMINGAMMO)) {
@@ -460,7 +461,7 @@ int canUseDPad(void) {
     if (inShop(CurrentMap, 0)) {
         return 0; // In Shop
     }
-    if (inU8List(CurrentMap, &race_maps, 8)) {
+    if (inU8List(CurrentMap, &race_maps[0], 8)) {
         return 0; // In Race
     }
     if (inMinigame(CurrentMap)) {
@@ -471,6 +472,8 @@ int canUseDPad(void) {
     }
     return CAN_USE_DPAD | CAN_SHOW_DPAD;
 }
+
+ROM_DATA static char mdl_text[4] = "100";
 
 Gfx* drawDPad(Gfx* dl) {
     /**
@@ -515,24 +518,47 @@ Gfx* drawDPad(Gfx* dl) {
         }
     }
     if (Rando.quality_of_life.hud_bp_multibunch) {
-        // Blueprint Show
+        // Medal Show
         int applied_requirement = 75;
-        if (Rando.medal_cb_req > 0) {
-            applied_requirement = Rando.medal_cb_req;
-        }
-        int mdl_opacity = 0x80;
         int world = getWorld(CurrentMap, 1);
+        // Get Requirements
+        if (Rando.cb_medal_requirement[world] > 0) {
+            applied_requirement = Rando.cb_medal_requirement[world];
+        }
+        if (applied_requirement < 1) {
+            applied_requirement = 1;
+        }
+        int half_medal_count = applied_requirement >> 1;
+        if (half_medal_count < 1) {
+            half_medal_count = 1;
+        }
+        // Vars
+        int mdl_num = 1;
+        int display_mdl_num = 1;
         int world_limit = 7;
         if (Rando.isles_cb_rando) {
             world_limit = 8;
         }
         if (world < world_limit) {
-            int kong_sum = MovesBase[(int)Character].tns_cb_count[world] + MovesBase[(int)Character].cb_count[world];
-            if (kong_sum >= applied_requirement) {
-                mdl_opacity = 0xFF;
+            int kong_count = MovesBase[(int)Character].tns_cb_count[world] + MovesBase[(int)Character].cb_count[world];
+            if (kong_count >= applied_requirement) {
+                display_mdl_num = 0;
+            } else if (Rando.include_half_medals && kong_count < half_medal_count) {
+                mdl_num = half_medal_count;
+            } else {
+                mdl_num = applied_requirement;
             }
+        } else {
+            display_mdl_num = 0;
         }
-        dl = drawImage(dl, 116, RGBA16, 32, 32, dpad_x_pos + 75, DPAD_Y, ICON_SCALE, ICON_SCALE, mdl_opacity);
+        if (display_mdl_num) {
+            dl = initDisplayList(dl);
+            dk_strFormat((char*)&mdl_text, "%d", mdl_num);
+            gDPSetCombineMode(dl++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+            dl = printText(dl, dpad_x_pos + 80, DPAD_Y - 15, 0.5f, (char*)&mdl_text);
+        } else {
+            dl = drawImage(dl, 116, RGBA16, 32, 32, dpad_x_pos + 75, DPAD_Y, ICON_SCALE, ICON_SCALE, 0xFF);
+        }
     }
     return dl;
 }

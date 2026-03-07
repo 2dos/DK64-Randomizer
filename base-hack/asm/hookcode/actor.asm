@@ -1,29 +1,3 @@
-tagPreventCode:
-    lui $a1, hi(preventTagSpawn)
-    lbu $a1, lo(preventTagSpawn) ($a1)
-    beqz $a1, tagPreventCode_Vanilla
-    nop
-    lh $a1, 0x0 ($s1)
-    addiu $a1, $a1, 0x10
-    addiu $t8, $zero, 98
-    beq $a1, $t8, tagPreventCode_Prevent
-    nop
-    addiu $t8, $zero, 136
-    beq $a1, $t8, tagPreventCode_Prevent
-    nop
-    addiu $t8, $zero, 137
-    beq $a1, $t8, tagPreventCode_Prevent
-    nop
-
-    tagPreventCode_Vanilla:
-        lh $a1, 0x0 ($s1)
-        j 0x8068953C
-        subu $t3, $t3, $zero
-
-    tagPreventCode_Prevent:
-        j 0x8068968C
-        nop
-
 destroyAllBarrelsCode:
     lw $t6, 0x0 ($s1)
     sb v0, 0x131 ($t6)
@@ -716,6 +690,14 @@ setHappyFace:
     sb $t6, 0x1EC ($t7)
     j 0x806C5E44
     sh $t6, 0x1B6 ($v0)
+
+spawnHoldableObject:
+    lui $a0, hi(CurrentActorPointer_0)
+    jal spawnBoulderObject
+    lw $a0, lo(CurrentActorPointer_0) ($a0)
+    lw $t2, 0x58 ($s0)
+    j 0x8069C218
+    addiu $at, $zero, 0x3D
 
 fixDiddySlamCrash:
     lh $t6, 0x3A ($sp) ; Get SFX id

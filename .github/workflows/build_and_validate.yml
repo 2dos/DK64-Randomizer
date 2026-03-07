@@ -10,10 +10,10 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-        - uses: actions/checkout@v3
+        - uses: actions/checkout@v6
 
         - name: Setup python
-          uses: actions/setup-python@v4.1.0
+          uses: actions/setup-python@v6.2.0
           with:
               python-version: 3.11.7
               architecture: x64
@@ -34,10 +34,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Run Tests
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
       - name: Setup python
-        uses: actions/setup-python@v4.1.0
+        uses: actions/setup-python@v6.2.0
         with:
             python-version: 3.11.7
             architecture: x64
@@ -55,7 +55,7 @@ jobs:
           fi
 
       - name: Get Cover 
-        uses: orgoro/coverage@v3.1
+        uses: orgoro/coverage@v3.2
         continue-on-error: true
         with:
             coverageFile: ./coverage.xml
@@ -63,30 +63,3 @@ jobs:
 
       - name: Job Complete
         run: echo "Job Complete"
-
-  analyze:
-    name: Analyze
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'javascript-typescript', 'python' ]
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: ${{ matrix.language }}
-        queries: security-extended,security-and-quality
-        build-mode: none
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3

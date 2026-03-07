@@ -4,16 +4,13 @@
 #define SNIDES_BONUS_GAMES 13
 
 #define LAG_CAP 10
-static short past_lag[LAG_CAP] = {};
-static unsigned char instrument_cs_indexes[] = {0, 4, 7, 8, 9};
-static char lag_counter = 0;
-static float current_avg_lag = 0;
-static char has_loaded = 0;
-static char new_picture = 0;
-int hint_pointers[35] = {};
-char* itemloc_pointers[LOCATION_ITEM_COUNT] = {};
+ROM_DATA static short past_lag[LAG_CAP] = {};
+ROM_RODATA_NUM static const unsigned char instrument_cs_indexes[] = {0, 4, 7, 8, 9};
+ROM_DATA static char lag_counter = 0;
+ROM_DATA static float current_avg_lag = 0;
+ROM_DATA static char has_loaded = 0;
+ROM_DATA static char new_picture = 0;
 char grab_lock_timer = -1;
-char tag_locked = 0;
 
 int resetPictureStatus(void) {
 	int value = *(unsigned char*)(0x807F946E);
@@ -34,23 +31,15 @@ void cFuncLoop(void) {
 	regularFrameLoop();
 	cc_effect_handler();
 	tagAnywhere();
-	level_order_rando_funcs();
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();
 	overlay_changes();
-	replace_zones(0);
+	checkDimCache();
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, FLAGTYPE_TEMPORARY); // Clear K. Lumsy temp flag
 		setFlag(0x79, 0, FLAGTYPE_TEMPORARY); // Clear BFI Reward Cutscene temp flag
 		if ((!Rando.tns_portal_rando_on) && (Rando.tns_indicator)) {
 			shiftBrokenJapesPortal();
-		}
-		openCoinDoor();
-		priceTransplant();
-		if (CurrentMap == MAP_AZTECBEETLE) {
-			TextItemName = Rando.aztec_beetle_reward;
-		} else if (CurrentMap == MAP_CAVESBEETLERACE) {
-			TextItemName = Rando.caves_beetle_reward;
 		}
 		if (isKrushaAdjacentModel(3)) {
 			if (CurrentMap == MAP_KROOLSHOE) {
@@ -61,8 +50,7 @@ void cFuncLoop(void) {
 		}
 		if (Rando.quality_of_life.vanilla_fixes) {
 			if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
-				int kong_target = CurrentMap - MAP_KROOLDK;
-				if (!checkFlagDuplicate(kong_flags[kong_target], FLAGTYPE_PERMANENT)) {
+				if (getItemCount_new(REQITEM_KONG, 0, CurrentMap - MAP_KROOLDK) == 0) {
 					exitBoss();
 					Character = Rando.starting_kong;
 				}
@@ -126,7 +114,7 @@ void cFuncLoop(void) {
 			int control_state = Player->control_state;
 			EnemyInView = 0;
 			if ((control_state == 4) || (control_state == 5)) {
-				EnemyInView = isSnapEnemyInRange();
+				EnemyInView = isSnapEnemyInRange(0);
 			}
 			if (Player->strong_kong_ostand_bitfield & 0x8000) {
 				picture_bitfield = 1;
@@ -156,14 +144,12 @@ void cFuncLoop(void) {
 		}
 	}
 	handleSFXCache();
+	SpeedUpMusic();
 	detectSongChange();
 	handleDPadFunctionality();
 	if (Rando.helm_hurry_mode) {
 		checkTotalCache();
 	}
-	// if (Rando.item_rando) {
-	// 	controlKeyText();
-	// }
 	if (CurrentMap == MAP_HELM) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) != 0)) {
 			if (inU8List(CutsceneIndex, &instrument_cs_indexes[0], 5)) {
@@ -187,7 +173,7 @@ void cFuncLoop(void) {
 	current_avg_lag /= LAG_CAP;
 }
 
-static unsigned char mj_falling_cutscenes[] = {
+ROM_RODATA_NUM static const unsigned char mj_falling_cutscenes[] = {
 	8, 2, 16, 18, 17
 };
 
@@ -206,14 +192,19 @@ void earlyFrame(void) {
 				setFlag(FLAG_KROOL_TOE_1 + i,0,FLAGTYPE_TEMPORARY); // Clear Toes
 			}
 		}
-		int boat_speed = 5000 << (CurrentMap == MAP_GALLEONPUFFTOSS);
+		int boat_speed = 5000;
+		if (CurrentMap == MAP_GALLEONPUFFTOSS)  {
+			boat_speed = 10000;
+		}
 		for (int i = 0; i < 2; i++) {
 			BoatSpeeds[i] = boat_speed;
 		}
 		PauseText = 0;
 		if (isLobby(CurrentMap)) {
 			PauseText = 1;
-		} else if (inShop(CurrentMap, 0)) {
+		} else if (inShop(CurrentMap, 1)) {
+			PauseText = 1;
+		} else if (CurrentMap == MAP_JAPES) {
 			PauseText = 1;
 		}
 		if (CurrentMap == MAP_HELM) {
@@ -251,13 +242,13 @@ void earlyFrame(void) {
 	}
 	if (CurrentMap == MAP_GALLEONPUFFTOSS) { // Pufftoss
 		if ((CutsceneActive) && (CutsceneIndex == 20) && (CutsceneTimer == 2)) { // Short Intro Cutscene
-			if (Rando.music_rando_on) {
+			if (Rando.music_rando_on && MusicTrackChannels[0] == SONG_BOSSINTRODUCTION) {
 				MusicTrackChannels[0] = 0; // Disables boss intro music
 			}
 		}
 	} else if (CurrentMap == MAP_FACTORYJACK) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)) {
-			if (inU8List(CutsceneIndex, &mj_falling_cutscenes, sizeof(mj_falling_cutscenes))) {
+			if (inU8List(CutsceneIndex, &mj_falling_cutscenes[0], sizeof(mj_falling_cutscenes))) {
 				// Falling off Mad Jack
 				if (Player) {
 					Player->control_state = 0xC;
@@ -342,34 +333,40 @@ void earlyFrame(void) {
 		handleArchipelagoFeed();
 	}
 	if (CurrentMap == MAP_FUNGI) {
-		if ((TBVoidByte & 3) == 0) { // Not pausing
-			if (CutsceneActive == 0) { // No cutscene playing
-				if (Player) {
-					int chunk = Player->chunk;
-					if ((chunk < 12) || (chunk > 17)) { // Not in owl tree area, deemed a safe zone because of races
-						handleTimeOfDay(TODCALL_FUNGIACTIVE);
+		if (Rando.fungi_time_of_day_setting == TIME_PROGRESSIVE) {
+			if ((TBVoidByte & 3) == 0) { // Not pausing
+				if (CutsceneActive == 0) { // No cutscene playing
+					if (Player) {
+						int chunk = Player->chunk;
+						if ((chunk < 12) || (chunk > 17)) { // Not in owl tree area, deemed a safe zone because of races
+							handleTimeOfDay(TODCALL_FUNGIACTIVE);
+						}
 					}
 				}
+			}
+		} else if (Rando.fungi_time_of_day_setting == TIME_DUSK) {
+			if (ObjectModel2Timer == 2) {
+				handleTimeOfDay(TODCALL_FUNGIACTIVE);
 			}
 		}
 	}
 }
 
-static char fpsStr[15] = "";
-static char bp_numerator = 0;
-static char bp_denominator = 0;
-static char bpStr[10] = "";
-static char pkmnStr[10] = "";
-static char hud_timer = 0;
-static char wait_progress_master = 0;
-static char wait_progress_timer = 0;
+ROM_DATA static char fpsStr[15] = "";
+ROM_DATA static unsigned char bp_numerator = 0;
+ROM_DATA static unsigned char bp_denominator = 0;
+ROM_DATA static char bpStr[10] = "";
+ROM_DATA static char pkmnStr[10] = "";
+ROM_DATA static char hud_timer = 0;
+ROM_DATA static char wait_progress_master = 0;
+ROM_DATA static char wait_progress_timer = 0;
 
 #define WAIT_SIZE 64
-static char wait_text_0[WAIT_SIZE] = "REMOVING LANKY KONG";
-static char wait_text_1[WAIT_SIZE] = "TELLING 2DOS TO PLAY DK64";
-static char wait_text_2[WAIT_SIZE] = "LOCKING K. LUMSY IN A CAGE";
-static char wait_text_3[WAIT_SIZE] = "STEALING THE BANANA HOARD";
-static unsigned char wait_text_lengths[] = {19, 25, 26, 25};
+ROM_DATA static char wait_text_0[WAIT_SIZE] = "REMOVING LANKY KONG";
+ROM_DATA static char wait_text_1[WAIT_SIZE] = "TELLING 2DOS TO PLAY DK64";
+ROM_DATA static char wait_text_2[WAIT_SIZE] = "LOCKING K. LUMSY IN A CAGE";
+ROM_DATA static char wait_text_3[WAIT_SIZE] = "STEALING THE BANANA HOARD";
+ROM_DATA static unsigned char wait_text_lengths[] = {19, 25, 26, 25};
 
 void insertROMMessages(void) {
 	for (int i = 0; i < 4; i++) {
@@ -396,14 +393,14 @@ void insertROMMessages(void) {
 	}
 }
 
-static const char* wait_texts[] = {
+ROM_DATA static char* wait_texts[] = {
 	"BOOTING UP THE RANDOMIZER",
 	wait_text_0,
 	wait_text_1,
 	wait_text_2,
 	wait_text_3,
 };
-static unsigned char ammo_hud_timer = 0;
+ROM_DATA static unsigned char ammo_hud_timer = 0;
 
 #define HERTZ 60
 
@@ -433,7 +430,7 @@ typedef struct eeprom_warning_struct {
 } eeprom_warning_struct;
 
 #define STANDARD_MARGIN_BOTTOM 14
-static const eeprom_warning_struct warning_text[] = {
+ROM_RODATA_NUM static const eeprom_warning_struct warning_text[] = {
 	{.text="WARNING", .x_offset=-10, .error=1, .margin_bottom=20},
 	{.text="YOUR EMULATOR SETUP IS WRONG", .x_offset=-96, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="YOUR GAME WILL NOT SAVE!", .x_offset=-76, .error=1, .margin_bottom=STANDARD_MARGIN_BOTTOM},
@@ -443,11 +440,6 @@ static const eeprom_warning_struct warning_text[] = {
 	{.text="OR THE DISCORD", .x_offset=-32, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="DISCORD.DK64RANDOMIZER.COM", .x_offset=-88, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="FOR HELP", .x_offset=-8, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
-};
-static const eeprom_warning_struct corrupt_warning_text[] = {
-	{.text="YOUR SAVE MIGHT BE CORRUPTED.", .x_offset=-96, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
-	{.text="DUE TO AN UNEXPECTED.", .x_offset=-64, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
-	{.text="INTERRUPTION MID-SAVE.", .x_offset=-70, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 };
 
 typedef struct menu_paad {
@@ -467,7 +459,7 @@ Gfx *displayMenuWarnings(Gfx *dl) {
 				int bottom = 700;
 				dl = drawScreenRect(dl, 250, top, 1000, bottom, 3, 3, 3, 1);
 				for (int k = 0; k < count; k++) {
-					eeprom_warning_struct* local_warning = &warning_text[k];
+					eeprom_warning_struct* local_warning = (eeprom_warning_struct*)&warning_text[k];
 					dl = drawInfoText(dl, local_warning->x_offset, y_info, local_warning->text, local_warning->error);
 					y_info += local_warning->margin_bottom;
 				}
@@ -488,7 +480,7 @@ Gfx* displayListModifiers(Gfx* dl) {
 					wait_progress_master = 0;
 				}
 			}
-			rgba* address = &KongRGBA[wait_progress_master];
+			rgba* address = &KongRGBA[(int)wait_progress_master];
 			int left_f = (((LOADBAR_FINISH - LOADBAR_START) + LOADBAR_MAXWIDTH) / LOADBAR_DIVISOR) * wait_progress_timer;
 			int left = left_f + LOADBAR_START - LOADBAR_MAXWIDTH;
 			int right = left + LOADBAR_MAXWIDTH;
@@ -520,9 +512,6 @@ Gfx* displayListModifiers(Gfx* dl) {
 		} else {
 			dl = drawTextPointers(dl);
 			dl = displaySongNameHandler(dl);
-			if (Rando.item_rando) {
-				dl = controlKeyText(dl);
-			}
 			if (Rando.fps_on) {
 				float fps = HERTZ;
 				if (current_avg_lag != 0) {
@@ -537,6 +526,7 @@ Gfx* displayListModifiers(Gfx* dl) {
 			dl = drawDPad(dl);
 			dl = renderDingSprite(dl);
 			dl = renderProgressiveSprite(dl);
+			dl = renderDimSprite(dl);
 			if (ammo_hud_timer) {
 				int ammo_x = 150;
 				int ammo_default_y = 850;
@@ -556,18 +546,9 @@ Gfx* displayListModifiers(Gfx* dl) {
 				int hud_st = HUD->item[0xC].hud_state;
 				if (hud_st) {
 					if ((hud_st == 1) || (hud_st == 2)) {
-						bp_numerator = 0;
-						bp_denominator = 0;
-						for (int i = 0; i < 8; i++) {
-							int bp_has = checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,FLAGTYPE_PERMANENT);
-							int bp_turn = checkFlagDuplicate(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,FLAGTYPE_PERMANENT);
-							if (!bp_turn) {
-								if (bp_has) {
-									bp_numerator += 1;
-								}
-								bp_denominator += 1;
-							}
-						}
+						getBPCountStats(getKong(0), &bp_numerator, &bp_denominator);
+						bp_numerator -= bp_denominator;
+						bp_denominator = 8 - bp_denominator;
 						if (hud_st == 1) {
 							hud_timer += 1;
 						}

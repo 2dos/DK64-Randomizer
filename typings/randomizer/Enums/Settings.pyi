@@ -18,15 +18,51 @@ class BigHeadMode(IntEnum):
     small = 2
     random = 3
 
+class BLockerDifficulty(IntEnum):
+    easy = 0
+    normal = 1
+    hard = 2
+
+class BLockerSetting(IntEnum):
+    pre_selected = 0
+    easy_random = 1
+    normal_random = 2
+    hard_random = 3
+    chaos = 4
+
+class TroffSetting(IntEnum):
+    pre_selected = 0
+    normal_random = 1
+    hard_random = 2
+
 class CBRando(IntEnum):
     off = 1
     on = 2
     on_with_isles = 3
 
+class CBRequirement(IntEnum):
+    pre_selected = 0
+    easy_random = 1
+    medium_random = 2
+    hard_random = 3
+    progressive = 4
+
 class CharacterColors(IntEnum):
     vanilla = 1
     randomized = 2
     custom = 3
+
+class ColorOptions(IntEnum):
+    enemies = 1
+    bosses = 2
+    fire = 3
+    friendly_npcs = 4
+    environment = 5
+    playable_characters = 6
+    items = 7
+    particles = 8
+    misc_objects = 9
+    barrels_and_boulders = 10
 
 class ColorblindMode(IntEnum):
     off = 0
@@ -62,6 +98,11 @@ class DKPortalRando(IntEnum):
     off = 0
     main_only = 1
     on = 2
+
+class KroolInBossPool(IntEnum):
+    off = 0
+    krool_only = 1
+    full_shuffle = 2
 
 class ExcludedSongs(IntEnum):
     wrinkly = 1
@@ -119,7 +160,7 @@ class ClimbingStatus(IntEnum):
     shuffled = 1
 
 class GlitchesSelected(IntEnum):
-    advanced_platforming = 1
+    monkey_maneuvers = 1
     b_locker_skips = 2
     boulder_clips = 3
     general_clips = 4
@@ -134,6 +175,12 @@ class GlitchesSelected(IntEnum):
     troff_n_scoff_skips = 13
     moontail = 14
     phasefall = 15
+
+class TricksSelected(IntEnum):
+    monkey_maneuvers = 1
+    hard_shooting = 2
+    advanced_grenading = 3
+    slope_resets = 4
 
 class HelmDoorItem(IntEnum):
     vanilla = 0
@@ -183,6 +230,7 @@ class HardModeSelected(IntEnum):
     donk_in_the_dark_world = 9
     donk_in_the_sky = 10
     angry_caves = 11
+    fast_balloons = 12
 
 class IceTrapFrequency(IntEnum):
     rare = 0
@@ -190,27 +238,76 @@ class IceTrapFrequency(IntEnum):
     common = 2
     frequent = 3
     pain = 4
+    unlimited = 5
+
+class IceTrapModel(IntEnum):
+    simple = 0
+    complex = 1
+
+class IceTrapModel2(IntEnum):
+    simple = 0
+    complex = 1
+    fair = 2
 
 class ItemRandoListSelected(IntEnum):
     shop = 1
-    banana = 2
-    toughbanana = 3
-    crown = 4
-    blueprint = 5
-    key = 6
-    medal = 7
-    nintendocoin = 8
-    kong = 9
-    fairy = 10
-    rainbowcoin = 11
-    beanpearl = 12
-    fakeitem = 13
-    junkitem = 14
-    crateitem = 15
-    rarewarecoin = 16
-    shopowners = 17
-    hint = 18
-    shockwave = 19
+    moves = 2
+    shockwave = 3
+    bfi_gift = 4
+    banana = 5
+    banana_checks = 6
+    toughbanana = 7
+    arenas = 8
+    crown = 9
+    blueprint = 10
+    kasplat = 11
+    key = 12
+    bosses = 13
+    endofhelm = 14
+    medal = 15
+    medal_checks = 16
+    medal_checks_helm = 17
+    nintendocoin = 18
+    arcade = 19
+    rarewarecoin = 20
+    jetpac = 21
+    kong = 22
+    kong_cages = 23
+    fairy = 24
+    fairy_checks = 25
+    rainbowcoin = 26
+    dirt_patches = 27
+    pearl = 28
+    clams = 29
+    bean = 30
+    anthillreward = 31
+    crateitem = 32
+    shopowners = 33
+    hint = 34
+    wrinkly = 35
+    boulderitem = 36
+    enemies = 37
+    dummyitem_enemies = 38
+    dummyitem_boulderitem = 39
+    dummyitem_crateitem = 40
+    trainingmoves = 41
+    trainingbarrels = 42
+    halfmedal = 43
+    dummyitem_halfmedal = 44
+    racebanana = 45
+    gauntletbanana = 46
+    blueprintbanana = 47
+    sniderewards = 48
+
+class ItemRandoFiller(IntEnum):
+    junkitem = 1
+    icetraps = 2
+    crown = 3
+    fairy = 4
+    medal = 5
+    pearl = 6
+    banana = 7
+    rainbowcoin = 8
 
 class KasplatRandoSetting(IntEnum):
     off = 0
@@ -240,6 +337,14 @@ class KongModels(IntEnum):
     cranky = 5
     candy = 6
     funky = 7
+    disco_donkey = 8
+
+class KongModelMode(IntEnum):
+    none = 0
+    manual = 1
+    random_one = 2
+    sometimes_one = 3
+    random_all = 4
 
 class LevelRandomization(IntEnum):
     vanilla = 0
@@ -247,11 +352,14 @@ class LevelRandomization(IntEnum):
     loadingzone = 2
     loadingzonesdecoupled = 3
     level_order_complex = 4
+    level_order_moderate = 5
 
 class LogicType(IntEnum):
+    advanced_glitchless = 0
     glitchless = 1
     glitch = 2
     nologic = 3
+    minimal = 4
 
 class MicrohintsEnabled(IntEnum):
     off = 0
@@ -283,6 +391,7 @@ class MinigamesListSelected(IntEnum):
     helm_minigames = 16
     arenas = 17
     training_minigames = 18
+    arcade = 19
 
 class MiscChangesSelected(IntEnum):
     auto_dance_skip = 1
@@ -355,6 +464,17 @@ class RandomPrices(IntEnum):
     high = 4
     extreme = 5
 
+class RandomRequirement(IntEnum):
+    pre_selected = 0
+    easy_random = 1
+    medium_random = 2
+    hard_random = 3
+
+class RandomStartingRegion(IntEnum):
+    off = 0
+    isles_only = 1
+    all = 2
+
 class RemovedBarriersSelected(IntEnum):
     japes_coconut_gates = 1
     japes_shellhive_gate = 2
@@ -373,6 +493,8 @@ class RemovedBarriersSelected(IntEnum):
     caves_ice_walls = 15
     galleon_treasure_room = 16
     aztec_tiny_temple_ice = 17
+    helm_star_gates = 18
+    helm_punch_gates = 19
 
 class ShockwaveStatus(IntEnum):
     vanilla = 0
@@ -407,6 +529,26 @@ class SwitchsanityLevel(IntEnum):
     helm_access = 1
     all = 2
 
+class SwitchsanityGone(IntEnum):
+    bongos = 0
+    guitar = 1
+    trombone = 2
+    sax = 3
+    triangle = 4
+    lever = 5
+    gong = 6
+    gone_pad = 7
+    random = 8
+
+class SwitchsanityKong(IntEnum):
+    donkey = 0
+    diddy = 1
+    lanky = 2
+    tiny = 3
+    chunky = 4
+    random = 5
+    any = 6
+
 class TrainingBarrels(IntEnum):
     normal = 0
     shuffled = 1
@@ -438,6 +580,11 @@ class WinConditionComplex(IntEnum):
     medium_random = 14
     hard_random = 15
     dk_rap_items = 16
+    req_bosses = 17
+    req_bonuses = 18
+    krools_challenge = 19
+    kill_the_rabbit = 20
+    get_keys_3_and_8 = 21
 
 class WrinklyHints(IntEnum):
     off = 0
@@ -658,6 +805,98 @@ class SettingsStringEnum(IntEnum):
     crown_enemy_difficulty = 203
     dk_portal_location_rando_v2 = 204
     dos_door_rando = 205
+    blocker_difficulty = 206
+    race_coin_rando = 207
+    prog_slam_level_1 = 208
+    prog_slam_level_2 = 209
+    prog_slam_level_3 = 210
+    prog_slam_level_4 = 211
+    prog_slam_level_5 = 212
+    prog_slam_level_6 = 213
+    prog_slam_level_7 = 214
+    prog_slam_level_8 = 215
+    switchsanity_enabled = 216
+    switchsanity_switch_isles_to_kroc_top = 217
+    switchsanity_switch_isles_helm_lobby = 218
+    switchsanity_switch_isles_aztec_lobby_back_room = 219
+    switchsanity_switch_isles_fungi_lobby_fairy = 220
+    switchsanity_switch_isles_spawn_rocketbarrel = 221
+    switchsanity_switch_japes_to_hive = 222
+    switchsanity_switch_japes_to_rambi = 223
+    switchsanity_switch_japes_to_painting_room = 224
+    switchsanity_switch_japes_to_cavern = 225
+    switchsanity_switch_aztec_to_kasplat_room = 226
+    switchsanity_switch_aztec_llama_front = 227
+    switchsanity_switch_aztec_llama_side = 228
+    switchsanity_switch_aztec_llama_back = 229
+    switchsanity_switch_aztec_sand_tunnel = 230
+    switchsanity_switch_aztec_to_connector_tunnel = 231
+    switchsanity_switch_galleon_to_lighthouse_side = 232
+    switchsanity_switch_galleon_to_shipwreck_side = 233
+    switchsanity_switch_galleon_to_cannon_game = 234
+    switchsanity_switch_fungi_yellow_tunnel = 235
+    switchsanity_switch_fungi_green_tunnel_near = 236
+    switchsanity_switch_fungi_green_tunnel_far = 237
+    switchsanity_switch_japes_free_kong = 238
+    switchsanity_switch_aztec_free_tiny = 239
+    switchsanity_switch_aztec_free_lanky = 240
+    switchsanity_switch_factory_free_kong = 241
+    item_rando_list_0 = 242
+    item_rando_list_1 = 243
+    item_rando_list_2 = 244
+    item_rando_list_3 = 245
+    item_rando_list_4 = 246
+    item_rando_list_5 = 247
+    item_rando_list_6 = 248
+    item_rando_list_7 = 249
+    item_rando_list_8 = 250
+    item_rando_list_9 = 251
+    decouple_item_rando = 252
+    filler_items_selected = 253
+    disable_racing_patches = 254
+    blocker_selection_behavior = 255
+    tns_selection_behavior = 256
+    medal_jetpac_behavior = 257
+    pearl_mermaid_behavior = 258
+    fairy_queen_behavior = 259
+    cb_medal_behavior = 260
+    tricks_selected = 261
+    shops_dont_cost = 262
+    less_fragile_boulders = 263
+    ice_trap_count = 264
+    cb_medal_behavior_new = 265
+    trap_weight_bubble = 266
+    trap_weight_reverse = 267
+    trap_weight_slow = 268
+    trap_weight_disablea = 269
+    trap_weight_disableb = 270
+    trap_weight_disablez = 271
+    trap_weight_disablecu = 272
+    trap_weight_getout = 273
+    trap_weight_dry = 274
+    trap_weight_flip = 275
+    trap_weight_icefloor = 276
+    trap_weight_paper = 277
+    trap_weight_slip = 278
+    total_gbs = 279
+    total_medals = 280
+    total_rainbow_coins = 281
+    total_pearls = 282
+    total_crowns = 283
+    total_fairies = 284
+    most_snide_rewards = 285
+    alt_minecart_mayhem = 286
+    trap_weight_animal = 287
+    trap_weight_rockfall = 288
+    trap_weight_disabletag = 289
+    random_starting_region_new = 290
+    kong_model_mode = 291
+    win_condition_spawns_ship = 292
+    ice_trap_model = 293
+    krool_in_boss_pool_v2 = 294
+    no_consumable_upgrades = 295
+    bosses_selected = 296
+    ice_trap_model_v2 = 297
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -668,12 +907,14 @@ class SettingsStringDataType(IntEnum):
     str = 6
     list = 7
     u16 = 8
+    u8 = 9
 
 SettingsMap: dict = {
     "activate_all_bananaports": ActivateAllBananaports,
     "bananaport_placement_rando": ShufflePortLocations,
     "bananaport_rando": BananaportRando,
     "big_head_mode": BigHeadMode,
+    "blocker_difficulty": BLockerDifficulty,
     "bonus_barrels": MinigameBarrels,
     "cb_rando": CBRando,
     "chunky_colors": CharacterColors,
@@ -690,17 +931,19 @@ SettingsMap: dict = {
     "enemies_selected": Enemies,
     "enguarde_colors": CharacterColors,
     "excluded_songs_selected": ExcludedSongs,
-    "free_trade_setting": FreeTradeSetting,
     "fungi_time": FungiTimeSetting,
     "galleon_water": GalleonWaterSetting,
     "gb_colors": CharacterColors,
     "glitches_selected": GlitchesSelected,
+    "tricks_selected": TricksSelected,
     "hard_bosses_selected": HardBossesSelected,
     "hard_mode_selected": HardModeSelected,
     "helm_barrels": MinigameBarrels,
     "helm_room_bonus_count": HelmBonuses,
     "helm_setting": HelmSetting,
     "ice_trap_frequency": IceTrapFrequency,
+    "ice_trap_model": IceTrapModel,
+    "ice_trap_model_v2": IceTrapModel2,
     "item_rando_list_selected": ItemRandoListSelected,
     "kasplat_rando_setting": KasplatRandoSetting,
     "krusha_ui": KrushaUi,
@@ -711,10 +954,12 @@ SettingsMap: dict = {
     "minigames_list_selected": MinigamesListSelected,
     "cb_rando_list_selected": Levels,
     "misc_changes_selected": MiscChangesSelected,
+    "bosses_selected": Maps,
     "more_cutscene_skips": ExtraCutsceneSkips,
     "move_rando": MoveRando,
     "music_filtering_selected": MusicFilters,
     "rambi_colors": CharacterColors,
+    "random_colors": ColorOptions,
     "random_models": RandomModels,
     "random_prices": RandomPrices,
     "shockwave_status": ShockwaveStatus,
@@ -729,6 +974,14 @@ SettingsMap: dict = {
     "warp_level_list_selected": Maps,
     "win_condition": WinCondition,
     "win_condition_item": WinConditionComplex,
+    "blocker_selection_behavior": BLockerSetting,
+    "tns_selection_behavior": TroffSetting,
+    "medal_jetpac_behavior": RandomRequirement,
+    "pearl_mermaid_behavior": RandomRequirement,
+    "fairy_queen_behavior": RandomRequirement,
+    "cb_medal_behavior": RandomRequirement,
+    "random_starting_region_new": RandomStartingRegion,
+    "cb_medal_behavior_new": CBRequirement,
     "wrinkly_hints": WrinklyHints,
     "spoiler_hints": SpoilerHints,
     "starting_kong": Kongs,
@@ -739,6 +992,7 @@ SettingsMap: dict = {
     "kong_model_lanky": KongModels,
     "kong_model_tiny": KongModels,
     "kong_model_chunky": KongModels,
+    "kong_model_mode": KongModelMode,
     "chunky_phase_slam_req": SlamRequirement,
     "puzzle_rando_difficulty": PuzzleRando,
     "progressive_hint_item": ProgressiveHintItem,
@@ -747,6 +1001,51 @@ SettingsMap: dict = {
     "starting_moves_list_3": Items,
     "starting_moves_list_4": Items,
     "starting_moves_list_5": Items,
+    "item_rando_list_0": ItemRandoListSelected,
+    "item_rando_list_1": ItemRandoListSelected,
+    "item_rando_list_2": ItemRandoListSelected,
+    "item_rando_list_3": ItemRandoListSelected,
+    "item_rando_list_4": ItemRandoListSelected,
+    "item_rando_list_5": ItemRandoListSelected,
+    "item_rando_list_6": ItemRandoListSelected,
+    "item_rando_list_7": ItemRandoListSelected,
+    "item_rando_list_8": ItemRandoListSelected,
+    "item_rando_list_9": ItemRandoListSelected,
+    "filler_items_selected": ItemRandoFiller,
+    "prog_slam_level_1": SlamRequirement,
+    "prog_slam_level_2": SlamRequirement,
+    "prog_slam_level_3": SlamRequirement,
+    "prog_slam_level_4": SlamRequirement,
+    "prog_slam_level_5": SlamRequirement,
+    "prog_slam_level_6": SlamRequirement,
+    "prog_slam_level_7": SlamRequirement,
+    "prog_slam_level_8": SlamRequirement,
+    "switchsanity_switch_isles_to_kroc_top": SwitchsanityKong,
+    "switchsanity_switch_isles_helm_lobby": SwitchsanityGone,
+    "switchsanity_switch_isles_aztec_lobby_back_room": SwitchsanityKong,
+    "switchsanity_switch_isles_fungi_lobby_fairy": SwitchsanityKong,
+    "switchsanity_switch_isles_spawn_rocketbarrel": SwitchsanityKong,
+    "switchsanity_switch_japes_to_hive": SwitchsanityKong,
+    "switchsanity_switch_japes_to_rambi": SwitchsanityKong,
+    "switchsanity_switch_japes_to_painting_room": SwitchsanityKong,
+    "switchsanity_switch_japes_to_cavern": SwitchsanityKong,
+    "switchsanity_switch_aztec_to_kasplat_room": SwitchsanityKong,
+    "switchsanity_switch_aztec_llama_front": SwitchsanityKong,
+    "switchsanity_switch_aztec_llama_side": SwitchsanityKong,
+    "switchsanity_switch_aztec_llama_back": SwitchsanityKong,
+    "switchsanity_switch_aztec_sand_tunnel": SwitchsanityKong,
+    "switchsanity_switch_aztec_to_connector_tunnel": SwitchsanityKong,
+    "switchsanity_switch_galleon_to_lighthouse_side": SwitchsanityKong,
+    "switchsanity_switch_galleon_to_shipwreck_side": SwitchsanityKong,
+    "switchsanity_switch_galleon_to_cannon_game": SwitchsanityKong,
+    "switchsanity_switch_fungi_yellow_tunnel": SwitchsanityKong,
+    "switchsanity_switch_fungi_green_tunnel_near": SwitchsanityKong,
+    "switchsanity_switch_fungi_green_tunnel_far": SwitchsanityKong,
+    "switchsanity_switch_japes_free_kong": SwitchsanityKong,
+    "switchsanity_switch_aztec_free_tiny": SwitchsanityKong,
+    "switchsanity_switch_aztec_free_lanky": SwitchsanityKong,
+    "switchsanity_switch_factory_free_kong": SwitchsanityKong,
+    "krool_in_boss_pool_v2": KroolInBossPool,
 }
 
 SettingsStringTypeMap: dict = {
@@ -755,29 +1054,30 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.auto_keys: SettingsStringDataType.bool,
     SettingsStringEnum.bananaport_placement_rando: ShufflePortLocations,
     SettingsStringEnum.bananaport_rando: BananaportRando,
-    SettingsStringEnum.blocker_0: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_1: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_2: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_3: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_4: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_5: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_6: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_7: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_text: SettingsStringDataType.var_int,
+    SettingsStringEnum.blocker_0: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_1: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_2: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_3: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_4: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_5: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_6: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_7: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_text: SettingsStringDataType.u8,
     SettingsStringEnum.bonus_barrel_auto_complete: SettingsStringDataType.bool,
     SettingsStringEnum.bonus_barrel_rando: SettingsStringDataType.bool,
     SettingsStringEnum.boss_kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.boss_location_rando: SettingsStringDataType.bool,
     SettingsStringEnum.cb_rando: CBRando,
     SettingsStringEnum.coin_door_item: HelmDoorItem,
-    SettingsStringEnum.coin_door_item_count: SettingsStringDataType.var_int,
+    SettingsStringEnum.coin_door_item_count: SettingsStringDataType.u8,
     SettingsStringEnum.random_crates: SettingsStringDataType.bool,
     SettingsStringEnum.crown_placement_rando: SettingsStringDataType.bool,
     SettingsStringEnum.crown_door_item: HelmDoorItem,
-    SettingsStringEnum.crown_door_item_count: SettingsStringDataType.var_int,
+    SettingsStringEnum.crown_door_item_count: SettingsStringDataType.u8,
     SettingsStringEnum.crown_enemy_rando: CrownEnemyRando,
     SettingsStringEnum.crown_enemy_difficulty: CrownEnemyDifficulty,
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.race_coin_rando: SettingsStringDataType.bool,
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
     SettingsStringEnum.dk_portal_location_rando: SettingsStringDataType.bool,
@@ -786,15 +1086,17 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
     SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,
     SettingsStringEnum.enemies_selected: SettingsStringDataType.list,
+    SettingsStringEnum.filler_items_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_rando: SettingsStringDataType.bool,
     SettingsStringEnum.enemy_speed_rando: SettingsStringDataType.bool,
     SettingsStringEnum.faster_checks_enabled: SettingsStringDataType.bool,
     SettingsStringEnum.fast_start_beginning_of_game_dummy: SettingsStringDataType.bool,
     SettingsStringEnum.fast_warps: SettingsStringDataType.bool,
     SettingsStringEnum.fps_display: SettingsStringDataType.bool,
-    SettingsStringEnum.free_trade_setting: FreeTradeSetting,
+    SettingsStringEnum.free_trade_setting: SettingsStringDataType.bool,
     SettingsStringEnum.generate_spoilerlog: SettingsStringDataType.bool,
     SettingsStringEnum.glitches_selected: SettingsStringDataType.list,
+    SettingsStringEnum.tricks_selected: SettingsStringDataType.list,
     SettingsStringEnum.hard_mode: SettingsStringDataType.bool,
     SettingsStringEnum.hard_mode_selected: SettingsStringDataType.list,
     SettingsStringEnum.hard_blockers: SettingsStringDataType.bool,
@@ -823,6 +1125,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.helmhurry_list_pearl: SettingsStringDataType.int16,
     SettingsStringEnum.helmhurry_list_rainbow_coin: SettingsStringDataType.int16,
     SettingsStringEnum.helmhurry_list_starting_time: SettingsStringDataType.u16,
+    SettingsStringEnum.ice_trap_count: SettingsStringDataType.int16,
     SettingsStringEnum.item_rando_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.item_reward_previews: SettingsStringDataType.bool,
     SettingsStringEnum.kasplat_rando_setting: KasplatRandoSetting,
@@ -833,8 +1136,10 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.kong_model_lanky: KongModels,
     SettingsStringEnum.kong_model_tiny: KongModels,
     SettingsStringEnum.kong_model_chunky: KongModels,
+    SettingsStringEnum.kong_model_mode: KongModelMode,
     SettingsStringEnum.kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.krool_access: SettingsStringDataType.bool,
+    SettingsStringEnum.win_condition_spawns_ship: SettingsStringDataType.bool,
     SettingsStringEnum.krool_key_count: SettingsStringDataType.var_int,
     SettingsStringEnum.krool_phase_count: SettingsStringDataType.var_int,
     SettingsStringEnum.krool_phase_order_rando: SettingsStringDataType.bool,
@@ -842,13 +1147,15 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.level_randomization: LevelRandomization,
     SettingsStringEnum.logic_type: LogicType,
     SettingsStringEnum.maximize_helm_blocker: SettingsStringDataType.bool,
+    SettingsStringEnum.most_snide_rewards: SettingsStringDataType.var_int,
     SettingsStringEnum.medal_cb_req: SettingsStringDataType.var_int,
-    SettingsStringEnum.medal_requirement: SettingsStringDataType.var_int,
+    SettingsStringEnum.medal_requirement: SettingsStringDataType.u8,
     SettingsStringEnum.microhints_enabled: MicrohintsEnabled,
     SettingsStringEnum.minigames_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.cb_rando_enabled: SettingsStringDataType.bool,
     SettingsStringEnum.cb_rando_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.misc_changes_selected: SettingsStringDataType.list,
+    SettingsStringEnum.bosses_selected: SettingsStringDataType.list,
     SettingsStringEnum.more_cutscene_skips: ExtraCutsceneSkips,
     SettingsStringEnum.move_rando: MoveRando,
     SettingsStringEnum.no_healing: SettingsStringDataType.bool,
@@ -865,7 +1172,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.randomize_blocker_required_amounts: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_cb_required_amounts: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_pickups: SettingsStringDataType.bool,
-    SettingsStringEnum.rareware_gb_fairies: SettingsStringDataType.var_int,
+    SettingsStringEnum.rareware_gb_fairies: SettingsStringDataType.u8,
     SettingsStringEnum.select_keys: SettingsStringDataType.bool,
     SettingsStringEnum.shockwave_status: ShockwaveStatus,
     SettingsStringEnum.shop_indicator: SettingsStringDataType.bool,
@@ -892,7 +1199,15 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.warp_level_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.warp_to_isles: SettingsStringDataType.bool,
     SettingsStringEnum.win_condition_item: WinConditionComplex,
-    SettingsStringEnum.win_condition_count: SettingsStringDataType.var_int,
+    SettingsStringEnum.blocker_selection_behavior: BLockerSetting,
+    SettingsStringEnum.tns_selection_behavior: TroffSetting,
+    SettingsStringEnum.medal_jetpac_behavior: RandomRequirement,
+    SettingsStringEnum.pearl_mermaid_behavior: RandomRequirement,
+    SettingsStringEnum.fairy_queen_behavior: RandomRequirement,
+    SettingsStringEnum.cb_medal_behavior: RandomRequirement,
+    SettingsStringEnum.cb_medal_behavior_new: CBRequirement,
+    SettingsStringEnum.random_starting_region_new: RandomStartingRegion,
+    SettingsStringEnum.win_condition_count: SettingsStringDataType.u8,
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,
     SettingsStringEnum.wrinkly_location_rando: SettingsStringDataType.bool,
@@ -912,11 +1227,12 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.start_with_slam: SettingsStringDataType.bool,
     SettingsStringEnum.spoiler_include_level_order: SettingsStringDataType.bool,
     SettingsStringEnum.enable_progressive_hints: SettingsStringDataType.bool,
-    SettingsStringEnum.progressive_hint_text: SettingsStringDataType.var_int,
-    SettingsStringEnum.progressive_hint_count: SettingsStringDataType.var_int,
+    SettingsStringEnum.progressive_hint_text: SettingsStringDataType.u8,
+    SettingsStringEnum.progressive_hint_count: SettingsStringDataType.u16,
     SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
     SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
+    SettingsStringEnum.disable_racing_patches: SettingsStringDataType.bool,
     SettingsStringEnum.starting_kong: Kongs,
     SettingsStringEnum.switchsanity: SwitchsanityLevel,
     SettingsStringEnum.fungi_time: FungiTimeSetting,
@@ -929,7 +1245,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.serious_hints: SettingsStringDataType.bool,
     SettingsStringEnum.cannons_require_blast: SettingsStringDataType.bool,
     SettingsStringEnum.chaos_blockers: SettingsStringDataType.bool,
-    SettingsStringEnum.mermaid_gb_pearls: SettingsStringDataType.var_int,
+    SettingsStringEnum.mermaid_gb_pearls: SettingsStringDataType.u8,
     SettingsStringEnum.chunky_phase_slam_req: SlamRequirement,
     SettingsStringEnum.shuffle_helm_location: SettingsStringDataType.bool,
     SettingsStringEnum.points_list_fairy_moves: SettingsStringDataType.int16,
@@ -938,9 +1254,12 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.krool_in_boss_pool: SettingsStringDataType.bool,
     SettingsStringEnum.enemy_kill_crown_timer: SettingsStringDataType.bool,
     SettingsStringEnum.ice_trap_frequency: IceTrapFrequency,
+    SettingsStringEnum.ice_trap_model: IceTrapModel,
+    SettingsStringEnum.ice_trap_model_v2: IceTrapModel2,
     SettingsStringEnum.ice_traps_damage: SettingsStringDataType.bool,
     SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
     SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,
+    SettingsStringEnum.blocker_difficulty: BLockerDifficulty,
     SettingsStringEnum.has_password: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,
@@ -954,16 +1273,91 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.starting_moves_list_count_4: SettingsStringDataType.int16,
     SettingsStringEnum.starting_moves_list_5: SettingsStringDataType.list,
     SettingsStringEnum.starting_moves_list_count_5: SettingsStringDataType.int16,
+    SettingsStringEnum.item_rando_list_0: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_1: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_2: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_3: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_4: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_5: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_6: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_7: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_8: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_9: SettingsStringDataType.list,
+    SettingsStringEnum.decouple_item_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.shops_dont_cost: SettingsStringDataType.bool,
+    SettingsStringEnum.alt_minecart_mayhem: SettingsStringDataType.bool,
+    SettingsStringEnum.less_fragile_boulders: SettingsStringDataType.bool,
+    SettingsStringEnum.no_consumable_upgrades: SettingsStringDataType.bool,
+    SettingsStringEnum.prog_slam_level_1: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_2: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_3: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_4: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_5: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_6: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_7: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_8: SlamRequirement,
     SettingsStringEnum.dos_door_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.switchsanity_enabled: SettingsStringDataType.bool,
+    SettingsStringEnum.switchsanity_switch_isles_to_kroc_top: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_isles_helm_lobby: SwitchsanityGone,
+    SettingsStringEnum.switchsanity_switch_isles_aztec_lobby_back_room: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_isles_fungi_lobby_fairy: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_isles_spawn_rocketbarrel: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_japes_to_hive: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_japes_to_rambi: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_japes_to_painting_room: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_japes_to_cavern: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_to_kasplat_room: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_llama_front: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_llama_side: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_llama_back: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_sand_tunnel: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_to_connector_tunnel: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_galleon_to_lighthouse_side: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_galleon_to_shipwreck_side: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_galleon_to_cannon_game: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_fungi_yellow_tunnel: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_fungi_green_tunnel_near: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_fungi_green_tunnel_far: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_japes_free_kong: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_free_tiny: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_free_lanky: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_free_kong: SwitchsanityKong,
+    SettingsStringEnum.trap_weight_bubble: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_reverse: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slow: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablea: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disableb: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablez: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablecu: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_getout: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_dry: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_flip: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_icefloor: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_paper: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slip: SettingsStringDataType.int8,
+    SettingsStringEnum.total_gbs: SettingsStringDataType.u8,
+    SettingsStringEnum.total_medals: SettingsStringDataType.u8,
+    SettingsStringEnum.total_rainbow_coins: SettingsStringDataType.u8,
+    SettingsStringEnum.total_pearls: SettingsStringDataType.u8,
+    SettingsStringEnum.total_crowns: SettingsStringDataType.u8,
+    SettingsStringEnum.total_fairies: SettingsStringDataType.u8,
+    SettingsStringEnum.trap_weight_animal: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_rockfall: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disabletag: SettingsStringDataType.int8,
+    SettingsStringEnum.krool_in_boss_pool_v2: KroolInBossPool,
 }
 
 SettingsStringListTypeMap: dict = {
     SettingsStringEnum.enemies_selected: Enemies,
+    SettingsStringEnum.filler_items_selected: ItemRandoFiller,
     SettingsStringEnum.glitches_selected: GlitchesSelected,
+    SettingsStringEnum.tricks_selected: TricksSelected,
     SettingsStringEnum.item_rando_list_selected: ItemRandoListSelected,
     SettingsStringEnum.minigames_list_selected: MinigamesListSelected,
     SettingsStringEnum.cb_rando_list_selected: Levels,
     SettingsStringEnum.misc_changes_selected: MiscChangesSelected,
+    SettingsStringEnum.bosses_selected: Maps,
     SettingsStringEnum.starting_keys_list_selected: Items,
     SettingsStringEnum.warp_level_list_selected: Maps,
     SettingsStringEnum.hard_mode_selected: HardModeSelected,
@@ -977,27 +1371,60 @@ SettingsStringListTypeMap: dict = {
     SettingsStringEnum.starting_moves_list_3: Items,
     SettingsStringEnum.starting_moves_list_4: Items,
     SettingsStringEnum.starting_moves_list_5: Items,
+    SettingsStringEnum.item_rando_list_0: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_1: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_2: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_3: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_4: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_5: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_6: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_7: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_8: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_9: ItemRandoListSelected,
+    SettingsStringEnum.trap_weight_bubble: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_reverse: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slow: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablea: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disableb: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablez: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablecu: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_getout: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_dry: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_flip: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_icefloor: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_paper: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slip: SettingsStringDataType.int8,
+    SettingsStringEnum.total_gbs: SettingsStringDataType.u8,
+    SettingsStringEnum.total_medals: SettingsStringDataType.u8,
+    SettingsStringEnum.total_rainbow_coins: SettingsStringDataType.u8,
+    SettingsStringEnum.total_pearls: SettingsStringDataType.u8,
+    SettingsStringEnum.total_crowns: SettingsStringDataType.u8,
+    SettingsStringEnum.total_fairies: SettingsStringDataType.u8,
+    SettingsStringEnum.trap_weight_animal: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_rockfall: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disabletag: SettingsStringDataType.int8,
 }
 
 SettingsStringIntRangeMap: dict = {
-    SettingsStringEnum.blocker_0: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_1: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_2: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_3: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_4: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_5: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_6: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_7: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_text: {"max": 201, "min": 0},
-    SettingsStringEnum.coin_door_item_count: {"max": 201, "min": 0},
-    SettingsStringEnum.crown_door_item_count: {"max": 201, "min": 0},
+    SettingsStringEnum.blocker_0: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_1: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_2: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_3: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_4: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_5: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_6: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_7: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_text: {"max": 255, "min": 0},
+    SettingsStringEnum.coin_door_item_count: {"max": 255, "min": 0},
+    SettingsStringEnum.crown_door_item_count: {"max": 255, "min": 0},
     SettingsStringEnum.helm_phase_count: {"max": 5, "min": 0},
     SettingsStringEnum.krool_key_count: {"max": 8, "min": 0},
     SettingsStringEnum.krool_phase_count: {"max": 5, "min": 0},
     SettingsStringEnum.medal_cb_req: {"max": 100, "min": 0},
-    SettingsStringEnum.medal_requirement: {"max": 40, "min": 0},
-    SettingsStringEnum.mermaid_gb_pearls: {"max": 5, "min": 0},
-    SettingsStringEnum.rareware_gb_fairies: {"max": 20, "min": 0},
+    SettingsStringEnum.most_snide_rewards: {"max": 40, "min": 0},
+    SettingsStringEnum.medal_requirement: {"max": 255, "min": 0},
+    SettingsStringEnum.mermaid_gb_pearls: {"max": 255, "min": 0},
+    SettingsStringEnum.rareware_gb_fairies: {"max": 255, "min": 0},
     SettingsStringEnum.starting_kongs_count: {"max": 5, "min": 0},
     SettingsStringEnum.starting_moves_count: {"max": 40, "min": 0},
     SettingsStringEnum.troff_0: {"max": 500, "min": 0},
@@ -1011,5 +1438,5 @@ SettingsStringIntRangeMap: dict = {
     SettingsStringEnum.troff_text: {"max": 500, "min": 0},
     SettingsStringEnum.progressive_hint_text: {"max": 201, "min": 0},
     SettingsStringEnum.progressive_hint_count: {"max": 3500, "min": 0},
-    SettingsStringEnum.win_condition_count: {"max": 201, "min": 0},
+    SettingsStringEnum.win_condition_count: {"max": 255, "min": 0},
 }

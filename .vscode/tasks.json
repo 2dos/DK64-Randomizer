@@ -18,7 +18,7 @@
     {
       "label": "Validate Styles",
       "type": "shell",
-      "command": "${command:python.interpreterPath} -m pycodestyle --ignore E501,W605,W503,E203,E741 ${workspaceFolder}",
+      "command": "${command:python.interpreterPath} -m pycodestyle --ignore E501,W605,W503,E203,E741,E731,E402 ${workspaceFolder}",
       "problemMatcher": []
     },
     {
@@ -65,7 +65,8 @@
         "Validate Docstrings",
         "Validate C",
         "Update Custom Location Lists",
-        "Generate PyI Stubs"
+        "Generate PyI Stubs",
+        "Update CB requirements",
       ],
       "problemMatcher": []
     },
@@ -78,7 +79,7 @@
     {
       "label": "Build BPS",
       "type": "shell",
-      "command": "cd ${workspaceFolder}/base-hack/ ; ./build.bat",
+      "command": "cd ${workspaceFolder}/base-hack ; ${command:python.interpreterPath} ./build_wrapper.py",
       "problemMatcher": [],
       "group": {
         "kind": "build",
@@ -88,7 +89,7 @@
     {
       "label": "Build Test Hack",
       "type": "shell",
-      "command": "cd ${workspaceFolder}/base-hack/ ; ./build.bat --test ; cd ${workspaceFolder} ; ${command:python.interpreterPath} base_hack_test.py",
+      "command": "cd ${workspaceFolder}/base-hack ; ${command:python.interpreterPath} ./build_wrapper.py --test ; cd ${workspaceFolder} ; ${command:python.interpreterPath} base_hack_test.py",
       "problemMatcher": [],
       "group": {
         "kind": "build",
@@ -99,6 +100,12 @@
       "label": "Run Server",
       "type": "shell",
       "command": "${command:python.interpreterPath} ./runner.py",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Bootstrap",
+      "type": "shell",
+      "command": "sass --style=compressed ${workspaceFolder}/static/styles/bootstrap/bootstrap.scss ${workspaceFolder}/static/styles/styles.css",
       "problemMatcher": []
     },
     {
@@ -121,6 +128,12 @@
       "type": "shell",
       "command": "${command:python.interpreterPath} ./cb_calc.py",
       "problemMatcher": []
+    },
+    {
+      "label": "Package APWorld",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} ./tools/package_apworld.py",
+      "problemMatcher": [],
     }
   ]
 }

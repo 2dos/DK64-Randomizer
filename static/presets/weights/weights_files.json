@@ -25,8 +25,21 @@
     },
     "bonus_barrel_auto_complete": 0.5,
     "bonus_barrel_rando": 0.7,
-    "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
+    "bosses_selected": {
+      "JapesBoss": 0.8,
+      "AztecBoss": 0.8,
+      "FactoryBoss": 0.8,
+      "GalleonBoss": 0.8,
+      "FungiBoss": 0.8,
+      "CavesBoss": 0.8,
+      "CastleBoss": 0.8,
+      "KroolDonkeyPhase": 0.8,
+      "KroolDiddyPhase": 0.8,
+      "KroolLankyPhase": 0.8,
+      "KroolTinyPhase": 0.8,
+      "KroolChunkyPhase": 0.8
+    },
     "cannons_require_blast": 0,
     "cb_rando_enabled": 0.3,
     "cb_rando_list_selected": {
@@ -129,7 +142,6 @@
       "random": 1
     },
     "glitches_selected": {},
-    "hard_blockers": 0,
     "hard_bosses": 0,
     "hard_bosses_selected": {},
     "hard_mode": 0,
@@ -228,6 +240,10 @@
       "mild": 0.2,
       "common": 0.1
     },
+    "ice_trap_model": {
+      "simple": 0.5,
+      "complex": 0.5
+    },
     "ice_traps_damage": 0.2,
     "item_rando_list_selected": {
       "shop": 0.95,
@@ -263,15 +279,22 @@
     "kong_model_lanky": {
       "default": 1
     },
+    "kong_model_mode": {
+      "none": 0.5,
+      "random_one": 0.5
+    },
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
-    "krool_in_boss_pool": 0.8,
+    "win_condition_spawns_ship": 0.3,
+    "krool_in_boss_pool_v2": {
+      "off": 0.2,
+      "krool_only": 0.3,
+      "full_shuffle": 0.5
+    },
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
-    "k_rool_vanilla_requirement": 0,
     "level_randomization": {
       "vanilla": 0.5,
       "level_order": 0.5
@@ -351,7 +374,9 @@
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
       "caves_igloo_pads": 1,
-      "caves_ice_walls": 1
+      "caves_ice_walls": 1,
+      "helm_star_gates": 1,
+      "helm_punch_gates": 1
     },
     "select_keys": 0,
     "serious_hints": 0.7,
@@ -392,9 +417,6 @@
       "max": 0
     },
     "starting_random": 1,
-    "switchsanity": {
-      "off": 1
-    },
     "tns_location_rando": 0,
     "troff_text": {
       "min": 100,
@@ -444,8 +466,21 @@
     },
     "bonus_barrel_auto_complete": 0.3,
     "bonus_barrel_rando": 0.7,
-    "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
+    "bosses_selected": {
+      "JapesBoss": 0.8,
+      "AztecBoss": 0.8,
+      "FactoryBoss": 0.8,
+      "GalleonBoss": 0.8,
+      "FungiBoss": 0.8,
+      "CavesBoss": 0.8,
+      "CastleBoss": 0.8,
+      "KroolDonkeyPhase": 0.8,
+      "KroolDiddyPhase": 0.8,
+      "KroolLankyPhase": 0.8,
+      "KroolTinyPhase": 0.8,
+      "KroolChunkyPhase": 0.8
+    },
     "cannons_require_blast": 0.5,
     "cb_rando_enabled": 0.5,
     "cb_rando_list_selected": {
@@ -553,7 +588,6 @@
       "random": 1
     },
     "glitches_selected": {},
-    "hard_blockers": 0.2,
     "hard_bosses": 0,
     "hard_bosses_selected": {},
     "hard_mode": 0,
@@ -653,11 +687,17 @@
       "common": 0.15,
       "frequent": 0.05
     },
+    "ice_trap_model": {
+      "simple": 0.5,
+      "complex": 0.5
+    },
     "ice_traps_damage": 0.5,
     "item_rando_list_selected": {
       "shop": 0.95,
       "banana": 0.95,
-      "toughbanana": 0.5,
+      "racebanana": 0.5,
+      "gauntletbanana": 0.5,
+      "blueprintbanana": 0.2,
       "crown": 0.7,
       "blueprint": 0.7,
       "key": 0.85,
@@ -671,6 +711,7 @@
       "fakeitem": 0.5,
       "junkitem": 0.5,
       "crateitem": 0.5,
+      "halfmedal": 0.5,
       "shopowners": 0.3
     },
     "item_reward_previews": 1,
@@ -693,15 +734,23 @@
     "kong_model_lanky": {
       "default": 1
     },
+    "kong_model_mode": {
+      "none": 0.45,
+      "random_one": 0.45,
+      "random_all": 0.1
+    },
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
-    "krool_in_boss_pool": 0.65,
+    "win_condition_spawns_ship": 0.5,
+    "krool_in_boss_pool_v2": {
+      "off": 0.35,
+      "krool_only": 0.3,
+      "full_shuffle": 0.35
+    },
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
-    "k_rool_vanilla_requirement": 0,
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.65,
@@ -786,7 +835,9 @@
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
       "caves_igloo_pads": 0.8,
-      "caves_ice_walls": 0.7
+      "caves_ice_walls": 0.7,
+      "helm_star_gates": 0.7,
+      "helm_punch_gates": 0.7
     },
     "select_keys": 0,
     "serious_hints": 0.3,
@@ -827,11 +878,6 @@
       "max": 0
     },
     "starting_random": 1,
-    "switchsanity": {
-      "off": 0.85,
-      "helm_access": 0.1,
-      "all": 0.05
-    },
     "tns_location_rando": 0.3,
     "troff_text": {
       "min": 150,
@@ -885,8 +931,21 @@
     },
     "bonus_barrel_auto_complete": 0.1,
     "bonus_barrel_rando": 0.7,
-    "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
+    "bosses_selected": {
+      "JapesBoss": 0.8,
+      "AztecBoss": 0.8,
+      "FactoryBoss": 0.8,
+      "GalleonBoss": 0.8,
+      "FungiBoss": 0.8,
+      "CavesBoss": 0.8,
+      "CastleBoss": 0.8,
+      "KroolDonkeyPhase": 0.8,
+      "KroolDiddyPhase": 0.8,
+      "KroolLankyPhase": 0.8,
+      "KroolTinyPhase": 0.8,
+      "KroolChunkyPhase": 0.8
+    },
     "cannons_require_blast": 1,
     "cb_rando_enabled": 0.6,
     "cb_rando_list_selected": {
@@ -995,10 +1054,6 @@
     "galleon_water": {
       "random": 1
     },
-    "glitches_selected": {
-      "advanced_platforming": 1
-    },
-    "hard_blockers": 0.6,
     "hard_bosses": 0.6,
     "hard_bosses_selected": {
       "fast_mad_jack": 0.8,
@@ -1111,11 +1166,17 @@
       "frequent": 0.1,
       "pain": 0.05
     },
+    "ice_trap_model": {
+      "simple": 0.3,
+      "complex": 0.7
+    },
     "ice_traps_damage": 1,
     "item_rando_list_selected": {
       "shop": 0.95,
       "banana": 0.95,
-      "toughbanana": 0.95,
+      "racebanana": 0.95,
+      "gauntletbanana": 0.95,
+      "blueprintbanana": 0.2,
       "crown": 0.7,
       "blueprint": 0.7,
       "key": 0.85,
@@ -1129,6 +1190,7 @@
       "fakeitem": 0.7,
       "junkitem": 0.7,
       "crateitem": 0.7,
+      "halfmedal": 0.7,
       "shopowners": 0.3
     },
     "item_reward_previews": 1,
@@ -1151,15 +1213,23 @@
     "kong_model_lanky": {
       "default": 1
     },
+    "kong_model_mode": {
+      "none": 0.4,
+      "random_one": 0.4,
+      "random_all": 0.2
+    },
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
-    "krool_in_boss_pool": 0.5,
+    "win_condition_spawns_ship": 0.7,
+    "krool_in_boss_pool_v2": {
+      "off": 0.25,
+      "krool_only": 0.50,
+      "full_shuffle": 0.25
+    },
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
-    "k_rool_vanilla_requirement": 0,
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.4,
@@ -1168,7 +1238,7 @@
     },
     "logic_type": {
       "glitchless": 0.8,
-      "glitch": 0.2
+      "advanced_glitchless": 0.2
     },
     "maximize_helm_blocker": 0.5,
     "medal_cb_req": {
@@ -1275,7 +1345,9 @@
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
       "caves_igloo_pads": 0.8,
-      "caves_ice_walls": 0.7
+      "caves_ice_walls": 0.7,
+      "helm_star_gates": 0.6,
+      "helm_punch_gates": 0.6
     },
     "select_keys": 0,
     "serious_hints": 0,
@@ -1316,11 +1388,6 @@
       "max": 0
     },
     "starting_random": 1,
-    "switchsanity": {
-      "off": 0.5,
-      "helm_access": 0.4,
-      "all": 0.1
-    },
     "tns_location_rando": 0.5,
     "troff_text": {
       "min": 150,
@@ -1374,8 +1441,21 @@
     },
     "bonus_barrel_auto_complete": 0.1,
     "bonus_barrel_rando": 0.7,
-    "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
+    "bosses_selected": {
+      "JapesBoss": 0.8,
+      "AztecBoss": 0.8,
+      "FactoryBoss": 0.8,
+      "GalleonBoss": 0.8,
+      "FungiBoss": 0.8,
+      "CavesBoss": 0.8,
+      "CastleBoss": 0.8,
+      "KroolDonkeyPhase": 0.8,
+      "KroolDiddyPhase": 0.8,
+      "KroolLankyPhase": 0.8,
+      "KroolTinyPhase": 0.8,
+      "KroolChunkyPhase": 0.8
+    },
     "cannons_require_blast": 1,
     "cb_rando_enabled": 0.6,
     "cb_rando_list_selected": {
@@ -1484,10 +1564,6 @@
     "galleon_water": {
       "random": 1
     },
-    "glitches_selected": {
-      "advanced_platforming": 1
-    },
-    "hard_blockers": 0.6,
     "hard_bosses": 0.6,
     "hard_bosses_selected": {
       "fast_mad_jack": 0.8,
@@ -1600,11 +1676,17 @@
       "frequent": 0.1,
       "pain": 0.05
     },
+    "ice_trap_model": {
+      "simple": 0.3,
+      "complex": 0.7
+    },
     "ice_traps_damage": 1,
     "item_rando_list_selected": {
       "shop": 0.95,
       "banana": 0.95,
-      "toughbanana": 0.95,
+      "racebanana": 0.95,
+      "gauntletbanana": 0.95,
+      "blueprintbanana": 0.2,
       "crown": 0.7,
       "blueprint": 0.7,
       "key": 0.85,
@@ -1618,6 +1700,7 @@
       "fakeitem": 0.7,
       "junkitem": 0.7,
       "crateitem": 0.7,
+      "halfmedal": 0.7,
       "shopowners": 0.3
     },
     "item_reward_previews": 0.75,
@@ -1640,15 +1723,23 @@
     "kong_model_lanky": {
       "default": 1
     },
+    "kong_model_mode": {
+      "none": 0.4,
+      "random_one": 0.4,
+      "random_all": 0.2
+    },
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
-    "krool_in_boss_pool": 0.5,
+    "win_condition_spawns_ship": 0.7,
+    "krool_in_boss_pool_v2": {
+      "off": 0.25,
+      "krool_only": 0.50,
+      "full_shuffle": 0.25
+    },
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
-    "k_rool_vanilla_requirement": 0,
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.4,
@@ -1657,7 +1748,7 @@
     },
     "logic_type": {
       "glitchless": 0.8,
-      "glitch": 0.2
+      "advanced_glitchless": 0.2
     },
     "maximize_helm_blocker": 0.5,
     "medal_cb_req": {
@@ -1764,7 +1855,9 @@
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
       "caves_igloo_pads": 0.8,
-      "caves_ice_walls": 0.7
+      "caves_ice_walls": 0.7,
+      "helm_star_gates": 0.6,
+      "helm_punch_gates": 0.6
     },
     "select_keys": 0,
     "serious_hints": 0,
@@ -1805,11 +1898,6 @@
       "max": 0
     },
     "starting_random": 1,
-    "switchsanity": {
-      "off": 0.5,
-      "helm_access": 0.4,
-      "all": 0.1
-    },
     "tns_location_rando": 0.5,
     "troff_text": {
       "min": 150,

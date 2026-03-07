@@ -24,3 +24,14 @@ scoff_patch:
     scoff_patch_finish:
         j 0x806BE104
         lui $at, 0x4F80
+
+banana_medal_handler:
+    addu $a3, $t9, $t3
+    sw $a3, 0x38 ($sp)
+    or $a0, $a3, $zero
+    or $a1, $v0, $zero
+    jal banana_medal_acquisition
+    or $a2, $t4, $zero
+    j 0x806F93A0
+    lw $a3, 0x38 ($sp)
+

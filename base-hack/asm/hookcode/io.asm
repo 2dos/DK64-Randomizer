@@ -85,38 +85,16 @@ DynamicCodeFixes:
     lui $t1, 0x8074
 
 getLobbyExit:
-    lui $a1, hi(ReplacementLobbyExitsArray)
+    lui $a1, hi(replacement_lobby_exits_array)
     sll $t7, $t6, 1
     addu $a1, $a1, $t7
-    lhu $a1, lo(ReplacementLobbyExitsArray) ($a1)
+    lhu $a1, lo(replacement_lobby_exits_array) ($a1)
     addu $a0, $a0, $t7
     jal 0x805FF378
-    lhu $a0, lo(ReplacementLobbiesArray) ($a0)
+    lhu $a0, lo(replacement_lobbies_array) ($a0)
     jal resetMapContainer
     nop
     j 0x80600070
-    nop
-
-checkFlag_ItemRando:
-    jal getFlagBlockAddress
-    sh $a2, 0x22 ($sp)
-    lw $a0, 0x24 ($sp)
-    addiu $a1, $sp, 0x22
-    or $a2, v0, $zero
-    jal updateFlag
-    addiu $a3, $zero, 0
-    j 0x80731170
-    nop
-
-setFlag_ItemRando:
-    jal getFlagBlockAddress
-    sh $a3, 0x32 ($sp)
-    lw $a0, 0x38 ($sp)
-    addiu $a1, $sp, 0x32
-    or $a2, v0, $zero
-    jal updateFlag
-    addiu $a3, $zero, 1
-    j 0x80731300
     nop
 
 adjustExitRead:
@@ -202,3 +180,62 @@ fixNullLagBoost:
     fixNullLagBoost_end:
     j   0x806CCA98
     lui $at, 0x4F80
+
+storeWaterSurfaceCount:
+    lbu $v0, 0x3 ($t7)
+    sb $v0, 0x93C5 ($at)
+    j 0x8065F230
+    sb $zero, 0x93C4 ($at)
+
+dynflagcheck_0:
+    lui $a1, hi(CurrentMap)
+    lw $a1, lo(CurrentMap) ($a1)
+    jal isDynFlag
+    lhu $a0, 0xFFF8 ($s0)
+    j 0x806F49F4
+    nop
+
+dynflagcheck_1:
+    lui $a1, hi(CurrentMap)
+    lw $a1, lo(CurrentMap) ($a1)
+    jal isDynFlag
+    lhu $a0, 0x0000 ($s7)
+    j 0x806F4998
+    nop
+
+dynflagcheck_2:
+    lui $a1, hi(CurrentMap)
+    lw $a1, lo(CurrentMap) ($a1)
+    jal isDynFlag
+    lhu $a0, 0x0028 ($s1)
+    j 0x80632148
+    nop
+
+dynflagcheck_3:
+    or $a1, $s4, $zero
+    jal isDynFlag
+    lhu $a0, 0x0028 ($s0)
+    j 0x80631E44
+    nop
+
+pleaseDontStopIslesMusic:
+    addiu $at, $at, 0xA0A8  ; currentMap pointer
+    lw $a0, 0x0 ($at)
+    addiu $at, $zero, 0x22
+    beq $at, $a0, mapIsIsles
+    lbu $a0, 0xb ($s1)
+    
+    cancelTheSong:
+    JAL cancelMusic
+    nop
+
+    PDSTMReturn:  ; because "return" would possibly be too common
+    j 0x8060378C
+    nop
+
+    mapIsIsles:
+    addiu $at, $zero, 0x6E
+    bne $at, $a0, PDSTMReturn
+    nop
+    b cancelTheSong
+    nop

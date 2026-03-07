@@ -1,6 +1,6 @@
 #include "../../include/common.h"
 
-static unsigned char game_beat_countdown = 0;
+ROM_DATA static unsigned char game_beat_countdown = 0;
 
 void beatGame(void) {
     if (isGamemode(GAMEMODE_ADVENTURE, 1)) {
@@ -26,7 +26,7 @@ void finalizeBeatGame(void) {
 
 // Pkmn Snap Spreadsheet: https://docs.google.com/spreadsheets/d/1nTZYi36dFaTB1XCgB7dJJffMsaKz-wOFmP5nDo8l3Uo/edit?usp=sharing
 
-static const short poke_snap_actors[] = {
+ROM_RODATA_NUM static const short poke_snap_actors[] = {
     175, // Kaboom
     178, // Blue Beaver
     181, // Book
@@ -63,102 +63,136 @@ static const short poke_snap_actors[] = {
     290, // Pufftup
     291, // Kosha
     340, // Bug (Trash Can)
-    CUSTOM_ACTORS_START + NEWACTOR_ZINGERFLAMETHROWER, // Zinger (Flamethrower)
-    CUSTOM_ACTORS_START + NEWACTOR_SCARAB, // Scarab
+    NEWACTOR_ZINGERFLAMETHROWER, // Zinger (Flamethrower)
+    NEWACTOR_SCARAB, // Scarab
+    163, // BFI Queen
+    164, // Ice Tomato
+    193, // Mermaid
+    201, // Llama
+    246, // Mechanical Fish
+    247, // Seal
 };
 
-typedef struct dk_rap_wincon_data {
-    /* 0x000 */ unsigned char move_type; // special, slam, gun, belt, instrument, flag
-    /* 0x001 */ unsigned char kong; // if necessary
-    /* 0x002 */ unsigned short signifier; // flag index, "bitwise or" if not flag
-} dk_rap_wincon_data;
+typedef struct move_kong_pairs {
+    unsigned char move_type;
+    unsigned char kong;
+    unsigned char level;
+} move_kong_pairs;
 
-static const dk_rap_wincon_data dk_rap_conditions[] = {
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_KONG_DK}, // DK, "So they're finally here"
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_KONG_DIDDY}, // Diddy, "So they're finally here"
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_KONG_LANKY}, // Lanky, "So they're finally here"
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_KONG_TINY}, // Tiny, "So they're finally here"
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_KONG_CHUNKY}, // Chunky, "So they're finally here"
-    {.move_type = PURCHASE_GUN, .kong=KONG_DK, .signifier=1}, // Coconut Gun, "His Coconut Gun can fire in spurts"
-    {.move_type = PURCHASE_MOVES, .kong=KONG_DK, .signifier=MOVECHECK_STRONG}, // Strong Kong, "He's bigger, faster and stronger too"
-    // {.move_type = PURCHASE_FLAG, .signifier=FLAG_ABILITY_SHOCKWAVE}, // Shockwave, implied through video
-    {.move_type = PURCHASE_MOVES, .kong=KONG_TINY, .signifier=MOVECHECK_MINI}, // Mini Monkey, "She can shrink in style to suit her mood"
-    {.move_type = PURCHASE_MOVES, .kong=KONG_TINY, .signifier=MOVECHECK_TWIRL}, // Twirl, "She can float through the air"
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_ABILITY_CLIMBING}, // Climbing, "And climb up trees"
-    {.move_type = PURCHASE_MOVES, .kong=KONG_LANKY, .signifier=MOVECHECK_OSTAND}, // Orangstand, "He can handstand, when he needs to"
-    {.move_type = PURCHASE_MOVES, .kong=KONG_LANKY, .signifier=MOVECHECK_BALLOON}, // Balloon, "Inflate himself, just like a balloon"
-    {.move_type = PURCHASE_INSTRUMENT, .kong=KONG_LANKY, .signifier=1}, // Trombone, "This crazy kong just digs this tune"
-    // {.move_type = PURCHASE_MOVES, .kong=KONG_DIDDY, .signifier=MOVECHECK_SPRING}, // Spring, implied through video
-    {.move_type = PURCHASE_MOVES, .kong=KONG_DIDDY, .signifier=MOVECHECK_ROCKETBARREL}, // Rocket, "He can fly real high with his jetpac on"
-    {.move_type = PURCHASE_GUN, .kong=KONG_DIDDY, .signifier=1}, // Popguns, "With his pistols out, he's one tough kong"
-    {.move_type = PURCHASE_INSTRUMENT, .kong=KONG_DIDDY, .signifier=1}, // Guitar, "He'll make you smile when he plays his tune"
-    // {.move_type = PURCHASE_MOVES, .kong=KONG_CHUNKY, .signifier=MOVECHECK_HUNKY}, // Hunky, Implied through video
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_TBARREL_BARREL}, // Barrels, "Can pick up a boulder with relative ease"
-    // {.move_type = PURCHASE_SLAM, .signifier=3}, // SDSS, Implied through video
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_ITEM_CRANKY}, // Cranky, "C'mon Cranky, take it to the fridge"
-    {.move_type = PURCHASE_GUN, .kong=KONG_CHUNKY, .signifier=1}, // Pineapple, "Walnuts, Peanuts, Pineapple Smells"
-    {.move_type = PURCHASE_GUN, .kong=KONG_LANKY, .signifier=1}, // Grape, "Grapes, Melons, Oranges and Coconut Shells"
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_TBARREL_ORANGE}, // Oranges, "Grapes, Melons, Oranges and Coconut Shells"
+ROM_RODATA_NUM static const move_kong_pairs moves_for_rap[] = {
+    {.move_type = 0, .kong = KONG_DK, .level=1},  // Strong Kong
+    {.move_type = 2, .kong = KONG_DK, .level=0},  // Coconut
+    {.move_type = 0, .kong = KONG_DIDDY, .level=1},  // Rocket
+    {.move_type = 2, .kong = KONG_DIDDY, .level=0},  // Peanut
+    {.move_type = 4, .kong = KONG_DIDDY, .level=0},  // Guitar
+    {.move_type = 0, .kong = KONG_LANKY, .level=0},  // Orangstand
+    {.move_type = 0, .kong = KONG_LANKY, .level=1},  // Balloon
+    {.move_type = 2, .kong = KONG_LANKY, .level=0},  // Grape
+    {.move_type = 4, .kong = KONG_LANKY, .level=0},  // Trombone
+    {.move_type = 0, .kong = KONG_TINY, .level=0},  // Mini Monkey
+    {.move_type = 0, .kong = KONG_TINY, .level=1},  // Twirl
+    {.move_type = 2, .kong = KONG_CHUNKY, .level=0},  // Pineapple
 };
+ROM_RODATA_NUM static const short rap_flags[] = {FLAG_TBARREL_BARREL, FLAG_TBARREL_ORANGE, FLAG_ABILITY_CLIMBING, FLAG_ITEM_CRANKY};
 
 int hasBeatenDKRapWinCon(void) {
-    for (int i = 0; i < sizeof(dk_rap_conditions) / sizeof(dk_rap_wincon_data); i++) {
-        PURCHASE_TYPES move_type = dk_rap_conditions[i].move_type;
-        int signifier = dk_rap_conditions[i].signifier;
-        if ((move_type == PURCHASE_MOVES) || (move_type == PURCHASE_GUN) || (move_type == PURCHASE_INSTRUMENT)) {
-            kongs kong = dk_rap_conditions[i].kong;
-            int head = (int)&MovesBase[kong];
-            unsigned char val = *(unsigned char*)(head + move_type);
-            if (!(val & signifier)) {
-                return 0;
-            }
-        } else if ((move_type == PURCHASE_SLAM) || (move_type == PURCHASE_AMMOBELT)) {
-            int head = (int)&MovesBase[0];
-            unsigned char val = *(unsigned char*)(head + move_type);
-            if (val < signifier) {
-                return 0;
-            }
-        } else {
-            if (!checkFlagDuplicate(signifier, FLAGTYPE_PERMANENT)) {
-                return 0;
-            }
+    if (getItemCount_new(REQITEM_KONG, -1, -1) != 5) {
+        // Missing at least 1 kong
+        return 0;
+    }
+    for (int i = 0; i < 12; i++) {
+        int kong = moves_for_rap[i].kong;
+        int head = (int)&MovesBase[kong];
+        unsigned char val = *(unsigned char*)(head + moves_for_rap[i].move_type);
+        int move_lvl = moves_for_rap[i].level;
+        if ((val & (1 << move_lvl)) == 0) {
+            return 0;
+        }
+    }
+    for (int i = 0; i < 4; i++) {
+        if (!hasFlagMove(rap_flags[i])) {
+            return 0;
         }
     }
     return 1;
 }
 
-void checkSeedVictory(void) {
-    if (!checkFlag(FLAG_GAME_BEATEN, FLAGTYPE_PERMANENT)) {
-        switch(Rando.win_condition) {
-            case GOAL_KEY8:
-                if (checkFlagDuplicate(FLAG_KEYHAVE_KEY8, FLAGTYPE_PERMANENT)) {
-                    beatGame();
-                }
-                break;
-            case GOAL_POKESNAP:
-                for (int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
-                    int offset = i >> 3;
-                    int shift = i & 7;
-                    if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
-                        if (!checkFlag(FLAG_PKMNSNAP_PICTURES + i, FLAGTYPE_PERMANENT)) {
-                            return;
-                        }
+int canAccessWinCondition(void) {
+    // Check if the win condition requirements are met
+    switch(Rando.win_condition) {
+        case GOAL_KEY8:
+            // Key 8 win condition - check for key 8
+            return getItemCount_new(REQITEM_KEY, 7, 0);
+        
+        case GOAL_KEYS_3_AND_8:
+            // Keys 3 and 8 win condition - check for both keys (vanilla K. Rool requirement)
+            return getItemCount_new(REQITEM_KEY, 2, 0) && getItemCount_new(REQITEM_KEY, 7, 0);
+        
+        case GOAL_POKESNAP:
+            // Pokemon Snap - check if all required photos are taken
+            for (unsigned int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
+                int offset = i >> 3;
+                int shift = i & 7;
+                if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
+                    if (!checkFlag(FLAG_PKMNSNAP_PICTURES + i, FLAGTYPE_PERMANENT)) {
+                        return 0;
                     }
                 }
-                beatGame();
-                break;
-            case GOAL_DKRAP:
-                if (hasBeatenDKRapWinCon()) {
-                    beatGame();
-                }
-                break;
-            case GOAL_CUSTOMITEM:
-                if (isItemRequirementSatisfied(&Rando.win_condition_extra)) {
-                    beatGame();
-                }
-            break;
+            }
+            return 1;
+        
+        case GOAL_DKRAP:
+            // DK Rap - check for DK Rap completion
+            return hasBeatenDKRapWinCon();
+        
+        case GOAL_KROOLS_CHALLENGE:
+            // Krool's Challenge - check if all required items are collected
+            if (getItemCountReq(REQITEM_KEY) < 8) {
+                return 0;
+            }
+            if (getItemCountReq(REQITEM_BLUEPRINT) < 40) {
+                return 0;
+            }
+            if (getItemCountReq(REQITEM_BOSSES) < 7) {
+                return 0;
+            }
+            if (getItemCountReq(REQITEM_BONUSES_NOHELM) < 43) {
+                return 0;
+            }
+            return 1;
+        case GOAL_CUSTOMITEM:
+            // Custom item requirement - check the specified item count
+            return isItemRequirementSatisfied(&Rando.win_condition_extra);
+        
+        default:
+            // For beat K. Rool and other win conditions, return 0 so they use normal key-based spawning
+            // Only return 1 if explicitly using win_condition_spawns_ship
+            return 0;
+    }
+}
+
+void checkSeedVictory(void) {
+    if (!checkFlag(FLAG_GAME_BEATEN, FLAGTYPE_PERMANENT)) {
+        // If win_condition_spawns_ship is enabled, don't trigger victory on win condition items - only when K. Rool is defeated
+        if (Rando.win_condition_spawns_ship) {
+            return;
+        }
+        if (canAccessWinCondition()) {
+            beatGame();
         }
     }
+}
+
+void winRabbitSeed(int song, float volume) {
+    playSong(song, volume);
+    beatGame();
+}
+
+void safeguardRabbitReward(void) {
+    if (checkFlag(FLAG_COLLECTABLE_CAVES_CHUNKY_5DI, FLAGTYPE_PERMANENT)) {
+        return;
+    }
+    playCutscene(CurrentActorPointer_0, 3, 1);
 }
 
 void checkVictory_flaghook(int flag) {
@@ -166,24 +200,40 @@ void checkVictory_flaghook(int flag) {
     checkSeedVictory();
 }
 
-int isSnapEnemyInRange(void) {
+ROM_RODATA_NUM static const unsigned short extra_kops[] = {
+    NEWACTOR_GUARDDISABLEA,
+    NEWACTOR_GUARDDISABLEZ,
+    NEWACTOR_GUARDGETOUT,
+    NEWACTOR_GUARDTAG,
+};
+
+int isSnapEnemyInRange(int set) {
+    int updated = 0;
     for (int i = 0; i < LoadedActorCount; i++) {
         actorData* actor = LoadedActorArray[i].actor;
         if (actor) {
-            int type = actor->actorType;
-            for (int j = 0; j < (sizeof(poke_snap_actors) / 2); j++) {
-                if (poke_snap_actors[j] == type) {
-                    if (!checkFlag(FLAG_PKMNSNAP_PICTURES + j, FLAGTYPE_PERMANENT)) {
-                        int offset = j >> 3;
-                        int shift = j & 7;
-                        if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
-                            float x_store = 0;
-                            float y_store = 0;
-                            calculateScreenPosition(actor->xPos, actor->yPos + 10.0f, actor->zPos, &x_store, &y_store, 0, 1.0f, 0);
-                            int x_int = x_store;
-                            int y_int = y_store;
-                            if ((x_int >= 0x51) && (x_int <= 0xE9)) { // Normal fairy bounds: 0x8A -> 0xB0
-                                if ((y_int >= 0x3B) && (y_int <= 0xAD)) { // Normal fairy bounds: 0x61 -> 0x87
+            int ref_actor = actor->actorType;
+            if (inShortList(ref_actor, (const short*)&extra_kops[0], 4)) {
+                ref_actor = 259;
+            }
+            int index = inShortList(ref_actor, &poke_snap_actors[0], sizeof(poke_snap_actors) >> 1);
+            if (index) {
+                int j = index - 1;
+                if (!checkFlag(FLAG_PKMNSNAP_PICTURES + j, FLAGTYPE_PERMANENT)) {
+                    int offset = j >> 3;
+                    int shift = j & 7;
+                    if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
+                        float x_store = 0;
+                        float y_store = 0;
+                        calculateScreenPosition(actor->xPos, actor->yPos + 10.0f, actor->zPos, &x_store, &y_store, 0, 1.0f, 0);
+                        int x_int = x_store;
+                        int y_int = y_store;
+                        if ((x_int >= 0x51) && (x_int <= 0xE9)) { // Normal fairy bounds: 0x8A -> 0xB0
+                            if ((y_int >= 0x3B) && (y_int <= 0xAD)) { // Normal fairy bounds: 0x61 -> 0x87
+                                if (set) {
+                                    updated = 1;
+                                    setPermFlag(FLAG_PKMNSNAP_PICTURES + j);
+                                } else {
                                     return 1;
                                 }
                             }
@@ -193,12 +243,12 @@ int isSnapEnemyInRange(void) {
             }
         }
     }
-    return 0;
+    return updated;
 }
 
-static unsigned char pkmn_snap_frames = 0;
-static unsigned char pkmn_snap_current = 0;
-static unsigned char pkmn_snap_total = 0;
+ROM_DATA static unsigned char pkmn_snap_frames = 0;
+ROM_DATA static unsigned char pkmn_snap_current = 0;
+ROM_DATA static unsigned char pkmn_snap_total = 0;
 
 int getPkmnSnapData(int* frames, int* current, int* total) {
     if (pkmn_snap_frames != 0) {
@@ -214,38 +264,10 @@ int getPkmnSnapData(int* frames, int* current, int* total) {
 }
 
 void pokemonSnapMode(void) {
-    int updated = 0;
-    for (int i = 0; i < LoadedActorCount; i++) {
-        actorData* actor = LoadedActorArray[i].actor;
-        if (actor) {
-            int type = actor->actorType;
-            for (int j = 0; j < (sizeof(poke_snap_actors) / 2); j++) {
-                if (poke_snap_actors[j] == type) {
-                    if (!checkFlag(FLAG_PKMNSNAP_PICTURES + j, FLAGTYPE_PERMANENT)) {
-                        int offset = j >> 3;
-                        int shift = j & 7;
-                        if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
-                            float x_store = 0;
-                            float y_store = 0;
-                            calculateScreenPosition(actor->xPos, actor->yPos + 10.0f, actor->zPos, &x_store, &y_store, 0, 1.0f, 0);
-                            int x_int = x_store;
-                            int y_int = y_store;
-                            if ((x_int >= 0x51) && (x_int <= 0xE9)) { // Normal fairy bounds: 0x8A -> 0xB0
-                                if ((y_int >= 0x3B) && (y_int <= 0xAD)) { // Normal fairy bounds: 0x61 -> 0x87
-                                    setPermFlag(FLAG_PKMNSNAP_PICTURES + j);
-                                    updated = 1;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    if (updated) {
+    if (isSnapEnemyInRange(1)) {
         int captured_count = 0;
         int total_count = 0;
-        for (int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
+        for (unsigned int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
             captured_count += checkFlag(FLAG_PKMNSNAP_PICTURES + i, FLAGTYPE_PERMANENT);
             int offset = i >> 3;
             int shift = i & 7;

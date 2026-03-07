@@ -1,73 +1,5 @@
 #include "../../include/common.h"
 
-static short flag_purchase_types[] = {
-	PURCHASE_FLAG,
-	PURCHASE_GB,
-	PURCHASE_ICEBUBBLE,
-	PURCHASE_ICEREVERSE,
-	PURCHASE_ICESLOW,
-};
-
-int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
-	if (kong > 4) {
-		kong = 0;
-	}
-	if (purchase_type != -1) {
-		if (purchase_value != 0) {
-			if (purchase_type == PURCHASE_MOVES) {
-				if (MovesBase[kong].special_moves & (1 << (purchase_value - 1))) {
-					return 0;
-				} else {
-					return 1;
-				}
-			} else if (purchase_type == PURCHASE_SLAM) {
-				if (MovesBase[kong].simian_slam >= purchase_value) {
-					return 0;
-				} else {
-					return 2;
-				}
-			} else if (purchase_type == PURCHASE_GUN) {
-				if (MovesBase[kong].weapon_bitfield & (1 << (purchase_value - 1))) {
-					return 0;
-				} else {
-					if (purchase_value == 1) {
-						return 1;
-					} else {
-						return 3;
-					}
-				}
-			} else if (purchase_type == PURCHASE_AMMOBELT) {
-				if (MovesBase[kong].ammo_belt >= purchase_value) {
-					return 0;
-				} else {
-					return 4;
-				}
-			} else if (purchase_type == PURCHASE_INSTRUMENT) {
-				if (MovesBase[kong].instrument_bitfield & (1 << (purchase_value - 1))) {
-					return 0;
-				} else {
-					if (purchase_value == 1) {
-						return 1;
-					} else {
-						return 5;
-					}
-				}
-			} else if (inShortList(purchase_type, &flag_purchase_types[0], sizeof(flag_purchase_types) >> 1)) {
-				if (purchase_value == -2) { // Shockwave & Camera Combo
-					if ((!checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT)) || (!checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT))) {
-						return 1;
-					}
-				} else {
-					if (!checkFlagDuplicate(purchase_value, FLAGTYPE_PERMANENT)) {
-						return 1;
-					}
-				}
-			}
-		}
-	}
-	return 0;
-}
-
 #define MOVEBTF_DK 1
 #define MOVEBTF_DIDDY 2
 #define MOVEBTF_LANKY 4
@@ -84,17 +16,14 @@ int isSharedMove(vendors shop_index, int level) {
 	if (!targ) {
 		return 1;
 	}
+	
 	for (int i = 1; i < 5; i++) {
 		purchase_struct* src = getShopData(shop_index, i, level);
 		if (src) {
-			if (targ->purchase_type != src->purchase_type) {
-				return 0;
-			}
-			if (targ->purchase_value != src->purchase_value) {
-				return 0;
-			}
-			if (!inShortList(targ->purchase_type, &flag_purchase_types[0], sizeof(flag_purchase_types) >> 1)) {
-				if (targ->move_kong != src->move_kong) {
+			unsigned char *src_arr = (unsigned char*)&src->item;
+			unsigned char *targ_arr = (unsigned char*)&targ->item;
+			for (int j = 0; j < 4; j++) {
+				if (src_arr[j] != targ_arr[j]) {
 					return 0;
 				}
 			}
@@ -114,154 +43,43 @@ typedef struct counter_paad {
 	/* 0x019 */ unsigned char shop;
 } counter_paad;
 
-typedef enum counter_items {
-	/* 0x000 */ COUNTER_NO_ITEM,
-	/* 0x001 */ COUNTER_DK_FACE,
-	/* 0x002 */ COUNTER_DIDDY_FACE,
-	/* 0x003 */ COUNTER_LANKY_FACE,
-	/* 0x004 */ COUNTER_TINY_FACE,
-	/* 0x005 */ COUNTER_CHUNKY_FACE,
-	/* 0x006 */ COUNTER_SHARED_FACE,
-	/* 0x007 */ COUNTER_SOLDOUT,
-	/* 0x008 */ COUNTER_GB,
-	/* 0x009 */ COUNTER_BP,
-	/* 0x00A */ COUNTER_CROWN,
-	/* 0x00B */ COUNTER_KEY,
-	/* 0x00C */ COUNTER_MEDAL,
-	/* 0x00D */ COUNTER_POTION,
-	/* 0x00E */ COUNTER_NINCOIN,
-	/* 0x00F */ COUNTER_RWCOIN,
-	/* 0x010 */ COUNTER_BEAN,
-	/* 0x011 */ COUNTER_PEARL,
-	/* 0x012 */ COUNTER_FAIRY,
-	/* 0x013 */ COUNTER_RAINBOWCOIN,
-	/* 0x014 */ COUNTER_FAKEITEM,
-	/* 0x015 */ COUNTER_HINT,
-	/* 0x016 */ COUNTER_AP,
-	/* 0x017 */ COUNTER_DILLO1,
-	/* 0x018 */ COUNTER_DOG1,
-	/* 0x019 */ COUNTER_MJ,
-	/* 0x01A */ COUNTER_PUFFTOSS,
-	/* 0x01B */ COUNTER_DOG2,
-	/* 0x01C */ COUNTER_DILLO2,
-	/* 0x01D */ COUNTER_KKO,
-} counter_items;
-
 int getCounterItem(vendors shop_index, int kong, int level) {
 	purchase_struct* data = getShopData(shop_index, kong, level);
 	if (data) {
-		switch(data->purchase_type) {
-			case PURCHASE_MOVES:
-			case PURCHASE_SLAM:
-			case PURCHASE_GUN:
-			case PURCHASE_AMMOBELT:
-			case PURCHASE_INSTRUMENT:
-				return COUNTER_POTION;
-				break;
-			case PURCHASE_FLAG:
-				{
-					int flag = data->purchase_value;
-					if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
-						return COUNTER_BP;
-					} else if (isMedalFlag(flag)) {
-						return COUNTER_MEDAL;
-					} else if (isFlagInRange(flag, FLAG_CROWN_JAPES, 10)) {
-						return COUNTER_CROWN;
-					} else if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
-						return COUNTER_NINCOIN;
-					} else if (flag == FLAG_COLLECTABLE_RAREWARECOIN) {
-						return COUNTER_RWCOIN;
-					} else if (flag == FLAG_COLLECTABLE_BEAN) {
-						return COUNTER_BEAN;
-					} else if (isFlagInRange(flag, FLAG_PEARL_0_COLLECTED, 5)) {
-						return COUNTER_PEARL;
-					} else if (isFlagInRange(flag, FLAG_FAIRY_1, 20)) {
-						return COUNTER_FAIRY;
-					} else if (isFlagInRange(flag, FLAG_WRINKLYVIEWED, 35)) {
-						return COUNTER_HINT;
-					} else if (isFlagAPItem(flag)) {
-						return COUNTER_AP;
-					} else if (isFlagInRange(flag, FLAG_RAINBOWCOIN_0, 16)) {
-						return COUNTER_RAINBOWCOIN;
-					} else if (isIceTrapFlag(flag) == DYNFLAG_ICETRAP) {
-						return COUNTER_FAKEITEM;
-					} else {
-						if (isTBarrelFlag(flag)) {
-							return COUNTER_POTION;
-						}
-						if (isFairyFlag(flag)) {
-							return COUNTER_POTION;
-						}
-						if (flag == FLAG_ABILITY_CLIMBING) {
-							return COUNTER_POTION;
-						}
-						int subtype = getMoveProgressiveFlagType(flag);
-						if (subtype >= 0) {
-							return COUNTER_POTION;
-						}
-						for (int i = 0; i < 8; i++) {
-							if (flag == getKeyFlag(i)) {
-								return COUNTER_KEY;
-							}
-						}
-						for (int i = 0; i < 5; i++) {
-							if (flag == getKongFlag(i)) {
-								return COUNTER_DK_FACE + i;
-							}
-						}
-					}
-				}
-				break;
-			case PURCHASE_GB:
-				return COUNTER_GB;
-			case PURCHASE_ICEBUBBLE:
-			case PURCHASE_ICEREVERSE:
-			case PURCHASE_ICESLOW:
-				return COUNTER_FAKEITEM;
-			break;
-		}
+		return getShopSkinIndex(&data->item);
 	}
-	return COUNTER_NO_ITEM;
+	return SKIN_NULL;
 }
 
-void getMoveCountInShop(counter_paad* paad, vendors shop_index) {
+int getMoveCountInShop(counter_paad* paad, vendors shop_index) {
 	int level = getWorld(CurrentMap,0);
-	int possess = 0;
 	int count = 0;
-	int slot = 0;
 	if (level < LEVEL_COUNT) {
 		for (int i = 0; i < 5; i++) {
-			purchase_struct* data = getShopData(shop_index, i, level);
-			if (data) {
-				possess = doesKongPossessMove(data->purchase_type, data->purchase_value, data->move_kong);
-			}
-			if ((possess == 1) && (isSharedMove(shop_index, level))) {
-				possess = 7;
-			}
-			if (possess == 1) {
-				paad->kong_images[slot] = i + 1;
-				paad->item_images[slot] = getCounterItem(shop_index, i, level);
-				slot += 1;
-				count += 1;
-			} else if (possess > 1) {
-				paad->kong_images[0] = COUNTER_SHARED_FACE;
-				paad->item_images[0] = getCounterItem(shop_index, i, level);
-				paad->cap = 1;
-				return;
+			if (!isShopEmpty(shop_index, level, i)) {
+				// Shop is some item
+				if (isSharedMove(shop_index, level)) {
+					paad->kong_images[0] = SKIN_SHARED;
+					paad->item_images[0] = getCounterItem(shop_index, i, level);
+					return 1;
+				} else {
+					paad->kong_images[count] = i + 1;
+					paad->item_images[count] = getCounterItem(shop_index, i, level);
+					count++;
+				}
 			}
 		}
 	}
-	paad->cap = count;
+	return count;
 }
 
 #define IMG_WIDTH 32
 
-#define COUNTER_CACHE_SIZE 32
-static void* texture_data[COUNTER_CACHE_SIZE] = {};
-static unsigned char texture_load[COUNTER_CACHE_SIZE] = {};
+ROM_DATA static void* texture_data[SKIN_TERMINATOR] = {};
+ROM_DATA static unsigned char texture_load[SKIN_TERMINATOR] = {};
 
 void wipeCounterImageCache(void) {
-	for (int i = 0; i < COUNTER_CACHE_SIZE; i++) {
+	for (int i = 0; i < SKIN_TERMINATOR; i++) {
 		texture_data[i] = 0;
 		texture_load[i] = 0;
 	}
@@ -294,12 +112,6 @@ void updateCounterDisplay(void) {
 	if (paad->cap > 0) {
 		int kong_image = paad->kong_images[index];
 		int item_image = paad->item_images[index];
-		if ((kong_image < 0) || (kong_image >= COUNTER_DILLO1)) {
-			kong_image = 0;
-		}
-		if ((item_image < 0) || (item_image >= COUNTER_DILLO1)) {
-			item_image = 0;
-		}
 		if (paad->use_item_display) {
 			paad->image_slots[0] = loadFontTexture_Counter(paad->image_slots[0], kong_image, 0);
 			paad->image_slots[2] = loadFontTexture_Counter(paad->image_slots[2], item_image, 2);
@@ -309,10 +121,10 @@ void updateCounterDisplay(void) {
 	}
 }
 
-unsigned int getActorModelTwoDist(ModelTwoData* _object) {
-	int ax = CurrentActorPointer_0->xPos;
-	int ay = CurrentActorPointer_0->yPos;
-	int az = CurrentActorPointer_0->zPos;
+unsigned int getActorModelTwoDist(ModelTwoData* _object, float *pos_tuple) {
+	int ax = pos_tuple[0];
+	int ay = pos_tuple[1];
+	int az = pos_tuple[2];
 	int mx = _object->xPos;
 	int my = _object->yPos;
 	int mz = _object->zPos;
@@ -322,58 +134,32 @@ unsigned int getActorModelTwoDist(ModelTwoData* _object) {
 	return (dx * dx) + (dy * dy) + (dz * dz);
 }
 
-int getClosestShop(void) {
-	/*
-		Cranky's: 0x73
-		Funky's Hut: 0x7A
-		Candy's Shop: 0x124
-		Snide's HQ: 0x79
-	*/
-	unsigned int dists[4] = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF};
-	int* m2location = (int*)ObjectModel2Pointer;
-	int found_counter = 0;
-	behaviour_data* behavs[4] = {};
+/*
+	Cranky's: 0x73
+	Funky's Hut: 0x7A
+	Candy's Shop: 0x124
+	Snide's HQ: 0x79
+*/
+ROM_RODATA_NUM static const short shop_objects[] = {0x73, 0x7A, 0x124, 0x79};
+
+int getClosestShop(float *pos_checker) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
+	int closest_dist = -1;
+	int closest_shop_index = -1;
+	paad->linked_behaviour = 0;
 	for (int i = 0; i < ObjectModel2Count; i++) {
-		if (found_counter < 4) {
-			ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
-			if (_object->object_type == 0x73) {
-				dists[0] = getActorModelTwoDist(_object);
-				behavs[0] = _object->behaviour_pointer;
-				found_counter += 1;
-			} else if (_object->object_type == 0x7A) {
-				dists[1] = getActorModelTwoDist(_object);
-				behavs[1] = _object->behaviour_pointer;
-				found_counter += 1;
-			} else if (_object->object_type == 0x124) {
-				dists[2] = getActorModelTwoDist(_object);
-				behavs[2] = _object->behaviour_pointer;
-				found_counter += 1;
-			} else if (_object->object_type == 0x79) {
-				dists[3] = getActorModelTwoDist(_object);
-				behavs[3] = _object->behaviour_pointer;
-				found_counter += 1;
+		ModelTwoData* _object = &ObjectModel2Pointer[i];
+		int local_idx = inShortList(_object->object_type, &shop_objects[0], 4);
+		if (local_idx) {
+			int temp_dist = getActorModelTwoDist(_object, pos_checker);
+			if ((closest_dist == -1) || (temp_dist < closest_dist)) {
+				closest_dist = temp_dist;
+				closest_shop_index = local_idx - 1;
+				paad->linked_behaviour = _object->behaviour_pointer;
 			}
 		}
 	}
-	int closest_index = 0;
-	if ((dists[2] < dists[1]) && (dists[2] < dists[0]) && (dists[2] < dists[3])) {
-		paad->linked_behaviour = behavs[2];
-		closest_index = 2;
-	} else if ((dists[3] < dists[1]) && (dists[3] < dists[0]) && (dists[3] < dists[2])) {
-		paad->linked_behaviour = behavs[3];
-		closest_index = 3;
-	} else if ((dists[1] < dists[0]) && (dists[1] < dists[2]) && (dists[1] < dists[3])) {
-		paad->linked_behaviour = behavs[1];
-		closest_index = 1;
-	} else if ((dists[0] < dists[1]) && (dists[0] < dists[2]) && (dists[0] < dists[3])) {
-		paad->linked_behaviour = behavs[0];
-		closest_index = 0;
-	}
-	if (found_counter > 0) {
-		paad->linked_behaviour = behavs[closest_index];
-	}
-	return closest_index;
+	return closest_shop_index;
 }
 
 typedef struct ModelData {
@@ -382,186 +168,139 @@ typedef struct ModelData {
 } ModelData;
 
 float getShopScale(int index) {
-	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < ObjectModel2Count; i++) {
-		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
+		ModelTwoData* _object = &ObjectModel2Pointer[i];
 		if (_object) {
-			if (index == 0) { // Crankys
-				if (_object->object_type == 0x73) {
-					ModelData* model = _object->model_pointer;
-					if (model) {
-						return model->scale;
+			if (_object->object_type == shop_objects[index]) {
+				ModelData* model = _object->model_pointer;
+				if (model) {
+					if (index == SHOP_SNIDE) {
+						return model->scale * 1.4f;
 					}
+					return model->scale;
 				}
-			} else if (index == 1) { // Funkys
-				if (_object->object_type == 0x7A) {
-					ModelData* model = _object->model_pointer;
-					if (model) {
-						return model->scale;
-					}
-				}
-			} else if (index == 2) { // Candys
-				if (_object->object_type == 0x124) {
-					ModelData* model = _object->model_pointer;
-					if (model) {
-						return model->scale;
-					}
-				}
-			} else if (index == 3) { // Snide
-				return 1.0f;
 			}
 		}
 	}
 	return 1.0f;
 }
 
-typedef struct krool_head {
-	/* 0x000 */ unsigned char map;
-	/* 0x001 */ unsigned char texture_offset;
-} krool_head;
-
-static const krool_head helm_heads[] = {
-	{.map = MAP_JAPESDILLO, .texture_offset=COUNTER_DILLO1},
-	{.map = MAP_AZTECDOGADON, .texture_offset=COUNTER_DOG1},
-	{.map = MAP_FACTORYJACK, .texture_offset=COUNTER_MJ},
-	{.map = MAP_GALLEONPUFFTOSS, .texture_offset=COUNTER_PUFFTOSS},
-	{.map = MAP_FUNGIDOGADON, .texture_offset=COUNTER_DOG2},
-	{.map = MAP_CAVESDILLO, .texture_offset=COUNTER_DILLO2},
-	{.map = MAP_CASTLEKUTOUT, .texture_offset=COUNTER_KKO},
-	{.map = MAP_KROOLDK, .texture_offset=COUNTER_DK_FACE},
-	{.map = MAP_KROOLDIDDY, .texture_offset=COUNTER_DIDDY_FACE},
-	{.map = MAP_KROOLLANKY, .texture_offset=COUNTER_LANKY_FACE},
-	{.map = MAP_KROOLTINY, .texture_offset=COUNTER_TINY_FACE},
-	{.map = MAP_KROOLCHUNKY, .texture_offset=COUNTER_CHUNKY_FACE},
-	{.map = 0xFF, .texture_offset=COUNTER_NO_ITEM},
-};
-
-static const short float_ids[] = {0x1F4, 0x36};
-static const short shop_obj_types[] = {0x73, 0x7A, 0x124};
-static const float float_offsets[] = {51.0f, 45.0f, 45.0f};
+ROM_RODATA_NUM static const short float_ids[] = {0x1F4, 0x36};
+ROM_RODATA_NUM static const float float_offsets[] = {51.0f, 45.0f, 45.0f, 24.5f};
+ROM_RODATA_NUM static const float h_factors[] = {60.0f, 60.0f, 62.0f, 120.6f};
 
 void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
 		// Init Code
-		if (CurrentMap != MAP_HELM) {
-			if (Rando.shop_indicator_on) {
-				if (Rando.shop_indicator_on == 2) {
-					paad->use_item_display = 1;
-				} else {
-					paad->use_item_display = 0;
-				}
-				// Initialize slots
-				for (int i = 0; i < 3; i++) {
-					paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], 0, i);
-				}
-				CurrentActorPointer_0->rot_z = 3072; // Facing vertical
-				int closest_shop = getClosestShop();
-				paad->shop = closest_shop;
-				if (closest_shop == 3) { // Snide is closest
-					deleteActorContainer(CurrentActorPointer_0);
-				} else {
-					getMoveCountInShop(paad, paad->shop);
-					paad->current_slot = 0;
-					updateCounterDisplay();
-					if (paad->cap == 0) {
-						paad->kong_images[0] = COUNTER_SOLDOUT;
-						paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], 7, 1);
-						paad->cap = 1;
-						paad->use_item_display = 0;
-					}
-					// Update Position depending on scale
-					float h_factor = 1.0f;
-					float y_factor = 1.0f;
-					if (closest_shop == 0) { // Cranky
-						h_factor = 60.0f;
-						y_factor = 40.0f;
-					} else if (closest_shop == 1) { // Funky
-						h_factor = 60.0f;
-						y_factor = 40.0f;
-					} else if (closest_shop == 2) { // Candy
-						h_factor = 62.0f;
-						y_factor = 40.0f;
-					}
-					float scale = getShopScale(closest_shop);
-					float x_r = determineXRatioMovement(CurrentActorPointer_0->rot_y);
-					float x_d = scale * h_factor * x_r;
-					float z_d = scale * h_factor * determineZRatioMovement(CurrentActorPointer_0->rot_y);
-					float y_d = scale * y_factor;
-					CurrentActorPointer_0->xPos += x_d;
-					CurrentActorPointer_0->yPos += y_d;
-					CurrentActorPointer_0->zPos += z_d;
-					CurrentActorPointer_0->rot_y = (CurrentActorPointer_0->rot_y + 2048) % 4096;
-					renderingParamsData* render = CurrentActorPointer_0->render;
-					if (render) {
-						render->scale_x = 0.0375f * scale;
-						render->scale_z = 0.0375f * scale;
-					}
-				}
+		if (Rando.shop_indicator_on) {
+			if (Rando.shop_indicator_on == 2) {
+				paad->use_item_display = 1;
 			} else {
-				deleteActorContainer(CurrentActorPointer_0);
+				paad->use_item_display = 0;
 			}
-		} else {
-			// Helm Indicator
+			// Initialize slots
 			for (int i = 0; i < 3; i++) {
-				paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], 0, i);
-			}
-			int id = getActorSpawnerIDFromTiedActor(CurrentActorPointer_0);
-			int face_map = Rando.k_rool_order[id - 0x100];
-			int face_img = COUNTER_NO_ITEM;
-			for (int i = 0; i < sizeof(helm_heads)/sizeof(krool_head); i++) {
-				if (helm_heads[i].map == face_map) {
-					face_img = helm_heads[i].texture_offset;
-				}
+				paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], SKIN_NULL, i);
 			}
 			CurrentActorPointer_0->rot_z = 3072; // Facing vertical
-			paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], face_img, 1);
-		}
-	} else {
-		if (CurrentMap != MAP_HELM) {
-			if ((ObjectModel2Timer % 20) == 0) {
-				int lim = paad->cap;
-				if (lim > 1) {
-					paad->current_slot += 1;
-					if (paad->current_slot >= lim) {
-						paad->current_slot = 0;
+			int closest_shop = getClosestShop(&CurrentActorPointer_0->xPos);
+			if (closest_shop == SHOP_SNIDE) {
+				if (!Rando.snide_has_rewards) {
+					deleteActorContainer(CurrentActorPointer_0);
+					return;
+				}
+				setActorModel(CurrentActorPointer_0, 0x139);
+			} else {
+				setActorModel(CurrentActorPointer_0, 0xA4);
+			}
+			paad->shop = closest_shop;
+			// Update Position depending on scale
+			float scale = getShopScale(closest_shop);
+			int rot_y = CurrentActorPointer_0->rot_y;
+			int rot_y_offset = 2048;
+			float y_factor = 40.0f;
+			if (closest_shop == SHOP_SNIDE) {
+				rot_y -= 445;
+				rot_y_offset = 2048 + 423;
+				y_factor = 44.3f;
+			}
+			float h_factor = h_factors[closest_shop];
+			float x_d = scale * h_factor * determineXRatioMovement(rot_y);
+			float z_d = scale * h_factor * determineZRatioMovement(rot_y);
+			float y_d = scale * y_factor;
+			CurrentActorPointer_0->xPos += x_d;
+			CurrentActorPointer_0->yPos += y_d;
+			CurrentActorPointer_0->zPos += z_d;
+			CurrentActorPointer_0->rot_y = (CurrentActorPointer_0->rot_y + rot_y_offset) % 4096;
+			renderingParamsData* render = CurrentActorPointer_0->render;
+			if (render) {
+				render->scale_x = 0.0375f * scale;
+				render->scale_z = 0.0375f * scale;
+			}
+			paad->current_slot = 0;
+			if (closest_shop == SHOP_SNIDE) { // Snide is closest
+				// Rules for Snide
+				int snide_index = getTurnedCount(-1);
+				if (snide_index > 39) {
+					deleteActorContainer(CurrentActorPointer_0);
+					return;
+				}
+				for (int i = 0; i < 3; i++) {
+					if ((snide_index + i) < 40) {
+						int img_idx = getShopSkinIndex(&snide_rewards[snide_index + i].item);
+						paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], img_idx, i);
 					}
-					updateCounterDisplay();
+				}
+				paad->cap = 1;
+			} else {
+				paad->cap = getMoveCountInShop(paad, paad->shop);
+				updateCounterDisplay();
+				if (paad->cap == 0) {
+					paad->kong_images[0] = SKIN_SOLDOUT;
+					paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], SKIN_SOLDOUT, 1);
+					paad->cap = 1;
+					paad->use_item_display = 0;
 				}
 			}
-			if (paad->linked_behaviour) {
-				if (paad->linked_behaviour->current_state == 0xC) {
-					CurrentActorPointer_0->obj_props_bitfield |= 0x4;
-				} else {
-					CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFFFFB;
-				}
+		} else {
+			deleteActorContainer(CurrentActorPointer_0);
+		}
+		return;
+	}
+	if ((ObjectModel2Timer % 20) == 0) {
+		int lim = paad->cap;
+		if (lim > 1) {
+			paad->current_slot += 1;
+			if (paad->current_slot >= lim) {
+				paad->current_slot = 0;
 			}
-			if (CurrentMap == MAP_GALLEON) {
-				int shop = paad->shop;
-				int* m2location = (int*)ObjectModel2Pointer;
-				int is_float = 0;
-				float float_y = 0.0f;
-				for (int i = 0; i < 2; i++) {
-					int float_id = float_ids[i];
-					int float_slot = convertIDToIndex(float_id);
-					if (float_slot > -1) {
-						ModelTwoData* float_slot_object = getObjectArrayAddr(m2location,0x90,float_slot);
-						int float_slot_obj_type = float_slot_object->object_type;
-						for (int j = 0; j < 3; j++) {
-							if (shop_obj_types[j] == float_slot_obj_type) {
-								if (j == shop) {
-									is_float = 1;
-									float_y = float_slot_object->yPos;
-								}
-							}
+			updateCounterDisplay();
+		}
+	}
+	if (paad->linked_behaviour) {
+		if (paad->linked_behaviour->current_state == 0xC) {
+			CurrentActorPointer_0->obj_props_bitfield |= 0x4;
+		} else {
+			CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFFFFB;
+		}
+	}
+	if (CurrentMap == MAP_GALLEON) {
+		int shop = paad->shop;
+		for (int i = 0; i < 2; i++) {
+			int float_slot = convertIDToIndex(float_ids[i]);
+			if (float_slot > -1) {
+				ModelTwoData* float_slot_object = &ObjectModel2Pointer[float_slot];
+				int float_slot_obj_type = float_slot_object->object_type;
+				for (int j = 0; j < 4; j++) {
+					if (shop_objects[j] == float_slot_obj_type) {
+						if (j == shop) {
+							CurrentActorPointer_0->yPos = float_slot_object->yPos + float_offsets[shop];
 						}
 					}
-				}
-				if (is_float) {
-					CurrentActorPointer_0->yPos = float_y + float_offsets[shop];
 				}
 			}
 		}
 	}
-	renderActor(CurrentActorPointer_0,0);
+	renderActor(CurrentActorPointer_0, 0);
 }

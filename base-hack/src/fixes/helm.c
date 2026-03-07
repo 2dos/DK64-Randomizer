@@ -56,12 +56,12 @@ void helmTime_exitRace(void) {
 	fixHelmTimerCorrection();
 }
 
-void helmTime_exitLevel(void) {
+void helmTime_exitLevel(int world) {
 	/**
 	 * @brief Instance of the correction code which overwrites the instruction to exit out of a level
 	 * 
 	 */
-	ExitFromLevel();
+	ExitFromLevel(world);
 	fixHelmTimerCorrection();
 }
 
@@ -83,16 +83,12 @@ void helmTime_exitKRool(void) {
 	fixHelmTimerCorrection();
 }
 
-static unsigned char helm_entry_points[] = {0, 3, 4};
+ROM_RODATA_NUM const unsigned char helm_entry_points[] = {0, 3, 4};
 
 void initHelmSetup(void) {
 	int setting = Rando.fast_start_helm;
 	if (setting > 0) {
 		setPermFlag(FLAG_STORY_HELM); // Helm Story
-		setFlag(FLAG_HELM_ROMANDOORS_OPEN,1,FLAGTYPE_TEMPORARY); // Roman Numeral Doors
-		for (int j = 0; j < 4; j++) {
-			setFlag(FLAG_HELM_GATE_0 + j,1,FLAGTYPE_TEMPORARY); // Gates knocked down
-		}
 		if (setting == 2) {
 			setPermFlag(FLAG_MODIFIER_HELMBOM);
 		}
@@ -100,9 +96,8 @@ void initHelmSetup(void) {
 }
 
 int getHelmExit(void) {
-	int setting = Rando.fast_start_helm;
 	initHelmSetup();
-	return helm_entry_points[setting];
+	return helm_entry_points[(int)Rando.fast_start_helm];
 }
 
 void WarpToHelm(void) {

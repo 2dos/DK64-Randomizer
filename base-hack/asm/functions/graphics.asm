@@ -39,3 +39,16 @@
 .definelabel recolorVertBlockText, 0x80704298
 .definelabel updateCamera, 0x805FCA94
 .definelabel guPerspectiveF, 0x80006050
+.definelabel spawnKeyTwinklies, 0x80686CF8
+.definelabel HUDSpriteUpdate, 0x8071BE04
+.definelabel PauseSpriteUpdate, 0x806AC07C
+.definelabel isCutsceneBarsPresent, 0x805FCA64
+.definelabel unkDLFunction, 0x8070068C
+.definelabel getDLFunction0, 0x806FE078
+.definelabel getDLFunction1, 0x8068DC54
+.definelabel unkTextFunction1, 0x806FDB8C
+.definelabel renderFrame, 0x8060A9BC
+.definelabel dlInit, 0x80610044
+.definelabel unkFadeFunction, 0x80704484
+.definelabel endDL, 0x805FE71C
+.definelabel unkDLFunction1, 0x805FE7B4
