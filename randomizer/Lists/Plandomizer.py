@@ -226,6 +226,9 @@ for locationEnum, locationObj in LocationList.items():
     # Do not include progressive hints.
     if locationObj.type == Types.ProgressiveHint:
         continue
+    # Do not include enemy photo locations.
+    if locationObj.type == Types.EnemyPhoto:
+        continue
     locationJson = {"name": locationObj.name, "value": locationEnum.name}
     kongString = getKongString(locationObj.kong)
     if locationObj.type == Types.BlueprintBanana:

@@ -235,6 +235,7 @@ def AllItemsUnrestricted(settings):
     allItems.extend(FunkyItems())
     allItems.extend(CandyItems())
     allItems.extend(SnideItems())
+    allItems.extend(TimeItems())
     return allItems
 
 

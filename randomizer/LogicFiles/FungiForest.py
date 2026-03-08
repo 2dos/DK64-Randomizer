@@ -15,6 +15,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 from randomizer.Enums.Settings import FungiTimeSetting, MinigameBarrels, RemovedBarriersSelected
+from randomizer.Enums.Types import Types
 
 LogicRegions = {
     Regions.FungiForestMedals: Region("Fungi Forest Medals", HintRegion.ForestCBs, Levels.FungiForest, False, None, [
@@ -48,8 +49,8 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_ForestMainEnemy_NearWellTag, lambda l: l.camera),
         LocationLogic(Locations.KremKap_ForestMainEnemy_GreenTunnel, lambda l: l.camera and (l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel) or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False)))),
     ], [
-        Event(Events.Night, lambda l: (l.cannons or (l.isdiddy and l.jetpack) or l.climbing) and (l.HasGun(Kongs.any) or l.adv_orange_usage or l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive) and l.nightAccess)),
-        Event(Events.Day, lambda l: (l.cannons or (l.isdiddy and l.jetpack) or l.climbing) and (l.HasGun(Kongs.any) or l.adv_orange_usage or l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive) and l.dayAccess)),
+        Event(Events.Night, lambda l: (l.cannons or (l.isdiddy and l.jetpack) or l.climbing) and ((Types.FungiTime not in l.settings.shuffled_location_types and (l.HasGun(Kongs.any) or l.adv_orange_usage)) or ((l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive) or Types.FungiTime in l.settings.shuffled_location_types) and l.nightAccess))),
+        Event(Events.Day, lambda l: (l.cannons or (l.isdiddy and l.jetpack) or l.climbing) and ((Types.FungiTime not in l.settings.shuffled_location_types and (l.HasGun(Kongs.any) or l.adv_orange_usage)) or ((l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive) or Types.FungiTime in l.settings.shuffled_location_types) and l.dayAccess))),
         Event(Events.WormGatesOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel) or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) and l.hasMoveSwitchsanity(Switches.FungiGreenPineapple, False))),
         Event(Events.ForestW1aTagged, lambda _: True),
         Event(Events.ForestW2aTagged, lambda _: True),
