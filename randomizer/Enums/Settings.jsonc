@@ -358,6 +358,16 @@
     "normal": 0,
     "shuffled": 1
   },
+  /* 
+    CannonStatus:
+    - Determines if and how cannon is randomized.
+    - normal: Cannon is a starting move.
+    - shuffled: Cannon is an item that can be found in the world.
+  */
+  "CannonStatus": {
+    "normal": 0,
+    "shuffled": 1
+  },
   /*
     GlitchesSelected:
     - Glitch categories that can be selected for the seed logic.

@@ -242,7 +242,7 @@ def getItemPatchingData(item_type: Types, item: Items, kong_override: int = None
         hint_level = int(hint_index / 5)
         hint_kong = hint_index % 5
         return ItemPatchingInfo(ReqItems.Hint, hint_level, hint_kong)
-    elif item_type in (Types.Shockwave, Types.Shop, Types.Climbing, Types.TrainingBarrel):
+    elif item_type in (Types.Shockwave, Types.Shop, Types.Climbing, Types.Cannons, Types.TrainingBarrel):
         # Special Moves
         idx_lst = [Items.BaboonBlast, Items.ChimpyCharge, Items.Orangstand, Items.MiniMonkey, Items.HunkyChunky]
         idx = getItemPatchingFromList(idx_lst, item, "Move", False)
@@ -296,6 +296,9 @@ def getItemPatchingData(item_type: Types, item: Items, kong_override: int = None
         # Camera Combo
         if item == Items.CameraAndShockwave:
             return ItemPatchingInfo(ReqItems.Move, 12, 0, 1)
+        # Cannons
+        if item == Items.Cannons:
+            return ItemPatchingInfo(ReqItems.Move, 13, 0, 1)
         raise Exception("Could not find valid move")
     elif item is None or item == Items.NoItem or item_type is None or item_type == Types.NoItem:
         return ItemPatchingInfo(0)
@@ -1145,6 +1148,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                                 no_texture_tuple = (
                                     Types.Candy,
                                     Types.Climbing,
+                                    Types.Cannons,
                                     Types.Cranky,
                                     Types.Fairy,
                                     Types.FillerFairy,

@@ -638,6 +638,11 @@ class Settings:
         # shuffled
         self.climbing_status = ClimbingStatus.normal
 
+        # cannon_status: CannonStatus
+        # normal
+        # shuffled
+        self.cannon_status = CannonStatus.normal
+
         # The status of camera & shockwave: ShockwaveStatus
         # vanilla - both located at Banana Fairy Isle
         # shuffled - located in a random valid location
@@ -1118,6 +1123,11 @@ class Settings:
             self.climbing_status = ClimbingStatus.normal
         else:
             self.climbing_status = ClimbingStatus.shuffled
+        # If Cannons is a guaranteed starting move, treat it like the others as well.
+        if Items.Cannons in guaranteed_starting_moves:
+            self.cannon_status = CannonStatus.normal
+        else:
+            self.cannon_status = CannonStatus.shuffled
         # If you start with two copies of Progressive Instrument Upgrade, you start with 3 melons of health
         if guaranteed_starting_moves.count(Items.ProgressiveInstrumentUpgrade) == 2:
             self.start_with_3rd_melon = True
@@ -1704,6 +1714,8 @@ class Settings:
                         selector_types = [Types.TrainingBarrel, Types.PreGivenMove]
                         if self.climbing_status != ClimbingStatus.normal:
                             selector_types.append(Types.Climbing)
+                        if self.cannon_status != CannonStatus.normal:
+                            selector_types.append(Types.Cannons)
                     elif selector_type == Types.Medal and IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
                         selector_types = [Types.Medal, Types.IslesMedal]
                     # Add items which are in the designated pools
@@ -1721,6 +1733,8 @@ class Settings:
                                 item_types = [Types.TrainingBarrel, Types.PreGivenMove]
                                 if self.climbing_status != ClimbingStatus.normal:
                                     item_types.append(Types.Climbing)
+                                if self.cannon_status != CannonStatus.normal:
+                                    item_types.append(Types.Cannons)
                         elif item_type == Types.Medal and IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
                             item_types = [Types.Medal, Types.IslesMedal]
                         for x in selector_types:
@@ -2601,6 +2615,8 @@ class Settings:
 
         if self.climbing_status == ClimbingStatus.shuffled:
             spoiler.LocationList[Locations.IslesClimbing].inaccessible = True
+        if self.cannon_status == CannonStatus.shuffled:
+            spoiler.LocationList[Locations.IslesCannons].inaccessible = True
 
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
@@ -2687,6 +2703,7 @@ class Settings:
                     Types.PreGivenMove,
                     Types.TrainingBarrel,
                     Types.Climbing,
+                    Types.Cannons,
                 )
             ]
             shuffledNonMoveLocations = [location for location in shuffledLocations if spoiler.LocationList[location].type != Types.PreGivenMove]
@@ -2709,6 +2726,8 @@ class Settings:
                     self.valid_locations[Types.TrainingBarrel] = locations_excluding_kong_shops.copy()
                 if Types.Climbing in self.shuffled_location_types:
                     self.valid_locations[Types.Climbing] = locations_excluding_kong_shops.copy()
+                if Types.Cannons in self.shuffled_location_types:
+                    self.valid_locations[Types.Cannons] = locations_excluding_kong_shops.copy()
                 self.valid_locations[Types.Shop][Kongs.any] = locations_excluding_kong_shops.copy()
                 # Kong-specific moves can go in any non-shared shop location
                 locations_excluding_shared_shops = [location for location in shuffledLocations if location not in SharedShopLocations]
@@ -2789,7 +2808,7 @@ class Settings:
             for item in (Types.RainbowCoin, Types.FillerRainbowCoin):
                 if item in self.shuffled_location_types:
                     self.valid_locations[item] = [
-                        x for x in shuffledNonMoveLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing)
+                        x for x in shuffledNonMoveLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing, Types.Cannons)
                     ]
             if Types.FakeItem in self.shuffled_location_types:
                 bad_fake_locations = (

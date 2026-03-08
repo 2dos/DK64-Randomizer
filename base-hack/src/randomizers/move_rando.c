@@ -400,6 +400,9 @@ void getNextMoveText(void) {
 						case 12:
 							top_item = ITEMTEXT_CAMERACOMBO;
 							break;
+						case 13:
+							top_item = ITEMTEXT_CANNONS;
+							break;
 					}
 					break;
 				case REQITEM_GOLDENBANANA:

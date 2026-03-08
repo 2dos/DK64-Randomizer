@@ -743,6 +743,7 @@ KasplatLocationList = {
             zmin=2440,
             zmax=2540,
             region=Regions.GloomyGalleonStart,
+            additional_logic=lambda l: l.cannons,
         ),
         KasplatLocation(
             name="Galleon Kasplat: Atop Whomp's Lighthouse",
@@ -964,6 +965,7 @@ KasplatLocationList = {
             zmin=2250,
             zmax=2400,
             region=Regions.FungiForestStart,
+            additional_logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
         ),
         KasplatLocation(
             name="Forest Kasplat: Grinder Room",

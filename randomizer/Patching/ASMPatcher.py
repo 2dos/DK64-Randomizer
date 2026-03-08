@@ -375,7 +375,7 @@ class Minigame8BitImage:
 def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Items.NintendoCoin, jetpac_item: Items = Items.RarewareCoin, settings=None):
     """Alter the image that is displayed in DK Arcade/Jetpac for their respective rewards."""
     colorless_potions = (
-        ItemPool.ImportantSharedMoves + ItemPool.JunkSharedMoves + ItemPool.TrainingBarrelAbilities() + ItemPool.ClimbingAbilities() + [Items.Shockwave, Items.Camera, Items.CameraAndShockwave]
+        ItemPool.ImportantSharedMoves + ItemPool.JunkSharedMoves + ItemPool.TrainingBarrelAbilities() + ItemPool.ClimbingAbilities() + ItemPool.CannonAbilities() + [Items.Shockwave, Items.Camera, Items.CameraAndShockwave]
     )
     # Image.open(f"{hash_dir}rw_coin.png").resize(dim).save(f"{arcade_dir}rwcoin.png")  # Rareware Coin
     # Image.open(f"{hash_dir}melon_slice.png").resize(dim).save(f"{arcade_dir}melon.png")  # Watermelon Slice
@@ -2161,6 +2161,10 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
         writeValue(ROM_COPY, 0x80671814, Overlay.Static, 0, offset_dict, 4)
     if BETTER_JUMPS:
         writeValue(ROM_COPY, 0x806E1C6C, Overlay.Static, 0, offset_dict, 4)
+
+    # Cannon code w/ flag check
+    writeFunction(ROM_COPY, 0x8067BA64, Overlay.Static, "cannonCodeWrapper", offset_dict)
+    updateActorFunction(ROM_COPY, 23, "cannonCodeWrapper")
     #
     writeHook(ROM_COPY, 0x806C3260, Overlay.Static, "fixLankyPhaseHandState", offset_dict)  # Ensures K Rool has a head in the end cutscene if in Lanky Phase
     writeFunction(ROM_COPY, 0x80628034, Overlay.Static, "exitBoss", offset_dict)

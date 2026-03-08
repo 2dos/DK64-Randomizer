@@ -35,7 +35,7 @@ class Item:
             self.movetype = data[0]
             self.index = data[1]
             self.rando_flag = data[2]
-        if type in (Types.TrainingBarrel, Types.Shockwave, Types.Climbing):
+        if type in (Types.TrainingBarrel, Types.Shockwave, Types.Climbing, Types.Cannons):
             self.movetype = data[0]
             self.flag = data[1]
             self.rando_flag = data[2]
@@ -112,6 +112,7 @@ ItemList = {
     Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "orange", 388]),
     Items.Barrels: Item("Barrels", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "barrel", 389]),
     Items.Climbing: Item("Climbing", True, Types.Climbing, Kongs.any, [MoveTypes.Flag, "climbing", 0x29F]),
+    Items.Cannons: Item("Cannons", True, Types.Cannons, Kongs.any, [MoveTypes.Flag, "cannons", 0x2E8]),
     Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, Kongs.any, [MoveTypes.Slam, 2, -1]),
     Items.ProgressiveSlam2: Item("Progressive Slam ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.ProgressiveSlam3: Item("Progressive Slam  ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
@@ -424,6 +425,7 @@ StartingMoveOptions = [
     Items.Oranges,
     Items.Barrels,
     Items.Climbing,
+    Items.Cannons,
     Items.ProgressiveSlam,
     Items.ProgressiveSlam2,
     Items.ProgressiveSlam3,

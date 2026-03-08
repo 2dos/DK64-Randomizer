@@ -166,6 +166,11 @@ def writeMoveDataToROM(ROM_COPY: LocalROM, arr: list, enable_hints: bool, spoile
                 ROM_COPY.writeMultipleBytes(0, 1)
                 ROM_COPY.writeMultipleBytes(0, 1)
                 ROM_COPY.writeMultipleBytes(0, 1)
+            elif x["flag"] == "cannons":
+                ROM_COPY.writeMultipleBytes(13, 1)
+                ROM_COPY.writeMultipleBytes(0, 1)
+                ROM_COPY.writeMultipleBytes(0, 1)
+                ROM_COPY.writeMultipleBytes(0, 1)
             else:
                 flag_dict = {
                     "dive": 0,

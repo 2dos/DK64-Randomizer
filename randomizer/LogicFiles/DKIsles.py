@@ -180,8 +180,9 @@ LogicRegions = {
         TransitionFront(Regions.JungleJapesLobby, lambda l: l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events or l.CanPhase() or l.CanSTS(), Transitions.IslesMainToJapesLobby),
         TransitionFront(Regions.KremIsle, lambda _: True),
         TransitionFront(Regions.IslesHill, lambda l: l.climbing or l.assumeUpperIslesAccess),
-        TransitionFront(Regions.CabinIsle, lambda l: l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events),
-        TransitionFront(Regions.CreepyCastleLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCastleLobby),
+        TransitionFront(Regions.CabinIsle, lambda l: (l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events) and l.cannons),
+        TransitionFront(Regions.FungiForestLobby, lambda l: (l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events) and ((l.cannons or l.assumeLevel5Entry))),
+        TransitionFront(Regions.CreepyCastleLobby, lambda l: (l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events) and (l.cannons or l.assumeLevel7Entry), Transitions.IslesMainToCastleLobby),
         TransitionFront(Regions.KremIsleTopLevel, lambda l: l.tbs),
         TransitionFront(Regions.KRool, lambda l: l.CanAccessKRool() or l.assumeKRoolAccess),
     ]),
@@ -517,7 +518,7 @@ LogicRegions = {
         Event(Events.KRoolPufftoss, lambda l: not l.settings.krool_pufftoss or True),
         Event(Events.KRoolDog2, lambda l: not l.settings.krool_dog2 or (l.barrels and l.hunkyChunky and l.chunky)),
         Event(Events.KRoolDillo2, lambda l: not l.settings.krool_dillo2 or l.barrels),
-        Event(Events.KRoolKKO, lambda l: not l.settings.krool_kutout or ((not l.IsLavaWater()) or l.Melons >= 3)),
+        Event(Events.KRoolKKO, lambda l: not l.settings.krool_kutout or ((not l.IsLavaWater()) or l.Melons >= 3) and l.cannons),
         Event(Events.KRoolDefeated, lambda l: Events.KRoolDonkey in l.Events and Events.KRoolDiddy in l.Events and Events.KRoolLanky in l.Events and Events.KRoolTiny in l.Events and Events.KRoolChunky in l.Events and Events.KRoolDillo1 in l.Events and Events.KRoolDillo2 in l.Events and Events.KRoolDog1 in l.Events and Events.KRoolDog2 in l.Events and Events.KRoolJack in l.Events and Events.KRoolPufftoss in l.Events and Events.KRoolKKO in l.Events)
     ], []),
 }

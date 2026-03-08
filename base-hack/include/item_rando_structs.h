@@ -87,6 +87,7 @@ typedef struct StartingItemsStruct {
 	/* 0x02E */ unsigned char slam;
 	/* 0x02F */ unsigned char belt;
     /* 0x030 */ unsigned char climbing;
+    /* 0x031 */ unsigned char cannons;
 } StartingItemsStruct;
 
 typedef struct MoveSpecialBijectionStruct {

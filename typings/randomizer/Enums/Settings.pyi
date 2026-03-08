@@ -159,6 +159,10 @@ class ClimbingStatus(IntEnum):
     normal = 0
     shuffled = 1
 
+class CannonStatus(IntEnum):
+    normal = 0
+    shuffled = 1
+
 class GlitchesSelected(IntEnum):
     monkey_maneuvers = 1
     b_locker_skips = 2

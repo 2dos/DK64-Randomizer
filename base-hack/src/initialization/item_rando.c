@@ -247,6 +247,34 @@ BoulderItemStruct boulder_item_table[16] = {
     { .map = MAP_AZTEC, .spawner_id = 1},
     { .map = MAP_AZTEC, .spawner_id = 0},
 };
+/*
+actor_spawn_packet box_item_table[24] = {
+    { .actor = NEWACTOR_NULL }, // Factory Lobby Box
+    { .actor = NEWACTOR_NULL }, // Japes Tiny Hut
+    { .actor = NEWACTOR_NULL }, // Japes Lanky Hut
+    { .actor = NEWACTOR_NULL }, // Japes DK Hut
+    { .actor = NEWACTOR_NULL }, // Japes Diddy Hut
+    { .actor = NEWACTOR_NULL }, // Factory Dark Room Low
+    { .actor = NEWACTOR_NULL }, // Galleon Headphones Chest
+    { .actor = NEWACTOR_NULL }, // Galleon Chest Lighthouse near Enguarde (meme hole side)
+    { .actor = NEWACTOR_NULL }, // Galleon Chest Lighthouse near Enguarde (kevin side)
+    { .actor = NEWACTOR_NULL }, // Galleon Chest Lighthouse mid level (kevin side)
+    { .actor = NEWACTOR_NULL }, // Galleon Chest Lighthouse mid level (meme hole side)
+    { .actor = NEWACTOR_NULL }, // Galleon Chest Shipwreck (between submarine branch and entrance)
+    { .actor = NEWACTOR_NULL }, // Galleon Chest Shipwreck (between 2ds branch and entrance)
+    { .actor = NEWACTOR_NULL }, // Galleon Chest Shipwreck (under gold tower tunnel entrance)
+    { .actor = NEWACTOR_NULL }, // Galleon Chest Shipwreck (between submarine branch and mech fish branch)
+    { .actor = NEWACTOR_NULL }, // Galleon Chest Shipwreck (near mech fish grate)
+    { .actor = NEWACTOR_NULL }, // Galleon 5DS Chest 1
+    { .actor = NEWACTOR_NULL }, // Galleon 5DS Chest 2
+    { .actor = NEWACTOR_NULL }, // Galleon 5DS Chest 3
+    { .actor = NEWACTOR_NULL }, // Fungi Thornvine Box (Slam)
+    { .actor = NEWACTOR_NULL }, // Fungi mill front slam
+    { .actor = NEWACTOR_NULL }, // Fungi mill rear triangle
+    { .actor = NEWACTOR_NULL }, // Fungi mill rear mini hole
+    { .actor = NEWACTOR_NULL }, // Castle Shed
+};
+*/
 bonus_barrel_info bonus_data[BONUS_DATA_COUNT] = {
     {.flag=0x186,               .spawn_actor=45,                    .kong_actor=1},
     {.flag=0xe0,                .spawn_actor=45,                    .kong_actor=2 + KONG_LANKY},

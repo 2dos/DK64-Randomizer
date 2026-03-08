@@ -158,6 +158,10 @@ class ClimbingShuffle(Toggle):
 
     display_name = "Climbing Shuffle"
 
+class CannonShuffle(Toggle):
+    """Whether or not you shuffle the Cannon ability into the world(s)."""
+
+    display_name = "Cannon Shuffle"
 
 class StartingKongCount(Range):
     """Determines how many Kongs you start with."""
@@ -1501,6 +1505,7 @@ class DK64Options(PerGameCommonOptions):
     random_patches: RandomPatches
     # cb_rando_enabled: CBRando
     climbing_shuffle: ClimbingShuffle
+    cannon_shuffle: CannonShuffle
     starting_kong_count: StartingKongCount
     starting_move_count: StartingMoveCount
     shopowners_in_pool: ShopKeepers
@@ -1605,6 +1610,7 @@ dk64_option_groups: List[OptionGroup] = [
             StartingMoveCount,
             HelmKeyLock,
             ClimbingShuffle,
+            CannonShuffle,
             ShopKeepers,
             BouldersInPool,
             Dropsanity,

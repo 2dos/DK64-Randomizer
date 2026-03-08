@@ -269,6 +269,7 @@ class Spoiler:
             Types.Shockwave: "Moves",
             Types.TrainingBarrel: "Moves",
             Types.Climbing: "Moves",
+            Types.Cannons: "Moves",
             Types.Banana: "Golden Bananas",
             Types.FillerBanana: "Golden Bananas",
             Types.Blueprint: "Blueprints",
@@ -695,6 +696,7 @@ class Spoiler:
                 if "Isles" in location.name or location.type in (
                     Types.PreGivenMove,
                     Types.Climbing,
+                    Types.Cannons,
                     Types.Cranky,
                     Types.Funky,
                     Types.Candy,

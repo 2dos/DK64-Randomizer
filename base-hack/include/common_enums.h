@@ -273,6 +273,7 @@ typedef enum item_purchase_text {
 	/* 0x05E */ ITEMTEXT_CLIMBING,
 	/* 0x05F */ ITEMTEXT_DAY,
 	/* 0x060 */ ITEMTEXT_NIGHT,
+	/* 0x061 */ ITEMTEXT_CANNONS,
 } item_purchase_text;
 
 typedef enum pausescreenlist {

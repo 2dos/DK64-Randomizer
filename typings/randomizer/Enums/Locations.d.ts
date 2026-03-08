@@ -1573,4 +1573,5 @@ export enum Locations {
     KremKap_IslesNPC_BFIQueen = 1572,
     TimeLocationDay = 1573,
     TimeLocationNight = 1574,
+    IslesCannons = 1575,
 }

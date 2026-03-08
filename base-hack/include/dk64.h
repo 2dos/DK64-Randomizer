@@ -535,6 +535,8 @@ extern void inVehicleMovement(void);
 extern void unkVehicleFunc(void);
 extern int isBoulderMakingCollision(void);
 
+extern void cannonCode(void);
+
 //vanilla data
 extern OSThread* __osActiveQueue;
 extern float TransitionSpeed;

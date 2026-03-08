@@ -1519,6 +1519,9 @@ int getTotalMoveCount(void) {
 	if (hasFlagMove(FLAG_ABILITY_CLIMBING)) {
 		count++;
 	}
+	if (checkFlag(FLAG_ABILITY_CANNON, FLAGTYPE_PERMANENT)) {
+		count++;
+	}
 	return count;
 }
 

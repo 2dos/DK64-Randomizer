@@ -78,6 +78,8 @@ extern int change_object_scripts(behaviour_data* behaviour_pointer, int id, int 
 extern void createCollisionObjInstance(collision_types subtype, int map, int exit);
 extern void disableDiddyRDDoors(void);
 
+extern void cannonCodeWrapper(void);
+
 extern void resetMapContainer(void);
 extern void correctDKPortal(void);
 extern int canSaveHelmHurry(void);

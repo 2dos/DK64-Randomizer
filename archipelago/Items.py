@@ -89,6 +89,8 @@ def random_starting_moves(world: "DK64World") -> typing.List[str]:
     # Either include Climbing as an eligible starting move or place it in the starting inventory
     if world.options.climbing_shuffle:
         all_eligible_starting_moves.extend(DK64RItemPoolUtility.ClimbingAbilities())
+    if world.options.cannon_shuffle:
+        all_eligible_starting_moves.extend(DK64RItemPoolUtility.CannonAbilities())
     world.random.shuffle(all_eligible_starting_moves)
     while len(starting_moves) < world.options.starting_move_count:
         if len(all_eligible_starting_moves) == 0:
@@ -248,6 +250,13 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Climbing:
                 if name in starting_moves or not world.options.climbing_shuffle:
+                    world.multiworld.push_precollected(copy.copy(ap_item))
+                elif name in world.options.start_inventory:
+                    continue
+                else:
+                    item_table.append(copy.copy(ap_item))
+            case DK64RTypes.Cannons:
+                if name in starting_moves or not world.options.cannon_shuffle:
                     world.multiworld.push_precollected(copy.copy(ap_item))
                 elif name in world.options.start_inventory:
                     continue

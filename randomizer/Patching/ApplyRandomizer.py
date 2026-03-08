@@ -792,7 +792,7 @@ def patching_response(spoiler):
         ItemPool.LankyMoves,
         ItemPool.TinyMoves,
         ItemPool.ChunkyMoves,
-        ItemPool.ImportantSharedMoves + ItemPool.JunkSharedMoves + ItemPool.TrainingBarrelAbilities() + ItemPool.ClimbingAbilities() + [Items.Shockwave, Items.Camera, Items.CameraAndShockwave],
+        ItemPool.ImportantSharedMoves + ItemPool.JunkSharedMoves + ItemPool.TrainingBarrelAbilities() + ItemPool.ClimbingAbilities() + ItemPool.CannonAbilities() + [Items.Shockwave, Items.Camera, Items.CameraAndShockwave],
     ]
     for index, lst in enumerate(potion_pools):
         if spoiler.arcade_item_reward in lst:

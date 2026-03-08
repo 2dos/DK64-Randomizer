@@ -37,6 +37,7 @@ from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     BananaportRando,
     ClimbingStatus,
+    CannonStatus,
     DamageAmount,
     FasterChecksSelected,
     GalleonWaterSetting,
@@ -99,6 +100,8 @@ class LogicVarHolder:
         self.assumePaidBLockers = False
         self.assumeAztecEntry = False
         self.assumeLevel4Entry = False
+        self.assumeLevel5Entry = False
+        self.assumeLevel7Entry = False
         self.assumeLevel8Entry = False
         self.assumeUpperIslesAccess = False
         self.assumeKRoolAccess = False
@@ -168,6 +171,7 @@ class LogicVarHolder:
         self.adv_orange_usage = self.oranges and self.advanced_grenading
         self.barrels = self.settings.training_barrels == TrainingBarrels.normal
         self.climbing = self.settings.climbing_status == ClimbingStatus.normal
+        self.cannons = self.settings.cannon_status == CannonStatus.normal
         self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
         progDonkey = 0
@@ -493,6 +497,8 @@ class LogicVarHolder:
                     self._recalculateBlueprints()
                 case Items.Climbing:
                     self.climbing = True
+                case Items.Cannons:
+                    self.cannons = True
                 case Items.Vines:
                     self.vines = True
                     self.can_use_vines = True
@@ -754,6 +760,8 @@ class LogicVarHolder:
                     self._recalculateBlueprints()
                 case Items.Climbing:
                     self.climbing = False
+                case Items.Cannons:
+                    self.cannons = False
                 case Items.Vines:
                     self.vines = False
                     self.can_use_vines = False
@@ -951,6 +959,7 @@ class LogicVarHolder:
         self.ischunky = self.chunky
 
         self.climbing = self.climbing or Items.Climbing in ownedItems
+        self.cannons = self.cannons or Items.Cannons in ownedItems
         self.vines = self.vines or Items.Vines in ownedItems
         self.swim = self.swim or Items.Swim in ownedItems
         self.oranges = self.oranges or Items.Oranges in ownedItems
@@ -1422,6 +1431,7 @@ class LogicVarHolder:
             self.oranges,
             self.barrels,
             self.climbing,
+            self.cannons,
             self.blast,
             self.strongKong,
             self.grab,
@@ -1805,8 +1815,10 @@ class LogicVarHolder:
             hasRequiredMoves = self.hunkyChunky and self.barrels
         elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
             hasRequiredMoves = self.barrels
-        elif bossFight == Maps.CastleBoss and self.IsLavaWater():
-            hasRequiredMoves = self.Melons >= 3
+        elif bossFight == Maps.CastleBoss:
+            if self.IsLavaWater():
+                hasRequiredMoves = self.Melons >= 3
+            hasRequiredMoves = hasRequiredMoves and self.cannons
         elif bossFight == Maps.KroolDonkeyPhase:
             hasRequiredMoves = (self.blast or (not self.settings.cannons_require_blast)) and self.climbing
         elif bossFight == Maps.KroolDiddyPhase:

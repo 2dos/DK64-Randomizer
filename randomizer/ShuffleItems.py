@@ -114,7 +114,7 @@ def ShuffleItems(spoiler):
                 flag=old_flag,
                 placement_data=placement_info,
                 is_reward_point=item_location.is_reward,
-                is_shop=item_location.type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing),
+                is_shop=item_location.type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing, Types.Cannons),
                 price=price,
                 placement_index=placement_index,
                 kong=old_kong,

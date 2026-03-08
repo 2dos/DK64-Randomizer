@@ -35,6 +35,7 @@ from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     BananaportRando,
     ClimbingStatus,
+    CannonStatus,
     DamageAmount,
     FasterChecksSelected,
     GlitchesSelected,
@@ -92,6 +93,8 @@ class LogicVarHolder:
         self.assumeInfiniteRaceCoins = False
         self.assumeAztecEntry = False
         self.assumeLevel4Entry = False
+        self.assumeLevel5Entry = False
+        self.assumeLevel7Entry = False
         self.assumeLevel8Entry = False  # Extra important to never assume this in LZR!
         self.assumeUpperIslesAccess = False
         self.assumeKRoolAccess = False
@@ -143,6 +146,7 @@ class LogicVarHolder:
         self.oranges = self.settings.training_barrels == TrainingBarrels.normal
         self.barrels = self.settings.training_barrels == TrainingBarrels.normal
         self.climbing = self.settings.climbing_status == ClimbingStatus.normal
+        self.cannons = self.settings.cannon_status == CannonStatus.normal
         self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
         progDonkey = 0
@@ -364,6 +368,7 @@ class LogicVarHolder:
         self.chunky = self.chunky or Items.Chunky in ownedItems or self.startkong == Kongs.chunky
 
         self.climbing = self.climbing or Items.Climbing in ownedItems
+        self.cannons = self.cannons or Items.Cannons in ownedItems
         self.vines = self.vines or Items.Vines in ownedItems
         self.swim = self.swim or Items.Swim in ownedItems
         self.oranges = self.oranges or Items.Oranges in ownedItems
@@ -840,6 +845,7 @@ class LogicVarHolder:
             self.oranges,
             self.barrels,
             self.climbing,
+            self.cannons,
             self.blast,
             self.strongKong,
             self.grab,
@@ -1241,8 +1247,10 @@ class LogicVarHolder:
             hasRequiredMoves = self.hunkyChunky and self.barrels
         elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
             hasRequiredMoves = self.barrels
-        elif bossFight == Maps.CastleBoss and self.IsLavaWater():
-            hasRequiredMoves = self.Melons >= 3
+        elif bossFight == Maps.CastleBoss:
+            if self.IsLavaWater():
+                hasRequiredMoves = self.Melons >= 3
+            hasRequiredMoves = hasRequiredMoves and self.cannons
         elif bossFight == Maps.KroolDonkeyPhase:
             hasRequiredMoves = (self.blast or (not self.settings.cannons_require_blast)) and self.climbing
         elif bossFight == Maps.KroolDiddyPhase:
@@ -1499,6 +1507,7 @@ class LogicVarHolder:
             and self.chunky
             and self.vines
             and self.climbing
+            and self.cannons
             and self.swim
             and self.barrels
             and self.oranges

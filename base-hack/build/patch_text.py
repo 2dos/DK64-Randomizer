@@ -623,6 +623,7 @@ move_names = [
     MoveName("Climbing", MoveTypes.flag),  # 94
     MoveName("Day", MoveTypes.flag),  # 95
     MoveName("Night", MoveTypes.flag),  # 96
+    MoveName("Cannons", MoveTypes.flag),  # 97
 ]
 
 move_names_arr = []
@@ -773,6 +774,7 @@ text_enum = [
     "ITEMTEXT_CLIMBING",  # 0x05E
     "ITEMTEXT_DAY",  # 0x05F
     "ITEMTEXT_NIGHT",  # 0x060
+    "ITEMTEXT_CANNONS",  # 0x061
 ]
 
 
@@ -829,6 +831,7 @@ location_references = [
     ItemReference("Barrel Throwing", "Barrel Barrel"),
     ItemReference("Vine Swinging", "Vine Barrel"),
     ItemReference("Climbing", "Starting Move"),
+    ItemReference("Cannons", "Starting Move"),
     # Instrument Upgrades & Slams
     ItemReference("Progressive Instrument Upgrade", ["Shared Galleon Candy", "Shared Caves Candy", "Shared Castle Candy"]),
     ItemReference("Progressive Slam", ["Shared Isles Cranky", "Shared Forest Cranky", "Shared Castle Cranky"]),

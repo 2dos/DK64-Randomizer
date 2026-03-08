@@ -38,7 +38,8 @@
 #define DEFS_LIMIT 166
 #define ACTOR_LIMIT (345 + NEWACTOR_TERMINATOR)
 
-// 0x2E8 - 0x2ec (inc) unused
+#define FLAG_ABILITY_CANNON 0x2E8
+// 0x2E9 - 0x2ec (inc) unused
 #define SNOOPDOOR_OPEN 0x2ED
 #define DKJAPESCAGEGB_OPEN 0x2EF
 #define JAPESMOUNTAINSPAWNED 0x2F0

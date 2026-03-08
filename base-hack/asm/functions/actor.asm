@@ -157,3 +157,4 @@
 .definelabel inVehicleMovement, 0x806CC970
 .definelabel unkVehicleFunc, 0x806D2378
 .definelabel isBoulderMakingCollision, 0x8069B85C
+.definelabel cannonCode, 0x8067B4C8

@@ -182,6 +182,11 @@ export enum ClimbingStatus {
     shuffled = 1,
 }
 
+export enum CannonStatus {
+    normal = 0,
+    shuffled = 1,
+}
+
 export enum GlitchesSelected {
     monkey_maneuvers = 1,
     b_locker_skips = 2,

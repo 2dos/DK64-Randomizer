@@ -591,6 +591,7 @@ fairy_locations = {
             map=Maps.FungiForest,
             region=Regions.FungiForestStart,
             fence=Fence(2370, 2229, 2557, 2472),
+            logic=lambda l: (l.cannons or (l.isdiddy and l.jetpack) or l.climbing) and l.camera,
             spawn_y=951,
         ),
         FairyData(

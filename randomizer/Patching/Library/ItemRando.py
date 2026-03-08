@@ -136,6 +136,7 @@ move_indexes = {
         Items.Shockwave,
         Items.CameraAndShockwave,
         Items.Climbing,
+        Items.Cannons,
         Items.SniperSight,
         Items.HomingAmmo,
     ],
@@ -547,6 +548,7 @@ pregiven_item_order = [
     Items.Camera,
     Items.Shockwave,
     Items.Climbing,
+    Items.Cannons,
 ]
 
 
@@ -701,6 +703,19 @@ item_db = {
         },
     ),
     Types.Climbing: ItemPlacementData(
+        model_index=[0xFB],
+        model_two_index=[0x1F6],
+        actor_index=[CustomActors.PotionAny],
+        arcade_reward_index=[ArcadeRewards.PotionAny],
+        jetpac_reward_index=[JetpacRewards.Potion],
+        overlay=[GraphicOverlay.TrainingBarrel],
+        preview_text="POTION",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "BOTTLE OF GROG",
+            Locations.ForestDiddyOwlRace: "STRANGE BREW",
+        },
+    ),
+    Types.Cannons: ItemPlacementData(
         model_index=[0xFB],
         model_two_index=[0x1F6],
         actor_index=[CustomActors.PotionAny],
@@ -1124,6 +1139,7 @@ item_shop_text_mapping = {
     Items.Oranges: (BuyText.orange, NoBuyText.training_move),
     Items.Barrels: (BuyText.barrel, NoBuyText.training_move),
     Items.Climbing: (BuyText.climb, NoBuyText.training_move),
+    Items.Cannons: (BuyText.climb, NoBuyText.training_move),
     # Slams
     Items.ProgressiveSlam: (BuyText.slam, NoBuyText.slam),
     Items.ProgressiveSlam2: (BuyText.slam, NoBuyText.slam),

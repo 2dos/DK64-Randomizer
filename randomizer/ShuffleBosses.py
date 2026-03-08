@@ -170,7 +170,7 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
         # Pufftoss is always accessible
         bossOptions[level].append(Maps.GalleonBoss)
         # King Kut Out is usually accessible but does care about lava water
-        if not spoiler.LogicVariables.IsLavaWater() or ownedMoves[level].count(Items.ProgressiveInstrumentUpgrade) >= 3:
+        if (not spoiler.LogicVariables.IsLavaWater() or ownedMoves[level].count(Items.ProgressiveInstrumentUpgrade) >= 3)and Items.Cannons in ownedMoves[level]:
             bossOptions[level].append(Maps.CastleBoss)
         if Items.Barrels in ownedMoves[level]:
             # These bosses only care about barrels

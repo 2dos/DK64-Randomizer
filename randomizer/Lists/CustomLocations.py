@@ -2410,6 +2410,7 @@ CustomLocations = {
         #     rot_y=2048,
         #     max_size=64,
         #     logic_region=Regions.GloomyGalleonStart,
+        #     logic=lambda l: l.cannons,
         #     group=3,
         # ),
         # CrownLocation(
@@ -2420,6 +2421,7 @@ CustomLocations = {
         #     z=2474,
         #     max_size=64,
         #     logic_region=Regions.GloomyGalleonStart,
+        #     logic=lambda l: l.cannons,
         #     group=3,
         # ),
         CustomLocation(
@@ -2431,6 +2433,7 @@ CustomLocations = {
             rot_y=3276,
             max_size=64,
             logic_region=Regions.GloomyGalleonStart,
+            logic=lambda l: l.cannons,
             group=3,
         ),
         # CrownLocation(map=Maps.GloomyGalleon, name="On Cranky", x=3290, y=1870, z=2372, max_size=32, logic_region=0, group=0),
@@ -2932,6 +2935,7 @@ CustomLocations = {
             z=2322,
             max_size=56,
             logic_region=Regions.FungiForestStart,
+            logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
             group=1,
         ),
         CustomLocation(
@@ -2942,6 +2946,7 @@ CustomLocations = {
             z=2237,
             max_size=64,
             logic_region=Regions.FungiForestStart,
+            logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
             group=1,
         ),
         CustomLocation(

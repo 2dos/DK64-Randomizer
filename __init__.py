@@ -372,7 +372,7 @@ if baseclasses_loaded:
         def shared_item_group() -> str:
             """Item group for Training Moves."""
             res = set()
-            training_items = ["Vines", "Diving", "Oranges", "Barrels", "Climbing", "progression Slam", "Fairy Camera", "Shockwave"]
+            training_items = ["Vines", "Diving", "Oranges", "Barrels", "Climbing", "Cannons", "progression Slam", "Fairy Camera", "Shockwave"]
             for item in training_items:
                 if item in full_item_table:
                     res.add(item)
@@ -1358,7 +1358,7 @@ if baseclasses_loaded:
                 for item in self.multiworld.precollected_items[self.player]:
                     dk64_item = logic_item_name_to_id[item.name]
                     # Only moves can be pushed to the pregiven_items list
-                    if DK64RItem.ItemList[dk64_item].type in [Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
+                    if DK64RItem.ItemList[dk64_item].type in [Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cannons, Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
                         spoiler.pregiven_items.append(dk64_item)
                 local_trap_count = 0
                 ap_item_is_major_item = False
@@ -1840,6 +1840,7 @@ if baseclasses_loaded:
                 "win_condition_item": self.spoiler.settings.win_condition_item.value,
                 "helm_hurry": self.spoiler.settings.helm_hurry,
                 "ClimbingShuffle": self.options.climbing_shuffle.value,
+                "CannonShuffle": self.options.cannon_shuffle.value,
                 "PlayerNum": self.player,
                 "death_link": self.options.death_link.value,
                 "ring_link": self.options.ring_link.value,
