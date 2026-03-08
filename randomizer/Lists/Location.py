@@ -805,36 +805,36 @@ LocationListOriginal = {
     Locations.ProgressiveHint_35: Location(Levels.CreepyCastle, "Progressive Hint 35", Items.CastleChunkyHint, Types.ProgressiveHint, Kongs.chunky),
 
     # Rainbow Coins - Has to be in order of map index
-    Locations.RainbowCoin_Location00: Location(Levels.JungleJapes, "Japes Dirt: Painting Hill", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x2A6)]),  # Painting Hill
-    Locations.RainbowCoin_Location01: Location(Levels.AngryAztec, "Aztec Dirt: Chunky Temple", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.AztecChunky5DTemple, -1, 0x2A7)]),  # Chunky 5DT
+    Locations.RainbowCoin_Location00: Location(Levels.JungleJapes, "Japes Dirt: On Painting Hill", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x2A6)]),  # Painting Hill
+    Locations.RainbowCoin_Location01: Location(Levels.AngryAztec, "Aztec Dirt: Chunky 5DT", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.AztecChunky5DTemple, -1, 0x2A7)]),  # Chunky 5DT
     Locations.RainbowCoin_Location02: Location(Levels.FranticFactory, "Factory Dirt: Dark Room", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x2A8)]),  # Dark Room
-    Locations.RainbowCoin_Location03: Location(Levels.DKIsles, "Isles Dirt: Cabin Isle", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A9)]),  # Fungi Entrance
-    Locations.RainbowCoin_Location04: Location(Levels.DKIsles, "Isles Dirt: Under Caves Lobby", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2AA)]),  # Caves Slope
-    Locations.RainbowCoin_Location05: Location(Levels.DKIsles, "Isles Dirt: Aztec Roof", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2AB)]),  # Aztec Roof
+    Locations.RainbowCoin_Location03: Location(Levels.DKIsles, "Isles Dirt: Front of Fungi Building", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A9)]),  # Fungi Entrance
+    Locations.RainbowCoin_Location04: Location(Levels.DKIsles, "Isles Dirt: Under Caves Lobby Entrance", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2AA)]),  # Caves Slope
+    Locations.RainbowCoin_Location05: Location(Levels.DKIsles, "Isles Dirt: On Aztec Building", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2AB)]),  # Aztec Roof
     Locations.RainbowCoin_Location06: Location(Levels.AngryAztec, "Aztec Dirt: Oasis", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2AC)]),  # Oasis
-    Locations.RainbowCoin_Location07: Location(Levels.FungiForest, "Forest Dirt: Mills Grass", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2AD)]),  # Isotarge Coin
-    Locations.RainbowCoin_Location08: Location(Levels.FungiForest, "Forest Dirt: Beanstalk", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2AE)]),  # Beanstalk
-    Locations.RainbowCoin_Location09: Location(Levels.GloomyGalleon, "Galleon Dirt: Lighthouse", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.GalleonLighthouse, -1, 0x2AF)]),  # Lighthouse
-    Locations.RainbowCoin_Location10: Location(Levels.CrystalCaves, "Caves Dirt: Giant Kosha", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x2B0)]),  # Giant Kosha
-    Locations.RainbowCoin_Location11: Location(Levels.CreepyCastle, "Castle Dirt: Top Floor", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x2B1)]),  # Castle Top
-    Locations.RainbowCoin_Location12: Location(Levels.DKIsles, "Isles Dirt: Back of Prison", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.KLumsy, -1, 0x2B2)]),  # K. Lumsy
-    Locations.RainbowCoin_Location13: Location(Levels.DKIsles, "Isles Dirt: Training Grounds Rear Tunnel", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2B3)]),  # Back of TG
-    Locations.RainbowCoin_Location14: Location(Levels.DKIsles, "Isles Dirt: Banana Hoard", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2B4)]),  # Banana Hoard
-    Locations.RainbowCoin_Location15: Location(Levels.DKIsles, "Isles Dirt: Castle Lobby", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x2B5)]),  # Castle Lobby
+    Locations.RainbowCoin_Location07: Location(Levels.FungiForest, "Forest Dirt: Mill Grass", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2AD)]),  # Isotarge Coin
+    Locations.RainbowCoin_Location08: Location(Levels.FungiForest, "Forest Dirt: Front of Beanstalk", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2AE)]),  # Beanstalk
+    Locations.RainbowCoin_Location09: Location(Levels.GloomyGalleon, "Galleon Dirt: Lighthouse: Interior Rear", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.GalleonLighthouse, -1, 0x2AF)]),  # Lighthouse
+    Locations.RainbowCoin_Location10: Location(Levels.CrystalCaves, "Caves Dirt: Giant Kosha Room", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x2B0)]),  # Giant Kosha
+    Locations.RainbowCoin_Location11: Location(Levels.CreepyCastle, "Castle Dirt: Top of Castle Near Shop", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x2B1)]),  # Castle Top
+    Locations.RainbowCoin_Location12: Location(Levels.DKIsles, "Isles Dirt: Prison: Back", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.KLumsy, -1, 0x2B2)]),  # K. Lumsy
+    Locations.RainbowCoin_Location13: Location(Levels.DKIsles, "Isles Dirt: Training Grounds: Rear Tunnel", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2B3)]),  # Back of TG
+    Locations.RainbowCoin_Location14: Location(Levels.DKIsles, "Isles Dirt: Training Grounds: Banana Hoard", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2B4)]),  # Banana Hoard
+    Locations.RainbowCoin_Location15: Location(Levels.DKIsles, "Isles Dirt: Castle Lobby: Center", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x2B5)]),  # Castle Lobby
 
     Locations.MelonCrate_Location00: Location(Levels.JungleJapes, "Japes Crate: Behind the Mountain", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3AC)]),  # Japes behind mountain
     Locations.MelonCrate_Location01: Location(Levels.JungleJapes, "Japes Crate: In the Rambi Cave", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3AD)]),  # Japes near cb boulder
-    Locations.MelonCrate_Location02: Location(Levels.AngryAztec, "Aztec Crate: Llama Temple Entrance", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, -1, 0x3AE)]),  # Llama Temple
-    Locations.MelonCrate_Location03: Location(Levels.FranticFactory, "Factory Crate: Near Funky", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x3AF)]),  # Factory near funky
-    Locations.MelonCrate_Location04: Location(Levels.FranticFactory, "Factory Crate: Near Candy", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x3B0)]),  # Factory near candy/cranky
+    Locations.MelonCrate_Location02: Location(Levels.AngryAztec, "Aztec Crate: Llama Temple: Entrance", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, -1, 0x3AE)]),  # Llama Temple
+    Locations.MelonCrate_Location03: Location(Levels.FranticFactory, "Factory Crate: Testing shop entrance right", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x3AF)]),  # Factory near funky
+    Locations.MelonCrate_Location04: Location(Levels.FranticFactory, "Factory Crate: Near right storage shop", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x3B0)]),  # Factory near candy/cranky
     Locations.MelonCrate_Location05: Location(Levels.GloomyGalleon, "Galleon Crate: Near Cactus", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x3B1)]),  # Galleon near cactus
     Locations.MelonCrate_Location06: Location(Levels.AngryAztec, "Aztec Crate: On Llama Temple", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3B2)]),  # Aztec on Llama
     Locations.MelonCrate_Location07: Location(Levels.AngryAztec, "Aztec Crate: Near Gong Tower", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3B3)]),  # Aztec near gong tower
-    Locations.MelonCrate_Location08: Location(Levels.FungiForest, "Forest Crate: Near Owl Tree", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B4)]),  # Fungi near owl tree
+    Locations.MelonCrate_Location08: Location(Levels.FungiForest, "Forest Crate: Owl Tree Clearing", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B4)]),  # Fungi near owl tree
     Locations.MelonCrate_Location09: Location(Levels.FungiForest, "Forest Crate: Near Thornvine Barn", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B5)]),  # Fungi near DK barn
-    Locations.MelonCrate_Location10: Location(Levels.FungiForest, "Forest Crate: Behind Dark Attic", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B6)]),  # Fungi behind dark attic
-    Locations.MelonCrate_Location11: Location(Levels.FungiForest, "Forest Crate: In Thornvine Barn", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.ForestThornvineBarn, -1, 0x3B7)]),  # Fungi in DK Barn
-    Locations.MelonCrate_Location12: Location(Levels.CreepyCastle, "Castle Crate: Behind Mausoleum Entrance", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.CastleLowerCave, -1, 0x3B8)]),  # Crypt behind Mausoleum entrance
+    Locations.MelonCrate_Location10: Location(Levels.FungiForest, "Forest Crate: Behind Rafters Barn", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B6)]),  # Fungi behind dark attic
+    Locations.MelonCrate_Location11: Location(Levels.FungiForest, "Forest Crate: DK Barn: Back Left", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.ForestThornvineBarn, -1, 0x3B7)]),  # Fungi in DK Barn
+    Locations.MelonCrate_Location12: Location(Levels.CreepyCastle, "Castle Crate: Lower Cave: Behind Mausoleum", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.CastleLowerCave, -1, 0x3B8)]),  # Crypt behind Mausoleum entrance
 
     Locations.HoldableBoulderIslesNearAztec: Location(Levels.DKIsles, "Isles Boulder: Near Level 2", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2B6)]),
     Locations.HoldableBoulderIslesNearCaves: Location(Levels.DKIsles, "Isles Boulder: Near Level 6", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2B7)]),
