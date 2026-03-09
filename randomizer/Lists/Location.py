@@ -833,7 +833,7 @@ LocationListOriginal = {
     Locations.MelonCrate_Location08: Location(Levels.FungiForest, "Forest Crate (Owl Tree Clearing)", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B4)]),  # Fungi near owl tree
     Locations.MelonCrate_Location09: Location(Levels.FungiForest, "Forest Crate (Near Thornvine Barn)", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B5)]),  # Fungi near DK barn
     Locations.MelonCrate_Location10: Location(Levels.FungiForest, "Forest Crate (Behind Rafters Barn)", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B6)]),  # Fungi behind dark attic
-    Locations.MelonCrate_Location11: Location(Levels.FungiForest, "Forest Crate (DK Barn: Back Left)", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.ForestThornvineBarn, -1, 0x3B7)]),  # Fungi in DK Barn
+    Locations.MelonCrate_Location11: Location(Levels.FungiForest, "Forest Crate (Thornvine Barn: Back Left)", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.ForestThornvineBarn, -1, 0x3B7)]),  # Fungi in DK Barn
     Locations.MelonCrate_Location12: Location(Levels.CreepyCastle, "Castle Crate (Lower Cave: Behind Mausoleum)", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.CastleLowerCave, -1, 0x3B8)]),  # Crypt behind Mausoleum entrance
 
     Locations.HoldableBoulderIslesNearAztec: Location(Levels.DKIsles, "Isles Boulder (Near Level 2)", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2B6)]),
