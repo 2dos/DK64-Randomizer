@@ -248,3 +248,4 @@ base-hack/modelling/*.obj
 *.i8
 *.ia8
 base-hack/modelling/*.obj
+dk64_full_item_table.txt

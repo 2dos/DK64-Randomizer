@@ -283,6 +283,13 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                     continue
                 else:
                     item_table.append(copy.copy(ap_item))
+            case DK64RTypes.FungiTime:
+                if not world.options.time_of_day:
+                    continue
+                if name in world.options.start_inventory:
+                    continue
+                else:
+                    item_table.append(copy.copy(ap_item))
             case (
                 DK64RTypes.BlueprintBanana
                 | DK64RTypes.Constant
