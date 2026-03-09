@@ -506,7 +506,7 @@ check_names_to_id = {
     "Forest Crate (Owl Tree Clearing)": 14041697,
     "Forest Crate (Near Thornvine Barn)": 14041698,
     "Forest Crate (Behind Rafters Barn)": 14041699,
-    "Forest Crate (DK Barn: Back Left)": 14041700,
+    "Forest Crate (Thornvine Barn: Back Left)": 14041700,
     "Castle Crate (Lower Cave: Behind Mausoleum)": 14041701,
     "Isles Boulder (Near Level 2)": 14041702,
     "Isles Boulder (Near Level 6)": 14041703,
