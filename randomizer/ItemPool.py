@@ -231,6 +231,7 @@ def AllItemsUnrestricted(settings):
     allItems.extend(FunkyItems())
     allItems.extend(CandyItems())
     allItems.extend(SnideItems())
+    allItems.extend(Photos())
     return allItems
 
 
@@ -487,6 +488,55 @@ def TrainingBarrelAbilities():
 def ClimbingAbilities():
     """Return all climbing abilities."""
     return [Items.Climbing]
+
+
+def Photos():
+    """Return all photo items."""
+    return [
+        Items.PhotoBeaverBlue,
+        Items.PhotoBook,
+        Items.PhotoZingerCharger,
+        Items.PhotoKlobber,
+        Items.PhotoKlump,
+        Items.PhotoKaboom,
+        Items.PhotoKlaptrapGreen,
+        Items.PhotoZingerLime,
+        Items.PhotoKlaptrapPurple,
+        Items.PhotoKlaptrapRed,
+        Items.PhotoBeaverGold,
+        Items.PhotoFireball,
+        Items.PhotoMushroomMan,
+        Items.PhotoRuler,
+        Items.PhotoRoboKremling,
+        Items.PhotoKremling,
+        Items.PhotoKasplatDK,
+        Items.PhotoKasplatDiddy,
+        Items.PhotoKasplatLanky,
+        Items.PhotoKasplatTiny,
+        Items.PhotoKasplatChunky,
+        Items.PhotoZingerRobo,
+        Items.PhotoKrossbones,
+        Items.PhotoShuri,
+        Items.PhotoGimpfish,
+        Items.PhotoMrDice0,
+        Items.PhotoSirDomino,
+        Items.PhotoMrDice1,
+        Items.PhotoBat,
+        Items.PhotoGhost,
+        Items.PhotoPufftup,
+        Items.PhotoKosha,
+        Items.PhotoSpider,
+        Items.PhotoFireball,
+        Items.PhotoBug,
+        Items.PhotoKop,
+        Items.PhotoTomato,
+        Items.PhotoBFI,
+        Items.PhotoIceTomato,
+        Items.PhotoMermaid,
+        Items.PhotoLlama,
+        Items.PhotoMechfish,
+        Items.PhotoSeal,
+    ]
 
 
 def Upgrades(settings):
