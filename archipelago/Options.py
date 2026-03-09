@@ -1469,7 +1469,10 @@ class DKPortalLocationRando(Choice):
     option_all = 2
     default = 0
 
+class ForestTimeOfDay(Toggle):
+    """Test"""
 
+    display_name = "Time of Day"
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -1573,6 +1576,7 @@ class DK64Options(PerGameCommonOptions):
     allowed_bosses: AllowedBosses
     random_starting_region: RandomStartingLocation
     dk_portal_location_rando: DKPortalLocationRando
+    time_of_day: ForestTimeOfDay
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1618,6 +1622,7 @@ dk64_option_groups: List[OptionGroup] = [
             HalfMedals,
             SnideTurninsToThePool,
             SnideMaximum,
+            ForestTimeOfDay,
         ],
     ),
     OptionGroup(

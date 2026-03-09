@@ -1609,16 +1609,17 @@ class LogicVarHolder:
 
     def TimeAccess(self, region, time):
         """Check if a certain region has the given time of day access for current kong."""
-        # In Archipelago, we're always using the Dusk setting so it is both day and night simultaneously
-        # In addition, this method is only ever called when checking the current region, which implies you already have access to the region.
-        return True
-        # if time == Time.Day:
-        #     return self.spoiler.RegionList[region].dayAccess[self.kong]
-        # elif time == Time.Night:
-        #     return self.spoiler.RegionList[region].nightAccess[self.kong]
-        # # Not sure when this'd be used
-        # else:  # if time == Time.Both
-        #     return self.spoiler.RegionList[region].dayAccess[self.kong] or self.spoiler.RegionList[region].nightAccess[self.kong]
+        # If time-of-day items are NOT shuffled, always allow access
+        if Types.FungiTime not in self.settings.shuffled_location_types:
+            return True
+        
+        # If time-of-day items ARE shuffled, check if we have the appropriate item
+        if time == Time.Day:
+            return self.dayAccess
+        elif time == Time.Night:
+            return self.nightAccess
+        else:  # Time.Both
+            return self.dayAccess or self.nightAccess
 
     def BlueprintAccess(self, item):
         """Check if we are the correct kong for this blueprint item."""

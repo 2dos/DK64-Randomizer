@@ -19,6 +19,7 @@ from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import HelmSetting, FungiTimeSetting, FasterChecksSelected, RemovedBarriersSelected, ShuffleLoadingZones, WinConditionComplex, LevelRandomization, DKPortalRando
+from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists import Location as DK64RLocation, Item as DK64RItem
@@ -397,7 +398,9 @@ def create_region(
         # Some events don't matter due to Archipelago settings
         if region_name == "GameStart":
             if event.name in (Events.Night, Events.Day):
-                if not event.logic(logic_holder):
+                # Only skip these events if time items are NOT shuffled and the logic fails
+                # If time items ARE shuffled, we need to keep the events even if not immediately accessible
+                if Types.FungiTime not in logic_holder.settings.shuffled_location_types and not event.logic(logic_holder):
                     should_skip_event = True
 
             # Filter out barrier events that won't be used
@@ -673,6 +676,14 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
                 converted_logic = lambda state: True
             else:
                 converted_logic = lambda state, player=world.player, exit=exit: hasDK64RTransition(state, player, exit)
+            
+            # Add time requirements if this transition has time restrictions
+            if exit.time == Time.Day:
+                original_logic = converted_logic
+                converted_logic = lambda state, orig=original_logic: orig(state) and state.has("Day", world.player)
+            elif exit.time == Time.Night:
+                original_logic = converted_logic
+                converted_logic = lambda state, orig=original_logic: orig(state) and state.has("Night", world.player)
 
             # Determine connection type and targets
             destination_name = exit.dest.name
@@ -907,7 +918,19 @@ def connect(world: World, source: str, target: str, rule: typing.Optional[typing
 
 def hasDK64RTransition(state: CollectionState, player: int, exit: TransitionFront):
     """Check if the given transition is accessible in the given state."""
-    return exit.logic(state.dk64_logic_holder[player])
+    logic_holder = state.dk64_logic_holder[player]
+    
+    # Check the base logic for the transition
+    if not exit.logic(logic_holder):
+        return False
+    
+    # Check time requirements if this transition has time restrictions
+    if exit.time == Time.Day:
+        return logic_holder.dayAccess
+    elif exit.time == Time.Night:
+        return logic_holder.nightAccess
+    # Time.Both or no time restriction - always accessible if logic passes
+    return True
 
 
 def hasDK64RLocation(state: CollectionState, player: int, location: LocationLogic):
