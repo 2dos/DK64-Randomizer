@@ -3777,7 +3777,7 @@ CustomLocations = {
             group=1,
         ),
         CustomLocation(
-            name="Giant Kosha Room",
+            name="Giant Kosha",
             map=Maps.CrystalCaves,
             x=1820.313,
             y=231.833,
