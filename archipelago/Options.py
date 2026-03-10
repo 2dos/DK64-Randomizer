@@ -1438,6 +1438,46 @@ class SnideTurninsToThePool(DefaultOnToggle):
     display_name = "Add Snide Turnins to the Pool"
 
 
+class AlterSwitchAllocation(OptionDict):
+    """Determines the slam color requirement for colored banana switches in each level.
+    
+    Valid Keys:
+    - "level_1" through "level_8"
+    
+    Valid Values:
+    - "none": No slam required (White)
+    - "green": Green Slam (Simian Slam)
+    - "blue": Blue Slam (Super Simian Slam)
+    - "red": Red Slam (Super Duper Simian Slam)
+    """
+    
+    display_name = "Alter Switch Allocation"
+    
+    valid_keys = frozenset(["level_1", "level_2", "level_3", "level_4", "level_5", "level_6", "level_7", "level_8"])
+    
+    default = {
+        "level_1": "green",
+        "level_2": "green",
+        "level_3": "green",
+        "level_4": "green",
+        "level_5": "blue",
+        "level_6": "blue",
+        "level_7": "red",
+        "level_8": "red",
+    }
+    
+    def verify(self, world, player_name: str, plando_options) -> None:
+        super().verify(world, player_name, plando_options)
+        
+        valid_values = {"none", "green", "blue", "red"}
+        
+        for key, value in self.value.items():
+            if key not in self.valid_keys:
+                raise OptionError(f"Invalid level key '{key}'. Must be one of: {', '.join(sorted(self.valid_keys))}")
+            if value not in valid_values:
+                raise OptionError(f"Invalid slam requirement '{value}' for {key}. Must be one of: {', '.join(sorted(valid_values))}")
+
+
 class RandomStartingLocation(Choice):
     """Determines if and where the game can start you.
 
@@ -1571,6 +1611,7 @@ class DK64Options(PerGameCommonOptions):
     galleon_water_level: GalleonWaterLevel
     remove_bait_potions: RemoveBaitPotions
     snide_turnins_to_pool: SnideTurninsToThePool
+    alter_switch_allocation: AlterSwitchAllocation
     krusha_model_mode: KrushaRandom
     krusha_kongs: KrushaKongs
     allowed_bosses: AllowedBosses
@@ -1670,6 +1711,7 @@ dk64_option_groups: List[OptionGroup] = [
             KrushaRandom,
             KrushaKongs,
             AllowedBosses,
+            AlterSwitchAllocation,
         ],
     ),
     OptionGroup(
