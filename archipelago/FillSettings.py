@@ -473,6 +473,22 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     settings_dict["random_crates"] = options.random_crates.value
     settings_dict["random_patches"] = options.random_patches.value
 
+    # Apply switch allocation settings
+    slam_map = {
+        "none": SlamRequirement.no_slam,
+        "green": SlamRequirement.green,
+        "blue": SlamRequirement.blue,
+        "red": SlamRequirement.red,
+    }
+    if options.alter_switch_allocation.value:
+        settings_dict["alter_switch_allocation"] = True
+        # Convert level_1-level_8 to prog_slam_level_1 through prog_slam_level_8
+        for i in range(8):
+            level_key = f"level_{i+1}"
+            if level_key in options.alter_switch_allocation.value:
+                slam_name = options.alter_switch_allocation.value[level_key]
+                settings_dict[f"prog_slam_level_{i+1}"] = slam_map.get(slam_name, SlamRequirement.green)
+
     # Apply blocker settings
     blocker_options: list[int] = [
         options.level_blockers.value.get("level_1", 0),
