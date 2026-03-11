@@ -17,6 +17,9 @@ typedef struct holdableDisplacementStruct {
     short displacement;
 } holdableDisplacementStruct;
 
+#define TS_JUMP_COOLDOWN 90
+ROM_DATA static int last_ts_jump_f = 0;
+
 ROM_RODATA_NUM static const holdableDisplacementStruct holdableDisplacements[] = {
     { .actor_type = 63,  .displacement = 386 },
     { .actor_type = 64,  .displacement = 386 },
@@ -49,6 +52,7 @@ float getHoldableHeight(actorData *actor) {
 
 void enterTS(void) {
     if (NewlyPressedControllerInput.Buttons.l) {
+        last_ts_jump_f = -TS_JUMP_COOLDOWN;
         playerData *player = (playerData *)CurrentActorPointer_0;
         player->control_state = 0x84;
         player->control_state_progress = 0;
@@ -72,6 +76,13 @@ void enterTS(void) {
     }
 }
 
+void boulderDestroy(void) {
+    CurrentActorPointer_0->control_state = 4;
+    Player->vehicle_actor_pointer = 0;
+    Player->control_state = 0xC;
+    Player->control_state_progress = 0;
+}
+
 void boulderTSCode(void) {
     if (CurrentActorPointer_0->grounded & 1) {
         CurrentActorPointer_0->hSpeed -= 0.1f;
@@ -90,7 +101,10 @@ void boulderTSCode(void) {
     }
     CurrentActorPointer_0->obj_props_bitfield |= 0x20;
     if (isBoulderMakingCollision()) {
-        CurrentActorPointer_0->control_state = 4;
+        boulderDestroy();
+    }
+    if (CurrentActorPointer_0->unk_FC && !isMakingContactWithWall(CurrentActorPointer_0, Player->facing_angle & 0xFFF)) {
+        boulderDestroy();
     }
     // Gravity Functions
     unkProjectileCode_2(CurrentActorPointer_0);
@@ -121,12 +135,13 @@ void TSHandler(void) {
 
 void TSJump(void) {
     if (Input.Buttons.a) {
+        if ((FrameLag < (last_ts_jump_f + TS_JUMP_COOLDOWN))) {
+            return;
+        }
+        last_ts_jump_f = FrameLag;
         playerData *player = (playerData *)CurrentActorPointer_0;
         actorData *vehicle = player->vehicle_actor_pointer;
-        int delta = vehicle->yPos - vehicle->floor;
-        if ((delta > -10) && (delta < 10)) {
-            vehicle->yVelocity = 100.0f;
-        }
+        vehicle->yVelocity = 100.0f;
     }
 }
 
@@ -135,10 +150,10 @@ void TSSpeed(void) {
         playerData *player = (playerData *)CurrentActorPointer_0;
         actorData *vehicle = player->vehicle_actor_pointer;
         if (vehicle->grounded & 1) {
-            vehicle->hSpeed += 20.0f;
+            vehicle->hSpeed += 40.0f;
             vehicle->yVelocity = 5.0f;
-            if (vehicle->hSpeed > 300.0f) {
-                vehicle->hSpeed = 300.0f;
+            if (vehicle->hSpeed > 220.0f) {
+                vehicle->hSpeed = 220.0f;
             }
             playAnimation(player, 0x86);
         }

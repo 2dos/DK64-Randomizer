@@ -536,6 +536,7 @@ extern void unkVehicleFunc(void);
 extern int isBoulderMakingCollision(void);
 
 extern void cannonCode(void);
+extern int isMakingContactWithWall(actorData *actor, int angle);
 
 //vanilla data
 extern OSThread* __osActiveQueue;

@@ -94,7 +94,7 @@ BOULDERS_DONT_DESTROY = True
 CAN_THROW_KEGS = True
 CAN_THROW_APPLES = True
 DISABLE_LONG_JUMP = False
-TS = False
+TS = True
 TEST_HUNKY_FIX = False
 BETTER_JUMPS = True
 
@@ -2151,11 +2151,12 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
         writeLabelValue(ROM_COPY, 0x80750F70, Overlay.Static, "TSHandler", offset_dict)
         writeLabelValue(ROM_COPY, 0x8075A390, Overlay.Static, "boulderExtraCode", offset_dict)
         writeHook(ROM_COPY, 0x8069CC1C, Overlay.Static, "boulderSpinCode", offset_dict)
-        # CSC 90
-        writeValue(ROM_COPY, 0x807527F0, Overlay.Static, 0x806E04E0, offset_dict, 4)
-        writeLabelValue(ROM_COPY, 0x807527F4, Overlay.Static, "TSJump", offset_dict)
-        writeLabelValue(ROM_COPY, 0x8075280C, Overlay.Static, "TSSpeed", offset_dict)
-        writeLabelValue(ROM_COPY, 0x807527FC, Overlay.Static, "TSDrop", offset_dict)
+        # CSC 2
+        CSC_START = 0X8075108C
+        writeValue(ROM_COPY, CSC_START + 0x04, Overlay.Static, 0x806E04E0, offset_dict, 4)
+        writeLabelValue(ROM_COPY, CSC_START + 0x08, Overlay.Static, "TSJump", offset_dict)
+        writeLabelValue(ROM_COPY, CSC_START + 0x20, Overlay.Static, "TSSpeed", offset_dict)
+        writeLabelValue(ROM_COPY, CSC_START + 0x10, Overlay.Static, "TSDrop", offset_dict)
     if TEST_HUNKY_FIX:
         writeValue(ROM_COPY, 0x8067185A, Overlay.Static, 0x64, offset_dict)
         writeValue(ROM_COPY, 0x80671814, Overlay.Static, 0, offset_dict, 4)

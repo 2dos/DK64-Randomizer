@@ -73,7 +73,9 @@ typedef struct bonedata {
 	/* 0x000 */ int unk_0;
 	/* 0x004 */ int unk_4;
 	/* 0x008 */ int unk_8;
-	/* 0x00C */ char unk_0C[0x70 - 0x0C];
+	/* 0x00C */ char unk_0C[0x24 - 0x0C];
+	/* 0x024 */ char in_wall;
+	/* 0x025 */ char unk_25[0x70 - 0x25];
 	/* 0x070 */ bone_block_data bone_block;
 } bonedata;
 typedef struct actorData {
@@ -114,7 +116,8 @@ typedef struct actorData {
 	/* 0x0EC */ short unk_EC;
 	/* 0x0EE */ short rot_y_copy;
 	/* 0x0F0 */ short reward_index;
-	/* 0x0F2 */ char unk_F2[0xFD-0xF2];
+	/* 0x0F2 */ char unk_F2[0xFC-0xF2];
+	/* 0x0FC */ unsigned char unk_FC;
 	/* 0x0FD */ unsigned char unk_FD;
 	/* 0x0FE */ char unk_FE[0x11C-0xFE];
 	/* 0x11C */ void* parent;
