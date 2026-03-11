@@ -66,16 +66,19 @@ gauntlet_gb_locations = [
     Locations.AztecTinyKlaptrapRoom,
     Locations.AztecChunkyKlaptrapRoom,
     Locations.FactoryDiddyRandD,
+    Locations.FactoryChunkyRandD,
     Locations.ForestLankyAttic,
     Locations.ForestTinyAnthill,
     Locations.ForestTinySpiderBoss,
     Locations.ForestChunkyApple,
     Locations.CavesDonkey5DoorCabin,
     Locations.CavesDiddy5DoorCabinLower,
+    Locations.CavesDiddy5DoorCabinUpper,
     Locations.CavesLanky5DoorIgloo,
     Locations.CavesTiny5DoorCabin,
     Locations.CavesChunky5DoorIgloo,
     Locations.CastleDonkeyLibrary,
+    Locations.CastleDiddyBallroom,
     Locations.CastleTinyTrashCan,
     Locations.CastleChunkyShed,
 ]
@@ -616,7 +619,7 @@ def GoldenBananaItems(settings):
     decrease = 0
     decrease_values = {
         Types.RaceBanana: 11,
-        Types.GauntletBanana: 16,
+        Types.GauntletBanana: 19,
         Types.BlueprintBanana: 40,
     }
     for item_type, value in decrease_values.items():
