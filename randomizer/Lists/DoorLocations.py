@@ -963,7 +963,7 @@ door_locations = {
             door_type=[DoorType.wrinkly],
         ),
         DoorData(
-            name="Triple Stairs Podium quicksand",
+            name="Far Back Triple Stairs Quicksand",
             map=Maps.AngryAztec,
             logicregion=Regions.AngryAztecMain,
             location=[3940.0, 112.0, 4099.0, 323.5],
@@ -1022,7 +1022,7 @@ door_locations = {
             group=4,
         ),
         DoorData(
-            name="Triple Stairs Podium",
+            name="Far Back Triple Stairs Wall",
             map=Maps.AngryAztec,
             logicregion=Regions.AngryAztecMain,
             location=[4183.0, 120.0, 3830.0, 239.5],
