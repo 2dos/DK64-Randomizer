@@ -353,7 +353,7 @@ KasplatLocationList = {
             region=Regions.AngryAztecMain,
         ),
         KasplatLocation(
-            name="Aztec Kasplat: Near Snide's",
+            name="Aztec Kasplat: Far Back Triple Stairs",
             map_id=Maps.AngryAztec,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[3969, 190, 4037],

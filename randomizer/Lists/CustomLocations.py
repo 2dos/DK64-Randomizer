@@ -200,7 +200,7 @@ CustomLocations = {
     Levels.JungleJapes: [
         CustomLocation(
             map=Maps.JungleJapes,
-            name="Near Funky",
+            name="Near Low Hill Shop",
             x=1989.7,
             y=520,
             z=2086.71,
@@ -256,7 +256,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.JungleJapes,
-            name="Diddy Cavern",
+            name="First Tunnel Cave",
             x=2381,
             y=280,
             z=392,
@@ -265,7 +265,7 @@ CustomLocations = {
             group=3,
         ),
         CustomLocation(
-            name="Inside Diddy's Cavern",
+            name="In First Tunnel Cave",
             map=Maps.JungleJapes,
             x=2475.0,
             y=280.0,
@@ -362,7 +362,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.JungleJapes,
-            name="Lanky useless slope - middle",
+            name="Useless Lanky Slope - Middle",
             x=2209,
             y=339,
             z=3205,
@@ -371,7 +371,7 @@ CustomLocations = {
             group=2,
         ),
         CustomLocation(
-            name="Lanky useless slope - left",
+            name="Useless Lanky Slope - Left",
             map=Maps.JungleJapes,
             x=2263.0,
             y=338.0,
@@ -383,7 +383,7 @@ CustomLocations = {
             group=2,
         ),
         CustomLocation(
-            name="Cranky-tunnel Crossing",
+            name="Stormy Tunnel Crossing",
             map=Maps.JungleJapes,
             x=1633.0,
             y=210.0,
@@ -408,7 +408,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.JungleJapes,
-            name="Fairy Pool",
+            name="Rambi Pool",
             x=597,
             y=240,
             z=3123,
@@ -1785,7 +1785,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Near right storage shop",
+            name="Near Right Storage Shop",
             x=319.03137207031,
             y=165.5,
             z=596.36285400391,
@@ -1820,7 +1820,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Near Snide",
+            name="Glass Window Shop",
             x=1702,
             y=810,
             z=2240,
@@ -1829,7 +1829,7 @@ CustomLocations = {
             group=5,
         ),
         CustomLocation(
-            name="Near Snide (hidden)",
+            name="Glass Window Shop (hidden)",
             map=Maps.FranticFactory,
             x=1603.0,
             y=810.0,
@@ -1938,7 +1938,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Testing shop entrance right",
+            name="Testing Shop Entrance Right",
             x=1735.7963867188,
             y=1113.1666259766,
             z=641.83825683594,
@@ -2229,7 +2229,7 @@ CustomLocations = {
     Levels.GloomyGalleon: [
         CustomLocation(
             map=Maps.GloomyGalleon,
-            name="Under cavern shop",
+            name="Under Cavern Shop",
             x=3296.94,
             y=1670,
             z=2450.29,
@@ -2874,7 +2874,7 @@ CustomLocations = {
     Levels.FungiForest: [
         CustomLocation(
             map=Maps.FungiForest,
-            name="Giant Mushroom High Ladder Platform",
+            name="Mushroom Exterior Top Ladder",
             x=1254.33,
             y=1079.33,
             z=1307.16,
@@ -2994,7 +2994,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FungiForest,
-            name="Behind Dark Attic",
+            name="Behind Rafters Barn",
             x=3175.0856933594,
             y=272.33334350586,
             z=4425.095703125,
@@ -3006,7 +3006,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FungiForest,
-            name="Near Mill Tag",
+            name="Near Mill Tag Barrel",
             x=4706,
             y=139,
             z=4373,
@@ -3057,7 +3057,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FungiForest,
-            name="En route to DK Barn",
+            name="En route to Thornvine Barn",
             x=4604,
             y=206,
             z=2844,
@@ -3067,7 +3067,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FungiForest,
-            name="Right of DK Barn",
+            name="Right of Thornvine Barn",
             x=4492,
             y=116,
             z=1959,
@@ -3077,7 +3077,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FungiForest,
-            name="Far Right of DK Barn",
+            name="Far Right of Thornvine Barn",
             x=4147,
             y=115,
             z=1496,
@@ -3087,7 +3087,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FungiForest,
-            name="Behind DK Barn",
+            name="Behind Thornvine Barn",
             x=3486,
             y=115,
             z=1427,
@@ -3097,7 +3097,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FungiForest,
-            name="Far Left of DK Barn",
+            name="Far Left of Thornvine Barn",
             x=3529,
             y=115,
             z=2035,
@@ -3107,7 +3107,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FungiForest,
-            name="Near DK Barn",
+            name="Near Thornvine Barn",
             x=4151,
             y=115,
             z=1784,
@@ -3253,7 +3253,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FungiForest,
-            name="Highest Giant Mushroom Platform",
+            name="Mushroom Exterior Top Floor",
             x=1196,
             y=1250,
             z=1315,
@@ -3305,7 +3305,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FungiForest,
-            name="Near Owl Tree",
+            name="Owl Tree Clearing",
             x=443.95544433594,
             y=189.33332824707,
             z=3946.9885253906,
@@ -3544,7 +3544,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.ForestThornvineBarn,
-            name="DK Barn: Near Entrance",
+            name="Thornvine Barn: Near Entrance",
             x=537,
             y=4,
             z=143,
@@ -3554,7 +3554,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.ForestThornvineBarn,
-            name="DK Barn: Near Ladder",
+            name="Thornvine Barn: Near Ladder",
             x=106,
             y=4,
             z=590,
@@ -3563,7 +3563,7 @@ CustomLocations = {
             group=6,
         ),
         CustomLocation(
-            name="DK Barn: Next to ladder",
+            name="Thornvine Barn: Next to ladder",
             map=Maps.ForestThornvineBarn,
             x=80.0,
             y=4.0,
@@ -3575,7 +3575,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.ForestThornvineBarn,
-            name="DK Barn: back left",
+            name="Thornvine Barn: Back Left",
             x=566.02142333984,
             y=4,
             z=524.61657714844,
@@ -3765,7 +3765,7 @@ CustomLocations = {
     Levels.CrystalCaves: [
         CustomLocation(
             map=Maps.CavesRotatingCabin,
-            name="Rotating cabin: wall",
+            name="Rotating Cabin: Wall",
             x=329,
             y=0,
             z=193,
@@ -3777,7 +3777,7 @@ CustomLocations = {
             group=1,
         ),
         CustomLocation(
-            name="Giant Kosha Room",
+            name="Giant Kosha",
             map=Maps.CrystalCaves,
             x=1820.313,
             y=231.833,
@@ -3860,7 +3860,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.CrystalCaves,
-            name="In the mini cave",
+            name="In the Mini Bonus Cave",
             x=453,
             y=180,
             z=2571,
@@ -4038,7 +4038,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.CrystalCaves,
-            name="Near Funky's",
+            name="Near Waterfall Shop",
             x=2543,
             y=172,
             z=1173,
@@ -4047,7 +4047,7 @@ CustomLocations = {
             group=2,
         ),
         CustomLocation(
-            name="Near Funky under Rocketbarrel",
+            name="Under Bridge Rocketbarrel",
             map=Maps.CrystalCaves,
             x=3013.0,
             y=253.0,
@@ -4156,7 +4156,7 @@ CustomLocations = {
         # ),
         CustomLocation(
             map=Maps.CrystalCaves,
-            name="Cabin Kasplat Pillar",
+            name="Cabins Center Rise",
             x=2984,
             y=379,
             z=1848,
@@ -4426,7 +4426,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.CavesDonkeyCabin,
-            name="Donkey cabin: Opposite Entrance",
+            name="DK cabin: Opposite Entrance",
             x=165,
             y=0,
             z=463,
@@ -4483,7 +4483,7 @@ CustomLocations = {
             banned_types=[LocationTypes.DirtPatch],
         ),
         CustomLocation(
-            name="Top of Castle near shop",
+            name="Top of Castle Near Shop",
             map=Maps.CreepyCastle,
             x=655.9,
             y=1794.167,
@@ -4560,7 +4560,7 @@ CustomLocations = {
             group=4,
         ),
         CustomLocation(
-            name="Lowest ledge towards Tiny Kasplat",
+            name="Lowest ledge towards Lone Cliff",
             map=Maps.CreepyCastle,
             x=245.0,
             y=366.0,
@@ -5014,7 +5014,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.CastleLowerCave,
-            name="Lower cave: Behind Mausoleum",
+            name="Lower Cave: Behind Mausoleum",
             x=1889.9437255859,
             y=320,
             z=1260.7548828125,
@@ -5522,7 +5522,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.Isles,
-            name="Outside K. Lumsy",
+            name="Outside Prison",
             x=3107,
             y=520,
             z=3500,
