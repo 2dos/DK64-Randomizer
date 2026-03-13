@@ -1328,23 +1328,6 @@ class Settings:
             self.wrinkly_location_rando = True
             self.tns_location_rando = True
 
-        # Krusha Kong
-        # if self.krusha_ui == KrushaUi.random:
-        #     slots = [x for x in range(5) if x != Kongs.chunky or not self.disco_chunky]  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
-        #     self.krusha_kong = self.random.choice(slots)
-        # else:
-        #     self.krusha_kong = None
-        #     krusha_conversion = {
-        #         KrushaUi.no_slot: None,
-        #         KrushaUi.dk: Kongs.donkey,
-        #         KrushaUi.diddy: Kongs.diddy,
-        #         KrushaUi.lanky: Kongs.lanky,
-        #         KrushaUi.tiny: Kongs.tiny,
-        #         KrushaUi.chunky: Kongs.chunky,
-        #     }
-        #     if self.krusha_ui in krusha_conversion:
-        #         self.krusha_kong = krusha_conversion[self.krusha_ui]
-
         # Fungi Time of Day
         if self.fungi_time == FungiTimeSetting.random:
             self.fungi_time_internal = self.random.choice([FungiTimeSetting.day, FungiTimeSetting.night])
