@@ -5,16 +5,19 @@ from BuildEnums import TableNames
 import zlib
 import math
 
+
 def rotate(x, y, angle):
+    """Rotate an xy point around (0, 0) through an angle."""
     theta = math.radians(-angle)
-    
+
     cos_t = math.cos(theta)
     sin_t = math.sin(theta)
-    
+
     x_new = x * cos_t - y * sin_t
     y_new = x * sin_t + y * cos_t
-    
+
     return x_new, y_new
+
 
 def mergeModel(
     source_file: int,
@@ -192,7 +195,7 @@ def mergeModel(
                         vert_cap = 0xFFFFFFFFF
                         i_load_vert = (vert_start + offset) >> 4
                         i_load_vert_end = min(i_load_vert + load_count, vert_cap)
-                        range_count = (i_load_vert_end - i_load_vert) + 1                                 
+                        range_count = (i_load_vert_end - i_load_vert) + 1
                         for yi in range(range_count):
                             if vert_buffer_start + yi < 32:
                                 vert_buffer[vert_buffer_start + yi] = vert_start + (yi * 0x10)
@@ -294,7 +297,6 @@ def mergeModel(
                                     val += 0x10000
                                 fh.write(val.to_bytes(2, "big"))
 
-                            
 
 mergeModel(
     0x48, 0xDA,

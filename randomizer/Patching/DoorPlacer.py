@@ -301,6 +301,7 @@ def remove_existing_indicators(spoiler, ROM_COPY: LocalROM):
         for data in other_retained_data:
             ROM_COPY.writeMultipleBytes(data, 4)
 
+
 def pushExit(ROM_COPY: LocalROM, cont_map_id: Maps, coords: list[int], angle: int) -> int:
     """Push exit to ROM."""
     exit_table = getPointerLocation(TableNames.Exits, cont_map_id)
@@ -320,74 +321,75 @@ def pushExit(ROM_COPY: LocalROM, cont_map_id: Maps, coords: list[int], angle: in
     ROM_COPY.writeMultipleBytes(0, 1)
     return exit_count
 
+
 vanilla_tns_data = {
     Maps.JungleJapes: [
-        { "obj_id": 0x11A, "exit_id": 10 },
-        { "obj_id": 0x37, "exit_id": 12 },
-        { "obj_id": 0x2C, "exit_id": 9 },
+        {"obj_id": 0x11A, "exit_id": 10},
+        {"obj_id": 0x37, "exit_id": 12},
+        {"obj_id": 0x2C, "exit_id": 9},
     ],
     Maps.AngryAztec: [
-        { "obj_id": 0x0A, "exit_id": 16 },
-        { "obj_id": 0x0B, "exit_id": 15 },
-        { "obj_id": 0xEC, "exit_id": 12 },
-        { "obj_id": 0x08, "exit_id": 13 },
-        { "obj_id": 0x09, "exit_id": 14 },
+        {"obj_id": 0x0A, "exit_id": 16},
+        {"obj_id": 0x0B, "exit_id": 15},
+        {"obj_id": 0xEC, "exit_id": 12},
+        {"obj_id": 0x08, "exit_id": 13},
+        {"obj_id": 0x09, "exit_id": 14},
     ],
     Maps.FranticFactory: [
-        { "obj_id": 0x4A, "exit_id": 10 },
-        { "obj_id": 0x46, "exit_id": 12 },
-        { "obj_id": 0x49, "exit_id": 11 },
-        { "obj_id": 0x48, "exit_id": 9 },
-        { "obj_id": 0x47, "exit_id": 13 },
+        {"obj_id": 0x4A, "exit_id": 10},
+        {"obj_id": 0x46, "exit_id": 12},
+        {"obj_id": 0x49, "exit_id": 11},
+        {"obj_id": 0x48, "exit_id": 9},
+        {"obj_id": 0x47, "exit_id": 13},
     ],
     Maps.GloomyGalleon: [
-        { "obj_id": 0x24, "exit_id": 13 },
-        { "obj_id": 0x26, "exit_id": 20 },
-        { "obj_id": 0x23, "exit_id": 14 },
-        { "obj_id": 0x22, "exit_id": 15 },
-        { "obj_id": 0x25, "exit_id": 12 },
+        {"obj_id": 0x24, "exit_id": 13},
+        {"obj_id": 0x26, "exit_id": 20},
+        {"obj_id": 0x23, "exit_id": 14},
+        {"obj_id": 0x22, "exit_id": 15},
+        {"obj_id": 0x25, "exit_id": 12},
     ],
     Maps.FungiForest: [
-        { "obj_id": 0x15, "exit_id": 20 },
-        { "obj_id": 0x47, "exit_id": 22 },
-        { "obj_id": 0x16, "exit_id": 21 },
-        { "obj_id": 0x3B, "exit_id": 24 },
-        { "obj_id": 0x52, "exit_id": 25 },
+        {"obj_id": 0x15, "exit_id": 20},
+        {"obj_id": 0x47, "exit_id": 22},
+        {"obj_id": 0x16, "exit_id": 21},
+        {"obj_id": 0x3B, "exit_id": 24},
+        {"obj_id": 0x52, "exit_id": 25},
     ],
     Maps.CrystalCaves: [
-        { "obj_id": 0x23, "exit_id": 24 },
-        { "obj_id": 0x24, "exit_id": 23 },
-        { "obj_id": 0x26, "exit_id": 26 },
-        { "obj_id": 0x25, "exit_id": 25 },
-        { "obj_id": 0x170, "exit_id": 11 },
+        {"obj_id": 0x23, "exit_id": 24},
+        {"obj_id": 0x24, "exit_id": 23},
+        {"obj_id": 0x26, "exit_id": 26},
+        {"obj_id": 0x25, "exit_id": 25},
+        {"obj_id": 0x170, "exit_id": 11},
     ],
     Maps.CreepyCastle: [
-        { "obj_id": 0x0D, "exit_id": 10 },
-        { "obj_id": 0x0C, "exit_id": 3 },
-        { "obj_id": 0x0B, "exit_id": 6 },
+        {"obj_id": 0x0D, "exit_id": 10},
+        {"obj_id": 0x0C, "exit_id": 3},
+        {"obj_id": 0x0B, "exit_id": 6},
     ],
     Maps.CastleLowerCave: [
-        { "obj_id": 0x02, "exit_id": 2 },
+        {"obj_id": 0x02, "exit_id": 2},
     ],
     Maps.CastleUpperCave: [
-        { "obj_id": 0x04, "exit_id": 3 },
+        {"obj_id": 0x04, "exit_id": 3},
     ],
     Maps.TroffNScoff: [
-        { "obj_id": 0x0E, "exit_id": 0 },
+        {"obj_id": 0x0E, "exit_id": 0},
     ],
 }
 
+
 def placeVanillaTNSScripts(ROM_COPY: LocalROM):
-    """Writes the script data for the vanilla set of T&S Portals."""
+    """Write the script data for the vanilla set of T&S Portals."""
     for map_id, portal_data in vanilla_tns_data.items():
         item_ids = []
         extra_data = {}
         for portal in portal_data:
             item_ids.append(portal["obj_id"])
-            extra_data[portal["obj_id"]] = {
-                "exit_id": portal["exit_id"]
-            }
+            extra_data[portal["obj_id"]] = {"exit_id": portal["exit_id"]}
         addNewScript(ROM_COPY, map_id, item_ids, ScriptTypes.TnsPortal, extra_data)
+
 
 def place_door_locations(spoiler, ROM_COPY: LocalROM):
     """Place Wrinkly Doors, and eventually T&S Doors."""
@@ -516,9 +518,7 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                                 item_data.append(0)
                                 id = getNextFreeID(ROM_COPY, cont_map_id, door_ids)
                                 map_wrinkly_ids.append(id)
-                                wrinkly_data[id] = {
-                                    "kong_id": kong
-                                }
+                                wrinkly_data[id] = {"kong_id": kong}
                                 door_ids.append(id)
                                 item_data.append((wrinkly_doors[kong] << 16) | id)
                                 item_data.append(1 << 16)
@@ -541,10 +541,7 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                             portal_indicator_ids.append(id)
                             door_ids.append(id)
                             portal_ids.append(id)
-                            portal_data[id] = {
-                                "coords": door.location[:3],
-                                "angle": door.location[3]
-                            }
+                            portal_data[id] = {"coords": door.location[:3], "angle": door.location[3]}
                             item_data.append((0x2AC << 16) | id)
                             item_data.append(1 << 16)
                             retained_model2.append(item_data)
@@ -579,9 +576,7 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                 extra_data = {}
                 for pid in portal_ids:
                     pid_data = portal_data[pid]
-                    extra_data[pid] = {
-                        "exit_id": pushExit(ROM_COPY, cont_map_id, pid_data["coords"], pid_data["angle"])
-                    }
+                    extra_data[pid] = {"exit_id": pushExit(ROM_COPY, cont_map_id, pid_data["coords"], pid_data["angle"])}
                 addNewScript(ROM_COPY, cont_map_id, portal_ids, ScriptTypes.TnsPortal, extra_data)
             # Reconstruct setup file
             ROM_COPY.seek(setup_table)

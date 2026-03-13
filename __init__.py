@@ -1346,7 +1346,7 @@ if baseclasses_loaded:
                     print(self.location_name_to_id, file=f)
                 with open(os.path.join(output_directory, f"donkitems_{self.player}.txt"), "w") as f:
                     print(self.item_name_to_id, file=f)
-                
+
                 spoiler = self.spoiler
                 spoiler.settings.archipelago = True
                 spoiler.settings.random = self.random

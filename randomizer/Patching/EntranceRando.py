@@ -47,6 +47,7 @@ def getEntranceDict(spoiler, transition: Transitions, vanilla_map: Maps, vanilla
         "exit": getFilteredExit(spoiler.settings, vanilla_map, vanilla_exit),
     }
 
+
 def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int = None, exit_id_override: int = None):
     """Write the castle cannon entrance to ROM."""
     isles_cutscenes = getPointerLocation(TableNames.Cutscenes, Maps.Isles)
@@ -57,14 +58,14 @@ def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int 
         header_end += 0x12 * count
     ROM_COPY.seek(header_end)
     count = int.from_bytes(ROM_COPY.readBytes(2), "big")
-    header_end += (2 + (0x1C * count))
+    header_end += 2 + (0x1C * count)
     ROM_COPY.seek(header_end)
     cutscene_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     read_location = header_end + 2
     for _ in range(cutscene_count):
         ROM_COPY.seek(read_location)
         point_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
-        read_location += (2 + (4 * point_count))
+        read_location += 2 + (4 * point_count)
     ROM_COPY.seek(read_location)
     item_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     read_location += 2
@@ -100,9 +101,9 @@ def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int 
             ROM_COPY.seek(read_location + 4)
             inner_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             if command == 4:
-                read_location += (0x20 + (inner_count * 0xE))
+                read_location += 0x20 + (inner_count * 0xE)
             elif command == 5:
-                read_location += (0x14 + (inner_count * 0x8))
+                read_location += 0x14 + (inner_count * 0x8)
         elif command in (10, 15, 16):
             read_location += 18
         elif command == 12:
@@ -110,6 +111,7 @@ def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int 
         else:
             read_location += 4
             count_copy += 1  # Not important cutscene
+
 
 def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int = None, exit_id_override: int = None):
     """Write the castle cannon entrance to ROM."""
@@ -197,6 +199,7 @@ def getEntranceOutput(spoiler, transition: Transitions, vanilla_map: Maps, vanil
         data["exit"] = helm_exits[int(spoiler.settings.helm_setting)]
     return (data["map"], data["exit"])
 
+
 def randomize_entrances(spoiler, ROM_COPY: LocalROM):
     """Randomize Entrances based on shuffled_exit_instructions."""
     if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all and spoiler.shuffled_exit_instructions is not None:
@@ -246,19 +249,13 @@ def randomize_entrances(spoiler, ROM_COPY: LocalROM):
         ROM_COPY.write(1)
         # Aztec Beetle Entry
         map_id, exit_id = getEntranceOutput(spoiler, Transitions.AztecMainToRace, Maps.AztecTinyRace, 0)
-        replaceScriptLines(ROM_COPY, Maps.AngryAztec, [0x1E], {
-            "EXEC 49 | 14 0 0": f"EXEC 49 | {map_id} {short_to_ushort(exit_id)} 0"
-        })
+        replaceScriptLines(ROM_COPY, Maps.AngryAztec, [0x1E], {"EXEC 49 | 14 0 0": f"EXEC 49 | {map_id} {short_to_ushort(exit_id)} 0"})
         # Seasick Ship Entry
         map_id, exit_id = getEntranceOutput(spoiler, Transitions.GalleonLighthouseAreaToSickBay, Maps.GalleonSickBay, 0)
-        replaceScriptLines(ROM_COPY, Maps.GloomyGalleon, [0x27], {
-            "EXEC 49 | 31 0 0": f"EXEC 49 | {map_id} {short_to_ushort(exit_id)} 0"
-        })
+        replaceScriptLines(ROM_COPY, Maps.GloomyGalleon, [0x27], {"EXEC 49 | 31 0 0": f"EXEC 49 | {map_id} {short_to_ushort(exit_id)} 0"})
         # Forest Minecart Entry
         map_id, exit_id = getEntranceOutput(spoiler, Transitions.ForestMainToCarts, Maps.ForestMinecarts, 0)
-        replaceScriptLines(ROM_COPY, Maps.FungiForest, [0x22], {
-            "EXEC 49 | 55 0 0": f"EXEC 49 | {map_id} {short_to_ushort(exit_id)} 0"
-        })
+        replaceScriptLines(ROM_COPY, Maps.FungiForest, [0x22], {"EXEC 49 | 55 0 0": f"EXEC 49 | {map_id} {short_to_ushort(exit_id)} 0"})
         # Write Castle Lobby entrance
         writeCastleCannonEntrance(ROM_COPY, spoiler)
         # Everything else
@@ -312,21 +309,15 @@ def randomize_entrances(spoiler, ROM_COPY: LocalROM):
             }
         # Ballroom to Museum
         map_id, exit_id = getEntranceOutput(spoiler, Transitions.CastleBallroomToMuseum, Maps.CastleMuseum, 2)
-        replaceScriptLines(ROM_COPY, Maps.CastleBallroom, [0x5], {
-            "EXEC 73 | 10 113 2": f"EXEC 73 | 10 {map_id} {short_to_ushort(exit_id)}"
-        })
+        replaceScriptLines(ROM_COPY, Maps.CastleBallroom, [0x5], {"EXEC 73 | 10 113 2": f"EXEC 73 | 10 {map_id} {short_to_ushort(exit_id)}"})
         # Museum to Ballroom
         map_id, exit_id = getEntranceOutput(spoiler, Transitions.CastleMuseumToBallroom, Maps.CastleBallroom, 1)
-        replaceScriptLines(ROM_COPY, Maps.CastleMuseum, [0x8], {
-            "EXEC 73 | 10 88 1": f"EXEC 73 | 10 {map_id} {short_to_ushort(exit_id)}"
-        })
+        replaceScriptLines(ROM_COPY, Maps.CastleMuseum, [0x8], {"EXEC 73 | 10 88 1": f"EXEC 73 | 10 {map_id} {short_to_ushort(exit_id)}"})
         # Mech Fish Entrance
         spoiler.settings.mech_fish_entrance = getEntranceDict(spoiler, Transitions.GalleonShipyardToMechFish, Maps.GalleonMechafish, 0)
         # Mech Fish Exit
         map_id, exit_id = getEntranceOutput(spoiler, Transitions.GalleonMechFishToShipyard, Maps.GloomyGalleon, 34)
-        replaceScriptLines(ROM_COPY, Maps.GalleonMechafish, [0xE], {
-            "EXEC 48 | 30 0 0": f"EXEC 49 | {map_id} {short_to_ushort(exit_id)} 0"
-        })
+        replaceScriptLines(ROM_COPY, Maps.GalleonMechafish, [0xE], {"EXEC 48 | 30 0 0": f"EXEC 49 | {map_id} {short_to_ushort(exit_id)} 0"})
 
 
 banned_filtration = (Maps.Cranky, Maps.Candy, Maps.Funky, Maps.Snide, Maps.HideoutHelm)

@@ -1007,7 +1007,6 @@ poptracker_name_mapping = {
 }
 
 
-
 # Universal Tracker integration configuration
 tracker_world = {
     "external_pack_key": "ut_pack_path",

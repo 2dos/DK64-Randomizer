@@ -281,61 +281,44 @@ def patching_response(spoiler):
                 # Only modify the instance script
                 if pad_type == SwitchType.GunSwitch:
                     if pad_kong == Kongs.any:
-                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
-                            f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": "COND 16 | 4 1 0"
-                        })
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": "COND 16 | 4 1 0"})
                     else:
                         KONG_PELLETS = [48, 36, 42, 43, 38]
-                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
-                            f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": f"COND 24 | {KONG_PELLETS[pad_kong]} 1 0"
-                        })
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": f"COND 24 | {KONG_PELLETS[pad_kong]} 1 0"})
                 elif pad_type in (SwitchType.InstrumentPad, SwitchType.SlamSwitch):
                     if pad_kong == Kongs.any:
-                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
-                            f"COND 25 | {slot_data.default_kong + 2} 0 0": "COND 0 | 0 0 0"
-                        })
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {f"COND 25 | {slot_data.default_kong + 2} 0 0": "COND 0 | 0 0 0"})
                     else:
-                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
-                            f"COND 25 | {slot_data.default_kong + 2} 0 0": f"COND 25 | {pad_kong + 2} 0 0"
-                        })
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {f"COND 25 | {slot_data.default_kong + 2} 0 0": f"COND 25 | {pad_kong + 2} 0 0"})
                 elif pad_type in (SwitchType.PushableButton, SwitchType.PunchGrate, SwitchType.IceWall, SwitchType.Gong):
                     control_states = [
                         [0, 0],
                         [0x2E, 1],  # Chimpy Charge
                         [0, 0],
                         [0, 0],
-                        [0x24, 2], # Primate Punch
+                        [0x24, 2],  # Primate Punch
                     ]
                     if pad_type == SwitchType.Gong:
-                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
-                            f"COND 23 | {control_states[slot_data.default_kong][0]} {control_states[slot_data.default_kong][1]} 0": f"COND 23 | {control_states[pad_kong][0]} {control_states[pad_kong][1]} 0"
-                        })
+                        replaceScriptLines(
+                            ROM_COPY,
+                            slot_data.map_id,
+                            slot_data.ids,
+                            {
+                                f"COND 23 | {control_states[slot_data.default_kong][0]} {control_states[slot_data.default_kong][1]} 0": f"COND 23 | {control_states[pad_kong][0]} {control_states[pad_kong][1]} 0"
+                            },
+                        )
                     else:
-                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
-                            f"COND 23 | {control_states[slot_data.default_kong][0]} 0 0": f"COND 23 | {control_states[pad_kong][0]} 0 0"
-                        })
-                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
-                            f"COND 33 | {control_states[slot_data.default_kong][1]} 0 0": f"COND 33 | {control_states[pad_kong][1]} 0 0"
-                        })
-                    replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {
-                        f"COND 24 | {slot_data.default_kong + 2} 1 0": f"COND 24 | {pad_kong + 2} 1 0"
-                    })
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {f"COND 23 | {control_states[slot_data.default_kong][0]} 0 0": f"COND 23 | {control_states[pad_kong][0]} 0 0"})
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {f"COND 33 | {control_states[slot_data.default_kong][1]} 0 0": f"COND 33 | {control_states[pad_kong][1]} 0 0"})
+                    replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {f"COND 24 | {slot_data.default_kong + 2} 1 0": f"COND 24 | {pad_kong + 2} 1 0"})
                 elif pad_type == SwitchType.GunInstrumentCombo:
                     if pad_kong == Kongs.any:
-                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[0]], {
-                            f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": "COND 16 | 4 1 0"
-                        })
-                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[1]], {
-                            f"COND 25 | {slot_data.default_kong + 2} 0 0": "COND 0 | 0 0 0"
-                        })
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[0]], {f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": "COND 16 | 4 1 0"})
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[1]], {f"COND 25 | {slot_data.default_kong + 2} 0 0": "COND 0 | 0 0 0"})
                     else:
                         KONG_PELLETS = [48, 36, 42, 43, 38]
-                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[0]], {
-                            f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": f"COND 24 | {KONG_PELLETS[pad_kong]} 1 0"
-                        })
-                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[1]], {
-                            f"COND 25 | {slot_data.default_kong + 2} 0 0": f"COND 25 | {pad_kong + 2} 0 0"
-                        })
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[0]], {f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": f"COND 24 | {KONG_PELLETS[pad_kong]} 1 0"})
+                        replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[1]], {f"COND 25 | {slot_data.default_kong + 2} 0 0": f"COND 25 | {pad_kong + 2} 0 0"})
 
     slam_req_values = {
         SlamRequirement.green: 1,
@@ -343,9 +326,7 @@ def patching_response(spoiler):
         SlamRequirement.red: 3,
     }
     req_val = slam_req_values[spoiler.settings.chunky_phase_slam_req_internal]
-    replaceScriptLines(ROM_COPY, Maps.KroolChunkyPhase, [0xA], {
-        "COND 37 | 2 0 0": f"COND 37 | {req_val} 0 0"
-    })
+    replaceScriptLines(ROM_COPY, Maps.KroolChunkyPhase, [0xA], {"COND 37 | 2 0 0": f"COND 37 | {req_val} 0 0"})
     ROM_COPY.seek(sav + 0x1E3)
     ROM_COPY.write(req_val)
 
@@ -361,9 +342,7 @@ def patching_response(spoiler):
         }
         for map_id, obj_ids in ta_blocks.items():
             for x in range(5):
-                replaceScriptLines(ROM_COPY, map_id, obj_ids, {
-                    f"CONDINV 25 | {x + 2} 0 0": "COND 25 | 0 0 0"
-                })
+                replaceScriptLines(ROM_COPY, map_id, obj_ids, {f"CONDINV 25 | {x + 2} 0 0": "COND 25 | 0 0 0"})
 
     # Camera unlocked
     given_moves = []
@@ -630,15 +609,25 @@ def patching_response(spoiler):
         if time_val in (FungiTimeSetting.progressive, FungiTimeSetting.dusk):
             addNewScript(ROM_COPY, Maps.FungiForest, progressive_removals, ScriptTypes.DeleteItem)
     for map_id, changes in day_script.items():
-        replaceScriptLines(ROM_COPY, map_id, changes, {
-            "CONDINV 38 | 16 0 0": "COND 6 | 7 65519 0",
-            "COND 38 | 16 0 0": "CONDINV 6 | 7 65519 0",
-        })
+        replaceScriptLines(
+            ROM_COPY,
+            map_id,
+            changes,
+            {
+                "CONDINV 38 | 16 0 0": "COND 6 | 7 65519 0",
+                "COND 38 | 16 0 0": "CONDINV 6 | 7 65519 0",
+            },
+        )
     for map_id, changes in night_script.items():
-        replaceScriptLines(ROM_COPY, map_id, changes, {
-            "COND 38 | 16 0 0": "COND 6 | 7 65519 1",
-            "CONDINV 38 | 16 0 0": "CONDINV 6 | 7 65519 1",
-        })
+        replaceScriptLines(
+            ROM_COPY,
+            map_id,
+            changes,
+            {
+                "COND 38 | 16 0 0": "COND 6 | 7 65519 1",
+                "CONDINV 38 | 16 0 0": "CONDINV 6 | 7 65519 1",
+            },
+        )
 
     # Galleon Water Level
     if spoiler.settings.galleon_water_internal == GalleonWaterSetting.raised:
@@ -723,30 +712,44 @@ def patching_response(spoiler):
     DARTBOARD_DEFAULT_ORDER = [4, 2, 3, 1, 6, 5]
     for x in range(6):
         # Conversion to prevent repeated overwrites
-        replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {
-            f"EXEC 40 | 1 {x} 0": f"EXEC 40 | 1 {x} 1"  
-        })
-        replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {
-            f"COND 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 0": f"COND 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 1",
-        })
-        replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {
-            f"CONDINV 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 0": f"CONDINV 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 1",
-        })
+        replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {f"EXEC 40 | 1 {x} 0": f"EXEC 40 | 1 {x} 1"})
+        replaceScriptLines(
+            ROM_COPY,
+            Maps.FranticFactory,
+            [0x7F],
+            {
+                f"COND 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 0": f"COND 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 1",
+            },
+        )
+        replaceScriptLines(
+            ROM_COPY,
+            Maps.FranticFactory,
+            [0x7F],
+            {
+                f"CONDINV 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 0": f"CONDINV 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 1",
+            },
+        )
     for x in range(6):
         index = spoiler.settings.dartboard_order[x]
-        replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {
-            f"EXEC 40 | 1 {x} 1": f"EXEC 40 | 1 {DARTBOARD_IMAGES[index]} 0"
-        })
-        replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {
-            f"COND 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 1": f"COND 24 | 43 {index + 1} 0",
-        })
-        replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {
-            f"CONDINV 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 1": f"CONDINV 24 | 43 {index + 1} 0",
-        })
+        replaceScriptLines(ROM_COPY, Maps.FranticFactory, [0x7F], {f"EXEC 40 | 1 {x} 1": f"EXEC 40 | 1 {DARTBOARD_IMAGES[index]} 0"})
+        replaceScriptLines(
+            ROM_COPY,
+            Maps.FranticFactory,
+            [0x7F],
+            {
+                f"COND 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 1": f"COND 24 | 43 {index + 1} 0",
+            },
+        )
+        replaceScriptLines(
+            ROM_COPY,
+            Maps.FranticFactory,
+            [0x7F],
+            {
+                f"CONDINV 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 1": f"CONDINV 24 | 43 {index + 1} 0",
+            },
+        )
     if IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.galleon_mech_fish):
-        replaceScriptLines(ROM_COPY, Maps.GalleonMechafish, [0x3, 0x4, 0x5], {
-            "EXEC 1 | 1 0 0": "EXEC 1 | 5 0 0"
-        })
+        replaceScriptLines(ROM_COPY, Maps.GalleonMechafish, [0x3, 0x4, 0x5], {"EXEC 1 | 1 0 0": "EXEC 1 | 5 0 0"})
 
     ROM_COPY.seek(sav + 0x060)
     for x in spoiler.settings.medal_cb_req_level:
@@ -792,7 +795,12 @@ def patching_response(spoiler):
         ItemPool.LankyMoves,
         ItemPool.TinyMoves,
         ItemPool.ChunkyMoves,
-        ItemPool.ImportantSharedMoves + ItemPool.JunkSharedMoves + ItemPool.TrainingBarrelAbilities() + ItemPool.ClimbingAbilities() + ItemPool.CannonAbilities() + [Items.Shockwave, Items.Camera, Items.CameraAndShockwave],
+        ItemPool.ImportantSharedMoves
+        + ItemPool.JunkSharedMoves
+        + ItemPool.TrainingBarrelAbilities()
+        + ItemPool.ClimbingAbilities()
+        + ItemPool.CannonAbilities()
+        + [Items.Shockwave, Items.Camera, Items.CameraAndShockwave],
     ]
     for index, lst in enumerate(potion_pools):
         if spoiler.arcade_item_reward in lst:
@@ -840,7 +848,7 @@ def patching_response(spoiler):
         ApplyMirrorMode(spoiler.settings, ROM_COPY)
 
     precalcBoot(ROM_COPY, spoiler)  # Needs to be done after any updates to setup for CBs, patches and crates
-    
+
     # Apply Hash
     order = 0
     for count in spoiler.settings.seed_hash:

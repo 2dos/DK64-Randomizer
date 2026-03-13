@@ -452,6 +452,9 @@ class TrackerItems(IntEnum):
     CANDY = auto()
     SNIDE = auto()
     CLIMB = auto()
+    CANNON = auto()
+    DAY = auto()
+    NIGHT = auto()
     TERMINATOR = auto()
 
 
@@ -993,7 +996,7 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.DayItem, ArcadeRewards.NightItem],
         jetpac_reward_index=[JetpacRewards.DayItem, JetpacRewards.NightItem],
         overlay=[GraphicOverlay.Hint] * 2,
-        index_getter= lambda item: [Items.Day, Items.Night].index(item),
+        index_getter=lambda item: [Items.Day, Items.Night].index(item),
         preview_text=["DAY", "NIGHT"],
         special_preview_text={
             Locations.GalleonDonkeySealRace: "YE CLOCK OF THE WAVES",

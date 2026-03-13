@@ -158,10 +158,12 @@ class ClimbingShuffle(Toggle):
 
     display_name = "Climbing Shuffle"
 
+
 class CannonShuffle(Toggle):
     """Whether or not you shuffle the Cannon ability into the world(s)."""
 
     display_name = "Cannon Shuffle"
+
 
 class StartingKongCount(Range):
     """Determines how many Kongs you start with."""
@@ -199,7 +201,7 @@ class KroolShuffle(Choice):
 
 
 class AllowedBosses(OptionList):
-    """Determines which bosses are in the pool. If not enough bosses are selected, it will fill the pool with duplicate bosses"""
+    """Determines which bosses are in the pool. If not enough bosses are selected, it will fill the pool with duplicate bosses."""
 
     display_name = "Allowed Bosses"
 
@@ -435,7 +437,7 @@ class RandomPatches(Toggle):
     display_name = "Random Dirt Patches"
 
 
-## TODO: Figure this out
+# TODO: Figure this out
 # class CBRando(Toggle):
 #     """Randomizes the locations of Colored Bananas throughout the levels.
 
@@ -1440,21 +1442,21 @@ class SnideTurninsToThePool(DefaultOnToggle):
 
 class AlterSwitchAllocation(OptionDict):
     """Determines the slam color requirement for colored banana switches in each level.
-    
+
     Valid Keys:
     - "level_1" through "level_8"
-    
+
     Valid Values:
     - "none": No slam required (White)
     - "green": Green Slam (Simian Slam)
     - "blue": Blue Slam (Super Simian Slam)
     - "red": Red Slam (Super Duper Simian Slam)
     """
-    
+
     display_name = "Alter Switch Allocation"
-    
+
     valid_keys = frozenset(["level_1", "level_2", "level_3", "level_4", "level_5", "level_6", "level_7", "level_8"])
-    
+
     default = {
         "level_1": "green",
         "level_2": "green",
@@ -1465,12 +1467,13 @@ class AlterSwitchAllocation(OptionDict):
         "level_7": "red",
         "level_8": "red",
     }
-    
+
     def verify(self, world, player_name: str, plando_options) -> None:
+        """Verify switch allocation."""
         super().verify(world, player_name, plando_options)
-        
+
         valid_values = {"none", "green", "blue", "red"}
-        
+
         for key, value in self.value.items():
             if key not in self.valid_keys:
                 raise OptionError(f"Invalid level key '{key}'. Must be one of: {', '.join(sorted(self.valid_keys))}")
@@ -1509,10 +1512,13 @@ class DKPortalLocationRando(Choice):
     option_all = 2
     default = 0
 
+
 class ForestTimeOfDay(Toggle):
-    """Test"""
+    """Temporary docstring for time of day setting."""
 
     display_name = "Time of Day"
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""

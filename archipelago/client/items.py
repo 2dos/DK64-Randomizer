@@ -190,7 +190,7 @@ item_ids: Dict[int, Dict[str, Any]] = {
     14041694: {"name": "Galleon Crate: Near Cactus", "count_id": None, "flag_id": 0x3B1},
     14041381: {"name": "Day", "count_id": None, "flag_id": 666, "progression": True},
     14041382: {"name": "Night", "count_id": None, "flag_id": 667, "progression": True},
-    14041383: {"name": "Cannon", "count_id": None, "flag_id": 744, "progressions": True}
+    14041383: {"name": "Cannon", "count_id": None, "flag_id": 744, "progressions": True},
 }
 
 
