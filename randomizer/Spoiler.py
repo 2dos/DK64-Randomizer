@@ -19,7 +19,6 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
     BLockerSetting,
-    CBRequirement,
     DKPortalRando,
     GlitchesSelected,
     LogicType,

@@ -22,7 +22,16 @@ from randomizer.Patching.Library.ItemRando import (
     LocationSelection,
 )
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, CompTextFiles, ItemPreview
-from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay, writeValue, patchBonus, getBonusIndex
+from randomizer.Patching.Library.ASM import (
+    getItemTableWriteAddress,
+    populateOverlayOffsets,
+    getSym,
+    getROMAddress,
+    Overlay,
+    writeValue,
+    patchBonus,
+    getBonusIndex,
+)
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
 from randomizer.Lists.WrinklyHints import kong_list

@@ -8,8 +8,6 @@ import time
 from tempfile import mktemp
 from randomizer.Enums.Settings import (
     BananaportRando,
-    CBRequirement,
-    CrownEnemyDifficulty,
     DamageAmount,
     FasterChecksSelected,
     FungiTimeSetting,

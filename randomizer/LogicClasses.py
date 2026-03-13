@@ -18,7 +18,6 @@ if TYPE_CHECKING:
     from randomizer.Enums.Locations import Locations
     from randomizer.Enums.MinigameType import MinigameType
     from randomizer.Enums.Transitions import Transitions
-    from randomizer.Logic import LogicVarHolder
 
 
 class LocationLogic:

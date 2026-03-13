@@ -58,7 +58,7 @@ from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.CustomLocations import resetCustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import SharedMoveLocations, SharedShopLocations, ShopLocationReference
+from randomizer.Lists.Location import SharedMoveLocations, SharedShopLocations
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex
 from randomizer.LogicClasses import Sphere, TransitionFront
@@ -90,7 +90,7 @@ from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import LinkWarps, ShuffleWarpsCrossMap
 
 if TYPE_CHECKING:
-    from randomizer.LogicClasses import LogicVarHolder, Region
+    from randomizer.LogicClasses import LogicVarHolder
     from randomizer.Spoiler import Spoiler
 
 

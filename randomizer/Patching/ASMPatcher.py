@@ -16,7 +16,6 @@ from randomizer.Enums.Settings import (
     RemovedBarriersSelected,
     GalleonWaterSetting,
     ActivateAllBananaports,
-    FreeTradeSetting,
     HardModeSelected,
     FungiTimeSetting,
     MiscChangesSelected,
