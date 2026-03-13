@@ -153,6 +153,67 @@ def convert_settings():
         return jsonify({"error": "Invalid data"}), 400
 
 
+@api.route("/export_archipelago_yaml", methods=["POST"])
+def export_archipelago_yaml():
+    """Export settings to Archipelago YAML format."""
+    try:
+        from randomizer.ArchipelagoMapper import export_to_yaml
+        
+        data = request.get_json()
+        
+        # Get settings from request
+        settings_data = data.get('settings', {})
+        player_name = data.get('player_name', 'Player')
+        include_triggers = data.get('include_triggers', False)
+        game_version = data.get('game_version', '0.6.6')
+        
+        # Settings should already be a dict from serialize_settings()
+        # Only decrypt if it's actually an encrypted string (starts with valid base64-like chars, not '{')
+        if isinstance(settings_data, str):
+            # Check if it looks like an encrypted string (not JSON)
+            if not settings_data.strip().startswith('{'):
+                settings_data = decrypt_settings_string_enum(settings_data)
+            else:
+                # It's a JSON string, parse it
+                settings_data = json.loads(settings_data)
+        
+        # Log a sample of settings keys to help with debugging
+        if settings_data:
+            sample_keys = list(settings_data.keys())[:20]
+            logging.info(f"Exporting YAML with {len(settings_data)} settings. Sample keys: {sample_keys}")
+            
+            # Debug list fields
+            list_fields = ['remove_barriers_selected', 'tricks_selected', 'glitches_selected', 'hard_mode_selected', 'enemies_selected']
+            for field in list_fields:
+                if field in settings_data:
+                    value = settings_data[field]
+                    logging.info(f"  {field}: {value} (type: {type(value).__name__}, len: {len(value) if isinstance(value, (list, tuple)) else 'N/A'})")
+            
+            # Debug item_rando_list_1 for dropsanity
+            if 'item_rando_list_1' in settings_data:
+                item_list = settings_data['item_rando_list_1']
+                logging.info(f"  item_rando_list_1: {item_list} (len: {len(item_list) if isinstance(item_list, (list, tuple)) else 'N/A'})")
+        
+        # Generate YAML
+        yaml_content = export_to_yaml(
+            settings_data,
+            player_name=player_name,
+            include_triggers=include_triggers,
+            game_version=game_version
+        )
+        
+        return jsonify({
+            'yaml': yaml_content,
+            'success': True
+        })
+    except Exception as e:
+        logging.error(f"Error exporting to YAML: {str(e)}", exc_info=True)
+        return jsonify({
+            'error': str(e),
+            'success': False
+        }), 500
+
+
 def runWaitressWorker():
     """Run the worker using Waitress."""
     # Start the Flask server

@@ -1142,37 +1142,12 @@ class SelectStartingKong(Choice):
     default = 5
 
 
-class KrushaKongs(OptionList):
-    """Determines which Kong slots will be replaced with Krusha.
-
-    You can select multiple Kongs or all of them to be replaced with Krusha.
-    If individual Kong Model settings are customized, they will take priority over this setting.
-
-    Valid Keys:
-    "dk"
-    "diddy"
-    "lanky"
-    "tiny"
-    "chunky"
-    """
-
-    display_name = "Krusha Kongs"
-
-    valid_keys = {
-        "dk",
-        "diddy",
-        "lanky",
-        "tiny",
-        "chunky",
-    }
-
-
 class KrushaRandom(Choice):
     """Determines which random kong is chosen to be Krusha.
 
-    This will overwrite whatever's chosen in KrushaKongs.
+    This will overwrite whatever's chosen in kong_models.
     "none": Kongs will be their vanilla model
-    "manual": Use krusha_kongs to plando your Kong Model
+    "manual": Use kong_models to plando your Kong Model
     "random_1": One Kong will be randomly replaced with Krusha
     "sometimes_1": Maybe one Kong will be randomly replaced with Krusha
     "random_all": Each Kong has a chance to be replaced with Krusha
@@ -1185,6 +1160,70 @@ class KrushaRandom(Choice):
     option_random_1 = 2
     option_sometimes_1 = 3
     option_random_all = 4
+
+
+class KongModels(OptionDict):
+    """Choose character models for each Kong.
+    
+    Valid Keys: "dk", "diddy", "lanky", "tiny", "chunky"
+    
+    Valid Values (varies by kong):
+    - "default": Normal Kong (all kongs)
+    - "krusha": Krusha (all kongs)
+    - "krool_fight": K. Rool fight model (all kongs)
+    - "krool_cutscene": K. Rool cutscene model (all kongs)
+    - "cranky": Cranky Kong (DK only)
+    - "candy": Candy Kong (Tiny only)
+    - "funky": Funky Kong (Diddy only)
+    - "robokrem": Robo Kremling (Lanky only)
+    
+    Example: {"dk": "krusha", "tiny": "candy"}
+    """
+    
+    display_name = "Kong Models"
+    
+    valid_keys = frozenset(["dk", "diddy", "lanky", "tiny", "chunky"])
+    
+    # Models available to all kongs
+    common_models = {"default", "krusha", "krool_fight", "krool_cutscene"}
+    
+    # Kong-specific models
+    kong_specific_models = {
+        "dk": {"cranky"},
+        "diddy": {"funky"},
+        "lanky": {"robokrem"},
+        "tiny": {"candy"},
+        "chunky": set(),
+    }
+    
+    default = {"dk": "default", "diddy": "default", "lanky": "default", "tiny": "default", "chunky": "default"}
+    
+    def verify(self, world: type[World], player_name: str, plando_options: PlandoOptions) -> None:
+        """Verify that each kong has a valid model assigned."""
+        super(KongModels, self).verify(world, player_name, plando_options)
+        
+        accumulated_errors = []
+        
+        for kong, model in self.value.items():
+            if kong not in self.valid_keys:
+                accumulated_errors.append(f"Invalid kong '{kong}'. Must be one of: {', '.join(sorted(self.valid_keys))}")
+                continue
+            
+            # Check if model is valid for this kong
+            valid_models = self.common_models | self.kong_specific_models.get(kong, set())
+            
+            # Chunky cannot be krool_cutscene
+            if kong == "chunky" and model == "krool_cutscene":
+                accumulated_errors.append(f"Chunky cannot use the 'krool_cutscene' model")
+                continue
+            
+            if model not in valid_models:
+                accumulated_errors.append(
+                    f"Invalid model '{model}' for {kong}. Valid models for {kong}: {', '.join(sorted(valid_models))}"
+                )
+        
+        if accumulated_errors:
+            raise OptionError("Found errors with option kong_models:\n" + "\n".join(accumulated_errors))
 
 
 class IceFloorWeight(BaseTrapWeight):
@@ -1613,7 +1652,7 @@ class DK64Options(PerGameCommonOptions):
     snide_turnins_to_pool: SnideTurninsToThePool
     alter_switch_allocation: AlterSwitchAllocation
     krusha_model_mode: KrushaRandom
-    krusha_kongs: KrushaKongs
+    kong_models: KongModels
     allowed_bosses: AllowedBosses
     random_starting_region: RandomStartingLocation
     dk_portal_location_rando: DKPortalLocationRando
@@ -1709,7 +1748,7 @@ dk64_option_groups: List[OptionGroup] = [
             JetpacRequirement,
             PuzzleRando,
             KrushaRandom,
-            KrushaKongs,
+            KongModels,
             AllowedBosses,
             AlterSwitchAllocation,
         ],

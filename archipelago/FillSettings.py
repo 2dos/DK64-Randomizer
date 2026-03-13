@@ -592,27 +592,55 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
             settings_dict["starting_kong"] = Kongs.diddy
         case SelectStartingKong.option_any:
             settings_dict["starting_kong"] = Kongs.any
-    krusha_kong_mapping: dict[str, str] = {"dk": "kong_model_dk", "diddy": "kong_model_diddy", "lanky": "kong_model_lanky", "tiny": "kong_model_tiny", "chunky": "kong_model_chunky"}
+    
+    # Apply individual kong model settings from the kong_models dict
+    kong_model_mapping = {"dk": "kong_model_dk", "diddy": "kong_model_diddy", "lanky": "kong_model_lanky", "tiny": "kong_model_tiny", "chunky": "kong_model_chunky"}
+    
+    # Convert string model names to enum values if needed
+    model_name_to_enum = {
+        "default": 0,
+        "disco_chunky": 1,
+        "krusha": 2,
+        "krool_fight": 3,
+        "krool_cutscene": 4,
+        "cranky": 5,
+        "candy": 6,
+        "funky": 7,
+        "disco_donkey": 8,
+        "robokrem": 9,
+    }
+    
+    for kong, setting_key in kong_model_mapping.items():
+        if kong in options.kong_models.value:
+            model_value = options.kong_models.value[kong]
+            # Convert string to int if needed
+            if isinstance(model_value, str):
+                model_value = model_name_to_enum.get(model_value, 0)
+            settings_dict[setting_key] = KongModels(model_value)
+        else:
+            settings_dict[setting_key] = KongModels.default
+    
+    # Then apply krusha settings (only if the individual model is still default)
     match options.krusha_model_mode.value:
         case KrushaRandom.option_manual:
             for kong in options.krusha_kongs.value:
-                if kong in krusha_kong_mapping and settings_dict[krusha_kong_mapping[kong]] == KongModels.default:
-                    settings_dict[krusha_kong_mapping[kong]] = KongModels.krusha
+                if kong in kong_model_mapping and settings_dict[kong_model_mapping[kong]] == KongModels.default:
+                    settings_dict[kong_model_mapping[kong]] = KongModels.krusha
         case KrushaRandom.option_random_1:
-            available: list[str] = [k for k, m in krusha_kong_mapping.items() if settings_dict[m] == KongModels.default]
+            available: list[str] = [k for k, m in kong_model_mapping.items() if settings_dict[m] == KongModels.default]
             if available:
-                selected = random.choice(list(krusha_kong_mapping.keys()))
-                if settings_dict[krusha_kong_mapping[selected]] == KongModels.default:
-                    settings_dict[krusha_kong_mapping[selected]] = KongModels.krusha
+                selected = random.choice(available)
+                if settings_dict[kong_model_mapping[selected]] == KongModels.default:
+                    settings_dict[kong_model_mapping[selected]] = KongModels.krusha
         case KrushaRandom.option_sometimes_1:
             if random.random() < 0.5:
-                available = [k for k, m in krusha_kong_mapping.items() if settings_dict[m] == KongModels.default]
+                available = [k for k, m in kong_model_mapping.items() if settings_dict[m] == KongModels.default]
                 if available:
-                    selected = random.choice(list(krusha_kong_mapping.keys()))
-                    if settings_dict[krusha_kong_mapping[selected]] == KongModels.default:
-                        settings_dict[krusha_kong_mapping[selected]] = KongModels.krusha
+                    selected = random.choice(available)
+                    if settings_dict[kong_model_mapping[selected]] == KongModels.default:
+                        settings_dict[kong_model_mapping[selected]] = KongModels.krusha
         case KrushaRandom.option_random_all:
-            for kong, model_key in krusha_kong_mapping.items():
+            for kong, model_key in kong_model_mapping.items():
                 if settings_dict[model_key] == KongModels.default and random.random() < 0.5:
                     settings_dict[model_key] = KongModels.krusha
 
