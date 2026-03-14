@@ -124,7 +124,7 @@
 | Aztec Llama Temple | Llama Temple: Vanilla Far Warp 1 |  | `self.logic = lambda _: True` | 
 | Aztec Llama Temple | Llama Temple: Vanilla Lava Warp 2 |  | `self.logic = lambda _: True` | 
 | Aztec Llama Temple | Llama Temple: Vanilla Close Warp 2 |  | `self.logic = lambda _: True` | 
-| Aztec Llama Temple | In the Water | CrownPad, DirtPatch, Bananaport | `Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or l.isdonkey or l.isdiddy or l.islanky or l.ischunky)` | 
+| Aztec Llama Temple | In the Water | CrownPad, DirtPatch, Bananaport | `Events.AztecLlamaSpit in l.Events` | 
 | Aztec Llama Temple | Llama Temple: DK Switch |  | `self.logic = lambda _: True` | 
 | Aztec Llama Temple | Llama Temple: Lava Room |  | `self.logic = lambda _: True` | 
 
@@ -132,7 +132,7 @@
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
 | Frantic Factory | Under R&D Grate | MelonCrate, Bananaport | `(l.grab and l.donkey) or l.CanAccessRNDRoom()` | 
-| Frantic Factory | Dark Room |  | `((l.punch and l.chunky) or l.CanPhase())` | 
+| Frantic Factory | Dark Room |  | `(l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase())` | 
 | Frantic Factory | On Foyer Carpet |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Near Foyer carpet |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Clock-in room left |  | `self.logic = lambda _: True` | 
@@ -148,7 +148,7 @@
 | Frantic Factory | Storage Room Corner |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Near left storage shop | MelonCrate | `self.logic = lambda _: True` | 
 | Frantic Factory | Near right storage shop |  | `self.logic = lambda _: True` | 
-| Frantic Factory | Dark Room Corner |  | `(l.punch and l.chunky) or l.phasewalk` | 
+| Frantic Factory | Dark Room Corner |  | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.phasewalk` | 
 | Frantic Factory | Arcade Room Bench |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Next to DK Arcade |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Near Snide |  | `self.logic = lambda _: True` | 
@@ -166,8 +166,8 @@
 | Frantic Factory | Piano Room right | CrownPad, Bananaport | `((l.trombone and l.islanky) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Diddy R&D corner | CrownPad, Bananaport | `(l.guitar and l.diddy) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Diddy R&D | CrownPad, Bananaport | `((l.guitar and l.isdiddy) or l.CanAccessRNDRoom())` | 
-| Frantic Factory | Chunky R&D | CrownPad, Bananaport | `(l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom()` | 
-| Frantic Factory | In front of toy monster room | CrownPad, Bananaport | `((l.punch and l.climbing and l.ischunky) or l.CanAccessRNDRoom())` | 
+| Frantic Factory | Chunky R&D | CrownPad, Bananaport | `(l.triangle and l.climbing and l.chunky and l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False)) or l.CanAccessRNDRoom()` | 
+| Frantic Factory | In front of toy monster room | CrownPad, Bananaport | `((l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.climbing and l.triangle and l.ischunky) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Car Race room |  | `(l.mini and l.istiny) or l.phasewalk` | 
 | Frantic Factory | Also car race room |  | `((l.mini and l.istiny) or l.CanPhase())` | 
 | Frantic Factory | R&D lever room |  | `self.logic = lambda _: True` | 
@@ -203,7 +203,7 @@
 | Gloomy Galleon | Behind the cannon wreck |  | `self.logic = lambda _: True` | 
 | Galleon2DShip | Lanky 2DS: Inside Chest | CrownPad, DirtPatch, Bananaport | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Left of cavern shop |  | `self.logic = lambda _: True` | 
-| Gloomy Galleon | Front of cavern shop |  | `self.logic = lambda _: True` | 
+| Gloomy Galleon | Front of cavern shop |  | `l.cannons` | 
 | Gloomy Galleon | Near Bridge Warp 3 |  | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Near the Rocketbarrel |  | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Near the Baboon Blast |  | `self.logic = lambda _: True` | 
@@ -248,8 +248,8 @@
 | Fungi Forest | Front of Beanstalk |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Mill Grass | Bananaport | `self.logic = lambda _: True` | 
 | Fungi Forest | Near Well | DirtPatch, Bananaport | `self.logic = lambda _: True` | 
-| Fungi Forest | Behind Clock |  | `self.logic = lambda _: True` | 
-| Fungi Forest | In front of Clock |  | `self.logic = lambda _: True` | 
+| Fungi Forest | Behind Clock |  | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
+| Fungi Forest | In front of Clock |  | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
 | Fungi Forest | Near Blue Tunnel |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Near Mills shop |  | `(l.TimeAccess(Regions.MillArea, Time.Day))` | 
 | Fungi Forest | Behind rafters barn |  | `self.logic = lambda _: True` | 

@@ -591,10 +591,10 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
             settings_dict["starting_kong"] = Kongs.diddy
         case SelectStartingKong.option_any:
             settings_dict["starting_kong"] = Kongs.any
-    
+
     # Apply individual kong model settings from the kong_models dict
     kong_model_mapping = {"dk": "kong_model_dk", "diddy": "kong_model_diddy", "lanky": "kong_model_lanky", "tiny": "kong_model_tiny", "chunky": "kong_model_chunky"}
-    
+
     # Convert string model names to enum values if needed
     model_name_to_enum = {
         "default": 0,
@@ -608,7 +608,7 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
         "disco_donkey": 8,
         "robokrem": 9,
     }
-    
+
     for kong, setting_key in kong_model_mapping.items():
         if kong in options.kong_models.value:
             model_value = options.kong_models.value[kong]
@@ -618,7 +618,7 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
             settings_dict[setting_key] = KongModels(model_value)
         else:
             settings_dict[setting_key] = KongModels.default
-    
+
     # Then apply krusha settings (only if the individual model is still default)
     match options.krusha_model_mode.value:
         case KrushaRandom.option_manual:

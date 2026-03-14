@@ -634,16 +634,16 @@ def export_archipelago_yaml():
         url = "http://127.0.0.1:8000"
     data = request.get_json()
     response = requests.post(f"{url}/export_archipelago_yaml", json=data)
-    
+
     if response.status_code == 200:
         # Return YAML as a downloadable file
-        yaml_content = response.json().get('yaml', '')
-        player_name = data.get('player_name', 'Player')
-        
+        yaml_content = response.json().get("yaml", "")
+        player_name = data.get("player_name", "Player")
+
         # Create response with YAML content
         response_obj = make_response(yaml_content)
-        response_obj.headers['Content-Type'] = 'application/x-yaml'
-        response_obj.headers['Content-Disposition'] = f'attachment; filename="{player_name} Kong.yaml"'
+        response_obj.headers["Content-Type"] = "application/x-yaml"
+        response_obj.headers["Content-Disposition"] = f'attachment; filename="{player_name} Kong.yaml"'
         return response_obj
     else:
         return set_response(response.json(), response.status_code)

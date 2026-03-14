@@ -25,8 +25,7 @@ def _inject_ap_stubs() -> None:
 
     bc.Item = type("Item", (), {"game": ""})  # type: ignore[attr-defined]
     bc.ItemClassification = _ItemClassification  # type: ignore[attr-defined]
-    for _name in ("PlandoOptions", "MultiWorld", "CollectionState", "Location",
-                  "LocationProgressType", "Region", "Entrance", "EntranceType", "Tutorial"):
+    for _name in ("PlandoOptions", "MultiWorld", "CollectionState", "Location", "LocationProgressType", "Region", "Entrance", "EntranceType", "Tutorial"):
         setattr(bc, _name, type(_name, (), {}))
     sys.modules["BaseClasses"] = bc
 
@@ -46,9 +45,7 @@ def _inject_ap_stubs() -> None:
         def __init__(self, *args, **kwargs):
             pass
 
-    for _name in ("Choice", "PerGameCommonOptions", "Range", "Option", "OptionDict",
-                  "OptionList", "Toggle", "DeathLink", "DefaultOnToggle",
-                  "OptionGroup", "TextChoice"):
+    for _name in ("Choice", "PerGameCommonOptions", "Range", "Option", "OptionDict", "OptionList", "Toggle", "DeathLink", "DefaultOnToggle", "OptionGroup", "TextChoice"):
         setattr(opt_mod, _name, type(_name, (_Base,), {}))
     opt_mod.OptionError = type("OptionError", (Exception,), {})  # type: ignore[attr-defined]
     sys.modules["Options"] = opt_mod
@@ -61,6 +58,7 @@ _inject_ap_stubs()
 
 from archipelago.Items import full_item_table  # noqa: E402
 
+
 def write_item_table():
     """Write the full_item_table to a text file."""
     with open("dk64_full_item_table.txt", "w") as f:
@@ -70,16 +68,17 @@ def write_item_table():
         f.write("-" * 80 + "\n")
         f.write(f"{'Item Name':<50} {'Item ID':<12} {'Progression':<12}\n")
         f.write("-" * 80 + "\n")
-        
+
         # Sort by item code for better readability
         sorted_items = sorted(full_item_table.items(), key=lambda x: x[1].code if x[1].code else 0)
-        
+
         for item_name, item_data in sorted_items:
             item_id = str(item_data.code) if item_data.code else "None"
             progression = "Yes" if item_data.progression else "No"
             f.write(f"{item_name:<50} {item_id:<12} {progression:<12}\n")
-    
+
     print(f"Successfully wrote {len(full_item_table)} items to dk64_full_item_table.txt")
+
 
 if __name__ == "__main__":
     write_item_table()

@@ -375,7 +375,12 @@ class Minigame8BitImage:
 def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Items.NintendoCoin, jetpac_item: Items = Items.RarewareCoin, settings=None):
     """Alter the image that is displayed in DK Arcade/Jetpac for their respective rewards."""
     colorless_potions = (
-        ItemPool.ImportantSharedMoves + ItemPool.JunkSharedMoves + ItemPool.TrainingBarrelAbilities() + ItemPool.ClimbingAbilities() + ItemPool.CannonAbilities() + [Items.Shockwave, Items.Camera, Items.CameraAndShockwave]
+        ItemPool.ImportantSharedMoves
+        + ItemPool.JunkSharedMoves
+        + ItemPool.TrainingBarrelAbilities()
+        + ItemPool.ClimbingAbilities()
+        + ItemPool.CannonAbilities()
+        + [Items.Shockwave, Items.Camera, Items.CameraAndShockwave]
     )
     # Image.open(f"{hash_dir}rw_coin.png").resize(dim).save(f"{arcade_dir}rwcoin.png")  # Rareware Coin
     # Image.open(f"{hash_dir}melon_slice.png").resize(dim).save(f"{arcade_dir}melon.png")  # Watermelon Slice
@@ -601,6 +606,7 @@ def loadBin(ROM_COPY: LocalROM, address: int, overlay: Overlay, bin_path: str, o
         file = io.BytesIO(bytes(data)).getvalue()
     ROM_COPY.writeBytes(file)
 
+
 LOBBIES = [
     Maps.JungleJapesLobby,
     Maps.AngryAztecLobby,
@@ -611,6 +617,7 @@ LOBBIES = [
     Maps.CreepyCastleLobby,
     Maps.HideoutHelmLobby,
 ]
+
 
 def precalcBoot(ROM_COPY: LocalROM, spoiler):
     """Pre-calculate the elements of bootSpeedup."""
@@ -700,6 +707,7 @@ def precalcBoot(ROM_COPY: LocalROM, spoiler):
         writeValue(ROM_COPY, m2_cb_coin_counts + (2 * index), Overlay.Custom, value, offset_dict)
     writeValue(ROM_COPY, 0x80631C2A, Overlay.Static, getHi(m2_cb_coin_counts), offset_dict)
     writeValue(ROM_COPY, 0x80631C3A, Overlay.Static, getLo(m2_cb_coin_counts), offset_dict)
+
 
 def patchAssembly(ROM_COPY: LocalROM, spoiler):
     """Patch all assembly instructions."""
@@ -2152,7 +2160,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
         writeLabelValue(ROM_COPY, 0x8075A390, Overlay.Static, "boulderExtraCode", offset_dict)
         writeHook(ROM_COPY, 0x8069CC1C, Overlay.Static, "boulderSpinCode", offset_dict)
         # CSC 2
-        CSC_START = 0X8075108C
+        CSC_START = 0x8075108C
         writeValue(ROM_COPY, CSC_START + 0x04, Overlay.Static, 0x806E04E0, offset_dict, 4)
         writeLabelValue(ROM_COPY, CSC_START + 0x08, Overlay.Static, "TSJump", offset_dict)
         writeLabelValue(ROM_COPY, CSC_START + 0x20, Overlay.Static, "TSSpeed", offset_dict)

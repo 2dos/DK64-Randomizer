@@ -1612,7 +1612,7 @@ class LogicVarHolder:
         # If time-of-day items are NOT shuffled, always allow access
         if Types.FungiTime not in self.settings.shuffled_location_types:
             return True
-        
+
         # If time-of-day items ARE shuffled, check if we have the appropriate item
         if time == Time.Day:
             return self.dayAccess

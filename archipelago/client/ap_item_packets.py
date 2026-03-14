@@ -62,7 +62,7 @@ class APItemPacket:
 
     def __init__(self, item_type: int, level: int = 0, kong: int = 0, config_flags: int = 0):
         """Initialize an AP item packet.
-        
+
         Args:
             item_type: requirement_item enum value
             level: Level/tier parameter for giveItem
@@ -85,13 +85,13 @@ class APItemPacket:
 
 def get_item_packet(count_data: Dict[str, Any]) -> Optional[APItemPacket]:
     """Convert count_data to an APItemPacket.
-    
+
     This function maps the count_id data structure to the generic packet format
     that the C code expects.
-    
+
     Args:
         count_data: The count_id dictionary from item_ids
-        
+
     Returns:
         APItemPacket or None if this item should not use the fed system
     """
@@ -105,25 +105,20 @@ def get_item_packet(count_data: Dict[str, Any]) -> Optional[APItemPacket]:
     if "ice_trap_type" in count_data:
         trap_type = count_data.get("ice_trap_type", "bubble")
         trap_kong = ICE_TRAP_TYPES.get(trap_type, 1)  # Default to bubble
-        return APItemPacket(
-            item_type=REQITEM_ICETRAP,
-            level=0,
-            kong=trap_kong,
-            config_flags=CONFIG_APPLY_ICE_TRAP  # Ice traps should have ice trap flag
-        )
+        return APItemPacket(item_type=REQITEM_ICETRAP, level=0, kong=trap_kong, config_flags=CONFIG_APPLY_ICE_TRAP)  # Ice traps should have ice trap flag
 
     # Handle items with specific item/level structure (moves, slams, etc.)
     if "item" in count_data and "level" in count_data:
         item_id = count_data.get("item")
         level = count_data.get("level")
         kong = count_data.get("kong", 0)  # Some moves have kong parameter
-        
+
         # These items are typically moves that come via AP fed system
         # The item_id here is actually a move index that we need to map
         # For now, items with item/level structure should continue using CountStruct
         # as they are already handled properly there
         return None
-    
+
     # Items with just "item" field
     if "item" in count_data and "level" not in count_data:
         # These should also stay in CountStruct
@@ -138,10 +133,8 @@ def get_item_packet(count_data: Dict[str, Any]) -> Optional[APItemPacket]:
 LEGACY_FED_ID_TO_PACKET = {
     # Golden Banana
     0x000: APItemPacket(REQITEM_GOLDENBANANA, 0, 0, CONFIG_APPLY_HELM_HURRY),
-    
     # Rainbow Coin
     0x001: APItemPacket(REQITEM_RAINBOWCOIN, 0, 0, CONFIG_APPLY_HELM_HURRY | CONFIG_GIVE_COINS),
-    
     # Special Moves (Baboon Blast through Gorilla Gone)
     # DK (0-2)
     0x019: APItemPacket(REQITEM_MOVE, 0, 0, CONFIG_APPLY_HELM_HURRY),  # Baboon Blast
@@ -163,21 +156,18 @@ LEGACY_FED_ID_TO_PACKET = {
     0x025: APItemPacket(REQITEM_MOVE, 0, 4, CONFIG_APPLY_HELM_HURRY),  # Hunky Chunky
     0x026: APItemPacket(REQITEM_MOVE, 1, 4, CONFIG_APPLY_HELM_HURRY),  # Primate Punch
     0x027: APItemPacket(REQITEM_MOVE, 2, 4, CONFIG_APPLY_HELM_HURRY),  # Gorilla Gone
-    
     # Instruments (level 8)
     0x028: APItemPacket(REQITEM_MOVE, 8, 0, CONFIG_APPLY_HELM_HURRY),  # Bongos
     0x029: APItemPacket(REQITEM_MOVE, 8, 1, CONFIG_APPLY_HELM_HURRY),  # Guitar
     0x02A: APItemPacket(REQITEM_MOVE, 8, 2, CONFIG_APPLY_HELM_HURRY),  # Trombone
     0x02B: APItemPacket(REQITEM_MOVE, 8, 3, CONFIG_APPLY_HELM_HURRY),  # Sax
     0x02C: APItemPacket(REQITEM_MOVE, 8, 4, CONFIG_APPLY_HELM_HURRY),  # Triangle
-    
     # Guns (level 4)
     0x02D: APItemPacket(REQITEM_MOVE, 4, 0, CONFIG_APPLY_HELM_HURRY),  # Coconut
     0x02E: APItemPacket(REQITEM_MOVE, 4, 1, CONFIG_APPLY_HELM_HURRY),  # Peanut
     0x02F: APItemPacket(REQITEM_MOVE, 4, 2, CONFIG_APPLY_HELM_HURRY),  # Grape
     0x030: APItemPacket(REQITEM_MOVE, 4, 3, CONFIG_APPLY_HELM_HURRY),  # Feather
     0x031: APItemPacket(REQITEM_MOVE, 4, 4, CONFIG_APPLY_HELM_HURRY),  # Pineapple
-    
     # Shared upgrades
     0x032: APItemPacket(REQITEM_MOVE, 5, 0, CONFIG_APPLY_HELM_HURRY),  # Homing Ammo
     0x033: APItemPacket(REQITEM_MOVE, 10, 0, CONFIG_APPLY_HELM_HURRY),  # Slam (level 10 = slam upgrade)
@@ -189,12 +179,12 @@ LEGACY_FED_ID_TO_PACKET = {
 
 def get_packet_from_fed_id(fed_id: int) -> Optional[APItemPacket]:
     """Get an AP packet from a legacy fed_id value.
-    
+
     This is for backward compatibility during the transition.
-    
+
     Args:
         fed_id: The old archipelago_items enum value
-        
+
     Returns:
         APItemPacket or None if not found
     """

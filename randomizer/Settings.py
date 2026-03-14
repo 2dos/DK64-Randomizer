@@ -2691,7 +2691,8 @@ class Settings:
             shuffledLocations = [
                 location
                 for location in spoiler.LocationList
-                if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime)
+                if spoiler.LocationList[location].type in self.shuffled_location_types
+                and spoiler.LocationList[location].type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime)
             ]
             shuffledLocationsShopOwner = [
                 location
@@ -2808,7 +2809,9 @@ class Settings:
             for item in (Types.RainbowCoin, Types.FillerRainbowCoin):
                 if item in self.shuffled_location_types:
                     self.valid_locations[item] = [
-                        x for x in shuffledNonMoveLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing, Types.Cannons)
+                        x
+                        for x in shuffledNonMoveLocations
+                        if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing, Types.Cannons)
                     ]
             if Types.FakeItem in self.shuffled_location_types:
                 bad_fake_locations = (

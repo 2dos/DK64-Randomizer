@@ -130,6 +130,7 @@ def ReplaceShipFairy(ROM_COPY: LocalROM):
         for y in x:
             ROM_COPY.writeMultipleBytes(y, 1)
 
+
 def updateSpawnFlag(flag: int, map_id: int, spawner_id: int, ROM_COPY: LocalROM, offset_dict: dict):
     """Update the spawn flag entry for a fairy."""
     for x in range(0x1F):
@@ -138,6 +139,7 @@ def updateSpawnFlag(flag: int, map_id: int, spawner_id: int, ROM_COPY: LocalROM,
         if ingame_flag == flag:
             writeValue(ROM_COPY, slot_head + 0, Overlay.Static, map_id, offset_dict, 1)
             writeValue(ROM_COPY, slot_head + 2, Overlay.Static, spawner_id, offset_dict)
+
 
 def PlaceFairies(spoiler, ROM_COPY: LocalROM):
     """Write Fairies to ROM."""
@@ -333,6 +335,4 @@ def PlaceFairies(spoiler, ROM_COPY: LocalROM):
             item_map = fairy_locations[item_level][item["fairy_index"]].map
             updateSpawnFlag(item["flag"], item_map, item["id"], ROM_COPY, offset_dict)
             if item["script_id"] >= 0:
-                replaceScriptLines(ROM_COPY, item["map_id"], [item["script_id"]], {
-                    f"EXEC 86 | {item['id']} 0 0": "EXEC 83 | 0 0 0"  # Remove Script Line
-                })
+                replaceScriptLines(ROM_COPY, item["map_id"], [item["script_id"]], {f"EXEC 86 | {item['id']} 0 0": "EXEC 83 | 0 0 0"})  # Remove Script Line

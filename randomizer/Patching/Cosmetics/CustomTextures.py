@@ -774,6 +774,7 @@ def writeCustomItemSprites(settings: Settings, ROM_COPY: ROM) -> None:
             tinted = Image.merge("RGBA", (tinted_r, tinted_g, tinted_b, a))
             writeColorImageToROM(tinted, img_data["table"], img_data["image"], 48, 42, False, TextureFormat.RGBA5551, ROM_COPY)
 
+
 def writeCustomFacePuzzle(settings: Settings, ROM_COPY: ROM) -> None:
     """Write custom face puzzle files to ROM."""
     if js.cosmetics is None:

@@ -676,7 +676,7 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
                 converted_logic = lambda state: True
             else:
                 converted_logic = lambda state, player=world.player, exit=exit: hasDK64RTransition(state, player, exit)
-            
+
             # Add time requirements if this transition has time restrictions
             if world.options.time_of_day:
                 if exit.time == Time.Day:
@@ -920,11 +920,11 @@ def connect(world: World, source: str, target: str, rule: typing.Optional[typing
 def hasDK64RTransition(state: CollectionState, player: int, exit: TransitionFront):
     """Check if the given transition is accessible in the given state."""
     logic_holder = state.dk64_logic_holder[player]
-    
+
     # Check the base logic for the transition
     if not exit.logic(logic_holder):
         return False
-    
+
     # Check time requirements if this transition has time restrictions
     if exit.time == Time.Day:
         return logic_holder.dayAccess

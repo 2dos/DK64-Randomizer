@@ -16,6 +16,7 @@ import zlib
 import struct
 import math
 
+
 class TableNames(IntEnum):
     """Pointer Table Enum."""
 
@@ -52,11 +53,13 @@ class TableNames(IntEnum):
     Unknown30 = auto()
     Unknown31 = auto()
 
+
 class Triangle:
     def __init__(self, coord_set_0: int, coord_set_1: int, coord_set_2: int, mesh: int, rgba: tuple = None):
         self.coords = (coord_set_0, coord_set_1, coord_set_2)
         self.rgba = rgba
         self.mesh = mesh
+
 
 class Color:
     def __init__(self, red: int, green: int, blue: int, alpha: int = 0xFF):
@@ -69,15 +72,18 @@ class Color:
         channels = [self.red, self.green, self.blue, self.alpha]
         return " ".join([str(int(x / 25.5) / 10) for x in channels])
 
+
 POINTER_OFFSET = 0x101C50
 MODEL_TO_EXPORT = 0x48
 # MODEL_TO_EXPORT = 5
 MODEL_DATA_OFFSET = 0x28
 MODEL_FILE = f"model_{hex(MODEL_TO_EXPORT)[2:]}.bin"
 
+
 def getObjOffset(base_offset: int, targ_offset: int):
     """Get the read pointer for a file based on the dk64 obj offsets."""
     return MODEL_DATA_OFFSET + (targ_offset - base_offset)
+
 
 def intf_to_float(intf):
     """Convert float as int format to float."""
@@ -86,12 +92,14 @@ def intf_to_float(intf):
     else:
         return struct.unpack("!f", bytes.fromhex("{:08X}".format(intf)))[0]
 
+
 def getColorString(rgba: list[int]) -> str:
     return Color(rgba[0], rgba[1], rgba[2]).asRatioString()
 
+
 def write_obj_file(triangles: list[Triangle], verts: list[dict], output_file: str):
     mesh_indexes = []
-    with open(output_file, 'w') as obj_file:
+    with open(output_file, "w") as obj_file:
         for triangle in triangles:
             if triangle.mesh not in mesh_indexes:
                 mesh_indexes.append(triangle.mesh)
@@ -109,18 +117,20 @@ def write_obj_file(triangles: list[Triangle], verts: list[dict], output_file: st
             obj_file.write(f"o {mesh_index}\n")
             obj_file.write(f"g {mesh_index}\n")
             for tri in mesh_triangles[mesh_index]:
-                obj_file.write(f'f {tri[0]} {tri[1]} {tri[2]}\n')
+                obj_file.write(f"f {tri[0]} {tri[1]} {tri[2]}\n")
+
 
 def rotate(x, y, angle):
     theta = math.radians(-angle)
-    
+
     cos_t = math.cos(theta)
     sin_t = math.sin(theta)
-    
+
     x_new = x * cos_t - y * sin_t
     y_new = x * sin_t + y * cos_t
-    
+
     return x_new, y_new
+
 
 def float_to_hex(f):
     """Convert float to hex."""
@@ -128,7 +138,10 @@ def float_to_hex(f):
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
 
+
 main_pointer_table_offset = POINTER_OFFSET
+
+
 def mergeModel(
     source_file: int,
     attribute_stealing: int,
@@ -304,7 +317,7 @@ def mergeModel(
                         vert_cap = 0xFFFFFFFFF
                         i_load_vert = (vert_start + offset) >> 4
                         i_load_vert_end = min(i_load_vert + load_count, vert_cap)
-                        range_count = (i_load_vert_end - i_load_vert) + 1                                 
+                        range_count = (i_load_vert_end - i_load_vert) + 1
                         for yi in range(range_count):
                             if vert_buffer_start + yi < 32:
                                 vert_buffer[vert_buffer_start + yi] = vert_start + (yi * 0x10)
@@ -341,14 +354,8 @@ def mergeModel(
                     elif command in (5, 6, 7):
                         continue
                 vert_rotation_data = [
-                    {
-                        "verts": translated_verts,
-                        "angle": -70
-                    },
-                    {
-                        "verts": translated_verts_opp,
-                        "angle": 70
-                    },
+                    {"verts": translated_verts, "angle": -70},
+                    {"verts": translated_verts_opp, "angle": 70},
                 ]
                 for vrd in vert_rotation_data:
                     for v in vrd["verts"]:
@@ -408,12 +415,13 @@ def mergeModel(
                                 val = int.from_bytes(fh.read(2), "big")
                                 if val > 0x7FFF:
                                     val -= 0x10000
-                                val += (bone_offsets[bn][x] - bone_offsets[target_bone][x])
+                                val += bone_offsets[bn][x] - bone_offsets[target_bone][x]
                                 fh.seek(v + (2 * x))
                                 val = int(val)
                                 if val < 0:
                                     val += 0x10000
                                 fh.write(val.to_bytes(2, "big"))
+
 
 def extractModel():
     with open("dk64.z64", "rb") as fh:
@@ -428,17 +436,22 @@ def extractModel():
         with open(MODEL_FILE, "wb") as fg:
             fg.write(zlib.decompress(data, (15 + 32)))
 
+
 extractModel()
 mergeModel(
-    MODEL_TO_EXPORT, 0xDA,
+    MODEL_TO_EXPORT,
+    0xDA,
     f"{hex(MODEL_TO_EXPORT)[2:]}_APOSE.bin",
-    False, True, 1.377, True,
+    False,
+    True,
+    1.377,
+    True,
     [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33],
     [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
     {
         # 1: [34, 35, 36, 37]
         1: [37]
-    }
+    },
 )
 
 for filename in (MODEL_FILE, f"{hex(MODEL_TO_EXPORT)[2:]}_APOSE.bin"):
@@ -488,12 +501,7 @@ for filename in (MODEL_FILE, f"{hex(MODEL_TO_EXPORT)[2:]}_APOSE.bin"):
             rgba = []
             for _ in range(4):
                 rgba.append(int.from_bytes(obj.read(1), "big"))
-            verts.append({
-                "coords": coords,
-                "uv": uv_mapping,
-                "rgba": rgba,
-                "index": index
-            })
+            verts.append({"coords": coords, "uv": uv_mapping, "rgba": rgba, "index": index})
         # Parse display list
         loaded_verts = []
         used_verts = []
@@ -534,7 +542,7 @@ for filename in (MODEL_FILE, f"{hex(MODEL_TO_EXPORT)[2:]}_APOSE.bin"):
                 #     vert_cap = vert_caps[chunk_index] >> 4
                 i_load_vert = (i_load_position + offset) >> 4
                 i_load_vert_end = min(i_load_vert + i_vert_count, vert_cap)
-                verts_loaded = verts[i_load_vert: i_load_vert_end]                                    
+                verts_loaded = verts[i_load_vert:i_load_vert_end]
                 for yi, y in enumerate(verts_loaded):
                     # print(i_vert_buffer_start, yi, len(verts_loaded), i_vert_buffer_start + yi)
                     if i_vert_buffer_start + yi < 32:
@@ -560,13 +568,7 @@ for filename in (MODEL_FILE, f"{hex(MODEL_TO_EXPORT)[2:]}_APOSE.bin"):
                     rgba = tbp_sum.copy()
                     for ch in range(4):
                         rgba[ch] = int(rgba[ch] / tbp_count)
-                mesh.append(Triangle(
-                    vert_cache[tri_buffer_positions[0]]["index"],
-                    vert_cache[tri_buffer_positions[1]]["index"],
-                    vert_cache[tri_buffer_positions[2]]["index"],
-                    bone_index,
-                    rgba
-                ))
+                mesh.append(Triangle(vert_cache[tri_buffer_positions[0]]["index"], vert_cache[tri_buffer_positions[1]]["index"], vert_cache[tri_buffer_positions[2]]["index"], bone_index, rgba))
             elif instruction in (6, 7):
                 # G_TRI2 / # G_QUAD
                 tri_buffer_positions = [
@@ -589,13 +591,7 @@ for filename in (MODEL_FILE, f"{hex(MODEL_TO_EXPORT)[2:]}_APOSE.bin"):
                     rgba = tbp_sum.copy()
                     for ch in range(4):
                         rgba[ch] = int(rgba[ch] / tbp_count)
-                mesh.append(Triangle(
-                    vert_cache[tri_buffer_positions[0]]["index"],
-                    vert_cache[tri_buffer_positions[1]]["index"],
-                    vert_cache[tri_buffer_positions[2]]["index"],
-                    bone_index,
-                    rgba
-                ))
+                mesh.append(Triangle(vert_cache[tri_buffer_positions[0]]["index"], vert_cache[tri_buffer_positions[1]]["index"], vert_cache[tri_buffer_positions[2]]["index"], bone_index, rgba))
                 rgba = None
                 tbp_count = 0
                 tbp_sum = [0, 0, 0, 0]
@@ -608,13 +604,7 @@ for filename in (MODEL_FILE, f"{hex(MODEL_TO_EXPORT)[2:]}_APOSE.bin"):
                     rgba = tbp_sum.copy()
                     for ch in range(4):
                         rgba[ch] = int(rgba[ch] / tbp_count)
-                mesh.append(Triangle(
-                    vert_cache[tri_buffer_positions[3]]["index"],
-                    vert_cache[tri_buffer_positions[4]]["index"],
-                    vert_cache[tri_buffer_positions[5]]["index"],
-                    bone_index,
-                    rgba
-                ))
+                mesh.append(Triangle(vert_cache[tri_buffer_positions[3]]["index"], vert_cache[tri_buffer_positions[4]]["index"], vert_cache[tri_buffer_positions[5]]["index"], bone_index, rgba))
         # Parse bone offsets
         for b in range(bone_count):
             obj.seek(bone_start_pointer + (b * 0x10))
@@ -640,4 +630,3 @@ for filename in (MODEL_FILE, f"{hex(MODEL_TO_EXPORT)[2:]}_APOSE.bin"):
                     verts[vert]["coords"][c] += bone_offsets[bone_local_index][c]
         # print(verts)
         write_obj_file(mesh, verts, filename.replace(".bin", ".obj"))
-    

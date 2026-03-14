@@ -66,12 +66,8 @@ def randomize_crown_pads(spoiler, ROM_COPY: LocalROM):
             if cont_map_id == Maps.CavesRotatingCabin:
                 if cont_map_id not in new_vanilla_crowns:
                     # Remove Caves Crown
-                    replaceScriptLines(ROM_COPY, Maps.CavesRotatingCabin, [0x0], {
-                        "COND 45 | 616 0 0": "COND 0 | 0 0 0"
-                    })
-                    replaceScriptLines(ROM_COPY, Maps.CavesRotatingCabin, [0x0], {
-                        "CONDINV 45 | 616 0 0": "CONDINV 0 | 0 0 0"
-                    })
+                    replaceScriptLines(ROM_COPY, Maps.CavesRotatingCabin, [0x0], {"COND 45 | 616 0 0": "COND 0 | 0 0 0"})
+                    replaceScriptLines(ROM_COPY, Maps.CavesRotatingCabin, [0x0], {"CONDINV 45 | 616 0 0": "CONDINV 0 | 0 0 0"})
             else:
                 setup_table = getPointerLocation(TableNames.Setups, cont_map_id)
                 ROM_COPY.seek(setup_table)

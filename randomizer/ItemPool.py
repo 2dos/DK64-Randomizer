@@ -499,6 +499,7 @@ def ClimbingAbilities():
     """Return all climbing abilities."""
     return [Items.Climbing]
 
+
 def CannonAbilities():
     """Return all cannon abilities."""
     return [Items.Cannons]
@@ -813,12 +814,14 @@ def HintItems():
         Items.CastleChunkyHint,
     ]
 
+
 def TimeItems():
     """Return a list of time items to be placed."""
     return [
         Items.Day,
         Items.Night,
     ]
+
 
 def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
     """Return a list of all items that will be assumed for immediate item placement."""

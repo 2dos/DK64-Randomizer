@@ -158,10 +158,12 @@ class ClimbingShuffle(Toggle):
 
     display_name = "Climbing Shuffle"
 
+
 class CannonShuffle(Toggle):
     """Whether or not you shuffle the Cannon ability into the world(s)."""
 
     display_name = "Cannon Shuffle"
+
 
 class StartingKongCount(Range):
     """Determines how many Kongs you start with."""
@@ -172,30 +174,73 @@ class StartingKongCount(Range):
     default = 1
 
 
-_STARTING_MOVE_VALID_KEYS = frozenset({
-    # Training barrel basics
-    "Vines", "Diving", "Oranges", "Barrels",
-    # Kong abilities
-    "Baboon Balloon", "Baboon Blast", "Chimpy Charge", "Gorilla Gone", "Gorilla Grab",
-    "Hunky Chunky", "Mini Monkey", "Monkeyport", "Orangstand", "Orangstand Sprint",
-    "Pony Tail Twirl", "Primate Punch", "Rocketbarrel Boost", "Simian Spring", "Strong Kong",
-    # Weapons
-    "Coconut", "Feather", "Grape", "Homing Ammo", "Peanut", "Pineapple", "Sniper Sight",
-    # Instruments
-    "Bongos", "Guitar", "Saxophone", "Triangle", "Trombone",
-    # Progressive upgrades (can appear multiple times in a pool list for multiple copies)
-    "Progressive Ammo Belt", "Progressive Instrument Upgrade", "Progressive Slam",
-    # Shockwave
-    "Camera and Shockwave", "Fairy Camera", "Shockwave",
-    # Special moves
-    "Climbing", "Cannons",
-    # Shopkeepers
-    "Cranky", "Funky", "Candy", "Snide",
-    # Keys
-    "Key 1", "Key 2", "Key 3", "Key 4", "Key 5", "Key 6", "Key 7", "Key 8",
-    # Time of day
-    "Day", "Night",
-})
+_STARTING_MOVE_VALID_KEYS = frozenset(
+    {
+        # Training barrel basics
+        "Vines",
+        "Diving",
+        "Oranges",
+        "Barrels",
+        # Kong abilities
+        "Baboon Balloon",
+        "Baboon Blast",
+        "Chimpy Charge",
+        "Gorilla Gone",
+        "Gorilla Grab",
+        "Hunky Chunky",
+        "Mini Monkey",
+        "Monkeyport",
+        "Orangstand",
+        "Orangstand Sprint",
+        "Pony Tail Twirl",
+        "Primate Punch",
+        "Rocketbarrel Boost",
+        "Simian Spring",
+        "Strong Kong",
+        # Weapons
+        "Coconut",
+        "Feather",
+        "Grape",
+        "Homing Ammo",
+        "Peanut",
+        "Pineapple",
+        "Sniper Sight",
+        # Instruments
+        "Bongos",
+        "Guitar",
+        "Saxophone",
+        "Triangle",
+        "Trombone",
+        # Progressive upgrades (can appear multiple times in a pool list for multiple copies)
+        "Progressive Ammo Belt",
+        "Progressive Instrument Upgrade",
+        "Progressive Slam",
+        # Shockwave
+        "Camera and Shockwave",
+        "Fairy Camera",
+        "Shockwave",
+        # Special moves
+        "Climbing",
+        "Cannons",
+        # Shopkeepers
+        "Cranky",
+        "Funky",
+        "Candy",
+        "Snide",
+        # Keys
+        "Key 1",
+        "Key 2",
+        "Key 3",
+        "Key 4",
+        "Key 5",
+        "Key 6",
+        "Key 7",
+        "Key 8",
+        # Time of day
+        "Day",
+        "Night",
+    }
+)
 
 
 class _BaseStartingMovePool(OptionList):
@@ -213,14 +258,41 @@ class StartingMovePool1(_BaseStartingMovePool):
 
     display_name = "Starting Move Pool 1 Items"
     default = [
-        "Vines", "Diving", "Oranges", "Barrels",
-        "Baboon Balloon", "Baboon Blast", "Chimpy Charge", "Gorilla Gone", "Gorilla Grab",
-        "Hunky Chunky", "Mini Monkey", "Monkeyport", "Orangstand", "Orangstand Sprint",
-        "Pony Tail Twirl", "Primate Punch", "Rocketbarrel Boost", "Simian Spring", "Strong Kong",
-        "Coconut", "Feather", "Grape", "Homing Ammo", "Peanut", "Pineapple", "Sniper Sight",
-        "Bongos", "Guitar", "Saxophone", "Triangle", "Trombone",
-        "Progressive Slam", "Progressive Slam",
-        "Camera and Shockwave", "Shockwave",
+        "Vines",
+        "Diving",
+        "Oranges",
+        "Barrels",
+        "Baboon Balloon",
+        "Baboon Blast",
+        "Chimpy Charge",
+        "Gorilla Gone",
+        "Gorilla Grab",
+        "Hunky Chunky",
+        "Mini Monkey",
+        "Monkeyport",
+        "Orangstand",
+        "Orangstand Sprint",
+        "Pony Tail Twirl",
+        "Primate Punch",
+        "Rocketbarrel Boost",
+        "Simian Spring",
+        "Strong Kong",
+        "Coconut",
+        "Feather",
+        "Grape",
+        "Homing Ammo",
+        "Peanut",
+        "Pineapple",
+        "Sniper Sight",
+        "Bongos",
+        "Guitar",
+        "Saxophone",
+        "Triangle",
+        "Trombone",
+        "Progressive Slam",
+        "Progressive Slam",
+        "Camera and Shockwave",
+        "Shockwave",
         "Cannons",
     ]
 
@@ -571,42 +643,44 @@ class SwitchsanityOptions(OptionDict):
 
     display_name = "Switchsanity"
 
-    KONG_SWITCHES = frozenset([
-        "isles_to_kroc_top",
-        "isles_aztec_lobby_back_room",
-        "isles_fungi_lobby_fairy",
-        "isles_spawn_rocketbarrel",
-        "japes_to_hive",
-        "japes_to_rambi",
-        "japes_to_painting_room",
-        "japes_to_cavern",
-        "japes_free_kong",
-        "aztec_to_kasplat_room",
-        "aztec_llama_front",
-        "aztec_llama_side",
-        "aztec_llama_back",
-        "aztec_sand_tunnel",
-        "aztec_to_connector_tunnel",
-        "aztec_free_lanky",
-        "aztec_free_tiny",
-        "aztec_gong_tower",
-        "aztec_lobby_gong",
-        "factory_free_kong",
-        "factory_dark_grate",
-        "factory_bonus_grate",
-        "factory_monster_grate",
-        "galleon_to_lighthouse_side",
-        "galleon_to_shipwreck_side",
-        "galleon_to_cannon_game",
-        "fungi_yellow_tunnel",
-        "fungi_green_tunnel_near",
-        "fungi_green_tunnel_far",
-        "caves_gone_cave",
-        "caves_snide_cave",
-        "caves_boulder_cave",
-        "caves_lobby_blueprint",
-        "caves_lobby_lava",
-    ])
+    KONG_SWITCHES = frozenset(
+        [
+            "isles_to_kroc_top",
+            "isles_aztec_lobby_back_room",
+            "isles_fungi_lobby_fairy",
+            "isles_spawn_rocketbarrel",
+            "japes_to_hive",
+            "japes_to_rambi",
+            "japes_to_painting_room",
+            "japes_to_cavern",
+            "japes_free_kong",
+            "aztec_to_kasplat_room",
+            "aztec_llama_front",
+            "aztec_llama_side",
+            "aztec_llama_back",
+            "aztec_sand_tunnel",
+            "aztec_to_connector_tunnel",
+            "aztec_free_lanky",
+            "aztec_free_tiny",
+            "aztec_gong_tower",
+            "aztec_lobby_gong",
+            "factory_free_kong",
+            "factory_dark_grate",
+            "factory_bonus_grate",
+            "factory_monster_grate",
+            "galleon_to_lighthouse_side",
+            "galleon_to_shipwreck_side",
+            "galleon_to_cannon_game",
+            "fungi_yellow_tunnel",
+            "fungi_green_tunnel_near",
+            "fungi_green_tunnel_far",
+            "caves_gone_cave",
+            "caves_snide_cave",
+            "caves_boulder_cave",
+            "caves_lobby_blueprint",
+            "caves_lobby_lava",
+        ]
+    )
     GONE_SWITCHES = frozenset(["isles_helm_lobby"])
     valid_keys = KONG_SWITCHES | GONE_SWITCHES
 
@@ -659,16 +733,10 @@ class SwitchsanityOptions(OptionDict):
                 raise OptionError(f"Invalid switchsanity key '{key}'. Must be one of the documented switch names.")
             if key in self.GONE_SWITCHES:
                 if value not in self.GONE_VALUES:
-                    raise OptionError(
-                        f"Invalid value '{value}' for switch '{key}'. "
-                        f"Must be one of: {', '.join(sorted(self.GONE_VALUES))}"
-                    )
+                    raise OptionError(f"Invalid value '{value}' for switch '{key}'. " f"Must be one of: {', '.join(sorted(self.GONE_VALUES))}")
             else:
                 if value not in self.KONG_VALUES:
-                    raise OptionError(
-                        f"Invalid value '{value}' for switch '{key}'. "
-                        f"Must be one of: {', '.join(sorted(self.KONG_VALUES))}"
-                    )
+                    raise OptionError(f"Invalid value '{value}' for switch '{key}'. " f"Must be one of: {', '.join(sorted(self.KONG_VALUES))}")
 
 
 class CrownPlacementRando(Toggle):
@@ -1418,9 +1486,9 @@ class KrushaRandom(Choice):
 
 class KongModels(OptionDict):
     """Choose character models for each Kong.
-    
+
     Valid Keys: "dk", "diddy", "lanky", "tiny", "chunky"
-    
+
     Valid Values (varies by kong):
     - "default": Normal Kong (all kongs)
     - "krusha": Krusha (all kongs)
@@ -1430,17 +1498,17 @@ class KongModels(OptionDict):
     - "candy": Candy Kong (Tiny only)
     - "funky": Funky Kong (Diddy only)
     - "robokrem": Robo Kremling (Lanky only)
-    
+
     Example: {"dk": "krusha", "tiny": "candy"}
     """
-    
+
     display_name = "Kong Models"
-    
+
     valid_keys = frozenset(["dk", "diddy", "lanky", "tiny", "chunky"])
-    
+
     # Models available to all kongs
     common_models = {"default", "krusha", "krool_fight", "krool_cutscene"}
-    
+
     # Kong-specific models
     kong_specific_models = {
         "dk": {"cranky"},
@@ -1449,33 +1517,31 @@ class KongModels(OptionDict):
         "tiny": {"candy"},
         "chunky": set(),
     }
-    
+
     default = {"dk": "default", "diddy": "default", "lanky": "default", "tiny": "default", "chunky": "default"}
-    
+
     def verify(self, world: type[World], player_name: str, plando_options: PlandoOptions) -> None:
         """Verify that each kong has a valid model assigned."""
         super(KongModels, self).verify(world, player_name, plando_options)
-        
+
         accumulated_errors = []
-        
+
         for kong, model in self.value.items():
             if kong not in self.valid_keys:
                 accumulated_errors.append(f"Invalid kong '{kong}'. Must be one of: {', '.join(sorted(self.valid_keys))}")
                 continue
-            
+
             # Check if model is valid for this kong
             valid_models = self.common_models | self.kong_specific_models.get(kong, set())
-            
+
             # Chunky cannot be krool_cutscene
             if kong == "chunky" and model == "krool_cutscene":
                 accumulated_errors.append(f"Chunky cannot use the 'krool_cutscene' model")
                 continue
-            
+
             if model not in valid_models:
-                accumulated_errors.append(
-                    f"Invalid model '{model}' for {kong}. Valid models for {kong}: {', '.join(sorted(valid_models))}"
-                )
-        
+                accumulated_errors.append(f"Invalid model '{model}' for {kong}. Valid models for {kong}: {', '.join(sorted(valid_models))}")
+
         if accumulated_errors:
             raise OptionError("Found errors with option kong_models:\n" + "\n".join(accumulated_errors))
 
@@ -1733,21 +1799,21 @@ class SnideTurninsToThePool(DefaultOnToggle):
 
 class AlterSwitchAllocation(OptionDict):
     """Determines the slam color requirement for colored banana switches in each level.
-    
+
     Valid Keys:
     - "level_1" through "level_8"
-    
+
     Valid Values:
     - "none": No slam required (White)
     - "green": Green Slam (Simian Slam)
     - "blue": Blue Slam (Super Simian Slam)
     - "red": Red Slam (Super Duper Simian Slam)
     """
-    
+
     display_name = "Alter Switch Allocation"
-    
+
     valid_keys = frozenset(["level_1", "level_2", "level_3", "level_4", "level_5", "level_6", "level_7", "level_8"])
-    
+
     default = {
         "level_1": "green",
         "level_2": "green",
@@ -1758,12 +1824,12 @@ class AlterSwitchAllocation(OptionDict):
         "level_7": "red",
         "level_8": "red",
     }
-    
+
     def verify(self, world, player_name: str, plando_options) -> None:
         super().verify(world, player_name, plando_options)
-        
+
         valid_values = {"none", "green", "blue", "red"}
-        
+
         for key, value in self.value.items():
             if key not in self.valid_keys:
                 raise OptionError(f"Invalid level key '{key}'. Must be one of: {', '.join(sorted(self.valid_keys))}")
@@ -1802,10 +1868,13 @@ class DKPortalLocationRando(Choice):
     option_all = 2
     default = 0
 
+
 class ForestTimeOfDay(Toggle):
-    """Test"""
+    """Determines if Fungi Time of Day are added to the item pool."""
 
     display_name = "Time of Day"
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
