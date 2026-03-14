@@ -347,93 +347,145 @@ class ArchipelagoMapper:
                 if ap_field == "enemies_selected":
                     from randomizer.Enums.Enemies import Enemies
 
-                    nm = {
-                        Enemies.Bat: "Bat", Enemies.BeaverBlue: "BeaverBlue", Enemies.BeaverGold: "BeaverGold",
-                        Enemies.Bug: "Bug", Enemies.FireballGlasses: "FireballGlasses", Enemies.GetOut: "GetOut",
-                        Enemies.Ghost: "Ghost", Enemies.Gimpfish: "Gimpfish", Enemies.Kaboom: "Kaboom",
-                        Enemies.KasplatChunky: "ChunkyKasplat", Enemies.KasplatDK: "DKKasplat",
-                        Enemies.KasplatDiddy: "DiddyKasplat", Enemies.KasplatLanky: "LankyKasplat",
-                        Enemies.KasplatTiny: "TinyKasplat", Enemies.KlaptrapGreen: "GreenKlaptrap",
-                        Enemies.KlaptrapPurple: "PurpleKlaptrap", Enemies.KlaptrapRed: "RedKlaptrap",
-                        Enemies.Klobber: "Klobber", Enemies.Klump: "Klump", Enemies.Guard: "Kop",
-                        Enemies.Kosha: "Kosha", Enemies.Kremling: "Kremling", Enemies.Krossbones: "Krossbones",
-                        Enemies.MrDice0: "GreenDice", Enemies.MrDice1: "RedDice",
-                        Enemies.MushroomMan: "MushroomMan", Enemies.Pufftup: "Pufftup",
-                        Enemies.RoboKremling: "RoboKremling", Enemies.ZingerRobo: "ZingerRobo",
-                        Enemies.Ruler: "Ruler", Enemies.Shuri: "Shuri", Enemies.SirDomino: "SirDomino",
-                        Enemies.SpiderSmall: "SpiderSmall", Enemies.ZingerCharger: "ZingerCharger",
-                        Enemies.ZingerLime: "ZingerLime", Enemies.GuardDisableA: "DisableAKop",
-                        Enemies.GuardDisableZ: "DisableZKop", Enemies.GuardTag: "DisableTaggingKop",
+                    name_map = {
+                        Enemies.Bat: "Bat",
+                        Enemies.BeaverBlue: "BeaverBlue",
+                        Enemies.BeaverGold: "BeaverGold",
+                        Enemies.Bug: "Bug",
+                        Enemies.FireballGlasses: "FireballGlasses",
+                        Enemies.GetOut: "GetOut",
+                        Enemies.Ghost: "Ghost",
+                        Enemies.Gimpfish: "Gimpfish",
+                        Enemies.Kaboom: "Kaboom",
+                        Enemies.KasplatChunky: "ChunkyKasplat",
+                        Enemies.KasplatDK: "DKKasplat",
+                        Enemies.KasplatDiddy: "DiddyKasplat",
+                        Enemies.KasplatLanky: "LankyKasplat",
+                        Enemies.KasplatTiny: "TinyKasplat",
+                        Enemies.KlaptrapGreen: "GreenKlaptrap",
+                        Enemies.KlaptrapPurple: "PurpleKlaptrap",
+                        Enemies.KlaptrapRed: "RedKlaptrap",
+                        Enemies.Klobber: "Klobber",
+                        Enemies.Klump: "Klump",
+                        Enemies.Guard: "Kop",
+                        Enemies.Kosha: "Kosha",
+                        Enemies.Kremling: "Kremling",
+                        Enemies.Krossbones: "Krossbones",
+                        Enemies.MrDice0: "GreenDice",
+                        Enemies.MrDice1: "RedDice",
+                        Enemies.MushroomMan: "MushroomMan",
+                        Enemies.Pufftup: "Pufftup",
+                        Enemies.RoboKremling: "RoboKremling",
+                        Enemies.ZingerRobo: "ZingerRobo",
+                        Enemies.Ruler: "Ruler",
+                        Enemies.Shuri: "Shuri",
+                        Enemies.SirDomino: "SirDomino",
+                        Enemies.SpiderSmall: "SpiderSmall",
+                        Enemies.ZingerCharger: "ZingerCharger",
+                        Enemies.ZingerLime: "ZingerLime",
+                        Enemies.GuardDisableA: "DisableAKop",
+                        Enemies.GuardDisableZ: "DisableZKop",
+                        Enemies.GuardTag: "DisableTaggingKop",
                         Enemies.GuardGetOut: "GetOutKop",
                     }
-                    return self._list_to_names(value, Enemies, nm)
+                    return self._list_to_names(value, Enemies, name_map)
 
                 elif ap_field == "remove_barriers_selected":
-                    from randomizer.Enums.Settings import RemovedBarriersSelected as E
+                    from randomizer.Enums.Settings import RemovedBarriersSelected
 
-                    nm = {
-                        E.japes_coconut_gates: "japes_coconut_gates", E.japes_shellhive_gate: "japes_shellhive_gate",
-                        E.aztec_tunnel_door: "aztec_tunnel_door", E.aztec_5dtemple_switches: "aztec_5dtemple_switches",
-                        E.aztec_llama_switches: "aztec_llama_switches", E.aztec_tiny_temple_ice: "aztec_tiny_temple_ice",
-                        E.factory_testing_gate: "factory_testing_gate", E.factory_production_room: "factory_production_room",
-                        E.galleon_lighthouse_gate: "galleon_lighthouse_gate", E.galleon_shipyard_area_gate: "galleon_shipyard_area_gate",
-                        E.castle_crypt_doors: "castle_crypt_doors", E.galleon_seasick_ship: "galleon_seasick_ship",
-                        E.forest_green_tunnel: "forest_green_tunnel", E.forest_yellow_tunnel: "forest_yellow_tunnel",
-                        E.caves_igloo_pads: "caves_igloo_pads", E.caves_ice_walls: "caves_ice_walls",
-                        E.galleon_treasure_room: "galleon_treasure_room", E.helm_star_gates: "helm_star_gates",
-                        E.helm_punch_gates: "helm_punch_gates",
+                    name_map = {
+                        RemovedBarriersSelected.japes_coconut_gates: "japes_coconut_gates",
+                        RemovedBarriersSelected.japes_shellhive_gate: "japes_shellhive_gate",
+                        RemovedBarriersSelected.aztec_tunnel_door: "aztec_tunnel_door",
+                        RemovedBarriersSelected.aztec_5dtemple_switches: "aztec_5dtemple_switches",
+                        RemovedBarriersSelected.aztec_llama_switches: "aztec_llama_switches",
+                        RemovedBarriersSelected.aztec_tiny_temple_ice: "aztec_tiny_temple_ice",
+                        RemovedBarriersSelected.factory_testing_gate: "factory_testing_gate",
+                        RemovedBarriersSelected.factory_production_room: "factory_production_room",
+                        RemovedBarriersSelected.galleon_lighthouse_gate: "galleon_lighthouse_gate",
+                        RemovedBarriersSelected.galleon_shipyard_area_gate: "galleon_shipyard_area_gate",
+                        RemovedBarriersSelected.castle_crypt_doors: "castle_crypt_doors",
+                        RemovedBarriersSelected.galleon_seasick_ship: "galleon_seasick_ship",
+                        RemovedBarriersSelected.forest_green_tunnel: "forest_green_tunnel",
+                        RemovedBarriersSelected.forest_yellow_tunnel: "forest_yellow_tunnel",
+                        RemovedBarriersSelected.caves_igloo_pads: "caves_igloo_pads",
+                        RemovedBarriersSelected.caves_ice_walls: "caves_ice_walls",
+                        RemovedBarriersSelected.galleon_treasure_room: "galleon_treasure_room",
+                        RemovedBarriersSelected.helm_star_gates: "helm_star_gates",
+                        RemovedBarriersSelected.helm_punch_gates: "helm_punch_gates",
                     }
-                    return self._list_to_names(value, E, nm)
+                    return self._list_to_names(value, RemovedBarriersSelected, name_map)
 
                 elif ap_field == "tricks_selected":
-                    from randomizer.Enums.Settings import TricksSelected as E
+                    from randomizer.Enums.Settings import TricksSelected
 
-                    nm = {E.monkey_maneuvers: "monkey_maneuvers", E.hard_shooting: "hard_shooting", E.advanced_grenading: "advanced_grenading", E.slope_resets: "slope_resets"}
-                    return self._list_to_names(value, E, nm)
+                    name_map = {TricksSelected.monkey_maneuvers: "monkey_maneuvers", TricksSelected.hard_shooting: "hard_shooting", TricksSelected.advanced_grenading: "advanced_grenading", TricksSelected.slope_resets: "slope_resets"}
+                    return self._list_to_names(value, TricksSelected, name_map)
 
                 elif ap_field == "glitches_selected":
-                    from randomizer.Enums.Settings import GlitchesSelected as E
+                    from randomizer.Enums.Settings import GlitchesSelected
 
-                    nm = {E.moonkicks: "moonkicks", E.phase_swimming: "phase_swimming", E.swim_through_shores: "swim_through_shores", E.troff_n_scoff_skips: "troff_n_scoff_skips", E.moontail: "moontail"}
-                    return self._list_to_names(value, E, nm)
+                    name_map = {
+                        GlitchesSelected.moonkicks: "moonkicks",
+                        GlitchesSelected.phase_swimming: "phase_swimming",
+                        GlitchesSelected.swim_through_shores: "swim_through_shores",
+                        GlitchesSelected.troff_n_scoff_skips: "troff_n_scoff_skips",
+                        GlitchesSelected.moontail: "moontail",
+                    }
+                    return self._list_to_names(value, GlitchesSelected, name_map)
 
                 elif ap_field == "hard_mode_selected":
-                    from randomizer.Enums.Settings import HardModeSelected as E
+                    from randomizer.Enums.Settings import HardModeSelected
 
-                    nm = {
-                        E.hard_enemies: "hard_enemies", E.shuffled_jetpac_enemies: "shuffled_jetpac_enemies",
-                        E.strict_helm_timer: "strict_helm_timer", E.donk_in_the_dark_world: "donk_in_the_dark_world",
-                        E.donk_in_the_sky: "donk_in_the_sky", E.angry_caves: "angry_caves",
-                        E.fast_balloons: "fast_balloons", E.lower_max_refill_amounts: "lower_max_refill_amounts",
+                    name_map = {
+                        HardModeSelected.hard_enemies: "hard_enemies",
+                        HardModeSelected.shuffled_jetpac_enemies: "shuffled_jetpac_enemies",
+                        HardModeSelected.strict_helm_timer: "strict_helm_timer",
+                        HardModeSelected.donk_in_the_dark_world: "donk_in_the_dark_world",
+                        HardModeSelected.donk_in_the_sky: "donk_in_the_sky",
+                        HardModeSelected.angry_caves: "angry_caves",
+                        HardModeSelected.fast_balloons: "fast_balloons",
+                        HardModeSelected.lower_max_refill_amounts: "lower_max_refill_amounts",
                     }
-                    return self._list_to_names(value, E, nm)
+                    return self._list_to_names(value, HardModeSelected, name_map)
 
                 elif ap_field == "harder_bosses":
-                    from randomizer.Enums.Settings import HardBossesSelected as E
+                    from randomizer.Enums.Settings import HardBossesSelected
 
-                    nm = {
-                        E.fast_mad_jack: "fast_mad_jack", E.alternative_mad_jack_kongs: "alternative_mad_jack_kongs",
-                        E.pufftoss_star_rando: "pufftoss_star_rando", E.pufftoss_star_raised: "pufftoss_star_raised",
-                        E.kut_out_phase_rando: "kut_out_phase_rando", E.k_rool_toes_rando: "k_rool_toes_rando",
-                        E.beta_lanky_phase: "beta_lanky_phase",
+                    name_map = {
+                        HardBossesSelected.fast_mad_jack: "fast_mad_jack",
+                        HardBossesSelected.alternative_mad_jack_kongs: "alternative_mad_jack_kongs",
+                        HardBossesSelected.pufftoss_star_rando: "pufftoss_star_rando",
+                        HardBossesSelected.pufftoss_star_raised: "pufftoss_star_raised",
+                        HardBossesSelected.kut_out_phase_rando: "kut_out_phase_rando",
+                        HardBossesSelected.k_rool_toes_rando: "k_rool_toes_rando",
+                        HardBossesSelected.beta_lanky_phase: "beta_lanky_phase",
                     }
-                    return self._list_to_names(value, E, nm)
+                    return self._list_to_names(value, HardBossesSelected, name_map)
 
                 elif ap_field == "shuffled_bonus_barrels":
-                    from randomizer.Enums.Settings import MinigamesListSelected as E
+                    from randomizer.Enums.Settings import MinigamesListSelected
 
-                    return self._list_to_names(value, E, None)
+                    return self._list_to_names(value, MinigamesListSelected, None)
 
                 elif ap_field == "allowed_bosses":
                     from randomizer.Enums.Maps import Maps
 
-                    nm = {
-                        Maps.JapesBoss: "Armydillo 1", Maps.AztecBoss: "Dogadon 1", Maps.FactoryBoss: "Mad Jack",
-                        Maps.GalleonBoss: "Pufftoss", Maps.FungiBoss: "Dogadon 2", Maps.CavesBoss: "Armydillo 2",
-                        Maps.CastleBoss: "Kutout", Maps.KroolDonkeyPhase: "DK phase", Maps.KroolDiddyPhase: "Diddy Phase",
-                        Maps.KroolLankyPhase: "Lanky Phase", Maps.KroolTinyPhase: "Tiny Phase", Maps.KroolChunkyPhase: "Chunky Phase",
+                    name_map = {
+                        Maps.JapesBoss: "Armydillo 1",
+                        Maps.AztecBoss: "Dogadon 1",
+                        Maps.FactoryBoss: "Mad Jack",
+                        Maps.GalleonBoss: "Pufftoss",
+                        Maps.FungiBoss: "Dogadon 2",
+                        Maps.CavesBoss: "Armydillo 2",
+                        Maps.CastleBoss: "Kutout",
+                        Maps.KroolDonkeyPhase: "DK phase",
+                        Maps.KroolDiddyPhase: "Diddy Phase",
+                        Maps.KroolLankyPhase: "Lanky Phase",
+                        Maps.KroolTinyPhase: "Tiny Phase",
+                        Maps.KroolChunkyPhase: "Chunky Phase",
                     }
-                    return self._list_to_names(value, Maps, nm)
+                    return self._list_to_names(value, Maps, name_map)
 
             except ImportError:
                 return [str(x) for x in value]
@@ -443,23 +495,58 @@ class ArchipelagoMapper:
             if not isinstance(value, dict):
                 value = {}
             dict_defaults = {
-                "goal_quantity": {"golden_bananas": 100, "blueprints": 20, "company_coins": 2, "keys": 8, "medals": 15, "crowns": 5, "fairies": 15, "rainbow_coins": 10, "pearls": 3, "bosses": 7, "bonuses": 15},
+                "goal_quantity": {
+                    "golden_bananas": 100,
+                    "blueprints": 20,
+                    "company_coins": 2,
+                    "keys": 8,
+                    "medals": 15,
+                    "crowns": 5,
+                    "fairies": 15,
+                    "rainbow_coins": 10,
+                    "pearls": 3,
+                    "bosses": 7,
+                    "bonuses": 15,
+                },
                 "helm_door_item_count": {"golden_bananas": 1, "blueprints": 1, "company_coins": 1, "keys": 1, "medals": 1, "crowns": 1, "fairies": 1, "rainbow_coins": 1, "bean": 1, "pearls": 1},
                 "level_blockers": {"level_1": 0, "level_2": 0, "level_3": 0, "level_4": 0, "level_5": 0, "level_6": 0, "level_7": 0, "level_8": 64},
                 "alter_switch_allocation": {"level_1": "green", "level_2": "green", "level_3": "green", "level_4": "green", "level_5": "blue", "level_6": "blue", "level_7": "red", "level_8": "red"},
                 "switchsanity": {
-                    "isles_to_kroc_top": "off", "isles_helm_lobby": "off", "isles_aztec_lobby_back_room": "off",
-                    "isles_fungi_lobby_fairy": "off", "isles_spawn_rocketbarrel": "off", "japes_to_hive": "off",
-                    "japes_to_rambi": "off", "japes_to_painting_room": "off", "japes_to_cavern": "off",
-                    "japes_free_kong": "off", "aztec_to_kasplat_room": "off", "aztec_llama_front": "off",
-                    "aztec_llama_side": "off", "aztec_llama_back": "off", "aztec_sand_tunnel": "off",
-                    "aztec_to_connector_tunnel": "off", "aztec_free_lanky": "off", "aztec_free_tiny": "off",
-                    "aztec_gong_tower": "off", "aztec_lobby_gong": "off", "factory_free_kong": "off",
-                    "factory_dark_grate": "off", "factory_bonus_grate": "off", "factory_monster_grate": "off",
-                    "galleon_to_lighthouse_side": "off", "galleon_to_shipwreck_side": "off", "galleon_to_cannon_game": "off",
-                    "fungi_yellow_tunnel": "off", "fungi_green_tunnel_near": "off", "fungi_green_tunnel_far": "off",
-                    "caves_gone_cave": "off", "caves_snide_cave": "off", "caves_boulder_cave": "off",
-                    "caves_lobby_blueprint": "off", "caves_lobby_lava": "off",
+                    "isles_to_kroc_top": "off",
+                    "isles_helm_lobby": "off",
+                    "isles_aztec_lobby_back_room": "off",
+                    "isles_fungi_lobby_fairy": "off",
+                    "isles_spawn_rocketbarrel": "off",
+                    "japes_to_hive": "off",
+                    "japes_to_rambi": "off",
+                    "japes_to_painting_room": "off",
+                    "japes_to_cavern": "off",
+                    "japes_free_kong": "off",
+                    "aztec_to_kasplat_room": "off",
+                    "aztec_llama_front": "off",
+                    "aztec_llama_side": "off",
+                    "aztec_llama_back": "off",
+                    "aztec_sand_tunnel": "off",
+                    "aztec_to_connector_tunnel": "off",
+                    "aztec_free_lanky": "off",
+                    "aztec_free_tiny": "off",
+                    "aztec_gong_tower": "off",
+                    "aztec_lobby_gong": "off",
+                    "factory_free_kong": "off",
+                    "factory_dark_grate": "off",
+                    "factory_bonus_grate": "off",
+                    "factory_monster_grate": "off",
+                    "galleon_to_lighthouse_side": "off",
+                    "galleon_to_shipwreck_side": "off",
+                    "galleon_to_cannon_game": "off",
+                    "fungi_yellow_tunnel": "off",
+                    "fungi_green_tunnel_near": "off",
+                    "fungi_green_tunnel_far": "off",
+                    "caves_gone_cave": "off",
+                    "caves_snide_cave": "off",
+                    "caves_boulder_cave": "off",
+                    "caves_lobby_blueprint": "off",
+                    "caves_lobby_lava": "off",
                 },
             }
             defaults = dict_defaults.get(ap_field)
@@ -638,11 +725,35 @@ class ArchipelagoMapper:
         if ap_field == "goal_quantity":
             win_condition_count = settings_dict.get("win_condition_count")
             win_condition_item = settings_dict.get("win_condition_item")
-            goal_quantity_dict = {"golden_bananas": 100, "blueprints": 20, "company_coins": 2, "keys": 8, "medals": 15, "crowns": 5, "fairies": 15, "rainbow_coins": 10, "pearls": 3, "bosses": 7, "bonuses": 15}
+            goal_quantity_dict = {
+                "golden_bananas": 100,
+                "blueprints": 20,
+                "company_coins": 2,
+                "keys": 8,
+                "medals": 15,
+                "crowns": 5,
+                "fairies": 15,
+                "rainbow_coins": 10,
+                "pearls": 3,
+                "bosses": 7,
+                "bonuses": 15,
+            }
             if win_condition_count is not None and win_condition_item is not None:
                 try:
                     item_value = win_condition_item.value if hasattr(win_condition_item, "value") else int(win_condition_item)
-                    goal_key = {3: "golden_bananas", 4: "blueprints", 5: "company_coins", 6: "keys", 7: "medals", 8: "crowns", 9: "fairies", 10: "rainbow_coins", 12: "pearls", 17: "bosses", 18: "bonuses"}.get(item_value)
+                    goal_key = {
+                        3: "golden_bananas",
+                        4: "blueprints",
+                        5: "company_coins",
+                        6: "keys",
+                        7: "medals",
+                        8: "crowns",
+                        9: "fairies",
+                        10: "rainbow_coins",
+                        12: "pearls",
+                        17: "bosses",
+                        18: "bonuses",
+                    }.get(item_value)
                     if goal_key:
                         goal_quantity_dict[goal_key] = int(win_condition_count) if win_condition_count else goal_quantity_dict[goal_key]
                 except (ValueError, TypeError):
@@ -658,15 +769,41 @@ class ArchipelagoMapper:
             gone_value_names = {0: "bongos", 1: "guitar", 2: "trombone", 3: "sax", 4: "triangle", 5: "lever", 6: "gong", 7: "gone_pad", 8: "random"}
             gone_switches = {"isles_helm_lobby"}
             all_switches = [
-                "isles_to_kroc_top", "isles_helm_lobby", "isles_aztec_lobby_back_room", "isles_fungi_lobby_fairy",
-                "isles_spawn_rocketbarrel", "japes_to_hive", "japes_to_rambi", "japes_to_painting_room",
-                "japes_to_cavern", "japes_free_kong", "aztec_to_kasplat_room", "aztec_llama_front",
-                "aztec_llama_side", "aztec_llama_back", "aztec_sand_tunnel", "aztec_to_connector_tunnel",
-                "aztec_free_lanky", "aztec_free_tiny", "aztec_gong_tower", "aztec_lobby_gong",
-                "factory_free_kong", "factory_dark_grate", "factory_bonus_grate", "factory_monster_grate",
-                "galleon_to_lighthouse_side", "galleon_to_shipwreck_side", "galleon_to_cannon_game",
-                "fungi_yellow_tunnel", "fungi_green_tunnel_near", "fungi_green_tunnel_far",
-                "caves_gone_cave", "caves_snide_cave", "caves_boulder_cave", "caves_lobby_blueprint", "caves_lobby_lava",
+                "isles_to_kroc_top",
+                "isles_helm_lobby",
+                "isles_aztec_lobby_back_room",
+                "isles_fungi_lobby_fairy",
+                "isles_spawn_rocketbarrel",
+                "japes_to_hive",
+                "japes_to_rambi",
+                "japes_to_painting_room",
+                "japes_to_cavern",
+                "japes_free_kong",
+                "aztec_to_kasplat_room",
+                "aztec_llama_front",
+                "aztec_llama_side",
+                "aztec_llama_back",
+                "aztec_sand_tunnel",
+                "aztec_to_connector_tunnel",
+                "aztec_free_lanky",
+                "aztec_free_tiny",
+                "aztec_gong_tower",
+                "aztec_lobby_gong",
+                "factory_free_kong",
+                "factory_dark_grate",
+                "factory_bonus_grate",
+                "factory_monster_grate",
+                "galleon_to_lighthouse_side",
+                "galleon_to_shipwreck_side",
+                "galleon_to_cannon_game",
+                "fungi_yellow_tunnel",
+                "fungi_green_tunnel_near",
+                "fungi_green_tunnel_far",
+                "caves_gone_cave",
+                "caves_snide_cave",
+                "caves_boulder_cave",
+                "caves_lobby_blueprint",
+                "caves_lobby_lava",
             ]
             result = {}
             for short_key in all_switches:
