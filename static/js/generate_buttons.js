@@ -366,8 +366,8 @@ else:
     return JSON.stringify(form_data);
 }
 
-// Event binding for exporting settings to a string
-document.getElementById("export_settings").addEventListener("click", export_settings_string);
+// Event binding for exporting settings to a string (also bound inline on button)
+document.getElementById("export_string_option").addEventListener("click", export_settings_string);
 
 function export_settings_string(event) {
     /**
@@ -842,7 +842,7 @@ async function export_archipelago_yaml(event) {
     }
 }
 
-// Add event listener for export button
-document.getElementById("export_archipelago_yaml").addEventListener("click", export_archipelago_yaml);
+// Add event listener for export YAML dropdown item
+document.getElementById("export_yaml_option").addEventListener("click", export_archipelago_yaml);
 
 window["setup_pyodide"] = setup_pyodide;

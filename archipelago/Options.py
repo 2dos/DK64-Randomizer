@@ -172,12 +172,159 @@ class StartingKongCount(Range):
     default = 1
 
 
-class StartingMoveCount(Range):
-    """Determines how many additional random moves you start with. If you choose more moves than are available, you will start with all moves."""
+_STARTING_MOVE_VALID_KEYS = frozenset({
+    # Training barrel basics
+    "Vines", "Diving", "Oranges", "Barrels",
+    # Kong abilities
+    "Baboon Balloon", "Baboon Blast", "Chimpy Charge", "Gorilla Gone", "Gorilla Grab",
+    "Hunky Chunky", "Mini Monkey", "Monkeyport", "Orangstand", "Orangstand Sprint",
+    "Pony Tail Twirl", "Primate Punch", "Rocketbarrel Boost", "Simian Spring", "Strong Kong",
+    # Weapons
+    "Coconut", "Feather", "Grape", "Homing Ammo", "Peanut", "Pineapple", "Sniper Sight",
+    # Instruments
+    "Bongos", "Guitar", "Saxophone", "Triangle", "Trombone",
+    # Progressive upgrades (can appear multiple times in a pool list for multiple copies)
+    "Progressive Ammo Belt", "Progressive Instrument Upgrade", "Progressive Slam",
+    # Shockwave
+    "Camera and Shockwave", "Fairy Camera", "Shockwave",
+    # Special moves
+    "Climbing", "Cannons",
+    # Shopkeepers
+    "Cranky", "Funky", "Candy", "Snide",
+    # Keys
+    "Key 1", "Key 2", "Key 3", "Key 4", "Key 5", "Key 6", "Key 7", "Key 8",
+    # Time of day
+    "Day", "Night",
+})
 
-    display_name = "Starting Move Count"
+
+class _BaseStartingMovePool(OptionList):
+    """Base class for starting move pool item lists."""
+
+    valid_keys = _STARTING_MOVE_VALID_KEYS
+
+
+class StartingMovePool1(_BaseStartingMovePool):
+    """Items available in starting move Pool 1. A random selection of this pool will be given at game start.
+
+    Progressive items (Progressive Slam, Progressive Ammo Belt, Progressive Instrument Upgrade)
+    can be listed multiple times to include multiple copies.
+    """
+
+    display_name = "Starting Move Pool 1 Items"
+    default = [
+        "Vines", "Diving", "Oranges", "Barrels",
+        "Baboon Balloon", "Baboon Blast", "Chimpy Charge", "Gorilla Gone", "Gorilla Grab",
+        "Hunky Chunky", "Mini Monkey", "Monkeyport", "Orangstand", "Orangstand Sprint",
+        "Pony Tail Twirl", "Primate Punch", "Rocketbarrel Boost", "Simian Spring", "Strong Kong",
+        "Coconut", "Feather", "Grape", "Homing Ammo", "Peanut", "Pineapple", "Sniper Sight",
+        "Bongos", "Guitar", "Saxophone", "Triangle", "Trombone",
+        "Progressive Slam", "Progressive Slam",
+        "Camera and Shockwave", "Shockwave",
+        "Cannons",
+    ]
+
+
+class StartingMovePool1Count(Range):
+    """How many items to randomly give from Starting Move Pool 1 at game start.
+
+    Values larger than the pool size will give all items in the pool.
+    """
+
+    display_name = "Starting Move Pool 1 Count"
     range_start = 0
-    range_end = 50
+    range_end = 999
+    default = 3
+
+
+class StartingMovePool2(_BaseStartingMovePool):
+    """Items available in starting move Pool 2. A selection of this pool will be given at game start.
+
+    By default contains bait potions, Fairy Camera, Snide, and one Progressive Slam.
+    Count defaults to 999 (give all items).
+    """
+
+    display_name = "Starting Move Pool 2 Items"
+    default = [
+        "Climbing",
+        "Progressive Ammo Belt",
+        "Progressive Instrument Upgrade",
+        "Fairy Camera",
+        "Snide",
+        "Progressive Slam",
+    ]
+
+
+class StartingMovePool2Count(Range):
+    """How many items to give from Starting Move Pool 2 at game start.
+
+    Defaults to 999 (give all items in pool).
+    """
+
+    display_name = "Starting Move Pool 2 Count"
+    range_start = 0
+    range_end = 999
+    default = 999
+
+
+class StartingMovePool3(_BaseStartingMovePool):
+    """Items available in starting move Pool 3. A selection of this pool will be given at game start.
+
+    By default contains the shopkeepers (Cranky, Funky, Candy).
+    """
+
+    display_name = "Starting Move Pool 3 Items"
+    default = ["Cranky", "Funky", "Candy"]
+
+
+class StartingMovePool3Count(Range):
+    """How many items to give from Starting Move Pool 3 at game start."""
+
+    display_name = "Starting Move Pool 3 Count"
+    range_start = 0
+    range_end = 999
+    default = 2
+
+
+class StartingMovePool4(_BaseStartingMovePool):
+    """Items available in starting move Pool 4. A selection of this pool will be given at game start.
+
+    By default contains extra bait potion copies (one Ammo Belt + two Instrument Upgrades).
+    """
+
+    display_name = "Starting Move Pool 4 Items"
+    default = [
+        "Progressive Ammo Belt",
+        "Progressive Instrument Upgrade",
+        "Progressive Instrument Upgrade",
+    ]
+
+
+class StartingMovePool4Count(Range):
+    """How many items to give from Starting Move Pool 4 at game start."""
+
+    display_name = "Starting Move Pool 4 Count"
+    range_start = 0
+    range_end = 999
+    default = 0
+
+
+class StartingMovePool5(_BaseStartingMovePool):
+    """Items available in starting move Pool 5. A selection of this pool will be given at game start.
+
+    Empty by default. Use this as a custom pool for any additional starting moves.
+    """
+
+    display_name = "Starting Move Pool 5 Items"
+    default = []
+
+
+class StartingMovePool5Count(Range):
+    """How many items to give from Starting Move Pool 5 at game start."""
+
+    display_name = "Starting Move Pool 5 Count"
+    range_start = 0
+    range_end = 999
     default = 0
 
 
@@ -400,21 +547,128 @@ class RequireBeatingKrool(DefaultOnToggle):
     display_name = "Require Beating K. Rool"
 
 
-class SwitchSanity(Choice):
-    """Determines if the pads leading to helm are randomized.
+class SwitchsanityOptions(OptionDict):
+    """Customizes each Switchsanity switch individually.
 
-    Options:
-    off: Switchsanity is Off
-    helm_access: Monkeyport pad and Gorilla Gone Pad are randomized
-    all: Most switches across the game are randomized.
+    Set each switch to the kong that controls it, or "off" to leave it at its vanilla assignment.
+
+    Kong switches accept: "off", "donkey", "diddy", "lanky", "tiny", "chunky", "random", "any"
+    The isles_helm_lobby switch (Gorilla Gone pad) also accepts:
+        "bongos", "guitar", "trombone", "sax", "triangle", "lever", "gong", "gone_pad"
+
+    Switch keys (one per switch across all levels):
+    - isles_to_kroc_top, isles_helm_lobby, isles_aztec_lobby_back_room
+    - isles_fungi_lobby_fairy, isles_spawn_rocketbarrel
+    - japes_to_hive, japes_to_rambi, japes_to_painting_room, japes_to_cavern, japes_free_kong
+    - aztec_to_kasplat_room, aztec_llama_front, aztec_llama_side, aztec_llama_back
+    - aztec_sand_tunnel, aztec_to_connector_tunnel, aztec_free_lanky, aztec_free_tiny
+    - aztec_gong_tower, aztec_lobby_gong
+    - factory_free_kong, factory_dark_grate, factory_bonus_grate, factory_monster_grate
+    - galleon_to_lighthouse_side, galleon_to_shipwreck_side, galleon_to_cannon_game
+    - fungi_yellow_tunnel, fungi_green_tunnel_near, fungi_green_tunnel_far
+    - caves_gone_cave, caves_snide_cave, caves_boulder_cave, caves_lobby_blueprint, caves_lobby_lava
     """
 
     display_name = "Switchsanity"
 
-    option_off = 0
-    option_helm_access = 1
-    option_all = 2
-    default = 0
+    KONG_SWITCHES = frozenset([
+        "isles_to_kroc_top",
+        "isles_aztec_lobby_back_room",
+        "isles_fungi_lobby_fairy",
+        "isles_spawn_rocketbarrel",
+        "japes_to_hive",
+        "japes_to_rambi",
+        "japes_to_painting_room",
+        "japes_to_cavern",
+        "japes_free_kong",
+        "aztec_to_kasplat_room",
+        "aztec_llama_front",
+        "aztec_llama_side",
+        "aztec_llama_back",
+        "aztec_sand_tunnel",
+        "aztec_to_connector_tunnel",
+        "aztec_free_lanky",
+        "aztec_free_tiny",
+        "aztec_gong_tower",
+        "aztec_lobby_gong",
+        "factory_free_kong",
+        "factory_dark_grate",
+        "factory_bonus_grate",
+        "factory_monster_grate",
+        "galleon_to_lighthouse_side",
+        "galleon_to_shipwreck_side",
+        "galleon_to_cannon_game",
+        "fungi_yellow_tunnel",
+        "fungi_green_tunnel_near",
+        "fungi_green_tunnel_far",
+        "caves_gone_cave",
+        "caves_snide_cave",
+        "caves_boulder_cave",
+        "caves_lobby_blueprint",
+        "caves_lobby_lava",
+    ])
+    GONE_SWITCHES = frozenset(["isles_helm_lobby"])
+    valid_keys = KONG_SWITCHES | GONE_SWITCHES
+
+    KONG_VALUES = frozenset(["off", "donkey", "diddy", "lanky", "tiny", "chunky", "random", "any"])
+    GONE_VALUES = frozenset(["off", "bongos", "guitar", "trombone", "sax", "triangle", "lever", "gong", "gone_pad", "random"])
+
+    default = {
+        "isles_to_kroc_top": "off",
+        "isles_helm_lobby": "off",
+        "isles_aztec_lobby_back_room": "off",
+        "isles_fungi_lobby_fairy": "off",
+        "isles_spawn_rocketbarrel": "off",
+        "japes_to_hive": "off",
+        "japes_to_rambi": "off",
+        "japes_to_painting_room": "off",
+        "japes_to_cavern": "off",
+        "japes_free_kong": "off",
+        "aztec_to_kasplat_room": "off",
+        "aztec_llama_front": "off",
+        "aztec_llama_side": "off",
+        "aztec_llama_back": "off",
+        "aztec_sand_tunnel": "off",
+        "aztec_to_connector_tunnel": "off",
+        "aztec_free_lanky": "off",
+        "aztec_free_tiny": "off",
+        "aztec_gong_tower": "off",
+        "aztec_lobby_gong": "off",
+        "factory_free_kong": "off",
+        "factory_dark_grate": "off",
+        "factory_bonus_grate": "off",
+        "factory_monster_grate": "off",
+        "galleon_to_lighthouse_side": "off",
+        "galleon_to_shipwreck_side": "off",
+        "galleon_to_cannon_game": "off",
+        "fungi_yellow_tunnel": "off",
+        "fungi_green_tunnel_near": "off",
+        "fungi_green_tunnel_far": "off",
+        "caves_gone_cave": "off",
+        "caves_snide_cave": "off",
+        "caves_boulder_cave": "off",
+        "caves_lobby_blueprint": "off",
+        "caves_lobby_lava": "off",
+    }
+
+    def verify(self, world, player_name: str, plando_options) -> None:
+        """Verify all switch keys and values are valid."""
+        super().verify(world, player_name, plando_options)
+        for key, value in self.value.items():
+            if key not in self.valid_keys:
+                raise OptionError(f"Invalid switchsanity key '{key}'. Must be one of the documented switch names.")
+            if key in self.GONE_SWITCHES:
+                if value not in self.GONE_VALUES:
+                    raise OptionError(
+                        f"Invalid value '{value}' for switch '{key}'. "
+                        f"Must be one of: {', '.join(sorted(self.GONE_VALUES))}"
+                    )
+            else:
+                if value not in self.KONG_VALUES:
+                    raise OptionError(
+                        f"Invalid value '{value}' for switch '{key}'. "
+                        f"Must be one of: {', '.join(sorted(self.KONG_VALUES))}"
+                    )
 
 
 class CrownPlacementRando(Toggle):
@@ -1581,7 +1835,7 @@ class DK64Options(PerGameCommonOptions):
     chaos_ratio: ChaosRatio
     level_blockers: LevelBlockers
     open_lobbies: OpenLobbies
-    switchsanity: SwitchSanity
+    switchsanity: SwitchsanityOptions
     crown_placement_rando: CrownPlacementRando
     random_crates: RandomCrates
     random_patches: RandomPatches
@@ -1589,7 +1843,16 @@ class DK64Options(PerGameCommonOptions):
     climbing_shuffle: ClimbingShuffle
     cannon_shuffle: CannonShuffle
     starting_kong_count: StartingKongCount
-    starting_move_count: StartingMoveCount
+    starting_move_pool_1: StartingMovePool1
+    starting_move_pool_1_count: StartingMovePool1Count
+    starting_move_pool_2: StartingMovePool2
+    starting_move_pool_2_count: StartingMovePool2Count
+    starting_move_pool_3: StartingMovePool3
+    starting_move_pool_3_count: StartingMovePool3Count
+    starting_move_pool_4: StartingMovePool4
+    starting_move_pool_4_count: StartingMovePool4Count
+    starting_move_pool_5: StartingMovePool5
+    starting_move_pool_5_count: StartingMovePool5Count
     shopowners_in_pool: ShopKeepers
     logic_type: LogicType
     tricks_selected: TricksSelected
@@ -1691,7 +1954,16 @@ dk64_option_groups: List[OptionGroup] = [
         [
             StartingKongCount,
             SelectStartingKong,
-            StartingMoveCount,
+            StartingMovePool1,
+            StartingMovePool1Count,
+            StartingMovePool2,
+            StartingMovePool2Count,
+            StartingMovePool3,
+            StartingMovePool3Count,
+            StartingMovePool4,
+            StartingMovePool4Count,
+            StartingMovePool5,
+            StartingMovePool5Count,
             HelmKeyLock,
             ClimbingShuffle,
             CannonShuffle,
@@ -1718,7 +1990,7 @@ dk64_option_groups: List[OptionGroup] = [
         [
             ShuffleHelmLevel,
             OpenLobbies,
-            SwitchSanity,
+            SwitchsanityOptions,
             RemoveBarriers,
             LoadingZoneRando,
             GalleonWaterLevel,

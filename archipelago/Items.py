@@ -77,31 +77,33 @@ full_item_table.update(event_table)  # Temp for generating goal item
 
 
 def random_starting_moves(world: "DK64World") -> typing.List[str]:
-    """Handle starting move alterations here."""
+    """Handle starting move alterations using the pool-based system.
+
+    Uses the already-resolved starting_moves_lists from world.spoiler.settings
+    (populated by FillSettings) to mirror the standalone Fill.py random.sample logic.
+    """
     starting_moves = []
+    settings = world.spoiler.settings
 
-    all_eligible_starting_moves = DK64RItemPoolUtility.AllKongMoves()
-    all_eligible_starting_moves.extend(DK64RItemPoolUtility.TrainingBarrelAbilities())
-    all_eligible_starting_moves.extend(DK64RItemPoolUtility.JunkSharedMoves)
-    all_eligible_starting_moves.append(DK64RItems.Camera)
-    all_eligible_starting_moves.append(DK64RItems.Shockwave)
-
-    # Either include Climbing as an eligible starting move or place it in the starting inventory
-    if world.options.climbing_shuffle:
-        all_eligible_starting_moves.extend(DK64RItemPoolUtility.ClimbingAbilities())
-    if world.options.cannon_shuffle:
-        all_eligible_starting_moves.extend(DK64RItemPoolUtility.CannonAbilities())
-    world.random.shuffle(all_eligible_starting_moves)
-    while len(starting_moves) < world.options.starting_move_count:
-        if len(all_eligible_starting_moves) == 0:
-            break
-        move_id = all_eligible_starting_moves.pop()
-        move = DK64RItem.ItemList[move_id]
-        # We don't want to pick anything we're already starting with. As an aside, the starting inventory move name may or may not have spaces in it.
-        if move.name in world.options.start_inventory:
-            # If we were to choose a move we're forcibly starting with, pick another
+    for i, pool in enumerate(settings.starting_moves_lists):
+        count = settings.starting_moves_list_counts[i]
+        if count <= 0 or not pool:
             continue
-        starting_moves.append(move.name)
+
+        # Convert Items enum values to AP display-name strings
+        item_names = []
+        for item_id in pool:
+            item_obj = DK64RItem.ItemList.get(item_id)
+            if item_obj is not None:
+                item_names.append(use_original_name_or_trap_name(item_obj))
+
+        count = min(count, len(item_names))
+        if count <= 0:
+            continue
+
+        # Randomly sample <count> items from the pool (mirrors Fill.py random.sample)
+        sampled = world.random.sample(item_names, k=count)
+        starting_moves.extend(sampled)
 
     return starting_moves
 
@@ -277,7 +279,8 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                     ap_item.classification = ItemClassification.progression_skip_balancing
                 item_table.append(copy.copy(ap_item))
             case DK64RTypes.Cranky | DK64RTypes.Funky | DK64RTypes.Candy | DK64RTypes.Snide:
-                if not world.options.shopowners_in_pool:
+                if name in starting_moves:
+                    world.multiworld.push_precollected(copy.copy(ap_item))
                     continue
                 if name in world.options.start_inventory:
                     continue

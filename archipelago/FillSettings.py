@@ -62,7 +62,7 @@ from randomizer.Enums.Switches import Switches
 from randomizer.Lists.Switches import SwitchInfo
 from archipelago.Options import (
     Goal,
-    SwitchSanity,
+    SwitchsanityOptions,
     SelectStartingKong,
     GalleonWaterLevel,
     KrushaRandom,
@@ -544,8 +544,7 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
         settings_dict["item_rando_list_1"].append(ItemRandoListSelected.boulderitem)
     if options.dropsanity:
         settings_dict["item_rando_list_1"].append(ItemRandoListSelected.enemies)
-    if options.shopowners_in_pool.value:
-        settings_dict["item_rando_list_1"].append(ItemRandoListSelected.shopowners)
+    settings_dict["item_rando_list_1"].append(ItemRandoListSelected.shopowners)
     if options.half_medals_in_pool.value:
         settings_dict["item_rando_list_1"].append(ItemRandoListSelected.halfmedal)
     if options.snide_turnins_to_pool.value:
@@ -623,9 +622,8 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     # Then apply krusha settings (only if the individual model is still default)
     match options.krusha_model_mode.value:
         case KrushaRandom.option_manual:
-            for kong in options.krusha_kongs.value:
-                if kong in kong_model_mapping and settings_dict[kong_model_mapping[kong]] == KongModels.default:
-                    settings_dict[kong_model_mapping[kong]] = KongModels.krusha
+            # Manual krusha assignment is handled via kong_models above
+            pass
         case KrushaRandom.option_random_1:
             available: list[str] = [k for k, m in kong_model_mapping.items() if settings_dict[m] == KongModels.default]
             if available:
@@ -659,90 +657,37 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
             settings_dict["dk_portal_location_rando_v2"] = DKPortalRando.main_only
         case DKPortalLocationRando.option_all:
             settings_dict["dk_portal_location_rando_v2"] = DKPortalRando.on
-    settings_dict["switchsanity_enabled"] = options.switchsanity.value != SwitchSanity.option_off
-    match options.switchsanity.value:
-        case SwitchSanity.option_all:
-            settings_dict.update(
-                {
-                    "switchsanity_switch_isles_to_kroc_top": SwitchsanityKong.random,
-                    "switchsanity_switch_isles_helm_lobby": SwitchsanityGone.random,
-                    "switchsanity_switch_isles_aztec_lobby_back_room": SwitchsanityKong.random,
-                    "switchsanity_switch_isles_fungi_lobby_fairy": SwitchsanityKong.random,
-                    "switchsanity_switch_isles_spawn_rocketbarrel": SwitchsanityKong.random,
-                    "switchsanity_switch_japes_to_hive": SwitchsanityKong.random,
-                    "switchsanity_switch_japes_to_rambi": SwitchsanityKong.random,
-                    "switchsanity_switch_japes_to_painting_room": SwitchsanityKong.random,
-                    "switchsanity_switch_japes_to_cavern": SwitchsanityKong.random,
-                    "switchsanity_switch_japes_free_kong": SwitchsanityKong.random,
-                    "switchsanity_switch_aztec_to_kasplat_room": SwitchsanityKong.random,
-                    "switchsanity_switch_aztec_llama_front": SwitchsanityKong.random,
-                    "switchsanity_switch_aztec_llama_side": SwitchsanityKong.random,
-                    "switchsanity_switch_aztec_llama_back": SwitchsanityKong.random,
-                    "switchsanity_switch_aztec_sand_tunnel": SwitchsanityKong.random,
-                    "switchsanity_switch_aztec_to_connector_tunnel": SwitchsanityKong.random,
-                    "switchsanity_switch_aztec_free_lanky": SwitchsanityKong.random,
-                    "switchsanity_switch_aztec_free_tiny": SwitchsanityKong.random,
-                    "switchsanity_switch_factory_free_kong": SwitchsanityKong.random,
-                    "switchsanity_switch_galleon_to_lighthouse_side": SwitchsanityKong.random,
-                    "switchsanity_switch_galleon_to_shipwreck_side": SwitchsanityKong.random,
-                    "switchsanity_switch_galleon_to_cannon_game": SwitchsanityKong.random,
-                    "switchsanity_switch_fungi_yellow_tunnel": SwitchsanityKong.random,
-                    "switchsanity_switch_fungi_green_tunnel_near": SwitchsanityKong.random,
-                    "switchsanity_switch_fungi_green_tunnel_far": SwitchsanityKong.random,
-                    "switchsanity_switch_factory_dark_grate": SwitchsanityKong.random,
-                    "switchsanity_switch_factory_bonus_grate": SwitchsanityKong.random,
-                    "switchsanity_switch_factory_monster_grate": SwitchsanityKong.random,
-                    "switchsanity_switch_caves_gone_cave": SwitchsanityKong.random,
-                    "switchsanity_switch_caves_snide_cave": SwitchsanityKong.random,
-                    "switchsanity_switch_caves_boulder_cave": SwitchsanityKong.random,
-                    "switchsanity_switch_caves_lobby_blueprint": SwitchsanityKong.random,
-                    "switchsanity_switch_caves_lobby_lava": SwitchsanityKong.random,
-                    "switchsanity_switch_aztec_gong_tower": SwitchsanityKong.random,
-                    "switchsanity_switch_aztec_lobby_gong": SwitchsanityKong.random,
-                }
-            )
-        case SwitchSanity.option_helm_access:
-            settings_dict.update(
-                {
-                    "switchsanity_switch_isles_to_kroc_top": SwitchsanityKong.random,
-                    "switchsanity_switch_isles_helm_lobby": SwitchsanityGone.random,
-                    "switchsanity_switch_isles_aztec_lobby_back_room": SwitchsanityKong.tiny,
-                    "switchsanity_switch_isles_fungi_lobby_fairy": SwitchsanityKong.tiny,
-                    "switchsanity_switch_isles_spawn_rocketbarrel": SwitchsanityKong.lanky,
-                    "switchsanity_switch_japes_to_hive": SwitchsanityKong.tiny,
-                    "switchsanity_switch_japes_to_rambi": SwitchsanityKong.donkey,
-                    "switchsanity_switch_japes_to_painting_room": SwitchsanityKong.diddy,
-                    "switchsanity_switch_japes_to_cavern": SwitchsanityKong.diddy,
-                    "switchsanity_switch_japes_free_kong": SwitchsanityKong.donkey,
-                    "switchsanity_switch_aztec_to_kasplat_room": SwitchsanityKong.donkey,
-                    "switchsanity_switch_aztec_llama_front": SwitchsanityKong.donkey,
-                    "switchsanity_switch_aztec_llama_side": SwitchsanityKong.lanky,
-                    "switchsanity_switch_aztec_llama_back": SwitchsanityKong.tiny,
-                    "switchsanity_switch_aztec_sand_tunnel": SwitchsanityKong.donkey,
-                    "switchsanity_switch_aztec_to_connector_tunnel": SwitchsanityKong.diddy,
-                    "switchsanity_switch_aztec_free_lanky": SwitchsanityKong.donkey,
-                    "switchsanity_switch_aztec_free_tiny": SwitchsanityKong.diddy,
-                    "switchsanity_switch_factory_free_kong": SwitchsanityKong.lanky,
-                    "switchsanity_switch_galleon_to_lighthouse_side": SwitchsanityKong.donkey,
-                    "switchsanity_switch_galleon_to_shipwreck_side": SwitchsanityKong.diddy,
-                    "switchsanity_switch_galleon_to_cannon_game": SwitchsanityKong.chunky,
-                    "switchsanity_switch_fungi_yellow_tunnel": SwitchsanityKong.lanky,
-                    "switchsanity_switch_fungi_green_tunnel_near": SwitchsanityKong.tiny,
-                    "switchsanity_switch_fungi_green_tunnel_far": SwitchsanityKong.chunky,
-                    "switchsanity_switch_factory_dark_grate": SwitchsanityKong.chunky,
-                    "switchsanity_switch_factory_bonus_grate": SwitchsanityKong.chunky,
-                    "switchsanity_switch_factory_monster_grate": SwitchsanityKong.chunky,
-                    "switchsanity_switch_caves_gone_cave": SwitchsanityKong.chunky,
-                    "switchsanity_switch_caves_snide_cave": SwitchsanityKong.chunky,
-                    "switchsanity_switch_caves_boulder_cave": SwitchsanityKong.chunky,
-                    "switchsanity_switch_caves_lobby_blueprint": SwitchsanityKong.chunky,
-                    "switchsanity_switch_caves_lobby_lava": SwitchsanityKong.chunky,
-                    "switchsanity_switch_aztec_gong_tower": SwitchsanityKong.diddy,
-                    "switchsanity_switch_aztec_lobby_gong": SwitchsanityKong.diddy,
-                }
-            )
-        case SwitchSanity.option_off:
-            settings_dict["switchsanity_enabled"] = False
+    _kong_value_map = {
+        "donkey": SwitchsanityKong.donkey,
+        "diddy": SwitchsanityKong.diddy,
+        "lanky": SwitchsanityKong.lanky,
+        "tiny": SwitchsanityKong.tiny,
+        "chunky": SwitchsanityKong.chunky,
+        "random": SwitchsanityKong.random,
+        "any": SwitchsanityKong.any,
+    }
+    _gone_value_map = {
+        "bongos": SwitchsanityGone.bongos,
+        "guitar": SwitchsanityGone.guitar,
+        "trombone": SwitchsanityGone.trombone,
+        "sax": SwitchsanityGone.sax,
+        "triangle": SwitchsanityGone.triangle,
+        "lever": SwitchsanityGone.lever,
+        "gong": SwitchsanityGone.gong,
+        "gone_pad": SwitchsanityGone.gone_pad,
+        "random": SwitchsanityGone.random,
+    }
+    _any_switch_enabled = any(v != "off" for v in options.switchsanity.value.values())
+    settings_dict["switchsanity_enabled"] = _any_switch_enabled
+    if _any_switch_enabled:
+        for _switch_key, _switch_value in options.switchsanity.value.items():
+            if _switch_value == "off":
+                continue
+            _full_key = f"switchsanity_switch_{_switch_key}"
+            if _switch_key in SwitchsanityOptions.GONE_SWITCHES:
+                settings_dict[_full_key] = _gone_value_map.get(_switch_value, SwitchsanityGone.random)
+            else:
+                settings_dict[_full_key] = _kong_value_map.get(_switch_value, SwitchsanityKong.random)
 
     # Apply logic, barriers, glitches, and tricks settings
     settings_dict["logic_type"] = options.logic_type.value
@@ -943,17 +888,26 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
             }
         )
 
-    # Apply starting moves settings
+    # Apply starting moves settings — pool-based system
     from randomizer.Lists import Item as DK64RItem
 
-    settings_dict["starting_moves_list_1"] = []
-    for item in options.start_inventory:
-        item_obj = DK64RItem.ItemList[logic_item_name_to_id.get(item)]
-        if item_obj.type not in [Types.Key, Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cannons, Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime]:
-            raise ValueError(f"Invalid item type for starting inventory: {item}. Starting inventory can only contain keys, shopkeepers, or moves.")
-        elif options.shopowners_in_pool.value and item_obj.type in [Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
-            settings_dict["starting_moves_list_1"].append(logic_item_name_to_id.get(item))
-    settings_dict["starting_moves_list_count_1"] = len(settings_dict["starting_moves_list_1"])
+    _valid_move_types = {Types.Key, Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cannons, Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime}
+    _shopkeeper_types = {Types.Cranky, Types.Funky, Types.Candy, Types.Snide}
+
+    for _pool_num in range(1, 6):
+        _pool_option = getattr(options, f"starting_move_pool_{_pool_num}")
+        _count_option = getattr(options, f"starting_move_pool_{_pool_num}_count")
+        _item_ids = []
+        for _item_name in _pool_option.value:
+            _item_id = logic_item_name_to_id.get(_item_name)
+            if _item_id is None:
+                continue
+            _item_obj = DK64RItem.ItemList.get(_item_id)
+            if _item_obj is None or _item_obj.type not in _valid_move_types:
+                continue
+            _item_ids.append(_item_id)
+        settings_dict[f"starting_moves_list_{_pool_num}"] = _item_ids
+        settings_dict[f"starting_moves_list_count_{_pool_num}"] = min(_count_option.value, len(_item_ids))
 
     # Apply hint settings
     if options.hint_style == 0:

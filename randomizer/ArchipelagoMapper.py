@@ -67,7 +67,7 @@ class ArchipelagoMapper:
         fields_text = match.group(1)
         
         # Parse field definitions (e.g., "starting_kong_count: StartingKongCount")
-        field_pattern = r'^\s*([a-z_]+):\s*([A-Z][A-Za-z0-9]+)'
+        field_pattern = r'^\s*([a-z_0-9]+):\s*([A-Z][A-Za-z0-9]+)'
         fields_found = re.findall(field_pattern, fields_text, re.MULTILINE)
         
         logging.info(f"Discovered {len(fields_found)} DK64 options from Options.py")
@@ -138,6 +138,13 @@ class ArchipelagoMapper:
                 
         elif 'OptionList' in parent_class or 'ItemSet' in parent_class or 'OptionSet' in parent_class:
             option_info['type'] = 'list'
+            # Extract list default if present (e.g. default = ["Vines", "Diving", ...])
+            list_default_match = re.search(r'default\s*=\s*(\[.*?\])', class_body, re.DOTALL)
+            if list_default_match:
+                try:
+                    option_info['default'] = eval(list_default_match.group(1))  # Safe: list of string literals
+                except Exception:
+                    pass
             
         elif 'OptionDict' in parent_class or 'ItemDict' in parent_class:
             option_info['type'] = 'dict'
@@ -253,11 +260,23 @@ class ArchipelagoMapper:
             'randomize_blocker_required_amounts': 'blocker_selection_behavior',
             'shop_prices': 'random_prices',
             'loading_zone_rando': 'LevelRandomization',
-            'cannon_shuffle': 'starting_moves_list_dk',  # Check starting moves
-            'climbing_shuffle': 'starting_moves_list_lanky',  # Check starting moves
+            'cannon_shuffle': 'cannon_shuffle',
+            'climbing_shuffle': 'climbing_shuffle',
             'level_blockers': 'blocker_text',  # Complex blocker handling
-            'starting_move_count': 'starting_moves_list_dk',  # Complex move counting
-            
+
+            # Starting move pools — each maps to starting_moves_list_N / starting_moves_list_count_N
+            # Actual values are reconstructed via _get_special_value
+            'starting_move_pool_1': 'starting_moves_list_1',
+            'starting_move_pool_1_count': 'starting_moves_list_count_1',
+            'starting_move_pool_2': 'starting_moves_list_2',
+            'starting_move_pool_2_count': 'starting_moves_list_count_2',
+            'starting_move_pool_3': 'starting_moves_list_3',
+            'starting_move_pool_3_count': 'starting_moves_list_count_3',
+            'starting_move_pool_4': 'starting_moves_list_4',
+            'starting_move_pool_4_count': 'starting_moves_list_count_4',
+            'starting_move_pool_5': 'starting_moves_list_5',
+            'starting_move_pool_5_count': 'starting_moves_list_count_5',
+
             # Options that control item_rando_list_1 rather than direct settings
             # These are handled specially in _get_special_value()
             'hints_in_item_pool': 'item_rando_list_1',
@@ -270,8 +289,13 @@ class ArchipelagoMapper:
             
             # Complex conversions that need special handling beyond simple assignment
             'kong_models': 'kong_model_dk',  # Converted to dict in special handler
-            'krusha_model_mode': 'kong_model_dk',  # Converted via match statement  
-            'krusha_kongs': 'kong_model_dk',  # Converted via match statement
+            'krusha_model_mode': 'kong_model_dk',  # Converted via match statement
+
+            # switchsanity is an OptionDict - each key maps to a standalone switchsanity_switch_* key
+            'switchsanity': 'switchsanity_enabled',  # Presence tracked via special handler
+
+            # alter_switch_allocation is an OptionDict - per-level data lives in prog_slam_level_1..8
+            'alter_switch_allocation': 'alter_switch_allocation',  # Reconstructed via special handler
         }
         
         # Combine auto-discovered mappings with manual overrides
@@ -477,6 +501,43 @@ class ArchipelagoMapper:
                 'level_6': 'blue',
                 'level_7': 'red',
                 'level_8': 'red',
+            },
+            'switchsanity': {
+                'isles_to_kroc_top': 'off',
+                'isles_helm_lobby': 'off',
+                'isles_aztec_lobby_back_room': 'off',
+                'isles_fungi_lobby_fairy': 'off',
+                'isles_spawn_rocketbarrel': 'off',
+                'japes_to_hive': 'off',
+                'japes_to_rambi': 'off',
+                'japes_to_painting_room': 'off',
+                'japes_to_cavern': 'off',
+                'japes_free_kong': 'off',
+                'aztec_to_kasplat_room': 'off',
+                'aztec_llama_front': 'off',
+                'aztec_llama_side': 'off',
+                'aztec_llama_back': 'off',
+                'aztec_sand_tunnel': 'off',
+                'aztec_to_connector_tunnel': 'off',
+                'aztec_free_lanky': 'off',
+                'aztec_free_tiny': 'off',
+                'aztec_gong_tower': 'off',
+                'aztec_lobby_gong': 'off',
+                'factory_free_kong': 'off',
+                'factory_dark_grate': 'off',
+                'factory_bonus_grate': 'off',
+                'factory_monster_grate': 'off',
+                'galleon_to_lighthouse_side': 'off',
+                'galleon_to_shipwreck_side': 'off',
+                'galleon_to_cannon_game': 'off',
+                'fungi_yellow_tunnel': 'off',
+                'fungi_green_tunnel_near': 'off',
+                'fungi_green_tunnel_far': 'off',
+                'caves_gone_cave': 'off',
+                'caves_snide_cave': 'off',
+                'caves_boulder_cave': 'off',
+                'caves_lobby_blueprint': 'off',
+                'caves_lobby_lava': 'off',
             },
         }
         
@@ -990,31 +1051,42 @@ class ArchipelagoMapper:
                     pass
             return False
         
-        # cannon_shuffle: True if cannon moves are in starting moves
+        # cannon_shuffle: True if the Cannons item appears in any starting move pool (1-5)
         if ap_field == 'cannon_shuffle':
-            # Check all kong starting moves lists for cannon moves
             try:
-                from randomizer.Enums.Items import Items
-                cannon_moves = [Items.BaboonBlast]  # Add other cannon moves if needed
-                for kong in ['dk', 'diddy', 'lanky', 'tiny', 'chunky']:
-                    moves_list = settings_dict.get(f'starting_moves_list_{kong}', [])
-                    for move in moves_list:
-                        if move in cannon_moves or (hasattr(move, 'value') and move.value in [m.value for m in cannon_moves]):
+                from randomizer.Lists.Item import ItemList
+                from randomizer.Enums.Items import Items as ItemsEnum
+                for pool_num in range(1, 6):
+                    pool_items = settings_dict.get(f'starting_moves_list_{pool_num}', [])
+                    for item_id in pool_items:
+                        if isinstance(item_id, int):
+                            try:
+                                item_id = ItemsEnum(item_id)
+                            except ValueError:
+                                continue
+                        item_obj = ItemList.get(item_id)
+                        if item_obj is not None and item_obj.name == 'Cannons':
                             return True
             except ImportError:
                 pass
             return False
-        
-        # climbing_shuffle: True if climbing moves are in starting moves  
+
+        # climbing_shuffle: True if the Climbing item appears in any starting move pool (1-5)
         if ap_field == 'climbing_shuffle':
-            # Check Lanky's starting moves for climbing moves
             try:
-                from randomizer.Enums.Items import Items
-                climbing_moves = [Items.OrangstandSprint, Items.Orangstand]
-                moves_list = settings_dict.get('starting_moves_list_lanky', [])
-                for move in moves_list:
-                    if move in climbing_moves or (hasattr(move, 'value') and move.value in [m.value for m in climbing_moves]):
-                        return True
+                from randomizer.Lists.Item import ItemList
+                from randomizer.Enums.Items import Items as ItemsEnum
+                for pool_num in range(1, 6):
+                    pool_items = settings_dict.get(f'starting_moves_list_{pool_num}', [])
+                    for item_id in pool_items:
+                        if isinstance(item_id, int):
+                            try:
+                                item_id = ItemsEnum(item_id)
+                            except ValueError:
+                                continue
+                        item_obj = ItemList.get(item_id)
+                        if item_obj is not None and item_obj.name == 'Climbing':
+                            return True
             except ImportError:
                 pass
             return False
@@ -1170,27 +1242,145 @@ class ArchipelagoMapper:
             
             return level_blockers_dict
         
-        # krusha_kongs: List of kongs with krusha model (specifically model type 2)
-        if ap_field == 'krusha_kongs':
-            try:
-                from randomizer.Enums.Settings import KongModels
-                krusha_kongs = []
-                for kong in ['dk', 'diddy', 'lanky', 'tiny', 'chunky']:
-                    model = settings_dict.get(f'kong_model_{kong}')
-                    if model is not None:
-                        # Check if it's specifically the krusha model (value 2)
-                        # Ignore other cosmetic models (disco_chunky, krool_fight, cranky, etc.)
-                        if hasattr(model, 'value'):
-                            if model.value == 2:  # KongModels.krusha
-                                krusha_kongs.append(kong)
-                        elif isinstance(model, int):
-                            if model == 2:  # KongModels.krusha value
-                                krusha_kongs.append(kong)
-                return krusha_kongs if krusha_kongs else None
-            except ImportError:
-                pass
-            return None
-        
+        # switchsanity: Read individual switchsanity_switch_* standalone settings
+        # and build the OptionDict with short key names
+        if ap_field == 'switchsanity':
+            # Kong switches: SwitchsanityKong enum (0=donkey,1=diddy,2=lanky,3=tiny,4=chunky,5=random,6=any)
+            kong_value_names = {0: 'donkey', 1: 'diddy', 2: 'lanky', 3: 'tiny', 4: 'chunky', 5: 'random', 6: 'any'}
+            # Gone switch (isles_helm_lobby): SwitchsanityGone enum (0=bongos...7=gone_pad,8=random)
+            gone_value_names = {0: 'bongos', 1: 'guitar', 2: 'trombone', 3: 'sax', 4: 'triangle', 5: 'lever', 6: 'gong', 7: 'gone_pad', 8: 'random'}
+
+            gone_switches = {'isles_helm_lobby'}
+            all_switches = [
+                'isles_to_kroc_top', 'isles_helm_lobby', 'isles_aztec_lobby_back_room',
+                'isles_fungi_lobby_fairy', 'isles_spawn_rocketbarrel',
+                'japes_to_hive', 'japes_to_rambi', 'japes_to_painting_room', 'japes_to_cavern', 'japes_free_kong',
+                'aztec_to_kasplat_room', 'aztec_llama_front', 'aztec_llama_side', 'aztec_llama_back',
+                'aztec_sand_tunnel', 'aztec_to_connector_tunnel', 'aztec_free_lanky', 'aztec_free_tiny',
+                'aztec_gong_tower', 'aztec_lobby_gong',
+                'factory_free_kong', 'factory_dark_grate', 'factory_bonus_grate', 'factory_monster_grate',
+                'galleon_to_lighthouse_side', 'galleon_to_shipwreck_side', 'galleon_to_cannon_game',
+                'fungi_yellow_tunnel', 'fungi_green_tunnel_near', 'fungi_green_tunnel_far',
+                'caves_gone_cave', 'caves_snide_cave', 'caves_boulder_cave', 'caves_lobby_blueprint', 'caves_lobby_lava',
+            ]
+
+            result = {}
+            for short_key in all_switches:
+                full_key = f'switchsanity_switch_{short_key}'
+                raw = settings_dict.get(full_key)
+                if raw is None:
+                    result[short_key] = 'off'
+                    continue
+                # Resolve enum to int if needed
+                int_val = raw.value if hasattr(raw, 'value') else (int(raw) if isinstance(raw, int) else None)
+                if int_val is None:
+                    result[short_key] = 'off'
+                    continue
+                if short_key in gone_switches:
+                    result[short_key] = gone_value_names.get(int_val, 'off')
+                else:
+                    result[short_key] = kong_value_names.get(int_val, 'off')
+            return result
+
+        # alter_switch_allocation: reconstruct the OptionDict from the per-level prog_slam_level_* standalone settings.
+        # In standalone, alter_switch_allocation is a boolean and prog_slam_level_1..8 are SlamRequirement enums.
+        # SlamRequirement: no_slam=0 ("none"), green=1, blue=2, red=3
+        if ap_field == 'alter_switch_allocation':
+            slam_name_map = {0: 'none', 1: 'green', 2: 'blue', 3: 'red'}
+            result = {}
+            for i in range(1, 9):
+                raw = settings_dict.get(f'prog_slam_level_{i}')
+                if raw is None:
+                    # Fall back to AlterSwitchAllocation defaults: levels 1-4 green, 5-6 blue, 7-8 red
+                    result[f'level_{i}'] = 'green' if i <= 4 else ('blue' if i <= 6 else 'red')
+                else:
+                    int_val = raw.value if hasattr(raw, 'value') else (int(raw) if isinstance(raw, int) else None)
+                    result[f'level_{i}'] = slam_name_map.get(int_val, 'green')
+            return result
+
+        # helm_door_item_count: reconstruct the OptionDict from the per-door standalone settings.
+        # In standalone settings there is no single helm_door_item_count key; instead
+        # crown_door_item / crown_door_item_count and coin_door_item / coin_door_item_count
+        # record which item type each door requires and how many of that item is needed.
+        # We build the full OptionDict (one count per item type) from those four fields.
+        if ap_field == 'helm_door_item_count':
+            # HelmDoorItem int value → helm_door_item_count dict key
+            door_item_key_map = {
+                3: 'golden_bananas',   # req_gb
+                4: 'blueprints',       # req_bp
+                5: 'company_coins',    # req_companycoins
+                6: 'keys',             # req_key
+                7: 'medals',           # req_medal
+                8: 'crowns',           # req_crown
+                9: 'fairies',          # req_fairy
+                10: 'rainbow_coins',   # req_rainbowcoin
+                11: 'bean',            # req_bean
+                12: 'pearls',          # req_pearl
+            }
+            result = {
+                'golden_bananas': 1,
+                'blueprints': 1,
+                'company_coins': 1,
+                'keys': 1,
+                'medals': 1,
+                'crowns': 1,
+                'fairies': 1,
+                'rainbow_coins': 1,
+                'bean': 1,
+                'pearls': 1,
+            }
+            for door_key, count_key in [('crown_door_item', 'crown_door_item_count'), ('coin_door_item', 'coin_door_item_count')]:
+                door_item = settings_dict.get(door_key)
+                if door_item is not None:
+                    int_val = door_item.value if hasattr(door_item, 'value') else (int(door_item) if isinstance(door_item, int) else None)
+                    item_key = door_item_key_map.get(int_val)
+                    if item_key:
+                        result[item_key] = settings_dict.get(count_key, 1)
+            return result
+
+        # starting_move_pool_N: Convert item IDs from starting_moves_list_N to AP string names.
+        # The standalone stores integer Items enum values in starting_moves_list_N (set by the
+        # form's <select id="starting_moves_list_N"> elements via serialize_settings).
+        # AP expects a list of display-name strings matching _STARTING_MOVE_VALID_KEYS.
+        # Note: ProgressiveSlam2/3, ProgressiveAmmoBelt2, ProgressiveInstrumentUpgrade2/3
+        # are dummy items used only for the modal UI and have names with trailing spaces —
+        # these must be normalized to the canonical base name (matching FillSettings.py logic).
+        _PROGRESSIVE_NAME_NORMALIZE = {
+            "Progressive Slam ": "Progressive Slam",
+            "Progressive Slam  ": "Progressive Slam",
+            "Progressive Ammo Belt ": "Progressive Ammo Belt",
+            "Progressive Instrument Upgrade ": "Progressive Instrument Upgrade",
+            "Progressive Instrument Upgrade  ": "Progressive Instrument Upgrade",
+        }
+        for _pool_num in range(1, 6):
+            if ap_field == f'starting_move_pool_{_pool_num}':
+                # Use sentinel to distinguish "key absent" (use AP defaults) from "key present but empty"
+                pool_items = settings_dict.get(f'starting_moves_list_{_pool_num}')
+                if pool_items is None:
+                    # Key absent — return None so settings_to_yaml falls back to AP class defaults
+                    return None
+                if not pool_items:
+                    # Key present but the pool was deliberately left empty
+                    return []
+                try:
+                    from randomizer.Lists.Item import ItemList
+                    from randomizer.Enums.Items import Items as ItemsEnum
+                    item_names = []
+                    for item_id in pool_items:
+                        if isinstance(item_id, int):
+                            try:
+                                item_id = ItemsEnum(item_id)
+                            except ValueError:
+                                continue
+                        item_obj = ItemList.get(item_id)
+                        if item_obj is not None:
+                            name = _PROGRESSIVE_NAME_NORMALIZE.get(item_obj.name, item_obj.name)
+                            item_names.append(name)
+                    return item_names if item_names else []
+                except ImportError:
+                    logging.warning(f"Could not import ItemList for starting_move_pool_{_pool_num} conversion")
+                    return [str(x) for x in pool_items]
+
         # No special handling needed
         return None
     
