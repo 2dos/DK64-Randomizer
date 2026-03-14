@@ -16,7 +16,6 @@ from randomizer.Enums.Settings import (
     RemovedBarriersSelected,
     GalleonWaterSetting,
     ActivateAllBananaports,
-    FreeTradeSetting,
     HardModeSelected,
     FungiTimeSetting,
     MiscChangesSelected,
@@ -97,6 +96,7 @@ DISABLE_LONG_JUMP = False
 TS = True
 TEST_HUNKY_FIX = False
 BETTER_JUMPS = True
+INSTANCE_SCRIPT_ADJUSTMENTS = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -248,6 +248,11 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
     musicCosmetics(ROM_COPY, settings, offset_dict)
     cameraCosmetics(ROM_COPY, settings, offset_dict)
     otherCosmetics(ROM_COPY, settings, offset_dict)
+    writeValue(ROM_COPY, 0x805FBDDA, Overlay.Static, settings.boot_sfx, offset_dict)
+    if settings.menu_kong != Kongs.donkey:
+        writeValue(ROM_COPY, 0x806C8580, Overlay.Static, 0x15010002, offset_dict, 4)
+        writeValue(ROM_COPY, 0x806C8584, Overlay.Static, 0x240B0000 | settings.menu_kong, offset_dict, 4)
+        writeValue(ROM_COPY, 0x806C8588, Overlay.Static, 0xA08B0000, offset_dict, 4)
 
 
 def isFasterCheckEnabled(spoiler, fast_check: FasterChecksSelected):
@@ -2250,6 +2255,35 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
         writeValue(ROM_COPY, 0x80024140, Overlay.Minecart, 0, offset_dict, 4)  # Prevent action on parent
         writeValue(ROM_COPY, 0x80024148, Overlay.Minecart, 0, offset_dict, 4)  # Prevent action on parent
 
+    # Instance Script Adjustments
+    if INSTANCE_SCRIPT_ADJUSTMENTS:
+        # New Struct:
+        # typedef struct ScriptBlock {
+        #     ScriptBlock *pointer;
+        #     unsigned char cond_macro_count;
+        #     unsigned char pad;
+        #     unsigned char exec_macro_count;
+        #     unsigned char pad2;
+        #     unsigned long long cond_macros[];
+        #     unsigned long long exec_macros[];
+        # } ScriptBlock;
+        # Writing file to RDRAM blocks
+        writeHook(ROM_COPY, 0x8063DD28, Overlay.Static, "InstanceMalloc", offset_dict)  # Adjust the malloc size
+        writeValue(ROM_COPY, 0x8063DD36, Overlay.Static, 0x0, offset_dict)  # Set the next block pointer to it's new struct place
+        writeValue(ROM_COPY, 0x8063DD4A, Overlay.Static, 0x0, offset_dict)  # Set the next block pointer to it's new struct place
+        writeValue(ROM_COPY, 0x8063DD5E, Overlay.Static, 0x4, offset_dict)  # Store the cond macro count to it's new struct place
+        writeValue(ROM_COPY, 0x8063DD56, Overlay.Static, 0x8, offset_dict)  # Store the pointer to the cond macros in it's new struct place
+        writeHook(ROM_COPY, 0x8063DD78, Overlay.Static, "InstanceWriteShift", offset_dict)  # Adjust the write pointer
+        writeValue(ROM_COPY, 0x8063DD86, Overlay.Static, 0x6, offset_dict)  # Store the exec macro count to it's new struct place
+        # Reading blocks to function parsers
+        writeValue(ROM_COPY, 0x8063E236, Overlay.Static, 0x4, offset_dict)  # Initial cond macro count check
+        writeValue(ROM_COPY, 0x8063E24E, Overlay.Static, 0x8, offset_dict)  # Cond macro pointer
+        writeValue(ROM_COPY, 0x8063E26A, Overlay.Static, 0x4, offset_dict)  # End cond macro count check
+        writeValue(ROM_COPY, 0x8063E2DA, Overlay.Static, 0x4, offset_dict)  # End block cond macro count check
+        writeValue(ROM_COPY, 0x8063E28E, Overlay.Static, 0x0, offset_dict)  # Next block pointer (failed cond macros)
+        writeValue(ROM_COPY, 0x8063E2D2, Overlay.Static, 0x0, offset_dict)  # Next block pointer
+        writeHook(ROM_COPY, 0x8063E290, Overlay.Static, "InstanceGetExec_0", offset_dict)  # Get exec count (initial) and adjust exec pointer
+        writeValue(ROM_COPY, 0x8063E2BA, Overlay.Static, 0x6, offset_dict)  # exec count pointer
     # Menu/Shop Stuff
     # Menu/Shop: Force enable cheats
     writeValue(ROM_COPY, 0x800280DC, Overlay.Menu, 0x1000, offset_dict)  # Force access to mystery menu

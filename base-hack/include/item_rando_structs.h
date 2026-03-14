@@ -88,6 +88,8 @@ typedef struct StartingItemsStruct {
 	/* 0x02F */ unsigned char belt;
     /* 0x030 */ unsigned char climbing;
     /* 0x031 */ unsigned char cannons;
+    /* 0x032 */ unsigned char day;
+    /* 0x033 */ unsigned char night;
 } StartingItemsStruct;
 
 typedef struct MoveSpecialBijectionStruct {

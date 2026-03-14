@@ -1,6 +1,5 @@
 """Update wrinkly hints compressed file."""
 
-from randomizer.Enums.Kongs import Kongs
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, grabText, writeText, CompTextFiles, writeRawFile
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.ASMPatcher import writeItemReferenceFlags

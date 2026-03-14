@@ -206,7 +206,9 @@ def buildAnyKongSwitches():
             pad_f.seek(tri_start + 0x15)
             pad_f.write((2).to_bytes(1, "big"))
 
+
 def buildGongs():
+    """Build the gong objects."""
     with open(ROMName, "rb") as fh:
         gong_f = ROMPointerFile(fh, TableNames.ModelTwoGeometry, 195)
         fh.seek(gong_f.start)

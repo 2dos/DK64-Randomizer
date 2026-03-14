@@ -13,7 +13,6 @@ from randomizer.Patching.Library.Generic import (
 )
 from randomizer.Patching.Library.Image import getBonusSkinOffset, ExtraTextures, getRandomHueShift, hueShiftImageFromAddress, TextureFormat, hueShiftColor
 from randomizer.Patching.MiscSetupChanges import SpeedUpFungiRabbit
-from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Models import Model, Sprite
 from randomizer.Enums.Settings import ColorblindMode, ExcludedSongs, KongModels, ColorOptions
 from randomizer.Patching.Patcher import ROM

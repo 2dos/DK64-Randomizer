@@ -12,7 +12,7 @@ BIN_FILE = OBJ_FILE.split(".obj")[0] + ".bin"
 
 def parse_obj_vertices(filepath):
     """
-    Parses an .obj file and retrieves vertex coordinates for each mesh.
+    Parse an .obj file and retrieves vertex coordinates for each mesh.
 
     Returns a dictionary: {mesh_name: [(x, y, z), ...], ...}
     """
@@ -47,6 +47,7 @@ def parse_obj_vertices(filepath):
 
 
 def writePointer(fh: BinaryIO, location: int):
+    """Write a pointer to a binary model file."""
     location -= MODEL_DATA_OFFSET
     location += BASE_ADDR
     fh.write(location.to_bytes(4, "big"))

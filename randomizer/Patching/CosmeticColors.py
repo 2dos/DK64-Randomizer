@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import gzip
-from typing import TYPE_CHECKING, List, Tuple
+from typing import List, Tuple
 from io import BytesIO
 
 from PIL import Image, ImageDraw, ImageEnhance

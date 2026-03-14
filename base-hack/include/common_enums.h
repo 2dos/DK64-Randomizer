@@ -735,6 +735,9 @@ typedef enum tracker_types {
 	/* 53 */ TRACKER_TYPE_CANDY,
 	/* 54 */ TRACKER_TYPE_SNIDE,
 	/* 55 */ TRACKER_TYPE_CLIMB,
+	/* 56 */ TRACKER_TYPE_CANNON,
+	/* 57 */ TRACKER_TYPE_DAY,
+	/* 58 */ TRACKER_TYPE_NIGHT,
 } tracker_types;
 
 typedef enum overlays {

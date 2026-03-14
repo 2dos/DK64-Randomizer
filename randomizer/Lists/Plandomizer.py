@@ -12,7 +12,7 @@ from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Types import Types
 from randomizer.Enums.VendorType import VendorType
 from randomizer.Lists.CustomLocations import CustomLocations, LocationTypes
-from randomizer.Lists.DoorLocations import DoorData, DoorType, door_locations
+from randomizer.Lists.DoorLocations import DoorType, door_locations
 from randomizer.Lists.FairyLocations import fairy_locations
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.KasplatLocations import KasplatLocationList

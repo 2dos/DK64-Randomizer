@@ -60,9 +60,9 @@ class ScriptBlock:
         active_conds = self.getActiveConditions(val)
         active_execs = self.getActiveExecutions(val)
         output_bin = [len(active_conds)]
-        if len(active_conds) > 5:
+        if len(active_conds) > 255:
             raise Exception("Too many conditions to compile script.")
-        if len(active_execs) > 4:
+        if len(active_execs) > 255:
             raise Exception("Too many executions to compile script.")
         for cond in active_conds:
             output_bin.extend(cond.compile(True, val))
@@ -475,7 +475,7 @@ def getTroffPortalScript(map_id: Maps, item_id: int, exit_id: int) -> list[int]:
                     FunctionData(0, [0, 0, 0]),
                 ],
                 [
-                    FunctionData(7, [125, short_to_ushort(-3), item_id]),  # Must be last for item id appending
+                    FunctionData(7, [125, short_to_ushort(-3), item_id]),
                 ],
             ),
         ],

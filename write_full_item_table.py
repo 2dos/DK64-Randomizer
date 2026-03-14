@@ -5,13 +5,13 @@ from types import ModuleType
 
 
 def _inject_ap_stubs() -> None:
-    """Inject minimal Archipelago stubs so archipelago.Items can be imported without AP installed.
+    """
+    Inject minimal Archipelago stubs so archipelago.Items can be imported without AP installed.
 
     full_item_table is built entirely from DK64R's own ItemList; the AP types
     (Item, ItemClassification, World, etc.) only appear in class/function
     definitions that are never executed during table construction.
     """
-
     # --- BaseClasses ---
     bc = ModuleType("BaseClasses")
 

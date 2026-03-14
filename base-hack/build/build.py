@@ -2014,7 +2014,7 @@ for x in range(36):
             source_file=f"assets/displays/dupepuzzle_{hex(0xD71 + x)}.png",
             texture_format=TextureFormat.RGBA5551,
             do_not_extract=True,
-            target_size=32*32*2,
+            target_size=32 * 32 * 2,
         ))
         chunky_counter += 1
     elif kong == 2:
@@ -2026,7 +2026,7 @@ for x in range(36):
             source_file=f"assets/displays/dupepuzzle_{hex(0xD71 + x)}.png",
             texture_format=TextureFormat.RGBA5551,
             do_not_extract=True,
-            target_size=32*32*2,
+            target_size=32 * 32 * 2,
         ))
         dk_counter += 1
 

@@ -452,6 +452,9 @@ class TrackerItems(IntEnum):
     CANDY = auto()
     SNIDE = auto()
     CLIMB = auto()
+    CANNON = auto()
+    DAY = auto()
+    NIGHT = auto()
     TERMINATOR = auto()
 
 

@@ -55,20 +55,27 @@ class TableNames(IntEnum):
 
 
 class Triangle:
+    """Triangle class."""
+
     def __init__(self, coord_set_0: int, coord_set_1: int, coord_set_2: int, mesh: int, rgba: tuple = None):
+        """Initialize with given parameters."""
         self.coords = (coord_set_0, coord_set_1, coord_set_2)
         self.rgba = rgba
         self.mesh = mesh
 
 
 class Color:
+    """Color class."""
+
     def __init__(self, red: int, green: int, blue: int, alpha: int = 0xFF):
+        """Initialize with given parameters."""
         self.red = red if red < 255 else 255
         self.green = green if green < 255 else 255
         self.blue = blue if blue < 255 else 255
         self.alpha = alpha if alpha < 255 else 255
 
     def asRatioString(self) -> str:
+        """Convert color to ratio string."""
         channels = [self.red, self.green, self.blue, self.alpha]
         return " ".join([str(int(x / 25.5) / 10) for x in channels])
 
@@ -94,10 +101,12 @@ def intf_to_float(intf):
 
 
 def getColorString(rgba: list[int]) -> str:
+    """Wrap function for converting RGBA to a obj-compatible ratio string."""
     return Color(rgba[0], rgba[1], rgba[2]).asRatioString()
 
 
 def write_obj_file(triangles: list[Triangle], verts: list[dict], output_file: str):
+    """Write output obj file from a list of triangles and verts."""
     mesh_indexes = []
     with open(output_file, "w") as obj_file:
         for triangle in triangles:
@@ -121,6 +130,7 @@ def write_obj_file(triangles: list[Triangle], verts: list[dict], output_file: st
 
 
 def rotate(x, y, angle):
+    """Rotate an xy point around (0, 0) with a provided angle."""
     theta = math.radians(-angle)
 
     cos_t = math.cos(theta)
@@ -424,6 +434,7 @@ def mergeModel(
 
 
 def extractModel():
+    """Extract a model from the game."""
     with open("dk64.z64", "rb") as fh:
         fh.seek(POINTER_OFFSET + (TableNames.ActorGeometry << 2))
         actor_table = POINTER_OFFSET + int.from_bytes(fh.read(4), "big")

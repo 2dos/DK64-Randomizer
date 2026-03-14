@@ -505,7 +505,7 @@ extern unsigned short guard_enabled_buttons;
 extern purchase_text_hint_struct purchase_hint_text_items[120];
 extern char aztec_beetle[0x20];
 extern char caves_beetle[0x20];
-extern unsigned char pregiven_status[56];
+extern unsigned char pregiven_status[59];
 extern StartingItemsStruct starting_item_data;
 extern coinHUDStruct CoinHUDElements[8];
 extern unsigned short guard_tag_timer;

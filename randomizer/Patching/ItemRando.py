@@ -22,7 +22,16 @@ from randomizer.Patching.Library.ItemRando import (
     LocationSelection,
 )
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, CompTextFiles, ItemPreview
-from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay, writeValue, patchBonus, getBonusIndex
+from randomizer.Patching.Library.ASM import (
+    getItemTableWriteAddress,
+    populateOverlayOffsets,
+    getSym,
+    getROMAddress,
+    Overlay,
+    writeValue,
+    patchBonus,
+    getBonusIndex,
+)
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
 from randomizer.Lists.WrinklyHints import kong_list
@@ -479,12 +488,20 @@ TRACKER_ITEM_PAIRING = {
         "item": Items.Climbing,
         "packets": [{"offset": EXTRA_STRUCT_OFFSET + 3, "mode": "set", "value": 1}],
     },
+    TrackerItems.CANNON: {
+        "item": Items.Cannons,
+        "packets": [{"offset": EXTRA_STRUCT_OFFSET + 4, "mode": "set", "value": 1}],
+    },
 }
 TRACKER_SHOPKEEPER_PAIRING = {
     TrackerItems.CRANKY: Items.Cranky,
     TrackerItems.FUNKY: Items.Funky,
     TrackerItems.CANDY: Items.Candy,
     TrackerItems.SNIDE: Items.Snide,
+}
+TRACKER_TIME_PAIRING = {
+    TrackerItems.DAY: Items.Day,
+    TrackerItems.NIGHT: Items.Night,
 }
 
 
@@ -608,6 +625,12 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
             matching_item = TRACKER_SHOPKEEPER_PAIRING[x]
             if matching_item in list(OTHER_STARTING_ITEMS.values()):
                 value = 1
+        elif x in list(TRACKER_TIME_PAIRING.keys()):
+            matching_item = TRACKER_TIME_PAIRING[x]
+            if matching_item in list(OTHER_STARTING_ITEMS.values()):
+                value = 1
+                starting_move_packets.append({"offset": EXTRA_STRUCT_OFFSET + 5 + (x - TrackerItems.DAY), "mode": "set", "value": 1})
+
         ROM_COPY.seek(base_addr + x)
         ROM_COPY.writeMultipleBytes(value, 1)
         starting_move_packets.extend(give_move_packets)

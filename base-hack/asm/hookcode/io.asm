@@ -304,3 +304,30 @@ InstIndexStore:
     addu $t1, $t9, $t4
     j 0x80735444
     sb $t3, 0x30 ($t1) ; 0x30 seems unused
+
+InstanceMalloc:
+    lh $a0, 0x0 ($s0)  ; Condition Macro Count
+    sll $a1, $a0, 3 ; Space for condition macros
+    addu $a2, $s0, $a1
+    lh $a2, 0x2 ($a2)  ; Execution Macro Count
+    sll $a2, $a2, 3  ; Space for execution macros
+    addu $a1, $a1, $a2  ; Space for all macros
+    jal dk_malloc
+    addiu $a0, $a1, 8  ; Include space for the counts of each macro type + end pointer
+    j 0x8063DD30
+    nop
+
+InstanceWriteShift:
+    sll $a2, $s4, 1
+    addu $a0, $s2, $t8
+    j 0x8063DD80
+    addiu $a0, $a0, 8
+
+InstanceGetExec_0:
+    lbu $t4, 0x4 ($s2)  ; Get cond macro count
+    or $s0, $zero, $zero
+    sll $s1, $t4, 3  ; Get space allocated for cond macros
+    addu $t4, $s2, $s1
+    addiu $s1, $t4, 0x8  ; Get pointer to exec macros
+    j 0x8063E29C
+    lbu $t4, 0x6 ($s2)  ; Get exec count

@@ -19,15 +19,15 @@ char k_rool_text[9] = "& K.ROOL";
 ROM_DATA static char updated_tracker = 0;
 
 typedef struct tracker_struct {
-	/* 0x000 */ short min_x;
-	/* 0x002 */ short max_x;
-	/* 0x004 */ short min_y;
-	/* 0x006 */ short max_y;
-	/* 0x008 */ unsigned char enabled;
-	/* 0x009 */ unsigned char type;
-	/* 0x00A */ unsigned char item;
-	/* 0x00B */ char level;
-	/* 0x00C */ char kong;
+	/* 0x000 */ unsigned char min_x;
+	/* 0x001 */ unsigned char max_x;
+	/* 0x002 */ unsigned char min_y;
+	/* 0x003 */ unsigned char max_y;
+	/* 0x004 */ unsigned char enabled;
+	/* 0x005 */ unsigned char type;
+	/* 0x006 */ unsigned char item;
+	/* 0x007 */ char level;
+	/* 0x008 */ char kong;
 } tracker_struct;
 
 #define TRACKER_ENABLED_DEFAULT 1
@@ -369,7 +369,7 @@ ROM_DATA static tracker_struct tracker_info[] = {
 	{
 		// Shockwave
 		.min_x = 130, .max_x = 152,
-		.min_y = 22, .max_y = 42,
+		.min_y = 22, .max_y = 39,
 		.enabled = TRACKER_ENABLED_DEFAULT,
 		.type = TRACKER_TYPE_SHOCKWAVE,
 		.item = REQITEM_MOVE,
@@ -379,7 +379,7 @@ ROM_DATA static tracker_struct tracker_info[] = {
 	{
 		// Slam
 		.min_x = 132, .max_x = 138,
-		.min_y = 54, .max_y = 64,
+		.min_y = 46, .max_y = 56,
 		.enabled = TRACKER_ENABLED_DEFAULT,
 		.type = TRACKER_TYPE_SLAM,
 		.item = REQITEM_MOVE,
@@ -388,7 +388,7 @@ ROM_DATA static tracker_struct tracker_info[] = {
 	{
 		// Slam
 		.min_x = 138, .max_x = 141,
-		.min_y = 52, .max_y = 55,
+		.min_y = 44, .max_y = 47,
 		.enabled = TRACKER_ENABLED_DEFAULT,
 		.type = TRACKER_TYPE_SLAM,
 		.item = REQITEM_MOVE,
@@ -397,7 +397,7 @@ ROM_DATA static tracker_struct tracker_info[] = {
 	{
 		// Slam
 		.min_x = 138, .max_x = 146,
-		.min_y = 60, .max_y = 63,
+		.min_y = 52, .max_y = 55,
 		.enabled = TRACKER_ENABLED_DEFAULT,
 		.type = TRACKER_TYPE_SLAM,
 		.item = REQITEM_MOVE,
@@ -406,7 +406,7 @@ ROM_DATA static tracker_struct tracker_info[] = {
 	{
 		// Slam
 		.min_x = 146, .max_x = 152,
-		.min_y = 54, .max_y = 63,
+		.min_y = 46, .max_y = 55,
 		.enabled = TRACKER_ENABLED_DEFAULT,
 		.type = TRACKER_TYPE_SLAM,
 		.item = REQITEM_MOVE,
@@ -415,7 +415,7 @@ ROM_DATA static tracker_struct tracker_info[] = {
 	{
 		// Slam
 		.min_x = 144, .max_x = 146,
-		.min_y = 52, .max_y = 55,
+		.min_y = 44, .max_y = 47,
 		.enabled = TRACKER_ENABLED_DEFAULT,
 		.type = TRACKER_TYPE_SLAM,
 		.item = REQITEM_MOVE,
@@ -423,7 +423,7 @@ ROM_DATA static tracker_struct tracker_info[] = {
 	{
 		 //Slam Has
 		.min_x = 132, .max_x = 152,
-		.min_y = 46, .max_y = 64,
+		.min_y = 38, .max_y = 56,
 		.enabled = TRACKER_ENABLED_DEFAULT,
 		.type = TRACKER_TYPE_SLAM_HAS,
 		.item = REQITEM_MOVE,
@@ -432,7 +432,7 @@ ROM_DATA static tracker_struct tracker_info[] = {
 	{
 		// Homing
 		.min_x = 134, .max_x = 149,
-		.min_y = 66, .max_y = 79,
+		.min_y = 58, .max_y = 72,
 		.enabled = TRACKER_ENABLED_DEFAULT,
 		.type = TRACKER_TYPE_HOMING,
 		.item = REQITEM_MOVE,
@@ -441,7 +441,7 @@ ROM_DATA static tracker_struct tracker_info[] = {
 	{
 		// Sniper
 		.min_x = 132, .max_x = 152,
-		.min_y = 92, .max_y = 104,
+		.min_y = 73, .max_y = 86,
 		.enabled = TRACKER_ENABLED_DEFAULT,
 		.type = TRACKER_TYPE_SNIPER,
 		.item = REQITEM_MOVE,
@@ -449,7 +449,7 @@ ROM_DATA static tracker_struct tracker_info[] = {
 	},
 	{
 		// Dive
-		.min_x = 0, .max_x = 20,
+		.min_x = 0, .max_x = 19,
 		.min_y = 108, .max_y = 128,
 		.enabled = TRACKER_ENABLED_DEFAULT,
 		.type = TRACKER_TYPE_DIVE,
@@ -459,7 +459,7 @@ ROM_DATA static tracker_struct tracker_info[] = {
 	},
 	{
 		// Orange
-		.min_x = 22, .max_x = 42,
+		.min_x = 19, .max_x = 36,
 		.min_y = 108, .max_y = 128,
 		.enabled = TRACKER_ENABLED_DEFAULT,
 		.type = TRACKER_TYPE_ORANGE,
@@ -469,7 +469,7 @@ ROM_DATA static tracker_struct tracker_info[] = {
 	},
 	{
 		// Barrel
-		.min_x = 44, .max_x = 64,
+		.min_x = 40, .max_x = 53,
 		.min_y = 108, .max_y = 128,
 		.enabled = TRACKER_ENABLED_DEFAULT,
 		.type = TRACKER_TYPE_BARREL,
@@ -479,7 +479,7 @@ ROM_DATA static tracker_struct tracker_info[] = {
 	},
 	{
 		// Vine
-		.min_x = 66, .max_x = 86,
+		.min_x = 56, .max_x = 72,
 		.min_y = 108, .max_y = 128,
 		.enabled = TRACKER_ENABLED_DEFAULT,
 		.type = TRACKER_TYPE_VINE,
@@ -489,7 +489,7 @@ ROM_DATA static tracker_struct tracker_info[] = {
 	},
 	{
 		// Climbing
-		.min_x = 87, .max_x = 107,
+		.min_x = 73, .max_x = 92,
 		.min_y = 108, .max_y = 128,
 		.enabled = TRACKER_ENABLED_DEFAULT,
 		.type = TRACKER_TYPE_CLIMB,
@@ -573,6 +573,78 @@ ROM_DATA static tracker_struct tracker_info[] = {
 		.type = TRACKER_TYPE_SNIDE,
 		.item = REQITEM_SHOPKEEPER,
 		.kong = 3,
+	},
+	{
+		// Cannon
+		.min_x = 91, .max_x = 111,
+		.min_y = 108, .max_y = 128,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_CANNON,
+		.item = REQITEM_MOVE,
+		.level = 13,
+	},
+	{
+		// Night
+		.min_x = 132, .max_x = 139,
+		.min_y = 87, .max_y = 108,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_NIGHT,
+		.item = REQITEM_FUNGITIME,
+		.kong = 1,
+	},
+	{
+		// Night
+		.min_x = 139, .max_x = 147,
+		.min_y = 87, .max_y = 91,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_NIGHT,
+		.item = REQITEM_FUNGITIME,
+		.kong = 1,
+	},
+	{
+		// Night
+		.min_x = 139, .max_x = 152,
+		.min_y = 102, .max_y = 108,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_NIGHT,
+		.item = REQITEM_FUNGITIME,
+		.kong = 1,
+	},
+	{
+		// Night
+		.min_x = 139, .max_x = 142,
+		.min_y = 100, .max_y = 102,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_NIGHT,
+		.item = REQITEM_FUNGITIME,
+		.kong = 1,
+	},
+	{
+		// Night
+		.min_x = 149, .max_x = 153,
+		.min_y = 99, .max_y = 102,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_NIGHT,
+		.item = REQITEM_FUNGITIME,
+		.kong = 1,
+	},
+	{
+		// Day
+		.min_x = 140, .max_x = 152,
+		.min_y = 91, .max_y = 99,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_DAY,
+		.item = REQITEM_FUNGITIME,
+		.kong = 0,
+	},
+	{
+		// Day
+		.min_x = 142, .max_x = 150,
+		.min_y = 99, .max_y = 103,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_DAY,
+		.item = REQITEM_FUNGITIME,
+		.kong = 0,
 	},
 };
 
@@ -695,6 +767,9 @@ unsigned char pregiven_status[] = {
 	1, // 53 = TRACKER_TYPE_CANDY
 	1, // 54 = TRACKER_TYPE_SNIDE
 	1, // 55 = TRACKER_TYPE_CLIMB
+	1, // 56 = TRACKER_TYPE_CANNON,
+	1, // 57 = TRACKER_TYPE_DAY,
+	1, // 58 = TRACKER_TYPE_NIGHT,
 };
 
 int getEnabledState(tracker_struct *segment) {

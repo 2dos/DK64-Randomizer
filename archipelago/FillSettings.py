@@ -484,10 +484,10 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
         settings_dict["alter_switch_allocation"] = True
         # Convert level_1-level_8 to prog_slam_level_1 through prog_slam_level_8
         for i in range(8):
-            level_key = f"level_{i+1}"
+            level_key = f"level_{i + 1}"
             if level_key in options.alter_switch_allocation.value:
                 slam_name = options.alter_switch_allocation.value[level_key]
-                settings_dict[f"prog_slam_level_{i+1}"] = slam_map.get(slam_name, SlamRequirement.green)
+                settings_dict[f"prog_slam_level_{i + 1}"] = slam_map.get(slam_name, SlamRequirement.green)
 
     # Apply blocker settings
     blocker_options: list[int] = [

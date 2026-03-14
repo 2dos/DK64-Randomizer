@@ -381,7 +381,7 @@ vanilla_tns_data = {
 
 
 def placeVanillaTNSScripts(ROM_COPY: LocalROM):
-    """Writes the script data for the vanilla set of T&S Portals."""
+    """Write the script data for the vanilla set of T&S Portals."""
     for map_id, portal_data in vanilla_tns_data.items():
         item_ids = []
         extra_data = {}

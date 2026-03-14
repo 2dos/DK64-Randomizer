@@ -271,8 +271,8 @@ for num_type in num_types:
 tracker_im = Image.new(mode="RGBA", size=(254, 128))
 instruments = ("bongos", "guitar", "trombone", "sax", "triangle")
 pellets = ("coconut", "peanut", "grape", "feather", "pineapple")
-extra_moves = ("film", "shockwave", "slam", "homing_crate", "sniper")
-training_moves = ("swim", "orange", "barrel", "vine", "climb")
+extra_moves = ("film", "shockwave", "slam", "homing_crate", "sniper", "time")
+training_moves = ("swim", "orange", "barrel", "vine", "climb", "cannon")
 kong_submoves = ("_move", "pad", "barrel")
 dim = 20
 gap = int(dim * 1.1)
@@ -304,15 +304,22 @@ for move_index, move in enumerate(extra_moves):
         move_im = Image.open(f"{hash_dir}{move}.png")
     else:
         move_im = Image.open(f"{getDir('assets/file_screen/')}tracker_images/{move}.png")
+    extra_gap = int((5 / 6) * gap)
+    y_pos = move_index * extra_gap
+    if move == "homing_crate":
+        y_pos += 4
+    elif move in ("sniper", "time"):
+        y_pos -= 3
     move_im = move_im.resize((dim, dim))
-    tracker_im.paste(move_im, ((6 * gap), (move_index * gap)), move_im)
+    tracker_im.paste(move_im, ((6 * gap), y_pos), move_im)
 for move_index, move in enumerate(training_moves):
     if move in ("orange"):
         move_im = Image.open(f"{hash_dir}{move}.png")
     else:
         move_im = Image.open(f"{getDir('assets/file_screen/')}tracker_images/{move}.png")
+    training_gap = int((5 / 6) * gap)
     move_im = move_im.resize((dim, dim))
-    tracker_im.paste(move_im, ((move_index * gap), 128 - dim), move_im)
+    tracker_im.paste(move_im, ((move_index * training_gap), 128 - dim), move_im)
 for file_info in number_crop:
     for num_info in file_info["image_list"]:
         key_num = num_info["num"]
@@ -978,7 +985,8 @@ for kong_local_index, kong in enumerate(["chunky", "tiny", "dk"]):
             slot_image = puzzle_im.crop((32 * x, 32 * y, 32 * (x + 1), 32 * (y + 1)))
             slot_image.save(f"{disp_dir}facepuzzle_{hex(image_index)}.png")
             slot_image.save(f"{disp_dir}dupepuzzle_{hex(image_index)}.png")
-            
+
+
 def alterWood(image):
     """Alter the wood color to our dark red color."""
     output = hueShift(image, 315)

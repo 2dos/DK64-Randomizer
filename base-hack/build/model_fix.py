@@ -571,7 +571,7 @@ with open(ROMName, "rb") as rom:
             # Replace Image
             fh.seek(0xDC)
             fh.write(index.to_bytes(4, "big"))
-                    
+
     # Multiplayer Pad
     rom.seek(modeltwo_table + (0x214 << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
@@ -771,7 +771,7 @@ with open(ROMName, "rb") as rom:
             rom.seek(model_start)
             data = rom.read(model_size)
             if indic == 0x1F8B:
-                data = zlib.decompress(data, (15 + 32))        
+                data = zlib.decompress(data, (15 + 32))
             with open(f"{obj_name}_{name}.bin", "wb") as fh:
                 fh.write(data)
             with open(f"{obj_name}_{name}.bin", "r+b") as fh:
@@ -798,7 +798,7 @@ with open(ROMName, "rb") as rom:
         rom.seek(model_start)
         data = rom.read(model_size)
         if indic == 0x1F8B:
-            data = zlib.decompress(data, (15 + 32))        
+            data = zlib.decompress(data, (15 + 32))
         with open(f"ice_wall_{name}.bin", "wb") as fh:
             fh.write(data)
         with open(f"ice_wall_{name}.bin", "r+b") as fh:
