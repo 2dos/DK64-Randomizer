@@ -208,7 +208,7 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
                     doorLocation = GetDoorLocationForKongAndLevel(kong, level)  # If testing all locations, replace "kong" with "kong % 5"
                     region = spoiler.RegionList[selected_door.logicregion]
                     region.locations.append(LocationLogic(doorLocation, selected_door.logic))
-                    spoiler.LocationList[doorLocation].name = f"{level_to_name[level]} Hint Door: {selected_door.name}"
+                    spoiler.LocationList[doorLocation].name = f"{level_to_name[level]} Hint Door ({selected_door.name})"
         elif disable_wrinkly_puzzles:
             # place vanilla wrinkly doors
             vanilla_wrinkly_doors = [door for door in available_doors if door_locations[level][door].default_placed == DoorType.wrinkly]
@@ -321,7 +321,7 @@ def ShuffleVanillaDoors(spoiler):
             doorLocation = GetDoorLocationForKongAndLevel(kong, level)
             region = spoiler.RegionList[selected_door.logicregion]
             region.locations.append(LocationLogic(doorLocation, selected_door.logic))
-            spoiler.LocationList[doorLocation].name = f"{level_to_name[level]} Hint Door: {selected_door.name}"
+            spoiler.LocationList[doorLocation].name = f"{level_to_name[level]} Hint Door ({selected_door.name})"
         # Any remaining vanilla door that isn't occupied and is a T&S door will get a T&S - the number of doors here will vary based on how many hints were placed in lobby vs level
         placed_tns_count = 1
         for door_index in vanilla_door_indexes:
