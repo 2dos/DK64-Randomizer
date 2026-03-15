@@ -1,2 +1,3 @@
 pyxdelta==0.2.3
 pillow==12.1.0
+protobuf==6.31.1
