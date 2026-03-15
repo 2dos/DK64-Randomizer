@@ -1,0 +1,172 @@
+syntax = "proto3";
+
+package randomizer.proto;
+
+import "common/key.proto";
+import "common/kong.proto";
+import "common/slam_level.proto";
+
+message Logic {
+    enum LogicType {
+        LOGIC_TYPE_UNSPECIFIED = 0;
+        LOGIC_TYPE_GLITCHLESS_LOGIC = 1;
+        LOGIC_TYPE_ADVANCED_GLITCHLESS_LOGIC = 2;
+        LOGIC_TYPE_GLITCH_LOGIC = 3;
+        LOGIC_TYPE_MINIMAL_LOGIC = 4;
+        LOGIC_TYPE_NO_LOGIC = 5;
+    }
+
+    enum Trick {
+        TRICK_UNSPECIFIED = 0;
+        TRICK_ADVANCED_GRENADING = 1;
+        TRICK_MONKEY_MANUEVERS = 2;
+        TRICK_HARD_SHOOTING = 3;
+    }
+
+    enum Glitch {
+        GLITCH_UNSPECIFIED = 0;
+        GLITCH_B_LOCKER_SKIPS = 1;
+        GLITCH_GENERAL_CLIPS = 2;
+        GLITCH_LEDGE_CLIPS = 3;
+        GLITCH_MOONKICKS = 4;
+        GLITCH_MOONTAIL = 5;
+        GLITCH_PHASE_SWIMMING = 6;
+        GLITCH_PHASE_WALKING = 7;
+        GLITCH_SKEW = 8;
+        GLITCH_SPAWN_SNAGS = 9;
+        GLITCH_SWIM_THROUGH_SHORES = 10;
+        GLITCH_TAG_BARREL_STORAGE = 11;
+        GLITCH_TROFF_N_SCOFF_SKIPS = 12;
+        GLITCH_PHASE_FALL = 13;
+    }
+
+    LogicType type = 1;
+
+    repeated Trick tricks = 2;
+
+    repeated Glitch glitches = 3;
+}
+
+message WinCondition {
+    enum WinConditionType {
+        WIN_CONDITION_TYPE_UNSPECIFIED = 0;
+        WIN_CONDITION_TYPE_KROOL = 1;
+        WIN_CONDITION_TYPE_KEY_8 = 2;
+        WIN_CONDITION_TYPE_KREMLING_KAPTURE = 3;
+        WIN_CONDITION_TYPE_DK_RAP = 4;
+        WIN_CONDITION_TYPE_KROOL_CHALLENGE = 5;
+        WIN_CONDITION_TYPE_RANDOM_EASY = 6;
+        WIN_CONDITION_TYPE_RANDOM_MEDIUM = 7;
+        WIN_CONDITION_TYPE_RANDOM_HARD = 8;
+        WIN_CONDITION_TYPE_GOLDEN_BANANAS = 9;
+        WIN_CONDITION_TYPE_BLUEPRINTS = 10;
+        WIN_CONDITION_TYPE_COMPANY_COINS = 11;
+        WIN_CONDITION_TYPE_KEYS = 12;
+        WIN_CONDITION_TYPE_MEDALS = 13;
+        WIN_CONDITION_TYPE_CROWNS = 14;
+        WIN_CONDITION_TYPE_FAIRIES = 15;
+        WIN_CONDITION_TYPE_RAINBOW_COINS = 16;
+        WIN_CONDITION_TYPE_BEAN = 17;
+        WIN_CONDITION_TYPE_PEARLS = 18;
+        WIN_CONDITION_TYPE_BOSSES = 19;
+        WIN_CONDITION_TYPE_BONUSES = 20;
+    }
+
+    WinConditionType type = 1;
+
+    optional int32 quantity = 2;
+}
+
+message RequiredKeys {
+    bool random_quantity = 1;
+
+    optional int32 specified_quantity = 2;
+
+    repeated common.KeyId specified_starting_keys = 3;
+
+    bool helm_key_lock = 4;
+
+    bool key_8_required = 5;
+}
+
+message StartingKongs {
+    bool random_quantity = 1;
+
+    optional int32 specified_quantity = 2;
+
+    optional common.KongId specified_starting_kong = 3;
+}
+
+message HelmDoorRequirement {
+    enum HelmDoorRequirementType {
+        HELM_DOOR_REQUIREMENT_TYPE_UNSPECIFIED = 0;
+        HELM_DOOR_REQUIREMENT_TYPE_OPEN = 1;
+        HELM_DOOR_REQUIREMENT_TYPE_RANDOM_EASY = 2;
+        HELM_DOOR_REQUIREMENT_TYPE_RANDOM_MEDIUM = 3;
+        HELM_DOOR_REQUIREMENT_TYPE_RANDOM_HARD = 4;
+        HELM_DOOR_REQUIREMENT_TYPE_GOLDEN_BANANAS = 5;
+        HELM_DOOR_REQUIREMENT_TYPE_BLUEPRINTS = 6;
+        HELM_DOOR_REQUIREMENT_TYPE_COMPANY_COINS = 7;
+        HELM_DOOR_REQUIREMENT_TYPE_KEYS = 8;
+        HELM_DOOR_REQUIREMENT_TYPE_MEDALS = 9;
+        HELM_DOOR_REQUIREMENT_TYPE_CROWNS = 10;
+        HELM_DOOR_REQUIREMENT_TYPE_FAIRIES = 11;
+        HELM_DOOR_REQUIREMENT_TYPE_RAINBOW_COINS = 12;
+        HELM_DOOR_REQUIREMENT_TYPE_BEAN = 13;
+        HELM_DOOR_REQUIREMENT_TYPE_PEARLS = 14;
+    }
+
+    HelmDoorRequirementType type = 1;
+
+    optional int32 specified_quantity = 2;
+}
+
+message HelmSettings {
+    enum HelmStartLocation {
+        HELM_START_LOCATION_UNSPECIFIED = 0;
+        HELM_START_LOCATION_VANILLA = 1;
+        HELM_START_LOCATION_SKIP_START = 2;
+        HELM_START_LOCATION_SKIP_ALL = 3;
+    }
+
+    bool random_length = 1;
+
+    optional int32 specified_length = 2;
+
+    bool shuffle_helm_rooms = 3;
+
+    HelmStartLocation helm_start_location = 4;
+
+    int32 helm_room_bonus_count = 5;
+
+    repeated HelmDoorRequirement helm_door_requirements = 6;
+}
+
+message KRoolSettings {
+    bool shuffle_k_rool_phases = 1;
+
+    bool vanilla_key_requirement = 2;
+
+    bool random_phase_amount = 3;
+
+    optional int32 specified_phase_amount = 4;
+
+    bool dk_phase_requires_blast = 5;
+
+    common.SlamLevel chunky_phase_slam_requirement = 6;
+}
+
+
+message EndgameSettings {
+    Logic logic = 1;
+
+    WinCondition win_condition = 2;
+
+    RequiredKeys required_keys = 3;
+
+    StartingKongs starting_kongs = 4;
+
+    HelmSettings helm_settings = 5;
+
+    KRoolSettings k_rool_settings = 6;
+}

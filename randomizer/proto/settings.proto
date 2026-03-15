@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package randomizer.proto;
+
+import "endgame_settings.proto";
+import "overworld_settings.proto";
+import "requirement_settings.proto";
+
+/* This message details all information about user-provided settings. 
+ * Any settings here should be user-visible, or directly derived from user-visible options. 
+ * If a setting should resolve to something random, that random result should be listed in SeedPatchingData, NOT here.
+ * This is split into separate messages to remain relatively organized.
+ */
+message SettingsInfo {
+  ItemSettings item_settings = 1;
+
+  RequirementSettings requirement_settings = 2;
+  
+  OverworldSettings overworld_settings = 3;
+
+  EndgameSettings endgame_settings = 4;
+
+  QualityOfLifeSettings qol_settings = 5;
+}

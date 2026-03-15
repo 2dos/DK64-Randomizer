@@ -1,0 +1,282 @@
+syntax = "proto3";
+
+package randomizer.proto;
+
+import "common/slam_level.proto";
+
+message BLockerOption {
+    enum BLockerRando {
+        B_LOCKER_RANDO_UNSPECIFIED = 0;
+        B_LOCKER_RANDO_PRE_SELECTED = 1;
+        B_LOCKER_RANDO_EASY_RANDOM = 2;
+        B_LOCKER_RANDO_NORMAL_RANDOM = 3;
+        B_LOCKER_RANDO_HARD_RANDOM = 4;
+        B_LOCKER_RANDO_CHAOS_B_LOCKERS = 5;
+    }
+
+    BLockerRando opt = 1;
+
+    repeated int32 amounts = 2;
+
+    optional int32 maximum = 3;
+}
+
+message TroffNScoffOption {
+    enum TNSRando {
+        TNS_RANDO_UNSPECIFIED = 0;
+        TNS_RANDO_PRE_SELECTED = 1;
+        TNS_RANDO_NORMAL_RANDOM = 2;
+        TNS_RANDO_HARD_RANDOM = 3;
+    }
+
+    TNSRando opt = 1;
+
+    repeated int32 amounts = 2;
+
+    optional int32 maximum = 3;
+}
+
+message MedalsForJetpac {
+    enum MedalReqRando {
+        MEDAL_REQ_RANDO_UNSPECIFIED = 0;
+        MEDAL_REQ_RANDO_PRE_SELECTED = 1;
+        MEDAL_REQ_RANDO_EASY_RANDOM = 2;
+        MEDAL_REQ_RANDO_NORMAL_RANDOM = 3;
+        MEDAL_REQ_RANDO_HARD_RANDOM = 4;
+    }
+
+    MedalReqRando opt = 1;
+
+    optional int32 selected_quantity = 2;
+}
+
+message PearlsForMermaid {
+    enum PearlReqRando {
+        PEARL_REQ_RANDO_UNSPECIFIED = 0;
+        PEARL_REQ_RANDO_PRE_SELECTED = 1;
+        PEARL_REQ_RANDO_EASY_RANDOM = 2;
+        PEARL_REQ_RANDO_NORMAL_RANDOM = 3;
+        PEARL_REQ_RANDO_HARD_RANDOM = 4;
+    }
+
+    PearlReqRando opt = 1;
+
+    optional int32 selected_quantity = 2;
+}
+
+message FairiesForFairyQueen {
+    enum FairyReqRando {
+        FAIRY_REQ_RANDO_UNSPECIFIED = 0;
+        FAIRY_REQ_RANDO_PRE_SELECTED = 1;
+        FAIRY_REQ_RANDO_EASY_RANDOM = 2;
+        FAIRY_REQ_RANDO_NORMAL_RANDOM = 3;
+        FAIRY_REQ_RANDO_HARD_RANDOM = 4;
+    }
+
+    FairyReqRando opt = 1;
+
+    optional int32 selected_quantity = 2;
+}
+
+message ColoredBananasForMedal {
+    enum CBReqRando {
+        CB_REQ_RANDO_UNSPECIFIED = 0;
+        CB_REQ_RANDO_PRE_SELECTED = 1;
+        CB_REQ_RANDO_EASY_RANDOM = 2;
+        CB_REQ_RANDO_NORMAL_RANDOM = 3;
+        CB_REQ_RANDO_HARD_RANDOM = 4;
+        CB_REQ_RANDO_PROGRESSIVE = 5;
+    }
+
+    CBReqRando opt = 1;
+
+    optional int32 selected_quantity = 2;
+}
+
+message ProgressiveSwitchStrength {
+    bool enabled = 1;
+
+    repeated common.SlamLevel slam_levels = 2;
+}
+
+message Switchsanity {
+    enum SwitchLocation {
+        SWITCH_LOCATION_UNSPECIFIED = 0;
+        SWITCH_LOCATION_ISLES_TO_TOP_OF_KREM_ISLE = 1;
+        SWITCH_LOCATION_ISLES_IN_HELM_LOBBY = 2;
+        SWITCH_LOCATION_ISLES_BACK_OF_AZTEC_LOBBY = 3;
+        SWITCH_LOCATION_ISLES_FOREST_LOBBY_FAIRY = 4;
+        SWITCH_LOCATION_ISLES_CABIN_ISLE_ROCKET = 5;
+        SWITCH_LOCATION_JAPES_FREE_KONG = 6;
+        SWITCH_LOCATION_JAPES_HIVE_AREA = 7;
+        SWITCH_LOCATION_JAPES_STARTING_TUNNEL = 8;
+        SWITCH_LOCATION_JAPES_PAINTING_ROOM = 9;
+        SWITCH_LOCATION_JAPES_RAMBI = 10;
+        SWITCH_LOCATION_AZTEC_TINY_TEMPLE_FREE_KONG = 11;
+        SWITCH_LOCATION_AZTEC_LLAMA_TEMPLE_FREE_KONG = 12;
+        SWITCH_LOCATION_AZTEC_STARTING_TUNNEL_KASPLAT = 13;
+        SWITCH_LOCATION_AZTEC_OASIS_DOOR = 14;
+        SWITCH_LOCATION_AZTEC_LLAMA_TEMPLE_FRONT = 15;
+        SWITCH_LOCATION_AZTEC_LLAMA_TEMPLE_SIDE = 16;
+        SWITCH_LOCATION_AZTEC_LLAMA_TEMPLE_BACK = 17;
+        SWITCH_LOCATION_AZTEC_SAND_TUNNEL = 18;
+        SWITCH_LOCATION_GALLEON_LIGHTHOUSE_AREA = 19;
+        SWITCH_LOCATION_GALLEON_SHIPYARD_AREA = 20;
+        SWITCH_LOCATION_GALLEON_CANNON_GAME = 21;
+        SWITCH_LOCATION_FOREST_YELLOW_TUNNEL = 22;
+        SWITCH_LOCATION_FOREST_GREEN_TUNNEL_CLOCK_SIDE = 23;
+        SWITCH_LOCATION_FOREST_GREEN_TUNNEL_BEAN_SIDE = 24;
+    }
+
+    enum SwitchItem {
+        SWITCH_ITEM_UNSPECIFIED = 0;
+        SWITCH_ITEM_RANDOM = 1;
+        SWITCH_ITEM_MONKEYPORT = 2;
+        SWITCH_ITEM_BABOON_BLAST = 3;
+        SWITCH_ITEM_BABOON_BALLOON = 4;
+        SWITCH_ITEM_GORILLA_GONE = 5;
+        SWITCH_ITEM_BONGOS = 6;
+        SWITCH_ITEM_GUITAR = 7;
+        SWITCH_ITEM_TROMBONE = 8;
+        SWITCH_ITEM_SAXOPHONE = 9;
+        SWITCH_ITEM_TRIANGLE = 10;
+        SWITCH_ITEM_GORILLA_GRAB = 11;
+        SWITCH_ITEM_CHIMPY_CHARGE = 12;
+        SWITCH_ITEM_PRIMATE_PUNCH  = 13;
+        SWITCH_ITEM_COCONUT = 14;
+        SWITCH_ITEM_PEANUT = 15;
+        SWITCH_ITEM_GRAPE = 16;
+        SWITCH_ITEM_FEATHER = 17;
+        SWITCH_ITEM_PINEAPPLE = 18;
+        SWITCH_ITEM_DK = 19;
+        SWITCH_ITEM_DIDDY = 20;
+        SWITCH_ITEM_LANKY = 21;
+        SWITCH_ITEM_TINY = 22;
+        SWITCH_ITEM_CHUNKY = 23;
+        SWITCH_ITEM_BONGOS_COCONUT = 24;
+        SWITCH_ITEM_GUITAR_PEANUT = 25;
+        SWITCH_ITEM_TROMBONE_GRAPE = 26;
+        SWITCH_ITEM_SAXOPHONE_FEATHER = 27;
+        SWITCH_ITEM_TRIANGLE_PINEAPPLE = 28;
+    }
+
+    message Switch {
+        SwitchLocation location = 1;
+        SwitchItem item = 2;
+    }
+
+    bool enabled = 1;
+
+    repeated Switch switch_assignment = 2;
+}
+
+enum Barrier {
+    BARRIER_UNSPECIFIED = 0;
+    BARRIER_JAPES_COCONUT_GATES = 1;
+    BARRIER_JAPES_SHELLHIVE_GATE = 2;
+    BARRIER_AZTEC_TINY_TEMPLE_ICE = 3;
+    BARRIER_AZTEC_TUNNEL_DOOR  = 4;
+    BARRIER_AZTEC_5_DOOR_TEMPLE_SWITCHES = 5;
+    BARRIER_AZTEC_LLAMA_SWITCHES = 6;
+    BARRIER_FACTORY_PRODUCTION_ROOM = 7;
+    BARRIER_FACTORY_TESTING_GATE = 8;
+    BARRIER_GALLEON_LIGHTHOUSE_GATE = 9;
+    BARRIER_GALLEON_SEASICK_SHIP = 10;
+    BARRIER_GALLEON_TREASURE_ROOM = 11;
+    BARRIER_FOREST_GREEN_TUNNEL = 12;
+    BARRIER_FOREST_YELLOW_TUNNEL = 13;
+    BARRIER_CAVES_IGLOO_PADS = 14;
+    BARRIER_CAVES_ICE_WALLS = 15;
+    BARRIER_CASTLE_CRYPT_DOORS = 16;
+}
+
+enum GalleonWater {
+    GALLEON_WATER_UNSPECIFIED = 0;
+    GALLEON_WATER_LOWERED = 1;
+    GALLEON_WATER_RAISED = 2;
+    GALLEON_WATER_RANDOM = 3;
+}
+
+enum FungiTime {
+    FUNGI_TIME_UNSPECIFIED = 0;
+    FUNGI_TIME_DAY_START = 1;
+    FUNGI_TIME_NIGHT_START = 2;
+    FUNGI_TIME_RANDOM_START = 3;
+    FUNGI_TIME_DUSK = 4;
+    FUNGI_TIME_PROGRESSIVE = 5;
+}
+
+enum ShopPrices {
+    SHOP_PRICES_UNSPECIFIED = 0;
+    SHOP_PRICES_VANILLA = 1;
+    SHOP_PRICES_FREE = 2;
+    SHOP_PRICES_LOW = 3;
+    SHOP_PRICES_MEDIUM = 4;
+    SHOP_PRICES_HIGH = 5;
+    SHOP_PRICES_EXTREME = 6;
+}
+
+enum ActivateBananaports {
+    ACTIVATE_BANANAPORTS_UNSPECIFIED = 0;
+    ACTIVATE_BANANAPORTS_ISLES = 1;
+    ACTIVATE_BANANAPORTS_ISLES_AND_HELM = 2;
+    ACTIVATE_BANANAPORTS_ALL = 3;
+}
+
+enum PuzzleRando {
+    PUZZLE_RANDO_UNSPECIFIED = 0;
+    PUZZLE_RANDO_EASY = 1;
+    PUZZLE_RANDO_MEDIUM = 2;
+    PUZZLE_RANDO_HARD = 3;
+    PUZZLE_RANDO_CHAOS = 4;
+}
+
+// Just a couple of examples to get the point across, I'll get to converting these all at some point
+// This will be in its own file because its a very important enum, of course.
+enum Location {
+    LOCATION_UNSPECIFIED = 0;
+    LOCATION_FACTORY_TOY_MONSTER = 1;
+    LOCATION_FACTORY_PIANO_GAME = 2;
+}
+
+message RequirementSettings {
+    BLockerOption b_locker_option = 1;
+
+    bool maximize_helm_b_locker = 2;
+
+    TroffNScoffOption tns_option = 3;
+
+    MedalsForJetpac medals_for_jetpac = 4;
+
+    PearlsForMermaid pearls_for_mermaid = 5;
+
+    FairiesForFairyQueen fairies_for_fairy_queen = 6;
+
+    ColoredBananasForMedal cbs_for_medal = 7;
+
+    bool open_lobbies = 8;
+
+    ProgressiveSwitchStrength progressive_switch_strength = 9;
+
+    Switchsanity switchsanity = 10;
+
+    bool smaller_shops = 11;
+
+    bool tooie_style_shops = 12;
+
+    bool free_trade_agreement = 13;
+
+    repeated Barrier removed_barriers = 14;
+
+    GalleonWater galleon_water = 15;
+
+    FungiTime fungi_time = 16;
+
+    ShopPrices shop_prices = 17;
+
+    ActivateBananaports activate_bananaports = 18;
+
+    repeated Location faster_checks = 19;
+
+    PuzzleRando puzzle_rando = 20;
+}

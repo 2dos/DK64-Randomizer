@@ -1,0 +1,254 @@
+syntax = "proto3";
+
+package randomizer.proto;
+
+import "common/level.proto";
+
+enum EntranceRandomizer {
+    ENTRANCE_RANDOMIZER_UNSPECIFIED = 0;
+    ENTRANCE_RANDOMIZER_VANILLA = 1;
+    ENTRANCE_RANDOMIZER_LEVEL_ORDER = 2;
+    ENTRANCE_RANDOMIZER_COMPLEX_LEVEL_ORDER = 3;
+    ENTRANCE_RANDOMIZER_LOADING_ZONES = 4;
+    ENTRANCE_RANDOMIZER_DECOUPLED_LOADING_ZONES = 5;
+}
+
+enum CrossMapBananaports {
+    CROSS_MAP_BANANAPORTS_UNSPECIFIED = 0;
+    CROSS_MAP_BANANAPORTS_OFF = 1;
+    CROSS_MAP_BANANAPORTS_COUPLED = 2;
+    CROSS_MAP_BANANAPORTS_DECOUPLED = 3;
+}
+
+message KongModels {
+    enum KongModel {
+        KONG_MODEL_UNSPECIFIED = 0;
+        KONG_MODEL_DK = 1;
+        KONG_MODEL_DIDDY = 2;
+        KONG_MODEL_LANKY = 3;
+        KONG_MODEL_TINY = 4;
+        KONG_MODEL_CHUNKY = 5;
+        KONG_MODEL_KRUSHA = 6;
+    }
+
+    KongModel dk_model = 1;
+    KongModel diddy_model = 2;
+    KongModel lanky_model = 3;
+    KongModel tiny_model = 4;
+    KongModel chunky_model = 5;
+}
+
+message ColoredBananaRandomizer {
+    bool enabled = 1;
+
+    repeated common.LevelId cb_randomized_levels = 2;
+}
+
+enum KasplatRandomizer {
+    KASPLAT_RANDOMIZER_UNSPECIFIED = 0;
+    KASPLAT_RANDOMIZER_VANILLA = 1;
+    KASPLAT_RANDOMIZER_VANILLA_LOCATIONS = 2;
+    KASPLAT_RANDOMIZER_LOCATION_SHUFFLE = 3;
+}
+
+message BananaportRandomizer{    
+    enum BananaportRandomizerOption {
+        BANANAPORT_RANDOMIZER_OPTION_UNSPECIFIED = 0;
+        BANANAPORT_RANDOMIZER_OPTION_VANILLA = 1;
+        BANANAPORT_RANDOMIZER_OPTION_HALF_VANILLA = 2;
+        BANANAPORT_RANDOMIZER_OPTION_ON = 3;
+    }
+
+    enum BananaportArea {
+        BANANAPORT_AREA_UNSPECIFIED = 0;
+        BANANAPORT_AREA_JAPES = 1;
+        BANANAPORT_AREA_AZTEC_MAIN = 2;
+        BANANAPORT_AREA_AZTEC_LLAMA = 3;
+        BANANAPORT_AREA_FACTORY = 4;
+        BANANAPORT_AREA_GALLEON = 5;
+        BANANAPORT_AREA_FOREST = 6;
+        BANANAPORT_AREA_CAVES = 7;
+        BANANAPORT_AREA_CASTLE_MAIN = 8;
+        BANANAPORT_AREA_CASTLE_CRYPT = 9;
+        BANANAPORT_AREA_ISLES = 10;
+    }
+
+    BananaportRandomizerOption opt = 1;
+
+    repeated BananaportArea bananaport_randomized_levels = 2;
+}
+
+enum PortalRandomizer {
+    PORTAL_RANDOMIZER_UNSPECIFIED = 0;
+    PORTAL_RANDOMIZER_VANILLA = 1;
+    PORTAL_RANDOMIZER_MAIN_ONLY = 2;
+    PORTAL_RANDOMIZER_ON = 3;
+}
+
+enum CrownEnemies {
+    CROWN_ENEMIES_UNSPECIFIED = 0;
+    CROWN_ENEMIES_VANILLA = 1;
+    CROWN_ENEMIES_EASY = 2;
+    CROWN_ENEMIES_MEDIUM = 3;
+    CROWN_ENEMIES_HARD = 4;
+    CROWN_ENEMIES_PROGRESSIVE = 5;
+}
+
+enum ShuffledEnemy {
+    SHUFFLED_ENEMY_UNSPECIFIED = 0;
+    SHUFFLED_ENEMY_BAT = 1;
+    SHUFFLED_ENEMY_BEAVER_BLUE = 2;
+    SHUFFLED_ENEMY_BEAVER_GOLD = 3;
+    SHUFFLED_ENEMY_BUG = 4;
+    SHUFFLED_ENEMY_FIREBALL = 5;
+    SHUFFLED_ENEMY_GET_OUT = 6;
+    SHUFFLED_ENEMY_GHOST = 7;
+    SHUFFLED_ENEMY_GIMPFISH = 8;
+    SHUFFLED_ENEMY_KABOOM = 9;
+    SHUFFLED_ENEMY_KASPLAT_CHUNKY = 10;
+    SHUFFLED_ENEMY_KASPLAT_DK = 11;
+    SHUFFLED_ENEMY_KASPLAT_DIDDY = 12;
+    SHUFFLED_ENEMY_KASPLAT_LANKY = 13;
+    SHUFFLED_ENEMY_KASPLAT_TINY = 14;
+    SHUFFLED_ENEMY_KLAPTRAP_GREEN = 15;
+    SHUFFLED_ENEMY_KLAPTRAP_PURPLE = 16;
+    SHUFFLED_ENEMY_KLAPTRAP_RED = 17;
+    SHUFFLED_ENEMY_KLOBBER = 18;
+    SHUFFLED_ENEMY_KLUMP = 19;
+    SHUFFLED_ENEMY_KOP = 20;
+    SHUFFLED_ENEMY_KOSHA = 21;
+    SHUFFLED_ENEMY_KREMLING = 22;
+    SHUFFLED_ENEMY_KROSSBONES = 23;
+    SHUFFLED_ENEMY_MR_DICE_GREEN = 24;
+    SHUFFLED_ENEMY_MR_DICE_RED = 25;
+    SHUFFLED_ENEMY_MUSHROOM_MAN = 26;
+    SHUFFLED_ENEMY_PUFFTUP = 27;
+    SHUFFLED_ENEMY_ROBO_KREMLING = 28;
+    SHUFFLED_ENEMY_ROBO_ZINGER = 29;
+    SHUFFLED_ENEMY_RULER = 30;
+    SHUFFLED_ENEMY_SHURI = 31;
+    SHUFFLED_ENEMY_SIR_DOMINO = 32;
+    SHUFFLED_ENEMY_SPIDER = 33;
+    SHUFFLED_ENEMY_ZINGER_CHARGER = 34;
+    SHUFFLED_ENEMY_ZINGER_LIME_THROWER = 35;
+}
+
+enum ShuffledBonusBarrel {
+    SHUFFLED_BONUS_BARREL_UNSPECIFIED = 0;
+    SHUFFLED_BONUS_BARREL_BATTY_BARREL_BANDIT = 1;
+    SHUFFLED_BONUS_BARREL_BIG_BUG_BASH = 2;
+    SHUFFLED_BONUS_BARREL_BUSY_BARREL_BARRAGE = 3;
+    SHUFFLED_BONUS_BARREL_MAD_MAZE_MAUL = 4;
+    SHUFFLED_BONUS_BARREL_MINECART_MAYHEM = 5;
+    SHUFFLED_BONUS_BARREL_BEAVER_BOTHER = 6;
+    SHUFFLED_BONUS_BARREL_TEETERING_TURTLE_TROUBLE = 7;
+    SHUFFLED_BONUS_BARREL_STEALTHY_SNOOP = 8;
+    SHUFFLED_BONUS_BARREL_STASH_SNATCH = 9;
+    SHUFFLED_BONUS_BARREL_SPLISH_SPLASH_SALVAGE = 10;
+    SHUFFLED_BONUS_BARREL_SPEEDY_SWING_SORTIE = 11;
+    SHUFFLED_BONUS_BARREL_KRAZY_KONG_KLAMOUR = 12;
+    SHUFFLED_BONUS_BARREL_SEARCHLIGHT_SEEK = 13;
+    SHUFFLED_BONUS_BARREL_KREMLING_KOSH = 14;
+    SHUFFLED_BONUS_BARREL_PERIL_PATH_PANIC = 15;
+    SHUFFLED_BONUS_BARREL_HELM_MINIGAMES = 16;
+    SHUFFLED_BONUS_BARREL_ARENAS = 17;
+    SHUFFLED_BONUS_BARREL_TRAINING_MINIGAMES = 18;
+    SHUFFLED_BONUS_BARREL_ARCADE = 19;
+}
+
+message HelmHurry {
+    bool enabled = 1;
+
+    int32 starting_time = 2;
+    int32 golden_banana_time = 3;
+    int32 blueprint_time = 4;
+    int32 company_coin_time = 5;
+    int32 move_time = 6;
+    int32 banana_medal_time = 7;
+    int32 rainbow_coin_time = 8;
+    int32 boss_key_time = 9;
+    int32 battle_crown_time = 10;
+    int32 bean_time = 11;
+    int32 pearl_time = 12;
+    int32 kong_time = 13;
+    int32 fairy_time = 14;
+    int32 cb_time = 15;
+    int32 trap_time = 16;
+}
+
+enum DamageEnum {
+    DAMAGE_ENUM_UNSPECIFIED = 0;
+    DAMAGE_ENUM_NORMAL = 1;
+    DAMAGE_ENUM_DOUBLE_DAMAGE = 2;
+    DAMAGE_ENUM_QUAD_DAMAGE = 3;
+    DAMAGE_ENUM_OHKO = 4;
+}
+
+message OverworldSettings {
+    // World Navigation
+    EntranceRandomizer entrance_randomizer = 1;
+    bool shuffle_helm_location = 2;
+    CrossMapBananaports cross_map_bananaports = 3;
+    bool random_starting_location = 4;
+    KongModels kong_models = 5;
+
+    // Location Randomizers
+    bool dirt_patch_randomizer = 6;
+    bool banana_coin_randomizer = 7;
+    bool banana_fairy_randomizer = 8;
+    bool melon_crate_randomizer = 9;
+    bool battle_crown_randomizer = 10;
+    bool race_coin_randomizer = 11;
+    bool randomize_pickups = 12;
+    bool shuffle_shop_locations = 13;
+    ColoredBananaRandomizer cb_randomizer = 14;
+    KasplatRandomizer kasplat_randomizer = 15;
+    BananaportRandomizer bananaport_randomizer = 16;
+    bool wrinky_door_randomizer = 17;
+    bool tns_portal_randomizer = 18;
+    bool vanilla_door_shuffle = 19;
+    bool dos_doors = 20;
+    PortalRandomizer dk_portal_randomizer = 21;
+
+    // Bosses
+    bool shuffle_boss_location = 22;
+    bool k_rool_phases_as_bosses = 23;
+
+    // Enemies
+    repeated ShuffledEnemy shuffled_enemies = 24;
+    CrownEnemies crown_enemies = 25;
+    bool random_enemy_speed = 26;
+    bool random_enemy_size = 27;
+
+    // Bonus Barrels
+    repeated ShuffledBonusBarrel shuffled_bonus_barrels = 28;
+    bool disable_hard_minigames = 29;
+    bool auto_complete_bonus_barrels = 30;
+
+    // Difficulty
+    bool no_heals = 31;
+    bool no_melon_slice_drops = 32;
+    bool ice_traps_damage_player = 33;
+    bool mirror_mode = 34;
+    bool irondonk = 35;
+    bool tag_barrels_disabled = 36;
+    HelmHurry helm_hurry_mode = 37;
+    bool hard_enemies = 38;
+    bool water_is_lava = 39;
+    bool reduced_fall_damage_threshold = 40;
+    bool shuffled_jetpac_enemies = 41;
+    bool lower_max_refill_amounts = 42;
+    bool strict_helm_timer = 43;
+    bool angry_caves = 44;
+    bool fast_balloons = 45;
+    bool donk_in_the_dark_world = 46;
+    bool donk_in_the_sky = 47;
+    bool fast_mad_jack = 48;
+    bool alternative_mad_jack_kongs = 49;
+    bool pufftoss_star_rando = 50;
+    bool pufftoss_star_raised = 51;
+    bool kut_out_phase_rando = 52;
+    bool k_rool_toes_rando = 53;
+    bool beta_lanky_phase = 54;
+    DamageEnum damage = 55;
+}
