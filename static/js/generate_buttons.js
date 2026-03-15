@@ -802,7 +802,6 @@ async function export_archipelago_yaml(event) {
     let request_data = {
         settings: settings,
         player_name: player_name,
-        include_triggers: false,  // Can be made configurable later
         game_version: "0.6.6"
     };
     

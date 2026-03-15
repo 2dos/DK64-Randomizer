@@ -228,6 +228,7 @@ class ArchipelagoMapper:
             "krusha_model_mode": "kong_model_dk",
             "switchsanity": "switchsanity_enabled",
             "alter_switch_allocation": "alter_switch_allocation",
+            "maximize_level8_blocker": "maximize_helm_blocker"
         }
 
         combined_mappings = {**auto_mappings, **manual_overrides}
@@ -704,10 +705,26 @@ class ArchipelagoMapper:
                         model_val = model.value if hasattr(model, "value") else model
                         if isinstance(model_val, int) and model_val == 2:
                             krusha_kongs.append(kong)
-                return "off" if not krusha_kongs else "manual"
+                return "none" if not krusha_kongs else "manual"
             except Exception:
                 pass
             return None
+        
+        if ap_field == "shop_prices":
+            tooie_shops = settings_dict.get("shops_dont_cost")
+            if not tooie_shops:
+                return "free"
+            random_prices = settings_dict.get("random_prices")
+            if random_prices is None:
+                return "free"
+            price_val = random_prices.value if hasattr(random_prices, "value") else int(random_prices)
+            # RandomPrices: vanilla=0, free=1, low=2, medium=3, high=4, extreme=5
+            # ShopPrices AP: free=0, low=1, medium=2, high=3
+            return {0: "free", 1: "free", 2: "low", 3: "medium", 4: "high", 5: "high"}.get(price_val, "free")
+
+        if ap_field == "maximize_level8_blocker":
+            maximize = settings_dict.get("maximize_helm_blocker")
+            return bool(maximize) if maximize is not None else None
 
         if ap_field == "kong_models":
             try:

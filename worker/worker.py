@@ -164,7 +164,6 @@ def export_archipelago_yaml():
         # Get settings from request
         settings_data = data.get("settings", {})
         player_name = data.get("player_name", "Player")
-        include_triggers = data.get("include_triggers", False)
         game_version = data.get("game_version", "0.6.6")
 
         # Settings should already be a dict from serialize_settings()
@@ -195,7 +194,7 @@ def export_archipelago_yaml():
                 logging.info(f"  item_rando_list_1: {item_list} (len: {len(item_list) if isinstance(item_list, (list, tuple)) else 'N/A'})")
 
         # Generate YAML
-        yaml_content = export_to_yaml(settings_data, player_name=player_name, include_triggers=include_triggers, game_version=game_version)
+        yaml_content = export_to_yaml(settings_data, player_name=player_name, game_version=game_version)
 
         return jsonify({"yaml": yaml_content, "success": True})
     except Exception as e:
