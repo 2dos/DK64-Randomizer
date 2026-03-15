@@ -1474,7 +1474,7 @@ colorblind_changes = [
     [0x12E5, 0x12E5],  # Pineapple
     [0x14A7, 0x14B5],  # Pineapple
     [0xB85, 0xB85],  # Snide HQ Sign
-    [0xC39, 0xC39],  # Dartboard Coin
+    # [0xC39, 0xC39],  # Dartboard Coin
 ]
 
 palette_files = [
