@@ -146,7 +146,7 @@
                     <hr />
                     <!-- Toasts -->
                     <div id="toasts">
-                        <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+                        <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container"></div>
                     </div>
                     <div class="container" id="nav-gen-type-container">
                         <nav style="display: inline-block; float: none; vertical-align: top;">
@@ -770,11 +770,11 @@
                 const strip = false;
                 const progress = true;
                 const toastDuration=5000;
-                const hook = document.getElementById("toasts");
+                const hook = document.getElementById("toast-container");
                 if (!strip) {
                     if (icon_mappings[color_scheme]) {
                         // Add icon at start of message
-                        message = `<span class="me-2"><i class="fa-solid fa-${icon_mappings[color_scheme]} fa-xl"></i></span>${message}`
+                        message = `<span class="me-2"><i class="fa-solid fa-${icon_mappings[color_scheme]} fa-xl noresize"></i></span>${message}`
                     }
                 }
                 const converse_style = color_scheme.includes("-subtle") ? color_scheme.replace("-subtle", "") : `${color_scheme}-subtle`;

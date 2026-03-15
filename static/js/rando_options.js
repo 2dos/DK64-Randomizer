@@ -996,7 +996,7 @@ document
 
 // Randomize all non-cosmetic settings.
 document.getElementById("randomize_settings").addEventListener("click", function (evt) {
-  generateToast(`Randomizing settings (${document.getElementById('random-weights').value}).<br>All non-cosmetic settings have been overwritten.`);
+  generateToast(`Randomizing settings (${document.getElementById('random-weights').value}). All non-cosmetic settings have been overwritten.`);
 
   randomize_settings();
 
