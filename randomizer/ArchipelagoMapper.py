@@ -228,7 +228,7 @@ class ArchipelagoMapper:
             "krusha_model_mode": "kong_model_dk",
             "switchsanity": "switchsanity_enabled",
             "alter_switch_allocation": "alter_switch_allocation",
-            "maximize_level8_blocker": "maximize_helm_blocker"
+            "maximize_level8_blocker": "maximize_helm_blocker",
         }
 
         combined_mappings = {**auto_mappings, **manual_overrides}
@@ -420,7 +420,12 @@ class ArchipelagoMapper:
                 elif ap_field == "tricks_selected":
                     from randomizer.Enums.Settings import TricksSelected
 
-                    name_map = {TricksSelected.monkey_maneuvers: "monkey_maneuvers", TricksSelected.hard_shooting: "hard_shooting", TricksSelected.advanced_grenading: "advanced_grenading", TricksSelected.slope_resets: "slope_resets"}
+                    name_map = {
+                        TricksSelected.monkey_maneuvers: "monkey_maneuvers",
+                        TricksSelected.hard_shooting: "hard_shooting",
+                        TricksSelected.advanced_grenading: "advanced_grenading",
+                        TricksSelected.slope_resets: "slope_resets",
+                    }
                     return self._list_to_names(value, TricksSelected, name_map)
 
                 elif ap_field == "glitches_selected":
@@ -709,7 +714,7 @@ class ArchipelagoMapper:
             except Exception:
                 pass
             return None
-        
+
         if ap_field == "shop_prices":
             tooie_shops = settings_dict.get("shops_dont_cost")
             if not tooie_shops:
