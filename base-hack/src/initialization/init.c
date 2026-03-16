@@ -244,41 +244,18 @@ void initHack(int source) {
 			bonusAutocomplete = Rando.resolve_bonus;
 			TextHoldOn = Rando.quality_of_life.textbox_hold;
 			ToggleAmmoOn = Rando.quality_of_life.ammo_swap;
-			LobbiesOpen = Rando.lobbies_open_bitfield;
-			ShorterBosses = Rando.short_bosses;
 			ItemRandoOn = Rando.item_rando;
-			KrushaSlot = Rando.krusha_slot;
-			RandomSwitches = Rando.random_switches;
 			DamageMultiplier = Rando.damage_multiplier; // Keep for Crowd Control. Needs it to know what to set damage mult back to
 			initItemRandoPointer();
 			initAP();
 			RandomizerVersion = 5;
 			RandomizerSubVersion = 1;  // Use this for tracker changes
-			for (int i = 0; i < 7; i++) {
-				SwitchLevel[i] = Rando.slam_level[i];
-			}
-			if (Rando.fairy_rando_on) {
-				// Fairy Location Table
-				int fairy_size = 20<<2;
-				fairy_location_item* fairy_write = getFile(fairy_size, 0x1FFC000);
-				for (int i = 0; i < (fairy_size >> 2); i++) {
-					for (int j = 0; j < 0x1F; j++) {
-						if (charspawnerflags[j].tied_flag == fairy_write[i].flag) {
-							charspawnerflags[j].map = fairy_write[i].map;
-							charspawnerflags[j].spawner_id = fairy_write[i].id;
-						}
-					}
-				}
-			}
 			// Kong Rando
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
 			initCosmetic();
 			initTextChanges();
-
-			replace_zones(1);
 			loadHooks();
-			loadExtraHooks();
 			// Place Move Data
 			moveTransplant();
 			
@@ -291,10 +268,6 @@ void initHack(int source) {
 			style6Mtx[0xF] = 100;
 			style6Mtx[0x8] = 0xEA00;
 			style6Mtx[0x9] = 0xFD00;
-			base_mtx = 12;
-			style2Mtx[0x0] = base_mtx;
-			style2Mtx[0x5] = base_mtx;
-			style2Mtx[0xF] = 10;
 			base_mtx = 50;
 			style128Mtx[0x0] = base_mtx;
 			style128Mtx[0x5] = base_mtx;

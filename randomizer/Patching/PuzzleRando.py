@@ -4,7 +4,7 @@ import math
 from enum import IntEnum, auto
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Library.Generic import IsDDMSSelected
+from randomizer.Patching.Library.Generic import IsDDMSSelected, TERMINATING_SFXS
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.ASM import getROMAddress, populateOverlayOffsets, getSym, Overlay
@@ -13,9 +13,7 @@ from randomizer.Enums.Settings import FasterChecksSelected, PuzzleRando
 
 def chooseSFX(rando):
     """Choose random SFX from bank of acceptable SFX."""
-    banks = [[98, 138], [166, 247], [249, 252], [398, 411], [471, 476], [519, 535], [547, 575], [614, 631], [644, 650]]
-    bank = rando.choice(banks)
-    return rando.randint(bank[0], bank[1])
+    return rando.choice(TERMINATING_SFXS)
 
 
 def shiftCastleMinecartRewardZones(ROM_COPY: LocalROM):
@@ -571,9 +569,9 @@ def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
         chosen_sounds = []
         for matching_head in range(8):
             ROM_COPY.seek(sav + 0x15C + (2 * matching_head))
-            sfx = chooseSFX(spoiler.settings.random)
+            sfx = spoiler.settings.random.choice(TERMINATING_SFXS)
             while sfx in chosen_sounds:
-                sfx = chooseSFX(spoiler.settings.random)
+                sfx = spoiler.settings.random.choice(TERMINATING_SFXS)
             chosen_sounds.append(sfx)
             ROM_COPY.writeMultipleBytes(sfx, 2)
         for piano_item in range(7):

@@ -62,6 +62,7 @@ ROM_RODATA_NUM static const unsigned char model_swap_base_index[] = {
 	0x12, // /* 0x00B */ KONGMODEL_CANDY,
 	0x11, // /* 0x00C */ KONGMODEL_FUNKY,
     0x03, // /* 0x00D */ KONGMODEL_DISCODONKEY,
+    0x2B, // /* 0x00E */ KONGMODEL_ROBOKREM,
 };
 
 int getCutsceneModelTableIndex(int vanilla_index) {
@@ -146,7 +147,7 @@ void adjustAnimationTables(void) {
                     }
                 */
                 int excl_base = 0;
-                int dances[] = {0x43A, 0x434};
+                int dances[] = {0x1DC, 0x43A, 0x1DC};  // 0x434 for failure anim
                 if (i == 0x5A) {
                     // Instrument
                     excl_base = 1;
@@ -162,11 +163,7 @@ void adjustAnimationTables(void) {
                     excl_base = 1;
                 } else if ((i >= 0x8A) && (i <= 0x8C)) {
                     // Tag Animation
-                    int dance = dances[1];
-                    if (i == 0x8B) {
-                        dance = dances[0];
-                    }
-                    AnimationTable1[(7 * i) + slot] = dance;
+                    AnimationTable1[(7 * i) + slot] = dances[i - 0x8A];
                     excl_base = 1;
                 }
                 if (!excl_base) {

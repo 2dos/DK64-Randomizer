@@ -18,12 +18,19 @@ typedef struct purchase_struct {
 	/* 0x005 */ unsigned char price;
 } purchase_struct;
 
+typedef struct ap_item_packet {
+	/* 0x000 */ unsigned char item_type;    // requirement_item enum value
+	/* 0x001 */ unsigned char level;         // Level/tier parameter for giveItem
+	/* 0x002 */ unsigned char kong;          // Kong index or other context param
+	/* 0x003 */ unsigned char config_flags;  // Packed giveItemConfig flags
+} ap_item_packet;
+
 typedef struct CountSpecialStruct {
     unsigned char nintendo_coin : 1; // 0x80
     unsigned char rareware_coin : 1; // 0x40
     unsigned char bean : 1; // 0x20
-    unsigned char unk3 : 1;
-    unsigned char unk4 : 1;
+    unsigned char unk3 : 1; // 0x10
+    unsigned char unk4 : 1; // 0x08
     unsigned char unk5 : 1;
     unsigned char unk6 : 1;
     unsigned char unk7 : 1;
@@ -80,6 +87,9 @@ typedef struct StartingItemsStruct {
 	/* 0x02E */ unsigned char slam;
 	/* 0x02F */ unsigned char belt;
     /* 0x030 */ unsigned char climbing;
+    /* 0x031 */ unsigned char cannons;
+    /* 0x032 */ unsigned char day;
+    /* 0x033 */ unsigned char night;
 } StartingItemsStruct;
 
 typedef struct MoveSpecialBijectionStruct {

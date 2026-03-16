@@ -497,7 +497,7 @@ KasplatLocationList = {
             zmin=500,
             zmax=850,
             region=Regions.BeyondHatch,
-            additional_logic=lambda l: (l.punch and l.chunky) or l.CanPhase(),
+            additional_logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase(),
         ),
         KasplatLocation(
             name="Factory Kasplat: Lowest Production Platform",
@@ -743,6 +743,7 @@ KasplatLocationList = {
             zmin=2440,
             zmax=2540,
             region=Regions.GloomyGalleonStart,
+            additional_logic=lambda l: l.cannons,
         ),
         KasplatLocation(
             name="Galleon Kasplat: Atop Whomp's Lighthouse",
@@ -964,6 +965,7 @@ KasplatLocationList = {
             zmin=2250,
             zmax=2400,
             region=Regions.FungiForestStart,
+            additional_logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
         ),
         KasplatLocation(
             name="Forest Kasplat: Grinder Room",

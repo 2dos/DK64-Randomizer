@@ -430,7 +430,6 @@ door_locations = {
             logicregion=Regions.JungleJapesStart,
             location=[1891.0, 280.0, 879.0, 180.0],
             group=2,
-            door_type=[DoorType.wrinkly],  # Causes the Painting Room Gate's script to run incorrectly when Japes is first entered through this portal.
         ),
         DoorData(
             name="Entrance Tunnel - Near Diddy Cave - front left",
@@ -1498,7 +1497,7 @@ door_locations = {
             kong_lst=[Kongs.chunky],
             group=4,
             moveless=False,
-            logic=lambda l: (l.ischunky and l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
+            logic=lambda l: (l.ischunky and l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
             door_type=[DoorType.wrinkly],
         ),
         DoorData(
@@ -1778,7 +1777,7 @@ door_locations = {
             kong_lst=[Kongs.chunky],
             group=6,
             moveless=False,
-            logic=lambda l: (l.chunky and l.punch) or l.CanPhase() or l.generalclips,
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase() or l.generalclips,
             door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
@@ -2866,6 +2865,7 @@ door_locations = {
             map=Maps.FungiForest,
             logicregion=Regions.FungiForestStart,
             location=[2431.0, 603.0, 2410.0, 0.0],
+            logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
             rx=10,
             group=8,
             door_type=[DoorType.wrinkly],
@@ -2875,6 +2875,7 @@ door_locations = {
             map=Maps.FungiForest,
             logicregion=Regions.FungiForestStart,
             location=[2431.0, 603.0, 2238.0, 180.0],
+            logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
             rx=10,
             group=8,
             door_type=[DoorType.wrinkly],

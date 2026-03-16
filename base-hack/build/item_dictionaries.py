@@ -205,6 +205,9 @@ item_database = [
     Item(name="Fake Item (Bean)", actor=CustomActors.IceTrapBean, model_two=0x264, bounce=True, scale=0.25, has_collision=True),
     Item(name="Fake Item (Key)", actor=CustomActors.IceTrapKey, model_two=0x265, bounce=True, scale=0.25, has_collision=True),
     Item(name="Fake Item (Fairy)", actor=CustomActors.IceTrapFairy, model_two=0x299, bounce=True, scale=0.25, has_collision=True),
+    # Fungi Items
+    Item(name="Fungi Time (Day)", actor=CustomActors.DayItem, model_two=0x29A, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fungi Time (Night)", actor=CustomActors.NightItem, model_two=0x29B, bounce=True, scale=0.25, has_collision=True),
     # Singles
     Item(name="DK Single", actor=0, model_two=0xD, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.DK),
     Item(name="Diddy Single", actor=0, model_two=0xA, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.Diddy),
@@ -607,7 +610,21 @@ with open("src/lib_items.c", "w") as fh:
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # AP Item
+            },  # Spread counter
+            {
+                "actor_type": CustomActors.DayItem,
+                "model": 0x13F,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Day Item
+            {
+                "actor_type": CustomActors.NightItem,
+                "model": 0x140,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Night Item
         ]
     )
     default_values = {
@@ -669,6 +686,8 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, CustomActors.SlipPeel, "&slipPeelCode", 2, 1, 0, 8, 0xDE)
+    actor_data = initActor(actor_data, CustomActors.DayItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.NightItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     for actor in GUARDS:
         actor_data = initActor(actor_data, actor, "(void*)0x806AF688", 2, 3, 0, 2, 259)
 

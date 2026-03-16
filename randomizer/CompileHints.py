@@ -22,6 +22,7 @@ from randomizer.Enums.Settings import (
     BananaportRando,
     BLockerSetting,
     ClimbingStatus,
+    CannonStatus,
     FasterChecksSelected,
     ProgressiveHintItem,
     ActivateAllBananaports,
@@ -46,7 +47,6 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import PreGivenLocations, SharedShopLocations, TrainingBarrelLocations
 from randomizer.Lists.MapsAndExits import GetMapId
-from randomizer.Lists.PathHintTree import BuildPathHintTree
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import (
     GetRegionIdOfLocation,
@@ -141,13 +141,13 @@ hint_distribution_default = {
     HintType.RequiredKeyHint: -1,  # Fixed number based on the number of keys to be obtained over the seed
     HintType.RequiredWinConditionHint: 0,  # Fixed number based on what K. Rool phases you must defeat
     HintType.RequiredHelmDoorHint: 0,  # Fixed number based on how many Helm doors have random requirements
-    HintType.WothLocation: 8,
+    HintType.WothLocation: 7,
     HintType.FullShopWithItems: 8,
     # HintType.FoolishMove: 0,  # Used to be 2, added to FoolishRegion when it was removed
     HintType.FoolishRegion: 3,
     HintType.ForeseenPathless: 0,
     HintType.Multipath: 0,
-    HintType.RegionItemCount: 2,  # Also known as scouring hints
+    HintType.RegionItemCount: 3,  # Also known as scouring hints
     HintType.ItemHinting: 0,
     HintType.Plando: 0,
     HintType.RequiredSlamHint: 1,  # Essentially the slam microhint placed on a door
@@ -292,7 +292,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         Maps.GalleonBoss: [],
         Maps.FungiBoss: [Items.Barrels, Items.HunkyChunky],
         Maps.CavesBoss: [Items.Barrels],
-        Maps.CastleBoss: [],
+        Maps.CastleBoss: [Items.Cannons],
         Maps.KroolDonkeyPhase: dk_phase_requirement,
         Maps.KroolDiddyPhase: [Items.Peanut, Items.RocketbarrelBoost],
         Maps.KroolLankyPhase: [Items.Barrels, Items.Trombone],
@@ -405,6 +405,8 @@ def compileHints(spoiler: Spoiler) -> bool:
             all_hintable_moves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
         if spoiler.settings.climbing_status != ClimbingStatus.normal:
             all_hintable_moves.extend(ItemPool.ClimbingAbilities())
+        if spoiler.settings.cannon_status != CannonStatus.normal:
+            all_hintable_moves.extend(ItemPool.CannonAbilities())
         if spoiler.settings.shuffle_items:
             if Types.Bean in spoiler.settings.shuffled_location_types:
                 all_hintable_moves.append(Items.Bean)
@@ -416,6 +418,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 all_hintable_moves.append(Items.Candy)
             if Types.Snide in spoiler.settings.shuffled_location_types:
                 all_hintable_moves.append(Items.Snide)
+            if Types.FungiTime in spoiler.settings.shuffled_location_types:
+                all_hintable_moves.extend([Items.Day, Items.Night])
         optional_hintable_locations = []
         slam_locations = []
         # Loop through all locations, finding the location of all of these hintable moves
@@ -424,7 +428,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             if location.item == Items.ProgressiveSlam:
                 slam_locations.append(id)
             # Never hint training moves for obvious reasons
-            if location.type in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
+            if location.type in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing, Types.Cannons, Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime):
                 continue
             # If it's a woth item, it must be hinted so put it in the list
             if id in spoiler.woth_locations:
@@ -438,7 +442,9 @@ def compileHints(spoiler: Spoiler) -> bool:
         # Sort the locations we plan on hinting by the number of doors they have available - this should roughly place hints in order of importance
         item_region_locations_to_hint.sort(key=lambda loc_id: (len(spoiler.accessible_hints_for_location[loc_id]) if loc_id in spoiler.accessible_hints_for_location.keys() else 10000))
         # If there's room, always hint a slam if we haven't hinted one already
-        hinted_slam_locations = [loc for loc in slam_locations if loc in item_region_locations_to_hint or spoiler.LocationList[loc].type in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing)]
+        hinted_slam_locations = [
+            loc for loc in slam_locations if loc in item_region_locations_to_hint or spoiler.LocationList[loc].type in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing, Types.Cannons)
+        ]
         if len(item_region_locations_to_hint) < hint_distribution[HintType.ItemHinting] and len(hinted_slam_locations) < 2:
             loc_to_hint = spoiler.settings.random.choice([loc for loc in slam_locations if loc not in hinted_slam_locations])
             item_region_locations_to_hint.append(loc_to_hint)
@@ -884,10 +890,12 @@ def compileHints(spoiler: Spoiler) -> bool:
                 elif item.type == Types.Shockwave:
                     item_name = "fairy moves"
                     item_color = "\x06"
-                elif item.type in (Types.TrainingBarrel, Types.Climbing):
+                elif item.type in (Types.TrainingBarrel, Types.Climbing, Types.Cannons):
                     item_name = "training moves"
                 elif item.type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
                     item_name = "shopkeepers"
+                elif item.type == Types.FungiTime:
+                    item_name = "time items"
                 elif item.type == Types.Shop:
                     if item.kong == Kongs.any:
                         item_name = "shared kong moves"
@@ -1506,9 +1514,11 @@ def compileHints(spoiler: Spoiler) -> bool:
                     Types.Funky,
                     Types.Candy,
                     Types.Snide,
+                    Types.FungiTime,
                     Types.Constant,
                     Types.IslesMedal,
                     Types.Climbing,
+                    Types.Cannons,
                 ):
                     continue
                 region_id = GetRegionIdOfLocation(spoiler, woth_location_id)
@@ -1639,7 +1649,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             # Only hint things that are in shuffled locations - don't hint starting moves because you can't know which move it refers to and don't hint the Helm Key if you know key 8 is there
             if (
                 location.type in spoiler.settings.shuffled_location_types
-                and location.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing)
+                and location.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing, Types.Cannons)
                 and not (spoiler.settings.key_8_helm and location_id == Locations.HelmKey)
             ):
                 # WotH Keys that are in Shops and have nothing else on the path to them will already be entirely covered and solved with the guaranteed multipath hint
@@ -1772,6 +1782,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 Items.Barrels,  # All the good training moves
                 Items.Vines,
                 Items.Climbing,
+                Items.Cannons,
                 Items.Swim,
                 Items.Camera,  # Camera and Shockwave
                 Items.Shockwave,
@@ -1826,7 +1837,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                             break
                         candidate_loc = sorted_unhinted_locs.pop(0)[0]
                         # The unhinted item in question must be a vial for this hint to make any sense
-                        if ItemList[spoiler.LocationList[candidate_loc].item].type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing):
+                        if ItemList[spoiler.LocationList[candidate_loc].item].type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing, Types.Cannons):
                             candidate_region_name = spoiler.RegionList[GetRegionIdOfLocation(spoiler, candidate_loc)].hint_name
                             # Ensure this region is in a hintable one (i.e. not a shop region) and that we haven't hinted this region already
                             if candidate_region_name in hintable_region_names:
@@ -2163,6 +2174,8 @@ def compileHints(spoiler: Spoiler) -> bool:
         if score > 0.25:
             location = spoiler.LocationList[loc_id]
             spoiler.poor_scoring_locations[location.name + " (" + ItemList[location.item].name + ")"] = score
+    if hintset.expectedDistribution[HintType.Multipath] <= 0:
+        spoiler.poor_scoring_locations = {"Non-multipath hints are not scored": 0}
 
     # Dim hints - these are only useful (and doable) if item rando is on
     if spoiler.settings.dim_solved_hints and spoiler.settings.shuffle_items:
@@ -2302,10 +2315,13 @@ def compileSpoilerHints(spoiler):
         + ItemPool.CandyItems()
         + ItemPool.SnideItems()
         + ItemPool.ClimbingAbilities()
+        + ItemPool.CannonAbilities()
     )
     # Idenfity what moves among our starting items cannot be hinted. This is to aid trackers in communicating what starting moves count towards the WotH count.
     if spoiler.settings.climbing_status == ClimbingStatus.normal:
         starting_info.starting_moves_not_hintable.append(Items.Climbing)
+    if spoiler.settings.cannon_status == CannonStatus.normal:
+        starting_info.starting_moves_not_hintable.append(Items.Cannons)
     if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
         starting_info.starting_moves_not_hintable.extend([Items.Camera, Items.Shockwave, Items.CameraAndShockwave])
     if spoiler.settings.training_barrels == TrainingBarrels.normal and spoiler.settings.fast_start_beginning_of_game:
@@ -2326,13 +2342,13 @@ def compileSpoilerHints(spoiler):
             # 2. Training barrel locations are only pre-given if fast start is on
             # 3. The exception: IslesFirstMove (the Simian Slam location) is only pre-given if fast start is on
             if (
-                (location.type in (Types.Climbing, Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide) and location_id != Locations.IslesFirstMove)
+                (location.type in (Types.Climbing, Types.Cannons, Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide, Types.FungiTime) and location_id != Locations.IslesFirstMove)
                 or (spoiler.settings.fast_start_beginning_of_game and location.type == (Types.TrainingBarrel))
                 or (location_id == Locations.IslesFirstMove and spoiler.settings.fast_start_beginning_of_game)
             ):
                 starting_info.starting_moves.append(item_obj.name)
                 # Starting shopkeepers are never hintable
-                if location.type in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
+                if location.type in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide, Types.FungiTime):
                     starting_info.starting_moves_not_hintable.append(item_obj.name)
                 if location_id in spoiler.woth_locations:
                     starting_info.starting_moves_woth_count += 1
@@ -2480,6 +2496,8 @@ def PointValueOfItem(settings, item_id):
     elif item_id in ItemPool.TrainingBarrelAbilities():
         return settings.points_list_training_moves
     elif item_id in ItemPool.ClimbingAbilities():
+        return settings.points_list_training_moves
+    elif item_id in ItemPool.CannonAbilities():
         return settings.points_list_training_moves
     elif item_id in ItemPool.ImportantSharedMoves:
         return settings.points_list_important_shared
@@ -2751,7 +2769,7 @@ def getNumberOfCutoffCharacters(message, number):
 def AssociateHintsWithFlags(spoiler, hintset):
     """Associate hints with the related flag at their related location as applicable."""
     for hint in hintset.hints:
-        if hint.related_location is not None:
+        if hint.related_location is not None and hint.related_location not in TrainingBarrelLocations and hint.related_location not in PreGivenLocations:
             for location_selection in spoiler.item_assignment:
                 if location_selection.location == hint.related_location:
                     hint.related_flag = location_selection.old_flag

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from math import sqrt
-from typing import TYPE_CHECKING, Any, List, Union, Set
+from typing import Any, List, Union, Set
 
 from randomizer.Enums.HintType import HintType
 from randomizer.Enums.Items import Items
@@ -251,9 +251,9 @@ class HintSet:
                 # If the item here is a Kong, it both can't be on the path to anything and is already given a required Kong hint
                 if location_item.type == Types.Kong:
                     continue
-                # A scouring hint to a vial could be good enough to work with, worthy of a slight reduction in unhinted score
+                # A scouring hint to a vial has considerable strength as of 5.0, but it's still worse than a direct hint. Problems could arise if there are multiple WotH vials in the same region.
                 if node.region_hinted and location_item.type not in (Types.Key, Types.Kong):
-                    node.score_multiplier *= 0.8
+                    node.score_multiplier *= 0.5
                 # Medal locations and Bosses get an automatic x1.5 unhinted multiplier because they are awful to orphan
                 if node_location.type in (Types.Medal, Types.HalfMedal, Types.Key):
                     node.score_multiplier *= 1.5
@@ -276,12 +276,13 @@ class HintSet:
                 # Training barrel locations don't matter if they're hinted or not because you start with them
                 if node.node_location_id in TrainingBarrelLocations or node.node_location_id in PreGivenLocations:
                     node.score_multiplier *= 0
-                # If this location is hinted or isn't on the path to any goals, bail before giving it a flat score - this makes the location's final score always 0
-                if node.path_hinted or node.woth_hinted or len(node.goals) == 0:
+                # If this location is hinted, bail before giving it a flat score - this makes the location's final score always 0
+                if node.path_hinted or node.woth_hinted or node.score_multiplier == 0:
+                    node.score_multiplier *= 0
                     continue
                 # The baseline unhinted score for a node is inversely proportional to the number of goals this location is on the path to
                 # If something is on the path to a lot of goals, it's often found early and usually less disastrous to be missed
-                node.unhinted_score += sqrt(1.0 / len(node.goals))
+                node.unhinted_score += sqrt(1.0 / max(1, len(node.goals)))  # If something is on the path to 0 goals, it's probably a "diving for level 4" situation, and those are quite dicey
                 for parent_loc_id in node.parents:
                     parent_node = hint_tree[parent_loc_id]
                     # If this is the only child of this parent and the parent is directly hinted, this is the only location that can resolve that hint.

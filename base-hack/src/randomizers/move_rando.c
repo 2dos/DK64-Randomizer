@@ -400,6 +400,9 @@ void getNextMoveText(void) {
 						case 12:
 							top_item = ITEMTEXT_CAMERACOMBO;
 							break;
+						case 13:
+							top_item = ITEMTEXT_CANNONS;
+							break;
 					}
 					break;
 				case REQITEM_GOLDENBANANA:
@@ -443,6 +446,9 @@ void getNextMoveText(void) {
 					break;
 				case REQITEM_RAINBOWCOIN:
 					top_item = ITEMTEXT_RAINBOWCOIN;
+					break;
+				case REQITEM_FUNGITIME:
+					top_item = ITEMTEXT_DAY + p_kong;
 					break;
 			}
 			if (override_string) {

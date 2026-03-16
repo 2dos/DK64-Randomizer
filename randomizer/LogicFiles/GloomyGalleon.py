@@ -64,11 +64,11 @@ LogicRegions = {
         Event(Events.WaterLowered, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.lowered),
         Event(Events.WaterRaised, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.raised),
     ], [
-        TransitionFront(Regions.GalleonPastVines, lambda l: l.can_use_vines or l.CanMoonkick()),
+        TransitionFront(Regions.GalleonPastVines, lambda l: (l.can_use_vines or l.CanMoonkick()) and l.cannons),
         TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: Events.GalleonCannonRoomOpened in l.Events or l.CanPhase() or l.CanSkew(False, False) or (l.CanPhaseswim() and Events.WaterRaised in l.Events)),
         TransitionFront(Regions.LighthouseSurface, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate) or Events.LighthouseGateOpened in l.Events or l.CanPhase() or l.CanSkew(False, False)),
         TransitionFront(Regions.Shipyard, lambda l: (l.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate) or Events.ShipyardGateOpened in l.Events or l.CanPhase() or l.CanSkew(False, False) or (l.CanPhaseswim() and Events.WaterRaised in l.Events)) and (not l.IsLavaWater() or l.Melons >= 2)),
-        TransitionFront(Regions.CrankyGalleon, lambda l: l.crankyAccess),
+        TransitionFront(Regions.CrankyGalleon, lambda l: l.crankyAccess and l.cannons),
     ]),
 
     Regions.GalleonPastVines: Region("Galleon Past Vines", HintRegion.GalleonCaverns, Levels.GloomyGalleon, False, None, [
@@ -176,7 +176,7 @@ LogicRegions = {
     Regions.SickBay: Region("Sick Bay", HintRegion.Lighthouse, Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonChunkySeasick, lambda l: (l.punch and l.ischunky)),
     ], [], [
-        TransitionFront(Regions.LighthousePlatform, lambda _: True, Transitions.GalleonSickBayToLighthouseArea),
+        TransitionFront(Regions.LighthousePlatform, lambda l: l.cannons, Transitions.GalleonSickBayToLighthouseArea),
     ]),
 
     Regions.Shipyard: Region("Shipyard", HintRegion.ShipyardOutskirts, Levels.GloomyGalleon, True, None, [

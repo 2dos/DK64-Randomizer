@@ -63,7 +63,7 @@ function isItemShuffled(item_type, is_dummy = false) {
     }
     const list_items = document.getElementById(`item_rando_list_${i}`).getElementsByTagName("li");
     for (let j = 0; j < list_items.length; j++) {
-      if (list_items[j].getAttribute("value") == "item_type") {
+      if (list_items[j].getAttribute("value") == item_type) {
         return true;
       }
     }
@@ -737,6 +737,16 @@ const switchsanity_defaults = {
   "switchsanity_switch_japes_free_kong": "donkey",
   "switchsanity_switch_aztec_free_tiny": "diddy",
   "switchsanity_switch_aztec_free_lanky": "donkey",
+  "switchsanity_switch_factory_dark_grate": "chunky",
+  "switchsanity_switch_factory_bonus_grate": "chunky",
+  "switchsanity_switch_factory_monster_grate": "chunky",
+  "switchsanity_switch_caves_gone_cave": "chunky",
+  "switchsanity_switch_caves_snide_cave": "chunky",
+  "switchsanity_switch_caves_boulder_cave": "chunky",
+  "switchsanity_switch_caves_lobby_blueprint": "chunky",
+  "switchsanity_switch_caves_lobby_lava": "chunky",
+  "switchsanity_switch_aztec_gong_tower": "diddy",
+  "switchsanity_switch_aztec_lobby_gong": "diddy",
 }
 function switchsanity_reset_default() {
   Object.keys(switchsanity_defaults).forEach(key => {
@@ -868,27 +878,33 @@ document
 
 // Hide plando options for Isles medal locations if medal CBs aren't shuffled
 function plando_disable_isles_medals(evt) {
-  const cbShuffle = document.getElementById("cb_rando_enabled").value;
+  const cbShuffled = document.getElementById("cb_rando_enabled").checked;
+  const cbShuffledLevels = document.getElementById("cb_rando_list_selected").selectedOptions;
+  // If no levels are selected, or Isles is selected, this bool is true.
+  let islesShuffled = cbShuffledLevels.length === 0;
+  for (const shuffledLevel of cbShuffledLevels) {
+    if (shuffledLevel.value === "DKIsles") {
+      islesShuffled = true;
+    }
+  }
   const kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"];
 
-  if (cbShuffle !== "on_with_isles") {
-    for (const kong of kongs) {
-      const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
+  for (const kong of kongs) {
+    const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
+    if (cbShuffled && islesShuffled) {
+      kongIsleElem.removeAttribute("disabled");
+      kongIsleElem.parentElement.setAttribute("data-bs-original-title", "");
+    } else {
       kongIsleElem.setAttribute("disabled", "disabled");
       kongIsleElem.value = "";
       const tooltip = "To assign a reward here, Isles CBs must be shuffled.";
       kongIsleElem.parentElement.setAttribute("data-bs-original-title", tooltip);
     }
-  } else {
-    for (const kong of kongs) {
-      const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
-      kongIsleElem.removeAttribute("disabled");
-      kongIsleElem.parentElement.setAttribute("data-bs-original-title", "");
-    }
   }
 }
 
 document.getElementById("cb_rando_enabled").addEventListener("change", plando_disable_isles_medals);
+document.getElementById("cb_rando_list_selected").addEventListener("click", plando_disable_isles_medals);
 
 // Disable K. Rool phases as bosses if they are not in the boss pool.
 function plando_disable_krool_phases_as_bosses(evt) {
@@ -903,16 +919,65 @@ function plando_disable_krool_phases_as_bosses(evt) {
     for (let option of tnsBossOptions) {
       option.setAttribute("disabled", "disabled");
     }
+  }
+  if (kroolInBossPool !== "full_shuffle") {
     for (let i = 0; i < 5; i++) {
       const kroolPhase = document.getElementById(`plando_krool_order_${i}`);
       if (kroolPhase.value.includes("Boss")) {
         kroolPhase.value = "";
+      }
+      for (const kroolOpt of kroolPhase.options) {
+        if (kroolOpt.value && kroolOpt.value.includes("Boss")) {
+          kroolOpt.setAttribute("disabled", "disabled");
+        }
       }
     }
   }
 }
 
 document.getElementById("krool_in_boss_pool_v2").addEventListener("change", plando_disable_krool_phases_as_bosses);
+
+// Ensure Pufftoss cannot be the final boss.
+function plando_disable_pufftoss_as_final_boss(evt) {
+  const kroolInBossPool = document.getElementById("krool_in_boss_pool_v2").value;
+  // If TnS bosses aren't allowed on K. Rool, exit early.
+  if (kroolInBossPool !== "full_shuffle") {
+    return;
+  }
+  const kroolPhaseCount = parseInt(
+    document.getElementById("krool_phase_count").value
+  );
+  // If the number of K. Rool phases is random, we can't safely put
+  // Pufftoss anywhere.
+  const kroolRandom = document.getElementById("krool_random").checked;
+
+  for (let i = 0; i < 5; i++) {
+    const allowPufftoss = !kroolRandom && (i + 1 !== kroolPhaseCount);
+    const kroolPhase = document.getElementById(`plando_krool_order_${i}`);
+    if (!allowPufftoss && kroolPhase.value === "GalleonBoss") {
+      kroolPhase.value = "";
+    }
+    for (const kroolOpt of kroolPhase.options) {
+      if (kroolOpt.value === "GalleonBoss") {
+        if (allowPufftoss) {
+          kroolOpt.removeAttribute("disabled");
+        } else {
+          kroolOpt.setAttribute("disabled", "disabled");
+        }
+      }
+    }
+  }
+}
+
+document
+  .getElementById("krool_in_boss_pool_v2")
+  .addEventListener("change", plando_disable_pufftoss_as_final_boss);
+document
+  .getElementById("krool_random")
+  .addEventListener("click", plando_disable_pufftoss_as_final_boss);
+document
+  .getElementById("krool_phase_count")
+  .addEventListener("change", plando_disable_pufftoss_as_final_boss);
 
 // Make changes to the plando tab based on other settings
 document
@@ -936,6 +1001,7 @@ document
     plando_disable_tns_custom_locations(evt);
     plando_disable_isles_medals(evt);
     plando_disable_krool_phases_as_bosses(evt);
+    plando_disable_pufftoss_as_final_boss(evt);
 });
 
 // Randomize all non-cosmetic settings.
@@ -1933,10 +1999,24 @@ document
   });
 
 // Dropdown Multiselect
-function toggleDropdown(name) {
-  const menu = document.getElementById(`${name}_selected`);
-  menu.classList.toggle('show');
-}
+
+document.addEventListener("click", (event) => {
+  const dropdownToggles = document.querySelectorAll(".dropdown-toggle[aria-expanded=true]");
+  const target = event.target;
+
+  dropdownToggles.forEach(toggle => {
+    const menu = document.querySelector(toggle.getAttribute("href"));
+    if (menu) {
+      if (
+        menu.classList.contains("show") &&
+        !toggle.contains(target) &&
+        !menu.contains(target)
+      ) {
+        bootstrap.Collapse.getOrCreateInstance(menu).hide();
+      }
+    }
+  });
+});
 
 function pushUpdateToDropdown(name) {
   const ddms = document.getElementById(`dropdown_${name}`);
@@ -2065,10 +2145,14 @@ function getTotalItemCounts() {
         total += local_value;
     }
     const notifier = document.getElementById("item_count_collective");
-    if (total < 298) {
+    const notif_alert = document.getElementById("item_count_collective_alert");
+    notifier.textContent = `Current Total: ${total} (Vanilla is 298)`;
+    if (total <= 298) {
         notifier.style.color = "white";
+        notif_alert.setAttribute("hidden", "hidden");
     } else {
         notifier.style.color = "red";
+        notif_alert.removeAttribute("hidden");
     }
 }
 for (let a = 0; a < alterers.length; a++) {

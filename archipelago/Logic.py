@@ -37,6 +37,7 @@ from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     BananaportRando,
     ClimbingStatus,
+    CannonStatus,
     DamageAmount,
     FasterChecksSelected,
     GalleonWaterSetting,
@@ -99,6 +100,8 @@ class LogicVarHolder:
         self.assumePaidBLockers = False
         self.assumeAztecEntry = False
         self.assumeLevel4Entry = False
+        self.assumeLevel5Entry = False
+        self.assumeLevel7Entry = False
         self.assumeLevel8Entry = False
         self.assumeUpperIslesAccess = False
         self.assumeKRoolAccess = False
@@ -168,6 +171,7 @@ class LogicVarHolder:
         self.adv_orange_usage = self.oranges and self.advanced_grenading
         self.barrels = self.settings.training_barrels == TrainingBarrels.normal
         self.climbing = self.settings.climbing_status == ClimbingStatus.normal
+        self.cannons = self.settings.cannon_status == CannonStatus.normal
         self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
         progDonkey = 0
@@ -230,6 +234,9 @@ class LogicVarHolder:
         self.funkyAccess = Types.Funky not in self.settings.shuffled_location_types
         self.candyAccess = Types.Candy not in self.settings.shuffled_location_types
         self.snideAccess = Types.Snide not in self.settings.shuffled_location_types
+
+        self.dayAccess = Types.FungiTime not in self.settings.shuffled_location_types
+        self.nightAccess = Types.FungiTime not in self.settings.shuffled_location_types
 
         self.HelmDonkey1 = False
         self.HelmDonkey2 = False
@@ -490,6 +497,8 @@ class LogicVarHolder:
                     self._recalculateBlueprints()
                 case Items.Climbing:
                     self.climbing = True
+                case Items.Cannons:
+                    self.cannons = True
                 case Items.Vines:
                     self.vines = True
                     self.can_use_vines = True
@@ -568,6 +577,10 @@ class LogicVarHolder:
                     self.candyAccess = True
                 case Items.Snide:
                     self.snideAccess = True
+                case Items.Day:
+                    self.dayAccess = True
+                case Items.Night:
+                    self.nightAccess = True
                 case Items.NintendoCoin:
                     self.nintendoCoin = True
                 case Items.RarewareCoin:
@@ -747,6 +760,8 @@ class LogicVarHolder:
                     self._recalculateBlueprints()
                 case Items.Climbing:
                     self.climbing = False
+                case Items.Cannons:
+                    self.cannons = False
                 case Items.Vines:
                     self.vines = False
                     self.can_use_vines = False
@@ -825,6 +840,10 @@ class LogicVarHolder:
                     self.candyAccess = False
                 case Items.Snide:
                     self.snideAccess = False
+                case Items.Day:
+                    self.dayAccess = False
+                case Items.Night:
+                    self.nightAccess = False
                 case Items.NintendoCoin:
                     self.nintendoCoin = False
                 case Items.RarewareCoin:
@@ -940,6 +959,7 @@ class LogicVarHolder:
         self.ischunky = self.chunky
 
         self.climbing = self.climbing or Items.Climbing in ownedItems
+        self.cannons = self.cannons or Items.Cannons in ownedItems
         self.vines = self.vines or Items.Vines in ownedItems
         self.swim = self.swim or Items.Swim in ownedItems
         self.oranges = self.oranges or Items.Oranges in ownedItems
@@ -988,6 +1008,8 @@ class LogicVarHolder:
         self.funkyAccess = self.funkyAccess or Items.Funky in ownedItems
         self.candyAccess = self.candyAccess or Items.Candy in ownedItems
         self.snideAccess = self.snideAccess or Items.Snide in ownedItems
+        self.dayAccess = self.dayAccess or Items.Day in ownedItems
+        self.nightAccess = self.nightAccess or Items.Night in ownedItems
 
         self.nintendoCoin = self.nintendoCoin or Items.NintendoCoin in ownedItems
         self.rarewareCoin = self.rarewareCoin or Items.RarewareCoin in ownedItems
@@ -1146,11 +1168,13 @@ class LogicVarHolder:
         slam_req = default_requirement_level
         if self.settings.alter_switch_allocation:
             slam_req = self.settings.switch_allocation[level]
-        if slam_req == 2:
+        if slam_req == 1:
+            return self.Slam
+        elif slam_req == 2:
             return self.superSlam
         elif slam_req == 3:
             return self.superDuperSlam
-        return self.Slam
+        return True
 
     @lru_cache(maxsize=None)
     def IsLavaWater(self) -> bool:
@@ -1252,7 +1276,7 @@ class LogicVarHolder:
             if data.kong == Kongs.any:
                 return self.HasGun(Kongs.any) and self.HasInstrument(Kongs.any)
             return kong_data and gun_abilities[data.kong] and instrument_abilities[data.kong]
-        elif data.switch_type == SwitchType.PushableButton:
+        elif data.switch_type in (SwitchType.PushableButton, SwitchType.PunchGrate, SwitchType.IceWall, SwitchType.Gong):
             if data.kong == Kongs.diddy:
                 return kong_data and self.charge
             if data.kong == Kongs.chunky:
@@ -1407,6 +1431,7 @@ class LogicVarHolder:
             self.oranges,
             self.barrels,
             self.climbing,
+            self.cannons,
             self.blast,
             self.strongKong,
             self.grab,
@@ -1584,16 +1609,17 @@ class LogicVarHolder:
 
     def TimeAccess(self, region, time):
         """Check if a certain region has the given time of day access for current kong."""
-        # In Archipelago, we're always using the Dusk setting so it is both day and night simultaneously
-        # In addition, this method is only ever called when checking the current region, which implies you already have access to the region.
-        return True
-        # if time == Time.Day:
-        #     return self.spoiler.RegionList[region].dayAccess[self.kong]
-        # elif time == Time.Night:
-        #     return self.spoiler.RegionList[region].nightAccess[self.kong]
-        # # Not sure when this'd be used
-        # else:  # if time == Time.Both
-        #     return self.spoiler.RegionList[region].dayAccess[self.kong] or self.spoiler.RegionList[region].nightAccess[self.kong]
+        # If time-of-day items are NOT shuffled, always allow access
+        if Types.FungiTime not in self.settings.shuffled_location_types:
+            return True
+
+        # If time-of-day items ARE shuffled, check if we have the appropriate item
+        if time == Time.Day:
+            return self.dayAccess
+        elif time == Time.Night:
+            return self.nightAccess
+        else:  # Time.Both
+            return self.dayAccess or self.nightAccess
 
     def BlueprintAccess(self, item):
         """Check if we are the correct kong for this blueprint item."""
@@ -1790,8 +1816,10 @@ class LogicVarHolder:
             hasRequiredMoves = self.hunkyChunky and self.barrels
         elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
             hasRequiredMoves = self.barrels
-        elif bossFight == Maps.CastleBoss and self.IsLavaWater():
-            hasRequiredMoves = self.Melons >= 3
+        elif bossFight == Maps.CastleBoss:
+            if self.IsLavaWater():
+                hasRequiredMoves = self.Melons >= 3
+            hasRequiredMoves = hasRequiredMoves and self.cannons
         elif bossFight == Maps.KroolDonkeyPhase:
             hasRequiredMoves = (self.blast or (not self.settings.cannons_require_blast)) and self.climbing
         elif bossFight == Maps.KroolDiddyPhase:

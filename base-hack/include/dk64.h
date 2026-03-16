@@ -44,13 +44,10 @@ extern int* getOtherSpritePointer();
 extern void alterSize(void* object, int size);
 extern void unkSizeFunction(void* object);
 extern void spawnRocketbarrel(void* object, int unk);
-extern void* getObjectArrayAddr(void* init_address, int common_object_size, int index);
-extern short getFloatUpper(float value);
 extern void playSong(songs songIndex, float volume);
 extern void restartSong(int write_slot, int song, float volume);
 extern int getSongTempo(void *player);
 extern void playLevelMusic(void);
-extern void loadExtraHooks();
 extern void playCutscene(void* actor, int cutscene_index, int cutscene_type);
 extern void playBonusCutsceneWrapper(void* actor, int unk0, int cutscene_index, int unk1);
 extern int isCutsceneActive(void);
@@ -139,8 +136,6 @@ extern void warpActorToParent(void *actor, void *parent, float scale);
 extern void updateCamera(void* mtx_i);
 extern void spawnKeyTwinklies(void *actor);
 extern void getControllerContainer(void *cont);
-
-extern int callFunc(void* func, int arg);
 
 extern void cutsceneDiddyCode(void);
 extern void cutsceneLankyCode(void);
@@ -534,7 +529,14 @@ extern void guSprite2DInit(uSprite *SpritePointer, void *SourceImagePointer, voi
 extern void unkGuMacro(void *mtx, float unk1);
 extern void unkGuMacro2(void *unk0, int unk1, int unk2, int unk3);
 
-extern int checkIntroStoryPlaying();
+extern int checkIntroStoryPlaying(void);
+
+extern void inVehicleMovement(void);
+extern void unkVehicleFunc(void);
+extern int isBoulderMakingCollision(void);
+
+extern void cannonCode(void);
+extern int isMakingContactWithWall(actorData *actor, int angle);
 
 //vanilla data
 extern OSThread* __osActiveQueue;
@@ -601,6 +603,7 @@ extern char JoystickEnabledY;
 extern char MapState;
 extern Controller ControllerInput;
 extern Controller NewlyPressedControllerInput;
+extern Controller Input;
 extern Controller PreviouslyPressedButtons;
 extern playerData* Player;
 extern SwapObjectData* SwapObject;
@@ -701,7 +704,6 @@ extern short ActorInteractionArray[345];
 
 extern trigger* TriggerArray;
 extern short TriggerSize;
-extern cannon* CastleCannonPointer;
 extern short TroffNScoffReqArray[8]; // u16 item size
 extern unsigned short TroffNScoffTurnedArray[8]; // u16 item size
 extern short BLockerDefaultArray[8]; // u16 item size
@@ -880,10 +882,7 @@ extern int TestVariable;
 extern char LoadedHooks;
 extern varspace Rando;
 extern short StoredLag;
-extern short ReplacementLobbiesArray[9];
-extern short ReplacementLobbyExitsArray[9];
 extern unsigned char DamageMultiplier;
-extern char LobbiesOpen;
 extern char* PauseSlot3TextPointer;
 extern char ExpandPauseMenu;
 extern unsigned short InitialPauseHeight;
@@ -891,7 +890,6 @@ extern unsigned short *CCButtons;
 extern cc_effects* CCEffectData;
 extern short style128Mtx[0x10];
 extern short style6Mtx[0x10];
-extern short style2Mtx[0x10];
 extern purchase_struct CrankyMoves_New[5][8];
 extern purchase_struct CandyMoves_New[5][8];
 extern purchase_struct FunkyMoves_New[5][8];
@@ -902,7 +900,6 @@ extern char bonusAutocomplete;
 extern char TextHoldOn;
 extern unsigned char PercussionPlayed;
 extern unsigned char PauseText;
-extern unsigned char ShorterBosses;
 extern char ForceStandardAmmo;
 extern char KKOPhaseRandoOn;
 extern unsigned short MultiBunchCount;
@@ -915,9 +912,6 @@ extern unsigned char EnemyInView;
 extern unsigned char ItemRandoOn;
 extern unsigned char KasplatSpawnBitfield;
 extern unsigned short HoldableSpawnBitfield;
-extern char KrushaSlot;
-extern unsigned char RandomSwitches;
-extern unsigned char SwitchLevel[7];
 extern int ExtraSaveData[0x100];
 extern char* DisplayedSongNamePointer;
 extern unsigned char RandomizerVersion;

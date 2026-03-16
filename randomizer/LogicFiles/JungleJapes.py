@@ -73,9 +73,9 @@ LogicRegions = {
     Regions.JapesCannonPlatform: Region("Jungle Japes Cannon Platform", HintRegion.Hillside, Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesLankyCagedBanana, lambda l: ((Events.JapesLankySwitch in l.Events or ((not l.settings.shuffle_shops) and l.CanSkew(True)) or l.CanSkew(False)) and l.lanky) or (((not l.settings.shuffle_shops) and l.CanSkew(True)) or l.CanSkew(False) and l.settings.free_trade_items)),
     ], [
-        Event(Events.JapesAccessToCannon, lambda _: True),
+        Event(Events.JapesAccessToCannon, lambda l: l.cannons),
     ], [
-        TransitionFront(Regions.JapesHillTop, lambda _: True),
+        TransitionFront(Regions.JapesHillTop, lambda l: l.cannons),
         TransitionFront(Regions.JungleJapesMain, lambda _: True),
         TransitionFront(Regions.JapesHill, lambda l: l.can_use_vines),
     ]),
@@ -314,7 +314,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesChunkyUnderground, lambda l: (l.can_use_vines and l.pineapple and l.ischunky) or (((l.twirl and l.istiny) or (l.can_use_vines and (l.isdiddy or l.istiny)) or (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))) and l.monkey_maneuvers and l.settings.free_trade_items) or l.CanPhase()),
         LocationLogic(Locations.JapesKasplatUnderground, lambda l: not l.settings.kasplat_rando and ((l.can_use_vines and l.pineapple and l.ischunky) or (l.can_use_vines and (l.isdiddy or l.istiny) and l.monkey_maneuvers and l.settings.free_trade_items) or l.CanPhase())),
     ], [], [
-        TransitionFront(Regions.JungleJapesStart, lambda _: True, Transitions.JapesCatacombToMain),
+        TransitionFront(Regions.JungleJapesStart, lambda l: l.cannons, Transitions.JapesCatacombToMain),
     ]),
 
     Regions.JapesBossLobby: Region("Japes Boss Lobby", HintRegion.Bosses, Levels.JungleJapes, True, None, [], [], [

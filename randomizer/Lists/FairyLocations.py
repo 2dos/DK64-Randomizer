@@ -4,7 +4,6 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
-from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.Enums.Switches import Switches
 
 
@@ -410,7 +409,7 @@ fairy_locations = {
             region=Regions.RandDUpper,
             fence=Fence(4509, 1456, 5001, 1764),
             spawn_y=1483,
-            logic=lambda l: l.camera and ((l.triangle and l.punch and l.ischunky and l.climbing) or l.CanAccessRNDRoom()),
+            logic=lambda l: l.camera and ((l.triangle and l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.ischunky and l.climbing) or l.CanAccessRNDRoom()),
         ),
         FairyData(
             name="Diddy R&D Room",
@@ -433,7 +432,7 @@ fairy_locations = {
             region=Regions.BeyondHatch,
             fence=Fence(1820, 526, 2079, 874),
             spawn_y=60,
-            logic=lambda l: l.camera and ((l.punch and l.chunky) or l.CanPhase()),
+            logic=lambda l: l.camera and (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()),
         ),
         FairyData(
             name="Crusher Room",
@@ -591,6 +590,7 @@ fairy_locations = {
             map=Maps.FungiForest,
             region=Regions.FungiForestStart,
             fence=Fence(2370, 2229, 2557, 2472),
+            logic=lambda l: (l.cannons or (l.isdiddy and l.jetpack) or l.climbing) and l.camera,
             spawn_y=951,
         ),
         FairyData(

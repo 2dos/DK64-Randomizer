@@ -82,6 +82,30 @@ boot_phrases = (
     "Ensuring Lanky is not in a keg",
     "Generating a jet seed",
     "Generating a casino",
+    "Fighting with alternate caps",
+    "Requesting a dev presence check",
+    "Preceding Reputations",
+    "Sending this seed to JXJacob",
+    "Replacing your seed with BadApple.mp4",
+    "Porting DOOM into DK Arcade",
+    "Solving Donkdle",
+    "Writing the raid message",
+    "Locking everything behind coconut",
+    "Forgetting to tag warp 2",
+    "Locking Diddy in Helm",
+    "Blowing into the cartridge",
+    "Blowing into the emulator... wait",
+    "Strapping a TNT to the Rabbit",
+    "Renewing the SSL Certificate",
+    "Switching to Linux",
+    "Reporting this bug to the devs",
+    "Oops. Your game has crashed",
+    "Making you read this",
+    "Falling Down",
+    "Replacing all the music with the DK Rap",
+    "Washing ghost sheets",
+    "Shrinking the heap",
+    "Using Jabo 1.6.1",
 )
 
 archipelago_boot_phrases = (
@@ -114,6 +138,10 @@ archipelago_boot_phrases = (
     "Going out of logic",
     "Adding another sanity option",
     "Sending the Bean",
+    "Praising the Cube",
+    "Testing your yaml",
+    "Adding bitclips to easy tricks",
+    "Disconnecting the client",
 )
 
 crown_heads = (

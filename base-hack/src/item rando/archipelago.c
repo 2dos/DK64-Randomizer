@@ -46,109 +46,40 @@ void sendTrap(ICE_TRAP_TYPES trap_type) {
     giveItem(REQITEM_ICETRAP, 0, trap_type, (giveItemConfig){.display_item_text = 0, .apply_ice_trap = 1});
 }
 
-ROM_DATA static unsigned char ice_trap_feds[] = {
-    TRANSFER_ITEM_FAKEITEM,
-    TRANSFER_ITEM_FAKEITEM_REVERSE,
-    TRANSFER_ITEM_FAKEITEM_SLOW,
-    0, // Super Bubble
-    TRANSFER_ITEM_FAKEITEM_DISABLEA,
-    TRANSFER_ITEM_FAKEITEM_DISABLEB,
-    TRANSFER_ITEM_FAKEITEM_DISABLEZ,
-    TRANSFER_ITEM_FAKEITEM_DISABLECU,
-    TRANSFER_ITEM_FAKEITEM_GETOUT,
-    TRANSFER_ITEM_FAKEITEM_DRY,
-    TRANSFER_ITEM_FAKEITEM_FLIP,
-    TRANSFER_ITEM_FAKEITEM_ICEFLOOR,
-    TRANSFER_ITEM_FAKEITEM_PAPER,
-    0, // Non-Instant Slip Trap
-    TRANSFER_ITEM_FAKEITEM_SLIP,
-    TRANSFER_ITEM_FAKEITEM_ANIMAL,
-    TRANSFER_ITEM_FAKEITEM_ROCKFALL,
-    TRANSFER_ITEM_FAKEITEM_DISABLETAG,
-};
-
 void handleSentItem(void) {
-    archipelago_items FedItem = ap_info.fed_item;
-    switch (FedItem) {
-        case TRANSFER_ITEM_GB:
-            giveGB();
+    // New generic packet-based approach
+    // Python sends an ap_item_packet struct with all giveItem parameters
+    ap_item_packet *packet = (ap_item_packet*)&ap_info.fed_item;
+    
+    // Unpack config flags into giveItemConfig struct
+    giveItemConfig config = {
+        .display_item_text = (packet->config_flags & 0x01) ? 1 : 0,
+        .apply_helm_hurry = (packet->config_flags & 0x02) ? 1 : 0,
+        .give_coins = (packet->config_flags & 0x04) ? 1 : 0,
+        .apply_ice_trap = (packet->config_flags & 0x08) ? 1 : 0,
+        .force_display_item_text = (packet->config_flags & 0x10) ? 1 : 0,
+    };
+    
+    // Special handling for certain item types
+    requirement_item item_type = (requirement_item)packet->item_type;
+    
+    switch (item_type) {
+        case REQITEM_GOLDENBANANA:
+            // GB has its own function
+            giveGB(1);
             break;
-        case TRANSFER_ITEM_RAINBOWCOIN:
-            giveItem(REQITEM_RAINBOWCOIN, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .give_coins = 1});
+        case REQITEM_ICETRAP:
+            // Ice traps use kong field as trap_type
+            sendTrap((ICE_TRAP_TYPES)packet->kong);
             break;
-        case TRANSFER_ITEM_FAKEITEM:
-        case TRANSFER_ITEM_FAKEITEM_REVERSE:
-        case TRANSFER_ITEM_FAKEITEM_SLOW:
-        case TRANSFER_ITEM_FAKEITEM_DISABLEA:
-        case TRANSFER_ITEM_FAKEITEM_DISABLEB:
-        case TRANSFER_ITEM_FAKEITEM_DISABLEZ:
-        case TRANSFER_ITEM_FAKEITEM_DISABLECU:
-        case TRANSFER_ITEM_FAKEITEM_GETOUT:
-        case TRANSFER_ITEM_FAKEITEM_DRY:
-        case TRANSFER_ITEM_FAKEITEM_FLIP:
-        case TRANSFER_ITEM_FAKEITEM_ICEFLOOR:
-        case TRANSFER_ITEM_FAKEITEM_PAPER:
-        case TRANSFER_ITEM_FAKEITEM_SLIP:
-        case TRANSFER_ITEM_FAKEITEM_ANIMAL:
-        case TRANSFER_ITEM_FAKEITEM_ROCKFALL:
-        case TRANSFER_ITEM_FAKEITEM_DISABLETAG:
-            for (unsigned int i = 0; i < sizeof(ice_trap_feds); i++) {
-                if (ice_trap_feds[i] == FedItem) {
-                    sendTrap(ICETRAP_BUBBLE + i);
-                } 
-            }
+        case REQITEM_MOVE:
+            // Special moves (item_type=2) can use direct bitfield manipulation for speed
+            // but we'll keep giveItem for consistency
+            giveItem(item_type, packet->level, packet->kong, config);
             break;
-        case TRANSFER_ITEM_BABOONBLAST:
-        case TRANSFER_ITEM_STRONGKONG:
-        case TRANSFER_ITEM_GORILLAGRAB:
-        case TRANSFER_ITEM_CHIMPYCHARGE:
-        case TRANSFER_ITEM_ROCKETBARREL:
-        case TRANSFER_ITEM_SIMIANSPRING:
-        case TRANSFER_ITEM_ORANGSTAND:
-        case TRANSFER_ITEM_BABOONBALLOON:
-        case TRANSFER_ITEM_ORANGSTANDSPRINT:
-        case TRANSFER_ITEM_MINIMONKEY:
-        case TRANSFER_ITEM_TWIRL:
-        case TRANSFER_ITEM_MONKEYPORT:
-        case TRANSFER_ITEM_HUNKYCHUNKY:
-        case TRANSFER_ITEM_PRIMATEPUNCH:
-        case TRANSFER_ITEM_GORILLAGONE:
-            {
-                int offset = FedItem - TRANSFER_ITEM_BABOONBLAST;
-                int kong = offset / 3;
-                int shift = 1 << (offset % 3);
-                MovesBase[kong].special_moves |= shift;
-                break;
-            }
-        case TRANSFER_ITEM_BONGOS:
-        case TRANSFER_ITEM_GUITAR:
-        case TRANSFER_ITEM_TROMBONE:
-        case TRANSFER_ITEM_SAX:
-        case TRANSFER_ITEM_TRIANGLE:
-            giveItem(REQITEM_MOVE, 8, FedItem - TRANSFER_ITEM_BONGOS, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
-            break;
-        case TRANSFER_ITEM_COCONUT:
-        case TRANSFER_ITEM_PEANUT:
-        case TRANSFER_ITEM_GRAPE:
-        case TRANSFER_ITEM_FEATHER:
-        case TRANSFER_ITEM_PINEAPPLE:
-            giveItem(REQITEM_MOVE, 4, FedItem - TRANSFER_ITEM_COCONUT, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
-            break;
-        case TRANSFER_ITEM_SLAMUPGRADE:
-            giveSlamLevel();
-            break;
-        case TRANSFER_ITEM_HOMING:
-            giveItem(REQITEM_MOVE, 5, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
-            break;
-        case TRANSFER_ITEM_SNIPER:
-            giveItem(REQITEM_MOVE, 6, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
-            break;
-        case TRANSFER_ITEM_BELTUPGRADE:
-            giveItem(REQITEM_MOVE, 7, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
-            break;
-        case TRANSFER_ITEM_INSTRUMENTUPGRADE:
-            giveItem(REQITEM_MOVE, 9, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
         default:
+            // All other items use the generic giveItem function
+            giveItem(item_type, packet->level, packet->kong, config);
             break;
     }
 }

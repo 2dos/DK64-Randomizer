@@ -453,12 +453,15 @@ def recolorSlamSwitches(galleon_switch_value, ROM_COPY: ROM, mode: ColorblindMod
         data = bytearray(num_data)  # convert num_data back to binary string
         writeRawFile(TableNames.ModelTwoGeometry, file_index, True, data, ROM_COPY)
         if not written_galleon_ship:
+            galleon_switch_colors = [
+                [0xFF, 0xFF, 0xFF],
+                new_color1.copy(),
+                new_color2.copy(),
+                new_color3.copy(),
+            ]
             galleon_switch_color = new_color1.copy()
             if galleon_switch_value is not None:
-                if galleon_switch_value != 1:
-                    galleon_switch_color = new_color3.copy()
-                    if galleon_switch_value == 2:
-                        galleon_switch_color = new_color2.copy()
+                galleon_switch_color = galleon_switch_colors[galleon_switch_value]
             recolorKRoolShipSwitch(galleon_switch_color, ROM_COPY)
             written_galleon_ship = True
 

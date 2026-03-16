@@ -29,8 +29,8 @@ settings = Settings(setting_data)
 spoiler = Spoiler(settings)
 settings.resolve_settings()
 # Couple settings needed for patching
-spoiler.dk_face_puzzle = [0] * 9
-spoiler.chunky_face_puzzle = [0] * 9
+spoiler.dk_face_puzzle = [1] * 9
+spoiler.chunky_face_puzzle = [1] * 9
 spoiler.arcade_order = [1, 4, 3, 2]
 spoiler.japes_rock_actor = 45
 spoiler.aztec_vulture_actor = 45

@@ -35,12 +35,13 @@ def readDataFromBytestream(data: bytearray, offset: int, size: int, signed: bool
             value = (1 << (8 * size)) - value
     return value
 
+
 def writeValueToBytestream(data: bytearray, value: int, offset: int, size: int) -> bytearray:
     """Write data to a byte stream."""
     values = [0] * size
     value = int(value)
     if value < 0:
-        value += (1 << (size * 8))
+        value += 1 << (size * 8)
     for x in range(size):
         values[(size - x) - 1] = value & 0xFF
         value >>= 8
@@ -73,6 +74,7 @@ def ApplyMirrorMode(settings: Settings, ROM_COPY: LocalROM):
                 dl_end = readDataFromBytestream(data, 0x48, 4)
             FlipDisplayList(ROM_COPY, data, dl_start, dl_end, tbl, file_index)
 
+
 MISC_SCALES = {
     0: 1,  # Test Map
     29: 1,  # Power Shed
@@ -87,12 +89,14 @@ MISC_SCALES = {
     188: 1,  # Fungi Blast
 }
 
+
 def applyCoordTransform(value: float, map_index: int = 0, apply_scaling: bool = False):
     """Apply the flipping coordinate transform."""
     offset = 3000
     if apply_scaling:
         offset *= MISC_SCALES.get(map_index, 3)
     return offset - value
+
 
 def ApplyMirrorModeNew(ROM_COPY: LocalROM):
     """Apply all Mirror Mode changes (testing)."""
@@ -176,7 +180,10 @@ def ApplyMirrorModeNew(ROM_COPY: LocalROM):
                     block_end = readDataFromBytestream(file_data, ref, 4)
                     ref += 4
                     block_count = int((block_end - start) / 0x18)
-                    print(hex(block_end), hex(block_count), )
+                    print(
+                        hex(block_end),
+                        hex(block_count),
+                    )
                     for _ in range(block_count):
                         div = coldata["divisor"]
                         for cs in range(3):
@@ -207,13 +214,21 @@ def ApplyMirrorModeNew(ROM_COPY: LocalROM):
                 map_exits = writeValueToBytestream(map_exits, new_value, offset, 2)
             writeRawFile(TableNames.Exits, map_index, False, map_exits, ROM_COPY)
 
-def trimData(data: bytes, alignment: int = 0x10) -> bytes:
+
+def trimData(data: bytes, alignment: int = 0x10, grouping: int = 1) -> bytes:
     """Trim a bytes object to remove trailing null bytes, and then align the size of the object to a certain modulo."""
     if alignment <= 0:
         raise ValueError("alignment must be positive")
 
     i = len(data) - 1
-    while i >= 0 and data[i] == 0:
+    while i >= (grouping - 1) and data[i] == 0:
+        non_zero_in_grouping = False
+        if grouping > 1:
+            for x in range(grouping):
+                if data[i - x]:
+                    non_zero_in_grouping = True
+            if non_zero_in_grouping:
+                break
         i -= 1
     if i < 0:
         return b""
@@ -234,7 +249,7 @@ def truncateFiles(ROM_COPY: ROM):
         TableNames.TexturesUncompressed,
         TableNames.Cutscenes,
         TableNames.Setups,
-        TableNames.InstanceScripts,
+        # TableNames.InstanceScripts,
         TableNames.Text,
         TableNames.Spawners,
         TableNames.Triggers,
@@ -275,6 +290,9 @@ def truncateFiles(ROM_COPY: ROM):
                     please_shift = True
             elif table_id == TableNames.MusicMIDI:
                 truncated_data = trimData(data, 0x10)
+                please_shift = True
+            elif table_id == TableNames.InstanceScripts:
+                truncated_data = trimData(data, 0x10, 0x10)
                 please_shift = True
             else:
                 truncated_data = data

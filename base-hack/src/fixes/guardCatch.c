@@ -119,13 +119,7 @@ void WarpHandle(void) {
      * @brief Handles the warp procedure for guards, voiding and death
      */
     if (CurrentMap == MAP_HELM) {
-        if (Rando.fast_start_helm == 2) { // Skip All
-            initiateTransition(MAP_HELM,4); // Crown Door
-        } else if (checkFlag(FLAG_HELM_ROMAN_DOORS_OPEN, FLAGTYPE_PERMANENT) || checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT)) { // Roman Doors Open or BoM off
-            initiateTransition(MAP_HELM,3); // Lever
-        } else {
-            initiateTransition(MAP_HELM,0); // Start
-        }
+        initiateTransition(MAP_HELM, helm_entry_points[(int)Rando.fast_start_helm]);
         setFlag(0x50,0,FLAGTYPE_TEMPORARY); // Prevent Helm Door hardlock
     } else if (inBossMap(CurrentMap, 1, 1, 1)) {
         exitBoss();
