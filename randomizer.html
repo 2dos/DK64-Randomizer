@@ -23,7 +23,7 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
             <div class="container px-5">
-                <button class="btn btn-dark me-2" style="background-color: rgba(0,0,0,0); border: 1px solid white" type="button" data-bs-toggle="collapse" data-bs-target="#nav-tab-list" aria-expanded="false" aria-controls="nav-tab-list">
+                <button class="btn btn-dark me-2" style="background-color: rgba(0,0,0,0); border: none" type="button" data-bs-toggle="collapse" data-bs-target="#nav-tab-list" aria-expanded="false" aria-controls="nav-tab-list" id="toggleSidebar">
                     <i class="fa-solid fa-bars fa-sm"></i>
                 </button>
                 <a class="navbar-brand" href="#page-top">DK64 Randomizer</a>
@@ -121,16 +121,16 @@
                 </div>
             </div>
         </div>
-        <img src="./static/img/logo.webp"
-            alt="DK64 Randomizer"
-            class="center_image"
-            style="cursor: pointer; margin-top: 70px"
-            onClick="render_page('./index')"/>
         <div class="d-flex">
-            <nav id="nav-tab-list" class="collapse collapse-horizontal"></nav>
+            <nav id="nav-tab-list" class="collapse collapse-horizontal show"></nav>
             <div class="flex-grow-1">
                 <div style="width: 90%; min-width: 400px"
-                    class="center">
+                class="center">
+                    <img src="./static/img/logo.webp"
+                        alt="DK64 Randomizer"
+                        class="center_image"
+                        style="cursor: pointer; margin-top: 70px"
+                        onClick="render_page('./index')"/>
                     <div class="card flex-grow-1" style="border-top-left-radius: 0px">
                         <form id="form" action="/" method="POST">
                             <!--Create navbar-->
@@ -502,7 +502,7 @@
             </div>
         </div>
     </body>
-    <footer id="footer">
+    <footer id="footer" style="z-index:1000">
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
             <!-- Left Section: Statistics -->
             <div id="footer-left" style="text-align: center;">

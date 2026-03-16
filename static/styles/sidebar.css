@@ -1,10 +1,10 @@
 #nav-tab-list {
     background:rgba(0, 0, 0, 0.9);
     border-right:1px solid rgba(255, 255, 255, 0.15);
-    position:fixed;
+    /* position:fixed; */
     top:0;
     bottom:0;
-    height:100%;
+    height:auto;
     left:0;
     z-index:1000;
 }
