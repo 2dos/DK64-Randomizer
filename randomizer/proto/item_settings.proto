@@ -175,10 +175,16 @@ message ItemCounts {
 
 message ItemSettings {
     bool decouple_item_rando = 1;
+
     repeated ItemPool pools = 2;
+
     repeated StartingMovePool starting_move_pools = 3;
+
     repeated ItemRandoFiller filler_items = 4;
+
     IceTrapSettings ice_traps = 5;
+    
     ItemCounts item_counts = 6;
+    
     int32 max_snide_reward_requirement = 7;
 }

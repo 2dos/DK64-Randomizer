@@ -121,17 +121,30 @@ message HintSettings {
 
 message QualityOfLifeSettings {
     repeated MiscChange misc_changes = 1;
+
     CutsceneSkips cutscene_skips = 2;
+
     bool shorten_boss_fights = 3;
+
     bool tag_anywhere = 4;
+
     bool shop_indicator = 5;
+    
     bool warp_to_isles = 6;
+
     bool fast_warps = 7;
+
     bool auto_key_turn_ins = 8;
+
     bool portal_numbers = 9;
+
     bool item_reward_previews = 10;
+
     bool enemy_kill_crown_timer = 11;
+
     bool disable_racing_patches = 12;
+
     bool less_fragile_boulders = 13;
+
     HintSettings hints = 14;
 }

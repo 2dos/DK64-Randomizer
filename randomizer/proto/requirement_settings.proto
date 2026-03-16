@@ -188,6 +188,8 @@ enum Barrier {
     BARRIER_CAVES_IGLOO_PADS = 14;
     BARRIER_CAVES_ICE_WALLS = 15;
     BARRIER_CASTLE_CRYPT_DOORS = 16;
+    BARRIER_HELM_STAR_GATES = 17;
+    BARRIER_HELM_PUNCH_GATES = 18;
 }
 
 enum GalleonWater {
@@ -225,18 +227,30 @@ enum ActivateBananaports {
 
 enum PuzzleRando {
     PUZZLE_RANDO_UNSPECIFIED = 0;
-    PUZZLE_RANDO_EASY = 1;
-    PUZZLE_RANDO_MEDIUM = 2;
-    PUZZLE_RANDO_HARD = 3;
-    PUZZLE_RANDO_CHAOS = 4;
+    PUZZLE_RANDO_OFF = 1;
+    PUZZLE_RANDO_EASY = 2;
+    PUZZLE_RANDO_MEDIUM = 3;
+    PUZZLE_RANDO_HARD = 4;
+    PUZZLE_RANDO_CHAOS = 5;
 }
 
-// Just a couple of examples to get the point across, I'll get to converting these all at some point
-// This will be in its own file because its a very important enum, of course.
-enum Location {
-    LOCATION_UNSPECIFIED = 0;
-    LOCATION_FACTORY_TOY_MONSTER = 1;
-    LOCATION_FACTORY_PIANO_GAME = 2;
+enum FasterCheck {
+    FASTER_CHECK_UNSPECIFIED = 0;
+    FASTER_CHECK_FACTORY_TOY_MONSTER_FIGHT = 1;
+    FASTER_CHECK_FACTORY_PIANO_GAME = 2;
+    FASTER_CHECK_FACTORY_DIDDY_RND = 3;
+    FASTER_CHECK_FACTORY_ARCADE_ROUND_1 = 4;
+    FASTER_CHECK_FACTORY_CAR_RACE = 5;
+    FASTER_CHECK_GALLEON_SEAL_RACE = 6;
+    FASTER_CHECK_GALLEON_MECH_FISH = 7;
+    FASTER_CHECK_FOREST_MILL_CONVEYOR = 8;
+    FASTER_CHECK_FOREST_OWL_RACE = 9;
+    FASTER_CHECK_FOREST_RABBIT_RACE = 10;
+    FASTER_CHECK_CAVES_ICE_TOMATO_MINIGAME = 11;
+    FASTER_CHECK_CASTLE_MINECART = 12;
+    FASTER_CHECK_CASTLE_CAR_RACE = 13;
+    FASTER_CHECK_JETPAC = 14;
+    FASTER_CHECK_ARCADE = 15;
 }
 
 message RequirementSettings {
@@ -276,7 +290,7 @@ message RequirementSettings {
 
     ActivateBananaports activate_bananaports = 18;
 
-    repeated Location faster_checks = 19;
+    repeated FasterCheck faster_checks = 19;
 
     PuzzleRando puzzle_rando = 20;
 }
