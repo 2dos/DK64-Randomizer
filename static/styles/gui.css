@@ -300,6 +300,20 @@ footer {
   background-color: rgba(65, 255, 37, 0.3);
 }
 
+@media screen and (min-width: 481px) {
+  #toggleSidebar {
+    display: none;
+  }
+  #nav-tab-list-mobile {
+    display: none;
+  }
+}
+@media screen and (max-width: 480px) {
+  #nav-tab-list {
+    display: none;
+  }
+}
+
 #nav-tab .nav-link {
   transition: all 0.3s;
 }
