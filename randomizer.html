@@ -223,10 +223,22 @@
                                                         class="btn btn-secondary settings_button"
                                                         type="button"
                                                         value="Import"/>
-                                                    <input id="export_settings"
-                                                        class="btn btn-secondary settings_button"
-                                                        type="button"
-                                                        value="Export"/>
+                                                    <div class="btn-group settings_button">
+                                                        <button id="export_settings"
+                                                            class="btn btn-secondary"
+                                                            type="button"
+                                                            onclick="export_settings_string(event)">Export</button>
+                                                        <button type="button"
+                                                            class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                                                            data-bs-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                            <span class="visually-hidden">Toggle Dropdown</span>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a class="dropdown-item" id="export_string_option" href="#">Export String</a></li>
+                                                            <li><a class="dropdown-item" id="export_yaml_option" href="#">Export as Archipelago YAML</a></li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

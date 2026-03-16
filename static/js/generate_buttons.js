@@ -366,8 +366,8 @@ else:
     return JSON.stringify(form_data);
 }
 
-// Event binding for exporting settings to a string
-document.getElementById("export_settings").addEventListener("click", export_settings_string);
+// Event binding for exporting settings to a string (also bound inline on button)
+document.getElementById("export_string_option").addEventListener("click", export_settings_string);
 
 function export_settings_string(event) {
     /**
@@ -774,5 +774,74 @@ async function import_settings_string(event) {
 }
 
 document.getElementById("import_settings").addEventListener("click", import_settings_string);
+
+async function export_archipelago_yaml(event) {
+    /**
+     * Export current settings to Archipelago YAML format.
+     */
+    if (event != null) {
+        event.preventDefault();
+    }
+    
+    // Serialize current settings
+    let settings = serialize_settings(false);
+    
+    // Debug: Check what's being serialized for list fields
+    let settings_obj = JSON.parse(settings);
+    console.log("remove_barriers_selected:", settings_obj.remove_barriers_selected);
+    console.log("tricks_selected:", settings_obj.tricks_selected);
+    console.log("enemies_selected:", settings_obj.enemies_selected);
+    
+    // Get player name from user
+    let player_name = prompt("Enter player name for YAML file:", "Player");
+    if (!player_name) {
+        player_name = "Player";
+    }
+    
+    // Prepare request data
+    let request_data = {
+        settings: settings,
+        player_name: player_name,
+        game_version: "0.6.6"
+    };
+    
+    try {
+        // Show loading toast
+        generateToast("Generating Archipelago YAML...");
+        
+        // Call API endpoint
+        let response = await fetch("/api/export_archipelago_yaml", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(request_data)
+        });
+        
+        if (response.ok) {
+            // Download the YAML file
+            let blob = await response.blob();
+            let url = window.URL.createObjectURL(blob);
+            let a = document.createElement("a");
+            a.href = url;
+            a.download = `${player_name} Kong.yaml`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            
+            generateToast("Archipelago YAML exported successfully!");
+        } else {
+            let error_data = await response.json();
+            generateToast("Error exporting YAML: " + (error_data.error || "Unknown error"), true);
+        }
+    } catch (error) {
+        console.error("Error exporting YAML:", error);
+        generateToast("Error exporting YAML: " + error.message, true);
+    }
+}
+
+// Add event listener for export YAML dropdown item
+document.getElementById("export_yaml_option").addEventListener("click", export_archipelago_yaml);
 
 window["setup_pyodide"] = setup_pyodide;
