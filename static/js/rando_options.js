@@ -1999,10 +1999,24 @@ document
   });
 
 // Dropdown Multiselect
-function toggleDropdown(name) {
-  const menu = document.getElementById(`${name}_selected`);
-  menu.classList.toggle('show');
-}
+
+document.addEventListener("click", (event) => {
+  const dropdownToggles = document.querySelectorAll(".dropdown-toggle[aria-expanded=true]");
+  const target = event.target;
+
+  dropdownToggles.forEach(toggle => {
+    const menu = document.querySelector(toggle.getAttribute("href"));
+    if (menu) {
+      if (
+        menu.classList.contains("show") &&
+        !toggle.contains(target) &&
+        !menu.contains(target)
+      ) {
+        bootstrap.Collapse.getOrCreateInstance(menu).hide();
+      }
+    }
+  });
+});
 
 function pushUpdateToDropdown(name) {
   const ddms = document.getElementById(`dropdown_${name}`);
