@@ -3,6 +3,7 @@ syntax = "proto3";
 package randomizer.proto;
 
 import "common/level.proto";
+import "common/map.proto";
 
 enum EntranceRandomizer {
     ENTRANCE_RANDOMIZER_UNSPECIFIED = 0;
@@ -20,28 +21,11 @@ enum CrossMapBananaports {
     CROSS_MAP_BANANAPORTS_DECOUPLED = 3;
 }
 
-message KongModels {
-    enum KongModel {
-        KONG_MODEL_UNSPECIFIED = 0;
-        KONG_MODEL_DK = 1;
-        KONG_MODEL_DIDDY = 2;
-        KONG_MODEL_LANKY = 3;
-        KONG_MODEL_TINY = 4;
-        KONG_MODEL_CHUNKY = 5;
-        KONG_MODEL_KRUSHA = 6;
-    }
-
-    KongModel dk_model = 1;
-    KongModel diddy_model = 2;
-    KongModel lanky_model = 3;
-    KongModel tiny_model = 4;
-    KongModel chunky_model = 5;
-}
-
-message ColoredBananaRandomizer {
-    bool enabled = 1;
-
-    repeated common.LevelId cb_randomized_levels = 2;
+enum RandomStartingRegion {
+    RANDOM_STARTING_REGION_UNSPECIFIED = 0;
+    RANDOM_STARTING_REGION_OFF = 1;
+    RANDOM_STARTING_REGION_ISLES_MAIN_ONLY = 2;
+    RANDOM_STARTING_REGION_ON = 3;
 }
 
 enum KasplatRandomizer {
@@ -51,38 +35,18 @@ enum KasplatRandomizer {
     KASPLAT_RANDOMIZER_LOCATION_SHUFFLE = 3;
 }
 
-message BananaportRandomizer{    
-    enum BananaportRandomizerOption {
-        BANANAPORT_RANDOMIZER_OPTION_UNSPECIFIED = 0;
-        BANANAPORT_RANDOMIZER_OPTION_VANILLA = 1;
-        BANANAPORT_RANDOMIZER_OPTION_HALF_VANILLA = 2;
-        BANANAPORT_RANDOMIZER_OPTION_ON = 3;
-    }
-
-    enum BananaportArea {
-        BANANAPORT_AREA_UNSPECIFIED = 0;
-        BANANAPORT_AREA_JAPES = 1;
-        BANANAPORT_AREA_AZTEC_MAIN = 2;
-        BANANAPORT_AREA_AZTEC_LLAMA = 3;
-        BANANAPORT_AREA_FACTORY = 4;
-        BANANAPORT_AREA_GALLEON = 5;
-        BANANAPORT_AREA_FOREST = 6;
-        BANANAPORT_AREA_CAVES = 7;
-        BANANAPORT_AREA_CASTLE_MAIN = 8;
-        BANANAPORT_AREA_CASTLE_CRYPT = 9;
-        BANANAPORT_AREA_ISLES = 10;
-    }
-
-    BananaportRandomizerOption opt = 1;
-
-    repeated BananaportArea bananaport_randomized_levels = 2;
-}
-
 enum PortalRandomizer {
     PORTAL_RANDOMIZER_UNSPECIFIED = 0;
     PORTAL_RANDOMIZER_VANILLA = 1;
     PORTAL_RANDOMIZER_MAIN_ONLY = 2;
     PORTAL_RANDOMIZER_ON = 3;
+}
+
+enum KroolInBossPool {
+    KROOL_IN_BOSS_POOL_UNSPECIFIED = 0;
+    KROOL_IN_BOSS_POOL_OFF = 1;
+    KROOL_IN_BOSS_POOL_KROOL_ONLY = 2;
+    KROOL_IN_BOSS_POOL_FULL_SHUFFLE = 3;
 }
 
 enum CrownEnemies {
@@ -156,6 +120,108 @@ enum ShuffledBonusBarrel {
     SHUFFLED_BONUS_BARREL_ARCADE = 19;
 }
 
+enum HardMode {
+    HARD_MODE_UNSPECIFIED = 0;
+    HARD_MODE_NULL_OPTION_0 = 1;
+    HARD_MODE_NULL_OPTION_1 = 2;
+    HARD_MODE_HARD_ENEMIES = 3;
+    HARD_MODE_WATER_IS_LAVA = 4;
+    HARD_MODE_REDUCED_FALL_DAMAGE_THRESHOLD = 5;
+    HARD_MODE_SHUFFLED_JETPAC_ENEMIES = 6;
+    HARD_MODE_LOWER_MAX_REFILL_AMOUNTS = 7;
+    HARD_MODE_STRICT_HELM_TIMER = 8;
+    HARD_MODE_DONK_IN_THE_DARK_WORLD = 9;
+    HARD_MODE_DONK_IN_THE_SKY = 10;
+    HARD_MODE_ANGRY_CAVES = 11;
+    HARD_MODE_FAST_BALLOONS = 12;
+}
+
+enum HardBoss {
+    HARD_BOSS_UNSPECIFIED = 0;
+    HARD_BOSS_FAST_MAD_JACK = 1;
+    HARD_BOSS_ALTERNATIVE_MAD_JACK_KONGS = 2;
+    HARD_BOSS_PUFFTOSS_STAR_RANDO = 3;
+    HARD_BOSS_PUFFTOSS_STAR_RAISED = 4;
+    HARD_BOSS_KUT_OUT_PHASE_RANDO = 5;
+    HARD_BOSS_K_ROOL_TOES_RANDO = 6;
+    HARD_BOSS_BETA_LANKY_PHASE = 7;
+}
+
+enum DamageEnum {
+    DAMAGE_ENUM_UNSPECIFIED = 0;
+    DAMAGE_ENUM_NORMAL = 1;
+    DAMAGE_ENUM_DOUBLE_DAMAGE = 2;
+    DAMAGE_ENUM_QUAD_DAMAGE = 3;
+    DAMAGE_ENUM_OHKO = 4;
+}
+
+message KongModels {
+    enum KongModel {
+        KONG_MODEL_UNSPECIFIED = 0;
+        KONG_MODEL_DK = 1;
+        KONG_MODEL_DIDDY = 2;
+        KONG_MODEL_LANKY = 3;
+        KONG_MODEL_TINY = 4;
+        KONG_MODEL_CHUNKY = 5;
+        KONG_MODEL_KRUSHA = 6;
+        KONG_MODEL_CRANKY = 7;
+        KONG_MODEL_CANDY = 8;
+        KONG_MODEL_FUNKY = 9;
+        KONG_MODEL_ROBOKREM = 10;
+        KONG_MODEL_KROOL_FIGHT = 11;
+        KONG_MODEL_KROOL_CUTSCENE = 12;
+    }
+
+    enum KongModelMode {
+        KONG_MODEL_MODE_UNSPECIFIED = 0;
+        KONG_MODEL_MODE_NONE = 1;
+        KONG_MODEL_MODE_MANUAL = 2;
+        KONG_MODEL_MODE_RANDOM_ONE = 3;
+        KONG_MODEL_MODE_SOMETIMES_ONE = 4;
+        KONG_MODEL_MODE_RANDOM_ALL = 5;
+    }
+
+    KongModel dk_model = 1;
+    KongModel diddy_model = 2;
+    KongModel lanky_model = 3;
+    KongModel tiny_model = 4;
+    KongModel chunky_model = 5;
+    KongModelMode mode = 6;
+}
+
+message ColoredBananaRandomizer {
+    bool enabled = 1;
+
+    repeated common.LevelId cb_randomized_levels = 2;
+}
+
+message BananaportRandomizer {
+    enum BananaportRandomizerOption {
+        BANANAPORT_RANDOMIZER_OPTION_UNSPECIFIED = 0;
+        BANANAPORT_RANDOMIZER_OPTION_VANILLA = 1;
+        BANANAPORT_RANDOMIZER_OPTION_HALF_VANILLA = 2;
+        BANANAPORT_RANDOMIZER_OPTION_ON = 3;
+    }
+
+    enum BananaportArea {
+        BANANAPORT_AREA_UNSPECIFIED = 0;
+        BANANAPORT_AREA_JAPES = 1;
+        BANANAPORT_AREA_AZTEC_MAIN = 2;
+        BANANAPORT_AREA_AZTEC_LLAMA = 3;
+        BANANAPORT_AREA_FACTORY = 4;
+        BANANAPORT_AREA_GALLEON = 5;
+        BANANAPORT_AREA_FOREST = 6;
+        BANANAPORT_AREA_CAVES = 7;
+        BANANAPORT_AREA_CASTLE_MAIN = 8;
+        BANANAPORT_AREA_CASTLE_CRYPT = 9;
+        BANANAPORT_AREA_ISLES = 10;
+    }
+
+    BananaportRandomizerOption opt = 1;
+
+    repeated BananaportArea bananaport_randomized_levels = 2;
+}
+
 message HelmHurry {
     bool enabled = 1;
 
@@ -175,21 +241,12 @@ message HelmHurry {
     int32 cb_time = 15;
     int32 trap_time = 16;
 }
-
-enum DamageEnum {
-    DAMAGE_ENUM_UNSPECIFIED = 0;
-    DAMAGE_ENUM_NORMAL = 1;
-    DAMAGE_ENUM_DOUBLE_DAMAGE = 2;
-    DAMAGE_ENUM_QUAD_DAMAGE = 3;
-    DAMAGE_ENUM_OHKO = 4;
-}
-
 message OverworldSettings {
     // World Navigation
     EntranceRandomizer entrance_randomizer = 1;
     bool shuffle_helm_location = 2;
     CrossMapBananaports cross_map_bananaports = 3;
-    bool random_starting_location = 4;
+    RandomStartingRegion random_starting_region = 4;
     KongModels kong_models = 5;
 
     // Location Randomizers
@@ -212,43 +269,30 @@ message OverworldSettings {
 
     // Bosses
     bool shuffle_boss_location = 22;
-    bool k_rool_phases_as_bosses = 23;
+    KroolInBossPool krool_in_boss_pool = 23;
+    repeated common.MapId bosses_selected = 24;
 
     // Enemies
-    repeated ShuffledEnemy shuffled_enemies = 24;
-    CrownEnemies crown_enemies = 25;
-    bool random_enemy_speed = 26;
-    bool random_enemy_size = 27;
+    repeated ShuffledEnemy shuffled_enemies = 25;
+    CrownEnemies crown_enemies = 26;
+    bool random_enemy_speed = 27;
+    bool random_enemy_size = 28;
 
-    // Bonus Barrels
-    repeated ShuffledBonusBarrel shuffled_bonus_barrels = 28;
-    bool disable_hard_minigames = 29;
-    bool auto_complete_bonus_barrels = 30;
+    // Bonus Barrles
+    repeated ShuffledBonusBarrel shuffled_bonus_barrels = 29;
+    bool disable_hard_minigames = 30;
+    bool auto_complete_bonus_barrels = 31;
+    bool alternate_minecart_mayhem = 32;
 
     // Difficulty
-    bool no_heals = 31;
-    bool no_melon_slice_drops = 32;
-    bool ice_traps_damage_player = 33;
-    bool mirror_mode = 34;
-    bool irondonk = 35;
-    bool tag_barrels_disabled = 36;
-    HelmHurry helm_hurry_mode = 37;
-    bool hard_enemies = 38;
-    bool water_is_lava = 39;
-    bool reduced_fall_damage_threshold = 40;
-    bool shuffled_jetpac_enemies = 41;
-    bool lower_max_refill_amounts = 42;
-    bool strict_helm_timer = 43;
-    bool angry_caves = 44;
-    bool fast_balloons = 45;
-    bool donk_in_the_dark_world = 46;
-    bool donk_in_the_sky = 47;
-    bool fast_mad_jack = 48;
-    bool alternative_mad_jack_kongs = 49;
-    bool pufftoss_star_rando = 50;
-    bool pufftoss_star_raised = 51;
-    bool kut_out_phase_rando = 52;
-    bool k_rool_toes_rando = 53;
-    bool beta_lanky_phase = 54;
-    DamageEnum damage = 55;
+    bool no_heals = 33;
+    bool no_melon_slice_drops = 34;
+    bool ice_traps_damage_player = 35;
+    bool mirror_mode = 36;
+    bool tag_barrels_disabled = 37;
+    HelmHurry helm_hurry_mode = 38;
+    bool no_consumable_upgrades = 39;
+    repeated HardMode hard_mode = 40;
+    repeated HardBoss hard_bosses = 41;
+    DamageEnum damage = 42;
 }
