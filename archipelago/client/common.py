@@ -5,11 +5,34 @@ from __future__ import annotations
 from asyncio import Task, create_task
 from typing import Any, Set, Coroutine
 import urllib.request
+import ssl
 import os
 import pkgutil
 import json
 import sys
 from Utils import get_settings
+
+
+def get_system_ca_bundle():
+    """Find the system's CA certificate bundle.
+
+    Tries common locations for CA certificates on Linux systems.
+    Returns the path if found, None otherwise.
+    """
+    ca_bundle_paths = [
+        "/etc/ssl/certs/ca-certificates.crt",  # Debian/Ubuntu/Gentoo
+        "/etc/pki/tls/certs/ca-bundle.crt",  # RedHat/CentOS/Fedora
+        "/etc/ssl/ca-bundle.pem",  # OpenSUSE
+        "/etc/ssl/cert.pem",  # OpenBSD/Alpine
+        "/usr/local/share/certs/ca-root-nss.crt",  # FreeBSD
+        "/etc/pki/tls/cert.pem",  # RedHat alternative
+    ]
+
+    for path in ca_bundle_paths:
+        if os.path.isfile(path):
+            return path
+
+    return None
 
 
 def get_ap_version():
@@ -140,7 +163,12 @@ def check_version():
 
         request = urllib.request.Request(api_endpoint, headers={"User-Agent": "DK64Client/1.0"})
         ap_version = get_ap_version()
-        with urllib.request.urlopen(request) as response:
+        # Create SSL context for certificate verification
+        ssl_context = None
+        ca_bundle = get_system_ca_bundle()
+        if ca_bundle:
+            ssl_context = ssl.create_default_context(cafile=ca_bundle)
+        with urllib.request.urlopen(request, context=ssl_context) as response:
             data = json.load(response)
             latest_tag = data.get("tag_name")
             if latest_tag and latest_tag.startswith("v"):
@@ -165,7 +193,7 @@ def check_version():
                     # Get the latest dev version for informational purposes
                     try:
                         dev_request = urllib.request.Request("https://api.github.com/repos/2dos/DK64-Randomizer-dev/releases/latest", headers={"User-Agent": "DK64Client/1.0"})
-                        with urllib.request.urlopen(dev_request) as dev_response:
+                        with urllib.request.urlopen(dev_request, context=ssl_context) as dev_response:
                             dev_data = json.load(dev_response)
                             latest_dev_tag = dev_data.get("tag_name")
                             if latest_dev_tag and latest_dev_tag.startswith("v"):
@@ -180,9 +208,35 @@ def check_version():
                         logger.warning(f"Warning: New version of DK64 Rando available: {api_version} (current: {ap_version})")
 
                 if should_update:
-                    # Check if we're installed in an apworld in custom_worlds/dk64.apworld
-                    # Check if the file exists
-                    apworld_output = "./custom_worlds/dk64.apworld"
+                    # Find the custom_worlds directory where APWorld is installed
+                    # Try multiple potential locations
+                    potential_paths = [
+                        "./custom_worlds/dk64.apworld",  # Relative to current directory
+                        os.path.expanduser("~/.local/share/Archipelago/custom_worlds/dk64.apworld"),  # Linux user install
+                        os.path.join(os.path.dirname(sys.executable), "custom_worlds", "dk64.apworld"),
+                    ]
+
+                    # Add the path relative to the CommonClient module if available
+                    try:
+                        import CommonClient
+
+                        commonlient_dir = os.path.dirname(os.path.abspath(CommonClient.__file__))
+                        archipelago_dir = os.path.dirname(commonlient_dir)
+                        potential_paths.insert(0, os.path.join(archipelago_dir, "custom_worlds", "dk64.apworld"))
+                    except Exception:
+                        # CommonClient module not available or path resolution failed, skip this location
+                        pass
+
+                    apworld_output = None
+                    for path in potential_paths:
+                        if os.path.exists(path):
+                            apworld_output = path
+                            break
+
+                    if not apworld_output:
+                        logger.warning("New version of DK64 Rando available, but no APWorld file found. Please update manually.")
+                        return
+
                     if os.path.exists(apworld_output):
                         should_install = ask_yes_no_cancel("Update Available", "A new version of DK64 Rando is available. Would you like to install it?")
                         if not should_install:
@@ -206,7 +260,7 @@ def check_version():
                             return
 
                         try:
-                            with urllib.request.urlopen(download_url) as response:
+                            with urllib.request.urlopen(download_url, context=ssl_context) as response:
                                 data = response.read()
                                 # Delete the original AP World in the folder
                                 os.remove(apworld_output)

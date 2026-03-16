@@ -13,3 +13,6 @@ class SwitchType(IntEnum):
     MiscActivator = auto()
     PushableButton = auto()
     GunInstrumentCombo = auto()
+    PunchGrate = auto()
+    IceWall = auto()
+    Gong = auto()

@@ -3598,7 +3598,7 @@ BananaCoinGroupList = {
             name="In Chunky R&D Room",
             konglist=[Kongs.chunky],
             region=Regions.RandDUpper,
-            logic=lambda l: (l.punch and l.triangle and l.ischunky) or l.CanAccessRNDRoom(),
+            logic=lambda l: (l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.ischunky) or l.CanAccessRNDRoom(),
             locations=[
                 [1.0, 4570, 1336, 1400],
                 [1.0, 4525, 1336, 1366],
@@ -3974,7 +3974,7 @@ BananaCoinGroupList = {
             name="Around Arcade Tunnel Bonus",
             konglist=[Kongs.chunky],
             region=Regions.FactoryArcadeTunnel,
-            logic=lambda l: (l.punch and l.ischunky) or l.CanPhase(),
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryArcadeTunnelGrate, False) or l.CanPhase(),
             locations=[
                 [1.0, 1343.939208984375, 1106.5, 1885.8740234375],
                 [1.0, 1178.9105224609375, 1106.5, 1893.6072998046875],
@@ -4128,6 +4128,7 @@ BananaCoinGroupList = {
             name="On broken ship near Cranky's",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.GloomyGalleonStart,
+            logic=lambda l: l.cannons,
             locations=[
                 [1.0, 3085, 1790, 3471],
                 [1.0, 3093, 1790, 3450],
@@ -4142,6 +4143,7 @@ BananaCoinGroupList = {
             name="On Broken Ship railings",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.GloomyGalleonStart,
+            logic=lambda l: l.cannons,
             locations=[
                 [1.0, 3147, 1835, 3526],
                 [1.0, 3147, 1835, 3431],
@@ -4702,6 +4704,7 @@ BananaCoinGroupList = {
             name="Around Cranky's Lab",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.GloomyGalleonStart,
+            logic=lambda l: l.cannons,
             locations=[
                 [1.0, 3215.933837890625, 1790.0, 2387.90576171875],
                 [1.0, 3402.533447265625, 1791.8359375, 2475.832275390625],
@@ -5121,6 +5124,7 @@ BananaCoinGroupList = {
             name="On Clock Torches",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.FungiForestStart,
+            logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
             locations=[
                 [1.0, 2538, 664, 2263],
                 [1.0, 2538, 664, 2387],
@@ -5706,6 +5710,7 @@ BananaCoinGroupList = {
             name="Behind Clock",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.FungiForestStart,
+            logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
             locations=[
                 [1.0, 2345.25341796875, 603.6666870117188, 2325.597412109375],
                 [1.0, 2331.1953125, 603.6666870117188, 2335.5341796875],

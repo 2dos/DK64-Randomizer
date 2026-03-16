@@ -26,7 +26,7 @@ from randomizer.Patching.CosmeticColors import (
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Library.Generic import recalculatePointerJSON, camelCaseToWords, getHoliday, Holidays, IsColorOptionSelected
+from randomizer.Patching.Library.Generic import recalculatePointerJSON, camelCaseToWords, getHoliday, Holidays, IsColorOptionSelected, TERMINATING_SFXS
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, writeText
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic, disableDynamicReverb, fixLankyIncompatibility
 from randomizer.Patching.MirrorMode import truncateFiles
@@ -94,11 +94,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     #     js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
     #     return
     elif from_patch_gen is True:
-        if (
-            js.document.getElementById("download_patch_file").checked
-            and js.document.getElementById("generate_seed").value != "Download Seed"
-            and not js.document.getElementById("load_patch_file").checked
-        ):
+        if js.document.getElementById("download_patch_file").checked and js.document.getElementById("generate_seed").value != "Download Seed":
             js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
         # gif_fairy = get_hash_images("browser", "loading-fairy")
         # gif_dead = get_hash_images("browser", "loading-dead")
@@ -194,6 +190,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
 
             # Fog
             holiday = getHoliday(settings)
+            settings.boot_sfx = random.choice(TERMINATING_SFXS)
             fog_enabled = [0, 0, 0]  # 0 = Vanilla, 1 = Set to a default (defined by either holiday mode or a custom default), 2 = rando
             default_colors = [
                 [0x8A, 0x52, 0x16],  # Aztec
@@ -339,8 +336,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 ROM_COPY.seek(sav + 0x1ED)
                 ROM_COPY.write(1)
 
-            truncateFiles(ROM_COPY)
             spoiler = updateJSONCosmetics(spoiler, settings, music_data, int(unix), head_sizes)
+        truncateFiles(ROM_COPY)
 
         # Apply Hash
         order = 0

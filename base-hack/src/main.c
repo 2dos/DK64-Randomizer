@@ -34,14 +34,10 @@ void cFuncLoop(void) {
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();
 	overlay_changes();
-	replace_zones(0);
 	checkDimCache();
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, FLAGTYPE_TEMPORARY); // Clear K. Lumsy temp flag
 		setFlag(0x79, 0, FLAGTYPE_TEMPORARY); // Clear BFI Reward Cutscene temp flag
-		if ((!Rando.tns_portal_rando_on) && (Rando.tns_indicator)) {
-			shiftBrokenJapesPortal();
-		}
 		if (isKrushaAdjacentModel(3)) {
 			if (CurrentMap == MAP_KROOLSHOE) {
 				setActorDamage(43, 1);
@@ -87,7 +83,6 @@ void cFuncLoop(void) {
 		}
 		callIceTrap();
 	}
-	// displayNumberOnTns();
 	if (Rando.music_rando_on) {
 		if (CurrentMap == MAP_NINTENDOLOGO) {
 			if (ObjectModel2Timer == 5) {
@@ -106,8 +101,6 @@ void cFuncLoop(void) {
 		}
 	}
 	callParentMapFilter();
-	spawnCannonWrapper();
-	setCrusher();
 	handleFallDamageImmunity();
 	if (Rando.win_condition == GOAL_POKESNAP) {
 		int picture_bitfield = 0;
@@ -126,21 +119,10 @@ void cFuncLoop(void) {
 		}
 		new_picture = picture_bitfield;
 	}
-	if (Rando.perma_lose_kongs) {
-		preventBossCheese();
-		kong_has_died();
-		fixGraceCheese();
-		forceBossKong();
-	} else {
-		if (CurrentMap == MAP_CASTLEKUTOUT) {
-			if (TransitionSpeed > 0.0f) {
-				if (LZFadeoutProgress == 30.0f) {
-					for (int i = 0; i < 7; i++) {
-						if (BossMapArray[i] == MAP_CASTLEKUTOUT) {
-							Character = BossKongArray[i];
-						}
-					}
-				}
+	if (CurrentMap == MAP_CASTLEKUTOUT) {
+		if (TransitionSpeed > 0.0f) {
+			if (LZFadeoutProgress == 30.0f) {
+				Character = KutOutKongArray[0];
 			}
 		}
 	}
@@ -274,7 +256,6 @@ void earlyFrame(void) {
 		auto_turn_keys();
 		wipeHintCache();
 		if (CurrentMap == MAP_MAINMENU) {
-			FileScreenDLCode_Write();
 			initTracker();
 			if (Player) {
 				// Remove DK's shadow in the main menu

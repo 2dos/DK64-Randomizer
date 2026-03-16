@@ -73,7 +73,9 @@ typedef struct bonedata {
 	/* 0x000 */ int unk_0;
 	/* 0x004 */ int unk_4;
 	/* 0x008 */ int unk_8;
-	/* 0x00C */ char unk_0C[0x70 - 0x0C];
+	/* 0x00C */ char unk_0C[0x24 - 0x0C];
+	/* 0x024 */ char in_wall;
+	/* 0x025 */ char unk_25[0x70 - 0x25];
 	/* 0x070 */ bone_block_data bone_block;
 } bonedata;
 typedef struct actorData {
@@ -97,7 +99,9 @@ typedef struct actorData {
 	/* 0x07C */ float xPos;
 	/* 0x080 */ float yPos;
 	/* 0x084 */ float zPos;
-	/* 0x088 */ char unk_80[0xB8-0x88];
+	/* 0x088 */ char unk_80[0xA4-0x88];
+	/* 0x0A4 */ float floor;
+	/* 0x0A8 */ char unk_a8[0xB8-0xA8];
 	/* 0x0B8 */ float hSpeed;
 	/* 0x0BC */ char unk_BC[0xC0-0xBC];
 	/* 0x0C0 */ float yVelocity;
@@ -112,7 +116,8 @@ typedef struct actorData {
 	/* 0x0EC */ short unk_EC;
 	/* 0x0EE */ short rot_y_copy;
 	/* 0x0F0 */ short reward_index;
-	/* 0x0F2 */ char unk_F2[0xFD-0xF2];
+	/* 0x0F2 */ char unk_F2[0xFC-0xF2];
+	/* 0x0FC */ unsigned char unk_FC;
 	/* 0x0FD */ unsigned char unk_FD;
 	/* 0x0FE */ char unk_FE[0x11C-0xFE];
 	/* 0x11C */ void* parent;
@@ -290,7 +295,8 @@ typedef struct playerData {
 	/* 0x325 */ char unk_324[0x328 - 0x325];
 	/* 0x328 */ actorData* krool_timer_pointer;
 	/* 0x32C */ actorData* held_actor;
-	/* 0x330 */ char unk_330[0x340 - 0x330];
+	/* 0x330 */ actorData* held_destroy_actor;
+	/* 0x334 */ char unk_334[0x340 - 0x334];
 	/* 0x340 */ float scale[6];
 	/* 0x358 */ char unk_358[0x368 - 0x358];
 	/* 0x368 */ unsigned int state_bitfield;
@@ -761,15 +767,6 @@ typedef struct trigger {
 	/* 0x038 */ char not_in_zone;
 	/* 0x039 */ char active;
 } trigger;
-
-typedef struct cannon {
-	/* 0x000 */ char unk_00[0x376];
-	/* 0x376 */ short source_map;
-	/* 0x378 */ short destination_map;
-	/* 0x37A */ short destination_exit;
-} cannon;
-
-
 
 typedef struct blocker_cheat {
 	/* 0x000 */ unsigned char gb_count;
@@ -1273,7 +1270,7 @@ typedef struct quality_options {
 	unsigned char reduce_lag : 1;
 	unsigned char remove_cutscenes : 1; // 1
 	unsigned char mountain_bridge_extended : 1;
-	unsigned char unused_3 : 1; // 3
+	unsigned char no_wrinkly_puzzles : 1; // 3
 	unsigned char dance_skip : 1;
 	unsigned char fast_boot : 1; // 5
 	unsigned char no_ship_timers : 1;
@@ -1636,6 +1633,17 @@ typedef struct Controller {
 	/* 0x003 */ char stickY;
 } Controller;
 
+typedef struct InputHandlerContainer {
+	/* 0x000 */ Controller cont;
+	/* 0x004 */ short unk4;
+} InputHandlerContainer;
+
+typedef struct button_swap_struct {
+	/* 0x000 */ unsigned short target_bit;
+	/* 0x002 */ unsigned short output_bit;
+	/* 0x004 */ unsigned short timer;
+} button_swap_struct;
+
 typedef struct Border {
 	/* 0x000 */ char player_count;
 	/* 0x001 */ char unk1;
@@ -1714,49 +1722,6 @@ typedef struct sprite_info {
 	/* 0x36C */ unsigned char blue;
 	/* 0x36D */ unsigned char alpha;
 } sprite_info;
-
-typedef struct RandomSwitchesIsles {
-	/* 0x000 */ unsigned char monkeyport; // 0 = monkeyport, 1 = blast, 2 = balloon
-	/* 0x001 */ unsigned char gone; // 0 = gone, 1-5 = instrument
-	/* 0x002 */ unsigned char aztec_lobby_feather;
-	/* 0x003 */ unsigned char fungi_lobby_feather;
-	/* 0x004 */ unsigned char spawn_rocketbarrel;
-} RandomSwitchesIsles;
-
-typedef struct RandomSwitchesJapes {
-	/* 0x000 */ unsigned char feather;
-	/* 0x001 */ unsigned char rambi;
-	/* 0x002 */ unsigned char painting;
-	/* 0x003 */ unsigned char diddy_cave;
-} RandomSwitchesJapes;
-
-typedef struct RandomSwitchesAztec {
-	/* 0x000 */ unsigned char bp_door;
-	/* 0x001 */ unsigned char llama_switches[3];
-	/* 0x004 */ unsigned char snoop_switch;
-	/* 0x005 */ unsigned char guitar;
-} RandomSwitchesAztec;
-
-typedef struct RandomSwitchesGalleon {
-	/* 0x000 */ unsigned char lighthouse;
-	/* 0x001 */ unsigned char shipwreck;
-	/* 0x002 */ unsigned char cannongame;
-} RandomSwitchesGalleon;
-
-typedef struct RandomSwitchesFungi {
-	/* 0x000 */ unsigned char yellow;
-	/* 0x001 */ unsigned char green_feather;
-	/* 0x002 */ unsigned char green_pineapple;
-} RandomSwitchesFungi;
-
-// Any 0s are treated as default
-typedef struct RandomSwitchesSetting {
-	/* 0x000 */ RandomSwitchesIsles isles;
-	/* 0x005 */ RandomSwitchesJapes japes;
-	/* 0x009 */ RandomSwitchesAztec aztec;
-	/* 0x00F */ RandomSwitchesGalleon galleon;
-	/* 0x012 */ RandomSwitchesFungi fungi;
-} RandomSwitchesSetting;
 
 typedef struct LZREntrance {
 	/* 0x000 */ unsigned char map;

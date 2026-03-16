@@ -105,7 +105,7 @@ with open("asm/objects.asm", "w") as obj_asm:
                         continue
                     if "// minigame:" in first_line:
                         minigame = first_line.split("// minigame:")[1].strip()
-                        print("Found minigame:", minigame)                    
+                        print("Found minigame:", minigame)
                 out_obj = f"obj/{_o}"
                 if minigame is None:
                     obj_asm.write(f'.importobj "{out_obj}"\n')

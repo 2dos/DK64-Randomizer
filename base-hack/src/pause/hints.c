@@ -91,6 +91,7 @@ short itemloc_flags[] = {
     FLAG_TBARREL_BARREL,
     FLAG_TBARREL_VINE,
     FLAG_ABILITY_CLIMBING,
+    FLAG_ABILITY_CANNON,
     // Instrument Upgrades and Slams
     FLAG_SHOPFLAG + (8 * 5) + (7 * 5) + ((LEVEL_GALLEON - LEVEL_AZTEC) * 5) + KONG_DK, // Instrument Upgrade
     FLAG_SHOPFLAG + (8 * 5) + (7 * 5) + (3 * 5) + ((LEVEL_CAVES - LEVEL_CAVES) * 5) + KONG_DK, // Instrument Upgrade

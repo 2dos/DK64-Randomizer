@@ -4,6 +4,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Switches import Switches
 from randomizer.LogicClasses import Balloon, ColoredBananaGroup
 
 ColoredBananaGroupList = [
@@ -443,7 +444,7 @@ ColoredBananaGroupList = [
         name="Leading to Chunky R&D room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.RandDUpper,
-        logic=lambda l: l.punch and l.chunky and l.climbing,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.climbing,
         locations=[[1, 1.0, 4404, 1421, 1396], [1, 1.0, 4346, 1417, 1355]],
     ),
     ColoredBananaGroup(
@@ -460,7 +461,7 @@ ColoredBananaGroupList = [
         name="Chunky R&D room behind chest",
         konglist=[Kongs.chunky],
         region=Regions.RandD,
-        logic=lambda l: l.CanAccessRNDRoom() or (l.punch and l.triangle and l.climbing),
+        logic=lambda l: l.CanAccessRNDRoom() or (l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing),
         locations=[[5, 1.0, 5000, 1341, 1748], [5, 1.0, 4980, 1341, 1778]],
     ),
     ColoredBananaGroup(
@@ -541,7 +542,7 @@ ColoredBananaGroupList = [
         name="In Dark room on box",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.punch or l.CanPhase(),
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase(),
         locations=[[5, 1.0, 2130, 52, 528]],
     ),
     ColoredBananaGroup(
@@ -875,7 +876,7 @@ ColoredBananaGroupList = [
         name="Stash Snatch room",
         konglist=[Kongs.chunky],
         region=Regions.FactoryArcadeTunnel,
-        logic=lambda l: l.punch,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryArcadeTunnelGrate, False),
         locations=[[5, 1.0, 1340, 1112, 1762], [5, 1.0, 1202, 1112, 1754]],
     ),
     ColoredBananaGroup(
@@ -1033,7 +1034,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.BeyondHatch,
         vanilla=True,
-        logic=lambda l: l.punch,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False),
         locations=[
             [5, 1.0, 1960.4481201171875, 106.5, 584.5081787109375],
             [5, 1.0, 1961.8372802734375, 126.5, 677.7713012695312],
@@ -1369,7 +1370,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.RandDUpper,
         vanilla=True,
-        logic=lambda l: (l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
+        logic=lambda l: (l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
         locations=[
             [1, 1.0, 4655.8388671875, 1339.0, 1240.5621337890625],
             [1, 1.0, 4767.98388671875, 1339.0, 1316.2774658203125],
@@ -1385,7 +1386,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.RandDUpper,
         vanilla=True,
-        logic=lambda l: (l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
+        logic=lambda l: (l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
         locations=[
             [1, 1.0, 4385.7177734375, 1339.0, 1695.80419921875],
             [1, 1.0, 4492.11083984375, 1339.0, 1768.3846435546875],
@@ -1698,7 +1699,7 @@ ColoredBananaGroupList = [
         name="Dark room entrance",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.chunky and l.punch,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False),
         locations=[
             [1, 1.0, 1747, 6, 667],
             [1, 1.0, 1762, 6, 667],
@@ -1713,7 +1714,7 @@ ColoredBananaGroupList = [
         name="Box in a corner of dark room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.chunky and l.punch,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False),
         locations=[[5, 1.0, 1804, 42, 914]],
     ),
     ColoredBananaGroup(
@@ -1940,7 +1941,7 @@ ColoredBananaGroupList = [
         name="On the R&D triangle pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.RandDUpper,
-        logic=lambda l: l.chunky and l.punch and l.climbing,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.climbing,
         locations=[[5, 1.0, 4405, 1427, 1395]],
     ),
     ColoredBananaGroup(
@@ -2188,7 +2189,7 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.chunky],
         region=Regions.RandDUpper,
-        logic=lambda l: (l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
+        logic=lambda l: (l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
         points=[[5086, 1580, 1562], [4830, 1560, 1948]],
     ),
     Balloon(
@@ -2225,7 +2226,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.punch or l.CanPhase(),
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase(),
         points=[[2078, 150, 510], [2078, 150, 810]],
     ),
     Balloon(
@@ -2429,7 +2430,7 @@ BalloonList = [
         konglist=[Kongs.chunky],
         region=Regions.RandDUpper,
         vanilla=True,
-        logic=lambda l: ((l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()),
+        logic=lambda l: ((l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom()),
         points=[[4424, 1490, 1560], [4567, 1486, 1341]],
     ),
     Balloon(

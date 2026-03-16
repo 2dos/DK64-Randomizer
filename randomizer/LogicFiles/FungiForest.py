@@ -15,6 +15,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 from randomizer.Enums.Settings import FungiTimeSetting, MinigameBarrels, RemovedBarriersSelected
+from randomizer.Enums.Types import Types
 
 LogicRegions = {
     Regions.FungiForestMedals: Region("Fungi Forest Medals", HintRegion.ForestCBs, Levels.FungiForest, False, None, [
@@ -48,8 +49,8 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_ForestMainEnemy_NearWellTag, lambda l: l.camera),
         LocationLogic(Locations.KremKap_ForestMainEnemy_GreenTunnel, lambda l: l.camera and (l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel) or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False)))),
     ], [
-        Event(Events.Night, lambda l: l.HasGun(Kongs.any) or l.adv_orange_usage or l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
-        Event(Events.Day, lambda l: l.HasGun(Kongs.any) or l.adv_orange_usage or l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
+        Event(Events.Night, lambda l: (Types.FungiTime in l.settings.shuffled_location_types and l.nightAccess) or (Types.FungiTime not in l.settings.shuffled_location_types and (l.cannons or (l.isdiddy and l.jetpack) or l.climbing) and (l.HasGun(Kongs.any) or l.adv_orange_usage or (l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive) and l.nightAccess)))),
+        Event(Events.Day, lambda l: (Types.FungiTime in l.settings.shuffled_location_types and l.dayAccess) or (Types.FungiTime not in l.settings.shuffled_location_types and (l.cannons or (l.isdiddy and l.jetpack) or l.climbing) and (l.HasGun(Kongs.any) or l.adv_orange_usage or (l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive) and l.dayAccess)))),
         Event(Events.WormGatesOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel) or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) and l.hasMoveSwitchsanity(Switches.FungiGreenPineapple, False))),
         Event(Events.ForestW1aTagged, lambda _: True),
         Event(Events.ForestW2aTagged, lambda _: True),
@@ -108,7 +109,7 @@ LogicRegions = {
 
     Regions.MushroomLower: Region("Mushroom Lower", HintRegion.MushroomInterior, Levels.FungiForest, True, None, [], [
         Event(Events.MushroomCannonsSpawned, lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple
-              and l.donkey and l.diddy and l.lanky and l.tiny and l.chunky),
+              and l.donkey and l.diddy and l.lanky and l.tiny and l.chunky and l.cannons),
         Event(Events.DonkeyMushroomSwitch, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.donkey)
     ], [
         TransitionFront(Regions.MushroomLowerBetweenLadders, lambda l: l.climbing),
@@ -303,7 +304,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_ForestAnthillEnemy_Gauntlet2, lambda l: l.camera),
         LocationLogic(Locations.KremKap_ForestAnthillEnemy_Gauntlet3, lambda l: l.camera),
     ], [], [
-        TransitionFront(Regions.HollowTreeArea, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.saxophone or (l.settings.free_trade_items and l.HasInstrument(Kongs.any))), Transitions.ForestAnthillToTree),
+        TransitionFront(Regions.HollowTreeArea, lambda l: (l.istiny or l.settings.free_trade_items) and l.cannons and (l.oranges or l.saxophone or (l.settings.free_trade_items and l.HasInstrument(Kongs.any))), Transitions.ForestAnthillToTree),
     ]),
 
     Regions.ForestMillTopOfNightCage: Region("Mill top of Night Cage", HintRegion.Mills, Levels.FungiForest, False, None, [], [], [

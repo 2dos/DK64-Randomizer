@@ -8,7 +8,7 @@ Thanks,
 		Ballaam
 */
 
-const short acceptable_items[] = {0x13c,0x18d,0x90,0x198,0x1b4,0x25c,0xb7,0x291,0x292,0x293,0x294,0x74,0xde,0xe0,0xe1,0xdd,0xdf,0x48,0x28f,0x5b,0x1f2,0x59,0x1f3,0x1f5,0x1f6,0x257,0x258,0x259,0x25a,0x25b,0x25f,0x260,0x261,0x262,0x25d,0x264,0x265,0x299,0x27e,0x289,0x28a,0x28b,0x28c};
+const short acceptable_items[] = {0x13c,0x18d,0x90,0x198,0x1b4,0x25c,0xb7,0x291,0x292,0x293,0x294,0x74,0xde,0xe0,0xe1,0xdd,0xdf,0x48,0x28f,0x5b,0x1f2,0x59,0x1f3,0x1f5,0x1f6,0x257,0x258,0x259,0x25a,0x25b,0x25f,0x260,0x261,0x262,0x25d,0x264,0x265,0x299,0x29a,0x29b,0x27e,0x289,0x28a,0x28b,0x28c};
 const item_conversion_info item_conversions[] = {
 	{.actor=72, .model_two=316, .scale=0.17f},
 	{.actor=86, .model_two=397, .scale=0.25f},
@@ -52,14 +52,16 @@ const item_conversion_info item_conversions[] = {
 	{.actor=365, .model_two=612, .scale=0.25f},
 	{.actor=366, .model_two=613, .scale=0.25f},
 	{.actor=382, .model_two=665, .scale=0.25f},
+	{.actor=392, .model_two=666, .scale=0.25f},
+	{.actor=393, .model_two=667, .scale=0.25f},
 	{.actor=375, .model_two=638, .scale=0.25f},
 	{.actor=377, .model_two=649, .scale=0.25f},
 	{.actor=378, .model_two=650, .scale=0.25f},
 	{.actor=379, .model_two=651, .scale=0.25f},
 	{.actor=380, .model_two=652, .scale=0.25f}
 };
-const unsigned short bounce_objects[] = {72,86,367,361,362,363,381,384,385,386,45,345,346,348,349,350,351,352,353,354,355,356,357,358,369,370,371,372,364,365,366,382,375,377,378,379,380};
-const unsigned short actor_drops[] = {72,86,367,347,361,362,363,140,381,384,385,386,45,78,75,77,79,76,52,47,121,51,345,346,348,349,350,351,352,353,354,355,356,357,358,369,370,371,372,364,365,366,382,375,377,378,379,380};
+const unsigned short bounce_objects[] = {72,86,367,361,362,363,381,384,385,386,45,345,346,348,349,350,351,352,353,354,355,356,357,358,369,370,371,372,364,365,366,382,392,393,375,377,378,379,380};
+const unsigned short actor_drops[] = {72,86,367,347,361,362,363,140,381,384,385,386,45,78,75,77,79,76,52,47,121,51,345,346,348,349,350,351,352,353,354,355,356,357,358,369,370,371,372,364,365,366,382,392,393,375,377,378,379,380};
 const item_scale_info item_scales[] = {
 	{.type=316, .scale=0.17f},
 	{.type=397, .scale=0.25f},
@@ -104,6 +106,8 @@ const item_scale_info item_scales[] = {
 	{.type=612, .scale=0.25f},
 	{.type=613, .scale=0.25f},
 	{.type=665, .scale=0.25f},
+	{.type=666, .scale=0.25f},
+	{.type=667, .scale=0.25f},
 	{.type=638, .scale=0.25f},
 	{.type=649, .scale=0.25f},
 	{.type=650, .scale=0.25f},
@@ -158,6 +162,8 @@ collision_info object_collisions[] = {
 	{.type=612, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=365, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
 	{.type=613, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=366, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
 	{.type=665, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=382, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=666, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=392, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=667, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=393, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
 	{.type=13, .collectable_type=0, .unk4=0.08f, .unk8=0.95f, .intended_actor=2, .actor_equivalent=0, .hitbox_y_center=0, .hitbox_radius=0, .hitbox_height=0},
 	{.type=10, .collectable_type=0, .unk4=0.08f, .unk8=0.95f, .intended_actor=3, .actor_equivalent=0, .hitbox_y_center=0, .hitbox_radius=0, .hitbox_height=0},
 	{.type=30, .collectable_type=0, .unk4=0.08f, .unk8=0.95f, .intended_actor=4, .actor_equivalent=0, .hitbox_y_center=0, .hitbox_radius=0, .hitbox_height=0},
@@ -394,7 +400,9 @@ actor_behaviour_def actor_defs[] = {
 	{.actor_type = 384, .model = 307, .code = (void*)2154340224, .unk10 = (void*)2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
 	{.actor_type = 385, .model = 309, .code = (void*)2154340224, .unk10 = (void*)2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
 	{.actor_type = 386, .model = 311, .code = (void*)2154340224, .unk10 = (void*)2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
-	{.actor_type = 387, .model = 313, .code = (void*)2154340224, .unk10 = (void*)2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}}
+	{.actor_type = 387, .model = 313, .code = (void*)2154340224, .unk10 = (void*)2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 392, .model = 319, .code = (void*)2154340224, .unk10 = (void*)2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 393, .model = 320, .code = (void*)2154340224, .unk10 = (void*)2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}}
 };
 unsigned char actor_master_types[] = {
 	1,
@@ -766,6 +774,8 @@ unsigned char actor_master_types[] = {
 	2,
 	2,
 	3,
+	2,
+	2,
 	2,
 	2,
 	2,
@@ -1182,7 +1192,9 @@ short actor_interactions[] = {
 	2,
 	2,
 	2,
-	2
+	2,
+	8,
+	8
 };
 health_damage_struct actor_health_damage[] = {
 	{.init_health = 0, .damage_applied = 0},
@@ -1576,7 +1588,9 @@ health_damage_struct actor_health_damage[] = {
 	{.init_health = 3, .damage_applied = 0},
 	{.init_health = 3, .damage_applied = 0},
 	{.init_health = 3, .damage_applied = 0},
-	{.init_health = 3, .damage_applied = 0}
+	{.init_health = 3, .damage_applied = 0},
+	{.init_health = 0, .damage_applied = 1},
+	{.init_health = 0, .damage_applied = 1}
 };
 collision_data_struct actor_collisions[] = {
 	{.collision_info = (void*)0, .unk_4 = 0},
@@ -1970,7 +1984,9 @@ collision_data_struct actor_collisions[] = {
 	{.collision_info = (void*)2155132884, .unk_4 = 1},
 	{.collision_info = (void*)2155132884, .unk_4 = 1},
 	{.collision_info = (void*)2155132884, .unk_4 = 1},
-	{.collision_info = (void*)2155132884, .unk_4 = 1}
+	{.collision_info = (void*)2155132884, .unk_4 = 1},
+	{.collision_info = (void*)0, .unk_4 = 0},
+	{.collision_info = (void*)0, .unk_4 = 0}
 };
 void* actor_functions[] = {
 	(void*)2154268652,
@@ -2364,7 +2380,9 @@ void* actor_functions[] = {
 	(void*)(void*)0x806AF688,
 	(void*)(void*)0x806AF688,
 	(void*)(void*)0x806AF688,
-	(void*)(void*)0x806AF688
+	(void*)(void*)0x806AF688,
+	(void*)&GoldenBananaCode,
+	(void*)&GoldenBananaCode
 };
 short* actor_extra_data_sizes[] = {
 	(short*)2155141956,
@@ -2758,7 +2776,9 @@ short* actor_extra_data_sizes[] = {
 	(short*)2155143240,
 	(short*)2155143240,
 	(short*)2155143240,
-	(short*)2155143240
+	(short*)2155143240,
+	(short*)2155142172,
+	(short*)2155142172
 };
 GBDictItem new_flag_mapping[] = {
 	{.map = 37, .unk_01 = 0, .model2_id = 1, .flag_index = 3, .intended_kong_actor = 2, .unk_07 = 0},

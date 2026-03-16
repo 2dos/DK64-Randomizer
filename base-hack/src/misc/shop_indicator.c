@@ -186,7 +186,7 @@ float getShopScale(int index) {
 }
 
 ROM_RODATA_NUM static const short float_ids[] = {0x1F4, 0x36};
-ROM_RODATA_NUM static const float float_offsets[] = {51.0f, 45.0f, 45.0f, 47.5f};
+ROM_RODATA_NUM static const float float_offsets[] = {51.0f, 45.0f, 45.0f, 24.5f};
 ROM_RODATA_NUM static const float h_factors[] = {60.0f, 60.0f, 62.0f, 120.6f};
 
 void newCounterCode(void) {
@@ -262,7 +262,6 @@ void newCounterCode(void) {
 					paad->cap = 1;
 					paad->use_item_display = 0;
 				}
-				
 			}
 		} else {
 			deleteActorContainer(CurrentActorPointer_0);
@@ -287,6 +286,7 @@ void newCounterCode(void) {
 		}
 	}
 	if (CurrentMap == MAP_GALLEON) {
+		int shop = paad->shop;
 		for (int i = 0; i < 2; i++) {
 			int float_slot = convertIDToIndex(float_ids[i]);
 			if (float_slot > -1) {
@@ -294,7 +294,9 @@ void newCounterCode(void) {
 				int float_slot_obj_type = float_slot_object->object_type;
 				for (int j = 0; j < 4; j++) {
 					if (shop_objects[j] == float_slot_obj_type) {
-						CurrentActorPointer_0->yPos = float_slot_object->yPos + float_offsets[j];
+						if (j == shop) {
+							CurrentActorPointer_0->yPos = float_slot_object->yPos + float_offsets[shop];
+						}
 					}
 				}
 			}

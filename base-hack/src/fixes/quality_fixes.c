@@ -80,6 +80,12 @@ void playTransformationSong(songs song, float volume) {
 			return;
 		}
 	}
+	if (song == SONG_HUNKYCHUNKY) {
+		if (CurrentMap == MAP_FACTORY){
+			// This song playing was a technicality to begin with, as the vanilla miniboss song has priority
+			return;
+		}
+	}
 	playSong(song, volume);
 }
 

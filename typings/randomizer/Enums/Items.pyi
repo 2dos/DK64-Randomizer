@@ -293,3 +293,6 @@ class Items(IntEnum):
     IceTrapDisableTagBean = 290
     IceTrapDisableTagKey = 291
     IceTrapDisableTagFairy = 292
+    Day = 293
+    Night = 294
+    Cannons = 295

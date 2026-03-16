@@ -1,9 +1,5 @@
 """All code associated with Krusha."""
 
-import js
-import zlib
-import gzip
-from typing import TYPE_CHECKING
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import ColorblindMode
 from randomizer.Patching.Library.Generic import getObjectAddress

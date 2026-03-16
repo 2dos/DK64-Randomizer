@@ -170,11 +170,11 @@
         "link": "RandomSettingsStandard"
     },
     {
-        "name": "Custom Locations: Miscellaneous",
-        "link": "CustomLocationsMiscellaneous"
-    },
-    {
         "name": "Custom Locations: Doors",
         "link": "CustomLocationsDoors"
+    },
+    {
+        "name": "Custom Locations: Miscellaneous",
+        "link": "CustomLocationsMiscellaneous"
     }
 ]

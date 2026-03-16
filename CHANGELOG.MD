@@ -21,18 +21,18 @@ This is the changelog for the initial push of 5.0 into Dev:
   - Moving/Cloning an item/check into a pool which already has that item/check will just remove any duplicates
 - You can now change the total amount of certain item types that can be placed inside a world. Want less golden bananas placed? You can now do that. Want a guaranteed 200 crowns placed into the world because you're the people's champion? Yes you can do that now.
   - There are a couple restrictions that need to be adhered to:
-  - Certain item types have minimum amounts that can be placed. Golden Bananas must be, at minimum, 40. Medals, Pearls and Fairies must be, at minimum, 1.
-  - You cannot have more than 255 of a certain item type
-  - The total amount of all item types cannot exceed 298
-  - This is to place less pressure on the fill.
+    - Certain item types have minimum amounts that can be placed. Golden Bananas must be, at minimum, 40. Medals, Pearls and Fairies must be, at minimum, 1.
+    - You cannot have more than 255 of a certain item type
+    - The total amount of all item types cannot exceed 298. This is to place less pressure on the fill.
   - If you decide to modify these, be mindful of the impacts on the fill:
-  - Reducing the amount of rainbow coins will drastically increase the likelihood of running into coin fill failures as it cannot find enough coins to buy everything in the worst order
-  - Decreasing GB checks whilst leaving some of the smaller GB check pools unshuffled will run into fill failures if you try to place less GBs than you need for the unshuffled GB checks.
+    - Reducing the amount of rainbow coins will drastically increase the likelihood of running into coin fill failures as it cannot find enough coins to buy everything in the worst order
+    - Decreasing GB checks whilst leaving some of the smaller GB check pools unshuffled will run into fill failures if you try to place less GBs than you need for the unshuffled GB checks.
 - Holdable Objects: Breaking a holdable object (boulders, kegs, vases) is now eligible as a check
 - Snide Rewards:
   - Snide Turn-ins can now be enabled as possible checks
   - You can adjust the maximum amount of Snide rewards
     - If max is set to 16, the first 16 blueprints will be randomized while the rest will be forced as GBs
+  - Each group of 8 rewards is a region (1st-8th, 9th-16th, etc.)
 - Filler Items: You can now specify which items you want to fill the world when the game would otherwise place empty checks
   - This includes the old options of "Junk Items" and "Ice Traps"
   - This will also include Banana Fairies, Crowns, Golden Bananas, Rainbow Coins, and Banana Medals
@@ -42,31 +42,31 @@ This is the changelog for the initial push of 5.0 into Dev:
   - Ice Traps can now look like other items:
     - Beans
     - Keys
-	- Fairies
+	  - Fairies
 - Added a handful of new ice trap effects:
   - Disable A Button
   - Disable B Button
   - Disable C-Up Button
   - Disable Z Button
-  - Get out:
-    - Spawns a get out akin to the Get Out Crowd Control effect. If you don't go into another map within 10 seconds, you die. Disables the start button until the next map load
+  - Get Out:
+    - Spawns a Get Out Sniper akin to the Get Out Crowd Control effect. If you don't go into another map within 10 seconds, you die. Disables the start button until the next map load.
   - Dry Trap: Removes all replenishables (ammo, oranges, crystals etc)
   - Flip Trap: Flips the screen for 8s, akin to the Crowd Control effect.
   - Ice Floor Trap: Floors will be Slippery for 15 seconds
   - Paper Trap: Turns the Kongs and Most models in the game into 2D Paper
   - Animal Buddy Trap: Transforms you into one of Enguarde or Rambi depending on your location
     - Turning into Rambi will also disable the B button
-  - Added a slip ice trap
-    - Outside of AP, picking up a slip ice trap will start an internal 5-40s timer. Once that timer has expired, and it is safe (in terms of game stability) to do so, the player will slip and the game will spawn a banana peel under the player
+  - Slip Trap
+    - Outside of AP, picking up a Slip Trap will start an internal 5-40s timer. Once that timer has expired, and it is safe (in terms of game stability) to do so, the player will slip and the game will spawn a banana peel under the player
     - Inside AP, the timer mechanic is not present, and will enter the checking whether safe state instantly.
     - The reasoning for the timer is that items that you pick up usually aren't in places which make the slip trap actually effective.
   - Rockfall Trap:
     - Stalactites will rain down upon you for 10 seconds
   - Disable Tag Trap:
      - Tags you to a different Kong and then disables Tag Anywhere for 15 seconds
-- Kong Cave Improvements:
-  - Kong Cages can now house more items making it very rare for those cages to have nothing in them
-  - The text produced is the same text as Tiny's. We intent to eventually change this to match the item received
+- Kong Cage Improvements:
+  - Kong Cages can now house more items making it very rare for those cages to have nothing in them.
+  - The text produced is the same text as Tiny's.
 - Half Medals
   - Half the medal requirement are now eligible to be checks
   - If Medal requirement is set to 50, a check will be placed on 25 Colored Bananas
@@ -79,41 +79,41 @@ This is the changelog for the initial push of 5.0 into Dev:
   - Races will require you to still beat the opponent.
   - Obtaining a race reward does not consume coins.
 - Win Condition overhaul:
-  - Beat K. Rool has now been decoupled from the wincons meaning now you can select any wincon + Beat K. Rool
+  - Beat K. Rool has now been decoupled from other win conditions, meaning now you can select any wincon + Beat K. Rool
   - As a result, K. Rool's ship will spawns only after fulfilling the original wincon
      - eg. Wincon of 8 medals will spawn the ship at 8 medals rather than 8 keys
 - New Wincons:
   - Krool's Challenge:
     - Accept K. Rool's Challenge and Collect every key, blueprint and beat all his bosses and bonus barrels and then face K. Rool in the 5 phase ring
-- Beat x bonus barrels
-- Beat x bosses
-- Kill the Rabbit:
-  - Kill the rabbit in Chunky's 5 Door Igloo. Turn it to Ash. Simple as that
-  - Along with this, all instances of the letter "R" in hints will be replaced with the letter "W"
-- Acquire Keys 3 and 8
-  - Added to remove the Vanilla Ship Requirements setting
+  - Beat x bonus barrels
+  - Beat x bosses
+  - Kill the Rabbit:
+    - Kill the rabbit in Chunky's 5 Door Igloo. Turn it to Ash. Simple as that
+    - Along with this, all instances of the letter "R" in hints will be replaced with the letter "W"
+  - Acquire Keys 3 and 8
+    - Added to remove the Vanilla Ship Requirements setting
 - Tooie-Style Shops:
   - Makes shops not cost any money. They will still require some amount of coins to purchase the item, but your coins will no longer be removed from you.
 
 ### Others
 - New Logic Options
-  - Minimal Logic:, which is basically no logic, but with a couple minor safeguards to prevent bricked seeds with common failpoints
+  - Minimal Logic: Mostly no logic, but with a couple minor safeguards to prevent bricked seeds with common failpoints
     - Key 5 can't be in Level 7 (Outside of LZR)
     - Kongs can't be in their own shops or medal checks
-    - Blast cannot be inside a blast course/Arcade R2
+    - Donkey Kong cannot be found inside most blast courses/Arcade Round 2
 - Advanced Glitchless Logic:
   - You can now select certain tricks to be enabled/disabled with AGL
-    - Monkey Maneuvers: The usual stuff in the old setting
-    - Formerly known as "Advanced Platforming". Renamed to prevent confusion with Archipelago
-    - Hard Shooting: Used to be in the difficulty section. Has been moved
+    - Monkey Maneuvers: Formerly known as "Advanced Platforming". Renamed to prevent confusion with Archipelago
+    - Hard Shooting: Used to be in the difficulty section. Has been moved to this section
     - Slope Resets: Using kong ground attacks to climb steep slopes
     - Advanced Grenading: Allows you to do the following checks:
-      - Kill Donkey Cabin with just oranges
-      - Change time of day with oranges
+      - DK 5 Door Cabin with just oranges
+      - Change Forest time of day with oranges
       - Japes Painting Room/Painting Room Fairy with oranges
 - Switchsanity Overhaul:
-  - Greater Control: For each switch which gets randomized, it allows you to select a particular switch for it to end up as, or you can randomize it should you so wish.
-  - Kong Unlock Switches: Kong unlock switches being randomized are no longer part of Kong Rando and have been moved to Switchsanity.
+  - Greater Control: For each switch which gets randomized, you can now select a particular switch for it to end up as, or you can randomize it should you so wish.
+  - Any Gun Switches: You can now set switches to be openable by any gun (represented by an ammo crate symbol). Random switches will never randomize to this.
+  - Kong Cage Unlock Switches: Kong unlock switches being randomized are no longer part of Kong Rando and have been moved to Switchsanity.
 - 8-bit Bonuses: Added an "Arcade" Category to the minigames multiselector, which can give you any of the 5 minigames:
   - DK Arcade: 25m
   - DK Arcade: 50m
@@ -128,9 +128,9 @@ This is the changelog for the initial push of 5.0 into Dev:
   - Allows you to select the slam strength of each level. Want more levels with blue slam? You can customize this to your heart's desire
 - Jetpac Platform Rando:
   - Jetpac platforms can now be in random positions
-- Kremling Kapture now has actual logic
+- Kremling Kapture now has actual logic to make sure it is beatable
 - Blueprints now no longer can only be on Kong locked checks
-  - You can find Blueprints on locations such as Dirt Patches and Fairies
+  - You can find Blueprints on shared locations such as Dirt Patches and Arenas. Shared shops and fairies are excluded for gameplay/technical reasons, respectively.
   - If a blueprint does roll on a Kong check, the blueprint will be for whoever's check it's on
 - The dartboard order is now part of random puzzle solutions. It will pick any 6-long random sequence of the 8 sprites, including repeating sprites.
 - Rainbow coins can now be on fairies
@@ -170,6 +170,7 @@ This is the changelog for the initial push of 5.0 into Dev:
   - "Off": Krool Bosses stay in their own pool, and T&S Bosses stay in their own pool
   - "Krool Only": Krool Bosses can appear in T&S Bosses, but T&S Bosses stay in their own pool
   - "Full Shuffle": Krool Bosses and T&S Bosses can be shuffled between each other
+- "The Bean" is now a valid path hint endpoint, if your win condition is set to the Bean.
 
 ### Quality of life changes
 - The cooldown timers for the following events have been reduced
@@ -179,13 +180,13 @@ This is the changelog for the initial push of 5.0 into Dev:
 - Diddy's Cage will now tell you which Kong is the Freeing Kong
 - Removed the cutscene and the 10 second timer for the 2 Lanky Mushroom Doors opening
   - Also both doors will remain permanently opened after slamming the switch
+- Dimmed hints will now notify you when you pick up the item that dims the hint
 
 
 ### Cosmetic-adjacent changes
 - Disco Donkey: A minor reskin of Donkey to utilize Chunky's disco outfit similar to [DitzyFlama's DK Rap Videos](https://www.youtube.com/watch?v=3qkk55G6e2w)
 - Disable Flavor Text: Disables any stylistic rewording of item names for certain item previews.
-  - The seal is currently the only character with an item preview who utilizes custom flavor text. So this would disable his pirate names and instead just say the name in plain form.
-  - There might be other NPCs who utilize flavor text in the future which this setting would impact.
+  - This includes the seal in Gloomy Galleon and the owl in Fungi Forest.
 - Greater Control over cosmetic changes: Anything which changes the color of an object in the world will now be part of the "random colors" dropdown multiselector, with various items in that multiselector for categories of objects you wish to change the color of:
   - Enemies:
   - Bosses
@@ -279,7 +280,7 @@ This is the changelog for the initial push of 5.0 into Dev:
 - `Frantic Factory Start` has been renamed to `Frantic Factory Foyer`
 - Shop Regions can no longer be hinted foolish
 - Kops can no longer logically be killed with shockwave
-- Added `Green Bean` to End Credit Sequence
+- Added `Green Bean` to End Credit Sequence. Reworked the credit sequence in general.
 - Added internal support for spoiler hints to the ROM. If spoiler hints are enabled, IGT will no longer show on the level progress screens on the pause menu. Instead, it will show the amount of remaining points left for that level
 - If you have a win con based around getting a certain amount of items, you may receive scouring hints which hint towards that item
 - 75m is no longer excluded from fast arcade

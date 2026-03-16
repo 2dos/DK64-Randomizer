@@ -185,13 +185,13 @@ def getNewID(map: Maps) -> int:
 
 def getObjectModifications(target_map: Maps) -> list:
     """Get list of object modifications that need to be made."""
-    MODEL_TWO_INDEXES = {}
     obj_modifications = [
         # Static modifications
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x1A, obj_type=0xCE),  # Japes starting switch
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.TrainingGrounds, 0x39, obj_type=0xCE),  # TGrounds Switch
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x52, x=1648.095, y=990, z=2431.953),  # Japes Mountain GB
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x68, scale=0.15),  # Stump GB
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Fungi, 0x28, scale=0.2),  # Winch GB
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x13E, scale=0.2),  # Nintendo Coin
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Cranky, 0x2, scale=0.2),  # Rareware Coin
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x24, x=1455.853, y=6.5, z=522.716, ry=0),  # Free Chunky Switch
@@ -203,6 +203,7 @@ def getObjectModifications(target_map: Maps) -> list:
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CD, y=178.5), # Factory Spring Coins
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CE, y=178.5), # Factory Spring Coins
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CF, y=178.5), # Factory Spring Coins
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.FungiShootingGame, 0, obj_type=0x2A9),  # Face Puzzle Board
         ObjectChange(ObjectTypes.actor, ObjectChangeType.add, Maps.Japes, 0x0, new_id=0x100, x=1839.1, y=680, z=2863, obj_type=112, rx=0, ry=0, rz=0, scale=0.25),  # Japes Headphones
         ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.Galleon, 23, x=1296, y=1600, z=2028),  # Galleon Chunky 2DS Balloon
         ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.Galleon, 25, y=1600),  # Galleon Lanky 5DS Balloon
@@ -299,35 +300,35 @@ def modify(file_name, map_index):
             byte_stream = byte_read[read_location : read_location + 0x30]
             _type = int.from_bytes(byte_read[read_location + 0x28 : read_location + 0x2A], "big")
             _id = int.from_bytes(byte_read[read_location + 0x2A : read_location + 0x2C], "big")
-            if _type == 0x2AC and map_index != Maps.TroffNScoff:
-                _y = int.from_bytes(byte_read[read_location + 4 : read_location + 8], "big")
-                _yf = getPortalIndicatorY(intf_to_float(_y))
-                if map_index == Maps.Japes and _id == 0x11A:
-                    changes.append(ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, new_id=getNewID(map_index), x=805.6618, y=_yf, z=2226.797, obj_type=0x2AB, scale=0.35))
-                else:
-                    if map_index == Maps.Caves and not added_caves_portal:
-                        changes.append(
-                            ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, x=120.997, y=50.167, z=1182.974, rx=0, ry=75.146, rz=0, new_id=0x170)
-                        )  # Caves 5DI Portal
-                        changes.append(
-                            ObjectChange(
-                                ObjectTypes.modeltwo,
-                                ObjectChangeType.add,
-                                map_index,
-                                _id,
-                                obj_type=0x2AB,
-                                x=120.997,
-                                y=getPortalIndicatorY(50.167),
-                                z=1182.974,
-                                rx=0,
-                                ry=75.146,
-                                rz=0,
-                                new_id=getNewID(Maps.Caves),
-                                scale=0.35,
-                            )
-                        )  # Caves 5DI Portal Indicator
-                        added_caves_portal = True
-                    changes.append(ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, new_id=getNewID(map_index), y=_yf, obj_type=0x2AB, scale=0.35))
+            # if _type == 0x2AC and map_index != Maps.TroffNScoff:
+            #     _y = int.from_bytes(byte_read[read_location + 4 : read_location + 8], "big")
+            #     _yf = getPortalIndicatorY(intf_to_float(_y))
+            #     if map_index == Maps.Japes and _id == 0x11A:
+            #         changes.append(ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, new_id=getNewID(map_index), x=805.6618, y=_yf, z=2226.797, obj_type=0x2AB, scale=0.35))
+            #     else:
+            #         if map_index == Maps.Caves and not added_caves_portal:
+            #             changes.append(
+            #                 ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, x=120.997, y=50.167, z=1182.974, rx=0, ry=75.146, rz=0, new_id=0x170)
+            #             )  # Caves 5DI Portal
+            #             changes.append(
+            #                 ObjectChange(
+            #                     ObjectTypes.modeltwo,
+            #                     ObjectChangeType.add,
+            #                     map_index,
+            #                     _id,
+            #                     obj_type=0x2AB,
+            #                     x=120.997,
+            #                     y=getPortalIndicatorY(50.167),
+            #                     z=1182.974,
+            #                     rx=0,
+            #                     ry=75.146,
+            #                     rz=0,
+            #                     new_id=getNewID(Maps.Caves),
+            #                     scale=0.35,
+            #                 )
+            #             )  # Caves 5DI Portal Indicator
+            #             added_caves_portal = True
+            #         changes.append(ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.add, map_index, _id, new_id=getNewID(map_index), y=_yf, obj_type=0x2AB, scale=0.35))
             # Parse changes
             instance_changes = [y for y in changes if (y.source_obj_id == _id or y.source_obj_id is None) and y.obj_master_type == ObjectTypes.modeltwo]
             deleting = False

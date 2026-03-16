@@ -35,6 +35,7 @@ from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     BananaportRando,
     ClimbingStatus,
+    CannonStatus,
     DamageAmount,
     FasterChecksSelected,
     GlitchesSelected,
@@ -92,6 +93,8 @@ class LogicVarHolder:
         self.assumeInfiniteRaceCoins = False
         self.assumeAztecEntry = False
         self.assumeLevel4Entry = False
+        self.assumeLevel5Entry = False
+        self.assumeLevel7Entry = False
         self.assumeLevel8Entry = False  # Extra important to never assume this in LZR!
         self.assumeUpperIslesAccess = False
         self.assumeKRoolAccess = False
@@ -143,6 +146,7 @@ class LogicVarHolder:
         self.oranges = self.settings.training_barrels == TrainingBarrels.normal
         self.barrels = self.settings.training_barrels == TrainingBarrels.normal
         self.climbing = self.settings.climbing_status == ClimbingStatus.normal
+        self.cannons = self.settings.cannon_status == CannonStatus.normal
         self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
         progDonkey = 0
@@ -204,6 +208,8 @@ class LogicVarHolder:
         self.funkyAccess = False
         self.candyAccess = False
         self.snideAccess = False
+        self.dayAccess = False
+        self.nightAccess = False
 
         self.HelmDonkey1 = False
         self.HelmDonkey2 = False
@@ -362,6 +368,7 @@ class LogicVarHolder:
         self.chunky = self.chunky or Items.Chunky in ownedItems or self.startkong == Kongs.chunky
 
         self.climbing = self.climbing or Items.Climbing in ownedItems
+        self.cannons = self.cannons or Items.Cannons in ownedItems
         self.vines = self.vines or Items.Vines in ownedItems
         self.swim = self.swim or Items.Swim in ownedItems
         self.oranges = self.oranges or Items.Oranges in ownedItems
@@ -410,6 +417,8 @@ class LogicVarHolder:
         self.funkyAccess = self.funkyAccess or Items.Funky in ownedItems
         self.candyAccess = self.candyAccess or Items.Candy in ownedItems
         self.snideAccess = self.snideAccess or Items.Snide in ownedItems
+        self.dayAccess = self.dayAccess or Items.Day in ownedItems
+        self.nightAccess = self.nightAccess or Items.Night in ownedItems
 
         self.nintendoCoin = self.nintendoCoin or Items.NintendoCoin in ownedItems
         self.rarewareCoin = self.rarewareCoin or Items.RarewareCoin in ownedItems
@@ -568,11 +577,13 @@ class LogicVarHolder:
         slam_req = default_requirement_level
         if self.settings.alter_switch_allocation:
             slam_req = self.settings.switch_allocation[level]
-        if slam_req == 2:
+        if slam_req == 1:
+            return self.Slam
+        elif slam_req == 2:
             return self.superSlam
         elif slam_req == 3:
             return self.superDuperSlam
-        return self.Slam
+        return True
 
     @lru_cache(maxsize=None)
     def IsLavaWater(self) -> bool:
@@ -671,7 +682,7 @@ class LogicVarHolder:
             if data.kong == Kongs.any:
                 return self.HasGun(Kongs.any) and self.HasInstrument(Kongs.any)
             return kong_data and gun_abilities[data.kong] and instrument_abilities[data.kong]
-        elif data.switch_type == SwitchType.PushableButton:
+        elif data.switch_type in (SwitchType.PushableButton, SwitchType.PunchGrate, SwitchType.IceWall, SwitchType.Gong):
             if data.kong == Kongs.diddy:
                 return kong_data and self.charge
             if data.kong == Kongs.chunky:
@@ -834,6 +845,7 @@ class LogicVarHolder:
             self.oranges,
             self.barrels,
             self.climbing,
+            self.cannons,
             self.blast,
             self.strongKong,
             self.grab,
@@ -1235,8 +1247,10 @@ class LogicVarHolder:
             hasRequiredMoves = self.hunkyChunky and self.barrels
         elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
             hasRequiredMoves = self.barrels
-        elif bossFight == Maps.CastleBoss and self.IsLavaWater():
-            hasRequiredMoves = self.Melons >= 3
+        elif bossFight == Maps.CastleBoss:
+            if self.IsLavaWater():
+                hasRequiredMoves = self.Melons >= 3
+            hasRequiredMoves = hasRequiredMoves and self.cannons
         elif bossFight == Maps.KroolDonkeyPhase:
             hasRequiredMoves = (self.blast or (not self.settings.cannons_require_blast)) and self.climbing
         elif bossFight == Maps.KroolDiddyPhase:
@@ -1471,8 +1485,12 @@ class LogicVarHolder:
         # A Blueprint buffer is not required after the fill is complete or if there can only be GBs here
         if self.assumeFillSuccess or Types.BlueprintBanana not in self.settings.shuffled_location_types or value > self.settings.most_snide_rewards:
             return self.BlueprintsWithKong >= value
-        bufferValue = ceil(value * 0.2)
-        return self.BlueprintsWithKong >= min(40, bufferValue + value)
+        # If we're still filling, we need to be a bit more advanced than purely having the Blueprints in hand
+        bufferValue = ceil(value * 0.2)  # A small buffer is designed to smooth out progression if the next big ticket item is on Snide
+        required_level_order = min(
+            7, ceil(value / 5)
+        )  # A level order requirement is imposed in SLO to prevent early keys being on late rewards. This is necessary for fill success due to progression being calculated after the fill.
+        return self.BlueprintsWithKong >= min(40, bufferValue + value) and self.HasFillRequirementsForLevel(self.settings.level_order[required_level_order])
 
     def HasAllItems(self):
         """Return if you have all progression items."""
@@ -1489,6 +1507,7 @@ class LogicVarHolder:
             and self.chunky
             and self.vines
             and self.climbing
+            and self.cannons
             and self.swim
             and self.barrels
             and self.oranges
