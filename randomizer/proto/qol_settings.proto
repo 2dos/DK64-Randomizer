@@ -1,0 +1,137 @@
+syntax = "proto3";
+
+package randomizer.proto;
+
+enum MiscChange {
+    MISC_CHANGE_UNSPECIFIED = 0;
+    MISC_CHANGE_AUTO_DANCE_SKIP = 1;
+    MISC_CHANGE_FAST_BOOT = 2;
+    MISC_CHANGE_CALM_CAVES = 3;
+    MISC_CHANGE_ANIMAL_BUDDIES_GRAB_ITEMS = 4;
+    MISC_CHANGE_REDUCED_LAG = 5;
+    MISC_CHANGE_REMOVE_EXTRANEOUS_CUTSCENES = 6;
+    MISC_CHANGE_HINT_TEXTBOX_HOLD = 7;
+    MISC_CHANGE_REMOVE_WRINKLY_PUZZLES = 8;
+    MISC_CHANGE_FAST_PICTURE_TAKING = 9;
+    MISC_CHANGE_HUD_HOTKEY = 10;
+    MISC_CHANGE_AMMO_SWAP = 11;
+    MISC_CHANGE_HOMING_BALLOONS = 12;
+    MISC_CHANGE_FAST_TRANSFORM_ANIMATION = 13;
+    MISC_CHANGE_TROFF_N_SCOFF_AUDIO_INDICATOR = 14;
+    MISC_CHANGE_LOWERED_AZTEC_LOBBY_BONUS = 15;
+    MISC_CHANGE_QUICKER_GALLEON_STAR = 16;
+    MISC_CHANGE_VANILLA_BUG_FIXES = 17;
+    MISC_CHANGE_SAVE_K_ROOL_PROGRESS = 18;
+    MISC_CHANGE_SMALL_BANANAS_ALWAYS_VISIBLE = 19;
+    MISC_CHANGE_FAST_HINTS = 20;
+    MISC_CHANGE_BRIGHTEN_MAD_MAZE_MAUL_ENEMIES = 21;
+    MISC_CHANGE_RAISE_FUNGI_DIRT_PATCH = 22;
+    MISC_CHANGE_GLOBAL_INSTRUMENT = 23;
+    MISC_CHANGE_FAST_PAUSE_TRANSITIONS = 24;
+    MISC_CHANGE_CANNON_GAME_BETTER_CONTROL = 25;
+    MISC_CHANGE_BETTER_FAIRY_CAMERA = 26;
+    MISC_CHANGE_REMOVE_ENEMY_CABIN_TIMER = 27;
+    MISC_CHANGE_REMOVE_GALLEON_SHIP_TIMERS = 28;
+    MISC_CHANGE_JAPES_BRIDGE_PERMANENTLY_EXTENDED = 29;
+    MISC_CHANGE_MOVE_SPRING_CABIN_ROCKETBARREL = 30;
+}
+
+enum CutsceneSkips {
+    CUTSCENE_SKIPS_UNSPECIFIED = 0;
+    CUTSCENE_SKIPS_OFF = 1;
+    CUTSCENE_SKIPS_PRESS_START = 2;
+    CUTSCENE_SKIPS_AUTO = 3;
+}
+
+enum WrinklyHints {
+    WRINKLY_HINTS_UNSPECIFIED = 0;
+    WRINKLY_HINTS_OFF = 1;
+    WRINKLY_HINTS_STANDARD = 2;
+    WRINKLY_HINTS_CRYPTIC = 3;
+    WRINKLY_HINTS_ITEM_HINTING = 4;
+    WRINKLY_HINTS_ITEM_HINTING_ADVANCED = 5;
+}
+
+enum ProgressiveHintItem {
+    PROGRESSIVE_HINT_ITEM_UNSPECIFIED = 0;
+    PROGRESSIVE_HINT_ITEM_OFF = 1;
+    PROGRESSIVE_HINT_ITEM_GOLDEN_BANANAS = 2;
+    PROGRESSIVE_HINT_ITEM_BLUEPRINTS = 3;
+    PROGRESSIVE_HINT_ITEM_KEYS = 4;
+    PROGRESSIVE_HINT_ITEM_MEDALS = 5;
+    PROGRESSIVE_HINT_ITEM_CROWNS = 6;
+    PROGRESSIVE_HINT_ITEM_FAIRIES = 7;
+    PROGRESSIVE_HINT_ITEM_RAINBOW_COINS = 8;
+    PROGRESSIVE_HINT_ITEM_BEAN = 9;
+    PROGRESSIVE_HINT_ITEM_PEARLS = 10;
+    PROGRESSIVE_HINT_ITEM_COLORED_BANANAS = 11;
+}
+
+enum SpoilerHintsType {
+    SPOILER_HINTS_TYPE_UNSPECIFIED = 0;
+    SPOILER_HINTS_TYPE_OFF = 1;
+    SPOILER_HINTS_TYPE_VIAL_COLORS = 2;
+    SPOILER_HINTS_TYPE_POINTS = 3;
+}
+
+enum ExtraHints {
+    EXTRA_HINTS_UNSPECIFIED = 0;
+    EXTRA_HINTS_OFF = 1;
+    EXTRA_HINTS_SOME = 2;
+    EXTRA_HINTS_ALL = 3;
+}
+
+message SpoilerHintsPoints {
+    int32 kongs = 1;
+    int32 keys = 2;
+    int32 shopkeepers = 3;
+    int32 guns = 4;
+    int32 instruments = 5;
+    int32 training_moves = 6;
+    int32 important_shared = 7;
+    int32 fairy_moves = 8;
+    int32 pad_moves = 9;
+    int32 barrel_moves = 10;
+    int32 active_moves = 11;
+    int32 bean = 12;
+}
+
+message SpoilerHintsConfig {
+    SpoilerHintsType type = 1;
+    SpoilerHintsPoints points = 2;
+    bool include_woth_count = 3;
+    bool include_level_order = 4;
+}
+
+message ProgressiveHints {
+    ProgressiveHintItem item = 1;
+    int32 count_for_35th_hint = 2;
+}
+
+message HintSettings {
+    WrinklyHints wrinkly_hints = 1;
+    ProgressiveHints progressive_hints = 2;
+    bool dim_solved_hints = 3;
+    bool no_joke_hints = 4;
+    bool kongless_hint_doors = 5;
+    bool shop_hints = 6;
+    SpoilerHintsConfig spoiler_hints = 7;
+    ExtraHints extra_hints = 8;
+}
+
+message QualityOfLifeSettings {
+    repeated MiscChange misc_changes = 1;
+    CutsceneSkips cutscene_skips = 2;
+    bool shorten_boss_fights = 3;
+    bool tag_anywhere = 4;
+    bool shop_indicator = 5;
+    bool warp_to_isles = 6;
+    bool fast_warps = 7;
+    bool auto_key_turn_ins = 8;
+    bool portal_numbers = 9;
+    bool item_reward_previews = 10;
+    bool enemy_kill_crown_timer = 11;
+    bool disable_racing_patches = 12;
+    bool less_fragile_boulders = 13;
+    HintSettings hints = 14;
+}
