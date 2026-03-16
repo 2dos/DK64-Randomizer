@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package randomizer.proto.common;
+
+enum SongGroup {
+    SONG_GROUP_UNSPECIFIED = 0;
+    SONG_GROUP_FIGHT = 1;
+    SONG_GROUP_LOBBY_SHOP = 2;
+    SONG_GROUP_INTERIORS = 3;
+    SONG_GROUP_EXTERIORS = 4;
+    SONG_GROUP_MINIGAMES = 5;
+    SONG_GROUP_HAPPY = 6;
+    SONG_GROUP_GLOOMY = 7;
+    SONG_GROUP_CALM = 8;
+    SONG_GROUP_SPAWNING = 9;
+    SONG_GROUP_COLLECTION = 10;
+}
