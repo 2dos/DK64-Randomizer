@@ -140,7 +140,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Items import Items as DK64RItems
     from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity, pp_wincon
     from archipelago.Items import DK64Item, full_item_table, setup_items
-    from archipelago.Options import DK64Options, Goal, SwitchSanity, SelectStartingKong, dk64_option_groups, LoadingZoneRando
+    from archipelago.Options import DK64Options, Goal, SwitchsanityOptions, SelectStartingKong, dk64_option_groups, LoadingZoneRando
     from archipelago.Prices import generate_prices
     from archipelago.Regions import all_locations, create_regions, connect_regions, connect_exit_level_and_deathwarp, connect_glitch_transitions
     from archipelago.Rules import set_rules
@@ -1341,11 +1341,11 @@ if baseclasses_loaded:
         def generate_output(self, output_directory: str):
             """Generate the output."""
             try:
-                # Write location and item mappings to files for debugging
-                with open(os.path.join(output_directory, f"donklocations_{self.player}.txt"), "w") as f:
-                    print(self.location_name_to_id, file=f)
-                with open(os.path.join(output_directory, f"donkitems_{self.player}.txt"), "w") as f:
-                    print(self.item_name_to_id, file=f)
+                # # Write location and item mappings to files for debugging
+                # with open(os.path.join(output_directory, f"donklocations_{self.player}.txt"), "w") as f:
+                #     print(self.location_name_to_id, file=f)
+                # with open(os.path.join(output_directory, f"donkitems_{self.player}.txt"), "w") as f:
+                #     print(self.item_name_to_id, file=f)
 
                 spoiler = self.spoiler
                 spoiler.settings.archipelago = True
