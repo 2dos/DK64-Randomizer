@@ -48,3 +48,5 @@
 .definelabel FirstMove_New, 0x807FF6EE
 .definelabel ExtraSaveData, 0x807ED2A8
 .definelabel MenuDarkness, 0x8075EAE4
+.definelabel RLock, 0x807532A6
+.definelabel DLock, 0x807ED694

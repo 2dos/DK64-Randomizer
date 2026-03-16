@@ -1,7 +1,7 @@
 .fa-2x {
     font-size: 2em;
 }
-.svg-inline--fa {
+.svg-inline--fa:not(.noresize) {
     position: relative;
     display: table-cell;
     width: 60px;

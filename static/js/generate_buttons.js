@@ -770,7 +770,7 @@ async function import_settings_string(event) {
     document.getElementById("settings_string").value = document.getElementById("settings_string").value.trim();
     const settingsString = document.getElementById("settings_string").value;
     import_settings_string_internal(settingsString);
-    generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.");
+    generateToast("Imported settings string. All non-cosmetic settings have been overwritten.");
 }
 
 document.getElementById("import_settings").addEventListener("click", import_settings_string);
