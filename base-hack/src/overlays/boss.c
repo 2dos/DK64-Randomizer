@@ -34,4 +34,9 @@ void overlay_mod_boss(void) {
 			*(int*)(0x8002FFE8) = 0; // Control State progress patch
 		}
 	}
+
+	if (RLock) {
+		*(unsigned char*)(0x80035F95) = 0x25;
+		*(short*)(0x80035F96) = 0x6400;
+	}
 }

@@ -216,6 +216,9 @@
 
 ROM_DATA static unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
 ROM_DATA static unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
+ROM_RODATA_NUM static unsigned char power_beams[] = {11, 8, 12, 10, 9};
+ROM_RODATA_NUM static unsigned char power_beams_0[] = {16, 14, 13, 15, 17};
+ROM_RODATA_NUM static unsigned char power_beams_1[] = {30, 32, 34, 36, 38};
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
 	int world = getWorld(CurrentMap, 0);
@@ -1322,6 +1325,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 									}
 									if (index == 0) {
 										// Barrels complete
+										modifyObjectState(power_beams[slot], 10);
+										modifyObjectState(power_beams_0[slot], 10);
+										modifyObjectState(power_beams_1[slot], 10);
 										if ((next_slot == -1) && (current_slot > -1)) {
 											// Helm Complete
 											PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
