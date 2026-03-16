@@ -245,7 +245,6 @@ footer {
 #rando_tabs li[role=presentation] a {
   background-color: rgba(0, 0, 0, 0);
   color: var(--bs-body-color);
-  transition: 0.5s ease-in-out;
   border: 2px solid transparent;
   font-size: 1.3vh;
   padding-left: 0;
