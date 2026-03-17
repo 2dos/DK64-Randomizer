@@ -49,7 +49,5 @@ message PlandomizerSettings {
 
     map<int32, common.ItemId> shop_assignments = 17;
 
-    map<int32, int32> shop_costs = 18;
-
-    repeated CustomLocationAssignment custom_location_assignments = 19;
+    repeated CustomLocationAssignment custom_location_assignments = 18;
 }
