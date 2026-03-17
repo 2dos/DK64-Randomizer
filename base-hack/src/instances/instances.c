@@ -11,30 +11,17 @@
  */
 #include "../../include/common.h"
 
-#define FUNGI_MINECART_GRATE 0x22
-#define SEASICK_SHIP 0x27
-#define AZTEC_BEETLE_GRATE 0x1E
-#define BALLROOM_MONKEYPORT 0x5
-#define MUSEUM_WARP_MONKEYPORT 0x8
-#define JAPES_BBLAST 0xA3
 #define FACTORY_BBLAST 0x4D
-#define CAVES_BBLAST 0x20
-#define CASTLE_BBLAST 0x1F
-#define AZTEC_BBLAST 0x2E
-#define GALLEON_BBLAST 0x34
-#define FUNGI_BBLAST 0x4C
 #define AZTEC_SNOOPDOOR 0xA1
 #define LLAMA_SNOOPPAD 0x69
 #define JAPES_DKCAGEGB 0x44
 #define JAPES_DKCAGESWITCH 0x40
 #define JAPES_MOUNTAINGB 0x52
 #define JAPES_MOUNTAINGBSWITCH 0x6
-#define JAPES_MOUNTAIN_CHARGE_CONTROLLER 0x37
 #define FACTORY_DIDDYPRODGB 0x2C
 #define FACTORY_DIDDYPRODSWITCH 0x31
 #define FACTORY_LANKYPRODGB 0x2A
 #define FACTORY_LANKYPRODSWITCH 0x30
-#define MILL_WARNINGLIGHTS 0xC
 #define MILL_CRUSHER 0x8
 #define MILL_TRIANGLEPAD 0x0
 #define MILLREAR_MINI_BOX 0x3
@@ -43,53 +30,16 @@
 #define CAVES_BOULDERDOME 0x2B
 #define CAVES_SMALLBOULDERPAD 0x2E
 #define CAVES_BIGBOULDERPAD 0x2F
-#define GALLEON_DKSTAR 0xC
 #define AZTEC_LLAMACOCONUT 0xD
 #define AZTEC_LLAMAGRAPE 0xE
 #define AZTEC_LLAMAFEATHER 0xF
-#define FUNGI_MILLGBINTERIOR 0xA
-
-#define GALLEON_BONGO_PAD 0x11
-#define GALLEON_GUITAR_CACTUS_PAD 0x14
-#define GALLEON_SAX_PAD 0x13
-#define GALLEON_TROMBONE_PAD 0x12
-#define GALLEON_TRIANGLE_PAD 0x1B
-#define GALLEON_LANKY_SLAM 0x1D
-#define GALLEON_TINY_SLAM 0x1C
-
-#define GALLEON_DK_5DSDOOR 0x19
-#define GALLEON_DIDDY_5DSDOOR 0x1A
-#define GALLEON_LANKY_5DSDOOR 0x17
-#define GALLEON_TINY_5DSDOOR 0x18
-#define GALLEON_CHUNKY_5DSDOOR 0x20
-#define GALLEON_LANKY_2DSDOOR 0x1F
-#define GALLEON_TINY_2DSDOOR 0x1E
-
-#define TGROUNDS_BAMBOOGATE 0x49
-#define TGROUNDS_SWITCH 0x39
 #define JAPES_DIDDYBAMBOOGATE 0x47
 #define JAPES_GATE0 0x2D
 #define JAPES_GATE1 0x2E
 #define JAPES_GATE2 0x2F
-#define JAPES_GUNSWITCH0 0x30
-#define JAPES_GUNSWITCH1 0x31
-#define JAPES_GUNSWITCH2 0x32
-#define JAPES_DIDDYFREEGB 0x48
-#define LLAMA_BAMBOOGATE 0x11
-#define LLAMA_GUNSWITCH 0x12
-#define LLAMA_BONGOPAD 0x16
 #define LLAMA_LAVAGATE 0x18
-#define TTEMPLE_SWITCH 0x0
-#define TTEMPLE_GUITARPAD 0x4
-#define TTEMPLE_KONGLETTER0 0xC
-#define TTEMPLE_KONGLETTER1 0xD
-#define TTEMPLE_KONGLETTER2 0xE
-#define TTEMPLE_KONGLETTER3 0xF
 #define TTEMPLE_BAMBOOGATE 0x15
-#define TTEMPLE_CHARGESWITCH 0x14
 #define FACTORY_FREESWITCH 0x24
-#define FACTORY_CAGE 0x21
-#define FACTORY_FREEGB 0x78
 
 #define FACTORY_4231_SWITCH 0x3F
 #define FACTORY_3124_SWITCH 0x40
@@ -104,7 +54,6 @@
 #define ISLES_CAVESBOULDER 0x1B
 #define ISLES_CASTLEROCK 0x34
 #define ISLES_HELMJAW 0x1C
-#define ISLES_FACTORYDOORCOLLISION 0x100
 
 #define ISLES_HIGHMONKEYPORT 0x37
 #define ISLES_LOWMONKEYPORT 0x38
@@ -132,20 +81,12 @@
 #define LLAMA_MATCHING_HEAD_SOUND7_0 0x1C // Sound 170
 #define LLAMA_MATCHING_HEAD_SOUND7_1 0x28
 
-#define FISH_SHIELD1 0x3
-#define FISH_SHIELD2 0x4
-#define FISH_SHIELD3 0x5
-#define FISH_WARP_CONTROLLER 0xE
-
-#define CHEST_PEARL_0 0x0
 #define MILLREAR_CHUNKYCHECK_RATE 0xF
-#define ROTATING_ROOM_OBJ 0x0
 #define FUNGI_BEAN 0x5
 #define FUNGI_BEANCONTROLLER 0x4D
 
 #define FACTORY_LARGEMETALSECTION 0x0
 #define FACTORY_PIANO 0x14
-#define FACTORY_DARTBOARD 0x7F
 #define ICE_MAZE 0x0
 
 #define HELM_PAD_BONGO 0x2C
@@ -162,27 +103,8 @@
 #define JAPES_CAVE_GATE 0x2B
 #define JAPES_PEANUT_MOUNTAIN 0x58
 #define JAPES_COCONUT_RAMBI 0x123
-#define LLAMA_GRAPE_SWITCH 0x6B
-#define FACTORY_SNATCH_GRATE 0x15
-#define FACTORY_PAD_TRIANGLE 0x37
-#define FACTORY_PAD_GUITAR 0x38
-#define FACTORY_PAD_TROMBONE 0x3B
-#define ISLES_SWITCH_GRAPE 0x27
-#define ISLES_SWITCH_PINEAPPLE 0x28
-#define ISLES_SWITCH_FEATHER 0x29
-#define ISLES_SWITCH_PEANUT 0x2A
-#define ISLES_SWITCH_COCONUT 0x32
-#define AZTEC_CHUNKY_CAGE 0x24
 #define CRYPT_LT_GRAPE 0x0
 #define CRYPT_LT_SIMIAN_SWITCH 0x4
-#define CRYPT_DDC_D 0xD
-#define CRYPT_DDC_E 0xE
-#define CRYPT_DDC_F 0xF
-#define DUNGEON_SLAM_DIDDY 0x4
-#define DUNGEON_SLAM_DK 0x5
-#define DUNGEON_SLAM_LANKY 0x6
-#define TREE_DOOR_DK 0x1
-#define TREE_DOOR_CHUNKY 0x9
 
 #define ITEM_NINTENDO_COIN 0x13E
 #define ITEM_RAREWARE_COIN 0x2
@@ -201,18 +123,10 @@
 #define FACTORY_BLOCKELEVATOR_5 0x27
 #define FACTORY_BLOCKELEVATOR_6 0x28
 
-#define FACTORY_BBLAST_STAR 0x0
 #define FACTORY_BBLAST_CONTROLLER 0x1
 
 #define JAPES_RAMBI_DOOR 0x115
 #define K_ROOL_SHIP 0x35
-#define ENEMY_CABIN_DOOR 0x0
-
-#define K_ROOL_CHUNKY_PHASE_SLAM 0xA
-
-#define FACTORY_CRUSHER_2 0x2
-#define FACTORY_CRUSHER_3 0x3
-#define FACTORY_CRUSHER_4 0x4
 
 ROM_RODATA_NUM static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
 ROM_RODATA_NUM static const unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
@@ -285,78 +199,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	 */
 	if (index >= 0) {
 		switch(CurrentMap) {
-			case MAP_GALLEON:
-				{
-					int gate_flag = 0;
-					switch (param2) {
-						case GALLEON_DKSTAR:
-							{
-								int progress = 1;
-								if (Rando.quality_of_life.galleon_star) {
-									progress = 3;
-								}
-								behaviour_pointer->next_state = progress;
-							}
-							break;
-						case GALLEON_BONGO_PAD:
-						case GALLEON_GUITAR_CACTUS_PAD:
-						case GALLEON_TRIANGLE_PAD:
-						case GALLEON_SAX_PAD:
-						case GALLEON_TROMBONE_PAD:
-						case GALLEON_LANKY_SLAM:
-						case GALLEON_TINY_SLAM:
-							if (index == 0) { 
-								return Rando.quality_of_life.no_ship_timers == 0;
-							} else {
-								if (Rando.quality_of_life.no_ship_timers) {
-									behaviour_pointer->next_state = 6;
-								} else {
-									behaviour_pointer->next_state = 5;
-								}
-							}
-							break;
-						case GALLEON_DK_5DSDOOR:
-							gate_flag = GALLEON_5DSOPEN_DK;
-						case GALLEON_DIDDY_5DSDOOR:
-							if (!gate_flag) {
-								gate_flag = GALLEON_5DSOPEN_DIDDY;
-							}
-						case GALLEON_LANKY_5DSDOOR:
-							if (!gate_flag) {
-								gate_flag = GALLEON_5DSOPEN_LANKY;
-							}
-						case GALLEON_TINY_5DSDOOR:
-							if (!gate_flag) {
-								gate_flag = GALLEON_5DSOPEN_TINY;
-							}
-						case GALLEON_CHUNKY_5DSDOOR:
-							if (!gate_flag) {
-								gate_flag = GALLEON_5DSOPEN_CHUNKY;
-							}
-						case GALLEON_LANKY_2DSDOOR:
-							if (!gate_flag) {
-								gate_flag = GALLEON_2DSOPEN_LANKY;
-							}
-						case GALLEON_TINY_2DSDOOR:
-							if (!gate_flag) {
-								gate_flag = GALLEON_2DSOPEN_TINY;
-							}
-							if (index == 0) {
-								if (Rando.quality_of_life.no_ship_timers) {
-									if (checkFlag(gate_flag, FLAGTYPE_PERMANENT)) {
-										behaviour_pointer->current_state = 10;
-										behaviour_pointer->next_state = 10;
-									}
-								}
-							} else {
-								if (Rando.quality_of_life.no_ship_timers) {
-									setPermFlag(gate_flag);
-								}
-							}
-						break;
-					}
-				}
-				break;
 			case MAP_AZTEC:
 				if (param2 == AZTEC_SNOOPDOOR) {
 					if (index == 0) {
@@ -685,14 +527,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->current_state = 20;
 						behaviour_pointer->next_state = 20;
 					}
-				} else if (param2 == JAPES_MOUNTAIN_CHARGE_CONTROLLER) {
-					if (MovesBase[KONG_DIDDY].special_moves & MOVECHECK_CHARGE) {
-						return 1;
-					}
-					if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
-						return 1;
-					}
-					return 0;
 				}
 				break;
 			case MAP_FUNGIANTHILL:
@@ -897,12 +731,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case MAP_FACTORYBBLAST:
-				if (param2 == FACTORY_BBLAST_STAR) {
-					if (Rando.faster_checks.arcade_first_round) {
-						behaviour_pointer->next_state = 20;
-						behaviour_pointer->current_state = 20;
-					}
-				} else if (param2 == FACTORY_BBLAST_CONTROLLER) {
+				if (param2 == FACTORY_BBLAST_CONTROLLER) {
 					if (Rando.faster_checks.arcade_first_round) {
 						if (!checkFlag(FLAG_ARCADE_LEVER,FLAGTYPE_PERMANENT)) {
 							if (checkFlag(FLAG_ARCADE_ROUND1,FLAGTYPE_PERMANENT)) {
