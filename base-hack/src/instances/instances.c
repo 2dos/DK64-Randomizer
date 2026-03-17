@@ -11,7 +11,6 @@
  */
 #include "../../include/common.h"
 
-#define FACTORY_BBLAST 0x4D
 #define AZTEC_SNOOPDOOR 0xA1
 #define LLAMA_SNOOPPAD 0x69
 #define JAPES_DKCAGEGB 0x44
@@ -726,23 +725,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						} else {
 							behaviour_pointer->current_state = 10;
 							behaviour_pointer->next_state = 10;
-						}
-					}
-				}
-				break;
-			case MAP_FACTORYBBLAST:
-				if (param2 == FACTORY_BBLAST_CONTROLLER) {
-					if (Rando.faster_checks.arcade_first_round) {
-						if (!checkFlag(FLAG_ARCADE_LEVER,FLAGTYPE_PERMANENT)) {
-							if (checkFlag(FLAG_ARCADE_ROUND1,FLAGTYPE_PERMANENT)) {
-								isObjectLoadedInMap(MAP_FACTORY, 45, 10); // Run just to load the setup properly
-								delayedObjectModel2Change(MAP_FACTORY, 45, 10);
-								setNextTransitionType(0);
-								setIntroStoryPlaying(2);
-								setNextTransitionType(0);
-								initiateTransition_0(MAP_FACTORY, 15, 0, 0);
-								behaviour_pointer->next_state = 1;
-							}
 						}
 					}
 				}

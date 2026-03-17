@@ -88,6 +88,7 @@ def patchScripts(spoiler, ROM_COPY):
     if IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1):
         replaceScriptLines(ROM_COPY, Maps.FactoryBaboonBlast, [0x0], {"COND 1 | 0 0 0": "CONDINV 0 | 0 0 0"})
         replaceScriptLines(ROM_COPY, Maps.FactoryBaboonBlast, [0x0], {"COND 1 | 1 0 0": "CONDINV 0 | 0 0 0"})
+        addNewScript(ROM_COPY, Maps.FactoryBaboonBlast, [0x1], ScriptTypes.FactoryBlastController)
     if spoiler.settings.more_cutscene_skips == ExtraCutsceneSkips.auto:
         # Remove Charge Cutscene
         replaceScriptLines(ROM_COPY, Maps.JapesMountain, [0x37], {

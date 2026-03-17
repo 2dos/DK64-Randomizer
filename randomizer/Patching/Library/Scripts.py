@@ -778,6 +778,25 @@ def getFiveTwoDoorShipGateScript(item_id: int, flag_id: int, timer: int, timer_2
         ]),
     ], flag_id)
 
+def getFactoryBlastControllerScript(item_id) -> list[int]:
+    """Get the instance script for the controller within Factory blast."""
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(0, [0, 0, 0]),
+        ], [
+            FunctionData(7, [15, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(45, [129, 1, 0], True),
+            FunctionData(45, [130, 1, 0]),
+        ], [
+            FunctionData(88, [Maps.FranticFactory, 45, 10]),
+            FunctionData(93, [0, 0, 0]),
+            FunctionData(49, [Maps.FranticFactory, 15, 0x100]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+    ])
 
 def getHelmLobbyGrabScript(item_id: int) -> list[int]:
     """Get the instance script for the Helm Lobby activator if it is a lever."""
@@ -1216,6 +1235,8 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
             subscript = getHelmLobbyGrabScript(item_id)
         elif stype == ScriptTypes.GalleonShipwreckDoor:
             subscript = getFiveTwoDoorShipGateScript(item_id, extra_data[item_id]["flag_id"], extra_data[item_id]["timer"], extra_data[item_id]["timer_2"], extra_data[item_id]["tied_pad"])
+        elif stype == ScriptTypes.FactoryBlastController:
+            subscript = getFactoryBlastControllerScript(item_id)
         if subscript is not None:
             good_scripts.append(subscript)
     # Reconstruct File

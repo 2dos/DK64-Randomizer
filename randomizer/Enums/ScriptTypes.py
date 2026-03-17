@@ -16,3 +16,4 @@ class ScriptTypes(IntEnum):
     DeleteItem = auto()
     HelmLobbyPadGrab = auto()
     GalleonShipwreckDoor = auto()
+    FactoryBlastController = auto()
