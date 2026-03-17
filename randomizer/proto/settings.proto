@@ -5,6 +5,7 @@ package randomizer.proto;
 import "endgame_settings.proto";
 import "item_settings.proto";
 import "overworld_settings.proto";
+import "plandomizer_settings.proto";
 import "qol_settings.proto";
 import "requirement_settings.proto";
 
@@ -23,4 +24,6 @@ message SettingsInfo {
   EndgameSettings endgame_settings = 4;
 
   QualityOfLifeSettings qol_settings = 5;
+
+  PlandomizerSettings plandomizer_settings = 6;
 }
