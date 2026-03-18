@@ -34,11 +34,6 @@ def GetNameFromPlandoItem(plandoItem: PlandoItems) -> str:
 PlandoEnumMap = {
     "plando_starting_exit": Transitions,
     "plando_starting_kongs_selected": Kongs,
-    "plando_kong_rescue_donkey": Kongs,
-    "plando_kong_rescue_diddy": Kongs,
-    "plando_kong_rescue_lanky": Kongs,
-    "plando_kong_rescue_tiny": Kongs,
-    "plando_kong_rescue_chunky": Kongs,
     "plando_starting_moves_selected": PlandoItems,
     "plando_level_order_0": Levels,
     "plando_level_order_1": Levels,
