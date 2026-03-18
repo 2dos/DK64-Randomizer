@@ -121,6 +121,7 @@ ColoredBananaGroupList = [
         name="Up the pendulum",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
         locations=[[5, 1.0, 2556, 595, 2323]],
     ),
     ColoredBananaGroup(
@@ -129,6 +130,7 @@ ColoredBananaGroupList = [
         name="Behind clock",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
         locations=[
             [1, 1.0, 2343, 604, 2261],
             [1, 1.0, 2305, 604, 2296],
@@ -143,6 +145,7 @@ ColoredBananaGroupList = [
         name="Cannon trajectory",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
         locations=[[5, 1.0, 2784, 420, 2211], [5, 1.0, 2745, 560, 2248]],
     ),
     ColoredBananaGroup(
@@ -2080,6 +2083,7 @@ ColoredBananaGroupList = [
         name="Day and night switches",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
         locations=[[5, 1.0, 2539, 612, 2388], [5, 1.0, 2538, 612, 2262]],
     ),
     ColoredBananaGroup(
@@ -3002,6 +3006,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
         points=[[2220, 720, 2460], [2220, 720, 2150]],
     ),
     Balloon(
@@ -3337,6 +3342,7 @@ BalloonList = [
         speed=12,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
         points=[[2626, 745, 2325], [2470, 745, 2325], [2471, 745, 2325]],
     ),
     Balloon(

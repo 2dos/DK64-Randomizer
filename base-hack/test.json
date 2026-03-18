@@ -160,7 +160,6 @@
    "shop_indicator_on":2,
    "warp_to_isles_enabled":1,
    "lobbies_open_bitfield":0,
-   "perma_lose_kongs":0,
    "jetpac_medal_requirement":1,
    "free_target_llama":255,
    "free_source_llama":0,
@@ -236,11 +235,7 @@
       255
    ],
    "helm_hurry_mode":0,
-   "win_condition":3,
-   "win_condition_extra": {
-      "item": 3,
-      "count": 255
-   },
+   "win_condition":5,
    "version":2,
    "item_rando":1,
    "remove_oscillation_effects":1,

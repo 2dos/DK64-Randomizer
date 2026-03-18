@@ -490,6 +490,8 @@ def hasCustomArcadeSprite(address: int) -> bool:
 
 def writeCustomArcadeSprites(settings: Settings, ROM_COPY: ROM) -> None:
     """Write a custom series of arcade sprites to ROM."""
+    if settings.arcade_custom_minigame is not None:
+        return
     if js.cosmetics is None:
         return
     if js.cosmetics.arcade_sprites is None:
@@ -771,3 +773,36 @@ def writeCustomItemSprites(settings: Settings, ROM_COPY: ROM) -> None:
             tinted_b = Image.eval(gray, lambda v: v * target_color[2] // 255)
             tinted = Image.merge("RGBA", (tinted_r, tinted_g, tinted_b, a))
             writeColorImageToROM(tinted, img_data["table"], img_data["image"], 48, 42, False, TextureFormat.RGBA5551, ROM_COPY)
+
+
+def writeCustomFacePuzzle(settings: Settings, ROM_COPY: ROM) -> None:
+    """Write custom face puzzle files to ROM."""
+    if js.cosmetics is None:
+        return
+    if js.cosmetics.face_puzzles is None:
+        return
+    if js.cosmetic_names.face_puzzles is None:
+        return
+    file_data = list(zip(js.cosmetics.face_puzzles, js.cosmetic_names.face_puzzles))
+    if len(file_data) == 0:
+        return
+    list_pool = file_data.copy()
+    PAINTING_COUNT = 2
+    if len(list_pool) < PAINTING_COUNT:
+        mult = math.ceil(PAINTING_COUNT / len(list_pool)) - 1
+        for _ in range(mult):
+            list_pool.extend(file_data.copy())
+    settings.random.shuffle(list_pool)
+    starting_files = [ExtraTextures.FacePuzzleDK0, ExtraTextures.FacePuzzleChunky0]
+    for pz in range(2):
+        selected_puzzle = list_pool.pop(0)
+        name = selected_puzzle[1].split("/")[-1]  # File Name
+        im_f = Image.open(BytesIO(bytes(selected_puzzle[0])))
+        im_f = getImageChunk(im_f, 96, 96)
+        im_f = im_f.transpose(Image.FLIP_TOP_BOTTOM).convert("RGBA")
+        puzzle_offset = 0
+        for y in range(3):
+            for x in range(3):
+                chunk = im_f.crop((32 * x, 32 * y, 32 * (x + 1), 32 * (y + 1)))
+                writeColorImageToROM(chunk, 25, getBonusSkinOffset(starting_files[pz] + puzzle_offset), 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+                puzzle_offset += 1

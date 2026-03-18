@@ -14,3 +14,6 @@ class ScriptTypes(IntEnum):
     CrownIsles2 = auto()
     MelonCrate = auto()
     DeleteItem = auto()
+    HelmLobbyPadGrab = auto()
+    GalleonShipwreckDoor = auto()
+    FactoryBlastController = auto()

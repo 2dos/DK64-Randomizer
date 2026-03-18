@@ -243,9 +243,10 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeFunction(ROM_COPY, 0x8069BDE8, Overlay.Static, "renderBoulderSparkles", offset_dict)
     writeFunction(ROM_COPY, 0x8067BDA0, Overlay.Static, "updateKegIDs", offset_dict)
     # Jetpac Reward Text
-    addr = getROMAddress(0x8002EABC, Overlay.Jetpac, offset_dict)
-    ROM_COPY.seek(addr)
-    ROM_COPY.writeBytes(bytes("REWARD COLLECTED\0", "ascii"))
+    if settings.jetpac_custom_minigame is None:
+        addr = getROMAddress(0x8002EABC, Overlay.Jetpac, offset_dict)
+        ROM_COPY.seek(addr)
+        ROM_COPY.writeBytes(bytes("REWARD COLLECTED\0", "ascii"))
     # Fairy count check
     writeValue(ROM_COPY, 0x806F8EBE, Overlay.Static, ReqItems.Fairy, offset_dict)
     writeFunction(ROM_COPY, 0x806F8EC4, Overlay.Static, "getItemCount_new", offset_dict)
@@ -278,7 +279,6 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeValue(ROM_COPY, 0x80731672, Overlay.Static, flag_map_count, offset_dict)
     writeHook(ROM_COPY, 0x8069840C, Overlay.Static, "VineCode", offset_dict)
     writeHook(ROM_COPY, 0x80698420, Overlay.Static, "VineShowCode", offset_dict)
-    writeHook(ROM_COPY, 0x8063ED7C, Overlay.Static, "HandleSlamCheck", offset_dict)
     writeHook(ROM_COPY, 0x80648364, Overlay.Static, "ShopImageHandler", offset_dict)
     writeHook(ROM_COPY, 0x806F6EA0, Overlay.Static, "BarrelMovesFixes", offset_dict)
     writeHook(ROM_COPY, 0x806E4930, Overlay.Static, "ChimpyChargeFix", offset_dict)

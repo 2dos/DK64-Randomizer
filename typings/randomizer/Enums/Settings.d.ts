@@ -182,6 +182,11 @@ export enum ClimbingStatus {
     shuffled = 1,
 }
 
+export enum CannonStatus {
+    normal = 0,
+    shuffled = 1,
+}
+
 export enum GlitchesSelected {
     monkey_maneuvers = 1,
     b_locker_skips = 2,
@@ -331,6 +336,7 @@ export enum ItemRandoListSelected {
     gauntletbanana = 46,
     blueprintbanana = 47,
     sniderewards = 48,
+    fungitime = 49,
 }
 
 export enum ItemRandoFiller {
@@ -376,6 +382,7 @@ export enum KongModels {
     candy = 6,
     funky = 7,
     disco_donkey = 8,
+    robokrem = 9,
 }
 
 export enum KongModelMode {
@@ -571,6 +578,7 @@ export enum ShufflePortLocations {
 }
 
 export enum SlamRequirement {
+    no_slam = 0,
     green = 1,
     blue = 2,
     red = 3,
@@ -964,6 +972,16 @@ export enum SettingsStringEnum {
     no_consumable_upgrades = 295,
     bosses_selected = 296,
     ice_trap_model_v2 = 297,
+    switchsanity_switch_factory_dark_grate = 298,
+    switchsanity_switch_factory_bonus_grate = 299,
+    switchsanity_switch_factory_monster_grate = 300,
+    switchsanity_switch_caves_gone_cave = 301,
+    switchsanity_switch_caves_snide_cave = 302,
+    switchsanity_switch_caves_boulder_cave = 303,
+    switchsanity_switch_caves_lobby_blueprint = 304,
+    switchsanity_switch_caves_lobby_lava = 305,
+    switchsanity_switch_aztec_gong_tower = 306,
+    switchsanity_switch_aztec_lobby_gong = 307,
 }
 
 export enum SettingsStringDataType {
@@ -1114,6 +1132,16 @@ export const SettingsMap = {
     'switchsanity_switch_aztec_free_tiny': SwitchsanityKong,
     'switchsanity_switch_aztec_free_lanky': SwitchsanityKong,
     'switchsanity_switch_factory_free_kong': SwitchsanityKong,
+    'switchsanity_switch_factory_dark_grate': SwitchsanityKong,
+    'switchsanity_switch_factory_bonus_grate': SwitchsanityKong,
+    'switchsanity_switch_factory_monster_grate': SwitchsanityKong,
+    'switchsanity_switch_caves_gone_cave': SwitchsanityKong,
+    'switchsanity_switch_caves_snide_cave': SwitchsanityKong,
+    'switchsanity_switch_caves_boulder_cave': SwitchsanityKong,
+    'switchsanity_switch_caves_lobby_blueprint': SwitchsanityKong,
+    'switchsanity_switch_aztec_gong_tower': SwitchsanityKong,
+    'switchsanity_switch_aztec_lobby_gong': SwitchsanityKong,
+    'switchsanity_switch_caves_lobby_lava': SwitchsanityKong,
     'krool_in_boss_pool_v2': KroolInBossPool,
 }
 
@@ -1392,6 +1420,16 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.switchsanity_switch_aztec_free_tiny: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_aztec_free_lanky: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_factory_free_kong: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_dark_grate: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_bonus_grate: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_monster_grate: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_gone_cave: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_snide_cave: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_boulder_cave: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_lobby_blueprint: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_lobby_lava: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_gong_tower: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_lobby_gong: SwitchsanityKong,
     SettingsStringEnum.trap_weight_bubble: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_reverse: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_slow: SettingsStringDataType.int8,

@@ -308,6 +308,14 @@
             "is_check": false
         },
         {
+            "name": "Time of Day",
+            "value": "fungitime",
+            "tooltip": "Day and Night are added into the pool.",
+            "check_count": 0,
+            "item_count": 2,
+            "is_check": false
+        },
+        {
             "name": "Hints",
             "value": "hint",
             "tooltip": "Hints are in the pool.",

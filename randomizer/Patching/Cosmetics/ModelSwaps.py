@@ -2,6 +2,7 @@
 
 import random
 import js
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Models import Model, Sprite
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Settings import KongModels, RandomModels
@@ -351,6 +352,7 @@ model_mapping = {
     KongModels.candy: 11,
     KongModels.funky: 12,
     KongModels.disco_donkey: 13,
+    KongModels.robokrem: 14,
 }
 
 model_texture_sections = {
@@ -417,6 +419,7 @@ def applyCosmeticModelSwaps(settings: Settings, ROM_COPY: ROM):
     funky_model_index = Model.Funky
     boot_model_index = Model.Boot
     melon_sprite = Sprite.BouncingMelon
+    menu_kong = Kongs.donkey
     swap_bitfield = 0
 
     model_inverse_mapping = {}
@@ -435,10 +438,7 @@ def applyCosmeticModelSwaps(settings: Settings, ROM_COPY: ROM):
         model_setting = RandomModels[js.document.getElementById("random_models").value]
     else:
         model_setting = settings.random_models
-    if model_setting == RandomModels.random:
-        bother_model_index = getRandomKlaptrapModel()
-    elif model_setting == RandomModels.extreme:
-        bother_model_index = getRandomKlaptrapModel()
+    if model_setting == RandomModels.extreme:
         racer_beetle = random.choice([Model.Beetle, Model.Rabbit])
         racer_rabbit = random.choice([Model.Beetle, Model.Rabbit])
         if racer_rabbit == Model.Beetle:
@@ -455,6 +455,8 @@ def applyCosmeticModelSwaps(settings: Settings, ROM_COPY: ROM):
             spawner_changes.append(rabbit_caves_change)
             applyCharacterSpawnerChanges(ROM_COPY, spawner_changes)
     if model_setting != RandomModels.off:
+        bother_model_index = getRandomKlaptrapModel()
+        menu_kong = random.choice([Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
         panic_fairy_model_index = random.choice(panic_models)
         turtle_model_index = random.choice(turtle_models)
         panic_klap_model_index = getRandomKlaptrapModel()
@@ -485,6 +487,7 @@ def applyCosmeticModelSwaps(settings: Settings, ROM_COPY: ROM):
     settings.candy_cutscene_model = candy_model_index
     settings.funky_cutscene_model = funky_model_index
     settings.boot_cutscene_model = boot_model_index
+    settings.menu_kong = menu_kong
     settings.wrinkly_rgb = [255, 255, 255]
     # Compute swap bitfield
     swap_bitfield |= 0x10 if settings.rabbit_model == Model.Beetle else 0

@@ -227,6 +227,21 @@ void fairyQueenCheckSpeedup(void *actor, int unk) {
     fairyQueenCutsceneInit(0x24D, 20, FLAGTYPE_PERMANENT);
 }
 
+void cannonCodeWrapper(void) {
+    if (CurrentActorPointer_0->control_state == 0) {
+        if (checkFlag(FLAG_ABILITY_CANNON, FLAGTYPE_PERMANENT)) {
+            CurrentActorPointer_0->noclip_byte = 2;
+            CurrentActorPointer_0->obj_props_bitfield |= 0x8000;
+            CurrentActorPointer_0->shadow_intensity = 0xFF;
+        } else {
+            CurrentActorPointer_0->noclip_byte = 1;
+            CurrentActorPointer_0->obj_props_bitfield &= ~0x8000;
+            CurrentActorPointer_0->shadow_intensity = 0x80;
+        }
+    }
+    cannonCode();
+}
+
 #define STORED_COUNT 18
 ROM_DATA static int stored_maps[STORED_COUNT] = {};
 ROM_DATA static unsigned char stored_kasplat[STORED_COUNT] = {};

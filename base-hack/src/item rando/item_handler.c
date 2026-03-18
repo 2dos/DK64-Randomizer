@@ -77,6 +77,10 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             }
             hh_item = HHITEM_COMPANYCOIN;
             break;
+        case REQITEM_FUNGITIME:
+            setPermFlag(FLAG_ITEM_DAY + kong);
+            display_text = 1;
+            break;
         case REQITEM_MEDAL:
             current_item_data.medals++;
             hh_item = HHITEM_MEDAL;
@@ -107,6 +111,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             }
             break;
         case REQITEM_JUNK:
+            applyDamage(0, 1);
             current_item_data.junk_items++;
             break;
         case REQITEM_HINT:
@@ -171,6 +176,8 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             } else if (level == 12) {
                 current_item_data.flag_moves.camera = 1;
                 current_item_data.flag_moves.shockwave = 1;
+            } else if (level == 13) {
+                setPermFlag(FLAG_ABILITY_CANNON);
             }
             hh_item = HHITEM_MOVE;
             display_text = 1;
@@ -288,6 +295,20 @@ int getItemCount_new(requirement_item item, int level, int kong) {
                 }
             }
             return count;
+        case REQITEM_FUNGITIME:
+            if (kong != 1) {
+                // Day
+                if (checkFlag(FLAG_ITEM_DAY, FLAGTYPE_PERMANENT)) {
+                    count++;
+                }
+            }
+            if (kong != 0) {
+                // Night
+                if (checkFlag(FLAG_ITEM_NIGHT, FLAGTYPE_PERMANENT)) {
+                    count++;
+                }
+            }
+            return count;
         case REQITEM_MEDAL:
             return current_item_data.medals;
         case REQITEM_BEAN:
@@ -339,6 +360,8 @@ int getItemCount_new(requirement_item item, int level, int kong) {
                 return checkFlag(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT);
             } else if (level == 12) {
                 return current_item_data.flag_moves.camera && current_item_data.flag_moves.shockwave;
+            } else if (level == 13) {
+                return checkFlag(FLAG_ABILITY_CANNON, FLAGTYPE_PERMANENT);
             }
         default:
             break;

@@ -263,6 +263,8 @@ barrel_skins = (
     "ap_useful",
     "ap_junk",
     "ap_trap",
+    "time_day",
+    "time_night",
 )
 
 

@@ -286,3 +286,4 @@
 .definelabel DLPointers, 0x8076A050
 .definelabel CameraDL, 0x8076A048
 .definelabel DLArray, 0x80767CE8
+.definelabel MinigameInput, 0x807ECDE8

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from math import sqrt
-from typing import TYPE_CHECKING, Any, List, Union, Set
+from typing import Any, List, Union, Set
 
 from randomizer.Enums.HintType import HintType
 from randomizer.Enums.Items import Items

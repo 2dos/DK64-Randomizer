@@ -14,10 +14,12 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmSetting, FungiTimeSetting, FasterChecksSelected, RemovedBarriersSelected, ShuffleLoadingZones, WinConditionComplex, LevelRandomization
+from randomizer.Enums.Settings import HelmSetting, FungiTimeSetting, FasterChecksSelected, RemovedBarriersSelected, ShuffleLoadingZones, WinConditionComplex, LevelRandomization, DKPortalRando
+from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists import Location as DK64RLocation, Item as DK64RItem
@@ -110,6 +112,19 @@ def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler, option
     # okay okay OKAY you get a logicVarHolder object for JUST THIS ONCE. Codes these days...
     logic_holder = LogicVarHolder(spoiler, player)
 
+    # Build location table from spoiler's LocationList (which may have custom locations)
+    all_locations_dynamic = {
+        spoiler.LocationList[location].name: (BASE_ID + index) for index, location in enumerate(DK64RLocation.LocationListOriginal) if spoiler.LocationList[location].type != Types.EnemyPhoto
+    }
+    all_locations_dynamic.update({"Victory": 0x00})  # Temp for generating goal location
+
+    # Debug: check for custom location names
+    custom_names = [name for name in all_locations_dynamic.keys() if "Battle Arena" in name or "Melon Crate" in name or "Dirt:" in name]
+    if custom_names and len(custom_names) > 0:
+        print(f"[DK64 create_regions] Found {len(custom_names)} custom locations, samples:")
+        for name in custom_names[:5]:
+            print(f"  {name}")
+
     # Pick random 10 shops to make shared
     # Only if shared shops are enabled in settings
     if options.enable_shared_shops.value:
@@ -125,8 +140,8 @@ def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler, option
         shared_shop_vendors = set()
 
         # Pre-process to identify which vendor/level combinations will have shared shops
-        for region_id in all_logic_regions:
-            region_obj = all_logic_regions[region_id]
+        for region_id in logic_holder.spoiler.RegionList:
+            region_obj = logic_holder.spoiler.RegionList[region_id]
             location_logics = [loc for loc in region_obj.locations if (not loc.isAuxiliaryLocation) or region_id.name == "FactoryBaboonBlast"]
 
             for location_logic in location_logics:
@@ -149,8 +164,8 @@ def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler, option
     # for location_name, location_id in all_locations.items():
     #     print(f"{location_name}: {location_id}")
 
-    for region_id in all_logic_regions:
-        region_obj = all_logic_regions[region_id]
+    for region_id in logic_holder.spoiler.RegionList:
+        region_obj = logic_holder.spoiler.RegionList[region_id]
         # Filtering out auxiliary locations is detrimental to glitch logic, but is necessary to ensure each location placed exactly once
         location_logics = [loc for loc in region_obj.locations if (not loc.isAuxiliaryLocation) or region_id.name == "FactoryBaboonBlast"]
         # V1 LIMITATION: Helm must be skip_start
@@ -170,16 +185,17 @@ def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler, option
             if (region_id == Regions.HideoutHelmEntry and spoiler.settings.helm_chunky) or (region_id == Regions.HideoutHelmChunkyRoom and not spoiler.settings.helm_chunky):
                 location_logics = [loc for loc in location_logics if loc.id not in (Locations.HelmChunky1, Locations.HelmChunky2)]
         collectibles = []
-        if region_id in all_collectible_regions.keys():
+        # Use spoiler.CollectibleRegions which reflects CB randomization if enabled
+        if region_id in logic_holder.spoiler.CollectibleRegions.keys():
             collectible_types = [Collectibles.bunch, Collectibles.banana, Collectibles.balloon]
             collectible_types.append(Collectibles.coin)
-            collectibles = [col for col in all_collectible_regions[region_id] if col.type in collectible_types]
+            collectibles = [col for col in logic_holder.spoiler.CollectibleRegions[region_id] if col.type in collectible_types]
         events = [event for event in region_obj.events]
 
         # if region_obj.level == Levels.Shops:
-        #     multiworld.regions.append(create_shop_region(multiworld, player, region_id.name, region_obj, location_logics, spoiler.settings))
+        #     multiworld.regions.append(create_shop_region(multiworld, player, region_id.name, region_obj, location_logics, spoiler.settings, all_locations_dynamic))
         # else:
-        multiworld.regions.append(create_region(multiworld, player, region_id.name, region_obj.level, location_logics, collectibles, events, logic_holder))
+        multiworld.regions.append(create_region(multiworld, player, region_id.name, region_obj.level, location_logics, collectibles, events, logic_holder, all_locations_dynamic))
 
 
 def create_region(
@@ -191,6 +207,7 @@ def create_region(
     collectibles: typing.List[Collectible],
     events: typing.List[Event],
     logic_holder: LogicVarHolder,
+    all_locations_dynamic: typing.Dict[str, int],
 ) -> Region:
     """Create a region for the given player's world."""
     new_region = Region(region_name, player, multiworld)
@@ -207,44 +224,56 @@ def create_region(
             location_logics = []
         for location_logic in location_logics:
             location_obj = logic_holder.spoiler.LocationList[location_logic.id]
-            # DK Arcade Round 1 is dependent on a setting - don't create the inaccessible location depending on that Faster Checks toggle
+
+            # Check if this location should be skipped based on type and settings
+            should_skip = False
+            match location_obj.type:
+                case Types.TrainingBarrel | Types.PreGivenMove:
+                    should_skip = True
+                case Types.Enemies:
+                    if Types.Enemies not in logic_holder.settings.shuffled_location_types:
+                        should_skip = True
+                case Types.BoulderItem:
+                    if Types.BoulderItem not in logic_holder.settings.shuffled_location_types:
+                        should_skip = True
+                case Types.Shop:
+                    if location_obj.kong == Kongs.any:
+                        if location_logic.id not in logic_holder.available_shared_shops:
+                            should_skip = True
+                    else:
+                        vendor_level_key = (location_obj.level, location_obj.vendor)
+                        if vendor_level_key in logic_holder.shared_shop_vendors:
+                            should_skip = True
+                case Types.EnemyPhoto:
+                    if logic_holder.settings.win_condition_item != WinConditionComplex.krem_kapture:
+                        should_skip = True
+                case Types.Hint:
+                    if Types.Hint not in logic_holder.settings.shuffled_location_types:
+                        should_skip = True
+
+            # DK Arcade Round 1 is dependent on a setting
             if location_logic.id == Locations.FactoryDonkeyDKArcade:
                 if logic_holder.checkFastCheck(FasterChecksSelected.factory_arcade_round_1) and region_name == "FactoryArcadeTunnel":
-                    continue
+                    should_skip = True
                 elif not logic_holder.checkFastCheck(FasterChecksSelected.factory_arcade_round_1) and region_name == "FactoryBaboonBlast":
-                    continue
-            # Starting move locations may be shuffled but their locations are not relevant ever due to item placement restrictions
-            if location_obj.type in (Types.TrainingBarrel, Types.PreGivenMove):
-                continue
-            # Dropsanity would otherwise flood the world with irrelevant locked locations, greatly slowing seed gen
-            if location_obj.type == Types.Enemies and Types.Enemies not in logic_holder.settings.shuffled_location_types:
-                continue
-            # Skip shared shops that are not in the available pool
-            if location_obj.type == Types.Shop and location_obj.kong == Kongs.any:
-                if location_logic.id not in logic_holder.available_shared_shops:
-                    continue
+                    should_skip = True
 
-            # Skip individual Kong shops if their vendor/level has a shared shop
-            if location_obj.type == Types.Shop and location_obj.kong != Kongs.any:
-                vendor_level_key = (location_obj.level, location_obj.vendor)
-                if vendor_level_key in logic_holder.shared_shop_vendors:
-                    continue
-            # Skip enemy photos if the win condition is not Krem Kapture.
-            if location_obj.type == Types.EnemyPhoto and logic_holder.settings.win_condition_item != WinConditionComplex.krem_kapture:
-                continue
-            # Skip hint locations if hints are not in the pool
-            if location_obj.type == Types.Hint and Types.Hint not in logic_holder.settings.shuffled_location_types:
-                continue
             # Skip locations marked as inaccessible by smaller shops
             if hasattr(location_obj, "smallerShopsInaccessible") and location_obj.smallerShopsInaccessible and logic_holder.settings.smaller_shops:
-                continue
-            loc_id = all_locations.get(location_obj.name, 0)
+                should_skip = True
+
             # Universal Tracker: don't add this location if it has no item
             if hasattr(multiworld, "generation_is_fake"):
                 if hasattr(multiworld, "re_gen_passthrough"):
                     if "Donkey Kong 64" in multiworld.re_gen_passthrough:
                         if location_obj.name in multiworld.re_gen_passthrough["Donkey Kong 64"]["JunkedLocations"]:
-                            continue
+                            should_skip = True
+
+            if should_skip:
+                continue
+
+            loc_id = all_locations_dynamic.get(location_obj.name, 0)
+
             location = DK64Location(player, location_obj.name, loc_id, new_region)
             # If the location is not shuffled, lock in the default item on the location
             if location_logic.id != Locations.BananaHoard and location_obj.type not in logic_holder.settings.shuffled_location_types and location_obj.default is not None:
@@ -270,8 +299,8 @@ def create_region(
             # Skip for minimal logic
             if not minimal_logic and location_obj.type == Types.RainbowCoin:
                 add_rule(location, lambda state: state.has("Shockwave", player))
-            # If this is a bonus barrel location, add logic to check that we can complete the bonus barrel.
-            # Skip for minimal logic
+
+            # Add bonus barrel completion logic
             if not minimal_logic:
                 match location_logic.bonusBarrel:
                     case MinigameType.BonusBarrel:
@@ -283,55 +312,42 @@ def create_region(
                     case MinigameType.HelmBarrelSecond:
                         if logic_holder.settings.helm_room_bonus_count == 2:
                             add_rule(location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic))
-            # Handle token locations for bonus completion win conditions
-            # These need to be created even in minimal logic to support those win conditions
-            match location_logic.bonusBarrel:
-                case MinigameType.BonusBarrel:
-                    if logic_holder.settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
-                        token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
-                        if minimal_logic:
-                            set_rule(token_location, lambda state: True)
-                        else:
-                            set_rule(
-                                token_location,
-                                lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic) and canDoBonusBarrel(state, player, location_logic),
-                            )
-                        token_location.place_locked_item(DK64Item("Bonus Completed", ItemClassification.progression_skip_balancing, None, player))
-                        new_region.locations.append(token_location)
-                case MinigameType.HelmBarrelFirst:
-                    if logic_holder.settings.helm_room_bonus_count > 0 and logic_holder.settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
-                        token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
-                        if minimal_logic:
-                            set_rule(token_location, lambda state: True)
-                        else:
-                            set_rule(
-                                token_location,
-                                lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic) and canDoBonusBarrel(state, player, location_logic),
-                            )
-                        token_location.place_locked_item(DK64Item("Bonus Completed", ItemClassification.progression_skip_balancing, None, player))
-                        new_region.locations.append(token_location)
-                case MinigameType.HelmBarrelSecond:
-                    if logic_holder.settings.helm_room_bonus_count == 2 and logic_holder.settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
-                        token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
-                        if minimal_logic:
-                            set_rule(token_location, lambda state: True)
-                        else:
-                            set_rule(
-                                token_location,
-                                lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic) and canDoBonusBarrel(state, player, location_logic),
-                            )
-                        token_location.place_locked_item(DK64Item("Bonus Completed", ItemClassification.progression_skip_balancing, None, player))
-                        new_region.locations.append(token_location)
-            # Item placement limitations! These only apply to items in your own world, as other worlds' items will be AP items, and those can be anywhere.
-            # Bosses and Crowns cannot have Junk due to technical reasons
-            if location_obj.type in (Types.Key, Types.Crown):
-                add_item_rule(location, lambda item: not (item.player == player and "Junk" in item.name))
-            # Fairies cannot have blueprints due to crashes
-            if location_obj.type == Types.Fairy:
-                add_item_rule(location, lambda item: not (item.player == player and "Blueprint" in item.name))
-            # Shops cannot have shopkeepers or Rainbow Coins due to technical issues
-            if location_obj.type == Types.Shop:
-                add_item_rule(location, lambda item: not (item.player == player and item.name in ["Cranky", "Funky", "Candy", "Snide", "Rainbow Coin"]))
+
+            # Create bonus token location if needed
+            if logic_holder.settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
+                should_create_token = False
+                match location_logic.bonusBarrel:
+                    case MinigameType.BonusBarrel:
+                        should_create_token = True
+                    case MinigameType.HelmBarrelFirst:
+                        if logic_holder.settings.helm_room_bonus_count > 0:
+                            should_create_token = True
+                    case MinigameType.HelmBarrelSecond:
+                        if logic_holder.settings.helm_room_bonus_count == 2:
+                            should_create_token = True
+
+                if should_create_token:
+                    token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
+                    if minimal_logic:
+                        set_rule(token_location, lambda state: True)
+                    else:
+                        set_rule(
+                            token_location,
+                            lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic) and canDoBonusBarrel(state, player, location_logic),
+                        )
+                    token_location.place_locked_item(DK64Item("Bonus Completed", ItemClassification.progression_skip_balancing, None, player))
+                    new_region.locations.append(token_location)
+
+            # Apply item placement restrictions based on location type
+            match location_obj.type:
+                case Types.Key | Types.Crown:
+                    add_item_rule(location, lambda item: not (item.player == player and "Junk" in item.name))
+                case Types.Shop:
+                    add_item_rule(location, lambda item: not (item.player == player and item.name in ["Cranky", "Funky", "Candy", "Snide", "Rainbow Coin"]))
+                case Types.Fairy:
+                    add_item_rule(location, lambda item: not (item.player == player and "Blueprint" in item.name))
+
+            # Add boss defeated token if needed
             if location_obj.type == Types.Key and logic_holder.settings.win_condition_item in (WinConditionComplex.req_bosses, WinConditionComplex.krools_challenge):
                 token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
                 set_rule(token_location, lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic))
@@ -376,73 +392,79 @@ def create_region(
         new_region.locations.append(location)
 
     for event in events:
-        # Some events don't matter due to Archipelago settings
-        # Entering levels in weird spots can require a number of pre-completed events to be handled in Game Start
-        # We need to filter out any that will return False (because they will never not return False)
-        # V1 LIMITATION: We're not filtering out auto key turn ins, so that setting must be on (not really a problem for basically anyone)
-        if region_name == "GameStart" and event.name in (Events.Night, Events.Day):
-            if not event.logic(logic_holder):
-                continue
-        if region_name == "GameStart":
-            if event.name == Events.AztecIceMelted:
-                if not logic_holder.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice):
-                    continue
-            elif event.name == Events.MainCoreActivated:
-                if not logic_holder.checkBarrier(RemovedBarriersSelected.factory_production_room):
-                    continue
-            elif event.name == Events.TestingGateOpened:
-                if not logic_holder.checkBarrier(RemovedBarriersSelected.factory_testing_gate):
-                    continue
-            elif event.name == Events.LighthouseGateOpened:
-                if not logic_holder.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate):
-                    continue
-            elif event.name == Events.ShipyardGateOpened:
-                if not logic_holder.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate):
-                    continue
-            elif event.name == Events.ActivatedLighthouse:
-                if not logic_holder.checkBarrier(RemovedBarriersSelected.galleon_seasick_ship):
-                    continue
-            elif event.name == Events.ShipyardTreasureRoomOpened:
-                if not logic_holder.checkBarrier(RemovedBarriersSelected.galleon_treasure_room):
-                    continue
-            elif event.name == Events.WormGatesOpened:
-                if not logic_holder.checkBarrier(RemovedBarriersSelected.forest_green_tunnel):
-                    continue
-            elif event.name == Events.HollowTreeGateOpened:
-                if not logic_holder.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel):
-                    continue
-        # Further, we need to remove the duplicate events for barriers that are pre-opened.
-        if region_name != "GameStart":
-            if event.name == Events.AztecIceMelted:
-                if logic_holder.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice):
-                    continue
-            elif event.name == Events.MainCoreActivated:
-                if logic_holder.checkBarrier(RemovedBarriersSelected.factory_production_room):
-                    continue
-            elif event.name == Events.TestingGateOpened:
-                if logic_holder.checkBarrier(RemovedBarriersSelected.factory_testing_gate):
-                    continue
-            elif event.name == Events.LighthouseGateOpened:
-                if logic_holder.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate):
-                    continue
-            elif event.name == Events.ShipyardGateOpened:
-                if logic_holder.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate):
-                    continue
-            elif event.name == Events.ActivatedLighthouse:
-                if logic_holder.checkBarrier(RemovedBarriersSelected.galleon_seasick_ship):
-                    continue
-            elif event.name == Events.ShipyardTreasureRoomOpened:
-                if logic_holder.checkBarrier(RemovedBarriersSelected.galleon_treasure_room):
-                    continue
-            elif event.name == Events.WormGatesOpened:
-                if logic_holder.checkBarrier(RemovedBarriersSelected.forest_green_tunnel):
-                    continue
-            elif event.name == Events.HollowTreeGateOpened:
-                if logic_holder.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel):
-                    continue
+        # Check if this event should be skipped based on settings and region
+        should_skip_event = False
 
-        # Water level altering events: allow the one matching the initial galleon_water_internal setting in GalleonStart
-        # and allow the opposite event in LighthouseUnderwater (for the switchable state)
+        # Some events don't matter due to Archipelago settings
+        if region_name == "GameStart":
+            if event.name in (Events.Night, Events.Day):
+                # Only skip these events if time items are NOT shuffled and the logic fails
+                # If time items ARE shuffled, we need to keep the events even if not immediately accessible
+                if Types.FungiTime not in logic_holder.settings.shuffled_location_types and not event.logic(logic_holder):
+                    should_skip_event = True
+
+            # Filter out barrier events that won't be used
+            match event.name:
+                case Events.AztecIceMelted:
+                    if not logic_holder.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice):
+                        should_skip_event = True
+                case Events.MainCoreActivated:
+                    if not logic_holder.checkBarrier(RemovedBarriersSelected.factory_production_room):
+                        should_skip_event = True
+                case Events.TestingGateOpened:
+                    if not logic_holder.checkBarrier(RemovedBarriersSelected.factory_testing_gate):
+                        should_skip_event = True
+                case Events.LighthouseGateOpened:
+                    if not logic_holder.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate):
+                        should_skip_event = True
+                case Events.ShipyardGateOpened:
+                    if not logic_holder.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate):
+                        should_skip_event = True
+                case Events.ActivatedLighthouse:
+                    if not logic_holder.checkBarrier(RemovedBarriersSelected.galleon_seasick_ship):
+                        should_skip_event = True
+                case Events.ShipyardTreasureRoomOpened:
+                    if not logic_holder.checkBarrier(RemovedBarriersSelected.galleon_treasure_room):
+                        should_skip_event = True
+                case Events.WormGatesOpened:
+                    if not logic_holder.checkBarrier(RemovedBarriersSelected.forest_green_tunnel):
+                        should_skip_event = True
+                case Events.HollowTreeGateOpened:
+                    if not logic_holder.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel):
+                        should_skip_event = True
+
+        # Remove duplicate events for barriers that are pre-opened
+        if region_name != "GameStart":
+            match event.name:
+                case Events.AztecIceMelted:
+                    if logic_holder.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice):
+                        should_skip_event = True
+                case Events.MainCoreActivated:
+                    if logic_holder.checkBarrier(RemovedBarriersSelected.factory_production_room):
+                        should_skip_event = True
+                case Events.TestingGateOpened:
+                    if logic_holder.checkBarrier(RemovedBarriersSelected.factory_testing_gate):
+                        should_skip_event = True
+                case Events.LighthouseGateOpened:
+                    if logic_holder.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate):
+                        should_skip_event = True
+                case Events.ShipyardGateOpened:
+                    if logic_holder.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate):
+                        should_skip_event = True
+                case Events.ActivatedLighthouse:
+                    if logic_holder.checkBarrier(RemovedBarriersSelected.galleon_seasick_ship):
+                        should_skip_event = True
+                case Events.ShipyardTreasureRoomOpened:
+                    if logic_holder.checkBarrier(RemovedBarriersSelected.galleon_treasure_room):
+                        should_skip_event = True
+                case Events.WormGatesOpened:
+                    if logic_holder.checkBarrier(RemovedBarriersSelected.forest_green_tunnel):
+                        should_skip_event = True
+                case Events.HollowTreeGateOpened:
+                    if logic_holder.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel):
+                        should_skip_event = True
+
+        # Water level altering events
         if event.name in (Events.WaterLowered, Events.WaterRaised):
             from randomizer.Enums.Settings import GalleonWaterSetting
 
@@ -452,35 +474,42 @@ def create_region(
                 elif event.name == Events.WaterRaised and logic_holder.settings.galleon_water_internal == GalleonWaterSetting.raised:
                     pass  # Allow this event
                 else:
-                    continue  # Skip the event that doesn't match the setting
+                    should_skip_event = True
             elif region_name == "LighthouseUnderwater":
-                # Allow the opposite event (the one you can switch to)
                 if event.name == Events.WaterRaised and logic_holder.settings.galleon_water_internal == GalleonWaterSetting.lowered:
                     pass  # Allow switching to raised
                 elif event.name == Events.WaterLowered and logic_holder.settings.galleon_water_internal == GalleonWaterSetting.raised:
                     pass  # Allow switching to lowered
                 else:
-                    continue  # Skip the event that matches the initial setting
+                    should_skip_event = True
             else:
-                continue  # Skip water events in all other regions
+                should_skip_event = True
+
         # This event only matters if you enter galleon via the Treasure Room and it spawns open
         if event.name == Events.ShipyardTreasureRoomOpened and region_name == "TreasureRoom":
             if not event.logic(logic_holder):
-                continue
+                should_skip_event = True
+
         # This HelmFinished event is only necessary for skip all Helm
         if event.name == Events.HelmFinished and region_name == "HideoutHelmEntry" and logic_holder.settings.helm_setting != HelmSetting.skip_all:
-            continue
-        # Helm barrier deduplication.
+            should_skip_event = True
+
+        # Helm barrier deduplication
         if event.name == Events.HelmDoorsOpened:
             if region_name == "HideoutHelmEntry" and not logic_holder.checkBarrier(RemovedBarriersSelected.helm_star_gates):
-                continue
+                should_skip_event = True
             elif region_name == "HideoutHelmMain" and logic_holder.checkBarrier(RemovedBarriersSelected.helm_star_gates):
-                continue
+                should_skip_event = True
+
         if event.name == Events.HelmGatesPunched:
             if region_name == "HideoutHelmEntry" and not logic_holder.checkBarrier(RemovedBarriersSelected.helm_punch_gates):
-                continue
+                should_skip_event = True
             elif region_name == "HideoutHelmMain" and logic_holder.checkBarrier(RemovedBarriersSelected.helm_punch_gates):
-                continue
+                should_skip_event = True
+
+        if should_skip_event:
+            continue
+
         location_name = region_name + " Event " + event.name.name
         location = DK64Location(player, location_name, None, new_region)
         # Quickly test and see if we can reach this location with zero items
@@ -502,7 +531,9 @@ def create_region(
 
 
 # CURRENTLY UNUSED - for some reason some Lanky shops are inaccessible??
-def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, region_obj: DK64Region, location_logics: typing.List[LocationLogic], settings: Settings) -> Region:
+def create_shop_region(
+    multiworld: MultiWorld, player: int, region_name: str, region_obj: DK64Region, location_logics: typing.List[LocationLogic], settings: Settings, all_locations_dynamic: typing.Dict[str, int]
+) -> Region:
     """Create a region for the given player's world."""
     # Shop regions have relatively straightforward logic that can be streamlined for performance purposes
     new_region = Region(region_name, player, multiworld)
@@ -512,14 +543,14 @@ def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, re
             for kong in range(5):
                 blueprint_obj = DK64RItem.ItemList[Items.DonkeyBlueprint + kong]
                 location_name = "Turn In " + blueprint_obj.name
-                loc_id = all_locations.get(location_name, 0)
+                loc_id = all_locations_dynamic.get(location_name, 0)
                 location = DK64Location(player, location_name, loc_id, new_region)
                 set_rule(location, lambda state, blueprint_name=blueprint_obj.name: state.has(blueprint_name, player))
                 location.place_locked_item(DK64Item(blueprint_obj.name, ItemClassification.progression_skip_balancing, None, player))
                 new_region.locations.append(location)
     # The one special child here is Cranky Generic, home of Jetpac, the only shop location with any relevant logic
     elif region_name == "Cranky Generic":
-        location = DK64Location(player, "Jetpac", all_locations.get("Jetpac", 0), new_region)
+        location = DK64Location(player, "Jetpac", all_locations_dynamic.get("Jetpac", 0), new_region)
         set_rule(location, lambda state, player=player, location_logic=location_logics[0]: hasDK64RLocation(state, player, location_logic))
         new_region.locations.append(location)
         settings.location_pool_size += 1
@@ -529,7 +560,7 @@ def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, re
             location_obj = DK64RLocation.LocationListOriginal[location_logic.id]
             if location_obj.kong == Kongs.any:
                 continue  # We need to eliminate shared shop locations so shops don't have both a shared item and Kong items
-            loc_id = all_locations.get(location_obj.name, 0)
+            loc_id = all_locations_dynamic.get(location_obj.name, 0)
             location = DK64Location(player, location_obj.name, loc_id, new_region)
             required_kong_name = location_obj.kong.name.title()
             set_rule(location, lambda state, required_kong_name=required_kong_name: state.has(required_kong_name, player))
@@ -539,7 +570,7 @@ def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, re
     return new_region
 
 
-def connect_regions(world: World, settings: Settings):
+def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
     """Connect the regions in the given world."""
     connect(world, "Menu", "GameStart")
 
@@ -561,16 +592,8 @@ def connect_regions(world: World, settings: Settings):
         connect(world, "IslesMain", "KremIsleBeyondLift", lambda state: True)
         return
 
-    # # Example Region Connection
-    # connect(
-    #     world,
-    #     "DK Isles",
-    #     "Test",
-    #     lambda state: state.has(DK64RItem.ItemList[DK64RItems.GoldenBanana].name, world.player, 2),
-    # )
-
-    # Shuffling level order should be going off of our ShufflableExits dictionary, but that's not properly isolated to the spoiler object yet.
-    # For now, we have to pre-calculate what the destination region is for each of these transitions.
+    # Build lobby transition mapping for level order shuffling
+    lobby_transition_mapping = None
     if settings.level_randomization == LevelRandomization.level_order_complex:
         lobby_transition_mapping = {}
         enter_lobby_transitions = {
@@ -607,6 +630,8 @@ def connect_regions(world: World, settings: Settings):
             level = settings.level_order[i + 1]
             lobby_transition_mapping[enter_lobby_transitions_list[i]] = enter_lobby_transitions[enter_lobby_transitions_list[level]]
             lobby_transition_mapping[exit_lobby_transitions_list[level]] = exit_lobby_transitions[exit_lobby_transitions_list[i]]
+
+    # Get entrance randomization pairings if available
     pairings = None
     if hasattr(world.multiworld, "generation_is_fake"):
         if hasattr(world.multiworld, "re_gen_passthrough") and settings.level_randomization == LevelRandomization.loadingzone:
@@ -614,79 +639,171 @@ def connect_regions(world: World, settings: Settings):
             if entrance_rando_data:
                 pairings = dict(entrance_rando_data)
 
+    # Connect all region exits
     for region_id, region_obj in all_logic_regions.items():
+        # Check if we should use modified region from spoiler
+        use_modified = False
+        if spoiler:
+            # Random starting region modifies GameStart's exits
+            if region_id == Regions.GameStart and hasattr(settings, "starting_region") and settings.starting_region:
+                use_modified = True
+            # DK Portal location rando modifies entry handler exits
+            elif settings.dk_portal_location_rando_v2 != DKPortalRando.off:
+                entry_handler_regions = {
+                    Regions.JungleJapesEntryHandler,
+                    Regions.AngryAztecEntryHandler,
+                    Regions.FranticFactoryEntryHandler,
+                    Regions.GloomyGalleonEntryHandler,
+                    Regions.FungiForestEntryHandler,
+                    Regions.CrystalCavesEntryHandler,
+                    Regions.CreepyCastleEntryHandler,
+                }
+                if region_id in entry_handler_regions:
+                    use_modified = True
+
+        if use_modified:
+            region_obj = spoiler.RegionList[region_id]
+
         for exit in region_obj.exits:
-            destination_name = exit.dest.name
-
-            # If this is a Isles <-> Lobby transition and we're shuffling levels, respect the dictionary built earlier
-            if settings.level_randomization == LevelRandomization.level_order_complex and exit.exitShuffleId in lobby_transition_mapping.keys():
-                destination_name = lobby_transition_mapping[exit.exitShuffleId]
+            # Test exit logic
+            quick_success = False
             try:
-                # Quickly test and see if we can pass this exit with zero items
-                quick_success = False
-                try:
-                    quick_success = exit.logic(None)
-                except Exception:
-                    pass
-                # If we can, we can greatly simplify the logic for this exit
-                if quick_success:
-                    converted_logic = lambda state: True
-                else:
-                    converted_logic = lambda state, player=world.player, exit=exit: hasDK64RTransition(state, player, exit)
+                quick_success = exit.logic(None)
+            except Exception:
+                pass
 
-                # For LZR with pairings, check if this exit has a shufflable ID and use the pairing
-                entrance_name = None
-                if settings.level_randomization == LevelRandomization.loadingzone:
-                    if exit.exitShuffleId and not exit.isGlitchTransition and ShufflableExits[exit.exitShuffleId].back.reverse:
-                        # Skip Helm transitions if Helm location is not being shuffled
-                        helm_transitions = {Transitions.IslesMainToHelmLobby, Transitions.IslesHelmLobbyToMain, Transitions.IslesToHelm, Transitions.HelmToIsles}
-                        if not settings.shuffle_helm_location and exit.exitShuffleId in helm_transitions:
-                            # Don't mark this as a shufflable entrance - connect it normally
-                            pass
-                        else:
-                            entrance_name = ShufflableExits[exit.exitShuffleId].name
+            if quick_success:
+                converted_logic = lambda state: True
+            else:
+                converted_logic = lambda state, player=world.player, exit=exit: hasDK64RTransition(state, player, exit)
 
-                # If we have pairings and this entrance is in them, connect to the paired target
-                if pairings and entrance_name and entrance_name in pairings:
-                    target_entrance_name = pairings[entrance_name]
-                    # Look up the target entrance in ShufflableExits to get its destination region
-                    target_shufflable_exit = None
-                    for transition_enum, shufflable_exit in ShufflableExits.items():
-                        if shufflable_exit.name == target_entrance_name:
-                            target_shufflable_exit = shufflable_exit
-                            break
+            # Add time requirements if this transition has time restrictions
+            if world.options.time_of_day:
+                if exit.time == Time.Day:
+                    original_logic = converted_logic
+                    converted_logic = lambda state, orig=original_logic: orig(state) and state.has("Day", world.player)
+                elif exit.time == Time.Night:
+                    original_logic = converted_logic
+                    converted_logic = lambda state, orig=original_logic: orig(state) and state.has("Night", world.player)
 
-                    if target_shufflable_exit:
-                        target_region_name = target_shufflable_exit.region.name
-                        connect(world, region_id.name, target_region_name, converted_logic, entrance_name)
+            # Determine connection type and targets
+            destination_name = exit.dest.name
+            entrance_name = None
+
+            # Handle level order shuffling
+            if settings.level_randomization == LevelRandomization.level_order_complex:
+                if lobby_transition_mapping and exit.exitShuffleId in lobby_transition_mapping:
+                    destination_name = lobby_transition_mapping[exit.exitShuffleId]
+
+            # Check for loading zone randomization
+            if settings.level_randomization == LevelRandomization.loadingzone:
+                if exit.exitShuffleId and not exit.isGlitchTransition and ShufflableExits[exit.exitShuffleId].back.reverse:
+                    # Skip Helm transitions if Helm location is not being shuffled
+                    helm_transitions = {
+                        Transitions.IslesMainToHelmLobby,
+                        Transitions.IslesHelmLobbyToMain,
+                        Transitions.IslesToHelm,
+                        Transitions.HelmToIsles,
+                    }
+                    if not settings.shuffle_helm_location and exit.exitShuffleId in helm_transitions:
+                        entrance_name = None
                     else:
-                        # Fallback to normal connection
-                        if not exit.isGlitchTransition:
+                        entrance_name = ShufflableExits[exit.exitShuffleId].name
+
+            # Determine connection type and handle the connection
+            try:
+                if pairings and entrance_name:
+                    if entrance_name in pairings:
+                        # Paired - connect to paired target from entrance randomization
+                        target_entrance_name = pairings[entrance_name]
+                        target_shufflable_exit = None
+                        for transition_enum, shufflable_exit in ShufflableExits.items():
+                            if shufflable_exit.name == target_entrance_name:
+                                target_shufflable_exit = shufflable_exit
+                                break
+
+                        if target_shufflable_exit:
+                            target_region_name = target_shufflable_exit.region.name
+                            connect(world, region_id.name, target_region_name, converted_logic, entrance_name)
+                        else:
+                            # Fallback to normal connection
                             connection = connect(world, region_id.name, destination_name, converted_logic, entrance_name)
                             if entrance_name is not None:
                                 disconnect_entrance_for_randomization(connection)
-                elif pairings and entrance_name:
-                    # This entrance should be shuffled but no pairing found - disconnect it
-                    connection = connect(world, region_id.name, destination_name, converted_logic, entrance_name)
-                    disconnect_entrance_for_randomization(connection)
-                else:
-                    # No entrance randomization or not a shufflable entrance - connect normally
-                    if not (settings.level_randomization == LevelRandomization.loadingzone and exit.isGlitchTransition):
+                    else:
+                        # Unpaired - entrance should be shuffled but no pairing found
                         connection = connect(world, region_id.name, destination_name, converted_logic, entrance_name)
-
-                        # If this is a shuffled entrance, prepare it to be randomized
-                        if entrance_name is not None:
-                            disconnect_entrance_for_randomization(connection)
-
-                # print("Connecting " + region_id.name + " to " + destination_name)
-            except Exception as e:
+                        disconnect_entrance_for_randomization(connection)
+                elif settings.level_randomization == LevelRandomization.loadingzone and exit.isGlitchTransition:
+                    # Skip glitch transitions during LZR
+                    pass
+                else:
+                    # Normal connection (may or may not be shufflable)
+                    connection = connect(world, region_id.name, destination_name, converted_logic, entrance_name)
+                    if entrance_name is not None:
+                        disconnect_entrance_for_randomization(connection)
+            except Exception:
                 pass
 
-    # V1 LIMITATION: We have pre-activated Isles warps, so we need to make two extra connections to make sure the logic is correct
-    connect(world, "IslesMain", "IslesMainUpper", lambda state: True)  # Pre-activated W2
-    connect(world, "IslesMain", "KremIsleBeyondLift", lambda state: True)  # Pre-activated W4
+    # Pre-activated Isles warps
+    connect(world, "IslesMain", "IslesMainUpper", lambda state: True)
+    connect(world, "IslesMain", "KremIsleBeyondLift", lambda state: True)
 
-    # For tracker regeneration with LZR, also handle deathwarps and exit level connections
+    # Random starting region exit connection
+    if spoiler and hasattr(settings, "starting_region") and settings.starting_region:
+        starting_region_id = settings.starting_region.get("region")
+        if starting_region_id is not None:
+            starting_region_obj = all_logic_regions.get(starting_region_id)
+            if starting_region_obj:
+                starting_level = starting_region_obj.level
+                level_exit_transitions = {
+                    Levels.JungleJapes: Transitions.JapesToIsles,
+                    Levels.AngryAztec: Transitions.AztecToIsles,
+                    Levels.FranticFactory: Transitions.FactoryToIsles,
+                    Levels.GloomyGalleon: Transitions.GalleonToIsles,
+                    Levels.FungiForest: Transitions.ForestToIsles,
+                    Levels.CrystalCaves: Transitions.CavesToIsles,
+                    Levels.CreepyCastle: Transitions.CastleToIsles,
+                }
+
+                # Only create exit level connection for non-Isles levels
+                if starting_level in level_exit_transitions:
+                    exit_transition_id = level_exit_transitions[starting_level]
+                    starting_region_name = starting_region_id.name if hasattr(starting_region_id, "name") else str(starting_region_id)
+
+                    level_to_entry_handler = {
+                        Levels.JungleJapes: Regions.JungleJapesEntryHandler,
+                        Levels.AngryAztec: Regions.AngryAztecEntryHandler,
+                        Levels.FranticFactory: Regions.FranticFactoryEntryHandler,
+                        Levels.GloomyGalleon: Regions.GloomyGalleonEntryHandler,
+                        Levels.FungiForest: Regions.FungiForestEntryHandler,
+                        Levels.CrystalCaves: Regions.CrystalCavesEntryHandler,
+                        Levels.CreepyCastle: Regions.CreepyCastleEntryHandler,
+                    }
+                    if starting_level in level_to_entry_handler:
+                        entry_handler_region = level_to_entry_handler[starting_level]
+                        entry_handler_obj = all_logic_regions.get(entry_handler_region)
+
+                        if entry_handler_obj:
+                            # Find the exit transition in the entry handler's exits
+                            exit_transition = None
+                            for exit in entry_handler_obj.exits:
+                                if exit.exitShuffleId == exit_transition_id:
+                                    exit_transition = exit
+                                    break
+
+                            # Create connection using the exit transition's logic
+                            if exit_transition:
+                                target_region_name = exit_transition.dest.name
+                                connect(
+                                    world,
+                                    starting_region_name,
+                                    target_region_name,
+                                    lambda state, player=world.player, exit=exit_transition: hasDK64RTransition(state, player, exit),
+                                    "Exit Level from spawn: " + starting_region_name,
+                                )
+
+    # Loading zone randomization special connections
     if pairings:
         # Handle deathwarps
         for region_id, region_obj in all_logic_regions.items():
@@ -802,7 +919,19 @@ def connect(world: World, source: str, target: str, rule: typing.Optional[typing
 
 def hasDK64RTransition(state: CollectionState, player: int, exit: TransitionFront):
     """Check if the given transition is accessible in the given state."""
-    return exit.logic(state.dk64_logic_holder[player])
+    logic_holder = state.dk64_logic_holder[player]
+
+    # Check the base logic for the transition
+    if not exit.logic(logic_holder):
+        return False
+
+    # Check time requirements if this transition has time restrictions
+    if exit.time == Time.Day:
+        return logic_holder.dayAccess
+    elif exit.time == Time.Night:
+        return logic_holder.nightAccess
+    # Time.Both or no time restriction - always accessible if logic passes
+    return True
 
 
 def hasDK64RLocation(state: CollectionState, player: int, location: LocationLogic):

@@ -19,7 +19,6 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
     BLockerSetting,
-    CBRequirement,
     DKPortalRando,
     GlitchesSelected,
     LogicType,
@@ -269,6 +268,7 @@ class Spoiler:
             Types.Shockwave: "Moves",
             Types.TrainingBarrel: "Moves",
             Types.Climbing: "Moves",
+            Types.Cannons: "Moves",
             Types.Banana: "Golden Bananas",
             Types.FillerBanana: "Golden Bananas",
             Types.Blueprint: "Blueprints",
@@ -297,6 +297,7 @@ class Spoiler:
             Types.Candy: "Shop Owners",
             Types.Snide: "Shop Owners",
             Types.Hint: "Hints",
+            Types.FungiTime: "Fungi Time",
         }
         if item_type in type_dict:
             return type_dict[item_type]
@@ -613,6 +614,7 @@ class Spoiler:
             "Hints": {},
             "Enemy Drops": {},
             "Shop Owners": {},
+            "Fungi Time": {},
             "Photos": {},
             "Empty": {},
             "Unknown": {},
@@ -657,6 +659,7 @@ class Spoiler:
                 Types.Candy,
                 Types.Funky,
                 Types.Snide,
+                Types.FungiTime,
             ) and location.item in (None, Items.NoItem):
                 continue
             if location.type == Types.HalfMedal and Types.HalfMedal not in self.settings.shuffled_location_types:
@@ -692,10 +695,12 @@ class Spoiler:
                 if "Isles" in location.name or location.type in (
                     Types.PreGivenMove,
                     Types.Climbing,
+                    Types.Cannons,
                     Types.Cranky,
                     Types.Funky,
                     Types.Candy,
                     Types.Snide,
+                    Types.FungiTime,
                 ):
                     level = "DK Isles"
                 elif "Japes" in location.name:
@@ -832,6 +837,9 @@ class Spoiler:
                     SwitchType.PadMove: "Simian Spring Pad",
                     SwitchType.MiscActivator: "Gong",
                     SwitchType.PushableButton: "Charge Button",
+                    SwitchType.PunchGrate: "Charge Grate",
+                    SwitchType.IceWall: "Charge Wall",
+                    SwitchType.Gong: "Charge Gong",
                     SwitchType.GunInstrumentCombo: "Peanut Switch and Guitar Pad",
                 },
                 Kongs.lanky: {
@@ -854,6 +862,9 @@ class Spoiler:
                     SwitchType.InstrumentPad: "Triangle Pad",
                     SwitchType.PadMove: "Gorilla Gone Pad",
                     SwitchType.PushableButton: "Punch Button",
+                    SwitchType.PunchGrate: "Punch Grate",
+                    SwitchType.IceWall: "Punch Wall",
+                    SwitchType.Gong: "Punch Gong",
                     SwitchType.GunInstrumentCombo: "Pineapple Switch and Triangle Pad",
                 },
                 Kongs.any: {

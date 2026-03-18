@@ -44,8 +44,6 @@ extern int* getOtherSpritePointer();
 extern void alterSize(void* object, int size);
 extern void unkSizeFunction(void* object);
 extern void spawnRocketbarrel(void* object, int unk);
-extern void* getObjectArrayAddr(void* init_address, int common_object_size, int index);
-extern short getFloatUpper(float value);
 extern void playSong(songs songIndex, float volume);
 extern void restartSong(int write_slot, int song, float volume);
 extern int getSongTempo(void *player);
@@ -139,8 +137,6 @@ extern void updateCamera(void* mtx_i);
 extern void spawnKeyTwinklies(void *actor);
 extern void getControllerContainer(void *cont);
 
-extern int callFunc(void* func, int arg);
-
 extern void cutsceneDiddyCode(void);
 extern void cutsceneLankyCode(void);
 extern void cutsceneTinyCode(void);
@@ -155,6 +151,9 @@ extern void spawnTextOverlayWrapper(int style, int x, int y, const char* str, in
 
 extern void regularFrameLoop(void);
 extern void handleMusicTransition(void);
+extern void handleMusic(void);
+extern void handleMusic2(void);
+extern void setBaseSlotVolume(int slot, float volume);
 
 extern void loadJetpacSprites(void);
 extern void updateGBCountHUD(int player);
@@ -471,7 +470,7 @@ extern int getTotalGBs(void);
 extern void displayPauseSpriteNumber(void* handler, int x, int y, int unk0, int unk1, int count, int unk2, int unk3);
 extern void headphonesCode(int unused, int enable); // Note: Only has parameters for *if* we're passing in an enabled state for the headphones fix qol change
 
-extern int getSpawnerIndexOfResolvedBonus(void* unk0, int unk1, int* map_storage);
+extern int getSpawnerIndexOfResolvedBonus(const void* unk0, int unk1, int* map_storage);
 extern void resolveBonus(short unk0, int unk1, int unk2, float unk3);
 extern void failBonus(int unk0, int unk1);
 extern void winBonus(int unk0, int unk1);
@@ -520,8 +519,24 @@ extern void handleController(void);
 extern Gfx *unkFadeFunction(Gfx *dl, int transition);
 extern void endDL(Gfx * dl, int index, int* count, int unk0);
 extern void unkDLFunction1(void *unk0, void *camera_dl, int unk1, int unk2);
+extern Gfx *setColorFramebuffer(Gfx *dl);
+extern Controller *MinigameInput;
+extern void _alSndpPlay(void *unk0, short sfx, unsigned short vol, int pan, float pitch, unsigned char fxmix, void *unk6);
+extern void *SFXSoundbank;
+extern void spriteUnk(Gfx **dl_ptr, void *sprite);
+extern void spriteSetParams(int unk0, int unk1, int unk2, int unk3);
+extern void guSprite2DInit(uSprite *SpritePointer, void *SourceImagePointer, void *TlutPointer, int Stride, int SubImageWidth, int SubImageHeight, int SourceImageType, int SourceImageBitSize, int SourceImageOffsetS, int SourceImageOffsetT);
+extern void unkGuMacro(void *mtx, float unk1);
+extern void unkGuMacro2(void *unk0, int unk1, int unk2, int unk3);
 
-extern int checkIntroStoryPlaying();
+extern int checkIntroStoryPlaying(void);
+
+extern void inVehicleMovement(void);
+extern void unkVehicleFunc(void);
+extern int isBoulderMakingCollision(void);
+
+extern void cannonCode(void);
+extern int isMakingContactWithWall(actorData *actor, int angle);
 
 //vanilla data
 extern OSThread* __osActiveQueue;
@@ -588,6 +603,7 @@ extern char JoystickEnabledY;
 extern char MapState;
 extern Controller ControllerInput;
 extern Controller NewlyPressedControllerInput;
+extern Controller Input;
 extern Controller PreviouslyPressedButtons;
 extern playerData* Player;
 extern SwapObjectData* SwapObject;
@@ -867,7 +883,6 @@ extern char LoadedHooks;
 extern varspace Rando;
 extern short StoredLag;
 extern unsigned char DamageMultiplier;
-extern char LobbiesOpen;
 extern char* PauseSlot3TextPointer;
 extern char ExpandPauseMenu;
 extern unsigned short InitialPauseHeight;
@@ -875,19 +890,16 @@ extern unsigned short *CCButtons;
 extern cc_effects* CCEffectData;
 extern short style128Mtx[0x10];
 extern short style6Mtx[0x10];
-extern short style2Mtx[0x10];
 extern purchase_struct CrankyMoves_New[5][8];
 extern purchase_struct CandyMoves_New[5][8];
 extern purchase_struct FunkyMoves_New[5][8];
 extern purchase_struct TrainingMoves_New[4];
 extern purchase_struct BFIMove_New;
 extern purchase_struct FirstMove_New;
-extern settingsData StoredSettings;
 extern char bonusAutocomplete;
-extern void* StoredCounterTextures[7];
 extern char TextHoldOn;
+extern unsigned char PercussionPlayed;
 extern unsigned char PauseText;
-extern unsigned char ShorterBosses;
 extern char ForceStandardAmmo;
 extern char KKOPhaseRandoOn;
 extern unsigned short MultiBunchCount;
@@ -900,9 +912,6 @@ extern unsigned char EnemyInView;
 extern unsigned char ItemRandoOn;
 extern unsigned char KasplatSpawnBitfield;
 extern unsigned short HoldableSpawnBitfield;
-extern char KrushaSlot;
-extern unsigned char RandomSwitches;
-extern unsigned char SwitchLevel[7];
 extern int ExtraSaveData[0x100];
 extern char* DisplayedSongNamePointer;
 extern unsigned char RandomizerVersion;

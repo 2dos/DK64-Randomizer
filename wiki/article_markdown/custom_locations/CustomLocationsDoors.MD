@@ -29,7 +29,7 @@
 | Jungle Japes | Next to Lanky's Painting Room - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Jungle Japes | Outside Diddy Cave Switch - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Jungle Japes | Outside Diddy Cave Switch - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Jungle Japes | Entrance Tunnel - Near Diddy Cave - back left | Wrinkly | `self.logic = lambda _: True` | 
+| Jungle Japes | Entrance Tunnel - Near Diddy Cave - back left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Jungle Japes | Entrance Tunnel - Near Diddy Cave - front left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Jungle Japes | Entrance Tunnel - Near Warppad 1 and 2 | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Jungle Japes | Diddy Tunnel - next to hole - river side | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -154,7 +154,7 @@
 | Frantic Factory | R&D | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Block Tower | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Storage Room | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Frantic Factory | Behind Chunky's Toy Box - big | Wrinkly | `(l.ischunky and l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
+| Frantic Factory | Behind Chunky's Toy Box - big | Wrinkly | `(l.ischunky and l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Next to Hatch with Tall Pole - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Next to Hatch with Tall Pole - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Bottom of the Tall Pole | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -187,7 +187,7 @@
 | Frantic Factory | Pin Code Room - front-right | Wrinkly | `(l.isdiddy and l.guitar) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Lanky's Piano Room - right | Wrinkly | `(l.islanky and l.trombone) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Lanky's Piano Room - left | Wrinkly | `(l.islanky and l.trombone) or l.CanAccessRNDRoom()` | 
-| Frantic Factory | Chunky's Dark Room | Wrinkly, Boss | `(l.chunky and l.punch) or l.CanPhase() or l.generalclips` | 
+| Frantic Factory | Chunky's Dark Room | Wrinkly, Boss | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase() or l.generalclips` | 
 | Factory Crusher | Crusher Room - start | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Factory Vanilla Level Entry | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Factory Power Hut | In the power hut | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -287,8 +287,8 @@
 | Fungi Forest | Mushroom Area - Next to Cranky | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Clock Area - Next to Purple Tunnel - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Clock Area - Next to Purple Tunnel - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Fungi Forest | Clock Area - Next to Clock - left | Wrinkly | `self.logic = lambda _: True` | 
-| Fungi Forest | Clock Area - Next to Clock - right | Wrinkly | `self.logic = lambda _: True` | 
+| Fungi Forest | Clock Area - Next to Clock - left | Wrinkly | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
+| Fungi Forest | Clock Area - Next to Clock - right | Wrinkly | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
 | Fungi Forest | Funky Area - Near Beanstalk - left | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Funky Area - Near Beanstalk - back | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Forest Giant Mushroom | Inside the Mushroom - All Kong Gun Switch - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 

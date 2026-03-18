@@ -260,6 +260,50 @@ ROM_RODATA_PTR static const char* kong_names[] = {
 	"CHUNKY",
 };
 
+typedef struct text_match_struct {
+	unsigned char req_item;
+	char kong;
+	char level;
+	unsigned char text_item;
+} text_match_struct;
+
+ROM_RODATA_NUM static const text_match_struct TextMatchInfo[] = {
+	{.req_item = REQITEM_MOVE, .level = 10, .kong = 0, .text_item = ITEMTEXT_DIVE},
+	{.req_item = REQITEM_MOVE, .level = 10, .kong = 1, .text_item = ITEMTEXT_ORANGE},
+	{.req_item = REQITEM_MOVE, .level = 10, .kong = 2, .text_item = ITEMTEXT_BARREL},
+	{.req_item = REQITEM_MOVE, .level = 10, .kong = 3, .text_item = ITEMTEXT_VINE},
+	{.req_item = REQITEM_MOVE, .level = 11, .kong = -1, .text_item = ITEMTEXT_CLIMBING},
+	{.req_item = REQITEM_MOVE, .level = 12, .kong = -1, .text_item = ITEMTEXT_CAMERACOMBO},
+	{.req_item = REQITEM_MOVE, .level = 13, .kong = -1, .text_item = ITEMTEXT_CANNONS},
+	{.req_item = REQITEM_GOLDENBANANA, .level = -1, .kong = -1, .text_item = ITEMTEXT_BANANA},
+	{.req_item = REQITEM_BLUEPRINT, .level = -1, .kong = 0, .text_item = ITEMTEXT_BLUEPRINT_DK},
+	{.req_item = REQITEM_BLUEPRINT, .level = -1, .kong = 1, .text_item = ITEMTEXT_BLUEPRINT_DIDDY},
+	{.req_item = REQITEM_BLUEPRINT, .level = -1, .kong = 2, .text_item = ITEMTEXT_BLUEPRINT_LANKY},
+	{.req_item = REQITEM_BLUEPRINT, .level = -1, .kong = 3, .text_item = ITEMTEXT_BLUEPRINT_TINY},
+	{.req_item = REQITEM_BLUEPRINT, .level = -1, .kong = 4, .text_item = ITEMTEXT_BLUEPRINT_CHUNKY},
+	{.req_item = REQITEM_MEDAL, .level = -1, .kong = -1, .text_item = ITEMTEXT_MEDAL},
+	{.req_item = REQITEM_COMPANYCOIN, .level = -1, .kong = 0, .text_item = ITEMTEXT_NINTENDO},
+	{.req_item = REQITEM_COMPANYCOIN, .level = -1, .kong = 1, .text_item = ITEMTEXT_RAREWARE},
+	{.req_item = REQITEM_CROWN, .level = -1, .kong = -1, .text_item = ITEMTEXT_CROWN},
+	{.req_item = REQITEM_HINT, .level = -1, .kong = -1, .text_item = ITEMTEXT_HINTITEM},
+	{.req_item = REQITEM_BEAN, .level = -1, .kong = -1, .text_item = ITEMTEXT_BEAN},
+	{.req_item = REQITEM_PEARL, .level = -1, .kong = -1, .text_item = ITEMTEXT_PEARL},
+	{.req_item = REQITEM_FAIRY, .level = -1, .kong = -1, .text_item = ITEMTEXT_FAIRY},
+	{.req_item = REQITEM_ICETRAP, .level = -1, .kong = -1, .text_item = ITEMTEXT_FAKEITEM},
+	{.req_item = REQITEM_SHOPKEEPER, .level = -1, .kong = 0, .text_item = ITEMTEXT_CRANKYITEM},
+	{.req_item = REQITEM_SHOPKEEPER, .level = -1, .kong = 1, .text_item = ITEMTEXT_FUNKYITEM},
+	{.req_item = REQITEM_SHOPKEEPER, .level = -1, .kong = 2, .text_item = ITEMTEXT_CANDYITEM},
+	{.req_item = REQITEM_SHOPKEEPER, .level = -1, .kong = 3, .text_item = ITEMTEXT_SNIDEITEM},
+	{.req_item = REQITEM_KONG, .level = -1, .kong = 0, .text_item = ITEMTEXT_KONG_DK},
+	{.req_item = REQITEM_KONG, .level = -1, .kong = 1, .text_item = ITEMTEXT_KONG_DIDDY},
+	{.req_item = REQITEM_KONG, .level = -1, .kong = 2, .text_item = ITEMTEXT_KONG_LANKY},
+	{.req_item = REQITEM_KONG, .level = -1, .kong = 3, .text_item = ITEMTEXT_KONG_TINY},
+	{.req_item = REQITEM_KONG, .level = -1, .kong = 4, .text_item = ITEMTEXT_KONG_CHUNKY},
+	{.req_item = REQITEM_RAINBOWCOIN, .level = -1, .kong = -1, .text_item = ITEMTEXT_RAINBOWCOIN},
+	{.req_item = REQITEM_FUNGITIME, .level = -1, .kong = 0, .text_item = ITEMTEXT_DAY},
+	{.req_item = REQITEM_FUNGITIME, .level = -1, .kong = 1, .text_item = ITEMTEXT_NIGHT},
+};
+
 void getNextMoveText(void) {
 	move_overlay_paad* paad = CurrentActorPointer_0->paad;
 	int start_hiding = 0;
@@ -320,10 +364,8 @@ void getNextMoveText(void) {
 			mtx_item mtx0;
 			mtx_item mtx1;
 			_guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
-			float start_y = 800.0f;
-			float position = start_y - (overlay_count * 100.0f); // Gap of 100.0f
-			float move_x = 640.0f;
-			_guTranslateF(&mtx1, move_x, position, 0.0f);
+			int position = 800 - (overlay_count * 100); // Gap of 100
+			_guTranslateF(&mtx1, 640.0f, position, 0.0f);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->matrix_0);
 			_guTranslateF(&mtx1, 0.0f, 48.0f, 0.0f);
@@ -349,102 +391,67 @@ void getNextMoveText(void) {
 						}
 					}
 				}
-			}
-			switch(p_type) {
-				case REQITEM_MOVE:
-					switch (p_value) {
-						case 0:
-						case 1:
-						case 2:
-							{
-								int move_index = (p_kong * 4) + p_value + 1;
-								top_item = SpecialMovesNames[move_index].name;
-								bottom_item = SpecialMovesNames[move_index].latin;
+			} else {
+				int tm_found = 0;
+				for (unsigned int di = 0; di < sizeof(TextMatchInfo) / sizeof(text_match_struct); di++) {
+					const text_match_struct *tm_data = &TextMatchInfo[di];
+					if (tm_data->req_item == p_type) {
+						if ((tm_data->level == -1) || (tm_data->level == p_value)) {
+							if ((tm_data->kong == -1) || (tm_data->kong == p_kong)) {
+								tm_found = 1;
+								top_item = tm_data->text_item;
 							}
-							break;
-						case 3:
-							{
-								int slam_level = MovesBase[0].simian_slam;
-								top_item = SimianSlamNames[slam_level].name;
-								bottom_item = SimianSlamNames[slam_level].latin;
-							}
-							break;
-						case 4:
-							top_item = GunNames[p_kong];
-							break;
-						case 5:
-						case 6:
-							top_item = GunUpgNames[p_value - 3];
-							break;
-						case 7:
-							{
-								int belt_level = MovesBase[0].ammo_belt;
-								top_item = AmmoBeltNames[belt_level];
-							}
-							break;
-						case 8:
-							top_item = InstrumentNames[p_kong];
-							break;
-						case 9:
-							{
-								int lvl = getInstrumentLevel();
-								top_item = InstrumentUpgNames[lvl + 1];
-							}
-							break;
-						case 10:
-							top_item = ITEMTEXT_DIVE + p_kong;
-							break;
-						case 11:
-							top_item = ITEMTEXT_CLIMBING;
-							break;
-						case 12:
-							top_item = ITEMTEXT_CAMERACOMBO;
-							break;
+						}
 					}
-					break;
-				case REQITEM_GOLDENBANANA:
-					top_item = ITEMTEXT_BANANA;
-					break;
-				case REQITEM_BLUEPRINT:
-					top_item = ITEMTEXT_BLUEPRINT_DK + p_kong;
-					break;
-				case REQITEM_MEDAL:
-					top_item = ITEMTEXT_MEDAL;
-					break;
-				case REQITEM_COMPANYCOIN:
-					top_item = ITEMTEXT_NINTENDO + p_kong;
-					break;
-				case REQITEM_CROWN:
-					top_item = ITEMTEXT_CROWN;
-					break;
-				case REQITEM_HINT:
-					top_item = ITEMTEXT_HINTITEM;
-					break;
-				case REQITEM_BEAN:
-					top_item = ITEMTEXT_BEAN;
-					break;
-				case REQITEM_PEARL:
-					top_item = ITEMTEXT_PEARL;
-					break;
-				case REQITEM_FAIRY:
-					top_item = ITEMTEXT_FAIRY;
-					break;
-				case REQITEM_ICETRAP:
-					top_item = ITEMTEXT_FAKEITEM;
-					break;
-				case REQITEM_SHOPKEEPER:
-					top_item = ITEMTEXT_CRANKYITEM + p_kong;
-					break;
-				case REQITEM_KEY:
-					top_item = ITEMTEXT_KEY1 + p_value;
-					break;
-				case REQITEM_KONG:
-					top_item = ITEMTEXT_KONG_DK + p_kong;
-					break;
-				case REQITEM_RAINBOWCOIN:
-					top_item = ITEMTEXT_RAINBOWCOIN;
-					break;
+				}
+				if (!tm_found) {
+					if (p_type == REQITEM_MOVE) {
+						switch (p_value) {
+							case 0:
+							case 1:
+							case 2:
+								{
+									int move_index = (p_kong * 4) + p_value + 1;
+									top_item = SpecialMovesNames[move_index].name;
+									bottom_item = SpecialMovesNames[move_index].latin;
+								}
+								break;
+							case 3:
+								{
+									int slam_level = MovesBase[0].simian_slam;
+									top_item = SimianSlamNames[slam_level].name;
+									bottom_item = SimianSlamNames[slam_level].latin;
+								}
+								break;
+							case 4:
+								top_item = GunNames[p_kong];
+								break;
+							case 5:
+							case 6:
+								top_item = GunUpgNames[p_value - 3];
+								break;
+							case 7:
+								{
+									int belt_level = MovesBase[0].ammo_belt;
+									top_item = AmmoBeltNames[belt_level];
+								}
+								break;
+							case 8:
+								top_item = InstrumentNames[p_kong];
+								break;
+							case 9:
+								{
+									int lvl = getInstrumentLevel();
+									top_item = InstrumentUpgNames[lvl + 1];
+								}
+								break;
+						}
+					} else if (p_type == REQITEM_KEY) {
+						top_item = ITEMTEXT_KEY1 + p_value;
+					}
+				}
 			}
+			
 			if (override_string) {
 				paad->upper_text = p_string;
 				if (p_subtitle) {
@@ -477,15 +484,13 @@ void getNextMoveText(void) {
 				}
 			}
 		}
-		int timer = paad->timer;
-		paad->timer = timer - 1;
-		if (timer == 1) {
+		paad->timer--;
+		if (paad->timer == 0) {
 			start_hiding = 1;
 		}
-		timer = paad->timer;
-		if (timer == paad->fade_out) {
+		if (paad->timer == paad->fade_out) {
 			CurrentActorPointer_0->control_state = 2;
-		} else if (timer == paad->fade_in) {
+		} else if (paad->timer == paad->fade_in) {
 			CurrentActorPointer_0->control_state = 1;
 		}
 		if (CurrentActorPointer_0->control_state == 1) {

@@ -63,7 +63,7 @@
         "Format Repo",
         "Validate Styles",
         "Validate Docstrings",
-        "Validate C",
+        // "Validate C",
         "Update Custom Location Lists",
         "Generate PyI Stubs",
         "Update CB requirements",

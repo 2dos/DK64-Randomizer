@@ -46,7 +46,9 @@
     "HalfMedal": 44,
     "RaceBanana": 45,
     "GauntletBanana": 46,
-    "FillerRainbowCoin": 47
+    "FillerRainbowCoin": 47,
+    "FungiTime": 48,
+    "Cannons": 49
   },
   "BarrierItems": {
     "Nothing": 0,
