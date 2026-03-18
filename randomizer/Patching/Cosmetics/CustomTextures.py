@@ -715,7 +715,7 @@ def writeCustomItemSprites(settings: Settings, ROM_COPY: ROM) -> None:
         {"table": 7, "image": 0x00E5, "frame": 5, "color": 0},
         {"table": 7, "image": 0x00E6, "frame": 6, "color": 0},
         {"table": 7, "image": 0x00E7, "frame": 7, "color": 0},
-        {"table": 25, "image": 0x0C39, "frame": 4, "color": 0},
+        # {"table": 25, "image": 0x0C39, "frame": 4, "color": 0},
         # Diddy
         {"table": 7, "image": 0x0100, "frame": 0, "color": 1},
         {"table": 7, "image": 0x0101, "frame": 1, "color": 1},

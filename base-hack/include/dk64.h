@@ -908,3 +908,5 @@ extern char* DisplayedSongNamePointer;
 extern unsigned char RandomizerVersion;
 extern unsigned char RandomizerSubVersion;
 extern CountStruct *ItemInventory;
+extern unsigned char RLock;
+extern int DLock[5];

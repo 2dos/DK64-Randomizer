@@ -516,7 +516,7 @@ class EmulatorInfo:
             if test_value == 0x52414D42:
                 self.connected_process = pm
                 self.connected_offset = read_address + self.extra_offset
-                self.writeBytes(0x807ED6A4, 4, 1)  # Connection validation
+                self.writeBytes(0x807ED6A0, 4, 1)  # Connection validation
                 return (pm, read_address + self.extra_offset)
 
         if not has_seen_nonzero:
