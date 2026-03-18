@@ -149,9 +149,9 @@ ROM_RODATA_NUM static const int head_ids[] = {
 	LLAMA_MATCHING_HEAD_SOUND7_1,
 };
 ROM_RODATA_NUM static const int head_sounds[] = {173,171,169,174,172,175,168,170};
-ROM_RODATA_NUM static unsigned char power_beams[] = {11, 8, 12, 10, 9};
-ROM_RODATA_NUM static unsigned char power_beams_0[] = {16, 14, 13, 15, 17};
-ROM_RODATA_NUM static unsigned char power_beams_1[] = {30, 32, 34, 36, 38};
+ROM_RODATA_NUM static const unsigned char power_beams[] = {11, 8, 12, 10, 9};
+ROM_RODATA_NUM static const unsigned char power_beams_0[] = {16, 14, 13, 15, 17};
+ROM_RODATA_NUM static const unsigned char power_beams_1[] = {30, 32, 34, 36, 38};
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
 	int world = getWorld(CurrentMap, 0);
