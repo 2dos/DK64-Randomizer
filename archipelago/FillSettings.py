@@ -588,7 +588,7 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
         case SelectStartingKong.option_tiny:
             settings_dict["starting_kong"] = Kongs.tiny
         case SelectStartingKong.option_chunky:
-            settings_dict["starting_kong"] = Kongs.diddy
+            settings_dict["starting_kong"] = Kongs.chunky
         case SelectStartingKong.option_any:
             settings_dict["starting_kong"] = Kongs.any
 

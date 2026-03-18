@@ -149,6 +149,9 @@ ROM_RODATA_NUM static const int head_ids[] = {
 	LLAMA_MATCHING_HEAD_SOUND7_1,
 };
 ROM_RODATA_NUM static const int head_sounds[] = {173,171,169,174,172,175,168,170};
+ROM_RODATA_NUM static unsigned char power_beams[] = {11, 8, 12, 10, 9};
+ROM_RODATA_NUM static unsigned char power_beams_0[] = {16, 14, 13, 15, 17};
+ROM_RODATA_NUM static unsigned char power_beams_1[] = {30, 32, 34, 36, 38};
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
 	int world = getWorld(CurrentMap, 0);
@@ -889,6 +892,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 									}
 									if (index == 0) {
 										// Barrels complete
+										modifyObjectState(power_beams[slot], 10);
+										modifyObjectState(power_beams_0[slot], 10);
+										modifyObjectState(power_beams_1[slot], 10);
 										if ((next_slot == -1) && (current_slot > -1)) {
 											// Helm Complete
 											PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
