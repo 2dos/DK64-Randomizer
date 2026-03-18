@@ -216,9 +216,9 @@
 
 ROM_DATA static unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
 ROM_DATA static unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
-ROM_RODATA_NUM static unsigned char power_beams[] = {11, 8, 12, 10, 9};
-ROM_RODATA_NUM static unsigned char power_beams_0[] = {16, 14, 13, 15, 17};
-ROM_RODATA_NUM static unsigned char power_beams_1[] = {30, 32, 34, 36, 38};
+ROM_RODATA_NUM static const unsigned char power_beams[] = {11, 8, 12, 10, 9};
+ROM_RODATA_NUM static const unsigned char power_beams_0[] = {16, 14, 13, 15, 17};
+ROM_RODATA_NUM static const unsigned char power_beams_1[] = {30, 32, 34, 36, 38};
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
 	int world = getWorld(CurrentMap, 0);
@@ -1515,6 +1515,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	} else if (index == -18) {
 		return (Player->strong_kong_ostand_bitfield & 0x20) || (!Rando.sprint_barrel_requires_sprint);
 	} else if (index == -19) {
+		if ((CurrentMap == MAP_FUNGILOBBY) && (!Rando.quality_of_life.no_wrinkly_puzzles)) {
+			return 0;
+		}
 		int world = getWorld(CurrentMap, 0);
 		return checkFlag(FLAG_WRINKLYVIEWED + (5 * world) + param2, FLAGTYPE_PERMANENT);
 	} else if (index == -20) {

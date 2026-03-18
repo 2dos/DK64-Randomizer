@@ -435,7 +435,7 @@
 {% macro gen_tab(internal_name, tab_icon, tab_name, first, hidden) %}
     <li role="presentation">
         <a
-            class="{% if first %}active{% endif %} py-2"
+            class="{% if first %}active{% endif %} p-2 pe-4"
             id="nav-{{ internal_name }}-tab"
             data-bs-toggle="tab"
             data-bs-target="#nav-{{ internal_name }}"
@@ -445,10 +445,7 @@
             aria-selected="{{ 'true' if first else 'false' }}"
             {% if hidden %}hidden{% endif %}
         >
-            <i class="fa {{ tab_icon }}"></i>
-            <span class="nav-text">
-                <div class="position-absolute top-50 start-0 translate-middle-y">{{ tab_name }}</div>
-            </span>
+            <i class="fa {{ tab_icon }} fa-xl me-2"></i> <span>{{ tab_name }}</span>
         </a>
     </li>
 {% endmacro %}
