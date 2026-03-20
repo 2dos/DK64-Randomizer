@@ -245,7 +245,7 @@ footer {
   background-color: rgba(0, 0, 0, 0);
   color: var(--bs-body-color);
   border: 2px solid transparent;
-  font-size: 1.3vh;
+  font-size: 1rem;
   padding-left: 0;
   padding-top: 0;
   padding-bottom: 0;
