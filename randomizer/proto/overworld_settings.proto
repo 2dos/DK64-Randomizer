@@ -120,31 +120,27 @@ enum ShuffledBonusBarrel {
     SHUFFLED_BONUS_BARREL_ARCADE = 19;
 }
 
-enum HardMode {
-    HARD_MODE_UNSPECIFIED = 0;
-    HARD_MODE_NULL_OPTION_0 = 1;
-    HARD_MODE_NULL_OPTION_1 = 2;
-    HARD_MODE_HARD_ENEMIES = 3;
-    HARD_MODE_WATER_IS_LAVA = 4;
-    HARD_MODE_REDUCED_FALL_DAMAGE_THRESHOLD = 5;
-    HARD_MODE_SHUFFLED_JETPAC_ENEMIES = 6;
-    HARD_MODE_LOWER_MAX_REFILL_AMOUNTS = 7;
-    HARD_MODE_STRICT_HELM_TIMER = 8;
-    HARD_MODE_DONK_IN_THE_DARK_WORLD = 9;
-    HARD_MODE_DONK_IN_THE_SKY = 10;
-    HARD_MODE_ANGRY_CAVES = 11;
-    HARD_MODE_FAST_BALLOONS = 12;
+message HardMode {
+    bool hard_enemies = 1;
+    bool water_is_lava = 2;
+    bool reduced_fall_damage_threshold = 3;
+    bool shuffled_jetpac_enemies = 4;
+    bool lower_max_refill_amounts = 5;
+    bool strict_helm_timer = 6;
+    bool donk_in_the_dark_world = 7;
+    bool donk_in_the_sky = 8;
+    bool angry_caves = 9;
+    bool fast_balloons = 10;
 }
 
-enum HardBoss {
-    HARD_BOSS_UNSPECIFIED = 0;
-    HARD_BOSS_FAST_MAD_JACK = 1;
-    HARD_BOSS_ALTERNATIVE_MAD_JACK_KONGS = 2;
-    HARD_BOSS_PUFFTOSS_STAR_RANDO = 3;
-    HARD_BOSS_PUFFTOSS_STAR_RAISED = 4;
-    HARD_BOSS_KUT_OUT_PHASE_RANDO = 5;
-    HARD_BOSS_K_ROOL_TOES_RANDO = 6;
-    HARD_BOSS_BETA_LANKY_PHASE = 7;
+message HardBoss {
+    bool fast_mad_jack = 1;
+    bool alternative_mad_jack_kongs = 2;
+    bool pufftoss_star_rando = 3;
+    bool pufftoss_star_raised = 4;
+    bool kut_out_phase_rando = 5;
+    bool k_rool_toes_rando = 6;
+    bool beta_lanky_phase = 7;
 }
 
 enum DamageEnum {
@@ -292,7 +288,7 @@ message OverworldSettings {
     bool tag_barrels_disabled = 37;
     HelmHurry helm_hurry_mode = 38;
     bool no_consumable_upgrades = 39;
-    repeated HardMode hard_mode = 40;
-    repeated HardBoss hard_bosses = 41;
+    HardMode hard_mode = 40;
+    HardBoss hard_bosses = 41;
     DamageEnum damage = 42;
 }

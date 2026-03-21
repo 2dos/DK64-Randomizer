@@ -2,38 +2,37 @@ syntax = "proto3";
 
 package randomizer.proto;
 
-enum MiscChange {
-    MISC_CHANGE_UNSPECIFIED = 0;
-    MISC_CHANGE_AUTO_DANCE_SKIP = 1;
-    MISC_CHANGE_FAST_BOOT = 2;
-    MISC_CHANGE_CALM_CAVES = 3;
-    MISC_CHANGE_ANIMAL_BUDDIES_GRAB_ITEMS = 4;
-    MISC_CHANGE_REDUCED_LAG = 5;
-    MISC_CHANGE_REMOVE_EXTRANEOUS_CUTSCENES = 6;
-    MISC_CHANGE_HINT_TEXTBOX_HOLD = 7;
-    MISC_CHANGE_REMOVE_WRINKLY_PUZZLES = 8;
-    MISC_CHANGE_FAST_PICTURE_TAKING = 9;
-    MISC_CHANGE_HUD_HOTKEY = 10;
-    MISC_CHANGE_AMMO_SWAP = 11;
-    MISC_CHANGE_HOMING_BALLOONS = 12;
-    MISC_CHANGE_FAST_TRANSFORM_ANIMATION = 13;
-    MISC_CHANGE_TROFF_N_SCOFF_AUDIO_INDICATOR = 14;
-    MISC_CHANGE_LOWERED_AZTEC_LOBBY_BONUS = 15;
-    MISC_CHANGE_QUICKER_GALLEON_STAR = 16;
-    MISC_CHANGE_VANILLA_BUG_FIXES = 17;
-    MISC_CHANGE_SAVE_K_ROOL_PROGRESS = 18;
-    MISC_CHANGE_SMALL_BANANAS_ALWAYS_VISIBLE = 19;
-    MISC_CHANGE_FAST_HINTS = 20;
-    MISC_CHANGE_BRIGHTEN_MAD_MAZE_MAUL_ENEMIES = 21;
-    MISC_CHANGE_RAISE_FUNGI_DIRT_PATCH = 22;
-    MISC_CHANGE_GLOBAL_INSTRUMENT = 23;
-    MISC_CHANGE_FAST_PAUSE_TRANSITIONS = 24;
-    MISC_CHANGE_CANNON_GAME_BETTER_CONTROL = 25;
-    MISC_CHANGE_BETTER_FAIRY_CAMERA = 26;
-    MISC_CHANGE_REMOVE_ENEMY_CABIN_TIMER = 27;
-    MISC_CHANGE_REMOVE_GALLEON_SHIP_TIMERS = 28;
-    MISC_CHANGE_JAPES_BRIDGE_PERMANENTLY_EXTENDED = 29;
-    MISC_CHANGE_MOVE_SPRING_CABIN_ROCKETBARREL = 30;
+message MiscChanges {
+    bool auto_dance_skip = 1;
+    bool fast_boot = 2;
+    bool calm_caves = 3;
+    bool animal_buddies_grab_items = 4;
+    bool reduced_lag = 5;
+    bool remove_extraneous_cutscenes = 6;
+    bool hint_textbox_hold = 7;
+    bool remove_wrinkly_puzzles = 8;
+    bool fast_picture_taking = 9;
+    bool hud_hotkey = 10;
+    bool ammo_swap = 11;
+    bool homing_balloons = 12;
+    bool fast_transform_animation = 13;
+    bool troff_n_scoff_audio_indicator = 14;
+    bool lowered_aztec_lobby_bonus = 15;
+    bool quicker_galleon_star = 16;
+    bool vanilla_bug_fixes = 17;
+    bool save_k_rool_progress = 18;
+    bool small_bananas_always_visible = 19;
+    bool fast_hints = 20;
+    bool brighten_mad_maze_maul_enemies = 21;
+    bool raise_fungi_dirt_patch = 22;
+    bool global_instrument = 23;
+    bool fast_pause_transitions = 24;
+    bool cannon_game_better_control = 25;
+    bool better_fairy_camera = 26;
+    bool remove_enemy_cabin_timer = 27;
+    bool remove_galleon_ship_timers = 28;
+    bool japes_bridge_permanently_extended = 29;
+    bool move_spring_cabin_rocketbarrel = 30;
 }
 
 enum CutsceneSkips {
@@ -120,7 +119,7 @@ message HintSettings {
 }
 
 message QualityOfLifeSettings {
-    repeated MiscChange misc_changes = 1;
+    MiscChanges misc_changes = 1;
 
     CutsceneSkips cutscene_skips = 2;
 

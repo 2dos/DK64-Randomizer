@@ -133,12 +133,6 @@ message HelmSettings {
         HELM_START_LOCATION_SKIP_ALL = 3;
     }
 
-    enum HelmBonuses {
-        HELM_BONUSES_UNSPECIFIED = 0;
-        HELM_BONUSES_ZERO = 1;
-        HELM_BONUSES_ONE = 2;
-        HELM_BONUSES_TWO = 3;
-    }
 
     bool random_length = 1;
 
@@ -148,7 +142,7 @@ message HelmSettings {
 
     HelmStartLocation helm_start_location = 4;
 
-    HelmBonuses helm_room_bonus_count = 5;
+    int32 helm_room_bonus_count = 5;
 
     repeated HelmDoorRequirement helm_door_requirements = 6;
 }

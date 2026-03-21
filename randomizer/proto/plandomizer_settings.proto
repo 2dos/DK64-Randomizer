@@ -8,8 +8,8 @@ import "common/level.proto";
 import "common/map.proto";
 
 message BossAssignment {
-    optional int32 map_id = 1;
-    optional int32 kong_id = 2;
+    optional common.MapId map_id = 1;
+    optional common.KongId kong_id = 2;
 }
 
 message CustomLocationAssignment {
@@ -33,13 +33,13 @@ message PlandomizerSettings {
     bool place_wrinkly = 8;
     bool place_tns = 9;
 
-    map<int32, int32> level_order = 10;
+    map<int32, common.LevelId> level_order = 10;
 
-    map<int32, int32> krool_order = 11;
+    map<int32, common.MapId> krool_order = 11;
 
     map<int32, BossAssignment> boss_order = 12;
 
-    map<int32, int32> helm_order = 13;
+    map<int32, common.KongId> helm_order = 13;
 
     map<int32, common.ItemId> item_assignments = 14;
 
