@@ -21,6 +21,7 @@ message Logic {
         TRICK_ADVANCED_GRENADING = 1;
         TRICK_MONKEY_MANUEVERS = 2;
         TRICK_HARD_SHOOTING = 3;
+        TRICK_SLOPE_RESETS = 4;
     }
 
     enum Glitch {
@@ -70,11 +71,14 @@ message WinCondition {
         WIN_CONDITION_TYPE_PEARLS = 18;
         WIN_CONDITION_TYPE_BOSSES = 19;
         WIN_CONDITION_TYPE_BONUSES = 20;
+        WIN_CONDITION_TYPE_KEYS_3_AND_8 = 21;
     }
 
     WinConditionType type = 1;
 
     optional int32 quantity = 2;
+
+    bool spawns_ship = 3;
 }
 
 message RequiredKeys {
@@ -129,6 +133,7 @@ message HelmSettings {
         HELM_START_LOCATION_SKIP_ALL = 3;
     }
 
+
     bool random_length = 1;
 
     optional int32 specified_length = 2;
@@ -145,15 +150,13 @@ message HelmSettings {
 message KRoolSettings {
     bool shuffle_k_rool_phases = 1;
 
-    bool vanilla_key_requirement = 2;
+    bool random_phase_amount = 2;
 
-    bool random_phase_amount = 3;
+    optional int32 specified_phase_amount = 3;
 
-    optional int32 specified_phase_amount = 4;
+    bool dk_phase_requires_blast = 4;
 
-    bool dk_phase_requires_blast = 5;
-
-    common.SlamLevel chunky_phase_slam_requirement = 6;
+    common.SlamLevel chunky_phase_slam_requirement = 5;
 }
 
 
