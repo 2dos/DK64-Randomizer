@@ -136,11 +136,11 @@ void ArenaEarlyCompletionCheck(void) {
 
 int getMinecartMayhemCoinReq(void) {
     if (CurrentMap == MAP_MMAYHEM_EASY) {
-        return 10;
+        return 8;
     } else if (CurrentMap == MAP_MMAYHEM_NORMAL) {
-        return 12;
+        return 10;
     } else if (CurrentMap == MAP_MMAYHEM_HARD) {
-        return 15;
+        return 12;
     }
     return 0;
 }

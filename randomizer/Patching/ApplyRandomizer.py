@@ -86,6 +86,7 @@ from randomizer.Patching.UpdateHints import (
     PushHintTiedRegions,
 )
 from randomizer.Patching.ASMPatcher import patchAssembly, precalcBoot
+from randomizer.Patching.ScriptPatcher import patchScripts
 from randomizer.Patching.MirrorMode import ApplyMirrorMode
 from randomizer.CompileHints import getHelmOrderHint
 
@@ -746,8 +747,6 @@ def patching_response(spoiler):
                 f"CONDINV 24 | 43 {DARTBOARD_DEFAULT_ORDER[x]} 1": f"CONDINV 24 | 43 {index + 1} 0",
             },
         )
-    if IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.galleon_mech_fish):
-        replaceScriptLines(ROM_COPY, Maps.GalleonMechafish, [0x3, 0x4, 0x5], {"EXEC 1 | 1 0 0": "EXEC 1 | 5 0 0"})
 
     ROM_COPY.seek(sav + 0x060)
     for x in spoiler.settings.medal_cb_req_level:
@@ -842,6 +841,7 @@ def patching_response(spoiler):
         showWinCondition(spoiler.settings, ROM_COPY)
 
         patchAssembly(ROM_COPY, spoiler)
+        patchScripts(spoiler, ROM_COPY)
         calculateInitFileScreen(spoiler, ROM_COPY)
         ApplyMirrorMode(spoiler.settings, ROM_COPY)
 

@@ -46,7 +46,7 @@
             "name": "Golden Bananas Checks",
             "value": "banana_checks",
             "tooltip": "",
-            "check_count": 134,
+            "check_count": 131,
             "item_count": 0,
             "is_check": true,
             "tied": "banana"
@@ -64,7 +64,7 @@
             "name": "Gauntlet & Mini-Boss Checks",
             "value": "gauntletbanana",
             "tooltip": "All banana checks which are obtained after killing a hoard of enemies or killing a mini boss.",
-            "check_count": 16,
+            "check_count": 19,
             "item_count": 0,
             "is_check": true,
             "tied": "banana"
