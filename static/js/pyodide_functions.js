@@ -53,30 +53,36 @@ function isValidBase64(str) {
 async function apply_patch(data, run_async) {
   // Check if this is an .chunky file
   let ischunkyFile = window.loaded_patch_filename && window.loaded_patch_filename.toLowerCase().endsWith('.chunky');
-  var extracted_data = data
+  var extracted_data = data;
 
   if (ischunkyFile) {
-    // For .chunky files, the data is already an ArrayBuffer from FileReader
-    var chunkyZip= new JSZip();
+    // .chunky is a zip containing "patch_data" (base64 text, newline-wrapped by
+    // Python's codecs.encode) and "archipelago.json".
+    var chunkyZip = new JSZip();
     try {
       const chunkyZipFile = await chunkyZip.loadAsync(data);
-      
-      // Extract the patch_data file and treat it as lanky content
+
       const patchDataEntry = chunkyZipFile.file("patch_data");
       if (patchDataEntry) {
-        const patchData = await patchDataEntry.async("string");
-        extracted_data = patchData;
+        const patchDataRaw = await patchDataEntry.async("string");
+        // Python's codecs.encode adds newlines every 76 chars; strip them so
+        // atob() inside base64ToArrayBuffer doesn't throw.
+        extracted_data = patchDataRaw.replace(/\s/g, "");
+        // Clear the filename so recursive calls from patching_response don't
+        // attempt to re-process the already-extracted data as a .chunky file.
+        window.loaded_patch_filename = null;
       } else {
-        throw new Error("patch_data file not found in .chunky archive");
+        throw new Error("patch_data not found in .chunky archive");
       }
     } catch (error) {
       console.error("Error processing .chunky file:", error);
       throw error;
     }
   }
-  // For .lanky files or base64 encoded data, decode as base64
+
+  // Decode base64 to binary for zip processing
   decodedData = base64ToArrayBuffer(extracted_data);
-  
+
   zip = new JSZip();
 
   try {

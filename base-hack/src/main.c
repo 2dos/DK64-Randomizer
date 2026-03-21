@@ -102,6 +102,10 @@ void cFuncLoop(void) {
 	}
 	callParentMapFilter();
 	handleFallDamageImmunity();
+	if ((DLock[4] == 1) || (RLock)) {
+		RLock = 1;
+		DLock[4] = 1;
+	}
 	if (Rando.win_condition == GOAL_POKESNAP) {
 		int picture_bitfield = 0;
 		if (Player) {

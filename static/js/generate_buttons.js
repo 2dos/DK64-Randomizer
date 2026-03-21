@@ -86,7 +86,7 @@ async function generate_seed_from_patch(event) {
             }
             $("#lankyModal").modal("show");
             // Apply the patch
-            await apply_patch(loaded_patch, true);
+            await apply_patch(window.loaded_patch, true);
             $("#lankyModal").modal("hide");
          }
     }
@@ -770,7 +770,7 @@ async function import_settings_string(event) {
     document.getElementById("settings_string").value = document.getElementById("settings_string").value.trim();
     const settingsString = document.getElementById("settings_string").value;
     import_settings_string_internal(settingsString);
-    generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.");
+    generateToast("Imported settings string. All non-cosmetic settings have been overwritten.");
 }
 
 document.getElementById("import_settings").addEventListener("click", import_settings_string);

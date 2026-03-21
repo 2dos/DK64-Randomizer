@@ -713,6 +713,90 @@ def getCrateScript(item_id: int) -> list[int]:
         ],
     )
 
+def getFiveTwoDoorShipGateScript(item_id: int, flag_id: int, timer: int, timer_2: int, tied_pad: int) -> list[int]:
+    is_slam_switch = flag_id in (0x2FE, 0x2FF)
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(45, [flag_id, 0, 0]),
+        ], [
+            FunctionData(1, [10, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(45, [flag_id, 0, 0], True),
+        ], [
+            FunctionData(20, [1 if is_slam_switch else 2, 2, 0], False, lambda f: f != 0x2FC),  # Not Chunky
+            FunctionData(22, [1 if is_slam_switch else 2, 1, 0], False, lambda f: f != 0x2FC),  # Not Chunky
+            FunctionData(38, [2, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [10, 0, 0]),
+        ], [
+            FunctionData(20, [2, 2, 0], False, lambda f: f == 0x2FC),  # Chunky
+            FunctionData(22, [2, 1, 0], False, lambda f: f == 0x2FC),  # Chunky
+            FunctionData(3, [0, 300 if flag_id == 0x2FF else 250, 0]),
+            FunctionData(1, [11, 0, 0]),
+            FunctionData(107, [flag_id, 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [11, 0, 0]),
+            FunctionData(4, [timer, 0, 0]),
+        ], [
+            FunctionData(17, [1 if is_slam_switch else 2, 1, 0]),
+            FunctionData(14, [288, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [11, 0, 0]),
+            FunctionData(4, [timer_2, 0, 0]),
+        ], [
+            FunctionData(16, [0, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [11, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(38, [2, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [20, 0, 0]),
+            FunctionData(19, [200 if is_slam_switch else 100, 0, 0], True),
+        ], [
+            FunctionData(17, [1 if is_slam_switch else 2, 1, 0]),
+            FunctionData(14, [288, 0, 0]),
+            FunctionData(3, [0, 70 if is_slam_switch else 75, 0]),
+            FunctionData(1, [21, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [21, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(16, [0, 0, 0]),
+            FunctionData(5, [tied_pad, 20 if is_slam_switch else 0, 0]),
+            FunctionData(84, [tied_pad, 1, 0]),
+            FunctionData(38, [2, 0, 0]),
+        ]),
+    ], flag_id)
+
+def getFactoryBlastControllerScript(item_id) -> list[int]:
+    """Get the instance script for the controller within Factory blast."""
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(0, [0, 0, 0]),
+        ], [
+            FunctionData(7, [15, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(45, [129, 1, 0], True),
+            FunctionData(45, [130, 1, 0]),
+        ], [
+            FunctionData(88, [Maps.FranticFactory, 45, 10]),
+            FunctionData(93, [0, 0, 0]),
+            FunctionData(49, [Maps.FranticFactory, 15, 0x100]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+    ])
 
 def getHelmLobbyGrabScript(item_id: int) -> list[int]:
     """Get the instance script for the Helm Lobby activator if it is a lever."""
@@ -1149,6 +1233,10 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
             subscript = getObjectHideScript(item_id)
         elif stype == ScriptTypes.HelmLobbyPadGrab:
             subscript = getHelmLobbyGrabScript(item_id)
+        elif stype == ScriptTypes.GalleonShipwreckDoor:
+            subscript = getFiveTwoDoorShipGateScript(item_id, extra_data[item_id]["flag_id"], extra_data[item_id]["timer"], extra_data[item_id]["timer_2"], extra_data[item_id]["tied_pad"])
+        elif stype == ScriptTypes.FactoryBlastController:
+            subscript = getFactoryBlastControllerScript(item_id)
         if subscript is not None:
             good_scripts.append(subscript)
     # Reconstruct File
