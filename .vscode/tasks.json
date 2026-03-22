@@ -112,7 +112,12 @@
     {
       "label": "Generate Protobuf code",
       "type": "shell",
-      "command": "protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/*.proto && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/common/*.proto",
+      "windows": {
+        "command": "protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/*.proto && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/common/*.proto",
+      },
+      "linux": {
+        "command": "source /etc/profile.d/protoc-gen-js.sh && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/*.proto && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/common/*.proto"
+      },
       "group": {
         "kind": "build",
         "isDefault": true
