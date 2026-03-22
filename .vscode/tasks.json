@@ -65,6 +65,7 @@
         "Validate Docstrings",
         // "Validate C",
         "Update Custom Location Lists",
+        "Generate Protobuf code",
         "Generate PyI Stubs",
         "Update CB requirements",
       ],
@@ -107,6 +108,20 @@
       "type": "shell",
       "command": "sass --style=compressed ${workspaceFolder}/static/styles/bootstrap/bootstrap.scss ${workspaceFolder}/static/styles/styles.css",
       "problemMatcher": []
+    },
+    {
+      "label": "Generate Protobuf code",
+      "type": "shell",
+      "windows": {
+        "command": "protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/*.proto && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/common/*.proto",
+      },
+      "linux": {
+        "command": "source /etc/profile.d/protoc-gen-js.sh && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/*.proto && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/common/*.proto"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     },
     {
       "label": "Generate PyI Stubs",
