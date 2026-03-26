@@ -8,7 +8,7 @@ rq
 apscheduler==3.11.2
 flask-cors==6.0.2
 requests
-cryptography==46.0.5
+cryptography==46.0.6
 pyopenssl==26.0.0
 swagger-ui-py
 flask-session
