@@ -511,8 +511,8 @@ class Settings:
         self.free_trade_setting = False
 
         # Minigames
-        self.arcade_custom_minigame = "arkanoid"
-        self.jetpac_custom_minigame = "arkanoid"
+        self.arcade_custom_minigame = None
+        self.jetpac_custom_minigame = None
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
