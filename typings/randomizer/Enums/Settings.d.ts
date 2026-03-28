@@ -383,6 +383,7 @@ export enum KongModels {
     funky = 7,
     disco_donkey = 8,
     robokrem = 9,
+    rabbit = 10,
 }
 
 export enum KongModelMode {

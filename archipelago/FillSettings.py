@@ -607,6 +607,7 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
         "funky": 7,
         "disco_donkey": 8,
         "robokrem": 9,
+        "rabbit": 10,
     }
 
     for kong, setting_key in kong_model_mapping.items():

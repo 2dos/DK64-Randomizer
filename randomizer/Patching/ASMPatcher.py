@@ -757,6 +757,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
         KongModels.krool_fight: "krool_name",
         KongModels.candy: "candy_name",
         KongModels.robokrem: "robokrem_name",
+        KongModels.rabbit: "rabbit_name",
     }
     index_mapping = {
         KongModels.cranky: 8,
@@ -765,9 +766,10 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
         KongModels.krool_fight: 7,
         KongModels.candy: 9,
         KongModels.robokrem: 11,
+        KongModels.rabbit: 12,
     }
     for kong_index, value in enumerate(kong_model_setting_values):
-        if value in (KongModels.cranky, KongModels.candy, KongModels.funky, KongModels.robokrem):
+        if value in (KongModels.cranky, KongModels.candy, KongModels.funky, KongModels.robokrem, KongModels.rabbit):
             writeValue(ROM_COPY, 0x8075C410 + (kong_index * 0x10) + 0xC, Overlay.Static, 0, offset_dict, 4)
             writeValue(ROM_COPY, 0x80619168, Overlay.Static, 0, offset_dict, 4)
         if value in name_mapping:

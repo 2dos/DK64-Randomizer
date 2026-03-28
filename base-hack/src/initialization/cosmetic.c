@@ -18,12 +18,14 @@ ROM_RODATA_PTR const char* cranky_name = "CRANKY";
 ROM_RODATA_PTR const char* candy_name = "CANDY";
 ROM_RODATA_PTR const char* funky_name = "FUNKY";
 ROM_RODATA_PTR const char* robokrem_name = "RICARDO";
+ROM_RODATA_PTR const char* rabbit_name = "RODNEY";
 
 ROM_RODATA_NUM static const unsigned char kongmodels_color[] = {
     KONGMODEL_CRANKY,
     KONGMODEL_CANDY,
     KONGMODEL_FUNKY,
     KONGMODEL_ROBOKREM,
+    KONGMODEL_RABBIT,
 };
 
 void* updateKongTB(int malloc_size) {

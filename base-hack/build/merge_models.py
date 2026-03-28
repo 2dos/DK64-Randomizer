@@ -314,6 +314,7 @@ mergeModel(0x10, 3, "cranky_model.bin", False, True, None, True, [16, 17, 18, 19
 mergeModel(0x12, 8, "candy_model.bin", False, True, None, True, [22, 23, 24, 25, 26, 27, 28], [15, 16, 17, 18, 19, 20, 21])
 mergeModel(0x11, 0, "funky_model.bin", False, True, None, True, [7, 8, 9], [4, 5, 6])
 mergeModel(0x2B, 0xDA, "ricardo_model.bin", False, True, 1.377, True, [9, 10, 11], [6, 7, 8])
+mergeModel(0x46, 0, "rabbit_model.bin", False, True, None, True, [12, 13, 14], [9, 10, 11])
 mergeModel(0x39, 6, "klump_model.bin", False, True, None, True, [10, 11, 12], [13, 14, 15])
 # modifyModel(0x11, "funky_model.bin", [7, 8, 9], [4, 5, 6])
 

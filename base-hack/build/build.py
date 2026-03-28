@@ -1774,7 +1774,8 @@ model_changes = [
     ModelChange(0x13E, "shrink_day_item.bin"),
     ModelChange(0x13F, "shrink_night_item.bin"),
     ModelChange(0x140, "ricardo_model.bin"),
-    ModelChange(0x141, "klump_model.bin"),  # Just as a terminator
+    ModelChange(0x141, "rabbit_model.bin"),
+    ModelChange(0x142, "klump_model.bin"),  # Just as a terminator
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 

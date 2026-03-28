@@ -1111,6 +1111,7 @@ typedef enum custom_kong_models {
 	/* 0x00C */ KONGMODEL_FUNKY,
 	/* 0x00D */ KONGMODEL_DISCODONKEY,
 	/* 0x00E */ KONGMODEL_ROBOKREM,
+	/* 0x00F */ KONGMODEL_RABBIT,
 } custom_kong_models;
 
 typedef enum dynamic_flag_icetrap_junk {

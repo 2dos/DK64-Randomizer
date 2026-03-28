@@ -990,6 +990,7 @@ kongname_text.append([{"text": ["CRANKY"]}])
 kongname_text.append([{"text": ["CANDY"]}])
 kongname_text.append([{"text": ["FUNKY"]}])
 kongname_text.append([{"text": ["RICARDO"]}])
+kongname_text.append([{"text": ["RODNEY"]}])
 writeText("kongname_text.bin", kongname_text)
 
 fairy_text = grabText(40)

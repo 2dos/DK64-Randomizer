@@ -831,120 +831,19 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case MAP_HELM:
-				{
-					int slot = -1;
-					int next_slot = -1;
-					int barrel_index = -1;
-					int previous_slot = -1;
-					int current_slot = -1;
-					int helm_pad_kong = -1;
-					switch(param2) {
-						case HELM_COIN_DOOR:
-							if (index == 0) {
-								return isItemRequirementSatisfied(&Rando.coin_door_requirement);
-							} else if (index == 1) {
-								return checkFlag(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
-							} else if (index == 2) {
-								// Disable coin door text
-								return 1;
-							}
-							break;
-						case HELM_PAD_BONGO:
-							slot = 0;
-							helm_pad_kong = 0;
-							barrel_index = 0;
-						case HELM_PAD_TRIANGLE:
-							if (slot == -1) {
-								slot = 1;
-								helm_pad_kong = 4;
-								barrel_index = 3;
-							}
-						case HELM_PAD_SAX:
-							if (slot == -1) {
-								slot = 2;
-								helm_pad_kong = 3;
-								barrel_index = 2;
-							}
-						case HELM_PAD_TROMBONE:
-							if (slot == -1) {
-								slot = 3;
-								helm_pad_kong = 2;
-								barrel_index = 4;
-							}
-						case HELM_PAD_GUITAR:
-							if (slot == -1) {
-								slot = 4;
-								helm_pad_kong = 1;
-								barrel_index = 1;
-							}
-							if (slot > -1) {
-								if (index < 2) {
-									for (int i = 0; i < 5; i++) {
-										if (Rando.helm_order[i] == slot) {
-											current_slot = i;
-											if (i > 0) {
-												previous_slot = Rando.helm_order[i - 1];
-											}
-											if (i < 4) {
-												next_slot = Rando.helm_order[i + 1];
-											}
-										}
-									}
-									if (index == 0) {
-										// Barrels complete
-										modifyObjectState(power_beams[slot], 10);
-										modifyObjectState(power_beams_0[slot], 10);
-										modifyObjectState(power_beams_1[slot], 10);
-										if ((next_slot == -1) && (current_slot > -1)) {
-											// Helm Complete
-											PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
-											setPermFlag(FLAG_MODIFIER_HELMBOM);
-											setFlag(0x50,1,FLAGTYPE_TEMPORARY);
-										} else if (next_slot > -1) {
-											// Move to next
-											PlayCutsceneFromModelTwoScript(behaviour_pointer, current_slot + 4, 1, 0);
-										}
-									} else if (index == 1) {
-										if (previous_slot == -1) {
-											// First or not in sequence
-											return 1;
-										}
-										return checkFlag(previous_slot + 0x4B, FLAGTYPE_TEMPORARY);
-									}
-								} else  if (index == 2) {
-									if ((Rando.microhints == MICROHINTS_ALL) && ((MovesBase[helm_pad_kong].instrument_bitfield & 1) == 0)) {
-										behaviour_pointer->next_state = 20;
-										// behaviour_pointer->current_state = 20;
-									}
-								} else if (index == 3) {
-									if (MovesBase[helm_pad_kong].instrument_bitfield & 1) {
-										behaviour_pointer->next_state = 0;
-										// behaviour_pointer->current_state = 0;
-									}
-								} else if (index == 4) {
-									if (Rando.required_helm_minigames == 0) {
-										setFlag(HelmMinigameFlags[2 * barrel_index], 1, FLAGTYPE_TEMPORARY);
-										setFlag(HelmMinigameFlags[(2 * barrel_index) + 1], 1, FLAGTYPE_TEMPORARY);
-										int in_helm_sequence = 0;
-										for (int i = 0; i < 5; i++) {
-											if (Rando.helm_order[i] == slot) {
-												in_helm_sequence = 1;
-											}
-										}
-										if (!in_helm_sequence) {
-											PlayCutsceneFromModelTwoScript(behaviour_pointer, 9 + (param2 - HELM_PAD_BONGO), 1, 0);
-										}
-									} else {
-										PlayCutsceneFromModelTwoScript(behaviour_pointer, 9 + (param2 - HELM_PAD_BONGO), 1, 0);
-									}
-								}
-							}
-						break;
+				if (param2 == HELM_COIN_DOOR) {
+					if (index == 0) {
+						return isItemRequirementSatisfied(&Rando.coin_door_requirement);
+					} else if (index == 1) {
+						return checkFlag(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
+					} else if (index == 2) {
+						// Disable coin door text
+						return 1;
 					}
-					break;
 				}
+				break;
 			default:
-			break;
+				break;
 		}
 	} else if (index == -1) {
 		// Bananaport generic code
@@ -966,6 +865,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		activateGonePad();
 	} else if (index == -7) {
 		return getItemCount_new(REQITEM_KONG, 0, param2) || Rando.disable_wrinkly_kong_requirement;
+	} else if (index == -8) {
+		return MovesBase[param2].instrument_bitfield & 1;
 	} else if (index == -16) {
 		PauseText = param2;
 	} else if (index == -17) {

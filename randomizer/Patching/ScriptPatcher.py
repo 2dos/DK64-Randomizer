@@ -1,5 +1,6 @@
 """Patching master file for instance scripts."""
 
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Patching.Library.Generic import IsDDMSSelected
@@ -94,3 +95,57 @@ def patchScripts(spoiler, ROM_COPY):
         replaceScriptLines(ROM_COPY, Maps.JapesMountain, [0x37], {
             "COND 52 | 3 1 0", "COND 0 | 0 0 0"
         })
+    # Helm Pads
+    helm_pad_data = {
+        0x2C: {
+            # Bongo
+            "temp_flags": [60, 65, 75],
+            "glass_panel": 55,
+            "hint_cs": 18,
+            "kong_id": Kongs.donkey,
+            "microhint": int(spoiler.settings.microhints_enabled) == 2,
+            "req_minigames": int(spoiler.settings.helm_room_bonus_count),
+            "helm_order": spoiler.settings.helm_order,
+        },
+        0x30: {
+            # Guitar
+            "temp_flags": [61, 66, 79],
+            "glass_panel": 57,
+            "hint_cs": 22,
+            "kong_id": Kongs.diddy,
+            "microhint": int(spoiler.settings.microhints_enabled) == 2,
+            "req_minigames": int(spoiler.settings.helm_room_bonus_count),
+            "helm_order": spoiler.settings.helm_order,
+        },
+        0x2F: {
+            # Trombone
+            "temp_flags": [64, 69, 78],
+            "glass_panel": 56,
+            "hint_cs": 21,
+            "kong_id": Kongs.lanky,
+            "microhint": int(spoiler.settings.microhints_enabled) == 2,
+            "req_minigames": int(spoiler.settings.helm_room_bonus_count),
+            "helm_order": spoiler.settings.helm_order,
+        },
+        0x2E: {
+            # Sax
+            "temp_flags": [62, 67, 77],
+            "glass_panel": 52,
+            "hint_cs": 20,
+            "kong_id": Kongs.tiny,
+            "microhint": int(spoiler.settings.microhints_enabled) == 2,
+            "req_minigames": int(spoiler.settings.helm_room_bonus_count),
+            "helm_order": spoiler.settings.helm_order,
+        },
+        0x2D: {
+            # Triangle
+            "temp_flags": [63, 68, 76],
+            "glass_panel": 54,
+            "hint_cs": 19,
+            "kong_id": Kongs.chunky,
+            "microhint": int(spoiler.settings.microhints_enabled) == 2,
+            "req_minigames": int(spoiler.settings.helm_room_bonus_count),
+            "helm_order": spoiler.settings.helm_order,
+        },
+    }
+    addNewScript(ROM_COPY, Maps.HideoutHelm, list(helm_pad_data.keys()), ScriptTypes.HelmInstrumentPad, helm_pad_data)
