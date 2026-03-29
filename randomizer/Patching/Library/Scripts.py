@@ -1125,6 +1125,7 @@ def getWrinklyScript(map_id: Maps, kong: Kongs, item_id: int) -> list[int]:
 
 def getHelmPadScript(item_id: int, temp_flags: list, kong_id: Kongs, glass_panel: int, hint_cs: int, helm_micro_enabled: bool, req_helm_minigames: int, helm_order: list) -> list[int]:
     """Get the instance script for the Helm music pads."""
+    helm_order = helm_order.copy()
     if len(helm_order) < 5:
         delta = 5 - len(helm_order)
         for _ in range(delta):
@@ -1161,11 +1162,11 @@ def getHelmPadScript(item_id: int, temp_flags: list, kong_id: Kongs, glass_panel
             FunctionData(5, [power_beams_0[slots[kong_id]], 10, 0]),
             FunctionData(5, [power_beams_1[slots[kong_id]], 10, 0]),
             # Helm Complete stuff
-            FunctionData(37, [8, 1, 0], lambda m: m["next_slot"] is None and m["current_slot"] is not None),  # Play CS
-            FunctionData(107, [0x302, 1, 0], lambda m: m["next_slot"] is None and m["current_slot"] is not None),  # Turn off BoM
-            FunctionData(121, [0x50, 1, 0]),  # Helm temp flag
+            FunctionData(37, [8, 1, 0], False, lambda m: m["next_slot"] is None and m["current_slot"] is not None),  # Play CS
+            FunctionData(107, [0x302, 1, 0], False, lambda m: m["next_slot"] is None and m["current_slot"] is not None),  # Turn off BoM
+            FunctionData(121, [0x50, 1, 0], False, lambda m: m["next_slot"] is None and m["current_slot"] is not None),  # Helm temp flag
             # Go to next stuff
-            FunctionData(37, [8 if current_slot is None else 4 + current_slot, 1, 0], lambda m: m["next_slot"] is not None),  # Play CS
+            FunctionData(37, [8 if current_slot is None else 4 + current_slot, 1, 0], False, lambda m: m["next_slot"] is not None),  # Play CS
             FunctionData(121, [temp_flags[2], 1, 0]),
         ]),
         ScriptBlock([
@@ -1233,13 +1234,13 @@ def getHelmPadScript(item_id: int, temp_flags: list, kong_id: Kongs, glass_panel
             # Set minigame flags
             FunctionData(121, [temp_flags[0], 1, 0]),
             FunctionData(121, [temp_flags[1], 1, 0]),
-            FunctionData(37, [9 + (item_id - 0x2C), 1, 0], inclusion_lambda=lambda m: not m["in_helm_sequence"]),
+            FunctionData(37, [9 + (item_id - 0x2C), 1, 0], False, inclusion_lambda=lambda m: not m["in_helm_sequence"]),
         ], inclusion_lambda=lambda m: m["minis"] == 0),
         ScriptBlock([
             FunctionData(1, [12, 0, 0]),
             FunctionData(35, [0, 0, 0], True),
         ], [
-            FunctionData(37, [9 + (item_id - 0x2C), 1, 0], inclusion_lambda=lambda m: m["minis"] > 0),
+            FunctionData(37, [9 + (item_id - 0x2C), 1, 0], False, inclusion_lambda=lambda m: m["minis"] > 0),
             FunctionData(84, [glass_panel, 1, 0]),
             FunctionData(5, [glass_panel, 10, 0]),
             FunctionData(1, [13, 0, 0]),
@@ -1395,6 +1396,7 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
             subscript = getFactoryBlastControllerScript(item_id)
         elif stype == ScriptTypes.HelmInstrumentPad:
             subscript = getHelmPadScript(item_id, extra_data[item_id]["temp_flags"], extra_data[item_id]["kong_id"], extra_data[item_id]["glass_panel"], extra_data[item_id]["hint_cs"], extra_data[item_id]["microhint"], extra_data[item_id]["req_minigames"], extra_data[item_id]["helm_order"])
+            print(subscript)
         if subscript is not None:
             good_scripts.append(subscript)
     # Reconstruct File
