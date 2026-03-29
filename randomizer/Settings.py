@@ -1941,12 +1941,6 @@ class Settings:
 
         # Win Condition
         wincon_items = {
-            WinConditionComplex.beat_krool: HelmDoorInfo(
-                1,
-                HelmDoorRandomInfo(1, 1, 0.06),
-                HelmDoorRandomInfo(1, 1, 0.06),
-                HelmDoorRandomInfo(1, 1, 0.03),
-            ),
             WinConditionComplex.dk_rap_items: HelmDoorInfo(
                 1,
                 HelmDoorRandomInfo(1, 1, 0.04),

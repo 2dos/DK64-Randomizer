@@ -29,8 +29,6 @@
     font-size: 14px;
     text-decoration:none;
     -webkit-transform:translateZ(0) scale(1,1);
-    -webkit-transition:all .1s linear;
-    transition:all .1s linear;
 }
 
 #nav-tab-list .nav-icon {
