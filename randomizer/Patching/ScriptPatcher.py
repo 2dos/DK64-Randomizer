@@ -17,6 +17,16 @@ def patchScripts(spoiler, ROM_COPY):
         replaceScriptLines(ROM_COPY, Maps.GloomyGalleon, [0xC], {
             "EXEC 1 | 1 0 0": "EXEC 1 | 3 0 0"
         })
+    if isQoLEnabled(spoiler, MiscChangesSelected.vanilla_bug_fixes):
+        # Speed up Fungi ToD transition
+        replaceScriptLines(ROM_COPY, Maps.FungiForest, [0x4, 0x5], {
+            "EXEC 3 | 0 70 0": "EXEC 83 | 0 0 0"
+        })
+    if isQoLEnabled(spoiler, MiscChangesSelected.remove_enemy_cabin_timer):
+        # Speed up Fungi ToD transition
+        replaceScriptLines(ROM_COPY, Maps.CavesDiddyLowerCabin, [0x0], {
+            "COND 0 | 0 0 1": "CONDINV 0 | 0 0 0"
+        })
     if isQoLEnabled(spoiler, MiscChangesSelected.remove_galleon_ship_timers):
         obj_ids = [0x11, 0x14, 0x1B, 0x13, 0x12, 0x1D, 0x1C]
         five_door_ids = [0x11, 0x14, 0x1B, 0x13, 0x12]

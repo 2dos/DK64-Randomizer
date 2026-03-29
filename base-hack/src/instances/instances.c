@@ -191,10 +191,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_FUNGI:
 				if (param2 == FUNGI_BEANCONTROLLER) {
 					return getItemCount_new(REQITEM_BEAN, 0, 0);
-				} else if ((param2 == FUNGI_SWITCH_DAY) || (param2 == FUNGI_SWITCH_NIGHT)) {
-					if (!Rando.quality_of_life.vanilla_fixes) {
-						behaviour_pointer->timer = 70;
-					}
 				} else if (param2 == FUNGI_SWITCH_LANKY_MUSHROOM) {
 					if (index == 0) {
 						if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
@@ -301,12 +297,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						return !isBonus(PreviousMap);
 					}
 				}
-				break;
-			case MAP_CAVES5DCDIDDYLOW:
-				if (Rando.quality_of_life.remove_enemy_cabin_timer) {
-					return 0;
-				}
-				return 1;
 				break;
 			case MAP_BATTLEARENA_BEAVERBRAWL:
 			case MAP_BATTLEARENA_KRITTERKARNAGE:
