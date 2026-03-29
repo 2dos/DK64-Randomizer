@@ -3,13 +3,18 @@
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.ScriptTypes import ScriptTypes
+from randomizer.Enums.Settings import MiscChangesSelected, FasterChecksSelected, ExtraCutsceneSkips, RemovedBarriersSelected
+from randomizer.Lists.Minigame import MinigameRequirements
 from randomizer.Patching.Library.Generic import IsDDMSSelected
-from randomizer.Enums.Settings import MiscChangesSelected, FasterChecksSelected, ExtraCutsceneSkips
 from randomizer.Patching.Library.Scripts import replaceScriptLines, addNewScript
 
 def isQoLEnabled(spoiler, misc_change: MiscChangesSelected):
     """Determine if a faster check setting is enabled."""
     return IsDDMSSelected(spoiler.settings.misc_changes_selected, misc_change)
+
+def isBarrierRemoved(spoiler, barrier: RemovedBarriersSelected):
+    """Determine if a barrier setting is enabled."""
+    return IsDDMSSelected(spoiler.settings.remove_barriers_selected, barrier)
 
 def patchScripts(spoiler, ROM_COPY):
     """Patch instance scripts."""
@@ -105,6 +110,10 @@ def patchScripts(spoiler, ROM_COPY):
         replaceScriptLines(ROM_COPY, Maps.JapesMountain, [0x37], {
             "COND 52 | 3 1 0", "COND 0 | 0 0 0"
         })
+        # Remove Aztec Coconut Cutscene
+        replaceScriptLines(ROM_COPY, Maps.AngryAztec, [0xD], {
+            "EXEC 37 | 23 1 0": "EXEC 83 | 0 0 0"
+        })
     # Helm Pads
     helm_pad_data = {
         0x2C: {
@@ -176,4 +185,24 @@ def patchScripts(spoiler, ROM_COPY):
         new_sound = spoiler.settings.matching_game_sounds[pair_index]
         replaceScriptLines(ROM_COPY, Maps.AztecLlamaTemple, pair, {
             f"EXEC 15 | {old_sound} 0 0": f"EXEC 15 | {new_sound} 0 0"
+        })
+    # Chunky Cabin Minigame check
+    cabin_minigame_map = 139
+    if len(spoiler.settings.minigames_list_selected) > 0:
+        for minigame_data in spoiler.shuffled_barrel_data.values():
+            if minigame_data.map == Maps.CavesChunkyCabin:
+                cabin_minigame_map = MinigameRequirements[minigame_data.minigame].map
+        replaceScriptLines(ROM_COPY, Maps.CavesChunkyCabin, [0x3, 0x4, 0x5, 0x6], {
+            "COND 50 | 139 0 0": f"COND 50 | {cabin_minigame_map} 0 0"
+        })
+        replaceScriptLines(ROM_COPY, Maps.CavesChunkyCabin, [0x3, 0x4, 0x5, 0x6], {
+            "CONDINV 50 | 139 0 0": f"CONDINV 50 | {cabin_minigame_map} 0 0"
+        })
+    if isBarrierRemoved(spoiler, RemovedBarriersSelected.aztec_llama_switches):
+        # Aztec Llama Switches
+        replaceScriptLines(ROM_COPY, Maps.AngryAztec, [0xD, 0xE, 0xF], {
+            "CONDINV 45 | 50 0 0": "CONDINV 0 | 0 0 0"
+        })
+        replaceScriptLines(ROM_COPY, Maps.AngryAztec, [0xD, 0xE, 0xF], {
+            "COND 45 | 50 0 0": "COND 0 | 0 0 0"
         })

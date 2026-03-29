@@ -71,15 +71,8 @@
 #define FACTORY_PIANO 0x14
 #define ICE_MAZE 0x0
 
-#define HELM_PAD_BONGO 0x2C
-#define HELM_PAD_TRIANGLE 0x2D
-#define HELM_PAD_SAX 0x2E
-#define HELM_PAD_TROMBONE 0x2F
-#define HELM_PAD_GUITAR 0x30
 #define HELM_COIN_DOOR 0x3
 
-#define FUNGI_SWITCH_NIGHT 0x4
-#define FUNGI_SWITCH_DAY 0x5
 #define FUNGI_SWITCH_LANKY_MUSHROOM 0XEB
 
 #define JAPES_CAVE_GATE 0x2B
@@ -104,8 +97,6 @@
 #define FACTORY_BLOCKELEVATOR_4 0x1C
 #define FACTORY_BLOCKELEVATOR_5 0x27
 #define FACTORY_BLOCKELEVATOR_6 0x28
-
-#define FACTORY_BBLAST_CONTROLLER 0x1
 
 #define JAPES_RAMBI_DOOR 0x115
 #define K_ROOL_SHIP 0x35
@@ -162,32 +153,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	 */
 	if (index >= 0) {
 		switch(CurrentMap) {
-			case MAP_AZTEC:
-				if (param2 == AZTEC_SNOOPDOOR) {
-					if (index == 0) {
-						// Flag Check
-						if (checkFlag(SNOOPDOOR_OPEN, FLAGTYPE_PERMANENT)) {
-							behaviour_pointer->next_state = 40;
-							behaviour_pointer->current_state = 40;
-						}
-					} else if (index == 1) {
-						// Flag Set
-						setPermFlag(SNOOPDOOR_OPEN);
-						setNextTransitionType(0);
-					}
-				} else if ((param2 == AZTEC_LLAMACOCONUT) || (param2 == AZTEC_LLAMAGRAPE) || (param2 == AZTEC_LLAMAFEATHER)) {
-					if ((index == 0) && (param2 == AZTEC_LLAMACOCONUT)) {
-						if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
-							PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
-						}
-					} else if (index == 1) {
-						if (Rando.removed_barriers.llama_switches) {
-							return 1;
-						}
-						return checkFlag(FLAG_MODIFIER_LLAMAFREE, FLAGTYPE_PERMANENT);
-					}
-				}
-				break;
 			case MAP_FUNGI:
 				if (param2 == FUNGI_BEANCONTROLLER) {
 					return getItemCount_new(REQITEM_BEAN, 0, 0);
@@ -277,24 +242,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case MAP_AZTECLLAMATEMPLE:
-				if (param2 == LLAMA_SNOOPPAD) {
-					if (checkFlag(SNOOPDOOR_OPEN, FLAGTYPE_PERMANENT)) {
-						behaviour_pointer->current_state = 20;
-						behaviour_pointer->next_state = 20;
-					}
-				} else if (param2 == LLAMA_LAVAGATE) {
+				if (param2 == LLAMA_LAVAGATE) {
 					if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 						hideObject(behaviour_pointer);
 						behaviour_pointer->pause_state = 1;
-					}
-				}
-				break;
-			case MAP_CAVES5DCCHUNKY:
-				if ((param2 == CHUNKY5DC_GGONE) || (param2 == CHUNKY5DC_TARGET0) || (param2 == CHUNKY5DC_TARGET1) || (param2 == CHUNKY5DC_TARGET2)) {
-					if (index == 0) {
-						return isBonus(PreviousMap);
-					} else if (index == 1) {
-						return !isBonus(PreviousMap);
 					}
 				}
 				break;
