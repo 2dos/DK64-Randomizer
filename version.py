@@ -1,3 +1,3 @@
 """Holds the version for DK64 Rando."""
 
-version = "5.14.37"
+version = "5.14.38"
