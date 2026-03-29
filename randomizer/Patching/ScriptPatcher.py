@@ -149,3 +149,21 @@ def patchScripts(spoiler, ROM_COPY):
         },
     }
     addNewScript(ROM_COPY, Maps.HideoutHelm, list(helm_pad_data.keys()), ScriptTypes.HelmInstrumentPad, helm_pad_data)
+    # Llama Temple Head Sounds
+    original_sounds = [173, 171, 169, 174, 172, 175, 168, 170]
+    ids = [
+        [0x1E, 0x23],
+        [0x24, 0x27],
+        [0x1B, 0x26],
+        [0x1D, 0x21],
+        [0x1A, 0x25],
+        [0x20, 0x22],
+        [0x19, 0x1F],
+        [0x1C, 0x28],
+    ]
+    for pair_index, pair in enumerate(ids):
+        old_sound = original_sounds[pair_index]
+        new_sound = spoiler.settings.matching_game_sounds[pair_index]
+        replaceScriptLines(ROM_COPY, Maps.AztecLlamaTemple, pair, {
+            f"EXEC 15 | {old_sound} 0 0": f"EXEC 15 | {new_sound} 0 0"
+        })

@@ -1396,7 +1396,6 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
             subscript = getFactoryBlastControllerScript(item_id)
         elif stype == ScriptTypes.HelmInstrumentPad:
             subscript = getHelmPadScript(item_id, extra_data[item_id]["temp_flags"], extra_data[item_id]["kong_id"], extra_data[item_id]["glass_panel"], extra_data[item_id]["hint_cs"], extra_data[item_id]["microhint"], extra_data[item_id]["req_minigames"], extra_data[item_id]["helm_order"])
-            print(subscript)
         if subscript is not None:
             good_scripts.append(subscript)
     # Reconstruct File

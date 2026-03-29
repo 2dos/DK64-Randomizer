@@ -88,22 +88,3 @@ int checkSlamLocation(int kong, int key, int id) {
 	}
 	return 0;
 }
-
-void playSFXContainer(int id, int vanilla_sfx, int new_sfx) {
-	/**
-	 * @brief Container function for playing a SFX from an object
-	 * 
-	 * @param id Object ID
-	 * @param vanilla_sfx Original SFX
-	 * @param new_sfx New SFX to be played. If 0, defaults to vanilla_sfx
-	 */
-	int index = convertIDToIndex(id);
-	if (index == -1) {
-		index = 0;
-	}
-	int sfx_played = new_sfx;
-	if (new_sfx == 0) {
-		sfx_played = vanilla_sfx;
-	}
-	playSFXFromObject(index,sfx_played,-1,127,0,0,0.3f);
-}

@@ -63,23 +63,6 @@
 #define CHUNKY5DC_TARGET2 0x5
 #define HELMLOBBY_GGONE 0x3
 
-#define LLAMA_MATCHING_HEAD_SOUND0_0 0x1E // Sound 173
-#define LLAMA_MATCHING_HEAD_SOUND0_1 0x23
-#define LLAMA_MATCHING_HEAD_SOUND1_0 0x24 // Sound 171
-#define LLAMA_MATCHING_HEAD_SOUND1_1 0x27
-#define LLAMA_MATCHING_HEAD_SOUND2_0 0x1B // Sound 169
-#define LLAMA_MATCHING_HEAD_SOUND2_1 0x26
-#define LLAMA_MATCHING_HEAD_SOUND3_0 0x1D // Sound 174
-#define LLAMA_MATCHING_HEAD_SOUND3_1 0x21
-#define LLAMA_MATCHING_HEAD_SOUND4_0 0x1A // Sound 172
-#define LLAMA_MATCHING_HEAD_SOUND4_1 0x25
-#define LLAMA_MATCHING_HEAD_SOUND5_0 0x20 // Sound 175
-#define LLAMA_MATCHING_HEAD_SOUND5_1 0x22
-#define LLAMA_MATCHING_HEAD_SOUND6_0 0x19 // Sound 168
-#define LLAMA_MATCHING_HEAD_SOUND6_1 0x1F
-#define LLAMA_MATCHING_HEAD_SOUND7_0 0x1C // Sound 170
-#define LLAMA_MATCHING_HEAD_SOUND7_1 0x28
-
 #define MILLREAR_CHUNKYCHECK_RATE 0xF
 #define FUNGI_BEAN 0x5
 #define FUNGI_BEANCONTROLLER 0x4D
@@ -130,28 +113,6 @@
 ROM_RODATA_NUM static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
 ROM_RODATA_NUM static const unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
 ROM_RODATA_NUM static const unsigned char hands[] = {6, 7, 9, 10, 11, 12};
-ROM_RODATA_NUM static const int head_ids[] = {
-	LLAMA_MATCHING_HEAD_SOUND0_0,
-	LLAMA_MATCHING_HEAD_SOUND0_1,
-	LLAMA_MATCHING_HEAD_SOUND1_0,
-	LLAMA_MATCHING_HEAD_SOUND1_1,
-	LLAMA_MATCHING_HEAD_SOUND2_0,
-	LLAMA_MATCHING_HEAD_SOUND2_1,
-	LLAMA_MATCHING_HEAD_SOUND3_0,
-	LLAMA_MATCHING_HEAD_SOUND3_1,
-	LLAMA_MATCHING_HEAD_SOUND4_0,
-	LLAMA_MATCHING_HEAD_SOUND4_1,
-	LLAMA_MATCHING_HEAD_SOUND5_0,
-	LLAMA_MATCHING_HEAD_SOUND5_1,
-	LLAMA_MATCHING_HEAD_SOUND6_0,
-	LLAMA_MATCHING_HEAD_SOUND6_1,
-	LLAMA_MATCHING_HEAD_SOUND7_0,
-	LLAMA_MATCHING_HEAD_SOUND7_1,
-};
-ROM_RODATA_NUM static const int head_sounds[] = {173,171,169,174,172,175,168,170};
-ROM_RODATA_NUM static const unsigned char power_beams[] = {11, 8, 12, 10, 9};
-ROM_RODATA_NUM static const unsigned char power_beams_0[] = {16, 14, 13, 15, 17};
-ROM_RODATA_NUM static const unsigned char power_beams_1[] = {30, 32, 34, 36, 38};
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
 	int world = getWorld(CurrentMap, 0);
@@ -330,17 +291,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						hideObject(behaviour_pointer);
 						behaviour_pointer->pause_state = 1;
 					}
-				} else {
-					int selection = -1;
-					for (unsigned int k = 0; k < sizeof(head_ids)/4; k++) {
-						if (param2 == head_ids[k]) {
-							selection = k / 2;
-						}
-					}
-					if (selection > -1) {
-						playSFXContainer(param2,head_sounds[selection],Rando.matching_game_sounds[selection]);
-					}
-					
 				}
 				break;
 			case MAP_CAVES5DCCHUNKY:

@@ -96,7 +96,7 @@ typedef struct varspace {
 	/* 0x152 */ char unk_152[0x15A - 0x152];
 	/* 0x15A */ char arcade_reward_idx; // Purely used for the arcade sprite in colorblind mode
 	/* 0x15B */ char auto_keys; // 0 = Vanilla, 1 = Keys turn in as soon as you get them
-	/* 0x15C */ short matching_game_sounds[8]; // Sound effect 0 is treated as "sound not randomized"
+	/* 0x15C */ char unk_15c[0x16C - 0x15C];
 	/* 0x16C */ char piano_game_order[7]; // Each item denotes a key, normally CBCDECA (2123420). A = 0, 1 = B, 2 = C, 3 = D, 4 = E, 5 = F
 	/* 0x173 */ char unk_173[0x17E - 0x173];
 	/* 0x17E */ unsigned char b_locker_requirements[8];
