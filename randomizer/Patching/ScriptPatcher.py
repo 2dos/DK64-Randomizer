@@ -206,3 +206,9 @@ def patchScripts(spoiler, ROM_COPY):
         replaceScriptLines(ROM_COPY, Maps.AngryAztec, [0xD, 0xE, 0xF], {
             "COND 45 | 50 0 0": "COND 0 | 0 0 0"
         })
+    if not spoiler.settings.sprint_barrel_requires_sprint:
+        replaceScriptLines(ROM_COPY, Maps.HelmBarrelLankyMaze, [0x0], {
+            "COND 38 | 0 32 0": "COND 0 | 0 0 0"
+        })
+    if isBarrierRemoved(spoiler, RemovedBarriersSelected.japes_coconut_gates):
+        addNewScript(ROM_COPY, Maps.JungleJapes, [0x2D, 0x2E, 0x2F], ScriptTypes.DeleteItem)

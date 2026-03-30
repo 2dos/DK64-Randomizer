@@ -161,9 +161,6 @@ def patching_response(spoiler):
 
     # Shuffle Levels
     if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
-        ROM_COPY.seek(sav + 0)
-        ROM_COPY.write(1)
-
         # Update Level Order
         vanilla_lobby_entrance_order = [
             Transitions.IslesMainToJapesLobby,
@@ -203,7 +200,6 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.shorten_boss, 0x13B),  # Shorten Boss Fights
         BooleanProperties(spoiler.settings.fast_warps, 0x13A),  # Fast Warps
         BooleanProperties(spoiler.settings.auto_keys, 0x15B),  # Auto-Turn Keys
-        BooleanProperties(spoiler.settings.tns_location_rando, 0x10E),  # T&S Portal Location Rando
         BooleanProperties(IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, Levels.DKIsles), 0x10B),  # 5 extra medal handling
         BooleanProperties(spoiler.settings.helm_hurry, 0xAE),  # Helm Hurry
         BooleanProperties(spoiler.settings.wrinkly_available, 0x52),  # Remove Wrinkly Kong Checks
@@ -214,8 +210,6 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.shop_indicator, 0x134, 2),  # Shop Indicator
         BooleanProperties(spoiler.settings.open_lobbies, 0x14C, 0xFF),  # Open Lobbies
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 255),  # Bonus Matches Contents
-        BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
-        BooleanProperties(spoiler.settings.sprint_barrel_requires_sprint, 0x2F),  # Sprint Barrel requires OSprint
         BooleanProperties(spoiler.settings.fix_lanky_tiny_prod, 0x114),  # Fix Lanky Tiny Prod
         BooleanProperties(spoiler.settings.enemy_kill_crown_timer, 0x35),  # Enemy crown timer reduction
         BooleanProperties(spoiler.settings.race_coin_rando, 0x94),  # Race Coin Location Rando
@@ -358,14 +352,6 @@ def patching_response(spoiler):
         sav + 0x0B0,
     )
     writeMultiselector(
-        spoiler.settings.remove_barriers_selected,
-        RemovedBarrierSelector,
-        RemovedBarriersSelected,
-        2,
-        ROM_COPY,
-        sav + 0x1DE,
-    )
-    writeMultiselector(
         spoiler.settings.faster_checks_selected,
         FasterCheckSelector,
         FasterChecksSelected,
@@ -384,24 +370,20 @@ def patching_response(spoiler):
 
     is_dw = IsDDMSSelected(spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world)
     is_sky = IsDDMSSelected(spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_sky)
+    ROM_COPY.seek(sav + 0x0C6)
+    old = int.from_bytes(ROM_COPY.readBytes(1), "big")
     if is_dw and is_sky:
         # Memory Challenge
-        ROM_COPY.seek(sav + 0x0C6)
-        old = int.from_bytes(ROM_COPY.readBytes(1), "big")
-        ROM_COPY.seek(sav + 0x0C6)
-        ROM_COPY.write(old | 0x8 | 0x2)
+        new = old | (0x8 | 0x2)
     elif is_dw and not is_sky:
         # Dark world only
-        ROM_COPY.seek(sav + 0x0C6)
-        old = int.from_bytes(ROM_COPY.readBytes(1), "big")
-        ROM_COPY.seek(sav + 0x0C6)
-        ROM_COPY.write(old | 0x8)
+        new = old | 0x8
     elif is_sky and not is_dw:
         # Sky only
+        new = old | 0x4
+    if new != old:
         ROM_COPY.seek(sav + 0x0C6)
-        old = int.from_bytes(ROM_COPY.readBytes(1), "big")
-        ROM_COPY.seek(sav + 0x0C6)
-        ROM_COPY.write(old | 0x4)
+        ROM_COPY.write(new)
 
     # Damage amount
     damage_multipliers = {
@@ -483,12 +465,6 @@ def patching_response(spoiler):
                 spoiler.text_changes[file].append(data)
             else:
                 spoiler.text_changes[file] = [data]
-
-    if IsDDMSSelected(spoiler.settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando):
-        # KKO Phase Order
-        for phase_slot in range(3):
-            ROM_COPY.seek(sav + 0x17B + phase_slot)
-            ROM_COPY.write(spoiler.settings.kko_phase_order[phase_slot])
 
     # Win Condition
     win_con_table = {
@@ -627,11 +603,6 @@ def patching_response(spoiler):
                 "CONDINV 38 | 16 0 0": "CONDINV 6 | 7 65519 1",
             },
         )
-
-    # Galleon Water Level
-    if spoiler.settings.galleon_water_internal == GalleonWaterSetting.raised:
-        ROM_COPY.seek(sav + 0x1DC)
-        ROM_COPY.writeMultipleBytes(1, 1)
 
     if spoiler.settings.fast_start_beginning_of_game:
         # Write a null move to this spot if fast start beginning of game is on

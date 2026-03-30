@@ -145,8 +145,6 @@ def PlaceFairies(spoiler, ROM_COPY: LocalROM):
     """Write Fairies to ROM."""
     ReplaceShipFairy(ROM_COPY)
     sav = spoiler.settings.rom_data
-    ROM_COPY.seek(sav + 0xE0)
-    ROM_COPY.writeMultipleBytes(0, 2)
     offset_dict = populateOverlayOffsets(ROM_COPY)
     if spoiler.settings.random_fairies:
         action_maps = [
@@ -325,10 +323,6 @@ def PlaceFairies(spoiler, ROM_COPY: LocalROM):
             for x in spawner_bytes:
                 for y in x:
                     ROM_COPY.writeMultipleBytes(y, 1)
-        # Non-Spawner files
-        # Setting Enable
-        ROM_COPY.seek(sav + 0x100)
-        ROM_COPY.write(1)
         # Array construction
         for item in spoiler.fairy_data_table:
             item_level = item["level"]

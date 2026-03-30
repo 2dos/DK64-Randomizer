@@ -101,8 +101,6 @@
 #define JAPES_RAMBI_DOOR 0x115
 #define K_ROOL_SHIP 0x35
 
-ROM_RODATA_NUM static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
-ROM_RODATA_NUM static const unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
 ROM_RODATA_NUM static const unsigned char hands[] = {6, 7, 9, 10, 11, 12};
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
@@ -389,11 +387,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == JAPES_DIDDYBAMBOOGATE) {
 					giveItemFromKongData(&kong_check_data[KONGCHECK_JAPES], FLAG_KONG_DIDDY);
-				} else if ((param2 == JAPES_GATE0) || (param2 == JAPES_GATE1) || (param2 == JAPES_GATE2)) {
-					if (Rando.removed_barriers.japes_coconut_gates) {
-						behaviour_pointer->current_state = 20;
-						behaviour_pointer->next_state = 20;
-					}
 				} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
 					if ((param2 == JAPES_PEANUT_MOUNTAIN) && (index == 1)) {
 						if (Rando.quality_of_life.mountain_bridge_extended) {
@@ -762,8 +755,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		PauseText = param2;
 	} else if (index == -17) {
 		return isTimeOfDay(param2);
-	} else if (index == -18) {
-		return (Player->strong_kong_ostand_bitfield & 0x20) || (!Rando.sprint_barrel_requires_sprint);
 	} else if (index == -19) {
 		int world = getWorld(CurrentMap, 0);
 		return checkFlag(FLAG_WRINKLYVIEWED + (5 * world) + param2, FLAGTYPE_PERMANENT);
