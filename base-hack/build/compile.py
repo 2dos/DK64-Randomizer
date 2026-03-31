@@ -18,11 +18,14 @@ from BuildLib import (
 BASH = r"C:\Program Files\Git\bin\bash.exe"
 cwd = os.path.dirname(os.path.abspath(__file__))
 
+
 def is_windows():
     return os.name == "nt"
 
+
 def exe(name):
     return name + ".exe" if is_windows() else name
+
 
 # ----------------------------
 # Environment
@@ -38,12 +41,14 @@ toolchain_gcc = os.path.join(N64_INST, "bin", exe("mips64-elf-gcc"))
 libdragon_dir = os.path.join("build", "libdragon")
 armips_dir = os.path.join("build", "armips")
 
+
 # ----------------------------
 # Helper
 # ----------------------------
 def run(cmd, cwd=None):
     print(">>", " ".join(cmd))
     subprocess.run(cmd, cwd=cwd, env=env, check=True)
+
 
 # ----------------------------
 # Prepare libdragon
@@ -96,12 +101,13 @@ if not os.path.exists(toolchain_gcc):
 os.makedirs("obj", exist_ok=True)
 os.makedirs("asm", exist_ok=True)
 
+
 def process_sprite(line):
     if "__LOAD_SPRITE(" not in line:
         return line
 
-    img_path = line.split("__LOAD_SPRITE(")[1].split(",")[0].replace("\"", "").strip()
-    img_format = line.split(",")[1].split(")")[0].replace("\"", "").strip()
+    img_path = line.split("__LOAD_SPRITE(")[1].split(",")[0].replace('"', "").strip()
+    img_format = line.split(",")[1].split(")")[0].replace('"', "").strip()
 
     if img_format == "RGBA5551":
         convertToRGBA5551(img_path)
@@ -120,6 +126,7 @@ def process_sprite(line):
         data = fh.read()
 
     return "{" + ", ".join(hex(x) for x in data) + "};\n"
+
 
 # ----------------------------
 # Compile loop
@@ -177,7 +184,7 @@ for root, dirs, _ in os.walk("asm/minigames"):
             f.write(".n64\n")
             f.write(f".headersize {hex(WRITE_ADDR)}\n")
             f.write(f".org {hex(WRITE_ADDR)}\n")
-            f.write(f".include \"asm/minigames/{d}/objects.asm\"\n")
+            f.write(f'.include "asm/minigames/{d}/objects.asm"\n')
 
         out_bin = os.path.join("minigame", f"{d}.bin")
         sym = os.path.join("minigame", f"{d}.sym")

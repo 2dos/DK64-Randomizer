@@ -35,7 +35,7 @@
 | Angry Aztec | Aztec Kasplat: On Tiny Temple | `l.jetpack and l.isdiddy and l.climbing` | 
 | Angry Aztec | Aztec Kasplat: In Vase Room | `(l.chunky and l.pineapple) or l.CanPhase()` | 
 | Angry Aztec | Aztec Kasplat: Behind 5-Door Temple | `self.additional_logic = lambda _: True` | 
-| Angry Aztec | Aztec Kasplat: Near Snide's | `self.additional_logic = lambda _: True` | 
+| Angry Aztec | Aztec Kasplat: Far Back Triple Stairs | `self.additional_logic = lambda _: True` | 
 | Aztec Llama Temple | Aztec Kasplat: By the Llama in his Temple | `self.additional_logic = lambda _: True` | 
 | Aztec Tiny Temple | Aztec Kasplat: Free Tiny Room | `self.additional_logic = lambda _: True` | 
 | Aztec Chunky5DTemple | Aztec Kasplat: Chunky 5-Door Temple | `(l.pineapple and l.ischunky) or l.CanPhase()` | 
