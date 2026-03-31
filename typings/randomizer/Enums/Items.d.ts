@@ -294,4 +294,5 @@ export enum Items {
     Day = 293,
     Night = 294,
     Cannons = 295,
+    Breakable = 296,
 }

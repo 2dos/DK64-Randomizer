@@ -16,6 +16,7 @@
 .definelabel PauseSlot3TextPointer, 0x807FFFBC // ptr
 .definelabel style6Mtx, 0x807FFF70
 .definelabel style128Mtx, 0x807FFF50
+.definelabel BreakableSpawnBitfield, 0x807FFF34 // 0x4
 .definelabel PercussionPlayed, 0x807FFF30 // u8
 .definelabel PauseText, 0x807FFFE6
 .definelabel ForceStandardAmmo, 0x807FFFE4

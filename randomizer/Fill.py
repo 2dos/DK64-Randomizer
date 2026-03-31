@@ -986,6 +986,7 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
                 Types.CrateItem,
                 Types.HalfMedal,
                 Types.BoulderItem,
+                Types.Breakable,
                 Types.Enemies,
             )
         ]:
@@ -2706,6 +2707,9 @@ def Fill(spoiler: Spoiler) -> None:
         # Half medals hold nothing, so leave this one empty
     if Types.BoulderItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.BoulderItem)
+        # Boulders/Vases/Kegs hold nothing, so leave this one empty
+    if Types.Breakable in spoiler.settings.shuffled_location_types:
+        placed_types.append(Types.Breakable)
         # Boulders/Vases/Kegs hold nothing, so leave this one empty
     if Types.Enemies in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Enemies)

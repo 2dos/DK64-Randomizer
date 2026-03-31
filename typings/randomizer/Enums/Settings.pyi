@@ -303,6 +303,8 @@ class ItemRandoListSelected(IntEnum):
     blueprintbanana = 47
     sniderewards = 48
     fungitime = 49
+    breakable = 50
+    dummyitem_breakable = 51
 
 class ItemRandoFiller(IntEnum):
     junkitem = 1

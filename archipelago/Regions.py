@@ -236,6 +236,9 @@ def create_region(
                 case Types.BoulderItem:
                     if Types.BoulderItem not in logic_holder.settings.shuffled_location_types:
                         should_skip = True
+                case Types.Breakable:
+                    if Types.Breakable not in logic_holder.settings.shuffled_location_types:
+                        should_skip = True
                 case Types.Shop:
                     if location_obj.kong == Kongs.any:
                         if location_logic.id not in logic_holder.available_shared_shops:

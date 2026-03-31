@@ -736,6 +736,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			WarpData = getFile(size, 0x1FF0000);
 		}
 		bananaportGenericCode(behaviour_pointer, id, param2);
+	} else if (index == -2) {
+		spawnBreakableObject(param2);
 	} else if (index == -3) {
 		TNSIndicatorGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -4) {

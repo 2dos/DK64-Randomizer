@@ -910,6 +910,7 @@ extern unsigned char ChunkyModel;
 extern unsigned char EnemyInView;
 extern unsigned char KasplatSpawnBitfield;
 extern unsigned short HoldableSpawnBitfield;
+extern unsigned int BreakableSpawnBitfield;
 extern int ExtraSaveData[0x100];
 extern char* DisplayedSongNamePointer;
 extern unsigned char RandomizerVersion;

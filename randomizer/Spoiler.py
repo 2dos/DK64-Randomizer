@@ -291,6 +291,7 @@ class Spoiler:
             Types.CrateItem: "Melon Crates",
             Types.HalfMedal: "Half-Medals",
             Types.BoulderItem: "Holdable Objects",
+            Types.Breakable: "Breakable Containers",
             Types.Enemies: "Enemy Drops",
             Types.Cranky: "Shop Owners",
             Types.Funky: "Shop Owners",

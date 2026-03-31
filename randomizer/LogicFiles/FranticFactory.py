@@ -146,6 +146,7 @@ LogicRegions = {
         LocationLogic(Locations.ChunkyKong, lambda l: Events.ChunkyFreed in l.Events),
         LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: Events.ChunkyFreed in l.Events),
         LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()) and ((l.punch and l.CanSlamSwitch(Levels.FranticFactory, 1)) or l.generalclips) and l.ischunky),
+        LocationLogic(Locations.BreakableFactoryDarkRoom, lambda l: (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()) and l.Slam and l.chunky),
         LocationLogic(Locations.RainbowCoin_Location02, lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()),
         LocationLogic(Locations.FactoryKasplatStorage, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.MelonCrate_Location04, lambda _: True),

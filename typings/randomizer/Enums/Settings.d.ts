@@ -337,6 +337,8 @@ export enum ItemRandoListSelected {
     blueprintbanana = 47,
     sniderewards = 48,
     fungitime = 49,
+    breakable = 50,
+    dummyitem_breakable = 51,
 }
 
 export enum ItemRandoFiller {

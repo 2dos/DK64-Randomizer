@@ -233,6 +233,10 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_JapesMainEnemy_Storm1, lambda l: l.camera),
         LocationLogic(Locations.KremKap_JapesMainEnemy_Storm2, lambda l: l.camera),
         LocationLogic(Locations.KremKap_JapesMainEnemy_MiddleTunnel, lambda l: l.camera),
+        LocationLogic(Locations.BreakableJapesDKHut, lambda l: Events.Rambi in l.Events),
+        LocationLogic(Locations.BreakableJapesDiddyHut, lambda l: Events.Rambi in l.Events),
+        LocationLogic(Locations.BreakableJapesLankyHut, lambda l: Events.Rambi in l.Events),
+        LocationLogic(Locations.BreakableJapesTinyHut, lambda l: Events.Rambi in l.Events),
     ], [
         Event(Events.Rambi, lambda l: l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.CanPhase()),
         Event(Events.JapesDonkeySwitch, lambda l: (Events.Rambi in l.Events or l.CanPhase()) and l.CanSlamSwitch(Levels.JungleJapes, 1) and l.donkey),

@@ -181,6 +181,7 @@ def get_default_settings() -> dict[str, Any]:
             ItemRandoListSelected.halfmedal,
             ItemRandoListSelected.enemies,
             ItemRandoListSelected.boulderitem,
+            ItemRandoListSelected.breakable,
             ItemRandoListSelected.shop,
             ItemRandoListSelected.bfi_gift,
             ItemRandoListSelected.banana_checks,

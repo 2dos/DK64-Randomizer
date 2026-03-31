@@ -372,6 +372,7 @@ def patching_response(spoiler):
     is_sky = IsDDMSSelected(spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_sky)
     ROM_COPY.seek(sav + 0x0C6)
     old = int.from_bytes(ROM_COPY.readBytes(1), "big")
+    new = old
     if is_dw and is_sky:
         # Memory Challenge
         new = old | (0x8 | 0x2)
