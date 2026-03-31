@@ -20,10 +20,12 @@ cwd = os.path.dirname(os.path.abspath(__file__))
 
 
 def is_windows():
+    """Return True if this is run on windows."""
     return os.name == "nt"
 
 
 def exe(name):
+    """Add ".exe" to given name if this is run on windows."""
     return name + ".exe" if is_windows() else name
 
 
@@ -46,6 +48,7 @@ armips_dir = os.path.join("build", "armips")
 # Helper
 # ----------------------------
 def run(cmd, cwd=None):
+    """Run command."""
     print(">>", " ".join(cmd))
     subprocess.run(cmd, cwd=cwd, env=env, check=True)
 
@@ -103,6 +106,7 @@ os.makedirs("asm", exist_ok=True)
 
 
 def process_sprite(line):
+    """Process sprites."""
     if "__LOAD_SPRITE(" not in line:
         return line
 
