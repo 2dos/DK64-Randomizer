@@ -881,8 +881,7 @@ LocationListOriginal = {
     Locations.BreakableForestMillRearTriangle: Location(Levels.FungiForest, "Forest Box (Mill Rear: Triangle)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.ForestMillBack, -1, 0x43B)]),
     Locations.BreakableForestMillRearMini: Location(Levels.FungiForest, "Forest Box (Mill Rear: Mini)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.ForestMillBack, -1, 0x43C)]),
     Locations.BreakableCastleShed: Location(Levels.CreepyCastle, "Castle Box (Shed)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.CastleShed, -1, 0x43D)]),
-    Locations.BreakableIslesFactoryLobby: Location(Levels.DKIsles, "Isles Box (Factory Lobby)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.FranticFactoryLobby, -1, 0x43E)]),
-
+    
     Locations.JapesMainEnemy_Start: Location(Levels.JungleJapes, "Japes Enemy: Start", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, DROPSANITY_FLAG_START + 0x0)]),
     Locations.JapesMainEnemy_DiddyCavern: Location(Levels.JungleJapes, "Japes Enemy: Diddy Cavern", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, DROPSANITY_FLAG_START + 0x1)]),
     Locations.JapesMainEnemy_Tunnel0: Location(Levels.JungleJapes, "Japes Enemy: Tunnel (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, DROPSANITY_FLAG_START + 0x2)]),

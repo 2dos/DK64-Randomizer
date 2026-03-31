@@ -1104,7 +1104,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                             raise Exception("Melon Crate Item Placement Error")
                     elif item.old_item == Types.Breakable:
                         index = item.location - Locations.BreakableJapesDKHut
-                        if index < 25:
+                        if index < 24:
                             addr = getItemTableWriteAddress(ROM_COPY, Types.Breakable, index, offset_dict)
                             ROM_COPY.seek(addr)
                             ROM_COPY.writeMultipleBytes(actor_index, 2)

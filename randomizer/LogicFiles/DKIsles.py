@@ -366,7 +366,6 @@ LogicRegions = {
         LocationLogic(Locations.FactoryChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.FactoryLobbyEnemy_Enemy0, lambda _: True),
         LocationLogic(Locations.KremKap_FactoryLobbyEnemy_Enemy0, lambda l: l.camera),
-        LocationLogic(Locations.BreakableIslesFactoryLobby, lambda l: l.chunky and l.punch),
     ], [
         Event(Events.FactoryLobbyAccessed, lambda _: True),
     ], [

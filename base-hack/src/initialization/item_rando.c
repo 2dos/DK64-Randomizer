@@ -247,7 +247,7 @@ BoulderItemStruct boulder_item_table[16] = {
     { .map = MAP_AZTEC, .spawner_id = 1},
     { .map = MAP_AZTEC, .spawner_id = 0},
 };
-actor_spawn_packet box_item_table[25] = {
+actor_spawn_packet box_item_table[24] = {
     { .actor = NEWACTOR_NULL }, // 00 | 3B | Japes DK Hut
     { .actor = NEWACTOR_NULL }, // 01 | 38 | Japes Diddy Hut
     { .actor = NEWACTOR_NULL }, // 02 | 3A | Japes Lanky Hut
@@ -272,7 +272,6 @@ actor_spawn_packet box_item_table[25] = {
     { .actor = NEWACTOR_NULL }, // 21 | 01 | Fungi mill rear triangle
     { .actor = NEWACTOR_NULL }, // 22 | 03 | Fungi mill rear mini hole
     { .actor = NEWACTOR_NULL }, // 23 | 05 | Castle Shed
-    { .actor = NEWACTOR_NULL }, // 24 | 0E | Factory Lobby Box
 };
 bonus_barrel_info bonus_data[BONUS_DATA_COUNT] = {
     {.flag=0x186,               .spawn_actor=45,                    .kong_actor=1},

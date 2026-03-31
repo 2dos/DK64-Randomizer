@@ -200,7 +200,7 @@ class Settings:
             ItemRandoListSelected.hint: [35, 0],
             ItemRandoListSelected.wrinkly: [0, 35],
             ItemRandoListSelected.boulderitem: [0, 16],
-            ItemRandoListSelected.breakable: [0, 25],
+            ItemRandoListSelected.breakable: [0, 24],
             ItemRandoListSelected.enemies: [0, 289],
             ItemRandoListSelected.trainingmoves: [4, 0],
             ItemRandoListSelected.trainingbarrels: [0, 4],

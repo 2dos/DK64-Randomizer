@@ -344,7 +344,7 @@
             "name": "Breakable Containers",
             "value": "breakable",
             "tooltip": "Breaking certain containers will spawn items.",
-            "check_count": 25,
+            "check_count": 24,
             "item_count": 0,
             "is_check": true
         },
@@ -378,7 +378,7 @@
             "name": "Breakable Containers",
             "value": "dummyitem_breakable",
             "tooltip": "Breaking certain containers will spawn items.",
-            "check_count": 25,
+            "check_count": 24,
             "item_count": 0,
             "is_check": false,
             "is_dummy": true
