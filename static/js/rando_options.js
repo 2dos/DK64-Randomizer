@@ -1544,7 +1544,7 @@ function update_win_con_num_access() {
     "hard_random",
   ]
   const KROOL_REQUIRED_WIN_CONS = ["krools_challenge"];
-  const KROOL_DISABLED_WIN_CONS = ["kill_the_rabbit"];
+  const KROOL_DISABLED_WIN_CONS = [];
 
   const winConSelection = document.getElementById("win_condition_item");
   const winConContainer = document.getElementById("win_condition_container");

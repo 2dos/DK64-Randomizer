@@ -863,8 +863,6 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     settings_dict["win_condition_item"] = GOAL_MAPPING[options.goal]
     if options.goal == Goal.option_krools_challenge:
         settings_dict["win_condition_spawns_ship"] = True
-    elif options.goal == Goal.option_kill_the_rabbit:
-        settings_dict["win_condition_spawns_ship"] = False
     if options.goal in QUANTITY_GOALS.keys():
         goal_name = QUANTITY_GOALS[options.goal]
         settings_dict["win_condition_count"] = calculate_quantity(goal_name, options.goal_quantity.value, random_obj)
