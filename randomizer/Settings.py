@@ -1731,7 +1731,7 @@ class Settings:
 
             # If training moves are not in any shuffled pool, add them to guaranteed_starting_moves
             if Types.TrainingBarrel not in self.shuffled_location_types:
-                training_barrel_items = [Items.Vines, Items.Swim, Items.Oranges, Items.Barrels]
+                training_barrel_items = [Items.Vines, Items.Swim, Items.Oranges, Items.Barrels, Items.Climbing]
                 for tb_item in training_barrel_items:
                     if tb_item not in guaranteed_starting_moves:
                         guaranteed_starting_moves.append(tb_item)
