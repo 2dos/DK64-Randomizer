@@ -802,7 +802,7 @@ class Settings:
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
         self.krool_access = False
-        self.win_condition_spawns_ship = 0  # 0 = Key-based, 1 = Win condition-based
+        self.win_condition_spawns_ship = False  # 0 = Key-based, 1 = Win condition-based
         self.helm_phase_order_rando = None
         self.open_lobbies = None
         self.randomize_pickups = False
@@ -2413,10 +2413,7 @@ class Settings:
         # Force win_condition_spawns_ship based on win condition
         # Krool's Challenge always requires beating K. Rool
         if self.win_condition_item == WinConditionComplex.krools_challenge:
-            self.win_condition_spawns_ship = 1
-        # Kill the Rabbit cannot require beating K. Rool (would softlock)
-        elif self.win_condition_item == WinConditionComplex.kill_the_rabbit:
-            self.win_condition_spawns_ship = 0
+            self.win_condition_spawns_ship = True
 
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
         if self.win_condition_item == WinConditionComplex.req_fairy or self.crown_door_item == BarrierItems.Fairy or self.coin_door_item == BarrierItems.Fairy:
