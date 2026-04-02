@@ -1097,7 +1097,7 @@ class Settings:
         if Items.Vines in guaranteed_starting_moves and Items.Barrels in guaranteed_starting_moves and Items.Oranges in guaranteed_starting_moves and Items.Swim in guaranteed_starting_moves:
             self.training_barrels = TrainingBarrels.normal
         else:
-            self.training_barrels = TrainingBarrels.shuffled        
+            self.training_barrels = TrainingBarrels.shuffled
         # If you start with two copies of Progressive Instrument Upgrade, you start with 3 melons of health
         if guaranteed_starting_moves.count(Items.ProgressiveInstrumentUpgrade) == 2:
             self.start_with_3rd_melon = True
