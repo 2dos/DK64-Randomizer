@@ -73,7 +73,7 @@ def ShuffleCBs(spoiler):
     """Shuffle CBs selected from location files."""
     retries = 0
     levels_to_populate = 7
-    MAX_BALLOONS = 105
+    MAX_BALLOONS = 104
     MAX_SINGLES = 780  # 793 Singles in Vanilla, under-representing this to help with the calculation formula
     MAX_BUNCHES = 790 - MAX_BALLOONS * 2 - round(MAX_SINGLES / 5)  # 334 bunches in vanilla, biasing this for now to help with calculation formula
     PLACEMENT_LIMIT = 1127

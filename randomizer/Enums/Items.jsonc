@@ -322,6 +322,7 @@
         "Day":293,
         "Night":294,
         "Cannons":295,
-        "Breakable":296
+        "Breakable":296,
+        "Balloon":297
     }
 }

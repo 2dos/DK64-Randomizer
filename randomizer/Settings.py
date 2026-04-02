@@ -201,6 +201,7 @@ class Settings:
             ItemRandoListSelected.wrinkly: [0, 35],
             ItemRandoListSelected.boulderitem: [0, 16],
             ItemRandoListSelected.breakable: [0, 24],
+            ItemRandoListSelected.balloon: [0, 104],
             ItemRandoListSelected.enemies: [0, 289],
             ItemRandoListSelected.trainingmoves: [4, 0],
             ItemRandoListSelected.trainingbarrels: [0, 4],
@@ -1619,10 +1620,12 @@ class Settings:
                 ItemRandoListSelected.wrinkly: (Types.Hint, Types.Hint, True),
                 ItemRandoListSelected.boulderitem: (Types.BoulderItem, Types.BoulderItem, True),
                 ItemRandoListSelected.breakable: (Types.Breakable, Types.Breakable, True),
+                ItemRandoListSelected.balloon: (Types.Balloon, Types.Balloon, True),
                 ItemRandoListSelected.enemies: (Types.Enemies, Types.Enemies, True),
                 ItemRandoListSelected.dummyitem_enemies: (Types.Enemies, Types.Enemies, False),
                 ItemRandoListSelected.dummyitem_boulderitem: (Types.BoulderItem, Types.BoulderItem, False),
                 ItemRandoListSelected.dummyitem_breakable: (Types.Breakable, Types.Breakable, False),
+                ItemRandoListSelected.dummyitem_balloon: (Types.Balloon, Types.Balloon, False),
                 ItemRandoListSelected.dummyitem_crateitem: (Types.CrateItem, Types.CrateItem, False),
                 ItemRandoListSelected.trainingmoves: (Types.TrainingBarrel, Types.TrainingBarrel, False),
                 ItemRandoListSelected.trainingbarrels: (Types.TrainingBarrel, Types.TrainingBarrel, True),
@@ -1649,6 +1652,7 @@ class Settings:
                 ItemRandoListSelected.dummyitem_crateitem,
                 ItemRandoListSelected.dummyitem_halfmedal,
                 ItemRandoListSelected.dummyitem_breakable,
+                ItemRandoListSelected.dummyitem_balloon,
             ]
             dummy_location_types = [Types.HelmKey, Types.HelmMedal]
             self.item_search = [
@@ -2881,6 +2885,7 @@ class Settings:
                         Types.CrateItem,
                         Types.BoulderItem,
                         Types.Breakable,
+                        Types.Balloon,
                         Types.Enemies,
                     )
                     and (spoiler.LocationList[x].type != Types.Key or spoiler.LocationList[x].level == Levels.HideoutHelm)

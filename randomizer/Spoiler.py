@@ -292,6 +292,7 @@ class Spoiler:
             Types.HalfMedal: "Half-Medals",
             Types.BoulderItem: "Holdable Objects",
             Types.Breakable: "Breakable Containers",
+            Types.Balloon: "Balloons",
             Types.Enemies: "Enemy Drops",
             Types.Cranky: "Shop Owners",
             Types.Funky: "Shop Owners",

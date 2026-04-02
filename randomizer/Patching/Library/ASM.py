@@ -239,6 +239,7 @@ item_type_table_conversion = {
     Types.CrateItem: ("crate_item_table", 4),
     Types.BoulderItem: ("boulder_item_table", 8),
     Types.Breakable: ("box_item_table", 4),
+    Types.Balloon: ("balloon_item_table", 4),
     Types.Kong: ("kong_check_data", 8),
     Types.Shop: ("purchase_hint_text_items", 2),  # Shop Hints
     Types.NintendoCoin: ("company_coin_table", 4),
