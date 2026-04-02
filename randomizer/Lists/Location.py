@@ -117,7 +117,7 @@ class Location:
             level_index = int(self.level)
             self.location_flag = 0x384 + self.kong + (5 * level_index)
             self.map_id_list = [MapIDCombo(0, -1, self.location_flag, self.kong)]
-        elif self.type in (Types.Banana, Types.BlueprintBanana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.BoulderItem, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide, Types.FungiTime):
+        elif self.type in (Types.Banana, Types.BlueprintBanana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.BoulderItem, Types.Breakable, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide, Types.FungiTime):
             if data is None:
                 self.map_id_list = []
             else:
@@ -184,7 +184,7 @@ class Location:
                     location_obj.inaccessible = False
 
 
-DROPSANITY_FLAG_START = 0x426
+DROPSANITY_FLAG_START = 0x446
 
 
 LocationListOriginal = {
@@ -857,6 +857,31 @@ LocationListOriginal = {
     Locations.HoldableVaseTriangle: Location(Levels.AngryAztec, "Aztec Vase (Triangle)", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2C4)]),
     Locations.HoldableVasePlus: Location(Levels.AngryAztec, "Aztec Vase (Plus)", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2C5)]),
 
+    Locations.BreakableJapesDKHut: Location(Levels.JungleJapes, "Japes Hut (DK)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x426)]),
+    Locations.BreakableJapesDiddyHut: Location(Levels.JungleJapes, "Japes Hut (Diddy)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x427)]),
+    Locations.BreakableJapesLankyHut: Location(Levels.JungleJapes, "Japes Hut (Lanky)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x428)]),
+    Locations.BreakableJapesTinyHut: Location(Levels.JungleJapes, "Japes Hut (Tiny)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x429)]),
+    Locations.BreakableFactoryDarkRoom: Location(Levels.FranticFactory, "Factory Box (Dark Room)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x42A)]),
+    Locations.BreakableGalleonHeadphonesChest: Location(Levels.GloomyGalleon, "Galleon Chest (Headphones)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x42B)]),
+    Locations.BreakableGalleonHighHole: Location(Levels.GloomyGalleon, "Galleon Chest (High platform near Hole)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x42C)]),
+    Locations.BreakableGalleonHighKevin: Location(Levels.GloomyGalleon, "Galleon Chest (High platform near Enguarde Alcove)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x42D)]),
+    Locations.BreakableGalleonMidKevin: Location(Levels.GloomyGalleon, "Galleon Chest (Middle platform near Enguarde Alcove)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x42E)]),
+    Locations.BreakableGalleonMidHole: Location(Levels.GloomyGalleon, "Galleon Chest (Middle platform near Hole)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x42F)]),
+    Locations.BreakableGalleonCloseSubmarine: Location(Levels.GloomyGalleon, "Galleon Chest (Close near Submarine)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x430)]),
+    Locations.BreakableGalleonClose2DS: Location(Levels.GloomyGalleon, "Galleon Chest (Close near 2 Door Ship)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x431)]),
+    Locations.BreakableGalleonUnderTunnel: Location(Levels.GloomyGalleon, "Galleon Chest (Under Tunnel)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x432)]),
+    Locations.BreakableGalleonUnderDiddy5DS: Location(Levels.GloomyGalleon, "Galleon Chest (Under Diddy 5DS Entrance)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x433)]),
+    Locations.BreakableGalleonNearMechFish: Location(Levels.GloomyGalleon, "Galleon Chest (Near Mech Fish)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x434)]),
+    Locations.BreakableGalleon2DSNearest: Location(Levels.GloomyGalleon, "Galleon Chest (2DS: Nearest)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.Galleon2DShip, -1, 0x435)]),
+    Locations.BreakableGalleon2DSNear: Location(Levels.GloomyGalleon, "Galleon Chest (2DS: Near)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.Galleon2DShip, -1, 0x436)]),
+    Locations.BreakableGalleon2DSFar: Location(Levels.GloomyGalleon, "Galleon Chest (2DS: Far)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.Galleon2DShip, -1, 0x437)]),
+    Locations.BreakableGalleon2DSFurthest: Location(Levels.GloomyGalleon, "Galleon Chest (2DS: Furthest)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.Galleon2DShip, -1, 0x438)]),
+    Locations.BreakableForestThornvine: Location(Levels.FungiForest, "Forest Box (Thornvine Barn)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.ForestThornvineBarn, -1, 0x439)]),
+    Locations.BreakableForestMillFront: Location(Levels.FungiForest, "Forest Box (Mill Front)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.ForestMillFront, -1, 0x43A)]),
+    Locations.BreakableForestMillRearTriangle: Location(Levels.FungiForest, "Forest Box (Mill Rear: Triangle)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.ForestMillBack, -1, 0x43B)]),
+    Locations.BreakableForestMillRearMini: Location(Levels.FungiForest, "Forest Box (Mill Rear: Mini)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.ForestMillBack, -1, 0x43C)]),
+    Locations.BreakableCastleShed: Location(Levels.CreepyCastle, "Castle Box (Shed)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.CastleShed, -1, 0x43D)]),
+    
     Locations.JapesMainEnemy_Start: Location(Levels.JungleJapes, "Japes Enemy: Start", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, DROPSANITY_FLAG_START + 0x0)]),
     Locations.JapesMainEnemy_DiddyCavern: Location(Levels.JungleJapes, "Japes Enemy: Diddy Cavern", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, DROPSANITY_FLAG_START + 0x1)]),
     Locations.JapesMainEnemy_Tunnel0: Location(Levels.JungleJapes, "Japes Enemy: Tunnel (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, DROPSANITY_FLAG_START + 0x2)]),

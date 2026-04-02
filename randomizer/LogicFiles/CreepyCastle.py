@@ -226,6 +226,7 @@ LogicRegions = {
 
     Regions.Shed: Region("Shed", HintRegion.CastleSurroundings, Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleChunkyShed, lambda l: (l.punch or l.CanPhase()) and ((l.gorillaGone and l.pineapple) or l.triangle) and l.ischunky),
+        LocationLogic(Locations.BreakableCastleShed, lambda l: l.ischunky and l.punch),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda _: True, Transitions.CastleShedToMain),
     ]),

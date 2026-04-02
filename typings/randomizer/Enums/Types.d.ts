@@ -48,6 +48,7 @@ export enum Types {
     FillerRainbowCoin = 47,
     FungiTime = 48,
     Cannons = 49,
+    Breakable = 50,
 }
 
 export enum BarrierItems {

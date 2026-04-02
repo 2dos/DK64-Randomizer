@@ -483,6 +483,7 @@ model_index_mapping = {
     KongModels.funky: (0x117, 0x117),
     KongModels.disco_donkey: (0x129, 0x129),
     KongModels.robokrem: (0x140, 0x140),
+    KongModels.rabbit: (0x141, 0x141),
 }
 
 LIME_COLORS = {

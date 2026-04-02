@@ -390,11 +390,11 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
     # Image.open(f"{hash_dir}rw_coin.png").resize(dim).save(f"{arcade_dir}rwcoin.png")  # Rareware Coin
     # Image.open(f"{hash_dir}melon_slice.png").resize(dim).save(f"{arcade_dir}melon.png")  # Watermelon Slice
     db = [
-        Minigame8BitImage([Items.Donkey], MinigameImageLoader("dk"), MinigameImageLoader("kong")),
-        Minigame8BitImage([Items.Diddy], MinigameImageLoader("diddy"), MinigameImageLoader("kong")),
-        Minigame8BitImage([Items.Lanky], MinigameImageLoader("lanky"), MinigameImageLoader("kong")),
-        Minigame8BitImage([Items.Tiny], MinigameImageLoader("tiny"), MinigameImageLoader("kong")),
-        Minigame8BitImage([Items.Chunky], MinigameImageLoader("chunky"), MinigameImageLoader("kong")),
+        Minigame8BitImage([Items.Donkey], MinigameImageLoader("dk"), MinigameImageLoader("dk")),
+        Minigame8BitImage([Items.Diddy], MinigameImageLoader("diddy"), MinigameImageLoader("diddy")),
+        Minigame8BitImage([Items.Lanky], MinigameImageLoader("lanky"), MinigameImageLoader("lanky")),
+        Minigame8BitImage([Items.Tiny], MinigameImageLoader("tiny"), MinigameImageLoader("tiny")),
+        Minigame8BitImage([Items.Chunky], MinigameImageLoader("chunky"), MinigameImageLoader("chunky")),
         Minigame8BitImage([Items.Bean], MinigameImageLoader("bean"), MinigameImageLoader("bean")),
         Minigame8BitImage([Items.Pearl, Items.FillerPearl], MinigameImageLoader("pearl"), MinigameImageLoader("pearl")),
         Minigame8BitImage(ItemPool.DonkeyMoves, MinigameImageLoader("potion_dk"), MinigameImageLoader("potion")),
@@ -429,22 +429,22 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
         Minigame8BitImage(
             [Items.Cranky],
             MinigameImageLoader(None, 25, 0x1387, 32, 32, TextureFormat.RGBA5551, [0x1388, 0x1389, 0x138A]),
-            MinigameImageLoader("kong"),
+            MinigameImageLoader("cranky"),
         ),
         Minigame8BitImage(
             [Items.Funky],
             MinigameImageLoader(None, 25, 0x172F, 32, 32, TextureFormat.RGBA5551, [0x1730, 0x1731, 0x1732]),
-            MinigameImageLoader("kong"),
+            MinigameImageLoader("funky"),
         ),
         Minigame8BitImage(
             [Items.Candy],
             MinigameImageLoader(None, 25, 0x172A, 32, 32, TextureFormat.RGBA5551, [0x172B, 0x172C, 0x172D]),
-            MinigameImageLoader("kong"),
+            MinigameImageLoader("candy"),
         ),
         Minigame8BitImage(
             [Items.Snide],
             MinigameImageLoader(None, 25, 0x172E, 64, 32, TextureFormat.RGBA5551),
-            MinigameImageLoader("kong"),
+            MinigameImageLoader("snide"),
         ),
         Minigame8BitImage(
             [Items.Day],
@@ -757,6 +757,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
         KongModels.krool_fight: "krool_name",
         KongModels.candy: "candy_name",
         KongModels.robokrem: "robokrem_name",
+        KongModels.rabbit: "rabbit_name",
     }
     index_mapping = {
         KongModels.cranky: 8,
@@ -765,9 +766,10 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
         KongModels.krool_fight: 7,
         KongModels.candy: 9,
         KongModels.robokrem: 11,
+        KongModels.rabbit: 12,
     }
     for kong_index, value in enumerate(kong_model_setting_values):
-        if value in (KongModels.cranky, KongModels.candy, KongModels.funky, KongModels.robokrem):
+        if value in (KongModels.cranky, KongModels.candy, KongModels.funky, KongModels.robokrem, KongModels.rabbit):
             writeValue(ROM_COPY, 0x8075C410 + (kong_index * 0x10) + 0xC, Overlay.Static, 0, offset_dict, 4)
             writeValue(ROM_COPY, 0x80619168, Overlay.Static, 0, offset_dict, 4)
         if value in name_mapping:

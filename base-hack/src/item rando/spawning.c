@@ -311,7 +311,25 @@ int isValidBoulderObject(int index) {
     if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
         return 0;
     }
-    int item = getBoulderItem(index);
+    int item = boulder_item_table[index].item;
+    if (item == NEWACTOR_NULL) {
+        return 0;
+    }
+    return item;
+}
+
+int isValidBreakableObject(int index) {
+    if (index < 0) {
+        return 0;
+    }
+    if (BreakableSpawnBitfield & (1 << index)) {
+        return 0;
+    }
+    int flag = FLAG_BREAKABLE_DESTROYED + index;
+    if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
+        return 0;
+    }
+    int item = box_item_table[index].actor;
     if (item == NEWACTOR_NULL) {
         return 0;
     }
@@ -337,6 +355,26 @@ void spawnBoulderObject(actorData *actor) {
         boulder_item_table[index].level,
         boulder_item_table[index].kong);
     HoldableSpawnBitfield |= (1 << index);
+}
+
+void spawnBreakableObject(int index) {
+    int item = isValidBreakableObject(index);
+    if (!item) {
+        return;
+    }
+    int cutscene = 1;
+    if (isBounceObject(item)) {
+        cutscene = 2;
+    }
+    spawnActorWithFlagHandler(item,
+        collisionPos[0],
+        collisionPos[1] + 10.0f,
+        collisionPos[2],
+        0, cutscene,
+        FLAG_GRABBABLES_DESTROYED + index, 0,
+        box_item_table[index].item_level,
+        box_item_table[index].item_kong);
+    BreakableSpawnBitfield |= (1 << index);
 }
 
 void renderBoulderSparkles(actorData *actor) {

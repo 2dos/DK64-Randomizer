@@ -586,7 +586,9 @@
     "gauntletbanana": 46,
     "blueprintbanana": 47,
     "sniderewards": 48,
-    "fungitime": 49
+    "fungitime": 49,
+    "breakable": 50,
+    "dummyitem_breakable": 51
   },
 
   "ItemRandoFiller": {
@@ -651,7 +653,8 @@
     "candy": 6,
     "funky": 7,
     "disco_donkey": 8,
-    "robokrem": 9
+    "robokrem": 9,
+    "rabbit": 10
   },
 
   /*

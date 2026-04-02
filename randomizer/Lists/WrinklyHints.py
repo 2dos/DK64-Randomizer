@@ -585,6 +585,7 @@ item_type_names = {
     Types.Enemies: "\x06an enemy\x06",
     Types.Hint: "\x06a hint door\x06",
     Types.BoulderItem: "\x06a holdable object\x06",
+    Types.Breakable: "\x06a breakable container\x06",
 }
 item_type_names_cryptic = {
     Types.Blueprint: ["a minion of K. Rool", "a shockwaving foe", "a colorfully haired henchman"],
@@ -595,6 +596,7 @@ item_type_names_cryptic = {
     Types.Enemies: ["a minor discouragement", "an obstacle along the way", "something found in mad maze maul"],
     Types.Hint: ["a source of a riddle", "the old granny house", "a door to the granny"],
     Types.BoulderItem: ["an object of relative ease", "something as solid as a rock"],
+    Types.Breakable: ["an container of fragility", "something as solid as a chalice"],
 }
 
 moves_data = [

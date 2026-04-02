@@ -223,7 +223,7 @@ void loadHooks(void) {
 	if (MenuDarkness != 0) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);
 	}
-	if(Rando.isles_cool_musical != 0){
+	if (Rando.isles_cool_musical) {
 		// Make Isles Fully Musical (make it never play song 0 as bgm in Isles)
 		loadSingularHook(0x80603784, &pleaseDontStopIslesMusic);
 		*(int*)(0x80603788) = 0x3C018077;  // LUI at, 0x8077
@@ -242,9 +242,7 @@ void initHack(int source) {
 			*(int*)(0x8076BF38) = ((int)(&music_storage[0]) + 0xF) & 0xFFFFFFF0; // Increase music storage. Ensure it's 0x10 aligned
 			grab_lock_timer = -1;
 			bonusAutocomplete = Rando.resolve_bonus;
-			TextHoldOn = Rando.quality_of_life.textbox_hold;
 			ToggleAmmoOn = Rando.quality_of_life.ammo_swap;
-			ItemRandoOn = Rando.item_rando;
 			DamageMultiplier = Rando.damage_multiplier; // Keep for Crowd Control. Needs it to know what to set damage mult back to
 			initItemRandoPointer();
 			initAP();

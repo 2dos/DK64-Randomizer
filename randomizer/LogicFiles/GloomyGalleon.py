@@ -39,6 +39,7 @@ LogicRegions = {
 
     Regions.GloomyGalleonStart: Region("Gloomy Galleon Start", HintRegion.GalleonCaverns, Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.GalleonChunkyChest, lambda l: l.punch and l.chunky),
+        LocationLogic(Locations.BreakableGalleonHeadphonesChest, lambda l: l.punch and l.chunky),
         LocationLogic(Locations.GalleonBattleArena, lambda l: (not l.settings.crown_placement_rando and ((l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False, False)))),
         LocationLogic(Locations.GalleonBananaFairybyCranky, lambda l: l.camera and l.punch and l.chunky),
         LocationLogic(Locations.GalleonMainEnemy_ChestRoom0, lambda _: True),
@@ -118,6 +119,10 @@ LogicRegions = {
 
     Regions.LighthouseUnderwater: Region("Lighthouse Underwater", HintRegion.Lighthouse, Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.GalleonLankyEnguardeChest, lambda l: Events.LighthouseEnguarde in l.Events and l.lanky),
+        LocationLogic(Locations.BreakableGalleonHighHole, lambda l: Events.LighthouseEnguarde in l.Events),
+        LocationLogic(Locations.BreakableGalleonHighKevin, lambda l: Events.LighthouseEnguarde in l.Events),
+        LocationLogic(Locations.BreakableGalleonMidKevin, lambda l: Events.LighthouseEnguarde in l.Events),
+        LocationLogic(Locations.BreakableGalleonMidHole, lambda l: Events.LighthouseEnguarde in l.Events),
     ], [
         Event(Events.WaterLowered, lambda _: True),
         Event(Events.WaterRaised, lambda _: True),
@@ -208,6 +213,11 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_GalleonMainEnemy_5DS0, lambda l: l.camera),
         LocationLogic(Locations.KremKap_GalleonMainEnemy_5DS1, lambda l: l.camera),
         LocationLogic(Locations.KremKap_GalleonNPC_Mechfish, lambda l: l.camera and Events.MechafishSummoned in l.Events and l.isdiddy),
+        LocationLogic(Locations.BreakableGalleonCloseSubmarine, lambda l: Events.ShipyardEnguarde in l.Events),
+        LocationLogic(Locations.BreakableGalleonClose2DS, lambda l: Events.ShipyardEnguarde in l.Events),
+        LocationLogic(Locations.BreakableGalleonUnderTunnel, lambda l: Events.ShipyardEnguarde in l.Events),
+        LocationLogic(Locations.BreakableGalleonUnderDiddy5DS, lambda l: Events.ShipyardEnguarde in l.Events),
+        LocationLogic(Locations.BreakableGalleonNearMechFish, lambda l: Events.ShipyardEnguarde in l.Events),
     ], [
         Event(Events.ShipyardEnguarde, lambda l: l.lanky),
     ], [
@@ -281,6 +291,10 @@ LogicRegions = {
 
     Regions.LankyShip: Region("Lanky Ship", HintRegion.ShipyardOutskirts, Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonLanky2DoorShip, lambda l: l.islanky or (l.settings.free_trade_items and l.CanPhaseswim())),
+        LocationLogic(Locations.BreakableGalleon2DSNearest, lambda l: l.islanky),
+        LocationLogic(Locations.BreakableGalleon2DSNear, lambda l: l.islanky),
+        LocationLogic(Locations.BreakableGalleon2DSFar, lambda l: l.islanky),
+        LocationLogic(Locations.BreakableGalleon2DSFurthest, lambda l: l.islanky),
     ], [], [
         TransitionFront(Regions.ShipyardUnderwater, lambda _: True, Transitions.GalleonLankyToShipyard),
         TransitionFront(Regions.TinyShip, lambda l: l.CanPhaseswim()),

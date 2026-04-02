@@ -200,6 +200,7 @@ class Settings:
             ItemRandoListSelected.hint: [35, 0],
             ItemRandoListSelected.wrinkly: [0, 35],
             ItemRandoListSelected.boulderitem: [0, 16],
+            ItemRandoListSelected.breakable: [0, 24],
             ItemRandoListSelected.enemies: [0, 289],
             ItemRandoListSelected.trainingmoves: [4, 0],
             ItemRandoListSelected.trainingbarrels: [0, 4],
@@ -448,6 +449,7 @@ class Settings:
             (0x20, 0x48, 4),
             (0x78, 0x60, 2),
         ]
+        self.matching_game_sounds = [173, 171, 169, 174, 172, 175, 168, 170]
         self.shuffle_shops = None
         # self.switchsanity = SwitchsanityLevel.off  # Deprecated
         self.switchsanity_enabled = False
@@ -511,8 +513,8 @@ class Settings:
         self.free_trade_setting = False
 
         # Minigames
-        self.arcade_custom_minigame = "arkanoid"
-        self.jetpac_custom_minigame = "arkanoid"
+        self.arcade_custom_minigame = None
+        self.jetpac_custom_minigame = None
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
@@ -1616,9 +1618,11 @@ class Settings:
                 ItemRandoListSelected.hint: (Types.Hint, Types.Hint, False),
                 ItemRandoListSelected.wrinkly: (Types.Hint, Types.Hint, True),
                 ItemRandoListSelected.boulderitem: (Types.BoulderItem, Types.BoulderItem, True),
+                ItemRandoListSelected.breakable: (Types.Breakable, Types.Breakable, True),
                 ItemRandoListSelected.enemies: (Types.Enemies, Types.Enemies, True),
                 ItemRandoListSelected.dummyitem_enemies: (Types.Enemies, Types.Enemies, False),
                 ItemRandoListSelected.dummyitem_boulderitem: (Types.BoulderItem, Types.BoulderItem, False),
+                ItemRandoListSelected.dummyitem_breakable: (Types.Breakable, Types.Breakable, False),
                 ItemRandoListSelected.dummyitem_crateitem: (Types.CrateItem, Types.CrateItem, False),
                 ItemRandoListSelected.trainingmoves: (Types.TrainingBarrel, Types.TrainingBarrel, False),
                 ItemRandoListSelected.trainingbarrels: (Types.TrainingBarrel, Types.TrainingBarrel, True),
@@ -1644,6 +1648,7 @@ class Settings:
                 ItemRandoListSelected.dummyitem_boulderitem,
                 ItemRandoListSelected.dummyitem_crateitem,
                 ItemRandoListSelected.dummyitem_halfmedal,
+                ItemRandoListSelected.dummyitem_breakable,
             ]
             dummy_location_types = [Types.HelmKey, Types.HelmMedal]
             self.item_search = [
@@ -2878,6 +2883,7 @@ class Settings:
                         Types.PreGivenMove,
                         Types.CrateItem,
                         Types.BoulderItem,
+                        Types.Breakable,
                         Types.Enemies,
                     )
                     and (spoiler.LocationList[x].type != Types.Key or spoiler.LocationList[x].level == Levels.HideoutHelm)

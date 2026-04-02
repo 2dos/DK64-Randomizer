@@ -48,7 +48,8 @@
     "GauntletBanana": 46,
     "FillerRainbowCoin": 47,
     "FungiTime": 48,
-    "Cannons": 49
+    "Cannons": 49,
+    "Breakable": 50
   },
   "BarrierItems": {
     "Nothing": 0,

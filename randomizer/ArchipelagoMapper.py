@@ -733,7 +733,7 @@ class ArchipelagoMapper:
 
         if ap_field == "kong_models":
             try:
-                model_value_to_name = {0: "default", 1: "disco_chunky", 2: "krusha", 3: "krool_fight", 4: "krool_cutscene", 5: "cranky", 6: "candy", 7: "funky", 8: "disco_donkey", 9: "robokrem"}
+                model_value_to_name = {0: "default", 1: "disco_chunky", 2: "krusha", 3: "krool_fight", 4: "krool_cutscene", 5: "cranky", 6: "candy", 7: "funky", 8: "disco_donkey", 9: "robokrem", 10: "rabbit"}
                 result = {}
                 for kong in ["dk", "diddy", "lanky", "tiny", "chunky"]:
                     model = settings_dict.get(f"kong_model_{kong}")

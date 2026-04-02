@@ -1123,6 +1123,163 @@ def getWrinklyScript(map_id: Maps, kong: Kongs, item_id: int) -> list[int]:
         ],
     )
 
+def getHelmPadScript(item_id: int, temp_flags: list, kong_id: Kongs, glass_panel: int, hint_cs: int, helm_micro_enabled: bool, req_helm_minigames: int, helm_order: list) -> list[int]:
+    """Get the instance script for the Helm music pads."""
+    helm_order = helm_order.copy()
+    if len(helm_order) < 5:
+        delta = 5 - len(helm_order)
+        for _ in range(delta):
+            helm_order.append(None)
+    slots = {
+        Kongs.donkey: 0,
+        Kongs.chunky: 1,
+        Kongs.tiny: 2,
+        Kongs.lanky: 3,
+        Kongs.diddy: 4,
+    }
+    power_beams = [11, 8, 12, 10, 9]
+    power_beams_0 = [16, 14, 13, 15, 17]
+    power_beams_1 = [30, 32, 34, 36, 38]
+    current_slot = None
+    next_slot = None
+    previous_slot = None
+    for x in range(5):
+        if helm_order[x] == slots[kong_id]:
+            current_slot = x
+            if x > 0:
+                previous_slot = helm_order[x - 1]
+            if x < 4:
+                next_slot = helm_order[x + 1]
+    in_helm_sequence = slots[kong_id] in helm_order
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(54, [temp_flags[0], 0, 0]),
+            FunctionData(54, [temp_flags[1], 0, 0]),
+            FunctionData(54, [temp_flags[2], 0, 0], True),
+        ], [
+            # Turn off power beams instantly - fixes the 2f quirk of cs skips
+            FunctionData(5, [power_beams[slots[kong_id]], 10, 0]),
+            FunctionData(5, [power_beams_0[slots[kong_id]], 10, 0]),
+            FunctionData(5, [power_beams_1[slots[kong_id]], 10, 0]),
+            # Helm Complete stuff
+            FunctionData(37, [8, 1, 0], False, lambda m: m["next_slot"] is None and m["current_slot"] is not None),  # Play CS
+            FunctionData(107, [0x302, 1, 0], False, lambda m: m["next_slot"] is None and m["current_slot"] is not None),  # Turn off BoM
+            FunctionData(121, [0x50, 1, 0], False, lambda m: m["next_slot"] is None and m["current_slot"] is not None),  # Helm temp flag
+            # Go to next stuff
+            FunctionData(37, [8 if current_slot is None else 4 + current_slot, 1, 0], False, lambda m: m["next_slot"] is not None),  # Play CS
+            FunctionData(121, [temp_flags[2], 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(6, [7, short_to_ushort(-8), kong_id], True),  # Does not have instrument
+        ], [
+            FunctionData(1, [20, 0, 0]),
+        ], inclusion_lambda=lambda m: m["micro"]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(116, [2, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(45, [770, 0, 0]),
+        ], [
+            FunctionData(69, [0, 0, 20]),
+            FunctionData(38, [3, 500, 0]),
+            FunctionData(1, [11, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(54, [0 if previous_slot is None else 0x4B + previous_slot, 0, 0], False, lambda m: m["previous_slot"] is not None),
+        ], [
+            FunctionData(69, [0, 0, 20]),
+            FunctionData(38, [3, 500, 0]),
+            FunctionData(1, [11, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(54, [0 if previous_slot is None else 0x4B + previous_slot, 0, 0], True),
+            FunctionData(45, [770, 0, 0], True),
+        ], [
+            FunctionData(38, [3, 300, 0]),
+            FunctionData(69, [1, 0, 255]),
+            FunctionData(71, [0, 0, 0]),
+            FunctionData(1 if kong_id == Kongs.diddy else 38, [99 if kong_id == Kongs.diddy else 2, 0, 0]),  # Diddy has a separate call for this?
+        ], lambda m: m["previous_slot"] is not None),
+        ScriptBlock([
+            FunctionData(1, [10, 0, 0]),
+        ], [
+            FunctionData(69, [0, 0, 20]),
+            FunctionData(71, [1, 0, 0]),
+            FunctionData(1, [11, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [11, 0, 0]),
+            FunctionData(6, [7, short_to_ushort(-8), kong_id], True),  # Does not have instrument
+        ], [
+            FunctionData(1, [20, 0, 0]),
+        ], inclusion_lambda=lambda m: m["micro"]),
+        ScriptBlock([
+            FunctionData(1, [11, 0, 0]),
+            FunctionData(13, [2, 0, 0]),
+            FunctionData(25, [kong_id + 2, 0, 0]),
+            FunctionData(23, [103, 0, 0]),
+        ], [
+            FunctionData(1, [12, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [12, 0, 0]),
+            FunctionData(35, [0, 0, 0], True),
+        ], [
+            # Set minigame flags
+            FunctionData(121, [temp_flags[0], 1, 0]),
+            FunctionData(121, [temp_flags[1], 1, 0]),
+            FunctionData(37, [9 + (item_id - 0x2C), 1, 0], False, inclusion_lambda=lambda m: not m["in_helm_sequence"]),
+        ], inclusion_lambda=lambda m: m["minis"] == 0),
+        ScriptBlock([
+            FunctionData(1, [12, 0, 0]),
+            FunctionData(35, [0, 0, 0], True),
+        ], [
+            FunctionData(37, [9 + (item_id - 0x2C), 1, 0], False, inclusion_lambda=lambda m: m["minis"] > 0),
+            FunctionData(84, [glass_panel, 1, 0]),
+            FunctionData(5, [glass_panel, 10, 0]),
+            FunctionData(1, [13, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [13, 0, 0]),
+            FunctionData(35, [0, 0, 0], True),
+        ], [
+            FunctionData(1, [11, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [20, 0, 0]),
+            FunctionData(6, [7, short_to_ushort(-8), kong_id]),  # Has instrument
+        ], [
+            FunctionData(1, [0, 0, 0]),
+        ], inclusion_lambda=lambda m: m["micro"]),
+        ScriptBlock([
+            FunctionData(1, [20, 0, 0]),
+            FunctionData(2, [0, 0, 0]),
+        ], [
+            FunctionData(37, [hint_cs, 1, 0]),
+            FunctionData(1, [21, 0, 0]),
+        ], inclusion_lambda=lambda m: m["micro"]),
+        ScriptBlock([
+            FunctionData(1, [21, 0, 0]),
+            FunctionData(2, [0, 0, 0], True),
+            FunctionData(35, [0, 0, 0], True),
+        ], [
+            FunctionData(1, [20, 0, 0]),
+        ], inclusion_lambda=lambda m: m["micro"]),
+    ], {
+        "micro": helm_micro_enabled,
+        "minis": req_helm_minigames,
+        "in_helm_sequence": in_helm_sequence,
+        "previous_slot": previous_slot,
+        "next_slot": next_slot,
+        "current_slot": current_slot,
+    })
+
 
 def replaceScriptLines(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], replacement_mapping: dict) -> None:
     """Replace a script line with another."""
@@ -1237,6 +1394,8 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
             subscript = getFiveTwoDoorShipGateScript(item_id, extra_data[item_id]["flag_id"], extra_data[item_id]["timer"], extra_data[item_id]["timer_2"], extra_data[item_id]["tied_pad"])
         elif stype == ScriptTypes.FactoryBlastController:
             subscript = getFactoryBlastControllerScript(item_id)
+        elif stype == ScriptTypes.HelmInstrumentPad:
+            subscript = getHelmPadScript(item_id, extra_data[item_id]["temp_flags"], extra_data[item_id]["kong_id"], extra_data[item_id]["glass_panel"], extra_data[item_id]["hint_cs"], extra_data[item_id]["microhint"], extra_data[item_id]["req_minigames"], extra_data[item_id]["helm_order"])
         if subscript is not None:
             good_scripts.append(subscript)
     # Reconstruct File

@@ -17,3 +17,4 @@ class ScriptTypes(IntEnum):
     HelmLobbyPadGrab = auto()
     GalleonShipwreckDoor = auto()
     FactoryBlastController = auto()
+    HelmInstrumentPad = auto()

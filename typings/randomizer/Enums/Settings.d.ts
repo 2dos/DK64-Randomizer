@@ -337,6 +337,8 @@ export enum ItemRandoListSelected {
     blueprintbanana = 47,
     sniderewards = 48,
     fungitime = 49,
+    breakable = 50,
+    dummyitem_breakable = 51,
 }
 
 export enum ItemRandoFiller {
@@ -383,6 +385,7 @@ export enum KongModels {
     funky = 7,
     disco_donkey = 8,
     robokrem = 9,
+    rabbit = 10,
 }
 
 export enum KongModelMode {

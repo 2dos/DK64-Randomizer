@@ -63,23 +63,6 @@
 #define CHUNKY5DC_TARGET2 0x5
 #define HELMLOBBY_GGONE 0x3
 
-#define LLAMA_MATCHING_HEAD_SOUND0_0 0x1E // Sound 173
-#define LLAMA_MATCHING_HEAD_SOUND0_1 0x23
-#define LLAMA_MATCHING_HEAD_SOUND1_0 0x24 // Sound 171
-#define LLAMA_MATCHING_HEAD_SOUND1_1 0x27
-#define LLAMA_MATCHING_HEAD_SOUND2_0 0x1B // Sound 169
-#define LLAMA_MATCHING_HEAD_SOUND2_1 0x26
-#define LLAMA_MATCHING_HEAD_SOUND3_0 0x1D // Sound 174
-#define LLAMA_MATCHING_HEAD_SOUND3_1 0x21
-#define LLAMA_MATCHING_HEAD_SOUND4_0 0x1A // Sound 172
-#define LLAMA_MATCHING_HEAD_SOUND4_1 0x25
-#define LLAMA_MATCHING_HEAD_SOUND5_0 0x20 // Sound 175
-#define LLAMA_MATCHING_HEAD_SOUND5_1 0x22
-#define LLAMA_MATCHING_HEAD_SOUND6_0 0x19 // Sound 168
-#define LLAMA_MATCHING_HEAD_SOUND6_1 0x1F
-#define LLAMA_MATCHING_HEAD_SOUND7_0 0x1C // Sound 170
-#define LLAMA_MATCHING_HEAD_SOUND7_1 0x28
-
 #define MILLREAR_CHUNKYCHECK_RATE 0xF
 #define FUNGI_BEAN 0x5
 #define FUNGI_BEANCONTROLLER 0x4D
@@ -88,15 +71,8 @@
 #define FACTORY_PIANO 0x14
 #define ICE_MAZE 0x0
 
-#define HELM_PAD_BONGO 0x2C
-#define HELM_PAD_TRIANGLE 0x2D
-#define HELM_PAD_SAX 0x2E
-#define HELM_PAD_TROMBONE 0x2F
-#define HELM_PAD_GUITAR 0x30
 #define HELM_COIN_DOOR 0x3
 
-#define FUNGI_SWITCH_NIGHT 0x4
-#define FUNGI_SWITCH_DAY 0x5
 #define FUNGI_SWITCH_LANKY_MUSHROOM 0XEB
 
 #define JAPES_CAVE_GATE 0x2B
@@ -122,36 +98,10 @@
 #define FACTORY_BLOCKELEVATOR_5 0x27
 #define FACTORY_BLOCKELEVATOR_6 0x28
 
-#define FACTORY_BBLAST_CONTROLLER 0x1
-
 #define JAPES_RAMBI_DOOR 0x115
 #define K_ROOL_SHIP 0x35
 
-ROM_RODATA_NUM static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
-ROM_RODATA_NUM static const unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
 ROM_RODATA_NUM static const unsigned char hands[] = {6, 7, 9, 10, 11, 12};
-ROM_RODATA_NUM static const int head_ids[] = {
-	LLAMA_MATCHING_HEAD_SOUND0_0,
-	LLAMA_MATCHING_HEAD_SOUND0_1,
-	LLAMA_MATCHING_HEAD_SOUND1_0,
-	LLAMA_MATCHING_HEAD_SOUND1_1,
-	LLAMA_MATCHING_HEAD_SOUND2_0,
-	LLAMA_MATCHING_HEAD_SOUND2_1,
-	LLAMA_MATCHING_HEAD_SOUND3_0,
-	LLAMA_MATCHING_HEAD_SOUND3_1,
-	LLAMA_MATCHING_HEAD_SOUND4_0,
-	LLAMA_MATCHING_HEAD_SOUND4_1,
-	LLAMA_MATCHING_HEAD_SOUND5_0,
-	LLAMA_MATCHING_HEAD_SOUND5_1,
-	LLAMA_MATCHING_HEAD_SOUND6_0,
-	LLAMA_MATCHING_HEAD_SOUND6_1,
-	LLAMA_MATCHING_HEAD_SOUND7_0,
-	LLAMA_MATCHING_HEAD_SOUND7_1,
-};
-ROM_RODATA_NUM static const int head_sounds[] = {173,171,169,174,172,175,168,170};
-ROM_RODATA_NUM static const unsigned char power_beams[] = {11, 8, 12, 10, 9};
-ROM_RODATA_NUM static const unsigned char power_beams_0[] = {16, 14, 13, 15, 17};
-ROM_RODATA_NUM static const unsigned char power_beams_1[] = {30, 32, 34, 36, 38};
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
 	int world = getWorld(CurrentMap, 0);
@@ -201,39 +151,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	 */
 	if (index >= 0) {
 		switch(CurrentMap) {
-			case MAP_AZTEC:
-				if (param2 == AZTEC_SNOOPDOOR) {
-					if (index == 0) {
-						// Flag Check
-						if (checkFlag(SNOOPDOOR_OPEN, FLAGTYPE_PERMANENT)) {
-							behaviour_pointer->next_state = 40;
-							behaviour_pointer->current_state = 40;
-						}
-					} else if (index == 1) {
-						// Flag Set
-						setPermFlag(SNOOPDOOR_OPEN);
-						setNextTransitionType(0);
-					}
-				} else if ((param2 == AZTEC_LLAMACOCONUT) || (param2 == AZTEC_LLAMAGRAPE) || (param2 == AZTEC_LLAMAFEATHER)) {
-					if ((index == 0) && (param2 == AZTEC_LLAMACOCONUT)) {
-						if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
-							PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
-						}
-					} else if (index == 1) {
-						if (Rando.removed_barriers.llama_switches) {
-							return 1;
-						}
-						return checkFlag(FLAG_MODIFIER_LLAMAFREE, FLAGTYPE_PERMANENT);
-					}
-				}
-				break;
 			case MAP_FUNGI:
 				if (param2 == FUNGI_BEANCONTROLLER) {
 					return getItemCount_new(REQITEM_BEAN, 0, 0);
-				} else if ((param2 == FUNGI_SWITCH_DAY) || (param2 == FUNGI_SWITCH_NIGHT)) {
-					if (!Rando.quality_of_life.vanilla_fixes) {
-						behaviour_pointer->timer = 70;
-					}
 				} else if (param2 == FUNGI_SWITCH_LANKY_MUSHROOM) {
 					if (index == 0) {
 						if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
@@ -320,43 +240,12 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case MAP_AZTECLLAMATEMPLE:
-				if (param2 == LLAMA_SNOOPPAD) {
-					if (checkFlag(SNOOPDOOR_OPEN, FLAGTYPE_PERMANENT)) {
-						behaviour_pointer->current_state = 20;
-						behaviour_pointer->next_state = 20;
-					}
-				} else if (param2 == LLAMA_LAVAGATE) {
+				if (param2 == LLAMA_LAVAGATE) {
 					if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 						hideObject(behaviour_pointer);
 						behaviour_pointer->pause_state = 1;
 					}
-				} else {
-					int selection = -1;
-					for (unsigned int k = 0; k < sizeof(head_ids)/4; k++) {
-						if (param2 == head_ids[k]) {
-							selection = k / 2;
-						}
-					}
-					if (selection > -1) {
-						playSFXContainer(param2,head_sounds[selection],Rando.matching_game_sounds[selection]);
-					}
-					
 				}
-				break;
-			case MAP_CAVES5DCCHUNKY:
-				if ((param2 == CHUNKY5DC_GGONE) || (param2 == CHUNKY5DC_TARGET0) || (param2 == CHUNKY5DC_TARGET1) || (param2 == CHUNKY5DC_TARGET2)) {
-					if (index == 0) {
-						return isBonus(PreviousMap);
-					} else if (index == 1) {
-						return !isBonus(PreviousMap);
-					}
-				}
-				break;
-			case MAP_CAVES5DCDIDDYLOW:
-				if (Rando.quality_of_life.remove_enemy_cabin_timer) {
-					return 0;
-				}
-				return 1;
 				break;
 			case MAP_BATTLEARENA_BEAVERBRAWL:
 			case MAP_BATTLEARENA_KRITTERKARNAGE:
@@ -498,11 +387,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == JAPES_DIDDYBAMBOOGATE) {
 					giveItemFromKongData(&kong_check_data[KONGCHECK_JAPES], FLAG_KONG_DIDDY);
-				} else if ((param2 == JAPES_GATE0) || (param2 == JAPES_GATE1) || (param2 == JAPES_GATE2)) {
-					if (Rando.removed_barriers.japes_coconut_gates) {
-						behaviour_pointer->current_state = 20;
-						behaviour_pointer->next_state = 20;
-					}
 				} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
 					if ((param2 == JAPES_PEANUT_MOUNTAIN) && (index == 1)) {
 						if (Rando.quality_of_life.mountain_bridge_extended) {
@@ -831,120 +715,19 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case MAP_HELM:
-				{
-					int slot = -1;
-					int next_slot = -1;
-					int barrel_index = -1;
-					int previous_slot = -1;
-					int current_slot = -1;
-					int helm_pad_kong = -1;
-					switch(param2) {
-						case HELM_COIN_DOOR:
-							if (index == 0) {
-								return isItemRequirementSatisfied(&Rando.coin_door_requirement);
-							} else if (index == 1) {
-								return checkFlag(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
-							} else if (index == 2) {
-								// Disable coin door text
-								return 1;
-							}
-							break;
-						case HELM_PAD_BONGO:
-							slot = 0;
-							helm_pad_kong = 0;
-							barrel_index = 0;
-						case HELM_PAD_TRIANGLE:
-							if (slot == -1) {
-								slot = 1;
-								helm_pad_kong = 4;
-								barrel_index = 3;
-							}
-						case HELM_PAD_SAX:
-							if (slot == -1) {
-								slot = 2;
-								helm_pad_kong = 3;
-								barrel_index = 2;
-							}
-						case HELM_PAD_TROMBONE:
-							if (slot == -1) {
-								slot = 3;
-								helm_pad_kong = 2;
-								barrel_index = 4;
-							}
-						case HELM_PAD_GUITAR:
-							if (slot == -1) {
-								slot = 4;
-								helm_pad_kong = 1;
-								barrel_index = 1;
-							}
-							if (slot > -1) {
-								if (index < 2) {
-									for (int i = 0; i < 5; i++) {
-										if (Rando.helm_order[i] == slot) {
-											current_slot = i;
-											if (i > 0) {
-												previous_slot = Rando.helm_order[i - 1];
-											}
-											if (i < 4) {
-												next_slot = Rando.helm_order[i + 1];
-											}
-										}
-									}
-									if (index == 0) {
-										// Barrels complete
-										modifyObjectState(power_beams[slot], 10);
-										modifyObjectState(power_beams_0[slot], 10);
-										modifyObjectState(power_beams_1[slot], 10);
-										if ((next_slot == -1) && (current_slot > -1)) {
-											// Helm Complete
-											PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
-											setPermFlag(FLAG_MODIFIER_HELMBOM);
-											setFlag(0x50,1,FLAGTYPE_TEMPORARY);
-										} else if (next_slot > -1) {
-											// Move to next
-											PlayCutsceneFromModelTwoScript(behaviour_pointer, current_slot + 4, 1, 0);
-										}
-									} else if (index == 1) {
-										if (previous_slot == -1) {
-											// First or not in sequence
-											return 1;
-										}
-										return checkFlag(previous_slot + 0x4B, FLAGTYPE_TEMPORARY);
-									}
-								} else  if (index == 2) {
-									if ((Rando.microhints == MICROHINTS_ALL) && ((MovesBase[helm_pad_kong].instrument_bitfield & 1) == 0)) {
-										behaviour_pointer->next_state = 20;
-										// behaviour_pointer->current_state = 20;
-									}
-								} else if (index == 3) {
-									if (MovesBase[helm_pad_kong].instrument_bitfield & 1) {
-										behaviour_pointer->next_state = 0;
-										// behaviour_pointer->current_state = 0;
-									}
-								} else if (index == 4) {
-									if (Rando.required_helm_minigames == 0) {
-										setFlag(HelmMinigameFlags[2 * barrel_index], 1, FLAGTYPE_TEMPORARY);
-										setFlag(HelmMinigameFlags[(2 * barrel_index) + 1], 1, FLAGTYPE_TEMPORARY);
-										int in_helm_sequence = 0;
-										for (int i = 0; i < 5; i++) {
-											if (Rando.helm_order[i] == slot) {
-												in_helm_sequence = 1;
-											}
-										}
-										if (!in_helm_sequence) {
-											PlayCutsceneFromModelTwoScript(behaviour_pointer, 9 + (param2 - HELM_PAD_BONGO), 1, 0);
-										}
-									} else {
-										PlayCutsceneFromModelTwoScript(behaviour_pointer, 9 + (param2 - HELM_PAD_BONGO), 1, 0);
-									}
-								}
-							}
-						break;
+				if (param2 == HELM_COIN_DOOR) {
+					if (index == 0) {
+						return isItemRequirementSatisfied(&Rando.coin_door_requirement);
+					} else if (index == 1) {
+						return checkFlag(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
+					} else if (index == 2) {
+						// Disable coin door text
+						return 1;
 					}
-					break;
 				}
+				break;
 			default:
-			break;
+				break;
 		}
 	} else if (index == -1) {
 		// Bananaport generic code
@@ -953,6 +736,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			WarpData = getFile(size, 0x1FF0000);
 		}
 		bananaportGenericCode(behaviour_pointer, id, param2);
+	} else if (index == -2) {
+		spawnBreakableObject(param2);
 	} else if (index == -3) {
 		TNSIndicatorGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -4) {
@@ -966,12 +751,12 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		activateGonePad();
 	} else if (index == -7) {
 		return getItemCount_new(REQITEM_KONG, 0, param2) || Rando.disable_wrinkly_kong_requirement;
+	} else if (index == -8) {
+		return MovesBase[param2].instrument_bitfield & 1;
 	} else if (index == -16) {
 		PauseText = param2;
 	} else if (index == -17) {
 		return isTimeOfDay(param2);
-	} else if (index == -18) {
-		return (Player->strong_kong_ostand_bitfield & 0x20) || (!Rando.sprint_barrel_requires_sprint);
 	} else if (index == -19) {
 		int world = getWorld(CurrentMap, 0);
 		return checkFlag(FLAG_WRINKLYVIEWED + (5 * world) + param2, FLAGTYPE_PERMANENT);

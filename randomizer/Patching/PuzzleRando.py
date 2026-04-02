@@ -568,12 +568,11 @@ def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
     if spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
         chosen_sounds = []
         for matching_head in range(8):
-            ROM_COPY.seek(sav + 0x15C + (2 * matching_head))
             sfx = spoiler.settings.random.choice(TERMINATING_SFXS)
             while sfx in chosen_sounds:
                 sfx = spoiler.settings.random.choice(TERMINATING_SFXS)
             chosen_sounds.append(sfx)
-            ROM_COPY.writeMultipleBytes(sfx, 2)
+            spoiler.settings.matching_game_sounds[matching_head] = sfx
         for piano_item in range(7):
             ROM_COPY.seek(sav + 0x16C + piano_item)
             key = spoiler.settings.random.randint(0, 5)

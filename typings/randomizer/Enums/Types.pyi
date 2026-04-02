@@ -50,6 +50,7 @@ class Types(IntEnum):
     FillerRainbowCoin = 47
     FungiTime = 48
     Cannons = 49
+    Breakable = 50
 
 class BarrierItems(IntEnum):
     Nothing = 0

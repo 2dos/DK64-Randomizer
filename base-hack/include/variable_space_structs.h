@@ -2,7 +2,7 @@ typedef struct varspace {
 	/* 0x000 */ char unk_00[0x2D];
 	/* 0x02D */ char required_helm_minigames; // 0 = Disable on instrument play, 1 = One minigame required, 2 = Vanilla
 	/* 0x02E */ char fast_start_beginning; // 0 = "Fast Start" setting not applied. 1 = On
-	/* 0x02F */ char sprint_barrel_requires_sprint;
+	/* 0x02F */ char unk_2f;
 	/* 0x030 */ char tag_anywhere; // 0 = Tag Anywhere buttons not enabled. 1 = Enabled
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
 	/* 0x032 */ char unk_32[2];
@@ -96,7 +96,7 @@ typedef struct varspace {
 	/* 0x152 */ char unk_152[0x15A - 0x152];
 	/* 0x15A */ char arcade_reward_idx; // Purely used for the arcade sprite in colorblind mode
 	/* 0x15B */ char auto_keys; // 0 = Vanilla, 1 = Keys turn in as soon as you get them
-	/* 0x15C */ short matching_game_sounds[8]; // Sound effect 0 is treated as "sound not randomized"
+	/* 0x15C */ char unk_15c[0x16C - 0x15C];
 	/* 0x16C */ char piano_game_order[7]; // Each item denotes a key, normally CBCDECA (2123420). A = 0, 1 = B, 2 = C, 3 = D, 4 = E, 5 = F
 	/* 0x173 */ char unk_173[0x17E - 0x173];
 	/* 0x17E */ unsigned char b_locker_requirements[8];
@@ -117,9 +117,7 @@ typedef struct varspace {
 	/* 0x1C7 */ unsigned char switchsanity_gone; // 0 = gone, 1-5 = instrument
 	/* 0x1C8 */ char unk_1cd[0x1DB - 0x1C8];
 	/* 0x1DB */ unsigned char fungi_time_of_day_setting; // See fungi_time enum
-	/* 0x1DC */ unsigned char galleon_water_raised;
-	/* 0x1DD */ unsigned char unk_1dd;
-	/* 0x1DE */ RemovedBarriers removed_barriers; // Size: 2
+	/* 0x1DC */ char unk_1dc[4];
 	/* 0x1E0 */ FasterChecks faster_checks; // Size: 1
 	/* 0x1E1 */ char unk_1e1;
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1

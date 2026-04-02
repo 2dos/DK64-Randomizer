@@ -1497,6 +1497,7 @@ class KongModels(OptionDict):
     - "cranky": Cranky Kong (DK only)
     - "candy": Candy Kong (Tiny only)
     - "funky": Funky Kong (Diddy only)
+    - "rabbit": Rabbit (Diddy only)
     - "robokrem": Robo Kremling (Lanky only)
 
     Example: {"dk": "krusha", "tiny": "candy"}
@@ -1512,7 +1513,7 @@ class KongModels(OptionDict):
     # Kong-specific models
     kong_specific_models = {
         "dk": {"cranky"},
-        "diddy": {"funky"},
+        "diddy": {"funky", "rabbit"},
         "lanky": {"robokrem"},
         "tiny": {"candy"},
         "chunky": set(),

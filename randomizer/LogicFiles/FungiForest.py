@@ -360,6 +360,8 @@ LogicRegions = {
         LocationLogic(Locations.ForestMillRearEnemy_Enemy, lambda _: True),
         LocationLogic(Locations.KremKap_ForestMillRearEnemy_Enemy, lambda l: l.camera),
         LocationLogic(Locations.HoldableKegMillRear, lambda l: l.barrels and l.ischunky),
+        LocationLogic(Locations.BreakableForestMillRearTriangle, lambda l: l.punch and l.ischunky),
+        LocationLogic(Locations.BreakableForestMillRearMini, lambda l: l.punch and l.ischunky),
     ], [
         Event(Events.GrinderActivated, lambda l: l.punch and l.triangle and l.ischunky),
         Event(Events.MillBoxBroken, lambda l: l.punch and l.ischunky),
@@ -382,6 +384,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_ForestMillFrontEnemy_Enemy, lambda l: l.camera),
         LocationLogic(Locations.HoldableKegMillFrontFar, lambda l: l.barrels and l.ischunky),
         LocationLogic(Locations.HoldableKegMillFrontNear, lambda l: l.barrels and l.ischunky),
+        LocationLogic(Locations.BreakableForestMillFront, lambda l: l.Slam),
     ], [
         Event(Events.ConveyorActivated, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.CanPhase() or l.generalclips) and l.grab and l.donkey),
     ], [
@@ -433,6 +436,7 @@ LogicRegions = {
         LocationLogic(Locations.MelonCrate_Location11, lambda _: True),
         LocationLogic(Locations.ForestThornBarnEnemy_Enemy, lambda _: True),
         LocationLogic(Locations.KremKap_ForestThornBarnEnemy_Enemy, lambda l: l.camera),
+        LocationLogic(Locations.BreakableForestThornvine, lambda l: l.Slam and l.isdonkey),
     ], [], [
         TransitionFront(Regions.ThornvineArea, lambda _: True, Transitions.ForestBarnToMain),
         TransitionFront(Regions.ThornvineBarnAboveLadder, lambda l: l.climbing),

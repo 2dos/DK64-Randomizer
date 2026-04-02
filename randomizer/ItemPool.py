@@ -274,6 +274,8 @@ def AllItems(settings):
         allItems.extend(HalfMedalItems())
     if Types.BoulderItem in settings.shuffled_location_types:
         allItems.extend(BoulderItems())
+    if Types.Breakable in settings.shuffled_location_types:
+        allItems.extend(BreakableItems())
     if Types.Hint in settings.shuffled_location_types:
         allItems.extend(HintItems())
     if Types.Enemies in settings.shuffled_location_types:
@@ -350,6 +352,8 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(HalfMedalItems())
     if Types.BoulderItem in settings.shuffled_location_types:
         allItems.extend(BoulderItems())
+    if Types.Breakable in settings.shuffled_location_types:
+        allItems.extend(BreakableItems())
     if Types.Hint in settings.shuffled_location_types:
         allItems.extend(HintItems())
     if Types.Enemies in settings.shuffled_location_types:
@@ -697,6 +701,9 @@ def BoulderItems():
     """Return a list of boulder items to be placed."""
     return []
 
+def BreakableItems():
+    """Return a list of breakable items to be placed."""
+    return []
 
 def EnemyItems():
     """Return a list of No Items to be placed."""
@@ -920,6 +927,8 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(HalfMedalItems())
     if Types.BoulderItem in unplacedTypes:
         itemPool.extend(BoulderItems())
+    if Types.Breakable in unplacedTypes:
+        itemPool.extend(BreakableItems())
     if Types.Enemies in unplacedTypes:
         itemPool.extend(EnemyItems())
     if Types.Cranky in unplacedTypes:

@@ -330,7 +330,6 @@ extern void activateGonePad(void);
 extern int canOpenSpecificBLocker(int level);
 extern int isBonus(maps map);
 extern int checkSlamLocation(int kong, int key, int id);
-extern void playSFXContainer(int id, int vanilla_sfx, int new_sfx);
 extern void getModelTwoItemFromActor(int actor, short* item, float* scale);
 extern void IslesMonkeyportCode(behaviour_data* behaviour_pointer, int index);
 extern void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index);

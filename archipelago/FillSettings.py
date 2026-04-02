@@ -181,6 +181,7 @@ def get_default_settings() -> dict[str, Any]:
             ItemRandoListSelected.halfmedal,
             ItemRandoListSelected.enemies,
             ItemRandoListSelected.boulderitem,
+            ItemRandoListSelected.breakable,
             ItemRandoListSelected.shop,
             ItemRandoListSelected.bfi_gift,
             ItemRandoListSelected.banana_checks,
@@ -607,6 +608,7 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
         "funky": 7,
         "disco_donkey": 8,
         "robokrem": 9,
+        "rabbit": 10,
     }
 
     for kong, setting_key in kong_model_mapping.items():
@@ -861,8 +863,6 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     settings_dict["win_condition_item"] = GOAL_MAPPING[options.goal]
     if options.goal == Goal.option_krools_challenge:
         settings_dict["win_condition_spawns_ship"] = True
-    elif options.goal == Goal.option_kill_the_rabbit:
-        settings_dict["win_condition_spawns_ship"] = False
     if options.goal in QUANTITY_GOALS.keys():
         goal_name = QUANTITY_GOALS[options.goal]
         settings_dict["win_condition_count"] = calculate_quantity(goal_name, options.goal_quantity.value, random_obj)

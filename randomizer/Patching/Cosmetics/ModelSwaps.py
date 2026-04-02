@@ -353,6 +353,7 @@ model_mapping = {
     KongModels.funky: 12,
     KongModels.disco_donkey: 13,
     KongModels.robokrem: 14,
+    KongModels.rabbit: 15,
 }
 
 model_texture_sections = {
