@@ -911,6 +911,7 @@ extern unsigned char EnemyInView;
 extern unsigned char KasplatSpawnBitfield;
 extern unsigned short HoldableSpawnBitfield;
 extern unsigned int BreakableSpawnBitfield;
+extern unsigned char BalloonSpawnBitfield[13];
 extern int ExtraSaveData[0x100];
 extern char* DisplayedSongNamePointer;
 extern unsigned char RandomizerVersion;

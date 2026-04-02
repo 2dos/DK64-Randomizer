@@ -328,7 +328,6 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
         writeFunction(ROM_COPY, addr, Overlay.Static, "getItem", offset_dict)  # Modify Function Call
     writeFunction(ROM_COPY, 0x806F6350, Overlay.Static, "getObjectCollectability", offset_dict)  # Modify Function Call
     writeFunction(ROM_COPY, 0x8070E1F0, Overlay.Static, "handleDynamicItemText", offset_dict)  # Handle Dynamic Text Item Name
-    writeFunction(ROM_COPY, 0x806A7AEC, Overlay.Static, "BalloonShoot", offset_dict)  # Balloon Shoot Hook
     # Rainbow Coins
     writeFunction(ROM_COPY, 0x806A222C, Overlay.Static, "getPatchFlag", offset_dict)  # Get Patch Flags
     writeFunction(ROM_COPY, 0x806A2058, Overlay.Static, "getPatchFlag", offset_dict)  # Get Patch Flags
@@ -445,6 +444,11 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeFunction(ROM_COPY, 0x80024980, Overlay.Menu, "turnedAllIn", offset_dict)
     writeValue(ROM_COPY, 0x8002498A, Overlay.Menu, 2, offset_dict)  # speed up lookup
     writeFunction(ROM_COPY, 0x800254A8, Overlay.Menu, "hasTurnedInAtLeast", offset_dict)
+    # Balloons
+    writeFunction(ROM_COPY, 0x806A7678, Overlay.Static, "shouldDeleteBalloon", offset_dict)
+    writeFunction(ROM_COPY, 0x806A7ACC, Overlay.Static, "balloonItemHandler", offset_dict)
+    writeValue(ROM_COPY, 0x806A7ADC, Overlay.Static, 0, offset_dict, 4)  # Remove displaying HUD
+    writeValue(ROM_COPY, 0x806A7AEC, Overlay.Static, 0, offset_dict, 4)  # Remove giving CBs
 
 
 def fairyFix(ROM_COPY: LocalROM, settings, offset_dict: dict):

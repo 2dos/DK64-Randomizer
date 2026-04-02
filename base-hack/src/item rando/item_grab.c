@@ -415,11 +415,6 @@ void forceDance(void) {
     }    
 }
 
-void BalloonShoot(int item, int player, int change) {
-    addHelmTime(HHITEM_CB, change);
-    changeCollectableCount(item, player, change);
-}
-
 void getItem(int object_type) {
     /**
      * @brief Item Grab hook, at the point of touching the item, before the flag is set.

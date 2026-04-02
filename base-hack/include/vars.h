@@ -98,7 +98,8 @@
 #define FLAG_HALF_MEDAL_JAPES_DK 0x3D6 // 0x3D6 -> 0x3FD (inc.) - 40 flags
 #define FLAG_SNIDE_REWARD 0x3FE // 0x3FE -> 0x425 (inc.) - 40 flags
 #define FLAG_BREAKABLE_DESTROYED 0x426 // 0x426 -> 0x445 (inc.) - 32 flags
-#define FLAG_ENEMY_KILLED_0 0x446 // 0x446 -> 0x5E6 (inc.) (428 flags)
+#define FLAG_BALLOON_ITEM 0x446 // 0x446 -> 0x4AD (inc.) - 104 flags
+#define FLAG_ENEMY_KILLED_0 0x4AE // 0x4AE -> 0x6A6 (inc.) (428 flags)
 
 #define MODEL_COUNT 0xED
 
