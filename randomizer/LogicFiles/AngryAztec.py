@@ -83,6 +83,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecMainEnemy_OasisDoor, lambda _: True),
         LocationLogic(Locations.KremKap_AztecMainEnemy_NearCandy, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecMainEnemy_OasisDoor, lambda l: l.camera),
+        LocationLogic(Locations.Balloon055, lambda l: l.diddy and l.peanut),
     ], [
         Event(Events.AztecGuitarPad, lambda l: ((l.can_use_vines and l.climbing) or (l.jetpack and l.isdiddy and l.climbing) or (l.monkey_maneuvers and (l.istiny or l.isdiddy))) and l.hasMoveSwitchsanity(Switches.AztecGuitar, True)),
         Event(Events.AztecW1bTagged, lambda _: True),
@@ -133,6 +134,7 @@ LogicRegions = {
     Regions.TempleVultureRoom: Region("Temple Vulture Room", HintRegion.TinyTemple, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecLankyVulture, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.grape and l.islanky),
         LocationLogic(Locations.AztecBattleArena, lambda l: not l.settings.crown_placement_rando and l.CanSlamSwitch(Levels.AngryAztec, 1) and l.grape and l.lanky),
+        LocationLogic(Locations.Balloon017, lambda l: l.ischunky and l.pineapple),
     ], [], [
         TransitionFront(Regions.TempleUnderwater, lambda l: l.swim),
     ]),
@@ -150,6 +152,8 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_AztecTempleEnemy_KongRoom2, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecTempleEnemy_KongRoom3, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecTempleEnemy_KongRoom4, lambda l: l.camera),
+        LocationLogic(Locations.Balloon015, lambda l: l.istiny and l.feather),
+        LocationLogic(Locations.Balloon016, lambda l: l.istiny and l.feather),
     ], [], [
         TransitionFront(Regions.TempleUnderwater, lambda l: l.swim),
     ]),
@@ -170,6 +174,8 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_AztecMainEnemy_TunnelCage3, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecMainEnemy_TunnelPad1, lambda l: l.camera),
         LocationLogic(Locations.HoldableBoulderAztec, lambda l: l.barrels and l.hunkyChunky and l.ischunky),
+        LocationLogic(Locations.Balloon054, lambda l: l.donkey and l.coconut),
+        LocationLogic(Locations.Balloon057, lambda l: l.donkey and l.coconut),
     ], [
         Event(Events.AztecW3bTagged, lambda _: True),
     ], [
@@ -195,6 +201,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_AztecMainEnemy_Outside5DT, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecMainEnemy_OutsideSnide, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecMainEnemy_NearSnoopTunnel, lambda l: l.camera),
+        LocationLogic(Locations.Balloon056, lambda l: l.donkey and l.coconut),
     ], [
         Event(Events.FedTotem, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_5dtemple_switches) or (l.jetpack and l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut and l.diddy)),
         Event(Events.AztecW2bTagged, lambda _: True),
@@ -220,6 +227,7 @@ LogicRegions = {
 
     Regions.AztecDonkeyQuicksandCave: Region("Aztec Donkey Sand Tunnel", HintRegion.AztecTunnels, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecDonkeyQuicksandCave, lambda l: l.isdonkey or l.settings.free_trade_items, MinigameType.BonusBarrel),
+        LocationLogic(Locations.Balloon058, lambda l: l.isdiddy and l.peanut),
     ], [
         Event(Events.AztecW5bTagged, lambda l: Locations.AztecDonkeyQuicksandCave in l.SpecialLocationsReached),
     ], [
@@ -273,6 +281,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_AztecDiddy5DTEnemy_StartLeft1, lambda l: l.camera and ((l.peanut and l.isdiddy) or l.CanPhase())),
         LocationLogic(Locations.KremKap_AztecDiddy5DTEnemy_Reward, lambda l: l.camera and ((l.peanut and l.isdiddy) or l.CanPhase())),
         LocationLogic(Locations.KremKap_AztecDiddy5DTEnemy_SecondSwitch, lambda l: l.camera and ((l.peanut and l.isdiddy) or l.CanPhase())),
+        LocationLogic(Locations.Balloon021, lambda l: l.isdiddy and l.peanut),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda _: True, Transitions.AztecDiddyToMain),
         TransitionFront(Regions.DiddyTempleDeadEndRight, lambda l: (l.peanut and l.isdiddy) or l.CanPhase()),
@@ -303,6 +312,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_AztecLanky5DTEnemy_JoiningPaths, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecLanky5DTEnemy_EndTrap, lambda l: l.camera and ((l.grape and l.islanky) or l.CanPhase())),
         LocationLogic(Locations.KremKap_AztecLanky5DTEnemy_Reward, lambda l: l.camera and ((l.grape and l.islanky) or l.CanPhase())),
+        LocationLogic(Locations.Balloon022, lambda l: l.islanky and l.grape),
     ], [], [
         TransitionFront(Regions.LankyTempleEntrance, lambda _: True),
     ]),
@@ -354,6 +364,8 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_AztecChunky5DTEnemy_SecondRight, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecChunky5DTEnemy_SecondLeft, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecChunky5DTEnemy_Reward, lambda l: l.camera and ((l.pineapple and l.ischunky) or l.CanPhase())),
+        LocationLogic(Locations.Balloon023, lambda l: l.ischunky and l.pineapple),
+        LocationLogic(Locations.Balloon024, lambda l: l.ischunky and l.pineapple),
     ], [], [
         TransitionFront(Regions.ChunkyTempleEntrance, lambda _: True),
     ]),
@@ -371,6 +383,9 @@ LogicRegions = {
         LocationLogic(Locations.AztecLankyLlamaTempleBarrel, lambda l: l.trombone and ((l.handstand and l.islanky) or (l.settings.free_trade_items and ((l.istiny and ((l.twirl and l.monkey_maneuvers) or l.slope_resets)) or l.CanMoonkick()))), MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecBananaFairyLlamaTemple, lambda l: l.camera),
         LocationLogic(Locations.MelonCrate_Location02, lambda _: True),
+        LocationLogic(Locations.Balloon018, lambda l: l.istiny and l.feather and l.swim),  # Swim to grab reward
+        LocationLogic(Locations.Balloon019, lambda l: l.islanky and l.grape and ((Events.AztecLlamaSpit in l.Events and l.swim) or l.CanPhaseswim() or l.CanPhase())),
+        LocationLogic(Locations.Balloon020, lambda l: l.islanky and l.grape and ((Events.AztecLlamaSpit in l.Events and l.swim) or l.CanPhaseswim() or l.CanPhase())),
         LocationLogic(Locations.AztecLlamaEnemy_KongFreeInstrument, lambda _: True),
         LocationLogic(Locations.AztecLlamaEnemy_DinoInstrument, lambda _: True),
         LocationLogic(Locations.AztecLlamaEnemy_Right, lambda _: True),
