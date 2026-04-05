@@ -344,7 +344,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_ForestMainEnemy_NearDarkAttic, lambda l: l.camera),
         LocationLogic(Locations.KremKap_ForestMainEnemy_NearWellExit, lambda l: l.camera),
         LocationLogic(Locations.KremKap_ForestMainEnemy_NearBlueTunnel, lambda l: l.camera),
-        LocationLogic(Locations.Balloon059, lambda l: l.diddy and l.peanut, time=Time.Day),
+        LocationLogic(Locations.Balloon059, lambda l: l.diddy and l.peanut and (l.climbing or l.TimeAccess(Regions.MillArea, Time.Day))),
         LocationLogic(Locations.Balloon061, lambda l: l.donkey and l.coconut),
     ], [
         Event(Events.ForestW1bTagged, lambda _: True),

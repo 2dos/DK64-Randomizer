@@ -359,6 +359,7 @@ def GetAccessibleLocations(
                         kongAccessibleRegions[i].add(regionId)
                 # Check accessibility for each event in this region
                 for event in region.events:
+                    # print(event.__dict__)
                     if event.name not in spoiler.LogicVariables.Events and event.logic(spoiler.LogicVariables):
                         # Add the event if it's not already in the list and its logic is satisfied
                         eventAdded = True
@@ -631,6 +632,7 @@ def VerifyWorld(spoiler: Spoiler) -> bool:
         # Verify some rules
         return VerifyMinimalLogic(spoiler)
     unreachables = GetAccessibleLocations(spoiler, ItemPool.AllItemsUnrestricted(settings), SearchMode.GetUnreachable)
+    # print(unreachables)
     if len(spoiler.cb_placements) == 0:
         unreachables = [
             x

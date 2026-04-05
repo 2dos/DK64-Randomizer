@@ -146,9 +146,10 @@ LogicRegions = {
         TransitionFront(Regions.GalleonBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
-    Regions.LighthouseSnideAlcove: Region("Lighthouse Snide Alcove", HintRegion.Lighthouse, Levels.GloomyGalleon, True, None, [], [
-        Event(Events.GalleonW3bTagged, lambda _: True),
+    Regions.LighthouseSnideAlcove: Region("Lighthouse Snide Alcove", HintRegion.Lighthouse, Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.Balloon051, lambda l: l.tiny and l.feather),
+    ], [
+        Event(Events.GalleonW3bTagged, lambda _: True),
     ], [
         TransitionFront(Regions.LighthouseSurface, lambda _: True),
         TransitionFront(Regions.Snide, lambda l: l.snideAccess),

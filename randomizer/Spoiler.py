@@ -613,6 +613,8 @@ class Spoiler:
             "Junk Items": {},
             "Melon Crates": {},
             "Holdable Objects": {},
+            "Breakable Containers": {},
+            "Balloons": {},
             "Hints": {},
             "Enemy Drops": {},
             "Shop Owners": {},

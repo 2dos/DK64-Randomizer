@@ -60,6 +60,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_CastleMainEnemy_MuseumSteps, lambda l: l.camera),
         LocationLogic(Locations.KremKap_CastleMainEnemy_PathToDungeon, lambda l: l.camera),
         LocationLogic(Locations.KremKap_CastleMainEnemy_NearHeadphones, lambda l: l.camera),
+        LocationLogic(Locations.Balloon082, lambda l: l.diddy and l.peanut),
     ], [
         Event(Events.CastleW1aTagged, lambda _: True),
         Event(Events.CastleW1bTagged, lambda _: True),
@@ -132,6 +133,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleTreeEnemy_StartRoom1, lambda _: True),
         LocationLogic(Locations.KremKap_CastleTreeEnemy_StartRoom0, lambda l: l.camera),
         LocationLogic(Locations.KremKap_CastleTreeEnemy_StartRoom1, lambda l: l.camera),
+        LocationLogic(Locations.Balloon099, lambda l: l.isdonkey and l.coconut),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda _: True, Transitions.CastleTreeToMain),
         TransitionFront(Regions.CastleTreePastPunch, lambda l: (l.punch and l.ischunky) or l.CanPhase()),
@@ -141,6 +143,7 @@ LogicRegions = {
 
     Regions.CastleTreePastPunch: Region("Castle Tree Past Punch", HintRegion.CastleSurroundings, Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleChunkyTree, lambda l: (((l.scope or l.hard_shooting) and l.pineapple and l.ischunky) or l.CanPhase()) and (l.ischunky or l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.Balloon100, lambda l: l.ischunky and l.pineapple),
     ], [], [
         TransitionFront(Regions.CastleTree, lambda _: True),
     ]),
@@ -183,6 +186,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleDiddyBallroom, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleBallroomEnemy_Start, lambda _: True),
         LocationLogic(Locations.KremKap_CastleBallroomEnemy_Start, lambda l: l.camera),
+        LocationLogic(Locations.Balloon083, lambda l: l.diddy and l.peanut),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda _: True, Transitions.CastleBallroomToMain),
         TransitionFront(Regions.MuseumBehindGlass, lambda l: l.monkeyport and l.istiny, Transitions.CastleBallroomToMuseum),
@@ -190,6 +194,7 @@ LogicRegions = {
 
     Regions.MuseumBehindGlass: Region("Museum Behind Glass", HintRegion.CastleRooms, Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleBananaFairyBallroom, lambda l: l.camera),
+        LocationLogic(Locations.Balloon092, lambda l: l.istiny and l.feather),
     ], [], [
         TransitionFront(Regions.Ballroom, lambda l: l.monkeyport and l.istiny, Transitions.CastleMuseumToBallroom),
         TransitionFront(Regions.CastleTinyRace, lambda l: (l.mini and l.istiny) or l.CanPhase(), Transitions.CastleMuseumToCarRace),
@@ -205,6 +210,7 @@ LogicRegions = {
 
     Regions.Tower: Region("Tower", HintRegion.CastleRooms, Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleLankyTower, lambda l: (l.scope or (l.hard_shooting and l.homing)) and l.balloon and l.grape and l.islanky, MinigameType.BonusBarrel),
+        LocationLogic(Locations.Balloon088, lambda l: l.islanky and l.grape),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda _: True, Transitions.CastleTowerToMain),
     ]),
@@ -227,6 +233,7 @@ LogicRegions = {
     Regions.Shed: Region("Shed", HintRegion.CastleSurroundings, Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleChunkyShed, lambda l: (l.punch or l.CanPhase()) and ((l.gorillaGone and l.pineapple) or l.triangle) and l.ischunky),
         LocationLogic(Locations.BreakableCastleShed, lambda l: l.ischunky and l.punch),
+        LocationLogic(Locations.Balloon101, lambda l: l.ischunky and l.pineapple),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda _: True, Transitions.CastleShedToMain),
     ]),
@@ -244,6 +251,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_CastleMuseumEnemy_MainFloor3, lambda l: l.camera),
         LocationLogic(Locations.KremKap_CastleMuseumEnemy_Start, lambda l: l.camera),
         LocationLogic(Locations.HoldableBoulderMuseum, lambda l: l.barrels and l.ischunky and (l.punch or l.CanPhase())),
+        LocationLogic(Locations.Balloon093, lambda l: l.ischunky and l.pineapple),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda _: True, Transitions.CastleMuseumToMain),
         TransitionFront(Regions.MuseumBehindGlass, lambda l: l.CanPhase()),
@@ -296,6 +304,7 @@ LogicRegions = {
     Regions.CryptDonkeyRoom: Region("Crypt Donkey Room", HintRegion.CastleUnderground, Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleCryptEnemy_MinecartEntry, lambda _: True),
         LocationLogic(Locations.KremKap_CastleCryptEnemy_MinecartEntry, lambda l: l.camera),
+        LocationLogic(Locations.Balloon091, lambda l: l.isdonkey and l.coconut),
     ], [], [
         TransitionFront(Regions.Crypt, lambda _: True),
         TransitionFront(Regions.CastleMinecarts, lambda l: (l.grab and l.isdonkey) or l.generalclips or l.CanPhase(), Transitions.CastleCryptToCarts),
@@ -311,6 +320,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_CastleCryptEnemy_DiddyCoffin1, lambda l: l.camera and l.isdiddy and l.charge),
         LocationLogic(Locations.KremKap_CastleCryptEnemy_DiddyCoffin2, lambda l: l.camera and l.isdiddy and l.charge),
         LocationLogic(Locations.KremKap_CastleCryptEnemy_DiddyCoffin3, lambda l: l.camera and l.isdiddy and l.charge),
+        LocationLogic(Locations.Balloon090, lambda l: l.isdiddy and l.peanut and l.charge),
     ], [], [
         TransitionFront(Regions.Crypt, lambda _: True),
     ]),
@@ -345,6 +355,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_CastleMausoleumEnemy_TinyPath, lambda l: l.camera),
         LocationLogic(Locations.KremKap_CastleMausoleumEnemy_LankyPath0, lambda l: l.camera),
         LocationLogic(Locations.KremKap_CastleMausoleumEnemy_LankyPath1, lambda l: l.camera),
+        LocationLogic(Locations.Balloon089, lambda l: l.islanky and l.grape and (l.sprint or l.generalclips or l.CanPhase())),
     ], [], [
         TransitionFront(Regions.LowerCave, lambda _: True, Transitions.CastleMausoleumToLower),
     ]),
@@ -359,6 +370,8 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_CastleUpperCaveEnemy_NearPit, lambda l: l.camera),
         LocationLogic(Locations.KremKap_CastleUpperCaveEnemy_NearEntrance, lambda l: l.camera),
         LocationLogic(Locations.KremKap_CastleUpperCaveEnemy_Pit, lambda l: l.camera),
+        LocationLogic(Locations.Balloon102, lambda l: l.diddy and l.peanut),
+        LocationLogic(Locations.Balloon103, lambda l: l.tiny and l.feather),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda _: True, Transitions.CastleUpperToMain),
         TransitionFront(Regions.CastleWaterfall, lambda _: True, Transitions.CastleUpperToWaterfall),
@@ -370,7 +383,6 @@ LogicRegions = {
     Regions.Dungeon: Region("Dungeon", HintRegion.CastleUnderground, Levels.CreepyCastle, True, None, [
         LocationLogic(Locations.CastleDonkeyDungeon, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or (l.Slam and l.CanPhase())) and l.donkey),
         LocationLogic(Locations.CastleDiddyDungeon, lambda l: (l.CanPhase() and (l.isdiddy or l.settings.free_trade_items)) or (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdiddy and (l.can_use_vines and ((l.scope and l.peanut and l.diddy) or (l.CanMoontail()))))),
-
         LocationLogic(Locations.CastleLankyDungeon, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()) and l.trombone and l.balloon and l.islanky, MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleDungeonEnemy_FaceRoom, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.CanPhase()),
         LocationLogic(Locations.CastleDungeonEnemy_ChairRoom, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdiddy) or l.CanPhase()),
@@ -378,6 +390,11 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_CastleDungeonEnemy_FaceRoom, lambda l: l.camera and ((l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.CanPhase())),
         LocationLogic(Locations.KremKap_CastleDungeonEnemy_ChairRoom, lambda l: l.camera and ((l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdiddy) or l.CanPhase())),
         LocationLogic(Locations.KremKap_CastleDungeonEnemy_OutsideLankyRoom, lambda l: l.camera),
+        LocationLogic(Locations.Balloon094, lambda l: l.isdiddy and l.peanut and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase())),
+        LocationLogic(Locations.Balloon095, lambda l: l.islanky and l.grape and l.trombone and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase())),
+        LocationLogic(Locations.Balloon096, lambda l: l.ischunky and l.pineapple and l.punch),
+        LocationLogic(Locations.Balloon097, lambda l: l.islanky and l.grape and l.trombone and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()) and l.balloon),
+        LocationLogic(Locations.Balloon098, lambda l: l.ischunky and l.pineapple and l.punch),
     ], [], [
         TransitionFront(Regions.UpperCave, lambda _: True, Transitions.CastleDungeonToUpper),
     ]),

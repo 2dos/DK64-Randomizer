@@ -187,6 +187,7 @@ def getObjectModifications(target_map: Maps) -> list:
     """Get list of object modifications that need to be made."""
     obj_modifications = [
         # Static modifications
+        ObjectChange(ObjectTypes.actor, ObjectChangeType.delete, Maps.TestMap, 0x0),
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x1A, obj_type=0xCE),  # Japes starting switch
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.TrainingGrounds, 0x39, obj_type=0xCE),  # TGrounds Switch
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x52, x=1648.095, y=990, z=2431.953),  # Japes Mountain GB
