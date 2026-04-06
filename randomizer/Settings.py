@@ -53,7 +53,7 @@ from randomizer.Lists.Switches import SwitchData
 from randomizer.Patching.Library.Generic import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem, getCompletableBonuses, IsDDMSSelected, MEDAL_PROGRESSIVE_RATIOS
 from randomizer.Patching.CoinPlacer import gen_mayhem_coins
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
-from randomizer.SettingStrings import encrypt_settings_string_enum
+from randomizer.ProtoSerializer import serialize_settings_to_base64, deserialize_settings_from_base64, proto_to_settings
 from randomizer.ShuffleBosses import (
     BossMapList,
     KRoolMaps,
@@ -254,13 +254,8 @@ class Settings:
 
         self.resolve_settings()
 
-        # Generate the settings string - DO THIS LAST because the encryption method alters the form data
-        try:
-            logger = logging.getLogger(__name__)
-            self.settings_string = encrypt_settings_string_enum(form_data)
-            # logger.warning("Using settings string: " + self.settings_string)
-        except Exception as ex:
-            raise Ex.SettingsIncompatibleException("Settings string is in an invalid state. Try applying a preset and recreating your changes.")
+        # Generate the settings string - DO THIS LAST
+        self.settings_string = self.to_proto_string()
 
     def apply_form_data(self, form_data):
         """Convert and apply the provided form data to this class."""
@@ -3388,6 +3383,14 @@ class Settings:
             str: Json string of the dict.
         """
         return json.dumps(self.__dict__)
+
+    def to_proto_string(self):
+        """Export settings as a protobuf-encoded base64 string.
+
+        Returns:
+            str: Base64-encoded protobuf string representing the settings.
+        """
+        return serialize_settings_to_base64(self)
 
     def __setattr__(self, name, value):
         """Set an attributes value but only after verifying our hash."""

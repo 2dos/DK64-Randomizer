@@ -22,7 +22,8 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry._logs import set_logger_provider
 from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
-from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
+from randomizer.Settings import Settings
+from randomizer.ProtoSerializer import serialize_settings_to_base64, deserialize_settings_from_base64, proto_to_settings, settings_to_proto
 from randomizer.Enums.Types import ItemRandoSelector, KeySelector, ItemRandoFillerSelector
 from randomizer.Lists.EnemyTypes import EnemySelector
 from randomizer.Lists.HardMode import HardBossSelector, HardSelector
@@ -136,19 +137,34 @@ def get_selector_info():
 
 @api.route("/convert_settings", methods=["POST"])
 def convert_settings():
-    """Convert settings between JSON and encrypted string formats."""
+    """Convert settings between JSON and protobuf string formats."""
     data = request.get_json()
     if "settings" in data:
         try:
             # Attempt to interpret `settings` as JSON
             settings_json = json.loads(data["settings"])
-            # If successful, encrypt it
-            encrypted = encrypt_settings_string_enum(settings_json)
-            return jsonify({"settings_string": encrypted})
+            # If successful, convert to Settings object and serialize to proto
+            settings_obj = Settings(settings_json)
+            proto_string = settings_obj.to_proto_string()
+            return jsonify({"settings_string": proto_string})
         except json.JSONDecodeError:
-            # If `settings` is not JSON, decrypt it
-            decrypted = decrypt_settings_string_enum(data["settings"])
-            return jsonify(decrypted)
+            # If `settings` is not JSON, deserialize from proto string
+            proto = deserialize_settings_from_base64(data["settings"])
+            # Convert proto to dict for JSON response
+            # The proto has nested structure (item_settings, requirement_settings, etc.)
+            # We need to flatten it to match the form_data structure
+            from google.protobuf.json_format import MessageToDict
+            nested_dict = MessageToDict(proto, preserving_proto_field_name=True)
+            
+            # Flatten the nested structure
+            settings_dict = {}
+            for category_key, category_value in nested_dict.items():
+                if isinstance(category_value, dict):
+                    settings_dict.update(category_value)
+                else:
+                    settings_dict[category_key] = category_value
+            
+            return jsonify(settings_dict)
     else:
         return jsonify({"error": "Invalid data"}), 400
 
@@ -167,11 +183,13 @@ def export_archipelago_yaml():
         game_version = data.get("game_version", "0.6.6")
 
         # Settings should already be a dict from serialize_settings()
-        # Only decrypt if it's actually an encrypted string (starts with valid base64-like chars, not '{')
+        # Only deserialize if it's actually a proto string (not JSON)
         if isinstance(settings_data, str):
-            # Check if it looks like an encrypted string (not JSON)
+            # Check if it looks like a proto string (not JSON)
             if not settings_data.strip().startswith("{"):
-                settings_data = decrypt_settings_string_enum(settings_data)
+                proto = deserialize_settings_from_base64(settings_data)
+                from google.protobuf.json_format import MessageToDict
+                settings_data = MessageToDict(proto, preserving_proto_field_name=True)
             else:
                 # It's a JSON string, parse it
                 settings_data = json.loads(settings_data)
