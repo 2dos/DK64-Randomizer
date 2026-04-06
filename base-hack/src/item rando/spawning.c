@@ -422,6 +422,29 @@ int isValidBalloonObject(int index) {
     return item;
 }
 
+void balloonVisHandler(int cb_flag) {
+    int balloon_offset = *(short*)(0x80688BCE);
+    int index = cb_flag - balloon_offset;
+    int item = isValidBalloonObject(index);
+    if (!item) {
+        return;
+    }
+    enum_bonus_skin skin = getBarrelSkinIndex(item);
+    const sprite_data_struct *sprite = (const sprite_data_struct *)&balloon_sprites[skin];
+    unkSpriteRenderFunc(0x18);
+    unkSpriteRenderFunc_1(1);
+    // if (alpha == 0xFF) {
+        // Is current kong
+        loadSpriteFunction(0x8071EB70);
+        unkSpriteRenderFunc_3(0x226);
+    // } else {
+        // changeActorColor(0xFF, 0xFF, 0xFF, 0x96);
+    // }
+    unkSpriteRenderFunc_2(4);
+    unkSpriteRenderFunc_4(3);
+    displaySpriteAttachedToActor(sprite, 0.8f, CurrentActorPointer_0, 1, 2);
+}
+
 void balloonItemHandler(int flag, int state, flagtypes flag_type) {
     if (!checkFlag(flag, flag_type)) {
         // Doesn't have CBs, give them

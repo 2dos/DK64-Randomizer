@@ -699,3 +699,12 @@ boulderSpinCode:
     boulderSpinCode_spin:
         j 0x8069CC2C
         nop
+
+displayBalloonItem:
+    jal 0x80714c08
+    addiu $a3, $zero, 1
+    lw $a0, 0x34 ($sp)
+    jal balloonVisHandler
+    lh $a0, 0x6 ($a0)
+    j 0x806A79F0
+    nop

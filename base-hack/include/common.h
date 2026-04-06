@@ -27,6 +27,7 @@
 #include "flags.h"
 #include "hooks.h"
 #include "pause.h"
+#include "balloon.h"
 #include "global.h"
 #include "vars.h"
 #include "archipelago.h"

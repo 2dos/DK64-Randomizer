@@ -619,6 +619,11 @@ for skin_type in skins:
             dirt_reward_px[x, y] = (r, g, b, 150 if a > 128 else 0)
     dirt.paste(whole_dirt_resized, (0, 0), whole_dirt_resized)
     dirt.save(f"{disp_dir}dirt_reward_{skin_type}.png")
+    # Handle Balloons
+    balloon = Image.new(mode="RGBA", size=(32, 64))
+    whole_balloon_head_resized = whole.resize((20, 20)).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    balloon.paste(whole_balloon_head_resized, (5, 39), whole_balloon_head_resized)
+    balloon.save(f"{disp_dir}balloon_reward_{skin_type}.png")
     # Resize image to combat stretching
     whole_0 = Image.new(mode="RGBA", size=(BASE_SIZE, BASE_SIZE))
     whole = whole.resize((BASE_SIZE, int(BASE_SIZE * 0.8)))
@@ -1015,6 +1020,10 @@ X_WIDTH = 12
 skin_im = skin_im.crop((X_WIDTH, 0, 32 - X_WIDTH, 32))
 shirt_im.paste(skin_im, (X_WIDTH, 0), skin_im)
 shirt_im.save(f"{disp_dir}disco_shirt_gap.png")
+
+# Kong Bananza
+Image.new(mode="RGBA", size=(32, 32), color="#000000").save(f"{disp_dir}bananza_black.png")
+Image.new(mode="RGBA", size=(32, 32), color="#949494").save(f"{disp_dir}bananza_grey.png")
 
 rmve = [
     "01234.png",

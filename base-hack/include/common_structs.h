@@ -1443,6 +1443,20 @@ typedef struct sprite_data_struct {
 	/* 0x014 */ short images[];
 } sprite_data_struct;
 
+typedef struct sprite_data_struct_single {
+	/* 0x000 */ int unk0;
+	/* 0x004 */ char images_per_frame_horizontal;
+	/* 0x005 */ char images_per_frame_vertical;
+	/* 0x006 */ short codec;
+	/* 0x008 */ int unk8;
+	/* 0x00C */ char unkC;
+	/* 0x00D */ char table;
+	/* 0x00E */ short width;
+	/* 0x010 */ short height;
+	/* 0x012 */ short image_count;
+	/* 0x014 */ short image;
+} sprite_data_struct_single;
+
 typedef struct item_conversion_info {
 	/* 0x000 */ short actor;
 	/* 0x002 */ short model_two;
