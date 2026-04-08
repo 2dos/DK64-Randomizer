@@ -715,3 +715,30 @@ wipeBalloonTexture:
     sh $zero, 0x396 ($v0)
     j 0x80714F44
     lbu $t7, 0x53 ($sp)
+
+spriteLoopHeightCheck0:
+    lh $t7, 0xE ($v0)
+    lhu $a3, 0x396 ($s1)
+    beq $a3, $zero, spriteLoopHeightCheck0_finish
+    nop
+    beq $t5, $zero, spriteLoopHeightCheck0_finish
+    nop
+    addiu $t7, $zero, 32
+
+    spriteLoopHeightCheck0_finish:
+        j 0x80716A44
+        lh $a3, 0xC ($v0)
+
+spriteLoopHeightCheck1:
+    lh $t9, 0xE ($v0)
+    lhu $t8, 0x396 ($s1)
+    beq $t8, $zero, spriteLoopHeightCheck1_finish
+    nop
+    beq $t5, $zero, spriteLoopHeightCheck1_finish
+    nop
+    addiu $t9, $zero, 32
+
+    spriteLoopHeightCheck1_finish:
+        j 0x80716B5C
+        andi $t8, $t7, 0xFFF
+    
