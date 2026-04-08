@@ -449,7 +449,7 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeFunction(ROM_COPY, 0x806A7ACC, Overlay.Static, "balloonItemHandler", offset_dict)
     writeHook(ROM_COPY, 0x806A79E8, Overlay.Static, "displayBalloonItem", offset_dict)
     writeHook(ROM_COPY, 0x80714F3C, Overlay.Static, "wipeBalloonTexture", offset_dict)
-    writeHook(ROM_COPY, 0x80716D8C, Overlay.Static, "spriteRenderLoopHandler", offset_dict)
+    writeFunction(ROM_COPY, 0x80630D5C, Overlay.Static, "balloonVisHandler2", offset_dict)
     writeValue(ROM_COPY, 0x806A7ADC, Overlay.Static, 0, offset_dict, 4)  # Remove displaying HUD
     writeValue(ROM_COPY, 0x806A7AEC, Overlay.Static, 0, offset_dict, 4)  # Remove giving CBs
 

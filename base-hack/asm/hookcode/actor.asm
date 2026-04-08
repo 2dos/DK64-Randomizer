@@ -715,24 +715,3 @@ wipeBalloonTexture:
     sh $zero, 0x396 ($v0)
     j 0x80714F44
     lbu $t7, 0x53 ($sp)
-
-spriteRenderLoopHandler:
-    lh $t3, 0x396 ($s1)  ; Get balloon texture
-    beq $t3, $zero, spriteRenderLoopHandler_finish ; If there is no balloon image, carry on as normal
-    lw $t9, 0x380 ($s1)
-    bne $t5, $zero, spriteRenderLoopHandler_finish ; If it is not the first iteration in the loop, cancel
-    nop
-    addiu $s0, $s0, 8
-    ; Load image texture
-    or $a0, $s0, $zero
-    jal balloonVisHandler2
-    or $a1, $t3, $zero
-    or $s0, $v0, $zero
-    addiu $s0, $s0, -8
-    ; Load variables back up
-    lw $t9, 0x380 ($s1)
-    lw $t5, 0x15C ($sp)
-
-    spriteRenderLoopHandler_finish:
-        j 0x80716d94
-        addiu $t5, $t5, 0x1

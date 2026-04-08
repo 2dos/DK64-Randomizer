@@ -15,3 +15,4 @@
 .definelabel drawRetroSprite, 0x8070F2FC
 .definelabel displayPauseSpriteNumber, 0x806AB808
 .definelabel loadJetpacSprites, 0x80026DC8
+.definelabel writeSpriteToDL, 0x80715E94

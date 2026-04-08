@@ -430,12 +430,17 @@ void balloonVisHandler(sprite_struct * sprite, int cb_flag) {
         return;
     }
     sprite->balloon_image = BALLOON_IMAGE_START + getBarrelSkinIndex(item);
+    sprite->vert_set[1] = sprite->vert_set[0];
 }
 
-Gfx *balloonVisHandler2(Gfx *dl, int image) {
-    void *image_ptr = getMapData(25, image, 0, 0);
-    gDPLoadTextureBlock(dl++, image_ptr, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSP2Triangles(dl++, 0, 1, 3, 0, 0, 2, 3, 0);
+Gfx *balloonVisHandler2(sprite_struct *sprite, Gfx *dl, short unk2) {
+    int old_count = sprite->image_count;
+    if (sprite->balloon_image) {
+        sprite->image[1] = getMapData(25, sprite->balloon_image, 0, 0);
+        sprite->image_count = 2;
+    }
+    dl = writeSpriteToDL(sprite, dl, unk2);
+    sprite->image_count = old_count;
     return dl;
 }
 
