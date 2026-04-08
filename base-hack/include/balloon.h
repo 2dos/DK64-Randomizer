@@ -6,4 +6,4 @@
 	Ballaam
 */
 
-extern const sprite_data_struct_single balloon_sprites[36];
+#define BALLOON_IMAGE_START 6134

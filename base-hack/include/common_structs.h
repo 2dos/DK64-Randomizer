@@ -1419,8 +1419,11 @@ typedef struct sprite_struct {
 	/* 0x36B */ unsigned char green;
 	/* 0x36C */ unsigned char blue;
 	/* 0x36D */ unsigned char alpha;
-	/* 0x36E */ char unk36E[0x384-0x36E];
+	/* 0x36E */ char unk36E[0x380-0x36E];
+	/* 0x380 */ int image_count;
 	/* 0x384 */ float* unk384;
+	/* 0x388 */ char unk_388[0x396-0x388];
+	/* 0x396 */ short balloon_image;
 } sprite_struct;
 
 typedef struct check_struct {

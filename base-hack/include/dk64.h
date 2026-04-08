@@ -109,7 +109,7 @@ extern void removeFromHandState(void* actor, int index);
 extern int playGunSFX(void* actor);
 extern void playTagActorAnimation(void* actor, void* paad, int index);
 extern void alterCutsceneKongProperties(void);
-extern void displaySpriteAttachedToActor(const void* sprite, float scale, void* actor, int bone, int info_type);
+extern sprite_struct *displaySpriteAttachedToActor(const void* sprite, float scale, void* actor, int bone, int info_type);
 extern void spawnCutsceneKongText(int text_index, int text_file, int unk0);
 extern void unkCutsceneKongFunction_0(int unk0, int unk1);
 extern void changeActorColor(const int red, const int green, const int blue, const int alpha);

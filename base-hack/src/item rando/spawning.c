@@ -422,27 +422,21 @@ int isValidBalloonObject(int index) {
     return item;
 }
 
-void balloonVisHandler(int cb_flag) {
+void balloonVisHandler(sprite_struct * sprite, int cb_flag) {
     int balloon_offset = *(short*)(0x80688BCE);
     int index = cb_flag - balloon_offset;
     int item = isValidBalloonObject(index);
     if (!item) {
         return;
     }
-    enum_bonus_skin skin = getBarrelSkinIndex(item);
-    const sprite_data_struct *sprite = (const sprite_data_struct *)&balloon_sprites[skin];
-    unkSpriteRenderFunc(0x18);
-    unkSpriteRenderFunc_1(1);
-    // if (alpha == 0xFF) {
-        // Is current kong
-        loadSpriteFunction(0x8071EB70);
-        unkSpriteRenderFunc_3(0x226);
-    // } else {
-        // changeActorColor(0xFF, 0xFF, 0xFF, 0x96);
-    // }
-    unkSpriteRenderFunc_2(4);
-    unkSpriteRenderFunc_4(3);
-    displaySpriteAttachedToActor(sprite, 0.8f, CurrentActorPointer_0, 1, 2);
+    sprite->balloon_image = BALLOON_IMAGE_START + getBarrelSkinIndex(item);
+}
+
+Gfx *balloonVisHandler2(Gfx *dl, int image) {
+    void *image_ptr = getMapData(25, image, 0, 0);
+    gDPLoadTextureBlock(dl++, image_ptr, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gSP2Triangles(dl++, 0, 1, 3, 0, 0, 2, 3, 0);
+    return dl;
 }
 
 void balloonItemHandler(int flag, int state, flagtypes flag_type) {

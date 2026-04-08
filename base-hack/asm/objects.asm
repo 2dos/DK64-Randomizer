@@ -4,7 +4,6 @@
 .importobj "obj/src_lib.o"
 .importobj "obj/src_lib_items.o"
 .importobj "obj/src_main.o"
-.importobj "obj/src_lib_balloon.o"
 .importobj "obj/src_fixes_cannon_game.o"
 .importobj "obj/src_fixes_spiders.o"
 .importobj "obj/src_fixes_dk_free_softlock.o"

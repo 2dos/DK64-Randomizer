@@ -621,7 +621,7 @@ for skin_type in skins:
     dirt.save(f"{disp_dir}dirt_reward_{skin_type}.png")
     # Handle Balloons
     balloon = Image.new(mode="RGBA", size=(32, 64))
-    whole_balloon_head_resized = whole.resize((20, 20)).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    whole_balloon_head_resized = whole.resize((20, 20)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).transpose(Image.Transpose.FLIP_LEFT_RIGHT)
     balloon.paste(whole_balloon_head_resized, (5, 39), whole_balloon_head_resized)
     balloon.save(f"{disp_dir}balloon_reward_{skin_type}.png")
     # Resize image to combat stretching
