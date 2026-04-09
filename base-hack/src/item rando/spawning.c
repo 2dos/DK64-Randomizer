@@ -431,11 +431,6 @@ void balloonVisHandler(sprite_struct * sprite, int cb_flag) {
     }
     sprite->balloon_image = BALLOON_IMAGE_START + getBarrelSkinIndex(item);
     sprite->vert_set[1] = sprite->vert_set[0];
-    for (int i = 0; i < 4; i++) {
-        sprite->vert_set[1].vert[i].v.ob[1] = (sprite->vert_set[1].vert[i].v.ob[1] >> 1) + 16;
-    }
-    sprite->vert_set[1].vert[2].v.tc[1] = 32 << 5;
-    sprite->vert_set[1].vert[3].v.tc[1] = 32 << 5;
 }
 
 Gfx *balloonVisHandler2(sprite_struct *sprite, Gfx *dl, short unk2) {

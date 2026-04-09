@@ -2666,6 +2666,9 @@ class Settings:
         if Types.FungiTime in self.shuffled_location_types:
             spoiler.LocationList[Locations.TimeLocationDay].inaccessible = True
             spoiler.LocationList[Locations.TimeLocationNight].inaccessible = True
+        if not self.cb_rando_enabled:
+            for loc in (Locations.Balloon084, Locations.Balloon095, Locations.Balloon097):
+                spoiler.LocationList[loc].inaccessible = True
 
         # Designate the Rock GB as a location for the starting kong
         spoiler.LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong
@@ -2679,11 +2682,15 @@ class Settings:
         self.valid_locations[Types.Kong] = self.kong_locations.copy()
         if self.shuffle_items and any(self.shuffled_location_types):
             # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) and Shop Owner Locations - those can only be Kongs and Shop Owners respectively
+            banned_single_locations = []
+            if not self.cb_rando_enabled:
+                banned_single_locations = [Locations.Balloon084, Locations.Balloon095, Locations.Balloon097]
             shuffledLocations = [
                 location
                 for location in spoiler.LocationList
                 if spoiler.LocationList[location].type in self.shuffled_location_types
                 and spoiler.LocationList[location].type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime)
+                and location not in banned_single_locations
             ]
             shuffledLocationsShopOwner = [
                 location
@@ -2885,7 +2892,6 @@ class Settings:
                         Types.CrateItem,
                         Types.BoulderItem,
                         Types.Breakable,
-                        Types.Balloon,
                         Types.Enemies,
                     )
                     and (spoiler.LocationList[x].type != Types.Key or spoiler.LocationList[x].level == Levels.HideoutHelm)

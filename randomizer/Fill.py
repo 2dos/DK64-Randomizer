@@ -2729,6 +2729,9 @@ def Fill(spoiler: Spoiler) -> None:
     for x in range(4):
         if spoiler.LocationList[Locations.ShopOwner_Location00 + x].item is None:
             spoiler.LocationList[Locations.ShopOwner_Location00 + x].PlaceItem(spoiler, Items.NoItem)
+    for loc in (Locations.Balloon084, Locations.Balloon095, Locations.Balloon097):
+        if spoiler.LocationList[loc].item is None:
+            spoiler.LocationList[loc].PlaceItem(spoiler, Items.NoItem)
     if spoiler.LocationList[Locations.TimeLocationDay].item is None:
         spoiler.LocationList[Locations.TimeLocationDay].PlaceItem(spoiler, Items.NoItem)
     if spoiler.LocationList[Locations.TimeLocationNight].item is None:
