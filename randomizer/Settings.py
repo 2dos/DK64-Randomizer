@@ -2563,6 +2563,21 @@ class Settings:
                 is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm) or location.type == Types.Shockwave
         return is_bad
 
+    def getBannedBalloonLocations(self) -> list[Locations]:
+        """Get a list of banned balloon locations based on settings."""
+        if self.cb_rando_enabled:
+            return []
+        return [
+            Locations.Balloon053,  # Lanky Crusher
+            Locations.Balloon054,  # DK Snake Road
+            Locations.Balloon057,  # DK Snake Road
+            Locations.Balloon081,  # DK 5DI
+            Locations.Balloon084,  # Tiny 5DC
+            Locations.Balloon089,  # Lanky Mauso
+            Locations.Balloon095,  # Lanky Dungeon
+            Locations.Balloon097,  # Lanky Dungeon
+        ]
+
     def finalize_world_settings(self, spoiler):
         """Finalize the world state after settings initialization."""
         # Starting Region Randomization
@@ -2666,9 +2681,9 @@ class Settings:
         if Types.FungiTime in self.shuffled_location_types:
             spoiler.LocationList[Locations.TimeLocationDay].inaccessible = True
             spoiler.LocationList[Locations.TimeLocationNight].inaccessible = True
-        if not self.cb_rando_enabled:
-            for loc in (Locations.Balloon084, Locations.Balloon095, Locations.Balloon097):
-                spoiler.LocationList[loc].inaccessible = True
+        banned_blns = self.getBannedBalloonLocations()
+        for loc in banned_blns:
+            spoiler.LocationList[loc].inaccessible = True
 
         # Designate the Rock GB as a location for the starting kong
         spoiler.LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong
@@ -2682,9 +2697,7 @@ class Settings:
         self.valid_locations[Types.Kong] = self.kong_locations.copy()
         if self.shuffle_items and any(self.shuffled_location_types):
             # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) and Shop Owner Locations - those can only be Kongs and Shop Owners respectively
-            banned_single_locations = []
-            if not self.cb_rando_enabled:
-                banned_single_locations = [Locations.Balloon084, Locations.Balloon095, Locations.Balloon097]
+            banned_single_locations = self.getBannedBalloonLocations()
             shuffledLocations = [
                 location
                 for location in spoiler.LocationList
