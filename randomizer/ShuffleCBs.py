@@ -20,10 +20,35 @@ import randomizer.Lists.CBLocations.DKIslesCBLocations
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Types import Types
 from randomizer.Enums.Collectibles import Collectibles
-from randomizer.LogicClasses import Collectible
+from randomizer.Enums.Maps import Maps
+from randomizer.LogicClasses import Collectible, LocationLogic, Balloon
 from randomizer.Patching.Library.Generic import IsItemSelected
 from randomizer.Lists.MapsAndExits import RegionMapList, LevelMapTable
+
+
+def addBalloon(spoiler, balloon: Balloon, enum_val: int, name: str, level: Levels, kong: Kongs):
+    """Add balloon to relevant Logic Region."""
+    level_to_name = {
+        Levels.DKIsles: "Isles",
+        Levels.JungleJapes: "Japes",
+        Levels.AngryAztec: "Aztec",
+        Levels.FranticFactory: "Factory",
+        Levels.GloomyGalleon: "Galleon",
+        Levels.FungiForest: "Forest",
+        Levels.CrystalCaves: "Caves",
+        Levels.CreepyCastle: "Castle",
+    }
+    # Combine base logic (to pop balloon) with item_logic (to reach the item after popping)
+    combined_logic = lambda l: balloon.logic(l) and balloon.item_logic(l)
+    spoiler.RegionList[balloon.region].locations.append(LocationLogic(enum_val, combined_logic))
+    spoiler.LocationList[enum_val].name = f"{level_to_name[level]} Balloon ({name})"
+    spoiler.LocationList[enum_val].default_mapid_data[0].map = balloon.map
+    spoiler.LocationList[enum_val].level = level
+    spoiler.LocationList[enum_val].kong = kong
+
 
 level_data = {
     Levels.JungleJapes: {
@@ -160,6 +185,9 @@ def ShuffleCBs(spoiler):
                     balloon_upper = int(balloon_upper * 1.5)
                     balloon_lower = int(balloon_lower * 1.5)
                 balloon_lst = level_data[level]["balloons"].copy()
+                # Filter out balloons banned when balloon items are shuffled
+                if Types.Balloon in spoiler.settings.shuffled_location_types:
+                    balloon_lst = [b for b in balloon_lst if not b.banned_when_item_rando]
                 selected_balloon_count = min(
                     spoiler.settings.random.randint(min(balloon_lower, balloon_upper), max(balloon_lower, balloon_upper)),
                     len(balloon_lst),
@@ -188,6 +216,20 @@ def ShuffleCBs(spoiler):
                                 }
                             )
                             placed_balloons += 1
+                            # Track balloon for location assignment if balloon items are shuffled
+                            if Types.Balloon in spoiler.settings.shuffled_location_types:
+                                local_map_index = len([x for x in spoiler.balloon_placement if x["map"] == balloon.map])
+                                spoiler.balloon_placement.append(
+                                    {
+                                        "id": balloon.id,
+                                        "name": balloon.name,
+                                        "kong": selected_kong,
+                                        "level": level,
+                                        "map": balloon.map,
+                                        "balloon": balloon,
+                                        "score": (balloon.map * 100) + local_map_index,
+                                    }
+                                )
                             if balloon.region not in spoiler.CollectibleRegions:
                                 spoiler.CollectibleRegions[balloon.region] = []
                             spoiler.CollectibleRegions[balloon.region].append(Collectible(Collectibles.balloon, selected_kong, balloon.logic, None, 1, name=balloon.name))
@@ -301,6 +343,17 @@ def ShuffleCBs(spoiler):
             if not Fill.VerifyWorld(spoiler):
                 raise Ex.CBFillFailureException
             spoiler.cb_placements = cb_data
+            
+            # Assign balloon locations if balloon items are shuffled
+            if Types.Balloon in spoiler.settings.shuffled_location_types:
+                sorted_balloons = spoiler.balloon_placement.copy()
+                sorted_balloons = sorted(sorted_balloons, key=lambda d: d["score"])
+                for balloon_index, balloon_data in enumerate(sorted_balloons):
+                    if balloon_index < 104:  # Hard limit on balloon locations
+                        balloon_data["enum"] = Locations.Balloon000 + balloon_index
+                        addBalloon(spoiler, balloon_data["balloon"], balloon_data["enum"], balloon_data["name"], balloon_data["level"], balloon_data["kong"])
+                        balloon_data["balloon"] = None  # Clear reference
+            
             return
         except Ex.CBFillFailureException:
             if retries >= 10:

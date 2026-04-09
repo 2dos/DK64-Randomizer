@@ -2940,6 +2940,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecOasis,
         logic=lambda l: l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False),
+        item_logic=lambda l: l.strong, # item_logic inherits from logic
         points=[[1380, 190, 735], [1380, 160, 800], [1380, 130, 735], [1380, 160, 670]],
     ),
     Balloon(
@@ -2986,6 +2987,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecOasis,
         points=[[2218, 50, 1087], [2225, 80, 1080], [2230, 110, 1085], [2223, 140, 1092]],
+        banned_when_item_rando=True, # Bans this from being picked when Balloons are in the pool
     ),
     Balloon(
         id=9,
