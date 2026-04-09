@@ -108,6 +108,7 @@ class Spoiler:
         self.location_data = {}
         self.enemy_replacements = []
         self.cb_placements = []
+        self.balloon_placement = []
         self.LogicVariables = LogicVarHolder(self)
         self.RegionList = deepcopy(RegionsOriginal)
         self.CollectibleRegions = deepcopy(CollectibleRegionsOriginal)

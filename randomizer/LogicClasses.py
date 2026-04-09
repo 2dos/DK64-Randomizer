@@ -284,7 +284,9 @@ class Balloon:
         konglist=[],
         region=None,
         logic=None,
+        item_logic=None,
         vanilla=False,
+        banned_when_item_rando=False,
         points=[],
     ) -> None:
         """Initialize with given parameters."""
@@ -299,8 +301,15 @@ class Balloon:
             self.logic = lambda _: True
         else:
             self.logic = logic
+        # item_logic is ADDITIONAL requirements on top of logic for item locations
+        # When balloon is an item location, both logic (to pop) AND item_logic (to reach item) must be satisfied
+        if item_logic is None:
+            self.item_logic = lambda _: True  # No additional requirements
+        else:
+            self.item_logic = item_logic
         self.spawnPoint = self.setSpawnPoint(points)
         self.selected = False
+        self.banned_when_item_rando = banned_when_item_rando  # Set to True for balloons that shouldn't be locations when balloon items are shuffled
 
     def setSpawnPoint(self, points: List[List[int]] = []) -> List[int]:
         """Set the spawn point of a balloon based on its path."""
