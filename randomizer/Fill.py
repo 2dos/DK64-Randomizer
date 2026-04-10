@@ -621,16 +621,15 @@ def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
                 print(f"Placement invalid: Camera is on a fairy location at {data.name} with a krem kap win condition")
                 return False
 
-    # Blasts/Arcade R2 can't contain DK
-    non_dk_locations = [
-        Locations.JapesDonkeyBaboonBlast,
-        Locations.FactoryDonkeyDKArcade,
-        Locations.NintendoCoin,
-    ]
-    for loc in non_dk_locations:
-        if spoiler.LocationList[loc].item == Items.Donkey:
+        # Blasts/Arcade R2 can't contain DK
+        non_dk_locations = [
+            Locations.JapesDonkeyBaboonBlast,
+            Locations.FactoryDonkeyDKArcade,
+            Locations.NintendoCoin,
+        ]
+        if loc in non_dk_locations and data.item == Items.Donkey:
             print("Placement invalid because DK being in a blast-locked location")
-            return False
+            return False            
     return True
 
 

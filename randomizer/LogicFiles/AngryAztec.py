@@ -201,7 +201,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_AztecMainEnemy_Outside5DT, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecMainEnemy_OutsideSnide, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecMainEnemy_NearSnoopTunnel, lambda l: l.camera),
-        LocationLogic(Locations.Balloon056, lambda l: l.donkey and l.coconut),
+        LocationLogic(Locations.Balloon056, lambda l: l.donkey and l.coconut and l.strongKong),
     ], [
         Event(Events.FedTotem, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_5dtemple_switches) or (l.jetpack and l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut and l.diddy)),
         Event(Events.AztecW2bTagged, lambda _: True),
@@ -227,7 +227,7 @@ LogicRegions = {
 
     Regions.AztecDonkeyQuicksandCave: Region("Aztec Donkey Sand Tunnel", HintRegion.AztecTunnels, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecDonkeyQuicksandCave, lambda l: l.isdonkey or l.settings.free_trade_items, MinigameType.BonusBarrel),
-        LocationLogic(Locations.Balloon058, lambda l: l.isdiddy and l.peanut),
+        LocationLogic(Locations.Balloon058, lambda l: l.diddy and l.peanut and l.isdonkey and l.strongKong),
     ], [
         Event(Events.AztecW5bTagged, lambda l: Locations.AztecDonkeyQuicksandCave in l.SpecialLocationsReached),
     ], [
