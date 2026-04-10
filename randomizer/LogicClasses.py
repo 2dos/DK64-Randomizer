@@ -285,6 +285,7 @@ class Balloon:
         region=None,
         logic=None,
         item_logic=None,
+        item_rando_konglist=None,
         vanilla=False,
         banned_when_item_rando=False,
         points=[],
@@ -295,6 +296,8 @@ class Balloon:
         self.map = map_id
         self.speed = speed
         self.kongs = konglist
+        # Override konglist when balloon items are shuffled (if specified)
+        self.item_rando_kongs = item_rando_konglist if item_rando_konglist is not None else konglist
         self.points = points  # 3 numbers: [int x, y, z]
         self.region = region
         if logic is None:
