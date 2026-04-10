@@ -8,6 +8,13 @@ import randomizer.CollectibleLogicFiles.FranticFactory
 import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
+import randomizer.LogicFiles.AngryAztec
+import randomizer.LogicFiles.CreepyCastle
+import randomizer.LogicFiles.CrystalCaves
+import randomizer.LogicFiles.FranticFactory
+import randomizer.LogicFiles.FungiForest
+import randomizer.LogicFiles.GloomyGalleon
+import randomizer.LogicFiles.JungleJapes
 import randomizer.Fill as Fill
 import randomizer.Lists.CBLocations.AngryAztecCBLocations
 import randomizer.Lists.CBLocations.CreepyCastleCBLocations
@@ -48,6 +55,23 @@ def addBalloon(spoiler, balloon: Balloon, enum_val: int, name: str, level: Level
     spoiler.LocationList[enum_val].default_mapid_data[0].map = balloon.map
     spoiler.LocationList[enum_val].level = level
     spoiler.LocationList[enum_val].kong = kong
+
+
+def removeBalloons(spoiler):
+    """Remove all vanilla balloons from Logic regions."""
+    level_logic_regions = [
+        randomizer.LogicFiles.JungleJapes.LogicRegions,
+        randomizer.LogicFiles.AngryAztec.LogicRegions,
+        randomizer.LogicFiles.FranticFactory.LogicRegions,
+        randomizer.LogicFiles.GloomyGalleon.LogicRegions,
+        randomizer.LogicFiles.FungiForest.LogicRegions,
+        randomizer.LogicFiles.CrystalCaves.LogicRegions,
+        randomizer.LogicFiles.CreepyCastle.LogicRegions,
+    ]
+    for level in level_logic_regions:
+        for region in level:
+            region_data = spoiler.RegionList[region]
+            region_data.locations = [x for x in region_data.locations if x.id < Locations.Balloon000 or x.id > Locations.Balloon103]
 
 
 level_data = {
@@ -198,7 +222,11 @@ def ShuffleCBs(spoiler):
                 placed_balloons = 0
                 for balloon in balloon_lst:
                     if placed_balloons < selected_balloon_count:
-                        balloon_kongs = balloon.kongs.copy()
+                        # Use item_rando_kongs if balloon items are shuffled, otherwise use normal kongs
+                        if Types.Balloon in spoiler.settings.shuffled_location_types:
+                            balloon_kongs = balloon.item_rando_kongs.copy()
+                        else:
+                            balloon_kongs = balloon.kongs.copy()
                         for kong in kong_specific_left:
                             if kong_specific_left[kong] < 10 and kong in balloon_kongs:  # Not enough Colored Bananas to place a balloon:
                                 balloon_kongs.remove(kong)  # Remove kong from permitted list
@@ -346,6 +374,8 @@ def ShuffleCBs(spoiler):
             
             # Assign balloon locations if balloon items are shuffled
             if Types.Balloon in spoiler.settings.shuffled_location_types:
+                # Remove vanilla balloon logic before adding custom balloons
+                removeBalloons(spoiler)
                 sorted_balloons = spoiler.balloon_placement.copy()
                 sorted_balloons = sorted(sorted_balloons, key=lambda d: d["score"])
                 for balloon_index, balloon_data in enumerate(sorted_balloons):
