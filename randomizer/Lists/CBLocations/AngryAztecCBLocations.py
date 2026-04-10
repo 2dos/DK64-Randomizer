@@ -2958,7 +2958,7 @@ BalloonList = [
     Balloon(
         id=5,
         map_id=Maps.AngryAztec,
-        name="In Frpnt of Candy",
+        name="In Front of Candy",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecOasis,
