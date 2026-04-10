@@ -48,10 +48,17 @@ def addBalloon(spoiler, balloon: Balloon, enum_val: int, name: str, level: Level
         Levels.CrystalCaves: "Caves",
         Levels.CreepyCastle: "Castle",
     }
+    kong_to_name = {
+        Kongs.donkey: "Donkey",
+        Kongs.diddy: "Diddy",
+        Kongs.lanky: "Lanky",
+        Kongs.tiny: "Tiny",
+        Kongs.chunky: "Chunky",
+    }
     # Combine base logic (to pop balloon) with item_logic (to reach the item after popping)
     combined_logic = lambda l: balloon.logic(l) and balloon.item_logic(l)
     spoiler.RegionList[balloon.region].locations.append(LocationLogic(enum_val, combined_logic))
-    spoiler.LocationList[enum_val].name = f"{level_to_name[level]} Balloon ({name})"
+    spoiler.LocationList[enum_val].name = f"{level_to_name[level]} {kong_to_name[kong]} Balloon ({name})"
     spoiler.LocationList[enum_val].default_mapid_data[0].map = balloon.map
     spoiler.LocationList[enum_val].level = level
     spoiler.LocationList[enum_val].kong = kong
