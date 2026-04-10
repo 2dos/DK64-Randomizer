@@ -746,11 +746,13 @@ def compileHints(spoiler: Spoiler) -> bool:
     if hintset.expectedDistribution[HintType.RequiredSlamHint] > 0:
         # If we're using hint doors, put it on a random hint door
         hint_location = hintset.getRandomHintLocation(random=spoiler.settings.random)
-        # If we're using progressive hints, put it on the last hint
-        if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
-            hint_location = [hint for hint in hintset.hints if hint.level == Levels.CreepyCastle and hint.kong == Kongs.chunky][0]
-            if hint_location.hint_type == HintType.Plando:
-                hint_location = hintset.getRandomHintLocation(random=spoiler.settings.random)
+
+        # # If we're using progressive hints, put it on the last hint -- DEPRECATED: Many settings need the slam hint sooner than the last hint
+        # if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
+        #     hint_location = [hint for hint in hintset.hints if hint.level == Levels.CreepyCastle and hint.kong == Kongs.chunky][0]
+        #     if hint_location.hint_type == HintType.Plando:
+        #         hint_location = hintset.getRandomHintLocation(random=spoiler.settings.random)
+
         # If hint_location is none, then there's no room for the slam hint. This is very likely plando's fault and intentionally done.
         if hint_location is not None:
             # Loop through locations looking for the slams - from prior calculations we can guarantee there are at least two in non-starting move locations
