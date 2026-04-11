@@ -531,6 +531,16 @@ int cc_allower_time(void) {
     return 1;
 }
 
+int cc_allower_helmtimer(void) {
+    return HelmTimerShown ^ 1;
+}
+
+int cc_enabler_helmtimer(void) {
+    initHelmTimer();
+    HelmStartTime = 600; // 10 minutes
+    return 1;
+}
+
 typedef struct water_height_struct {
     /* 0x000 */ short map;
     /* 0x002 */ short default_height;
@@ -598,6 +608,9 @@ ROM_RODATA_NUM static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enabler_time, .allower=&cc_allower_time, .auto_disable=1}, // Toggle Time of Day
     {.enabler = &cc_enabler_water, .allower=&cc_allower_water, .auto_disable=1}, // Randomize Water Level
     {.enabler = &cc_enabler_crate, .allower=&cc_allower_crate, .auto_disable=1}, // Spawn Pushable Crate
+    {.enabler = &cc_enabler_helmtimer, .allower=&cc_allower_helmtimer, .auto_disable=1}, // Start Helm Timer
+    {.restart_upon_map_entry = 0}, // Disable Climbing
+    {.restart_upon_map_entry = 0}, // Disable Ledge Grabs
 };
 
 void cc_effect_handler(void) {

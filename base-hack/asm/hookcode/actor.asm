@@ -715,4 +715,3 @@ wipeBalloonTexture:
     sh $zero, 0x396 ($v0)
     j 0x80714F44
     lbu $t7, 0x53 ($sp)
-    
