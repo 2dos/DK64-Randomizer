@@ -1155,16 +1155,12 @@ if baseclasses_loaded:
         def get_archipelago_item_type_by_classification(self, item_classification: ItemClassification) -> DK64RItems:
             """Get the appropriate DK64R Archipelago item type based on the ItemClassification."""
             if item_classification & ItemClassification.progression:
-                print("Progression")
                 return DK64RItems.ArchipelagoItem
             elif item_classification & ItemClassification.useful:
-                print("Useful")
                 return DK64RItems.SpecialArchipelagoItem
             elif item_classification & ItemClassification.trap:
-                print("Trap")
                 return DK64RItems.TrapArchipelagoItem
             else:
-                print("Filler")
                 return DK64RItems.ArchipelagoItem.FoolsArchipelagoItem
 
         def generate_output(self, output_directory: str):
