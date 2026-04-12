@@ -1996,7 +1996,7 @@ BalloonList = [
     Balloon(
         id=5,
         map_id=Maps.JungleJapes,
-        name="First tunnel 1 (gate side)",
+        name="Gate side Peanut Tunnel",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesStart,
@@ -2005,7 +2005,7 @@ BalloonList = [
     Balloon(
         id=6,
         map_id=Maps.JungleJapes,
-        name="First tunnel 2 (main area side)",
+        name="Main Area Side Peanut Tunnel",
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesStart,
@@ -2027,6 +2027,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
+        item_logic=lambda l: (l.handstand and l.lanky) or (l.twirl and l.tiny and l.climbing) or l.CanMoonkick() or l.CanSkew(True) or l.CanSkew(False) or l.slope_resets,
         points=[[575, 540, 1958], [560, 540, 1800]],
     ),
     Balloon(
@@ -2035,13 +2036,14 @@ BalloonList = [
         name="Over river by middle switch",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        item_logic=lambda l: l.swim,
         region=Regions.JungleJapesStart,
         points=[[1460, 470, 2120], [1475, 340, 2105]],
     ),
     Balloon(
         id=10,
         map_id=Maps.JungleJapes,
-        name="T&S portal above Diddy BP",
+        name="TnS Alcove",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesTnSAlcove,
@@ -2050,7 +2052,7 @@ BalloonList = [
     Balloon(
         id=11,
         map_id=Maps.JungleJapes,
-        name="Around mountain",
+        name="Around Diddy mountain",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesHillTop,
@@ -2076,7 +2078,7 @@ BalloonList = [
     Balloon(
         id=13,
         map_id=Maps.JungleJapes,
-        name="Funky's Armory",
+        name="Lower Hillside Shop",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesHillTop,
@@ -2094,7 +2096,7 @@ BalloonList = [
     Balloon(
         id=15,
         map_id=Maps.JungleJapes,
-        name="Tunnel near DK BP",
+        name="Lower Hive Tunnel",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate1,
@@ -2103,7 +2105,7 @@ BalloonList = [
     Balloon(
         id=16,
         map_id=Maps.JungleJapes,
-        name="Tunnel near Tiny BP",
+        name="Upper Hive Tunnel",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate1,
@@ -2119,9 +2121,10 @@ BalloonList = [
     Balloon(
         id=17,
         map_id=Maps.JungleJapes,
-        name="Near high W2 above river",
+        name="Near Diddy Mountain above river",
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        item_logic=lambda l: l.swim,
         region=Regions.JapesHillTop,
         points=[[1350, 900, 1950], [1650, 900, 1900]],
     ),
@@ -2131,6 +2134,7 @@ BalloonList = [
         name="Above river by tag barrel",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        item_logic=lambda l: l.swim,
         region=Regions.JungleJapesStart,
         points=[[1190, 375, 1592], [1350, 385, 1745], [1505, 380, 1705]],
     ),
@@ -2140,6 +2144,7 @@ BalloonList = [
         name="Over river by big vine",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        item_logic=lambda l: l.swim,
         region=Regions.JungleJapesMain,
         points=[[2235, 355, 1825], [2089, 350, 1675], [1900, 360, 1720]],
     ),
@@ -2173,7 +2178,7 @@ BalloonList = [
     Balloon(
         id=23,
         map_id=Maps.JungleJapes,
-        name="Above vines next to BBlast",
+        name="Above vines next to Baboon Blast",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBlastPadPlatform,
@@ -2207,7 +2212,7 @@ BalloonList = [
     Balloon(
         id=26,
         map_id=Maps.JungleJapes,
-        name="Above hole by Diddy BP (BP side)",
+        name="Above Stormy Tunnel Pit (Painting Side)",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
@@ -2216,7 +2221,7 @@ BalloonList = [
     Balloon(
         id=27,
         map_id=Maps.JungleJapes,
-        name="Above hole by Diddy BP (wall side)",
+        name="Above Stormy Tunnel Pit (wall side)",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
@@ -2225,7 +2230,7 @@ BalloonList = [
     Balloon(
         id=28,
         map_id=Maps.JungleJapes,
-        name="Between beaver and rambi door",
+        name="Near Stormy Tunnel Rambi Gate",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
@@ -2234,7 +2239,7 @@ BalloonList = [
     Balloon(
         id=29,
         map_id=Maps.JungleJapes,
-        name="Above slope to Cranky",
+        name="Above slope to Stormy Area Shop",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
@@ -2243,7 +2248,7 @@ BalloonList = [
     Balloon(
         id=30,
         map_id=Maps.JapesTinyHive,
-        name="Around final room",
+        name="Hive: Around final room",
         speed=4,
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
@@ -2260,7 +2265,7 @@ BalloonList = [
     Balloon(
         id=31,
         map_id=Maps.JapesMountain,
-        name="First room above river",
+        name="Diddy Mountain: First room above river",
         speed=3,
         konglist=[Kongs.diddy],
         region=Regions.Mine,
@@ -2274,6 +2279,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesCatacomb,
         points=[[970, 85, 545], [1078, 80, 981], [809, 80, 722]],
+        banned_when_item_rando=True, # Over Pit
     ),
     Balloon(
         id=33,
@@ -2283,11 +2289,12 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesCatacomb,
         points=[[737, 80, 549], [735, 80, 690], [857, 60, 888]],
+        banned_when_item_rando=True, # Over Pit
     ),
     Balloon(
         id=34,
         map_id=Maps.JapesMountain,
-        name="In conveyor room (Diddy)",
+        name="Diddy Mountain: In conveyor room",
         speed=3,
         konglist=[Kongs.diddy],
         region=Regions.Mine,
@@ -2298,7 +2305,7 @@ BalloonList = [
     Balloon(
         id=35,
         map_id=Maps.JungleJapes,
-        name="In first cave (Diddy)",
+        name="Around Peanut Cave",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondPeanutGate,
@@ -2308,7 +2315,7 @@ BalloonList = [
     Balloon(
         id=36,
         map_id=Maps.JungleJapes,
-        name="In front of Snide's (Donkey)",
+        name="In front of Upper Hillside Shop",
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesHillTop,
@@ -2318,7 +2325,7 @@ BalloonList = [
     Balloon(
         id=37,
         map_id=Maps.JungleJapes,
-        name="In boulder cave 1 (Chunky)",
+        name="In boulder cave (1)",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondRambiGate,
@@ -2328,7 +2335,7 @@ BalloonList = [
     Balloon(
         id=38,
         map_id=Maps.JungleJapes,
-        name="Behind Rambi hut (Lanky)",
+        name="Behind Lanky Rambi hut",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
@@ -2338,7 +2345,7 @@ BalloonList = [
     Balloon(
         id=39,
         map_id=Maps.JungleJapes,
-        name="Above mountain (Diddy)",
+        name="Above mountain",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesTopOfMountain,
@@ -2348,7 +2355,7 @@ BalloonList = [
     Balloon(
         id=40,
         map_id=Maps.JungleJapes,
-        name="Under baboon blast pad (Donkey)",
+        name="Under baboon blast pad",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesStart,
@@ -2358,7 +2365,7 @@ BalloonList = [
     Balloon(
         id=41,
         map_id=Maps.JungleJapes,
-        name="In front of Cranky (Donkey)",
+        name="In front of Stormy Shop",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
@@ -2368,7 +2375,7 @@ BalloonList = [
     Balloon(
         id=42,
         map_id=Maps.JungleJapes,
-        name="Behind Rambi hut (Tiny)",
+        name="Behind Tiny Rambi hut",
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
@@ -2378,17 +2385,18 @@ BalloonList = [
     Balloon(
         id=43,
         map_id=Maps.JungleJapes,
-        name="In fairy room (Tiny)",
+        name="In Rambi Pool",
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondRambiGate,
+        item_logic=lambda l: l.swim,
         vanilla=True,
         points=[[339, 278, 2869], [400, 274, 2784], [506, 270, 2712]],
     ),
     Balloon(
         id=44,
         map_id=Maps.JungleJapes,
-        name="In boulder cave 2 (Chunky)",
+        name="In boulder cave (2)",
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondRambiGate,
@@ -2398,7 +2406,7 @@ BalloonList = [
     Balloon(
         id=45,
         map_id=Maps.JungleJapes,
-        name="In boulder cave 3 (Chunky)",
+        name="In boulder cave (3)",
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondRambiGate,
@@ -2408,7 +2416,7 @@ BalloonList = [
     Balloon(
         id=46,
         map_id=Maps.JungleJapes,
-        name="In Lanky blueprint room (Lanky)",
+        name="In Stormy Bonus room",
         speed=3,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
@@ -2418,7 +2426,7 @@ BalloonList = [
     Balloon(
         id=47,
         map_id=Maps.JapesTinyHive,
-        name="In first room (Tiny)",
+        name="Hive: In first room",
         speed=2,
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
@@ -2428,7 +2436,7 @@ BalloonList = [
     Balloon(
         id=48,
         map_id=Maps.JapesLankyCave,
-        name="In painting room (Lanky)",
+        name="Painting Room: Above Entrance",
         speed=3,
         konglist=[Kongs.lanky, Kongs.tiny],
         region=Regions.JapesLankyCave,
@@ -2457,7 +2465,7 @@ BalloonList = [
     Balloon(
         id=51,
         map_id=Maps.JungleJapes,
-        name="Hive tunnel coconut switch",
+        name="Hive tunnel Free Kong Switch",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesStart,
@@ -2466,16 +2474,17 @@ BalloonList = [
     Balloon(
         id=52,
         map_id=Maps.JungleJapes,
-        name="Above the river near Funky",
+        name="Above the river near Lower Hillside Shop",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        item_logic=lambda l: l.swim,
         region=Regions.JapesHill,
         points=[[2221, 609, 1880], [2113, 565, 1826], [2157, 777, 1898]],
     ),
     Balloon(
         id=53,
         map_id=Maps.JungleJapes,
-        name="Hillside coconut switch",
+        name="Hillside Free Kong Switch",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesMain,
@@ -2502,7 +2511,7 @@ BalloonList = [
     Balloon(
         id=56,
         map_id=Maps.JungleJapes,
-        name="Up high near Snide",
+        name="Up high near Upper Hillside Shop",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesHillTop,
@@ -2520,7 +2529,7 @@ BalloonList = [
     Balloon(
         id=58,
         map_id=Maps.JungleJapes,
-        name="Stormy tunnel towards Cranky",
+        name="Stormy tunnel towards Shop",
         speed=10,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
@@ -2556,7 +2565,7 @@ BalloonList = [
     Balloon(
         id=62,
         map_id=Maps.JapesMountain,
-        name="Little tunnel",
+        name="Mountain: Little tunnel",
         speed=5,
         konglist=[Kongs.diddy],
         region=Regions.Mine,
@@ -2565,7 +2574,7 @@ BalloonList = [
     Balloon(
         id=63,
         map_id=Maps.JapesMountain,
-        name="Around post under the minecart track",
+        name="Mountain: Around post under the minecart track",
         speed=10,
         konglist=[Kongs.diddy],
         region=Regions.Mine,
@@ -2574,7 +2583,7 @@ BalloonList = [
     Balloon(
         id=64,
         map_id=Maps.JapesLankyCave,
-        name="Around the painting",
+        name="Painting Room: Around the painting",
         speed=7,
         konglist=[Kongs.lanky, Kongs.tiny],
         region=Regions.JapesLankyCave,
@@ -2583,7 +2592,7 @@ BalloonList = [
     Balloon(
         id=65,
         map_id=Maps.JapesTinyHive,
-        name="Second room",
+        name="Hive: Second room",
         speed=7,
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
