@@ -1,6 +1,8 @@
 """All code associated with colorblind mode."""
 
 import gzip
+import js
+from io import BytesIO
 from randomizer.Settings import ColorblindMode
 from randomizer.Patching.Library.Image import (
     getRGBFromHash,
@@ -19,6 +21,7 @@ from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, g
 from randomizer.Patching.Library.ASM import getROMAddress, populateOverlayOffsets
 from randomizer.Patching.Patcher import ROM
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Types import Types
 from PIL import ImageEnhance, Image
 
 
@@ -846,3 +849,25 @@ def recolorHintItem(mode: ColorblindMode, ROM_COPY: ROM):
         color = getKongItemColor(mode, kong)
         im = Image.new("RGBA", (32, 32), color)
         writeColorImageToROM(im, 25, texture, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+
+BALLOON_START = [5835, 5827, 5843, 5851, 5819]
+def addBalloonBulb(settings, ROM_COPY, mode: ColorblindMode):
+    """Add the bulb portion of the balloon to not include the colored banana icon."""
+    if Types.Balloon not in settings.shuffled_location_types:
+        return
+    for kong in range(5):
+        color = getKongItemColor(mode, kong, True)
+        bulb_image = Image.open(BytesIO(js.getFile("base-hack/assets/displays/balloon_bulb.png")))
+        w, h = bulb_image.size
+        px = bulb_image.load()
+        for y in range(h):
+            for x in range(w):
+                r, g, b, a = px[x, y]
+                r = int(r * (color[0] / 0xFF))
+                g = int(g * (color[1] / 0xFF))
+                b = int(b * (color[2] / 0xFF))
+                px[x, y] = (r, g, b, a)
+        for offset in range(8):
+            balloon_im = getImageFile(ROM_COPY, 25, BALLOON_START[kong] + offset, True, 32, 64, TextureFormat.RGBA5551)
+            balloon_im.paste(bulb_image, (0, 34), bulb_image)
+            writeColorImageToROM(balloon_im, 25, BALLOON_START[kong] + offset, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)

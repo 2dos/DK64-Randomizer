@@ -425,6 +425,10 @@ extern void TSSpeed(void);
 extern void TSDrop(void);
 
 extern int isTimeOfDay(int is_night);
+extern int shouldDeleteBalloon(int cb_flag, flagtypes flag_type);
+extern void balloonItemHandler(int flag, int state, flagtypes flag_type);
+extern void balloonVisHandler(sprite_struct * sprite, int cb_flag);
+extern Gfx *balloonVisHandler2(sprite_struct *sprite, Gfx *dl, short unk2);
 
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];

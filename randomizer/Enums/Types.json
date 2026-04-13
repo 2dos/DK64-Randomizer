@@ -349,6 +349,14 @@
             "is_check": true
         },
         {
+            "name": "Balloons",
+            "value": "balloon",
+            "tooltip": "Popping Balloons will spawn items.",
+            "check_count": 104,
+            "item_count": 0,
+            "is_check": true
+        },
+        {
             "name": "Enemy Drops",
             "value": "enemies",
             "tooltip": "Killing enemies that produce sparkles spawns items.",
@@ -379,6 +387,15 @@
             "value": "dummyitem_breakable",
             "tooltip": "Breaking certain containers will spawn items.",
             "check_count": 24,
+            "item_count": 0,
+            "is_check": false,
+            "is_dummy": true
+        },
+        {
+            "name": "Balloons",
+            "value": "dummyitem_balloon",
+            "tooltip": "Popping balloons will spawn items.",
+            "check_count": 104,
             "item_count": 0,
             "is_check": false,
             "is_dummy": true

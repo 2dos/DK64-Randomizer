@@ -259,6 +259,7 @@ ItemList = {
     Items.HalfMedal: Item("Half Medal", False, Types.HalfMedal, Kongs.any),
     Items.BoulderItem: Item("Boulder Drop", False, Types.BoulderItem, Kongs.any),
     Items.Breakable: Item("Breakable Container Drop", False, Types.Breakable, Kongs.any),
+    Items.Balloon: Item("Balloon Drop", False, Types.Balloon, Kongs.any),
     Items.EnemyItem: Item("Enemy Item", False, Types.Enemies, Kongs.any),
     Items.Cranky: Item("Cranky", True, Types.Cranky, Kongs.any),
     Items.Funky: Item("Funky", True, Types.Funky, Kongs.any),

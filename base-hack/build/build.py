@@ -576,6 +576,24 @@ file_dict = [
         target_size=32 * 32 * 2,
     ),
     File(
+        name="Kong Black Fur",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.KongBananzaBlack),
+        source_file="assets/displays/bananza_black.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+        target_size=32 * 32 * 2,
+    ),
+    File(
+        name="Kong Grey Skin",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.KongBananzaGrey),
+        source_file="assets/displays/bananza_grey.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+        target_size=32 * 32 * 2,
+    ),
+    File(
         name="Bandit Image 0",
         pointer_table_index=TableNames.TexturesGeometry,
         file_index=getBonusSkinOffset(ExtraTextures.BanditImage0),
@@ -1613,6 +1631,15 @@ for bi, b in enumerate(barrel_skins):
             texture_format=TextureFormat.RGBA5551,
         )
     )
+    file_dict.append(
+        File(
+            name=f"Balloon Item Skin ({b.capitalize()})",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=6026 + (3 * len(barrel_skins)) + bi,
+            source_file=f"assets/displays/balloon_reward_{b}.png",
+            texture_format=TextureFormat.RGBA5551,
+        )
+    )
 
 shrinkModel(False, "", 0xAE, 0.15, "shrink_crown.bin", False)  # Battle Crown
 shrinkModel(False, "", 0xA4, 0.1, "shrink_key.bin", False)  # Boss Key
@@ -1669,6 +1696,7 @@ model_changes = [
     ModelChange(5, "lanky_base.bin"),
     ModelChange(6, "lanky_ins.bin"),
     ModelChange(3, "dk_base.bin"),
+    # ModelChange(3, "bananza_donkey.bin"),
     ModelChange(8, "tiny_base.bin"),
     ModelChange(9, "tiny_ins.bin"),
     ModelChange(0x8F, "reel0.bin"),
@@ -2224,7 +2252,7 @@ for x in file_dict:
 
 with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
-    clampCompressedTextures(fh, 6300)
+    clampCompressedTextures(fh, getBonusSkinOffset(len(ExtraTextures)))
     new_ptr_6_unc_size = len(comptext_files)
     print(f" - Expanding pointer table {TableNames.Unknown6} from 0 bytes to {4 * new_ptr_6_unc_size} bytes")
     data = []
@@ -2780,7 +2808,7 @@ with open(newROMName, "r+b") as fh:
         displays.append(f"facepuzzle_{hex(0xD71 + x)}")
         displays.append(f"dupepuzzle_{hex(0xD71 + x)}")
     for b in barrel_skins:
-        displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}", f"shop_{b}"])
+        displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}", f"shop_{b}", f"balloon_reward_{b}"])
     for disp in displays:
         for ext in [".png", ".rgba32", ".rgba5551"]:
             other_remove.append(f"displays/{disp}{ext}")

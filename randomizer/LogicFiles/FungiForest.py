@@ -107,7 +107,9 @@ LogicRegions = {
         TransitionFront(Regions.CrankyForest, lambda l: l.crankyAccess),
     ]),
 
-    Regions.MushroomLower: Region("Mushroom Lower", HintRegion.MushroomInterior, Levels.FungiForest, True, None, [], [
+    Regions.MushroomLower: Region("Mushroom Lower", HintRegion.MushroomInterior, Levels.FungiForest, True, None, [
+        LocationLogic(Locations.Balloon068, lambda l: l.lanky and l.grape),
+    ], [
         Event(Events.MushroomCannonsSpawned, lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple
               and l.donkey and l.diddy and l.lanky and l.tiny and l.chunky and l.cannons),
         Event(Events.DonkeyMushroomSwitch, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.donkey)
@@ -146,6 +148,7 @@ LogicRegions = {
 
     Regions.MushroomLowerExterior: Region("Mushroom Lower Exterior", HintRegion.MushroomExterior, Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestKasplatLowerMushroomExterior, lambda l: not l.settings.kasplat_rando),
+        LocationLogic(Locations.Balloon060, lambda l: l.istiny and l.feather),
     ], [], [
         TransitionFront(Regions.GiantMushroomArea, lambda _: True),
         TransitionFront(Regions.MushroomBlastLevelExterior, lambda l: l.climbing),
@@ -187,6 +190,7 @@ LogicRegions = {
 
     Regions.MushroomUpper: Region("Mushroom Upper", HintRegion.MushroomInterior, Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestDonkeyMushroomCannons, lambda l: Events.MushroomCannonsSpawned in l.Events and Events.DonkeyMushroomSwitch in l.Events),
+        LocationLogic(Locations.Balloon067, lambda l: l.lanky and l.grape),
     ], [], [
         TransitionFront(Regions.MushroomUpperVineFloor, lambda _: True),
         TransitionFront(Regions.MushroomUpperExterior, lambda _: True, Transitions.ForestUpperMushroomToUpperExterior),
@@ -201,6 +205,7 @@ LogicRegions = {
 
     Regions.MushroomNightExterior: Region("Mushroom Night Exterior", HintRegion.MushroomExterior, Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestKasplatUpperMushroomExterior, lambda l: not l.settings.kasplat_rando),
+        LocationLogic(Locations.Balloon062, lambda l: l.ischunky and l.pineapple),
     ], [], [
         TransitionFront(Regions.MushroomNightDoor, lambda _: True, Transitions.ForestExteriorToNight, time=Time.Night),
         TransitionFront(Regions.GiantMushroomArea, lambda _: True),
@@ -241,6 +246,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestChunkyFacePuzzle, lambda l: l.pineapple and l.CanSlamSwitch(Levels.FungiForest, 2) and l.ischunky),
         LocationLogic(Locations.ForestFacePuzzleEnemy_Enemy, lambda _: True),
         LocationLogic(Locations.KremKap_ForestFacePuzzleEnemy_Enemy, lambda l: l.camera),
+        LocationLogic(Locations.Balloon069, lambda l: l.ischunky and l.pineapple),
     ], [], [
         TransitionFront(Regions.MushroomUpperExterior, lambda _: True, Transitions.ForestChunkyToExterior),
     ]),
@@ -338,6 +344,8 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_ForestMainEnemy_NearDarkAttic, lambda l: l.camera),
         LocationLogic(Locations.KremKap_ForestMainEnemy_NearWellExit, lambda l: l.camera),
         LocationLogic(Locations.KremKap_ForestMainEnemy_NearBlueTunnel, lambda l: l.camera),
+        LocationLogic(Locations.Balloon059, lambda l: l.diddy and l.peanut and (l.climbing or l.TimeAccess(Regions.MillArea, Time.Day))),
+        LocationLogic(Locations.Balloon061, lambda l: l.donkey and l.coconut),
     ], [
         Event(Events.ForestW1bTagged, lambda _: True),
     ], [
@@ -385,6 +393,7 @@ LogicRegions = {
         LocationLogic(Locations.HoldableKegMillFrontFar, lambda l: l.barrels and l.ischunky),
         LocationLogic(Locations.HoldableKegMillFrontNear, lambda l: l.barrels and l.ischunky),
         LocationLogic(Locations.BreakableForestMillFront, lambda l: l.Slam),
+        LocationLogic(Locations.Balloon066, lambda l: l.isdonkey and l.coconut and l.Slam and l.CanSlamSwitch(Levels.FungiForest, 2)),
     ], [
         Event(Events.ConveyorActivated, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.CanPhase() or l.generalclips) and l.grab and l.donkey),
     ], [
@@ -402,6 +411,7 @@ LogicRegions = {
     Regions.WinchRoom: Region("Winch Room", HintRegion.Mills, Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestWinchEnemy_Enemy, lambda _: True),
         LocationLogic(Locations.KremKap_ForestWinchEnemy_Enemy, lambda l: l.camera),
+        LocationLogic(Locations.Balloon065, lambda l: l.isdiddy and l.peanut),
     ], [
         Event(Events.WinchRaised, lambda l: l.peanut and l.charge and l.isdiddy),
     ], [
@@ -425,6 +435,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_ForestMainEnemy_Thornvine1, lambda l: l.camera),
         LocationLogic(Locations.KremKap_ForestMainEnemy_Thornvine2, lambda l: l.camera),
         LocationLogic(Locations.KremKap_ForestMainEnemy_ThornvineEntrance, lambda l: l.camera),
+        LocationLogic(Locations.Balloon063, lambda l: l.tiny and l.feather),
     ], [], [
         TransitionFront(Regions.MillArea, lambda _: True, time=Time.Night),
         TransitionFront(Regions.ThornvineBarn, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.isdonkey and l.strongKong) or l.CanPhase(), Transitions.ForestMainToBarn),

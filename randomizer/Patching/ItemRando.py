@@ -1112,6 +1112,16 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                             ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
                         else:
                             raise Exception("Melon Crate Item Placement Error")
+                    elif item.old_item == Types.Balloon:
+                        index = item.location - Locations.Balloon000
+                        if index < 104:
+                            addr = getItemTableWriteAddress(ROM_COPY, Types.Balloon, index, offset_dict)
+                            ROM_COPY.seek(addr)
+                            ROM_COPY.writeMultipleBytes(actor_index, 2)
+                            ROM_COPY.writeMultipleBytes(item_properties.level, 1)
+                            ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
+                        else:
+                            raise Exception("Melon Crate Item Placement Error")
                     elif item.old_item == Types.Enemies:
                         index = item.location - Locations.JapesMainEnemy_Start
                         ROM_COPY.seek(POINTER_ROM_ENEMIES + (index * 8))

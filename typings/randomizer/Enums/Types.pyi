@@ -51,6 +51,7 @@ class Types(IntEnum):
     FungiTime = 48
     Cannons = 49
     Breakable = 50
+    Balloon = 51
 
 class BarrierItems(IntEnum):
     Nothing = 0

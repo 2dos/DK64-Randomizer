@@ -339,6 +339,8 @@ export enum ItemRandoListSelected {
     fungitime = 49,
     breakable = 50,
     dummyitem_breakable = 51,
+    balloon = 52,
+    dummyitem_balloon = 53,
 }
 
 export enum ItemRandoFiller {

@@ -176,7 +176,7 @@ def saveUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to a save file."""
     # Files
     balloon_patch_count = 150
-    static_expansion = 0x140
+    static_expansion = 424
     if settings.enemy_drop_rando:
         static_expansion += 428  # Total Enemies
     expandSaveFile(ROM_COPY, static_expansion, balloon_patch_count, offset_dict, settings)

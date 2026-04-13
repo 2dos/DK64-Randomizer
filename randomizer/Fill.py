@@ -359,6 +359,7 @@ def GetAccessibleLocations(
                         kongAccessibleRegions[i].add(regionId)
                 # Check accessibility for each event in this region
                 for event in region.events:
+                    # print(event.__dict__)
                     if event.name not in spoiler.LogicVariables.Events and event.logic(spoiler.LogicVariables):
                         # Add the event if it's not already in the list and its logic is satisfied
                         eventAdded = True
@@ -603,22 +604,32 @@ def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
                 print(f"Placement invalid: {kong_items[data.kong].name} is locked behind their own shop at {data.name}")
                 return False
 
-        # Kongs cannot be on their own banana medal or half-medal locations
-        if data.type in (Types.Medal, Types.HalfMedal) and data.kong < 5:
+        # Kongs cannot be on their own banana medal, half-medal or balloon locations
+        if data.type in (Types.Medal, Types.HalfMedal, Types.Balloon) and data.kong < 5:
             if data.item == kong_items[data.kong]:
                 print(f"Placement invalid: {kong_items[data.kong].name} is on their own medal location at {data.name}")
                 return False
 
-    # Blasts/Arcade R2 can't contain DK
-    non_dk_locations = [
-        Locations.JapesDonkeyBaboonBlast,
-        Locations.FactoryDonkeyDKArcade,
-        Locations.NintendoCoin,
-    ]
-    for loc in non_dk_locations:
-        if spoiler.LocationList[loc].item == Items.Donkey:
-            print("Placement invalid because DK being in a blast-locked location")
+        # Chunky cannot be on a holdable
+        if data.type == Types.BoulderItem and data.item == Items.Chunky:
+            print(f"Placement invalid: Chunky is on a holdable location at {data.name}")
             return False
+
+        # Camera cannot be on a fairy if krem kap is the win con
+        if spoiler.settings.win_condition_item == WinConditionComplex.krem_kapture:
+            if data.type == Types.Fairy and data.item in (Items.Camera, Items.CameraAndShockwave):
+                print(f"Placement invalid: Camera is on a fairy location at {data.name} with a krem kap win condition")
+                return False
+
+        # Blasts/Arcade R2 can't contain DK
+        non_dk_locations = [
+            Locations.JapesDonkeyBaboonBlast,
+            Locations.FactoryDonkeyDKArcade,
+            Locations.NintendoCoin,
+        ]
+        if loc in non_dk_locations and data.item == Items.Donkey:
+            print("Placement invalid because DK being in a blast-locked location")
+            return False            
     return True
 
 
@@ -631,6 +642,7 @@ def VerifyWorld(spoiler: Spoiler) -> bool:
         # Verify some rules
         return VerifyMinimalLogic(spoiler)
     unreachables = GetAccessibleLocations(spoiler, ItemPool.AllItemsUnrestricted(settings), SearchMode.GetUnreachable)
+    # print(unreachables)
     if len(spoiler.cb_placements) == 0:
         unreachables = [
             x
@@ -986,6 +998,7 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
                 Types.CrateItem,
                 Types.HalfMedal,
                 Types.BoulderItem,
+                Types.Balloon,
                 Types.Breakable,
                 Types.Enemies,
             )
@@ -2710,7 +2723,10 @@ def Fill(spoiler: Spoiler) -> None:
         # Boulders/Vases/Kegs hold nothing, so leave this one empty
     if Types.Breakable in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Breakable)
-        # Boulders/Vases/Kegs hold nothing, so leave this one empty
+        # Breakable Containers hold nothing, so leave this one empty
+    if Types.Balloon in spoiler.settings.shuffled_location_types:
+        placed_types.append(Types.Balloon)
+        # Balloons hold nothing, so leave this one empty
     if Types.Enemies in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Enemies)
         # Enemies hold nothing, so leave this one empty
@@ -2723,6 +2739,10 @@ def Fill(spoiler: Spoiler) -> None:
     for x in range(4):
         if spoiler.LocationList[Locations.ShopOwner_Location00 + x].item is None:
             spoiler.LocationList[Locations.ShopOwner_Location00 + x].PlaceItem(spoiler, Items.NoItem)
+    banned_blns = spoiler.settings.getBannedBalloonLocations()
+    for loc in banned_blns:
+        if spoiler.LocationList[loc].item is None:
+            spoiler.LocationList[loc].PlaceItem(spoiler, Items.NoItem)
     if spoiler.LocationList[Locations.TimeLocationDay].item is None:
         spoiler.LocationList[Locations.TimeLocationDay].PlaceItem(spoiler, Items.NoItem)
     if spoiler.LocationList[Locations.TimeLocationNight].item is None:
