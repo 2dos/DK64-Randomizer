@@ -54,23 +54,24 @@ def serialize_settings_to_base64(settings) -> str:
     """Serialize a Settings object to a base64-encoded protobuf string.
     
     This creates a compact, copy-paste friendly representation of settings.
+    Uses URL-safe base64 encoding to avoid issues with JSON transmission.
     
     Args:
         settings: Settings object to serialize
         
     Returns:
-        Base64-encoded protobuf string
+        URL-safe base64-encoded protobuf string
     """
     proto = settings_to_proto(settings)
     binary_data = proto.SerializeToString()
-    return base64.b64encode(binary_data).decode('utf-8')
+    return base64.urlsafe_b64encode(binary_data).decode('utf-8')
 
 
 def deserialize_settings_from_base64(proto_string: str) -> settings_pb2.SettingsInfo:
     """Deserialize a base64-encoded protobuf string to a SettingsInfo message.
     
     Args:
-        proto_string: Base64-encoded protobuf string
+        proto_string: URL-safe base64-encoded protobuf string
         
     Returns:
         SettingsInfo protobuf message
@@ -79,7 +80,11 @@ def deserialize_settings_from_base64(proto_string: str) -> settings_pb2.Settings
         ValueError: If the string cannot be decoded or parsed
     """
     try:
-        binary_data = base64.b64decode(proto_string)
+        try:
+            binary_data = base64.urlsafe_b64decode(proto_string)
+        except Exception:
+            binary_data = base64.b64decode(proto_string)
+        
         proto = settings_pb2.SettingsInfo()
         proto.ParseFromString(binary_data)
         return proto
@@ -110,6 +115,7 @@ def is_proto_settings_string(settings_string: str) -> bool:
 def _populate_item_settings(settings, proto: item_settings_pb2.ItemSettings):
     """Populate ItemSettings proto from Settings object."""
     proto.decouple_item_rando = bool(settings.decouple_item_rando)
+    is_decoupled = bool(settings.decouple_item_rando)
     
     # ItemPool - create one pool for each of the 10 lists to preserve exact distribution
     # Always create all 10 pools (even if empty) to maintain index mapping
@@ -124,7 +130,7 @@ def _populate_item_settings(settings, proto: item_settings_pb2.ItemSettings):
                 
                 # For decoupled mode, lists 0-4 are items, 5-9 are checks
                 # For coupled mode, all lists are items
-                if settings.decouple_item_rando and i >= 5:
+                if is_decoupled and i >= 5:
                     pool.checks.extend(items)
                 else:
                     pool.items.extend(items)
@@ -218,10 +224,56 @@ def _populate_requirement_settings(settings, proto: requirement_settings_pb2.Req
     # Open lobbies
     proto.open_lobbies = bool(settings.open_lobbies)
     
-    # Switchsanity - only tracking enabled state for now
-    # Individual switch assignments could be added if needed, but would require
-    # mapping ~35+ individual switchsanity_switch_* attributes to proto fields
+    # Switchsanity
     proto.switchsanity.enabled = bool(settings.switchsanity_enabled)
+    
+    # Map individual switchsanity_switch_* attributes to proto switch assignments
+    # Mapping: settings attribute name -> proto SwitchLocation enum value
+    switch_location_map = {
+        'switchsanity_switch_isles_to_kroc_top': 1,  # SWITCH_LOCATION_ISLES_TO_TOP_OF_KREM_ISLE
+        'switchsanity_switch_isles_helm_lobby': 2,  # SWITCH_LOCATION_ISLES_IN_HELM_LOBBY
+        'switchsanity_switch_isles_aztec_lobby_back_room': 3,  # SWITCH_LOCATION_ISLES_BACK_OF_AZTEC_LOBBY
+        'switchsanity_switch_isles_fungi_lobby_fairy': 4,  # SWITCH_LOCATION_ISLES_FOREST_LOBBY_FAIRY
+        'switchsanity_switch_isles_spawn_rocketbarrel': 5,  # SWITCH_LOCATION_ISLES_CABIN_ISLE_ROCKET
+        'switchsanity_switch_japes_free_kong': 6,  # SWITCH_LOCATION_JAPES_FREE_KONG
+        'switchsanity_switch_japes_to_hive': 7,  # SWITCH_LOCATION_JAPES_HIVE_AREA
+        'switchsanity_switch_japes_to_cavern': 8,  # SWITCH_LOCATION_JAPES_STARTING_TUNNEL
+        'switchsanity_switch_japes_to_painting_room': 9,  # SWITCH_LOCATION_JAPES_PAINTING_ROOM
+        'switchsanity_switch_japes_to_rambi': 10,  # SWITCH_LOCATION_JAPES_RAMBI
+        'switchsanity_switch_aztec_free_tiny': 11,  # SWITCH_LOCATION_AZTEC_TINY_TEMPLE_FREE_KONG
+        'switchsanity_switch_aztec_free_lanky': 12,  # SWITCH_LOCATION_AZTEC_LLAMA_TEMPLE_FREE_KONG
+        'switchsanity_switch_aztec_to_kasplat_room': 13,  # SWITCH_LOCATION_AZTEC_STARTING_TUNNEL_KASPLAT
+        'switchsanity_switch_aztec_to_connector_tunnel': 14,  # SWITCH_LOCATION_AZTEC_OASIS_DOOR
+        'switchsanity_switch_aztec_llama_front': 15,  # SWITCH_LOCATION_AZTEC_LLAMA_TEMPLE_FRONT
+        'switchsanity_switch_aztec_llama_side': 16,  # SWITCH_LOCATION_AZTEC_LLAMA_TEMPLE_SIDE
+        'switchsanity_switch_aztec_llama_back': 17,  # SWITCH_LOCATION_AZTEC_LLAMA_TEMPLE_BACK
+        'switchsanity_switch_aztec_sand_tunnel': 18,  # SWITCH_LOCATION_AZTEC_SAND_TUNNEL
+        'switchsanity_switch_galleon_to_lighthouse_side': 19,  # SWITCH_LOCATION_GALLEON_LIGHTHOUSE_AREA
+        'switchsanity_switch_galleon_to_shipwreck_side': 20,  # SWITCH_LOCATION_GALLEON_SHIPYARD_AREA
+        'switchsanity_switch_galleon_to_cannon_game': 21,  # SWITCH_LOCATION_GALLEON_CANNON_GAME
+        'switchsanity_switch_fungi_yellow_tunnel': 22,  # SWITCH_LOCATION_FOREST_YELLOW_TUNNEL
+        'switchsanity_switch_fungi_green_tunnel_near': 23,  # SWITCH_LOCATION_FOREST_GREEN_TUNNEL_CLOCK_SIDE
+        'switchsanity_switch_fungi_green_tunnel_far': 24,  # SWITCH_LOCATION_FOREST_GREEN_TUNNEL_BEAN_SIDE
+        'switchsanity_switch_factory_dark_grate': 25,
+        'switchsanity_switch_factory_bonus_grate': 26,
+        'switchsanity_switch_factory_monster_grate': 27,
+        'switchsanity_switch_caves_gone_cave': 28,
+        'switchsanity_switch_caves_snide_cave': 29,
+        'switchsanity_switch_caves_boulder_cave': 30,
+        'switchsanity_switch_caves_lobby_blueprint': 31,
+        'switchsanity_switch_caves_lobby_lava': 32,
+        'switchsanity_switch_aztec_gong_tower': 33,
+        'switchsanity_switch_aztec_lobby_gong': 34,
+    }
+    
+    for attr_name, location_enum in switch_location_map.items():
+        if hasattr(settings, attr_name):
+            switch_item = getattr(settings, attr_name)
+            if switch_item is not None:
+                switch_assignment = proto.switchsanity.switch_assignment.add()
+                switch_assignment.location = location_enum
+                # Convert the switch item to proto enum value (extract .value if enum)
+                switch_assignment.item = switch_item.value if hasattr(switch_item, 'value') else switch_item
     
     # Smaller shops
     proto.smaller_shops = bool(settings.smaller_shops)
@@ -413,6 +465,11 @@ def _populate_endgame_settings(settings, proto: endgame_settings_pb2.EndgameSett
         door_req = proto.helm_settings.helm_door_requirements.add()
         door_req.type = settings.crown_door_item
         door_req.specified_quantity = settings.crown_door_item_count
+
+    if settings.coin_door_item:
+        door_req = proto.helm_settings.helm_door_requirements.add()
+        door_req.type = settings.coin_door_item
+        door_req.specified_quantity = settings.coin_door_item_count
     
     # K.Rool Settings
     proto.k_rool_settings.shuffle_k_rool_phases = bool(settings.krool_phase_order_rando)
@@ -529,6 +586,7 @@ def _apply_item_settings(proto: item_settings_pb2.ItemSettings, settings):
     """Apply ItemSettings proto to Settings object."""
     # Decouple item rando
     settings.decouple_item_rando = bool(proto.decouple_item_rando)
+    is_decoupled = bool(proto.decouple_item_rando)
     
     # ItemPool - restore each pool to its corresponding list (preserves exact distribution)
     # Clear all individual lists first
@@ -540,8 +598,15 @@ def _apply_item_settings(proto: item_settings_pb2.ItemSettings, settings):
         if i >= 10:
             break  # Safety check - only process up to 10 lists
         
-        # Combine items and checks from this pool
-        pool_items = list(pool.items) + list(pool.checks)
+        # In decoupled mode, lists 0-4 have items, lists 5-9 have checks
+        # In coupled mode, all lists have items only
+        if is_decoupled and i >= 5:
+            # This is a checks list (item_rando_list_5 through _9) - use pool.checks
+            pool_items = list(pool.checks)
+        else:
+            # This is an items list (item_rando_list_0 through _4 in decoupled, or all in coupled) - use pool.items
+            pool_items = list(pool.items)
+        
         setattr(settings, f"item_rando_list_{i}", pool_items)
     
     # StartingMovePool - extract multiple pools (restores each pool to its corresponding list)
@@ -635,9 +700,53 @@ def _apply_requirement_settings(proto: requirement_settings_pb2.RequirementSetti
     # Open lobbies
     settings.open_lobbies = bool(proto.open_lobbies)
     
-    # Switchsanity - only tracking enabled state for now
+    # Switchsanity
     if proto.HasField('switchsanity'):
         settings.switchsanity_enabled = bool(proto.switchsanity.enabled)
+        
+        # Reverse mapping: proto SwitchLocation enum value -> settings attribute name
+        location_to_attr_map = {
+            1: 'switchsanity_switch_isles_to_kroc_top',
+            2: 'switchsanity_switch_isles_helm_lobby',
+            3: 'switchsanity_switch_isles_aztec_lobby_back_room',
+            4: 'switchsanity_switch_isles_fungi_lobby_fairy',
+            5: 'switchsanity_switch_isles_spawn_rocketbarrel',
+            6: 'switchsanity_switch_japes_free_kong',
+            7: 'switchsanity_switch_japes_to_hive',
+            8: 'switchsanity_switch_japes_to_cavern',
+            9: 'switchsanity_switch_japes_to_painting_room',
+            10: 'switchsanity_switch_japes_to_rambi',
+            11: 'switchsanity_switch_aztec_free_tiny',
+            12: 'switchsanity_switch_aztec_free_lanky',
+            13: 'switchsanity_switch_aztec_to_kasplat_room',
+            14: 'switchsanity_switch_aztec_to_connector_tunnel',
+            15: 'switchsanity_switch_aztec_llama_front',
+            16: 'switchsanity_switch_aztec_llama_side',
+            17: 'switchsanity_switch_aztec_llama_back',
+            18: 'switchsanity_switch_aztec_sand_tunnel',
+            19: 'switchsanity_switch_galleon_to_lighthouse_side',
+            20: 'switchsanity_switch_galleon_to_shipwreck_side',
+            21: 'switchsanity_switch_galleon_to_cannon_game',
+            22: 'switchsanity_switch_fungi_yellow_tunnel',
+            23: 'switchsanity_switch_fungi_green_tunnel_near',
+            24: 'switchsanity_switch_fungi_green_tunnel_far',
+            25: 'switchsanity_switch_factory_dark_grate',
+            26: 'switchsanity_switch_factory_bonus_grate',
+            27: 'switchsanity_switch_factory_monster_grate',
+            28: 'switchsanity_switch_caves_gone_cave',
+            29: 'switchsanity_switch_caves_snide_cave',
+            30: 'switchsanity_switch_caves_boulder_cave',
+            31: 'switchsanity_switch_caves_lobby_blueprint',
+            32: 'switchsanity_switch_caves_lobby_lava',
+            33: 'switchsanity_switch_aztec_gong_tower',
+            34: 'switchsanity_switch_aztec_lobby_gong',
+        }
+        
+        # Apply each switch assignment from proto to settings
+        for switch_assignment in proto.switchsanity.switch_assignment:
+            attr_name = location_to_attr_map.get(switch_assignment.location)
+            if attr_name:
+                setattr(settings, attr_name, switch_assignment.item)
     
     # Smaller shops
     settings.smaller_shops = bool(proto.smaller_shops)
@@ -833,6 +942,8 @@ def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, setting
         door_req = proto.helm_settings.helm_door_requirements[0]
         settings.crown_door_item = door_req.type
         settings.crown_door_item_count = door_req.specified_quantity
+        settings.coin_door_item = door_req.type
+        settings.coin_door_item_coint = door_req.specified_quantity
     
     # K.Rool Settings
     settings.krool_phase_order_rando = bool(proto.k_rool_settings.shuffle_k_rool_phases)

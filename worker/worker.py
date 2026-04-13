@@ -42,6 +42,7 @@ from tasks import generate_seed
 from opentelemetry_instrumentation_rq import RQInstrumentor
 from randomizer.Lists.Exceptions import SettingsIncompatibleException, PlandoIncompatibleException
 from opentelemetry.instrumentation.redis import RedisInstrumentor
+from types import SimpleNamespace
 
 BRANCH = os.environ.get("BRANCH", "LOCAL")
 listen_branch = BRANCH
@@ -150,21 +151,9 @@ def convert_settings():
         except json.JSONDecodeError:
             # If `settings` is not JSON, deserialize from proto string
             proto = deserialize_settings_from_base64(data["settings"])
-            # Convert proto to dict for JSON response
-            # The proto has nested structure (item_settings, requirement_settings, etc.)
-            # We need to flatten it to match the form_data structure
-            from google.protobuf.json_format import MessageToDict
-            nested_dict = MessageToDict(proto, preserving_proto_field_name=True)
-            
-            # Flatten the nested structure
-            settings_dict = {}
-            for category_key, category_value in nested_dict.items():
-                if isinstance(category_value, dict):
-                    settings_dict.update(category_value)
-                else:
-                    settings_dict[category_key] = category_value
-            
-            return jsonify(settings_dict)
+            settings_container = SimpleNamespace()
+            proto_to_settings(proto, settings_container)
+            return jsonify(settings_container.__dict__)
     else:
         return jsonify({"error": "Invalid data"}), 400
 
