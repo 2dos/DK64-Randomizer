@@ -201,6 +201,7 @@ class Settings:
             ItemRandoListSelected.wrinkly: [0, 35],
             ItemRandoListSelected.boulderitem: [0, 16],
             ItemRandoListSelected.breakable: [0, 24],
+            ItemRandoListSelected.balloon: [0, 104],
             ItemRandoListSelected.enemies: [0, 289],
             ItemRandoListSelected.trainingmoves: [4, 0],
             ItemRandoListSelected.trainingbarrels: [0, 4],
@@ -797,7 +798,7 @@ class Settings:
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
         self.krool_access = False
-        self.win_condition_spawns_ship = 0  # 0 = Key-based, 1 = Win condition-based
+        self.win_condition_spawns_ship = False  # 0 = Key-based, 1 = Win condition-based
         self.helm_phase_order_rando = None
         self.open_lobbies = None
         self.randomize_pickups = False
@@ -1622,10 +1623,12 @@ class Settings:
                 ItemRandoListSelected.wrinkly: (Types.Hint, Types.Hint, True),
                 ItemRandoListSelected.boulderitem: (Types.BoulderItem, Types.BoulderItem, True),
                 ItemRandoListSelected.breakable: (Types.Breakable, Types.Breakable, True),
+                ItemRandoListSelected.balloon: (Types.Balloon, Types.Balloon, True),
                 ItemRandoListSelected.enemies: (Types.Enemies, Types.Enemies, True),
                 ItemRandoListSelected.dummyitem_enemies: (Types.Enemies, Types.Enemies, False),
                 ItemRandoListSelected.dummyitem_boulderitem: (Types.BoulderItem, Types.BoulderItem, False),
                 ItemRandoListSelected.dummyitem_breakable: (Types.Breakable, Types.Breakable, False),
+                ItemRandoListSelected.dummyitem_balloon: (Types.Balloon, Types.Balloon, False),
                 ItemRandoListSelected.dummyitem_crateitem: (Types.CrateItem, Types.CrateItem, False),
                 ItemRandoListSelected.trainingmoves: (Types.TrainingBarrel, Types.TrainingBarrel, False),
                 ItemRandoListSelected.trainingbarrels: (Types.TrainingBarrel, Types.TrainingBarrel, True),
@@ -1652,6 +1655,7 @@ class Settings:
                 ItemRandoListSelected.dummyitem_crateitem,
                 ItemRandoListSelected.dummyitem_halfmedal,
                 ItemRandoListSelected.dummyitem_breakable,
+                ItemRandoListSelected.dummyitem_balloon,
             ]
             dummy_location_types = [Types.HelmKey, Types.HelmMedal]
             self.item_search = [
@@ -2416,10 +2420,7 @@ class Settings:
         # Force win_condition_spawns_ship based on win condition
         # Krool's Challenge always requires beating K. Rool
         if self.win_condition_item == WinConditionComplex.krools_challenge:
-            self.win_condition_spawns_ship = 1
-        # Kill the Rabbit cannot require beating K. Rool (would softlock)
-        elif self.win_condition_item == WinConditionComplex.kill_the_rabbit:
-            self.win_condition_spawns_ship = 0
+            self.win_condition_spawns_ship = True
 
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
         if self.win_condition_item == WinConditionComplex.req_fairy or self.crown_door_item == BarrierItems.Fairy or self.coin_door_item == BarrierItems.Fairy:
@@ -2565,6 +2566,21 @@ class Settings:
                 is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm) or location.type == Types.Shockwave
         return is_bad
 
+    def getBannedBalloonLocations(self) -> list[Locations]:
+        """Get a list of banned balloon locations based on settings."""
+        if self.cb_rando_enabled:
+            return []
+        return [
+            Locations.Balloon053,  # Lanky Crusher
+            Locations.Balloon054,  # DK Snake Road
+            Locations.Balloon057,  # DK Snake Road
+            Locations.Balloon081,  # DK 5DI
+            Locations.Balloon084,  # Tiny 5DC
+            Locations.Balloon089,  # Lanky Mauso
+            Locations.Balloon095,  # Lanky Dungeon
+            Locations.Balloon097,  # Lanky Dungeon
+        ]
+
     def finalize_world_settings(self, spoiler):
         """Finalize the world state after settings initialization."""
         # Starting Region Randomization
@@ -2668,6 +2684,9 @@ class Settings:
         if Types.FungiTime in self.shuffled_location_types:
             spoiler.LocationList[Locations.TimeLocationDay].inaccessible = True
             spoiler.LocationList[Locations.TimeLocationNight].inaccessible = True
+        banned_blns = self.getBannedBalloonLocations()
+        for loc in banned_blns:
+            spoiler.LocationList[loc].inaccessible = True
 
         # Designate the Rock GB as a location for the starting kong
         spoiler.LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong
@@ -2681,11 +2700,13 @@ class Settings:
         self.valid_locations[Types.Kong] = self.kong_locations.copy()
         if self.shuffle_items and any(self.shuffled_location_types):
             # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) and Shop Owner Locations - those can only be Kongs and Shop Owners respectively
+            banned_single_locations = self.getBannedBalloonLocations()
             shuffledLocations = [
                 location
                 for location in spoiler.LocationList
                 if spoiler.LocationList[location].type in self.shuffled_location_types
                 and spoiler.LocationList[location].type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime)
+                and location not in banned_single_locations
             ]
             shuffledLocationsShopOwner = [
                 location

@@ -307,6 +307,7 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                 | DK64RTypes.ProgressiveHint
                 | DK64RTypes.ArchipelagoItem
                 | DK64RTypes.BoulderItem
+                | DK64RTypes.Balloon
                 | DK64RTypes.Breakable
                 | DK64RTypes.FillerPearl
                 | DK64RTypes.FillerBanana

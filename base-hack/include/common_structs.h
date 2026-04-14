@@ -1403,8 +1403,28 @@ typedef struct pause_paad {
 	/* 0x015 */ char unk15;
 } pause_paad;
 
+typedef struct sprite_vert_set {
+	/* 0x000 */ Vtx vert[4];
+} sprite_vert_set;
+
+typedef struct sprite_base_struct {
+	/* 0x000 */ void *sprite_info;
+	/* 0x004 */ int unk4;
+	/* 0x008 */ char img_per_frame_h;
+	/* 0x009 */ char img_per_frame_v;
+	/* 0x00A */ char unkA;
+	/* 0x00B */ char unkB;
+	/* 0x00C */ short width;
+	/* 0x00E */ short height;
+} sprite_base_struct;
+
 typedef struct sprite_struct {
-	/* 0x000 */ char unk0[0x338];
+	/* 0x000 */ char unk0[0x28];
+	/* 0x028 */ sprite_vert_set vert_set[4];
+	/* 0x128 */ Mtx matrix[2];
+	/* 0x1A8 */ char unk1A8[0x330-0x1A8];
+	/* 0x330 */ sprite_base_struct *base_info;
+	/* 0x334 */ char unk334[0x338-0x334];
 	/* 0x338 */ void* actor;
 	/* 0x33C */ char unk33C[0x340-0x33C];
 	/* 0x340 */ float x;
@@ -1419,8 +1439,12 @@ typedef struct sprite_struct {
 	/* 0x36B */ unsigned char green;
 	/* 0x36C */ unsigned char blue;
 	/* 0x36D */ unsigned char alpha;
-	/* 0x36E */ char unk36E[0x384-0x36E];
+	/* 0x36E */ char unk36E[0x370-0x36E];
+	/* 0x370 */ void *image[4];
+	/* 0x380 */ int image_count;
 	/* 0x384 */ float* unk384;
+	/* 0x388 */ char unk_388[0x396-0x388];
+	/* 0x396 */ short balloon_image;
 } sprite_struct;
 
 typedef struct check_struct {
@@ -1442,6 +1466,20 @@ typedef struct sprite_data_struct {
 	/* 0x012 */ short image_count;
 	/* 0x014 */ short images[];
 } sprite_data_struct;
+
+typedef struct sprite_data_struct_single {
+	/* 0x000 */ int unk0;
+	/* 0x004 */ char images_per_frame_horizontal;
+	/* 0x005 */ char images_per_frame_vertical;
+	/* 0x006 */ short codec;
+	/* 0x008 */ int unk8;
+	/* 0x00C */ char unkC;
+	/* 0x00D */ char table;
+	/* 0x00E */ short width;
+	/* 0x010 */ short height;
+	/* 0x012 */ short image_count;
+	/* 0x014 */ short image;
+} sprite_data_struct_single;
 
 typedef struct item_conversion_info {
 	/* 0x000 */ short actor;

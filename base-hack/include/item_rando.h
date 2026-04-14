@@ -16,6 +16,7 @@ extern actor_spawn_packet extra_actor_spawns[2];
 extern patch_db_item patch_flags[16];
 extern BoulderItemStruct boulder_item_table[16];
 extern actor_spawn_packet box_item_table[24];
+extern actor_spawn_packet balloon_item_table[104];
 extern bonus_barrel_info bonus_data[BONUS_DATA_COUNT];
 extern meloncrate_db_item crate_flags[16];
 extern model_item_data kong_check_data[4];

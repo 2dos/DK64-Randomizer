@@ -12,7 +12,7 @@ import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, ColorblindMode, KongModels, WinConditionComplex
 from randomizer.Enums.Maps import Maps
-from randomizer.Enums.Types import BarrierItems
+from randomizer.Enums.Types import BarrierItems, Types
 from randomizer.Patching.Cosmetics.CustomTextures import (
     writeTransition,
     writeCustomPaintings,
@@ -33,6 +33,7 @@ from randomizer.Patching.Cosmetics.Colorblind import (
     recolorPotions,
     recolorMushrooms,
     recolorHintItem,
+    addBalloonBulb,
     writeKasplatHairColorToROM,
     maskBlueprintImage,
     maskLaserImage,
@@ -357,7 +358,6 @@ BLUEPRINT_START = [5624, 5608, 5519, 5632, 5616]
 COIN_START = [224, 256, 248, 216, 264]
 BUNCH_START = [274, 854, 818, 842, 830]
 
-
 def overwrite_object_colors(settings, ROM_COPY: ROM):
     """Overwrite object colors."""
     mode = settings.colorblind_mode
@@ -385,6 +385,7 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
         recolorPotions(settings, mode, ROM_COPY)
         recolorMushrooms(mode, ROM_COPY)
         recolorHintItem(mode, ROM_COPY)
+        addBalloonBulb(settings, ROM_COPY, mode)
         for kong_index in range(5):
             # file = 4120
             # # Kasplat Hair
@@ -445,12 +446,13 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
                     bunch_im = getImageFile(ROM_COPY, 7, BUNCH_START[kong_index] + offset, False, 44, 44, TextureFormat.RGBA5551)
                     bunch_im = maskImage(bunch_im, kong_index, 0, True, mode)
                     writeColorImageToROM(bunch_im, 7, BUNCH_START[kong_index] + offset, 44, 44, False, TextureFormat.RGBA5551, ROM_COPY)
-                for offset in range(8):
-                    # Balloon
-                    balloon_im = getImageFile(ROM_COPY, 25, BALLOON_START[kong_index] + offset, True, 32, 64, TextureFormat.RGBA5551)
-                    balloon_im = maskImage(balloon_im, kong_index, 33, False, mode)
-                    balloon_im.paste(dk_single, balloon_single_frames[offset], dk_single)
-                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + offset, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)
+                if Types.Balloon not in settings.shuffled_location_types:
+                    for offset in range(8):
+                        # Balloon
+                        balloon_im = getImageFile(ROM_COPY, 25, BALLOON_START[kong_index] + offset, True, 32, 64, TextureFormat.RGBA5551)
+                        balloon_im = maskImage(balloon_im, kong_index, 33, False, mode)
+                        balloon_im.paste(dk_single, balloon_single_frames[offset], dk_single)
+                        writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + offset, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)
     else:
         # Recolor slam switch if colorblind mode is off
         if galleon_switch_value is not None:
@@ -462,13 +464,14 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
                     new_color = [0xFF, 0xFF, 0xFF]
                 recolorKRoolShipSwitch(new_color, ROM_COPY)
     if settings.head_balloons:
-        for kong in range(5):
-            for offset in range(8):
-                balloon_im = getImageFile(ROM_COPY, 25, BALLOON_START[kong] + offset, True, 32, 64, TextureFormat.RGBA5551)
-                kong_im = getImageFile(ROM_COPY, 14, 190 + kong, True, 32, 32, TextureFormat.RGBA5551)
-                kong_im = kong_im.transpose(Image.FLIP_TOP_BOTTOM).resize((20, 20))
-                balloon_im.paste(kong_im, (5, 39), kong_im)
-                writeColorImageToROM(balloon_im, 25, BALLOON_START[kong] + offset, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)
+        if Types.Balloon not in settings.shuffled_location_types:
+            for kong in range(5):
+                for offset in range(8):
+                    balloon_im = getImageFile(ROM_COPY, 25, BALLOON_START[kong] + offset, True, 32, 64, TextureFormat.RGBA5551)
+                    kong_im = getImageFile(ROM_COPY, 14, 190 + kong, True, 32, 32, TextureFormat.RGBA5551)
+                    kong_im = kong_im.transpose(Image.FLIP_TOP_BOTTOM).resize((20, 20))
+                    balloon_im.paste(kong_im, (5, 39), kong_im)
+                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong] + offset, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)
 
 
 ORANGE_SCALING = 0.7

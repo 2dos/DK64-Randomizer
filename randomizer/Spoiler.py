@@ -108,6 +108,7 @@ class Spoiler:
         self.location_data = {}
         self.enemy_replacements = []
         self.cb_placements = []
+        self.balloon_placement = []
         self.LogicVariables = LogicVarHolder(self)
         self.RegionList = deepcopy(RegionsOriginal)
         self.CollectibleRegions = deepcopy(CollectibleRegionsOriginal)
@@ -292,6 +293,7 @@ class Spoiler:
             Types.HalfMedal: "Half-Medals",
             Types.BoulderItem: "Holdable Objects",
             Types.Breakable: "Breakable Containers",
+            Types.Balloon: "Balloons",
             Types.Enemies: "Enemy Drops",
             Types.Cranky: "Shop Owners",
             Types.Funky: "Shop Owners",
@@ -612,6 +614,8 @@ class Spoiler:
             "Junk Items": {},
             "Melon Crates": {},
             "Holdable Objects": {},
+            "Breakable Containers": {},
+            "Balloons": {},
             "Hints": {},
             "Enemy Drops": {},
             "Shop Owners": {},

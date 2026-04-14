@@ -8,6 +8,7 @@ import time
 from tempfile import mktemp
 from randomizer.Enums.Settings import (
     BananaportRando,
+    ColorblindMode,
     DamageAmount,
     FasterChecksSelected,
     FungiTimeSetting,
@@ -43,6 +44,7 @@ from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.CoinPlacer import randomize_coins, place_mayhem_coins
 from randomizer.Patching.Cosmetics.TextRando import writeBootMessages
 from randomizer.Patching.Cosmetics.Puzzles import updateMillLeverTexture, updateCryptLeverTexture, updateDiddyDoors, updateHelmFaces, updateSnidePanel
+from randomizer.Patching.Cosmetics.Colorblind import addBalloonBulb
 from randomizer.Patching.CosmeticColors import (
     applyHelmDoorCosmetics,
     applyKongModelSwaps,
@@ -811,6 +813,7 @@ def patching_response(spoiler):
         updateHelmFaces(spoiler.settings, ROM_COPY)
         updateSnidePanel(spoiler.settings, ROM_COPY)
         showWinCondition(spoiler.settings, ROM_COPY)
+        addBalloonBulb(spoiler.settings, ROM_COPY, ColorblindMode.off)
 
         patchAssembly(ROM_COPY, spoiler)
         patchScripts(spoiler, ROM_COPY)

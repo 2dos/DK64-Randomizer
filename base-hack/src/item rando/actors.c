@@ -248,6 +248,7 @@ ROM_DATA static unsigned char stored_kasplat[STORED_COUNT] = {};
 ROM_DATA static unsigned char stored_enemies[ENEMY_REWARD_CACHE_SIZE][STORED_COUNT] = {};
 ROM_DATA static unsigned short stored_holdable;
 ROM_DATA static unsigned int stored_breakable;
+ROM_DATA static unsigned char stored_balloons[13] = {};
 
 int setupHook(int map) {
     /**
@@ -275,6 +276,9 @@ int setupHook(int map) {
             stored_holdable = HoldableSpawnBitfield;
             stored_breakable = BreakableSpawnBitfield;
             stored_kasplat[i] = KasplatSpawnBitfield;
+            for (int j = 0; j < 13; j++) {
+                stored_balloons[j] = BalloonSpawnBitfield[j];
+            }
             for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                 stored_enemies[j][i] = enemy_rewards_spawned[j];
             }
@@ -287,6 +291,9 @@ int setupHook(int map) {
                     stored_holdable = HoldableSpawnBitfield;
                     stored_breakable = BreakableSpawnBitfield;
                     stored_kasplat[i] = KasplatSpawnBitfield;
+                    for (int j = 0; j < 13; j++) {
+                        stored_balloons[j] = BalloonSpawnBitfield[j];
+                    }
                     for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                         stored_enemies[j][i] = enemy_rewards_spawned[j];
                     }
@@ -311,6 +318,9 @@ int setupHook(int map) {
             HoldableSpawnBitfield = stored_holdable;
             BreakableSpawnBitfield = stored_breakable;
             KasplatSpawnBitfield = stored_kasplat[i];
+            for (int j = 0; j < 13; j++) {
+                BalloonSpawnBitfield[j] = stored_balloons[j];
+            }
             for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                 enemy_rewards_spawned[j] = stored_enemies[j][i];
             }
@@ -320,6 +330,9 @@ int setupHook(int map) {
         KasplatSpawnBitfield = 0;
         HoldableSpawnBitfield = 0;
         BreakableSpawnBitfield = 0;
+        for (int j = 0; j < 13; j++) {
+            BalloonSpawnBitfield[j] = 0;
+        }
         for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
             enemy_rewards_spawned[j] = 0;
         }
@@ -353,6 +366,9 @@ void CheckKasplatSpawnBitfield(void) {
                     } else if (isFlagInRange(flag, FLAG_BREAKABLE_DESTROYED, 32)) {
                         // Is Holdable
                         BreakableSpawnBitfield |= (1 << (flag - FLAG_BREAKABLE_DESTROYED));
+                    } else if (isFlagInRange(flag, FLAG_BALLOON_ITEM, 104)) {
+                        int offset = flag - FLAG_BALLOON_ITEM;
+                        BalloonSpawnBitfield[offset >> 3] |= (1 << (offset & 7));
                     }
                 }
                 // Get Next Spawner

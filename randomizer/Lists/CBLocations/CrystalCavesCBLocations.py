@@ -2340,7 +2340,7 @@ BalloonList = [
     Balloon(
         id=1,
         map_id=Maps.CrystalCaves,
-        name="Near pillar by DK portal",
+        name="Near pillar by Caves Entrance",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2349,7 +2349,7 @@ BalloonList = [
     Balloon(
         id=2,
         map_id=Maps.CrystalCaves,
-        name="First room between DK portal and main level",
+        name="First room between Caves Entrance and main level",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2358,7 +2358,7 @@ BalloonList = [
     Balloon(
         id=3,
         map_id=Maps.CrystalCaves,
-        name="Under bridge to W4 Mini Monkey",
+        name="Under bridge to Twirl Cave",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2367,7 +2367,7 @@ BalloonList = [
     Balloon(
         id=4,
         map_id=Maps.CrystalCaves,
-        name="Around pillar of Lanky BP",
+        name="Around Warp 5 Pillar",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2376,7 +2376,7 @@ BalloonList = [
     Balloon(
         id=5,
         map_id=Maps.CrystalCaves,
-        name="Around Lanky BP (high)",
+        name="High Above Warp 5 Pillar",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CavesBlueprintPillar,
@@ -2392,7 +2392,7 @@ BalloonList = [
     Balloon(
         id=6,
         map_id=Maps.CrystalCaves,
-        name="Above W1 and W2 (Ice castle height)",
+        name="Behind Ice Castle",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2401,7 +2401,7 @@ BalloonList = [
     Balloon(
         id=7,
         map_id=Maps.CrystalCaves,
-        name="Above small boulder",
+        name="Above Boulder by Ice Castle",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2410,7 +2410,7 @@ BalloonList = [
     Balloon(
         id=8,
         map_id=Maps.CrystalCaves,
-        name="Around pillar near Cranky",
+        name="Around Warp 4 Pillar",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2419,7 +2419,7 @@ BalloonList = [
     Balloon(
         id=9,
         map_id=Maps.CrystalCaves,
-        name="Above river under bridge to small boulder",
+        name="Under Bridge Between Castle and Small Boulder",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2428,7 +2428,7 @@ BalloonList = [
     Balloon(
         id=10,
         map_id=Maps.CrystalCaves,
-        name="Beneath BBlast",
+        name="Beneath Baboon Blast Pad",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2437,7 +2437,7 @@ BalloonList = [
     Balloon(
         id=11,
         map_id=Maps.CrystalCaves,
-        name="Above area to Mini Monkey W3 room",
+        name="Next to Mini Bonus Cave",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2446,7 +2446,7 @@ BalloonList = [
     Balloon(
         id=12,
         map_id=Maps.CrystalCaves,
-        name="Behind right pillar near 5DI",
+        name="Behind right pillar near Igloo",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
@@ -2455,7 +2455,7 @@ BalloonList = [
     Balloon(
         id=13,
         map_id=Maps.CrystalCaves,
-        name="Above Monkeyport igloo",
+        name="Above Tiny Transparent igloo",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
@@ -2471,7 +2471,7 @@ BalloonList = [
     Balloon(
         id=14,
         map_id=Maps.CrystalCaves,
-        name="Between Tag barrel and W1",
+        name="Around Igloo Tag Barrel",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
@@ -2480,7 +2480,7 @@ BalloonList = [
     Balloon(
         id=15,
         map_id=Maps.CrystalCaves,
-        name="Above Chunky igloo",
+        name="Above Kosha Igloo",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
@@ -2489,7 +2489,7 @@ BalloonList = [
     Balloon(
         id=16,
         map_id=Maps.CrystalCaves,
-        name="In waterfall (Under bonus barrel)",
+        name="In Diddy Bonus waterfall",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2498,7 +2498,7 @@ BalloonList = [
     Balloon(
         id=17,
         map_id=Maps.CrystalCaves,
-        name="In front of 5DC lower floor",
+        name="Front of Lower Floor 5-Door Cabin",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
@@ -2507,7 +2507,7 @@ BalloonList = [
     Balloon(
         id=18,
         map_id=Maps.CrystalCaves,
-        name="Above 5DC middle floor",
+        name="Above 5-Door Cabin middle floor",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
@@ -2516,7 +2516,7 @@ BalloonList = [
     Balloon(
         id=19,
         map_id=Maps.CrystalCaves,
-        name="Above river close to waterfall 5DC side",
+        name="Above River by 5-Door Cabin",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
@@ -2525,7 +2525,7 @@ BalloonList = [
     Balloon(
         id=20,
         map_id=Maps.CrystalCaves,
-        name="Around Tiny BP pillar (low)",
+        name="Below Cabin Central Rise",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
@@ -2541,7 +2541,7 @@ BalloonList = [
     Balloon(
         id=21,
         map_id=Maps.CrystalCaves,
-        name="Above useless platform below Lanky 1DC",
+        name="Above Cabins Headphone Platform",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
@@ -2550,7 +2550,7 @@ BalloonList = [
     Balloon(
         id=22,
         map_id=Maps.CrystalCaves,
-        name="Above river at Lanky 1DC roof height",
+        name="Above river by Lanky 1-Door Cabin",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
@@ -2559,7 +2559,7 @@ BalloonList = [
     Balloon(
         id=23,
         map_id=Maps.CrystalCaves,
-        name="Above rocketbarrel area (between Rotating room and waterfall tag)",
+        name="Above Rocketbarrel Past 5-Door Cabin",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
@@ -2568,7 +2568,7 @@ BalloonList = [
     Balloon(
         id=24,
         map_id=Maps.CrystalCaves,
-        name="Above rotating room",
+        name="Above Rotating Cabin",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
@@ -2577,7 +2577,7 @@ BalloonList = [
     Balloon(
         id=25,
         map_id=Maps.CrystalCaves,
-        name="In front of Candy",
+        name="In front of Cabin's Shop",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
@@ -2586,7 +2586,7 @@ BalloonList = [
     Balloon(
         id=26,
         map_id=Maps.CavesLankyIgloo,
-        name="Around crystal tower (lower)",
+        name="Lanky Igloo: Around Central Tower",
         speed=8,
         konglist=[Kongs.lanky],
         region=Regions.LankyIgloo,
@@ -2595,7 +2595,7 @@ BalloonList = [
     Balloon(
         id=27,
         map_id=Maps.CavesLankyCabin,
-        name="Across room in L pattern",
+        name="Lanky 1DC: Across L Pattern",
         speed=10,
         konglist=[Kongs.lanky],
         region=Regions.LankyCabin,
@@ -2604,16 +2604,17 @@ BalloonList = [
     Balloon(
         id=28,
         map_id=Maps.CavesDiddyLowerCabin,
-        name="Around room above platforms",
+        name="Lower Diddy 5DC: Around room above platforms",
         speed=8,
         konglist=[Kongs.diddy],
         region=Regions.DiddyLowerCabin,
+        item_logic=lambda l: (l.jetpack and l.diddy) or l.monkey_maneuvers,
         points=[[306, 200, 184], [441, 200, 305], [304, 200, 431], [154, 200, 298]],
     ),
     Balloon(
         id=29,
         map_id=Maps.CavesDiddyUpperCabin,
-        name="Above entrance high up in the room",
+        name="Upper Diddy 5DC: Above entrance high up in the room",
         speed=7,
         konglist=[Kongs.diddy],
         region=Regions.DiddyUpperCabin,
@@ -2623,7 +2624,7 @@ BalloonList = [
     Balloon(
         id=30,
         map_id=Maps.CavesDonkeyCabin,
-        name="Around room",
+        name="Donkey 5DC: Around Room",
         speed=10,
         konglist=[Kongs.donkey],
         region=Regions.DonkeyCabin,
@@ -2632,7 +2633,7 @@ BalloonList = [
     Balloon(
         id=31,
         map_id=Maps.CrystalCaves,
-        name="Around W4 pillar (Diddy)",
+        name="Around Warp 4 pillar",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2649,7 +2650,7 @@ BalloonList = [
     Balloon(
         id=32,
         map_id=Maps.CrystalCaves,
-        name="In front of Snide (Chunky)",
+        name="In front of Ice Cave Shop",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CavesSnideArea,
@@ -2659,7 +2660,7 @@ BalloonList = [
     Balloon(
         id=33,
         map_id=Maps.CrystalCaves,
-        name="Around Tiny blueprint (Tiny)",
+        name="Above Cabin Central Rise",
         speed=16,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
@@ -2677,7 +2678,7 @@ BalloonList = [
     Balloon(
         id=34,
         map_id=Maps.CrystalCaves,
-        name="Waterfall (Lanky)",
+        name="Far Cabin's Waterfall",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
@@ -2687,7 +2688,7 @@ BalloonList = [
     Balloon(
         id=35,
         map_id=Maps.CrystalCaves,
-        name="In gorilla gone room (Donkey)",
+        name="In gorilla gone room",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CavesGGRoom,
@@ -2697,7 +2698,7 @@ BalloonList = [
     Balloon(
         id=36,
         map_id=Maps.CrystalCaves,
-        name="Above 5DC (Diddy)",
+        name="High Above 5-Door Cabin",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
@@ -2707,7 +2708,7 @@ BalloonList = [
     Balloon(
         id=37,
         map_id=Maps.CrystalCaves,
-        name="In bonus barrel cave (Chunky)",
+        name="In bonus barrel cave",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CavesBonusCave,
@@ -2724,7 +2725,7 @@ BalloonList = [
     Balloon(
         id=38,
         map_id=Maps.CrystalCaves,
-        name="In Diddy BP room (Tiny)",
+        name="Inside Twirl Cave",
         speed=16,
         konglist=[Kongs.diddy, Kongs.tiny],
         region=Regions.CavesBlueprintCave,
@@ -2741,7 +2742,7 @@ BalloonList = [
     Balloon(
         id=39,
         map_id=Maps.CrystalCaves,
-        name="In giant boulder room (Donkey)",
+        name="In giant boulder room",
         speed=11,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BoulderCave,
@@ -2751,7 +2752,7 @@ BalloonList = [
     Balloon(
         id=40,
         map_id=Maps.CavesTinyIgloo,
-        name="In Tiny 5DI (Tiny)",
+        name="Tiny 5DI: Inside Tiny 5DI",
         speed=10,
         konglist=[Kongs.tiny],
         region=Regions.TinyIgloo,
@@ -2761,7 +2762,7 @@ BalloonList = [
     Balloon(
         id=41,
         map_id=Maps.CavesLankyIgloo,
-        name="In Lanky 5DI (Lanky)",
+        name="Lanky 5DI: In Lanky 5DI",
         speed=7,
         konglist=[Kongs.lanky],
         region=Regions.LankyIgloo,
@@ -2771,7 +2772,7 @@ BalloonList = [
     Balloon(
         id=42,
         map_id=Maps.CavesDonkeyIgloo,
-        name="In DK 5DI (Donkey)",
+        name="DK 5DI: In DK 5DI",
         speed=14,
         konglist=[Kongs.donkey],
         region=Regions.DonkeyIgloo,
@@ -2787,11 +2788,12 @@ BalloonList = [
         region=Regions.TinyCabin,
         vanilla=True,
         points=[[455, -99, 385], [432, 51, 384]],
+        banned_when_item_rando=True, # Over Pit
     ),
     Balloon(
         id=44,
         map_id=Maps.CavesChunkyIgloo,
-        name="In Chunky 5DI (Chunky)",
+        name="Chunky 5DI: In Chunky 5DI",
         speed=16,
         konglist=[Kongs.chunky],
         region=Regions.ChunkyIgloo,
@@ -2801,7 +2803,7 @@ BalloonList = [
     Balloon(
         id=45,
         map_id=Maps.CavesFrozenCastle,
-        name="In frozen castle (Lanky)",
+        name="Tomato Castle: Above Door",
         speed=8,
         konglist=[Kongs.lanky],
         region=Regions.FrozenCastle,
@@ -2811,7 +2813,7 @@ BalloonList = [
     Balloon(
         id=46,
         map_id=Maps.CavesDiddyIgloo,
-        name="In Diddy 5DI (Diddy)",
+        name="Diddy 5DI: In Diddy 5DI",
         speed=13,
         konglist=[Kongs.diddy],
         region=Regions.DiddyIgloo,
@@ -2831,7 +2833,7 @@ BalloonList = [
     Balloon(
         id=48,
         map_id=Maps.CrystalCaves,
-        name="Slope to Cranky",
+        name="Slope near Igloo Shop",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2840,7 +2842,7 @@ BalloonList = [
     Balloon(
         id=49,
         map_id=Maps.CrystalCaves,
-        name="Bridge near Cranky",
+        name="Bridge near Igloo Shop",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2876,7 +2878,7 @@ BalloonList = [
     Balloon(
         id=53,
         map_id=Maps.CrystalCaves,
-        name="Crystal platforms near Funky",
+        name="Crystal platforms near Waterfall Shop",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
@@ -2885,7 +2887,7 @@ BalloonList = [
     Balloon(
         id=54,
         map_id=Maps.CrystalCaves,
-        name="Near Lanky cabin",
+        name="Near Lanky 1-Door Cabin",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
@@ -2894,7 +2896,7 @@ BalloonList = [
     Balloon(
         id=55,
         map_id=Maps.CrystalCaves,
-        name="Tall pillar near 5-door cabin",
+        name="Tall pillar near 5-Door cabin",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
@@ -2908,11 +2910,12 @@ BalloonList = [
         konglist=[Kongs.donkey],
         region=Regions.DonkeyCabin,
         points=[[414, 30, 337], [411, 100, 275], [417, 30, 216], [411, -70, 275]],
+        banned_when_item_rando=True, # Over pit
     ),
     Balloon(
         id=57,
         map_id=Maps.CavesDiddyUpperCabin,
-        name="Middle of the room",
+        name="Upper Diddy 5DC: Middle of the room",
         speed=9,
         konglist=[Kongs.diddy],
         region=Regions.DiddyUpperCabin,
@@ -2925,12 +2928,13 @@ BalloonList = [
         speed=9,
         konglist=[Kongs.chunky],
         region=Regions.ChunkyCabin,
+        item_logic=lambda l: l.gorillagone and l.slam,
         points=[[300, 64, 268], [372, 64, 338], [288, 64, 410], [213, 64, 332]],
     ),
     Balloon(
         id=59,
         map_id=Maps.CavesRotatingCabin,
-        name="Puzzles",
+        name="Rotating Cabin: RGB",
         speed=6,
         konglist=[Kongs.donkey],
         region=Regions.RotatingCabin,
@@ -2939,7 +2943,7 @@ BalloonList = [
     Balloon(
         id=60,
         map_id=Maps.CavesLankyCabin,
-        name="GB hole",
+        name="Lanky 1DC: GB hole",
         speed=17,
         konglist=[Kongs.lanky],
         region=Regions.LankyCabin,

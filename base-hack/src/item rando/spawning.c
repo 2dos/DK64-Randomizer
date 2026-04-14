@@ -371,7 +371,7 @@ void spawnBreakableObject(int index) {
         collisionPos[1] + 10.0f,
         collisionPos[2],
         0, cutscene,
-        FLAG_GRABBABLES_DESTROYED + index, 0,
+        FLAG_BREAKABLE_DESTROYED + index, 0,
         box_item_table[index].item_level,
         box_item_table[index].item_kong);
     BreakableSpawnBitfield |= (1 << index);
@@ -393,4 +393,82 @@ void renderBoulderSparkles(actorData *actor) {
         scale = 3.0f;
     }
     renderSparkles(scale);
+}
+
+// Balloons
+int shouldDeleteBalloon(int cb_flag, flagtypes flag_type) {
+    if (checkFlag(cb_flag, flag_type)) {
+        int balloon_offset = *(short*)(0x80688BCE);
+        return checkFlag((cb_flag - balloon_offset) + FLAG_BALLOON_ITEM, FLAGTYPE_PERMANENT);
+    }
+    return 0;
+}
+
+int isValidBalloonObject(int index) {
+    if (index < 0) {
+        return 0;
+    }
+    if (BalloonSpawnBitfield[index >> 3] & (1 << (index & 7))) {
+        return 0;
+    }
+    int flag = FLAG_BALLOON_ITEM + index;
+    if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
+        return 0;
+    }
+    int item = balloon_item_table[index].actor;
+    if (item == NEWACTOR_NULL) {
+        return 0;
+    }
+    return item;
+}
+
+void balloonVisHandler(sprite_struct * sprite, int cb_flag) {
+    int balloon_offset = *(short*)(0x80688BCE);
+    int index = cb_flag - balloon_offset;
+    int item = isValidBalloonObject(index);
+    if (!item) {
+        return;
+    }
+    sprite->balloon_image = BALLOON_IMAGE_START + getBarrelSkinIndex(item);
+    sprite->vert_set[1] = sprite->vert_set[0];
+}
+
+Gfx *balloonVisHandler2(sprite_struct *sprite, Gfx *dl, short unk2) {
+    int old_count = sprite->image_count;
+    if (sprite->balloon_image) {
+        sprite->image[1] = getMapData(25, sprite->balloon_image, 0, 0);
+        sprite->image_count = 2;
+    }
+    dl = writeSpriteToDL(sprite, dl, unk2);
+    sprite->image_count = old_count;
+    return dl;
+}
+
+void balloonItemHandler(int flag, int state, flagtypes flag_type) {
+    if (!checkFlag(flag, flag_type)) {
+        // Doesn't have CBs, give them
+        setFlag(flag, state, flag_type);
+        displayItemOnHUD(0, 0, 0);
+        addHelmTime(HHITEM_CB, 10);
+        changeCollectableCount(0, 0, 10);
+    }
+    int balloon_offset = *(short*)(0x80688BCE);
+    int index = flag - balloon_offset;
+    int item = isValidBalloonObject(index);
+    if (!item) {
+        return;
+    }
+    int cutscene = 1;
+    if (isBounceObject(item)) {
+        cutscene = 2;
+    }
+    spawnActorWithFlagHandler(item,
+        CurrentActorPointer_0->xPos,
+        CurrentActorPointer_0->yPos + 10.0f,
+        CurrentActorPointer_0->zPos,
+        0, cutscene,
+        FLAG_BALLOON_ITEM + index, 0,
+        balloon_item_table[index].item_level,
+        balloon_item_table[index].item_kong);
+    BalloonSpawnBitfield[index >> 3] |= (1 << (index & 7));
 }

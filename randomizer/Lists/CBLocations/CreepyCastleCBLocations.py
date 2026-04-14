@@ -2830,11 +2830,12 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
         points=[[586, 330, 325], [404, 330, 340]],
+        banned_when_item_rando=True, # No Land
     ),
     Balloon(
         id=2,
         map_id=Maps.CreepyCastle,
-        name="Around big tree",
+        name="Around Big Tree",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
@@ -2843,7 +2844,7 @@ BalloonList = [
     Balloon(
         id=3,
         map_id=Maps.CreepyCastle,
-        name="Above area near low T&S portal",
+        name="Above Area Near Very Bottom",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CastleVeryBottom,
@@ -2852,7 +2853,7 @@ BalloonList = [
     Balloon(
         id=4,
         map_id=Maps.CreepyCastle,
-        name="Above empty area past W1",
+        name="Cemetary",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CastleGraveyardPlatform,
@@ -2861,10 +2862,11 @@ BalloonList = [
     Balloon(
         id=5,
         map_id=Maps.CreepyCastle,
-        name="Over and under moat bridge",
+        name="Over and Under Moar Bridge",
         speed=10,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
+        item_logic=lambda l: l.swim,
         points=[[608, 600, 726], [608, 810, 726], [883, 810, 915], [883, 600, 915]],
     ),
     Balloon(
@@ -2874,12 +2876,13 @@ BalloonList = [
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
+        item_logic=lambda l: l.swim,
         points=[[1084, 760, 946], [1269, 750, 892]],
     ),
     Balloon(
         id=7,
         map_id=Maps.CreepyCastle,
-        name="Above headphones by warps tag",
+        name="Above headphones",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
@@ -2893,11 +2896,12 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
         points=[[1228, 910, 2110], [850, 890, 2136]],
+        banned_when_item_rando=True, # No land
     ),
     Balloon(
         id=9,
         map_id=Maps.CreepyCastle,
-        name="By Lanky blueprint",
+        name="Past First Big Bridge",
         speed=12,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
@@ -2911,11 +2915,12 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
         points=[[1279, 1060, 984], [1132, 1060, 1002]],
+        banned_when_item_rando=True, # Might stick to wall
     ),
     Balloon(
         id=11,
         map_id=Maps.CreepyCastle,
-        name="Around Cranky's shop",
+        name="Around Mid-Exterior Shop",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
@@ -2945,11 +2950,12 @@ BalloonList = [
             [2080, 1495, 1142],
             [2085, 1480, 1331],
         ],
+        banned_when_item_rando=True, # No Land
     ),
     Balloon(
         id=14,
         map_id=Maps.CreepyCastle,
-        name="On path near W5 (castle side)",
+        name="Above Museum",
         speed=9,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
@@ -2986,7 +2992,7 @@ BalloonList = [
     Balloon(
         id=17,
         map_id=Maps.CreepyCastle,
-        name="Behind Snide's",
+        name="Behind Upper-Exterior Shop",
         speed=9,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
@@ -3002,7 +3008,7 @@ BalloonList = [
     Balloon(
         id=18,
         map_id=Maps.CastleBallroom,
-        name="In back of the room",
+        name="Museum: Rear",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Ballroom,
@@ -3011,7 +3017,7 @@ BalloonList = [
     Balloon(
         id=19,
         map_id=Maps.CastleDungeon,
-        name="In Lanky's section",
+        name="Dungeon: Before Lanky's Acid Room",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Dungeon,
@@ -3020,7 +3026,7 @@ BalloonList = [
     Balloon(
         id=20,
         map_id=Maps.CastleDungeon,
-        name="In Diddy's section",
+        name="Dungeon: Before Diddy's Room",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Dungeon,
@@ -3029,7 +3035,7 @@ BalloonList = [
     Balloon(
         id=21,
         map_id=Maps.CastleDungeon,
-        name="In DK's room",
+        name="Dungeon: In DK's room",
         speed=10,
         konglist=[Kongs.donkey],
         region=Regions.Dungeon,
@@ -3039,7 +3045,7 @@ BalloonList = [
     Balloon(
         id=22,
         map_id=Maps.CastleLowerCave,
-        name="Above pathway to crypt",
+        name="Lower Cave: Above pathway to crypt",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LowerCave,
@@ -3048,7 +3054,7 @@ BalloonList = [
     Balloon(
         id=23,
         map_id=Maps.CastleLowerCave,
-        name="Around mausoleum",
+        name="Lower Cave: Around mausoleum",
         speed=9,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LowerCave,
@@ -3057,7 +3063,7 @@ BalloonList = [
     Balloon(
         id=24,
         map_id=Maps.CastleCrypt,
-        name="Above warps",
+        name="Crypt: Above warps",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         region=Regions.Crypt,
@@ -3066,7 +3072,7 @@ BalloonList = [
     Balloon(
         id=25,
         map_id=Maps.CastleCrypt,
-        name="Around coffin in Chunky's room",
+        name="Crypt: Around Chunky's Coffin",
         speed=7,
         konglist=[Kongs.chunky],
         region=Regions.CryptChunkyRoom,
@@ -3075,7 +3081,7 @@ BalloonList = [
     Balloon(
         id=26,
         map_id=Maps.CastleCrypt,
-        name="Around coffin in Diddy's room",
+        name="Crypt: Around Diddy's Coffin",
         speed=7,
         konglist=[Kongs.diddy],
         region=Regions.CryptDiddyRoom,
@@ -3089,6 +3095,7 @@ BalloonList = [
         konglist=[Kongs.lanky, Kongs.tiny],
         region=Regions.Mausoleum,
         points=[[1002, 220, 1731], [1002, 0, 1731]],
+        banned_when_item_rando=True, # Over Acid
     ),
     Balloon(
         id=28,
@@ -3099,11 +3106,12 @@ BalloonList = [
         region=Regions.Mausoleum,
         logic=lambda l: l.twirl or (l.monkey_maneuvers and (not l.isKrushaAdjacent(Kongs.tiny))),
         points=[[1304, 240, 2150], [967, 230, 2140]],
+        banned_when_item_rando=True, # Over Acid
     ),
     Balloon(
         id=29,
         map_id=Maps.CastleUpperCave,
-        name="Near moat entrance",
+        name="Upper Cave: Near moat entrance",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.UpperCave,
@@ -3112,7 +3120,7 @@ BalloonList = [
     Balloon(
         id=30,
         map_id=Maps.CastleUpperCave,
-        name="Near Candy",
+        name="Upper Cave: Near Upper Cave Shop",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.UpperCave,
@@ -3126,11 +3134,12 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.UpperCave,
         points=[[900, 240, 820], [900, 0, 820]],
+        banned_when_item_rando=True, # Over Pit
     ),
     Balloon(
         id=32,
         map_id=Maps.CastleLibrary,
-        name="In switch room",
+        name="Library: In switch room",
         speed=8,
         konglist=[Kongs.donkey],
         region=Regions.Library,
@@ -3139,7 +3148,7 @@ BalloonList = [
     Balloon(
         id=33,
         map_id=Maps.CastleLibrary,
-        name="In GB room",
+        name="Library: Past Books",
         speed=8,
         konglist=[Kongs.donkey],
         region=Regions.LibraryPastBooks,
@@ -3148,7 +3157,7 @@ BalloonList = [
     Balloon(
         id=34,
         map_id=Maps.CastleMuseum,
-        name="In hallway to main room",
+        name="Museum: In hallway to main room",
         speed=7,
         konglist=[Kongs.chunky],
         region=Regions.Museum,
@@ -3157,7 +3166,7 @@ BalloonList = [
     Balloon(
         id=35,
         map_id=Maps.CastleMuseum,
-        name="Around car race",
+        name="Museum: Around car race",
         speed=9,
         konglist=[Kongs.tiny],
         region=Regions.MuseumBehindGlass,
@@ -3166,7 +3175,7 @@ BalloonList = [
     Balloon(
         id=36,
         map_id=Maps.CastleTree,
-        name="First room",
+        name="Tree: Entrance",
         speed=10,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CastleTree,
@@ -3175,7 +3184,7 @@ BalloonList = [
     Balloon(
         id=37,
         map_id=Maps.CreepyCastle,
-        name="Above W1 (Diddy)",
+        name="Beside W1",
         speed=10,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
@@ -3185,7 +3194,7 @@ BalloonList = [
     Balloon(
         id=38,
         map_id=Maps.CastleBallroom,
-        name="By bonus barrel (Diddy)",
+        name="Ballroom: Inside Ballroom",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Ballroom,
@@ -3195,7 +3204,7 @@ BalloonList = [
     Balloon(
         id=39,
         map_id=Maps.CastleTower,
-        name="In tower (Lanky)",
+        name="Tower: Wind Tower",
         speed=9,
         konglist=[Kongs.lanky],
         region=Regions.Tower,
@@ -3212,11 +3221,12 @@ BalloonList = [
         vanilla=True,
         logic=lambda l: l.sprint or l.generalclips or l.CanPhase(),
         points=[[2366, 134, 465], [2399, 124, 652], [2270, 126, 563]],
+        banned_when_item_rando=True, #Over Acid
     ),
     Balloon(
         id=41,
         map_id=Maps.CastleCrypt,
-        name="In coffin in Diddy's room (Diddy)",
+        name="Crypt: Inside Diddy's Coffin",
         speed=3,
         konglist=[Kongs.diddy],
         region=Regions.CryptDiddyRoom,
@@ -3227,7 +3237,7 @@ BalloonList = [
     Balloon(
         id=42,
         map_id=Maps.CastleCrypt,
-        name="In DK's room (Donkey)",
+        name="Crypt: Beside Minecart Entrance",
         speed=6,
         konglist=[Kongs.donkey],
         region=Regions.CryptDonkeyRoom,
@@ -3237,18 +3247,18 @@ BalloonList = [
     Balloon(
         id=43,
         map_id=Maps.CastleMuseum,
-        name="In monument room (Tiny)",
+        name="Museum: Behind Museum Glass",
         speed=10,
         konglist=[Kongs.tiny],
         region=Regions.MuseumBehindGlass,
         vanilla=True,
-        logic=lambda l: l.feather and (l.monkeyport or l.CanPhase()),
+        logic=lambda l: l.monkeyport or l.CanPhase(),
         points=[[1274, 268, 1475], [1238, 284, 1629], [1080, 248, 1628], [1022, 266, 1437], [1220, 288, 1390]],
     ),
     Balloon(
         id=44,
         map_id=Maps.CastleMuseum,
-        name="Around middle (Chunky)",
+        name="Museum",
         speed=5,
         konglist=[Kongs.chunky],
         region=Regions.Museum,
@@ -3258,7 +3268,7 @@ BalloonList = [
     Balloon(
         id=45,
         map_id=Maps.CastleDungeon,
-        name="In Diddy's dungeon room (Diddy)",
+        name="Dungeon: Inside Diddy Dungeon",
         speed=9,
         konglist=[Kongs.diddy],
         region=Regions.Dungeon,
@@ -3276,11 +3286,12 @@ BalloonList = [
         vanilla=True,
         logic=lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()) and l.trombone and l.balloon,
         points=[[617, 144, 261], [480, 144, 253]],
+        banned_when_item_rando=True,
     ),
     Balloon(
         id=47,
         map_id=Maps.CastleDungeon,
-        name="In cage left side (Chunky)",
+        name="Dungeon: Chunky Jail (0)",
         speed=2,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Dungeon,
@@ -3298,11 +3309,12 @@ BalloonList = [
         vanilla=True,
         logic=lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()),
         points=[[453, 156, 820], [661, 154, 805]],
+        banned_when_item_rando=True,
     ),
     Balloon(
         id=49,
         map_id=Maps.CastleDungeon,
-        name="In cage right side (Chunky)",
+        name="Dungeon: Chunky Jail (1)",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Dungeon,
@@ -3313,7 +3325,7 @@ BalloonList = [
     Balloon(
         id=50,
         map_id=Maps.CastleTree,
-        name="Above hole (Donkey)",
+        name="Tree: Above Hole",
         speed=13,
         konglist=[Kongs.donkey],
         region=Regions.CastleTree,
@@ -3323,7 +3335,7 @@ BalloonList = [
     Balloon(
         id=51,
         map_id=Maps.CastleTree,
-        name="In Chunky's room (Chunky)",
+        name="Tree: In Chunky's Room",
         speed=10,
         konglist=[Kongs.chunky],
         region=Regions.CastleTreePastPunch,
@@ -3333,7 +3345,7 @@ BalloonList = [
     Balloon(
         id=53,
         map_id=Maps.CastleLowerCave,
-        name="In front of crypt (Diddy)",
+        name="Lower Cave: Above Crypt Entrance",
         speed=10,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LowerCave,
@@ -3343,7 +3355,7 @@ BalloonList = [
     Balloon(
         id=54,
         map_id=Maps.CastleLowerCave,
-        name="In front of Funky (Tiny)",
+        name="Lower Cave: Front of Lower Cave Shop",
         speed=9,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LowerCave,
@@ -3359,6 +3371,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
         points=[[154, 477, 437], [69, 477, 569], [64, 477, 747], [69, 477, 569]],
+        banned_when_item_rando=True, # Over Pit
     ),
     Balloon(
         id=56,
@@ -3372,7 +3385,7 @@ BalloonList = [
     Balloon(
         id=57,
         map_id=Maps.CreepyCastle,
-        name="Around the lower T&S area",
+        name="Around Very Bottom Castle",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CastleVeryBottom,
@@ -3395,11 +3408,12 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CastleVeryBottom,
         points=[[1020, 400, 2044], [1006, 444, 2140], [1003, 319, 2089]],
+        banned_when_item_rando=True, # Over Void
     ),
     Balloon(
         id=60,
         map_id=Maps.CreepyCastle,
-        name="Around tree in uneventful area just above the grayevard",
+        name="Around Cemetary",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
@@ -3417,7 +3431,7 @@ BalloonList = [
     Balloon(
         id=62,
         map_id=Maps.CastleLowerCave,
-        name="Tunnel to Funky",
+        name="Lower Cave: Tunnel to Lower Cave Shop",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LowerCave,
@@ -3426,7 +3440,7 @@ BalloonList = [
     Balloon(
         id=63,
         map_id=Maps.CastleCrypt,
-        name="DK's path",
+        name="Crypt: DK's path",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         region=Regions.Crypt,
@@ -3435,7 +3449,7 @@ BalloonList = [
     Balloon(
         id=64,
         map_id=Maps.CastleCrypt,
-        name="Tilted pineapple switch",
+        name="Crypt: Tilted pineapple switch",
         speed=2,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         region=Regions.Crypt,
@@ -3444,7 +3458,7 @@ BalloonList = [
     Balloon(
         id=65,
         map_id=Maps.CastleMausoleum,
-        name="Beginning of Lanky's path",
+        name="Mausoleum: Beginning of Lanky's path",
         speed=10,
         konglist=[Kongs.lanky, Kongs.tiny],
         region=Regions.Mausoleum,
@@ -3453,7 +3467,7 @@ BalloonList = [
     Balloon(
         id=66,
         map_id=Maps.CastleDungeon,
-        name="Intersection",
+        name="Dungeon: Intersection",
         speed=9,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Dungeon,
@@ -3462,7 +3476,7 @@ BalloonList = [
     Balloon(
         id=67,
         map_id=Maps.CastleUpperCave,
-        name="Near the dungeon door",
+        name="Upper Cave: Near dungeon door",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.UpperCave,
@@ -3471,7 +3485,7 @@ BalloonList = [
     Balloon(
         id=68,
         map_id=Maps.CastleGreenhouse,
-        name="Dead end near the arena",
+        name="Greenhouse: Deadend Near Center",
         speed=4,
         konglist=[Kongs.lanky],
         region=Regions.Greenhouse,
@@ -3480,7 +3494,7 @@ BalloonList = [
     Balloon(
         id=69,
         map_id=Maps.CastleShed,
-        name="Back of the shed (Chunky)",
+        name="Shed: Rear",
         speed=6,
         konglist=[Kongs.chunky],
         region=Regions.Shed,
@@ -3490,7 +3504,7 @@ BalloonList = [
     Balloon(
         id=70,
         map_id=Maps.CastleTrashCan,
-        name="Above the cheese",
+        name="Trash: Above cheese",
         speed=15,
         konglist=[Kongs.tiny],
         region=Regions.TrashCan,
@@ -3499,7 +3513,7 @@ BalloonList = [
     Balloon(
         id=71,
         map_id=Maps.CastleBallroom,
-        name="Above the back candle",
+        name="Ballroom: Above back candle",
         speed=5,
         konglist=[Kongs.diddy],
         region=Regions.Ballroom,
@@ -3509,16 +3523,17 @@ BalloonList = [
     Balloon(
         id=72,
         map_id=Maps.CastleLibrary,
-        name="Among the flying books",
+        name="Library Among the flying books",
         speed=13,
         konglist=[Kongs.donkey],
         region=Regions.LibraryPastSlam,
+        item_logic= lambda l: l.strongKong and l.donkey,
         points=[[2266, 200, 470], [2266, 200, 270], [2376, 260, 270], [2376, 260, 470], [2467, 215, 470], [2467, 215, 270], [2556, 280, 270], [2556, 280, 470]],
     ),
     Balloon(
         id=73,
         map_id=Maps.CastleMuseum,
-        name="Through the glass",
+        name="Museum: Through the glass",
         speed=10,
         konglist=[Kongs.tiny],
         region=Regions.MuseumBehindGlass,

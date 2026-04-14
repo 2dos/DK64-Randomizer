@@ -811,6 +811,9 @@ void handleGrabbingLock(void* player, int player_index, int allow_vines) {
 }
 
 int canPlayerClimb(void) {
+    if (CCEffectData->no_climb == CC_ENABLED) {
+        return 0;
+    }
     int parent_map = 0;
     int parent_exit = 0;
     getParentMap(&parent_map, &parent_exit);
@@ -821,6 +824,9 @@ int canPlayerClimb(void) {
 }
 
 void handleLedgeLock(void) {
+    if (CCEffectData->no_ledges == CC_ENABLED) {
+        return;
+    }
     if ((grab_lock_timer >= 0) && (grab_lock_timer < 2)) {
         return;
     }

@@ -182,6 +182,7 @@ def get_default_settings() -> dict[str, Any]:
             ItemRandoListSelected.enemies,
             ItemRandoListSelected.boulderitem,
             ItemRandoListSelected.breakable,
+            ItemRandoListSelected.balloon,
             ItemRandoListSelected.shop,
             ItemRandoListSelected.bfi_gift,
             ItemRandoListSelected.banana_checks,
