@@ -2122,7 +2122,7 @@ function getTotalItemCounts() {
     }
     const notifier = document.getElementById("item_count_collective");
     const notif_alert = document.getElementById("item_count_collective_alert");
-    notifier.textContent = `Current Total: ${total} (Vanilla is 298)`;
+    notifier.textContent = `Current Total: ${total} (Maximum Safe Total is 298)`;
     if (total <= 298) {
         notifier.style.color = "white";
         notif_alert.setAttribute("hidden", "hidden");
