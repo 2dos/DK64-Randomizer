@@ -249,6 +249,7 @@ enum ItemId {
     ITEM_ID_FUNGI_NIGHT = 243;
     ITEM_ID_CANNON = 244;
     ITEM_ID_BREAKABLE = 245;
+    ITEM_ID_BALLOON = 246;
 }
 
 enum ItemType {
@@ -303,4 +304,5 @@ enum ItemType {
     ITEM_TYPE_FUNGI_TIME = 48;
     ITEM_TYPE_CANNON = 49;
     ITEM_TYPE_BREAKABLE= 50;
+    ITEM_TYPE_BALLOON= 51;
 }
