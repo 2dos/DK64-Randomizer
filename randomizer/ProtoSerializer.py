@@ -140,14 +140,23 @@ def _populate_item_settings(settings, proto: item_settings_pb2.ItemSettings):
     # Read from individual starting_moves_list_1 through _5 fields (not the combined lists)
     for i in range(1, 6):  # 1-5 inclusive
         move_pool = proto.starting_move_pools.add()
+        # Use original lists (before progressive item conversion)
+        # This preserves ProgressiveSlam2/3, ProgressiveAmmoBelt2, ProgressiveInstrumentUpgrade2/3
+        original_list_attr = f"original_starting_moves_list_{i}"
         list_attr = f"starting_moves_list_{i}"
         count_attr = f"starting_moves_list_count_{i}"
         
-        if hasattr(settings, list_attr):
+        # Prefer original list if it exists, otherwise fall back to current list
+        if hasattr(settings, original_list_attr):
+            move_list = getattr(settings, original_list_attr)
+        elif hasattr(settings, list_attr):
             move_list = getattr(settings, list_attr)
-            if move_list:
-                items_with_values = [x.value if hasattr(x, 'value') else x for x in move_list]
-                move_pool.items.extend(items_with_values)
+        else:
+            move_list = None
+            
+        if move_list:
+            items_with_values = [x.value if hasattr(x, 'value') else x for x in move_list]
+            move_pool.items.extend(items_with_values)
         
         if hasattr(settings, count_attr):
             count_val = getattr(settings, count_attr)
