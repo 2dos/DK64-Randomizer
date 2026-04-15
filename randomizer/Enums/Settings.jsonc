@@ -824,6 +824,19 @@
   },
 
   /*
+    ProgressiveHintAlgorithm:
+    - Determines how quickly progressive hints are unlocked.
+    - slow: Hints are granted at a slower pace.
+    - medium: Default hint pacing.
+    - fast: Hints are granted more quickly.
+  */
+  "ProgressiveHintAlgorithm": {
+    "slow": 0,
+    "medium": 1,
+    "fast": 2
+  },
+
+  /*
     PuzzleRando:
     - Determines the difficulty of puzzle rando.
     - off: Puzzle solutions are NOT randomized.
@@ -1428,7 +1441,8 @@
     "krool_in_boss_pool_v2": 294,
     "no_consumable_upgrades": 295,
     "bosses_selected": 296,
-    "ice_trap_model_v2": 297
+    "ice_trap_model_v2": 297,
+    "progressive_hint_algorithm": 298
   },
   /*
     SettingsStringDataType:
@@ -1538,6 +1552,7 @@
     "chunky_phase_slam_req": { "obj": "SlamRequirement" },
     "puzzle_rando_difficulty": { "obj": "PuzzleRando" },
     "progressive_hint_item": { "obj": "ProgressiveHintItem" },
+    "progressive_hint_algorithm": { "obj": "ProgressiveHintAlgorithm" },
     "starting_moves_list_1": { "obj": "Items" },
     "starting_moves_list_2": { "obj": "Items" },
     "starting_moves_list_3": { "obj": "Items" },
@@ -2071,6 +2086,7 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.progressive_hint_item": { "obj": "ProgressiveHintItem" },
+    "SettingsStringEnum.progressive_hint_algorithm": { "obj": "ProgressiveHintAlgorithm" },
     "SettingsStringEnum.starting_moves_list_1": {
       "obj": "SettingsStringDataType.list"
     },
