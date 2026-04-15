@@ -379,7 +379,7 @@ def patching_response(spoiler):
         ROM_COPY.write(getProgHintBarrierItem(spoiler.settings.progressive_hint_item))
         for x in range(10):
             ROM_COPY.seek(sav + 0x98 + (x * 2))
-            ROM_COPY.writeMultipleBytes(getHintRequirementBatch(x, count), 2)
+            ROM_COPY.writeMultipleBytes(getHintRequirementBatch(x, count, spoiler.settings.progressive_hint_algorithm), 2)
     ROM_COPY.seek(sav + 0x115)
     ROM_COPY.writeMultipleBytes(count, 1)
 

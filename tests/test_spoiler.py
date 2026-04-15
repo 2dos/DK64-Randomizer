@@ -15,7 +15,7 @@ from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando, 
                                        FreeTradeSetting, HelmDoorItem, HelmBonuses,
                                        HelmSetting, KasplatRandoSetting,
                                        KrushaUi, LevelRandomization, LogicType,
-                                       MicrohintsEnabled, MoveRando,
+                                       MicrohintsEnabled, MoveRando, ProgressiveHintAlgorithm,
                                        RandomPrices, SettingsMap,
                                        ShockwaveStatus, SpoilerHints,
                                        TrainingBarrels, WinConditionComplex,
@@ -36,7 +36,7 @@ class TestSpoiler(unittest.TestCase):
     def test_settings_string(self):
         """Confirm that settings strings decryption is working and generate a spoiler log with it."""
         # The settings string is defined either here or in the string above, pick your poison
-        self.settings_string = "Px+YQAAEKA4WBwwDhoDDgGHgMQAYiAxICiYFFAKKgUWA4+ASAAkIBF8mMFEcFI2FRkQjQLHaF6AAS/AAdggACwwAAYoAAP9A0tAoCBgIDgYIBASCgoGBYODAiAJ1MhuABvABwABxAByABzAB0AC5ABMwEJw9AhQgMDDCCQkE1GArQLRLSLTLUTVTWbXbYtltp222426ndW83CXAW+HfXhXEHOXGHInK3MHQHSXVHWnY3bDRElNSZhcYBlqiUQISIUQKMFIClBTBIyQRcE9TZPlm2YBGyyH6fhkJZWxluESSRiMU0gQ5HZCkWakl6LELYvVOhUQsAhMwoZEiR0qqrKBTLDkyTvEUByvIFYzyWMDIAAFLVTPEN0FIQAAUKAAKGAAFDgACiAABVoAAokAAUUAAKLAAFGAACjQABVwAAE+EsqoMVgtj2Z4sgwRwwDOZJdgcjwpioWhjisDQVpOIY1hcJIQn8g5BkiXReDoNBwQCISCgVCwYDIaDgdDwgEIiEYkEomE4oFIsFouF4wXwMDBWMRoNVYwAQEAkFAthAYqGQzYgAdgB+gIpwMDEZDHStz5TToeJGis8TV5vfKAwIxZpvU8THy8zNzs8OkeMAh3XEGWsQgvXz+AbPHwwmjnd1K9lZmcU2dWxfCnCgHBEMiEqWxrnwifwBZAEFA2oUR4IhkKY6EqWxrnwjKdK2vjOt8755BKiUUN809Fj3CVY5ba05KsHmGhBmPUuNEsLHilPgQBbIgfdZuXRQOLNEGegA+QB6gD6AHsAPsA"
+        self.settings_string = "Px+YQAAEKA4WBwwDhoDDgGHgMQAYiAxICiYFFAKKgUWA4+AyABkIFKWL5MYKI4KRtGjIhGgWO0L0AA1+AAzBAAJhgAAxQAAf6BpkBQEDAQHAwQCAkFBQMCwcGBEATqljcADeADgADiADkADmADoAFyACZgITiiBChAYGGEGhIJrIBWgWiWkWmWomqms2u2xbNbUNttxt1O6t5uEuAt8O+vCuIOcuMOROVuYOgOkuqOtOxu2GiJKakyi4wDrVEqAQkQogUYKQFKCmCRkgi4J6myfLNsxCOTDLIfp/HoZCWVsZbhEkkYjFNIEOh8QpqSXosQti9U6FRCwCEzCiASJHaqqsoGMsOTJO8RQHK8gVjPJYysgAN1TPEN0EIQAC0KABaGAAlDgASiAAHVoADokABUUAAaLAAdGAAKjQADVwAFk+EsqoMVgtj2Z4sgwRwwDOZJdgcKYqFoY4rA0FaTiGIo1hcJIQn8g5LEGSJdF4RAgEgoFg0HBAIhIKBULBgMhoOB0PCAQiIRiQSiYTigUiwWi4XjAar4GBgrGI0L6sYAGXC6XmEBioZDNiAB2AH6AinAsMRkOlbHymnQ8SNFZ4mrze+UBgRizTep4mPl5mbnZ4dI8YBDuuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOFAPCIZDISpbGufCJ/AFkAQUDahRHgiGQpjoSpbGufCMp0ra+M63zvnkDqRXzT0WPcGVlgkqweYcEHCkY9S40wseKU+BEFt91NldFA4s0gS4a16AJL5Aq43qAPoAewA+wA"
         settings_dict = decrypt_settings_string_enum(self.settings_string)
         settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
 
@@ -45,6 +45,7 @@ class TestSpoiler(unittest.TestCase):
         # settings_dict["plandomizer_data"] = json.loads('{"plando_starting_exit": -1, "plando_starting_kongs_selected": [-1], "plando_kong_rescue_diddy": -1, "plando_kong_rescue_lanky": -1, "plando_kong_rescue_tiny": -1, "plando_kong_rescue_chunky": -1, "plando_level_order_0": -1, "plando_level_order_1": -1, "plando_level_order_2": -1, "plando_level_order_3": -1, "plando_level_order_4": -1, "plando_level_order_5": -1, "plando_level_order_6": -1, "plando_level_order_7": -1, "plando_krool_order_0": -1, "plando_krool_order_1": -1, "plando_krool_order_2": -1, "plando_helm_order_0": -1, "plando_helm_order_1": -1, "plando_place_fairies": false, "plando_place_arenas": false, "plando_place_patches": false, "plando_place_kasplats": false, "plando_place_crates": false, "plando_place_wrinkly": false, "plando_place_tns": false, "locations": {"156": 18}, "prices": {}, "plando_bonus_barrels": {"156": 60}, "plando_switchsanity": {}, "plando_battle_arenas": {}, "plando_dirt_patches": [], "plando_fairies": [], "plando_kasplats": {}, "plando_melon_crates": [], "plando_wrinkly_doors": {}, "plando_tns_portals": {}, "hints": {}}')
 
         settings = Settings(settings_dict)
+        settings.progressive_hint_algorithm = ProgressiveHintAlgorithm.medium
         # settings.extreme_debugging = True  # Greatly slows seed gen, use with caution
         spoiler = Spoiler(settings)
         Generate_Spoiler(spoiler)

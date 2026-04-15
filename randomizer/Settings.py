@@ -1045,6 +1045,7 @@ class Settings:
         # self.enable_progressive_hints = False  # Deprecated
         # self.progressive_hint_text = 0  # Deprecated
         self.progressive_hint_count = 0
+        self.progressive_hint_algorithm = ProgressiveHintAlgorithm.medium
         # Misc
         self.archipelago = False
 
