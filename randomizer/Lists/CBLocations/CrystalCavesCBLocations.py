@@ -2928,7 +2928,7 @@ BalloonList = [
         speed=9,
         konglist=[Kongs.chunky],
         region=Regions.ChunkyCabin,
-        item_logic=lambda l: l.gorillagone and l.slam,
+        item_logic=lambda l: l.gorillaGone and l.Slam,
         points=[[300, 64, 268], [372, 64, 338], [288, 64, 410], [213, 64, 332]],
     ),
     Balloon(
