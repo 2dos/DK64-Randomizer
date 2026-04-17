@@ -62,7 +62,7 @@ from randomizer.Lists.Location import SharedMoveLocations, SharedShopLocations
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex
 from randomizer.LogicClasses import Sphere, TransitionFront
-from randomizer.Patching import ApplyRandomizer
+# Lazy import: from randomizer.Patching import ApplyRandomizer (loaded only when needed for ROM patching)
 from randomizer.Patching.EnemyRando import randomize_enemies_0
 from randomizer.Patching.PuzzleRando import randomizeRaceRequirements
 from randomizer.Patching.Library.Generic import IsItemSelected, getBLockerThresholds, IsDDMSSelected
@@ -88,6 +88,7 @@ from randomizer.ShufflePatches import ShufflePatches
 from randomizer.ShufflePorts import ShufflePorts, ResetPorts
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import LinkWarps, ShuffleWarpsCrossMap
+from randomizer.ProtoSerializer import fill_result_to_proto
 
 if TYPE_CHECKING:
     from randomizer.LogicClasses import LogicVarHolder
@@ -4064,9 +4065,22 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     ShuffleExits.Reset(spoiler)
     spoiler.createJson()
     js.postMessage("Patching ROM...")
+    
+    # Convert fill results to protobuf for patching
+    print("[Fill] Converting Fill results to protobuf...")
+    fill_result_proto = fill_result_to_proto(spoiler)
+    proto_size = fill_result_proto.ByteSize()
+    print(f"[Fill] ✓ Created FillResult proto ({proto_size:,} bytes)")
+    print(f"[Fill]   - Location assignments: {len(fill_result_proto.location_assignments.assignments)}")
+    print(f"[Fill]   - CB placements: {len(fill_result_proto.placement_data.cb_placements)}")
+    print(f"[Fill]   - Shuffled exits: {len(fill_result_proto.shuffle_data.shuffled_exits)}")
+    print(f"[Fill] Passing FillResult proto to patching...")
+    
     # print(spoiler)
     # print(spoiler.json)
-    patch_data, password = ApplyRandomizer.patching_response(spoiler)
+    # Lazy import - only load patching modules when actually patching ROM
+    from randomizer.Patching import ApplyRandomizer
+    patch_data, password = ApplyRandomizer.patching_response(fill_result_proto, spoiler.settings)
     return patch_data, spoiler, password
 
 

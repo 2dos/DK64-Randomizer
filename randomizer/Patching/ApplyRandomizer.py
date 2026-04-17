@@ -138,20 +138,651 @@ def encPass(spoiler) -> int:
         return 0, 0
 
 
-def patching_response(spoiler):
-    """Apply the patch data to the ROM in the local server to be returned to the client."""
+def _create_patching_adapter(fill_result, settings):
+    """Create an adapter object that converts FillResult proto to spoiler-like interface.
+    
+    This adapter allows existing patching code to work with the proto without
+    requiring immediate refactoring of all patching functions.
+    
+    Args:
+        fill_result: FillResult protobuf message
+        settings: Settings object
+        
+    Returns:
+        Adapter object with spoiler-like interface
+    """
+    from randomizer.Enums.Regions import Regions
+    from randomizer.LogicClasses import TransitionFront
+    
+    class PatchingAdapter:
+        """Adapter that provides spoiler-like interface for FillResult proto."""
+        
+        def __init__(self, fill_result, settings):
+            self.settings = settings
+            self.fill_result = fill_result
+            self.json = "{}"  # Will be populated in patching_response
+            self.text_changes = {}
+            self.enemy_rando_data = {}  # Will be populated by EnemyRando if needed
+            self.microhints = {}  # Will be populated by compileMicrohints during patching
+            self.pregiven_items = []  # Items given at start (populated during Fill)
+            self.arcade_item_reward = None  # Set in patching_response
+            self.jetpac_item_reward = None  # Set in patching_response
+            
+            # Initialize location_references - static mapping of items to reference names
+            from randomizer.Fill import ItemReference
+            self.location_references = [
+                # DK Moves
+                ItemReference(Items.BaboonBlast, "Baboon Blast", "DK Japes Cranky"),
+                ItemReference(Items.StrongKong, "Strong Kong", "DK Aztec Cranky"),
+                ItemReference(Items.GorillaGrab, "Gorilla Grab", "DK Factory Cranky"),
+                ItemReference(Items.Coconut, "Coconut Gun", "DK Japes Funky"),
+                ItemReference(Items.Bongos, "Bongo Blast", "DK Aztec Candy"),
+                # Diddy Moves
+                ItemReference(Items.ChimpyCharge, "Chimpy Charge", "Diddy Japes Cranky"),
+                ItemReference(Items.RocketbarrelBoost, "Rocketbarrel Boost", "Diddy Aztec Cranky"),
+                ItemReference(Items.SimianSpring, "Simian Spring", "Diddy Factory Cranky"),
+                ItemReference(Items.Peanut, "Peanut Popguns", "Diddy Japes Funky"),
+                ItemReference(Items.Guitar, "Guitar Gazump", "Diddy Aztec Candy"),
+                # Lanky Moves
+                ItemReference(Items.Orangstand, "Orangstand", "Lanky Japes Cranky"),
+                ItemReference(Items.BaboonBalloon, "Baboon Balloon", "Lanky Factory Cranky"),
+                ItemReference(Items.OrangstandSprint, "Orangstand Sprint", "Lanky Caves Cranky"),
+                ItemReference(Items.Grape, "Grape Shooter", "Lanky Japes Funky"),
+                ItemReference(Items.Trombone, "Trombone Tremor", "Lanky Aztec Candy"),
+                # Tiny Moves
+                ItemReference(Items.MiniMonkey, "Mini Monkey", "Tiny Japes Cranky"),
+                ItemReference(Items.PonyTailTwirl, "Pony Tail Twirl", "Tiny Factory Cranky"),
+                ItemReference(Items.Monkeyport, "Monkeyport", "Tiny Caves Cranky"),
+                ItemReference(Items.Feather, "Feather Bow", "Tiny Japes Funky"),
+                ItemReference(Items.Saxophone, "Saxophone Slam", "Tiny Aztec Candy"),
+                # Chunky Moves
+                ItemReference(Items.HunkyChunky, "Hunky Chunky", "Chunky Japes Cranky"),
+                ItemReference(Items.PrimatePunch, "Primate Punch", "Chunky Factory Cranky"),
+                ItemReference(Items.GorillaGone, "Gorilla Gone", "Chunky Caves Cranky"),
+                ItemReference(Items.Pineapple, "Pineapple Launcher", "Chunky Japes Funky"),
+                ItemReference(Items.Triangle, "Triangle Trample", "Chunky Aztec Candy"),
+                # Gun Upgrades
+                ItemReference(Items.HomingAmmo, "Homing Ammo", "Shared Forest Funky"),
+                ItemReference(Items.SniperSight, "Sniper Scope", "Shared Castle Funky"),
+                ItemReference(Items.ProgressiveAmmoBelt, "Progressive Ammo Belt", ["Shared Factory Funky", "Shared Caves Funky"]),
+                ItemReference(Items.Camera, "Fairy Camera", "Banana Fairy Gift"),
+                ItemReference(Items.Shockwave, "Shockwave", "Banana Fairy Gift"),
+                # Basic Moves
+                ItemReference(Items.Swim, "Diving", "Dive Barrel"),
+                ItemReference(Items.Oranges, "Orange Throwing", "Orange Barrel"),
+                ItemReference(Items.Barrels, "Barrel Throwing", "Barrel Barrel"),
+                ItemReference(Items.Vines, "Vine Swinging", "Vine Barrel"),
+                ItemReference(Items.Climbing, "Climbing", "Starting Move"),
+                ItemReference(Items.Cannons, "Cannons", "Starting Move"),
+                # Instrument Upgrades & Slams
+                ItemReference(
+                    Items.ProgressiveInstrumentUpgrade,
+                    "Progressive Instrument Upgrade",
+                    ["Shared Galleon Candy", "Shared Caves Candy", "Shared Castle Candy"],
+                ),
+                ItemReference(
+                    Items.ProgressiveSlam,
+                    "Progressive Slam",
+                    ["Shared Isles Cranky", "Shared Forest Cranky", "Shared Castle Cranky"],
+                ),
+                # Kongs
+                ItemReference(Items.Donkey, "Donkey Kong", "Starting Kong"),
+                ItemReference(Items.Diddy, "Diddy Kong", "Japes Diddy Cage"),
+                ItemReference(Items.Lanky, "Lanky Kong", "Llama Lanky Cage"),
+                ItemReference(Items.Tiny, "Tiny Kong", "Aztec Tiny Cage"),
+                ItemReference(Items.Chunky, "Chunky Kong", "Factory Chunky Cage"),
+                # Shopkeepers
+                ItemReference(Items.Cranky, "Cranky Kong", "Starting Item"),
+                ItemReference(Items.Candy, "Candy Kong", "Starting Item"),
+                ItemReference(Items.Funky, "Funky Kong", "Starting Item"),
+                ItemReference(Items.Snide, "Snide", "Starting Item"),
+                # Early Keys
+                ItemReference(Items.JungleJapesKey, "Key 1", "Starting Key", True),
+                ItemReference(Items.AngryAztecKey, "Key 2", "Starting Key", True),
+                ItemReference(Items.FranticFactoryKey, "Key 3", "Starting Key", True),
+                ItemReference(Items.GloomyGalleonKey, "Key 4", "Starting Key", True),
+                # Late Keys
+                ItemReference(Items.FungiForestKey, "Key 5", "Starting Key", True),
+                ItemReference(Items.CrystalCavesKey, "Key 6", "Starting Key", True),
+                ItemReference(Items.CreepyCastleKey, "Key 7", "Starting Key", True),
+                ItemReference(Items.HideoutHelmKey, "Key 8", "Starting Key", True),
+            ]
+            
+            # Convert shuffled exits from proto to TransitionFront objects
+            self.shuffled_exit_data = {}
+            for exit_id, exit_dest in fill_result.shuffle_data.shuffled_exits.items():
+                # Create TransitionFront-like object
+                class ExitDestination:
+                    def __init__(self, dest, reverse, exit_name, spoiler_name):
+                        self.dest = dest if isinstance(dest, Regions) else Regions(dest)
+                        self.reverse = reverse
+                        self.exit = exit_name
+                        self.spoilerName = spoiler_name
+                
+                self.shuffled_exit_data[exit_id] = ExitDestination(
+                    exit_dest.destination_region,
+                    exit_dest.reverse_transition,
+                    exit_dest.exit_name,
+                    exit_dest.spoiler_name
+                )
+            
+            # Store proto references for functions that need them
+            self._location_assignments = fill_result.location_assignments
+            self._move_shop_data = fill_result.move_shop_data
+            self._shuffle_data = fill_result.shuffle_data
+            self._placement_data = fill_result.placement_data
+            self._hint_data = fill_result.hint_data
+            self._path_data = fill_result.path_data
+            self._misc_data = fill_result.misc_data
+            
+        # Properties to access proto data with backward-compatible interface
+        @property
+        def LocationList(self):
+            """Simulate LocationList for item rando."""
+            from randomizer.Lists.Location import LocationListOriginal
+            from randomizer.Enums.Locations import Locations
+            
+            # Create a dict-like object that provides location->item mapping
+            class LocationDict:
+                def __init__(self, assignments):
+                    self._assignments = assignments
+                    self._cache = {}  # Cache LocationObj instances to persist attribute changes
+                
+                def _get_or_create_location(self, location_id):
+                    """Get or create a LocationObj for the given location_id."""
+                    if location_id not in self._cache:
+                        class LocationObj:
+                            def __init__(self, item_id, location_id):
+                                self.item = item_id if item_id != 0 else None
+                                self.location = location_id  # Store location ID for key lookups
+                                # Get location properties from LocationListOriginal if available
+                                try:
+                                    loc_enum = Locations(location_id)
+                                    if loc_enum in LocationListOriginal:
+                                        orig_loc = LocationListOriginal[loc_enum]
+                                        self.name = orig_loc.name
+                                        self.type = orig_loc.type
+                                        self.kong = orig_loc.kong
+                                        self.level = orig_loc.level
+                                        self.default = orig_loc.default
+                                        self.inaccessible = orig_loc.inaccessible
+                                        self.smallerShopsInaccessible = orig_loc.smallerShopsInaccessible
+                                        self.tooExpensiveInaccessible = orig_loc.tooExpensiveInaccessible
+                                    else:
+                                        self.name = f"Location_{location_id}"
+                                        self.type = None
+                                        self.kong = None
+                                        self.level = None
+                                        self.default = None
+                                        self.inaccessible = False
+                                        self.smallerShopsInaccessible = False
+                                        self.tooExpensiveInaccessible = False
+                                except:
+                                    self.name = f"Location_{location_id}"
+                                    self.type = None
+                                    self.kong = None
+                                    self.level = None
+                                    self.default = None
+                                    self.inaccessible = False
+                                    self.smallerShopsInaccessible = False
+                                    self.tooExpensiveInaccessible = False
+                        
+                        item_id = self._assignments.assignments.get(int(location_id), 0)
+                        self._cache[location_id] = LocationObj(item_id, location_id)
+                    
+                    return self._cache[location_id]
+                
+                def items(self):
+                    """Return (location_id, location_obj) pairs."""
+                    for loc_id in self._assignments.assignments.keys():
+                        yield (loc_id, self._get_or_create_location(loc_id))
+                
+                def __iter__(self):
+                    """Iterate over location IDs."""
+                    return iter(self._assignments.assignments.keys())
+                
+                def __len__(self):
+                    """Return number of locations."""
+                    return len(self._assignments.assignments)
+                
+                def __getitem__(self, key):
+                    # Handle multiple key types: int, Locations enum, LocationObj, etc.
+                    if isinstance(key, int):
+                        key_int = key
+                    elif hasattr(key, 'location'):
+                        # LocationObj from our own adapter - has .location attribute with the ID
+                        key_int = int(key.location)
+                    elif hasattr(key, 'value'):
+                        # Enum type (Locations has .value attribute)
+                        key_int = int(key.value)
+                    else:
+                        # Try direct conversion
+                        key_int = int(key)
+                    return self._get_or_create_location(key_int)
+                
+                def __contains__(self, key):
+                    """Check if location exists in assignments."""
+                    if isinstance(key, int):
+                        key_int = key
+                    elif hasattr(key, 'location'):
+                        # LocationObj from our own adapter
+                        key_int = int(key.location)
+                    elif hasattr(key, 'value'):
+                        key_int = int(key.value)
+                    else:
+                        key_int = int(key)
+                    return key_int in self._assignments.assignments
+            
+            return LocationDict(self._location_assignments)
+        
+        @property
+        def move_data(self):
+            """Return move shop data from proto."""
+            # Convert proto MoveShopData back to the 3-element list structure
+            result = []
+            
+            # Index 0: Shop moves - structure is [shop_tier][kong][level]
+            # Proto structure: shop_types[0].shop_indices[N] where N is shop_tier
+            shop_moves = []
+            if len(self._move_shop_data.shop_types) > 0:
+                shop_type = self._move_shop_data.shop_types[0]  # There's only one shop type
+                for shop_index in shop_type.shop_indices:  # 3 tiers
+                    kong_moves_list = []
+                    for kong_moves in shop_index.kong_moves:  # 5 kongs
+                        level_moves = []
+                        for move_entry in kong_moves.moves:  # 8 levels
+                            level_moves.append(_move_entry_proto_to_dict(move_entry))
+                        # Ensure we always have exactly 8 levels (pad with empty moves if needed)
+                        while len(level_moves) < 8:
+                            level_moves.append({'move_type': None})
+                        kong_moves_list.append(level_moves)
+                    shop_moves.append(kong_moves_list)
+            result.append(shop_moves)
+            
+            # Index 1: Training barrels
+            training = []
+            for move_entry in self._move_shop_data.training_barrels:
+                training.append(_move_entry_proto_to_dict(move_entry))
+            result.append(training)
+            
+            # Index 2: BFI moves
+            bfi = []
+            for move_entry in self._move_shop_data.bfi_moves:
+                bfi.append(_move_entry_proto_to_dict(move_entry))
+            result.append(bfi)
+            
+            return result
+        
+        @property
+        def shuffled_barrel_data(self):
+            """Return barrel shuffle data - reconstruct MinigameLocationData objects."""
+            from randomizer.Lists.Minigame import BarrelMetaData, MinigameLocationData
+            from randomizer.Enums.Minigames import Minigames
+            
+            result = {}
+            for location_id, minigame_type in self._shuffle_data.shuffled_barrels.items():
+                # Get the original barrel metadata for this location
+                if location_id in BarrelMetaData:
+                    original = BarrelMetaData[location_id]
+                    # Create new MinigameLocationData with shuffled minigame but original location data
+                    result[location_id] = MinigameLocationData(
+                        original.map,
+                        original.barrel_id,
+                        Minigames(minigame_type),
+                        original.kong
+                    )
+                else:
+                    # Fallback - shouldn't happen but be defensive
+                    result[location_id] = minigame_type
+            return result
+        
+        @property
+        def shuffled_door_data(self):
+            """Return door shuffle data."""
+            from randomizer.Enums.Levels import Levels
+            from collections import defaultdict
+            # Convert proto door shuffles back to dict with empty lists as default
+            result = defaultdict(list)
+            for door_shuffle in self._shuffle_data.shuffled_doors:
+                result[Levels(door_shuffle.level)] = list(door_shuffle.doors)
+            return result
+        
+        @property
+        def shuffled_exit_instructions(self):
+            """Return exit instructions."""
+            return list(self._shuffle_data.exit_instructions)
+        
+        @property
+        def cb_placements(self):
+            """Return CB placements."""
+            result = []
+            for cb_proto in self._placement_data.cb_placements:
+                cb_dict = {
+                    'id': cb_proto.id,
+                    'name': cb_proto.name,
+                    'kong': cb_proto.kong,
+                    'level': cb_proto.level,
+                    'type': cb_proto.type,
+                    'map': cb_proto.map,
+                }
+                if cb_proto.locations:
+                    cb_dict['locations'] = [
+                        [loc.amount, loc.scale, loc.x, loc.y, loc.z]
+                        for loc in cb_proto.locations
+                    ]
+                result.append(cb_dict)
+            return result
+        
+        @property
+        def balloon_placement(self):
+            """Return balloon placements."""
+            result = []
+            for balloon_proto in self._placement_data.balloon_placements:
+                result.append({
+                    'id': balloon_proto.id,
+                    'name': balloon_proto.name,
+                    'kong': balloon_proto.kong,
+                    'level': balloon_proto.level,
+                    'map': balloon_proto.map,
+                    'score': balloon_proto.score,
+                })
+            return result
+        
+        @property
+        def enemy_replacements(self):
+            """Return enemy replacements."""
+            result = []
+            for enemy_proto in self._placement_data.enemy_replacements:
+                swaps = []
+                for swap_proto in enemy_proto.kasplat_swaps:
+                    swaps.append({
+                        'vanilla_location': swap_proto.vanilla_location,
+                        'replace_with': swap_proto.replace_with,
+                    })
+                result.append({
+                    'container_map': enemy_proto.container_map,
+                    'kasplat_swaps': swaps,
+                })
+            return result
+        
+        @property
+        def coin_requirements(self):
+            """Return coin requirements."""
+            return dict(self._placement_data.coin_requirements)
+        
+        @property
+        def item_assignment(self):
+            """Return item assignments."""
+            from randomizer.Enums.Types import Types
+            from randomizer.Enums.Items import Items
+            from randomizer.Enums.Kongs import Kongs as KongEnum
+            
+            result = []
+            for assign_proto in self._misc_data.item_assignments:
+                class ItemAssignment:
+                    pass
+                
+                assign_obj = ItemAssignment()
+                
+                # Proto fields
+                assign_obj.old_type = Types(assign_proto.old_type) if assign_proto.old_type > 0 else None
+                assign_obj.old_flag = assign_proto.old_flag
+                assign_obj.maps_to_actor_ids = dict(assign_proto.maps_to_actor_ids)
+                assign_obj.placement_data = dict(assign_proto.maps_to_actor_ids)  # placement_data is same as maps_to_actor_ids
+                assign_obj.location = assign_proto.location
+                assign_obj.new_flag = assign_proto.new_flag
+                assign_obj.new_type = Types(assign_proto.new_type) if assign_proto.new_type > 0 else None
+                assign_obj.new_item = Items(assign_proto.new_item) if assign_proto.new_item > 0 else None
+                assign_obj.new_kong = KongEnum(assign_proto.new_kong) if assign_proto.new_kong >= 0 else KongEnum.any
+                assign_obj.shared = assign_proto.shared
+                assign_obj.placement_index = [assign_proto.placement_index] if assign_proto.placement_index > 0 else []
+                assign_obj.placement_subindex = assign_proto.placement_subindex
+                
+                # Additional attributes expected by patching code (from LocationSelection class)
+                assign_obj.name = ""
+                assign_obj.old_item = None  # vanilla_item - not stored in proto
+                assign_obj.old_kong = KongEnum.any  # Default kong
+                assign_obj.reward_spot = False  # is_reward_point
+                assign_obj.is_shop = (assign_proto.placement_index > 0 and assign_proto.placement_index < 120)
+                assign_obj.price = 0  # Default price
+                assign_obj.can_have_item = True
+                assign_obj.can_place_item = True
+                assign_obj.shop_locked = False
+                assign_obj.order = 0
+                assign_obj.move_name = ""
+                
+                result.append(assign_obj)
+            return result
+        
+        @property
+        def music_bgm_data(self):
+            """Return BGM music data."""
+            return dict(self._misc_data.music_bgm_data)
+        
+        @property
+        def music_majoritem_data(self):
+            """Return major item music data."""
+            return dict(self._misc_data.music_majoritem_data)
+        
+        @property
+        def music_minoritem_data(self):
+            """Return minor item music data."""
+            return dict(self._misc_data.music_minoritem_data)
+        
+        @property
+        def music_event_data(self):
+            """Return event music data."""
+            return dict(self._misc_data.music_event_data)
+        
+        @property
+        def hintset(self):
+            """Return hint set."""
+            class HintSet:
+                def __init__(self, proto):
+                    self.max_hints = proto.max_hints
+                    self.hints = []
+                    for hint_proto in proto.hints:
+                        class Hint:
+                            pass
+                        h = Hint()
+                        h.location = hint_proto.location_id
+                        h.hint = hint_proto.hint_text
+                        h.short_hint = None  # Short hints are not in proto
+                        h.important = hint_proto.important
+                        h.priority = hint_proto.priority
+                        self.hints.append(h)
+                
+                def RemoveFTT(self):
+                    """Remove the First Time Talk hint (called after writing to ROM)."""
+                    # FTT is the first hint, remove it from the list
+                    if self.hints:
+                        self.hints = self.hints[1:]
+            
+            return HintSet(self._hint_data.hint_set)
+        
+        @property
+        def tied_hint_flags(self):
+            """Return tied hint flags."""
+            return dict(self._hint_data.tied_hint_flags)
+        
+        @property
+        def tied_hint_regions(self):
+            """Return tied hint regions."""
+            return list(self._hint_data.tied_hint_regions)
+        
+        @property
+        def RegionList(self):
+            """Return region list - this is logic data not part of Fill output."""
+            from randomizer.Logic import RegionsOriginal
+            return RegionsOriginal
+        
+        @property
+        def majorItems(self):
+            """Return major items list."""
+            from randomizer.Enums.Items import Items
+            return [Items(item_id) for item_id in self._path_data.major_items]
+        
+        @property
+        def woth_locations(self):
+            """Return Way of the Hoard locations."""
+            from randomizer.Enums.Locations import Locations
+            return [Locations(loc_id) for loc_id in self._path_data.woth_locations]
+        
+        @property
+        def woth_paths(self):
+            """Return Way of the Hoard paths."""
+            from randomizer.Enums.Locations import Locations
+            result = {}
+            for loc_id, path_proto in self._path_data.woth_paths.items():
+                result[Locations(loc_id)] = [Locations(l) for l in path_proto.locations]
+            return result
+        
+        @property
+        def foolish_region_names(self):
+            """Return foolish region names."""
+            return list(self._path_data.foolish_region_names)
+        
+        @property
+        def pathless_moves(self):
+            """Return pathless moves."""
+            from randomizer.Enums.Items import Items
+            return [Items(item_id) for item_id in self._path_data.pathless_moves]
+        
+        @property
+        def playthrough(self):
+            """Return playthrough spheres."""
+            from randomizer.Enums.Locations import Locations
+            from randomizer.Enums.Items import Items
+            result = {}
+            for i, sphere_proto in enumerate(self._path_data.playthrough):
+                sphere_dict = {}
+                for loc_proto in sphere_proto.locations:
+                    sphere_dict[Locations(loc_proto.location_id)] = Items(loc_proto.item_id)
+                result[i] = sphere_dict
+            return result
+        
+        @property
+        def region_hintable_count(self):
+            """Return region hintable count."""
+            result = {}
+            for region_name, counts_proto in self._path_data.region_hintable_count.items():
+                region_dict = {}
+                for item_type, item_data in counts_proto.items.items():
+                    from randomizer.Enums.Locations import Locations
+                    region_dict[int(item_type)] = {
+                        'count': item_data.count,
+                        'locations': [Locations(loc_id) for loc_id in item_data.location_ids]
+                    }
+                result[region_name] = region_dict
+            return result
+    
+    return PatchingAdapter(fill_result, settings)
+
+
+def _move_entry_proto_to_dict(move_entry_proto):
+    """Convert a MoveEntry proto to a dictionary."""
+    from randomizer.proto_gen import fill_result_pb2
+    
+    which = move_entry_proto.WhichOneof('entry')
+    
+    if which == 'empty_move':
+        return {'move_type': None}
+    elif which == 'flag_move':
+        return {
+            'move_type': 'flag',
+            'flag': move_entry_proto.flag_move.flag,
+            'price': move_entry_proto.flag_move.price,
+        }
+    elif which == 'special_move':
+        return {
+            'move_type': 'special',
+            'move_lvl': move_entry_proto.special_move.move_lvl,
+            'move_kong': move_entry_proto.special_move.move_kong,
+            'price': move_entry_proto.special_move.price,
+        }
+    elif which == 'slam_move':
+        return {
+            'move_type': 'slam',
+            'move_lvl': move_entry_proto.slam_move.move_lvl,
+            'move_kong': move_entry_proto.slam_move.move_kong,
+            'price': move_entry_proto.slam_move.price,
+        }
+    elif which == 'gun_move':
+        return {
+            'move_type': 'gun',
+            'move_lvl': move_entry_proto.gun_move.move_lvl,
+            'move_kong': move_entry_proto.gun_move.move_kong,
+            'price': move_entry_proto.gun_move.price,
+        }
+    elif which == 'ammo_belt_move':
+        return {
+            'move_type': 'ammo_belt',
+            'move_lvl': move_entry_proto.ammo_belt_move.move_lvl,
+            'move_kong': move_entry_proto.ammo_belt_move.move_kong,
+            'price': move_entry_proto.ammo_belt_move.price,
+        }
+    elif which == 'instrument_move':
+        return {
+            'move_type': 'instrument',
+            'move_lvl': move_entry_proto.instrument_move.move_lvl,
+            'move_kong': move_entry_proto.instrument_move.move_kong,
+            'price': move_entry_proto.instrument_move.price,
+        }
+    else:
+        return {'move_type': None}
+
+
+def patching_response(fill_result_or_spoiler, settings=None, rom=None):
+    """Apply the patch data to the ROM in the local server to be returned to the client.
+    
+    Args:
+        fill_result_or_spoiler: Either a FillResult proto (new path) or Spoiler object (legacy path)
+        settings: Settings object (required when fill_result_or_spoiler is a FillResult proto)
+        rom: Optional ROM object to patch (browser case). If None, loads from file (server case).
+    """
+    # Handle both old (Spoiler) and new (FillResult proto + Settings) APIs
+    from randomizer.proto_gen import fill_result_pb2
+    
+    if isinstance(fill_result_or_spoiler, fill_result_pb2.FillResult):
+        # New proto-based path - convert proto to adapter object
+        print("[Patching] ✓ Received FillResult protobuf")
+        fill_result = fill_result_or_spoiler
+        if settings is None:
+            raise ValueError("settings parameter required when using FillResult proto")
+        
+        print("[Patching] Creating adapter to convert proto to patching interface...")
+        spoiler = _create_patching_adapter(fill_result, settings)
+        
+        # Initialize valid_locations on settings - required for patching functions
+        print("[Patching] Initializing valid_locations for settings...")
+        settings.update_valid_locations(spoiler)
+        
+        print("[Patching] ✓ Proto adapter created, proceeding with ROM patching")
+    else:
+        # Legacy path - treat as Spoiler object
+        print("[Patching] Using legacy Spoiler object (not proto)")
+        spoiler = fill_result_or_spoiler
+    
     # Make sure we re-load the seed id
     spoiler.settings.set_seed()
 
     # Write date to ROM for debugging purposes
     try:
         temp_json = json.loads(spoiler.json)
+        if "Settings" not in temp_json:
+            temp_json["Settings"] = {}
     except Exception:
         temp_json = {"Settings": {}}
     dt = Datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
     temp_json["Settings"]["Generation Timestamp"] = dt
     spoiler.json = json.dumps(temp_json, indent=4)
-    ROM_COPY = LocalROM()
+    
+    # Use provided ROM if available (browser case), otherwise load from file (server case)
+    if rom is not None:
+        ROM_COPY = rom
+    else:
+        ROM_COPY = LocalROM()
+    
     ROM_COPY.seek(0x1FFF200)
     ROM_COPY.writeBytes(dt.encode("ascii"))
     # Initialize Text Changes
