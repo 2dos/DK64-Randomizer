@@ -68,7 +68,7 @@ def addBalloon(spoiler, balloon: Balloon, enum_val: int, name: str, level: Level
 def removeBalloons(spoiler):
     """Remove all vanilla balloons from Logic regions."""
     level_logic_regions = [
-        randomizer.LogicFiles.DKIsles.LogicRegion,
+        randomizer.LogicFiles.DKIsles.LogicRegions,
         randomizer.LogicFiles.JungleJapes.LogicRegions,
         randomizer.LogicFiles.AngryAztec.LogicRegions,
         randomizer.LogicFiles.FranticFactory.LogicRegions,
