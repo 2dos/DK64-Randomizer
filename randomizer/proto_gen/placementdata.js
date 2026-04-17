@@ -50,7 +50,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.randomizer.proto.PlacementData.repeatedFields_ = [1,2,3,5,6];
+proto.randomizer.proto.PlacementData.repeatedFields_ = [1,2,3,5,6,7];
 
 
 
@@ -93,7 +93,8 @@ coinRequirementsMap: (f = msg.getCoinRequirementsMap()) ? f.toObject(includeInst
 coinPlacementsList: jspb.Message.toObjectList(msg.getCoinPlacementsList(),
     proto.randomizer.proto.CoinPlacement.toObject, includeInstance),
 raceCoinPlacementsList: jspb.Message.toObjectList(msg.getRaceCoinPlacementsList(),
-    proto.randomizer.proto.RaceCoinPlacement.toObject, includeInstance)
+    proto.randomizer.proto.RaceCoinPlacement.toObject, includeInstance),
+pkmnSnapDataList: (f = jspb.Message.getRepeatedBooleanField(msg, 7)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -160,6 +161,12 @@ proto.randomizer.proto.PlacementData.deserializeBinaryFromReader = function(msg,
       var value = new proto.randomizer.proto.RaceCoinPlacement;
       reader.readMessage(value,proto.randomizer.proto.RaceCoinPlacement.deserializeBinaryFromReader);
       msg.addRaceCoinPlacements(value);
+      break;
+    case 7:
+      var values = /** @type {!Array<boolean>} */ (reader.isDelimited() ? reader.readPackedBool() : [reader.readBool()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addPkmnSnapData(values[i]);
+      }
       break;
     default:
       reader.skipField();
@@ -232,6 +239,13 @@ proto.randomizer.proto.PlacementData.serializeBinaryToWriter = function(message,
       6,
       f,
       proto.randomizer.proto.RaceCoinPlacement.serializeBinaryToWriter
+    );
+  }
+  f = message.getPkmnSnapDataList();
+  if (f.length > 0) {
+    writer.writePackedBool(
+      7,
+      f
     );
   }
 };
@@ -447,6 +461,43 @@ proto.randomizer.proto.PlacementData.prototype.addRaceCoinPlacements = function(
  */
 proto.randomizer.proto.PlacementData.prototype.clearRaceCoinPlacementsList = function() {
   return this.setRaceCoinPlacementsList([]);
+};
+
+
+/**
+ * repeated bool pkmn_snap_data = 7;
+ * @return {!Array<boolean>}
+ */
+proto.randomizer.proto.PlacementData.prototype.getPkmnSnapDataList = function() {
+  return /** @type {!Array<boolean>} */ (jspb.Message.getRepeatedBooleanField(this, 7));
+};
+
+
+/**
+ * @param {!Array<boolean>} value
+ * @return {!proto.randomizer.proto.PlacementData} returns this
+ */
+proto.randomizer.proto.PlacementData.prototype.setPkmnSnapDataList = function(value) {
+  return jspb.Message.setField(this, 7, value || []);
+};
+
+
+/**
+ * @param {boolean} value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.PlacementData} returns this
+ */
+proto.randomizer.proto.PlacementData.prototype.addPkmnSnapData = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 7, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.PlacementData} returns this
+ */
+proto.randomizer.proto.PlacementData.prototype.clearPkmnSnapDataList = function() {
+  return this.setPkmnSnapDataList([]);
 };
 
 

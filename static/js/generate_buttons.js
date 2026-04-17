@@ -101,6 +101,8 @@ async function setup_pyodide() {
         if (!window.pyodide) {
             pyodide = await loadPyodide();
             const url = window.location.origin;
+ 
+            await pyodide.loadPackage("protobuf");
             await pyodide.loadPackage(url + "/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl");
             await pyodide.loadPackage("pillow");
             if (location.hostname == "dev.dk64randomizer.com" || location.hostname == "dk64randomizer.com") {

@@ -1,6 +1,7 @@
 """Settings serialization to/from Protocol Buffers."""
 
 import base64
+import json
 import logging
 import sys
 import os
@@ -1330,6 +1331,11 @@ def _populate_placement_data(spoiler, proto):
             coin_proto.kong = int(coin_data.get('kong', 0))
             coin_proto.type = coin_data.get('type', '')
             coin_proto.name = coin_data.get('name', '')
+    
+    # Pokemon Snap enemy data (for Krem Kapture win condition)
+    if hasattr(spoiler, 'pkmn_snap_data'):
+        for spawned in spoiler.pkmn_snap_data:
+            proto.pkmn_snap_data.append(bool(spawned))
 
 
 def _populate_hint_data(spoiler, proto):
@@ -1511,7 +1517,10 @@ def _populate_misc_patching_data(spoiler, proto):
         proto.music_event_data[int(key)] = int(value)
     
     # Text file changes
-    if hasattr(spoiler, 'text_file_changes'):
-        for key, value in spoiler.text_file_changes.items():
-            proto.text_file_changes[int(key)] = str(value)
+    if hasattr(spoiler, 'text_changes'):
+        for file_id, changes_list in spoiler.text_changes.items():
+            text_changes_proto = proto.text_file_changes[int(file_id)]
+            for change_dict in changes_list:
+                # Serialize each change dict as a JSON string
+                text_changes_proto.changes.append(json.dumps(change_dict))
 
