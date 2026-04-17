@@ -870,6 +870,7 @@ class Settings:
         self.tns_selection_behavior = TroffSetting.normal_random
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
+        self.ship_location_rando = False
         # self.dk_portal_location_rando = False  # Deprecated
         self.dk_portal_location_rando_v2 = DKPortalRando.off
         self.level_portal_destinations = [

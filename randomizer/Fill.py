@@ -75,6 +75,7 @@ from randomizer.ShuffleCoins import ShuffleCoins, shuffleRaceCoins
 from randomizer.ShuffleCrates import ShuffleMelonCrates
 from randomizer.ShuffleCrowns import ShuffleCrowns
 from randomizer.ShuffleDoors import SetProgressiveHintDoorLogic, ShuffleDoors, ShuffleVanillaDoors, UpdateDoorLevels
+from randomizer.ShuffleShip import ShuffleShip
 from randomizer.ShuffleFairies import ShuffleFairyLocations
 from randomizer.ShuffleItems import ShuffleItems
 from randomizer.ShuffleKasplats import (
@@ -4089,6 +4090,7 @@ class ItemReference:
 
 def ShuffleMisc(spoiler: Spoiler) -> None:
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
+    ShuffleShip(spoiler)
     resetCustomLocations(spoiler)
     ResetPorts()
     spoiler.shuffled_barrel_data = deepcopy(BarrelMetaData)

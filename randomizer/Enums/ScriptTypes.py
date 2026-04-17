@@ -18,3 +18,5 @@ class ScriptTypes(IntEnum):
     GalleonShipwreckDoor = auto()
     FactoryBlastController = auto()
     HelmInstrumentPad = auto()
+    KRoolShip = auto()
+    KRoolShipController = auto()
