@@ -1657,3 +1657,33 @@ def _populate_misc_patching_data(spoiler, proto):
                 proto.boss_bananas.append(int(count))
             except (TypeError, ValueError):
                 proto.boss_bananas.append(0)
+    for item_id in getattr(spoiler, 'pregiven_items', None) or []:
+        try:
+            proto.pregiven_items.append(int(item_id))
+        except (TypeError, ValueError):
+            continue
+    first_move_item = getattr(spoiler, 'first_move_item', None)
+    if first_move_item is not None:
+        try:
+            proto.first_move_item = int(first_move_item)
+        except (TypeError, ValueError):
+            pass
+
+    # Archipelago flag. Set to True by the apworld before serialization; the
+    # user-input settings restored in the browser default to False, so without
+    # this roundtrip the patcher would treat AP seeds as local rando.
+    if settings is not None and getattr(settings, 'archipelago', False):
+        proto.archipelago = True
+        # AP slot name is only meaningful when archipelago=True; the patcher
+        # reads it to stamp the ROM header (ApplyRandomizer line ~1418).
+        player_name = getattr(settings, 'player_name', None)
+        if player_name:
+            proto.player_name = str(player_name)
+
+    # Fill-time K. Rool key requirement. Settings re-randomizes this in
+    # __init__ (keys_random branch, plus starting-key-picking when
+    # select_keys=False), and the browser rebuild uses a different RNG
+    # state, so we must ship the exact list that the fill used.
+    krool_keys_required = getattr(settings, 'krool_keys_required', None) if settings is not None else None
+    if krool_keys_required:
+        proto.krool_keys_required.extend([int(getattr(k, 'value', k)) for k in krool_keys_required])

@@ -6,11 +6,16 @@ import zipfile
 
 # Define paths
 dk64_folder = "dk64"
-# vendor_folder removed - no longer needed
-
-# Files and folders to copy into dk64
-files_to_copy = ["__init__.py", "js.py", "version.py", "static/compiled.jsonc", "archipelago.json"]
-folders_to_copy = ["archipelago", "base-hack/assets/arcade_jetpac", "base-hack/assets/DKTV", "base-hack/assets/displays", "randomizer", "static/patches", "base-hack/minigame"]
+files_to_copy = [
+    "__init__.py",
+    "js.py",
+    "version.py",
+    "archipelago.json",
+    "base-hack/assets/DKTV/logo3.png",
+    "static/patches/pointer_addresses.json",
+    "static/patches/symbols.json",
+]
+folders_to_copy = ["archipelago", "randomizer"]
 
 # Ensure dk64 directory exists
 os.makedirs(dk64_folder, exist_ok=True)

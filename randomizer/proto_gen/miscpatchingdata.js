@@ -50,7 +50,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.randomizer.proto.MiscPatchingData.repeatedFields_ = [1,2,3,11,12,13,15,16,17];
+proto.randomizer.proto.MiscPatchingData.repeatedFields_ = [1,2,3,11,12,13,15,16,17,18,22];
 
 
 
@@ -102,7 +102,12 @@ startingKongListList: (f = jspb.Message.getRepeatedField(msg, 13)) == null ? und
 resolvedStartingKong: (f = jspb.Message.getField(msg, 14)) == null ? undefined : f,
 blockerEntryCountsList: (f = jspb.Message.getRepeatedField(msg, 15)) == null ? undefined : f,
 blockerEntryItemsList: (f = jspb.Message.getRepeatedField(msg, 16)) == null ? undefined : f,
-bossBananasList: (f = jspb.Message.getRepeatedField(msg, 17)) == null ? undefined : f
+bossBananasList: (f = jspb.Message.getRepeatedField(msg, 17)) == null ? undefined : f,
+pregivenItemsList: (f = jspb.Message.getRepeatedField(msg, 18)) == null ? undefined : f,
+firstMoveItem: (f = jspb.Message.getField(msg, 19)) == null ? undefined : f,
+archipelago: (f = jspb.Message.getBooleanField(msg, 20)) == null ? undefined : f,
+playerName: (f = jspb.Message.getField(msg, 21)) == null ? undefined : f,
+kroolKeysRequiredList: (f = jspb.Message.getRepeatedField(msg, 22)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -230,6 +235,30 @@ proto.randomizer.proto.MiscPatchingData.deserializeBinaryFromReader = function(m
       var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
       for (var i = 0; i < values.length; i++) {
         msg.addBossBananas(values[i]);
+      }
+      break;
+    case 18:
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addPregivenItems(values[i]);
+      }
+      break;
+    case 19:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setFirstMoveItem(value);
+      break;
+    case 20:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setArchipelago(value);
+      break;
+    case 21:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPlayerName(value);
+      break;
+    case 22:
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addKroolKeysRequired(values[i]);
       }
       break;
     default:
@@ -365,6 +394,41 @@ proto.randomizer.proto.MiscPatchingData.serializeBinaryToWriter = function(messa
   if (f.length > 0) {
     writer.writePackedUint32(
       17,
+      f
+    );
+  }
+  f = message.getPregivenItemsList();
+  if (f.length > 0) {
+    writer.writePackedUint32(
+      18,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 19));
+  if (f != null) {
+    writer.writeUint32(
+      19,
+      f
+    );
+  }
+  f = /** @type {boolean} */ (jspb.Message.getField(message, 20));
+  if (f != null) {
+    writer.writeBool(
+      20,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 21));
+  if (f != null) {
+    writer.writeString(
+      21,
+      f
+    );
+  }
+  f = message.getKroolKeysRequiredList();
+  if (f.length > 0) {
+    writer.writePackedUint32(
+      22,
       f
     );
   }
@@ -927,6 +991,188 @@ proto.randomizer.proto.MiscPatchingData.prototype.addBossBananas = function(valu
  */
 proto.randomizer.proto.MiscPatchingData.prototype.clearBossBananasList = function() {
   return this.setBossBananasList([]);
+};
+
+
+/**
+ * repeated uint32 pregiven_items = 18;
+ * @return {!Array<number>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getPregivenItemsList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 18));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setPregivenItemsList = function(value) {
+  return jspb.Message.setField(this, 18, value || []);
+};
+
+
+/**
+ * @param {number} value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addPregivenItems = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 18, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearPregivenItemsList = function() {
+  return this.setPregivenItemsList([]);
+};
+
+
+/**
+ * optional uint32 first_move_item = 19;
+ * @return {number}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getFirstMoveItem = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 19, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setFirstMoveItem = function(value) {
+  return jspb.Message.setField(this, 19, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearFirstMoveItem = function() {
+  return jspb.Message.setField(this, 19, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.hasFirstMoveItem = function() {
+  return jspb.Message.getField(this, 19) != null;
+};
+
+
+/**
+ * optional bool archipelago = 20;
+ * @return {boolean}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getArchipelago = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 20, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setArchipelago = function(value) {
+  return jspb.Message.setField(this, 20, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearArchipelago = function() {
+  return jspb.Message.setField(this, 20, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.hasArchipelago = function() {
+  return jspb.Message.getField(this, 20) != null;
+};
+
+
+/**
+ * optional string player_name = 21;
+ * @return {string}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getPlayerName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 21, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setPlayerName = function(value) {
+  return jspb.Message.setField(this, 21, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearPlayerName = function() {
+  return jspb.Message.setField(this, 21, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.hasPlayerName = function() {
+  return jspb.Message.getField(this, 21) != null;
+};
+
+
+/**
+ * repeated uint32 krool_keys_required = 22;
+ * @return {!Array<number>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getKroolKeysRequiredList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 22));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setKroolKeysRequiredList = function(value) {
+  return jspb.Message.setField(this, 22, value || []);
+};
+
+
+/**
+ * @param {number} value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addKroolKeysRequired = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 22, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearKroolKeysRequiredList = function() {
+  return this.setKroolKeysRequiredList([]);
 };
 
 

@@ -477,6 +477,11 @@ message MiscPatchingData {
   repeated uint32 blocker_entry_counts = 15;  // BLockerEntryCount per level
   repeated uint32 blocker_entry_items = 16;   // BarrierItems enum per level
   repeated uint32 boss_bananas = 17;          // BossBananas (T&S CB count) per level
+  repeated uint32 pregiven_items = 18;                // ItemId list
+  optional uint32 first_move_item = 19;               // ItemId (fast_start=False only)
+  optional bool archipelago = 20;
+  optional string player_name = 21;
+  repeated uint32 krool_keys_required = 22;
 }
 
 message LevelPortalDestination {

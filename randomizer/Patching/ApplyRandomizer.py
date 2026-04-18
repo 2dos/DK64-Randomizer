@@ -209,32 +209,46 @@ def _create_patching_adapter(fill_result, settings):
                 print(f"[Patching] Warning: failed to load enemy_location_list: {_e}")
                 self.enemy_location_list = {}
 
-            # Populate pregiven_items from LocationAssignments — mirrors the
-            # logic in Spoiler.createJson so the patcher's starting-moves
-            # writer (ItemRando.calculateInitFileScreen → starting_items =
-            # OTHER_STARTING_ITEMS + spoiler.pregiven_items) sees the same
-            # list the server would have produced.
+            # Populate pregiven_items. Prefer the explicit `pregiven_items`
+            # field on the proto (populated in both local-rando and AP flows);
+            # fall back to reconstructing from PreGivenLocations in
+            # location_assignments for old proto files that predate the field.
             try:
                 from randomizer.Lists.Location import PreGivenLocations
                 from randomizer.Enums.Locations import Locations as _LocEnum
                 from randomizer.Enums.Items import Items as _ItemEnum
                 fast_start = getattr(settings, 'fast_start_beginning_of_game', True)
                 self.first_move_item = None
-                for loc_id, item_id in fill_result.location_assignments.assignments.items():
-                    try:
-                        loc_enum = _LocEnum(int(loc_id))
-                    except Exception:
-                        continue
-                    if loc_enum not in PreGivenLocations:
-                        continue
-                    try:
-                        item_enum = _ItemEnum(int(item_id))
-                    except Exception:
-                        continue
-                    if fast_start or loc_enum != _LocEnum.IslesFirstMove:
-                        self.pregiven_items.append(item_enum)
-                    else:
-                        self.first_move_item = item_enum
+
+                misc = fill_result.misc_data
+                explicit_pregiven = list(misc.pregiven_items) if len(misc.pregiven_items) > 0 else None
+                if explicit_pregiven is not None:
+                    for item_id in explicit_pregiven:
+                        try:
+                            self.pregiven_items.append(_ItemEnum(int(item_id)))
+                        except Exception:
+                            continue
+                    if misc.HasField("first_move_item"):
+                        try:
+                            self.first_move_item = _ItemEnum(int(misc.first_move_item))
+                        except Exception:
+                            self.first_move_item = None
+                else:
+                    for loc_id, item_id in fill_result.location_assignments.assignments.items():
+                        try:
+                            loc_enum = _LocEnum(int(loc_id))
+                        except Exception:
+                            continue
+                        if loc_enum not in PreGivenLocations:
+                            continue
+                        try:
+                            item_enum = _ItemEnum(int(item_id))
+                        except Exception:
+                            continue
+                        if fast_start or loc_enum != _LocEnum.IslesFirstMove:
+                            self.pregiven_items.append(item_enum)
+                        else:
+                            self.first_move_item = item_enum
             except Exception as _e:
                 print(f"[Patching] Warning: failed to populate pregiven_items: {_e}")
                 self.first_move_item = None
@@ -867,11 +881,15 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
         if len(fill_result.misc_data.level_void_maps) > 0:
             settings.level_void_maps = [int(m) for m in fill_result.misc_data.level_void_maps]
 
-        # Fill-time resolved starting Kong roster. The user-input settings
-        # has the raw request (possibly Kongs.any and an unrandomized list);
-        # the actual Kongs to start with were picked during seed generation
-        # and need to be restored exactly for ItemRando.place_starting_moves
-        # and Logic to write the correct starting Kong bitmask.
+        if fill_result.misc_data.HasField("archipelago"):
+            settings.archipelago = bool(fill_result.misc_data.archipelago)
+        if fill_result.misc_data.HasField("player_name"):
+            settings.player_name = str(fill_result.misc_data.player_name)
+        elif not hasattr(settings, "player_name"):
+            settings.player_name = ""
+        if len(fill_result.misc_data.krool_keys_required) > 0:
+            from randomizer.Enums.Events import Events as _EventsEnum
+            settings.krool_keys_required = [_EventsEnum(int(e)) for e in fill_result.misc_data.krool_keys_required]
         if len(fill_result.misc_data.starting_kong_list) > 0:
             from randomizer.Enums.Kongs import Kongs as _KongEnum
             settings.starting_kong_list = [_KongEnum(int(k)) for k in fill_result.misc_data.starting_kong_list]
