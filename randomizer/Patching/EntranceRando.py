@@ -111,7 +111,6 @@ def writeCastleCannonEntrance(ROM_COPY: LocalROM, spoiler, map_id_override: int 
         else:
             read_location += 4
             count_copy += 1  # Not important cutscene
-    print("Exited while loop")
 
 
 def writeEntrance(ROM_COPY: LocalROM, spoiler, transition: Transitions, offset: int, vanilla_map: Maps, vanilla_exit: int):

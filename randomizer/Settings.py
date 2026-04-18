@@ -1045,6 +1045,7 @@ class Settings:
         # self.enable_progressive_hints = False  # Deprecated
         # self.progressive_hint_text = 0  # Deprecated
         self.progressive_hint_count = 0
+        self.progressive_hint_algorithm = ProgressiveHintAlgorithm.medium
         # Misc
         self.archipelago = False
 
@@ -1098,11 +1099,6 @@ class Settings:
             self.training_barrels = TrainingBarrels.normal
         else:
             self.training_barrels = TrainingBarrels.shuffled
-        # If Climbing is a guaranteed starting move, treat it like the others as well.
-        if Items.Climbing in guaranteed_starting_moves:
-            self.climbing_status = ClimbingStatus.normal
-        else:
-            self.climbing_status = ClimbingStatus.shuffled
         # If you start with two copies of Progressive Instrument Upgrade, you start with 3 melons of health
         if guaranteed_starting_moves.count(Items.ProgressiveInstrumentUpgrade) == 2:
             self.start_with_3rd_melon = True
@@ -1674,6 +1670,10 @@ class Settings:
                         selector_types = [sk for sk in [Types.Cranky, Types.Snide, Types.Candy, Types.Funky] if shopkeeper_type_mapping[sk] not in guaranteed_starting_moves]
                     elif selector_type == Types.TrainingBarrel:
                         selector_types = [Types.TrainingBarrel, Types.PreGivenMove]
+                        if Items.Climbing in guaranteed_starting_moves:
+                            self.climbing_status = ClimbingStatus.normal
+                        else:
+                            self.climbing_status = ClimbingStatus.shuffled
                         if self.climbing_status != ClimbingStatus.normal:
                             selector_types.append(Types.Climbing)
                     elif selector_type == Types.Medal and IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
@@ -1691,6 +1691,10 @@ class Settings:
                                 item_types = []
                             else:
                                 item_types = [Types.TrainingBarrel, Types.PreGivenMove]
+                                if Items.Climbing in guaranteed_starting_moves:
+                                    self.climbing_status = ClimbingStatus.normal
+                                else:
+                                    self.climbing_status = ClimbingStatus.shuffled
                                 if self.climbing_status != ClimbingStatus.normal:
                                     item_types.append(Types.Climbing)
                         elif item_type == Types.Medal and IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
@@ -1728,7 +1732,7 @@ class Settings:
 
             # If training moves are not in any shuffled pool, add them to guaranteed_starting_moves
             if Types.TrainingBarrel not in self.shuffled_location_types:
-                training_barrel_items = [Items.Vines, Items.Swim, Items.Oranges, Items.Barrels]
+                training_barrel_items = [Items.Vines, Items.Swim, Items.Oranges, Items.Barrels, Items.Climbing]
                 for tb_item in training_barrel_items:
                     if tb_item not in guaranteed_starting_moves:
                         guaranteed_starting_moves.append(tb_item)

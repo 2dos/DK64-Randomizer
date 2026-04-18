@@ -23,6 +23,7 @@ from randomizer.Enums.Settings import (
     HelmDoorItem,
     IceTrapFrequency,
     ProgressiveHintItem,
+    ProgressiveHintAlgorithm,
     HelmSetting,
     HelmBonuses,
     ColorOptions,
@@ -666,32 +667,33 @@ MEDAL_PROGRESSIVE_RATIOS = [
 ]
 
 
-EXPONENT = 1.7
-OFFSET_DIVISOR = 15
-
-
-def getHintRequirement(slot: int, cap: int):
-    """Get the hint requirement for a slot index."""
+def getHintRequirement(slot: int, cap: int, algorithm: ProgressiveHintAlgorithm):
+    """Get the hint requirement for a slot index from a power-warped linear function."""
     if slot == 34:
         return cap
-    offset = cap / OFFSET_DIVISOR
     hint_slot = slot & 0xFC
-    multiplier = cap - offset
-    final_offset = (cap + offset) / 2
-    exp_result = 1 + (math.pow(hint_slot, EXPONENT) / math.pow(34, EXPONENT))
-    z = math.pi * exp_result
-    required_gb_count = int(multiplier * 0.5 * math.cos(z) + final_offset)
-    if required_gb_count == 0:
-        return 1
-    return required_gb_count
+    # Only thing to adjust here is the ramping factor, which determines how quickly it reaches linear scaling.
+    # A higher factor means it ramps slower, costing less for longer
+    # A lower factor means it becomes linear faster, becoming costlier sooner
+    if algorithm == ProgressiveHintAlgorithm.fast:
+        ramping_factor = 1.8
+    elif algorithm == ProgressiveHintAlgorithm.medium:
+        ramping_factor = 1.5
+    else:  # algorithm == ProgressiveHintAlgorithm.slow
+        ramping_factor = 1.25
+    g = lambda slot: math.log(1 + math.exp(ramping_factor * (slot - 1)))
+    # This calculation normalizes the function between 1 and 100 given the inputs will be 1 to 35
+    percent_of_cap = 1 + 99 * math.pow((hint_slot / 34.0), ramping_factor)
+    # The cost of the hint is simply that percentage times the cap, with a minimum of 1 and a maximum of the cap as guard rails
+    return min(cap, max(1, int((percent_of_cap / 100) * cap)))
 
 
-def getHintRequirementBatch(batch: int, cap: int):
+def getHintRequirementBatch(batch: int, cap: int, algorithm: ProgressiveHintAlgorithm):
     """Get the hint requirement for a batch index."""
     slot = 34
     if batch < 9:
         slot = batch * 4
-    return getHintRequirement(slot, cap)
+    return getHintRequirement(slot, cap, algorithm)
 
 
 def getProgHintBarrierItem(item: ProgressiveHintItem) -> BarrierItems:

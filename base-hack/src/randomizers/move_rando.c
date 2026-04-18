@@ -100,7 +100,7 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 				paad->item_type = item_data->item_type;
 				paad->item_level = item_data->level;
 				paad->kong = item_data->kong;
-				int p_price = selected->price;
+				int p_price = getPrice(selected);
 				textParameter = p_price;
 				paad->price = p_price;
 			}

@@ -498,6 +498,12 @@ export enum ProgressiveHintItem {
     req_cb = 10,
 }
 
+export enum ProgressiveHintAlgorithm {
+    slow = 0,
+    medium = 1,
+    fast = 2,
+}
+
 export enum PuzzleRando {
     off = 0,
     easy = 1,
@@ -964,6 +970,7 @@ export enum SettingsStringEnum {
     no_consumable_upgrades = 295,
     bosses_selected = 296,
     ice_trap_model_v2 = 297,
+    progressive_hint_algorithm = 298,
 }
 
 export enum SettingsStringDataType {
@@ -1065,6 +1072,7 @@ export const SettingsMap = {
     'chunky_phase_slam_req': SlamRequirement,
     'puzzle_rando_difficulty': PuzzleRando,
     'progressive_hint_item': ProgressiveHintItem,
+    'progressive_hint_algorithm': ProgressiveHintAlgorithm,
     'starting_moves_list_1': Items,
     'starting_moves_list_2': Items,
     'starting_moves_list_3': Items,
@@ -1332,6 +1340,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.has_password: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,
+    SettingsStringEnum.progressive_hint_algorithm: ProgressiveHintAlgorithm,
     SettingsStringEnum.starting_moves_list_1: SettingsStringDataType.list,
     SettingsStringEnum.starting_moves_list_count_1: SettingsStringDataType.int16,
     SettingsStringEnum.starting_moves_list_2: SettingsStringDataType.list,

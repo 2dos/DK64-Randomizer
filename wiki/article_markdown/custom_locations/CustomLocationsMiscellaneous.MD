@@ -2,13 +2,13 @@
 # Jungle Japes
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
-| Jungle Japes | Near Funky |  | `self.logic = lambda _: True` | 
+| Jungle Japes | Near Low Hill Shop |  | `self.logic = lambda _: True` | 
 | Jungle Japes | On Painting Hill |  | `self.logic = lambda _: True` | 
 | Jungle Japes | Next to level entrance |  | `self.logic = lambda _: True` | 
 | Jungle Japes | On Tree (Starting Area) |  | `l.climbing` | 
 | Jungle Japes | Next to first tunnel entrance |  | `self.logic = lambda _: True` | 
-| Jungle Japes | Diddy Cavern |  | `self.logic = lambda _: True` | 
-| Jungle Japes | Inside Diddy's Cavern |  | `self.logic = lambda _: True` | 
+| Jungle Japes | First Tunnel Cave |  | `self.logic = lambda _: True` | 
+| Jungle Japes | In First Tunnel Cave |  | `self.logic = lambda _: True` | 
 | Jungle Japes | First tunnel - later half |  | `self.logic = lambda _: True` | 
 | Jungle Japes | Painting Hill | MelonCrate, Bananaport | `self.logic = lambda _: True` | 
 | Jungle Japes | Hive area near Hunky barrel |  | `self.logic = lambda _: True` | 
@@ -16,11 +16,11 @@
 | Jungle Japes | Near Log |  | `self.logic = lambda _: True` | 
 | Jungle Japes | Near the Vine Pit |  | `self.logic = lambda _: True` | 
 | Jungle Japes | Vine Pit |  | `self.logic = lambda _: True` | 
-| Jungle Japes | Lanky useless slope - middle |  | `self.logic = lambda _: True` | 
-| Jungle Japes | Lanky useless slope - left | MelonCrate | `self.logic = lambda _: True` | 
-| Jungle Japes | Cranky-tunnel Crossing |  | `self.logic = lambda _: True` | 
+| Jungle Japes | Useless Lanky Slope - Middle |  | `self.logic = lambda _: True` | 
+| Jungle Japes | Useless Lanky Slope - Left | MelonCrate | `self.logic = lambda _: True` | 
+| Jungle Japes | Stormy Tunnel Crossing |  | `self.logic = lambda _: True` | 
 | Jungle Japes | In the Rambi Cave | CrownPad, Bananaport | `self.logic = lambda _: True` | 
-| Jungle Japes | Fairy Pool |  | `self.logic = lambda _: True` | 
+| Jungle Japes | Rambi Pool |  | `self.logic = lambda _: True` | 
 | Jungle Japes | Behind Lanky Hut |  | `self.logic = lambda _: True` | 
 | Jungle Japes | Behind DK Hut |  | `self.logic = lambda _: True` | 
 | Jungle Japes | Left of DK hut |  | `self.logic = lambda _: True` | 
@@ -147,12 +147,12 @@
 | Frantic Factory | Vent platform near elevators |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Storage Room Corner |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Near left storage shop | MelonCrate | `self.logic = lambda _: True` | 
-| Frantic Factory | Near right storage shop |  | `self.logic = lambda _: True` | 
+| Frantic Factory | Near Right Storage Shop |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Dark Room Corner |  | `(l.punch and l.chunky) or l.phasewalk` | 
 | Frantic Factory | Arcade Room Bench |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Next to DK Arcade |  | `self.logic = lambda _: True` | 
-| Frantic Factory | Near Snide |  | `self.logic = lambda _: True` | 
-| Frantic Factory | Near Snide (hidden) |  | `self.logic = lambda _: True` | 
+| Frantic Factory | Glass Window Shop |  | `self.logic = lambda _: True` | 
+| Frantic Factory | Glass Window Shop (hidden) |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Right Corridor |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Number Game |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Under Block Tower Stairs |  | `self.logic = lambda _: True` | 
@@ -161,7 +161,7 @@
 | Frantic Factory | Testing shop entrance left | MelonCrate | `self.logic = lambda _: True` | 
 | Frantic Factory | Testing shop left |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Testing shop right |  | `self.logic = lambda _: True` | 
-| Frantic Factory | Testing shop entrance right |  | `self.logic = lambda _: True` | 
+| Frantic Factory | Testing Shop Entrance Right |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Piano Room left corner | CrownPad, Bananaport | `(l.trombone and l.lanky) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Piano Room right | CrownPad, Bananaport | `((l.trombone and l.islanky) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Diddy R&D corner | CrownPad, Bananaport | `(l.guitar and l.diddy) or l.CanAccessRNDRoom()` | 
@@ -188,7 +188,7 @@
 # Gloomy Galleon
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
-| Gloomy Galleon | Under cavern shop |  | `(l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False, False)` | 
+| Gloomy Galleon | Under Cavern Shop |  | `(l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False, False)` | 
 | Galleon Lighthouse | Lighthouse: Interior Rear |  | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Near Cactus | DirtPatch, CrownPad, Bananaport | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Front of cannonball |  | `l.CanGetOnCannonGamePlatform()` | 
@@ -244,7 +244,7 @@
 # Fungi Forest
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
-| Fungi Forest | Giant Mushroom High Ladder Platform |  | `self.logic = lambda _: True` | 
+| Fungi Forest | Mushroom Exterior Top Ladder |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Front of Beanstalk |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Mill Grass | Bananaport | `self.logic = lambda _: True` | 
 | Fungi Forest | Near Well | DirtPatch, Bananaport | `self.logic = lambda _: True` | 
@@ -255,18 +255,18 @@
 | Fungi Forest | Behind rafters barn |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Left of rafters barn |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Next to Diddy Pad |  | `self.logic = lambda _: True` | 
-| Fungi Forest | Behind Dark Attic |  | `self.logic = lambda _: True` | 
-| Fungi Forest | Near Mill Tag |  | `self.logic = lambda _: True` | 
+| Fungi Forest | Behind Rafters Barn |  | `self.logic = lambda _: True` | 
+| Fungi Forest | Near Mill Tag Barrel |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Near Well Exit |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Near Winch |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Near Mill Punch Door |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Next to Crusher Output |  | `self.logic = lambda _: True` | 
-| Fungi Forest | En route to DK Barn |  | `self.logic = lambda _: True` | 
-| Fungi Forest | Right of DK Barn |  | `self.logic = lambda _: True` | 
-| Fungi Forest | Far Right of DK Barn |  | `self.logic = lambda _: True` | 
-| Fungi Forest | Behind DK Barn |  | `self.logic = lambda _: True` | 
-| Fungi Forest | Far Left of DK Barn |  | `self.logic = lambda _: True` | 
-| Fungi Forest | Near DK Barn |  | `self.logic = lambda _: True` | 
+| Fungi Forest | En route to Thornvine Barn |  | `self.logic = lambda _: True` | 
+| Fungi Forest | Right of Thornvine Barn |  | `self.logic = lambda _: True` | 
+| Fungi Forest | Far Right of Thornvine Barn |  | `self.logic = lambda _: True` | 
+| Fungi Forest | Behind Thornvine Barn |  | `self.logic = lambda _: True` | 
+| Fungi Forest | Far Left of Thornvine Barn |  | `self.logic = lambda _: True` | 
+| Fungi Forest | Near Thornvine Barn |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Alcove near the apple |  | `(l.TimeAccess(Regions.WormArea, Time.Night) or l.CanPhase())` | 
 | Fungi Forest | On the Tomato Field |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Near beanstalk shop |  | `self.logic = lambda _: True` | 
@@ -278,12 +278,12 @@
 | Fungi Forest | Near Lower Baboon Blast Ladder |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Near Baboon Blast |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Above Upper Baboon Blast Ladder |  | `self.logic = lambda _: True` | 
-| Fungi Forest | Highest Giant Mushroom Platform |  | `self.logic = lambda _: True` | 
+| Fungi Forest | Mushroom Exterior Top Floor |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Behind Rabbit |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Next to Rabbit's house |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Under Owl Tree |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Under the Owl Tree |  | `self.logic = lambda _: True` | 
-| Fungi Forest | Near Owl Tree |  | `self.logic = lambda _: True` | 
+| Fungi Forest | Owl Tree Clearing |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Near Owl Rocketbarrel |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Grass Near Owl Rocketbarrel | DirtPatch, Bananaport | `self.logic = lambda _: True` | 
 | Fungi Forest | Top of Owl Tree |  | `((l.jetpack and l.isdiddy) or l.CanMoonkick())` | 
@@ -301,10 +301,10 @@
 | Forest Anthill | Anthill: Orange Platform |  | `self.logic = lambda _: True` | 
 | Forest Winch Room | Winch Room: Opposite Entrance |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Near Thornvine Barn |  | `self.logic = lambda _: True` | 
-| Forest Thornvine Barn | DK Barn: Near Entrance |  | `self.logic = lambda _: True` | 
-| Forest Thornvine Barn | DK Barn: Near Ladder |  | `self.logic = lambda _: True` | 
-| Forest Thornvine Barn | DK Barn: Next to ladder |  | `self.logic = lambda _: True` | 
-| Forest Thornvine Barn | DK Barn: back left |  | `self.logic = lambda _: True` | 
+| Forest Thornvine Barn | Thornvine Barn: Near Entrance |  | `self.logic = lambda _: True` | 
+| Forest Thornvine Barn | Thornvine Barn: Near Ladder |  | `self.logic = lambda _: True` | 
+| Forest Thornvine Barn | Thornvine Barn: Next to ladder |  | `self.logic = lambda _: True` | 
+| Forest Thornvine Barn | Thornvine Barn: Back Left |  | `self.logic = lambda _: True` | 
 | Forest Mill Front | Mill Front: Near Conveyor |  | `self.logic = lambda _: True` | 
 | Forest Mill Front | Mill Front: Near Mini Monkey |  | `self.logic = lambda _: True` | 
 | Forest Mill Front | Mill front: Near levers |  | `self.logic = lambda _: True` | 
@@ -326,15 +326,15 @@
 # Crystal Caves
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
-| Caves Rotating Cabin | Rotating cabin: wall |  | `l.Slam and l.isdonkey` | 
-| Crystal Caves | Giant Kosha Room |  | `self.logic = lambda _: True` | 
+| Caves Rotating Cabin | Rotating Cabin: Wall |  | `l.Slam and l.isdonkey` | 
+| Crystal Caves | Giant Kosha |  | `self.logic = lambda _: True` | 
 | Crystal Caves | In Monkeyport igloo |  | `((Events.CavesMonkeyportAccess in l.Events or l.CanPhaseswim()))` | 
 | Crystal Caves | In breakable igloo |  | `Events.CavesLargeBoulderButton in l.Events or l.CanPhaseswim() or l.generalclips` | 
 | Crystal Caves | On igloo Pillar | MelonCrate | `(l.jetpack and l.isdiddy) or (l.twirl and l.istiny and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
 | Crystal Caves | On top of the Igloo | CrownPad, MelonCrate | `self.logic = lambda _: True` | 
 | Crystal Caves | Under tag barrel near igloo | MelonCrate | `self.logic = lambda _: True` | 
 | Crystal Caves | In front of Igloo | CrownPad, DirtPatch, Bananaport | `(l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))) or l.Slam` | 
-| Crystal Caves | In the mini cave |  | `self.logic = lambda _: True` | 
+| Crystal Caves | In the Mini Bonus Cave |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Near ice wall to boulder |  | `self.logic = lambda _: True` | 
 | Crystal Caves | In Giant Boulder Room |  | `self.logic = lambda _: True` | 
 | Crystal Caves | In front of Cranky | MelonCrate | `self.logic = lambda _: True` | 
@@ -351,8 +351,8 @@
 | Crystal Caves | Near Gorilla Gone Room |  | `self.logic = lambda _: True` | 
 | Crystal Caves | In Gorilla Gone Room |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Near Kasplat Spire |  | `self.logic = lambda _: True` | 
-| Crystal Caves | Near Funky's |  | `self.logic = lambda _: True` | 
-| Crystal Caves | Near Funky under Rocketbarrel |  | `self.logic = lambda _: True` | 
+| Crystal Caves | Near Waterfall Shop |  | `self.logic = lambda _: True` | 
+| Crystal Caves | Under Bridge Rocketbarrel |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Mini Monkeyport cave |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Near headphones |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Headphones ledge |  | `self.logic = lambda _: True` | 
@@ -360,7 +360,7 @@
 | Crystal Caves | Left of rotating cabin |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Next to rotating cabin |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Right of rotating cabin |  | `self.logic = lambda _: True` | 
-| Crystal Caves | Cabin Kasplat Pillar | MelonCrate | `self.logic = lambda _: True` | 
+| Crystal Caves | Cabins Center Rise | MelonCrate | `self.logic = lambda _: True` | 
 | Crystal Caves | Near cabins Rocketbarrel |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Near Tiny cabin |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Near cabins Tag barrel |  | `self.logic = lambda _: True` | 
@@ -383,7 +383,7 @@
 | Caves Lanky Cabin | Lanky cabin: Carpet |  | `self.logic = lambda _: True` | 
 | Caves Chunky Cabin | Chunky cabin: Back Left Corner | CrownPad | `self.logic = lambda _: True` | 
 | Caves Diddy Upper Cabin | Diddy Upper cabin: Right |  | `self.logic = lambda _: True` | 
-| Caves Donkey Cabin | Donkey cabin: Opposite Entrance |  | `self.logic = lambda _: True` | 
+| Caves Donkey Cabin | DK cabin: Opposite Entrance |  | `self.logic = lambda _: True` | 
 | Caves Frozen Castle | Ice Castle: Left of puzzle |  | `self.logic = lambda _: True` | 
 | Caves Frozen Castle | Ice Castle: Right of puzzle |  | `self.logic = lambda _: True` | 
 | Caves Tiny Cabin | Tiny Cabin: Interior |  | `l.oranges` | 
@@ -392,14 +392,14 @@
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
 | Castle Greenhouse | Greenhouse: Center | DirtPatch | `l.islanky or l.settings.free_trade_items` | 
-| Creepy Castle | Top of Castle near shop |  | `self.logic = lambda _: True` | 
+| Creepy Castle | Top of Castle Near Shop |  | `self.logic = lambda _: True` | 
 | Castle Greenhouse | Greenhouse: GB area | DirtPatch | `self.logic = lambda _: True` | 
 | Creepy Castle | Near the Tree |  | `self.logic = lambda _: True` | 
 | Creepy Castle | Next to lowest tree |  | `self.logic = lambda _: True` | 
 | Creepy Castle | Near lower entrance - right |  | `self.logic = lambda _: True` | 
 | Creepy Castle | Lowest ledge near ladder |  | `self.logic = lambda _: True` | 
 | Creepy Castle | Graveyard behind stone |  | `self.logic = lambda _: True` | 
-| Creepy Castle | Lowest ledge towards Tiny Kasplat |  | `self.logic = lambda _: True` | 
+| Creepy Castle | Lowest ledge towards Lone Cliff |  | `self.logic = lambda _: True` | 
 | Creepy Castle | Near the lower door |  | `self.logic = lambda _: True` | 
 | Creepy Castle | Upper Gravestone |  | `self.logic = lambda _: True` | 
 | Creepy Castle | Near Dungeon Tunnel Steps |  | `self.logic = lambda _: True` | 
@@ -438,7 +438,7 @@
 | Castle Lower Cave | Lower cave: Lower Portion |  | `self.logic = lambda _: True` | 
 | Castle Lower Cave | Lower cave: Also Behind Mausoleum |  | `self.logic = lambda _: True` | 
 | Castle Lower Cave | Lower cave: Near shop |  | `self.logic = lambda _: True` | 
-| Castle Lower Cave | Lower cave: Behind Mausoleum |  | `self.logic = lambda _: True` | 
+| Castle Lower Cave | Lower Cave: Behind Mausoleum |  | `self.logic = lambda _: True` | 
 | Castle Crypt | Crypt: entrance |  | `self.logic = lambda _: True` | 
 | Castle Crypt | Crypt: Near Chunky Coffin |  | `self.logic = lambda _: True` | 
 | Castle Crypt | Crypt: Near Diddy Coffin |  | `self.logic = lambda _: True` | 
@@ -486,7 +486,7 @@
 | Isles | Isles Boulders |  | `self.logic = lambda _: True` | 
 | Isles | Front of Aztec Building |  | `self.logic = lambda _: True` | 
 | Isles | Behind Aztec Building |  | `self.logic = lambda _: True` | 
-| Isles | Outside K. Lumsy |  | `self.logic = lambda _: True` | 
+| Isles | Outside Prison |  | `self.logic = lambda _: True` | 
 | Isles | Near Monkeyport pad |  | `self.logic = lambda _: True` | 
 | Isles | Back of Krem Isle |  | `self.logic = lambda _: True` | 
 | Isles | Under DK Caged GB |  | `self.logic = lambda _: True` | 

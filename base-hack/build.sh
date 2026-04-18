@@ -63,7 +63,6 @@ runscriptarg() {
 runscript "Pulling actor data from ROM" "build/getDefaultData.py"
 runscript "Building Item Previews File" "build/dump_previews.py"
 runscript "Define Heap" "build/heap.py"
-runscript "Installing Packages" "build/install_packages.py"
 runscript "Pulling Images from ROM" "build/pull_images_from_rom.py"
 runscript "Modifying images from ROM" "build/createComplexImages.py"
 runscript "Building Item Database" "build/item_dictionaries.py"
