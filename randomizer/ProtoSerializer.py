@@ -1216,10 +1216,21 @@ def _populate_shuffle_data(spoiler, proto):
             # Direct enum value
             proto.shuffled_barrels[int(location_id)] = int(minigame_data)
     
-    # Shuffled doors
-    for door_data in spoiler.shuffled_door_data.values():
-        # Need to understand structure better - placeholder for now
-        pass
+    # Shuffled doors. Each level maps to a list of tuples:
+    #   (door_index, DoorType.wrinkly, kong_assignee)
+    #   (door_index, DoorType.boss)
+    #   (door_index, DoorType.dk_portal)
+    # Downstream patching (DoorPlacer.place_door_locations) reads these by
+    # positional index, so we must preserve tuple shape on the consumer side.
+    for level, door_list in spoiler.shuffled_door_data.items():
+        shuffle_proto = proto.shuffled_doors.add()
+        shuffle_proto.level = int(level)
+        for entry in door_list:
+            door_proto = shuffle_proto.doors.add()
+            door_proto.door_location = int(entry[0])
+            door_proto.door_type = str(int(entry[1]))
+            if len(entry) > 2 and entry[2] is not None:
+                door_proto.kong_assignee = int(entry[2])
     
     # Exit instructions
     for instruction in spoiler.shuffled_exit_instructions:
@@ -1337,6 +1348,29 @@ def _populate_placement_data(spoiler, proto):
         for spawned in spoiler.pkmn_snap_data:
             proto.pkmn_snap_data.append(bool(spawned))
 
+    # Enemy rando data: map_id -> list of {enemy, speeds, id, location}.
+    # Populated by randomize_enemies_0 during Fill; consumed by
+    # randomize_enemies at patch time. Without serializing this the patcher
+    # has an empty dict and writes no enemy swaps.
+    enemy_rando_data = getattr(spoiler, 'enemy_rando_data', None) or {}
+    for map_id, entries in enemy_rando_data.items():
+        map_proto = proto.enemy_rando_data[int(map_id)]
+        for entry in entries or []:
+            entry_proto = map_proto.entries.add()
+            try:
+                entry_proto.enemy = int(entry.get('enemy', 0))
+            except (TypeError, ValueError):
+                entry_proto.enemy = 0
+            for speed in (entry.get('speeds') or []):
+                try:
+                    entry_proto.speeds.append(int(speed))
+                except (TypeError, ValueError):
+                    continue
+            try:
+                entry_proto.spawner_id = int(entry.get('id', 0))
+            except (TypeError, ValueError):
+                entry_proto.spawner_id = 0
+            entry_proto.location = str(entry.get('location', '') or '')
 
 def _populate_hint_data(spoiler, proto):
     """Populate HintData from spoiler hint structures."""
@@ -1464,37 +1498,85 @@ def _populate_path_data(spoiler, proto):
 
 def _populate_misc_patching_data(spoiler, proto):
     """Populate MiscPatchingData from spoiler miscellaneous data."""
-    # Item assignments
+    # Item assignments. LocationSelection has many fields the patcher reads
+    # directly (ItemRando.place_randomized_items); we need to preserve them
+    # all faithfully - in particular placement_index (list, not scalar),
+    # placement_data (actor ids per map), old_item/old_kong, and reward_spot.
+    def _s(val, default=0):
+        """Coerce possibly-None / enum values to int for sint32 fields (-1 sentinel)."""
+        if val is None:
+            return -1
+        try:
+            return int(val)
+        except (TypeError, ValueError):
+            return default
+
     for item_assign in spoiler.item_assignment:
         assign_proto = proto.item_assignments.add()
-        assign_proto.old_type = int(item_assign.old_type) if hasattr(item_assign, 'old_type') and item_assign.old_type is not None else 0
-        assign_proto.old_flag = int(item_assign.old_flag) if hasattr(item_assign, 'old_flag') and item_assign.old_flag is not None else 0
-        
-        # maps_to_actor_ids
-        if hasattr(item_assign, 'maps_to_actor_ids'):
-            for map_id, actor_id in item_assign.maps_to_actor_ids.items():
-                assign_proto.maps_to_actor_ids[int(map_id)] = int(actor_id)
-        
-        assign_proto.location = int(item_assign.location) if hasattr(item_assign, 'location') and item_assign.location is not None else 0
-        assign_proto.new_flag = int(item_assign.new_flag) if hasattr(item_assign, 'new_flag') and item_assign.new_flag is not None else 0
-        assign_proto.new_type = int(item_assign.new_type) if hasattr(item_assign, 'new_type') and item_assign.new_type is not None else 0
-        assign_proto.new_item = int(item_assign.new_item) if hasattr(item_assign, 'new_item') and item_assign.new_item is not None else 0
-        assign_proto.new_kong = int(item_assign.new_kong) if hasattr(item_assign, 'new_kong') and item_assign.new_kong is not None else 0
-        assign_proto.shared = bool(item_assign.shared) if hasattr(item_assign, 'shared') and item_assign.shared is not None else False
-        
-        # Handle placement_index - can be a list or single value, may be negative
-        if hasattr(item_assign, 'placement_index') and item_assign.placement_index is not None:
-            if isinstance(item_assign.placement_index, list) and len(item_assign.placement_index) > 0:
-                # Use 0 if value is negative (uint32 can't hold negative values)
-                assign_proto.placement_index = max(0, int(item_assign.placement_index[0]))
-            elif not isinstance(item_assign.placement_index, list):
-                assign_proto.placement_index = max(0, int(item_assign.placement_index))
-            else:
-                assign_proto.placement_index = 0
+        assign_proto.old_type = _s(getattr(item_assign, 'old_type', None), -1)
+        assign_proto.old_flag = _s(getattr(item_assign, 'old_flag', None), -1)
+        assign_proto.old_item = _s(getattr(item_assign, 'old_item', None), -1)
+        assign_proto.old_kong = _s(getattr(item_assign, 'old_kong', None), -1)
+
+        # LocationSelection.placement_data: dict[map_id, actor_id]. Older code
+        # also referred to this via the attribute "maps_to_actor_ids".
+        placement_map = getattr(item_assign, 'placement_data', None)
+        if placement_map is None:
+            placement_map = getattr(item_assign, 'maps_to_actor_ids', None)
+        if placement_map:
+            for map_id, actor_id in placement_map.items():
+                try:
+                    assign_proto.maps_to_actor_ids[int(map_id)] = int(actor_id)
+                except (TypeError, ValueError):
+                    continue
+
+        assign_proto.location = int(item_assign.location) if getattr(item_assign, 'location', None) is not None else 0
+        assign_proto.new_flag = _s(getattr(item_assign, 'new_flag', None), -1)
+        assign_proto.new_type = _s(getattr(item_assign, 'new_type', None), -1)
+        assign_proto.new_item = _s(getattr(item_assign, 'new_item', None), -1)
+        assign_proto.new_kong = _s(getattr(item_assign, 'new_kong', None), -1)
+        assign_proto.shared = bool(getattr(item_assign, 'shared', False))
+
+        # placement_index is a list in LocationSelection (shared shop items
+        # write to multiple slots). Preserve the whole list; negatives are
+        # meaningful (e.g. -1 sentinel for vanilla keys).
+        pidx = getattr(item_assign, 'placement_index', None)
+        if pidx is None:
+            pass
+        elif isinstance(pidx, (list, tuple)):
+            for v in pidx:
+                try:
+                    assign_proto.placement_index.append(int(v))
+                except (TypeError, ValueError):
+                    pass
         else:
-            assign_proto.placement_index = 0
-            
-        assign_proto.placement_subindex = int(item_assign.placement_subindex) if hasattr(item_assign, 'placement_subindex') and item_assign.placement_subindex is not None else 0
+            try:
+                assign_proto.placement_index.append(int(pidx))
+            except (TypeError, ValueError):
+                pass
+
+        assign_proto.placement_subindex = int(getattr(item_assign, 'placement_subindex', 0) or 0)
+
+        # Other LocationSelection flags consulted directly by the patcher.
+        assign_proto.is_reward_point = bool(getattr(item_assign, 'reward_spot', False))
+        assign_proto.is_shop = bool(getattr(item_assign, 'is_shop', False))
+
+        price = getattr(item_assign, 'price', 0)
+        if isinstance(price, (list, tuple)):
+            assign_proto.price = int(price[0]) if price else 0
+        else:
+            try:
+                assign_proto.price = int(price or 0)
+            except (TypeError, ValueError):
+                assign_proto.price = 0
+
+        assign_proto.can_have_item = bool(getattr(item_assign, 'can_have_item', True))
+        assign_proto.can_place_item = bool(getattr(item_assign, 'can_place_item', True))
+        assign_proto.shop_locked = bool(getattr(item_assign, 'shop_locked', False))
+        assign_proto.order = int(getattr(item_assign, 'order', 0) or 0)
+        assign_proto.name = str(getattr(item_assign, 'name', '') or '')
+        assign_proto.move_name = str(getattr(item_assign, 'move_name', '') or '')
+
     
     # Valid photo items
     for item_id in spoiler.valid_photo_items:
@@ -1524,3 +1606,54 @@ def _populate_misc_patching_data(spoiler, proto):
                 # Serialize each change dict as a JSON string
                 text_changes_proto.changes.append(json.dumps(change_dict))
 
+    # Per-level DK portal destinations. These are mutated by the Fill phase
+    # (e.g. assignDKPortal sets exit=-1 to indicate "use map default entry").
+    # ASMPatcher reads settings.level_portal_destinations directly at patch time,
+    # so we must round-trip the mutated values through the proto.
+    settings = getattr(spoiler, 'settings', None)
+    if settings is not None:
+        for entry in getattr(settings, 'level_portal_destinations', []) or []:
+            dest_proto = proto.level_portal_destinations.add()
+            dest_proto.map = int(entry["map"])
+            dest_proto.exit = int(entry["exit"])  # sint32; preserves -1 sentinel
+        for map_id in getattr(settings, 'level_void_maps', []) or []:
+            proto.level_void_maps.append(int(map_id))
+
+        # Fill-time resolved starting Kongs. The user-input settings object
+        # only carries the raw request (kong_rando flag, starting_kongs_count,
+        # and possibly Kongs.any); the concrete list/lead Kong is chosen during
+        # generation and must be preserved so the patched ROM matches the
+        # spoiler log and the `B` in `spoiler.settings.starting_kong_list`
+        # consumed by ItemRando.place_starting_moves.
+        starting_kong_list = getattr(settings, 'starting_kong_list', None) or []
+        for kong in starting_kong_list:
+            try:
+                proto.starting_kong_list.append(int(kong))
+            except (TypeError, ValueError):
+                continue
+        resolved_starting_kong = getattr(settings, 'starting_kong', None)
+        if resolved_starting_kong is not None:
+            try:
+                proto.resolved_starting_kong = int(resolved_starting_kong)
+            except (TypeError, ValueError):
+                pass
+
+        # Fill-time resolved B.Locker / T&S arrays. These start from user
+        # input but are rolled randomly in chaos mode and reordered in
+        # ShuffleExits (randomizer/ShuffleExits.py). Without preserving them
+        # the ROM's level access costs won't match the spoiler log.
+        for count in getattr(settings, 'BLockerEntryCount', []) or []:
+            try:
+                proto.blocker_entry_counts.append(int(count))
+            except (TypeError, ValueError):
+                proto.blocker_entry_counts.append(0)
+        for item in getattr(settings, 'BLockerEntryItems', []) or []:
+            try:
+                proto.blocker_entry_items.append(int(item))
+            except (TypeError, ValueError):
+                proto.blocker_entry_items.append(0)
+        for count in getattr(settings, 'BossBananas', []) or []:
+            try:
+                proto.boss_bananas.append(int(count))
+            except (TypeError, ValueError):
+                proto.boss_bananas.append(0)

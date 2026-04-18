@@ -201,7 +201,7 @@ def updateHelmFaces(settings: Settings, ROM_COPY: LocalROM) -> None:
             big_image = None
             if data["local_image"]:
                 # Pull image from the repo
-                big_image = Image.open(io.BytesIO(js.getFile(data["image"])))
+                big_image = Image.open(io.BytesIO(bytes(js.getFile(data["image"]))))
                 big_image = big_image.resize((64, 64)).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
                 if index % 2 == 0:
                     # Left side

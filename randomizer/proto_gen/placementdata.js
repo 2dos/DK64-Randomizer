@@ -20,6 +20,7 @@ goog.require('jspb.Message');
 goog.require('proto.randomizer.proto.BalloonPlacement');
 goog.require('proto.randomizer.proto.CBPlacement');
 goog.require('proto.randomizer.proto.CoinPlacement');
+goog.require('proto.randomizer.proto.EnemyRandoMapEntries');
 goog.require('proto.randomizer.proto.EnemyReplacement');
 goog.require('proto.randomizer.proto.RaceCoinPlacement');
 
@@ -94,7 +95,8 @@ coinPlacementsList: jspb.Message.toObjectList(msg.getCoinPlacementsList(),
     proto.randomizer.proto.CoinPlacement.toObject, includeInstance),
 raceCoinPlacementsList: jspb.Message.toObjectList(msg.getRaceCoinPlacementsList(),
     proto.randomizer.proto.RaceCoinPlacement.toObject, includeInstance),
-pkmnSnapDataList: (f = jspb.Message.getRepeatedBooleanField(msg, 7)) == null ? undefined : f
+pkmnSnapDataList: (f = jspb.Message.getRepeatedBooleanField(msg, 7)) == null ? undefined : f,
+enemyRandoDataMap: (f = msg.getEnemyRandoDataMap()) ? f.toObject(includeInstance, proto.randomizer.proto.EnemyRandoMapEntries.toObject) : []
   };
 
   if (includeInstance) {
@@ -167,6 +169,12 @@ proto.randomizer.proto.PlacementData.deserializeBinaryFromReader = function(msg,
       for (var i = 0; i < values.length; i++) {
         msg.addPkmnSnapData(values[i]);
       }
+      break;
+    case 8:
+      var value = msg.getEnemyRandoDataMap();
+      reader.readMessage(value, function(message, reader) {
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readUint32, jspb.BinaryReader.prototype.readMessage, proto.randomizer.proto.EnemyRandoMapEntries.deserializeBinaryFromReader, 0, new proto.randomizer.proto.EnemyRandoMapEntries());
+         });
       break;
     default:
       reader.skipField();
@@ -247,6 +255,10 @@ proto.randomizer.proto.PlacementData.serializeBinaryToWriter = function(message,
       7,
       f
     );
+  }
+  f = message.getEnemyRandoDataMap(true);
+  if (f && f.getLength() > 0) {
+    f.serializeBinary(8, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeMessage, proto.randomizer.proto.EnemyRandoMapEntries.serializeBinaryToWriter);
   }
 };
 
@@ -498,6 +510,29 @@ proto.randomizer.proto.PlacementData.prototype.addPkmnSnapData = function(value,
  */
 proto.randomizer.proto.PlacementData.prototype.clearPkmnSnapDataList = function() {
   return this.setPkmnSnapDataList([]);
+};
+
+
+/**
+ * map<uint32, EnemyRandoMapEntries> enemy_rando_data = 8;
+ * @param {boolean=} opt_noLazyCreate Do not create the map if
+ * empty, instead returning `undefined`
+ * @return {!jspb.Map<number,!proto.randomizer.proto.EnemyRandoMapEntries>}
+ */
+proto.randomizer.proto.PlacementData.prototype.getEnemyRandoDataMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<number,!proto.randomizer.proto.EnemyRandoMapEntries>} */ (
+      jspb.Message.getMapField(this, 8, opt_noLazyCreate,
+      proto.randomizer.proto.EnemyRandoMapEntries));
+};
+
+
+/**
+ * Clears values from the map. The map will be non-null.
+ * @return {!proto.randomizer.proto.PlacementData} returns this
+ */
+proto.randomizer.proto.PlacementData.prototype.clearEnemyRandoDataMap = function() {
+  this.getEnemyRandoDataMap().clear();
+  return this;
 };
 
 

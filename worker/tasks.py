@@ -144,8 +144,8 @@ def update_seed_results(patch, spoiler, settings_dict, password, delayed_timesta
     zip_data = BytesIO()
 
     with zipfile.ZipFile(zip_data, "w") as zip_file:
-        # Write each variable to the zip file
-        zip_file.writestr("patch", patch)
+        # Write proto instead of xdelta patch (new proto-based format)
+        zip_file.writestr("fill_result", patch)
         zip_file.writestr("hash", str(hash))
         zip_file.writestr("spoiler_log", str(json.dumps(spoiler_log)))
         zip_file.writestr("seed_id", str(spoiler.settings.seed_id))
@@ -157,10 +157,14 @@ def update_seed_results(patch, spoiler, settings_dict, password, delayed_timesta
     zip_conv = codecs.encode(zip_data.getvalue(), "base64").decode()
 
     # Store the patch file in generated_seeds folder.
+    print(f"[Worker] Writing .lanky file: {file_name}.lanky ({len(zip_conv):,} chars base64)")
     with open("generated_seeds/" + file_name + ".lanky", "w") as f:
         f.write(zip_conv)
+    print(f"[Worker] ✓ File written, preparing response...")
     if password:
+        print(f"[Worker] Returning response with password")
         return {"patch": zip_conv, "hash": hash, "seed_number": current_seed_number, "password": password}
+    print(f"[Worker] Returning response without password")
     return {"patch": zip_conv, "hash": hash, "seed_number": current_seed_number}
 
 

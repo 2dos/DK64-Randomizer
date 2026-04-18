@@ -50,10 +50,18 @@ class BooleanProperties:
 
 async def patching_response(data, from_patch_gen=False, lanky_from_history=False, gen_history=False):
     """Apply the patch data to the ROM in the BROWSER not the server."""
+    import js as js_module
+    js_module.console.log("[ApplyLocal] ====== FUNCTION CALLED ======")
+    print("[ApplyLocal] patching_response called")
+    print(f"[ApplyLocal] data length: {len(data) if data else 'None'}")
+    print(f"[ApplyLocal] from_patch_gen: {from_patch_gen}")
+    
     # Unzip the data_passed
     loop = asyncio.get_event_loop()
     # Base64 decode the data
+    print("[ApplyLocal] About to base64 decode...")
     decoded_data = base64.b64decode(data)
+    print(f"[ApplyLocal] Decoded {len(decoded_data):,} bytes")
     # Create an in-memory byte stream from the zip data
     zip_stream = io.BytesIO(decoded_data)
 
@@ -82,6 +90,10 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         hash_id = str(extracted_variables["seed_number"].decode("utf-8"))
     except Exception:
         hash_id = None
+    
+    # Check if this is a proto-based patch (new format) or xdelta-based (legacy)
+    is_proto_patch = "fill_result" in extracted_variables
+    
     # Make sure we re-load the seed id for patch file creation
     js.event_response_data = data
     if lanky_from_history:
@@ -96,12 +108,26 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     elif from_patch_gen is True:
         if js.document.getElementById("download_patch_file").checked or js.document.getElementById("load_patch_file").checked:
             js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
-        # gif_fairy = get_hash_images("browser", "loading-fairy")
-        # gif_dead = get_hash_images("browser", "loading-dead")
-        # js.document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0]
-        # js.document.getElementById("progress-dead").src = "data:image/jpeg;base64," + gif_dead[0]
-        # Apply the base patch
-        await js.apply_patch(data)
+        
+        if is_proto_patch:
+            # New proto-based path - deserialize and apply proto to ROM
+            print("[ApplyLocal] Detected proto-based patch file")
+            from randomizer.proto_gen import fill_result_pb2
+            from randomizer.Patching import ApplyRandomizer
+            
+            fill_result = fill_result_pb2.FillResult()
+            fill_result.ParseFromString(extracted_variables["fill_result"])
+            print(f"[ApplyLocal] Deserialized FillResult proto ({fill_result.ByteSize():,} bytes)")
+            
+            # Note: Don't create ROM here - it will be created below at line 143
+            # where cosmetic patches are applied. Just store the proto for now.
+            extracted_variables["fill_result_proto"] = fill_result
+            print("[ApplyLocal] ✓ Proto deserialized, will apply after ROM creation")
+        else:
+            # Legacy xdelta-based path
+            print("[ApplyLocal] Detected legacy xdelta-based patch file")
+            await js.apply_patch(data)
+        
         if gen_history is False:
             js.write_seed_history(seed_id, str(data), json.dumps(settings.seed_hash))
             js.load_old_seeds()
@@ -118,7 +144,51 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     minor = split_data[1]
     patch = split_data[2]
 
+    print("[ApplyLocal] About to create ROM...")
     ROM_COPY = ROM()
+    print(f"[ApplyLocal] ROM created. Checking for proto... fill_result_proto in extracted_variables: {'fill_result_proto' in extracted_variables}")
+    
+    # Apply proto patches if this is a proto-based patch file
+    if "fill_result_proto" in extracted_variables:
+        from randomizer.Patching import ApplyRandomizer
+        fill_result = extracted_variables["fill_result_proto"]
+
+        # NOTE: For proto-based patches, `patchedRom` has already been built
+        # in JS by `apply_base_hack_bps()` (see static/js/rompatcher/RomPatcher.js),
+        # which applies the prebuilt vanilla -> base-hack BPS so that the
+        # Python patching pipeline sees the expanded base-hack ROM layout.
+        # Do NOT overwrite it here with a copy of the vanilla ROM, or all
+        # subsequent pointer-table reads (TNS scripts, setups, ...) will
+        # run past EOF and fail with cryptic TypeErrors.
+        if not hasattr(js, "patchedRom") or js.patchedRom is None:
+            raise RuntimeError(
+                "Proto patch flow: js.patchedRom is not initialized. "
+                "apply_base_hack_bps() must run before patching_response()."
+            )
+
+        # The legacy (xdelta) flow never ran ApplyRandomizer.patching_response
+        # in the browser, so plain-JS-object globals (loaded via jQuery
+        # $.ajax with dataType:"json") worked through the server-side code
+        # paths only. Pyodide exposes those as JsProxy, and plain JS objects
+        # are NOT subscriptable (`obj[key]` raises TypeError). Convert them
+        # once to native Python dicts so every downstream access site
+        # (`js.rom_symbols[section]["foo"]`, `js.pointer_addresses[i]["entries"]`
+        # etc.) just works.
+        for _global_name in ("rom_symbols", "pointer_addresses"):
+            _val = getattr(js, _global_name, None)
+            if _val is not None and hasattr(_val, "to_py"):
+                try:
+                    setattr(js, _global_name, _val.to_py())
+                    print(f"[ApplyLocal] Converted js.{_global_name} JsProxy -> Python dict/list")
+                except Exception as _conv_err:
+                    print(f"[ApplyLocal] Warning: could not convert js.{_global_name}: {_conv_err}")
+
+        # Create new ROM object that uses the base-hack patchedRom
+        ROM_COPY = ROM()
+        print("[ApplyLocal] Calling ApplyRandomizer.patching_response with proto data...")
+        ApplyRandomizer.patching_response(fill_result, settings, ROM_COPY)
+        print("[ApplyLocal] ✓ Proto patches applied successfully")
+    
     if major != patch_major or minor != patch_minor:
         js.document.getElementById("patch_version_warning").hidden = False
         js.document.getElementById("patch_warning_message").innerHTML = (

@@ -29,7 +29,7 @@ goog.require('jspb.Message');
  * @constructor
  */
 proto.randomizer.proto.ItemAssignment = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.randomizer.proto.ItemAssignment.repeatedFields_, null);
 };
 goog.inherits(proto.randomizer.proto.ItemAssignment, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -39,6 +39,13 @@ if (goog.DEBUG && !COMPILED) {
    */
   proto.randomizer.proto.ItemAssignment.displayName = 'proto.randomizer.proto.ItemAssignment';
 }
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.randomizer.proto.ItemAssignment.repeatedFields_ = [10];
 
 
 
@@ -73,6 +80,8 @@ proto.randomizer.proto.ItemAssignment.toObject = function(includeInstance, msg) 
   var f, obj = {
 oldType: jspb.Message.getFieldWithDefault(msg, 1, 0),
 oldFlag: jspb.Message.getFieldWithDefault(msg, 2, 0),
+oldItem: jspb.Message.getFieldWithDefault(msg, 12, 0),
+oldKong: jspb.Message.getFieldWithDefault(msg, 13, 0),
 mapsToActorIdsMap: (f = msg.getMapsToActorIdsMap()) ? f.toObject(includeInstance, undefined) : [],
 location: jspb.Message.getFieldWithDefault(msg, 4, 0),
 newFlag: jspb.Message.getFieldWithDefault(msg, 5, 0),
@@ -80,8 +89,17 @@ newType: jspb.Message.getFieldWithDefault(msg, 6, 0),
 newItem: jspb.Message.getFieldWithDefault(msg, 7, 0),
 newKong: jspb.Message.getFieldWithDefault(msg, 8, 0),
 shared: jspb.Message.getBooleanFieldWithDefault(msg, 9, false),
-placementIndex: jspb.Message.getFieldWithDefault(msg, 10, 0),
-placementSubindex: jspb.Message.getFieldWithDefault(msg, 11, 0)
+placementIndexList: (f = jspb.Message.getRepeatedField(msg, 10)) == null ? undefined : f,
+placementSubindex: jspb.Message.getFieldWithDefault(msg, 11, 0),
+isRewardPoint: jspb.Message.getBooleanFieldWithDefault(msg, 14, false),
+isShop: jspb.Message.getBooleanFieldWithDefault(msg, 15, false),
+price: jspb.Message.getFieldWithDefault(msg, 16, 0),
+canHaveItem: jspb.Message.getBooleanFieldWithDefault(msg, 17, false),
+canPlaceItem: jspb.Message.getBooleanFieldWithDefault(msg, 18, false),
+shopLocked: jspb.Message.getBooleanFieldWithDefault(msg, 19, false),
+order: jspb.Message.getFieldWithDefault(msg, 20, 0),
+name: jspb.Message.getFieldWithDefault(msg, 21, ""),
+moveName: jspb.Message.getFieldWithDefault(msg, 22, "")
   };
 
   if (includeInstance) {
@@ -119,12 +137,20 @@ proto.randomizer.proto.ItemAssignment.deserializeBinaryFromReader = function(msg
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readUint32());
+      var value = /** @type {number} */ (reader.readSint32());
       msg.setOldType(value);
       break;
     case 2:
-      var value = /** @type {number} */ (reader.readUint32());
+      var value = /** @type {number} */ (reader.readSint32());
       msg.setOldFlag(value);
+      break;
+    case 12:
+      var value = /** @type {number} */ (reader.readSint32());
+      msg.setOldItem(value);
+      break;
+    case 13:
+      var value = /** @type {number} */ (reader.readSint32());
+      msg.setOldKong(value);
       break;
     case 3:
       var value = msg.getMapsToActorIdsMap();
@@ -137,19 +163,19 @@ proto.randomizer.proto.ItemAssignment.deserializeBinaryFromReader = function(msg
       msg.setLocation(value);
       break;
     case 5:
-      var value = /** @type {number} */ (reader.readUint32());
+      var value = /** @type {number} */ (reader.readSint32());
       msg.setNewFlag(value);
       break;
     case 6:
-      var value = /** @type {number} */ (reader.readUint32());
+      var value = /** @type {number} */ (reader.readSint32());
       msg.setNewType(value);
       break;
     case 7:
-      var value = /** @type {number} */ (reader.readUint32());
+      var value = /** @type {number} */ (reader.readSint32());
       msg.setNewItem(value);
       break;
     case 8:
-      var value = /** @type {number} */ (reader.readUint32());
+      var value = /** @type {number} */ (reader.readSint32());
       msg.setNewKong(value);
       break;
     case 9:
@@ -157,12 +183,50 @@ proto.randomizer.proto.ItemAssignment.deserializeBinaryFromReader = function(msg
       msg.setShared(value);
       break;
     case 10:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setPlacementIndex(value);
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedSint32() : [reader.readSint32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addPlacementIndex(values[i]);
+      }
       break;
     case 11:
       var value = /** @type {number} */ (reader.readUint32());
       msg.setPlacementSubindex(value);
+      break;
+    case 14:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsRewardPoint(value);
+      break;
+    case 15:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsShop(value);
+      break;
+    case 16:
+      var value = /** @type {number} */ (reader.readSint32());
+      msg.setPrice(value);
+      break;
+    case 17:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setCanHaveItem(value);
+      break;
+    case 18:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setCanPlaceItem(value);
+      break;
+    case 19:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setShopLocked(value);
+      break;
+    case 20:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setOrder(value);
+      break;
+    case 21:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 22:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMoveName(value);
       break;
     default:
       reader.skipField();
@@ -195,15 +259,29 @@ proto.randomizer.proto.ItemAssignment.serializeBinaryToWriter = function(message
   var f = undefined;
   f = message.getOldType();
   if (f !== 0) {
-    writer.writeUint32(
+    writer.writeSint32(
       1,
       f
     );
   }
   f = message.getOldFlag();
   if (f !== 0) {
-    writer.writeUint32(
+    writer.writeSint32(
       2,
+      f
+    );
+  }
+  f = message.getOldItem();
+  if (f !== 0) {
+    writer.writeSint32(
+      12,
+      f
+    );
+  }
+  f = message.getOldKong();
+  if (f !== 0) {
+    writer.writeSint32(
+      13,
       f
     );
   }
@@ -220,28 +298,28 @@ proto.randomizer.proto.ItemAssignment.serializeBinaryToWriter = function(message
   }
   f = message.getNewFlag();
   if (f !== 0) {
-    writer.writeUint32(
+    writer.writeSint32(
       5,
       f
     );
   }
   f = message.getNewType();
   if (f !== 0) {
-    writer.writeUint32(
+    writer.writeSint32(
       6,
       f
     );
   }
   f = message.getNewItem();
   if (f !== 0) {
-    writer.writeUint32(
+    writer.writeSint32(
       7,
       f
     );
   }
   f = message.getNewKong();
   if (f !== 0) {
-    writer.writeUint32(
+    writer.writeSint32(
       8,
       f
     );
@@ -253,9 +331,9 @@ proto.randomizer.proto.ItemAssignment.serializeBinaryToWriter = function(message
       f
     );
   }
-  f = message.getPlacementIndex();
-  if (f !== 0) {
-    writer.writeUint32(
+  f = message.getPlacementIndexList();
+  if (f.length > 0) {
+    writer.writePackedSint32(
       10,
       f
     );
@@ -267,11 +345,74 @@ proto.randomizer.proto.ItemAssignment.serializeBinaryToWriter = function(message
       f
     );
   }
+  f = message.getIsRewardPoint();
+  if (f) {
+    writer.writeBool(
+      14,
+      f
+    );
+  }
+  f = message.getIsShop();
+  if (f) {
+    writer.writeBool(
+      15,
+      f
+    );
+  }
+  f = message.getPrice();
+  if (f !== 0) {
+    writer.writeSint32(
+      16,
+      f
+    );
+  }
+  f = message.getCanHaveItem();
+  if (f) {
+    writer.writeBool(
+      17,
+      f
+    );
+  }
+  f = message.getCanPlaceItem();
+  if (f) {
+    writer.writeBool(
+      18,
+      f
+    );
+  }
+  f = message.getShopLocked();
+  if (f) {
+    writer.writeBool(
+      19,
+      f
+    );
+  }
+  f = message.getOrder();
+  if (f !== 0) {
+    writer.writeUint32(
+      20,
+      f
+    );
+  }
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
+      21,
+      f
+    );
+  }
+  f = message.getMoveName();
+  if (f.length > 0) {
+    writer.writeString(
+      22,
+      f
+    );
+  }
 };
 
 
 /**
- * optional uint32 old_type = 1;
+ * optional sint32 old_type = 1;
  * @return {number}
  */
 proto.randomizer.proto.ItemAssignment.prototype.getOldType = function() {
@@ -289,7 +430,7 @@ proto.randomizer.proto.ItemAssignment.prototype.setOldType = function(value) {
 
 
 /**
- * optional uint32 old_flag = 2;
+ * optional sint32 old_flag = 2;
  * @return {number}
  */
 proto.randomizer.proto.ItemAssignment.prototype.getOldFlag = function() {
@@ -303,6 +444,42 @@ proto.randomizer.proto.ItemAssignment.prototype.getOldFlag = function() {
  */
 proto.randomizer.proto.ItemAssignment.prototype.setOldFlag = function(value) {
   return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional sint32 old_item = 12;
+ * @return {number}
+ */
+proto.randomizer.proto.ItemAssignment.prototype.getOldItem = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 12, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.randomizer.proto.ItemAssignment} returns this
+ */
+proto.randomizer.proto.ItemAssignment.prototype.setOldItem = function(value) {
+  return jspb.Message.setProto3IntField(this, 12, value);
+};
+
+
+/**
+ * optional sint32 old_kong = 13;
+ * @return {number}
+ */
+proto.randomizer.proto.ItemAssignment.prototype.getOldKong = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 13, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.randomizer.proto.ItemAssignment} returns this
+ */
+proto.randomizer.proto.ItemAssignment.prototype.setOldKong = function(value) {
+  return jspb.Message.setProto3IntField(this, 13, value);
 };
 
 
@@ -348,7 +525,7 @@ proto.randomizer.proto.ItemAssignment.prototype.setLocation = function(value) {
 
 
 /**
- * optional uint32 new_flag = 5;
+ * optional sint32 new_flag = 5;
  * @return {number}
  */
 proto.randomizer.proto.ItemAssignment.prototype.getNewFlag = function() {
@@ -366,7 +543,7 @@ proto.randomizer.proto.ItemAssignment.prototype.setNewFlag = function(value) {
 
 
 /**
- * optional uint32 new_type = 6;
+ * optional sint32 new_type = 6;
  * @return {number}
  */
 proto.randomizer.proto.ItemAssignment.prototype.getNewType = function() {
@@ -384,7 +561,7 @@ proto.randomizer.proto.ItemAssignment.prototype.setNewType = function(value) {
 
 
 /**
- * optional uint32 new_item = 7;
+ * optional sint32 new_item = 7;
  * @return {number}
  */
 proto.randomizer.proto.ItemAssignment.prototype.getNewItem = function() {
@@ -402,7 +579,7 @@ proto.randomizer.proto.ItemAssignment.prototype.setNewItem = function(value) {
 
 
 /**
- * optional uint32 new_kong = 8;
+ * optional sint32 new_kong = 8;
  * @return {number}
  */
 proto.randomizer.proto.ItemAssignment.prototype.getNewKong = function() {
@@ -438,20 +615,39 @@ proto.randomizer.proto.ItemAssignment.prototype.setShared = function(value) {
 
 
 /**
- * optional uint32 placement_index = 10;
- * @return {number}
+ * repeated sint32 placement_index = 10;
+ * @return {!Array<number>}
  */
-proto.randomizer.proto.ItemAssignment.prototype.getPlacementIndex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
+proto.randomizer.proto.ItemAssignment.prototype.getPlacementIndexList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 10));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.randomizer.proto.ItemAssignment} returns this
+ */
+proto.randomizer.proto.ItemAssignment.prototype.setPlacementIndexList = function(value) {
+  return jspb.Message.setField(this, 10, value || []);
 };
 
 
 /**
  * @param {number} value
+ * @param {number=} opt_index
  * @return {!proto.randomizer.proto.ItemAssignment} returns this
  */
-proto.randomizer.proto.ItemAssignment.prototype.setPlacementIndex = function(value) {
-  return jspb.Message.setProto3IntField(this, 10, value);
+proto.randomizer.proto.ItemAssignment.prototype.addPlacementIndex = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 10, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.ItemAssignment} returns this
+ */
+proto.randomizer.proto.ItemAssignment.prototype.clearPlacementIndexList = function() {
+  return this.setPlacementIndexList([]);
 };
 
 
@@ -470,6 +666,168 @@ proto.randomizer.proto.ItemAssignment.prototype.getPlacementSubindex = function(
  */
 proto.randomizer.proto.ItemAssignment.prototype.setPlacementSubindex = function(value) {
   return jspb.Message.setProto3IntField(this, 11, value);
+};
+
+
+/**
+ * optional bool is_reward_point = 14;
+ * @return {boolean}
+ */
+proto.randomizer.proto.ItemAssignment.prototype.getIsRewardPoint = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 14, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.ItemAssignment} returns this
+ */
+proto.randomizer.proto.ItemAssignment.prototype.setIsRewardPoint = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 14, value);
+};
+
+
+/**
+ * optional bool is_shop = 15;
+ * @return {boolean}
+ */
+proto.randomizer.proto.ItemAssignment.prototype.getIsShop = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 15, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.ItemAssignment} returns this
+ */
+proto.randomizer.proto.ItemAssignment.prototype.setIsShop = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 15, value);
+};
+
+
+/**
+ * optional sint32 price = 16;
+ * @return {number}
+ */
+proto.randomizer.proto.ItemAssignment.prototype.getPrice = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 16, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.randomizer.proto.ItemAssignment} returns this
+ */
+proto.randomizer.proto.ItemAssignment.prototype.setPrice = function(value) {
+  return jspb.Message.setProto3IntField(this, 16, value);
+};
+
+
+/**
+ * optional bool can_have_item = 17;
+ * @return {boolean}
+ */
+proto.randomizer.proto.ItemAssignment.prototype.getCanHaveItem = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 17, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.ItemAssignment} returns this
+ */
+proto.randomizer.proto.ItemAssignment.prototype.setCanHaveItem = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 17, value);
+};
+
+
+/**
+ * optional bool can_place_item = 18;
+ * @return {boolean}
+ */
+proto.randomizer.proto.ItemAssignment.prototype.getCanPlaceItem = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 18, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.ItemAssignment} returns this
+ */
+proto.randomizer.proto.ItemAssignment.prototype.setCanPlaceItem = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 18, value);
+};
+
+
+/**
+ * optional bool shop_locked = 19;
+ * @return {boolean}
+ */
+proto.randomizer.proto.ItemAssignment.prototype.getShopLocked = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 19, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.ItemAssignment} returns this
+ */
+proto.randomizer.proto.ItemAssignment.prototype.setShopLocked = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 19, value);
+};
+
+
+/**
+ * optional uint32 order = 20;
+ * @return {number}
+ */
+proto.randomizer.proto.ItemAssignment.prototype.getOrder = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 20, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.randomizer.proto.ItemAssignment} returns this
+ */
+proto.randomizer.proto.ItemAssignment.prototype.setOrder = function(value) {
+  return jspb.Message.setProto3IntField(this, 20, value);
+};
+
+
+/**
+ * optional string name = 21;
+ * @return {string}
+ */
+proto.randomizer.proto.ItemAssignment.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 21, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.randomizer.proto.ItemAssignment} returns this
+ */
+proto.randomizer.proto.ItemAssignment.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 21, value);
+};
+
+
+/**
+ * optional string move_name = 22;
+ * @return {string}
+ */
+proto.randomizer.proto.ItemAssignment.prototype.getMoveName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 22, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.randomizer.proto.ItemAssignment} returns this
+ */
+proto.randomizer.proto.ItemAssignment.prototype.setMoveName = function(value) {
+  return jspb.Message.setProto3StringField(this, 22, value);
 };
 
 

@@ -857,7 +857,7 @@ def addBalloonBulb(settings, ROM_COPY, mode: ColorblindMode):
         return
     for kong in range(5):
         color = getKongItemColor(mode, kong, True)
-        bulb_image = Image.open(BytesIO(js.getFile("base-hack/assets/displays/balloon_bulb.png")))
+        bulb_image = Image.open(BytesIO(bytes(js.getFile("base-hack/assets/displays/balloon_bulb.png"))))
         w, h = bulb_image.size
         px = bulb_image.load()
         for y in range(h):

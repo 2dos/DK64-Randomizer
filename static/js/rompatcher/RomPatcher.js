@@ -109,6 +109,47 @@ function apply_conversion() {
   romFile.convert();
 }
 
+/**
+ * Apply the prebuilt base-hack BPS (vanilla DK64 -> expanded base-hack ROM)
+ * to `romFile`, producing `patchedRom`. This is used by the proto-based
+ * patch flow (.lanky containing `fill_result`), which does not ship an
+ * xdelta that would otherwise perform the vanilla->base-hack conversion.
+ *
+ * Subsequent Python patching steps (TNS scripts, setups, etc.) assume the
+ * expanded base-hack ROM layout, so this MUST run before any of them.
+ */
+async function apply_base_hack_bps() {
+  console.log("Applying base-hack BPS (vanilla -> base-hack)");
+
+  // Ensure the source ROM is in z64 byte order (the BPS was built from z64).
+  // convert() is a no-op for an already-z64 ROM.
+  try {
+    romFile.convert();
+  } catch (e) {
+    console.warn("romFile.convert() failed or already converted:", e);
+  }
+
+  const response = await fetch("static/patches/shrink-dk64.bps");
+  if (!response.ok) {
+    throw new Error(
+      "Failed to fetch base-hack BPS (status " + response.status + ")"
+    );
+  }
+  const bpsBuffer = await response.arrayBuffer();
+
+  const bpsFile = new MarcFile(new Uint8Array(bpsBuffer));
+  const basePatch = parseBPSFile(bpsFile);
+
+  // Apply against a fresh MarcFile view of the source bytes so we don't
+  // alter romFile's own offset.
+  const romSource = new MarcFile(romFile._u8array);
+  patchedRom = basePatch.apply(romSource, false);
+  patchedRom.offset = 0;
+  console.log(
+    "Base-hack BPS applied, patchedRom size: " + patchedRom.fileSize
+  );
+}
+
 function getDate() {
   return new Date().toUTCString();
 }

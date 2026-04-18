@@ -11,7 +11,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-goog.provide('proto.randomizer.proto.DoorEntry');
+goog.provide('proto.randomizer.proto.LevelPortalDestination');
 
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
@@ -27,16 +27,16 @@ goog.require('jspb.Message');
  * @extends {jspb.Message}
  * @constructor
  */
-proto.randomizer.proto.DoorEntry = function(opt_data) {
+proto.randomizer.proto.LevelPortalDestination = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
-goog.inherits(proto.randomizer.proto.DoorEntry, jspb.Message);
+goog.inherits(proto.randomizer.proto.LevelPortalDestination, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   /**
    * @public
    * @override
    */
-  proto.randomizer.proto.DoorEntry.displayName = 'proto.randomizer.proto.DoorEntry';
+  proto.randomizer.proto.LevelPortalDestination.displayName = 'proto.randomizer.proto.LevelPortalDestination';
 }
 
 
@@ -54,8 +54,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
  *     http://goto/soy-param-migration
  * @return {!Object}
  */
-proto.randomizer.proto.DoorEntry.prototype.toObject = function(opt_includeInstance) {
-  return proto.randomizer.proto.DoorEntry.toObject(opt_includeInstance, this);
+proto.randomizer.proto.LevelPortalDestination.prototype.toObject = function(opt_includeInstance) {
+  return proto.randomizer.proto.LevelPortalDestination.toObject(opt_includeInstance, this);
 };
 
 
@@ -64,15 +64,14 @@ proto.randomizer.proto.DoorEntry.prototype.toObject = function(opt_includeInstan
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.randomizer.proto.DoorEntry} msg The msg instance to transform.
+ * @param {!proto.randomizer.proto.LevelPortalDestination} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.randomizer.proto.DoorEntry.toObject = function(includeInstance, msg) {
+proto.randomizer.proto.LevelPortalDestination.toObject = function(includeInstance, msg) {
   var f, obj = {
-doorType: jspb.Message.getFieldWithDefault(msg, 1, ""),
-doorLocation: jspb.Message.getFieldWithDefault(msg, 2, 0),
-kongAssignee: jspb.Message.getFieldWithDefault(msg, 3, 0)
+map: jspb.Message.getFieldWithDefault(msg, 1, 0),
+exit: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -86,23 +85,23 @@ kongAssignee: jspb.Message.getFieldWithDefault(msg, 3, 0)
 /**
  * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.randomizer.proto.DoorEntry}
+ * @return {!proto.randomizer.proto.LevelPortalDestination}
  */
-proto.randomizer.proto.DoorEntry.deserializeBinary = function(bytes) {
+proto.randomizer.proto.LevelPortalDestination.deserializeBinary = function(bytes) {
   var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.randomizer.proto.DoorEntry;
-  return proto.randomizer.proto.DoorEntry.deserializeBinaryFromReader(msg, reader);
+  var msg = new proto.randomizer.proto.LevelPortalDestination;
+  return proto.randomizer.proto.LevelPortalDestination.deserializeBinaryFromReader(msg, reader);
 };
 
 
 /**
  * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
- * @param {!proto.randomizer.proto.DoorEntry} msg The message object to deserialize into.
+ * @param {!proto.randomizer.proto.LevelPortalDestination} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.randomizer.proto.DoorEntry}
+ * @return {!proto.randomizer.proto.LevelPortalDestination}
  */
-proto.randomizer.proto.DoorEntry.deserializeBinaryFromReader = function(msg, reader) {
+proto.randomizer.proto.LevelPortalDestination.deserializeBinaryFromReader = function(msg, reader) {
   while (reader.nextField()) {
     if (reader.isEndGroup()) {
       break;
@@ -110,16 +109,12 @@ proto.randomizer.proto.DoorEntry.deserializeBinaryFromReader = function(msg, rea
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setDoorType(value);
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setMap(value);
       break;
     case 2:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setDoorLocation(value);
-      break;
-    case 3:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setKongAssignee(value);
+      var value = /** @type {number} */ (reader.readSint32());
+      msg.setExit(value);
       break;
     default:
       reader.skipField();
@@ -134,9 +129,9 @@ proto.randomizer.proto.DoorEntry.deserializeBinaryFromReader = function(msg, rea
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
-proto.randomizer.proto.DoorEntry.prototype.serializeBinary = function() {
+proto.randomizer.proto.LevelPortalDestination.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.randomizer.proto.DoorEntry.serializeBinaryToWriter(this, writer);
+  proto.randomizer.proto.LevelPortalDestination.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
@@ -144,87 +139,62 @@ proto.randomizer.proto.DoorEntry.prototype.serializeBinary = function() {
 /**
  * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
- * @param {!proto.randomizer.proto.DoorEntry} message
+ * @param {!proto.randomizer.proto.LevelPortalDestination} message
  * @param {!jspb.BinaryWriter} writer
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.randomizer.proto.DoorEntry.serializeBinaryToWriter = function(message, writer) {
+proto.randomizer.proto.LevelPortalDestination.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getDoorType();
-  if (f.length > 0) {
-    writer.writeString(
+  f = message.getMap();
+  if (f !== 0) {
+    writer.writeUint32(
       1,
       f
     );
   }
-  f = message.getDoorLocation();
+  f = message.getExit();
   if (f !== 0) {
-    writer.writeUint32(
+    writer.writeSint32(
       2,
       f
     );
   }
-  f = message.getKongAssignee();
-  if (f !== 0) {
-    writer.writeUint32(
-      3,
-      f
-    );
-  }
 };
 
 
 /**
- * optional string door_type = 1;
- * @return {string}
- */
-proto.randomizer.proto.DoorEntry.prototype.getDoorType = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.randomizer.proto.DoorEntry} returns this
- */
-proto.randomizer.proto.DoorEntry.prototype.setDoorType = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
-};
-
-
-/**
- * optional uint32 door_location = 2;
+ * optional uint32 map = 1;
  * @return {number}
  */
-proto.randomizer.proto.DoorEntry.prototype.getDoorLocation = function() {
+proto.randomizer.proto.LevelPortalDestination.prototype.getMap = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.randomizer.proto.LevelPortalDestination} returns this
+ */
+proto.randomizer.proto.LevelPortalDestination.prototype.setMap = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional sint32 exit = 2;
+ * @return {number}
+ */
+proto.randomizer.proto.LevelPortalDestination.prototype.getExit = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
 /**
  * @param {number} value
- * @return {!proto.randomizer.proto.DoorEntry} returns this
+ * @return {!proto.randomizer.proto.LevelPortalDestination} returns this
  */
-proto.randomizer.proto.DoorEntry.prototype.setDoorLocation = function(value) {
+proto.randomizer.proto.LevelPortalDestination.prototype.setExit = function(value) {
   return jspb.Message.setProto3IntField(this, 2, value);
-};
-
-
-/**
- * optional uint32 kong_assignee = 3;
- * @return {number}
- */
-proto.randomizer.proto.DoorEntry.prototype.getKongAssignee = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.randomizer.proto.DoorEntry} returns this
- */
-proto.randomizer.proto.DoorEntry.prototype.setKongAssignee = function(value) {
-  return jspb.Message.setProto3IntField(this, 3, value);
 };
 
 

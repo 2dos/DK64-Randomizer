@@ -178,6 +178,9 @@ message DoorEntry {
   string door_type = 1;
   uint32 door_location = 2;
   // Additional door data as needed
+  // For wrinkly doors, the kong the door is assigned to (KongId). Unused for
+  // boss (T&S) and dk_portal entries; defaults to 0.
+  uint32 kong_assignee = 3;
 }
 
 message KasplatShuffle {
@@ -241,7 +244,26 @@ message PlacementData {
   // Pokemon Snap enemy data (for Krem Kapture win condition)
   // Boolean array indicating which enemies spawn in Pokemon Snap
   repeated bool pkmn_snap_data = 7;
+
+  // Per-map randomized enemy spawn data. Built by randomize_enemies_0 during
+  // the Fill and consumed by randomize_enemies at patch time. Maps container
+  // map_id -> list of enemy entries. Required for enemy rando to work
+  // through the proto-based patching flow.
+  map<uint32, EnemyRandoMapEntries> enemy_rando_data = 8;
 }
+
+// Wrapper so we can store a repeated list inside a proto map value.
+message EnemyRandoMapEntries {
+  repeated EnemyRandoEntry entries = 1;
+}
+
+message EnemyRandoEntry {
+  uint32 enemy = 1;            // Enemies enum value
+  repeated uint32 speeds = 2;  // [idle_speed, aggro_speed]
+  uint32 spawner_id = 3;       // Matches Spawner.index in the vanilla ROM data
+  string location = 4;         // Locations enum name (for spoiler display)
+}
+
 
 message CBPlacement {
   uint32 id = 1;
@@ -427,20 +449,71 @@ message MiscPatchingData {
   
   // Text file changes (file ID -> list of changes)
   map<uint32, TextFileChanges> text_file_changes = 10;
+
+  // DK portal / level entry destinations (per level, length 8)
+  // Mirrors settings.level_portal_destinations, written by ASMPatcher.
+  // exit can be -1 (meaning "default entry for the map"); serialized signed.
+  repeated LevelPortalDestination level_portal_destinations = 11;
+
+  // Per-level void map IDs (length 8). Mirrors settings.level_void_maps.
+  repeated uint32 level_void_maps = 12;
+
+  // Fill-time resolved starting Kongs. The user-input settings only carry
+  // `starting_kong` (can be Kongs.any) and `starting_kongs_count`; the actual
+  // roster of starting Kongs is decided during generation and must survive
+  // the roundtrip so the patched ROM matches the spoiler.
+  repeated common.KongId starting_kong_list = 13;
+
+  // Fill-time resolved `starting_kong` (the lead Kong). May differ from the
+  // user-input value when that was Kongs.any or got overridden by plando.
+  optional common.KongId resolved_starting_kong = 14;
+
+  // Fill-time resolved B.Locker / T&S values. The user-input settings only
+  // carry the raw request (chaos/pre-selected flag, max count, weights); the
+  // concrete per-level amounts are rolled with `self.random` during generation
+  // and additionally reordered by ShuffleExits when loading zones are shuffled.
+  // These must round-trip so the patched ROM matches the spoiler log.
+  // All arrays are length 8, indexed by in-game level order.
+  repeated uint32 blocker_entry_counts = 15;  // BLockerEntryCount per level
+  repeated uint32 blocker_entry_items = 16;   // BarrierItems enum per level
+  repeated uint32 boss_bananas = 17;          // BossBananas (T&S CB count) per level
+}
+
+message LevelPortalDestination {
+  uint32 map = 1;     // Maps enum
+  sint32 exit = 2;    // Exit index, -1 means "use map default"
 }
 
 message ItemAssignment {
-  uint32 old_type = 1;  // Type enum
-  uint32 old_flag = 2;
-  map<uint32, uint32> maps_to_actor_ids = 3;  // map ID -> actor ID
-  uint32 location = 4;  // LocationId
-  uint32 new_flag = 5;
-  uint32 new_type = 6;  // Type enum
-  uint32 new_item = 7;  // ItemId
-  uint32 new_kong = 8;  // KongId
+  // Using sint32 where values are legitimately signed (-1 sentinel for
+  // "no flag", "no item", Kongs.any, etc). The previous uint32s silently
+  // turned negatives into huge unsigned numbers.
+  sint32 old_type = 1;       // Types enum; -1 = None
+  sint32 old_flag = 2;       // -1 = no flag
+  sint32 old_item = 12;      // Types enum; -1 = None (was missing)
+  sint32 old_kong = 13;      // Kongs enum; -1 means use default
+  // map_id -> actor_id / object_id. LocationSelection.placement_data.
+  map<uint32, uint32> maps_to_actor_ids = 3;
+  uint32 location = 4;       // LocationId
+  sint32 new_flag = 5;       // -1 = no flag
+  sint32 new_type = 6;       // Types enum; -1 = None
+  sint32 new_item = 7;       // ItemId; -1 = None
+  sint32 new_kong = 8;       // KongId; -1 = Kongs.any
   bool shared = 9;
-  uint32 placement_index = 10;
+  // placement_index is a LIST in LocationSelection (shared shop items hit
+  // multiple placement slots). Keeping it a repeated sint32 preserves that.
+  repeated sint32 placement_index = 10;
   uint32 placement_subindex = 11;
+  // Remaining LocationSelection fields the patcher reads directly.
+  bool is_reward_point = 14;
+  bool is_shop = 15;
+  sint32 price = 16;         // Can be a list of prices; store first/common value
+  bool can_have_item = 17;
+  bool can_place_item = 18;
+  bool shop_locked = 19;
+  uint32 order = 20;
+  string name = 21;
+  string move_name = 22;
 }
 
 message ItemReference {

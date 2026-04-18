@@ -108,7 +108,8 @@ async function setup_pyodide() {
             if (location.hostname == "dev.dk64randomizer.com" || location.hostname == "dk64randomizer.com") {
                 await pyodide.loadPackage("micropip");
                 const micropip = pyodide.pyimport("micropip");
-                await micropip.install(url + "/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl");
+                // Force reinstall with timestamp to bypass cache
+                await micropip.install(url + "/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl?t=" + Date.now(), {keep_going: true});
             }
         }
     } catch (error) {
