@@ -1,5 +1,6 @@
 {
     "important_syms": [
-        "loop"
+        "loop",
+        "word_to_guess"
     ]
 }

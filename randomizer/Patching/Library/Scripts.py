@@ -798,6 +798,46 @@ def getFactoryBlastControllerScript(item_id) -> list[int]:
         ]),
     ])
 
+def getKRoolShipScript(item_id: int) -> list[int]:
+    """Get the instance script associated with the crashed ship."""
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(69, [1, 0, 255]),
+            FunctionData(70, [0, 0, 0]),
+            FunctionData(71, [0, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(6, [7, short_to_ushort(-9), 0]),
+        ], [
+            FunctionData(69, [1, 255, 255]),
+            FunctionData(70, [1, 0, 0]),
+            FunctionData(71, [1, 0, 0]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+        ], [
+            FunctionData(38, [2, 0, 0]),
+            FunctionData(1, [2, 0, 0]),
+        ]),
+    ])
+
+def getKRoolShipControllerScript(item_id: int, radius: int) -> list[int]:
+    """Get the instance script associated with the controller object for a custom ship."""
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(6, [7, short_to_ushort(-9), 0]),
+            FunctionData(19, [radius, 0, 0]),
+        ], [
+            FunctionData(7, [125, short_to_ushort(-10), 0]),
+            FunctionData(1, [1, 0, 0]),
+        ])
+    ])
+
 def getHelmLobbyGrabScript(item_id: int) -> list[int]:
     """Get the instance script for the Helm Lobby activator if it is a lever."""
     microhints = True
@@ -1394,6 +1434,10 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
             subscript = getFiveTwoDoorShipGateScript(item_id, extra_data[item_id]["flag_id"], extra_data[item_id]["timer"], extra_data[item_id]["timer_2"], extra_data[item_id]["tied_pad"])
         elif stype == ScriptTypes.FactoryBlastController:
             subscript = getFactoryBlastControllerScript(item_id)
+        elif stype == ScriptTypes.KRoolShip:
+            subscript = getKRoolShipScript(item_id)
+        elif stype == ScriptTypes.KRoolShipController:
+            subscript = getKRoolShipControllerScript(item_id, extra_data[item_id]["radius"])
         elif stype == ScriptTypes.HelmInstrumentPad:
             subscript = getHelmPadScript(item_id, extra_data[item_id]["temp_flags"], extra_data[item_id]["kong_id"], extra_data[item_id]["glass_panel"], extra_data[item_id]["hint_cs"], extra_data[item_id]["microhint"], extra_data[item_id]["req_minigames"], extra_data[item_id]["helm_order"])
         if subscript is not None:

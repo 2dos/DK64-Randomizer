@@ -52,6 +52,7 @@ from randomizer.Lists.Songs import song_data
 from randomizer.Lists.Switches import SwitchData
 from randomizer.Patching.Library.Generic import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem, getCompletableBonuses, IsDDMSSelected, MEDAL_PROGRESSIVE_RATIOS
 from randomizer.Patching.CoinPlacer import gen_mayhem_coins
+from randomizer.Patching.Library.Wordle import wordle_words
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.ProtoSerializer import serialize_settings_to_base64, deserialize_settings_from_base64, proto_to_settings
 from randomizer.ShuffleBosses import (
@@ -867,6 +868,7 @@ class Settings:
         self.tns_selection_behavior = TroffSetting.normal_random
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
+        self.ship_location_rando = False
         # self.dk_portal_location_rando = False  # Deprecated
         self.dk_portal_location_rando_v2 = DKPortalRando.off
         self.level_portal_destinations = [
@@ -1067,6 +1069,7 @@ class Settings:
         # self.enable_progressive_hints = False  # Deprecated
         # self.progressive_hint_text = 0  # Deprecated
         self.progressive_hint_count = 0
+        self.progressive_hint_algorithm = ProgressiveHintAlgorithm.medium
         # Misc
         self.archipelago = False
 
@@ -1128,16 +1131,6 @@ class Settings:
             self.training_barrels = TrainingBarrels.normal
         else:
             self.training_barrels = TrainingBarrels.shuffled
-        # If Climbing is a guaranteed starting move, treat it like the others as well.
-        if Items.Climbing in guaranteed_starting_moves:
-            self.climbing_status = ClimbingStatus.normal
-        else:
-            self.climbing_status = ClimbingStatus.shuffled
-        # If Cannons is a guaranteed starting move, treat it like the others as well.
-        if Items.Cannons in guaranteed_starting_moves:
-            self.cannon_status = CannonStatus.normal
-        else:
-            self.cannon_status = CannonStatus.shuffled
         # If you start with two copies of Progressive Instrument Upgrade, you start with 3 melons of health
         if guaranteed_starting_moves.count(Items.ProgressiveInstrumentUpgrade) == 2:
             self.start_with_3rd_melon = True
@@ -1262,6 +1255,10 @@ class Settings:
         self.lanky_freeing_kong = self.switchsanity_data[Switches.AztecLlamaPuzzle].kong
         self.tiny_freeing_kong = self.switchsanity_data[Switches.AztecOKONGPuzzle].kong
         self.chunky_freeing_kong = self.switchsanity_data[Switches.FactoryFreeKong].kong
+
+        self.wordle_word = None
+        if self.arcade_custom_minigame == "wordle" or self.jetpac_custom_minigame == "wordle":
+            self.wordle_word = self.random.choice(wordle_words)
 
         # Determine item requirements if random
         req_data = {
@@ -1711,6 +1708,14 @@ class Settings:
                         selector_types = [sk for sk in [Types.Cranky, Types.Snide, Types.Candy, Types.Funky] if shopkeeper_type_mapping[sk] not in guaranteed_starting_moves]
                     elif selector_type == Types.TrainingBarrel:
                         selector_types = [Types.TrainingBarrel, Types.PreGivenMove]
+                        if Items.Climbing in guaranteed_starting_moves:
+                            self.climbing_status = ClimbingStatus.normal
+                        else:
+                            self.climbing_status = ClimbingStatus.shuffled
+                        if Items.Cannons in guaranteed_starting_moves:
+                            self.cannon_status = CannonStatus.normal
+                        else:
+                            self.cannon_status = CannonStatus.shuffled
                         if self.climbing_status != ClimbingStatus.normal:
                             selector_types.append(Types.Climbing)
                         if self.cannon_status != CannonStatus.normal:
@@ -1730,6 +1735,10 @@ class Settings:
                                 item_types = []
                             else:
                                 item_types = [Types.TrainingBarrel, Types.PreGivenMove]
+                                if Items.Climbing in guaranteed_starting_moves:
+                                    self.climbing_status = ClimbingStatus.normal
+                                else:
+                                    self.climbing_status = ClimbingStatus.shuffled
                                 if self.climbing_status != ClimbingStatus.normal:
                                     item_types.append(Types.Climbing)
                                 if self.cannon_status != CannonStatus.normal:
@@ -1769,7 +1778,7 @@ class Settings:
 
             # If training moves are not in any shuffled pool, add them to guaranteed_starting_moves
             if Types.TrainingBarrel not in self.shuffled_location_types:
-                training_barrel_items = [Items.Vines, Items.Swim, Items.Oranges, Items.Barrels]
+                training_barrel_items = [Items.Vines, Items.Swim, Items.Oranges, Items.Barrels, Items.Climbing]
                 for tb_item in training_barrel_items:
                     if tb_item not in guaranteed_starting_moves:
                         guaranteed_starting_moves.append(tb_item)
@@ -1982,12 +1991,6 @@ class Settings:
 
         # Win Condition
         wincon_items = {
-            WinConditionComplex.beat_krool: HelmDoorInfo(
-                1,
-                HelmDoorRandomInfo(1, 1, 0.06),
-                HelmDoorRandomInfo(1, 1, 0.06),
-                HelmDoorRandomInfo(1, 1, 0.03),
-            ),
             WinConditionComplex.dk_rap_items: HelmDoorInfo(
                 1,
                 HelmDoorRandomInfo(1, 1, 0.04),

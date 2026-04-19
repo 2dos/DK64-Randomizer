@@ -548,6 +548,8 @@ class Spoiler:
         humanspoiler["End Game"]["K. Rool"]["K Rool Phases"] = krool_order
         humanspoiler["End Game"]["K. Rool"]["Chunky Phase Slam Requirement"] = self.settings.chunky_phase_slam_req_internal.name
         humanspoiler["End Game"]["K. Rool"]["DK Phase requires Baboon Blast"] = self.settings.cannons_require_blast
+        if self.settings.ship_location_rando:
+            humanspoiler["End Game"]["K. Rool"]["K Rool Location"] = self.ship_name
 
         helm_default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
         helm_new_order = []

@@ -783,6 +783,26 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     if settings.jetpac_custom_minigame is not None:
         loadBin(ROM_COPY, 0x80024390, Overlay.Jetpac, f"base-hack/minigame/{settings.jetpac_custom_minigame}.bin", offset_dict)
         writeFunction(ROM_COPY, 0x8002433C, Overlay.Jetpac, f"{settings.jetpac_custom_minigame}.loop", offset_dict, "minigames")
+    minigames = {
+        "arcade": {
+            "setting": settings.arcade_custom_minigame,
+            "overlay": Overlay.Arcade,
+        },
+        "jetpac": {
+            "setting": settings.jetpac_custom_minigame,
+            "overlay": Overlay.Jetpac
+        }
+    }
+    for mg_name, mg_data in minigames.items():
+        setting = mg_data["setting"]
+        if setting == "wordle":
+            if settings.wordle_word is not None:
+                WORD_STRING_LOC = getSym("wordle.word_to_guess", "minigames")
+                addr = getROMAddress(WORD_STRING_LOC, mg_data["overlay"], offset_dict)
+                string_to_write = f"{settings.wordle_word.upper()}\0"
+                ROM_COPY.seek(addr)
+                ROM_COPY.writeBytes(bytes(string_to_write, "ascii"))
+            
     writeHook(ROM_COPY, 0x8073A544, Overlay.Static, "LogPercussion", offset_dict)
     writeHook(ROM_COPY, 0x8073543C, Overlay.Static, "InstIndexStore", offset_dict)
 

@@ -123,15 +123,14 @@
         </div>
         <div class="d-flex">
             <nav id="nav-tab-list" class="collapse collapse-horizontal show"></nav>
-            <nav id="nav-tab-list-mobile" class="collapse collapse-vertical" style="min-width: 100%"></nav>
             <div class="flex-grow-1">
+                <img src="./static/img/logo.webp"
+                    alt="DK64 Randomizer"
+                    class="center_image"
+                    style="cursor: pointer; margin-top: 70px"
+                    onClick="render_page('./index')"/>
                 <div style="width: 90%; min-width: 400px"
-                class="center">
-                    <img src="./static/img/logo.webp"
-                        alt="DK64 Randomizer"
-                        class="center_image"
-                        style="cursor: pointer; margin-top: 70px"
-                        onClick="render_page('./index')"/>
+                    class="center">
                     <div class="card flex-grow-1" style="border-top-left-radius: 0px">
                         <form id="form" action="/" method="POST">
                             <!--Create navbar-->
@@ -515,7 +514,7 @@
             </div>
         </div>
     </body>
-    <footer id="footer" style="z-index:1000">
+    <footer id="footer" style="z-index: 1000">
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
             <!-- Left Section: Statistics -->
             <div id="footer-left" style="text-align: center;">

@@ -1,5 +1,6 @@
 // minigame: wordle
 #include "minigame_defs.h"
+#include "wordle.h"
 
 typedef enum gameStates {
     GAMESTATE_INIT,
@@ -15,7 +16,7 @@ typedef enum guessStates {
 } guessStates;
 
 ROM_DATA static gameStates game_state = GAMESTATE_INIT;
-ROM_DATA static char word_to_guess[] = "BEANS";
+ROM_DATA char word_to_guess[6] = "BEANS";
 ROM_DATA static char selected_col = 0;
 ROM_DATA static char selected_row = 0;
 ROM_DATA static char selected_letter_index = 0;

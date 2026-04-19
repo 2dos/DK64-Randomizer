@@ -1,10 +1,10 @@
-#nav-tab-list, #nav-tab-list-mobile {
+#nav-tab-list {
     background:rgba(0, 0, 0, 0.9);
     border-right:1px solid rgba(255, 255, 255, 0.15);
     /* position:fixed; */
     top:0;
     bottom:0;
-    height:auto;
+    height: auto;
     left:0;
     z-index:1000;
 }
@@ -29,8 +29,6 @@
     font-size: 14px;
     text-decoration:none;
     -webkit-transform:translateZ(0) scale(1,1);
-    -webkit-transition:all .1s linear;
-    transition:all .1s linear;
 }
 
 #nav-tab-list .nav-icon, #nav-tab-list-mobile .nav-icon {

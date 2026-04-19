@@ -75,6 +75,7 @@ from randomizer.ShuffleCoins import ShuffleCoins, shuffleRaceCoins
 from randomizer.ShuffleCrates import ShuffleMelonCrates
 from randomizer.ShuffleCrowns import ShuffleCrowns
 from randomizer.ShuffleDoors import SetProgressiveHintDoorLogic, ShuffleDoors, ShuffleVanillaDoors, UpdateDoorLevels
+from randomizer.ShuffleShip import ShuffleShip
 from randomizer.ShuffleFairies import ShuffleFairyLocations
 from randomizer.ShuffleItems import ShuffleItems
 from randomizer.ShuffleKasplats import (
@@ -3153,13 +3154,6 @@ def FillKongs(spoiler: Spoiler, placedTypes: List[Types], placedItems: List[Item
         # Plando causes problems here. Let's just not.
         if any([item for item in placedItems if ItemList[item].type == Types.Kong]):
             raise Ex.PlandoIncompatibleException("Cannot plando Kong placement if Kongs are not in the pool.")
-        if spoiler.settings.enable_plandomizer and (
-            spoiler.settings.plandomizer_dict["plando_kong_rescue_diddy"] != -1
-            or spoiler.settings.plandomizer_dict["plando_kong_rescue_lanky"] != -1
-            or spoiler.settings.plandomizer_dict["plando_kong_rescue_tiny"] != -1
-            or spoiler.settings.plandomizer_dict["plando_kong_rescue_chunky"] != -1
-        ):
-            raise Ex.PlandoIncompatibleException("Cannot plando Kong cage openers if Kongs are not in the pool.")
         # Determine what locations the kong items need to be placed in
         if any(spoiler.settings.kong_locations):
             emptyKongLocations = [location for location in [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong] if location not in spoiler.settings.kong_locations]
@@ -4092,6 +4086,7 @@ class ItemReference:
 
 def ShuffleMisc(spoiler: Spoiler) -> None:
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
+    ShuffleShip(spoiler)
     resetCustomLocations(spoiler)
     ResetPorts()
     spoiler.shuffled_barrel_data = deepcopy(BarrelMetaData)

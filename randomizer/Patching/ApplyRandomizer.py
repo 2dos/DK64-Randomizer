@@ -80,6 +80,7 @@ from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
+from randomizer.Patching.ShipPlacer import PlaceShip
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from randomizer.Patching.UpdateHints import (
     PushHints,
@@ -1198,7 +1199,7 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
         ROM_COPY.write(getProgHintBarrierItem(spoiler.settings.progressive_hint_item))
         for x in range(10):
             ROM_COPY.seek(sav + 0x98 + (x * 2))
-            ROM_COPY.writeMultipleBytes(getHintRequirementBatch(x, count), 2)
+            ROM_COPY.writeMultipleBytes(getHintRequirementBatch(x, count, spoiler.settings.progressive_hint_algorithm), 2)
     ROM_COPY.seek(sav + 0x115)
     ROM_COPY.writeMultipleBytes(count, 1)
 
@@ -1529,6 +1530,7 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
     apply_kongrando_cosmetic(ROM_COPY)
     randomize_setup(spoiler, ROM_COPY)
     randomize_puzzles(spoiler, ROM_COPY)
+    PlaceShip(spoiler, ROM_COPY)
     randomize_cbs(spoiler, ROM_COPY)
     randomize_coins(spoiler, ROM_COPY)
     place_mayhem_coins(spoiler, ROM_COPY)

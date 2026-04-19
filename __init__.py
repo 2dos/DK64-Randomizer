@@ -1193,17 +1193,14 @@ if baseclasses_loaded:
 
         def get_archipelago_item_type_by_classification(self, item_classification: ItemClassification) -> DK64RItems:
             """Get the appropriate DK64R Archipelago item type based on the ItemClassification."""
-            match item_classification:
-                case ItemClassification.progression | ItemClassification.progression_skip_balancing:
-                    return DK64RItems.ArchipelagoItem
-                case ItemClassification.useful:
-                    return DK64RItems.SpecialArchipelagoItem
-                case ItemClassification.trap:
-                    return DK64RItems.TrapArchipelagoItem
-                case ItemClassification.filler:
-                    return DK64RItems.ArchipelagoItem.FoolsArchipelagoItem
-                case _:
-                    return DK64RItems.ArchipelagoItem
+            if item_classification & ItemClassification.progression:
+                return DK64RItems.ArchipelagoItem
+            elif item_classification & ItemClassification.useful:
+                return DK64RItems.SpecialArchipelagoItem
+            elif item_classification & ItemClassification.trap:
+                return DK64RItems.TrapArchipelagoItem
+            else:
+                return DK64RItems.ArchipelagoItem.FoolsArchipelagoItem
 
         def generate_output(self, output_directory: str):
             """Generate the output."""

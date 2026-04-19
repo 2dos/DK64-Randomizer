@@ -753,11 +753,37 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		return getItemCount_new(REQITEM_KONG, 0, param2) || Rando.disable_wrinkly_kong_requirement;
 	} else if (index == -8) {
 		return MovesBase[param2].instrument_bitfield & 1;
+	} else if (index == -9) {
+		if (Rando.win_condition_spawns_ship) {
+			// Win condition-based access
+			if (!canAccessWinCondition()) {
+				return 0;
+			}
+		} else {
+			// Key-based access
+			if (getItemCount_new(REQITEM_KEY, -1, 0) < 8) {
+				return 0;
+			}
+		}
+		return 1;
+	} else if (index == -10) {
+		int latest_map = Rando.k_rool_order[0];
+		for (int i = 1; i < 5; i++) {
+			if (checkFlag(FLAG_KROOL_ENTERED + i, FLAGTYPE_PERMANENT)) {
+				if (Rando.k_rool_order[i] != 0xFF) {
+					latest_map = Rando.k_rool_order[i];
+				}
+			}
+		}
+		initiateTransition(latest_map, 0);
 	} else if (index == -16) {
 		PauseText = param2;
 	} else if (index == -17) {
 		return isTimeOfDay(param2);
 	} else if (index == -19) {
+		if ((CurrentMap == MAP_FUNGILOBBY) && (!Rando.quality_of_life.no_wrinkly_puzzles)) {
+			return 0;
+		}
 		int world = getWorld(CurrentMap, 0);
 		return checkFlag(FLAG_WRINKLYVIEWED + (5 * world) + param2, FLAGTYPE_PERMANENT);
 	} else if (index == -20) {
