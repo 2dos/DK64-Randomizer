@@ -432,7 +432,7 @@
             aria-selected="{{ 'true' if first else 'false' }}"
             {% if hidden %}hidden{% endif %}
         >
-            <i class="fa {{ tab_icon }} fa-xl me-2"></i> <span>{{ tab_name }}</span>
+            <i class="fa {{ tab_icon }} fa-xl me-2"></i> <span>{{ tab_name }}</span> <span class="badge text-bg-warning ms-auto navbadge" id="nav-{{ internal_name }}-badge" hidden>4</span>
         </a>
     </li>
 {% endmacro %}

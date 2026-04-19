@@ -10,4 +10,48 @@
     {{ gen_tab("music",         "fa-music",                 "Music",            false,  false) }}
     {{ gen_tab("plando",        "fa-scroll",                "Plandomizer",      false,  true) }}
     {{ gen_tab("settings",      "fa-file-lines",            "Settings",         false,  true) }}
+    <div class="px-3">
+        <div style="font-size: 0.9rem; color: #888">Search:</div>
+        <input type="search" id="setting-search" />
+    </div>
 </ul>
+<script>
+    document.getElementById("setting-search").addEventListener("input", (e) => {
+        const search_value = document.getElementById("setting-search").value.toLowerCase();
+        const containers = document.querySelectorAll("label.form-check-label, p.select-title");
+        let tabs = {};
+        containers.forEach(c => {
+            if (!c.closest(".modal.fade")) {
+                if (search_value.trim().length > 0) {
+                    const value = c.innerHTML.trim().toLowerCase();
+                    if (value.includes(search_value)) {
+                        const tab = c.closest("div[role=tabpanel]");
+                        const tabname = `${tab.getAttribute("id")}-badge`;
+                        if (!Object.keys(tabs).includes(tabname)) {
+                            tabs[tabname] = 0;
+                        }
+                        tabs[tabname]++;
+                        c.classList.add("found-item");
+                        console.log(value)
+                        console.log(c)
+                        return;
+                    }
+                }
+                c.classList.remove("found-item");
+            }
+        });
+        const badges = document.getElementsByClassName("navbadge");
+        for (let b = 0; b < badges.length; b++) {
+            const badge_container = badges[b];
+            const badge_name = badge_container.getAttribute("id");
+            if (Object.keys(tabs).includes(badge_name)) {
+                if (tabs[badge_name] > 0) {
+                    badge_container.removeAttribute("hidden");
+                    badge_container.innerHTML = tabs[badge_name];
+                    continue;
+                }
+            }
+            badge_container.setAttribute("hidden", "hidden");
+        }
+    });
+</script>
