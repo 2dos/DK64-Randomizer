@@ -987,6 +987,7 @@ export enum SettingsStringEnum {
     switchsanity_switch_caves_lobby_lava = 305,
     switchsanity_switch_aztec_gong_tower = 306,
     switchsanity_switch_aztec_lobby_gong = 307,
+    ship_location_rando = 308,
 }
 
 export enum SettingsStringDataType {
@@ -1390,6 +1391,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.alt_minecart_mayhem: SettingsStringDataType.bool,
     SettingsStringEnum.less_fragile_boulders: SettingsStringDataType.bool,
     SettingsStringEnum.no_consumable_upgrades: SettingsStringDataType.bool,
+    SettingsStringEnum.ship_location_rando: SettingsStringDataType.bool,
     SettingsStringEnum.prog_slam_level_1: SlamRequirement,
     SettingsStringEnum.prog_slam_level_2: SlamRequirement,
     SettingsStringEnum.prog_slam_level_3: SlamRequirement,

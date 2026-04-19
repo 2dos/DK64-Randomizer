@@ -3065,6 +3065,7 @@
         "flappy_bird.loop": 2147633760,
         "hexagon.loop": 2147637688,
         "minesweeper.loop": 2147637488,
-        "wordle.loop": 2147635320
+        "wordle.loop": 2147635320,
+        "wordle.word_to_guess": 2147635640
     }
 }

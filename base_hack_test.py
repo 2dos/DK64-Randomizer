@@ -11,7 +11,7 @@ from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Items import Items
-from randomizer.Patching.MirrorMode import truncateFiles, ApplyMirrorModeNew
+from randomizer.Patching.MirrorMode import truncateFiles
 
 print("Building Test Instance")
 APPLY_VARIABLES = True
@@ -23,9 +23,10 @@ ROM_HEADER = platform.system() == "Linux"
 if not APPLY_VARIABLES:
     sys.exit()
 
-settings_string = "fmEAABCgOFgcMA4aAw4Bh4DEAGIgMSAomBRQCioFFgOL5MYKI4KRsKjIhGgWO0L0AA1+AAzBAAJhgAAxQAAf6BpkBQEDAQHAwQCAkFBQMCwcGBEATqljcADeADgADiADkADmADoAFyACZgITh6BChAYGGEGhIJrIBWgWiWkWmWomqms2u2xbNbUNttxt1O6t5uEuAt8O+vCuIOcuMOROVuYOgOkuqOtOxu2GiJKakyi4wDrVEqAQUQKMFIClBTAQRcE9TZPlm2YhGyyH6fhkJZWwFuAkZjFNIEOh8QpqSXosQti9U6FRCwCEzCiASJHaqqsoGMsOTJO8RQHK8gVjg88ljAyAABVM8Q3QQT4SyqgxWC6LY9meLIMEcMAzmSWBdgcKYqFoY4rA0FYhiKNYXE8JIQn8SxBkiXReEQZCALFgUEYmEQSEotFAgDgeBQYDQkE4dEINBwVF41CwpCIJGAuBC+BhoDBWMVYX2ABl4uF1hAYqGQzYgAdgB+gIpwJDEZDpWx6dDxI0VniavN7w6R4wCHdcQZaxCC9fP4Bs8fDCaOd3Ur2VmZxTZ1bF8KcKAeEQyGQlS2Nc+ET+ALIAgoG1CiPBEMhTHQlS2Nc+EZTpW18Z1vnfPIGUimonse4PXLfIrBG8w8IMUkow9JZhpx6Gl8CQIg1txBZpyCKa7Lbr9T0AHyAPUAfQA9gB9gA"
+settings_string = "PyEAABCgOFgcMA4aAw4Bh4DEAGIgMSAomBRQCioFFgOPgMgAZCBSli+TGCiOCkbCoyIRoFjtC9AANfgAOwQACYYAAMUAAH+gaZAUBAwEBwMEAgJBQUDAsHBgRAE6pY3AA3gA4AA4gA5AA5gA6ABcgAmYCE4egQoQGBhhBoSCayAVoFolpFplqJqprNrtsWzW1DbczLcbdUwkxjurebhLgLfDvrwriDnLjDkTlbmEyMqkrksjoDpLqjrTsbtktkukvgkpqTKLjAOtUSoBCRCiBRgpAUoKYJGSCLgnqbJ8s2zEI5MMsh+n8ehkJZWxluESSRiMU0gQ6HxCmpJeixC2L1ToVELAITMKIBIkdqqqygYyw5Mk7xFAcryBWODzyWMDIAAFUzxDdBCEAAtCgAWhgAJQ4AEogAB1aAA6JAAVFAAGiwAHRgACo0AA1cABZPhLfgqjQgxWC2PZniyDBHDAM5kl2BwpioWhjg0FaTiGIo1hcJIQn8SxBkiXReEQIBIKBYNBwQCISCgVCwYDIaDgdDwgEIiEYkEomE4oFIsFouF4wGq+BwYKxiNC+rJOwAMuF0vMIDFQyGbEADsAP0BFOBYYjIdK2PlNOh4kaKzxNXm98oDAjFmm9TxMfLzM3Ozw6R4wCHdcQZaxCC9fP4Bs8fDCaOd3Ur2VmZxTZ1bF8KcKAeEQyGQlS2Nc+ET+ALIAgoG1CiPBEMhTHQlS2Nc+EZTpW18Z1vnfPIJvsximnz1oe42CINbdgQWacgimquy26/BHJlpLVW8xAIMUkqGl5pxZhQxI98AD0AHyAPUAfQA9gB9gA"
 setting_data = decrypt_settings_string_enum(settings_string)
 settings = Settings(setting_data)
+settings.arcade_custom_minigame = "match_three"
 spoiler = Spoiler(settings)
 settings.resolve_settings()
 # Couple settings needed for patching
@@ -194,7 +195,7 @@ with open("./base-hack/include/variable_space_structs.h", "r") as varspace:
                 if lz_type == 9 and lz_map == 0xB0 and lz_exit == 0:
                     writeToROMNoOffset(isles_list + (0x38 * lz_index) + 0x12, set_variables[x][0], 2, "Isles -> TGrounds Zone Map")
                     writeToROMNoOffset(isles_list + (0x38 * lz_index) + 0x14, set_variables[x][1], 2, "Isles -> TGrounds Zone Exit")
-        elif x in ("quality_of_life", "moves_pregiven", "disabled_music", "hard_mode", "rom_flags"):
+        elif x in ("quality_of_life", "disabled_music", "hard_mode", "rom_flags"):
             if x == "quality_of_life":
                 order = [
                     "reduce_lag",
@@ -223,51 +224,6 @@ with open("./base-hack/include/variable_space_structs.h", "r") as varspace:
                     "cannon_game_speed",
                 ]
                 bitfield_offset = 0xB0
-            elif x == "moves_pregiven":
-                order = [
-                    "blast",
-                    "strong_kong",
-                    "grab",
-                    "charge",
-                    "rocketbarrel",
-                    "spring",
-                    "ostand",
-                    "balloon",
-                    "osprint",
-                    "mini",
-                    "twirl",
-                    "monkeyport",
-                    "hunky",
-                    "punch",
-                    "gone",
-                    "slam_upgrade_0",
-                    "slam_upgrade_1",
-                    "slam_upgrade_2",
-                    "coconut",
-                    "peanut",
-                    "grape",
-                    "feather",
-                    "pineapple",
-                    "bongos",
-                    "guitar",
-                    "trombone",
-                    "sax",
-                    "triangle",
-                    "belt_upgrade_0",
-                    "belt_upgrade_1",
-                    "homing",
-                    "sniper",
-                    "ins_upgrade_0",
-                    "ins_upgrade_1",
-                    "ins_upgrade_2",
-                    "dive",
-                    "oranges",
-                    "barrels",
-                    "vines",
-                    "camera",
-                    "shockwave",
-                ]
-                bitfield_offset = 0xD5
             elif x == "disabled_music":
                 order = [
                     "wrinkly",

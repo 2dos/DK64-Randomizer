@@ -17,8 +17,9 @@ def ShuffleShip(spoiler):
         return
     spoiler.ship_location_index = index
     # Remove the existing link between IslesMain and KRool
-    spoiler.RegionList[Regions.IslesMain].exits = [x for x in spoiler.RegionList[Regions.IslesMain].exits if x.dest != Regions.KRool]
+    for reg in spoiler.RegionList:
+        spoiler.RegionList[reg].exits = [x for x in spoiler.RegionList[reg].exits if x.dest != Regions.KRool]
     # Add the new link
     spoiler.RegionList[loc.region].exits.append(
-        TransitionFront(Regions.KRool, lambda l: (l.CanAccessKRool() or l.assumeKRoolAccess) and loc.logic(l))
+        TransitionFront(Regions.KRool, lambda l: (l.CanAccessKRool() and loc.logic(l)) or l.assumeKRoolAccess)
     )

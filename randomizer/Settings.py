@@ -52,6 +52,7 @@ from randomizer.Lists.Songs import song_data
 from randomizer.Lists.Switches import SwitchData
 from randomizer.Patching.Library.Generic import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem, getCompletableBonuses, IsDDMSSelected, MEDAL_PROGRESSIVE_RATIOS
 from randomizer.Patching.CoinPlacer import gen_mayhem_coins
+from randomizer.Patching.Library.Wordle import wordle_words
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.ShuffleBosses import (
@@ -1258,6 +1259,10 @@ class Settings:
         self.lanky_freeing_kong = self.switchsanity_data[Switches.AztecLlamaPuzzle].kong
         self.tiny_freeing_kong = self.switchsanity_data[Switches.AztecOKONGPuzzle].kong
         self.chunky_freeing_kong = self.switchsanity_data[Switches.FactoryFreeKong].kong
+
+        self.wordle_word = None
+        if self.arcade_custom_minigame == "wordle" or self.jetpac_custom_minigame == "wordle":
+            self.wordle_word = self.random.choice(wordle_words)
 
         # Determine item requirements if random
         req_data = {
