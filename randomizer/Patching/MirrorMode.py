@@ -268,22 +268,34 @@ def truncateFiles(ROM_COPY: ROM):
             continue
         ROM_COPY.seek(POINTER_OFFSET + (32 * 4) + (table_id * 4))
         entry_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        if entry_count <= 0:
+            continue
         files = []
         ROM_COPY.seek(POINTER_OFFSET + (table_id * 4))
         table_start = POINTER_OFFSET + int.from_bytes(ROM_COPY.readBytes(4), "big")
+        # Read pointers[0..entry_count] as one block of (entry_count+1)*4 bytes.
+        # The browser-side ROM.readBytes goes through a JsProxy and the
+        # past-EOF sanity check scans every returned element, so doing one big
+        # read is orders of magnitude faster than 2 * entry_count tiny reads.
+        ROM_COPY.seek(table_start)
+        raw_ptrs = ROM_COPY.readBytes((entry_count + 1) * 4)
+        pointers = [
+            POINTER_OFFSET + (int.from_bytes(raw_ptrs[i * 4:(i + 1) * 4], "big") & 0x7FFFFFFF)
+            for i in range(entry_count + 1)
+        ]
         please_shift = False
         for entry in range(entry_count):
-            ROM_COPY.seek(table_start + (entry * 4))
-            file_start = POINTER_OFFSET + (int.from_bytes(ROM_COPY.readBytes(4), "big") & 0x7FFFFFFF)
-            file_end = POINTER_OFFSET + (int.from_bytes(ROM_COPY.readBytes(4), "big") & 0x7FFFFFFF)
+            file_start = pointers[entry]
+            file_end = pointers[entry + 1]
             file_size = file_end - file_start
             if file_size <= 0:
                 files.append(b"")
                 continue
             ROM_COPY.seek(file_start)
             data = ROM_COPY.readBytes(file_size)
-            ROM_COPY.seek(file_start)
-            indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            # Use the bytes we already have for the gzip indicator instead of
+            # a second seek + read.
+            indicator = int.from_bytes(data[:2], "big") if file_size >= 2 else 0
             if indicator == 0x1F8B:
                 truncated_data = gzip.compress(zlib.decompress(data, (15 + 32)), compresslevel=9)
                 if len(data) != len(truncated_data):
@@ -298,8 +310,7 @@ def truncateFiles(ROM_COPY: ROM):
                 truncated_data = data
             files.append(truncated_data)
         if please_shift:
-            ROM_COPY.seek(table_start)
-            head = POINTER_OFFSET + (int.from_bytes(ROM_COPY.readBytes(4), "big") & 0x7FFFFFFF)
+            head = pointers[0]
             total_offset = 0
             for entry in range(entry_count):
                 ROM_COPY.seek(table_start + (entry * 4) + 4)

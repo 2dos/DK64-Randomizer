@@ -10,9 +10,7 @@ import zipfile
 import codecs
 from io import BytesIO
 import pkgutil
-import shutil
 import sys
-import tempfile
 from typing import Any, TypedDict
 
 baseclasses_loaded = False
@@ -25,100 +23,6 @@ try:
 except ImportError:
     pass
 if baseclasses_loaded:
-
-    def display_error_box(title: str, text: str) -> bool | None:
-        """Display an error message box."""
-        from tkinter import Tk, messagebox
-
-        root = Tk()
-        root.withdraw()
-        ret = messagebox.showerror(title, text)
-        root.update()
-
-    def copy_dependencies(zip_path, file):
-        """Copy a ZIP file from the package to a temporary directory, extracts its contents.
-
-        Ensures the temporary directory exists.
-        Args:
-            zip_path (str): The relative path to the ZIP file within the package.
-        Behavior:
-            - Creates a temporary directory if it does not exist.
-            - Reads the ZIP file from the package using `pkgutil.get_data`.
-            - Writes the ZIP file to the temporary directory if it does not already exist.
-            - Extracts the contents of the ZIP file into the temporary directory.
-        Prints:
-            - A message if the ZIP file could not be read.
-            - A message when the ZIP file is successfully copied.
-            - A message when the ZIP file is successfully extracted.
-        """
-        # Create a temporary directory
-        temp_dir = tempfile.mkdtemp()
-
-        zip_dest = os.path.join(temp_dir, file)
-        try:
-            # Load the ZIP file from the package
-            zip_data = pkgutil.get_data(__name__, zip_path)
-            # Check if the zip already exists in the destination
-            if not os.path.exists(zip_dest):
-                if zip_data is None:
-                    print(f"Failed to read {zip_path}")
-                else:
-                    # Write the ZIP file to the destination
-                    with open(zip_dest, "wb") as f:
-                        f.write(zip_data)
-                    print(f"Copied {zip_path} to {zip_dest}")
-
-                    # Extract the ZIP file
-                    with zipfile.ZipFile(zip_dest, "r") as zip_ref:
-                        zip_ref.extractall(temp_dir)
-                    print(f"Extracted {zip_dest} into {temp_dir}")
-
-        except PermissionError:
-            display_error_box("Permission Error", "Unable to install Dependencies to AP, please try to install AP as an admin.")
-            raise PermissionError("Permission Error: Unable to install Dependencies to AP, please try to install AP as an admin.")
-
-        # Add the temporary directory to sys.path
-        if temp_dir not in sys.path:
-            sys.path.insert(0, temp_dir)
-
-    platform_type = sys.platform
-    python_version = f"{sys.version_info.major}{sys.version_info.minor}"
-    baseclasses_path = os.path.dirname(os.path.dirname(BaseClasses.__file__))
-    if not baseclasses_path.endswith("lib"):
-        baseclasses_path = os.path.join(baseclasses_path, "lib")
-    # Remove ANY PIL folders from the baseclasses_path
-    # Or Pyxdelta or pillow folders
-    try:
-        for folder in os.listdir(baseclasses_path):
-            if folder.startswith("PIL") or folder.startswith("pyxdelta") or folder.startswith("pillow"):
-                folder_path = os.path.join(baseclasses_path, folder)
-                if os.path.isdir(folder_path):
-                    shutil.rmtree(folder_path)
-                elif os.path.isfile(folder_path):
-                    os.remove(folder_path)
-            # Also if its windows.zip or linux.zip, remove it
-            if folder.startswith("windows.zip") or folder.startswith("linux.zip"):
-                os.remove(os.path.join(baseclasses_path, folder))
-    except Exception as e:
-        pass
-
-    match platform_type:
-        case "win32":
-            zip_path = "vendor/windows.zip"
-            copy_dependencies(zip_path, "windows.zip")
-        case "linux":
-            # Try version-specific zip first, fall back to generic
-            version_zip = f"vendor/linux_{python_version}.zip"
-            generic_zip = "vendor/linux.zip"
-            try:
-                copy_dependencies(version_zip, f"linux_{python_version}.zip")
-            except (FileNotFoundError, KeyError):
-                try:
-                    copy_dependencies(generic_zip, "linux.zip")
-                except (FileNotFoundError, KeyError):
-                    raise Exception(f"Could not find vendor dependencies for Linux Python {python_version}")
-        case _:
-            raise Exception(f"Unsupported platform: {platform_type}")
 
     # Add paths for APWorld context - use __file__ to get the correct base path
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -151,12 +55,11 @@ if baseclasses_loaded:
     from randomizer.Spoiler import Spoiler
     from randomizer.Settings import Settings
     from randomizer.ShuffleWarps import LinkWarps
-    from randomizer.Patching.ApplyRandomizer import patching_response
     from version import version
-    from randomizer.Patching.EnemyRando import randomize_enemies_0
     from randomizer.Fill import ShuffleItems, Generate_Spoiler, IdentifyMajorItems
     from randomizer.CompileHints import compileMicrohints
     from archipelago.Hints import CompileArchipelagoHints
+    from randomizer.ProtoSerializer import fill_result_to_proto
     from randomizer.Enums.Types import Types, BarrierItems
     from randomizer.Enums.Enemies import Enemies
     from randomizer.Enums.Kongs import Kongs
@@ -189,9 +92,6 @@ if baseclasses_loaded:
     from archipelago.FillSettings import fillsettings
     from archipelago import Tracker
     from archipelago.Prices import generate_prices
-    from Utils import open_filename
-    import shutil
-    import zlib
 
     boss_map_names = {
         Maps.JapesBoss: "Army Dillo 1",
@@ -207,14 +107,6 @@ if baseclasses_loaded:
         Maps.KroolTinyPhase: "Tiny Phase",
         Maps.KroolChunkyPhase: "Chunky Phase",
     }
-
-    def crc32_of_file(file_path):
-        """Compute CRC32 checksum of a file."""
-        crc_value = 0
-        with open(file_path, "rb") as f:
-            for chunk in iter(lambda: f.read(4096), b""):
-                crc_value = zlib.crc32(chunk, crc_value)
-        return f"{crc_value & 0xFFFFFFFF:08X}"  # Convert to 8-character hex
 
     def launch_client():
         """Launch the DK64 client."""
@@ -671,31 +563,6 @@ if baseclasses_loaded:
         @classmethod
         def stage_assert_generate(cls, multiworld: MultiWorld):
             """Assert the stage and generate the world."""
-            # Check if dk64.z64 exists, if it doesn't prompt the user to provide it
-            # ANd then we will copy it to the root directory
-            crc_values = ["D44B4FC6"]
-            rom_file = "dk64.z64"
-            if not os.path.exists(rom_file):
-                print("Please provide a DK64 ROM file.")
-                file = open_filename("Select DK64 ROM", (("N64 ROM", (".z64", ".n64")),))
-                if not file:
-                    raise FileNotFoundError("No ROM file selected.")
-                crc = crc32_of_file(file)
-                print(f"CRC32: {crc}")
-                if crc not in crc_values:
-                    print("Invalid DK64 ROM file, please make sure your ROM is big endian.")
-                    raise FileNotFoundError("Invalid DK64 ROM file, please make sure your ROM is a vanilla DK64 file in big endian.")
-                # Copy the file to the root directory
-                try:
-                    shutil.copy(file, rom_file)
-                except Exception as e:
-                    raise FileNotFoundError(f"Failed to copy ROM file, this may be a permissions issue: {e}")
-            else:
-                crc = crc32_of_file(rom_file)
-                print(f"CRC32: {crc}")
-                if crc not in crc_values:
-                    print("Invalid DK64 ROM file, please make sure your ROM is big endian.")
-                    raise FileNotFoundError("Invalid DK64 ROM file, please make sure your ROM is a vanilla DK64 file in big endian.")
             check_version()
 
         def _get_slot_data(self):
@@ -1509,8 +1376,8 @@ if baseclasses_loaded:
                 if ap_item_is_major_item and ap_major_item_type is not None:
                     spoiler.majorItems.append(ap_major_item_type)
 
-                # Generate patch with cumulative prices (what players see in-game)
-                patch_data, _ = patching_response(spoiler)
+
+                patch_data = fill_result_to_proto(spoiler).SerializeToString()
                 lanky = self.update_seed_results(patch_data, spoiler, self.player)
 
                 output_data = {
@@ -1693,8 +1560,7 @@ if baseclasses_loaded:
             # Zip all the data into a single file.
             zip_data = BytesIO()
             with zipfile.ZipFile(zip_data, "w") as zip_file:
-                # Write each variable to the zip file
-                zip_file.writestr("patch", patch)
+                zip_file.writestr("fill_result", patch)
                 zip_file.writestr("hash", str(hash))
                 zip_file.writestr("spoiler_log", str(json.dumps(spoiler_log)))
                 zip_file.writestr("generated_time", str(timestamp))

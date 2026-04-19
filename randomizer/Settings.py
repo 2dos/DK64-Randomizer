@@ -255,8 +255,10 @@ class Settings:
 
         self.resolve_settings()
 
-        # Generate the settings string - DO THIS LAST
-        self.settings_string = self.to_proto_string()
+        # Proto serialization moved to only happen when needed (generate_output or Generate_Spoiler)
+        # This avoids loading patching modules during Settings initialization
+        # self.settings_string = self.to_proto_string()
+        self.settings_string = ""  # Will be populated when proto is actually needed
 
     def apply_form_data(self, form_data):
         """Convert and apply the provided form data to this class."""

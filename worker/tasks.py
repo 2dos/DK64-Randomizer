@@ -144,8 +144,8 @@ def update_seed_results(patch, spoiler, settings_dict, password, delayed_timesta
     zip_data = BytesIO()
 
     with zipfile.ZipFile(zip_data, "w") as zip_file:
-        # Write each variable to the zip file
-        zip_file.writestr("patch", patch)
+        # Write proto instead of xdelta patch (new proto-based format)
+        zip_file.writestr("fill_result", patch)
         zip_file.writestr("hash", str(hash))
         zip_file.writestr("spoiler_log", str(json.dumps(spoiler_log)))
         zip_file.writestr("seed_id", str(spoiler.settings.seed_id))

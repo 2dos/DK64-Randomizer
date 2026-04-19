@@ -227,6 +227,10 @@ def writeMoveDataToROM(ROM_COPY: LocalROM, arr: list, enable_hints: bool, spoile
 
 def dictEqual(dict1: dict, dict2: dict) -> bool:
     """Determine if two dictionaries are equal."""
+    # Handle cases where inputs might not be dicts
+    if not isinstance(dict1, dict) or not isinstance(dict2, dict):
+        return dict1 == dict2
+    
     if len(dict1) != len(dict2):
         return False
     else:

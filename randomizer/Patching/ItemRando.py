@@ -623,7 +623,7 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
                 give_move_packets.append({"offset": 0xA, "mode": "or", "value": 1 << key})
         elif x in list(TRACKER_SHOPKEEPER_PAIRING.keys()):
             matching_item = TRACKER_SHOPKEEPER_PAIRING[x]
-            if matching_item in list(OTHER_STARTING_ITEMS.values()):
+            if matching_item in list(OTHER_STARTING_ITEMS.values()) or matching_item in spoiler.pregiven_items:
                 value = 1
         elif x in list(TRACKER_TIME_PAIRING.keys()):
             matching_item = TRACKER_TIME_PAIRING[x]

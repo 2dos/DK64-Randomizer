@@ -1,10 +1,11 @@
 """Settings serialization to/from Protocol Buffers."""
 
 import base64
+import json
 import logging
 import sys
 import os
-from typing import Optional, TYPE_CHECKING
+from typing import Any, Dict, Optional, TYPE_CHECKING
 
 proto_gen_path = os.path.join(os.path.dirname(__file__), 'proto_gen')
 if proto_gen_path not in sys.path:
@@ -16,11 +17,16 @@ from randomizer.proto_gen import overworld_settings_pb2
 from randomizer.proto_gen import endgame_settings_pb2
 from randomizer.proto_gen import qol_settings_pb2
 from randomizer.proto_gen import plandomizer_settings_pb2
+from randomizer.proto_gen import fill_result_pb2
+
+if TYPE_CHECKING:
+    from randomizer.Settings import Settings
+    from randomizer.Spoiler import Spoiler
 
 logger = logging.getLogger(__name__)
 
 
-def settings_to_proto(settings) -> settings_pb2.SettingsInfo:
+def settings_to_proto(settings: "Settings") -> settings_pb2.SettingsInfo:
     """Convert a Settings object to a SettingsInfo protobuf message."""
     proto = settings_pb2.SettingsInfo()
     
@@ -35,7 +41,7 @@ def settings_to_proto(settings) -> settings_pb2.SettingsInfo:
     return proto
 
 
-def proto_to_settings(proto: settings_pb2.SettingsInfo, settings):
+def proto_to_settings(proto: settings_pb2.SettingsInfo, settings: "Settings") -> None:
     """Apply settings from a SettingsInfo protobuf message to a Settings object.
     
     Args:
@@ -50,7 +56,7 @@ def proto_to_settings(proto: settings_pb2.SettingsInfo, settings):
     _apply_plandomizer_settings(proto.plandomizer_settings, settings)
 
 
-def serialize_settings_to_base64(settings) -> str:
+def serialize_settings_to_base64(settings: "Settings") -> str:
     """Serialize a Settings object to a base64-encoded protobuf string.
     
     This creates a compact, copy-paste friendly representation of settings.
@@ -112,7 +118,7 @@ def is_proto_settings_string(settings_string: str) -> bool:
 
 
 # Helper functions to populate proto messages from Settings
-def _populate_item_settings(settings, proto: item_settings_pb2.ItemSettings):
+def _populate_item_settings(settings: "Settings", proto: item_settings_pb2.ItemSettings) -> None:
     """Populate ItemSettings proto from Settings object."""
     proto.decouple_item_rando = bool(settings.decouple_item_rando)
     is_decoupled = bool(settings.decouple_item_rando)
@@ -199,7 +205,7 @@ def _populate_item_settings(settings, proto: item_settings_pb2.ItemSettings):
     # Max snide reward requirement
     proto.max_snide_reward_requirement = settings.most_snide_rewards
 
-def _populate_requirement_settings(settings, proto: requirement_settings_pb2.RequirementSettings):
+def _populate_requirement_settings(settings: "Settings", proto: requirement_settings_pb2.RequirementSettings) -> None:
     """Populate RequirementSettings proto from Settings object."""
     # B Locker option
     proto.b_locker_option.opt = settings.blocker_selection_behavior
@@ -315,7 +321,7 @@ def _populate_requirement_settings(settings, proto: requirement_settings_pb2.Req
     proto.puzzle_rando = settings.puzzle_rando_difficulty
 
 
-def _populate_overworld_settings(settings, proto: overworld_settings_pb2.OverworldSettings):
+def _populate_overworld_settings(settings: "Settings", proto: overworld_settings_pb2.OverworldSettings) -> None:
     """Populate OverworldSettings proto from Settings object."""
     # World Navigation
     proto.entrance_randomizer = settings.level_randomization
@@ -435,7 +441,7 @@ def _populate_overworld_settings(settings, proto: overworld_settings_pb2.Overwor
     proto.damage = settings.damage_amount
 
 
-def _populate_endgame_settings(settings, proto: endgame_settings_pb2.EndgameSettings):
+def _populate_endgame_settings(settings: "Settings", proto: endgame_settings_pb2.EndgameSettings) -> None:
     """Populate EndgameSettings proto from Settings object."""
     # Logic
     proto.logic.type = settings.logic_type
@@ -488,7 +494,7 @@ def _populate_endgame_settings(settings, proto: endgame_settings_pb2.EndgameSett
     proto.k_rool_settings.chunky_phase_slam_requirement = settings.chunky_phase_slam_req
 
 
-def _populate_qol_settings(settings, proto: qol_settings_pb2.QualityOfLifeSettings):
+def _populate_qol_settings(settings: "Settings", proto: qol_settings_pb2.QualityOfLifeSettings) -> None:
     """Populate QualityOfLifeSettings proto from Settings object."""    
     from randomizer.Enums.Settings import MiscChangesSelected, CrownEnemyRando, MicrohintsEnabled
     
@@ -572,7 +578,7 @@ def _populate_qol_settings(settings, proto: qol_settings_pb2.QualityOfLifeSettin
     proto.hints.spoiler_hints.points.bean = int(settings.points_list_bean)
 
 
-def _populate_plandomizer_settings(settings, proto: plandomizer_settings_pb2.PlandomizerSettings):
+def _populate_plandomizer_settings(settings: "Settings", proto: plandomizer_settings_pb2.PlandomizerSettings) -> None:
     """Populate PlandomizerSettings proto from Settings object."""
     # Plandomizer uses a complex dictionary structure (settings.plandomizer_dict)
     # Keys include: plando_starting_exit, plando_starting_kongs_selected, 
@@ -591,7 +597,7 @@ def _populate_plandomizer_settings(settings, proto: plandomizer_settings_pb2.Pla
 
 
 # Helper functions to apply proto messages to Settings
-def _apply_item_settings(proto: item_settings_pb2.ItemSettings, settings):
+def _apply_item_settings(proto: item_settings_pb2.ItemSettings, settings: "Settings") -> None:
     """Apply ItemSettings proto to Settings object."""
     # Decouple item rando
     settings.decouple_item_rando = bool(proto.decouple_item_rando)
@@ -677,7 +683,7 @@ def _apply_item_settings(proto: item_settings_pb2.ItemSettings, settings):
     settings.most_snide_rewards = proto.max_snide_reward_requirement
 
 
-def _apply_requirement_settings(proto: requirement_settings_pb2.RequirementSettings, settings):
+def _apply_requirement_settings(proto: requirement_settings_pb2.RequirementSettings, settings: "Settings") -> None:
     """Apply RequirementSettings proto to Settings object."""
     # B Locker option
     settings.blocker_selection_behavior = proto.b_locker_option.opt
@@ -786,7 +792,7 @@ def _apply_requirement_settings(proto: requirement_settings_pb2.RequirementSetti
     settings.puzzle_rando_difficulty = proto.puzzle_rando
 
 
-def _apply_overworld_settings(proto: overworld_settings_pb2.OverworldSettings, settings):
+def _apply_overworld_settings(proto: overworld_settings_pb2.OverworldSettings, settings: "Settings") -> None:
     """Apply OverworldSettings proto to Settings object."""
     # World Navigation
     settings.level_randomization = proto.entrance_randomizer
@@ -914,7 +920,7 @@ def _apply_overworld_settings(proto: overworld_settings_pb2.OverworldSettings, s
     settings.damage_amount = proto.damage
 
 
-def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, settings):
+def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, settings: "Settings") -> None:
     """Apply EndgameSettings proto to Settings object."""
     # Logic
     settings.logic_type = proto.logic.type
@@ -960,7 +966,7 @@ def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, setting
     settings.chunky_phase_slam_req = proto.k_rool_settings.chunky_phase_slam_requirement
 
 
-def _apply_qol_settings(proto: qol_settings_pb2.QualityOfLifeSettings, settings):
+def _apply_qol_settings(proto: qol_settings_pb2.QualityOfLifeSettings, settings: "Settings") -> None:
     """Apply QualityOfLifeSettings proto to Settings object."""
     from randomizer.Enums.Settings import MiscChangesSelected, CrownEnemyRando, MicrohintsEnabled
     
@@ -1076,7 +1082,612 @@ def _apply_qol_settings(proto: qol_settings_pb2.QualityOfLifeSettings, settings)
     settings.points_list_bean = int(proto.hints.spoiler_hints.points.bean)
 
 
-def _apply_plandomizer_settings(proto: plandomizer_settings_pb2.PlandomizerSettings, settings):
+def _apply_plandomizer_settings(proto: plandomizer_settings_pb2.PlandomizerSettings, settings: "Settings") -> None:
     """Apply PlandomizerSettings proto to Settings object."""
     # TODO: Map proto fields to settings attributes
     pass
+
+
+# =============================================================================
+# Fill Result Serialization
+# =============================================================================
+
+def fill_result_to_proto(spoiler: "Spoiler") -> fill_result_pb2.FillResult:
+    """Convert a Spoiler object (post-Fill) to a FillResult protobuf message.
+    
+    This serializes all the results of the Fill algorithm that are needed
+    for patching the ROM.
+    
+    Args:
+        spoiler: Spoiler object after Fill has completed
+        
+    Returns:
+        FillResult protobuf message
+    """
+    proto = fill_result_pb2.FillResult()
+    
+    # Populate each section
+    _populate_location_assignments(spoiler, proto.location_assignments)
+    _populate_move_shop_data(spoiler, proto.move_shop_data)
+    _populate_shuffle_data(spoiler, proto.shuffle_data)
+    _populate_placement_data(spoiler, proto.placement_data)
+    _populate_hint_data(spoiler, proto.hint_data)
+    _populate_path_data(spoiler, proto.path_data)
+    _populate_misc_patching_data(spoiler, proto.misc_data)
+    
+    return proto
+
+
+def _populate_location_assignments(spoiler: "Spoiler", proto: fill_result_pb2.LocationAssignments) -> None:
+    """Populate LocationAssignments from spoiler.LocationList."""
+    for location_id, location in spoiler.LocationList.items():
+        if location.item is not None:
+            proto.assignments[int(location_id)] = int(location.item)
+
+
+def _populate_move_shop_data(spoiler: "Spoiler", proto: fill_result_pb2.MoveShopData) -> None:
+    """Populate MoveShopData from spoiler.move_data."""
+    # move_data is a 3-element list: [shop_moves, training_barrels, bfi_moves]
+    
+    # Index 0: Shop moves (3D structure)
+    if len(spoiler.move_data) > 0 and isinstance(spoiler.move_data[0], list):
+        for shop_type_data in spoiler.move_data[0]:
+            shop_type_proto = proto.shop_types.add()
+            for shop_index_data in shop_type_data:
+                shop_index_proto = shop_type_proto.shop_indices.add()
+                for kong_moves_data in shop_index_data:
+                    kong_moves_proto = shop_index_proto.kong_moves.add()
+                    for move_entry in kong_moves_data:
+                        _populate_move_entry(move_entry, kong_moves_proto.moves.add())
+    
+    # Index 1: Training barrels
+    if len(spoiler.move_data) > 1 and isinstance(spoiler.move_data[1], list):
+        for move_entry in spoiler.move_data[1]:
+            _populate_move_entry(move_entry, proto.training_barrels.add())
+    
+    # Index 2: BFI moves
+    if len(spoiler.move_data) > 2 and isinstance(spoiler.move_data[2], list):
+        for move_entry in spoiler.move_data[2]:
+            _populate_move_entry(move_entry, proto.bfi_moves.add())
+
+
+def _populate_move_entry(move_dict: Any, proto: fill_result_pb2.MoveEntry) -> None:
+    """Populate a single MoveEntry from a move dictionary."""
+    # Handle non-dict types (might be string or other)
+    if not isinstance(move_dict, dict):
+        proto.empty_move.CopyFrom(fill_result_pb2.EmptyMove())
+        return
+    
+    move_type = move_dict.get("move_type")
+    
+    if move_type is None:
+        proto.empty_move.CopyFrom(fill_result_pb2.EmptyMove())
+    elif move_type == "flag":
+        proto.flag_move.flag = move_dict.get("flag", "")
+        proto.flag_move.price = move_dict.get("price", 0)
+    elif move_type == "special":
+        proto.special_move.move_lvl = move_dict.get("move_lvl", 0)
+        proto.special_move.move_kong = move_dict.get("move_kong", 0)
+        proto.special_move.price = move_dict.get("price", 0)
+    elif move_type == "slam":
+        proto.slam_move.move_lvl = move_dict.get("move_lvl", 0)
+        proto.slam_move.move_kong = move_dict.get("move_kong", 0)
+        proto.slam_move.price = move_dict.get("price", 0)
+    elif move_type == "gun":
+        proto.gun_move.move_lvl = move_dict.get("move_lvl", 0)
+        proto.gun_move.move_kong = move_dict.get("move_kong", 0)
+        proto.gun_move.price = move_dict.get("price", 0)
+    elif move_type == "ammo_belt":
+        proto.ammo_belt_move.move_lvl = move_dict.get("move_lvl", 0)
+        proto.ammo_belt_move.move_kong = move_dict.get("move_kong", 0)
+        proto.ammo_belt_move.price = move_dict.get("price", 0)
+    elif move_type == "instrument":
+        proto.instrument_move.move_lvl = move_dict.get("move_lvl", 0)
+        proto.instrument_move.move_kong = move_dict.get("move_kong", 0)
+        proto.instrument_move.price = move_dict.get("price", 0)
+
+
+def _populate_shuffle_data(spoiler: "Spoiler", proto: fill_result_pb2.ShuffleData) -> None:
+    """Populate ShuffleData from spoiler shuffle dictionaries."""
+    # Shuffled exits
+    for exit_id, exit_dest in spoiler.shuffled_exit_data.items():
+        exit_proto = proto.shuffled_exits[int(exit_id)]
+        
+        # Handle both TransitionFront and TransitionBack objects
+        if hasattr(exit_dest, 'dest'):
+            # TransitionFront object
+            exit_proto.destination_region = int(exit_dest.dest)
+            exit_proto.exit_name = exit_dest.exit if hasattr(exit_dest, 'exit') else ""
+        elif hasattr(exit_dest, 'regionId'):
+            # TransitionBack object
+            exit_proto.destination_region = int(exit_dest.regionId)
+            exit_proto.exit_name = exit_dest.name if hasattr(exit_dest, 'name') else ""
+        else:
+            # Unknown type, try to extract what we can
+            exit_proto.destination_region = int(getattr(exit_dest, 'dest', getattr(exit_dest, 'regionId', 0)))
+            exit_proto.exit_name = getattr(exit_dest, 'exit', getattr(exit_dest, 'name', ""))
+        
+        exit_proto.reverse_transition = int(exit_dest.reverse) if hasattr(exit_dest, 'reverse') and exit_dest.reverse is not None else 0
+        exit_proto.spoiler_name = exit_dest.spoilerName if hasattr(exit_dest, 'spoilerName') else ""
+    
+    # Shuffled barrels
+    for location_id, minigame_data in spoiler.shuffled_barrel_data.items():
+        # minigame_data could be a MinigameLocationData object or just an enum
+        if hasattr(minigame_data, 'minigame'):
+            # MinigameLocationData object
+            proto.shuffled_barrels[int(location_id)] = int(minigame_data.minigame)
+        else:
+            # Direct enum value
+            proto.shuffled_barrels[int(location_id)] = int(minigame_data)
+    
+    # Shuffled doors. Each level maps to a list of tuples:
+    #   (door_index, DoorType.wrinkly, kong_assignee)
+    #   (door_index, DoorType.boss)
+    #   (door_index, DoorType.dk_portal)
+    # Downstream patching (DoorPlacer.place_door_locations) reads these by
+    # positional index, so we must preserve tuple shape on the consumer side.
+    for level, door_list in spoiler.shuffled_door_data.items():
+        shuffle_proto = proto.shuffled_doors.add()
+        shuffle_proto.level = int(level)
+        for entry in door_list:
+            door_proto = shuffle_proto.doors.add()
+            door_proto.door_location = int(entry[0])
+            door_proto.door_type = str(int(entry[1]))
+            if len(entry) > 2 and entry[2] is not None:
+                door_proto.kong_assignee = int(entry[2])
+    
+    # Exit instructions
+    for instruction in spoiler.shuffled_exit_instructions:
+        proto.exit_instructions.append(str(instruction))
+    
+    # Port connections
+    if hasattr(spoiler, 'port_connections'):
+        for port_id, connection in spoiler.port_connections.items():
+            port_proto = proto.port_connections[int(port_id)]
+            if hasattr(connection, 'dest'):
+                port_proto.destination_region = int(connection.dest)
+            if hasattr(connection, 'map'):
+                port_proto.destination_map = int(connection.map)
+            if hasattr(connection, 'exit'):
+                port_proto.destination_exit = int(connection.exit)
+    
+    # Warp data (human readable)
+    if hasattr(spoiler, 'warp_data'):
+        for warp in spoiler.warp_data:
+            warp_proto = proto.warp_data.add()
+            warp_proto.from_location = warp.get('from', '')
+            warp_proto.to = warp.get('to', '')
+    
+    # Crown placements
+    if hasattr(spoiler, 'crown_locations'):
+        for crown_loc in spoiler.crown_locations:
+            crown_proto = proto.crown_placements.add()
+            crown_proto.map_id = int(crown_loc.get('map', 0))
+            crown_proto.arena_id = int(crown_loc.get('arena', 0))
+    
+    # Patch placements (dirt patches)
+    if hasattr(spoiler, 'dirt_patch_placement'):
+        for patch in spoiler.dirt_patch_placement:
+            patch_proto = proto.patch_placements.add()
+            patch_proto.map_id = int(patch.get('map', 0))
+            patch_proto.patch_id = int(patch.get('id', 0))
+            patch_proto.item_id = int(patch.get('item', 0))
+    
+    # Crate placements
+    if hasattr(spoiler, 'melon_crate_placement'):
+        for crate in spoiler.melon_crate_placement:
+            crate_proto = proto.crate_placements.add()
+            crate_proto.map_id = int(crate.get('map', 0))
+            crate_proto.crate_id = int(crate.get('id', 0))
+            crate_proto.item_id = int(crate.get('item', 0))
+
+
+def _populate_placement_data(spoiler: "Spoiler", proto: fill_result_pb2.PlacementData) -> None:
+    """Populate PlacementData from spoiler placement lists."""
+    # CB placements
+    for cb_data in spoiler.cb_placements:
+        cb_proto = proto.cb_placements.add()
+        cb_proto.id = cb_data.get('id', 0)
+        cb_proto.name = cb_data.get('name', '')
+        cb_proto.kong = int(cb_data.get('kong', 0))
+        cb_proto.level = int(cb_data.get('level', 0))
+        cb_proto.type = cb_data.get('type', '')
+        cb_proto.map = int(cb_data.get('map', 0))
+        
+        # Locations (for CB type) - structure is [amount, scale, x, y, z]
+        if 'locations' in cb_data and isinstance(cb_data['locations'], list):
+            for loc in cb_data['locations']:
+                loc_proto = cb_proto.locations.add()
+                if isinstance(loc, dict):
+                    # Dict format: {'amount': val, 'scale': val, 'x': val, 'y': val, 'z': val}
+                    loc_proto.amount = int(loc.get('amount', 1))
+                    loc_proto.scale = float(loc.get('scale', 1.0))
+                    loc_proto.x = float(loc.get('x', 0))
+                    loc_proto.y = float(loc.get('y', 0))
+                    loc_proto.z = float(loc.get('z', 0))
+                elif isinstance(loc, (list, tuple)) and len(loc) >= 5:
+                    # List format: [amount, scale, x, y, z]
+                    loc_proto.amount = int(loc[0])
+                    loc_proto.scale = float(loc[1])
+                    loc_proto.x = float(loc[2])
+                    loc_proto.y = float(loc[3])
+                    loc_proto.z = float(loc[4])
+    
+    # Balloon placements
+    for balloon_data in spoiler.balloon_placement:
+        balloon_proto = proto.balloon_placements.add()
+        balloon_proto.id = balloon_data.get('id', 0)
+        balloon_proto.name = balloon_data.get('name', '')
+        balloon_proto.kong = int(balloon_data.get('kong', 0))
+        balloon_proto.level = int(balloon_data.get('level', 0))
+        balloon_proto.map = int(balloon_data.get('map', 0))
+        balloon_proto.score = balloon_data.get('score', 0)
+    
+    # Enemy replacements
+    for enemy_data in spoiler.enemy_replacements:
+        enemy_proto = proto.enemy_replacements.add()
+        enemy_proto.container_map = int(enemy_data.get('container_map', 0))
+        
+        for swap in enemy_data.get('kasplat_swaps', []):
+            swap_proto = enemy_proto.kasplat_swaps.add()
+            swap_proto.vanilla_location = int(swap.get('vanilla_location', 0))
+            swap_proto.replace_with = int(swap.get('replace_with', 0))
+    
+    # Coin requirements
+    for map_id, coin_count in spoiler.coin_requirements.items():
+        proto.coin_requirements[int(map_id)] = int(coin_count)
+    
+    # Coin placements (if they exist)
+    if hasattr(spoiler, 'coin_placement'):
+        for coin_data in spoiler.coin_placement:
+            coin_proto = proto.coin_placements.add()
+            coin_proto.level = int(coin_data.get('level', 0))
+            coin_proto.map = int(coin_data.get('map', 0))
+            coin_proto.kong = int(coin_data.get('kong', 0))
+            coin_proto.type = coin_data.get('type', '')
+            coin_proto.name = coin_data.get('name', '')
+    
+    # Pokemon Snap enemy data (for Krem Kapture win condition)
+    if hasattr(spoiler, 'pkmn_snap_data'):
+        for spawned in spoiler.pkmn_snap_data:
+            proto.pkmn_snap_data.append(bool(spawned))
+
+    # Enemy rando data: map_id -> list of {enemy, speeds, id, location}.
+    # Populated by randomize_enemies_0 during Fill; consumed by
+    # randomize_enemies at patch time. Without serializing this the patcher
+    # has an empty dict and writes no enemy swaps.
+    enemy_rando_data = getattr(spoiler, 'enemy_rando_data', None) or {}
+    for map_id, entries in enemy_rando_data.items():
+        map_proto = proto.enemy_rando_data[int(map_id)]
+        for entry in entries or []:
+            entry_proto = map_proto.entries.add()
+            try:
+                entry_proto.enemy = int(entry.get('enemy', 0))
+            except (TypeError, ValueError):
+                entry_proto.enemy = 0
+            for speed in (entry.get('speeds') or []):
+                try:
+                    entry_proto.speeds.append(int(speed))
+                except (TypeError, ValueError):
+                    continue
+            try:
+                entry_proto.spawner_id = int(entry.get('id', 0))
+            except (TypeError, ValueError):
+                entry_proto.spawner_id = 0
+            entry_proto.location = str(entry.get('location', '') or '')
+
+def _populate_hint_data(spoiler: "Spoiler", proto: fill_result_pb2.HintData) -> None:
+    """Populate HintData from spoiler hint structures."""
+    # Hint set
+    if hasattr(spoiler, 'hintset'):
+        proto.hint_set.max_hints = spoiler.hintset.hint_cap
+        for hint in spoiler.hintset.hints:
+            hint_proto = proto.hint_set.hints.add()
+            hint_proto.location_id = int(hint.location) if hasattr(hint, 'location') else 0
+            hint_proto.hint_text = hint.hint if hasattr(hint, 'hint') else ""
+            hint_proto.important = hint.important if hasattr(hint, 'important') else False
+            hint_proto.priority = hint.priority if hasattr(hint, 'priority') else 0
+    
+    # Tied hint flags
+    for hint_name, flag_value in spoiler.tied_hint_flags.items():
+        proto.tied_hint_flags[hint_name] = int(flag_value)
+    
+    # Tied hint regions
+    for region in spoiler.tied_hint_regions:
+        proto.tied_hint_regions.append(int(region))
+    
+    # Level spoiler hints (if they exist)
+    if hasattr(spoiler, 'level_spoiler'):
+        for level_id, level_hints in spoiler.level_spoiler.items():
+            level_proto = proto.level_spoiler_hints[int(level_id)]
+            if hasattr(level_hints, 'vial_colors'):
+                level_proto.vial_colors.extend(level_hints.vial_colors)
+            if hasattr(level_hints, 'points'):
+                level_proto.points = level_hints.points
+            if hasattr(level_hints, 'woth_count'):
+                level_proto.woth_count = level_hints.woth_count
+    
+    # Human-readable spoiler hints
+    if hasattr(spoiler, 'level_spoiler_human_readable'):
+        for level_name, hint_text in spoiler.level_spoiler_human_readable.items():
+            proto.level_spoiler_human_readable[level_name] = hint_text
+
+
+def _populate_path_data(spoiler: "Spoiler", proto: fill_result_pb2.PathData) -> None:
+    """Populate PathData from spoiler path structures."""
+    # WotH locations
+    if hasattr(spoiler, 'woth_locations'):
+        for location_id in spoiler.woth_locations:
+            proto.woth_locations.append(int(location_id))
+    
+    # WotH paths
+    for goal_location, path_locations in spoiler.woth_paths.items():
+        path_proto = proto.woth_paths[int(goal_location)]
+        for loc_id in path_locations:
+            path_proto.locations.append(int(loc_id))
+    
+    # K. Rool paths
+    for phase_name, path_locations in spoiler.krool_paths.items():
+        path_proto = proto.krool_paths[str(phase_name)]
+        for loc_id in path_locations:
+            path_proto.locations.append(int(loc_id))
+    
+    # Rabbit path
+    for location_id in spoiler.rabbit_path:
+        proto.rabbit_path.append(int(location_id))
+    
+    # DK Rap win con paths
+    for verse_name, path_locations in spoiler.rap_win_con_paths.items():
+        path_proto = proto.rap_win_con_paths[str(verse_name)]
+        for loc_id in path_locations:
+            path_proto.locations.append(int(loc_id))
+    
+    # Other paths
+    for goal_location, path_locations in spoiler.other_paths.items():
+        path_proto = proto.other_paths[int(goal_location)]
+        for loc_id in path_locations:
+            path_proto.locations.append(int(loc_id))
+    
+    # Playthrough
+    if hasattr(spoiler, 'playthrough') and isinstance(spoiler.playthrough, list):
+        for sphere_dict in spoiler.playthrough:
+            sphere_proto = proto.playthrough.add()
+            for location_id, item_id in sphere_dict.items():
+                loc_proto = sphere_proto.locations.add()
+                loc_proto.location_id = int(location_id)
+                loc_proto.item_id = int(item_id)
+    
+    # Major items
+    if hasattr(spoiler, 'majorItems'):
+        for item_id in spoiler.majorItems:
+            proto.major_items.append(int(item_id))
+    
+    # Foolish region names
+    if hasattr(spoiler, 'foolish_region_names'):
+        proto.foolish_region_names.extend([str(name) for name in spoiler.foolish_region_names])
+    
+    # Pathless moves
+    if hasattr(spoiler, 'pathless_moves'):
+        for item_id in spoiler.pathless_moves:
+            proto.pathless_moves.append(int(item_id))
+    
+    # Region hintable count
+    if hasattr(spoiler, 'region_hintable_count'):
+        for region_name, items_dict in spoiler.region_hintable_count.items():
+            region_counts_proto = proto.region_hintable_count[str(region_name)]
+            for item_name, item_data in items_dict.items():
+                item_data_proto = region_counts_proto.items[item_name]
+                item_data_proto.plural = item_data.get('plural', '')
+                item_data_proto.count = item_data.get('count', 0)
+                # Handle Location objects or integers
+                # Location objects need to be reverse-looked up in spoiler.LocationList to get their ID
+                for loc in item_data.get('shuffled_locations', []):
+                    if isinstance(loc, int):
+                        item_data_proto.shuffled_locations.append(loc)
+                    else:
+                        # It's a Location object - find its ID in spoiler.LocationList
+                        if hasattr(spoiler, 'LocationList'):
+                            for loc_id, loc_obj in spoiler.LocationList.items():
+                                if loc_obj is loc:
+                                    item_data_proto.shuffled_locations.append(int(loc_id))
+                                    break
+    
+    # Accessible hints for location
+    if hasattr(spoiler, 'accessible_hints_for_location'):
+        for location_id, hints in spoiler.accessible_hints_for_location.items():
+            hints_proto = proto.accessible_hints_for_location[int(location_id)]
+            if isinstance(hints, list):
+                hints_proto.hint_names.extend([str(h) for h in hints])
+
+
+def _populate_misc_patching_data(spoiler: "Spoiler", proto: fill_result_pb2.MiscPatchingData) -> None:
+    """Populate MiscPatchingData from spoiler miscellaneous data."""
+    # Item assignments. LocationSelection has many fields the patcher reads
+    # directly (ItemRando.place_randomized_items); we need to preserve them
+    # all faithfully - in particular placement_index (list, not scalar),
+    # placement_data (actor ids per map), old_item/old_kong, and reward_spot.
+    def _s(val: Any, default: int = 0) -> int:
+        """Coerce possibly-None / enum values to int for sint32 fields (-1 sentinel)."""
+        if val is None:
+            return -1
+        try:
+            return int(val)
+        except (TypeError, ValueError):
+            return default
+
+    for item_assign in spoiler.item_assignment:
+        assign_proto = proto.item_assignments.add()
+        assign_proto.old_type = _s(getattr(item_assign, 'old_type', None), -1)
+        assign_proto.old_flag = _s(getattr(item_assign, 'old_flag', None), -1)
+        assign_proto.old_item = _s(getattr(item_assign, 'old_item', None), -1)
+        assign_proto.old_kong = _s(getattr(item_assign, 'old_kong', None), -1)
+
+        # LocationSelection.placement_data: dict[map_id, actor_id]. Older code
+        # also referred to this via the attribute "maps_to_actor_ids".
+        placement_map = getattr(item_assign, 'placement_data', None)
+        if placement_map is None:
+            placement_map = getattr(item_assign, 'maps_to_actor_ids', None)
+        if placement_map:
+            for map_id, actor_id in placement_map.items():
+                try:
+                    assign_proto.maps_to_actor_ids[int(map_id)] = int(actor_id)
+                except (TypeError, ValueError):
+                    continue
+
+        assign_proto.location = int(item_assign.location) if getattr(item_assign, 'location', None) is not None else 0
+        assign_proto.new_flag = _s(getattr(item_assign, 'new_flag', None), -1)
+        assign_proto.new_type = _s(getattr(item_assign, 'new_type', None), -1)
+        assign_proto.new_item = _s(getattr(item_assign, 'new_item', None), -1)
+        assign_proto.new_kong = _s(getattr(item_assign, 'new_kong', None), -1)
+        assign_proto.shared = bool(getattr(item_assign, 'shared', False))
+
+        # placement_index is a list in LocationSelection (shared shop items
+        # write to multiple slots). Preserve the whole list; negatives are
+        # meaningful (e.g. -1 sentinel for vanilla keys).
+        pidx = getattr(item_assign, 'placement_index', None)
+        if pidx is None:
+            pass
+        elif isinstance(pidx, (list, tuple)):
+            for v in pidx:
+                try:
+                    assign_proto.placement_index.append(int(v))
+                except (TypeError, ValueError):
+                    pass
+        else:
+            try:
+                assign_proto.placement_index.append(int(pidx))
+            except (TypeError, ValueError):
+                pass
+
+        assign_proto.placement_subindex = int(getattr(item_assign, 'placement_subindex', 0) or 0)
+
+        # Other LocationSelection flags consulted directly by the patcher.
+        assign_proto.is_reward_point = bool(getattr(item_assign, 'reward_spot', False))
+        assign_proto.is_shop = bool(getattr(item_assign, 'is_shop', False))
+
+        price = getattr(item_assign, 'price', 0)
+        if isinstance(price, (list, tuple)):
+            assign_proto.price = int(price[0]) if price else 0
+        else:
+            try:
+                assign_proto.price = int(price or 0)
+            except (TypeError, ValueError):
+                assign_proto.price = 0
+
+        assign_proto.can_have_item = bool(getattr(item_assign, 'can_have_item', True))
+        assign_proto.can_place_item = bool(getattr(item_assign, 'can_place_item', True))
+        assign_proto.shop_locked = bool(getattr(item_assign, 'shop_locked', False))
+        assign_proto.order = int(getattr(item_assign, 'order', 0) or 0)
+        assign_proto.name = str(getattr(item_assign, 'name', '') or '')
+        assign_proto.move_name = str(getattr(item_assign, 'move_name', '') or '')
+
+    
+    # Valid photo items
+    for item_id in spoiler.valid_photo_items:
+        proto.valid_photo_items.append(int(item_id))
+    
+    # Special items
+    if hasattr(spoiler, 'arcade_item_reward') and spoiler.arcade_item_reward is not None:
+        proto.arcade_item_reward = int(spoiler.arcade_item_reward)
+    if hasattr(spoiler, 'jetpac_item_reward') and spoiler.jetpac_item_reward is not None:
+        proto.jetpac_item_reward = int(spoiler.jetpac_item_reward)
+    
+    # Music data
+    for key, value in spoiler.music_bgm_data.items():
+        proto.music_bgm_data[int(key)] = int(value)
+    for key, value in spoiler.music_majoritem_data.items():
+        proto.music_majoritem_data[int(key)] = int(value)
+    for key, value in spoiler.music_minoritem_data.items():
+        proto.music_minoritem_data[int(key)] = int(value)
+    for key, value in spoiler.music_event_data.items():
+        proto.music_event_data[int(key)] = int(value)
+    
+    # Text file changes
+    if hasattr(spoiler, 'text_changes'):
+        for file_id, changes_list in spoiler.text_changes.items():
+            text_changes_proto = proto.text_file_changes[int(file_id)]
+            for change_dict in changes_list:
+                # Serialize each change dict as a JSON string
+                text_changes_proto.changes.append(json.dumps(change_dict))
+
+    # Per-level DK portal destinations. These are mutated by the Fill phase
+    # (e.g. assignDKPortal sets exit=-1 to indicate "use map default entry").
+    # ASMPatcher reads settings.level_portal_destinations directly at patch time,
+    # so we must round-trip the mutated values through the proto.
+    settings = getattr(spoiler, 'settings', None)
+    if settings is not None:
+        for entry in getattr(settings, 'level_portal_destinations', []) or []:
+            dest_proto = proto.level_portal_destinations.add()
+            dest_proto.map = int(entry["map"])
+            dest_proto.exit = int(entry["exit"])  # sint32; preserves -1 sentinel
+        for map_id in getattr(settings, 'level_void_maps', []) or []:
+            proto.level_void_maps.append(int(map_id))
+
+        # Fill-time resolved starting Kongs. The user-input settings object
+        # only carries the raw request (kong_rando flag, starting_kongs_count,
+        # and possibly Kongs.any); the concrete list/lead Kong is chosen during
+        # generation and must be preserved so the patched ROM matches the
+        # spoiler log and the `B` in `spoiler.settings.starting_kong_list`
+        # consumed by ItemRando.place_starting_moves.
+        starting_kong_list = getattr(settings, 'starting_kong_list', None) or []
+        for kong in starting_kong_list:
+            try:
+                proto.starting_kong_list.append(int(kong))
+            except (TypeError, ValueError):
+                continue
+        resolved_starting_kong = getattr(settings, 'starting_kong', None)
+        if resolved_starting_kong is not None:
+            try:
+                proto.resolved_starting_kong = int(resolved_starting_kong)
+            except (TypeError, ValueError):
+                pass
+
+        # Fill-time resolved B.Locker / T&S arrays. These start from user
+        # input but are rolled randomly in chaos mode and reordered in
+        # ShuffleExits (randomizer/ShuffleExits.py). Without preserving them
+        # the ROM's level access costs won't match the spoiler log.
+        for count in getattr(settings, 'BLockerEntryCount', []) or []:
+            try:
+                proto.blocker_entry_counts.append(int(count))
+            except (TypeError, ValueError):
+                proto.blocker_entry_counts.append(0)
+        for item in getattr(settings, 'BLockerEntryItems', []) or []:
+            try:
+                proto.blocker_entry_items.append(int(item))
+            except (TypeError, ValueError):
+                proto.blocker_entry_items.append(0)
+        for count in getattr(settings, 'BossBananas', []) or []:
+            try:
+                proto.boss_bananas.append(int(count))
+            except (TypeError, ValueError):
+                proto.boss_bananas.append(0)
+    for item_id in getattr(spoiler, 'pregiven_items', None) or []:
+        try:
+            proto.pregiven_items.append(int(item_id))
+        except (TypeError, ValueError):
+            continue
+    first_move_item = getattr(spoiler, 'first_move_item', None)
+    if first_move_item is not None:
+        try:
+            proto.first_move_item = int(first_move_item)
+        except (TypeError, ValueError):
+            pass
+
+    # Archipelago flag. Set to True by the apworld before serialization; the
+    # user-input settings restored in the browser default to False, so without
+    # this roundtrip the patcher would treat AP seeds as local rando.
+    if settings is not None and getattr(settings, 'archipelago', False):
+        proto.archipelago = True
+        # AP slot name is only meaningful when archipelago=True; the patcher
+        # reads it to stamp the ROM header (ApplyRandomizer line ~1418).
+        player_name = getattr(settings, 'player_name', None)
+        if player_name:
+            proto.player_name = str(player_name)
+
+    # Fill-time K. Rool key requirement. Settings re-randomizes this in
+    # __init__ (keys_random branch, plus starting-key-picking when
+    # select_keys=False), and the browser rebuild uses a different RNG
+    # state, so we must ship the exact list that the fill used.
+    krool_keys_required = getattr(settings, 'krool_keys_required', None) if settings is not None else None
+    if krool_keys_required:
+        proto.krool_keys_required.extend([int(getattr(k, 'value', k)) for k in krool_keys_required])
