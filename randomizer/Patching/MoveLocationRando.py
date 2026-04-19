@@ -11,22 +11,6 @@ from randomizer.Patching.Library.Assets import CompTextFiles, ItemPreview
 from randomizer.Patching.Library.ItemRando import pregiven_item_order
 from randomizer.CompileHints import getHelmProgItems
 
-# /* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)
-# /* 0x0AF */ unsigned char diddy_crankymoves[7]; // See "dk_crankymoves"
-# /* 0x0B6 */ unsigned char lanky_crankymoves[7]; // See "dk_crankymoves"
-# /* 0x0BD */ unsigned char tiny_crankymoves[7]; // See "dk_crankymoves"
-# /* 0x0C4 */ unsigned char chunky_crankymoves[7]; // See "dk_crankymoves"
-# /* 0x0CB */ unsigned char dk_funkymoves[7]; // See "dk_crankymoves"
-# /* 0x0D2 */ unsigned char diddy_funkymoves[7]; // See "dk_crankymoves"
-# /* 0x0D9 */ unsigned char lanky_funkymoves[7]; // See "dk_crankymoves"
-# /* 0x0E0 */ unsigned char tiny_funkymoves[7]; // See "dk_crankymoves"
-# /* 0x0E7 */ unsigned char chunky_funkymoves[7]; // See "dk_crankymoves"
-# /* 0x0EE */ unsigned char dk_candymoves[7]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
-# /* 0x0F5 */ unsigned char diddy_candymoves[7]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
-# /* 0x0FC */ unsigned char lanky_candymoves[7]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
-# /* 0x103 */ unsigned char tiny_candymoves[7]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
-# /* 0x10A */ unsigned char chunky_candymoves[7]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
-
 moveRandoOffset = 0x0A7
 
 dk_crankymoves = []
@@ -163,6 +147,11 @@ def writeMoveDataToROM(ROM_COPY: LocalROM, arr: list, enable_hints: bool, spoile
             ROM_COPY.writeMultipleBytes(2, 1)
             if x["flag"] == "climbing":
                 ROM_COPY.writeMultipleBytes(11, 1)
+                ROM_COPY.writeMultipleBytes(0, 1)
+                ROM_COPY.writeMultipleBytes(0, 1)
+                ROM_COPY.writeMultipleBytes(0, 1)
+            elif x["flag"] == "cannons":
+                ROM_COPY.writeMultipleBytes(13, 1)
                 ROM_COPY.writeMultipleBytes(0, 1)
                 ROM_COPY.writeMultipleBytes(0, 1)
                 ROM_COPY.writeMultipleBytes(0, 1)

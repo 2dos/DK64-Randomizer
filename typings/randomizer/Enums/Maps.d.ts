@@ -200,4 +200,5 @@ export enum Maps {
     Arcade100 = 219,
     JetpacRocket = 220,
     DKRap = 76,
+    TroffNScoff = 42,
 }

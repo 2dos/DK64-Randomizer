@@ -121,6 +121,7 @@ ColoredBananaGroupList = [
         name="Up the pendulum",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
         locations=[[5, 1.0, 2556, 595, 2323]],
     ),
     ColoredBananaGroup(
@@ -129,6 +130,7 @@ ColoredBananaGroupList = [
         name="Behind clock",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
         locations=[
             [1, 1.0, 2343, 604, 2261],
             [1, 1.0, 2305, 604, 2296],
@@ -143,6 +145,7 @@ ColoredBananaGroupList = [
         name="Cannon trajectory",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
         locations=[[5, 1.0, 2784, 420, 2211], [5, 1.0, 2745, 560, 2248]],
     ),
     ColoredBananaGroup(
@@ -2080,6 +2083,7 @@ ColoredBananaGroupList = [
         name="Day and night switches",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
         locations=[[5, 1.0, 2539, 612, 2388], [5, 1.0, 2538, 612, 2262]],
     ),
     ColoredBananaGroup(
@@ -2962,7 +2966,7 @@ BalloonList = [
     Balloon(
         id=1,
         map_id=Maps.FungiForest,
-        name="Above apple GB",
+        name="Above apple Destination",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
@@ -2971,7 +2975,7 @@ BalloonList = [
     Balloon(
         id=2,
         map_id=Maps.FungiForest,
-        name="By blue wall near Minecart",
+        name="Between blue tunnel and minecart",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
@@ -3002,6 +3006,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
         points=[[2220, 720, 2460], [2220, 720, 2150]],
     ),
     Balloon(
@@ -3016,7 +3021,7 @@ BalloonList = [
     Balloon(
         id=7,
         map_id=Maps.FungiForest,
-        name="Next to conveyor GB box",
+        name="Next to conveyor Check box",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MillArea,
@@ -3025,7 +3030,7 @@ BalloonList = [
     Balloon(
         id=8,
         map_id=Maps.FungiForest,
-        name="Side of Mill where back entrance is",
+        name="Near Back Mill Door",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MillArea,
@@ -3034,7 +3039,7 @@ BalloonList = [
     Balloon(
         id=9,
         map_id=Maps.FungiForest,
-        name="Above back tag barrel (Mill area)",
+        name="Above Hidden Dirt Patch",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MillArea,
@@ -3077,7 +3082,7 @@ BalloonList = [
     Balloon(
         id=13,
         map_id=Maps.FungiForest,
-        name="At first giant mushroom level by rocketbarrel barrel",
+        name="Mushroom Exterior Rocketbarrel",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomBlastLevelExterior,
@@ -3086,7 +3091,7 @@ BalloonList = [
     Balloon(
         id=14,
         map_id=Maps.FungiForest,
-        name="By second level entrance",
+        name="By third level entrance",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomUpperMidExterior,
@@ -3095,7 +3100,7 @@ BalloonList = [
     Balloon(
         id=15,
         map_id=Maps.FungiForest,
-        name="By high W5",
+        name="Upper Level Exterior Mushroom ",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomUpperExterior,
@@ -3104,7 +3109,7 @@ BalloonList = [
     Balloon(
         id=16,
         map_id=Maps.FungiForest,
-        name="By T&S on top of giant mushroom",
+        name="Very Top Mushroom Exterior Rear",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomUpperExterior,
@@ -3113,7 +3118,7 @@ BalloonList = [
     Balloon(
         id=17,
         map_id=Maps.FungiForest,
-        name="By battle crown",
+        name="Mushroom Exterior Night Ladder",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomUpperExterior,
@@ -3122,7 +3127,7 @@ BalloonList = [
     Balloon(
         id=18,
         map_id=Maps.FungiForest,
-        name="By yellow tunnel tree side",
+        name="By yellow tunnel owl side",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.HollowTreeArea,
@@ -3149,7 +3154,7 @@ BalloonList = [
     Balloon(
         id=20,
         map_id=Maps.FungiForest,
-        name="By T&S portal (tree area)",
+        name="By Owl Tree Rocketbarrel",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.HollowTreeArea,
@@ -3158,7 +3163,7 @@ BalloonList = [
     Balloon(
         id=21,
         map_id=Maps.FungiForest,
-        name="Above tree",
+        name="Above Owl Tree",
         speed=5,
         konglist=[Kongs.diddy],
         region=Regions.HollowTreeArea,
@@ -3168,7 +3173,7 @@ BalloonList = [
     Balloon(
         id=22,
         map_id=Maps.ForestMillFront,
-        name="Middle of the room",
+        name="Front Mill: Middle of the room",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GrinderRoom,
@@ -3177,7 +3182,7 @@ BalloonList = [
     Balloon(
         id=23,
         map_id=Maps.ForestGiantMushroom,
-        name="Diddy BP floor",
+        name="Giant Mushroom: Lowest Mesh Ground",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomMiddle,
@@ -3186,7 +3191,7 @@ BalloonList = [
     Balloon(
         id=24,
         map_id=Maps.ForestGiantMushroom,
-        name="Oranges level",
+        name="Giant Mushroom: Middle Mesh Ground",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomUpperVineFloor,
@@ -3195,7 +3200,7 @@ BalloonList = [
     Balloon(
         id=25,
         map_id=Maps.ForestMillBack,
-        name="Middle of room",
+        name="Rear Mill: Middle of room",
         speed=5,
         konglist=[Kongs.tiny, Kongs.chunky],
         region=Regions.MillChunkyTinyArea,
@@ -3204,7 +3209,7 @@ BalloonList = [
     Balloon(
         id=26,
         map_id=Maps.FungiForest,
-        name="In front of Snide (Diddy)",
+        name="In front of Day Gated Shop",
         speed=9,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MillArea,
@@ -3214,7 +3219,7 @@ BalloonList = [
     Balloon(
         id=27,
         map_id=Maps.FungiForest,
-        name="Above Tiny's blueprint (Tiny)",
+        name="Lower Mushroom Exterior",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomLowerExterior,
@@ -3224,7 +3229,7 @@ BalloonList = [
     Balloon(
         id=28,
         map_id=Maps.FungiForest,
-        name="Behind Diddy's barn (Donkey)",
+        name="Behind Diddy's barn",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MillArea,
@@ -3234,7 +3239,7 @@ BalloonList = [
     Balloon(
         id=29,
         map_id=Maps.FungiForest,
-        name="Above Chunky's blueprint (Chunky)",
+        name="Upper Mushroom Exterior",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomNightExterior,
@@ -3244,7 +3249,7 @@ BalloonList = [
     Balloon(
         id=30,
         map_id=Maps.FungiForest,
-        name="By DK's blueprint (Tiny)",
+        name="Behind Thornvine Barn",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.ThornvineArea,
@@ -3254,7 +3259,7 @@ BalloonList = [
     Balloon(
         id=31,
         map_id=Maps.ForestWinchRoom,
-        name="In winch room (Diddy)",
+        name="Inside winch room",
         speed=7,
         konglist=[Kongs.diddy],
         region=Regions.WinchRoom,
@@ -3264,7 +3269,7 @@ BalloonList = [
     Balloon(
         id=32,
         map_id=Maps.ForestMillFront,
-        name="In DK's lever room (Donkey)",
+        name="Front Mill: Inside Grab Room",
         speed=7,
         konglist=[Kongs.donkey],
         region=Regions.GrinderRoom,
@@ -3275,7 +3280,7 @@ BalloonList = [
     Balloon(
         id=33,
         map_id=Maps.ForestGiantMushroom,
-        name="Top of giant mushroom interior (Lanky)",
+        name="Upper Mushroom Interior",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomUpper,
@@ -3285,7 +3290,7 @@ BalloonList = [
     Balloon(
         id=34,
         map_id=Maps.ForestGiantMushroom,
-        name="Bottom of giant mushroom (Lanky)",
+        name="Lower Mushroom Interior",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomLower,
@@ -3295,7 +3300,7 @@ BalloonList = [
     Balloon(
         id=35,
         map_id=Maps.ForestChunkyFaceRoom,
-        name="Chunky's face puzzle room (Chunky)",
+        name="Face Puzzle",
         speed=10,
         konglist=[Kongs.chunky],
         region=Regions.MushroomChunkyRoom,
@@ -3337,6 +3342,7 @@ BalloonList = [
         speed=12,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
+        logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
         points=[[2626, 745, 2325], [2470, 745, 2325], [2471, 745, 2325]],
     ),
     Balloon(
@@ -3361,7 +3367,7 @@ BalloonList = [
     Balloon(
         id=42,
         map_id=Maps.FungiForest,
-        name="Minecart well",
+        name="Minecart Entrance",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
@@ -3388,7 +3394,7 @@ BalloonList = [
     Balloon(
         id=45,
         map_id=Maps.FungiForest,
-        name="Front mill front door to attic",
+        name="Above Mill Attic Entrance",
         speed=10,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MillArea,
@@ -3419,12 +3425,13 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GiantMushroomArea,
+        item_logic=lambda l: l.swim,
         points=[[1034, 279, 1453], [1232, 248, 1324], [1358, 270, 1076], [1162, 282, 1236]],
     ),
     Balloon(
         id=49,
         map_id=Maps.FungiForest,
-        name="Around mushroom near rocketbarrel (mushroom side)",
+        name="Around mushroom near rocketbarrel",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GiantMushroomArea,
@@ -3460,16 +3467,17 @@ BalloonList = [
     Balloon(
         id=53,
         map_id=Maps.ForestAnthill,
-        name="Around the cannon",
+        name="Anthill: Around the cannon",
         speed=5,
         konglist=[Kongs.tiny],
         region=Regions.Anthill,
         points=[[499, 277, 671], [440, 262, 864], [324, 285, 731]],
+        banned_when_item_rando=True, # Over Pit
     ),
     Balloon(
         id=54,
         map_id=Maps.ForestThornvineBarn,
-        name="Ladder side",
+        name="Thornvine: Ladder side",
         speed=8,
         konglist=[Kongs.donkey],
         region=Regions.ThornvineBarn,
@@ -3478,7 +3486,7 @@ BalloonList = [
     Balloon(
         id=55,
         map_id=Maps.ForestGiantMushroom,
-        name="Around the vines to night door",
+        name="Giant Mushroom: Around the vines to night door",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomUpperMid,
@@ -3487,7 +3495,7 @@ BalloonList = [
     Balloon(
         id=56,
         map_id=Maps.ForestGiantMushroom,
-        name="Behind the highest ladder",
+        name="Giant Mushroom: Behind the highest ladder",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomUpper,
@@ -3496,7 +3504,7 @@ BalloonList = [
     Balloon(
         id=57,
         map_id=Maps.ForestLankyZingersRoom,
-        name="High up",
+        name="Lanky Zinger Room: High up",
         speed=3,
         konglist=[Kongs.lanky],
         region=Regions.MushroomLankyZingersRoom,
@@ -3505,7 +3513,7 @@ BalloonList = [
     Balloon(
         id=58,
         map_id=Maps.ForestMillAttic,
-        name="Enemy hole",
+        name="Mill Attic: Enemy hole",
         speed=9,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MillAttic,
@@ -3514,7 +3522,7 @@ BalloonList = [
     Balloon(
         id=59,
         map_id=Maps.ForestMillFront,
-        name="Wooden wall",
+        name="Front Mill: Wooden wall",
         speed=9,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GrinderRoom,
@@ -3523,7 +3531,7 @@ BalloonList = [
     Balloon(
         id=60,
         map_id=Maps.ForestMillBack,
-        name="Back corner",
+        name="Rear Mill: Back corner",
         speed=6,
         konglist=[Kongs.tiny, Kongs.chunky],
         region=Regions.MillChunkyTinyArea,

@@ -9,6 +9,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Plandomizer import GetItemsFromPlandoItem, PlandoItems
 from randomizer.Enums.Settings import (
     ClimbingStatus,
+    CannonStatus,
     MoveRando,
     ShockwaveStatus,
     ShuffleLoadingZones,
@@ -99,6 +100,8 @@ def PlaceConstants(spoiler):
             typesOfItemsShuffled.append(Types.TrainingBarrel)
         if settings.climbing_status == ClimbingStatus.shuffled:
             typesOfItemsShuffled.append(Types.Climbing)
+        if settings.cannon_status == CannonStatus.shuffled:
+            typesOfItemsShuffled.append(Types.Cannons)
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
         typesOfItemsShuffled.append(Types.Key)
     typesOfItemsShuffled.extend(settings.shuffled_location_types)
@@ -118,7 +121,7 @@ def PlaceConstants(spoiler):
         if spoiler.LocationList[location].type in typesOfItemsNotShuffled or location in unshuffled_bananas:
             spoiler.LocationList[location].PlaceDefaultItem(spoiler)
             # If we're placing a vanilla training move, we have to make the location available
-            if spoiler.LocationList[location].type in (Types.TrainingBarrel, Types.Climbing, Types.PreGivenMove):
+            if spoiler.LocationList[location].type in (Types.TrainingBarrel, Types.Climbing, Types.Cannons, Types.PreGivenMove):
                 spoiler.LocationList[location].inaccessible = False
         else:
             spoiler.LocationList[location].constant = False
@@ -224,6 +227,7 @@ def AllItemsUnrestricted(settings):
     allItems.extend(JunkSharedMoves)
     allItems.extend(TrainingBarrelAbilities().copy())
     allItems.extend(ClimbingAbilities().copy())
+    allItems.extend(CannonAbilities().copy())
     if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
         allItems.append(Items.Camera)
         allItems.append(Items.Shockwave)
@@ -234,6 +238,7 @@ def AllItemsUnrestricted(settings):
     allItems.extend(FunkyItems())
     allItems.extend(CandyItems())
     allItems.extend(SnideItems())
+    allItems.extend(TimeItems())
     allItems.extend(Photos())
     return allItems
 
@@ -269,6 +274,10 @@ def AllItems(settings):
         allItems.extend(HalfMedalItems())
     if Types.BoulderItem in settings.shuffled_location_types:
         allItems.extend(BoulderItems())
+    if Types.Breakable in settings.shuffled_location_types:
+        allItems.extend(BreakableItems())
+    if Types.Balloon in settings.shuffled_location_types:
+        allItems.extend(BalloonItems())
     if Types.Hint in settings.shuffled_location_types:
         allItems.extend(HintItems())
     if Types.Enemies in settings.shuffled_location_types:
@@ -281,6 +290,8 @@ def AllItems(settings):
         allItems.extend(CandyItems())
     if Types.Snide in settings.shuffled_location_types:
         allItems.extend(SnideItems())
+    if Types.FungiTime in settings.shuffled_location_types:
+        allItems.extend(TimeItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems(settings))
     filler_types = [
@@ -300,6 +311,8 @@ def AllItems(settings):
             allItems.extend(TrainingBarrelAbilities().copy())
         if settings.climbing_status == ClimbingStatus.shuffled:
             allItems.extend(ClimbingAbilities().copy())
+        if settings.cannon_status == CannonStatus.shuffled:
+            allItems.extend(CannonAbilities().copy())
         if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
             allItems.append(Items.Camera)
             allItems.append(Items.Shockwave)
@@ -341,6 +354,10 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(HalfMedalItems())
     if Types.BoulderItem in settings.shuffled_location_types:
         allItems.extend(BoulderItems())
+    if Types.Breakable in settings.shuffled_location_types:
+        allItems.extend(BreakableItems())
+    if Types.Balloon in settings.shuffled_location_types:
+        allItems.extend(BalloonItems())
     if Types.Hint in settings.shuffled_location_types:
         allItems.extend(HintItems())
     if Types.Enemies in settings.shuffled_location_types:
@@ -353,6 +370,8 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(CandyItems())
     if Types.Snide in settings.shuffled_location_types:
         allItems.extend(SnideItems())
+    if Types.FungiTime in settings.shuffled_location_types:
+        allItems.extend(TimeItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems(settings))
     filler_types = [
@@ -493,6 +512,11 @@ def ClimbingAbilities():
     return [Items.Climbing]
 
 
+def CannonAbilities():
+    """Return all cannon abilities."""
+    return [Items.Cannons]
+
+
 def Photos():
     """Return all photo items."""
     return [
@@ -551,6 +575,8 @@ def Upgrades(settings):
     # Add climbing to item pool if shuffled
     if settings.climbing_status == ClimbingStatus.shuffled:
         upgrades.extend(ClimbingAbilities())
+    if settings.cannon_status == CannonStatus.shuffled:
+        upgrades.extend(CannonAbilities())
     # Add either progressive upgrade items or individual ones depending on settings
     slam_count = 3
     if settings.start_with_slam:
@@ -679,6 +705,13 @@ def BoulderItems():
     """Return a list of boulder items to be placed."""
     return []
 
+def BreakableItems():
+    """Return a list of breakable items to be placed."""
+    return []
+
+def BalloonItems():
+    """Return a list of balloon items to be placed."""
+    return []
 
 def EnemyItems():
     """Return a list of No Items to be placed."""
@@ -850,6 +883,14 @@ def HintItems():
     ]
 
 
+def TimeItems():
+    """Return a list of time items to be placed."""
+    return [
+        Items.Day,
+        Items.Night,
+    ]
+
+
 def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
     """Return a list of all items that will be assumed for immediate item placement."""
     itemPool = []
@@ -874,6 +915,8 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(TrainingBarrelAbilities())
     if Types.Climbing in unplacedTypes:
         itemPool.extend(ClimbingAbilities())
+    if Types.Cannons in unplacedTypes:
+        itemPool.extend(CannonAbilities())
     if Types.Kong in unplacedTypes:
         itemPool.extend(Kongs(settings))
     if Types.Medal in unplacedTypes:
@@ -892,6 +935,10 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(HalfMedalItems())
     if Types.BoulderItem in unplacedTypes:
         itemPool.extend(BoulderItems())
+    if Types.Balloon in unplacedTypes:
+        itemPool.extend(BalloonItems())
+    if Types.Breakable in unplacedTypes:
+        itemPool.extend(BreakableItems())
     if Types.Enemies in unplacedTypes:
         itemPool.extend(EnemyItems())
     if Types.Cranky in unplacedTypes:
@@ -902,6 +949,8 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(CandyItems())
     if Types.Snide in unplacedTypes:
         itemPool.extend(SnideItems())
+    if Types.FungiTime in unplacedTypes:
+        itemPool.extend(TimeItems())
     # Never logic-affecting items
     # if Types.FakeItem in unplacedTypes:
     #     itemPool.extend(FakeItems())
@@ -915,6 +964,8 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
             itemPool.extend(TrainingBarrelAbilities().copy())
         if settings.climbing_status == ClimbingStatus.shuffled:
             itemPool.extend(ClimbingAbilities().copy())
+        if settings.cannon_status == CannonStatus.shuffled:
+            itemPool.extend(CannonAbilities().copy())
     # With a list of specifically placed items, we can't assume those
     for item in placed_items:
         if item in itemPool:

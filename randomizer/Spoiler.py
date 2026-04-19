@@ -19,7 +19,6 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
     BLockerSetting,
-    CBRequirement,
     DKPortalRando,
     GlitchesSelected,
     LogicType,
@@ -109,6 +108,7 @@ class Spoiler:
         self.location_data = {}
         self.enemy_replacements = []
         self.cb_placements = []
+        self.balloon_placement = []
         self.LogicVariables = LogicVarHolder(self)
         self.RegionList = deepcopy(RegionsOriginal)
         self.CollectibleRegions = deepcopy(CollectibleRegionsOriginal)
@@ -269,6 +269,7 @@ class Spoiler:
             Types.Shockwave: "Moves",
             Types.TrainingBarrel: "Moves",
             Types.Climbing: "Moves",
+            Types.Cannons: "Moves",
             Types.Banana: "Golden Bananas",
             Types.FillerBanana: "Golden Bananas",
             Types.Blueprint: "Blueprints",
@@ -291,12 +292,15 @@ class Spoiler:
             Types.CrateItem: "Melon Crates",
             Types.HalfMedal: "Half-Medals",
             Types.BoulderItem: "Holdable Objects",
+            Types.Breakable: "Breakable Containers",
+            Types.Balloon: "Balloons",
             Types.Enemies: "Enemy Drops",
             Types.Cranky: "Shop Owners",
             Types.Funky: "Shop Owners",
             Types.Candy: "Shop Owners",
             Types.Snide: "Shop Owners",
             Types.Hint: "Hints",
+            Types.FungiTime: "Fungi Time",
         }
         if item_type in type_dict:
             return type_dict[item_type]
@@ -544,6 +548,8 @@ class Spoiler:
         humanspoiler["End Game"]["K. Rool"]["K Rool Phases"] = krool_order
         humanspoiler["End Game"]["K. Rool"]["Chunky Phase Slam Requirement"] = self.settings.chunky_phase_slam_req_internal.name
         humanspoiler["End Game"]["K. Rool"]["DK Phase requires Baboon Blast"] = self.settings.cannons_require_blast
+        if self.settings.ship_location_rando:
+            humanspoiler["End Game"]["K. Rool"]["K Rool Location"] = self.ship_name
 
         helm_default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
         helm_new_order = []
@@ -610,9 +616,12 @@ class Spoiler:
             "Junk Items": {},
             "Melon Crates": {},
             "Holdable Objects": {},
+            "Breakable Containers": {},
+            "Balloons": {},
             "Hints": {},
             "Enemy Drops": {},
             "Shop Owners": {},
+            "Fungi Time": {},
             "Photos": {},
             "Empty": {},
             "Unknown": {},
@@ -657,6 +666,7 @@ class Spoiler:
                 Types.Candy,
                 Types.Funky,
                 Types.Snide,
+                Types.FungiTime,
             ) and location.item in (None, Items.NoItem):
                 continue
             if location.type == Types.HalfMedal and Types.HalfMedal not in self.settings.shuffled_location_types:
@@ -692,10 +702,12 @@ class Spoiler:
                 if "Isles" in location.name or location.type in (
                     Types.PreGivenMove,
                     Types.Climbing,
+                    Types.Cannons,
                     Types.Cranky,
                     Types.Funky,
                     Types.Candy,
                     Types.Snide,
+                    Types.FungiTime,
                 ):
                     level = "DK Isles"
                 elif "Japes" in location.name:
@@ -832,6 +844,9 @@ class Spoiler:
                     SwitchType.PadMove: "Simian Spring Pad",
                     SwitchType.MiscActivator: "Gong",
                     SwitchType.PushableButton: "Charge Button",
+                    SwitchType.PunchGrate: "Charge Grate",
+                    SwitchType.IceWall: "Charge Wall",
+                    SwitchType.Gong: "Charge Gong",
                     SwitchType.GunInstrumentCombo: "Peanut Switch and Guitar Pad",
                 },
                 Kongs.lanky: {
@@ -854,6 +869,9 @@ class Spoiler:
                     SwitchType.InstrumentPad: "Triangle Pad",
                     SwitchType.PadMove: "Gorilla Gone Pad",
                     SwitchType.PushableButton: "Punch Button",
+                    SwitchType.PunchGrate: "Punch Grate",
+                    SwitchType.IceWall: "Punch Wall",
+                    SwitchType.Gong: "Punch Gong",
                     SwitchType.GunInstrumentCombo: "Pineapple Switch and Triangle Pad",
                 },
                 Kongs.any: {

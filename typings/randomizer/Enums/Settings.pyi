@@ -159,6 +159,10 @@ class ClimbingStatus(IntEnum):
     normal = 0
     shuffled = 1
 
+class CannonStatus(IntEnum):
+    normal = 0
+    shuffled = 1
+
 class GlitchesSelected(IntEnum):
     monkey_maneuvers = 1
     b_locker_skips = 2
@@ -298,6 +302,11 @@ class ItemRandoListSelected(IntEnum):
     gauntletbanana = 46
     blueprintbanana = 47
     sniderewards = 48
+    fungitime = 49
+    breakable = 50
+    dummyitem_breakable = 51
+    balloon = 52
+    dummyitem_balloon = 53
 
 class ItemRandoFiller(IntEnum):
     junkitem = 1
@@ -338,6 +347,8 @@ class KongModels(IntEnum):
     candy = 6
     funky = 7
     disco_donkey = 8
+    robokrem = 9
+    rabbit = 10
 
 class KongModelMode(IntEnum):
     none = 0
@@ -519,6 +530,7 @@ class ShufflePortLocations(IntEnum):
     on = 4
 
 class SlamRequirement(IntEnum):
+    no_slam = 0
     green = 1
     blue = 2
     red = 3
@@ -903,6 +915,17 @@ class SettingsStringEnum(IntEnum):
     bosses_selected = 296
     ice_trap_model_v2 = 297
     progressive_hint_algorithm = 298
+    switchsanity_switch_factory_dark_grate = 299
+    switchsanity_switch_factory_bonus_grate = 300
+    switchsanity_switch_factory_monster_grate = 301
+    switchsanity_switch_caves_gone_cave = 302
+    switchsanity_switch_caves_snide_cave = 303
+    switchsanity_switch_caves_boulder_cave = 304
+    switchsanity_switch_caves_lobby_blueprint = 305
+    switchsanity_switch_caves_lobby_lava = 306
+    switchsanity_switch_aztec_gong_tower = 307
+    switchsanity_switch_aztec_lobby_gong = 308
+    ship_location_rando = 309
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1296,6 +1319,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.alt_minecart_mayhem: SettingsStringDataType.bool,
     SettingsStringEnum.less_fragile_boulders: SettingsStringDataType.bool,
     SettingsStringEnum.no_consumable_upgrades: SettingsStringDataType.bool,
+    SettingsStringEnum.ship_location_rando: SettingsStringDataType.bool,
     SettingsStringEnum.prog_slam_level_1: SlamRequirement,
     SettingsStringEnum.prog_slam_level_2: SlamRequirement,
     SettingsStringEnum.prog_slam_level_3: SlamRequirement,
@@ -1331,6 +1355,16 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.switchsanity_switch_aztec_free_tiny: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_aztec_free_lanky: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_factory_free_kong: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_dark_grate: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_bonus_grate: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_monster_grate: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_gone_cave: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_snide_cave: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_boulder_cave: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_lobby_blueprint: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_lobby_lava: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_gong_tower: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_lobby_gong: SwitchsanityKong,
     SettingsStringEnum.trap_weight_bubble: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_reverse: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_slow: SettingsStringDataType.int8,
@@ -1414,37 +1448,37 @@ SettingsStringListTypeMap: dict = {
 }
 
 SettingsStringIntRangeMap: dict = {
-    SettingsStringEnum.blocker_0: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_1: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_2: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_3: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_4: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_5: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_6: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_7: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_text: {"max": 255, "min": 0},
-    SettingsStringEnum.coin_door_item_count: {"max": 255, "min": 0},
-    SettingsStringEnum.crown_door_item_count: {"max": 255, "min": 0},
-    SettingsStringEnum.helm_phase_count: {"max": 5, "min": 0},
-    SettingsStringEnum.krool_key_count: {"max": 8, "min": 0},
-    SettingsStringEnum.krool_phase_count: {"max": 5, "min": 0},
-    SettingsStringEnum.medal_cb_req: {"max": 100, "min": 0},
-    SettingsStringEnum.most_snide_rewards: {"max": 40, "min": 0},
-    SettingsStringEnum.medal_requirement: {"max": 255, "min": 0},
-    SettingsStringEnum.mermaid_gb_pearls: {"max": 255, "min": 0},
-    SettingsStringEnum.rareware_gb_fairies: {"max": 255, "min": 0},
-    SettingsStringEnum.starting_kongs_count: {"max": 5, "min": 0},
-    SettingsStringEnum.starting_moves_count: {"max": 40, "min": 0},
-    SettingsStringEnum.troff_0: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_1: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_2: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_3: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_4: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_5: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_6: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_7: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_text: {"max": 500, "min": 0},
-    SettingsStringEnum.progressive_hint_text: {"max": 201, "min": 0},
-    SettingsStringEnum.progressive_hint_count: {"max": 3500, "min": 0},
-    SettingsStringEnum.win_condition_count: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_0: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_1: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_2: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_3: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_4: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_5: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_6: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_7: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_text: {'max': 255, 'min': 0},
+    SettingsStringEnum.coin_door_item_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.crown_door_item_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.helm_phase_count: {'max': 5, 'min': 0},
+    SettingsStringEnum.krool_key_count: {'max': 8, 'min': 0},
+    SettingsStringEnum.krool_phase_count: {'max': 5, 'min': 0},
+    SettingsStringEnum.medal_cb_req: {'max': 100, 'min': 0},
+    SettingsStringEnum.most_snide_rewards: {'max': 40, 'min': 0},
+    SettingsStringEnum.medal_requirement: {'max': 255, 'min': 0},
+    SettingsStringEnum.mermaid_gb_pearls: {'max': 255, 'min': 0},
+    SettingsStringEnum.rareware_gb_fairies: {'max': 255, 'min': 0},
+    SettingsStringEnum.starting_kongs_count: {'max': 5, 'min': 0},
+    SettingsStringEnum.starting_moves_count: {'max': 40, 'min': 0},
+    SettingsStringEnum.troff_0: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_1: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_2: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_3: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_4: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_5: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_6: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_7: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_text: {'max': 500, 'min': 0},
+    SettingsStringEnum.progressive_hint_text: {'max': 201, 'min': 0},
+    SettingsStringEnum.progressive_hint_count: {'max': 3500, 'min': 0},
+    SettingsStringEnum.win_condition_count: {'max': 255, 'min': 0},
 }

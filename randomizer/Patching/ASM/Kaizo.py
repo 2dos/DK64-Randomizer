@@ -93,6 +93,8 @@ def mirrorMode(ROM_COPY: LocalROM, settings, offset_dict: dict):
 
 def shuffleJetpacEnemies(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to shuffling Jetpac enemies."""
+    if settings.jetpac_custom_minigame is not None:
+        return
     if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies):
         order = settings.jetpac_enemy_order
         functions = [

@@ -4,6 +4,10 @@ This module contains all the settings configuration logic
 that was previously in the generate_early method.
 """
 
+from typing import Any
+from random import Random
+
+from BaseClasses import MultiWorld
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
@@ -34,7 +38,6 @@ from randomizer.Enums.Settings import (
     MiscChangesSelected,
     ProgressiveHintItem,
     PuzzleRando,
-    RandomPrices,
     RandomStartingRegion,
     RandomRequirement,
     RemovedBarriersSelected,
@@ -45,7 +48,6 @@ from randomizer.Enums.Settings import (
     SwitchsanityKong,
     TricksSelected,
     TroffSetting,
-    WinConditionComplex,
     WrinklyHints,
     KroolInBossPool,
 )
@@ -58,12 +60,22 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Switches import Switches
 from randomizer.Lists.Switches import SwitchInfo
-from archipelago.Options import Goal, SwitchSanity, SelectStartingKong, GalleonWaterLevel
+from archipelago.Options import (
+    Goal,
+    SwitchsanityOptions,
+    SelectStartingKong,
+    GalleonWaterLevel,
+    KrushaRandom,
+    KroolShuffle,
+    DKPortalLocationRando,
+    RandomStartingLocation,
+    DK64Options,
+)
 from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity
 from archipelago.Logic import logic_item_name_to_id
 
 
-def get_default_settings() -> dict:
+def get_default_settings() -> dict[str, Any]:
     """Get the default settings dictionary."""
     return {
         "activate_all_bananaports": ActivateAllBananaports.isles,
@@ -99,7 +111,6 @@ def get_default_settings() -> dict:
         "boss_location_rando": True,
         "cannons_require_blast": True,
         "cb_medal_behavior_new": CBRequirement.pre_selected,
-        "cb_rando_enabled": False,
         "chunky_phase_slam_req": SlamRequirement.green,
         "coin_door_item": HelmDoorItem.opened,
         "coin_door_item_count": 1,
@@ -107,7 +118,6 @@ def get_default_settings() -> dict:
         "crown_door_item": HelmDoorItem.opened,
         "crown_door_item_count": 1,
         "crown_enemy_difficulty": CrownEnemyDifficulty.easy,
-        "crown_placement_rando": False,
         "damage_amount": DamageAmount.default,
         "decouple_item_rando": False,
         "dim_solved_hints": False,
@@ -171,6 +181,8 @@ def get_default_settings() -> dict:
             ItemRandoListSelected.halfmedal,
             ItemRandoListSelected.enemies,
             ItemRandoListSelected.boulderitem,
+            ItemRandoListSelected.breakable,
+            ItemRandoListSelected.balloon,
             ItemRandoListSelected.shop,
             ItemRandoListSelected.bfi_gift,
             ItemRandoListSelected.banana_checks,
@@ -268,9 +280,7 @@ def get_default_settings() -> dict:
         "progressive_hint_item": ProgressiveHintItem.off,
         "puzzle_rando_difficulty": PuzzleRando.medium,
         "race_coin_rando": False,
-        "random_crates": False,
         "random_fairies": False,
-        "random_patches": False,
         "random_starting_region": False,
         "random_starting_region_new": RandomStartingRegion.off,
         "randomize_enemy_sizes": False,
@@ -318,30 +328,129 @@ def get_default_settings() -> dict:
         "wrinkly_available": True,
         "wrinkly_hints": WrinklyHints.standard,
         "wrinkly_location_rando": False,
+        "cb_rando_enabled": False,
+        "cb_rando_list_selected": [],
     }
 
 
-def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None:
-    """Apply Archipelago-specific settings modifications."""
-    # Core Archipelago settings
+def handle_fake_generation_settings(settings: Settings, multiworld: MultiWorld) -> None:
+    """Handle settings for fake generation (UT mode)."""
+    if hasattr(multiworld, "generation_is_fake"):
+        if hasattr(multiworld, "re_gen_passthrough"):
+            if "Donkey Kong 64" in multiworld.re_gen_passthrough:
+                passthrough = multiworld.re_gen_passthrough["Donkey Kong 64"]
+                settings.level_order = passthrough["LevelOrder"]
+
+                # Store custom location names for later restoration (after spoiler is created)
+                if passthrough.get("CustomLocationNames"):
+                    settings.ut_custom_location_names = passthrough["CustomLocationNames"]
+
+                # Switch logic lifted out of level shuffle due to static levels for UT
+                if settings.alter_switch_allocation:
+                    for x in range(8):
+                        settings.switch_allocation[x] = passthrough["SlamLevels"][x]
+
+                settings.starting_kong_list = passthrough["StartingKongs"]
+                settings.starting_kong = settings.starting_kong_list[0]  # fake a starting kong so that we don't force a different kong
+                settings.medal_requirement = passthrough["JetpacReq"]
+                settings.rareware_gb_fairies = passthrough["FairyRequirement"]
+                settings.BLockerEntryItems = passthrough["BLockerEntryItems"]
+                settings.BLockerEntryCount = passthrough["BLockerEntryCount"]
+                settings.medal_cb_req = passthrough["MedalCBRequirement"]
+                settings.medal_cb_req_level = [settings.medal_cb_req] * 8
+
+                for level, value in enumerate(passthrough["MedalCBRequirementLevel"]):
+                    settings.medal_cb_req_level[Levels(level)] = int(value)
+
+                settings.mermaid_gb_pearls = passthrough["MermaidPearls"]
+                settings.BossBananas = passthrough["BossBananas"]
+                settings.boss_maps = passthrough["BossMaps"]
+                settings.boss_kongs = passthrough["BossKongs"]
+                settings.lanky_freeing_kong = passthrough["LankyFreeingKong"]
+                settings.helm_order = passthrough["HelmOrder"]
+
+                # Krusha kong models
+                if "KongModels" in passthrough:
+                    kong_models = passthrough["KongModels"]
+                    settings.kong_model_dk = KongModels[kong_models.get("DK", "default")]
+                    settings.kong_model_diddy = KongModels[kong_models.get("Diddy", "default")]
+                    settings.kong_model_lanky = KongModels[kong_models.get("Lanky", "default")]
+                    settings.kong_model_tiny = KongModels[kong_models.get("Tiny", "default")]
+                    settings.kong_model_chunky = KongModels[kong_models.get("Chunky", "default")]
+                settings.logic_type = LogicType[passthrough["LogicType"]]
+                settings.tricks_selected = passthrough["TricksSelected"]
+                settings.glitches_selected = passthrough["GlitchesSelected"]
+                settings.open_lobbies = passthrough["OpenLobbies"]
+                settings.starting_key_list = passthrough["StartingKeyList"]
+                settings.galleon_water = GalleonWaterSetting[passthrough["GalleonWater"]]
+                settings.galleon_water_internal = GalleonWaterSetting[passthrough["GalleonWater"]]
+
+                # There's multiple sources of truth for helm order.
+                settings.helm_donkey = 0 in settings.helm_order
+                settings.helm_diddy = 4 in settings.helm_order
+                settings.helm_lanky = 3 in settings.helm_order
+                settings.helm_tiny = 2 in settings.helm_order
+                settings.helm_chunky = 1 in settings.helm_order
+
+                # Switchsanity
+                for switch, data in passthrough["SwitchSanity"].items():
+                    needed_kong = Kongs[data["kong"]]
+                    switch_type = SwitchType[data["type"]]
+                    settings.switchsanity_data[Switches[switch]] = SwitchInfo(switch, needed_kong, switch_type, 0, 0, [])
+
+                if passthrough["Shopkeepers"]:
+                    settings.shuffled_location_types.append(Types.Cranky)
+                    settings.shuffled_location_types.append(Types.Funky)
+                    settings.shuffled_location_types.append(Types.Candy)
+                    settings.shuffled_location_types.append(Types.Snide)
+
+                # Restore starting region
+                if passthrough.get("StartingRegion"):
+                    from randomizer.Enums.Regions import Regions
+                    from randomizer.Enums.Maps import Maps as DK64Maps
+
+                    starting_region_data = passthrough["StartingRegion"]
+                    # Ensure all fields exist and are not None
+                    if all(key in starting_region_data and starting_region_data[key] is not None for key in ["region", "map", "exit", "region_name", "exit_name"]):
+                        try:
+                            settings.starting_region = {
+                                "region": Regions[starting_region_data["region"]],
+                                "map": DK64Maps[starting_region_data["map"]],
+                                "exit": starting_region_data["exit"],
+                                "region_name": starting_region_data["region_name"],
+                                "exit_name": starting_region_data["exit_name"],
+                            }
+                        except (KeyError, TypeError) as e:
+                            # If there's an error converting the data, just skip it
+                            pass
+
+                # Store DK Portal locations for later restoration (after spoiler is created)
+                if passthrough.get("DKPortalLocations"):
+                    settings.ut_dk_portal_locations = passthrough["DKPortalLocations"]
+
+
+def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Random) -> Settings:
+    """Fill and configure all DK64 settings."""
+    # Start with default settings
+    settings_dict: dict[str, Any] = get_default_settings()
+
+    # Apply Archipelago-specific settings
     settings_dict["krool_access"] = True
     settings_dict["archipelago"] = True
     settings_dict["starting_kongs_count"] = options.starting_kong_count.value
     settings_dict["open_lobbies"] = options.open_lobbies.value
-    if options.krool_in_boss_pool.value:
-        settings_dict["krool_in_boss_pool_v2"] = KroolInBossPool.full_shuffle
-    else:
-        settings_dict["krool_in_boss_pool_v2"] = KroolInBossPool.off
+    match options.krool_in_boss_pool.value:
+        case KroolShuffle.option_off:
+            settings_dict["krool_in_boss_pool_v2"] = KroolInBossPool.off
+        case KroolShuffle.option_krool_only:
+            settings_dict["krool_in_boss_pool_v2"] = KroolInBossPool.krool_only
+        case KroolShuffle.option_full_shuffle:
+            settings_dict["krool_in_boss_pool_v2"] = KroolInBossPool.full_shuffle
     settings_dict["helm_phase_count"] = options.helm_phase_count.value
     settings_dict["krool_phase_count"] = options.krool_phase_count.value
     settings_dict["level_randomization"] = LevelRandomization.loadingzone if options.loading_zone_rando.value else LevelRandomization.level_order_complex
-
-    # Medal distribution settings
-    if options.medal_distribution.value == 0:  # pre_selected
+    if options.medal_distribution.value in (0, 4):  # pre_selected or progressive
         settings_dict["medal_cb_req"] = options.cbs_required_for_medal.value
-    elif options.medal_distribution.value == 4:  # progressive
-        settings_dict["medal_cb_req"] = options.cbs_required_for_medal.value
-
     settings_dict["medal_requirement"] = options.jetpac_requirement.value
     settings_dict["rareware_gb_fairies"] = options.fairies_required_for_bfi.value
     settings_dict["mirror_mode"] = options.mirror_mode.value
@@ -354,18 +463,36 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     if options.enable_cutscenes.value:
         settings_dict["more_cutscene_skips"] = ExtraCutsceneSkips.press
     settings_dict["alt_minecart_mayhem"] = options.alternate_minecart_mayhem.value
-    if options.galleon_water_level == GalleonWaterLevel.option_lowered:
-        settings_dict["galleon_water"] = GalleonWaterSetting.lowered
-    elif options.galleon_water_level == GalleonWaterLevel.option_raised:
-        settings_dict["galleon_water"] = GalleonWaterSetting.raised
-    else:
-        settings_dict["galleon_water"] = GalleonWaterSetting.vanilla
+    match options.galleon_water_level:
+        case GalleonWaterLevel.option_lowered:
+            settings_dict["galleon_water"] = GalleonWaterSetting.lowered
+        case GalleonWaterLevel.option_raised:
+            settings_dict["galleon_water"] = GalleonWaterSetting.raised
+        case _:
+            settings_dict["galleon_water"] = GalleonWaterSetting.lowered
     settings_dict["no_consumable_upgrades"] = options.remove_bait_potions.value
+    settings_dict["crown_placement_rando"] = options.crown_placement_rando.value
+    settings_dict["random_crates"] = options.random_crates.value
+    settings_dict["random_patches"] = options.random_patches.value
 
+    # Apply switch allocation settings
+    slam_map = {
+        "none": SlamRequirement.no_slam,
+        "green": SlamRequirement.green,
+        "blue": SlamRequirement.blue,
+        "red": SlamRequirement.red,
+    }
+    if options.alter_switch_allocation.value:
+        settings_dict["alter_switch_allocation"] = True
+        # Convert level_1-level_8 to prog_slam_level_1 through prog_slam_level_8
+        for i in range(8):
+            level_key = f"level_{i + 1}"
+            if level_key in options.alter_switch_allocation.value:
+                slam_name = options.alter_switch_allocation.value[level_key]
+                settings_dict[f"prog_slam_level_{i + 1}"] = slam_map.get(slam_name, SlamRequirement.green)
 
-def apply_blocker_settings(settings_dict: dict, options) -> None:
-    """Apply level blocker settings."""
-    blocker_options = [
+    # Apply blocker settings
+    blocker_options: list[int] = [
         options.level_blockers.value.get("level_1", 0),
         options.level_blockers.value.get("level_2", 0),
         options.level_blockers.value.get("level_3", 0),
@@ -375,33 +502,22 @@ def apply_blocker_settings(settings_dict: dict, options) -> None:
         options.level_blockers.value.get("level_7", 0),
         options.level_blockers.value.get("level_8", 64),
     ]
-
-    # Blocker settings - prioritize chaos blockers, then randomization setting
     settings_dict["maximize_helm_blocker"] = options.maximize_level8_blocker.value
-
     if options.enable_chaos_blockers.value:
         settings_dict["blocker_text"] = options.chaos_ratio.value
         settings_dict["blocker_selection_behavior"] = BLockerSetting.chaos
     elif options.randomize_blocker_required_amounts.value:
         settings_dict["blocker_text"] = options.blocker_max.value
         settings_dict["blocker_selection_behavior"] = BLockerSetting.normal_random
-    else:  # randomize_blocker_required_amounts is False and chaos blockers is False
+    else:
         settings_dict["blocker_text"] = options.blocker_max.value
         settings_dict["blocker_selection_behavior"] = BLockerSetting.pre_selected
-        # When using pre-selected, we need to set the blocker values
         for i, blocker in enumerate(blocker_options):
             settings_dict[f"blocker_{i}"] = blocker
 
-
-def apply_item_randomization_settings(settings_dict: dict, options) -> None:
-    """Apply item randomization settings."""
+    # Apply item randomization settings
     settings_dict["item_rando_list_selected"] = []
-
-    # Reset item randomization list to ensure it starts empty
-    settings_dict["item_rando_list_1"] = []
-
-    # Always enabled item categories
-    always_enabled_categories = [
+    settings_dict["item_rando_list_1"] = [
         ItemRandoListSelected.shop,
         ItemRandoListSelected.moves,
         ItemRandoListSelected.banana,
@@ -422,200 +538,231 @@ def apply_item_randomization_settings(settings_dict: dict, options) -> None:
         ItemRandoListSelected.shockwave,
         ItemRandoListSelected.trainingmoves,
     ]
-    settings_dict["item_rando_list_1"].extend(always_enabled_categories)
     settings_dict["decouple_item_rando"] = False
-
-    # Set a default filler list for compatibility with core randomizer
     settings_dict["filler_items_selected"] = [ItemRandoFiller.junkitem]
-
-    # Conditional item categories
     if options.hints_in_item_pool.value:
         settings_dict["item_rando_list_1"].append(ItemRandoListSelected.hint)
     if options.boulders_in_pool.value:
         settings_dict["item_rando_list_1"].append(ItemRandoListSelected.boulderitem)
     if options.dropsanity:
         settings_dict["item_rando_list_1"].append(ItemRandoListSelected.enemies)
-    if options.shopowners_in_pool.value:
-        settings_dict["item_rando_list_1"].append(ItemRandoListSelected.shopowners)
+    settings_dict["item_rando_list_1"].append(ItemRandoListSelected.shopowners)
     if options.half_medals_in_pool.value:
         settings_dict["item_rando_list_1"].append(ItemRandoListSelected.halfmedal)
     if options.snide_turnins_to_pool.value:
         settings_dict["item_rando_list_1"].append(ItemRandoListSelected.blueprintbanana)
+    if options.time_of_day.value:
+        settings_dict["item_rando_list_1"].append(ItemRandoListSelected.fungitime)
 
-
-def apply_hard_mode_settings(settings_dict: dict, options) -> None:
-    """Apply hard mode settings."""
+    # Apply hard mode settings
     settings_dict["hard_mode_selected"] = []
-    hard_mode_mapping = {
-        "hard_enemies": HardModeSelected.hard_enemies,
-        "shuffled_jetpac_enemies": HardModeSelected.shuffled_jetpac_enemies,
-        "strict_helm_timer": HardModeSelected.strict_helm_timer,
-        "donk_in_the_dark_world": HardModeSelected.donk_in_the_dark_world,
-        "donk_in_the_sky": HardModeSelected.donk_in_the_sky,
-    }
-
     for hard in options.hard_mode_selected:
-        if hard in hard_mode_mapping:
-            settings_dict["hard_mode_selected"].append(hard_mode_mapping[hard])
+        match hard:
+            case "hard_enemies":
+                settings_dict["hard_mode_selected"].append(HardModeSelected.hard_enemies)
+            case "shuffled_jetpac_enemies":
+                settings_dict["hard_mode_selected"].append(HardModeSelected.shuffled_jetpac_enemies)
+            case "strict_helm_timer":
+                settings_dict["hard_mode_selected"].append(HardModeSelected.strict_helm_timer)
+            case "donk_in_the_dark_world":
+                settings_dict["hard_mode_selected"].append(HardModeSelected.donk_in_the_dark_world)
+            case "donk_in_the_sky":
+                settings_dict["hard_mode_selected"].append(HardModeSelected.donk_in_the_sky)
+            case "angry_caves":
+                settings_dict["hard_mode_selected"].append(HardModeSelected.angry_caves)
+            case "fast_balloons":
+                settings_dict["hard_mode_selected"].append(HardModeSelected.fast_balloons)
+            case "lower_max_refill_amounts":
+                settings_dict["hard_mode_selected"].append(HardModeSelected.lower_max_refill_amounts)
 
+    # Apply Kong settings
+    import random
 
-def apply_kong_settings(settings_dict: dict, options) -> None:
-    """Apply Kong settings."""
-    # Key settings
     settings_dict["krool_key_count"] = options.pregiven_keys.value
     settings_dict["win_condition_spawns_ship"] = 1 if options.require_beating_krool.value else 0
+    match options.select_starting_kong.value:
+        case SelectStartingKong.option_donkey:
+            settings_dict["starting_kong"] = Kongs.donkey
+        case SelectStartingKong.option_diddy:
+            settings_dict["starting_kong"] = Kongs.diddy
+        case SelectStartingKong.option_lanky:
+            settings_dict["starting_kong"] = Kongs.lanky
+        case SelectStartingKong.option_tiny:
+            settings_dict["starting_kong"] = Kongs.tiny
+        case SelectStartingKong.option_chunky:
+            settings_dict["starting_kong"] = Kongs.chunky
+        case SelectStartingKong.option_any:
+            settings_dict["starting_kong"] = Kongs.any
 
-    # Kong mapping
-    kong_mapping = {
-        SelectStartingKong.option_donkey: Kongs.donkey,
-        SelectStartingKong.option_diddy: Kongs.diddy,
-        SelectStartingKong.option_lanky: Kongs.lanky,
-        SelectStartingKong.option_tiny: Kongs.tiny,
-        SelectStartingKong.option_chunky: Kongs.chunky,
-        SelectStartingKong.option_any: Kongs.any,
+    # Apply individual kong model settings from the kong_models dict
+    kong_model_mapping = {"dk": "kong_model_dk", "diddy": "kong_model_diddy", "lanky": "kong_model_lanky", "tiny": "kong_model_tiny", "chunky": "kong_model_chunky"}
+
+    # Convert string model names to enum values if needed
+    model_name_to_enum = {
+        "default": 0,
+        "disco_chunky": 1,
+        "krusha": 2,
+        "krool_fight": 3,
+        "krool_cutscene": 4,
+        "cranky": 5,
+        "candy": 6,
+        "funky": 7,
+        "disco_donkey": 8,
+        "robokrem": 9,
+        "rabbit": 10,
     }
 
-    settings_dict["starting_kong"] = kong_mapping[options.select_starting_kong.value]
+    for kong, setting_key in kong_model_mapping.items():
+        if kong in options.kong_models.value:
+            model_value = options.kong_models.value[kong]
+            # Convert string to int if needed
+            if isinstance(model_value, str):
+                model_value = model_name_to_enum.get(model_value, 0)
+            settings_dict[setting_key] = KongModels(model_value)
+        else:
+            settings_dict[setting_key] = KongModels.default
 
+    # Then apply krusha settings (only if the individual model is still default)
+    match options.krusha_model_mode.value:
+        case KrushaRandom.option_manual:
+            # Manual krusha assignment is handled via kong_models above
+            pass
+        case KrushaRandom.option_random_1:
+            available: list[str] = [k for k, m in kong_model_mapping.items() if settings_dict[m] == KongModels.default]
+            if available:
+                selected = random.choice(available)
+                if settings_dict[kong_model_mapping[selected]] == KongModels.default:
+                    settings_dict[kong_model_mapping[selected]] = KongModels.krusha
+        case KrushaRandom.option_sometimes_1:
+            if random.random() < 0.5:
+                available = [k for k, m in kong_model_mapping.items() if settings_dict[m] == KongModels.default]
+                if available:
+                    selected = random.choice(available)
+                    if settings_dict[kong_model_mapping[selected]] == KongModels.default:
+                        settings_dict[kong_model_mapping[selected]] = KongModels.krusha
+        case KrushaRandom.option_random_all:
+            for kong, model_key in kong_model_mapping.items():
+                if settings_dict[model_key] == KongModels.default and random.random() < 0.5:
+                    settings_dict[model_key] = KongModels.krusha
 
-def apply_switchsanity_settings(settings_dict: dict, options) -> None:
-    """Apply switchsanity settings."""
-    settings_dict["switchsanity_enabled"] = options.switchsanity.value != SwitchSanity.option_off
+    # Apply starting region, portal, and switchsanity settings
+    match options.random_starting_region.value:
+        case RandomStartingLocation.option_off:
+            settings_dict["random_starting_region_new"] = RandomStartingRegion.off
+        case RandomStartingLocation.option_isles_only:
+            settings_dict["random_starting_region_new"] = RandomStartingRegion.isles_only
+        case RandomStartingLocation.option_all:
+            settings_dict["random_starting_region_new"] = RandomStartingRegion.all
+    match options.dk_portal_location_rando.value:
+        case DKPortalLocationRando.option_off:
+            settings_dict["dk_portal_location_rando_v2"] = DKPortalRando.off
+        case DKPortalLocationRando.option_main_only:
+            settings_dict["dk_portal_location_rando_v2"] = DKPortalRando.main_only
+        case DKPortalLocationRando.option_all:
+            settings_dict["dk_portal_location_rando_v2"] = DKPortalRando.on
+    _kong_value_map = {
+        "donkey": SwitchsanityKong.donkey,
+        "diddy": SwitchsanityKong.diddy,
+        "lanky": SwitchsanityKong.lanky,
+        "tiny": SwitchsanityKong.tiny,
+        "chunky": SwitchsanityKong.chunky,
+        "random": SwitchsanityKong.random,
+        "any": SwitchsanityKong.any,
+    }
+    _gone_value_map = {
+        "bongos": SwitchsanityGone.bongos,
+        "guitar": SwitchsanityGone.guitar,
+        "trombone": SwitchsanityGone.trombone,
+        "sax": SwitchsanityGone.sax,
+        "triangle": SwitchsanityGone.triangle,
+        "lever": SwitchsanityGone.lever,
+        "gong": SwitchsanityGone.gong,
+        "gone_pad": SwitchsanityGone.gone_pad,
+        "random": SwitchsanityGone.random,
+    }
+    _any_switch_enabled = any(v != "off" for v in options.switchsanity.value.values())
+    settings_dict["switchsanity_enabled"] = _any_switch_enabled
+    if _any_switch_enabled:
+        for _switch_key, _switch_value in options.switchsanity.value.items():
+            if _switch_value == "off":
+                continue
+            _full_key = f"switchsanity_switch_{_switch_key}"
+            if _switch_key in SwitchsanityOptions.GONE_SWITCHES:
+                settings_dict[_full_key] = _gone_value_map.get(_switch_value, SwitchsanityGone.random)
+            else:
+                settings_dict[_full_key] = _kong_value_map.get(_switch_value, SwitchsanityKong.random)
 
-    if options.switchsanity.value == SwitchSanity.option_all:
-        # All switches randomized
-        switch_settings = {
-            "switchsanity_switch_isles_to_kroc_top": SwitchsanityKong.random,
-            "switchsanity_switch_isles_helm_lobby": SwitchsanityGone.random,
-            "switchsanity_switch_isles_aztec_lobby_back_room": SwitchsanityKong.random,
-            "switchsanity_switch_isles_fungi_lobby_fairy": SwitchsanityKong.random,
-            "switchsanity_switch_isles_spawn_rocketbarrel": SwitchsanityKong.random,
-            "switchsanity_switch_japes_to_hive": SwitchsanityKong.random,
-            "switchsanity_switch_japes_to_rambi": SwitchsanityKong.random,
-            "switchsanity_switch_japes_to_painting_room": SwitchsanityKong.random,
-            "switchsanity_switch_japes_to_cavern": SwitchsanityKong.random,
-            "switchsanity_switch_japes_free_kong": SwitchsanityKong.random,
-            "switchsanity_switch_aztec_to_kasplat_room": SwitchsanityKong.random,
-            "switchsanity_switch_aztec_llama_front": SwitchsanityKong.random,
-            "switchsanity_switch_aztec_llama_side": SwitchsanityKong.random,
-            "switchsanity_switch_aztec_llama_back": SwitchsanityKong.random,
-            "switchsanity_switch_aztec_sand_tunnel": SwitchsanityKong.random,
-            "switchsanity_switch_aztec_to_connector_tunnel": SwitchsanityKong.random,
-            "switchsanity_switch_aztec_free_lanky": SwitchsanityKong.random,
-            "switchsanity_switch_aztec_free_tiny": SwitchsanityKong.random,
-            "switchsanity_switch_factory_free_kong": SwitchsanityKong.random,
-            "switchsanity_switch_galleon_to_lighthouse_side": SwitchsanityKong.random,
-            "switchsanity_switch_galleon_to_shipwreck_side": SwitchsanityKong.random,
-            "switchsanity_switch_galleon_to_cannon_game": SwitchsanityKong.random,
-            "switchsanity_switch_fungi_yellow_tunnel": SwitchsanityKong.random,
-            "switchsanity_switch_fungi_green_tunnel_near": SwitchsanityKong.random,
-            "switchsanity_switch_fungi_green_tunnel_far": SwitchsanityKong.random,
-        }
-        settings_dict.update(switch_settings)
-    elif options.switchsanity.value == SwitchSanity.option_helm_access:
-        # Helm switchsanity now has to have each of its switches set
-        helm_switch_settings = {
-            "switchsanity_switch_isles_to_kroc_top": SwitchsanityKong.random,
-            "switchsanity_switch_isles_helm_lobby": SwitchsanityGone.random,
-            "switchsanity_switch_isles_aztec_lobby_back_room": SwitchsanityKong.tiny,
-            "switchsanity_switch_isles_fungi_lobby_fairy": SwitchsanityKong.tiny,
-            "switchsanity_switch_isles_spawn_rocketbarrel": SwitchsanityKong.lanky,
-            "switchsanity_switch_japes_to_hive": SwitchsanityKong.tiny,
-            "switchsanity_switch_japes_to_rambi": SwitchsanityKong.donkey,
-            "switchsanity_switch_japes_to_painting_room": SwitchsanityKong.diddy,
-            "switchsanity_switch_japes_to_cavern": SwitchsanityKong.diddy,
-            "switchsanity_switch_japes_free_kong": SwitchsanityKong.donkey,
-            "switchsanity_switch_aztec_to_kasplat_room": SwitchsanityKong.donkey,
-            "switchsanity_switch_aztec_llama_front": SwitchsanityKong.donkey,
-            "switchsanity_switch_aztec_llama_side": SwitchsanityKong.lanky,
-            "switchsanity_switch_aztec_llama_back": SwitchsanityKong.tiny,
-            "switchsanity_switch_aztec_sand_tunnel": SwitchsanityKong.donkey,
-            "switchsanity_switch_aztec_to_connector_tunnel": SwitchsanityKong.diddy,
-            "switchsanity_switch_aztec_free_lanky": SwitchsanityKong.donkey,
-            "switchsanity_switch_aztec_free_tiny": SwitchsanityKong.diddy,
-            "switchsanity_switch_factory_free_kong": SwitchsanityKong.lanky,
-            "switchsanity_switch_galleon_to_lighthouse_side": SwitchsanityKong.donkey,
-            "switchsanity_switch_galleon_to_shipwreck_side": SwitchsanityKong.diddy,
-            "switchsanity_switch_galleon_to_cannon_game": SwitchsanityKong.chunky,
-            "switchsanity_switch_fungi_yellow_tunnel": SwitchsanityKong.lanky,
-            "switchsanity_switch_fungi_green_tunnel_near": SwitchsanityKong.tiny,
-            "switchsanity_switch_fungi_green_tunnel_far": SwitchsanityKong.chunky,
-        }
-        settings_dict.update(helm_switch_settings)
-    elif options.switchsanity.value == SwitchSanity.option_off:
-        settings_dict["switchsanity_enabled"] = False
-
-
-def apply_logic_and_barriers_settings(settings_dict: dict, options) -> None:
-    """Apply logic and barriers configuration."""
+    # Apply logic, barriers, glitches, and tricks settings
     settings_dict["logic_type"] = options.logic_type.value
     settings_dict["remove_barriers_selected"] = []
-
-    # Barrier removal mapping
-    barrier_mapping = {
-        "japes_coconut_gates": RemovedBarriersSelected.japes_coconut_gates,
-        "japes_shellhive_gate": RemovedBarriersSelected.japes_shellhive_gate,
-        "aztec_tunnel_door": RemovedBarriersSelected.aztec_tunnel_door,
-        "aztec_5dtemple_switches": RemovedBarriersSelected.aztec_5dtemple_switches,
-        "aztec_llama_switches": RemovedBarriersSelected.aztec_llama_switches,
-        "aztec_tiny_temple_ice": RemovedBarriersSelected.aztec_tiny_temple_ice,
-        "factory_testing_gate": RemovedBarriersSelected.factory_testing_gate,
-        "factory_production_room": RemovedBarriersSelected.factory_production_room,
-        "galleon_lighthouse_gate": RemovedBarriersSelected.galleon_lighthouse_gate,
-        "galleon_shipyard_area_gate": RemovedBarriersSelected.galleon_shipyard_area_gate,
-        "castle_crypt_doors": RemovedBarriersSelected.castle_crypt_doors,
-        "galleon_seasick_ship": RemovedBarriersSelected.galleon_seasick_ship,
-        "forest_green_tunnel": RemovedBarriersSelected.forest_green_tunnel,
-        "forest_yellow_tunnel": RemovedBarriersSelected.forest_yellow_tunnel,
-        "caves_igloo_pads": RemovedBarriersSelected.caves_igloo_pads,
-        "caves_ice_walls": RemovedBarriersSelected.caves_ice_walls,
-        "galleon_treasure_room": RemovedBarriersSelected.galleon_treasure_room,
-        "helm_star_gates": RemovedBarriersSelected.helm_star_gates,
-        "helm_punch_gates": RemovedBarriersSelected.helm_punch_gates,
-    }
-
     for barrier in options.remove_barriers_selected:
-        if barrier in barrier_mapping:
-            settings_dict["remove_barriers_selected"].append(barrier_mapping[barrier])
-
-
-def apply_glitches_and_tricks_settings(settings_dict: dict, options) -> None:
-    """Apply glitches and tricks configuration."""
-    # Prevents tricks and glitches from being added twice
+        match barrier:
+            case "japes_coconut_gates":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.japes_coconut_gates)
+            case "japes_shellhive_gate":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.japes_shellhive_gate)
+            case "aztec_tunnel_door":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.aztec_tunnel_door)
+            case "aztec_5dtemple_switches":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.aztec_5dtemple_switches)
+            case "aztec_llama_switches":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.aztec_llama_switches)
+            case "aztec_tiny_temple_ice":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.aztec_tiny_temple_ice)
+            case "factory_testing_gate":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.factory_testing_gate)
+            case "factory_production_room":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.factory_production_room)
+            case "galleon_lighthouse_gate":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.galleon_lighthouse_gate)
+            case "galleon_shipyard_area_gate":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.galleon_shipyard_area_gate)
+            case "castle_crypt_doors":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.castle_crypt_doors)
+            case "galleon_seasick_ship":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.galleon_seasick_ship)
+            case "forest_green_tunnel":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.forest_green_tunnel)
+            case "forest_yellow_tunnel":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.forest_yellow_tunnel)
+            case "caves_igloo_pads":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.caves_igloo_pads)
+            case "caves_ice_walls":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.caves_ice_walls)
+            case "galleon_treasure_room":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.galleon_treasure_room)
+            case "helm_star_gates":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.helm_star_gates)
+            case "helm_punch_gates":
+                settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.helm_punch_gates)
     settings_dict["glitches_selected"] = []
     settings_dict["tricks_selected"] = []
-
-    # Tricks mapping
-    tricks_mapping = {
-        "monkey_maneuvers": TricksSelected.monkey_maneuvers,
-        "hard_shooting": TricksSelected.hard_shooting,
-        "advanced_grenading": TricksSelected.advanced_grenading,
-        "slope_resets": TricksSelected.slope_resets,
-    }
-
     for trick in options.tricks_selected:
-        if trick in tricks_mapping:
-            settings_dict["tricks_selected"].append(tricks_mapping[trick])
-
-    # Glitches mapping
-    glitches_mapping = {
-        "moonkicks": GlitchesSelected.moonkicks,
-        "phase_swimming": GlitchesSelected.phase_swimming,
-        "swim_through_shores": GlitchesSelected.swim_through_shores,
-        "troff_n_scoff_skips": GlitchesSelected.troff_n_scoff_skips,
-        "moontail": GlitchesSelected.moontail,
-    }
-
+        match trick:
+            case "monkey_maneuvers":
+                settings_dict["tricks_selected"].append(TricksSelected.monkey_maneuvers)
+            case "hard_shooting":
+                settings_dict["tricks_selected"].append(TricksSelected.hard_shooting)
+            case "advanced_grenading":
+                settings_dict["tricks_selected"].append(TricksSelected.advanced_grenading)
+            case "slope_resets":
+                settings_dict["tricks_selected"].append(TricksSelected.slope_resets)
     for glitch in options.glitches_selected:
-        if glitch in glitches_mapping:
-            settings_dict["glitches_selected"].append(glitches_mapping[glitch])
+        match glitch:
+            case "moonkicks":
+                settings_dict["glitches_selected"].append(GlitchesSelected.moonkicks)
+            case "phase_swimming":
+                settings_dict["glitches_selected"].append(GlitchesSelected.phase_swimming)
+            case "swim_through_shores":
+                settings_dict["glitches_selected"].append(GlitchesSelected.swim_through_shores)
+            case "troff_n_scoff_skips":
+                settings_dict["glitches_selected"].append(GlitchesSelected.troff_n_scoff_skips)
+            case "moontail":
+                settings_dict["glitches_selected"].append(GlitchesSelected.moontail)
 
-
-def apply_enemies(settings_dict: dict, options) -> None:
-    """Apply Enemy settings."""
+    # Apply enemy settings
     settings_dict["enemies_selected"] = []
-
-    enemy_mapping = {
+    enemy_mapping: dict[str, Enemies] = {
         "Bat": Enemies.Bat,
         "BeaverBlue": Enemies.BeaverBlue,
         "BeaverGold": Enemies.BeaverGold,
@@ -656,34 +803,48 @@ def apply_enemies(settings_dict: dict, options) -> None:
         "DisableTaggingKop": Enemies.GuardTag,
         "GetOutKop": Enemies.GuardGetOut,
     }
-
     for enemy in options.enemies_selected:
         if enemy in enemy_mapping:
             settings_dict["enemies_selected"].append(enemy_mapping[enemy])
 
-
-def apply_boss_and_key_settings(settings_dict: dict, options) -> None:
-    """Apply boss and key settings."""
-    # Starting keys configuration
+    # Apply boss and key settings
     settings_dict["starting_keys_list_selected"] = []
-
-    # Hard Boss mapping
-    hard_boss_mapping = {
-        "fast_mad_jack": HardBossesSelected.fast_mad_jack,
-        "alternative_mad_jack_kongs": HardBossesSelected.alternative_mad_jack_kongs,
-        "pufftoss_star_rando": HardBossesSelected.pufftoss_star_rando,
-        "pufftoss_star_raised": HardBossesSelected.pufftoss_star_raised,
-        "kut_out_phase_rando": HardBossesSelected.kut_out_phase_rando,
-        "k_rool_toes_rando": HardBossesSelected.k_rool_toes_rando,
-        "beta_lanky_phase": HardBossesSelected.beta_lanky_phase,
+    boss_mapping: dict[str, Maps] = {
+        "Armydillo 1": Maps.JapesBoss,
+        "Dogadon 1": Maps.AztecBoss,
+        "Mad Jack": Maps.FactoryBoss,
+        "Pufftoss": Maps.GalleonBoss,
+        "Dogadon 2": Maps.FungiBoss,
+        "Armydillo 2": Maps.CavesBoss,
+        "Kutout": Maps.CastleBoss,
+        "DK phase": Maps.KroolDonkeyPhase,
+        "Diddy Phase": Maps.KroolDiddyPhase,
+        "Lanky Phase": Maps.KroolLankyPhase,
+        "Tiny Phase": Maps.KroolTinyPhase,
+        "Chunky Phase": Maps.KroolChunkyPhase,
     }
-
+    if hasattr(options, "allowed_bosses") and options.allowed_bosses.value:
+        settings_dict["bosses_selected"] = []
+        for boss in options.allowed_bosses.value:
+            if boss in boss_mapping:
+                settings_dict["bosses_selected"].append(boss_mapping[boss])
     for hardboss in options.harder_bosses:
-        if hardboss in hard_boss_mapping:
-            settings_dict["hard_bosses_selected"].append(hard_boss_mapping[hardboss])
-
-    # Key mapping for starting inventory
-    key_mapping = {
+        match hardboss:
+            case "fast_mad_jack":
+                settings_dict["hard_bosses_selected"].append(HardBossesSelected.fast_mad_jack)
+            case "alternative_mad_jack_kongs":
+                settings_dict["hard_bosses_selected"].append(HardBossesSelected.alternative_mad_jack_kongs)
+            case "pufftoss_star_rando":
+                settings_dict["hard_bosses_selected"].append(HardBossesSelected.pufftoss_star_rando)
+            case "pufftoss_star_raised":
+                settings_dict["hard_bosses_selected"].append(HardBossesSelected.pufftoss_star_raised)
+            case "kut_out_phase_rando":
+                settings_dict["hard_bosses_selected"].append(HardBossesSelected.kut_out_phase_rando)
+            case "k_rool_toes_rando":
+                settings_dict["hard_bosses_selected"].append(HardBossesSelected.k_rool_toes_rando)
+            case "beta_lanky_phase":
+                settings_dict["hard_bosses_selected"].append(HardBossesSelected.beta_lanky_phase)
+    key_mapping: dict[str, DK64RItems] = {
         "Key 1": DK64RItems.JungleJapesKey,
         "Key 2": DK64RItems.AngryAztecKey,
         "Key 3": DK64RItems.FranticFactoryKey,
@@ -693,82 +854,72 @@ def apply_boss_and_key_settings(settings_dict: dict, options) -> None:
         "Key 7": DK64RItems.CreepyCastleKey,
         "Key 8": DK64RItems.HideoutHelmKey,
     }
-
     for item in options.start_inventory:
         if item in key_mapping:
             settings_dict["starting_keys_list_selected"].append(key_mapping[item])
-
     if settings_dict["starting_keys_list_selected"]:
         settings_dict["select_keys"] = True
 
-
-def apply_goal_settings(settings_dict: dict, options, random_obj) -> None:
-    """Apply goal and win condition settings."""
+    # Apply goal settings
     settings_dict["win_condition_item"] = GOAL_MAPPING[options.goal]
-
-    # Krool's Challenge always requires beating K. Rool otherwise wheres the challenge
     if options.goal == Goal.option_krools_challenge:
         settings_dict["win_condition_spawns_ship"] = True
-    # The rabbit is too powerful to allow this
-    elif options.goal == Goal.option_kill_the_rabbit:
-        settings_dict["win_condition_spawns_ship"] = False
-
     if options.goal in QUANTITY_GOALS.keys():
         goal_name = QUANTITY_GOALS[options.goal]
         settings_dict["win_condition_count"] = calculate_quantity(goal_name, options.goal_quantity.value, random_obj)
-
-    # Treasure hurry settings
     if options.goal == Goal.option_treasure_hurry:
-        settings_dict["helm_hurry"] = True
-        settings_dict["helmhurry_list_starting_time"] = 60000
-        settings_dict["helmhurry_list_golden_banana"] = -60
-        settings_dict["helmhurry_list_blueprint"] = -120
-        settings_dict["helmhurry_list_company_coins"] = -3600
-        settings_dict["helmhurry_list_move"] = 0
-        settings_dict["helmhurry_list_banana_medal"] = -300
-        settings_dict["helmhurry_list_rainbow_coin"] = 0
-        settings_dict["helmhurry_list_boss_key"] = -900
-        settings_dict["helmhurry_list_battle_crown"] = -1200
-        settings_dict["helmhurry_list_bean"] = -5400
-        settings_dict["helmhurry_list_pearl"] = -1800
-        settings_dict["helmhurry_list_kongs"] = 0
-        settings_dict["helmhurry_list_fairies"] = -600
-        settings_dict["helmhurry_list_colored_bananas"] = -2
-        settings_dict["helmhurry_list_ice_traps"] = 120
+        settings_dict.update(
+            {
+                "helm_hurry": True,
+                "helmhurry_list_starting_time": 60000,
+                "helmhurry_list_golden_banana": -60,
+                "helmhurry_list_blueprint": -120,
+                "helmhurry_list_company_coins": -3600,
+                "helmhurry_list_move": 0,
+                "helmhurry_list_banana_medal": -300,
+                "helmhurry_list_rainbow_coin": 0,
+                "helmhurry_list_boss_key": -900,
+                "helmhurry_list_battle_crown": -1200,
+                "helmhurry_list_bean": -5400,
+                "helmhurry_list_pearl": -1800,
+                "helmhurry_list_kongs": 0,
+                "helmhurry_list_fairies": -600,
+                "helmhurry_list_colored_bananas": -2,
+                "helmhurry_list_ice_traps": 120,
+            }
+        )
 
-
-def apply_starting_moves_settings(settings_dict: dict, options) -> None:
-    """Apply starting moves settings."""
+    # Apply starting moves settings — pool-based system
     from randomizer.Lists import Item as DK64RItem
 
-    settings_dict["starting_moves_list_1"] = []
+    _valid_move_types = {Types.Key, Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cannons, Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime}
+    _shopkeeper_types = {Types.Cranky, Types.Funky, Types.Candy, Types.Snide}
 
-    for item in options.start_inventory:
-        item_obj = DK64RItem.ItemList[logic_item_name_to_id.get(item)]
-        if item_obj.type not in [Types.Key, Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
-            # Ensure that the items in the start inventory are only keys, shops, shockwaves, training barrels, climbing items, or shop owners
-            raise ValueError(f"Invalid item type for starting inventory: {item}. Starting inventory can only contain keys, shopkeepers, or moves.")
-        elif options.shopowners_in_pool.value and item_obj.type in [Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
-            settings_dict["starting_moves_list_1"].append(logic_item_name_to_id.get(item))
+    for _pool_num in range(1, 6):
+        _pool_option = getattr(options, f"starting_move_pool_{_pool_num}")
+        _count_option = getattr(options, f"starting_move_pool_{_pool_num}_count")
+        _item_ids = []
+        for _item_name in _pool_option.value:
+            _item_id = logic_item_name_to_id.get(_item_name)
+            if _item_id is None:
+                continue
+            _item_obj = DK64RItem.ItemList.get(_item_id)
+            if _item_obj is None or _item_obj.type not in _valid_move_types:
+                continue
+            _item_ids.append(_item_id)
+        settings_dict[f"starting_moves_list_{_pool_num}"] = _item_ids
+        settings_dict[f"starting_moves_list_count_{_pool_num}"] = min(_count_option.value, len(_item_ids))
 
-    settings_dict["starting_moves_list_count_1"] = len(settings_dict["starting_moves_list_1"])
-
-
-def apply_hint_settings(settings_dict: dict, options) -> None:
-    """Apply hint settings."""
+    # Apply hint settings
     if options.hint_style == 0:
         settings_dict["wrinkly_hints"] = WrinklyHints.off
 
-
-def apply_minigame_settings(settings_dict: dict, options, multiworld) -> None:
-    """Apply minigame and bonus barrel settings."""
+    # Apply minigame and bonus barrel settings
     settings_dict["minigames_list_selected"] = [MinigamesListSelected[minigame] for minigame in options.shuffled_bonus_barrels]
     settings_dict["disable_hard_minigames"] = not options.hard_minigames.value
     settings_dict["bonus_barrel_auto_complete"] = options.auto_complete_bonus_barrels.value and options.goal.value != Goal.option_bonuses
     settings_dict["helm_room_bonus_count"] = HelmBonuses(options.helm_room_bonus_count.value)
-
-    # Map door item type to the key name in helm_door_item_count dict
-    door_item_to_key = {
+    door_item_to_key: dict[HelmDoorItem, str] = {
         HelmDoorItem.req_gb: "golden_bananas",
         HelmDoorItem.req_bp: "blueprints",
         HelmDoorItem.req_companycoins: "company_coins",
@@ -780,114 +931,23 @@ def apply_minigame_settings(settings_dict: dict, options, multiworld) -> None:
         HelmDoorItem.req_bean: "bean",
         HelmDoorItem.req_pearl: "pearls",
     }
-
     settings_dict["crown_door_item"] = HelmDoorItem(options.crown_door_item.value)
-    # Get count from dict based on selected item, default to 1 if not found
     crown_item_key = door_item_to_key.get(settings_dict["crown_door_item"])
     settings_dict["crown_door_item_count"] = options.helm_door_item_count.value.get(crown_item_key, 1) if crown_item_key else 1
-
     settings_dict["coin_door_item"] = HelmDoorItem(options.coin_door_item.value)
-    # Get count from dict based on selected item, default to 1 if not found
     coin_item_key = door_item_to_key.get(settings_dict["coin_door_item"])
     settings_dict["coin_door_item_count"] = options.helm_door_item_count.value.get(coin_item_key, 1) if coin_item_key else 1
-
-    if hasattr(multiworld, "generation_is_fake"):
-        if hasattr(multiworld, "re_gen_passthrough"):
-            if "Donkey Kong 64" in multiworld.re_gen_passthrough:
-                passthrough = multiworld.re_gen_passthrough["Donkey Kong 64"]
-                settings_dict["bonus_barrel_auto_complete"] = passthrough["Autocomplete"]
-                settings_dict["helm_room_bonus_count"] = HelmBonuses(passthrough["HelmBarrelCount"])
-
-
-def handle_fake_generation_settings(settings: Settings, multiworld) -> None:
-    """Handle settings for fake generation (UT mode)."""
-    if hasattr(multiworld, "generation_is_fake"):
-        if hasattr(multiworld, "re_gen_passthrough"):
-            if "Donkey Kong 64" in multiworld.re_gen_passthrough:
-                passthrough = multiworld.re_gen_passthrough["Donkey Kong 64"]
-                settings.level_order = passthrough["LevelOrder"]
-
-                # Switch logic lifted out of level shuffle due to static levels for UT
-                if settings.alter_switch_allocation:
-                    for x in range(8):
-                        settings.switch_allocation[x] = passthrough["SlamLevels"][x]
-
-                settings.starting_kong_list = passthrough["StartingKongs"]
-                settings.starting_kong = settings.starting_kong_list[0]  # fake a starting kong so that we don't force a different kong
-                settings.medal_requirement = passthrough["JetpacReq"]
-                settings.rareware_gb_fairies = passthrough["FairyRequirement"]
-                settings.BLockerEntryItems = passthrough["BLockerEntryItems"]
-                settings.BLockerEntryCount = passthrough["BLockerEntryCount"]
-                settings.medal_cb_req = passthrough["MedalCBRequirement"]
-                settings.medal_cb_req_level = [settings.medal_cb_req] * 8
-
-                for level, value in enumerate(passthrough["MedalCBRequirementLevel"]):
-                    settings.medal_cb_req_level[Levels(level)] = int(value)
-
-                settings.mermaid_gb_pearls = passthrough["MermaidPearls"]
-                settings.BossBananas = passthrough["BossBananas"]
-                settings.boss_maps = passthrough["BossMaps"]
-                settings.boss_kongs = passthrough["BossKongs"]
-                settings.lanky_freeing_kong = passthrough["LankyFreeingKong"]
-                settings.helm_order = passthrough["HelmOrder"]
-                settings.logic_type = LogicType[passthrough["LogicType"]]
-                settings.tricks_selected = passthrough["TricksSelected"]
-                settings.glitches_selected = passthrough["GlitchesSelected"]
-                settings.open_lobbies = passthrough["OpenLobbies"]
-                settings.starting_key_list = passthrough["StartingKeyList"]
-                settings.galleon_water = GalleonWaterSetting[passthrough["GalleonWater"]]
-                settings.galleon_water_internal = GalleonWaterSetting[passthrough["GalleonWater"]]
-
-                # There's multiple sources of truth for helm order.
-                settings.helm_donkey = 0 in settings.helm_order
-                settings.helm_diddy = 4 in settings.helm_order
-                settings.helm_lanky = 3 in settings.helm_order
-                settings.helm_tiny = 2 in settings.helm_order
-                settings.helm_chunky = 1 in settings.helm_order
-
-                # Switchsanity
-                for switch, data in passthrough["SwitchSanity"].items():
-                    needed_kong = Kongs[data["kong"]]
-                    switch_type = SwitchType[data["type"]]
-                    settings.switchsanity_data[Switches[switch]] = SwitchInfo(switch, needed_kong, switch_type, 0, 0, [])
-
-                if passthrough["Shopkeepers"]:
-                    settings.shuffled_location_types.append(Types.Cranky)
-                    settings.shuffled_location_types.append(Types.Funky)
-                    settings.shuffled_location_types.append(Types.Candy)
-                    settings.shuffled_location_types.append(Types.Snide)
-
-
-def fillsettings(options, multiworld, random_obj):
-    """Fill and configure all DK64 settings."""
-    # Start with default settings
-    settings_dict = get_default_settings()
-
-    # Apply all setting categories
-    apply_archipelago_settings(settings_dict, options, multiworld)
-    apply_blocker_settings(settings_dict, options)
-    apply_item_randomization_settings(settings_dict, options)
-    apply_hard_mode_settings(settings_dict, options)
-    apply_kong_settings(settings_dict, options)
-    apply_switchsanity_settings(settings_dict, options)
-    apply_logic_and_barriers_settings(settings_dict, options)
-    apply_glitches_and_tricks_settings(settings_dict, options)
-    apply_boss_and_key_settings(settings_dict, options)
-    apply_goal_settings(settings_dict, options, random_obj)
-    apply_starting_moves_settings(settings_dict, options)
-    apply_hint_settings(settings_dict, options)
-    apply_minigame_settings(settings_dict, options, multiworld)
-    apply_enemies(settings_dict, options)
+    if hasattr(multiworld, "generation_is_fake") and hasattr(multiworld, "re_gen_passthrough") and "Donkey Kong 64" in multiworld.re_gen_passthrough:
+        passthrough = multiworld.re_gen_passthrough["Donkey Kong 64"]
+        settings_dict["bonus_barrel_auto_complete"] = passthrough["Autocomplete"]
+        settings_dict["helm_room_bonus_count"] = HelmBonuses(passthrough["HelmBarrelCount"])
 
     # Handle fake generation keys if needed
     if hasattr(multiworld, "generation_is_fake"):
-        # If gen is fake, don't pick random keys to start with, trust the slot data
         settings_dict["krool_key_count"] = 8
 
     # Create settings object
     settings = Settings(settings_dict, random_obj)
-
-    # Archipelago really wants the number of locations to match the number of items. Keep track of how many locations we've made here
     settings.location_pool_size = 0
 
     # Handle fake generation additional settings

@@ -9,20 +9,17 @@
 .definelabel LoadedHooks, 0x807FFFEF // u8
 .definelabel HoldableSpawnBitfield, 0x807FFFEC // u16
 .definelabel bonusAutocomplete, 0x807FFFE9 // u8
-.definelabel TextHoldOn, 0x807FFFE8 // u8
-.definelabel LobbiesOpen, 0x807FFFE7 // u8
 .definelabel Rando, 0x807FF800 // 0x200
 .definelabel CCButtons, 0x807FFFB0 // 0x4
 .definelabel CCEffectData, 0x807FFFB4 // 0x4
 .definelabel ItemInventory, 0x807FFFB8 // 0x4
 .definelabel PauseSlot3TextPointer, 0x807FFFBC // ptr
-.definelabel style2Mtx, 0x807FFF90
 .definelabel style6Mtx, 0x807FFF70
 .definelabel style128Mtx, 0x807FFF50
-.definelabel StoredSettings, 0x807ED560
-.definelabel StoredCounterTextures, 0x807FFF30
+.definelabel BalloonSpawnBitfield, 0x807FFF38 // 0xD
+.definelabel BreakableSpawnBitfield, 0x807FFF34 // 0x4
+.definelabel PercussionPlayed, 0x807FFF30 // u8
 .definelabel PauseText, 0x807FFFE6
-.definelabel ShorterBosses, 0x807FFFE5
 .definelabel ForceStandardAmmo, 0x807FFFE4
 .definelabel KKOPhaseRandoOn, 0x807FFFE0
 .definelabel MultiBunchCount, 0x807FFFDE
@@ -32,13 +29,9 @@
 .definelabel InvertedControls, 0x807FFFD7
 .definelabel ChunkyModel, 0x807FFFD5
 .definelabel EnemyInView, 0x807FFFD4
-.definelabel ItemRandoOn, 0x807FFFD3
-.definelabel RandomSwitches, 0x807FFF20
-.definelabel SwitchLevel, 0x807FFF21
 .definelabel APData, 0x807FFF1C
 .definelabel APName, 0x807E2EE0
 
-.definelabel KrushaSlot, 0x807FFF2E
 .definelabel KasplatSpawnBitfield, 0x807FFF2F
 .definelabel CrankyMoves_New, 0x807FF400
 .definelabel FunkyMoves_New, 0x807FF4F0

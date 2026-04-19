@@ -2,10 +2,10 @@ typedef struct varspace {
 	/* 0x000 */ char unk_00[0x2D];
 	/* 0x02D */ char required_helm_minigames; // 0 = Disable on instrument play, 1 = One minigame required, 2 = Vanilla
 	/* 0x02E */ char fast_start_beginning; // 0 = "Fast Start" setting not applied. 1 = On
-	/* 0x02F */ char sprint_barrel_requires_sprint;
+	/* 0x02F */ char unk_2f;
 	/* 0x030 */ char tag_anywhere; // 0 = Tag Anywhere buttons not enabled. 1 = Enabled
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
-	/* 0x032 */ LZREntrance mech_fish_exit;
+	/* 0x032 */ char unk_32[2];
 	/* 0x034 */ char item_rando; // 0 = Off, 1 = On
 	/* 0x035 */ char crown_timer_reduction;
 	/* 0x036 */ char rareware_gb_fairies; // Fairy requirement to access Rareware GB
@@ -23,14 +23,11 @@ typedef struct varspace {
 	/* 0x053 */ unsigned char ammo_belt_prices[2]; // Array of ammo belt prices: [1,2]. 1 item for each level of ammo belt
 	/* 0x055 */ unsigned char instrument_upgrade_prices[3]; // Array of instrument upgrade prices: [1,2,3]. 1st and 3rd items are the Upgrades 1 and 2 respectively. 2nd item is the 3rd melon cost
 	/* 0x058 */ unsigned char k_rool_order[5]; // Order of K. Rool phases: [0,1,2,3,4] dictates DK->Diddy->Lanky->Tiny->Chunky. If K. Rool is being shortened to less than 5 phases, put the unused phases as -1
-	/* 0x05D */ char randomize_more_loading_zones; // 0 = Not randomizing loading zones inside levels. 1 = On, 2 = Just Castle Cannon
-	/* 0x05E */ LZREntrance aztec_beetle_enter; // Map and exit replacing the loading zone which normally bring you to Aztec Beetle Race from Aztec. First byte is map, second byte is exit value. Same logic applies until (and including) "enter_levels[7]"
+	/* 0x05D */ char unk_5D[3];
 	/* 0x060 */ char cb_medal_requirement[8]; 
 	/* 0x068 */ char include_half_medals; // Medals have a corresponding check for collecting 1/2 the bananas of the standard requirement
 	/* 0x069 */ char snide_has_rewards;
-	/* 0x06A */ LZREntrance seasick_ship_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x06C */ LZREntrance fungi_minecart_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x06E */ char unk_6E[0x88 - 0x6E];
+	/* 0x06A */ char unk_6A[0x88 - 0x6A];
 	/* 0x088 */ rgb fog[3]; // Order: Aztec, Caves, Castle
 	/* 0x091 */ char disable_race_patches;
 	/* 0x092 */ char unk_91[0x94 - 0x92];
@@ -54,43 +51,36 @@ typedef struct varspace {
 	/* 0x0C8 */ char unk_C8[3];
 	/* 0x0CB */ unsigned char default_camera_type; // 0 = Free, 1 = Follow
 	/* 0x0CC */ unsigned char default_camera_mode; // 0 = Inverted, 1 = Non-Inverted
-	/* 0x0CD */ char unk_cd[8];
-	/* 0x0D5 */ moves_pregiven_bitfield moves_pregiven; // Bitfield, Size 0x6
+	/* 0x0CD */ char unk_cd[0xDB - 0xCD];
 	/* 0x0DB */ unsigned char seasonal_changes; // 0 = None, 1 = Halloween, 2 = Christmas
-	/* 0x0DC */ char unk_DC[4];
-	/* 0x0E0 */ fairy_activations fairy_triggers_disabled;
+	/* 0x0DC */ char unk_DC[0xE2 - 0xDC];
 	/* 0x0E2 */ unsigned short helm_hurry_start;
 	/* 0x0E4 */ short helm_hurry_bonuses[0xE];
-	/* 0x100 */ char fairy_rando_on;
+	/* 0x100 */ char unk_100;
 	/* 0x101 */ LocationVisuals location_visuals; // Bitfield for visual hints of what is inside a location.
 	/* 0x102 */ char microhints; // 0 = Off, 1 = GGone/Monkeyport, 2 = GGone/MPort, Instruments in Helm
-	/* 0x103 */ char random_switches;
-	/* 0x104 */ char slam_level[7]; // Level of slam required to slam a switch in a level (if random_switches is on)
+	/* 0x103 */ char unk_103[8];
 	/* 0x10B */ char isles_cb_rando; // Gives 5 extra medals and handles appropriately
 	/* 0x10C */ unsigned char starting_map; // 0 = Isles - from escape
 	/* 0x10D */ unsigned char starting_exit;
-	/* 0x10E */ unsigned char tns_portal_rando_on;
+	/* 0x10E */ char unk_10e;
 	/* 0x10F */ unsigned char remove_oscillation_effects; // Removes water oscillation + Seasick Ship interior rocking
-	/* 0x110 */ unsigned char arcade_reward; // Reward Index for R2 of Arcade
-	/* 0x111 */ unsigned char jetpac_reward; // Reward Index for Jetpac 5000 Pts
+	/* 0x110 */ char unk_110[2];
 	/* 0x112 */ char rainbow_ammo;
 	/* 0x113 */ char unk_113;
 	/* 0x114 */ char fix_lanky_tiny_prod;
 	/* 0x115 */ unsigned char progressive_hint_gb_cap; // 0 = Off, 1 or more = Hints are rewarded for collecting GBs, rather than hint doors, 35th hint is unlocked at x
 	/* 0x116 */ char cutscene_skip_setting; // 0 = Off, 1 = On Button Press, 2 = Automatic
-	/* 0x117 */ char unk_117[5];
-	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
+	/* 0x117 */ char unk_117[6];
 	/* 0x11D */ unsigned char win_condition; // See common_enums.h for enum
-	/* 0x11E */ char tns_indicator;
-	/* 0x11F */ char unk_11F[7];
+	/* 0x11E */ char unk_11E[8];
 	/* 0x126 */ char resolve_bonus; // Bitfield. 0000 0001 = auto-complete bonus barrels. 0000 0010 = auto-complete helm barrels. 0 = Off. 3 = Resolve Helm & Bonus Barrels
 	/* 0x127 */ char isles_cool_musical;
 	/* 0x128 */ char disable_drops; // 0 = Off. 1 = No Klump/Melon/Ammo Crate Drops
 	/* 0x129 */ unsigned char hash[5];
 	/* 0x12E */ char music_rando_on; // 0 = Off, 1 = Music Rando on, apply extra data shuffle
 	/* 0x12F */ char spoiler_hints;
-	/* 0x130 */ LZREntrance ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
-	/* 0x132 */ LZREntrance museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
+	/* 0x130 */ char unk_130[4];
 	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Only kong displayed, 2 = Both item and kong
 	/* 0x135 */ char warp_to_isles_enabled; // 0 = Off, 1 = Add Warp to Isles option
 	/* 0x136 */ char unk_136[2];
@@ -100,28 +90,19 @@ typedef struct varspace {
 	/* 0x13B */ char short_bosses; // 0 = Vanilla fights, 1 = Short fights
 	/* 0x13C */ char unk_13c[0x14C - 0x13C];
 	/* 0x14C */ unsigned char lobbies_open_bitfield; // hccf gfaj
-	/* 0x14D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
-	/* 0x14E */ char unk_14E[2];
+	/* 0x14D */ char unk_14D[3];
 	/* 0x150 */ char ice_traps_damage;
 	/* 0x151 */ char starting_kong; // Kong you start as upon file init
-	/* 0x152 */ char unk_152;
-	/* 0x153 */ char free_source_japes; // Kong who frees the kong in Japes
-	/* 0x154 */ char unk_154;
-	/* 0x155 */ char free_source_llama; // Kong who frees the kong in Llama Temple
-	/* 0x156 */ char unk_156;
-	/* 0x157 */ char free_source_ttemple; // Kong who frees the kong in Tiny Temple
-	/* 0x158 */ char unk_158;
-	/* 0x159 */ char free_source_factory; // Kong who frees the kong in Factory
+	/* 0x152 */ char unk_152[0x15A - 0x152];
 	/* 0x15A */ char arcade_reward_idx; // Purely used for the arcade sprite in colorblind mode
 	/* 0x15B */ char auto_keys; // 0 = Vanilla, 1 = Keys turn in as soon as you get them
-	/* 0x15C */ short matching_game_sounds[8]; // Sound effect 0 is treated as "sound not randomized"
+	/* 0x15C */ char unk_15c[0x16C - 0x15C];
 	/* 0x16C */ char piano_game_order[7]; // Each item denotes a key, normally CBCDECA (2123420). A = 0, 1 = B, 2 = C, 3 = D, 4 = E, 5 = F
-	/* 0x173 */ char dartboard_order[6]; // Each item denotes a picture. 0 = Crystal, 1 = Melon, 2 = Banana, 3 = Orange, 4 = Ammo Crate, 5 = Medal, 6 = Coin, 7 = Film
-	/* 0x179 */ char unk_179[0x17E - 0x179];
+	/* 0x173 */ char unk_173[0x17E - 0x173];
 	/* 0x17E */ unsigned char b_locker_requirements[8];
 	/* 0x186 */ char unk_186[0x190-0x186];
 	/* 0x190 */ char helm_order[5]; // Each item is a place in the order. -1 for an empty slot. For each item, 0 = DK, 1 = Chunky, 2 = Tiny, 3 = Lanky, 4 = Diddy. DK has to either be first or not present.
-	/* 0x195 */ char disable_rotating_crown; // 0 = Checks flag, 1 = Disabled
+	/* 0x195 */ char unk_195;
 	/* 0x196 */ unsigned char enabled_pkmnsnap_enemies[6]; // Bitfield
 	/* 0x19C */ unsigned char unk_19C[0x1A2 - 0x19C];
 	/* 0x1A2 */ LZREntrance blast_entrances[7];
@@ -132,13 +113,13 @@ typedef struct varspace {
 	/* 0x1B7 */ DisabledMusicStruct disabled_music;
 	/* 0x1B8 */ unsigned char kong_models[5];
 	/* 0x1BD */ char unk_1bd[0x1C6 - 0x1BD];
-	/* 0x1C6 */ RandomSwitchesSetting switchsanity; // Size 0x15
+	/* 0x1C6 */ unsigned char switchsanity_monkeyport; // 0 = monkeyport, 1 = blast, 2 = balloon
+	/* 0x1C7 */ unsigned char switchsanity_gone; // 0 = gone, 1-5 = instrument
+	/* 0x1C8 */ char unk_1cd[0x1DB - 0x1C8];
 	/* 0x1DB */ unsigned char fungi_time_of_day_setting; // See fungi_time enum
-	/* 0x1DC */ unsigned char galleon_water_raised;
-	/* 0x1DD */ unsigned char unk_1dd;
-	/* 0x1DE */ RemovedBarriers removed_barriers; // Size: 2
+	/* 0x1DC */ char unk_1dc[4];
 	/* 0x1E0 */ FasterChecks faster_checks; // Size: 1
-	/* 0x1E1 */ char big_head_mode; // 0 = off, 1 = on, 2 = small head
+	/* 0x1E1 */ char unk_1e1;
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
 	/* 0x1E3 */ unsigned char chunky_phase_krool_slam_req; // Slam level required for Chunky Phase
   	/* 0x1E4 */ unsigned char pause_hints_colored;

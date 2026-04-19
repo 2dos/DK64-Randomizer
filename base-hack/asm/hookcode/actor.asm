@@ -252,17 +252,7 @@ CannonForceCode:
     j 0x8067B694
     nop
 
-    CannonForceCode_CheckFlag:
-        jal 0x8067B450
-        or $a0, $s0, $zero
-        j 0x8067B68C
-        nop
-
     CannonForceCode_IsIsles:
-        lui $a0, hi(LobbiesOpen)
-        lbu $a0, lo(LobbiesOpen) ($a0)
-        beqz $a0, CannonForceCode_CheckFlag
-        nop
         j 0x8067B6CC
         nop
 
@@ -332,38 +322,6 @@ SpriteFix:
     SpriteFix_Finish:
         j 0x806A6710
         sb $t9, 0x1 ($t0)
-
-HandleSlamCheck:
-    ; handles slam check, and passes it through a system which compares it to the slam level dicated by switch adjustments if necessary
-    lh $t4, 0x2 ($s0)
-    lui $t6, hi(RandomSwitches)
-    lbu $t6, lo(RandomSwitches) ($t6)
-    beqz $t6, HandleSlamCheck_Finish ; No Random Switches, exert vanilla behaviour
-    or $t1, $zero, $zero
-
-    ; check level - level index will be stored in reg t2
-    lui $t6, hi(CurrentMap)
-    lw $t6, lo(CurrentMap) ($t6)
-    lui $t2, hi(levelIndexMapping)
-    addu $t2, $t6, $t2
-    lbu $t2, lo(levelIndexMapping) ($t2)
-    sltiu $at, $t2, 8
-    beqz $at, HandleSlamCheck_Finish ; Isnt part of levels japes->castle
-    nop
-
-    ; check if map is a bad map, where we prohibit this effect being exerted
-    addiu $at, $zero, 0x9A ; Mad Jack
-    beq $t6, $at, HandleSlamCheck_Finish
-    nop
-
-    ; All checks have passed, slam level will be dictated by level
-    lui $t6, hi(SwitchLevel)
-    addu $t6, $t6, $t2
-    lbu $t4, lo(SwitchLevel) ($t6)
-
-    HandleSlamCheck_Finish:
-        j 0x8063ed84
-        nop
 
 brightenMMMEnemies:
     ori $t4, $t2, 0xFF
@@ -723,3 +681,37 @@ fixBLockerRange:
     fixBLockerRange_finish:
         j 0x800275C4
         lui $at, 0x8003
+
+boulderExtraCode:
+    jal boulderTSCode
+    nop
+    j 0x8069C938
+    nop
+
+boulderSpinCode:
+    addiu $at, $zero, 8
+    lbu $t7, 0x154 ($s0)
+    beq $t7, $at, boulderSpinCode_spin
+    addiu $at, $zero, 3
+    j 0x8069CC24
+    nop
+
+    boulderSpinCode_spin:
+        j 0x8069CC2C
+        nop
+
+displayBalloonItem:
+    jal 0x80714c08
+    addiu $a3, $zero, 1
+    lw $a1, 0x34 ($sp)
+    lh $a1, 0x6 ($a1)
+    jal balloonVisHandler
+    or $a0, $v0, $zero
+    j 0x806A79F0
+    nop
+
+wipeBalloonTexture:
+    sw $t6, 0x380 ($v0)
+    sh $zero, 0x396 ($v0)
+    j 0x80714F44
+    lbu $t7, 0x53 ($sp)

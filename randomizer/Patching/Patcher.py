@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-import copy
 import os
 from io import BytesIO
-import pkgutil
 from typing import TYPE_CHECKING, Union
 import struct
 

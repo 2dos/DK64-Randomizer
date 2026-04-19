@@ -401,34 +401,21 @@
     </div>
 {% endmacro %}
 {% macro lock_tab() %}
-    <li>
+    <li role="presentation">
         <a
-            class="py-2"
-            id="lock-nav-panel"
+            class="p-2 pe-4"
+            id="collapse-nav-panel"
+            type="button"
         >
-            <i class="fa fa-lock-open fa-2x" id="lock-nav-panel-unlock" hidden></i>
-            <i class="fa fa-lock" id="lock-nav-panel-lock"></i>
-            <span class="nav-text">
-                <div class="position-absolute top-50 start-0 translate-middle-y">Lock Panel</div>
-            </span>
+            <div>
+                <div><i class="fa-solid fa-angles-left fa-xl"></i> Close</div>
+                <div style="font-size: 0.7rem" class="fst-italic">Click <i class="fa-solid fa-bars"></i> to open again</div>
+            </div>
         </a>
     </li>
     <script>
-        document.getElementById("lock-nav-panel").addEventListener("click", (e) => {
-            const tab_list = document.getElementById("nav-tab-list");
-            const panel = document.getElementById("lock-nav-panel");
-            tab_list.classList.toggle("expanded");
-            const expanded = tab_list.classList.contains("expanded");
-            panel.getElementsByTagName("div")[0].innerText = expanded ? "Unlock Panel" : "Lock Panel";
-            const lock_icon = document.getElementById("lock-nav-panel-lock");
-            const unlock_icon = document.getElementById("lock-nav-panel-unlock");
-            if (expanded) {
-                lock_icon.setAttribute("hidden", "hidden");
-                unlock_icon.removeAttribute("hidden");
-            } else {
-                unlock_icon.setAttribute("hidden", "hidden");
-                lock_icon.removeAttribute("hidden");
-            }
+        document.getElementById("collapse-nav-panel").addEventListener("click", () => {
+            document.getElementById("toggleSidebar").click();
         });
     </script>
 {% endmacro %}

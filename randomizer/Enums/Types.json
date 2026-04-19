@@ -308,6 +308,14 @@
             "is_check": false
         },
         {
+            "name": "Time of Day",
+            "value": "fungitime",
+            "tooltip": "Day and Night are added into the pool.",
+            "check_count": 0,
+            "item_count": 2,
+            "is_check": false
+        },
+        {
             "name": "Hints",
             "value": "hint",
             "tooltip": "Hints are in the pool.",
@@ -333,6 +341,22 @@
             "is_check": true
         },
         {
+            "name": "Breakable Containers",
+            "value": "breakable",
+            "tooltip": "Breaking certain containers will spawn items.",
+            "check_count": 24,
+            "item_count": 0,
+            "is_check": true
+        },
+        {
+            "name": "Balloons",
+            "value": "balloon",
+            "tooltip": "Popping Balloons will spawn items.",
+            "check_count": 104,
+            "item_count": 0,
+            "is_check": true
+        },
+        {
             "name": "Enemy Drops",
             "value": "enemies",
             "tooltip": "Killing enemies that produce sparkles spawns items.",
@@ -354,6 +378,24 @@
             "value": "dummyitem_boulderitem",
             "tooltip": "Destroying boulders and other holdable objects spawn items.",
             "check_count": 16,
+            "item_count": 0,
+            "is_check": false,
+            "is_dummy": true
+        },
+        {
+            "name": "Breakable Containers",
+            "value": "dummyitem_breakable",
+            "tooltip": "Breaking certain containers will spawn items.",
+            "check_count": 24,
+            "item_count": 0,
+            "is_check": false,
+            "is_dummy": true
+        },
+        {
+            "name": "Balloons",
+            "value": "dummyitem_balloon",
+            "tooltip": "Popping balloons will spawn items.",
+            "check_count": 104,
             "item_count": 0,
             "is_check": false,
             "is_dummy": true

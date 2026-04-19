@@ -737,6 +737,16 @@ const switchsanity_defaults = {
   "switchsanity_switch_japes_free_kong": "donkey",
   "switchsanity_switch_aztec_free_tiny": "diddy",
   "switchsanity_switch_aztec_free_lanky": "donkey",
+  "switchsanity_switch_factory_dark_grate": "chunky",
+  "switchsanity_switch_factory_bonus_grate": "chunky",
+  "switchsanity_switch_factory_monster_grate": "chunky",
+  "switchsanity_switch_caves_gone_cave": "chunky",
+  "switchsanity_switch_caves_snide_cave": "chunky",
+  "switchsanity_switch_caves_boulder_cave": "chunky",
+  "switchsanity_switch_caves_lobby_blueprint": "chunky",
+  "switchsanity_switch_caves_lobby_lava": "chunky",
+  "switchsanity_switch_aztec_gong_tower": "diddy",
+  "switchsanity_switch_aztec_lobby_gong": "diddy",
 }
 function switchsanity_reset_default() {
   Object.keys(switchsanity_defaults).forEach(key => {
@@ -1534,7 +1544,7 @@ function update_win_con_num_access() {
     "hard_random",
   ]
   const KROOL_REQUIRED_WIN_CONS = ["krools_challenge"];
-  const KROOL_DISABLED_WIN_CONS = ["kill_the_rabbit"];
+  const KROOL_DISABLED_WIN_CONS = [];
 
   const winConSelection = document.getElementById("win_condition_item");
   const winConContainer = document.getElementById("win_condition_container");
@@ -1989,10 +1999,24 @@ document
   });
 
 // Dropdown Multiselect
-function toggleDropdown(name) {
-  const menu = document.getElementById(`${name}_selected`);
-  menu.classList.toggle('show');
-}
+
+document.addEventListener("click", (event) => {
+  const dropdownToggles = document.querySelectorAll(".dropdown-toggle[aria-expanded=true]");
+  const target = event.target;
+
+  dropdownToggles.forEach(toggle => {
+    const menu = document.querySelector(toggle.getAttribute("href"));
+    if (menu) {
+      if (
+        menu.classList.contains("show") &&
+        !toggle.contains(target) &&
+        !menu.contains(target)
+      ) {
+        bootstrap.Collapse.getOrCreateInstance(menu).hide();
+      }
+    }
+  });
+});
 
 function pushUpdateToDropdown(name) {
   const ddms = document.getElementById(`dropdown_${name}`);

@@ -124,7 +124,7 @@ def writeFloatUpper(ROM_COPY, address: int, overlay: Overlay, value: float, offs
     ROM_COPY.writeMultipleBytes(passed_value, 2)
 
 
-def writeFunction(ROM_COPY, address: int, overlay: Overlay, func_name: str, offset_dict: dict):
+def writeFunction(ROM_COPY, address: int, overlay: Overlay, func_name: str, offset_dict: dict, section: str = "symbols"):
     """Write function JAL to ROM."""
     if isinstance(ROM_COPY, ROM):
         raise Exception("Cosmetics cannot utilize writeFunction.")
@@ -132,7 +132,7 @@ def writeFunction(ROM_COPY, address: int, overlay: Overlay, func_name: str, offs
     rom_start = getROMAddress(address, overlay, offset_dict)
     if rom_start is None:
         raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
-    function_address = js.rom_symbols["symbols"].get(func_name.lower(), None)
+    function_address = js.rom_symbols[section].get(func_name.lower(), None)
     if function_address is None:
         raise Exception(f"Couldn't find function {func_name}.")
     ROM_COPY.seek(rom_start)
@@ -140,7 +140,7 @@ def writeFunction(ROM_COPY, address: int, overlay: Overlay, func_name: str, offs
     ROM_COPY.writeMultipleBytes(value, 4)
 
 
-def writeHook(ROM_COPY, address: int, overlay: Overlay, hook_location: str, offset_dict):
+def writeHook(ROM_COPY, address: int, overlay: Overlay, hook_location: str, offset_dict: dict, section: str = "symbols"):
     """Write hook to ROM."""
     if isinstance(ROM_COPY, ROM):
         raise Exception("Cosmetics cannot utilize writeHook.")
@@ -148,7 +148,7 @@ def writeHook(ROM_COPY, address: int, overlay: Overlay, hook_location: str, offs
     rom_start = getROMAddress(address, overlay, offset_dict)
     if rom_start is None:
         raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
-    hook_address = js.rom_symbols["symbols"].get(hook_location.lower(), None)
+    hook_address = js.rom_symbols[section].get(hook_location.lower(), None)
     if hook_address is None:
         raise Exception(f"Couldn't find hook {hook_location}.")
     ROM_COPY.seek(rom_start)
@@ -157,7 +157,7 @@ def writeHook(ROM_COPY, address: int, overlay: Overlay, hook_location: str, offs
     ROM_COPY.writeMultipleBytes(0, 4)
 
 
-def writeLabelValue(ROM_COPY, address: int, overlay: Overlay, label_name: str, offset_dict) -> int:
+def writeLabelValue(ROM_COPY, address: int, overlay: Overlay, label_name: str, offset_dict: dict, section: str = "symbols") -> int:
     """Write value of label to ROM."""
     if isinstance(ROM_COPY, ROM):
         raise Exception("Cosmetics cannot utilize writeLabelValue.")
@@ -165,7 +165,7 @@ def writeLabelValue(ROM_COPY, address: int, overlay: Overlay, label_name: str, o
     rom_start = getROMAddress(address, overlay, offset_dict)
     if rom_start is None:
         raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
-    label_address = js.rom_symbols["symbols"].get(label_name.lower(), None)
+    label_address = js.rom_symbols[section].get(label_name.lower(), None)
     if label_address is None:
         raise Exception(f"Couldn't find hook {label_name}.")
     ROM_COPY.seek(rom_start)
@@ -186,25 +186,25 @@ def getHi(value: int) -> int:
     return hi
 
 
-def getHiSym(ref: str) -> int:
+def getHiSym(ref: str, section: str = "symbols") -> int:
     """Run getHi, but relative to a symbol rather than a value."""
-    label_address = js.rom_symbols["symbols"].get(ref.lower(), None)
+    label_address = js.rom_symbols[section].get(ref.lower(), None)
     if label_address is None:
         raise Exception(f"Couldn't find symbol {ref}.")
     return getHi(label_address)
 
 
-def getLoSym(ref: str) -> int:
+def getLoSym(ref: str, section: str = "symbols") -> int:
     """Run getLo, but relative to a symbol rather than a value."""
-    label_address = js.rom_symbols["symbols"].get(ref.lower(), None)
+    label_address = js.rom_symbols[section].get(ref.lower(), None)
     if label_address is None:
         raise Exception(f"Couldn't find symbol {ref}.")
     return getLo(label_address)
 
 
-def getSym(ref: str) -> int:
+def getSym(ref: str, section: str = "symbols") -> int:
     """Get symbol value."""
-    sym_value = js.rom_symbols["symbols"].get(ref.lower(), None)
+    sym_value = js.rom_symbols[section].get(ref.lower(), None)
     if sym_value is None:
         raise Exception(f"Couldn't find symbol {ref}.")
     return sym_value
@@ -238,6 +238,8 @@ item_type_table_conversion = {
     Types.RainbowCoin: ("rcoin_item_table", 4),
     Types.CrateItem: ("crate_item_table", 4),
     Types.BoulderItem: ("boulder_item_table", 8),
+    Types.Breakable: ("box_item_table", 4),
+    Types.Balloon: ("balloon_item_table", 4),
     Types.Kong: ("kong_check_data", 8),
     Types.Shop: ("purchase_hint_text_items", 2),  # Shop Hints
     Types.NintendoCoin: ("company_coin_table", 4),

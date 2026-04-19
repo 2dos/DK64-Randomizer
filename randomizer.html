@@ -23,6 +23,9 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
             <div class="container px-5">
+                <button class="btn btn-dark me-2" style="background-color: rgba(0,0,0,0); border: none" type="button" data-bs-toggle="collapse" data-bs-target="#nav-tab-list-mobile" aria-expanded="false" aria-controls="nav-tab-list-mobile" id="toggleSidebar">
+                    <i class="fa-solid fa-bars fa-sm"></i>
+                </button>
                 <a class="navbar-brand" href="#page-top">DK64 Randomizer</a>
                 <button class="navbar-toggler"
                         type="button"
@@ -132,19 +135,17 @@
                         <form id="form" action="/" method="POST">
                             <!--Create navbar-->
                             <div class="container" id="visual_indicator">
-                            <img style="
-                                width: 10%;
-                                height: 10%;
-                                margin: 10%;
-                                top: 50%;
-                                left: 40%;
-                                " src="./static/img/loading-icon-black.svg" />
-
-                    
+                              <img style="
+                                  width: 10%;
+                                  height: 10%;
+                                  margin: 10%;
+                                  top: 50%;
+                                  left: 40%;
+                                  " src="./static/img/loading-icon-black.svg" />
                             </div>
                             <div class="container" id="tab-data" hidden></div>
-
-
+        
+        
                             <hr />
                             <!-- Toasts -->
                             <div id="toasts">
@@ -221,14 +222,28 @@
                                                             </span>
                                                         </div>
                                                         <div>
-                                                            <input id="import_settings"
-                                                                class="btn btn-secondary settings_button"
-                                                                type="button"
-                                                                value="Import"/>
-                                                            <input id="export_settings"
-                                                                class="btn btn-secondary settings_button"
-                                                                type="button"
-                                                                value="Export"/>
+                                                            <div>
+                                                                <input id="import_settings"
+                                                                    class="btn btn-secondary settings_button"
+                                                                    type="button"
+                                                                    value="Import"/>
+                                                                <div class="btn-group settings_button">
+                                                                    <button id="export_settings"
+                                                                        class="btn btn-secondary"
+                                                                        type="button"
+                                                                        onclick="export_settings_string(event)">Export</button>
+                                                                    <button type="button"
+                                                                        class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                                                                        data-bs-toggle="dropdown"
+                                                                        aria-expanded="false">
+                                                                        <span class="visually-hidden">Toggle Dropdown</span>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li><a class="dropdown-item" id="export_string_option" href="#">Export String</a></li>
+                                                                        <li><a class="dropdown-item" id="export_yaml_option" href="#">Export as Archipelago YAML</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -910,6 +925,7 @@
                                 // Inject into the DOM
                                 $("#tab-data").html(renderedHTML);
                                 $("#nav-tab-list").html(navRenderedHTML);
+                                $("#nav-tab-list-mobile").html(navRenderedHTML);
                     
                                 // After rendering the HTML, dynamically load the other scripts
                                 loadAdditionalScripts();

@@ -4,6 +4,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Switches import Switches
 from randomizer.LogicClasses import Balloon, ColoredBananaGroup
 
 ColoredBananaGroupList = [
@@ -443,7 +444,7 @@ ColoredBananaGroupList = [
         name="Leading to Chunky R&D room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.RandDUpper,
-        logic=lambda l: l.punch and l.chunky and l.climbing,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.climbing,
         locations=[[1, 1.0, 4404, 1421, 1396], [1, 1.0, 4346, 1417, 1355]],
     ),
     ColoredBananaGroup(
@@ -460,7 +461,7 @@ ColoredBananaGroupList = [
         name="Chunky R&D room behind chest",
         konglist=[Kongs.chunky],
         region=Regions.RandD,
-        logic=lambda l: l.CanAccessRNDRoom() or (l.punch and l.triangle and l.climbing),
+        logic=lambda l: l.CanAccessRNDRoom() or (l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing),
         locations=[[5, 1.0, 5000, 1341, 1748], [5, 1.0, 4980, 1341, 1778]],
     ),
     ColoredBananaGroup(
@@ -541,7 +542,7 @@ ColoredBananaGroupList = [
         name="In Dark room on box",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.punch or l.CanPhase(),
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase(),
         locations=[[5, 1.0, 2130, 52, 528]],
     ),
     ColoredBananaGroup(
@@ -875,7 +876,7 @@ ColoredBananaGroupList = [
         name="Stash Snatch room",
         konglist=[Kongs.chunky],
         region=Regions.FactoryArcadeTunnel,
-        logic=lambda l: l.punch,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryArcadeTunnelGrate, False),
         locations=[[5, 1.0, 1340, 1112, 1762], [5, 1.0, 1202, 1112, 1754]],
     ),
     ColoredBananaGroup(
@@ -1033,7 +1034,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.BeyondHatch,
         vanilla=True,
-        logic=lambda l: l.punch,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False),
         locations=[
             [5, 1.0, 1960.4481201171875, 106.5, 584.5081787109375],
             [5, 1.0, 1961.8372802734375, 126.5, 677.7713012695312],
@@ -1369,7 +1370,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.RandDUpper,
         vanilla=True,
-        logic=lambda l: (l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
+        logic=lambda l: (l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
         locations=[
             [1, 1.0, 4655.8388671875, 1339.0, 1240.5621337890625],
             [1, 1.0, 4767.98388671875, 1339.0, 1316.2774658203125],
@@ -1385,7 +1386,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.RandDUpper,
         vanilla=True,
-        logic=lambda l: (l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
+        logic=lambda l: (l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
         locations=[
             [1, 1.0, 4385.7177734375, 1339.0, 1695.80419921875],
             [1, 1.0, 4492.11083984375, 1339.0, 1768.3846435546875],
@@ -1698,7 +1699,7 @@ ColoredBananaGroupList = [
         name="Dark room entrance",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.chunky and l.punch,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False),
         locations=[
             [1, 1.0, 1747, 6, 667],
             [1, 1.0, 1762, 6, 667],
@@ -1713,7 +1714,7 @@ ColoredBananaGroupList = [
         name="Box in a corner of dark room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.chunky and l.punch,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False),
         locations=[[5, 1.0, 1804, 42, 914]],
     ),
     ColoredBananaGroup(
@@ -1940,7 +1941,7 @@ ColoredBananaGroupList = [
         name="On the R&D triangle pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.RandDUpper,
-        logic=lambda l: l.chunky and l.punch and l.climbing,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.climbing,
         locations=[[5, 1.0, 4405, 1427, 1395]],
     ),
     ColoredBananaGroup(
@@ -1957,7 +1958,7 @@ BalloonList = [
     Balloon(
         id=1,
         map_id=Maps.FranticFactory,
-        name="First room left corner",
+        name="Foyer left corner",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryStart,
@@ -1966,7 +1967,7 @@ BalloonList = [
     Balloon(
         id=2,
         map_id=Maps.FranticFactory,
-        name="First room right side",
+        name="Foyer right side",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryStart,
@@ -1975,7 +1976,7 @@ BalloonList = [
     Balloon(
         id=3,
         map_id=Maps.FranticFactory,
-        name="First room by robots left side",
+        name="Foyer robots left side",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryStart,
@@ -1984,7 +1985,7 @@ BalloonList = [
     Balloon(
         id=4,
         map_id=Maps.FranticFactory,
-        name="Tunnel by Snide's window",
+        name="Tunnel by window shopping",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryStart,
@@ -2057,7 +2058,7 @@ BalloonList = [
     Balloon(
         id=11,
         map_id=Maps.FranticFactory,
-        name="Block tower room in front of numbers game window",
+        name="Front of Number Game Window",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
@@ -2075,7 +2076,7 @@ BalloonList = [
     Balloon(
         id=13,
         map_id=Maps.FranticFactory,
-        name="Block tower room by Mini Monkey barrel",
+        name="Mini Monkey Testing Barrel",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
@@ -2084,7 +2085,7 @@ BalloonList = [
     Balloon(
         id=14,
         map_id=Maps.FranticFactory,
-        name="Block tower room by tag barrel",
+        name="Block Tower Tag Barrel",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
@@ -2093,7 +2094,7 @@ BalloonList = [
     Balloon(
         id=15,
         map_id=Maps.FranticFactory,
-        name="Funky's room high and around room",
+        name="Testing Shop room high and around room",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
@@ -2166,7 +2167,7 @@ BalloonList = [
     Balloon(
         id=21,
         map_id=Maps.FranticFactory,
-        name="In window by car race Mini Monkey",
+        name="Window by car race Mini Monkey",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.RandD,
@@ -2188,13 +2189,13 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.chunky],
         region=Regions.RandDUpper,
-        logic=lambda l: (l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
+        logic=lambda l: (l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
         points=[[5086, 1580, 1562], [4830, 1560, 1948]],
     ),
     Balloon(
         id=24,
         map_id=Maps.FranticFactory,
-        name="Cranky/Candy room",
+        name="Storage Shops Room",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
@@ -2203,7 +2204,7 @@ BalloonList = [
     Balloon(
         id=25,
         map_id=Maps.FranticFactory,
-        name="Chunky room above blue switch",
+        name="Storage Room above blue switch",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
@@ -2212,7 +2213,7 @@ BalloonList = [
     Balloon(
         id=26,
         map_id=Maps.FranticFactory,
-        name="Chunky room above dark room entrance",
+        name="Storage Room Above Dark Entrance",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
@@ -2225,7 +2226,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.punch or l.CanPhase(),
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase(),
         points=[[2078, 150, 510], [2078, 150, 810]],
     ),
     Balloon(
@@ -2283,7 +2284,7 @@ BalloonList = [
     Balloon(
         id=33,
         map_id=Maps.FranticFactory,
-        name="Around hatch (Chunky)",
+        name="Around hatch",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryStart,
@@ -2293,7 +2294,7 @@ BalloonList = [
     Balloon(
         id=34,
         map_id=Maps.FranticFactory,
-        name="Top of pole by Snide (Chunky)",
+        name="Top of pole by Snide",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
@@ -2303,7 +2304,7 @@ BalloonList = [
     Balloon(
         id=35,
         map_id=Maps.FranticFactory,
-        name="In piano game room (Lanky)",
+        name="In piano game room",
         speed=6,
         konglist=[Kongs.lanky],
         region=Regions.RandD,
@@ -2314,7 +2315,7 @@ BalloonList = [
     Balloon(
         id=36,
         map_id=Maps.FranticFactory,
-        name="In front of Snide (Tiny)",
+        name="In front of Snide",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
@@ -2324,7 +2325,7 @@ BalloonList = [
     Balloon(
         id=37,
         map_id=Maps.FranticFactory,
-        name="In Diddy's R&D room (back) (Diddy)",
+        name="In Diddy's R&D room (back)",
         speed=3,
         konglist=[Kongs.diddy],
         region=Regions.RandDUpper,
@@ -2335,7 +2336,7 @@ BalloonList = [
     Balloon(
         id=38,
         map_id=Maps.FranticFactory,
-        name="In Diddy's R&D room (front) (Diddy)",
+        name="In Diddy's R&D room (front)",
         speed=5,
         konglist=[Kongs.diddy],
         region=Regions.RandDUpper,
@@ -2346,7 +2347,7 @@ BalloonList = [
     Balloon(
         id=39,
         map_id=Maps.FranticFactory,
-        name="In R&D above hatch to Chunky's room (Donkey)",
+        name="In R&D above hatch to Storage room",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.RandDUpper,
@@ -2356,7 +2357,7 @@ BalloonList = [
     Balloon(
         id=40,
         map_id=Maps.FranticFactory,
-        name="In front of Candy & Cranky (Donkey)",
+        name="In front of Storage Shops",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
@@ -2366,7 +2367,7 @@ BalloonList = [
     Balloon(
         id=41,
         map_id=Maps.FranticFactory,
-        name="Around numbers game (Donkey)",
+        name="Around numbers game",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
@@ -2383,7 +2384,7 @@ BalloonList = [
     Balloon(
         id=42,
         map_id=Maps.FranticFactory,
-        name="In Diddy's R&D room (left) (Diddy)",
+        name="In Diddy's R&D room (left)",
         speed=6,
         konglist=[Kongs.diddy],
         region=Regions.RandDUpper,
@@ -2394,7 +2395,7 @@ BalloonList = [
     Balloon(
         id=43,
         map_id=Maps.FranticFactory,
-        name="Prod room, by center (Tiny)",
+        name="Production Low Center Core",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MiddleCore,
@@ -2404,7 +2405,7 @@ BalloonList = [
     Balloon(
         id=44,
         map_id=Maps.FranticFactory,
-        name="In front of Funky (Tiny)",
+        name="In front of Testing Shop",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
@@ -2414,7 +2415,7 @@ BalloonList = [
     Balloon(
         id=45,
         map_id=Maps.FranticFactory,
-        name="Prod room, by highest tag barrel (Lanky)",
+        name="Highest Prod Room Tag Barrel",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.UpperCore,
@@ -2424,23 +2425,24 @@ BalloonList = [
     Balloon(
         id=46,
         map_id=Maps.FranticFactory,
-        name="Chunky R&D room (Chunky)",
+        name="Chunky R&D room",
         speed=6,
         konglist=[Kongs.chunky],
         region=Regions.RandDUpper,
         vanilla=True,
-        logic=lambda l: ((l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()),
+        logic=lambda l: ((l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom()),
         points=[[4424, 1490, 1560], [4567, 1486, 1341]],
     ),
     Balloon(
         id=47,
         map_id=Maps.FactoryCrusher,
-        name="In crusher room (Lanky)",
+        name="In crusher room",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.InsideCore,
         vanilla=True,
         points=[[286, 44, 508], [272, 38, 415]],
+        banned_when_item_rando=True, # Banned in vanilla
     ),
     # Wave 2 by Snap
     Balloon(
@@ -2491,7 +2493,7 @@ BalloonList = [
     Balloon(
         id=53,
         map_id=Maps.FranticFactory,
-        name="Around the Lanky pipe",
+        name="Around the Production Lanky pipe",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.UpperCore,
@@ -2509,7 +2511,7 @@ BalloonList = [
     Balloon(
         id=55,
         map_id=Maps.FranticFactory,
-        name="Above the headphones",
+        name="Above the Storage headphones",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
@@ -2527,7 +2529,7 @@ BalloonList = [
     Balloon(
         id=57,
         map_id=Maps.FranticFactory,
-        name="Window of the number game",
+        name="Window of the numbers game",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
@@ -2546,7 +2548,7 @@ BalloonList = [
     Balloon(
         id=59,
         map_id=Maps.FranticFactory,
-        name="Ceiling pipe towards Funky",
+        name="Ceiling pipe towards Testing Shop",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,

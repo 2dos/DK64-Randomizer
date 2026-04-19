@@ -158,6 +158,7 @@ settings*.asm
 *.v64
 *.dkp
 *.bin
+!base-hack/minigame/*.bin
 *.bin.gz
 *.raw
 codeOutput.txt
@@ -246,3 +247,5 @@ base-hack/modelling/*.obj
 *.ia4
 *.i8
 *.ia8
+base-hack/modelling/*.obj
+dk64_full_item_table.txt

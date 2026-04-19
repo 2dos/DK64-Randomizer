@@ -247,6 +247,138 @@ BoulderItemStruct boulder_item_table[16] = {
     { .map = MAP_AZTEC, .spawner_id = 1},
     { .map = MAP_AZTEC, .spawner_id = 0},
 };
+actor_spawn_packet box_item_table[24] = {
+    { .actor = NEWACTOR_NULL }, // 00 | 3B | Japes DK Hut
+    { .actor = NEWACTOR_NULL }, // 01 | 38 | Japes Diddy Hut
+    { .actor = NEWACTOR_NULL }, // 02 | 3A | Japes Lanky Hut
+    { .actor = NEWACTOR_NULL }, // 03 | 39 | Japes Tiny Hut
+    { .actor = NEWACTOR_NULL }, // 04 | 77 | Factory Dark Room Low
+    { .actor = NEWACTOR_NULL }, // 05 | 0D | Galleon Headphones Chest
+    { .actor = NEWACTOR_NULL }, // 06 | 4D | Galleon Chest Lighthouse near Enguarde (meme hole side)
+    { .actor = NEWACTOR_NULL }, // 07 | 4B | Galleon Chest Lighthouse near Enguarde (kevin side)
+    { .actor = NEWACTOR_NULL }, // 08 | 4F | Galleon Chest Lighthouse mid level (kevin side)
+    { .actor = NEWACTOR_NULL }, // 09 | BE | Galleon Chest Lighthouse mid level (meme hole side)
+    { .actor = NEWACTOR_NULL }, // 10 | E7 | Galleon Chest Shipwreck (between submarine branch and entrance)
+    { .actor = NEWACTOR_NULL }, // 11 | E8 | Galleon Chest Shipwreck (between 2ds branch and entrance)
+    { .actor = NEWACTOR_NULL }, // 12 | E9 | Galleon Chest Shipwreck (under gold tower tunnel entrance)
+    { .actor = NEWACTOR_NULL }, // 13 | E5 | Galleon Chest Shipwreck (between submarine branch and mech fish branch)
+    { .actor = NEWACTOR_NULL }, // 14 | E6 | Galleon Chest Shipwreck (near mech fish grate)
+    { .actor = NEWACTOR_NULL }, // 15 | 0E | Galleon 5DS Chest 1
+    { .actor = NEWACTOR_NULL }, // 16 | 0F | Galleon 5DS Chest 2
+    { .actor = NEWACTOR_NULL }, // 17 | 0D | Galleon 5DS Chest 3
+    { .actor = NEWACTOR_NULL }, // 18 | 0C | Galleon 5DS Chest 4
+    { .actor = NEWACTOR_NULL }, // 19 | 01 | Fungi Thornvine Box (Slam)
+    { .actor = NEWACTOR_NULL }, // 20 | 06 | Fungi mill front slam
+    { .actor = NEWACTOR_NULL }, // 21 | 01 | Fungi mill rear triangle
+    { .actor = NEWACTOR_NULL }, // 22 | 03 | Fungi mill rear mini hole
+    { .actor = NEWACTOR_NULL }, // 23 | 05 | Castle Shed
+};
+actor_spawn_packet balloon_item_table[104] = {
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+    { .actor = NEWACTOR_NULL },
+};
 bonus_barrel_info bonus_data[BONUS_DATA_COUNT] = {
     {.flag=0x186,               .spawn_actor=45,                    .kong_actor=1},
     {.flag=0xe0,                .spawn_actor=45,                    .kong_actor=2 + KONG_LANKY},
@@ -411,6 +543,8 @@ snide_packet snide_rewards[40] = {
     {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
     {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
 };
+ROM_DATA unsigned short actor_cb_counts[221] = {};
+ROM_DATA short m2_cb_coin_counts[8] = {};
 
 int getCrownIndex(maps map) {
     /**
@@ -420,12 +554,7 @@ int getCrownIndex(maps map) {
      * 
      * @return Actor Index of the reward
      */
-	for (int i = 0; i < 10; i++) {
-		if (map == crown_maps[i]) {
-			return i;
-		}
-	}
-	return 0;
+    return inU8List(map, &crown_maps[0], 10) - 1;
 }
 
 int getKeyIndex(int old_flag) {
@@ -436,12 +565,7 @@ int getKeyIndex(int old_flag) {
      * 
      * @return Actor Index of the reward
      */
-	for (int i = 0; i < 8; i++) {
-		if (old_flag == normal_key_flags[i]) {
-			return i;
-		}
-	}
-	return 0;
+    return inShortList(old_flag, &normal_key_flags[0], 8) - 1;
 }
 
 int getPatchFlag(int id) {
@@ -502,34 +626,6 @@ int getCrateWorld(int index) {
 	return crate_flags[index].world;
 }
 
-void populatePatchItem(int id, int map, int index, int world) {
-    /**
-     * @brief Populate the patch table with a dirt patch
-     * 
-     * @param id Patch ID
-     * @param map Patch Map
-     * @param index Index inside the patch table
-     * @param world World where the patch is
-     */
-    patch_flags[index].id = id;
-    patch_flags[index].map = map;
-    patch_flags[index].world = world;
-}
-
-void populateCrateItem(int id, int map, int index, int world) {
-    /**
-     * @brief Populate the Crate table with a Melon Crate
-     * 
-     * @param id Crate ID
-     * @param map Crate Map
-     * @param index Index inside the Crate table
-     * @param world World where the Crate is
-     */
-    crate_flags[index].id = id;
-    crate_flags[index].map = map;
-    crate_flags[index].world = world;
-}
-
 int getBonusFlag(int index) {
     /**
      * @brief Get bonus barrel flag from barrel index
@@ -558,13 +654,6 @@ int getBoulderIndex(void) {
         }
     }
     return -1;
-}
-
-int getBoulderItem(int index) {
-    if (index < 0) {
-        return 0;
-    }
-    return boulder_item_table[index].item;
 }
 
 typedef struct barrel_skin_tie {
@@ -619,6 +708,8 @@ ROM_RODATA_NUM static const barrel_skin_tie bonus_skins[] = {
     {.actor = NEWACTOR_SPECIALARCHIPELAGOITEM,  .reqitem=REQITEM_AP,                .level= 1, .kong=-1, .skin=SKIN_AP_USEFUL},
     {.actor = NEWACTOR_FOOLSARCHIPELAGOITEM,    .reqitem=REQITEM_AP,                .level= 2, .kong=-1, .skin=SKIN_AP_JUNK},
     {.actor = NEWACTOR_TRAPARCHIPELAGOITEM,     .reqitem=REQITEM_AP,                .level= 3, .kong=-1, .skin=SKIN_AP_TRAP},
+    {.actor = NEWACTOR_DAYITEM,                 .reqitem=REQITEM_FUNGITIME,         .level=-1, .kong= 0, .skin=SKIN_DAY},
+    {.actor = NEWACTOR_NIGHTITEM,               .reqitem=REQITEM_FUNGITIME,         .level=-1, .kong= 1, .skin=SKIN_NIGHT},
 };
 
 enum_bonus_skin getBarrelSkinIndex(int actor) {
@@ -685,11 +776,6 @@ void initItemRando(void) {
      * @brief Initialize Item Rando functionality
      */
         
-    // Checks Screen
-    pausescreenlist screen_count = PAUSESCREEN_TERMINATOR; // 4 screens vanilla + hint screen + check screen + move tracker
-    *(short*)(0x806A8672) = screen_count - 1; // Screen decrease cap
-    *(short*)(0x806A8646) = screen_count; // Screen increase cap
-
     // Head Size - It shouldn't be here, but haha funny game crash if placed in base init
     int load_size = 0xED;
     unsigned char* head_write = getFile(load_size, 0x1FEE800);

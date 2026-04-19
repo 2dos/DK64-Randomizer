@@ -358,6 +358,16 @@
     "normal": 0,
     "shuffled": 1
   },
+  /* 
+    CannonStatus:
+    - Determines if and how cannon is randomized.
+    - normal: Cannon is a starting move.
+    - shuffled: Cannon is an item that can be found in the world.
+  */
+  "CannonStatus": {
+    "normal": 0,
+    "shuffled": 1
+  },
   /*
     GlitchesSelected:
     - Glitch categories that can be selected for the seed logic.
@@ -575,7 +585,12 @@
     "racebanana": 45,
     "gauntletbanana": 46,
     "blueprintbanana": 47,
-    "sniderewards": 48
+    "sniderewards": 48,
+    "fungitime": 49,
+    "breakable": 50,
+    "dummyitem_breakable": 51,
+    "balloon": 52,
+    "dummyitem_balloon": 53
   },
 
   "ItemRandoFiller": {
@@ -639,7 +654,9 @@
     "cranky": 5,
     "candy": 6,
     "funky": 7,
-    "disco_donkey": 8
+    "disco_donkey": 8,
+    "robokrem": 9,
+    "rabbit": 10
   },
 
   /*
@@ -971,6 +988,7 @@
     - random: Random slam color from the above.
   */
   "SlamRequirement": {
+    "no_slam": 0,
     "green": 1,
     "blue": 2,
     "red": 3,
@@ -1442,7 +1460,18 @@
     "no_consumable_upgrades": 295,
     "bosses_selected": 296,
     "ice_trap_model_v2": 297,
-    "progressive_hint_algorithm": 298
+    "progressive_hint_algorithm": 298,
+    "switchsanity_switch_factory_dark_grate": 299,
+    "switchsanity_switch_factory_bonus_grate": 300,
+    "switchsanity_switch_factory_monster_grate": 301,
+    "switchsanity_switch_caves_gone_cave": 302,
+    "switchsanity_switch_caves_snide_cave": 303,
+    "switchsanity_switch_caves_boulder_cave": 304,
+    "switchsanity_switch_caves_lobby_blueprint": 305,
+    "switchsanity_switch_caves_lobby_lava": 306,
+    "switchsanity_switch_aztec_gong_tower": 307,
+    "switchsanity_switch_aztec_lobby_gong": 308,
+    "ship_location_rando": 309
   },
   /*
     SettingsStringDataType:
@@ -1602,6 +1631,16 @@
     "switchsanity_switch_aztec_free_tiny": { "obj": "SwitchsanityKong" },
     "switchsanity_switch_aztec_free_lanky": { "obj": "SwitchsanityKong" },
     "switchsanity_switch_factory_free_kong": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_factory_dark_grate": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_factory_bonus_grate": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_factory_monster_grate": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_caves_gone_cave": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_caves_snide_cave": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_caves_boulder_cave": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_caves_lobby_blueprint": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_aztec_gong_tower": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_aztec_lobby_gong": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_caves_lobby_lava": { "obj": "SwitchsanityKong" },
     "krool_in_boss_pool_v2": { "obj": "KroolInBossPool" }
   },
   // ALL SETTINGS NEED AN ENTRY HERE!
@@ -2142,6 +2181,7 @@
     "SettingsStringEnum.alt_minecart_mayhem": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.less_fragile_boulders": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.no_consumable_upgrades": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.ship_location_rando": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.prog_slam_level_1": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_2": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_3": { "obj": "SlamRequirement" },
@@ -2177,6 +2217,16 @@
     "SettingsStringEnum.switchsanity_switch_aztec_free_tiny": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.switchsanity_switch_aztec_free_lanky": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.switchsanity_switch_factory_free_kong": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_factory_dark_grate": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_factory_bonus_grate": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_factory_monster_grate": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_caves_gone_cave": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_caves_snide_cave": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_caves_boulder_cave": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_caves_lobby_blueprint": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_caves_lobby_lava": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_aztec_gong_tower": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_aztec_lobby_gong": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.trap_weight_bubble": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_reverse": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_slow": { "obj": "SettingsStringDataType.int8" },

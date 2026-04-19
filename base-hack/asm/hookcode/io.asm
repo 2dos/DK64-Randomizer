@@ -239,3 +239,95 @@ pleaseDontStopIslesMusic:
     nop
     b cancelTheSong
     nop
+
+PercussionInstruments:
+    ; Percussion instruments
+    .byte 2 ; Rokotom
+    .byte 3 ; Taiko Drum
+    .byte 8 ; Bongos
+    .byte 9 ; Drum Kit
+    .byte 11 ; Tom Tom
+    .byte 29 ; Timpani
+    .byte 34 ; Drum Roll / Snares
+    .byte 93 ; Concert Drum
+    .byte 0 ; Null terminator
+
+.align 4
+
+LogPercussion:
+    lw $t9, 0x0 ($t8)
+    lbu $t4, 0x30 ($t8) ; Inst Index
+    ; addiu $t4, $t4, 1
+    ; Quick code to filter out non-relevant maps quickly
+    lui $t0, hi(CutsceneActive)
+    lbu $t0, lo(CutsceneActive) ($t0)
+    addiu $t1, $zero, 3
+    beq $t0, $t1, LogPercussion_log
+    addiu $t1, $zero, 4
+    bne $t0, $t1, LogPercussion_end
+    nop
+
+    LogPercussion_log:
+        lui $t1, hi(PercussionInstruments)
+        addiu $t1, $t1, lo(PercussionInstruments)
+        
+        LogPercussion_loop:
+            lbu $t2, 0x0 ($t1)
+            ;
+            beq $t2, $zero, LogPercussion_end
+            addiu $t1, $t1, 1
+            beq $t4, $t2, LogPercussion_note
+            lui $t2, hi(PercussionPlayed)
+            b LogPercussion_loop
+            nop
+
+        LogPercussion_note:
+            addiu $t3, $zero, 1
+            sb $t3, lo(PercussionPlayed) ($t2)
+
+    LogPercussion_end:
+        j 0x8073A54C
+        sw $t9, 0x14 ($sp)
+
+InstIndexStore:
+    ; vacant vars - t4, t9, t1
+    lw $t0, 0xD0 ($sp) ; Seqp
+    lw $t3, 0x90 ($sp) ; Inst index
+    lbu $t5, 0xC3 ($sp) ; chan
+    ; get chan state
+    sll $t4, $t5, 2
+    subu $t4, $t4, $t5
+    lw $t9, 0x60 ($t0)
+    sll $t4, $t4, 2
+    addu $t4, $t4, $t5
+    sll $t4, $t4, 2
+    addu $t1, $t9, $t4
+    j 0x80735444
+    sb $t3, 0x30 ($t1) ; 0x30 seems unused
+
+InstanceMalloc:
+    lh $a0, 0x0 ($s0)  ; Condition Macro Count
+    sll $a1, $a0, 3 ; Space for condition macros
+    addu $a2, $s0, $a1
+    lh $a2, 0x2 ($a2)  ; Execution Macro Count
+    sll $a2, $a2, 3  ; Space for execution macros
+    addu $a1, $a1, $a2  ; Space for all macros
+    jal dk_malloc
+    addiu $a0, $a1, 8  ; Include space for the counts of each macro type + end pointer
+    j 0x8063DD30
+    nop
+
+InstanceWriteShift:
+    sll $a2, $s4, 1
+    addu $a0, $s2, $t8
+    j 0x8063DD80
+    addiu $a0, $a0, 8
+
+InstanceGetExec_0:
+    lbu $t4, 0x4 ($s2)  ; Get cond macro count
+    or $s0, $zero, $zero
+    sll $s1, $t4, 3  ; Get space allocated for cond macros
+    addu $t4, $s2, $s1
+    addiu $s1, $t4, 0x8  ; Get pointer to exec macros
+    j 0x8063E29C
+    lbu $t4, 0x6 ($s2)  ; Get exec count

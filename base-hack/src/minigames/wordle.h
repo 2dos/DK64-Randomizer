@@ -1,0 +1,1 @@
+extern char word_to_guess[6];

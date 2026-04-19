@@ -12,7 +12,7 @@ from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Types import Types
 from randomizer.Enums.VendorType import VendorType
 from randomizer.Lists.CustomLocations import CustomLocations, LocationTypes
-from randomizer.Lists.DoorLocations import DoorData, DoorType, door_locations
+from randomizer.Lists.DoorLocations import DoorType, door_locations
 from randomizer.Lists.FairyLocations import fairy_locations
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.KasplatLocations import KasplatLocationList
@@ -218,7 +218,7 @@ for locationEnum, locationObj in LocationList.items():
         continue
     # Do not include training barrels or pre-given move locations. We will fill
     # those automatically based on the user's selected starting moves.
-    if locationObj.type in [Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing]:
+    if locationObj.type in [Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing, Types.Cannons]:
         continue
     # Do not include the shopkeepers.
     if locationObj.type in [Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:

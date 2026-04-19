@@ -28,7 +28,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Hard Mode
 - Helm Hurry Mode
 - Mirror Mode
-- Irondonk
+- Perma Death
 - Guaranteed Starting Keys
 
 # Other Settings

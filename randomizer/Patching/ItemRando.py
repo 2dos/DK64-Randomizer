@@ -22,7 +22,16 @@ from randomizer.Patching.Library.ItemRando import (
     LocationSelection,
 )
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, CompTextFiles, ItemPreview
-from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay, writeValue, patchBonus, getBonusIndex
+from randomizer.Patching.Library.ASM import (
+    getItemTableWriteAddress,
+    populateOverlayOffsets,
+    getSym,
+    getROMAddress,
+    Overlay,
+    writeValue,
+    patchBonus,
+    getBonusIndex,
+)
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
 from randomizer.Lists.WrinklyHints import kong_list
@@ -222,6 +231,10 @@ def getItemPatchingData(item_type: Types, item: Items, kong_override: int = None
     elif item_type == Types.Key:
         key_index = getItemPatchingFromList(ItemPool.Keys(), item, "Key")
         return ItemPatchingInfo(ReqItems.Key, key_index)
+    elif item_type == Types.FungiTime:
+        if item == Items.Day:
+            return ItemPatchingInfo(ReqItems.FungiTime, 0, 0)
+        return ItemPatchingInfo(ReqItems.FungiTime, 0, 1)
     elif item_type == Types.FakeItem:
         for effect_index, idx_lst in enumerate(ice_trap_data):
             if item in idx_lst:
@@ -238,7 +251,7 @@ def getItemPatchingData(item_type: Types, item: Items, kong_override: int = None
         hint_level = int(hint_index / 5)
         hint_kong = hint_index % 5
         return ItemPatchingInfo(ReqItems.Hint, hint_level, hint_kong)
-    elif item_type in (Types.Shockwave, Types.Shop, Types.Climbing, Types.TrainingBarrel):
+    elif item_type in (Types.Shockwave, Types.Shop, Types.Climbing, Types.Cannons, Types.TrainingBarrel):
         # Special Moves
         idx_lst = [Items.BaboonBlast, Items.ChimpyCharge, Items.Orangstand, Items.MiniMonkey, Items.HunkyChunky]
         idx = getItemPatchingFromList(idx_lst, item, "Move", False)
@@ -292,6 +305,9 @@ def getItemPatchingData(item_type: Types, item: Items, kong_override: int = None
         # Camera Combo
         if item == Items.CameraAndShockwave:
             return ItemPatchingInfo(ReqItems.Move, 12, 0, 1)
+        # Cannons
+        if item == Items.Cannons:
+            return ItemPatchingInfo(ReqItems.Move, 13, 0, 1)
         raise Exception("Could not find valid move")
     elif item is None or item == Items.NoItem or item_type is None or item_type == Types.NoItem:
         return ItemPatchingInfo(0)
@@ -472,12 +488,20 @@ TRACKER_ITEM_PAIRING = {
         "item": Items.Climbing,
         "packets": [{"offset": EXTRA_STRUCT_OFFSET + 3, "mode": "set", "value": 1}],
     },
+    TrackerItems.CANNON: {
+        "item": Items.Cannons,
+        "packets": [{"offset": EXTRA_STRUCT_OFFSET + 4, "mode": "set", "value": 1}],
+    },
 }
 TRACKER_SHOPKEEPER_PAIRING = {
     TrackerItems.CRANKY: Items.Cranky,
     TrackerItems.FUNKY: Items.Funky,
     TrackerItems.CANDY: Items.Candy,
     TrackerItems.SNIDE: Items.Snide,
+}
+TRACKER_TIME_PAIRING = {
+    TrackerItems.DAY: Items.Day,
+    TrackerItems.NIGHT: Items.Night,
 }
 
 
@@ -492,6 +516,8 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
         Locations.ShopOwner_Location01: Items.Funky,
         Locations.ShopOwner_Location02: Items.Candy,
         Locations.ShopOwner_Location03: Items.Snide,
+        Locations.TimeLocationDay: Items.Day,
+        Locations.TimeLocationNight: Items.Night,
     }
     if (not spoiler.settings.fast_start_beginning_of_game) or spoiler.settings.archipelago:
         del OTHER_STARTING_ITEMS[Locations.IslesVinesTrainingBarrel]
@@ -509,10 +535,13 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
         if spoiler.LocationList[Locations.IslesBarrelsTrainingBarrel].inaccessible:
             del OTHER_STARTING_ITEMS[Locations.IslesBarrelsTrainingBarrel]
     found_shopkeeper = False
+    found_time = False
     if spoiler.settings.shuffle_items:
         for item in spoiler.item_assignment:
             if item.location >= Locations.ShopOwner_Location00 and item.location <= Locations.ShopOwner_Location03:
                 found_shopkeeper = True
+            if item.location in (Locations.TimeLocationDay, Locations.TimeLocationNight):
+                found_time = True
             if item.can_have_item:
                 if item.location in list(OTHER_STARTING_ITEMS.keys()):
                     OTHER_STARTING_ITEMS[item.location] = item.new_item
@@ -521,6 +550,9 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
         OTHER_STARTING_ITEMS[Locations.ShopOwner_Location01] = Items.NoItem
         OTHER_STARTING_ITEMS[Locations.ShopOwner_Location02] = Items.NoItem
         OTHER_STARTING_ITEMS[Locations.ShopOwner_Location03] = Items.NoItem
+    if not found_time and ItemRandoListSelected.fungitime in spoiler.settings.item_rando_list_selected:
+        OTHER_STARTING_ITEMS[Locations.TimeLocationDay] = Items.NoItem
+        OTHER_STARTING_ITEMS[Locations.TimeLocationNight] = Items.NoItem
     starting_slam_level = 0
     starting_belt_level = 0
     starting_ins_upg_level = 0
@@ -593,6 +625,12 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
             matching_item = TRACKER_SHOPKEEPER_PAIRING[x]
             if matching_item in list(OTHER_STARTING_ITEMS.values()):
                 value = 1
+        elif x in list(TRACKER_TIME_PAIRING.keys()):
+            matching_item = TRACKER_TIME_PAIRING[x]
+            if matching_item in list(OTHER_STARTING_ITEMS.values()):
+                value = 1
+                starting_move_packets.append({"offset": EXTRA_STRUCT_OFFSET + 5 + (x - TrackerItems.DAY), "mode": "set", "value": 1})
+
         ROM_COPY.seek(base_addr + x)
         ROM_COPY.writeMultipleBytes(value, 1)
         starting_move_packets.extend(give_move_packets)
@@ -982,8 +1020,6 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         db_item = getItemDBEntry(item.new_type)
                         db_index = db_item.index_getter(item.new_item)
                         arcade_reward_index = db_item.arcade_reward_index[db_index]
-                        ROM_COPY.seek(sav + 0x110)
-                        ROM_COPY.write(arcade_reward_index)
                         addr = getItemTableWriteAddress(ROM_COPY, Types.NintendoCoin, 0, offset_dict)
                         ROM_COPY.seek(addr)
                         ROM_COPY.write(item_properties.response_type)
@@ -995,8 +1031,6 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         db_item = getItemDBEntry(item.new_type)
                         db_index = db_item.index_getter(item.new_item)
                         jetpac_reward_index = db_item.jetpac_reward_index[db_index]
-                        ROM_COPY.seek(sav + 0x111)
-                        ROM_COPY.write(jetpac_reward_index)
                         addr = getItemTableWriteAddress(ROM_COPY, Types.RarewareCoin, 1, offset_dict)
                         ROM_COPY.seek(addr)
                         ROM_COPY.write(item_properties.response_type)
@@ -1064,6 +1098,26 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                             ROM_COPY.writeMultipleBytes(actor_index, 2)
                             ROM_COPY.writeMultipleBytes(HOLDABLE_LOCATION_INFO[item.location]["map_id"], 2)
                             ROM_COPY.writeMultipleBytes(HOLDABLE_LOCATION_INFO[item.location]["spawner_id"], 2)
+                            ROM_COPY.writeMultipleBytes(item_properties.level, 1)
+                            ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
+                        else:
+                            raise Exception("Melon Crate Item Placement Error")
+                    elif item.old_item == Types.Breakable:
+                        index = item.location - Locations.BreakableJapesDKHut
+                        if index < 24:
+                            addr = getItemTableWriteAddress(ROM_COPY, Types.Breakable, index, offset_dict)
+                            ROM_COPY.seek(addr)
+                            ROM_COPY.writeMultipleBytes(actor_index, 2)
+                            ROM_COPY.writeMultipleBytes(item_properties.level, 1)
+                            ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
+                        else:
+                            raise Exception("Melon Crate Item Placement Error")
+                    elif item.old_item == Types.Balloon:
+                        index = item.location - Locations.Balloon000
+                        if index < 104:
+                            addr = getItemTableWriteAddress(ROM_COPY, Types.Balloon, index, offset_dict)
+                            ROM_COPY.seek(addr)
+                            ROM_COPY.writeMultipleBytes(actor_index, 2)
                             ROM_COPY.writeMultipleBytes(item_properties.level, 1)
                             ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
                         else:
@@ -1137,6 +1191,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                                 no_texture_tuple = (
                                     Types.Candy,
                                     Types.Climbing,
+                                    Types.Cannons,
                                     Types.Cranky,
                                     Types.Fairy,
                                     Types.FillerFairy,

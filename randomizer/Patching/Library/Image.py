@@ -161,6 +161,33 @@ class ExtraTextures(IntEnum):
     HalfMedal06 = auto()
     HalfMedal07 = auto()
     HalfMedal08 = auto()
+    DayIcon = auto()
+    NightIcon = auto()
+    APIcon = auto()
+    DiddyIcePalette0 = auto()
+    DiddyIcePalette1 = auto()
+    ChunkyIcePalette0 = auto()
+    ChunkyIcePalette1 = auto()
+    FacePuzzleDK0 = auto()
+    FacePuzzleDK1 = auto()
+    FacePuzzleDK2 = auto()
+    FacePuzzleDK3 = auto()
+    FacePuzzleDK4 = auto()
+    FacePuzzleDK5 = auto()
+    FacePuzzleDK6 = auto()
+    FacePuzzleDK7 = auto()
+    FacePuzzleDK8 = auto()
+    FacePuzzleChunky0 = auto()
+    FacePuzzleChunky1 = auto()
+    FacePuzzleChunky2 = auto()
+    FacePuzzleChunky3 = auto()
+    FacePuzzleChunky4 = auto()
+    FacePuzzleChunky5 = auto()
+    FacePuzzleChunky6 = auto()
+    FacePuzzleChunky7 = auto()
+    FacePuzzleChunky8 = auto()
+    KongBananzaBlack = auto()
+    KongBananzaGrey = auto()
 
 
 barrel_skins = (
@@ -198,12 +225,14 @@ barrel_skins = (
     "ap_useful",
     "ap_junk",
     "ap_trap",
+    "time_day",
+    "time_night",
 )
 
 
 def getBonusSkinOffset(offset: int):
     """Get texture index after the barrel skins."""
-    return 6026 + (3 * len(barrel_skins)) + offset
+    return 6026 + (4 * len(barrel_skins)) + offset
 
 
 def getImageFromAddress(ROM_COPY: Union[LocalROM, ROM], rom_address: int, width: int, height: int, compressed: bool, file_size: int, format: TextureFormat):

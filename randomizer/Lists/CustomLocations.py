@@ -1572,7 +1572,11 @@ CustomLocations = {
             z=2385,
             max_size=64,
             logic_region=Regions.LlamaTemple,
-            logic=lambda l: Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny)),
+            logic=lambda l: Events.AztecLlamaSpit in l.Events
+            and l.HasGun(Kongs.any)
+            and l.swim
+            and l.scope
+            and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or l.isdonkey or l.isdiddy or l.islanky or l.ischunky),
             group=4,
             banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),
@@ -1621,7 +1625,7 @@ CustomLocations = {
             max_size=64,
             vanilla_patch=True,
             logic_region=Regions.BeyondHatch,
-            logic=lambda l: ((l.punch and l.chunky) or l.CanPhase()),
+            logic=lambda l: (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()),
             group=4,
         ),
         CustomLocation(
@@ -1803,7 +1807,7 @@ CustomLocations = {
             z=525,
             max_size=72,
             logic_region=Regions.BeyondHatch,
-            logic=lambda l: (l.punch and l.chunky) or l.phasewalk,
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.phasewalk,
             group=4,
         ),
         CustomLocation(map=Maps.FranticFactory, name="Arcade Room Bench", x=1922, y=1143, z=1515, max_size=40, logic_region=Regions.FactoryArcadeTunnel, group=4),
@@ -2006,7 +2010,7 @@ CustomLocations = {
             z=1350,
             max_size=64,
             logic_region=Regions.RandDUpper,
-            logic=lambda l: (l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom(),
+            logic=lambda l: (l.triangle and l.climbing and l.chunky and l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False)) or l.CanAccessRNDRoom(),
             group=3,
             banned_types=[
                 LocationTypes.CrownPad,
@@ -2022,7 +2026,7 @@ CustomLocations = {
             rot_y=2654,
             max_size=64,
             logic_region=Regions.RandDUpper,
-            logic=lambda l: ((l.punch and l.climbing and l.ischunky) or l.CanAccessRNDRoom()),
+            logic=lambda l: ((l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.climbing and l.triangle and l.ischunky) or l.CanAccessRNDRoom()),
             group=3,
             banned_types=[
                 LocationTypes.CrownPad,
@@ -2406,6 +2410,7 @@ CustomLocations = {
         #     rot_y=2048,
         #     max_size=64,
         #     logic_region=Regions.GloomyGalleonStart,
+        #     logic=lambda l: l.cannons,
         #     group=3,
         # ),
         # CrownLocation(
@@ -2416,6 +2421,7 @@ CustomLocations = {
         #     z=2474,
         #     max_size=64,
         #     logic_region=Regions.GloomyGalleonStart,
+        #     logic=lambda l: l.cannons,
         #     group=3,
         # ),
         CustomLocation(
@@ -2427,6 +2433,7 @@ CustomLocations = {
             rot_y=3276,
             max_size=64,
             logic_region=Regions.GloomyGalleonStart,
+            logic=lambda l: l.cannons,
             group=3,
         ),
         # CrownLocation(map=Maps.GloomyGalleon, name="On Cranky", x=3290, y=1870, z=2372, max_size=32, logic_region=0, group=0),
@@ -2928,6 +2935,7 @@ CustomLocations = {
             z=2322,
             max_size=56,
             logic_region=Regions.FungiForestStart,
+            logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
             group=1,
         ),
         CustomLocation(
@@ -2938,6 +2946,7 @@ CustomLocations = {
             z=2237,
             max_size=64,
             logic_region=Regions.FungiForestStart,
+            logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
             group=1,
         ),
         CustomLocation(
@@ -3855,7 +3864,7 @@ CustomLocations = {
             max_size=64,
             logic_region=Regions.IglooArea,
             group=3,
-            logic=lambda l: (l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))) or l.Slam,
+            logic=lambda l: (l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or l.isdonkey or l.isdiddy or l.islanky or l.ischunky)) or l.Slam,
             banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),
         CustomLocation(
@@ -6123,22 +6132,10 @@ CustomLocations = {
             z=1159,
             max_size=64,
             logic_region=Regions.TrainingGrounds,
-            logic=lambda l: l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny)) and l.swim and l.scope,
+            logic=lambda l: l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or l.isdonkey or l.isdiddy or l.islanky or l.ischunky) and l.swim and l.scope,
             group=3,
             banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
         ),
-        # CustomLocation(
-        #     map=Maps.TrainingGrounds,
-        #     name="Training Grounds: Under Water in Corner",
-        #     x=1962,
-        #     y=-187,
-        #     z=1324,
-        #     max_size=64,
-        #     logic_region=Regions.TrainingGrounds,
-        #     logic=lambda l: l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny)) and l.swim and l.scope,
-        #     group=2,
-        #     banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
-        # ),
         CustomLocation(
             map=Maps.TrainingGrounds,
             name="Training Grounds: Near Pool",

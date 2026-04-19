@@ -35,7 +35,7 @@ class Item:
             self.movetype = data[0]
             self.index = data[1]
             self.rando_flag = data[2]
-        if type in (Types.TrainingBarrel, Types.Shockwave, Types.Climbing):
+        if type in (Types.TrainingBarrel, Types.Shockwave, Types.Climbing, Types.Cannons):
             self.movetype = data[0]
             self.flag = data[1]
             self.rando_flag = data[2]
@@ -112,6 +112,7 @@ ItemList = {
     Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "orange", 388]),
     Items.Barrels: Item("Barrels", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "barrel", 389]),
     Items.Climbing: Item("Climbing", True, Types.Climbing, Kongs.any, [MoveTypes.Flag, "climbing", 0x29F]),
+    Items.Cannons: Item("Cannons", True, Types.Cannons, Kongs.any, [MoveTypes.Flag, "cannons", 0x2E8]),
     Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, Kongs.any, [MoveTypes.Slam, 2, -1]),
     Items.ProgressiveSlam2: Item("Progressive Slam ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.ProgressiveSlam3: Item("Progressive Slam  ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
@@ -257,6 +258,8 @@ ItemList = {
     Items.CrateMelon: Item("Crate Melon", False, Types.CrateItem, Kongs.any),
     Items.HalfMedal: Item("Half Medal", False, Types.HalfMedal, Kongs.any),
     Items.BoulderItem: Item("Boulder Drop", False, Types.BoulderItem, Kongs.any),
+    Items.Breakable: Item("Breakable Container Drop", False, Types.Breakable, Kongs.any),
+    Items.Balloon: Item("Balloon Drop", False, Types.Balloon, Kongs.any),
     Items.EnemyItem: Item("Enemy Item", False, Types.Enemies, Kongs.any),
     Items.Cranky: Item("Cranky", True, Types.Cranky, Kongs.any),
     Items.Funky: Item("Funky", True, Types.Funky, Kongs.any),
@@ -348,6 +351,8 @@ ItemList = {
     Items.SpecialArchipelagoItem: Item("Special Archipelago Item", False, Types.ArchipelagoItem, Kongs.any),
     Items.FoolsArchipelagoItem: Item("Junk Archipelago Item", False, Types.ArchipelagoItem, Kongs.any),
     Items.TrapArchipelagoItem: Item("Trap Archipelago Item", False, Types.ArchipelagoItem, Kongs.any),
+    Items.Day: Item("Day", True, Types.FungiTime, Kongs.any),
+    Items.Night: Item("Night", True, Types.FungiTime, Kongs.any),
     Items.BananaHoard: Item("Banana Hoard", True, Types.Constant, Kongs.any),
     Items.PhotoBeaverBlue: Item("Photo (Beaver Blue)", False, Types.EnemyPhoto, Kongs.any),
     Items.PhotoBook: Item("Photo (Book)", False, Types.EnemyPhoto, Kongs.any),
@@ -422,6 +427,7 @@ StartingMoveOptions = [
     Items.Oranges,
     Items.Barrels,
     Items.Climbing,
+    Items.Cannons,
     Items.ProgressiveSlam,
     Items.ProgressiveSlam2,
     Items.ProgressiveSlam3,

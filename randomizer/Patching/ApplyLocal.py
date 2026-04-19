@@ -26,7 +26,7 @@ from randomizer.Patching.CosmeticColors import (
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Library.Generic import recalculatePointerJSON, camelCaseToWords, getHoliday, Holidays, IsColorOptionSelected
+from randomizer.Patching.Library.Generic import recalculatePointerJSON, camelCaseToWords, getHoliday, Holidays, IsColorOptionSelected, TERMINATING_SFXS
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, writeText
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic, disableDynamicReverb, fixLankyIncompatibility
 from randomizer.Patching.MirrorMode import truncateFiles
@@ -191,6 +191,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
 
             # Fog
             holiday = getHoliday(settings)
+            settings.boot_sfx = random.choice(TERMINATING_SFXS)
             fog_enabled = [0, 0, 0]  # 0 = Vanilla, 1 = Set to a default (defined by either holiday mode or a custom default), 2 = rando
             default_colors = [
                 [0x8A, 0x52, 0x16],  # Aztec

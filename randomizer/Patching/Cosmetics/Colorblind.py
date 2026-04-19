@@ -1,6 +1,8 @@
 """All code associated with colorblind mode."""
 
 import gzip
+import js
+from io import BytesIO
 from randomizer.Settings import ColorblindMode
 from randomizer.Patching.Library.Image import (
     getRGBFromHash,
@@ -19,6 +21,7 @@ from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, g
 from randomizer.Patching.Library.ASM import getROMAddress, populateOverlayOffsets
 from randomizer.Patching.Patcher import ROM
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Types import Types
 from PIL import ImageEnhance, Image
 
 
@@ -453,12 +456,15 @@ def recolorSlamSwitches(galleon_switch_value, ROM_COPY: ROM, mode: ColorblindMod
         data = bytearray(num_data)  # convert num_data back to binary string
         writeRawFile(TableNames.ModelTwoGeometry, file_index, True, data, ROM_COPY)
         if not written_galleon_ship:
+            galleon_switch_colors = [
+                [0xFF, 0xFF, 0xFF],
+                new_color1.copy(),
+                new_color2.copy(),
+                new_color3.copy(),
+            ]
             galleon_switch_color = new_color1.copy()
             if galleon_switch_value is not None:
-                if galleon_switch_value != 1:
-                    galleon_switch_color = new_color3.copy()
-                    if galleon_switch_value == 2:
-                        galleon_switch_color = new_color2.copy()
+                galleon_switch_color = galleon_switch_colors[galleon_switch_value]
             recolorKRoolShipSwitch(galleon_switch_color, ROM_COPY)
             written_galleon_ship = True
 
@@ -747,30 +753,31 @@ def recolorPotions(settings, colorblind_mode: ColorblindMode, ROM_COPY: ROM):
         data = bytearray(num_data)  # convert num_data back to binary string
         writeRawFile(TableNames.ModelTwoGeometry, file_index, True, data, ROM_COPY)
 
-    ROM_COPY.seek(settings.rom_data + 0x15A)
-    arcade_sprite = int.from_bytes(ROM_COPY.readBytes(1), "big")
-    if arcade_sprite == 0:
-        return
-    kong = arcade_sprite - 1
-    if kong == Kongs.any:
-        color = "#FFFFFF"
-    elif kong < 5:
-        color = getKongItemColor(colorblind_mode, kong)
-    offset_dict = populateOverlayOffsets(ROM_COPY)
-    addr = getROMAddress(0x8003AE58, Overlay.Arcade, offset_dict)
-    potion_image = getImageFromAddress(ROM_COPY, addr, 20, 20, False, 800, TextureFormat.RGBA5551)
-    potion_image = maskPotionImage(potion_image, color, getPotionColor(colorblind_mode, kong))
-    px = potion_image.load()
-    ROM_COPY.seek(addr)
-    for y in range(20):
-        for x in range(20):
-            px_data = px[x, y]
-            val = 1 if px_data[3] > 128 else 0
-            for c in range(3):
-                local_channel = (px_data[c] >> 3) & 0x1F
-                shift = 1 + (5 * (2 - c))
-                val |= local_channel << shift
-            ROM_COPY.writeMultipleBytes(val, 2)
+    if settings.arcade_custom_minigame is None:
+        ROM_COPY.seek(settings.rom_data + 0x15A)
+        arcade_sprite = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        if arcade_sprite == 0:
+            return
+        kong = arcade_sprite - 1
+        if kong == Kongs.any:
+            color = "#FFFFFF"
+        elif kong < 5:
+            color = getKongItemColor(colorblind_mode, kong)
+        offset_dict = populateOverlayOffsets(ROM_COPY)
+        addr = getROMAddress(0x8003AE58, Overlay.Arcade, offset_dict)
+        potion_image = getImageFromAddress(ROM_COPY, addr, 20, 20, False, 800, TextureFormat.RGBA5551)
+        potion_image = maskPotionImage(potion_image, color, getPotionColor(colorblind_mode, kong))
+        px = potion_image.load()
+        ROM_COPY.seek(addr)
+        for y in range(20):
+            for x in range(20):
+                px_data = px[x, y]
+                val = 1 if px_data[3] > 128 else 0
+                for c in range(3):
+                    local_channel = (px_data[c] >> 3) & 0x1F
+                    shift = 1 + (5 * (2 - c))
+                    val |= local_channel << shift
+                ROM_COPY.writeMultipleBytes(val, 2)
 
 
 def maskMushroomImage(im_f, reference_image, color, side_2=False):
@@ -842,3 +849,25 @@ def recolorHintItem(mode: ColorblindMode, ROM_COPY: ROM):
         color = getKongItemColor(mode, kong)
         im = Image.new("RGBA", (32, 32), color)
         writeColorImageToROM(im, 25, texture, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+
+BALLOON_START = [5835, 5827, 5843, 5851, 5819]
+def addBalloonBulb(settings, ROM_COPY, mode: ColorblindMode):
+    """Add the bulb portion of the balloon to not include the colored banana icon."""
+    if Types.Balloon not in settings.shuffled_location_types:
+        return
+    for kong in range(5):
+        color = getKongItemColor(mode, kong, True)
+        bulb_image = Image.open(BytesIO(js.getFile("base-hack/assets/displays/balloon_bulb.png")))
+        w, h = bulb_image.size
+        px = bulb_image.load()
+        for y in range(h):
+            for x in range(w):
+                r, g, b, a = px[x, y]
+                r = int(r * (color[0] / 0xFF))
+                g = int(g * (color[1] / 0xFF))
+                b = int(b * (color[2] / 0xFF))
+                px[x, y] = (r, g, b, a)
+        for offset in range(8):
+            balloon_im = getImageFile(ROM_COPY, 25, BALLOON_START[kong] + offset, True, 32, 64, TextureFormat.RGBA5551)
+            balloon_im.paste(bulb_image, (0, 34), bulb_image)
+            writeColorImageToROM(balloon_im, 25, BALLOON_START[kong] + offset, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)

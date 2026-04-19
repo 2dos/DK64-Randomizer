@@ -9,19 +9,16 @@ from functools import lru_cache
 
 import js
 import math
-from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems, Types
 from randomizer.Enums.Settings import (
-    BLockerDifficulty,
     BLockerSetting,
     HardModeSelected,
     MiscChangesSelected,
     HelmDoorItem,
-    IceTrapFrequency,
     ProgressiveHintItem,
     ProgressiveHintAlgorithm,
     HelmSetting,
@@ -29,7 +26,6 @@ from randomizer.Enums.Settings import (
     ColorOptions,
 )
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
-from randomizer.Patching.Library.DataTypes import short_to_ushort
 
 if TYPE_CHECKING:
     from randomizer.Lists.MapsAndExits import Maps
@@ -69,6 +65,8 @@ class ReqItems(IntEnum):
     Shopkeeper = auto()
     ArchipelagoItem = auto()
     RaceCoin = auto()
+    BonusesNoHelm = auto()
+    FungiTime = auto()
 
 
 class MenuTexture:
@@ -276,73 +274,6 @@ def getNextFreeID(ROM_COPY: LocalROM, cont_map_id: Union[Maps, int], ignore: Lis
     return 0  # Shouldn't ever hit this. This is a case if there's no vacant IDs in range [0,599]
 
 
-def addNewScript(ROM_COPY: LocalROM, cont_map_id: Union[Maps, int], item_ids: List[int], type: ScriptTypes) -> None:
-    """Append a new script to the script database. Has to be just 1 execution and 1 endblock."""
-    script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
-    ROM_COPY.seek(script_table)
-    script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
-    good_scripts = []
-    # Construct good pre-existing scripts
-    file_offset = 2
-    for script_item in range(script_count):
-        ROM_COPY.seek(script_table + file_offset)
-        script_start = script_table + file_offset
-        script_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
-        block_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
-        file_offset += 6
-        for block_item in range(block_count):
-            ROM_COPY.seek(script_table + file_offset)
-            cond_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
-            file_offset += 2 + (8 * cond_count)
-            ROM_COPY.seek(script_table + file_offset)
-            exec_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
-            file_offset += 2 + (8 * exec_count)
-        script_end = script_table + file_offset
-        if script_id not in item_ids:
-            script_data = []
-            ROM_COPY.seek(script_start)
-            for x in range(int((script_end - script_start) / 2)):
-                script_data.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
-            good_scripts.append(script_data)
-    # Get new script data
-    subscript_type = -100
-    if type == ScriptTypes.Bananaport:
-        subscript_type = -1
-    elif type == ScriptTypes.Wrinkly:
-        subscript_type = -2
-    elif type == ScriptTypes.TnsPortal:
-        subscript_type = -3
-    elif type == ScriptTypes.TnsIndicator:
-        subscript_type = -4
-    elif type == ScriptTypes.CrownMain:
-        subscript_type = -5
-    elif type == ScriptTypes.CrownIsles2:
-        subscript_type = -6
-    elif type == ScriptTypes.MelonCrate:
-        subscript_type = -13
-    elif type == ScriptTypes.DeleteItem:
-        subscript_type = -16
-    for item_id in item_ids:
-        script_arr = [
-            item_id,
-            1,  # Block Count
-            0,  # Behav 9C, Not sure the purpose on this. 0 seems safe from prior knowledge
-            0,  # Cond Count
-            1,  # Exec Count
-            7,  # Func Type (Run JALR)
-            125,  # JALR Type (Points to our custom code)
-            short_to_ushort(subscript_type),  # Subscript Type
-            item_id,  # Item ID, for the purpose of our script to locate any required data
-        ]
-        good_scripts.append(script_arr)
-    # Reconstruct File
-    ROM_COPY.seek(script_table)
-    ROM_COPY.writeMultipleBytes(len(good_scripts), 2)
-    for script in good_scripts:
-        for x in script:
-            ROM_COPY.writeMultipleBytes(x, 2)
-
-
 def getObjectAddress(ROM_COPY: LocalROM, map: int, id: int, object_type: str) -> int:
     """Get address of object in setup."""
     setup_start = getPointerLocation(TableNames.Setups, map)
@@ -543,6 +474,7 @@ def getItemNumberString(count: int, item_type: Types) -> str:
         Types.Coin: "Company Coin",
         Types.TrainingBarrel: "Move",
         Types.Climbing: "Move",
+        Types.Cannons: "Move",
         Types.Kong: "Kong",
         Types.Medal: "Medal",
         Types.FillerMedal: "Medal",
@@ -557,6 +489,7 @@ def getItemNumberString(count: int, item_type: Types) -> str:
         Types.Hint: "Hint",
         Types.PreGivenMove: "Move",
         Types.Climbing: "Move",
+        Types.Cannons: "Move",
         Types.NintendoCoin: "Nintendo Coin",
         Types.RarewareCoin: "Rareware Coin",
         Types.Cranky: "Cranky",
@@ -566,6 +499,7 @@ def getItemNumberString(count: int, item_type: Types) -> str:
         Types.IslesMedal: "Medal",
         Types.ProgressiveHint: "Hint",
         Types.ArchipelagoItem: "Archipelago Item",
+        Types.FungiTime: "Fungi Time",
     }
     name = names.get(item_type, item_type.name)
     if count != 1:
@@ -721,6 +655,119 @@ def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
         value <<= 8
         value += local_value
     return value
+
+
+TERMINATING_SFXS = [
+    19,
+    20,
+    22,
+    24,
+    36,
+    53,
+    61,
+    69,
+    83,
+    91,
+    100,
+    107,
+    114,
+    118,
+    126,
+    130,
+    158,
+    168,
+    184,
+    196,
+    197,
+    206,
+    211,
+    212,
+    213,
+    247,
+    322,
+    323,
+    336,
+    353,
+    362,
+    366,
+    368,
+    374,
+    377,
+    383,
+    409,
+    414,
+    418,
+    430,
+    441,
+    450,
+    459,
+    484,
+    491,
+    520,
+    535,
+    536,
+    541,
+    543,
+    560,
+    563,
+    568,
+    572,
+    580,
+    594,
+    601,
+    603,
+    614,
+    629,
+    677,
+    686,
+    691,
+    700,
+    705,
+    744,
+    755,
+    763,
+    779,
+    795,
+    796,
+    797,
+    821,
+    834,
+    837,
+    838,
+    844,
+    869,
+    883,
+    895,
+    897,
+    900,
+    912,
+    913,
+    918,
+    936,
+    952,
+    956,
+    989,
+    1009,
+    1012,
+    1013,
+    1014,
+    1015,
+    1016,
+    1017,
+    1018,
+    1019,
+    1020,
+    1021,
+    1022,
+    1023,
+    1025,
+    1031,
+    1053,
+    1058,
+    1060,
+    1068,
+    1125,
+]
 
 
 def getCompletableBonuses(settings) -> list:

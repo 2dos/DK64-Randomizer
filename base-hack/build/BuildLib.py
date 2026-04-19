@@ -263,12 +263,14 @@ barrel_skins = (
     "ap_useful",
     "ap_junk",
     "ap_trap",
+    "time_day",
+    "time_night",
 )
 
 
 def getBonusSkinOffset(offset: int):
     """Get texture index after the barrel skins."""
-    return 6026 + (3 * len(barrel_skins)) + offset
+    return 6026 + (4 * len(barrel_skins)) + offset
 
 
 def intf_to_float(intf):
