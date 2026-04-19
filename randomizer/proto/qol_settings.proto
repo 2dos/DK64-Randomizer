@@ -105,6 +105,7 @@ message SpoilerHintsConfig {
 message ProgressiveHints {
     ProgressiveHintItem item = 1;
     int32 count_for_35th_hint = 2;
+    ProgressiveHintCurve hint_curve = 3;
 }
 
 message HintSettings {
@@ -116,6 +117,13 @@ message HintSettings {
     bool shop_hints = 6;
     SpoilerHintsConfig spoiler_hints = 7;
     ExtraHints extra_hints = 8;
+}
+
+enum ProgressiveHintCurve {
+    HINT_CURVE_UNSPECIFIED = 0;
+    HINT_CURVE_SLOW = 1;
+    HINT_CURVE_MEDIUM = 2;
+    HINT_CURVE_FAST = 3;
 }
 
 message QualityOfLifeSettings {

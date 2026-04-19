@@ -370,6 +370,7 @@ def _populate_overworld_settings(settings: "Settings", proto: overworld_settings
     proto.krool_in_boss_pool = settings.krool_in_boss_pool_v2
     if settings.boss_maps:
         proto.bosses_selected.extend([x.value if hasattr(x, 'value') else x for x in settings.boss_maps])
+    proto.ship_location_rando = bool(settings.ship_location_rando)
     
     # Enemies
     if settings.enemies_selected:
@@ -557,6 +558,7 @@ def _populate_qol_settings(settings: "Settings", proto: qol_settings_pb2.Quality
     # Progressive hints
     proto.hints.progressive_hints.item = settings.progressive_hint_item
     proto.hints.progressive_hints.count_for_35th_hint = int(settings.progressive_hint_count)
+    proto.hints.progressive_hints.hint_curve = settings.progressive_hint_algorithm
     
     # Spoiler hints configuration
     proto.hints.spoiler_hints.type = settings.spoiler_hints
@@ -834,6 +836,7 @@ def _apply_overworld_settings(proto: overworld_settings_pb2.OverworldSettings, s
     settings.boss_location_rando = bool(proto.shuffle_boss_location)
     settings.krool_in_boss_pool_v2 = proto.krool_in_boss_pool
     settings.boss_maps = list(proto.bosses_selected)
+    settings.ship_location_rando = bool(proto.ship_location_rando)
     
     # Enemies
     settings.enemies_selected = list(proto.shuffled_enemies)
@@ -1061,6 +1064,7 @@ def _apply_qol_settings(proto: qol_settings_pb2.QualityOfLifeSettings, settings:
     # Progressive hints
     settings.progressive_hint_item = proto.hints.progressive_hints.item
     settings.progressive_hint_count = int(proto.hints.progressive_hints.count_for_35th_hint)
+    settings.progressive_hint_algorithm = proto.hints.progressive_hints.hint_curve
     
     # Spoiler hints configuration
     settings.spoiler_hints = proto.hints.spoiler_hints.type

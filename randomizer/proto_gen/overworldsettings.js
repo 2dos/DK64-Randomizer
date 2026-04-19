@@ -135,7 +135,8 @@ helmHurryMode: (f = msg.getHelmHurryMode()) && proto.randomizer.proto.HelmHurry.
 noConsumableUpgrades: jspb.Message.getBooleanFieldWithDefault(msg, 39, false),
 hardMode: (f = msg.getHardMode()) && proto.randomizer.proto.HardMode.toObject(includeInstance, f),
 hardBosses: (f = msg.getHardBosses()) && proto.randomizer.proto.HardBoss.toObject(includeInstance, f),
-damage: jspb.Message.getFieldWithDefault(msg, 42, 0)
+damage: jspb.Message.getFieldWithDefault(msg, 42, 0),
+shipLocationRando: jspb.Message.getBooleanFieldWithDefault(msg, 43, false)
   };
 
   if (includeInstance) {
@@ -351,6 +352,10 @@ proto.randomizer.proto.OverworldSettings.deserializeBinaryFromReader = function(
     case 42:
       var value = /** @type {!proto.randomizer.proto.DamageEnum} */ (reader.readEnum());
       msg.setDamage(value);
+      break;
+    case 43:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setShipLocationRando(value);
       break;
     default:
       reader.skipField();
@@ -678,6 +683,13 @@ proto.randomizer.proto.OverworldSettings.serializeBinaryToWriter = function(mess
   if (f !== 0.0) {
     writer.writeEnum(
       42,
+      f
+    );
+  }
+  f = message.getShipLocationRando();
+  if (f) {
+    writer.writeBool(
+      43,
       f
     );
   }
@@ -1608,6 +1620,24 @@ proto.randomizer.proto.OverworldSettings.prototype.getDamage = function() {
  */
 proto.randomizer.proto.OverworldSettings.prototype.setDamage = function(value) {
   return jspb.Message.setProto3EnumField(this, 42, value);
+};
+
+
+/**
+ * optional bool ship_location_rando = 43;
+ * @return {boolean}
+ */
+proto.randomizer.proto.OverworldSettings.prototype.getShipLocationRando = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 43, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.OverworldSettings} returns this
+ */
+proto.randomizer.proto.OverworldSettings.prototype.setShipLocationRando = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 43, value);
 };
 
 

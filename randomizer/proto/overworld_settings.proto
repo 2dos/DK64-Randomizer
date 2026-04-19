@@ -291,4 +291,5 @@ message OverworldSettings {
     HardMode hard_mode = 40;
     HardBoss hard_bosses = 41;
     DamageEnum damage = 42;
+    bool ship_location_rando = 43;
 }
