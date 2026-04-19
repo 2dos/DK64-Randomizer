@@ -149,17 +149,11 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         for _global_name in ("rom_symbols", "pointer_addresses"):
             _val = getattr(js, _global_name, None)
             if _val is not None and hasattr(_val, "to_py"):
-                try:
-                    setattr(js, _global_name, _val.to_py())
-                    print(f"[ApplyLocal] Converted js.{_global_name} JsProxy -> Python dict/list")
-                except Exception as _conv_err:
-                    print(f"[ApplyLocal] Warning: could not convert js.{_global_name}: {_conv_err}")
+                setattr(js, _global_name, _val.to_py())
 
         # Create new ROM object that uses the base-hack patchedRom
         ROM_COPY = ROM()
-        print("[ApplyLocal] Calling ApplyRandomizer.patching_response with proto data...")
         ApplyRandomizer.patching_response(fill_result, settings, ROM_COPY)
-        print("[ApplyLocal] ✓ Proto patches applied successfully")
     
     if major != patch_major or minor != patch_minor:
         js.document.getElementById("patch_version_warning").hidden = False

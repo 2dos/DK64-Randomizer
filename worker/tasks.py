@@ -157,14 +157,10 @@ def update_seed_results(patch, spoiler, settings_dict, password, delayed_timesta
     zip_conv = codecs.encode(zip_data.getvalue(), "base64").decode()
 
     # Store the patch file in generated_seeds folder.
-    print(f"[Worker] Writing .lanky file: {file_name}.lanky ({len(zip_conv):,} chars base64)")
     with open("generated_seeds/" + file_name + ".lanky", "w") as f:
         f.write(zip_conv)
-    print(f"[Worker] ✓ File written, preparing response...")
     if password:
-        print(f"[Worker] Returning response with password")
         return {"patch": zip_conv, "hash": hash, "seed_number": current_seed_number, "password": password}
-    print(f"[Worker] Returning response without password")
     return {"patch": zip_conv, "hash": hash, "seed_number": current_seed_number}
 
 

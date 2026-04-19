@@ -24,13 +24,6 @@ except ImportError:
     pass
 if baseclasses_loaded:
 
-    # NOTE: The APWorld used to ship Pillow (PIL) and pyxdelta inside
-    # vendor/<platform>.zip and extract them to a temp dir on import so that
-    # patching_response() could produce a patched ROM on the generation host.
-    # Patching now happens entirely browser-side against the player's own
-    # dk64.z64, so the generation host no longer needs PIL, pyxdelta, or a
-    # local ROM, and the vendor-zip bootstrap has been removed.
-
     # Add paths for APWorld context - use __file__ to get the correct base path
     current_dir = os.path.dirname(os.path.abspath(__file__))
     if current_dir not in sys.path:
@@ -66,6 +59,7 @@ if baseclasses_loaded:
     from randomizer.Fill import ShuffleItems, Generate_Spoiler, IdentifyMajorItems
     from randomizer.CompileHints import compileMicrohints
     from archipelago.Hints import CompileArchipelagoHints
+    from randomizer.ProtoSerializer import fill_result_to_proto
     from randomizer.Enums.Types import Types, BarrierItems
     from randomizer.Enums.Enemies import Enemies
     from randomizer.Enums.Kongs import Kongs
@@ -569,12 +563,6 @@ if baseclasses_loaded:
         @classmethod
         def stage_assert_generate(cls, multiworld: MultiWorld):
             """Assert the stage and generate the world."""
-            # No ROM is required on the Archipelago generation host. The .chunky
-            # patch file produced by this world is now just a serialized
-            # FillResult protobuf; ROM patching happens browser-side using the
-            # player's own dk64.z64 when they open the patch file in the
-            # randomizer UI. Previously this method required dk64.z64 on the
-            # host so that LocalROM() inside patching_response() could load it.
             check_version()
 
         def _get_slot_data(self):
@@ -1388,13 +1376,6 @@ if baseclasses_loaded:
                 if ap_item_is_major_item and ap_major_item_type is not None:
                     spoiler.majorItems.append(ap_major_item_type)
 
-                # Serialize the Fill result directly to a protobuf.
-                # This is the same payload that the legacy server-path of
-                # patching_response() would have returned, but produced
-                # without ever loading or touching dk64.z64. The browser-side
-                # patcher (ApplyLocal.patching_response) will deserialize this
-                # FillResult and apply it to the player's own ROM at patch time.
-                from randomizer.ProtoSerializer import fill_result_to_proto
 
                 patch_data = fill_result_to_proto(spoiler).SerializeToString()
                 lanky = self.update_seed_results(patch_data, spoiler, self.player)
@@ -1579,13 +1560,6 @@ if baseclasses_loaded:
             # Zip all the data into a single file.
             zip_data = BytesIO()
             with zipfile.ZipFile(zip_data, "w") as zip_file:
-                # Write each variable to the zip file.
-                # NOTE: The browser-side patcher
-                # (randomizer.Patching.ApplyLocal.patching_response) detects a
-                # proto-based patch file by checking for a member named
-                # "fill_result". The old xdelta-based format used a member
-                # named "patch" instead, so this must stay "fill_result" or
-                # the browser will take the legacy xdelta path and fail.
                 zip_file.writestr("fill_result", patch)
                 zip_file.writestr("hash", str(hash))
                 zip_file.writestr("spoiler_log", str(json.dumps(spoiler_log)))

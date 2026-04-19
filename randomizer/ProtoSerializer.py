@@ -5,7 +5,7 @@ import json
 import logging
 import sys
 import os
-from typing import Optional, TYPE_CHECKING
+from typing import Any, Dict, Optional, TYPE_CHECKING
 
 proto_gen_path = os.path.join(os.path.dirname(__file__), 'proto_gen')
 if proto_gen_path not in sys.path:
@@ -19,10 +19,14 @@ from randomizer.proto_gen import qol_settings_pb2
 from randomizer.proto_gen import plandomizer_settings_pb2
 from randomizer.proto_gen import fill_result_pb2
 
+if TYPE_CHECKING:
+    from randomizer.Settings import Settings
+    from randomizer.Spoiler import Spoiler
+
 logger = logging.getLogger(__name__)
 
 
-def settings_to_proto(settings):
+def settings_to_proto(settings: "Settings") -> settings_pb2.SettingsInfo:
     """Convert a Settings object to a SettingsInfo protobuf message."""
     proto = settings_pb2.SettingsInfo()
     
@@ -37,7 +41,7 @@ def settings_to_proto(settings):
     return proto
 
 
-def proto_to_settings(proto, settings):
+def proto_to_settings(proto: settings_pb2.SettingsInfo, settings: "Settings") -> None:
     """Apply settings from a SettingsInfo protobuf message to a Settings object.
     
     Args:
@@ -52,7 +56,7 @@ def proto_to_settings(proto, settings):
     _apply_plandomizer_settings(proto.plandomizer_settings, settings)
 
 
-def serialize_settings_to_base64(settings) -> str:
+def serialize_settings_to_base64(settings: "Settings") -> str:
     """Serialize a Settings object to a base64-encoded protobuf string.
     
     This creates a compact, copy-paste friendly representation of settings.
@@ -69,7 +73,7 @@ def serialize_settings_to_base64(settings) -> str:
     return base64.urlsafe_b64encode(binary_data).decode('utf-8')
 
 
-def deserialize_settings_from_base64(proto_string: str):
+def deserialize_settings_from_base64(proto_string: str) -> settings_pb2.SettingsInfo:
     """Deserialize a base64-encoded protobuf string to a SettingsInfo message.
     
     Args:
@@ -114,7 +118,7 @@ def is_proto_settings_string(settings_string: str) -> bool:
 
 
 # Helper functions to populate proto messages from Settings
-def _populate_item_settings(settings, proto):
+def _populate_item_settings(settings: "Settings", proto: item_settings_pb2.ItemSettings) -> None:
     """Populate ItemSettings proto from Settings object."""
     proto.decouple_item_rando = bool(settings.decouple_item_rando)
     is_decoupled = bool(settings.decouple_item_rando)
@@ -201,7 +205,7 @@ def _populate_item_settings(settings, proto):
     # Max snide reward requirement
     proto.max_snide_reward_requirement = settings.most_snide_rewards
 
-def _populate_requirement_settings(settings, proto):
+def _populate_requirement_settings(settings: "Settings", proto: requirement_settings_pb2.RequirementSettings) -> None:
     """Populate RequirementSettings proto from Settings object."""
     # B Locker option
     proto.b_locker_option.opt = settings.blocker_selection_behavior
@@ -317,7 +321,7 @@ def _populate_requirement_settings(settings, proto):
     proto.puzzle_rando = settings.puzzle_rando_difficulty
 
 
-def _populate_overworld_settings(settings, proto):
+def _populate_overworld_settings(settings: "Settings", proto: overworld_settings_pb2.OverworldSettings) -> None:
     """Populate OverworldSettings proto from Settings object."""
     # World Navigation
     proto.entrance_randomizer = settings.level_randomization
@@ -437,7 +441,7 @@ def _populate_overworld_settings(settings, proto):
     proto.damage = settings.damage_amount
 
 
-def _populate_endgame_settings(settings, proto):
+def _populate_endgame_settings(settings: "Settings", proto: endgame_settings_pb2.EndgameSettings) -> None:
     """Populate EndgameSettings proto from Settings object."""
     # Logic
     proto.logic.type = settings.logic_type
@@ -490,7 +494,7 @@ def _populate_endgame_settings(settings, proto):
     proto.k_rool_settings.chunky_phase_slam_requirement = settings.chunky_phase_slam_req
 
 
-def _populate_qol_settings(settings, proto):
+def _populate_qol_settings(settings: "Settings", proto: qol_settings_pb2.QualityOfLifeSettings) -> None:
     """Populate QualityOfLifeSettings proto from Settings object."""    
     from randomizer.Enums.Settings import MiscChangesSelected, CrownEnemyRando, MicrohintsEnabled
     
@@ -574,7 +578,7 @@ def _populate_qol_settings(settings, proto):
     proto.hints.spoiler_hints.points.bean = int(settings.points_list_bean)
 
 
-def _populate_plandomizer_settings(settings, proto):
+def _populate_plandomizer_settings(settings: "Settings", proto: plandomizer_settings_pb2.PlandomizerSettings) -> None:
     """Populate PlandomizerSettings proto from Settings object."""
     # Plandomizer uses a complex dictionary structure (settings.plandomizer_dict)
     # Keys include: plando_starting_exit, plando_starting_kongs_selected, 
@@ -593,7 +597,7 @@ def _populate_plandomizer_settings(settings, proto):
 
 
 # Helper functions to apply proto messages to Settings
-def _apply_item_settings(proto, settings):
+def _apply_item_settings(proto: item_settings_pb2.ItemSettings, settings: "Settings") -> None:
     """Apply ItemSettings proto to Settings object."""
     # Decouple item rando
     settings.decouple_item_rando = bool(proto.decouple_item_rando)
@@ -679,7 +683,7 @@ def _apply_item_settings(proto, settings):
     settings.most_snide_rewards = proto.max_snide_reward_requirement
 
 
-def _apply_requirement_settings(proto, settings):
+def _apply_requirement_settings(proto: requirement_settings_pb2.RequirementSettings, settings: "Settings") -> None:
     """Apply RequirementSettings proto to Settings object."""
     # B Locker option
     settings.blocker_selection_behavior = proto.b_locker_option.opt
@@ -788,7 +792,7 @@ def _apply_requirement_settings(proto, settings):
     settings.puzzle_rando_difficulty = proto.puzzle_rando
 
 
-def _apply_overworld_settings(proto, settings):
+def _apply_overworld_settings(proto: overworld_settings_pb2.OverworldSettings, settings: "Settings") -> None:
     """Apply OverworldSettings proto to Settings object."""
     # World Navigation
     settings.level_randomization = proto.entrance_randomizer
@@ -916,7 +920,7 @@ def _apply_overworld_settings(proto, settings):
     settings.damage_amount = proto.damage
 
 
-def _apply_endgame_settings(proto, settings):
+def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, settings: "Settings") -> None:
     """Apply EndgameSettings proto to Settings object."""
     # Logic
     settings.logic_type = proto.logic.type
@@ -962,7 +966,7 @@ def _apply_endgame_settings(proto, settings):
     settings.chunky_phase_slam_req = proto.k_rool_settings.chunky_phase_slam_requirement
 
 
-def _apply_qol_settings(proto, settings):
+def _apply_qol_settings(proto: qol_settings_pb2.QualityOfLifeSettings, settings: "Settings") -> None:
     """Apply QualityOfLifeSettings proto to Settings object."""
     from randomizer.Enums.Settings import MiscChangesSelected, CrownEnemyRando, MicrohintsEnabled
     
@@ -1078,7 +1082,7 @@ def _apply_qol_settings(proto, settings):
     settings.points_list_bean = int(proto.hints.spoiler_hints.points.bean)
 
 
-def _apply_plandomizer_settings(proto, settings):
+def _apply_plandomizer_settings(proto: plandomizer_settings_pb2.PlandomizerSettings, settings: "Settings") -> None:
     """Apply PlandomizerSettings proto to Settings object."""
     # TODO: Map proto fields to settings attributes
     pass
@@ -1088,7 +1092,7 @@ def _apply_plandomizer_settings(proto, settings):
 # Fill Result Serialization
 # =============================================================================
 
-def fill_result_to_proto(spoiler):
+def fill_result_to_proto(spoiler: "Spoiler") -> fill_result_pb2.FillResult:
     """Convert a Spoiler object (post-Fill) to a FillResult protobuf message.
     
     This serializes all the results of the Fill algorithm that are needed
@@ -1114,14 +1118,14 @@ def fill_result_to_proto(spoiler):
     return proto
 
 
-def _populate_location_assignments(spoiler, proto):
+def _populate_location_assignments(spoiler: "Spoiler", proto: fill_result_pb2.LocationAssignments) -> None:
     """Populate LocationAssignments from spoiler.LocationList."""
     for location_id, location in spoiler.LocationList.items():
         if location.item is not None:
             proto.assignments[int(location_id)] = int(location.item)
 
 
-def _populate_move_shop_data(spoiler, proto):
+def _populate_move_shop_data(spoiler: "Spoiler", proto: fill_result_pb2.MoveShopData) -> None:
     """Populate MoveShopData from spoiler.move_data."""
     # move_data is a 3-element list: [shop_moves, training_barrels, bfi_moves]
     
@@ -1147,7 +1151,7 @@ def _populate_move_shop_data(spoiler, proto):
             _populate_move_entry(move_entry, proto.bfi_moves.add())
 
 
-def _populate_move_entry(move_dict, proto):
+def _populate_move_entry(move_dict: Any, proto: fill_result_pb2.MoveEntry) -> None:
     """Populate a single MoveEntry from a move dictionary."""
     # Handle non-dict types (might be string or other)
     if not isinstance(move_dict, dict):
@@ -1183,7 +1187,7 @@ def _populate_move_entry(move_dict, proto):
         proto.instrument_move.price = move_dict.get("price", 0)
 
 
-def _populate_shuffle_data(spoiler, proto):
+def _populate_shuffle_data(spoiler: "Spoiler", proto: fill_result_pb2.ShuffleData) -> None:
     """Populate ShuffleData from spoiler shuffle dictionaries."""
     # Shuffled exits
     for exit_id, exit_dest in spoiler.shuffled_exit_data.items():
@@ -1278,7 +1282,7 @@ def _populate_shuffle_data(spoiler, proto):
             crate_proto.item_id = int(crate.get('item', 0))
 
 
-def _populate_placement_data(spoiler, proto):
+def _populate_placement_data(spoiler: "Spoiler", proto: fill_result_pb2.PlacementData) -> None:
     """Populate PlacementData from spoiler placement lists."""
     # CB placements
     for cb_data in spoiler.cb_placements:
@@ -1372,7 +1376,7 @@ def _populate_placement_data(spoiler, proto):
                 entry_proto.spawner_id = 0
             entry_proto.location = str(entry.get('location', '') or '')
 
-def _populate_hint_data(spoiler, proto):
+def _populate_hint_data(spoiler: "Spoiler", proto: fill_result_pb2.HintData) -> None:
     """Populate HintData from spoiler hint structures."""
     # Hint set
     if hasattr(spoiler, 'hintset'):
@@ -1409,7 +1413,7 @@ def _populate_hint_data(spoiler, proto):
             proto.level_spoiler_human_readable[level_name] = hint_text
 
 
-def _populate_path_data(spoiler, proto):
+def _populate_path_data(spoiler: "Spoiler", proto: fill_result_pb2.PathData) -> None:
     """Populate PathData from spoiler path structures."""
     # WotH locations
     if hasattr(spoiler, 'woth_locations'):
@@ -1496,13 +1500,13 @@ def _populate_path_data(spoiler, proto):
                 hints_proto.hint_names.extend([str(h) for h in hints])
 
 
-def _populate_misc_patching_data(spoiler, proto):
+def _populate_misc_patching_data(spoiler: "Spoiler", proto: fill_result_pb2.MiscPatchingData) -> None:
     """Populate MiscPatchingData from spoiler miscellaneous data."""
     # Item assignments. LocationSelection has many fields the patcher reads
     # directly (ItemRando.place_randomized_items); we need to preserve them
     # all faithfully - in particular placement_index (list, not scalar),
     # placement_data (actor ids per map), old_item/old_kong, and reward_spot.
-    def _s(val, default=0):
+    def _s(val: Any, default: int = 0) -> int:
         """Coerce possibly-None / enum values to int for sint32 fields (-1 sentinel)."""
         if val is None:
             return -1

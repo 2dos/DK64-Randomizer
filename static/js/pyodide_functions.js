@@ -113,12 +113,7 @@ async function apply_patch(data, run_async) {
                   console.log("Applying Xdelta Patch (legacy format)");
                   apply_xdelta(fileContent);
                 } else {
-                  console.log("Using proto-based patch (new format)");
-                  // Proto patches don't ship an xdelta that performs the
-                  // vanilla -> base-hack conversion, so apply the prebuilt
-                  // base-hack BPS here to produce `patchedRom` with the
-                  // expanded base-hack layout that the Python patching
-                  // pipeline assumes.
+                  
                   await apply_base_hack_bps();
                 }
                 

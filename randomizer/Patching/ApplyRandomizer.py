@@ -206,7 +206,6 @@ def _create_patching_adapter(fill_result, settings):
                 from randomizer.Lists.EnemyTypes import enemy_location_list as _enemy_location_list
                 self.enemy_location_list = _deepcopy(_enemy_location_list)
             except Exception as _e:
-                print(f"[Patching] Warning: failed to load enemy_location_list: {_e}")
                 self.enemy_location_list = {}
 
             # Populate pregiven_items. Prefer the explicit `pregiven_items`
@@ -250,7 +249,6 @@ def _create_patching_adapter(fill_result, settings):
                         else:
                             self.first_move_item = item_enum
             except Exception as _e:
-                print(f"[Patching] Warning: failed to populate pregiven_items: {_e}")
                 self.first_move_item = None
             
             # Initialize location_references - static mapping of items to reference names
@@ -860,12 +858,9 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
     
     if isinstance(fill_result_or_spoiler, fill_result_pb2.FillResult):
         # New proto-based path - convert proto to adapter object
-        print("[Patching] ✓ Received FillResult protobuf")
         fill_result = fill_result_or_spoiler
         if settings is None:
             raise ValueError("settings parameter required when using FillResult proto")
-        
-        print("[Patching] Creating adapter to convert proto to patching interface...")
         spoiler = _create_patching_adapter(fill_result, settings)
         
         # Apply Fill-phase mutations of settings that travel through the proto.
@@ -912,13 +907,10 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
             settings.BossBananas = [int(c) for c in fill_result.misc_data.boss_bananas]
         
         # Initialize valid_locations on settings - required for patching functions
-        print("[Patching] Initializing valid_locations for settings...")
         settings.update_valid_locations(spoiler)
         
-        print("[Patching] ✓ Proto adapter created, proceeding with ROM patching")
     else:
         # Legacy path - treat as Spoiler object
-        print("[Patching] Using legacy Spoiler object (not proto)")
         spoiler = fill_result_or_spoiler
     
     # Make sure we re-load the seed id
@@ -1623,28 +1615,22 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
     
     # Check if this is the browser path (applying proto to provided ROM)
     # or the server path (creating proto for .lanky file)
-    print(f"[Patching] DEBUG: rom parameter is {type(rom).__name__ if rom is not None else 'None'}")
     if rom is not None:
         # Browser path: ROM patching is complete, don't delete ROM, don't return proto
-        print("[Patching] ✓ ROM patching complete (browser path)")
         # ROM_COPY is the provided rom parameter - caller will handle it
         return None, password
     else:
         # Server path: Return serialized FillResult proto for .lanky file creation
         # The proto contains all fill data needed to reconstruct the ROM patch client-side
-        print("[Patching] DEBUG: Taking server path, rom is None")
         if isinstance(fill_result_or_spoiler, fill_result_pb2.FillResult):
             # Already have proto - serialize it to bytes
             proto_bytes = fill_result_or_spoiler.SerializeToString()
-            print(f"[Patching] ✓ Serialized FillResult proto ({len(proto_bytes):,} bytes)")
             patch = proto_bytes
         else:
             # Legacy path - convert spoiler to proto then serialize
-            print("[Patching] Converting Spoiler to FillResult proto for serialization...")
             from randomizer.ProtoSerializer import fill_result_to_proto
             fill_result_proto = fill_result_to_proto(spoiler)
             proto_bytes = fill_result_proto.SerializeToString()
-            print(f"[Patching] ✓ Serialized FillResult proto from Spoiler ({len(proto_bytes):,} bytes)")
             patch = proto_bytes
         
         del ROM_COPY
