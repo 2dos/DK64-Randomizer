@@ -1695,3 +1695,13 @@ def _populate_misc_patching_data(spoiler: "Spoiler", proto: fill_result_pb2.Misc
     krool_keys_required = getattr(settings, 'krool_keys_required', None) if settings is not None else None
     if krool_keys_required:
         proto.krool_keys_required.extend([int(getattr(k, 'value', k)) for k in krool_keys_required])
+
+    ship_location_index = getattr(spoiler, 'ship_location_index', None)
+    if ship_location_index is not None:
+        try:
+            proto.ship_location_index = int(ship_location_index)
+        except (TypeError, ValueError):
+            pass
+    ship_name = getattr(spoiler, 'ship_name', None)
+    if ship_name:
+        proto.ship_name = str(ship_name)

@@ -454,26 +454,9 @@ message MiscPatchingData {
   // Mirrors settings.level_portal_destinations, written by ASMPatcher.
   // exit can be -1 (meaning "default entry for the map"); serialized signed.
   repeated LevelPortalDestination level_portal_destinations = 11;
-
-  // Per-level void map IDs (length 8). Mirrors settings.level_void_maps.
   repeated uint32 level_void_maps = 12;
-
-  // Fill-time resolved starting Kongs. The user-input settings only carry
-  // `starting_kong` (can be Kongs.any) and `starting_kongs_count`; the actual
-  // roster of starting Kongs is decided during generation and must survive
-  // the roundtrip so the patched ROM matches the spoiler.
   repeated common.KongId starting_kong_list = 13;
-
-  // Fill-time resolved `starting_kong` (the lead Kong). May differ from the
-  // user-input value when that was Kongs.any or got overridden by plando.
   optional common.KongId resolved_starting_kong = 14;
-
-  // Fill-time resolved B.Locker / T&S values. The user-input settings only
-  // carry the raw request (chaos/pre-selected flag, max count, weights); the
-  // concrete per-level amounts are rolled with `self.random` during generation
-  // and additionally reordered by ShuffleExits when loading zones are shuffled.
-  // These must round-trip so the patched ROM matches the spoiler log.
-  // All arrays are length 8, indexed by in-game level order.
   repeated uint32 blocker_entry_counts = 15;  // BLockerEntryCount per level
   repeated uint32 blocker_entry_items = 16;   // BarrierItems enum per level
   repeated uint32 boss_bananas = 17;          // BossBananas (T&S CB count) per level
@@ -482,6 +465,8 @@ message MiscPatchingData {
   optional bool archipelago = 20;
   optional string player_name = 21;
   repeated uint32 krool_keys_required = 22;
+  optional uint32 ship_location_index = 23;
+  optional string ship_name = 24;
 }
 
 message LevelPortalDestination {

@@ -107,7 +107,9 @@ pregivenItemsList: (f = jspb.Message.getRepeatedField(msg, 18)) == null ? undefi
 firstMoveItem: (f = jspb.Message.getField(msg, 19)) == null ? undefined : f,
 archipelago: (f = jspb.Message.getBooleanField(msg, 20)) == null ? undefined : f,
 playerName: (f = jspb.Message.getField(msg, 21)) == null ? undefined : f,
-kroolKeysRequiredList: (f = jspb.Message.getRepeatedField(msg, 22)) == null ? undefined : f
+kroolKeysRequiredList: (f = jspb.Message.getRepeatedField(msg, 22)) == null ? undefined : f,
+shipLocationIndex: (f = jspb.Message.getField(msg, 23)) == null ? undefined : f,
+shipName: (f = jspb.Message.getField(msg, 24)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -260,6 +262,14 @@ proto.randomizer.proto.MiscPatchingData.deserializeBinaryFromReader = function(m
       for (var i = 0; i < values.length; i++) {
         msg.addKroolKeysRequired(values[i]);
       }
+      break;
+    case 23:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setShipLocationIndex(value);
+      break;
+    case 24:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setShipName(value);
       break;
     default:
       reader.skipField();
@@ -429,6 +439,20 @@ proto.randomizer.proto.MiscPatchingData.serializeBinaryToWriter = function(messa
   if (f.length > 0) {
     writer.writePackedUint32(
       22,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 23));
+  if (f != null) {
+    writer.writeUint32(
+      23,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 24));
+  if (f != null) {
+    writer.writeString(
+      24,
       f
     );
   }
@@ -1173,6 +1197,78 @@ proto.randomizer.proto.MiscPatchingData.prototype.addKroolKeysRequired = functio
  */
 proto.randomizer.proto.MiscPatchingData.prototype.clearKroolKeysRequiredList = function() {
   return this.setKroolKeysRequiredList([]);
+};
+
+
+/**
+ * optional uint32 ship_location_index = 23;
+ * @return {number}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getShipLocationIndex = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 23, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setShipLocationIndex = function(value) {
+  return jspb.Message.setField(this, 23, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearShipLocationIndex = function() {
+  return jspb.Message.setField(this, 23, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.hasShipLocationIndex = function() {
+  return jspb.Message.getField(this, 23) != null;
+};
+
+
+/**
+ * optional string ship_name = 24;
+ * @return {string}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getShipName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 24, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setShipName = function(value) {
+  return jspb.Message.setField(this, 24, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearShipName = function() {
+  return jspb.Message.setField(this, 24, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.hasShipName = function() {
+  return jspb.Message.getField(this, 24) != null;
 };
 
 

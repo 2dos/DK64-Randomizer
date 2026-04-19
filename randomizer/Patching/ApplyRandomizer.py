@@ -169,6 +169,14 @@ def _create_patching_adapter(fill_result, settings):
             self.arcade_item_reward = None  # Set in patching_response
             self.jetpac_item_reward = None  # Set in patching_response
 
+            # Ship location rando result
+            self.ship_location_index = None
+            self.ship_name = ""
+            if fill_result.misc_data.HasField("ship_location_index"):
+                self.ship_location_index = int(fill_result.misc_data.ship_location_index)
+            if fill_result.misc_data.HasField("ship_name"):
+                self.ship_name = str(fill_result.misc_data.ship_name)
+
             # ---- Enemy rando data ----
             # Reconstruct spoiler.enemy_rando_data (map_id -> list of dicts)
             # from the proto. Consumed by randomize_enemies at patch time.
