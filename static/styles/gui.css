@@ -229,7 +229,6 @@ footer {
 
 #nav-gen-type button.nav-link {
   padding: 5px 10px;
-  transition: 0.5s ease-in-out background;
   background-color: rgba(0, 0, 0, 0);
   border: none;
   margin: 0px 5px;
@@ -246,7 +245,7 @@ footer {
   background-color: rgba(0, 0, 0, 0);
   color: var(--bs-body-color);
   border: 2px solid transparent;
-  font-size: 1.3vh;
+  font-size: 1rem;
   padding-left: 0;
   padding-top: 0;
   padding-bottom: 0;
@@ -298,20 +297,6 @@ footer {
 }
 #rando_tabs li[role=presentation]:nth-child(5n+5) a:hover {
   background-color: rgba(65, 255, 37, 0.3);
-}
-
-@media screen and (min-width: 481px) {
-  #toggleSidebar {
-    display: none;
-  }
-  #nav-tab-list-mobile {
-    display: none;
-  }
-}
-@media screen and (max-width: 480px) {
-  #nav-tab-list {
-    display: none;
-  }
 }
 
 #nav-tab .nav-link {

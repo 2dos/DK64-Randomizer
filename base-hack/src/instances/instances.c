@@ -781,6 +781,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	} else if (index == -17) {
 		return isTimeOfDay(param2);
 	} else if (index == -19) {
+		if ((CurrentMap == MAP_FUNGILOBBY) && (!Rando.quality_of_life.no_wrinkly_puzzles)) {
+			return 0;
+		}
 		int world = getWorld(CurrentMap, 0);
 		return checkFlag(FLAG_WRINKLYVIEWED + (5 * world) + param2, FLAGTYPE_PERMANENT);
 	} else if (index == -20) {

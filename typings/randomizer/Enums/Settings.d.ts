@@ -510,6 +510,12 @@ export enum ProgressiveHintItem {
     req_cb = 10,
 }
 
+export enum ProgressiveHintAlgorithm {
+    slow = 0,
+    medium = 1,
+    fast = 2,
+}
+
 export enum PuzzleRando {
     off = 0,
     easy = 1,
@@ -977,17 +983,18 @@ export enum SettingsStringEnum {
     no_consumable_upgrades = 295,
     bosses_selected = 296,
     ice_trap_model_v2 = 297,
-    switchsanity_switch_factory_dark_grate = 298,
-    switchsanity_switch_factory_bonus_grate = 299,
-    switchsanity_switch_factory_monster_grate = 300,
-    switchsanity_switch_caves_gone_cave = 301,
-    switchsanity_switch_caves_snide_cave = 302,
-    switchsanity_switch_caves_boulder_cave = 303,
-    switchsanity_switch_caves_lobby_blueprint = 304,
-    switchsanity_switch_caves_lobby_lava = 305,
-    switchsanity_switch_aztec_gong_tower = 306,
-    switchsanity_switch_aztec_lobby_gong = 307,
-    ship_location_rando = 308,
+    progressive_hint_algorithm = 298,
+    switchsanity_switch_factory_dark_grate = 299,
+    switchsanity_switch_factory_bonus_grate = 300,
+    switchsanity_switch_factory_monster_grate = 301,
+    switchsanity_switch_caves_gone_cave = 302,
+    switchsanity_switch_caves_snide_cave = 303,
+    switchsanity_switch_caves_boulder_cave = 304,
+    switchsanity_switch_caves_lobby_blueprint = 305,
+    switchsanity_switch_caves_lobby_lava = 306,
+    switchsanity_switch_aztec_gong_tower = 307,
+    switchsanity_switch_aztec_lobby_gong = 308,
+    ship_location_rando = 309,
 }
 
 export enum SettingsStringDataType {
@@ -1089,6 +1096,7 @@ export const SettingsMap = {
     'chunky_phase_slam_req': SlamRequirement,
     'puzzle_rando_difficulty': PuzzleRando,
     'progressive_hint_item': ProgressiveHintItem,
+    'progressive_hint_algorithm': ProgressiveHintAlgorithm,
     'starting_moves_list_1': Items,
     'starting_moves_list_2': Items,
     'starting_moves_list_3': Items,
@@ -1366,6 +1374,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.has_password: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,
+    SettingsStringEnum.progressive_hint_algorithm: ProgressiveHintAlgorithm,
     SettingsStringEnum.starting_moves_list_1: SettingsStringDataType.list,
     SettingsStringEnum.starting_moves_list_count_1: SettingsStringDataType.int16,
     SettingsStringEnum.starting_moves_list_2: SettingsStringDataType.list,

@@ -921,10 +921,6 @@ level_options = [
 ]
 # Plando options where the value is of type Kongs.
 kong_options = [
-    "plando_kong_rescue_diddy",
-    "plando_kong_rescue_lanky",
-    "plando_kong_rescue_tiny",
-    "plando_kong_rescue_chunky",
     "plando_helm_order_0",
     "plando_helm_order_1",
     "plando_helm_order_2",
