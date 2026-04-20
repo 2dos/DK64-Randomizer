@@ -1006,7 +1006,18 @@ class ItemPool(OptionList):
 
     display_name = "Item Pool"
     valid_keys = _ITEM_POOL_VALID_KEYS
-    default = list(_ITEM_POOL_VALID_KEYS)
+    default = [
+        "crowns",
+        "blueprints",
+        "medals",
+        "company_coins",
+        "fairies",
+        "rainbow_coins",
+        "bean",
+        "pearls",
+        "crates",
+        "battle_arenas",
+    ]
 
     def verify(self, world, player_name: str, plando_options) -> None:
         """Verify all keys are valid."""
