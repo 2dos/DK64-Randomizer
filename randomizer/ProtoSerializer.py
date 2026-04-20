@@ -715,14 +715,12 @@ def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, setting
     settings.helm_phase_order_rando = bool(proto.helm_settings.shuffle_helm_rooms)
     settings.helm_room_bonus_count = proto.helm_settings.helm_room_bonus_count
 
-    # Only the first door requirement is used; it is applied to both doors.
-    # (Preserved verbatim, including the `coin_door_item_coint` typo on Settings.)
     if proto.helm_settings.helm_door_requirements:
         door_req = proto.helm_settings.helm_door_requirements[0]
         settings.crown_door_item = door_req.type
         settings.crown_door_item_count = door_req.specified_quantity
         settings.coin_door_item = door_req.type
-        settings.coin_door_item_coint = door_req.specified_quantity
+        settings.coin_door_item_count = door_req.specified_quantity
 
     settings.krool_phase_order_rando = bool(proto.k_rool_settings.shuffle_k_rool_phases)
     settings.krool_random = bool(proto.k_rool_settings.random_phase_amount)

@@ -684,7 +684,7 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
                 converted_logic = lambda state, player=world.player, exit=exit: hasDK64RTransition(state, player, exit)
 
             # Add time requirements if this transition has time restrictions
-            if world.options.time_of_day:
+            if "time_of_day" in world.options.item_pool:
                 if exit.time == Time.Day:
                     original_logic = converted_logic
                     converted_logic = lambda state, orig=original_logic: orig(state) and state.has("Day", world.player)

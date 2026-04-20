@@ -6,7 +6,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Settings import Settings
 from randomizer.Patching.Library.Image import writeColorImageToROM, TextureFormat, getImageFile, getNumberImage, ExtraTextures, getBonusSkinOffset, TableNames
 from randomizer.Patching.Patcher import LocalROM
-from PIL import Image, ImageEnhance
+from randomizer.Patching.LazyPIL import Image, ImageEnhance
 
 
 def updateMillLeverTexture(settings: Settings, ROM_COPY: LocalROM) -> None:

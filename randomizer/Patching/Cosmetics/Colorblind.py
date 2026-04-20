@@ -22,7 +22,7 @@ from randomizer.Patching.Library.ASM import getROMAddress, populateOverlayOffset
 from randomizer.Patching.Patcher import ROM
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Types import Types
-from PIL import ImageEnhance, Image
+from randomizer.Patching.LazyPIL import Image, ImageEnhance
 
 
 def changeVertexColor(num_data: list[int], offset: int, new_color: list[int]) -> list[int]:

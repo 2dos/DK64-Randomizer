@@ -1765,9 +1765,10 @@ if baseclasses_loaded:
                     else ""
                 ),
                 "Junk": self.junked_locations,
-                "HintsInPool": self.options.hints_in_item_pool.value,
-                "BouldersInPool": self.options.boulders_in_pool.value,
-                "Dropsanity": self.options.dropsanity.value,
+                "ItemPool": sorted(self.options.item_pool.value),
+                "HintsInPool": "hints" in self.options.item_pool,
+                "BouldersInPool": "boulders" in self.options.item_pool,
+                "Dropsanity": "dropsanity" in self.options.item_pool,
                 "Version": self.ap_version,
                 "EnemyData": (
                     {
@@ -1775,11 +1776,11 @@ if baseclasses_loaded:
                         for location_id, enemy_loc in self.spoiler.enemy_location_list.items()
                         if EnemyMetaData[enemy_loc.enemy].e_type == EnemySubtype.GroundBeefy
                     }
-                    if self.options.dropsanity.value
+                    if "dropsanity" in self.options.item_pool
                     else {}
                 ),
-                "Shopkeepers": self.options.shopowners_in_pool.value,
-                "HalfMedals": self.options.half_medals_in_pool.value,
+                "Shopkeepers": "shopkeepers" in self.options.item_pool,
+                "HalfMedals": "half_medals" in self.options.item_pool,
                 "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
                 "Autocomplete": self.options.auto_complete_bonus_barrels.value,
                 "HelmBarrelCount": self.options.helm_room_bonus_count.value,

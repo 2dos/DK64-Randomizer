@@ -45,7 +45,7 @@ from randomizer.Patching.ASM.Items import *
 from randomizer.Patching.ASM.Kaizo import *
 from randomizer.Patching.ASM.Save import saveUpdates
 from randomizer.Patching.ASM.TextFiles import writeNewTextFiles
-from PIL import Image
+from randomizer.Patching.LazyPIL import Image
 
 KEY_FLAG_ADDRESSES = [
     0x800258FA,

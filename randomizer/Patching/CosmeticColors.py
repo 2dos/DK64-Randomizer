@@ -6,7 +6,7 @@ import gzip
 from typing import List, Tuple
 from io import BytesIO
 
-from PIL import Image, ImageDraw, ImageEnhance
+from randomizer.Patching.LazyPIL import Image, ImageDraw, ImageEnhance
 
 import js
 from randomizer.Enums.Kongs import Kongs
