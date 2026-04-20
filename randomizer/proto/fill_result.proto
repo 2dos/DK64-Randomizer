@@ -160,6 +160,55 @@ message ShuffleData {
   
   // Crate shuffles (melon crates)
   repeated CratePlacement crate_placements = 11;
+
+  // Shop location shuffles: {level -> {old_shop_region -> new_shop_region}}
+  repeated ShopLocationShuffle shuffled_shop_locations = 12;
+
+  // Kasplat location shuffles: kasplat_name -> kong_index
+  map<string, uint32> shuffled_kasplat_map = 13;
+
+  // Fairy location shuffles: level -> list of fairy indexes
+  repeated FairyLocationLevel fairy_locations = 14;
+
+  // Fairy data table: 20-entry array of fairy metadata
+  repeated FairyDataEntry fairy_data_table = 15;
+
+  // Bananaport replacements: list of (new_pad_index, visual_type)
+  repeated BananaportReplacement bananaport_replacements = 16;
+
+  // Warp locations: warp_id -> custom_location_id
+  map<uint32, uint32> warp_locations = 17;
+}
+
+message ShopLocationAssignment {
+  uint32 old_shop = 1;  // Regions enum
+  uint32 new_shop = 2;  // Regions enum
+}
+
+message ShopLocationShuffle {
+  uint32 level = 1;  // Levels enum
+  repeated ShopLocationAssignment assignments = 2;
+}
+
+message FairyLocationLevel {
+  uint32 level = 1;  // Levels enum
+  repeated uint32 fairy_indexes = 2;
+}
+
+message FairyDataEntry {
+  bool present = 1;         // false = empty slot
+  uint32 fairy_index = 2;
+  uint32 level = 3;         // Levels enum
+  int32 flag = 4;
+  int32 id = 5;
+  int32 shift = 6;
+  int32 script_id = 7;
+  int32 map_id = 8;
+}
+
+message BananaportReplacement {
+  uint32 new_pad_index = 1;
+  uint32 visual_type = 2;
 }
 
 message ExitDestination {
@@ -202,6 +251,9 @@ message WarpHumanReadable {
 message CrownPlacement {
   uint32 map_id = 1;
   uint32 arena_id = 2;
+  uint32 level = 3;        // Levels enum value
+  uint32 crown_index = 4;  // index into CustomLocations[level]
+  uint32 subindex = 5;     // placement sub-index
 }
 
 message CrownHumanReadable {
@@ -213,12 +265,16 @@ message PatchPlacement {
   uint32 map_id = 1;
   uint32 patch_id = 2;
   uint32 item_id = 3;  // ItemId
+  uint32 level = 4;    // Levels enum value
+  string name = 5;     // patch name for CustomLocations lookup
 }
 
 message CratePlacement {
   uint32 map_id = 1;
   uint32 crate_id = 2;
   uint32 item_id = 3;  // ItemId
+  uint32 level = 4;    // Levels enum value
+  string name = 5;     // crate name for CustomLocations lookup
 }
 
 // Placement data for CBs, coins, enemies
@@ -302,17 +358,28 @@ message KasplatSwap {
   uint32 replace_with = 2;  // KongId
 }
 
+message CoinLocation {
+  float scale = 1;
+  float x = 2;
+  float y = 3;
+  float z = 4;
+}
+
 message CoinPlacement {
   uint32 level = 1;
   uint32 map = 2;
   uint32 kong = 3;
   string type = 4;
   string name = 5;
+  repeated CoinLocation locations = 6;
 }
 
 message RaceCoinPlacement {
   uint32 map = 1;
   uint32 count = 2;
+  uint32 level = 3;
+  string name = 4;
+  repeated CoinLocation locations = 5;
 }
 
 // Hint data
@@ -358,6 +425,13 @@ message LevelSpoilerHints {
   repeated string vial_colors = 1;
   int32 points = 2;
   int32 woth_count = 3;
+  repeated LevelSpoilerItem level_items = 4;
+}
+
+message LevelSpoilerItem {
+  uint32 item = 1;    // Items enum
+  int32 points = 2;
+  uint32 flag = 3;
 }
 
 // Path data for WotH and playthrough

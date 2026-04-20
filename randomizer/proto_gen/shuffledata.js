@@ -17,14 +17,18 @@ goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Map');
 goog.require('jspb.Message');
+goog.require('proto.randomizer.proto.BananaportReplacement');
 goog.require('proto.randomizer.proto.CratePlacement');
 goog.require('proto.randomizer.proto.CrownHumanReadable');
 goog.require('proto.randomizer.proto.CrownPlacement');
 goog.require('proto.randomizer.proto.DoorShuffle');
 goog.require('proto.randomizer.proto.ExitDestination');
+goog.require('proto.randomizer.proto.FairyDataEntry');
+goog.require('proto.randomizer.proto.FairyLocationLevel');
 goog.require('proto.randomizer.proto.KasplatShuffle');
 goog.require('proto.randomizer.proto.PatchPlacement');
 goog.require('proto.randomizer.proto.PortConnection');
+goog.require('proto.randomizer.proto.ShopLocationShuffle');
 goog.require('proto.randomizer.proto.WarpHumanReadable');
 
 /**
@@ -54,7 +58,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.randomizer.proto.ShuffleData.repeatedFields_ = [3,4,5,7,8,9,10,11];
+proto.randomizer.proto.ShuffleData.repeatedFields_ = [3,4,5,7,8,9,10,11,12,14,15,16];
 
 
 
@@ -104,7 +108,17 @@ crownDataList: jspb.Message.toObjectList(msg.getCrownDataList(),
 patchPlacementsList: jspb.Message.toObjectList(msg.getPatchPlacementsList(),
     proto.randomizer.proto.PatchPlacement.toObject, includeInstance),
 cratePlacementsList: jspb.Message.toObjectList(msg.getCratePlacementsList(),
-    proto.randomizer.proto.CratePlacement.toObject, includeInstance)
+    proto.randomizer.proto.CratePlacement.toObject, includeInstance),
+shuffledShopLocationsList: jspb.Message.toObjectList(msg.getShuffledShopLocationsList(),
+    proto.randomizer.proto.ShopLocationShuffle.toObject, includeInstance),
+shuffledKasplatMapMap: (f = msg.getShuffledKasplatMapMap()) ? f.toObject(includeInstance, undefined) : [],
+fairyLocationsList: jspb.Message.toObjectList(msg.getFairyLocationsList(),
+    proto.randomizer.proto.FairyLocationLevel.toObject, includeInstance),
+fairyDataTableList: jspb.Message.toObjectList(msg.getFairyDataTableList(),
+    proto.randomizer.proto.FairyDataEntry.toObject, includeInstance),
+bananaportReplacementsList: jspb.Message.toObjectList(msg.getBananaportReplacementsList(),
+    proto.randomizer.proto.BananaportReplacement.toObject, includeInstance),
+warpLocationsMap: (f = msg.getWarpLocationsMap()) ? f.toObject(includeInstance, undefined) : []
   };
 
   if (includeInstance) {
@@ -197,6 +211,38 @@ proto.randomizer.proto.ShuffleData.deserializeBinaryFromReader = function(msg, r
       var value = new proto.randomizer.proto.CratePlacement;
       reader.readMessage(value,proto.randomizer.proto.CratePlacement.deserializeBinaryFromReader);
       msg.addCratePlacements(value);
+      break;
+    case 12:
+      var value = new proto.randomizer.proto.ShopLocationShuffle;
+      reader.readMessage(value,proto.randomizer.proto.ShopLocationShuffle.deserializeBinaryFromReader);
+      msg.addShuffledShopLocations(value);
+      break;
+    case 13:
+      var value = msg.getShuffledKasplatMapMap();
+      reader.readMessage(value, function(message, reader) {
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readUint32, null, "", 0);
+         });
+      break;
+    case 14:
+      var value = new proto.randomizer.proto.FairyLocationLevel;
+      reader.readMessage(value,proto.randomizer.proto.FairyLocationLevel.deserializeBinaryFromReader);
+      msg.addFairyLocations(value);
+      break;
+    case 15:
+      var value = new proto.randomizer.proto.FairyDataEntry;
+      reader.readMessage(value,proto.randomizer.proto.FairyDataEntry.deserializeBinaryFromReader);
+      msg.addFairyDataTable(value);
+      break;
+    case 16:
+      var value = new proto.randomizer.proto.BananaportReplacement;
+      reader.readMessage(value,proto.randomizer.proto.BananaportReplacement.deserializeBinaryFromReader);
+      msg.addBananaportReplacements(value);
+      break;
+    case 17:
+      var value = msg.getWarpLocationsMap();
+      reader.readMessage(value, function(message, reader) {
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readUint32, jspb.BinaryReader.prototype.readUint32, null, 0, 0);
+         });
       break;
     default:
       reader.skipField();
@@ -301,6 +347,46 @@ proto.randomizer.proto.ShuffleData.serializeBinaryToWriter = function(message, w
       f,
       proto.randomizer.proto.CratePlacement.serializeBinaryToWriter
     );
+  }
+  f = message.getShuffledShopLocationsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      12,
+      f,
+      proto.randomizer.proto.ShopLocationShuffle.serializeBinaryToWriter
+    );
+  }
+  f = message.getShuffledKasplatMapMap(true);
+  if (f && f.getLength() > 0) {
+    f.serializeBinary(13, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeUint32);
+  }
+  f = message.getFairyLocationsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      14,
+      f,
+      proto.randomizer.proto.FairyLocationLevel.serializeBinaryToWriter
+    );
+  }
+  f = message.getFairyDataTableList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      15,
+      f,
+      proto.randomizer.proto.FairyDataEntry.serializeBinaryToWriter
+    );
+  }
+  f = message.getBananaportReplacementsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      16,
+      f,
+      proto.randomizer.proto.BananaportReplacement.serializeBinaryToWriter
+    );
+  }
+  f = message.getWarpLocationsMap(true);
+  if (f && f.getLength() > 0) {
+    f.serializeBinary(17, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeUint32);
   }
 };
 
@@ -674,6 +760,204 @@ proto.randomizer.proto.ShuffleData.prototype.addCratePlacements = function(opt_v
  */
 proto.randomizer.proto.ShuffleData.prototype.clearCratePlacementsList = function() {
   return this.setCratePlacementsList([]);
+};
+
+
+/**
+ * repeated ShopLocationShuffle shuffled_shop_locations = 12;
+ * @return {!Array<!proto.randomizer.proto.ShopLocationShuffle>}
+ */
+proto.randomizer.proto.ShuffleData.prototype.getShuffledShopLocationsList = function() {
+  return /** @type{!Array<!proto.randomizer.proto.ShopLocationShuffle>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.randomizer.proto.ShopLocationShuffle, 12));
+};
+
+
+/**
+ * @param {!Array<!proto.randomizer.proto.ShopLocationShuffle>} value
+ * @return {!proto.randomizer.proto.ShuffleData} returns this
+*/
+proto.randomizer.proto.ShuffleData.prototype.setShuffledShopLocationsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 12, value);
+};
+
+
+/**
+ * @param {!proto.randomizer.proto.ShopLocationShuffle=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.ShopLocationShuffle}
+ */
+proto.randomizer.proto.ShuffleData.prototype.addShuffledShopLocations = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 12, opt_value, proto.randomizer.proto.ShopLocationShuffle, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.ShuffleData} returns this
+ */
+proto.randomizer.proto.ShuffleData.prototype.clearShuffledShopLocationsList = function() {
+  return this.setShuffledShopLocationsList([]);
+};
+
+
+/**
+ * map<string, uint32> shuffled_kasplat_map = 13;
+ * @param {boolean=} opt_noLazyCreate Do not create the map if
+ * empty, instead returning `undefined`
+ * @return {!jspb.Map<string,number>}
+ */
+proto.randomizer.proto.ShuffleData.prototype.getShuffledKasplatMapMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<string,number>} */ (
+      jspb.Message.getMapField(this, 13, opt_noLazyCreate,
+      null));
+};
+
+
+/**
+ * Clears values from the map. The map will be non-null.
+ * @return {!proto.randomizer.proto.ShuffleData} returns this
+ */
+proto.randomizer.proto.ShuffleData.prototype.clearShuffledKasplatMapMap = function() {
+  this.getShuffledKasplatMapMap().clear();
+  return this;
+};
+
+
+/**
+ * repeated FairyLocationLevel fairy_locations = 14;
+ * @return {!Array<!proto.randomizer.proto.FairyLocationLevel>}
+ */
+proto.randomizer.proto.ShuffleData.prototype.getFairyLocationsList = function() {
+  return /** @type{!Array<!proto.randomizer.proto.FairyLocationLevel>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.randomizer.proto.FairyLocationLevel, 14));
+};
+
+
+/**
+ * @param {!Array<!proto.randomizer.proto.FairyLocationLevel>} value
+ * @return {!proto.randomizer.proto.ShuffleData} returns this
+*/
+proto.randomizer.proto.ShuffleData.prototype.setFairyLocationsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 14, value);
+};
+
+
+/**
+ * @param {!proto.randomizer.proto.FairyLocationLevel=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.FairyLocationLevel}
+ */
+proto.randomizer.proto.ShuffleData.prototype.addFairyLocations = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 14, opt_value, proto.randomizer.proto.FairyLocationLevel, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.ShuffleData} returns this
+ */
+proto.randomizer.proto.ShuffleData.prototype.clearFairyLocationsList = function() {
+  return this.setFairyLocationsList([]);
+};
+
+
+/**
+ * repeated FairyDataEntry fairy_data_table = 15;
+ * @return {!Array<!proto.randomizer.proto.FairyDataEntry>}
+ */
+proto.randomizer.proto.ShuffleData.prototype.getFairyDataTableList = function() {
+  return /** @type{!Array<!proto.randomizer.proto.FairyDataEntry>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.randomizer.proto.FairyDataEntry, 15));
+};
+
+
+/**
+ * @param {!Array<!proto.randomizer.proto.FairyDataEntry>} value
+ * @return {!proto.randomizer.proto.ShuffleData} returns this
+*/
+proto.randomizer.proto.ShuffleData.prototype.setFairyDataTableList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 15, value);
+};
+
+
+/**
+ * @param {!proto.randomizer.proto.FairyDataEntry=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.FairyDataEntry}
+ */
+proto.randomizer.proto.ShuffleData.prototype.addFairyDataTable = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 15, opt_value, proto.randomizer.proto.FairyDataEntry, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.ShuffleData} returns this
+ */
+proto.randomizer.proto.ShuffleData.prototype.clearFairyDataTableList = function() {
+  return this.setFairyDataTableList([]);
+};
+
+
+/**
+ * repeated BananaportReplacement bananaport_replacements = 16;
+ * @return {!Array<!proto.randomizer.proto.BananaportReplacement>}
+ */
+proto.randomizer.proto.ShuffleData.prototype.getBananaportReplacementsList = function() {
+  return /** @type{!Array<!proto.randomizer.proto.BananaportReplacement>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.randomizer.proto.BananaportReplacement, 16));
+};
+
+
+/**
+ * @param {!Array<!proto.randomizer.proto.BananaportReplacement>} value
+ * @return {!proto.randomizer.proto.ShuffleData} returns this
+*/
+proto.randomizer.proto.ShuffleData.prototype.setBananaportReplacementsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 16, value);
+};
+
+
+/**
+ * @param {!proto.randomizer.proto.BananaportReplacement=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.BananaportReplacement}
+ */
+proto.randomizer.proto.ShuffleData.prototype.addBananaportReplacements = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 16, opt_value, proto.randomizer.proto.BananaportReplacement, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.ShuffleData} returns this
+ */
+proto.randomizer.proto.ShuffleData.prototype.clearBananaportReplacementsList = function() {
+  return this.setBananaportReplacementsList([]);
+};
+
+
+/**
+ * map<uint32, uint32> warp_locations = 17;
+ * @param {boolean=} opt_noLazyCreate Do not create the map if
+ * empty, instead returning `undefined`
+ * @return {!jspb.Map<number,number>}
+ */
+proto.randomizer.proto.ShuffleData.prototype.getWarpLocationsMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<number,number>} */ (
+      jspb.Message.getMapField(this, 17, opt_noLazyCreate,
+      null));
+};
+
+
+/**
+ * Clears values from the map. The map will be non-null.
+ * @return {!proto.randomizer.proto.ShuffleData} returns this
+ */
+proto.randomizer.proto.ShuffleData.prototype.clearWarpLocationsMap = function() {
+  this.getWarpLocationsMap().clear();
+  return this;
 };
 
 

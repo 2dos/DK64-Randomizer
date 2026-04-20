@@ -72,7 +72,9 @@ proto.randomizer.proto.CratePlacement.toObject = function(includeInstance, msg) 
   var f, obj = {
 mapId: jspb.Message.getFieldWithDefault(msg, 1, 0),
 crateId: jspb.Message.getFieldWithDefault(msg, 2, 0),
-itemId: jspb.Message.getFieldWithDefault(msg, 3, 0)
+itemId: jspb.Message.getFieldWithDefault(msg, 3, 0),
+level: jspb.Message.getFieldWithDefault(msg, 4, 0),
+name: jspb.Message.getFieldWithDefault(msg, 5, "")
   };
 
   if (includeInstance) {
@@ -121,6 +123,14 @@ proto.randomizer.proto.CratePlacement.deserializeBinaryFromReader = function(msg
       var value = /** @type {number} */ (reader.readUint32());
       msg.setItemId(value);
       break;
+    case 4:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setLevel(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -168,6 +178,20 @@ proto.randomizer.proto.CratePlacement.serializeBinaryToWriter = function(message
   if (f !== 0) {
     writer.writeUint32(
       3,
+      f
+    );
+  }
+  f = message.getLevel();
+  if (f !== 0) {
+    writer.writeUint32(
+      4,
+      f
+    );
+  }
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
       f
     );
   }
@@ -225,6 +249,42 @@ proto.randomizer.proto.CratePlacement.prototype.getItemId = function() {
  */
 proto.randomizer.proto.CratePlacement.prototype.setItemId = function(value) {
   return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional uint32 level = 4;
+ * @return {number}
+ */
+proto.randomizer.proto.CratePlacement.prototype.getLevel = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.randomizer.proto.CratePlacement} returns this
+ */
+proto.randomizer.proto.CratePlacement.prototype.setLevel = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional string name = 5;
+ * @return {string}
+ */
+proto.randomizer.proto.CratePlacement.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.randomizer.proto.CratePlacement} returns this
+ */
+proto.randomizer.proto.CratePlacement.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
 };
 
 

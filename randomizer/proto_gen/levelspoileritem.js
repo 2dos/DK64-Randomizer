@@ -11,7 +11,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-goog.provide('proto.randomizer.proto.CrownPlacement');
+goog.provide('proto.randomizer.proto.LevelSpoilerItem');
 
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
@@ -27,16 +27,16 @@ goog.require('jspb.Message');
  * @extends {jspb.Message}
  * @constructor
  */
-proto.randomizer.proto.CrownPlacement = function(opt_data) {
+proto.randomizer.proto.LevelSpoilerItem = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
-goog.inherits(proto.randomizer.proto.CrownPlacement, jspb.Message);
+goog.inherits(proto.randomizer.proto.LevelSpoilerItem, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   /**
    * @public
    * @override
    */
-  proto.randomizer.proto.CrownPlacement.displayName = 'proto.randomizer.proto.CrownPlacement';
+  proto.randomizer.proto.LevelSpoilerItem.displayName = 'proto.randomizer.proto.LevelSpoilerItem';
 }
 
 
@@ -54,8 +54,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
  *     http://goto/soy-param-migration
  * @return {!Object}
  */
-proto.randomizer.proto.CrownPlacement.prototype.toObject = function(opt_includeInstance) {
-  return proto.randomizer.proto.CrownPlacement.toObject(opt_includeInstance, this);
+proto.randomizer.proto.LevelSpoilerItem.prototype.toObject = function(opt_includeInstance) {
+  return proto.randomizer.proto.LevelSpoilerItem.toObject(opt_includeInstance, this);
 };
 
 
@@ -64,17 +64,15 @@ proto.randomizer.proto.CrownPlacement.prototype.toObject = function(opt_includeI
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.randomizer.proto.CrownPlacement} msg The msg instance to transform.
+ * @param {!proto.randomizer.proto.LevelSpoilerItem} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.randomizer.proto.CrownPlacement.toObject = function(includeInstance, msg) {
+proto.randomizer.proto.LevelSpoilerItem.toObject = function(includeInstance, msg) {
   var f, obj = {
-mapId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-arenaId: jspb.Message.getFieldWithDefault(msg, 2, 0),
-level: jspb.Message.getFieldWithDefault(msg, 3, 0),
-crownIndex: jspb.Message.getFieldWithDefault(msg, 4, 0),
-subindex: jspb.Message.getFieldWithDefault(msg, 5, 0)
+item: jspb.Message.getFieldWithDefault(msg, 1, 0),
+points: jspb.Message.getFieldWithDefault(msg, 2, 0),
+flag: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -88,23 +86,23 @@ subindex: jspb.Message.getFieldWithDefault(msg, 5, 0)
 /**
  * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.randomizer.proto.CrownPlacement}
+ * @return {!proto.randomizer.proto.LevelSpoilerItem}
  */
-proto.randomizer.proto.CrownPlacement.deserializeBinary = function(bytes) {
+proto.randomizer.proto.LevelSpoilerItem.deserializeBinary = function(bytes) {
   var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.randomizer.proto.CrownPlacement;
-  return proto.randomizer.proto.CrownPlacement.deserializeBinaryFromReader(msg, reader);
+  var msg = new proto.randomizer.proto.LevelSpoilerItem;
+  return proto.randomizer.proto.LevelSpoilerItem.deserializeBinaryFromReader(msg, reader);
 };
 
 
 /**
  * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
- * @param {!proto.randomizer.proto.CrownPlacement} msg The message object to deserialize into.
+ * @param {!proto.randomizer.proto.LevelSpoilerItem} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.randomizer.proto.CrownPlacement}
+ * @return {!proto.randomizer.proto.LevelSpoilerItem}
  */
-proto.randomizer.proto.CrownPlacement.deserializeBinaryFromReader = function(msg, reader) {
+proto.randomizer.proto.LevelSpoilerItem.deserializeBinaryFromReader = function(msg, reader) {
   while (reader.nextField()) {
     if (reader.isEndGroup()) {
       break;
@@ -113,23 +111,15 @@ proto.randomizer.proto.CrownPlacement.deserializeBinaryFromReader = function(msg
     switch (field) {
     case 1:
       var value = /** @type {number} */ (reader.readUint32());
-      msg.setMapId(value);
+      msg.setItem(value);
       break;
     case 2:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setArenaId(value);
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPoints(value);
       break;
     case 3:
       var value = /** @type {number} */ (reader.readUint32());
-      msg.setLevel(value);
-      break;
-    case 4:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setCrownIndex(value);
-      break;
-    case 5:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setSubindex(value);
+      msg.setFlag(value);
       break;
     default:
       reader.skipField();
@@ -144,9 +134,9 @@ proto.randomizer.proto.CrownPlacement.deserializeBinaryFromReader = function(msg
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
-proto.randomizer.proto.CrownPlacement.prototype.serializeBinary = function() {
+proto.randomizer.proto.LevelSpoilerItem.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.randomizer.proto.CrownPlacement.serializeBinaryToWriter(this, writer);
+  proto.randomizer.proto.LevelSpoilerItem.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
@@ -154,137 +144,87 @@ proto.randomizer.proto.CrownPlacement.prototype.serializeBinary = function() {
 /**
  * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
- * @param {!proto.randomizer.proto.CrownPlacement} message
+ * @param {!proto.randomizer.proto.LevelSpoilerItem} message
  * @param {!jspb.BinaryWriter} writer
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.randomizer.proto.CrownPlacement.serializeBinaryToWriter = function(message, writer) {
+proto.randomizer.proto.LevelSpoilerItem.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getMapId();
+  f = message.getItem();
   if (f !== 0) {
     writer.writeUint32(
       1,
       f
     );
   }
-  f = message.getArenaId();
+  f = message.getPoints();
   if (f !== 0) {
-    writer.writeUint32(
+    writer.writeInt32(
       2,
       f
     );
   }
-  f = message.getLevel();
+  f = message.getFlag();
   if (f !== 0) {
     writer.writeUint32(
       3,
       f
     );
   }
-  f = message.getCrownIndex();
-  if (f !== 0) {
-    writer.writeUint32(
-      4,
-      f
-    );
-  }
-  f = message.getSubindex();
-  if (f !== 0) {
-    writer.writeUint32(
-      5,
-      f
-    );
-  }
 };
 
 
 /**
- * optional uint32 map_id = 1;
+ * optional uint32 item = 1;
  * @return {number}
  */
-proto.randomizer.proto.CrownPlacement.prototype.getMapId = function() {
+proto.randomizer.proto.LevelSpoilerItem.prototype.getItem = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
  * @param {number} value
- * @return {!proto.randomizer.proto.CrownPlacement} returns this
+ * @return {!proto.randomizer.proto.LevelSpoilerItem} returns this
  */
-proto.randomizer.proto.CrownPlacement.prototype.setMapId = function(value) {
+proto.randomizer.proto.LevelSpoilerItem.prototype.setItem = function(value) {
   return jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
 /**
- * optional uint32 arena_id = 2;
+ * optional int32 points = 2;
  * @return {number}
  */
-proto.randomizer.proto.CrownPlacement.prototype.getArenaId = function() {
+proto.randomizer.proto.LevelSpoilerItem.prototype.getPoints = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
 /**
  * @param {number} value
- * @return {!proto.randomizer.proto.CrownPlacement} returns this
+ * @return {!proto.randomizer.proto.LevelSpoilerItem} returns this
  */
-proto.randomizer.proto.CrownPlacement.prototype.setArenaId = function(value) {
+proto.randomizer.proto.LevelSpoilerItem.prototype.setPoints = function(value) {
   return jspb.Message.setProto3IntField(this, 2, value);
 };
 
 
 /**
- * optional uint32 level = 3;
+ * optional uint32 flag = 3;
  * @return {number}
  */
-proto.randomizer.proto.CrownPlacement.prototype.getLevel = function() {
+proto.randomizer.proto.LevelSpoilerItem.prototype.getFlag = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
 /**
  * @param {number} value
- * @return {!proto.randomizer.proto.CrownPlacement} returns this
+ * @return {!proto.randomizer.proto.LevelSpoilerItem} returns this
  */
-proto.randomizer.proto.CrownPlacement.prototype.setLevel = function(value) {
+proto.randomizer.proto.LevelSpoilerItem.prototype.setFlag = function(value) {
   return jspb.Message.setProto3IntField(this, 3, value);
-};
-
-
-/**
- * optional uint32 crown_index = 4;
- * @return {number}
- */
-proto.randomizer.proto.CrownPlacement.prototype.getCrownIndex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.randomizer.proto.CrownPlacement} returns this
- */
-proto.randomizer.proto.CrownPlacement.prototype.setCrownIndex = function(value) {
-  return jspb.Message.setProto3IntField(this, 4, value);
-};
-
-
-/**
- * optional uint32 subindex = 5;
- * @return {number}
- */
-proto.randomizer.proto.CrownPlacement.prototype.getSubindex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.randomizer.proto.CrownPlacement} returns this
- */
-proto.randomizer.proto.CrownPlacement.prototype.setSubindex = function(value) {
-  return jspb.Message.setProto3IntField(this, 5, value);
 };
 
 

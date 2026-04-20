@@ -1048,28 +1048,80 @@ def _populate_shuffle_data(spoiler: "Spoiler", proto: fill_result_pb2.ShuffleDat
             warp_proto.from_location = warp.get("from", "")
             warp_proto.to = warp.get("to", "")
 
-    # Crown arenas
-    if hasattr(spoiler, "crown_locations"):
-        for crown_loc in spoiler.crown_locations:
-            crown_proto = proto.crown_placements.add()
-            crown_proto.map_id = int(crown_loc.get("map", 0))
-            crown_proto.arena_id = int(crown_loc.get("arena", 0))
+    # Crown arenas – crown_locations is {Levels: {crown_index: subindex}}
+    if hasattr(spoiler, "crown_locations") and spoiler.crown_locations:
+        for level, crown_data in spoiler.crown_locations.items():
+            for crown_index, subindex in crown_data.items():
+                crown_proto = proto.crown_placements.add()
+                crown_proto.level = int(_enum_value(level))
+                crown_proto.crown_index = int(crown_index)
+                crown_proto.subindex = int(subindex)
 
-    # Dirt patches
+    # Dirt patches – each entry is {"name", "map", "level" (Levels enum), ...}
     if hasattr(spoiler, "dirt_patch_placement"):
         for patch in spoiler.dirt_patch_placement:
             patch_proto = proto.patch_placements.add()
             patch_proto.map_id = int(patch.get("map", 0))
-            patch_proto.patch_id = int(patch.get("id", 0))
-            patch_proto.item_id = int(patch.get("item", 0))
+            patch_proto.level = int(_enum_value(patch.get("level", 0)))
+            patch_proto.name = str(patch.get("name", ""))
 
-    # Melon crates
-    if hasattr(spoiler, "melon_crate_placement"):
-        for crate in spoiler.melon_crate_placement:
+    # Melon crates – attribute is meloncrate_placement
+    if hasattr(spoiler, "meloncrate_placement"):
+        for crate in spoiler.meloncrate_placement:
             crate_proto = proto.crate_placements.add()
             crate_proto.map_id = int(crate.get("map", 0))
-            crate_proto.crate_id = int(crate.get("id", 0))
-            crate_proto.item_id = int(crate.get("item", 0))
+            crate_proto.level = int(_enum_value(crate.get("level", 0)))
+            crate_proto.name = str(crate.get("name", ""))
+
+    # Shop location shuffles – {Levels: {old_shop_region: new_shop_region}}
+    if hasattr(spoiler, "shuffled_shop_locations") and spoiler.shuffled_shop_locations:
+        for level, shop_map in spoiler.shuffled_shop_locations.items():
+            shuffle_proto = proto.shuffled_shop_locations.add()
+            shuffle_proto.level = int(_enum_value(level))
+            for old_shop, new_shop in shop_map.items():
+                assign = shuffle_proto.assignments.add()
+                assign.old_shop = int(_enum_value(old_shop))
+                assign.new_shop = int(_enum_value(new_shop))
+
+    # Kasplat location shuffles – {name: kong_index}
+    if hasattr(spoiler, "shuffled_kasplat_map") and spoiler.shuffled_kasplat_map:
+        for name, kong in spoiler.shuffled_kasplat_map.items():
+            proto.shuffled_kasplat_map[str(name)] = int(kong)
+
+    # Fairy locations – {Levels: [fairy_indexes]}
+    if hasattr(spoiler, "fairy_locations") and spoiler.fairy_locations:
+        for level, indexes in spoiler.fairy_locations.items():
+            fairy_proto = proto.fairy_locations.add()
+            fairy_proto.level = int(_enum_value(level))
+            fairy_proto.fairy_indexes.extend([int(i) for i in indexes])
+
+    # Fairy data table – list of 20 dicts (or None)
+    if hasattr(spoiler, "fairy_data_table") and spoiler.fairy_data_table:
+        for entry in spoiler.fairy_data_table:
+            entry_proto = proto.fairy_data_table.add()
+            if entry is not None:
+                entry_proto.present = True
+                entry_proto.fairy_index = int(entry.get("fairy_index", 0))
+                entry_proto.level = int(_enum_value(entry.get("level", 0)))
+                entry_proto.flag = int(entry.get("flag", 0))
+                entry_proto.id = int(entry.get("id", 0))
+                entry_proto.shift = int(entry.get("shift", 0))
+                entry_proto.script_id = int(entry.get("script_id", 0))
+                entry_proto.map_id = int(entry.get("map_id", 0))
+            else:
+                entry_proto.present = False
+
+    # Bananaport replacements – [(new_pad_index, visual_type)]
+    if hasattr(spoiler, "bananaport_replacements") and spoiler.bananaport_replacements:
+        for pad_index, visual_type in spoiler.bananaport_replacements:
+            bp_proto = proto.bananaport_replacements.add()
+            bp_proto.new_pad_index = int(pad_index)
+            bp_proto.visual_type = int(visual_type)
+
+    # Warp locations – {warp_id: custom_location_id}
+    if hasattr(spoiler, "warp_locations") and spoiler.warp_locations:
+        for warp_id, loc_id in spoiler.warp_locations.items():
+            proto.warp_locations[int(warp_id)] = int(loc_id)
 
 
 # -----------------------------------------------------------------------------
@@ -1133,14 +1185,34 @@ def _populate_placement_data(spoiler: "Spoiler", proto: fill_result_pb2.Placemen
         proto.coin_requirements[int(map_id)] = int(coin_count)
 
     # Coin placements
-    if hasattr(spoiler, "coin_placement"):
-        for coin_data in spoiler.coin_placement:
+    if hasattr(spoiler, "coin_placements"):
+        for coin_data in spoiler.coin_placements:
             coin_proto = proto.coin_placements.add()
-            coin_proto.level = int(coin_data.get("level", 0))
+            coin_proto.level = int(_enum_value(coin_data.get("level", 0)))
             coin_proto.map = int(coin_data.get("map", 0))
-            coin_proto.kong = int(coin_data.get("kong", 0))
+            coin_proto.kong = int(_enum_value(coin_data.get("kong", 0)))
             coin_proto.type = coin_data.get("type", "")
             coin_proto.name = coin_data.get("name", "")
+            for loc in coin_data.get("locations", []):
+                loc_proto = coin_proto.locations.add()
+                loc_proto.scale = float(loc[0])
+                loc_proto.x = float(loc[1])
+                loc_proto.y = float(loc[2])
+                loc_proto.z = float(loc[3])
+
+    # Race coin placements
+    if hasattr(spoiler, "race_coin_placements"):
+        for coin_data in spoiler.race_coin_placements:
+            coin_proto = proto.race_coin_placements.add()
+            coin_proto.map = int(coin_data.get("map", 0))
+            coin_proto.level = int(_enum_value(coin_data.get("level", 0)))
+            coin_proto.name = coin_data.get("name", "")
+            for loc in coin_data.get("locations", []):
+                loc_proto = coin_proto.locations.add()
+                loc_proto.scale = float(loc[0])
+                loc_proto.x = float(loc[1])
+                loc_proto.y = float(loc[2])
+                loc_proto.z = float(loc[3])
 
     # Pokemon Snap enemy data (for Krem Kapture win condition)
     if hasattr(spoiler, "pkmn_snap_data"):
@@ -1194,6 +1266,12 @@ def _populate_hint_data(spoiler: "Spoiler", proto: fill_result_pb2.HintData) -> 
                 level_proto.points = level_hints.points
             if hasattr(level_hints, "woth_count"):
                 level_proto.woth_count = level_hints.woth_count
+            if hasattr(level_hints, "level_items"):
+                for item_entry in level_hints.level_items:
+                    item_proto = level_proto.level_items.add()
+                    item_proto.item = int(_enum_value(item_entry.get("item", 0)))
+                    item_proto.points = int(item_entry.get("points", 0))
+                    item_proto.flag = int(item_entry.get("flag", 0))
 
     if hasattr(spoiler, "level_spoiler_human_readable"):
         for level_name, hint_text in spoiler.level_spoiler_human_readable.items():

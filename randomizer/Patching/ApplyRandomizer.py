@@ -797,6 +797,155 @@ def _create_patching_adapter(fill_result, settings):
                     }
                 result[region_name] = region_dict
             return result
+
+        @cached_property
+        def crown_locations(self):
+            """Return crown locations as {Levels: {crown_index: subindex}}."""
+            from randomizer.Enums.Levels import Levels
+            result = {}
+            for crown_proto in self._shuffle_data.crown_placements:
+                level = Levels(crown_proto.level)
+                if level not in result:
+                    result[level] = {}
+                result[level][int(crown_proto.crown_index)] = int(crown_proto.subindex)
+            return result
+
+        @cached_property
+        def dirt_patch_placement(self):
+            """Return dirt patch placements as list of dicts."""
+            from randomizer.Enums.Levels import Levels
+            result = []
+            for patch_proto in self._shuffle_data.patch_placements:
+                result.append({
+                    "name": patch_proto.name,
+                    "map": int(patch_proto.map_id),
+                    "level": Levels(patch_proto.level),
+                })
+            return result
+
+        @cached_property
+        def meloncrate_placement(self):
+            """Return melon crate placements as list of dicts."""
+            from randomizer.Enums.Levels import Levels
+            result = []
+            for crate_proto in self._shuffle_data.crate_placements:
+                result.append({
+                    "name": crate_proto.name,
+                    "map": int(crate_proto.map_id),
+                    "level": Levels(crate_proto.level),
+                })
+            return result
+
+        @cached_property
+        def coin_placements(self):
+            """Return coin placements."""
+            result = []
+            for coin_proto in self._placement_data.coin_placements:
+                locations = [[loc.scale, loc.x, loc.y, loc.z] for loc in coin_proto.locations]
+                result.append({
+                    "level": int(coin_proto.level),
+                    "map": int(coin_proto.map),
+                    "kong": int(coin_proto.kong),
+                    "type": coin_proto.type,
+                    "name": coin_proto.name,
+                    "locations": locations,
+                })
+            return result
+
+        @cached_property
+        def race_coin_placements(self):
+            """Return race coin placements."""
+            result = []
+            for coin_proto in self._placement_data.race_coin_placements:
+                locations = [[loc.scale, loc.x, loc.y, loc.z] for loc in coin_proto.locations]
+                result.append({
+                    "map": int(coin_proto.map),
+                    "level": int(coin_proto.level),
+                    "name": coin_proto.name,
+                    "locations": locations,
+                })
+            return result
+
+        @cached_property
+        def shuffled_shop_locations(self):
+            """Return shuffled shop locations as {Levels: {old_shop: new_shop}}."""
+            from randomizer.Enums.Levels import Levels
+            from randomizer.Enums.Regions import Regions
+            result = {}
+            for shuffle_proto in self._shuffle_data.shuffled_shop_locations:
+                level = Levels(shuffle_proto.level)
+                level_map = {}
+                for assign in shuffle_proto.assignments:
+                    level_map[Regions(assign.old_shop)] = Regions(assign.new_shop)
+                result[level] = level_map
+            return result
+
+        @cached_property
+        def shuffled_kasplat_map(self):
+            """Return kasplat shuffles as {name: kong_index}."""
+            return dict(self._shuffle_data.shuffled_kasplat_map)
+
+        @cached_property
+        def fairy_locations(self):
+            """Return fairy locations as {Levels: [fairy_indexes]}."""
+            from randomizer.Enums.Levels import Levels
+            result = {}
+            for fairy_proto in self._shuffle_data.fairy_locations:
+                result[Levels(fairy_proto.level)] = list(fairy_proto.fairy_indexes)
+            return result
+
+        @cached_property
+        def fairy_data_table(self):
+            """Return fairy data table as list of 20 dicts (or None)."""
+            from randomizer.Enums.Levels import Levels
+            result = []
+            for entry_proto in self._shuffle_data.fairy_data_table:
+                if entry_proto.present:
+                    result.append({
+                        "fairy_index": int(entry_proto.fairy_index),
+                        "level": Levels(entry_proto.level),
+                        "flag": int(entry_proto.flag),
+                        "id": int(entry_proto.id),
+                        "shift": int(entry_proto.shift),
+                        "script_id": int(entry_proto.script_id),
+                        "map_id": int(entry_proto.map_id),
+                    })
+                else:
+                    result.append(None)
+            return result
+
+        @cached_property
+        def bananaport_replacements(self):
+            """Return bananaport replacements as [(new_pad_index, visual_type)]."""
+            return [(int(bp.new_pad_index), int(bp.visual_type))
+                    for bp in self._shuffle_data.bananaport_replacements]
+
+        @cached_property
+        def warp_locations(self):
+            """Return warp locations as {warp_id: custom_location_id}."""
+            return dict(self._shuffle_data.warp_locations)
+
+        @cached_property
+        def level_spoiler(self):
+            """Return level spoiler as {Levels: obj with .level_items}."""
+            from randomizer.Enums.Levels import Levels
+            from randomizer.Enums.Items import Items
+
+            class _LevelSpoiler:
+                def __init__(self, level_items):
+                    self.level_items = level_items
+
+            result = {}
+            for level_id, hints_proto in self._proto.level_spoiler_hints.items():
+                items = []
+                for item_proto in hints_proto.level_items:
+                    items.append({
+                        "item": Items(item_proto.item) if item_proto.item else None,
+                        "points": int(item_proto.points),
+                        "flag": int(item_proto.flag),
+                    })
+                result[Levels(level_id)] = _LevelSpoiler(items)
+            return result
     
     return PatchingAdapter(fill_result, settings)
 
