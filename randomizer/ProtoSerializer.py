@@ -637,6 +637,67 @@ def _apply_overworld_settings(proto: overworld_settings_pb2.OverworldSettings, s
 # =============================================================================
 
 
+# HelmDoorItem <-> proto HelmDoorRequirementType. The two enums do NOT share
+# numeric values, so raw int copies produce mismatches (e.g. vanilla=0 round-
+# trips as UNSPECIFIED=0 which is fine, but medium_random=2 would decode as
+# RANDOM_EASY=2). Explicit map required both directions.
+_HELM_DOOR_ITEM_TO_PROTO: Dict[int, int] = {
+    0: 0,   # vanilla       -> VANILLA
+    1: 1,   # opened        -> OPEN
+    2: 3,   # medium_random -> RANDOM_MEDIUM
+    3: 5,   # req_gb        -> GOLDEN_BANANAS
+    4: 6,   # req_bp        -> BLUEPRINTS
+    5: 7,   # req_companycoins -> COMPANY_COINS
+    6: 8,   # req_key       -> KEYS
+    7: 9,   # req_medal     -> MEDALS
+    8: 10,  # req_crown     -> CROWNS
+    9: 11,  # req_fairy     -> FAIRIES
+    10: 12, # req_rainbowcoin -> RAINBOW_COINS
+    11: 13, # req_bean      -> BEAN
+    12: 14, # req_pearl     -> PEARLS
+    13: 2,  # easy_random   -> RANDOM_EASY
+    14: 4,  # hard_random   -> RANDOM_HARD
+}
+_PROTO_TO_HELM_DOOR_ITEM: Dict[int, int] = {v: k for k, v in _HELM_DOOR_ITEM_TO_PROTO.items()}
+
+
+_BARRIER_TO_HELM_DOOR_ITEM_COMMON: Dict[int, int] = {
+    0: 1,    # Nothing -> opened
+    3: 3,    # GoldenBanana -> req_gb
+    4: 4,    # Blueprint -> req_bp
+    5: 9,    # Fairy -> req_fairy
+    6: 6,    # Key -> req_key
+    9: 7,    # Medal -> req_medal
+    10: 11,  # Bean -> req_bean
+    11: 12,  # Pearl -> req_pearl
+    12: 10,  # RainbowCoin -> req_rainbowcoin
+}
+
+
+def _barrier_to_helm_door_item(value: Any, is_coin_door: bool) -> int:
+    """Convert a stored crown/coin door value back to its HelmDoorItem int."""
+    if value is None:
+        return 0  # vanilla
+    ival = int(value)
+    from randomizer.Enums.Settings import HelmDoorItem
+    from randomizer.Enums.Types import BarrierItems
+
+    if isinstance(value, HelmDoorItem):
+        return ival
+    if isinstance(value, BarrierItems):
+        if is_coin_door and ival == int(BarrierItems.CompanyCoin):
+            return 0  # vanilla
+        if not is_coin_door and ival == int(BarrierItems.Crown):
+            return 0  # vanilla
+        if is_coin_door and ival == int(BarrierItems.Crown):
+            return 8  # req_crown
+        if not is_coin_door and ival == int(BarrierItems.CompanyCoin):
+            return 5  # req_companycoins
+        return _BARRIER_TO_HELM_DOOR_ITEM_COMMON.get(ival, 0)
+    # Bare int fallback: assume pre-resolve HelmDoorItem value.
+    return ival
+
+
 def _populate_endgame_settings(settings: "Settings", proto: endgame_settings_pb2.EndgameSettings) -> None:
     """Populate EndgameSettings proto from Settings object."""
     # Logic
@@ -672,14 +733,13 @@ def _populate_endgame_settings(settings: "Settings", proto: endgame_settings_pb2
     proto.helm_settings.helm_start_location = settings.helm_setting
     proto.helm_settings.helm_room_bonus_count = settings.helm_room_bonus_count
 
-    if settings.crown_door_item:
-        door_req = proto.helm_settings.helm_door_requirements.add()
-        door_req.type = settings.crown_door_item
-        door_req.specified_quantity = settings.crown_door_item_count
-    if settings.coin_door_item:
-        door_req = proto.helm_settings.helm_door_requirements.add()
-        door_req.type = settings.coin_door_item
-        door_req.specified_quantity = settings.coin_door_item_count
+    # Always emit exactly two entries so index [0] = crown door, [1] = coin door.
+    crown_req = proto.helm_settings.helm_door_requirements.add()
+    crown_req.type = _HELM_DOOR_ITEM_TO_PROTO.get(_barrier_to_helm_door_item(settings.crown_door_item, is_coin_door=False), 0)
+    crown_req.specified_quantity = settings.crown_door_item_count
+    coin_req = proto.helm_settings.helm_door_requirements.add()
+    coin_req.type = _HELM_DOOR_ITEM_TO_PROTO.get(_barrier_to_helm_door_item(settings.coin_door_item, is_coin_door=True), 0)
+    coin_req.specified_quantity = settings.coin_door_item_count
 
     # K. Rool settings
     proto.k_rool_settings.shuffle_k_rool_phases = bool(settings.krool_phase_order_rando)
@@ -691,6 +751,7 @@ def _populate_endgame_settings(settings: "Settings", proto: endgame_settings_pb2
 
 def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, settings: "Settings") -> None:
     """Apply EndgameSettings proto to Settings object."""
+    from randomizer.Enums.Settings import HelmDoorItem
     settings.logic_type = proto.logic.type
     settings.glitches_selected = list(proto.logic.glitches)
     settings.tricks_selected = list(proto.logic.tricks)
@@ -715,12 +776,13 @@ def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, setting
     settings.helm_phase_order_rando = bool(proto.helm_settings.shuffle_helm_rooms)
     settings.helm_room_bonus_count = proto.helm_settings.helm_room_bonus_count
 
-    if proto.helm_settings.helm_door_requirements:
-        door_req = proto.helm_settings.helm_door_requirements[0]
-        settings.crown_door_item = door_req.type
-        settings.crown_door_item_count = door_req.specified_quantity
-        settings.coin_door_item = door_req.type
-        settings.coin_door_item_count = door_req.specified_quantity
+    reqs = proto.helm_settings.helm_door_requirements
+    if len(reqs) > 0:
+        settings.crown_door_item = HelmDoorItem(_PROTO_TO_HELM_DOOR_ITEM.get(int(reqs[0].type), 0))
+        settings.crown_door_item_count = reqs[0].specified_quantity
+    if len(reqs) > 1:
+        settings.coin_door_item = HelmDoorItem(_PROTO_TO_HELM_DOOR_ITEM.get(int(reqs[1].type), 0))
+        settings.coin_door_item_count = reqs[1].specified_quantity
 
     settings.krool_phase_order_rando = bool(proto.k_rool_settings.shuffle_k_rool_phases)
     settings.krool_random = bool(proto.k_rool_settings.random_phase_amount)
@@ -822,7 +884,7 @@ def _populate_qol_settings(settings: "Settings", proto: qol_settings_pb2.Quality
     proto.hints.shop_hints = bool(settings.enable_shop_hints)
     proto.hints.dim_solved_hints = bool(settings.dim_solved_hints)
     proto.hints.no_joke_hints = bool(settings.serious_hints)
-    proto.hints.kongless_hint_doors = bool(settings.microhints_enabled != MicrohintsEnabled.off)
+    proto.hints.kongless_hint_doors = bool(settings.wrinkly_available)
     proto.hints.extra_hints = settings.microhints_enabled
 
     proto.hints.progressive_hints.item = settings.progressive_hint_item
@@ -853,6 +915,7 @@ def _apply_qol_settings(proto: qol_settings_pb2.QualityOfLifeSettings, settings:
     settings.enable_shop_hints = bool(proto.hints.shop_hints)
     settings.dim_solved_hints = bool(proto.hints.dim_solved_hints)
     settings.serious_hints = bool(proto.hints.no_joke_hints)
+    settings.wrinkly_available = bool(proto.hints.kongless_hint_doors)
     settings.microhints_enabled = proto.hints.extra_hints
 
     settings.progressive_hint_item = proto.hints.progressive_hints.item
