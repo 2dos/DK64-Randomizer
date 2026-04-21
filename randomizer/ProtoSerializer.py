@@ -522,8 +522,8 @@ def _populate_overworld_settings(settings: "Settings", proto: overworld_settings
     # Bosses
     proto.shuffle_boss_location = bool(settings.boss_location_rando)
     proto.krool_in_boss_pool = settings.krool_in_boss_pool_v2
-    if settings.boss_maps:
-        proto.bosses_selected.extend(_enum_values(settings.boss_maps))
+    if settings.bosses_selected:
+        proto.bosses_selected.extend(_enum_values(settings.bosses_selected))
     proto.ship_location_rando = bool(settings.ship_location_rando)
 
     # Enemies
@@ -599,7 +599,7 @@ def _apply_overworld_settings(proto: overworld_settings_pb2.OverworldSettings, s
 
     settings.boss_location_rando = bool(proto.shuffle_boss_location)
     settings.krool_in_boss_pool_v2 = proto.krool_in_boss_pool
-    settings.boss_maps = list(proto.bosses_selected)
+    settings.bosses_selected = list(proto.bosses_selected)
     settings.ship_location_rando = bool(proto.ship_location_rando)
 
     settings.enemies_selected = list(proto.shuffled_enemies)
@@ -661,6 +661,12 @@ _HELM_DOOR_ITEM_TO_PROTO: Dict[int, int] = {
 _PROTO_TO_HELM_DOOR_ITEM: Dict[int, int] = {v: k for k, v in _HELM_DOOR_ITEM_TO_PROTO.items()}
 
 
+# Kongs (donkey=0..chunky=4, any=5) <-> proto KongId (UNSPECIFIED=0,
+# DONKEY=1..CHUNKY=5). Kongs.any maps to UNSPECIFIED.
+_KONG_TO_PROTO: Dict[int, int] = {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 0}
+_PROTO_TO_KONG: Dict[int, int] = {v: k for k, v in _KONG_TO_PROTO.items()}
+
+
 _BARRIER_TO_HELM_DOOR_ITEM_COMMON: Dict[int, int] = {
     0: 1,    # Nothing -> opened
     3: 3,    # GoldenBanana -> req_gb
@@ -719,11 +725,13 @@ def _populate_endgame_settings(settings: "Settings", proto: endgame_settings_pb2
         proto.required_keys.specified_starting_keys.extend(_enum_values(settings.starting_keys_list_selected))
     proto.required_keys.helm_key_lock = bool(settings.key_8_helm)
     proto.required_keys.key_8_required = bool(settings.k_rool_vanilla_requirement)
+    proto.required_keys.random_quantity = bool(settings.keys_random)
 
     # Starting Kongs
     proto.starting_kongs.random_quantity = bool(settings.kong_rando)
     proto.starting_kongs.specified_quantity = settings.starting_kongs_count
-    proto.starting_kongs.specified_starting_kong = settings.starting_kong
+    proto.starting_kongs.specified_starting_kong = _KONG_TO_PROTO.get(int(settings.starting_kong), 0)
+    proto.starting_kongs.random_quantity = bool(settings.starting_random)
 
     # Helm settings. helm_setting serves double duty as both specified length
     # and helm start location.
@@ -732,6 +740,7 @@ def _populate_endgame_settings(settings: "Settings", proto: endgame_settings_pb2
     proto.helm_settings.shuffle_helm_rooms = bool(settings.helm_phase_order_rando)
     proto.helm_settings.helm_start_location = settings.helm_setting
     proto.helm_settings.helm_room_bonus_count = settings.helm_room_bonus_count
+    proto.helm_settings.random_length = bool(settings.helm_random)
 
     # Always emit exactly two entries so index [0] = crown door, [1] = coin door.
     crown_req = proto.helm_settings.helm_door_requirements.add()
@@ -765,16 +774,20 @@ def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, setting
     settings.starting_keys_list_selected = list(proto.required_keys.specified_starting_keys)
     settings.key_8_helm = bool(proto.required_keys.helm_key_lock)
     settings.k_rool_vanilla_requirement = bool(proto.required_keys.key_8_required)
+    settings.keys_random = bool(proto.required_keys.random_quantity)
 
+    from randomizer.Enums.Kongs import Kongs
     settings.kong_rando = bool(proto.starting_kongs.random_quantity)
     settings.starting_kongs_count = proto.starting_kongs.specified_quantity
-    settings.starting_kong = proto.starting_kongs.specified_starting_kong
+    settings.starting_kong = Kongs(_PROTO_TO_KONG.get(int(proto.starting_kongs.specified_starting_kong), 5))
+    settings.starting_random = bool(proto.starting_kongs.random_quantity)
 
     if proto.helm_settings.random_length:
         settings.helm_barrels = 1  # MinigameBarrels.random
     settings.helm_setting = proto.helm_settings.helm_start_location if proto.helm_settings.helm_start_location else proto.helm_settings.specified_length
     settings.helm_phase_order_rando = bool(proto.helm_settings.shuffle_helm_rooms)
     settings.helm_room_bonus_count = proto.helm_settings.helm_room_bonus_count
+    settings.helm_random = bool(proto.helm_settings.random_length)
 
     reqs = proto.helm_settings.helm_door_requirements
     if len(reqs) > 0:
@@ -786,6 +799,8 @@ def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, setting
 
     settings.krool_phase_order_rando = bool(proto.k_rool_settings.shuffle_k_rool_phases)
     settings.krool_random = bool(proto.k_rool_settings.random_phase_amount)
+    settings.krool_phase_count = proto.k_rool_settings.specified_phase_amount
+    settings.cannons_require_blast = bool(proto.k_rool_settings.dk_phase_requires_blast)
     settings.chunky_phase_slam_req = proto.k_rool_settings.chunky_phase_slam_requirement
 
 
