@@ -1028,7 +1028,11 @@ def _populate_shuffle_data(spoiler: "Spoiler", proto: fill_result_pb2.ShuffleDat
                 door_proto.kong_assignee = int(entry[2])
 
     for instruction in spoiler.shuffled_exit_instructions:
-        proto.exit_instructions.append(str(instruction))
+        serializable = {
+            "container_map": int(instruction["container_map"]),
+            "zones": [{k: int(v) for k, v in zone.items()} for zone in instruction.get("zones", [])],
+        }
+        proto.exit_instructions.append(str(serializable))
 
     # Port connections
     if hasattr(spoiler, "port_connections"):

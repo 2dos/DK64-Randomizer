@@ -340,18 +340,30 @@ def _create_patching_adapter(fill_result, settings):
                 ItemReference(Items.HideoutHelmKey, "Key 8", "Starting Key", True),
             ]
             
-            # Convert shuffled exits from proto to TransitionFront objects
+            # Convert shuffled exits from proto to TransitionBack-like objects
             self.shuffled_exit_data = {}
             for exit_id, exit_dest in fill_result.shuffle_data.shuffled_exits.items():
-                # Create TransitionFront-like object
+                # Mirror randomizer.LogicClasses.TransitionBack attributes so downstream
+                # consumers (EntranceRando, CompileHints, Spoiler) work unchanged.
                 class ExitDestination:
-                    def __init__(self, dest, reverse, exit_name, spoiler_name):
-                        self.dest = dest if isinstance(dest, Regions) else Regions(dest)
-                        self.reverse = reverse
-                        self.exit = exit_name
+                    def __init__(self, region_id, reverse, exit_name, spoiler_name):
+                        self.regionId = region_id if isinstance(region_id, Regions) else Regions(region_id)
+                        try:
+                            self.reverse = Transitions(reverse) if reverse is not None else None
+                        except ValueError:
+                            self.reverse = None
+                        self.name = exit_name
                         self.spoilerName = spoiler_name
-                
-                self.shuffled_exit_data[exit_id] = ExitDestination(
+                        # Back-compat aliases for any remaining legacy access patterns.
+                        self.dest = self.regionId
+                        self.exit = exit_name
+
+                transition_key = exit_id
+                try:
+                    transition_key = Transitions(exit_id)
+                except ValueError:
+                    pass
+                self.shuffled_exit_data[transition_key] = ExitDestination(
                     exit_dest.destination_region,
                     exit_dest.reverse_transition,
                     exit_dest.exit_name,
@@ -564,7 +576,20 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def shuffled_exit_instructions(self):
             """Return exit instructions."""
-            return list(self._shuffle_data.exit_instructions)
+            import ast
+
+            instructions = []
+            for entry in self._shuffle_data.exit_instructions:
+                if isinstance(entry, str):
+                    try:
+                        parsed = ast.literal_eval(entry)
+                        if isinstance(parsed, (dict, list)):
+                            instructions.append(parsed)
+                            continue
+                    except (ValueError, SyntaxError):
+                        pass
+                instructions.append(entry)
+            return instructions
         
         @cached_property
         def cb_placements(self):
