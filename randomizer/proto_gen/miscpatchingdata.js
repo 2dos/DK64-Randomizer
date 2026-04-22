@@ -50,7 +50,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.randomizer.proto.MiscPatchingData.repeatedFields_ = [1,2,3,11,12,13,15,16,17,18,22];
+proto.randomizer.proto.MiscPatchingData.repeatedFields_ = [1,2,3,11,12,13,15,16,17,18,22,25];
 
 
 
@@ -109,7 +109,8 @@ archipelago: (f = jspb.Message.getBooleanField(msg, 20)) == null ? undefined : f
 playerName: (f = jspb.Message.getField(msg, 21)) == null ? undefined : f,
 kroolKeysRequiredList: (f = jspb.Message.getRepeatedField(msg, 22)) == null ? undefined : f,
 shipLocationIndex: (f = jspb.Message.getField(msg, 23)) == null ? undefined : f,
-shipName: (f = jspb.Message.getField(msg, 24)) == null ? undefined : f
+shipName: (f = jspb.Message.getField(msg, 24)) == null ? undefined : f,
+switchAllocationList: (f = jspb.Message.getRepeatedField(msg, 25)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -270,6 +271,12 @@ proto.randomizer.proto.MiscPatchingData.deserializeBinaryFromReader = function(m
     case 24:
       var value = /** @type {string} */ (reader.readString());
       msg.setShipName(value);
+      break;
+    case 25:
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addSwitchAllocation(values[i]);
+      }
       break;
     default:
       reader.skipField();
@@ -453,6 +460,13 @@ proto.randomizer.proto.MiscPatchingData.serializeBinaryToWriter = function(messa
   if (f != null) {
     writer.writeString(
       24,
+      f
+    );
+  }
+  f = message.getSwitchAllocationList();
+  if (f.length > 0) {
+    writer.writePackedUint32(
+      25,
       f
     );
   }
@@ -1269,6 +1283,43 @@ proto.randomizer.proto.MiscPatchingData.prototype.clearShipName = function() {
  */
 proto.randomizer.proto.MiscPatchingData.prototype.hasShipName = function() {
   return jspb.Message.getField(this, 24) != null;
+};
+
+
+/**
+ * repeated uint32 switch_allocation = 25;
+ * @return {!Array<number>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getSwitchAllocationList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 25));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setSwitchAllocationList = function(value) {
+  return jspb.Message.setField(this, 25, value || []);
+};
+
+
+/**
+ * @param {number} value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addSwitchAllocation = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 25, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearSwitchAllocationList = function() {
+  return this.setSwitchAllocationList([]);
 };
 
 

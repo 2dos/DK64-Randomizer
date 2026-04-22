@@ -6,6 +6,10 @@ import logging
 import os
 import sys
 from typing import Any, Dict, Iterable, List, Tuple, TYPE_CHECKING
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Settings import CrownEnemyRando, HardBossesSelected, HardModeSelected, HelmDoorItem, MiscChangesSelected, SlamRequirement
+from randomizer.Enums.Types import BarrierItems
 
 proto_gen_path = os.path.join(os.path.dirname(__file__), "proto_gen")
 if proto_gen_path not in sys.path:
@@ -220,7 +224,6 @@ def _populate_item_settings(settings: "Settings", proto: item_settings_pb2.ItemS
 
 def _apply_item_settings(proto: item_settings_pb2.ItemSettings, settings: "Settings") -> None:
     """Apply ItemSettings proto to Settings object."""
-    from randomizer.Enums.Items import Items
 
     is_decoupled = bool(proto.decouple_item_rando)
     settings.decouple_item_rando = is_decoupled
@@ -367,6 +370,12 @@ def _populate_requirement_settings(settings: "Settings", proto: requirement_sett
 
     proto.puzzle_rando = settings.puzzle_rando_difficulty
 
+    # Progressive switch strength (alter_switch_allocation + prog_slam_level_1..8).
+    proto.progressive_switch_strength.enabled = bool(settings.alter_switch_allocation)
+    proto.progressive_switch_strength.slam_levels.extend(
+        int(getattr(settings, f"prog_slam_level_{i}")) for i in range(1, 9)
+    )
+
 
 def _apply_requirement_settings(proto: requirement_settings_pb2.RequirementSettings, settings: "Settings") -> None:
     """Apply RequirementSettings proto to Settings object."""
@@ -411,6 +420,14 @@ def _apply_requirement_settings(proto: requirement_settings_pb2.RequirementSetti
     settings.activate_all_bananaports = proto.activate_bananaports
     settings.faster_checks_selected = list(proto.faster_checks)
     settings.puzzle_rando_difficulty = proto.puzzle_rando
+    settings.alter_switch_allocation = bool(proto.progressive_switch_strength.enabled)
+    slam_levels = list(proto.progressive_switch_strength.slam_levels)
+    for i in range(1, 9):
+        if i - 1 < len(slam_levels):
+            try:
+                setattr(settings, f"prog_slam_level_{i}", SlamRequirement(int(slam_levels[i - 1])))
+            except ValueError:
+                setattr(settings, f"prog_slam_level_{i}", int(slam_levels[i - 1]))
 
 
 # =============================================================================
@@ -479,7 +496,6 @@ _HARD_BOSSES_FIELDS: Tuple[str, ...] = (
 
 def _populate_overworld_settings(settings: "Settings", proto: overworld_settings_pb2.OverworldSettings) -> None:
     """Populate OverworldSettings proto from Settings object."""
-    from randomizer.Enums.Settings import HardBossesSelected, HardModeSelected
 
     # World navigation
     proto.entrance_randomizer = settings.level_randomization
@@ -569,7 +585,6 @@ def _populate_overworld_settings(settings: "Settings", proto: overworld_settings
 
 def _apply_overworld_settings(proto: overworld_settings_pb2.OverworldSettings, settings: "Settings") -> None:
     """Apply OverworldSettings proto to Settings object."""
-    from randomizer.Enums.Settings import HardBossesSelected, HardModeSelected
 
     settings.level_randomization = proto.entrance_randomizer
     settings.shuffle_helm_location = bool(proto.shuffle_helm_location)
@@ -685,8 +700,6 @@ def _barrier_to_helm_door_item(value: Any, is_coin_door: bool) -> int:
     if value is None:
         return 0  # vanilla
     ival = int(value)
-    from randomizer.Enums.Settings import HelmDoorItem
-    from randomizer.Enums.Types import BarrierItems
 
     if isinstance(value, HelmDoorItem):
         return ival
@@ -760,7 +773,6 @@ def _populate_endgame_settings(settings: "Settings", proto: endgame_settings_pb2
 
 def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, settings: "Settings") -> None:
     """Apply EndgameSettings proto to Settings object."""
-    from randomizer.Enums.Settings import HelmDoorItem
     settings.logic_type = proto.logic.type
     settings.glitches_selected = list(proto.logic.glitches)
     settings.tricks_selected = list(proto.logic.tricks)
@@ -776,7 +788,6 @@ def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, setting
     settings.k_rool_vanilla_requirement = bool(proto.required_keys.key_8_required)
     settings.keys_random = bool(proto.required_keys.random_quantity)
 
-    from randomizer.Enums.Kongs import Kongs
     settings.kong_rando = bool(proto.starting_kongs.random_quantity)
     settings.starting_kongs_count = proto.starting_kongs.specified_quantity
     settings.starting_kong = Kongs(_PROTO_TO_KONG.get(int(proto.starting_kongs.specified_starting_kong), 5))
@@ -882,7 +893,6 @@ _SPOILER_POINTS_FIELDS: Tuple[Tuple[str, str], ...] = (
 
 def _populate_qol_settings(settings: "Settings", proto: qol_settings_pb2.QualityOfLifeSettings) -> None:
     """Populate QualityOfLifeSettings proto from Settings object."""
-    from randomizer.Enums.Settings import CrownEnemyRando, MicrohintsEnabled, MiscChangesSelected
 
     for proto_field, settings_attr in _QOL_BOOL_FIELDS:
         setattr(proto, proto_field, bool(getattr(settings, settings_attr)))
@@ -916,7 +926,6 @@ def _populate_qol_settings(settings: "Settings", proto: qol_settings_pb2.Quality
 
 def _apply_qol_settings(proto: qol_settings_pb2.QualityOfLifeSettings, settings: "Settings") -> None:
     """Apply QualityOfLifeSettings proto to Settings object."""
-    from randomizer.Enums.Settings import MiscChangesSelected
 
     for proto_field, settings_attr in _QOL_BOOL_FIELDS:
         setattr(settings, settings_attr, bool(getattr(proto, proto_field)))
@@ -1636,3 +1645,8 @@ def _populate_misc_patching_data(spoiler: "Spoiler", proto: fill_result_pb2.Misc
     ship_name = getattr(spoiler, "ship_name", None)
     if ship_name:
         proto.ship_name = str(ship_name)
+
+    # Switch allocation
+    switch_allocation = getattr(settings, "switch_allocation", None) if settings is not None else None
+    if switch_allocation:
+        proto.switch_allocation.extend([int(_enum_value(x)) for x in switch_allocation])

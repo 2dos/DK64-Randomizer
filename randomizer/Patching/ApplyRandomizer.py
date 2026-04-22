@@ -1,5 +1,6 @@
 """Apply Patch data to the ROM."""
 
+import ast
 import json
 import os
 from datetime import datetime as Datetime
@@ -37,6 +38,16 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.ScriptTypes import ScriptTypes
+from randomizer.Enums.DoorType import DoorType
+from randomizer.Enums.Enemies import Enemies
+from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Minigames import Minigames
+from randomizer.Enums.Regions import Regions
+from randomizer.Lists.EnemyTypes import enemy_location_list
+from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations
+from randomizer.Lists.Minigame import BarrelMetaData, MinigameLocationData
+from randomizer.Logic import RegionsOriginal
+from randomizer.LogicClasses import TransitionFront
 from randomizer.Lists.HardMode import HardSelector
 from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector
 from randomizer.Patching.BananaPlacer import randomize_cbs
@@ -93,6 +104,8 @@ from randomizer.Patching.ASMPatcher import patchAssembly, precalcBoot
 from randomizer.Patching.ScriptPatcher import patchScripts
 from randomizer.Patching.MirrorMode import ApplyMirrorMode
 from randomizer.CompileHints import getHelmOrderHint
+from collections import defaultdict
+from copy import deepcopy
 
 # from randomizer.Spoiler import Spoiler
 
@@ -153,9 +166,6 @@ def _create_patching_adapter(fill_result, settings):
     Returns:
         Adapter object with spoiler-like interface
     """
-    from randomizer.Enums.Regions import Regions
-    from randomizer.LogicClasses import TransitionFront
-    
     class PatchingAdapter:
         """Adapter that provides spoiler-like interface for FillResult proto."""
         
@@ -169,6 +179,15 @@ def _create_patching_adapter(fill_result, settings):
             self.arcade_item_reward = None  # Set in patching_response
             self.jetpac_item_reward = None  # Set in patching_response
 
+            if list(fill_result.misc_data.switch_allocation):
+                restored = []
+                for raw in fill_result.misc_data.switch_allocation:
+                    try:
+                        restored.append(SlamRequirement(int(raw)))
+                    except ValueError:
+                        restored.append(int(raw))
+                settings.switch_allocation = restored
+
             # Ship location rando result
             self.ship_location_index = None
             self.ship_name = ""
@@ -180,13 +199,12 @@ def _create_patching_adapter(fill_result, settings):
             # ---- Enemy rando data ----
             # Reconstruct spoiler.enemy_rando_data (map_id -> list of dicts)
             # from the proto. Consumed by randomize_enemies at patch time.
-            from randomizer.Enums.Enemies import Enemies as _EnemiesEnum
             enemy_rando_data = {}
             for map_id, map_entries in fill_result.placement_data.enemy_rando_data.items():
                 entries_list = []
                 for entry in map_entries.entries:
                     try:
-                        enemy_enum = _EnemiesEnum(int(entry.enemy))
+                        enemy_enum = Enemies(int(entry.enemy))
                     except Exception:
                         enemy_enum = int(entry.enemy)
                     entries_list.append({
@@ -201,19 +219,16 @@ def _create_patching_adapter(fill_result, settings):
             # valid_photo_items, pkmn_snap_data and the static enemy_location_list
             # are all read by the patching code; restore them from the proto /
             # static source so the adapter behaves like a real Spoiler.
-            from randomizer.Enums.Items import Items as _ItemsEnum
             valid_photo_items = []
             for pid in fill_result.misc_data.valid_photo_items:
                 try:
-                    valid_photo_items.append(_ItemsEnum(int(pid)))
+                    valid_photo_items.append(Items(int(pid)))
                 except Exception:
                     valid_photo_items.append(int(pid))
             self.valid_photo_items = valid_photo_items
             self.pkmn_snap_data = list(fill_result.placement_data.pkmn_snap_data)
             try:
-                from copy import deepcopy as _deepcopy
-                from randomizer.Lists.EnemyTypes import enemy_location_list as _enemy_location_list
-                self.enemy_location_list = _deepcopy(_enemy_location_list)
+                self.enemy_location_list = deepcopy(enemy_location_list)
             except Exception as _e:
                 self.enemy_location_list = {}
 
@@ -222,9 +237,6 @@ def _create_patching_adapter(fill_result, settings):
             # fall back to reconstructing from PreGivenLocations in
             # location_assignments for old proto files that predate the field.
             try:
-                from randomizer.Lists.Location import PreGivenLocations
-                from randomizer.Enums.Locations import Locations as _LocEnum
-                from randomizer.Enums.Items import Items as _ItemEnum
                 fast_start = getattr(settings, 'fast_start_beginning_of_game', True)
                 self.first_move_item = None
 
@@ -233,27 +245,27 @@ def _create_patching_adapter(fill_result, settings):
                 if explicit_pregiven is not None:
                     for item_id in explicit_pregiven:
                         try:
-                            self.pregiven_items.append(_ItemEnum(int(item_id)))
+                            self.pregiven_items.append(Items(int(item_id)))
                         except Exception:
                             continue
                     if misc.HasField("first_move_item"):
                         try:
-                            self.first_move_item = _ItemEnum(int(misc.first_move_item))
+                            self.first_move_item = Items(int(misc.first_move_item))
                         except Exception:
                             self.first_move_item = None
                 else:
                     for loc_id, item_id in fill_result.location_assignments.assignments.items():
                         try:
-                            loc_enum = _LocEnum(int(loc_id))
+                            loc_enum = Locations(int(loc_id))
                         except Exception:
                             continue
                         if loc_enum not in PreGivenLocations:
                             continue
                         try:
-                            item_enum = _ItemEnum(int(item_id))
+                            item_enum = Items(int(item_id))
                         except Exception:
                             continue
-                        if fast_start or loc_enum != _LocEnum.IslesFirstMove:
+                        if fast_start or loc_enum != Locations.IslesFirstMove:
                             self.pregiven_items.append(item_enum)
                         else:
                             self.first_move_item = item_enum
@@ -383,9 +395,6 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def LocationList(self):
             """Simulate LocationList for item rando."""
-            from randomizer.Lists.Location import LocationListOriginal
-            from randomizer.Enums.Locations import Locations
-            
             # Create a dict-like object that provides location->item mapping
             class LocationDict:
                 def __init__(self, assignments):
@@ -520,9 +529,6 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def shuffled_barrel_data(self):
             """Return barrel shuffle data - reconstruct MinigameLocationData objects."""
-            from randomizer.Lists.Minigame import BarrelMetaData, MinigameLocationData
-            from randomizer.Enums.Minigames import Minigames
-            
             result = {}
             for location_id, minigame_type in self._shuffle_data.shuffled_barrels.items():
                 # Get the original barrel metadata for this location
@@ -543,9 +549,6 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def shuffled_door_data(self):
             """Return door shuffle data."""
-            from randomizer.Enums.Levels import Levels
-            from randomizer.Enums.DoorType import DoorType
-            from collections import defaultdict
             # Convert proto door shuffles back to the legacy tuple shape expected
             # by DoorPlacer.place_door_locations:
             #   (door_index, DoorType.wrinkly, kong_assignee)
@@ -576,8 +579,6 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def shuffled_exit_instructions(self):
             """Return exit instructions."""
-            import ast
-
             instructions = []
             for entry in self._shuffle_data.exit_instructions:
                 if isinstance(entry, str):
@@ -652,10 +653,6 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def item_assignment(self):
             """Return item assignments."""
-            from randomizer.Enums.Types import Types
-            from randomizer.Enums.Items import Items
-            from randomizer.Enums.Kongs import Kongs as KongEnum
-            
             result = []
             for assign_proto in self._misc_data.item_assignments:
                 class ItemAssignment:
@@ -667,7 +664,7 @@ def _create_patching_adapter(fill_result, settings):
                 assign_obj.old_type = Types(assign_proto.old_type) if assign_proto.old_type >= 0 else None
                 assign_obj.old_flag = assign_proto.old_flag  # -1 means no flag
                 assign_obj.old_item = Types(assign_proto.old_item) if assign_proto.old_item >= 0 else None
-                assign_obj.old_kong = KongEnum(assign_proto.old_kong) if assign_proto.old_kong >= 0 else KongEnum.any
+                assign_obj.old_kong = Kongs(assign_proto.old_kong) if assign_proto.old_kong >= 0 else Kongs.any
 
                 # placement_data is the canonical attribute on LocationSelection;
                 # maps_to_actor_ids is kept as an alias for any legacy readers.
@@ -679,7 +676,7 @@ def _create_patching_adapter(fill_result, settings):
                 assign_obj.new_flag = assign_proto.new_flag
                 assign_obj.new_type = Types(assign_proto.new_type) if assign_proto.new_type >= 0 else None
                 assign_obj.new_item = Items(assign_proto.new_item) if assign_proto.new_item >= 0 else None
-                assign_obj.new_kong = KongEnum(assign_proto.new_kong) if assign_proto.new_kong >= 0 else KongEnum.any
+                assign_obj.new_kong = Kongs(assign_proto.new_kong) if assign_proto.new_kong >= 0 else Kongs.any
                 assign_obj.shared = assign_proto.shared
 
                 # placement_index is a repeated sint32 — preserve the whole list
@@ -760,25 +757,21 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def RegionList(self):
             """Return region list - this is logic data not part of Fill output."""
-            from randomizer.Logic import RegionsOriginal
             return RegionsOriginal
         
         @cached_property
         def majorItems(self):
             """Return major items list."""
-            from randomizer.Enums.Items import Items
             return [Items(item_id) for item_id in self._path_data.major_items]
         
         @cached_property
         def woth_locations(self):
             """Return Way of the Hoard locations."""
-            from randomizer.Enums.Locations import Locations
             return [Locations(loc_id) for loc_id in self._path_data.woth_locations]
         
         @cached_property
         def woth_paths(self):
             """Return Way of the Hoard paths."""
-            from randomizer.Enums.Locations import Locations
             result = {}
             for loc_id, path_proto in self._path_data.woth_paths.items():
                 result[Locations(loc_id)] = [Locations(l) for l in path_proto.locations]
@@ -792,14 +785,11 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def pathless_moves(self):
             """Return pathless moves."""
-            from randomizer.Enums.Items import Items
             return [Items(item_id) for item_id in self._path_data.pathless_moves]
         
         @cached_property
         def playthrough(self):
             """Return playthrough spheres."""
-            from randomizer.Enums.Locations import Locations
-            from randomizer.Enums.Items import Items
             result = {}
             for i, sphere_proto in enumerate(self._path_data.playthrough):
                 sphere_dict = {}
@@ -815,7 +805,6 @@ def _create_patching_adapter(fill_result, settings):
             for region_name, counts_proto in self._path_data.region_hintable_count.items():
                 region_dict = {}
                 for item_type, item_data in counts_proto.items.items():
-                    from randomizer.Enums.Locations import Locations
                     region_dict[int(item_type)] = {
                         'count': item_data.count,
                         'locations': [Locations(loc_id) for loc_id in item_data.location_ids]
@@ -826,7 +815,6 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def crown_locations(self):
             """Return crown locations as {Levels: {crown_index: subindex}}."""
-            from randomizer.Enums.Levels import Levels
             result = {}
             for crown_proto in self._shuffle_data.crown_placements:
                 level = Levels(crown_proto.level)
@@ -838,7 +826,6 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def dirt_patch_placement(self):
             """Return dirt patch placements as list of dicts."""
-            from randomizer.Enums.Levels import Levels
             result = []
             for patch_proto in self._shuffle_data.patch_placements:
                 result.append({
@@ -851,7 +838,6 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def meloncrate_placement(self):
             """Return melon crate placements as list of dicts."""
-            from randomizer.Enums.Levels import Levels
             result = []
             for crate_proto in self._shuffle_data.crate_placements:
                 result.append({
@@ -894,8 +880,6 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def shuffled_shop_locations(self):
             """Return shuffled shop locations as {Levels: {old_shop: new_shop}}."""
-            from randomizer.Enums.Levels import Levels
-            from randomizer.Enums.Regions import Regions
             result = {}
             for shuffle_proto in self._shuffle_data.shuffled_shop_locations:
                 level = Levels(shuffle_proto.level)
@@ -913,7 +897,6 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def fairy_locations(self):
             """Return fairy locations as {Levels: [fairy_indexes]}."""
-            from randomizer.Enums.Levels import Levels
             result = {}
             for fairy_proto in self._shuffle_data.fairy_locations:
                 result[Levels(fairy_proto.level)] = list(fairy_proto.fairy_indexes)
@@ -922,7 +905,6 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def fairy_data_table(self):
             """Return fairy data table as list of 20 dicts (or None)."""
-            from randomizer.Enums.Levels import Levels
             result = []
             for entry_proto in self._shuffle_data.fairy_data_table:
                 if entry_proto.present:
@@ -953,8 +935,6 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def level_spoiler(self):
             """Return level spoiler as {Levels: obj with .level_items}."""
-            from randomizer.Enums.Levels import Levels
-            from randomizer.Enums.Items import Items
 
             class _LevelSpoiler:
                 def __init__(self, level_items):

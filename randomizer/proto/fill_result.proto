@@ -541,6 +541,7 @@ message MiscPatchingData {
   repeated uint32 krool_keys_required = 22;
   optional uint32 ship_location_index = 23;
   optional string ship_name = 24;
+  repeated uint32 switch_allocation = 25;
 }
 
 message LevelPortalDestination {
