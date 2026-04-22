@@ -802,6 +802,7 @@ def apply_minigame_settings(settings_dict: dict, options, multiworld) -> None:
 def handle_fake_generation_settings(settings: Settings, multiworld) -> None:
     """Handle settings for fake generation (UT mode)."""
     if hasattr(multiworld, "generation_is_fake"):
+        settings.is_ut_generation = True
         if hasattr(multiworld, "re_gen_passthrough"):
             if "Donkey Kong 64" in multiworld.re_gen_passthrough:
                 passthrough = multiworld.re_gen_passthrough["Donkey Kong 64"]

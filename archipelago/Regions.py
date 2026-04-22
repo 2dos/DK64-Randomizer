@@ -221,13 +221,13 @@ def create_region(
                 continue
             # Skip shared shops that are not in the available pool
             if location_obj.type == Types.Shop and location_obj.kong == Kongs.any:
-                if location_logic.id not in logic_holder.available_shared_shops:
+                if (not hasattr(multiworld, "generation_is_fake")) and location_logic.id not in logic_holder.available_shared_shops:
                     continue
 
             # Skip individual Kong shops if their vendor/level has a shared shop
             if location_obj.type == Types.Shop and location_obj.kong != Kongs.any:
                 vendor_level_key = (location_obj.level, location_obj.vendor)
-                if vendor_level_key in logic_holder.shared_shop_vendors:
+                if (not hasattr(multiworld, "generation_is_fake")) and vendor_level_key in logic_holder.shared_shop_vendors:
                     continue
             # Skip enemy photos if the win condition is not Krem Kapture.
             if location_obj.type == Types.EnemyPhoto and logic_holder.settings.win_condition_item != WinConditionComplex.krem_kapture:
