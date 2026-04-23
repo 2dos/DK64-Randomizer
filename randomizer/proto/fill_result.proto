@@ -394,7 +394,7 @@ message HintData {
   repeated uint32 tied_hint_regions = 3;  // HintRegionId
   
   // Microhint data
-  repeated Microhint microhints = 4;
+  map<string, string> microhints = 4;
   
   // Spoiler hint data by level
   map<uint32, LevelSpoilerHints> level_spoiler_hints = 5;

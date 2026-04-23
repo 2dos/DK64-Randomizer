@@ -1348,6 +1348,11 @@ def _populate_hint_data(spoiler: "Spoiler", proto: fill_result_pb2.HintData) -> 
     for region in spoiler.tied_hint_regions:
         proto.tied_hint_regions.append(int(region))
 
+    microhints = getattr(spoiler, "microhints", None)
+    if microhints:
+        for item_name, hint_text in microhints.items():
+            proto.microhints[str(item_name)] = str(hint_text)
+
     if hasattr(spoiler, "level_spoiler"):
         for level_id, level_hints in spoiler.level_spoiler.items():
             level_proto = proto.level_spoiler_hints[int(level_id)]

@@ -174,7 +174,7 @@ def _create_patching_adapter(fill_result, settings):
             self.fill_result = fill_result
             self.json = "{}"  # Will be populated in patching_response
             self.text_changes = {}
-            self.microhints = {}  # Will be populated by compileMicrohints during patching
+            self.microhints = dict(fill_result.hint_data.microhints)
             self.pregiven_items = []  # Items given at start (populated during Fill)
             self.arcade_item_reward = None  # Set in patching_response
             self.jetpac_item_reward = None  # Set in patching_response
