@@ -162,9 +162,6 @@ class DK64Client:
     item_names = None
     players = None
     _purchase_cache = {}
-    custom_check_id_to_name = {}
-    custom_check_id_to_flag = {}
-    custom_flag_to_check_id = {}  # Reverse mapping: flag_id -> location_id
     ENABLE_DEATHLINK = False
     ENABLE_RINGLINK = False
     ENABLE_TAGLINK = False
@@ -839,19 +836,8 @@ class DK64Client:
         checks_to_read = self.remaining_checks.copy()
 
         for id in checks_to_read:
-            # Get location name (prefer custom name if available)
-            name = self.custom_check_id_to_name.get(id, check_id_to_name.get(id))
-
-            # Determine which flag to check for this location
-            check = None
-
-            # For custom locations (crowns, dirt, crates), ONLY use the custom flag
-            # Do not fall back to location_name_to_flag as that would use vanilla flags
-            if id in self.custom_check_id_to_flag:
-                check = self.custom_check_id_to_flag.get(id)
-            else:
-                # For non-custom locations, use the vanilla flag mapping
-                check = location_name_to_flag.get(name)
+            name = check_id_to_name.get(id)
+            check = location_name_to_flag.get(name)
 
             if check:
                 # Check if this flag is set in memory
@@ -1228,8 +1214,7 @@ class DK64Context(CommonContext):
             # Debug logging for shared shops
             shared_shop_ids = set()
             for location_id in actual_checks:
-                # Use custom name if available, otherwise fall back to check_id_to_name
-                location_name = self.custom_check_id_to_name.get(location_id, check_id_to_name.get(location_id, ""))
+                location_name = check_id_to_name.get(location_id, "")
                 if "Shared" in location_name:
                     shared_shop_ids.add(location_id)
         else:
@@ -1239,7 +1224,6 @@ class DK64Context(CommonContext):
         self.client.pending_checks = []
         self.found_checks = []
         self.client.flag_lookup = None
-        self.custom_flag_to_check_id = {}
         self.handled_scouts = []
         self.create_hints_params = []
 
@@ -1248,8 +1232,6 @@ class DK64Context(CommonContext):
         self.client = DK64Client()
         self.client.game = self.game.upper()
         self.slot_data = {}
-        self.custom_check_id_to_name = {}
-        self.custom_check_id_to_flag = {}
         self.reset_checks()
 
         super().__init__(server_address, password)
@@ -1292,46 +1274,6 @@ class DK64Context(CommonContext):
             self.found_checks = []
 
     had_invalid_slot_data: typing.Optional[bool] = None
-
-    def update_custom_location_names(self):
-        """Update the check_id_to_name dictionary with custom location names from slot_data."""
-        custom_location_data = self.slot_data.get("CustomLocationNames", {})
-        if custom_location_data:
-            # Convert string keys back to integers and extract both name and flag
-            self.custom_check_id_to_name = {}
-            self.custom_check_id_to_flag = {}
-            for id_str, data in custom_location_data.items():
-                loc_id = int(id_str)
-                if isinstance(data, dict):
-                    self.custom_check_id_to_name[loc_id] = data.get("name")
-                    if data.get("flag") is not None:
-                        flag_id = data.get("flag")
-                        self.custom_check_id_to_flag[loc_id] = flag_id
-                else:
-                    # Backwards compatibility: if data is just a string (old format)
-                    self.custom_check_id_to_name[loc_id] = data
-
-            # Also update the client's dictionaries
-            self.client.custom_check_id_to_name = self.custom_check_id_to_name
-            self.client.custom_check_id_to_flag = self.custom_check_id_to_flag
-
-            # Update the location_names lookup used by Archipelago's notification system
-            # We need to inject custom names so they take priority over base names
-            if hasattr(self, "location_names") and self.location_names:
-                try:
-                    # Get the game's location store ChainMap
-                    if self.game in self.location_names._game_store:
-                        game_store = self.location_names._game_store[self.game]
-
-                        # Create our custom names dict
-                        custom_names_dict = {loc_id: name for loc_id, name in self.custom_check_id_to_name.items() if name}
-
-                        # Use new_child() to prepend our custom names to the existing ChainMap
-                        # This modifies the ChainMap in place and ensures any existing references see the update
-                        updated_chain = game_store.new_child(custom_names_dict)
-                        self.location_names._game_store[self.game] = updated_chain
-                except Exception as e:
-                    logger.error(f"Failed to update location_names: {e}", exc_info=True)
 
     def event_invalid_slot(self):
         """Handle an invalid slot event."""
@@ -1383,7 +1325,6 @@ class DK64Context(CommonContext):
         if cmd == "Connected":
             self.game = self.slot_info[self.slot].game
             self.slot_data = args.get("slot_data", {})
-            self.update_custom_location_names()
             self.setup_hint_locations()
             if self.slot_data.get("Version"):
                 ap_version = get_ap_version()
@@ -1863,8 +1804,7 @@ class DK64Context(CommonContext):
             """Handle an item get."""
             built_checks_list = []
             for check in dk64_checks:
-                # Use custom name if available, otherwise fall back to check_id_to_name
-                check_name = self.custom_check_id_to_name.get(check, check_id_to_name.get(check))
+                check_name = check_id_to_name.get(check)
                 if check_name:
                     built_checks_list.append(check)
                     continue

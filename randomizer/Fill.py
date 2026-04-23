@@ -4005,7 +4005,7 @@ def BlockCompletionOfLevelSet(settings: Settings, lockedLevels):
 def HandleArchipelagoBLockers(settings: Settings) -> None:
     """Handle chaos locker logic for Archipelago."""
     # Only process if we're using chaos lockers
-    if settings.blocker_selection_behavior == BLockerSetting.chaos:
+    if (not hasattr(settings, "is_ut_generation")) and settings.blocker_selection_behavior == BLockerSetting.chaos:
         # Handle helm blocker maximization for chaos lockers
         if settings.maximize_helm_blocker:
             # When maximizing, use the chaos ratio maximum

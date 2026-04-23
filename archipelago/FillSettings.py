@@ -336,14 +336,11 @@ def get_default_settings() -> dict[str, Any]:
 def handle_fake_generation_settings(settings: Settings, multiworld: MultiWorld) -> None:
     """Handle settings for fake generation (UT mode)."""
     if hasattr(multiworld, "generation_is_fake"):
+        settings.is_ut_generation = True
         if hasattr(multiworld, "re_gen_passthrough"):
             if "Donkey Kong 64" in multiworld.re_gen_passthrough:
                 passthrough = multiworld.re_gen_passthrough["Donkey Kong 64"]
                 settings.level_order = passthrough["LevelOrder"]
-
-                # Store custom location names for later restoration (after spoiler is created)
-                if passthrough.get("CustomLocationNames"):
-                    settings.ut_custom_location_names = passthrough["CustomLocationNames"]
 
                 # Switch logic lifted out of level shuffle due to static levels for UT
                 if settings.alter_switch_allocation:
@@ -471,9 +468,6 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
         case _:
             settings_dict["galleon_water"] = GalleonWaterSetting.lowered
     settings_dict["no_consumable_upgrades"] = options.remove_bait_potions.value
-    settings_dict["crown_placement_rando"] = options.crown_placement_rando.value
-    settings_dict["random_crates"] = options.random_crates.value
-    settings_dict["random_patches"] = options.random_patches.value
 
     # Apply switch allocation settings
     slam_map = {

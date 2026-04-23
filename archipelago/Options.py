@@ -739,34 +739,6 @@ class SwitchsanityOptions(OptionDict):
                     raise OptionError(f"Invalid value '{value}' for switch '{key}'. " f"Must be one of: {', '.join(sorted(self.KONG_VALUES))}")
 
 
-class CrownPlacementRando(Toggle):
-    """Randomizes the locations of Battle Arena crown pads to alternate positions throughout the levels."""
-
-    display_name = "Crown Placement Randomization"
-
-
-class RandomCrates(Toggle):
-    """Randomizes the locations of Melon Crates to alternate positions throughout the levels."""
-
-    display_name = "Random Melon Crates"
-
-
-class RandomPatches(Toggle):
-    """Randomizes the locations of Dirt Patches (Rainbow Coins) to alternate positions throughout the levels."""
-
-    display_name = "Random Dirt Patches"
-
-
-# TODO: Figure this out
-# class CBRando(Toggle):
-#     """Randomizes the locations of Colored Bananas throughout the levels.
-
-#     This does NOT make individual bananas checks - they remain collectibles that count toward medals.
-#     """
-
-#     display_name = "Colored Banana Randomization"
-
-
 class LogicType(Choice):
     """Determines what type of logic is needed to beat the seed.
 
@@ -963,7 +935,6 @@ _ITEM_POOL_VALID_KEYS = frozenset(
         "bean",
         "pearls",
         "crates",
-        "battle_arenas",
         "hints",
         "shopkeepers",
         "half_medals",
@@ -992,15 +963,14 @@ class ItemPool(OptionList):
     - "bean": The Bean
     - "pearls": Mermaid Pearls
     - "crates": Melon Crates
-    - "battle_arenas": Banana rewards from Battle Arenas (Gauntlets)
     - "hints": Wrinkly Hint items
     - "shopkeepers": Cranky/Funky/Candy/Snide themselves (shops locked until collected)
     - "half_medals": Half Medal items granted at partial CB requirements
     - "snide_turnins": Blueprint turn-in rewards
     - "time_of_day": Fungi Forest Time of Day
-    - "boulders": Throwable boulder/barrel checks
-    - "balloons": Balloon checks
-    - "breakables": Breakable object checks (pots, etc.)
+    - "boulders": Throwable boulder/keg checks
+    - "balloons": Colored Balloon checks
+    - "breakables": Breakable object checks (boxes, etc.)
     - "dropsanity": Enemy drop checks
     """
 
@@ -1016,7 +986,6 @@ class ItemPool(OptionList):
         "bean",
         "pearls",
         "crates",
-        "battle_arenas",
     ]
 
     def verify(self, world, player_name: str, plando_options) -> None:
@@ -1989,10 +1958,6 @@ class DK64Options(PerGameCommonOptions):
     level_troff: LevelTroff
     open_lobbies: OpenLobbies
     switchsanity: SwitchsanityOptions
-    crown_placement_rando: CrownPlacementRando
-    random_crates: RandomCrates
-    random_patches: RandomPatches
-    # cb_rando_enabled: CBRando
     climbing_shuffle: ClimbingShuffle
     cannon_shuffle: CannonShuffle
     starting_kong_count: StartingKongCount
@@ -2145,15 +2110,6 @@ dk64_option_groups: List[OptionGroup] = [
             GalleonWaterLevel,
             RandomStartingLocation,
             DKPortalLocationRando,
-        ],
-    ),
-    OptionGroup(
-        "Custom Locations",
-        [
-            CrownPlacementRando,
-            RandomCrates,
-            RandomPatches,
-            # CBRando,
         ],
     ),
     OptionGroup(
