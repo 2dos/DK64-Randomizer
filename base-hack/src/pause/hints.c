@@ -152,7 +152,7 @@ ROM_RODATA_NUM static const itemloc_data itemloc_textnames[] = {
     }, // 6
     {
         .header="BASIC MOVES",
-        .lengths={1, 1, 1, 1, 1, -1}
+        .lengths={1, 1, 1, 1, 1, 1}
     }, // 5
     {
         .header="INSTRUMENT UPGRADES AND SLAMS",
