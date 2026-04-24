@@ -1336,14 +1336,14 @@ int updateLevelIGT(void) {
 	if (canSaveHelmHurry()) {
 		int sum = 0;
 		for (int i = 0; i < 9; i++) {
-			int value = ReadFile(DATA_IGT_JAPES + i, 0, 0, FileIndex);
+			int value = ReadFileSimple(DATA_IGT_JAPES + i);
 			sum += value; 
 		}
 		int diff = new_igt - sum;
 		int world = getWorld(previous_map_save, 1);
 		if (world < 9) {
-			int old = ReadFile(DATA_IGT_JAPES + world, 0, 0, FileIndex);
-			SaveToFile(DATA_IGT_JAPES + world, 0, 0, FileIndex, old + diff);
+			int old = ReadFileSimple(DATA_IGT_JAPES + world);
+			SaveFileSimple(DATA_IGT_JAPES + world, old + diff);
 		}
 	}
 	previous_map_save = CurrentMap;

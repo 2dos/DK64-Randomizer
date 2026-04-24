@@ -612,6 +612,7 @@ class Settings:
         # damage multiplier: DamageAmount
         self.damage_amount = DamageAmount.default
         self.wipe_file_on_death = False
+        self.lives = 5
 
         # logic_type: LogicType
         # nologic - No Logical considerations

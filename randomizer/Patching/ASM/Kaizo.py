@@ -236,6 +236,6 @@ def hardBosses(ROM_COPY: LocalROM, settings, offset_dict: dict):
 def hitless(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """Items related to hitless."""
     if settings.wipe_file_on_death:
-        writeFunction(ROM_COPY, 0x8071292C, Overlay.Static, "hitlessDeath", offset_dict)
-        writeFunction(ROM_COPY, 0x807128FC, Overlay.Static, "hitlessDeath", offset_dict)
-        writeFunction(ROM_COPY, 0x807128C8, Overlay.Static, "hitlessDeath", offset_dict)
+        writeFunction(ROM_COPY, 0x8071292C, Overlay.Static, "hitlessDeathWrapper0", offset_dict)
+        writeFunction(ROM_COPY, 0x807128FC, Overlay.Static, "hitlessDeathWrapper1", offset_dict)
+        writeFunction(ROM_COPY, 0x807128C8, Overlay.Static, "hitlessDeathWrapper1", offset_dict)

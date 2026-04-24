@@ -348,7 +348,7 @@ def writeBuyText(item: Items, address: int, ROM_COPY: LocalROM):
     ROM_COPY.write(data[1] + BuyText.terminator)
 
 
-COUNT_STRUCT_SIZE = 0x1E
+COUNT_STRUCT_SIZE = 0x20
 KONG_STRUCT_SIZE = 0x3
 EXTRA_STRUCT_OFFSET = COUNT_STRUCT_SIZE + (5 * KONG_STRUCT_SIZE)
 TRACKER_ITEM_PAIRING = {
@@ -573,7 +573,7 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
     starting_move_packets = []
     for x in range(TrackerItems.TERMINATOR):
         value = 0
-        give_move_packets = []
+        give_move_packets = [{"offset": 0x1E, "mode": "set", "value": spoiler.settings.lives, "size": 2}]
         if x in TRACKER_ITEM_PAIRING:
             checked_items = [TRACKER_ITEM_PAIRING[x]["item"]]
             if x in (TrackerItems.CAMERA, TrackerItems.SHOCKWAVE):

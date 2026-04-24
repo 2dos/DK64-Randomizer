@@ -1384,6 +1384,14 @@ void death(void) {
 	GameStats[STAT_DEATHS]++;
 }
 
+int ReadFileSimple(int data) {
+    return ReadFile(data, 0, 0, FileIndex);
+}
+
+void SaveFileSimple(int data, int value) {
+    SaveToFile(data, 0, 0, FileIndex, value);
+}
+
 int applyDamageMask(int player_index, int damage) {
 	int applied_multiplier = Rando.damage_multiplier;
 	int init_health = CollectableBase.Health;

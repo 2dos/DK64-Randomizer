@@ -527,13 +527,34 @@ void parseControllerInput(Controller * cont) {
     cont->stickX = -cont->stickX;
 }
 
-void hitlessDeath(void) {
-    WipeFile(FileIndex, 1);
-    resetMap(); // Resets parent chain to prevent SirSmack causing memes
-    LoadGameOver();
-    SaveToFile(0xD, 0, 0, FileIndex, 0);
-    performEEPROMAction(1);
+int hitlessDeath(void) {
+    if (ItemInventory) {
+        ItemInventory->lives--;
+        if (ItemInventory->lives == 0) {
+            WipeFile(FileIndex, 1);
+            SaveFileSimple(0xD, 0);
+            performEEPROMAction(1);
+            resetMap(); // Resets parent chain to prevent SirSmack causing memes
+            setNextTransitionType(0);
+            initiateTransitionGamemode(MAP_MAINMENU, 0, GAMEMODE_MAINMENU);
+            return 1;
+        }
+    }
+    return 0;
 }
+
+void hitlessDeathWrapper0(int player_index) {
+    if (!hitlessDeath()) {
+        voidWarp(player_index);
+    }
+}
+
+void hitlessDeathWrapper1(int map, int exit) {
+    if (!hitlessDeath()) {
+        initiateTransition(map, exit);
+    }
+}
+
 
 void setHardPathSpeed(int index, int speed) {
     unkObjFunction6(index, speed << 2);
