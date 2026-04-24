@@ -32,13 +32,13 @@ void initAP(void) {
 
 void initAPCounter(void) {
     if (isAPEnabled()) {
-        ap_info.counter = ReadFile(DATA_APCOUNTER, 0, 0, FileIndex);
+        ap_info.counter = ReadFileSimple(DATA_APCOUNTER);
     }
 }
 
 void saveAPCounter(void) {
     if (isAPEnabled()) {
-        SaveToFile(DATA_APCOUNTER, 0, 0, FileIndex, ap_info.counter);
+        SaveFileSimple(DATA_APCOUNTER, ap_info.counter);
     }
 }
 

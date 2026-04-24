@@ -75,6 +75,7 @@ extern void clearGun(void* player);
 extern void playAnimation(void* player, int anim_index);
 extern void clearTagSlide(void* player);
 extern void initiateTransitionFade(maps map, int cutscene, int gamemode);
+extern void initiateTransitionGamemode(maps map, int cutscene, int gamemode);
 extern void __osInvalICache(void* write_location, int size);
 extern void __osInvalDCache(void* write_location, int size);
 extern void __osWritebackDCache(void* write_location, int size);
@@ -249,7 +250,7 @@ extern void* loadCounterFontTexture(int texture_base, void* write_location, int 
 extern void delayedObjectModel2Change(maps map, int model2_id, int state);
 extern int isObjectLoadedInMap(maps map, int model2_id, int state);
 extern int cycleRNG(void);
-extern void voidWarp(void);
+extern void voidWarp(int player);
 extern void setToeTexture(void* actor, int data);
 extern void applyFootDamage(void* actor, int unk0, int unk1, int unk2);
 extern void modifyCharSpawnerAttributes(int unk0, int unk1, int unk2);

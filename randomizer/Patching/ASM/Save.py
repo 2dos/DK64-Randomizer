@@ -53,6 +53,7 @@ FileInfoSizes = [
     22,  # IGT Tiny
     22,  # IGT Chunky
     22,  # Hurry IGT
+    16,  # Lives
     16,  # Tags
     12,  # Photos
     16,  # Kills

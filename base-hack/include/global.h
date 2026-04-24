@@ -22,7 +22,10 @@ extern overlays getOverlayFromMap(maps map);
 extern int applyDamageMask(int player_index, int damage);
 extern void* replaceWaterTexture(int table, int file, int unk0, int unk1);
 extern void* replaceWaterTexture_spooky(int table, int file, int unk0, int unk1);
-extern int isBounceObject(int object);\
+extern int isBounceObject(int object);
+
+extern int ReadFileSimple(int data);
+extern void SaveFileSimple(int data, int value);
 
 extern int isModelTwoTiedFlag_new(maps map, setup_item * item);
 extern float getModelTwoScale(int obj_id);

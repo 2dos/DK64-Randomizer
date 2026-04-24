@@ -474,6 +474,7 @@ ROM_DATA static unsigned char FileInfoData[] = {
     22, // IGT Tiny
     22, // IGT Chunky
     22, // Hurry IGT
+    16, // Lives
     16, // Tags
     12, // Photos
     16, // Kills
@@ -501,46 +502,48 @@ void initItemRandoPointer(void) {
 void readItemsFromFile(void) {
     wipeTurnedInArray();
     for (int i = 0; i < 5; i++) {
-        current_item_data.bp_count[i] = ReadFile(DATA_DKBP + i, 0, 0, FileIndex);
-        current_item_data.turned_in_bp_count[i] = ReadFile(DATA_DKBPTURNIN + i, 0, 0, FileIndex);
-        current_item_data.hint_bitfield[i] = ReadFile(DATA_DKHINTS + i, 0, 0, FileIndex);
+        current_item_data.bp_count[i] = ReadFileSimple(DATA_DKBP + i);
+        current_item_data.turned_in_bp_count[i] = ReadFileSimple(DATA_DKBPTURNIN + i);
+        current_item_data.hint_bitfield[i] = ReadFileSimple(DATA_DKHINTS + i);
     }
-    current_item_data.key_bitfield = ReadFile(DATA_KEYS, 0, 0, FileIndex);
-    current_item_data.kong_bitfield = ReadFile(DATA_KONGS, 0, 0, FileIndex);
-    current_item_data.crowns = ReadFile(DATA_CROWNS, 0, 0, FileIndex);
-    *(unsigned char*)(&current_item_data.special_items) = ReadFile(DATA_SPECIALITEMS, 0, 0, FileIndex);
-    current_item_data.medals = ReadFile(DATA_MEDALS, 0, 0, FileIndex);
-    current_item_data.pearls = ReadFile(DATA_PEARLS, 0, 0, FileIndex);
-    current_item_data.fairies = ReadFile(DATA_FAIRIES, 0, 0, FileIndex);
-    current_item_data.rainbow_coins = ReadFile(DATA_RAINBOWCOINS, 0, 0, FileIndex);
-    current_item_data.ice_traps = ReadFile(DATA_ICETRAPS, 0, 0, FileIndex);
-    current_item_data.junk_items = ReadFile(DATA_JUNKITEMS, 0, 0, FileIndex);
-    current_item_data.race_coins = ReadFile(DATA_RACECOINS, 0, 0, FileIndex);
-    *(unsigned char*)(&current_item_data.flag_moves) = ReadFile(DATA_SPECIALMOVES, 0, 0, FileIndex);
+    current_item_data.key_bitfield = ReadFileSimple(DATA_KEYS);
+    current_item_data.kong_bitfield = ReadFileSimple(DATA_KONGS);
+    current_item_data.crowns = ReadFileSimple(DATA_CROWNS);
+    *(unsigned char*)(&current_item_data.special_items) = ReadFileSimple(DATA_SPECIALITEMS);
+    current_item_data.medals = ReadFileSimple(DATA_MEDALS);
+    current_item_data.pearls = ReadFileSimple(DATA_PEARLS);
+    current_item_data.fairies = ReadFileSimple(DATA_FAIRIES);
+    current_item_data.rainbow_coins = ReadFileSimple(DATA_RAINBOWCOINS);
+    current_item_data.ice_traps = ReadFileSimple(DATA_ICETRAPS);
+    current_item_data.junk_items = ReadFileSimple(DATA_JUNKITEMS);
+    current_item_data.race_coins = ReadFileSimple(DATA_RACECOINS);
+    current_item_data.lives = ReadFileSimple(DATA_LIVES);
+    *(unsigned char*)(&current_item_data.flag_moves) = ReadFileSimple(DATA_SPECIALMOVES);
     for (int i = 0; i < STAT_TERMINATOR; i++) {
-        GameStats[i] = ReadFile(DATA_STAT_TAG + i, 0, 0, FileIndex);
+        GameStats[i] = ReadFileSimple(DATA_STAT_TAG + i);
     }
 }
 
 void saveItemsToFile(void) {
     for (int i = 0; i < 5; i++) {
-        SaveToFile(DATA_DKBP + i, 0, 0, FileIndex, current_item_data.bp_count[i]);
-        SaveToFile(DATA_DKBPTURNIN + i, 0, 0, FileIndex, current_item_data.turned_in_bp_count[i]);
-        SaveToFile(DATA_DKHINTS + i, 0, 0, FileIndex, current_item_data.hint_bitfield[i]);
+        SaveFileSimple(DATA_DKBP + i, current_item_data.bp_count[i]);
+        SaveFileSimple(DATA_DKBPTURNIN + i, current_item_data.turned_in_bp_count[i]);
+        SaveFileSimple(DATA_DKHINTS + i, current_item_data.hint_bitfield[i]);
     }
-    SaveToFile(DATA_KEYS, 0, 0, FileIndex, current_item_data.key_bitfield);
-    SaveToFile(DATA_KONGS, 0, 0, FileIndex, current_item_data.kong_bitfield);
-    SaveToFile(DATA_CROWNS, 0, 0, FileIndex, current_item_data.crowns);
-    SaveToFile(DATA_SPECIALITEMS, 0, 0, FileIndex, *(unsigned char*)(&current_item_data.special_items));
-    SaveToFile(DATA_MEDALS, 0, 0, FileIndex, current_item_data.medals);
-    SaveToFile(DATA_PEARLS, 0, 0, FileIndex, current_item_data.pearls);
-    SaveToFile(DATA_FAIRIES, 0, 0, FileIndex, current_item_data.fairies);
-    SaveToFile(DATA_RAINBOWCOINS, 0, 0, FileIndex, current_item_data.rainbow_coins);
-    SaveToFile(DATA_ICETRAPS, 0, 0, FileIndex, current_item_data.ice_traps);
-    SaveToFile(DATA_JUNKITEMS, 0, 0, FileIndex, current_item_data.junk_items);
-    SaveToFile(DATA_RACECOINS, 0, 0, FileIndex, current_item_data.race_coins);
-    SaveToFile(DATA_SPECIALMOVES, 0, 0, FileIndex, *(unsigned char*)(&current_item_data.flag_moves));
+    SaveFileSimple(DATA_KEYS, current_item_data.key_bitfield);
+    SaveFileSimple(DATA_KONGS, current_item_data.kong_bitfield);
+    SaveFileSimple(DATA_CROWNS, current_item_data.crowns);
+    SaveFileSimple(DATA_SPECIALITEMS, *(unsigned char*)(&current_item_data.special_items));
+    SaveFileSimple(DATA_MEDALS, current_item_data.medals);
+    SaveFileSimple(DATA_PEARLS, current_item_data.pearls);
+    SaveFileSimple(DATA_FAIRIES, current_item_data.fairies);
+    SaveFileSimple(DATA_RAINBOWCOINS, current_item_data.rainbow_coins);
+    SaveFileSimple(DATA_ICETRAPS, current_item_data.ice_traps);
+    SaveFileSimple(DATA_JUNKITEMS, current_item_data.junk_items);
+    SaveFileSimple(DATA_RACECOINS, current_item_data.race_coins);
+    SaveFileSimple(DATA_LIVES, current_item_data.lives);
+    SaveFileSimple(DATA_SPECIALMOVES, *(unsigned char*)(&current_item_data.flag_moves));
     for (int i = 0; i < STAT_TERMINATOR; i++) {
-        SaveToFile(DATA_STAT_TAG + i, 0, 0, FileIndex, GameStats[i]);
+        SaveFileSimple(DATA_STAT_TAG + i, GameStats[i]);
     }
 }
