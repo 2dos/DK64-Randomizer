@@ -758,8 +758,10 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
         KongModels.candy: "candy_name",
         KongModels.robokrem: "robokrem_name",
         KongModels.rabbit: "rabbit_name",
+        KongModels.krusha: 0x80759288,
     }
     index_mapping = {
+        KongModels.krusha: 6,
         KongModels.cranky: 8,
         KongModels.funky: 10,
         KongModels.krool_cutscene: 7,
@@ -773,7 +775,11 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
             writeValue(ROM_COPY, 0x8075C410 + (kong_index * 0x10) + 0xC, Overlay.Static, 0, offset_dict, 4)
             writeValue(ROM_COPY, 0x80619168, Overlay.Static, 0, offset_dict, 4)
         if value in name_mapping:
-            writeLabelValue(ROM_COPY, 0x8074E780 + (4 * kong_index), Overlay.Static, name_mapping[value], offset_dict)
+            val = name_mapping[value]
+            if not isinstance(val, str):
+                writeValue(ROM_COPY, 0x8074E780 + (4 * kong_index), Overlay.Static, val, offset_dict, 4)
+            else:
+                writeLabelValue(ROM_COPY, 0x8074E780 + (4 * kong_index), Overlay.Static, val, offset_dict)
         if value in index_mapping:
             writeValue(ROM_COPY, 0x8074E85C + (4 * kong_index), Overlay.Static, index_mapping[value], offset_dict, 4)
 
