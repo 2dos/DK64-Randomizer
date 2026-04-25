@@ -337,7 +337,7 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                 ROM_COPY.seek(item_start + 0x28)
                 item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
                 retain = True
-                if spoiler.settings.wrinkly_location_rando or spoiler.settings.remove_wrinkly_puzzles or spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
+                if spoiler.settings.wrinkly_location_rando or spoiler.settings.remove_wrinkly_puzzles or (spoiler.settings.progressive_hint_item != ProgressiveHintItem.off and Types.Hint not in spoiler.settings.shuffled_location_types):
                     if item_type in wrinkly_doors:
                         retain = False
                     if cont_map_id == Maps.AngryAztecLobby and item_type in (0x23C, 0x18):
