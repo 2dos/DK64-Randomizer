@@ -279,10 +279,7 @@ def truncateFiles(ROM_COPY: ROM):
         # read is orders of magnitude faster than 2 * entry_count tiny reads.
         ROM_COPY.seek(table_start)
         raw_ptrs = ROM_COPY.readBytes((entry_count + 1) * 4)
-        pointers = [
-            POINTER_OFFSET + (int.from_bytes(raw_ptrs[i * 4:(i + 1) * 4], "big") & 0x7FFFFFFF)
-            for i in range(entry_count + 1)
-        ]
+        pointers = [POINTER_OFFSET + (int.from_bytes(raw_ptrs[i * 4 : (i + 1) * 4], "big") & 0x7FFFFFFF) for i in range(entry_count + 1)]
         please_shift = False
         for entry in range(entry_count):
             file_start = pointers[entry]

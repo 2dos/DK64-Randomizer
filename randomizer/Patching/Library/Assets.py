@@ -196,7 +196,7 @@ def _get_pointer_addresses():
     cached = _get_pointer_addresses._cache
     if cached is not None and cached[0] is raw:
         return cached[1]
-    if hasattr(raw, 'to_py'):
+    if hasattr(raw, "to_py"):
         converted = raw.to_py()
     else:
         converted = raw  # Already Python (server path).

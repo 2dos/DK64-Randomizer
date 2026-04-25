@@ -50,6 +50,7 @@ from randomizer.Logic import RegionsOriginal
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Lists.HardMode import HardSelector
 from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector
+from randomizer.Lists.Switches import SwitchData
 from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.BananaPortRando import randomize_bananaport, move_bananaports
 from randomizer.Patching.BarrelRando import randomize_barrels
@@ -155,20 +156,21 @@ def encPass(spoiler) -> int:
 
 def _create_patching_adapter(fill_result, settings):
     """Create an adapter object that converts FillResult proto to spoiler-like interface.
-    
+
     This adapter allows existing patching code to work with the proto without
     requiring immediate refactoring of all patching functions.
-    
+
     Args:
         fill_result: FillResult protobuf message
         settings: Settings object
-        
+
     Returns:
         Adapter object with spoiler-like interface
     """
+
     class PatchingAdapter:
         """Adapter that provides spoiler-like interface for FillResult proto."""
-        
+
         def __init__(self, fill_result, settings):
             self.settings = settings
             self.fill_result = fill_result
@@ -187,6 +189,24 @@ def _create_patching_adapter(fill_result, settings):
                     except ValueError:
                         restored.append(int(raw))
                 settings.switch_allocation = restored
+
+            # Switchsanity
+            if fill_result.misc_data.HasField("switchsanity_enabled"):
+                settings.switchsanity_enabled = bool(fill_result.misc_data.switchsanity_enabled)
+            if list(fill_result.misc_data.switchsanity_data):
+                settings.switchsanity_data = deepcopy(SwitchData)
+                for entry in fill_result.misc_data.switchsanity_data:
+                    switch_enum = Switches(int(entry.switch))
+                    if switch_enum not in settings.switchsanity_data:
+                        continue
+                    info = settings.switchsanity_data[switch_enum]
+                    info.kong = Kongs(int(entry.kong))
+                    info.switch_type = SwitchType(int(entry.switch_type))
+                # Update the locations' assigned kong with the set freeing kong list
+                settings.diddy_freeing_kong = settings.switchsanity_data[Switches.JapesFreeKong].kong
+                settings.lanky_freeing_kong = settings.switchsanity_data[Switches.AztecLlamaPuzzle].kong
+                settings.tiny_freeing_kong = settings.switchsanity_data[Switches.AztecOKONGPuzzle].kong
+                settings.chunky_freeing_kong = settings.switchsanity_data[Switches.FactoryFreeKong].kong
 
             # Ship location rando result
             self.ship_location_index = None
@@ -207,12 +227,14 @@ def _create_patching_adapter(fill_result, settings):
                         enemy_enum = Enemies(int(entry.enemy))
                     except Exception:
                         enemy_enum = int(entry.enemy)
-                    entries_list.append({
-                        "enemy": enemy_enum,
-                        "speeds": list(entry.speeds),
-                        "id": int(entry.spawner_id),
-                        "location": entry.location,
-                    })
+                    entries_list.append(
+                        {
+                            "enemy": enemy_enum,
+                            "speeds": list(entry.speeds),
+                            "id": int(entry.spawner_id),
+                            "location": entry.location,
+                        }
+                    )
                 enemy_rando_data[int(map_id)] = entries_list
             self.enemy_rando_data = enemy_rando_data
 
@@ -237,7 +259,7 @@ def _create_patching_adapter(fill_result, settings):
             # fall back to reconstructing from PreGivenLocations in
             # location_assignments for old proto files that predate the field.
             try:
-                fast_start = getattr(settings, 'fast_start_beginning_of_game', True)
+                fast_start = getattr(settings, "fast_start_beginning_of_game", True)
                 self.first_move_item = None
 
                 misc = fill_result.misc_data
@@ -271,9 +293,10 @@ def _create_patching_adapter(fill_result, settings):
                             self.first_move_item = item_enum
             except Exception as _e:
                 self.first_move_item = None
-            
+
             # Initialize location_references - static mapping of items to reference names
             from randomizer.Fill import ItemReference
+
             self.location_references = [
                 # DK Moves
                 ItemReference(Items.BaboonBlast, "Baboon Blast", "DK Japes Cranky"),
@@ -351,7 +374,7 @@ def _create_patching_adapter(fill_result, settings):
                 ItemReference(Items.CreepyCastleKey, "Key 7", "Starting Key", True),
                 ItemReference(Items.HideoutHelmKey, "Key 8", "Starting Key", True),
             ]
-            
+
             # Convert shuffled exits from proto to TransitionBack-like objects
             self.shuffled_exit_data = {}
             for exit_id, exit_dest in fill_result.shuffle_data.shuffled_exits.items():
@@ -375,13 +398,8 @@ def _create_patching_adapter(fill_result, settings):
                     transition_key = Transitions(exit_id)
                 except ValueError:
                     pass
-                self.shuffled_exit_data[transition_key] = ExitDestination(
-                    exit_dest.destination_region,
-                    exit_dest.reverse_transition,
-                    exit_dest.exit_name,
-                    exit_dest.spoiler_name
-                )
-            
+                self.shuffled_exit_data[transition_key] = ExitDestination(exit_dest.destination_region, exit_dest.reverse_transition, exit_dest.exit_name, exit_dest.spoiler_name)
+
             # Store proto references for functions that need them
             self._location_assignments = fill_result.location_assignments
             self._move_shop_data = fill_result.move_shop_data
@@ -390,20 +408,22 @@ def _create_patching_adapter(fill_result, settings):
             self._hint_data = fill_result.hint_data
             self._path_data = fill_result.path_data
             self._misc_data = fill_result.misc_data
-            
+
         # Properties to access proto data with backward-compatible interface
         @cached_property
         def LocationList(self):
             """Simulate LocationList for item rando."""
+
             # Create a dict-like object that provides location->item mapping
             class LocationDict:
                 def __init__(self, assignments):
                     self._assignments = assignments
                     self._cache = {}  # Cache LocationObj instances to persist attribute changes
-                
+
                 def _get_or_create_location(self, location_id):
                     """Get or create a LocationObj for the given location_id."""
                     if location_id not in self._cache:
+
                         class LocationObj:
                             def __init__(self, item_id, location_id):
                                 self.item = item_id if item_id != 0 else None
@@ -439,61 +459,61 @@ def _create_patching_adapter(fill_result, settings):
                                     self.inaccessible = False
                                     self.smallerShopsInaccessible = False
                                     self.tooExpensiveInaccessible = False
-                        
+
                         item_id = self._assignments.assignments.get(int(location_id), 0)
                         self._cache[location_id] = LocationObj(item_id, location_id)
-                    
+
                     return self._cache[location_id]
-                
+
                 def items(self):
                     """Return (location_id, location_obj) pairs."""
                     for loc_id in self._assignments.assignments.keys():
                         yield (loc_id, self._get_or_create_location(loc_id))
-                
+
                 def __iter__(self):
                     """Iterate over location IDs."""
                     return iter(self._assignments.assignments.keys())
-                
+
                 def __len__(self):
                     """Return number of locations."""
                     return len(self._assignments.assignments)
-                
+
                 def __getitem__(self, key):
                     # Handle multiple key types: int, Locations enum, LocationObj, etc.
                     if isinstance(key, int):
                         key_int = key
-                    elif hasattr(key, 'location'):
+                    elif hasattr(key, "location"):
                         # LocationObj from our own adapter - has .location attribute with the ID
                         key_int = int(key.location)
-                    elif hasattr(key, 'value'):
+                    elif hasattr(key, "value"):
                         # Enum type (Locations has .value attribute)
                         key_int = int(key.value)
                     else:
                         # Try direct conversion
                         key_int = int(key)
                     return self._get_or_create_location(key_int)
-                
+
                 def __contains__(self, key):
                     """Check if location exists in assignments."""
                     if isinstance(key, int):
                         key_int = key
-                    elif hasattr(key, 'location'):
+                    elif hasattr(key, "location"):
                         # LocationObj from our own adapter
                         key_int = int(key.location)
-                    elif hasattr(key, 'value'):
+                    elif hasattr(key, "value"):
                         key_int = int(key.value)
                     else:
                         key_int = int(key)
                     return key_int in self._assignments.assignments
-            
+
             return LocationDict(self._location_assignments)
-        
+
         @cached_property
         def move_data(self):
             """Return move shop data from proto."""
             # Convert proto MoveShopData back to the 3-element list structure
             result = []
-            
+
             # Index 0: Shop moves - structure is [shop_tier][kong][level]
             # Proto structure: shop_types[0].shop_indices[N] where N is shop_tier
             shop_moves = []
@@ -507,25 +527,25 @@ def _create_patching_adapter(fill_result, settings):
                             level_moves.append(_move_entry_proto_to_dict(move_entry))
                         # Ensure we always have exactly 8 levels (pad with empty moves if needed)
                         while len(level_moves) < 8:
-                            level_moves.append({'move_type': None})
+                            level_moves.append({"move_type": None})
                         kong_moves_list.append(level_moves)
                     shop_moves.append(kong_moves_list)
             result.append(shop_moves)
-            
+
             # Index 1: Training barrels
             training = []
             for move_entry in self._move_shop_data.training_barrels:
                 training.append(_move_entry_proto_to_dict(move_entry))
             result.append(training)
-            
+
             # Index 2: BFI moves
             bfi = []
             for move_entry in self._move_shop_data.bfi_moves:
                 bfi.append(_move_entry_proto_to_dict(move_entry))
             result.append(bfi)
-            
+
             return result
-        
+
         @cached_property
         def shuffled_barrel_data(self):
             """Return barrel shuffle data - reconstruct MinigameLocationData objects."""
@@ -535,17 +555,12 @@ def _create_patching_adapter(fill_result, settings):
                 if location_id in BarrelMetaData:
                     original = BarrelMetaData[location_id]
                     # Create new MinigameLocationData with shuffled minigame but original location data
-                    result[location_id] = MinigameLocationData(
-                        original.map,
-                        original.barrel_id,
-                        Minigames(minigame_type),
-                        original.kong
-                    )
+                    result[location_id] = MinigameLocationData(original.map, original.barrel_id, Minigames(minigame_type), original.kong)
                 else:
                     # Fallback - shouldn't happen but be defensive
                     result[location_id] = minigame_type
             return result
-        
+
         @cached_property
         def shuffled_door_data(self):
             """Return door shuffle data."""
@@ -556,11 +571,18 @@ def _create_patching_adapter(fill_result, settings):
             #   (door_index, DoorType.dk_portal)
             # Make sure every level key is present (with an empty list) so
             # `for level in spoiler.shuffled_door_data` iterates all 7 levels.
-            result = {lvl: [] for lvl in (
-                Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory,
-                Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves,
-                Levels.CreepyCastle,
-            )}
+            result = {
+                lvl: []
+                for lvl in (
+                    Levels.JungleJapes,
+                    Levels.AngryAztec,
+                    Levels.FranticFactory,
+                    Levels.GloomyGalleon,
+                    Levels.FungiForest,
+                    Levels.CrystalCaves,
+                    Levels.CreepyCastle,
+                )
+            }
             for door_shuffle in self._shuffle_data.shuffled_doors:
                 level = Levels(door_shuffle.level)
                 entries = []
@@ -575,7 +597,7 @@ def _create_patching_adapter(fill_result, settings):
                         entries.append((int(door.door_location), door_type))
                 result[level] = entries
             return result
-        
+
         @cached_property
         def shuffled_exit_instructions(self):
             """Return exit instructions."""
@@ -591,43 +613,42 @@ def _create_patching_adapter(fill_result, settings):
                         pass
                 instructions.append(entry)
             return instructions
-        
+
         @cached_property
         def cb_placements(self):
             """Return CB placements."""
             result = []
             for cb_proto in self._placement_data.cb_placements:
                 cb_dict = {
-                    'id': cb_proto.id,
-                    'name': cb_proto.name,
-                    'kong': cb_proto.kong,
-                    'level': cb_proto.level,
-                    'type': cb_proto.type,
-                    'map': cb_proto.map,
+                    "id": cb_proto.id,
+                    "name": cb_proto.name,
+                    "kong": cb_proto.kong,
+                    "level": cb_proto.level,
+                    "type": cb_proto.type,
+                    "map": cb_proto.map,
                 }
                 if cb_proto.locations:
-                    cb_dict['locations'] = [
-                        [loc.amount, loc.scale, loc.x, loc.y, loc.z]
-                        for loc in cb_proto.locations
-                    ]
+                    cb_dict["locations"] = [[loc.amount, loc.scale, loc.x, loc.y, loc.z] for loc in cb_proto.locations]
                 result.append(cb_dict)
             return result
-        
+
         @cached_property
         def balloon_placement(self):
             """Return balloon placements."""
             result = []
             for balloon_proto in self._placement_data.balloon_placements:
-                result.append({
-                    'id': balloon_proto.id,
-                    'name': balloon_proto.name,
-                    'kong': balloon_proto.kong,
-                    'level': balloon_proto.level,
-                    'map': balloon_proto.map,
-                    'score': balloon_proto.score,
-                })
+                result.append(
+                    {
+                        "id": balloon_proto.id,
+                        "name": balloon_proto.name,
+                        "kong": balloon_proto.kong,
+                        "level": balloon_proto.level,
+                        "map": balloon_proto.map,
+                        "score": balloon_proto.score,
+                    }
+                )
             return result
-        
+
         @cached_property
         def enemy_replacements(self):
             """Return enemy replacements."""
@@ -635,29 +656,34 @@ def _create_patching_adapter(fill_result, settings):
             for enemy_proto in self._placement_data.enemy_replacements:
                 swaps = []
                 for swap_proto in enemy_proto.kasplat_swaps:
-                    swaps.append({
-                        'vanilla_location': swap_proto.vanilla_location,
-                        'replace_with': swap_proto.replace_with,
-                    })
-                result.append({
-                    'container_map': enemy_proto.container_map,
-                    'kasplat_swaps': swaps,
-                })
+                    swaps.append(
+                        {
+                            "vanilla_location": swap_proto.vanilla_location,
+                            "replace_with": swap_proto.replace_with,
+                        }
+                    )
+                result.append(
+                    {
+                        "container_map": enemy_proto.container_map,
+                        "kasplat_swaps": swaps,
+                    }
+                )
             return result
-        
+
         @cached_property
         def coin_requirements(self):
             """Return coin requirements."""
             return dict(self._placement_data.coin_requirements)
-        
+
         @cached_property
         def item_assignment(self):
             """Return item assignments."""
             result = []
             for assign_proto in self._misc_data.item_assignments:
+
                 class ItemAssignment:
                     pass
-                
+
                 assign_obj = ItemAssignment()
 
                 # Proto fields (all sint32 on the wire; -1 == None sentinel).
@@ -697,37 +723,40 @@ def _create_patching_adapter(fill_result, settings):
 
                 result.append(assign_obj)
             return result
-        
+
         @cached_property
         def music_bgm_data(self):
             """Return BGM music data."""
             return dict(self._misc_data.music_bgm_data)
-        
+
         @cached_property
         def music_majoritem_data(self):
             """Return major item music data."""
             return dict(self._misc_data.music_majoritem_data)
-        
+
         @cached_property
         def music_minoritem_data(self):
             """Return minor item music data."""
             return dict(self._misc_data.music_minoritem_data)
-        
+
         @cached_property
         def music_event_data(self):
             """Return event music data."""
             return dict(self._misc_data.music_event_data)
-        
+
         @cached_property
         def hintset(self):
             """Return hint set."""
+
             class HintSet:
                 def __init__(self, proto):
                     self.max_hints = proto.max_hints
                     self.hints = []
                     for hint_proto in proto.hints:
+
                         class Hint:
                             pass
+
                         h = Hint()
                         h.location = hint_proto.location_id
                         h.hint = hint_proto.hint_text
@@ -735,40 +764,40 @@ def _create_patching_adapter(fill_result, settings):
                         h.important = hint_proto.important
                         h.priority = hint_proto.priority
                         self.hints.append(h)
-                
+
                 def RemoveFTT(self):
                     """Remove the First Time Talk hint (called after writing to ROM)."""
                     # FTT is the first hint, remove it from the list
                     if self.hints:
                         self.hints = self.hints[1:]
-            
+
             return HintSet(self._hint_data.hint_set)
-        
+
         @cached_property
         def tied_hint_flags(self):
             """Return tied hint flags."""
             return dict(self._hint_data.tied_hint_flags)
-        
+
         @cached_property
         def tied_hint_regions(self):
             """Return tied hint regions."""
             return list(self._hint_data.tied_hint_regions)
-        
+
         @cached_property
         def RegionList(self):
             """Return region list - this is logic data not part of Fill output."""
             return RegionsOriginal
-        
+
         @cached_property
         def majorItems(self):
             """Return major items list."""
             return [Items(item_id) for item_id in self._path_data.major_items]
-        
+
         @cached_property
         def woth_locations(self):
             """Return Way of the Hoard locations."""
             return [Locations(loc_id) for loc_id in self._path_data.woth_locations]
-        
+
         @cached_property
         def woth_paths(self):
             """Return Way of the Hoard paths."""
@@ -776,17 +805,17 @@ def _create_patching_adapter(fill_result, settings):
             for loc_id, path_proto in self._path_data.woth_paths.items():
                 result[Locations(loc_id)] = [Locations(l) for l in path_proto.locations]
             return result
-        
+
         @cached_property
         def foolish_region_names(self):
             """Return foolish region names."""
             return list(self._path_data.foolish_region_names)
-        
+
         @cached_property
         def pathless_moves(self):
             """Return pathless moves."""
             return [Items(item_id) for item_id in self._path_data.pathless_moves]
-        
+
         @cached_property
         def playthrough(self):
             """Return playthrough spheres."""
@@ -797,7 +826,7 @@ def _create_patching_adapter(fill_result, settings):
                     sphere_dict[Locations(loc_proto.location_id)] = Items(loc_proto.item_id)
                 result[i] = sphere_dict
             return result
-        
+
         @cached_property
         def region_hintable_count(self):
             """Return region hintable count."""
@@ -805,10 +834,7 @@ def _create_patching_adapter(fill_result, settings):
             for region_name, counts_proto in self._path_data.region_hintable_count.items():
                 region_dict = {}
                 for item_type, item_data in counts_proto.items.items():
-                    region_dict[int(item_type)] = {
-                        'count': item_data.count,
-                        'locations': [Locations(loc_id) for loc_id in item_data.location_ids]
-                    }
+                    region_dict[int(item_type)] = {"count": item_data.count, "locations": [Locations(loc_id) for loc_id in item_data.location_ids]}
                 result[region_name] = region_dict
             return result
 
@@ -828,11 +854,13 @@ def _create_patching_adapter(fill_result, settings):
             """Return dirt patch placements as list of dicts."""
             result = []
             for patch_proto in self._shuffle_data.patch_placements:
-                result.append({
-                    "name": patch_proto.name,
-                    "map": int(patch_proto.map_id),
-                    "level": Levels(patch_proto.level),
-                })
+                result.append(
+                    {
+                        "name": patch_proto.name,
+                        "map": int(patch_proto.map_id),
+                        "level": Levels(patch_proto.level),
+                    }
+                )
             return result
 
         @cached_property
@@ -840,11 +868,13 @@ def _create_patching_adapter(fill_result, settings):
             """Return melon crate placements as list of dicts."""
             result = []
             for crate_proto in self._shuffle_data.crate_placements:
-                result.append({
-                    "name": crate_proto.name,
-                    "map": int(crate_proto.map_id),
-                    "level": Levels(crate_proto.level),
-                })
+                result.append(
+                    {
+                        "name": crate_proto.name,
+                        "map": int(crate_proto.map_id),
+                        "level": Levels(crate_proto.level),
+                    }
+                )
             return result
 
         @cached_property
@@ -853,14 +883,16 @@ def _create_patching_adapter(fill_result, settings):
             result = []
             for coin_proto in self._placement_data.coin_placements:
                 locations = [[loc.scale, loc.x, loc.y, loc.z] for loc in coin_proto.locations]
-                result.append({
-                    "level": int(coin_proto.level),
-                    "map": int(coin_proto.map),
-                    "kong": int(coin_proto.kong),
-                    "type": coin_proto.type,
-                    "name": coin_proto.name,
-                    "locations": locations,
-                })
+                result.append(
+                    {
+                        "level": int(coin_proto.level),
+                        "map": int(coin_proto.map),
+                        "kong": int(coin_proto.kong),
+                        "type": coin_proto.type,
+                        "name": coin_proto.name,
+                        "locations": locations,
+                    }
+                )
             return result
 
         @cached_property
@@ -869,12 +901,14 @@ def _create_patching_adapter(fill_result, settings):
             result = []
             for coin_proto in self._placement_data.race_coin_placements:
                 locations = [[loc.scale, loc.x, loc.y, loc.z] for loc in coin_proto.locations]
-                result.append({
-                    "map": int(coin_proto.map),
-                    "level": int(coin_proto.level),
-                    "name": coin_proto.name,
-                    "locations": locations,
-                })
+                result.append(
+                    {
+                        "map": int(coin_proto.map),
+                        "level": int(coin_proto.level),
+                        "name": coin_proto.name,
+                        "locations": locations,
+                    }
+                )
             return result
 
         @cached_property
@@ -908,15 +942,17 @@ def _create_patching_adapter(fill_result, settings):
             result = []
             for entry_proto in self._shuffle_data.fairy_data_table:
                 if entry_proto.present:
-                    result.append({
-                        "fairy_index": int(entry_proto.fairy_index),
-                        "level": Levels(entry_proto.level),
-                        "flag": int(entry_proto.flag),
-                        "id": int(entry_proto.id),
-                        "shift": int(entry_proto.shift),
-                        "script_id": int(entry_proto.script_id),
-                        "map_id": int(entry_proto.map_id),
-                    })
+                    result.append(
+                        {
+                            "fairy_index": int(entry_proto.fairy_index),
+                            "level": Levels(entry_proto.level),
+                            "flag": int(entry_proto.flag),
+                            "id": int(entry_proto.id),
+                            "shift": int(entry_proto.shift),
+                            "script_id": int(entry_proto.script_id),
+                            "map_id": int(entry_proto.map_id),
+                        }
+                    )
                 else:
                     result.append(None)
             return result
@@ -924,8 +960,7 @@ def _create_patching_adapter(fill_result, settings):
         @cached_property
         def bananaport_replacements(self):
             """Return bananaport replacements as [(new_pad_index, visual_type)]."""
-            return [(int(bp.new_pad_index), int(bp.visual_type))
-                    for bp in self._shuffle_data.bananaport_replacements]
+            return [(int(bp.new_pad_index), int(bp.visual_type)) for bp in self._shuffle_data.bananaport_replacements]
 
         @cached_property
         def warp_locations(self):
@@ -944,73 +979,75 @@ def _create_patching_adapter(fill_result, settings):
             for level_id, hints_proto in self._proto.level_spoiler_hints.items():
                 items = []
                 for item_proto in hints_proto.level_items:
-                    items.append({
-                        "item": Items(item_proto.item) if item_proto.item else None,
-                        "points": int(item_proto.points),
-                        "flag": int(item_proto.flag),
-                    })
+                    items.append(
+                        {
+                            "item": Items(item_proto.item) if item_proto.item else None,
+                            "points": int(item_proto.points),
+                            "flag": int(item_proto.flag),
+                        }
+                    )
                 result[Levels(level_id)] = _LevelSpoiler(items)
             return result
-    
+
     return PatchingAdapter(fill_result, settings)
 
 
 def _move_entry_proto_to_dict(move_entry_proto):
     """Convert a MoveEntry proto to a dictionary."""
     from randomizer.proto_gen import fill_result_pb2
-    
-    which = move_entry_proto.WhichOneof('entry')
-    
-    if which == 'empty_move':
-        return {'move_type': None}
-    elif which == 'flag_move':
+
+    which = move_entry_proto.WhichOneof("entry")
+
+    if which == "empty_move":
+        return {"move_type": None}
+    elif which == "flag_move":
         return {
-            'move_type': 'flag',
-            'flag': move_entry_proto.flag_move.flag,
-            'price': move_entry_proto.flag_move.price,
+            "move_type": "flag",
+            "flag": move_entry_proto.flag_move.flag,
+            "price": move_entry_proto.flag_move.price,
         }
-    elif which == 'special_move':
+    elif which == "special_move":
         return {
-            'move_type': 'special',
-            'move_lvl': move_entry_proto.special_move.move_lvl,
-            'move_kong': move_entry_proto.special_move.move_kong,
-            'price': move_entry_proto.special_move.price,
+            "move_type": "special",
+            "move_lvl": move_entry_proto.special_move.move_lvl,
+            "move_kong": move_entry_proto.special_move.move_kong,
+            "price": move_entry_proto.special_move.price,
         }
-    elif which == 'slam_move':
+    elif which == "slam_move":
         return {
-            'move_type': 'slam',
-            'move_lvl': move_entry_proto.slam_move.move_lvl,
-            'move_kong': move_entry_proto.slam_move.move_kong,
-            'price': move_entry_proto.slam_move.price,
+            "move_type": "slam",
+            "move_lvl": move_entry_proto.slam_move.move_lvl,
+            "move_kong": move_entry_proto.slam_move.move_kong,
+            "price": move_entry_proto.slam_move.price,
         }
-    elif which == 'gun_move':
+    elif which == "gun_move":
         return {
-            'move_type': 'gun',
-            'move_lvl': move_entry_proto.gun_move.move_lvl,
-            'move_kong': move_entry_proto.gun_move.move_kong,
-            'price': move_entry_proto.gun_move.price,
+            "move_type": "gun",
+            "move_lvl": move_entry_proto.gun_move.move_lvl,
+            "move_kong": move_entry_proto.gun_move.move_kong,
+            "price": move_entry_proto.gun_move.price,
         }
-    elif which == 'ammo_belt_move':
+    elif which == "ammo_belt_move":
         return {
-            'move_type': 'ammo_belt',
-            'move_lvl': move_entry_proto.ammo_belt_move.move_lvl,
-            'move_kong': move_entry_proto.ammo_belt_move.move_kong,
-            'price': move_entry_proto.ammo_belt_move.price,
+            "move_type": "ammo_belt",
+            "move_lvl": move_entry_proto.ammo_belt_move.move_lvl,
+            "move_kong": move_entry_proto.ammo_belt_move.move_kong,
+            "price": move_entry_proto.ammo_belt_move.price,
         }
-    elif which == 'instrument_move':
+    elif which == "instrument_move":
         return {
-            'move_type': 'instrument',
-            'move_lvl': move_entry_proto.instrument_move.move_lvl,
-            'move_kong': move_entry_proto.instrument_move.move_kong,
-            'price': move_entry_proto.instrument_move.price,
+            "move_type": "instrument",
+            "move_lvl": move_entry_proto.instrument_move.move_lvl,
+            "move_kong": move_entry_proto.instrument_move.move_kong,
+            "price": move_entry_proto.instrument_move.price,
         }
     else:
-        return {'move_type': None}
+        return {"move_type": None}
 
 
 def patching_response(fill_result_or_spoiler, settings=None, rom=None):
     """Apply the patch data to the ROM in the local server to be returned to the client.
-    
+
     Args:
         fill_result_or_spoiler: Either a FillResult proto (new path) or Spoiler object (legacy path)
         settings: Settings object (required when fill_result_or_spoiler is a FillResult proto)
@@ -1018,24 +1055,21 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
     """
     # Handle both old (Spoiler) and new (FillResult proto + Settings) APIs
     from randomizer.proto_gen import fill_result_pb2
-    
+
     if isinstance(fill_result_or_spoiler, fill_result_pb2.FillResult):
         # New proto-based path - convert proto to adapter object
         fill_result = fill_result_or_spoiler
         if settings is None:
             raise ValueError("settings parameter required when using FillResult proto")
         spoiler = _create_patching_adapter(fill_result, settings)
-        
+
         # Apply Fill-phase mutations of settings that travel through the proto.
         # The settings object was deserialized from user-input settings and does
         # not reflect per-level changes made during the Fill (e.g. assignDKPortal
         # writes exit=-1 into level_portal_destinations). ASMPatcher reads these
         # fields off `settings` directly, so restore them here.
         if len(fill_result.misc_data.level_portal_destinations) > 0:
-            settings.level_portal_destinations = [
-                {"map": int(dest.map), "exit": int(dest.exit)}
-                for dest in fill_result.misc_data.level_portal_destinations
-            ]
+            settings.level_portal_destinations = [{"map": int(dest.map), "exit": int(dest.exit)} for dest in fill_result.misc_data.level_portal_destinations]
         if len(fill_result.misc_data.level_void_maps) > 0:
             settings.level_void_maps = [int(m) for m in fill_result.misc_data.level_void_maps]
 
@@ -1047,14 +1081,17 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
             settings.player_name = ""
         if len(fill_result.misc_data.krool_keys_required) > 0:
             from randomizer.Enums.Events import Events as _EventsEnum
+
             settings.krool_keys_required = [_EventsEnum(int(e)) for e in fill_result.misc_data.krool_keys_required]
         if len(fill_result.misc_data.starting_kong_list) > 0:
             from randomizer.Enums.Kongs import Kongs as _KongEnum
+
             settings.starting_kong_list = [_KongEnum(int(k)) for k in fill_result.misc_data.starting_kong_list]
             # Keep the derived count honest.
             settings.starting_kongs_count = len(settings.starting_kong_list)
         if fill_result.misc_data.HasField("resolved_starting_kong"):
             from randomizer.Enums.Kongs import Kongs as _KongEnum
+
             settings.starting_kong = _KongEnum(int(fill_result.misc_data.resolved_starting_kong))
 
         # Restore Fill-mutated B.Locker / T&S arrays. ASMPatcher reads these
@@ -1065,17 +1102,18 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
             settings.BLockerEntryCount = [int(c) for c in fill_result.misc_data.blocker_entry_counts]
         if len(fill_result.misc_data.blocker_entry_items) > 0:
             from randomizer.Enums.Types import BarrierItems as _BarrierItems
+
             settings.BLockerEntryItems = [_BarrierItems(int(i)) for i in fill_result.misc_data.blocker_entry_items]
         if len(fill_result.misc_data.boss_bananas) > 0:
             settings.BossBananas = [int(c) for c in fill_result.misc_data.boss_bananas]
-        
+
         # Initialize valid_locations on settings - required for patching functions
         settings.update_valid_locations(spoiler)
-        
+
     else:
         # Legacy path - treat as Spoiler object
         spoiler = fill_result_or_spoiler
-    
+
     # Make sure we re-load the seed id
     spoiler.settings.set_seed()
 
@@ -1089,13 +1127,13 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
     dt = Datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
     temp_json["Settings"]["Generation Timestamp"] = dt
     spoiler.json = json.dumps(temp_json, indent=4)
-    
+
     # Use provided ROM if available (browser case), otherwise load from file (server case)
     if rom is not None:
         ROM_COPY = rom
     else:
         ROM_COPY = LocalROM()
-    
+
     ROM_COPY.seek(0x1FFF200)
     ROM_COPY.writeBytes(dt.encode("ascii"))
     # Initialize Text Changes
@@ -1776,7 +1814,7 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
 
     # Create a dummy time to attach to the end of the file name non decimal
     str(time.time()).replace(".", "")
-    
+
     # Check if this is the browser path (applying proto to provided ROM)
     # or the server path (creating proto for .lanky file)
     if rom is not None:
@@ -1793,10 +1831,11 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
         else:
             # Legacy path - convert spoiler to proto then serialize
             from randomizer.ProtoSerializer import fill_result_to_proto
+
             fill_result_proto = fill_result_to_proto(spoiler)
             proto_bytes = fill_result_proto.SerializeToString()
             patch = proto_bytes
-        
+
         del ROM_COPY
         return patch, password
 

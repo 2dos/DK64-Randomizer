@@ -2962,7 +2962,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
         item_rando_konglist=[Kongs.donkey, Kongs.chunky],
-        item_logic = lambda l: l.climbing,
+        item_logic=lambda l: l.climbing,
         points=[[1092, 300, 756], [1330, 250, 760], [1574, 286, 743], [1330, 250, 760]],
     ),
     Balloon(
@@ -3369,7 +3369,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleLobby,
         points=[[679, 55, 477], [819, 55, 681], [687, 55, 880], [465, 55, 885], [352, 55, 672], [470, 55, 474]],
-        banned_when_item_rando=True, # Over Acid
+        banned_when_item_rando=True,  # Over Acid
     ),
     Balloon(
         id=47,
@@ -3398,7 +3398,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.HideoutHelmLobby,
         points=[[340, 270, 545], [257, 280, 615], [326, 260, 741], [412, 275, 644]],
-        banned_when_item_rando=True, # Over Lava
+        banned_when_item_rando=True,  # Over Lava
     ),
     Balloon(
         id=50,
@@ -3408,7 +3408,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.HideoutHelmLobby,
         points=[[654, 311, 493], [605, 250, 424], [598, 275, 689]],
-        banned_when_item_rando=True, # Over Lava
+        banned_when_item_rando=True,  # Over Lava
     ),
     Balloon(
         id=51,

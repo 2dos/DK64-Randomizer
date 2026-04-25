@@ -20,6 +20,7 @@ goog.require('jspb.Message');
 goog.require('proto.randomizer.proto.ItemAssignment');
 goog.require('proto.randomizer.proto.ItemReference');
 goog.require('proto.randomizer.proto.LevelPortalDestination');
+goog.require('proto.randomizer.proto.SwitchsanityAssignment');
 goog.require('proto.randomizer.proto.TextFileChanges');
 
 goog.forwardDeclare('proto.randomizer.proto.common.KongId');
@@ -50,7 +51,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.randomizer.proto.MiscPatchingData.repeatedFields_ = [1,2,3,11,12,13,15,16,17,18,22,25];
+proto.randomizer.proto.MiscPatchingData.repeatedFields_ = [1,2,3,11,12,13,15,16,17,18,22,25,26];
 
 
 
@@ -110,7 +111,10 @@ playerName: (f = jspb.Message.getField(msg, 21)) == null ? undefined : f,
 kroolKeysRequiredList: (f = jspb.Message.getRepeatedField(msg, 22)) == null ? undefined : f,
 shipLocationIndex: (f = jspb.Message.getField(msg, 23)) == null ? undefined : f,
 shipName: (f = jspb.Message.getField(msg, 24)) == null ? undefined : f,
-switchAllocationList: (f = jspb.Message.getRepeatedField(msg, 25)) == null ? undefined : f
+switchAllocationList: (f = jspb.Message.getRepeatedField(msg, 25)) == null ? undefined : f,
+switchsanityDataList: jspb.Message.toObjectList(msg.getSwitchsanityDataList(),
+    proto.randomizer.proto.SwitchsanityAssignment.toObject, includeInstance),
+switchsanityEnabled: (f = jspb.Message.getBooleanField(msg, 27)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -277,6 +281,15 @@ proto.randomizer.proto.MiscPatchingData.deserializeBinaryFromReader = function(m
       for (var i = 0; i < values.length; i++) {
         msg.addSwitchAllocation(values[i]);
       }
+      break;
+    case 26:
+      var value = new proto.randomizer.proto.SwitchsanityAssignment;
+      reader.readMessage(value,proto.randomizer.proto.SwitchsanityAssignment.deserializeBinaryFromReader);
+      msg.addSwitchsanityData(value);
+      break;
+    case 27:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSwitchsanityEnabled(value);
       break;
     default:
       reader.skipField();
@@ -467,6 +480,21 @@ proto.randomizer.proto.MiscPatchingData.serializeBinaryToWriter = function(messa
   if (f.length > 0) {
     writer.writePackedUint32(
       25,
+      f
+    );
+  }
+  f = message.getSwitchsanityDataList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      26,
+      f,
+      proto.randomizer.proto.SwitchsanityAssignment.serializeBinaryToWriter
+    );
+  }
+  f = /** @type {boolean} */ (jspb.Message.getField(message, 27));
+  if (f != null) {
+    writer.writeBool(
+      27,
       f
     );
   }
@@ -1320,6 +1348,80 @@ proto.randomizer.proto.MiscPatchingData.prototype.addSwitchAllocation = function
  */
 proto.randomizer.proto.MiscPatchingData.prototype.clearSwitchAllocationList = function() {
   return this.setSwitchAllocationList([]);
+};
+
+
+/**
+ * repeated SwitchsanityAssignment switchsanity_data = 26;
+ * @return {!Array<!proto.randomizer.proto.SwitchsanityAssignment>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getSwitchsanityDataList = function() {
+  return /** @type{!Array<!proto.randomizer.proto.SwitchsanityAssignment>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.randomizer.proto.SwitchsanityAssignment, 26));
+};
+
+
+/**
+ * @param {!Array<!proto.randomizer.proto.SwitchsanityAssignment>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+*/
+proto.randomizer.proto.MiscPatchingData.prototype.setSwitchsanityDataList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 26, value);
+};
+
+
+/**
+ * @param {!proto.randomizer.proto.SwitchsanityAssignment=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.SwitchsanityAssignment}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addSwitchsanityData = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 26, opt_value, proto.randomizer.proto.SwitchsanityAssignment, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearSwitchsanityDataList = function() {
+  return this.setSwitchsanityDataList([]);
+};
+
+
+/**
+ * optional bool switchsanity_enabled = 27;
+ * @return {boolean}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getSwitchsanityEnabled = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 27, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setSwitchsanityEnabled = function(value) {
+  return jspb.Message.setField(this, 27, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearSwitchsanityEnabled = function() {
+  return jspb.Message.setField(this, 27, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.hasSwitchsanityEnabled = function() {
+  return jspb.Message.getField(this, 27) != null;
 };
 
 

@@ -1,4 +1,5 @@
 """Place the ship object and associated attributes into ROM."""
+
 from randomizer.Lists.ShipLocations import ship_locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
@@ -6,6 +7,7 @@ from randomizer.Patching.Library.Generic import getNextFreeID
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Library.Scripts import addNewScript
 from randomizer.Enums.ScriptTypes import ScriptTypes
+
 
 def RemoveOldShip(ROM_COPY):
     """Remove all remnants of the original ship from isles."""
@@ -43,6 +45,7 @@ def RemoveOldShip(ROM_COPY):
     ROM_COPY.seek(cont_map_setup_address)
     for x in new_ints:
         ROM_COPY.writeMultipleBytes(x, 4)
+
 
 def PlaceShip(spoiler, ROM_COPY):
     """Place Ship function."""
@@ -122,8 +125,4 @@ def PlaceShip(spoiler, ROM_COPY):
         ROM_COPY.writeMultipleBytes(x, 4)
     # Scripts
     addNewScript(ROM_COPY, ship_data.map_index, [selected_id], ScriptTypes.KRoolShip)
-    addNewScript(ROM_COPY, ship_data.map_index, [selected_id_controller], ScriptTypes.KRoolShipController, {
-        selected_id_controller: {
-            "radius": int(ship_data.lz_radius)
-        }
-    })
+    addNewScript(ROM_COPY, ship_data.map_index, [selected_id_controller], ScriptTypes.KRoolShipController, {selected_id_controller: {"radius": int(ship_data.lz_radius)}})

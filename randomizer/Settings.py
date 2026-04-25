@@ -1094,14 +1094,14 @@ class Settings:
             self.starting_moves_list_count_5,
         ]
         self.starting_moves_lists = [self.starting_moves_list_1, self.starting_moves_list_2, self.starting_moves_list_3, self.starting_moves_list_4, self.starting_moves_list_5]
-        
+
         # Preserve original starting moves lists for proto serialization before conversion
         self.original_starting_moves_list_1 = self.starting_moves_list_1.copy()
         self.original_starting_moves_list_2 = self.starting_moves_list_2.copy()
         self.original_starting_moves_list_3 = self.starting_moves_list_3.copy()
         self.original_starting_moves_list_4 = self.starting_moves_list_4.copy()
         self.original_starting_moves_list_5 = self.starting_moves_list_5.copy()
-        
+
         for i in range(len(self.starting_moves_lists)):
             copy_of_list = self.starting_moves_lists[i].copy()
             for item in copy_of_list:

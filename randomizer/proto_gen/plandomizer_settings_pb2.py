@@ -4,19 +4,14 @@
 # source: plandomizer_settings.proto
 # Protobuf Python Version: 6.31.1
 """Generated protocol buffer code."""
+
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import runtime_version as _runtime_version
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf.internal import builder as _builder
-_runtime_version.ValidateProtobufRuntimeVersion(
-    _runtime_version.Domain.PUBLIC,
-    6,
-    31,
-    1,
-    '',
-    'plandomizer_settings.proto'
-)
+
+_runtime_version.ValidateProtobufRuntimeVersion(_runtime_version.Domain.PUBLIC, 6, 31, 1, "", "plandomizer_settings.proto")
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -27,50 +22,51 @@ from .common import kong_pb2 as common_dot_kong__pb2
 from .common import level_pb2 as common_dot_level__pb2
 from .common import map_pb2 as common_dot_map__pb2
 
-
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1aplandomizer_settings.proto\x12\x10randomizer.proto\x1a\x11\x63ommon/item.proto\x1a\x11\x63ommon/kong.proto\x1a\x12\x63ommon/level.proto\x1a\x10\x63ommon/map.proto\"\x93\x01\n\x0e\x42ossAssignment\x12\x33\n\x06map_id\x18\x01 \x01(\x0e\x32\x1e.randomizer.proto.common.MapIdH\x00\x88\x01\x01\x12\x35\n\x07kong_id\x18\x02 \x01(\x0e\x32\x1f.randomizer.proto.common.KongIdH\x01\x88\x01\x01\x42\t\n\x07_map_idB\n\n\x08_kong_id\"\x89\x01\n\x18\x43ustomLocationAssignment\x12\x13\n\x0blocation_id\x18\x01 \x01(\t\x12\x17\n\x0f\x63hosen_location\x18\x02 \x01(\t\x12\x34\n\x06reward\x18\x03 \x01(\x0e\x32\x1f.randomizer.proto.common.ItemIdH\x00\x88\x01\x01\x42\t\n\x07_reward\"\xea\x0c\n\x13PlandomizerSettings\x12\x1a\n\rstarting_exit\x18\x01 \x01(\x05H\x00\x88\x01\x01\x12\x37\n\x0estarting_kongs\x18\x02 \x03(\x0e\x32\x1f.randomizer.proto.common.KongId\x12\x15\n\rplace_fairies\x18\x03 \x01(\x08\x12\x14\n\x0cplace_arenas\x18\x04 \x01(\x08\x12\x15\n\rplace_patches\x18\x05 \x01(\x08\x12\x16\n\x0eplace_kasplats\x18\x06 \x01(\x08\x12\x14\n\x0cplace_crates\x18\x07 \x01(\x08\x12\x15\n\rplace_wrinkly\x18\x08 \x01(\x08\x12\x11\n\tplace_tns\x18\t \x01(\x08\x12J\n\x0blevel_order\x18\n \x03(\x0b\x32\x35.randomizer.proto.PlandomizerSettings.LevelOrderEntry\x12J\n\x0bkrool_order\x18\x0b \x03(\x0b\x32\x35.randomizer.proto.PlandomizerSettings.KroolOrderEntry\x12H\n\nboss_order\x18\x0c \x03(\x0b\x32\x34.randomizer.proto.PlandomizerSettings.BossOrderEntry\x12H\n\nhelm_order\x18\r \x03(\x0b\x32\x34.randomizer.proto.PlandomizerSettings.HelmOrderEntry\x12T\n\x10item_assignments\x18\x0e \x03(\x0b\x32:.randomizer.proto.PlandomizerSettings.ItemAssignmentsEntry\x12\\\n\x14minigame_assignments\x18\x0f \x03(\x0b\x32>.randomizer.proto.PlandomizerSettings.MinigameAssignmentsEntry\x12T\n\x10hint_assignments\x18\x10 \x03(\x0b\x32:.randomizer.proto.PlandomizerSettings.HintAssignmentsEntry\x12T\n\x10shop_assignments\x18\x11 \x03(\x0b\x32:.randomizer.proto.PlandomizerSettings.ShopAssignmentsEntry\x12O\n\x1b\x63ustom_location_assignments\x18\x12 \x03(\x0b\x32*.randomizer.proto.CustomLocationAssignment\x1aS\n\x0fLevelOrderEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12/\n\x05value\x18\x02 \x01(\x0e\x32 .randomizer.proto.common.LevelId:\x02\x38\x01\x1aQ\n\x0fKroolOrderEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12-\n\x05value\x18\x02 \x01(\x0e\x32\x1e.randomizer.proto.common.MapId:\x02\x38\x01\x1aR\n\x0e\x42ossOrderEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12/\n\x05value\x18\x02 \x01(\x0b\x32 .randomizer.proto.BossAssignment:\x02\x38\x01\x1aQ\n\x0eHelmOrderEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12.\n\x05value\x18\x02 \x01(\x0e\x32\x1f.randomizer.proto.common.KongId:\x02\x38\x01\x1aW\n\x14ItemAssignmentsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12.\n\x05value\x18\x02 \x01(\x0e\x32\x1f.randomizer.proto.common.ItemId:\x02\x38\x01\x1a:\n\x18MinigameAssignmentsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x05:\x02\x38\x01\x1a\x36\n\x14HintAssignmentsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1aW\n\x14ShopAssignmentsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12.\n\x05value\x18\x02 \x01(\x0e\x32\x1f.randomizer.proto.common.ItemId:\x02\x38\x01\x42\x10\n\x0e_starting_exitb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n\x1aplandomizer_settings.proto\x12\x10randomizer.proto\x1a\x11\x63ommon/item.proto\x1a\x11\x63ommon/kong.proto\x1a\x12\x63ommon/level.proto\x1a\x10\x63ommon/map.proto"\x93\x01\n\x0e\x42ossAssignment\x12\x33\n\x06map_id\x18\x01 \x01(\x0e\x32\x1e.randomizer.proto.common.MapIdH\x00\x88\x01\x01\x12\x35\n\x07kong_id\x18\x02 \x01(\x0e\x32\x1f.randomizer.proto.common.KongIdH\x01\x88\x01\x01\x42\t\n\x07_map_idB\n\n\x08_kong_id"\x89\x01\n\x18\x43ustomLocationAssignment\x12\x13\n\x0blocation_id\x18\x01 \x01(\t\x12\x17\n\x0f\x63hosen_location\x18\x02 \x01(\t\x12\x34\n\x06reward\x18\x03 \x01(\x0e\x32\x1f.randomizer.proto.common.ItemIdH\x00\x88\x01\x01\x42\t\n\x07_reward"\xea\x0c\n\x13PlandomizerSettings\x12\x1a\n\rstarting_exit\x18\x01 \x01(\x05H\x00\x88\x01\x01\x12\x37\n\x0estarting_kongs\x18\x02 \x03(\x0e\x32\x1f.randomizer.proto.common.KongId\x12\x15\n\rplace_fairies\x18\x03 \x01(\x08\x12\x14\n\x0cplace_arenas\x18\x04 \x01(\x08\x12\x15\n\rplace_patches\x18\x05 \x01(\x08\x12\x16\n\x0eplace_kasplats\x18\x06 \x01(\x08\x12\x14\n\x0cplace_crates\x18\x07 \x01(\x08\x12\x15\n\rplace_wrinkly\x18\x08 \x01(\x08\x12\x11\n\tplace_tns\x18\t \x01(\x08\x12J\n\x0blevel_order\x18\n \x03(\x0b\x32\x35.randomizer.proto.PlandomizerSettings.LevelOrderEntry\x12J\n\x0bkrool_order\x18\x0b \x03(\x0b\x32\x35.randomizer.proto.PlandomizerSettings.KroolOrderEntry\x12H\n\nboss_order\x18\x0c \x03(\x0b\x32\x34.randomizer.proto.PlandomizerSettings.BossOrderEntry\x12H\n\nhelm_order\x18\r \x03(\x0b\x32\x34.randomizer.proto.PlandomizerSettings.HelmOrderEntry\x12T\n\x10item_assignments\x18\x0e \x03(\x0b\x32:.randomizer.proto.PlandomizerSettings.ItemAssignmentsEntry\x12\\\n\x14minigame_assignments\x18\x0f \x03(\x0b\x32>.randomizer.proto.PlandomizerSettings.MinigameAssignmentsEntry\x12T\n\x10hint_assignments\x18\x10 \x03(\x0b\x32:.randomizer.proto.PlandomizerSettings.HintAssignmentsEntry\x12T\n\x10shop_assignments\x18\x11 \x03(\x0b\x32:.randomizer.proto.PlandomizerSettings.ShopAssignmentsEntry\x12O\n\x1b\x63ustom_location_assignments\x18\x12 \x03(\x0b\x32*.randomizer.proto.CustomLocationAssignment\x1aS\n\x0fLevelOrderEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12/\n\x05value\x18\x02 \x01(\x0e\x32 .randomizer.proto.common.LevelId:\x02\x38\x01\x1aQ\n\x0fKroolOrderEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12-\n\x05value\x18\x02 \x01(\x0e\x32\x1e.randomizer.proto.common.MapId:\x02\x38\x01\x1aR\n\x0e\x42ossOrderEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12/\n\x05value\x18\x02 \x01(\x0b\x32 .randomizer.proto.BossAssignment:\x02\x38\x01\x1aQ\n\x0eHelmOrderEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12.\n\x05value\x18\x02 \x01(\x0e\x32\x1f.randomizer.proto.common.KongId:\x02\x38\x01\x1aW\n\x14ItemAssignmentsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12.\n\x05value\x18\x02 \x01(\x0e\x32\x1f.randomizer.proto.common.ItemId:\x02\x38\x01\x1a:\n\x18MinigameAssignmentsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x05:\x02\x38\x01\x1a\x36\n\x14HintAssignmentsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1aW\n\x14ShopAssignmentsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12.\n\x05value\x18\x02 \x01(\x0e\x32\x1f.randomizer.proto.common.ItemId:\x02\x38\x01\x42\x10\n\x0e_starting_exitb\x06proto3'
+)
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'plandomizer_settings_pb2', _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "plandomizer_settings_pb2", _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
-  DESCRIPTOR._loaded_options = None
-  _globals['_PLANDOMIZERSETTINGS_LEVELORDERENTRY']._loaded_options = None
-  _globals['_PLANDOMIZERSETTINGS_LEVELORDERENTRY']._serialized_options = b'8\001'
-  _globals['_PLANDOMIZERSETTINGS_KROOLORDERENTRY']._loaded_options = None
-  _globals['_PLANDOMIZERSETTINGS_KROOLORDERENTRY']._serialized_options = b'8\001'
-  _globals['_PLANDOMIZERSETTINGS_BOSSORDERENTRY']._loaded_options = None
-  _globals['_PLANDOMIZERSETTINGS_BOSSORDERENTRY']._serialized_options = b'8\001'
-  _globals['_PLANDOMIZERSETTINGS_HELMORDERENTRY']._loaded_options = None
-  _globals['_PLANDOMIZERSETTINGS_HELMORDERENTRY']._serialized_options = b'8\001'
-  _globals['_PLANDOMIZERSETTINGS_ITEMASSIGNMENTSENTRY']._loaded_options = None
-  _globals['_PLANDOMIZERSETTINGS_ITEMASSIGNMENTSENTRY']._serialized_options = b'8\001'
-  _globals['_PLANDOMIZERSETTINGS_MINIGAMEASSIGNMENTSENTRY']._loaded_options = None
-  _globals['_PLANDOMIZERSETTINGS_MINIGAMEASSIGNMENTSENTRY']._serialized_options = b'8\001'
-  _globals['_PLANDOMIZERSETTINGS_HINTASSIGNMENTSENTRY']._loaded_options = None
-  _globals['_PLANDOMIZERSETTINGS_HINTASSIGNMENTSENTRY']._serialized_options = b'8\001'
-  _globals['_PLANDOMIZERSETTINGS_SHOPASSIGNMENTSENTRY']._loaded_options = None
-  _globals['_PLANDOMIZERSETTINGS_SHOPASSIGNMENTSENTRY']._serialized_options = b'8\001'
-  _globals['_BOSSASSIGNMENT']._serialized_start=125
-  _globals['_BOSSASSIGNMENT']._serialized_end=272
-  _globals['_CUSTOMLOCATIONASSIGNMENT']._serialized_start=275
-  _globals['_CUSTOMLOCATIONASSIGNMENT']._serialized_end=412
-  _globals['_PLANDOMIZERSETTINGS']._serialized_start=415
-  _globals['_PLANDOMIZERSETTINGS']._serialized_end=2057
-  _globals['_PLANDOMIZERSETTINGS_LEVELORDERENTRY']._serialized_start=1412
-  _globals['_PLANDOMIZERSETTINGS_LEVELORDERENTRY']._serialized_end=1495
-  _globals['_PLANDOMIZERSETTINGS_KROOLORDERENTRY']._serialized_start=1497
-  _globals['_PLANDOMIZERSETTINGS_KROOLORDERENTRY']._serialized_end=1578
-  _globals['_PLANDOMIZERSETTINGS_BOSSORDERENTRY']._serialized_start=1580
-  _globals['_PLANDOMIZERSETTINGS_BOSSORDERENTRY']._serialized_end=1662
-  _globals['_PLANDOMIZERSETTINGS_HELMORDERENTRY']._serialized_start=1664
-  _globals['_PLANDOMIZERSETTINGS_HELMORDERENTRY']._serialized_end=1745
-  _globals['_PLANDOMIZERSETTINGS_ITEMASSIGNMENTSENTRY']._serialized_start=1747
-  _globals['_PLANDOMIZERSETTINGS_ITEMASSIGNMENTSENTRY']._serialized_end=1834
-  _globals['_PLANDOMIZERSETTINGS_MINIGAMEASSIGNMENTSENTRY']._serialized_start=1836
-  _globals['_PLANDOMIZERSETTINGS_MINIGAMEASSIGNMENTSENTRY']._serialized_end=1894
-  _globals['_PLANDOMIZERSETTINGS_HINTASSIGNMENTSENTRY']._serialized_start=1896
-  _globals['_PLANDOMIZERSETTINGS_HINTASSIGNMENTSENTRY']._serialized_end=1950
-  _globals['_PLANDOMIZERSETTINGS_SHOPASSIGNMENTSENTRY']._serialized_start=1952
-  _globals['_PLANDOMIZERSETTINGS_SHOPASSIGNMENTSENTRY']._serialized_end=2039
+    DESCRIPTOR._loaded_options = None
+    _globals["_PLANDOMIZERSETTINGS_LEVELORDERENTRY"]._loaded_options = None
+    _globals["_PLANDOMIZERSETTINGS_LEVELORDERENTRY"]._serialized_options = b"8\001"
+    _globals["_PLANDOMIZERSETTINGS_KROOLORDERENTRY"]._loaded_options = None
+    _globals["_PLANDOMIZERSETTINGS_KROOLORDERENTRY"]._serialized_options = b"8\001"
+    _globals["_PLANDOMIZERSETTINGS_BOSSORDERENTRY"]._loaded_options = None
+    _globals["_PLANDOMIZERSETTINGS_BOSSORDERENTRY"]._serialized_options = b"8\001"
+    _globals["_PLANDOMIZERSETTINGS_HELMORDERENTRY"]._loaded_options = None
+    _globals["_PLANDOMIZERSETTINGS_HELMORDERENTRY"]._serialized_options = b"8\001"
+    _globals["_PLANDOMIZERSETTINGS_ITEMASSIGNMENTSENTRY"]._loaded_options = None
+    _globals["_PLANDOMIZERSETTINGS_ITEMASSIGNMENTSENTRY"]._serialized_options = b"8\001"
+    _globals["_PLANDOMIZERSETTINGS_MINIGAMEASSIGNMENTSENTRY"]._loaded_options = None
+    _globals["_PLANDOMIZERSETTINGS_MINIGAMEASSIGNMENTSENTRY"]._serialized_options = b"8\001"
+    _globals["_PLANDOMIZERSETTINGS_HINTASSIGNMENTSENTRY"]._loaded_options = None
+    _globals["_PLANDOMIZERSETTINGS_HINTASSIGNMENTSENTRY"]._serialized_options = b"8\001"
+    _globals["_PLANDOMIZERSETTINGS_SHOPASSIGNMENTSENTRY"]._loaded_options = None
+    _globals["_PLANDOMIZERSETTINGS_SHOPASSIGNMENTSENTRY"]._serialized_options = b"8\001"
+    _globals["_BOSSASSIGNMENT"]._serialized_start = 125
+    _globals["_BOSSASSIGNMENT"]._serialized_end = 272
+    _globals["_CUSTOMLOCATIONASSIGNMENT"]._serialized_start = 275
+    _globals["_CUSTOMLOCATIONASSIGNMENT"]._serialized_end = 412
+    _globals["_PLANDOMIZERSETTINGS"]._serialized_start = 415
+    _globals["_PLANDOMIZERSETTINGS"]._serialized_end = 2057
+    _globals["_PLANDOMIZERSETTINGS_LEVELORDERENTRY"]._serialized_start = 1412
+    _globals["_PLANDOMIZERSETTINGS_LEVELORDERENTRY"]._serialized_end = 1495
+    _globals["_PLANDOMIZERSETTINGS_KROOLORDERENTRY"]._serialized_start = 1497
+    _globals["_PLANDOMIZERSETTINGS_KROOLORDERENTRY"]._serialized_end = 1578
+    _globals["_PLANDOMIZERSETTINGS_BOSSORDERENTRY"]._serialized_start = 1580
+    _globals["_PLANDOMIZERSETTINGS_BOSSORDERENTRY"]._serialized_end = 1662
+    _globals["_PLANDOMIZERSETTINGS_HELMORDERENTRY"]._serialized_start = 1664
+    _globals["_PLANDOMIZERSETTINGS_HELMORDERENTRY"]._serialized_end = 1745
+    _globals["_PLANDOMIZERSETTINGS_ITEMASSIGNMENTSENTRY"]._serialized_start = 1747
+    _globals["_PLANDOMIZERSETTINGS_ITEMASSIGNMENTSENTRY"]._serialized_end = 1834
+    _globals["_PLANDOMIZERSETTINGS_MINIGAMEASSIGNMENTSENTRY"]._serialized_start = 1836
+    _globals["_PLANDOMIZERSETTINGS_MINIGAMEASSIGNMENTSENTRY"]._serialized_end = 1894
+    _globals["_PLANDOMIZERSETTINGS_HINTASSIGNMENTSENTRY"]._serialized_start = 1896
+    _globals["_PLANDOMIZERSETTINGS_HINTASSIGNMENTSENTRY"]._serialized_end = 1950
+    _globals["_PLANDOMIZERSETTINGS_SHOPASSIGNMENTSENTRY"]._serialized_start = 1952
+    _globals["_PLANDOMIZERSETTINGS_SHOPASSIGNMENTSENTRY"]._serialized_end = 2039
 # @@protoc_insertion_point(module_scope)

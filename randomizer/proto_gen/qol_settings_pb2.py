@@ -4,55 +4,50 @@
 # source: qol_settings.proto
 # Protobuf Python Version: 6.31.1
 """Generated protocol buffer code."""
+
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import runtime_version as _runtime_version
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf.internal import builder as _builder
-_runtime_version.ValidateProtobufRuntimeVersion(
-    _runtime_version.Domain.PUBLIC,
-    6,
-    31,
-    1,
-    '',
-    'qol_settings.proto'
-)
+
+_runtime_version.ValidateProtobufRuntimeVersion(_runtime_version.Domain.PUBLIC, 6, 31, 1, "", "qol_settings.proto")
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
-
-
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12qol_settings.proto\x12\x10randomizer.proto\"\x9c\x07\n\x0bMiscChanges\x12\x17\n\x0f\x61uto_dance_skip\x18\x01 \x01(\x08\x12\x11\n\tfast_boot\x18\x02 \x01(\x08\x12\x12\n\ncalm_caves\x18\x03 \x01(\x08\x12!\n\x19\x61nimal_buddies_grab_items\x18\x04 \x01(\x08\x12\x13\n\x0breduced_lag\x18\x05 \x01(\x08\x12#\n\x1bremove_extraneous_cutscenes\x18\x06 \x01(\x08\x12\x19\n\x11hint_textbox_hold\x18\x07 \x01(\x08\x12\x1e\n\x16remove_wrinkly_puzzles\x18\x08 \x01(\x08\x12\x1b\n\x13\x66\x61st_picture_taking\x18\t \x01(\x08\x12\x12\n\nhud_hotkey\x18\n \x01(\x08\x12\x11\n\tammo_swap\x18\x0b \x01(\x08\x12\x17\n\x0fhoming_balloons\x18\x0c \x01(\x08\x12 \n\x18\x66\x61st_transform_animation\x18\r \x01(\x08\x12%\n\x1dtroff_n_scoff_audio_indicator\x18\x0e \x01(\x08\x12!\n\x19lowered_aztec_lobby_bonus\x18\x0f \x01(\x08\x12\x1c\n\x14quicker_galleon_star\x18\x10 \x01(\x08\x12\x19\n\x11vanilla_bug_fixes\x18\x11 \x01(\x08\x12\x1c\n\x14save_k_rool_progress\x18\x12 \x01(\x08\x12$\n\x1csmall_bananas_always_visible\x18\x13 \x01(\x08\x12\x12\n\nfast_hints\x18\x14 \x01(\x08\x12&\n\x1e\x62righten_mad_maze_maul_enemies\x18\x15 \x01(\x08\x12\x1e\n\x16raise_fungi_dirt_patch\x18\x16 \x01(\x08\x12\x19\n\x11global_instrument\x18\x17 \x01(\x08\x12\x1e\n\x16\x66\x61st_pause_transitions\x18\x18 \x01(\x08\x12\"\n\x1a\x63\x61nnon_game_better_control\x18\x19 \x01(\x08\x12\x1b\n\x13\x62\x65tter_fairy_camera\x18\x1a \x01(\x08\x12 \n\x18remove_enemy_cabin_timer\x18\x1b \x01(\x08\x12\"\n\x1aremove_galleon_ship_timers\x18\x1c \x01(\x08\x12)\n!japes_bridge_permanently_extended\x18\x1d \x01(\x08\x12&\n\x1emove_spring_cabin_rocketbarrel\x18\x1e \x01(\x08\"\xfd\x01\n\x12SpoilerHintsPoints\x12\r\n\x05kongs\x18\x01 \x01(\x05\x12\x0c\n\x04keys\x18\x02 \x01(\x05\x12\x13\n\x0bshopkeepers\x18\x03 \x01(\x05\x12\x0c\n\x04guns\x18\x04 \x01(\x05\x12\x13\n\x0binstruments\x18\x05 \x01(\x05\x12\x16\n\x0etraining_moves\x18\x06 \x01(\x05\x12\x18\n\x10important_shared\x18\x07 \x01(\x05\x12\x13\n\x0b\x66\x61iry_moves\x18\x08 \x01(\x05\x12\x11\n\tpad_moves\x18\t \x01(\x05\x12\x14\n\x0c\x62\x61rrel_moves\x18\n \x01(\x05\x12\x14\n\x0c\x61\x63tive_moves\x18\x0b \x01(\x05\x12\x0c\n\x04\x62\x65\x61n\x18\x0c \x01(\x05\"\xb5\x01\n\x12SpoilerHintsConfig\x12\x30\n\x04type\x18\x01 \x01(\x0e\x32\".randomizer.proto.SpoilerHintsType\x12\x34\n\x06points\x18\x02 \x01(\x0b\x32$.randomizer.proto.SpoilerHintsPoints\x12\x1a\n\x12include_woth_count\x18\x03 \x01(\x08\x12\x1b\n\x13include_level_order\x18\x04 \x01(\x08\"\xa0\x01\n\x10ProgressiveHints\x12\x33\n\x04item\x18\x01 \x01(\x0e\x32%.randomizer.proto.ProgressiveHintItem\x12\x1b\n\x13\x63ount_for_35th_hint\x18\x02 \x01(\x05\x12:\n\nhint_curve\x18\x03 \x01(\x0e\x32&.randomizer.proto.ProgressiveHintCurve\"\xd6\x02\n\x0cHintSettings\x12\x35\n\rwrinkly_hints\x18\x01 \x01(\x0e\x32\x1e.randomizer.proto.WrinklyHints\x12=\n\x11progressive_hints\x18\x02 \x01(\x0b\x32\".randomizer.proto.ProgressiveHints\x12\x18\n\x10\x64im_solved_hints\x18\x03 \x01(\x08\x12\x15\n\rno_joke_hints\x18\x04 \x01(\x08\x12\x1b\n\x13kongless_hint_doors\x18\x05 \x01(\x08\x12\x12\n\nshop_hints\x18\x06 \x01(\x08\x12;\n\rspoiler_hints\x18\x07 \x01(\x0b\x32$.randomizer.proto.SpoilerHintsConfig\x12\x31\n\x0b\x65xtra_hints\x18\x08 \x01(\x0e\x32\x1c.randomizer.proto.ExtraHints\"\xda\x03\n\x15QualityOfLifeSettings\x12\x33\n\x0cmisc_changes\x18\x01 \x01(\x0b\x32\x1d.randomizer.proto.MiscChanges\x12\x37\n\x0e\x63utscene_skips\x18\x02 \x01(\x0e\x32\x1f.randomizer.proto.CutsceneSkips\x12\x1b\n\x13shorten_boss_fights\x18\x03 \x01(\x08\x12\x14\n\x0ctag_anywhere\x18\x04 \x01(\x08\x12\x16\n\x0eshop_indicator\x18\x05 \x01(\x08\x12\x15\n\rwarp_to_isles\x18\x06 \x01(\x08\x12\x12\n\nfast_warps\x18\x07 \x01(\x08\x12\x19\n\x11\x61uto_key_turn_ins\x18\x08 \x01(\x08\x12\x16\n\x0eportal_numbers\x18\t \x01(\x08\x12\x1c\n\x14item_reward_previews\x18\n \x01(\x08\x12\x1e\n\x16\x65nemy_kill_crown_timer\x18\x0b \x01(\x08\x12\x1e\n\x16\x64isable_racing_patches\x18\x0c \x01(\x08\x12\x1d\n\x15less_fragile_boulders\x18\r \x01(\x08\x12-\n\x05hints\x18\x0e \x01(\x0b\x32\x1e.randomizer.proto.HintSettings*\x80\x01\n\rCutsceneSkips\x12\x1e\n\x1a\x43UTSCENE_SKIPS_UNSPECIFIED\x10\x00\x12\x16\n\x12\x43UTSCENE_SKIPS_OFF\x10\x01\x12\x1e\n\x1a\x43UTSCENE_SKIPS_PRESS_START\x10\x02\x12\x17\n\x13\x43UTSCENE_SKIPS_AUTO\x10\x03*\xc4\x01\n\x0cWrinklyHints\x12\x1d\n\x19WRINKLY_HINTS_UNSPECIFIED\x10\x00\x12\x15\n\x11WRINKLY_HINTS_OFF\x10\x01\x12\x1a\n\x16WRINKLY_HINTS_STANDARD\x10\x02\x12\x19\n\x15WRINKLY_HINTS_CRYPTIC\x10\x03\x12\x1e\n\x1aWRINKLY_HINTS_ITEM_HINTING\x10\x04\x12\'\n#WRINKLY_HINTS_ITEM_HINTING_ADVANCED\x10\x05*\xc8\x03\n\x13ProgressiveHintItem\x12%\n!PROGRESSIVE_HINT_ITEM_UNSPECIFIED\x10\x00\x12\x1d\n\x19PROGRESSIVE_HINT_ITEM_OFF\x10\x01\x12(\n$PROGRESSIVE_HINT_ITEM_GOLDEN_BANANAS\x10\x02\x12$\n PROGRESSIVE_HINT_ITEM_BLUEPRINTS\x10\x03\x12\x1e\n\x1aPROGRESSIVE_HINT_ITEM_KEYS\x10\x04\x12 \n\x1cPROGRESSIVE_HINT_ITEM_MEDALS\x10\x05\x12 \n\x1cPROGRESSIVE_HINT_ITEM_CROWNS\x10\x06\x12!\n\x1dPROGRESSIVE_HINT_ITEM_FAIRIES\x10\x07\x12\'\n#PROGRESSIVE_HINT_ITEM_RAINBOW_COINS\x10\x08\x12\x1e\n\x1aPROGRESSIVE_HINT_ITEM_BEAN\x10\t\x12 \n\x1cPROGRESSIVE_HINT_ITEM_PEARLS\x10\n\x12)\n%PROGRESSIVE_HINT_ITEM_COLORED_BANANAS\x10\x0b*\x95\x01\n\x10SpoilerHintsType\x12\"\n\x1eSPOILER_HINTS_TYPE_UNSPECIFIED\x10\x00\x12\x1a\n\x16SPOILER_HINTS_TYPE_OFF\x10\x01\x12\"\n\x1eSPOILER_HINTS_TYPE_VIAL_COLORS\x10\x02\x12\x1d\n\x19SPOILER_HINTS_TYPE_POINTS\x10\x03*i\n\nExtraHints\x12\x1b\n\x17\x45XTRA_HINTS_UNSPECIFIED\x10\x00\x12\x13\n\x0f\x45XTRA_HINTS_OFF\x10\x01\x12\x14\n\x10\x45XTRA_HINTS_SOME\x10\x02\x12\x13\n\x0f\x45XTRA_HINTS_ALL\x10\x03*s\n\x14ProgressiveHintCurve\x12\x1a\n\x16HINT_CURVE_UNSPECIFIED\x10\x00\x12\x13\n\x0fHINT_CURVE_SLOW\x10\x01\x12\x15\n\x11HINT_CURVE_MEDIUM\x10\x02\x12\x13\n\x0fHINT_CURVE_FAST\x10\x03\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n\x12qol_settings.proto\x12\x10randomizer.proto"\x9c\x07\n\x0bMiscChanges\x12\x17\n\x0f\x61uto_dance_skip\x18\x01 \x01(\x08\x12\x11\n\tfast_boot\x18\x02 \x01(\x08\x12\x12\n\ncalm_caves\x18\x03 \x01(\x08\x12!\n\x19\x61nimal_buddies_grab_items\x18\x04 \x01(\x08\x12\x13\n\x0breduced_lag\x18\x05 \x01(\x08\x12#\n\x1bremove_extraneous_cutscenes\x18\x06 \x01(\x08\x12\x19\n\x11hint_textbox_hold\x18\x07 \x01(\x08\x12\x1e\n\x16remove_wrinkly_puzzles\x18\x08 \x01(\x08\x12\x1b\n\x13\x66\x61st_picture_taking\x18\t \x01(\x08\x12\x12\n\nhud_hotkey\x18\n \x01(\x08\x12\x11\n\tammo_swap\x18\x0b \x01(\x08\x12\x17\n\x0fhoming_balloons\x18\x0c \x01(\x08\x12 \n\x18\x66\x61st_transform_animation\x18\r \x01(\x08\x12%\n\x1dtroff_n_scoff_audio_indicator\x18\x0e \x01(\x08\x12!\n\x19lowered_aztec_lobby_bonus\x18\x0f \x01(\x08\x12\x1c\n\x14quicker_galleon_star\x18\x10 \x01(\x08\x12\x19\n\x11vanilla_bug_fixes\x18\x11 \x01(\x08\x12\x1c\n\x14save_k_rool_progress\x18\x12 \x01(\x08\x12$\n\x1csmall_bananas_always_visible\x18\x13 \x01(\x08\x12\x12\n\nfast_hints\x18\x14 \x01(\x08\x12&\n\x1e\x62righten_mad_maze_maul_enemies\x18\x15 \x01(\x08\x12\x1e\n\x16raise_fungi_dirt_patch\x18\x16 \x01(\x08\x12\x19\n\x11global_instrument\x18\x17 \x01(\x08\x12\x1e\n\x16\x66\x61st_pause_transitions\x18\x18 \x01(\x08\x12"\n\x1a\x63\x61nnon_game_better_control\x18\x19 \x01(\x08\x12\x1b\n\x13\x62\x65tter_fairy_camera\x18\x1a \x01(\x08\x12 \n\x18remove_enemy_cabin_timer\x18\x1b \x01(\x08\x12"\n\x1aremove_galleon_ship_timers\x18\x1c \x01(\x08\x12)\n!japes_bridge_permanently_extended\x18\x1d \x01(\x08\x12&\n\x1emove_spring_cabin_rocketbarrel\x18\x1e \x01(\x08"\xfd\x01\n\x12SpoilerHintsPoints\x12\r\n\x05kongs\x18\x01 \x01(\x05\x12\x0c\n\x04keys\x18\x02 \x01(\x05\x12\x13\n\x0bshopkeepers\x18\x03 \x01(\x05\x12\x0c\n\x04guns\x18\x04 \x01(\x05\x12\x13\n\x0binstruments\x18\x05 \x01(\x05\x12\x16\n\x0etraining_moves\x18\x06 \x01(\x05\x12\x18\n\x10important_shared\x18\x07 \x01(\x05\x12\x13\n\x0b\x66\x61iry_moves\x18\x08 \x01(\x05\x12\x11\n\tpad_moves\x18\t \x01(\x05\x12\x14\n\x0c\x62\x61rrel_moves\x18\n \x01(\x05\x12\x14\n\x0c\x61\x63tive_moves\x18\x0b \x01(\x05\x12\x0c\n\x04\x62\x65\x61n\x18\x0c \x01(\x05"\xb5\x01\n\x12SpoilerHintsConfig\x12\x30\n\x04type\x18\x01 \x01(\x0e\x32".randomizer.proto.SpoilerHintsType\x12\x34\n\x06points\x18\x02 \x01(\x0b\x32$.randomizer.proto.SpoilerHintsPoints\x12\x1a\n\x12include_woth_count\x18\x03 \x01(\x08\x12\x1b\n\x13include_level_order\x18\x04 \x01(\x08"\xa0\x01\n\x10ProgressiveHints\x12\x33\n\x04item\x18\x01 \x01(\x0e\x32%.randomizer.proto.ProgressiveHintItem\x12\x1b\n\x13\x63ount_for_35th_hint\x18\x02 \x01(\x05\x12:\n\nhint_curve\x18\x03 \x01(\x0e\x32&.randomizer.proto.ProgressiveHintCurve"\xd6\x02\n\x0cHintSettings\x12\x35\n\rwrinkly_hints\x18\x01 \x01(\x0e\x32\x1e.randomizer.proto.WrinklyHints\x12=\n\x11progressive_hints\x18\x02 \x01(\x0b\x32".randomizer.proto.ProgressiveHints\x12\x18\n\x10\x64im_solved_hints\x18\x03 \x01(\x08\x12\x15\n\rno_joke_hints\x18\x04 \x01(\x08\x12\x1b\n\x13kongless_hint_doors\x18\x05 \x01(\x08\x12\x12\n\nshop_hints\x18\x06 \x01(\x08\x12;\n\rspoiler_hints\x18\x07 \x01(\x0b\x32$.randomizer.proto.SpoilerHintsConfig\x12\x31\n\x0b\x65xtra_hints\x18\x08 \x01(\x0e\x32\x1c.randomizer.proto.ExtraHints"\xda\x03\n\x15QualityOfLifeSettings\x12\x33\n\x0cmisc_changes\x18\x01 \x01(\x0b\x32\x1d.randomizer.proto.MiscChanges\x12\x37\n\x0e\x63utscene_skips\x18\x02 \x01(\x0e\x32\x1f.randomizer.proto.CutsceneSkips\x12\x1b\n\x13shorten_boss_fights\x18\x03 \x01(\x08\x12\x14\n\x0ctag_anywhere\x18\x04 \x01(\x08\x12\x16\n\x0eshop_indicator\x18\x05 \x01(\x08\x12\x15\n\rwarp_to_isles\x18\x06 \x01(\x08\x12\x12\n\nfast_warps\x18\x07 \x01(\x08\x12\x19\n\x11\x61uto_key_turn_ins\x18\x08 \x01(\x08\x12\x16\n\x0eportal_numbers\x18\t \x01(\x08\x12\x1c\n\x14item_reward_previews\x18\n \x01(\x08\x12\x1e\n\x16\x65nemy_kill_crown_timer\x18\x0b \x01(\x08\x12\x1e\n\x16\x64isable_racing_patches\x18\x0c \x01(\x08\x12\x1d\n\x15less_fragile_boulders\x18\r \x01(\x08\x12-\n\x05hints\x18\x0e \x01(\x0b\x32\x1e.randomizer.proto.HintSettings*\x80\x01\n\rCutsceneSkips\x12\x1e\n\x1a\x43UTSCENE_SKIPS_UNSPECIFIED\x10\x00\x12\x16\n\x12\x43UTSCENE_SKIPS_OFF\x10\x01\x12\x1e\n\x1a\x43UTSCENE_SKIPS_PRESS_START\x10\x02\x12\x17\n\x13\x43UTSCENE_SKIPS_AUTO\x10\x03*\xc4\x01\n\x0cWrinklyHints\x12\x1d\n\x19WRINKLY_HINTS_UNSPECIFIED\x10\x00\x12\x15\n\x11WRINKLY_HINTS_OFF\x10\x01\x12\x1a\n\x16WRINKLY_HINTS_STANDARD\x10\x02\x12\x19\n\x15WRINKLY_HINTS_CRYPTIC\x10\x03\x12\x1e\n\x1aWRINKLY_HINTS_ITEM_HINTING\x10\x04\x12\'\n#WRINKLY_HINTS_ITEM_HINTING_ADVANCED\x10\x05*\xc8\x03\n\x13ProgressiveHintItem\x12%\n!PROGRESSIVE_HINT_ITEM_UNSPECIFIED\x10\x00\x12\x1d\n\x19PROGRESSIVE_HINT_ITEM_OFF\x10\x01\x12(\n$PROGRESSIVE_HINT_ITEM_GOLDEN_BANANAS\x10\x02\x12$\n PROGRESSIVE_HINT_ITEM_BLUEPRINTS\x10\x03\x12\x1e\n\x1aPROGRESSIVE_HINT_ITEM_KEYS\x10\x04\x12 \n\x1cPROGRESSIVE_HINT_ITEM_MEDALS\x10\x05\x12 \n\x1cPROGRESSIVE_HINT_ITEM_CROWNS\x10\x06\x12!\n\x1dPROGRESSIVE_HINT_ITEM_FAIRIES\x10\x07\x12\'\n#PROGRESSIVE_HINT_ITEM_RAINBOW_COINS\x10\x08\x12\x1e\n\x1aPROGRESSIVE_HINT_ITEM_BEAN\x10\t\x12 \n\x1cPROGRESSIVE_HINT_ITEM_PEARLS\x10\n\x12)\n%PROGRESSIVE_HINT_ITEM_COLORED_BANANAS\x10\x0b*\x95\x01\n\x10SpoilerHintsType\x12"\n\x1eSPOILER_HINTS_TYPE_UNSPECIFIED\x10\x00\x12\x1a\n\x16SPOILER_HINTS_TYPE_OFF\x10\x01\x12"\n\x1eSPOILER_HINTS_TYPE_VIAL_COLORS\x10\x02\x12\x1d\n\x19SPOILER_HINTS_TYPE_POINTS\x10\x03*i\n\nExtraHints\x12\x1b\n\x17\x45XTRA_HINTS_UNSPECIFIED\x10\x00\x12\x13\n\x0f\x45XTRA_HINTS_OFF\x10\x01\x12\x14\n\x10\x45XTRA_HINTS_SOME\x10\x02\x12\x13\n\x0f\x45XTRA_HINTS_ALL\x10\x03*s\n\x14ProgressiveHintCurve\x12\x1a\n\x16HINT_CURVE_UNSPECIFIED\x10\x00\x12\x13\n\x0fHINT_CURVE_SLOW\x10\x01\x12\x15\n\x11HINT_CURVE_MEDIUM\x10\x02\x12\x13\n\x0fHINT_CURVE_FAST\x10\x03\x62\x06proto3'
+)
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'qol_settings_pb2', _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "qol_settings_pb2", _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
-  DESCRIPTOR._loaded_options = None
-  _globals['_CUTSCENESKIPS']._serialized_start=2393
-  _globals['_CUTSCENESKIPS']._serialized_end=2521
-  _globals['_WRINKLYHINTS']._serialized_start=2524
-  _globals['_WRINKLYHINTS']._serialized_end=2720
-  _globals['_PROGRESSIVEHINTITEM']._serialized_start=2723
-  _globals['_PROGRESSIVEHINTITEM']._serialized_end=3179
-  _globals['_SPOILERHINTSTYPE']._serialized_start=3182
-  _globals['_SPOILERHINTSTYPE']._serialized_end=3331
-  _globals['_EXTRAHINTS']._serialized_start=3333
-  _globals['_EXTRAHINTS']._serialized_end=3438
-  _globals['_PROGRESSIVEHINTCURVE']._serialized_start=3440
-  _globals['_PROGRESSIVEHINTCURVE']._serialized_end=3555
-  _globals['_MISCCHANGES']._serialized_start=41
-  _globals['_MISCCHANGES']._serialized_end=965
-  _globals['_SPOILERHINTSPOINTS']._serialized_start=968
-  _globals['_SPOILERHINTSPOINTS']._serialized_end=1221
-  _globals['_SPOILERHINTSCONFIG']._serialized_start=1224
-  _globals['_SPOILERHINTSCONFIG']._serialized_end=1405
-  _globals['_PROGRESSIVEHINTS']._serialized_start=1408
-  _globals['_PROGRESSIVEHINTS']._serialized_end=1568
-  _globals['_HINTSETTINGS']._serialized_start=1571
-  _globals['_HINTSETTINGS']._serialized_end=1913
-  _globals['_QUALITYOFLIFESETTINGS']._serialized_start=1916
-  _globals['_QUALITYOFLIFESETTINGS']._serialized_end=2390
+    DESCRIPTOR._loaded_options = None
+    _globals["_CUTSCENESKIPS"]._serialized_start = 2393
+    _globals["_CUTSCENESKIPS"]._serialized_end = 2521
+    _globals["_WRINKLYHINTS"]._serialized_start = 2524
+    _globals["_WRINKLYHINTS"]._serialized_end = 2720
+    _globals["_PROGRESSIVEHINTITEM"]._serialized_start = 2723
+    _globals["_PROGRESSIVEHINTITEM"]._serialized_end = 3179
+    _globals["_SPOILERHINTSTYPE"]._serialized_start = 3182
+    _globals["_SPOILERHINTSTYPE"]._serialized_end = 3331
+    _globals["_EXTRAHINTS"]._serialized_start = 3333
+    _globals["_EXTRAHINTS"]._serialized_end = 3438
+    _globals["_PROGRESSIVEHINTCURVE"]._serialized_start = 3440
+    _globals["_PROGRESSIVEHINTCURVE"]._serialized_end = 3555
+    _globals["_MISCCHANGES"]._serialized_start = 41
+    _globals["_MISCCHANGES"]._serialized_end = 965
+    _globals["_SPOILERHINTSPOINTS"]._serialized_start = 968
+    _globals["_SPOILERHINTSPOINTS"]._serialized_end = 1221
+    _globals["_SPOILERHINTSCONFIG"]._serialized_start = 1224
+    _globals["_SPOILERHINTSCONFIG"]._serialized_end = 1405
+    _globals["_PROGRESSIVEHINTS"]._serialized_start = 1408
+    _globals["_PROGRESSIVEHINTS"]._serialized_end = 1568
+    _globals["_HINTSETTINGS"]._serialized_start = 1571
+    _globals["_HINTSETTINGS"]._serialized_end = 1913
+    _globals["_QUALITYOFLIFESETTINGS"]._serialized_start = 1916
+    _globals["_QUALITYOFLIFESETTINGS"]._serialized_end = 2390
 # @@protoc_insertion_point(module_scope)

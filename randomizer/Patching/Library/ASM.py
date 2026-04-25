@@ -6,7 +6,6 @@ from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Patcher import ROM
 from randomizer.Enums.Types import Types
 
-
 # Cached Python-dict view of `js.rom_symbols` (which is a plain JS object
 # loaded via jQuery $.ajax). Plain JS objects are not subscriptable via
 # JsProxy (`obj[key]` raises TypeError), so we convert once with to_py()
@@ -30,6 +29,7 @@ def _get_rom_symbols_section(section: str):
     if sec is None:
         raise Exception(f"rom_symbols section '{section}' not found.")
     return sec
+
 
 HANDLED_OVERLAYS = (
     Overlay.Static,

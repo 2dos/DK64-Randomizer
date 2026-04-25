@@ -90,6 +90,7 @@ from randomizer.ShufflePorts import ShufflePorts, ResetPorts
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import LinkWarps, ShuffleWarpsCrossMap
 from randomizer.ProtoSerializer import fill_result_to_proto
+
 if TYPE_CHECKING:
     from randomizer.LogicClasses import LogicVarHolder
     from randomizer.Spoiler import Spoiler
@@ -630,7 +631,7 @@ def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
         ]
         if loc in non_dk_locations and data.item == Items.Donkey:
             print("Placement invalid because DK being in a blast-locked location")
-            return False            
+            return False
     return True
 
 
@@ -4058,8 +4059,7 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     ShuffleExits.Reset(spoiler)
     spoiler.createJson()
     js.postMessage("Patching ROM...")
-    
-    
+
     # print(spoiler)
     # print(spoiler.json)
     fill_proto = fill_result_to_proto(spoiler)

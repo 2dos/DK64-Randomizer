@@ -4,35 +4,30 @@
 # source: common/wrinkly_kong.proto
 # Protobuf Python Version: 6.31.1
 """Generated protocol buffer code."""
+
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import runtime_version as _runtime_version
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf.internal import builder as _builder
-_runtime_version.ValidateProtobufRuntimeVersion(
-    _runtime_version.Domain.PUBLIC,
-    6,
-    31,
-    1,
-    '',
-    'common/wrinkly_kong.proto'
-)
+
+_runtime_version.ValidateProtobufRuntimeVersion(_runtime_version.Domain.PUBLIC, 6, 31, 1, "", "common/wrinkly_kong.proto")
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
-
-
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19\x63ommon/wrinkly_kong.proto\x12\x17randomizer.proto.common*\xb6\x01\n\x0bWrinklyKong\x12\x1c\n\x18WRINKLY_KONG_UNSPECIFIED\x10\x00\x12\x14\n\x10WRINKLY_KONG_FTT\x10\x01\x12\x13\n\x0fWRINKLY_KONG_DK\x10\x02\x12\x16\n\x12WRINKLY_KONG_DIDDY\x10\x03\x12\x15\n\x11WRINKLY_KONG_TINY\x10\x04\x12\x16\n\x12WRINKLY_KONG_LANKY\x10\x05\x12\x17\n\x13WRINKLY_KONG_CHUNKY\x10\x06*\x96\x02\n\x0fWrinklyLocation\x12 \n\x1cWRINKLY_LOCATION_UNSPECIFIED\x10\x00\x12\x18\n\x14WRINKLY_LOCATION_FTT\x10\x01\x12\x1a\n\x16WRINKLY_LOCATION_JAPES\x10\x02\x12\x1a\n\x16WRINKLY_LOCATION_AZTEC\x10\x03\x12\x1c\n\x18WRINKLY_LOCATION_FACTORY\x10\x04\x12\x1c\n\x18WRINKLY_LOCATION_GALLEON\x10\x05\x12\x1a\n\x16WRINKLY_LOCATION_FUNGI\x10\x06\x12\x1a\n\x16WRINKLY_LOCATION_CAVES\x10\x07\x12\x1b\n\x17WRINKLY_LOCATION_CASTLE\x10\x08\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b"\n\x19\x63ommon/wrinkly_kong.proto\x12\x17randomizer.proto.common*\xb6\x01\n\x0bWrinklyKong\x12\x1c\n\x18WRINKLY_KONG_UNSPECIFIED\x10\x00\x12\x14\n\x10WRINKLY_KONG_FTT\x10\x01\x12\x13\n\x0fWRINKLY_KONG_DK\x10\x02\x12\x16\n\x12WRINKLY_KONG_DIDDY\x10\x03\x12\x15\n\x11WRINKLY_KONG_TINY\x10\x04\x12\x16\n\x12WRINKLY_KONG_LANKY\x10\x05\x12\x17\n\x13WRINKLY_KONG_CHUNKY\x10\x06*\x96\x02\n\x0fWrinklyLocation\x12 \n\x1cWRINKLY_LOCATION_UNSPECIFIED\x10\x00\x12\x18\n\x14WRINKLY_LOCATION_FTT\x10\x01\x12\x1a\n\x16WRINKLY_LOCATION_JAPES\x10\x02\x12\x1a\n\x16WRINKLY_LOCATION_AZTEC\x10\x03\x12\x1c\n\x18WRINKLY_LOCATION_FACTORY\x10\x04\x12\x1c\n\x18WRINKLY_LOCATION_GALLEON\x10\x05\x12\x1a\n\x16WRINKLY_LOCATION_FUNGI\x10\x06\x12\x1a\n\x16WRINKLY_LOCATION_CAVES\x10\x07\x12\x1b\n\x17WRINKLY_LOCATION_CASTLE\x10\x08\x62\x06proto3"
+)
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'common.wrinkly_kong_pb2', _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "common.wrinkly_kong_pb2", _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
-  DESCRIPTOR._loaded_options = None
-  _globals['_WRINKLYKONG']._serialized_start=55
-  _globals['_WRINKLYKONG']._serialized_end=237
-  _globals['_WRINKLYLOCATION']._serialized_start=240
-  _globals['_WRINKLYLOCATION']._serialized_end=518
+    DESCRIPTOR._loaded_options = None
+    _globals["_WRINKLYKONG"]._serialized_start = 55
+    _globals["_WRINKLYKONG"]._serialized_end = 237
+    _globals["_WRINKLYLOCATION"]._serialized_start = 240
+    _globals["_WRINKLYLOCATION"]._serialized_end = 518
 # @@protoc_insertion_point(module_scope)

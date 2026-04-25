@@ -380,7 +380,7 @@ def ShuffleCBs(spoiler):
             if not Fill.VerifyWorld(spoiler):
                 raise Ex.CBFillFailureException
             spoiler.cb_placements = cb_data
-            
+
             # Assign balloon locations if balloon items are shuffled
             if Types.Balloon in spoiler.settings.shuffled_location_types:
                 # Remove vanilla balloon logic before adding custom balloons
@@ -392,7 +392,7 @@ def ShuffleCBs(spoiler):
                         balloon_data["enum"] = Locations.Balloon000 + balloon_index
                         addBalloon(spoiler, balloon_data["balloon"], balloon_data["enum"], balloon_data["name"], balloon_data["level"], balloon_data["kong"])
                         balloon_data["balloon"] = None  # Clear reference
-            
+
             return
         except Ex.CBFillFailureException:
             if retries >= 10:

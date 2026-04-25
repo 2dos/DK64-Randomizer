@@ -178,6 +178,7 @@ def export_archipelago_yaml():
             if not settings_data.strip().startswith("{"):
                 proto = deserialize_settings_from_base64(settings_data)
                 from google.protobuf.json_format import MessageToDict
+
                 settings_data = MessageToDict(proto, preserving_proto_field_name=True)
             else:
                 # It's a JSON string, parse it

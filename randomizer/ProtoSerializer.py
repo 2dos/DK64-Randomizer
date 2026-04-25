@@ -372,9 +372,7 @@ def _populate_requirement_settings(settings: "Settings", proto: requirement_sett
 
     # Progressive switch strength (alter_switch_allocation + prog_slam_level_1..8).
     proto.progressive_switch_strength.enabled = bool(settings.alter_switch_allocation)
-    proto.progressive_switch_strength.slam_levels.extend(
-        int(getattr(settings, f"prog_slam_level_{i}")) for i in range(1, 9)
-    )
+    proto.progressive_switch_strength.slam_levels.extend(int(getattr(settings, f"prog_slam_level_{i}")) for i in range(1, 9))
 
 
 def _apply_requirement_settings(proto: requirement_settings_pb2.RequirementSettings, settings: "Settings") -> None:
@@ -657,19 +655,19 @@ def _apply_overworld_settings(proto: overworld_settings_pb2.OverworldSettings, s
 # trips as UNSPECIFIED=0 which is fine, but medium_random=2 would decode as
 # RANDOM_EASY=2). Explicit map required both directions.
 _HELM_DOOR_ITEM_TO_PROTO: Dict[int, int] = {
-    0: 0,   # vanilla       -> VANILLA
-    1: 1,   # opened        -> OPEN
-    2: 3,   # medium_random -> RANDOM_MEDIUM
-    3: 5,   # req_gb        -> GOLDEN_BANANAS
-    4: 6,   # req_bp        -> BLUEPRINTS
-    5: 7,   # req_companycoins -> COMPANY_COINS
-    6: 8,   # req_key       -> KEYS
-    7: 9,   # req_medal     -> MEDALS
+    0: 0,  # vanilla       -> VANILLA
+    1: 1,  # opened        -> OPEN
+    2: 3,  # medium_random -> RANDOM_MEDIUM
+    3: 5,  # req_gb        -> GOLDEN_BANANAS
+    4: 6,  # req_bp        -> BLUEPRINTS
+    5: 7,  # req_companycoins -> COMPANY_COINS
+    6: 8,  # req_key       -> KEYS
+    7: 9,  # req_medal     -> MEDALS
     8: 10,  # req_crown     -> CROWNS
     9: 11,  # req_fairy     -> FAIRIES
-    10: 12, # req_rainbowcoin -> RAINBOW_COINS
-    11: 13, # req_bean      -> BEAN
-    12: 14, # req_pearl     -> PEARLS
+    10: 12,  # req_rainbowcoin -> RAINBOW_COINS
+    11: 13,  # req_bean      -> BEAN
+    12: 14,  # req_pearl     -> PEARLS
     13: 2,  # easy_random   -> RANDOM_EASY
     14: 4,  # hard_random   -> RANDOM_HARD
 }
@@ -683,12 +681,12 @@ _PROTO_TO_KONG: Dict[int, int] = {v: k for k, v in _KONG_TO_PROTO.items()}
 
 
 _BARRIER_TO_HELM_DOOR_ITEM_COMMON: Dict[int, int] = {
-    0: 1,    # Nothing -> opened
-    3: 3,    # GoldenBanana -> req_gb
-    4: 4,    # Blueprint -> req_bp
-    5: 9,    # Fairy -> req_fairy
-    6: 6,    # Key -> req_key
-    9: 7,    # Medal -> req_medal
+    0: 1,  # Nothing -> opened
+    3: 3,  # GoldenBanana -> req_gb
+    4: 4,  # Blueprint -> req_bp
+    5: 9,  # Fairy -> req_fairy
+    6: 6,  # Key -> req_key
+    9: 7,  # Medal -> req_medal
     10: 11,  # Bean -> req_bean
     11: 12,  # Pearl -> req_pearl
     12: 10,  # RainbowCoin -> req_rainbowcoin
@@ -1577,6 +1575,20 @@ def _populate_fill_time_settings(spoiler_settings: Any, proto: fill_result_pb2.M
             proto.boss_bananas.append(int(count))
         except (TypeError, ValueError):
             proto.boss_bananas.append(0)
+
+    # Switchsanity
+    if getattr(spoiler_settings, "switchsanity_enabled", False):
+        proto.switchsanity_enabled = True
+    switchsanity_data = getattr(spoiler_settings, "switchsanity_data", None) or {}
+    for switch_enum, info in switchsanity_data.items():
+        kong = getattr(info, "kong", None)
+        switch_type = getattr(info, "switch_type", None)
+        if kong is None or switch_type is None:
+            continue
+        assignment = proto.switchsanity_data.add()
+        assignment.switch = int(_enum_value(switch_enum))
+        assignment.kong = int(_enum_value(kong))
+        assignment.switch_type = int(_enum_value(switch_type))
 
 
 def _populate_misc_patching_data(spoiler: "Spoiler", proto: fill_result_pb2.MiscPatchingData) -> None:

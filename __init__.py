@@ -1189,7 +1189,6 @@ if baseclasses_loaded:
                 if ap_item_is_major_item and ap_major_item_type is not None:
                     spoiler.majorItems.append(ap_major_item_type)
 
-
                 patch_data = fill_result_to_proto(spoiler).SerializeToString()
                 lanky = self.update_seed_results(patch_data, spoiler, self.player)
 

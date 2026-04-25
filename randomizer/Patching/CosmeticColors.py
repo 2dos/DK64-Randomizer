@@ -358,6 +358,7 @@ BLUEPRINT_START = [5624, 5608, 5519, 5632, 5616]
 COIN_START = [224, 256, 248, 216, 264]
 BUNCH_START = [274, 854, 818, 842, 830]
 
+
 def overwrite_object_colors(settings, ROM_COPY: ROM):
     """Overwrite object colors."""
     mode = settings.colorblind_mode

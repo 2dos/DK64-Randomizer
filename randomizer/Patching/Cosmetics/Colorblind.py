@@ -850,7 +850,10 @@ def recolorHintItem(mode: ColorblindMode, ROM_COPY: ROM):
         im = Image.new("RGBA", (32, 32), color)
         writeColorImageToROM(im, 25, texture, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
 
+
 BALLOON_START = [5835, 5827, 5843, 5851, 5819]
+
+
 def addBalloonBulb(settings, ROM_COPY, mode: ColorblindMode):
     """Add the bulb portion of the balloon to not include the colored banana icon."""
     if Types.Balloon not in settings.shuffled_location_types:

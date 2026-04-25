@@ -35,7 +35,6 @@ for folder in folders_to_copy:
         shutil.copytree(folder, os.path.join(dk64_folder, folder), dirs_exist_ok=True, ignore=shutil.ignore_patterns("__pycache__"))
 
 
-
 # Function to zip a folder
 def zip_folder(folder_path: str, zip_name: str, preserve_root: bool = False):
     """Zip a folder."""

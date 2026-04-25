@@ -542,6 +542,14 @@ message MiscPatchingData {
   optional uint32 ship_location_index = 23;
   optional string ship_name = 24;
   repeated uint32 switch_allocation = 25;
+  repeated SwitchsanityAssignment switchsanity_data = 26;
+  optional bool switchsanity_enabled = 27;
+}
+
+message SwitchsanityAssignment {
+  uint32 switch = 1;       // Switches enum value
+  uint32 kong = 2;         // Kongs enum value
+  uint32 switch_type = 3;  // SwitchType enum value
 }
 
 message LevelPortalDestination {

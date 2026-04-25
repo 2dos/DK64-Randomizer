@@ -794,10 +794,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
             "setting": settings.arcade_custom_minigame,
             "overlay": Overlay.Arcade,
         },
-        "jetpac": {
-            "setting": settings.jetpac_custom_minigame,
-            "overlay": Overlay.Jetpac
-        }
+        "jetpac": {"setting": settings.jetpac_custom_minigame, "overlay": Overlay.Jetpac},
     }
     for mg_name, mg_data in minigames.items():
         setting = mg_data["setting"]
@@ -808,7 +805,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
                 string_to_write = f"{settings.wordle_word.upper()}\0"
                 ROM_COPY.seek(addr)
                 ROM_COPY.writeBytes(bytes(string_to_write, "ascii"))
-            
+
     writeHook(ROM_COPY, 0x8073A544, Overlay.Static, "LogPercussion", offset_dict)
     writeHook(ROM_COPY, 0x8073543C, Overlay.Static, "InstIndexStore", offset_dict)
 

@@ -230,7 +230,7 @@ def dictEqual(dict1: dict, dict2: dict) -> bool:
     # Handle cases where inputs might not be dicts
     if not isinstance(dict1, dict) or not isinstance(dict2, dict):
         return dict1 == dict2
-    
+
     if len(dict1) != len(dict2):
         return False
     else:
