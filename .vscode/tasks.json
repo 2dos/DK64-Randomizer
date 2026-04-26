@@ -68,6 +68,7 @@
         "Generate Protobuf code",
         "Generate PyI Stubs",
         "Update CB requirements",
+        "Generate Selector Info",
       ],
       "problemMatcher": []
     },
@@ -149,6 +150,19 @@
       "type": "shell",
       "command": "${command:python.interpreterPath} ./tools/package_apworld.py",
       "problemMatcher": [],
+    },
+    {
+      "label": "Generate Selector Info",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} ./tools/generate_selector_info.py",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": [
+        "Generate Protobuf code"
+      ]
     }
   ]
 }
