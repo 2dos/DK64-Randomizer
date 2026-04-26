@@ -983,16 +983,6 @@ menu_text = grabText(37)
 menu_text[46] = [{"text": ["FIRST PERSON CAMERA"]}]
 writeText("menu_text.bin", menu_text)
 
-kongname_text = grabText(2)
-kongname_text.append([{"text": ["KRUSHA"]}])
-kongname_text.append([{"text": ["K. ROOL"]}])
-kongname_text.append([{"text": ["CRANKY"]}])
-kongname_text.append([{"text": ["CANDY"]}])
-kongname_text.append([{"text": ["FUNKY"]}])
-kongname_text.append([{"text": ["RICARDO"]}])
-kongname_text.append([{"text": ["RODNEY"]}])
-writeText("kongname_text.bin", kongname_text)
-
 fairy_text = grabText(40)
 fairy_text[4] = [{"text": ["~ REMEMBER, MUST GET FAIRIES TO OBTAIN SPECIAL REWARD."]}]
 writeText("fairy_rw_text.bin", fairy_text)

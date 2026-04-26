@@ -751,15 +751,23 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
         settings.kong_model_chunky,
     ]
     name_mapping = {
-        KongModels.cranky: "cranky_name",
-        KongModels.funky: "funky_name",
-        KongModels.krool_cutscene: "krool_name",
-        KongModels.krool_fight: "krool_name",
-        KongModels.candy: "candy_name",
-        KongModels.robokrem: "robokrem_name",
-        KongModels.rabbit: "rabbit_name",
-        KongModels.krusha: 0x80759288,
+        # All of these should be 7 chars or less, otherwise they'll get capped
+        KongModels.cranky: "CRANKY",
+        KongModels.funky: "FUNKY",
+        KongModels.krool_cutscene: "K. ROOL",
+        KongModels.krool_fight: "K. ROOL",
+        KongModels.candy: "CANDY",
+        KongModels.robokrem: "RICARDO",
+        KongModels.rabbit: "RODNEY",
+        KongModels.krusha: "KRUSHA",
     }
+    vanilla_names = [
+        "DONKEY KONG",
+        "DIDDY KONG",
+        "LANKY KONG",
+        "TINY KONG",
+        "CHUNKY KONG",
+    ]
     index_mapping = {
         KongModels.krusha: 6,
         KongModels.cranky: 8,
@@ -776,12 +784,22 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
             writeValue(ROM_COPY, 0x80619168, Overlay.Static, 0, offset_dict, 4)
         if value in name_mapping:
             val = name_mapping[value]
-            if not isinstance(val, str):
-                writeValue(ROM_COPY, 0x8074E780 + (4 * kong_index), Overlay.Static, val, offset_dict, 4)
+            addr = getROMAddress(0x80759260 + (8 * kong_index), Overlay.Static, offset_dict)
+            if len(val) > 7:
+                val = val[:7]
+            ROM_COPY.seek(addr)
+            ROM_COPY.writeBytes(bytes(f"{val}\0", "ascii"))
+            data = {
+                "textbox_index": kong_index,
+                "mode": "replace",
+                "search": vanilla_names[kong_index],
+                "target": name_mapping[value]
+            }
+            file = 2
+            if file in spoiler.text_changes:
+                spoiler.text_changes[file].append(data)
             else:
-                writeLabelValue(ROM_COPY, 0x8074E780 + (4 * kong_index), Overlay.Static, val, offset_dict)
-        if value in index_mapping:
-            writeValue(ROM_COPY, 0x8074E85C + (4 * kong_index), Overlay.Static, index_mapping[value], offset_dict, 4)
+                spoiler.text_changes[file] = [data]
 
     if settings.arcade_custom_minigame is not None:
         loadBin(ROM_COPY, 0x80024390, Overlay.Arcade, f"base-hack/minigame/{settings.arcade_custom_minigame}.bin", offset_dict)

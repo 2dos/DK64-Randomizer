@@ -1787,7 +1787,6 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
     alterStoryCutsceneWarps(spoiler, ROM_COPY)
 
     if "PYTEST_CURRENT_TEST" not in os.environ:
-        replaceIngameText(spoiler, ROM_COPY)
         updateMillLeverTexture(spoiler.settings, ROM_COPY)
         updateCryptLeverTexture(spoiler.settings, ROM_COPY)
         updateDiddyDoors(spoiler.settings, ROM_COPY)
@@ -1800,6 +1799,7 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
 
         patchAssembly(ROM_COPY, spoiler)
         patchScripts(spoiler, ROM_COPY)
+        replaceIngameText(spoiler, ROM_COPY)
         calculateInitFileScreen(spoiler, ROM_COPY)
         ApplyMirrorMode(spoiler.settings, ROM_COPY)
 

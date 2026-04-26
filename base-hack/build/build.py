@@ -1931,7 +1931,7 @@ for index, icon in enumerate(hash_icons):
 text_files = (
     TextChange("Bonus Instructions", 0, ""),
     TextChange("Story Level Intro", 0, ""),
-    TextChange("Kong Names", 0, "kongname_text.bin"),
+    TextChange("Kong Names", 0, ""),
     TextChange("Diddy", 0, ""),
     TextChange("Tiny", 0, ""),
     TextChange("Chunky", 0, ""),
