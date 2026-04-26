@@ -606,19 +606,6 @@ def get_total_info():
     return current_total, last_generated_time
 
 
-@api.route("/get_selector_info", methods=["GET"])
-@enforce_api_restrictions()
-def get_selector_info():
-    """Get the selector data for the randomizer."""
-    # If the branch arg is master call os.environ.get("WORKER_URL_MASTER") with requests
-    # Else call os.environ.get("WORKER_URL_DEV") with requests
-    url = environ.get("WORKER_URL_DEV") if request.args.get("branch") == "dev" else environ.get("WORKER_URL_MASTER")
-    if not url:
-        url = "http://127.0.0.1:8000"
-    response = requests.get(f"{url}/get_selector_info")
-    return set_response(response.text, response.status_code)
-
-
 @api.route("/convert_settings", methods=["POST"])
 @enforce_api_restrictions()
 def convert_settings():
