@@ -28,7 +28,7 @@ void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id) {
 	for (int i = 1; i < 4; i++) {
 		int tex = (((10-i) + display_number % 10) % 10) - 1;
 		if (CurrentMap == MAP_TROFFNSCOFF) {
-			tex = 10;
+			tex = 9;
 		}
 		displayNumberOnObject(id, 4 + i, tex, 0, 0);
 		display_number /= 10;
