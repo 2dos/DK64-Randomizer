@@ -84,6 +84,8 @@ def main():
                     setattr(entry, key, int(item[key]))
             if "is_check" in item:
                 entry.is_check = bool(item["is_check"])
+            if "is_dummy" in item:
+                entry.is_dummy = bool(item["is_dummy"])
             if item.get("tied") is not None:
                 entry.tied = str(item["tied"])
 

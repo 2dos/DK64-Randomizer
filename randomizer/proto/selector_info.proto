@@ -16,6 +16,7 @@ message SelectorEntry {
   bool is_check = 8;
   string tied = 9;
   int32 num_val = 10;
+  bool is_dummy = 11;
 }
 
 

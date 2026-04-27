@@ -79,7 +79,8 @@ checkCount: jspb.Message.getFieldWithDefault(msg, 6, 0),
 itemCount: jspb.Message.getFieldWithDefault(msg, 7, 0),
 isCheck: jspb.Message.getBooleanFieldWithDefault(msg, 8, false),
 tied: jspb.Message.getFieldWithDefault(msg, 9, ""),
-numVal: jspb.Message.getFieldWithDefault(msg, 10, 0)
+numVal: jspb.Message.getFieldWithDefault(msg, 10, 0),
+isDummy: jspb.Message.getBooleanFieldWithDefault(msg, 11, false)
   };
 
   if (includeInstance) {
@@ -155,6 +156,10 @@ proto.randomizer.proto.SelectorEntry.deserializeBinaryFromReader = function(msg,
     case 10:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setNumVal(value);
+      break;
+    case 11:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsDummy(value);
       break;
     default:
       reader.skipField();
@@ -252,6 +257,13 @@ proto.randomizer.proto.SelectorEntry.serializeBinaryToWriter = function(message,
   if (f !== 0) {
     writer.writeInt32(
       10,
+      f
+    );
+  }
+  f = message.getIsDummy();
+  if (f) {
+    writer.writeBool(
+      11,
       f
     );
   }
@@ -435,6 +447,24 @@ proto.randomizer.proto.SelectorEntry.prototype.getNumVal = function() {
  */
 proto.randomizer.proto.SelectorEntry.prototype.setNumVal = function(value) {
   return jspb.Message.setProto3IntField(this, 10, value);
+};
+
+
+/**
+ * optional bool is_dummy = 11;
+ * @return {boolean}
+ */
+proto.randomizer.proto.SelectorEntry.prototype.getIsDummy = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 11, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.SelectorEntry} returns this
+ */
+proto.randomizer.proto.SelectorEntry.prototype.setIsDummy = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 11, value);
 };
 
 
