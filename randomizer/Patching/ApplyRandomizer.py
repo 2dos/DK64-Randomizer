@@ -373,6 +373,10 @@ def _create_patching_adapter(fill_result, settings):
                 ItemReference(Items.CrystalCavesKey, "Key 6", "Starting Key", True),
                 ItemReference(Items.CreepyCastleKey, "Key 7", "Starting Key", True),
                 ItemReference(Items.HideoutHelmKey, "Key 8", "Starting Key", True),
+                # Special Items
+                ItemReference(Items.Bean, "The Bean", "Forst Anthill Second Reward"),
+                ItemReference(Items.NintendoCoin, "Nintendo Coin", "Factory Arcade Round 2"),
+                ItemReference(Items.RarewareCoin, "Rareware Coin", "Jetpac"),
             ]
 
             # Convert shuffled exits from proto to TransitionBack-like objects
