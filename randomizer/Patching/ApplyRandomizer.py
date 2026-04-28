@@ -410,7 +410,7 @@ def _create_patching_adapter(fill_result, settings):
             self._misc_data = fill_result.misc_data
 
         # Properties to access proto data with backward-compatible interface
-        @cached_property
+        @property
         def LocationList(self):
             """Simulate LocationList for item rando."""
 
@@ -508,7 +508,7 @@ def _create_patching_adapter(fill_result, settings):
 
             return LocationDict(self._location_assignments)
 
-        @cached_property
+        @property
         def move_data(self):
             """Return move shop data from proto."""
             # Convert proto MoveShopData back to the 3-element list structure
@@ -546,7 +546,7 @@ def _create_patching_adapter(fill_result, settings):
 
             return result
 
-        @cached_property
+        @property
         def shuffled_barrel_data(self):
             """Return barrel shuffle data - reconstruct MinigameLocationData objects."""
             result = {}
@@ -561,7 +561,7 @@ def _create_patching_adapter(fill_result, settings):
                     result[location_id] = minigame_type
             return result
 
-        @cached_property
+        @property
         def shuffled_door_data(self):
             """Return door shuffle data."""
             # Convert proto door shuffles back to the legacy tuple shape expected
@@ -598,7 +598,7 @@ def _create_patching_adapter(fill_result, settings):
                 result[level] = entries
             return result
 
-        @cached_property
+        @property
         def shuffled_exit_instructions(self):
             """Return exit instructions."""
             instructions = []
@@ -614,7 +614,7 @@ def _create_patching_adapter(fill_result, settings):
                 instructions.append(entry)
             return instructions
 
-        @cached_property
+        @property
         def cb_placements(self):
             """Return CB placements."""
             result = []
@@ -632,7 +632,7 @@ def _create_patching_adapter(fill_result, settings):
                 result.append(cb_dict)
             return result
 
-        @cached_property
+        @property
         def balloon_placement(self):
             """Return balloon placements."""
             result = []
@@ -649,7 +649,7 @@ def _create_patching_adapter(fill_result, settings):
                 )
             return result
 
-        @cached_property
+        @property
         def enemy_replacements(self):
             """Return enemy replacements."""
             result = []
@@ -670,12 +670,12 @@ def _create_patching_adapter(fill_result, settings):
                 )
             return result
 
-        @cached_property
+        @property
         def coin_requirements(self):
             """Return coin requirements."""
             return dict(self._placement_data.coin_requirements)
 
-        @cached_property
+        @property
         def item_assignment(self):
             """Return item assignments."""
             result = []
@@ -724,27 +724,27 @@ def _create_patching_adapter(fill_result, settings):
                 result.append(assign_obj)
             return result
 
-        @cached_property
+        @property
         def music_bgm_data(self):
             """Return BGM music data."""
             return dict(self._misc_data.music_bgm_data)
 
-        @cached_property
+        @property
         def music_majoritem_data(self):
             """Return major item music data."""
             return dict(self._misc_data.music_majoritem_data)
 
-        @cached_property
+        @property
         def music_minoritem_data(self):
             """Return minor item music data."""
             return dict(self._misc_data.music_minoritem_data)
 
-        @cached_property
+        @property
         def music_event_data(self):
             """Return event music data."""
             return dict(self._misc_data.music_event_data)
 
-        @cached_property
+        @property
         def hintset(self):
             """Return hint set."""
 
@@ -773,32 +773,32 @@ def _create_patching_adapter(fill_result, settings):
 
             return HintSet(self._hint_data.hint_set)
 
-        @cached_property
+        @property
         def tied_hint_flags(self):
             """Return tied hint flags."""
             return dict(self._hint_data.tied_hint_flags)
 
-        @cached_property
+        @property
         def tied_hint_regions(self):
             """Return tied hint regions."""
             return list(self._hint_data.tied_hint_regions)
 
-        @cached_property
+        @property
         def RegionList(self):
             """Return region list - this is logic data not part of Fill output."""
             return RegionsOriginal
 
-        @cached_property
+        @property
         def majorItems(self):
             """Return major items list."""
             return [Items(item_id) for item_id in self._path_data.major_items]
 
-        @cached_property
+        @property
         def woth_locations(self):
             """Return Way of the Hoard locations."""
             return [Locations(loc_id) for loc_id in self._path_data.woth_locations]
 
-        @cached_property
+        @property
         def woth_paths(self):
             """Return Way of the Hoard paths."""
             result = {}
@@ -806,17 +806,17 @@ def _create_patching_adapter(fill_result, settings):
                 result[Locations(loc_id)] = [Locations(l) for l in path_proto.locations]
             return result
 
-        @cached_property
+        @property
         def foolish_region_names(self):
             """Return foolish region names."""
             return list(self._path_data.foolish_region_names)
 
-        @cached_property
+        @property
         def pathless_moves(self):
             """Return pathless moves."""
             return [Items(item_id) for item_id in self._path_data.pathless_moves]
 
-        @cached_property
+        @property
         def playthrough(self):
             """Return playthrough spheres."""
             result = {}
@@ -827,7 +827,7 @@ def _create_patching_adapter(fill_result, settings):
                 result[i] = sphere_dict
             return result
 
-        @cached_property
+        @property
         def region_hintable_count(self):
             """Return region hintable count."""
             result = {}
@@ -838,7 +838,7 @@ def _create_patching_adapter(fill_result, settings):
                 result[region_name] = region_dict
             return result
 
-        @cached_property
+        @property
         def crown_locations(self):
             """Return crown locations as {Levels: {crown_index: subindex}}."""
             result = {}
@@ -849,7 +849,7 @@ def _create_patching_adapter(fill_result, settings):
                 result[level][int(crown_proto.crown_index)] = int(crown_proto.subindex)
             return result
 
-        @cached_property
+        @property
         def dirt_patch_placement(self):
             """Return dirt patch placements as list of dicts."""
             result = []
@@ -863,7 +863,7 @@ def _create_patching_adapter(fill_result, settings):
                 )
             return result
 
-        @cached_property
+        @property
         def meloncrate_placement(self):
             """Return melon crate placements as list of dicts."""
             result = []
@@ -877,7 +877,7 @@ def _create_patching_adapter(fill_result, settings):
                 )
             return result
 
-        @cached_property
+        @property
         def coin_placements(self):
             """Return coin placements."""
             result = []
@@ -895,7 +895,7 @@ def _create_patching_adapter(fill_result, settings):
                 )
             return result
 
-        @cached_property
+        @property
         def race_coin_placements(self):
             """Return race coin placements."""
             result = []
@@ -911,7 +911,7 @@ def _create_patching_adapter(fill_result, settings):
                 )
             return result
 
-        @cached_property
+        @property
         def shuffled_shop_locations(self):
             """Return shuffled shop locations as {Levels: {old_shop: new_shop}}."""
             result = {}
@@ -923,12 +923,12 @@ def _create_patching_adapter(fill_result, settings):
                 result[level] = level_map
             return result
 
-        @cached_property
+        @property
         def shuffled_kasplat_map(self):
             """Return kasplat shuffles as {name: kong_index}."""
             return dict(self._shuffle_data.shuffled_kasplat_map)
 
-        @cached_property
+        @property
         def fairy_locations(self):
             """Return fairy locations as {Levels: [fairy_indexes]}."""
             result = {}
@@ -936,7 +936,7 @@ def _create_patching_adapter(fill_result, settings):
                 result[Levels(fairy_proto.level)] = list(fairy_proto.fairy_indexes)
             return result
 
-        @cached_property
+        @property
         def fairy_data_table(self):
             """Return fairy data table as list of 20 dicts (or None)."""
             result = []
@@ -957,17 +957,17 @@ def _create_patching_adapter(fill_result, settings):
                     result.append(None)
             return result
 
-        @cached_property
+        @property
         def bananaport_replacements(self):
             """Return bananaport replacements as [(new_pad_index, visual_type)]."""
             return [(int(bp.new_pad_index), int(bp.visual_type)) for bp in self._shuffle_data.bananaport_replacements]
 
-        @cached_property
+        @property
         def warp_locations(self):
             """Return warp locations as {warp_id: custom_location_id}."""
             return dict(self._shuffle_data.warp_locations)
 
-        @cached_property
+        @property
         def level_spoiler(self):
             """Return level spoiler as {Levels: obj with .level_items}."""
 

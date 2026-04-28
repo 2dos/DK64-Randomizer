@@ -56,8 +56,16 @@ def addBalloon(spoiler, balloon: Balloon, enum_val: int, name: str, level: Level
         Kongs.tiny: "Tiny",
         Kongs.chunky: "Chunky",
     }
-    # Combine base logic (to pop balloon) with item_logic (to reach the item after popping)
-    combined_logic = lambda l: balloon.logic(l) and balloon.item_logic(l)
+    # Map kongs to their required logic attributes (kong + gun)
+    kong_to_requirements = {
+        Kongs.donkey: lambda l: l.donkey and l.coconut,
+        Kongs.diddy: lambda l: l.diddy and l.peanut,
+        Kongs.lanky: lambda l: l.lanky and l.grape,
+        Kongs.tiny: lambda l: l.tiny and l.feather,
+        Kongs.chunky: lambda l: l.chunky and l.pineapple,
+    }
+    # Combine kong+gun requirements with base logic (to pop balloon) and item_logic (to reach the item after popping)
+    combined_logic = lambda l: kong_to_requirements[kong](l) and balloon.logic(l) and balloon.item_logic(l)
     spoiler.RegionList[balloon.region].locations.append(LocationLogic(enum_val, combined_logic))
     spoiler.LocationList[enum_val].name = f"{level_to_name[level]} {kong_to_name[kong]} Balloon ({name})"
     spoiler.LocationList[enum_val].default_mapid_data[0].map = balloon.map

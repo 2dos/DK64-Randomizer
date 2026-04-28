@@ -478,7 +478,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=37,
         map_id=Maps.Isles,
-        name="Tree between tag barrel and Japes",
+        name="Top of tree between tag barrel and Japes",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
         logic=lambda l: (l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy),
