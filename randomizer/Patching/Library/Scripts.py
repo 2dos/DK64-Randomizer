@@ -1376,6 +1376,74 @@ def getHelmPadScript(item_id: int, temp_flags: list, kong_id: Kongs, glass_panel
         "current_slot": current_slot,
     })
 
+def getHelmMonkeyport(item_id: int, kong: Kongs, microhint: bool):
+    """Get the script associated with getting to the top of Krem Isle."""
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(52, [5, 3, 0], True, lambda d: d["kong"] == Kongs.tiny),  # Doesn't have mport
+            FunctionData(52, [2, 1, 0], True, lambda d: d["kong"] == Kongs.donkey),  # Doesn't have blast
+            FunctionData(52, [4, 2, 0], True, lambda d: d["kong"] == Kongs.lanky),  # Doesn't have balloon
+        ], [
+            FunctionData(69, [1, 70, 255]),
+            FunctionData(1, [5, 0, 0], False, lambda d: d["microhint"]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(52, [5, 3, 0], False, lambda d: d["kong"] == Kongs.tiny),  # Has mport
+            FunctionData(52, [2, 1, 0], False, lambda d: d["kong"] == Kongs.donkey),  # Has blast
+            FunctionData(52, [4, 2, 0], False, lambda d: d["kong"] == Kongs.lanky),  # Has balloon
+        ], [
+            FunctionData(69, [1, 255, 255]),
+            FunctionData(38, [3, 300, 0]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(17, [2 + kong, 1, 0]),
+        ], [
+            FunctionData(5, [55, 20, 0], False, lambda d: d["kong"] == Kongs.tiny),  # Activate other pad (mport)
+            FunctionData(84, [55, 1, 0], False, lambda d: d["kong"] == Kongs.tiny),  # Activate other pad (mport)
+            FunctionData(73, [0, Maps.Isles, 0], False, lambda d: d["kong"] == Kongs.donkey),  # Activate blast pad (dk)
+            FunctionData(73, [6, 15, 0], False, lambda d: d["kong"] == Kongs.lanky),  # Activate balloon (lanky)
+        ]),
+        ScriptBlock([
+            FunctionData(1, [20, 0, 0]),
+        ], [
+            FunctionData(73, [3, 0, 0]),
+            FunctionData(1, [0, 0, 0]),
+        ], lambda d: d["kong"] == Kongs.tiny),
+        # Microhint handling
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(52, [5, 3, 0], True, lambda d: d["kong"] == Kongs.tiny),  # Doesn't have mport
+            FunctionData(52, [2, 1, 0], True, lambda d: d["kong"] == Kongs.donkey),  # Doesn't have blast
+            FunctionData(52, [4, 2, 0], True, lambda d: d["kong"] == Kongs.lanky),  # Doesn't have balloon
+            FunctionData(6, [7, short_to_ushort(-11), 7]),  # Can open 7 B Lockers
+            FunctionData(2, [0, 0, 0]),  # Standing on object
+        ], [
+            FunctionData(37, [24, 1, 0]),  # Play CS
+            FunctionData(1, [6, 0, 0]),
+        ], lambda d: d["microhint"]),
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(52, [5, 3, 0], False, lambda d: d["kong"] == Kongs.tiny),  # Has mport
+            FunctionData(52, [2, 1, 0], False, lambda d: d["kong"] == Kongs.donkey),  # Has blast
+            FunctionData(52, [4, 2, 0], False, lambda d: d["kong"] == Kongs.lanky),  # Has balloon
+        ], [
+            FunctionData(1, [0, 0, 0]),
+        ], lambda d: d["microhint"]),
+        ScriptBlock([
+            FunctionData(1, [6, 0, 0]),
+            FunctionData(2, [0, 0, 0], True),  # Not standing on object
+            FunctionData(35, [0, 0, 0], True),  # CS not playing
+        ], [
+            FunctionData(1, [5, 0, 0]),
+        ], lambda d: d["microhint"]),
+    ], {
+        "kong": kong,
+        "microhint": microhint
+    })
 
 def replaceScriptLines(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], replacement_mapping: dict) -> None:
     """Replace a script line with another."""
@@ -1496,6 +1564,8 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
             subscript = getKRoolShipControllerScript(item_id, extra_data[item_id]["radius"])
         elif stype == ScriptTypes.HelmInstrumentPad:
             subscript = getHelmPadScript(item_id, extra_data[item_id]["temp_flags"], extra_data[item_id]["kong_id"], extra_data[item_id]["glass_panel"], extra_data[item_id]["hint_cs"], extra_data[item_id]["microhint"], extra_data[item_id]["req_minigames"], extra_data[item_id]["helm_order"])
+        elif stype == ScriptTypes.KrocIslePort:
+            subscript = getHelmMonkeyport(item_id, extra_data["kong"], extra_data["microhint"])
         if subscript is not None:
             good_scripts.append(subscript)
     # Reconstruct File

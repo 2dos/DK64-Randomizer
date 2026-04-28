@@ -213,12 +213,18 @@ def patchScripts(spoiler, ROM_COPY):
             gone_pad = SwitchsanityGone.lever
         elif gone_kong == Kongs.diddy:
             gone_pad = SwitchsanityGone.gong
-    if gone_pad != SwitchsanityGone.gone_pad:
-        addNewScript(ROM_COPY, Maps.HideoutHelmLobby, [0x3], ScriptTypes.HelmLobbyPadGrab, {
-            "activator": gone_pad,
-            "bonus_map": helm_lobby_minigame_map,
-            "microhint": spoiler.settings.microhints_enabled != MicrohintsEnabled.off,
-        })
+    addNewScript(ROM_COPY, Maps.HideoutHelmLobby, [0x3], ScriptTypes.HelmLobbyPadGrab, {
+        "activator": gone_pad,
+        "bonus_map": helm_lobby_minigame_map,
+        "microhint": spoiler.settings.microhints_enabled != MicrohintsEnabled.off,
+    })
+    port_kong = spoiler.settings.switchsanity_data[Switches.IslesMonkeyport].kong
+    addNewScript(ROM_COPY, Maps.Isles, [0x38], ScriptTypes.KrocIslePort, {
+        "kong": port_kong,
+        "microhint": spoiler.settings.microhints_enabled != MicrohintsEnabled.off,
+    })
+    if port_kong != Kongs.tiny:
+        addNewScript(ROM_COPY, Maps.Isles, [0x37], ScriptTypes.DeleteItem)
     if isBarrierRemoved(spoiler, RemovedBarriersSelected.aztec_llama_switches):
         # Aztec Llama Switches
         replaceScriptLines(ROM_COPY, Maps.AngryAztec, [0xD, 0xE, 0xF], {

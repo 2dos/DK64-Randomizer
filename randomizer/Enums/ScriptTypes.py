@@ -20,3 +20,4 @@ class ScriptTypes(IntEnum):
     HelmInstrumentPad = auto()
     KRoolShip = auto()
     KRoolShipController = auto()
+    KrocIslePort = auto()
