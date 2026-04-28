@@ -215,14 +215,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						unkObjFunction2(id,2,1);
 						unkObjFunction2(id,3,1);
 					}
-				} else if (param2 == ISLES_LOWMONKEYPORT) {
-					IslesMonkeyportCode(behaviour_pointer, id);
-				} else if (param2 == ISLES_HIGHMONKEYPORT) {
-					if (Rando.switchsanity_monkeyport != 0) {
-						hideObject(behaviour_pointer);
-						behaviour_pointer->current_state = 21;
-						behaviour_pointer->next_state = 21;
-					}
 				} else if (param2 == K_ROOL_SHIP) {
 					// Check access requirements based on ship spawn method
 					if (Rando.win_condition_spawns_ship) {
@@ -330,11 +322,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->unk_60 = 1;
 						behaviour_pointer->unk_62 = 100;
 					}
-				}
-				break;
-			case MAP_HELMLOBBY:
-				if (param2 == HELMLOBBY_GGONE) {
-					HelmLobbyGoneCode(behaviour_pointer, id);
 				}
 				break;
 			case MAP_JAPES:
@@ -776,6 +763,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			}
 		}
 		initiateTransition(latest_map, 0);
+	} else if (index == -11) {
+		return canOpenXBlockers(param2);
 	} else if (index == -16) {
 		PauseText = param2;
 	} else if (index == -17) {
