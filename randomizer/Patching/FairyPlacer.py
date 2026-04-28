@@ -135,7 +135,7 @@ def updateSpawnFlag(flag: int, map_id: int, spawner_id: int, ROM_COPY: LocalROM,
     """Update the spawn flag entry for a fairy."""
     for x in range(0x1F):
         slot_head = 0x80755DA8 + (8 * x)
-        ingame_flag = readValue(ROM_COPY, slot_head + 6, Overlay.Static, offset_dict)
+        ingame_flag = readValue(ROM_COPY, slot_head + 4, Overlay.Static, offset_dict)
         if ingame_flag == flag:
             writeValue(ROM_COPY, slot_head + 0, Overlay.Static, map_id, offset_dict, 1)
             writeValue(ROM_COPY, slot_head + 2, Overlay.Static, spawner_id, offset_dict)
