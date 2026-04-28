@@ -705,13 +705,16 @@ def BoulderItems():
     """Return a list of boulder items to be placed."""
     return []
 
+
 def BreakableItems():
     """Return a list of breakable items to be placed."""
     return []
 
+
 def BalloonItems():
     """Return a list of balloon items to be placed."""
     return []
+
 
 def EnemyItems():
     """Return a list of No Items to be placed."""

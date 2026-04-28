@@ -132,7 +132,7 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
         ap_item = DK64Item(name, ItemClassification.progression, full_item_table[name].code, world.player)
         match dk64r_item.type:
             case DK64RTypes.Banana:
-                if world.options.snide_turnins_to_pool:
+                if "snide_turnins" in world.options.item_pool:
                     num_bananas = 201
                 else:
                     num_bananas = 161
@@ -162,6 +162,8 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                 for _ in range(num_moves):
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Blueprint:
+                if "blueprints" not in world.options.item_pool:
+                    continue
                 # Need to remove the old blueprints
                 if item_id >= DK64RItems.DonkeyBlueprint and item_id <= DK64RItems.ChunkyBlueprint:
                     if BarrierItems.Blueprint in helm_door_required_types:
@@ -175,6 +177,8 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                     for _ in range(8):
                         item_table.append(copy.copy(ap_item))
             case DK64RTypes.Fairy:
+                if "fairies" not in world.options.item_pool:
+                    continue
                 num_fairies = 20
                 if BarrierItems.Fairy in helm_door_required_types or world.options.goal == Goal.option_fairies:
                     # Helm door requires fairies
@@ -202,6 +206,8 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                 else:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Crown:
+                if "crowns" not in world.options.item_pool:
+                    continue
                 num_crowns = 10
                 if world.options.goal not in {Goal.option_crowns, Goal.option_treasure_hurry} and BarrierItems.Crown not in helm_door_required_types and not world.options.enable_chaos_blockers:
                     ap_item.classification = ItemClassification.filler
@@ -216,6 +222,8 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                 else:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Medal:
+                if "medals" not in world.options.item_pool:
+                    continue
                 num_medals = 40
                 if BarrierItems.Medal in helm_door_required_types:
                     # Helm door requires medals
@@ -225,11 +233,15 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                 for _ in range(num_medals):
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Bean:
+                if "bean" not in world.options.item_pool:
+                    continue
                 if BarrierItems.Bean in helm_door_required_types or world.options.goal == Goal.option_bean:
                     # Helm door or win condition requires bean
                     ap_item.classification = ItemClassification.progression_skip_balancing
                 item_table.append(copy.copy(ap_item))
             case DK64RTypes.Pearl:
+                if "pearls" not in world.options.item_pool:
+                    continue
                 num_pearls = 5
                 if BarrierItems.Pearl in helm_door_required_types or world.options.goal == Goal.option_pearls:
                     # Helm door requires pearls
@@ -239,6 +251,8 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                 for _ in range(num_pearls):
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.RainbowCoin:
+                if "rainbow_coins" not in world.options.item_pool:
+                    continue
                 num_coins = 16
                 if BarrierItems.RainbowCoin in helm_door_required_types or world.options.goal == Goal.option_rainbow_coins:
                     ap_item.classification = ItemClassification.progression_skip_balancing
@@ -265,12 +279,14 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                 else:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Hint:
-                if not world.options.hints_in_item_pool:
+                if "hints" not in world.options.item_pool:
                     continue
                 else:
                     ap_item.classification = ItemClassification.useful
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.NintendoCoin | DK64RTypes.RarewareCoin:
+                if "company_coins" not in world.options.item_pool:
+                    continue
                 if not (world.options.goal in {Goal.option_company_coins, Goal.option_treasure_hurry} or BarrierItems.CompanyCoin in helm_door_required_types or world.options.enable_chaos_blockers):
                     ap_item.classification = ItemClassification.filler
                 elif (
@@ -279,6 +295,8 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                     ap_item.classification = ItemClassification.progression_skip_balancing
                 item_table.append(copy.copy(ap_item))
             case DK64RTypes.Cranky | DK64RTypes.Funky | DK64RTypes.Candy | DK64RTypes.Snide:
+                if "shopkeepers" not in world.options.item_pool:
+                    continue
                 if name in starting_moves:
                     world.multiworld.push_precollected(copy.copy(ap_item))
                     continue
@@ -287,7 +305,7 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                 else:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.FungiTime:
-                if not world.options.time_of_day:
+                if "time_of_day" not in world.options.item_pool:
                     continue
                 if name in world.options.start_inventory:
                     continue

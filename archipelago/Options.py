@@ -739,34 +739,6 @@ class SwitchsanityOptions(OptionDict):
                     raise OptionError(f"Invalid value '{value}' for switch '{key}'. " f"Must be one of: {', '.join(sorted(self.KONG_VALUES))}")
 
 
-class CrownPlacementRando(Toggle):
-    """Randomizes the locations of Battle Arena crown pads to alternate positions throughout the levels."""
-
-    display_name = "Crown Placement Randomization"
-
-
-class RandomCrates(Toggle):
-    """Randomizes the locations of Melon Crates to alternate positions throughout the levels."""
-
-    display_name = "Random Melon Crates"
-
-
-class RandomPatches(Toggle):
-    """Randomizes the locations of Dirt Patches (Rainbow Coins) to alternate positions throughout the levels."""
-
-    display_name = "Random Dirt Patches"
-
-
-# TODO: Figure this out
-# class CBRando(Toggle):
-#     """Randomizes the locations of Colored Bananas throughout the levels.
-
-#     This does NOT make individual bananas checks - they remain collectibles that count toward medals.
-#     """
-
-#     display_name = "Colored Banana Randomization"
-
-
 class LogicType(Choice):
     """Determines what type of logic is needed to beat the seed.
 
@@ -952,10 +924,76 @@ class RemoveBarriers(OptionList):
     ]
 
 
-class HintItemRandomization(Toggle):
-    """Determines if Hints are added into the Item Pool."""
+_ITEM_POOL_VALID_KEYS = frozenset(
+    [
+        "crowns",
+        "blueprints",
+        "medals",
+        "company_coins",
+        "fairies",
+        "rainbow_coins",
+        "bean",
+        "pearls",
+        "crates",
+        "hints",
+        "shopkeepers",
+        "half_medals",
+        "snide_turnins",
+        "time_of_day",
+        "boulders",
+        "balloons",
+        "breakables",
+        "dropsanity",
+    ]
+)
 
-    display_name = "Randomize Hint"
+
+class ItemPool(OptionList):
+    """Determines which item categories are shuffled into the Archipelago item pool.
+
+    Moves, Golden Bananas, Shops, Kongs, Keys, Races, Training Moves, and Shockwave are always included and cannot be disabled.
+
+    Valid Keys:
+    - "crowns": Battle Arena Crowns
+    - "blueprints": Kong Blueprints
+    - "medals": Banana Medals
+    - "company_coins": Nintendo & Rareware Coins
+    - "fairies": Banana Fairies
+    - "rainbow_coins": Rainbow Coins (dirt patches)
+    - "bean": The Bean
+    - "pearls": Mermaid Pearls
+    - "crates": Melon Crates
+    - "hints": Wrinkly Hint items
+    - "shopkeepers": Cranky/Funky/Candy/Snide themselves (shops locked until collected)
+    - "half_medals": Half Medal items granted at partial CB requirements
+    - "snide_turnins": Blueprint turn-in rewards
+    - "time_of_day": Fungi Forest Time of Day
+    - "boulders": Throwable boulder/keg checks
+    - "balloons": Colored Balloon checks
+    - "breakables": Breakable object checks (boxes, etc.)
+    - "dropsanity": Enemy drop checks
+    """
+
+    display_name = "Item Pool"
+    valid_keys = _ITEM_POOL_VALID_KEYS
+    default = [
+        "crowns",
+        "blueprints",
+        "medals",
+        "company_coins",
+        "fairies",
+        "rainbow_coins",
+        "bean",
+        "pearls",
+        "crates",
+    ]
+
+    def verify(self, world, player_name: str, plando_options) -> None:
+        """Verify all keys are valid."""
+        super().verify(world, player_name, plando_options)
+        invalid = [k for k in self.value if k not in self.valid_keys]
+        if invalid:
+            raise OptionError(f"Invalid item_pool keys: {', '.join(invalid)}. Must be one of: {', '.join(sorted(self.valid_keys))}")
 
 
 class RandomizeBlockers(Toggle):
@@ -1021,16 +1059,55 @@ class LevelBlockers(OptionDict):
     }
 
 
-class BouldersInPool(Toggle):
-    """Determines if throwing boulders/barrels spawn a check."""
+class RandomizeTroff(Toggle):
+    """Determines if Troff n Scoff banana values are randomized."""
 
-    display_name = "Boulders in Pool"
+    display_name = "Randomize Troff n Scoff"
+    default = True
 
 
-class Dropsanity(Toggle):
-    """Determines if Enemy Drops are added into the pool."""
+class MaximumTroff(Range):
+    """Determines the Maximum Value for Troff n Scoff if Randomize Troff n Scoff is enabled."""
 
-    display_name = "Dropsanity"
+    display_name = "Maximum Troff n Scoff"
+    range_start = 0
+    range_end = 500
+    default = 150
+
+
+class LevelTroff(OptionDict):
+    """Determines the Troff n Scoff banana values for each level if Randomize Troff n Scoff is turned off.
+
+    Valid Keys:
+    - "level_1"
+    - "level_2"
+    - "level_3"
+    - "level_4"
+    - "level_5"
+    - "level_6"
+    - "level_7"
+    - "level_8"
+
+    Valid Values:
+    - a number from 0 to 500
+    - "random", which will pick a random valid value for you
+    - a range in the form "x-y", which will pick a random valid value between x and y
+    """
+
+    display_name = "Level Troff n Scoff"
+
+    min = 0
+    max = 500
+    default = {
+        "level_1": 0,
+        "level_2": 0,
+        "level_3": 0,
+        "level_4": 0,
+        "level_5": 0,
+        "level_6": 0,
+        "level_7": 0,
+        "level_8": 0,
+    }
 
 
 class ChaosRatio(Range):
@@ -1046,12 +1123,6 @@ class ChaosRatio(Range):
     range_start = 1
     range_end = 100
     default = 32
-
-
-class ShopKeepers(Toggle):
-    """Determines if Cranky, Funky, Candy, and Snide are added into the item pool. Shops will be inaccessible unless you collect its shop keeper."""
-
-    display_name = "Shop Keepers in Pool"
 
 
 class ShopPrices(Choice):
@@ -1123,17 +1194,6 @@ class MicroHints(Choice):
     option_some = 1
     option_all = 2
     default = 2
-
-
-class HalfMedals(Toggle):
-    """Determines if Half Medals are added to the pool.
-
-    If medal_cb_req is set to 50, you will get a check at 25 Colored Bananas.
-    """
-
-    display_name = "Half Medals in Pool"
-
-    default = False
 
 
 class ShuffledBonusBarrels(OptionList):
@@ -1792,12 +1852,6 @@ class RemoveBaitPotions(Toggle):
     display_name = "Remove Bait Potions"
 
 
-class SnideTurninsToThePool(DefaultOnToggle):
-    """If enabled, Snide Turnins will be added to the pool."""
-
-    display_name = "Add Snide Turnins to the Pool"
-
-
 class AlterSwitchAllocation(OptionDict):
     """Determines the slam color requirement for colored banana switches in each level.
 
@@ -1871,12 +1925,6 @@ class DKPortalLocationRando(Choice):
     default = 0
 
 
-class ForestTimeOfDay(Toggle):
-    """Determines if Fungi Time of Day are added to the item pool."""
-
-    display_name = "Time of Day"
-
-
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -1905,12 +1953,11 @@ class DK64Options(PerGameCommonOptions):
     maximize_level8_blocker: MaximizeHelmBLocker
     chaos_ratio: ChaosRatio
     level_blockers: LevelBlockers
+    randomize_troff: RandomizeTroff
+    troff_max: MaximumTroff
+    level_troff: LevelTroff
     open_lobbies: OpenLobbies
     switchsanity: SwitchsanityOptions
-    crown_placement_rando: CrownPlacementRando
-    random_crates: RandomCrates
-    random_patches: RandomPatches
-    # cb_rando_enabled: CBRando
     climbing_shuffle: ClimbingShuffle
     cannon_shuffle: CannonShuffle
     starting_kong_count: StartingKongCount
@@ -1924,18 +1971,14 @@ class DK64Options(PerGameCommonOptions):
     starting_move_pool_4_count: StartingMovePool4Count
     starting_move_pool_5: StartingMovePool5
     starting_move_pool_5_count: StartingMovePool5Count
-    shopowners_in_pool: ShopKeepers
+    shopkeeper_hints: ShopkeeperHints
+    microhints: MicroHints
+    item_pool: ItemPool
     logic_type: LogicType
     tricks_selected: TricksSelected
-    half_medals_in_pool: HalfMedals
     glitches_selected: GlitchesSelected
     hard_mode_selected: HardModeSelected
     mirror_mode: MirrorMode
-    hints_in_item_pool: HintItemRandomization
-    boulders_in_pool: BouldersInPool
-    dropsanity: Dropsanity
-    shopkeeper_hints: ShopkeeperHints
-    microhints: MicroHints
     trap_fill_percentage: TrapFillPercentage
     bubble_trap_weight: BubbleTrapWeight
     reverse_trap_weight: ReverseTrapWeight
@@ -1983,14 +2026,12 @@ class DK64Options(PerGameCommonOptions):
     loading_zone_rando: LoadingZoneRando
     galleon_water_level: GalleonWaterLevel
     remove_bait_potions: RemoveBaitPotions
-    snide_turnins_to_pool: SnideTurninsToThePool
     alter_switch_allocation: AlterSwitchAllocation
     krusha_model_mode: KrushaRandom
     kong_models: KongModels
     allowed_bosses: AllowedBosses
     random_starting_region: RandomStartingLocation
     dk_portal_location_rando: DKPortalLocationRando
-    time_of_day: ForestTimeOfDay
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -2021,6 +2062,14 @@ dk64_option_groups: List[OptionGroup] = [
         ],
     ),
     OptionGroup(
+        "Troff n Scoff Settings",
+        [
+            RandomizeTroff,
+            MaximumTroff,
+            LevelTroff,
+        ],
+    ),
+    OptionGroup(
         "Item Pool",
         [
             StartingKongCount,
@@ -2038,14 +2087,8 @@ dk64_option_groups: List[OptionGroup] = [
             HelmKeyLock,
             ClimbingShuffle,
             CannonShuffle,
-            ShopKeepers,
-            BouldersInPool,
-            Dropsanity,
-            HintItemRandomization,
-            HalfMedals,
-            SnideTurninsToThePool,
+            ItemPool,
             SnideMaximum,
-            ForestTimeOfDay,
         ],
     ),
     OptionGroup(
@@ -2067,15 +2110,6 @@ dk64_option_groups: List[OptionGroup] = [
             GalleonWaterLevel,
             RandomStartingLocation,
             DKPortalLocationRando,
-        ],
-    ),
-    OptionGroup(
-        "Custom Locations",
-        [
-            CrownPlacementRando,
-            RandomCrates,
-            RandomPatches,
-            # CBRando,
         ],
     ),
     OptionGroup(

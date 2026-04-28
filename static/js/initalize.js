@@ -212,11 +212,42 @@ function toast_alert(text) {
   generateToast(text, true);
 }
 function getFile(file) {
-  return $.ajax({
-    type: "GET",
-    url: file,
-    async: false,
-  }).responseText;
+  // Synchronous XHR returning a Uint8Array of the raw bytes.
+  //
+  // This used to be an `$.ajax` call returning `responseText`, which worked
+  // for text files but corrupted binary assets (PNGs, BPS, .bin) because
+  // responseText normally decodes bytes as UTF-8. Every Python caller of
+  // this helper wraps the result in `BytesIO(...)` / `Image.open(...)`,
+  // so we need to return raw bytes.
+  //
+  // We keep this synchronous because all Python callers assume it is.
+  //
+  // Browsers (notably Firefox) forbid setting `responseType` on a sync XHR
+  // in a window context, so we use the classic
+  //   overrideMimeType("text/plain; charset=x-user-defined")
+  // trick: the response becomes a string where each UTF-16 code unit
+  // holds one raw byte in its low 8 bits. We then copy those into a
+  // Uint8Array. This works in every modern browser.
+  try {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", file, false);
+    if (typeof xhr.overrideMimeType === "function") {
+      xhr.overrideMimeType("text/plain; charset=x-user-defined");
+    }
+    xhr.send(null);
+    if (xhr.status !== 0 && (xhr.status < 200 || xhr.status >= 300)) {
+      throw new Error("HTTP " + xhr.status + " for " + file);
+    }
+    var text = xhr.responseText || "";
+    var out = new Uint8Array(text.length);
+    for (var i = 0; i < text.length; i++) {
+      out[i] = text.charCodeAt(i) & 0xff;
+    }
+    return out;
+  } catch (e) {
+    console.error("getFile failed for", file, e);
+    throw e;
+  }
 }
 
 var valid_extensions = [".bin", ".candy"];

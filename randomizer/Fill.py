@@ -89,6 +89,7 @@ from randomizer.ShufflePatches import ShufflePatches
 from randomizer.ShufflePorts import ShufflePorts, ResetPorts
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import LinkWarps, ShuffleWarpsCrossMap
+from randomizer.ProtoSerializer import fill_result_to_proto
 
 if TYPE_CHECKING:
     from randomizer.LogicClasses import LogicVarHolder
@@ -630,7 +631,7 @@ def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
         ]
         if loc in non_dk_locations and data.item == Items.Donkey:
             print("Placement invalid because DK being in a blast-locked location")
-            return False            
+            return False
     return True
 
 
@@ -4005,7 +4006,7 @@ def BlockCompletionOfLevelSet(settings: Settings, lockedLevels):
 def HandleArchipelagoBLockers(settings: Settings) -> None:
     """Handle chaos locker logic for Archipelago."""
     # Only process if we're using chaos lockers
-    if settings.blocker_selection_behavior == BLockerSetting.chaos:
+    if (not hasattr(settings, "is_ut_generation")) and settings.blocker_selection_behavior == BLockerSetting.chaos:
         # Handle helm blocker maximization for chaos lockers
         if settings.maximize_helm_blocker:
             # When maximizing, use the chaos ratio maximum
@@ -4058,9 +4059,11 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     ShuffleExits.Reset(spoiler)
     spoiler.createJson()
     js.postMessage("Patching ROM...")
+
     # print(spoiler)
     # print(spoiler.json)
-    patch_data, password = ApplyRandomizer.patching_response(spoiler)
+    fill_proto = fill_result_to_proto(spoiler)
+    patch_data, password = ApplyRandomizer.patching_response(fill_proto, spoiler.settings)
     return patch_data, spoiler, password
 
 

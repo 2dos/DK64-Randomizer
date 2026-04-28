@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package randomizer.proto.common;
+
+enum Collectible {
+    COLLECTIBLE_UNSPECIFIED = 0;
+    COLLECTIBLE_BANANA = 1;
+    COLLECTIBLE_BUNCH = 2;
+    COLLECTIBLE_BALLOON = 3;
+    COLLECTIBLE_COIN = 4;
+    COLLECTIBLE_RACECOIN = 5;
+}

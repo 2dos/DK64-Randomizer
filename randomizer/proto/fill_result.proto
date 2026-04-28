@@ -1,0 +1,605 @@
+syntax = "proto3";
+
+package randomizer.proto;
+
+import "common/item.proto";
+import "common/kong.proto";
+import "common/level.proto";
+import "common/location.proto";
+import "common/map.proto";
+import "common/minigame_type.proto";
+import "common/region.proto";
+import "common/transition.proto";
+import "common/hint_region.proto";
+
+/* This message contains all the results of the Fill algorithm.
+ * This represents the complete state of a randomized seed that needs to be
+ * applied to the ROM during patching. This enforces separation between
+ * randomization logic (which produces this proto) and ROM patching
+ * (which consumes this proto).
+ */
+message FillResult {
+  // Location assignments - which item is at which location
+  LocationAssignments location_assignments = 1;
+  
+  // Shop move data - what moves are available at which shops
+  MoveShopData move_shop_data = 2;
+  
+  // All shuffle data (exits, barrels, doors, kasplats, etc.)
+  ShuffleData shuffle_data = 3;
+  
+  // Placement data for CBs, coins, enemies
+  PlacementData placement_data = 4;
+  
+  // Hint data for Wrinkly doors and spoiler hints
+  HintData hint_data = 5;
+  
+  // Path data for Way of the Hoard and playthrough
+  PathData path_data = 6;
+  
+  // Other miscellaneous data needed for patching
+  MiscPatchingData misc_data = 7;
+}
+
+// Location assignments - mapping location IDs to item IDs
+message LocationAssignments {
+  // Map of location ID to item ID
+  map<uint32, uint32> assignments = 1;
+}
+
+// Move shop data - 3D structure of shop moves
+message MoveShopData {
+  // Three shop types: 0=Cranky, 1=Funky, 2=Candy
+  repeated ShopType shop_types = 1;
+  
+  // Training barrel moves (4 entries for dive, orange, barrel, vine)
+  repeated MoveEntry training_barrels = 2;
+  
+  // BFI/Shockwave (1 entry)
+  repeated MoveEntry bfi_moves = 3;
+}
+
+message ShopType {
+  // 3 shop indices (one per level tier)
+  repeated ShopIndex shop_indices = 1;
+}
+
+message ShopIndex {
+  // 5 kong move lists (one per kong)
+  repeated KongMoveList kong_moves = 1;
+}
+
+message KongMoveList {
+  // 8 level entries (one per level 0-7)
+  repeated MoveEntry moves = 1;
+}
+
+message MoveEntry {
+  // Type of move entry
+  oneof entry {
+    SpecialMove special_move = 1;
+    SlamMove slam_move = 2;
+    GunMove gun_move = 3;
+    AmmoBeltMove ammo_belt_move = 4;
+    InstrumentMove instrument_move = 5;
+    FlagMove flag_move = 6;
+    EmptyMove empty_move = 7;
+  }
+}
+
+message SpecialMove {
+  uint32 move_lvl = 1;
+  uint32 move_kong = 2;
+  uint32 price = 3;
+}
+
+message SlamMove {
+  uint32 move_lvl = 1;
+  uint32 move_kong = 2;
+  uint32 price = 3;
+}
+
+message GunMove {
+  uint32 move_lvl = 1;
+  uint32 move_kong = 2;
+  uint32 price = 3;
+}
+
+message AmmoBeltMove {
+  uint32 move_lvl = 1;
+  uint32 move_kong = 2;
+  uint32 price = 3;
+}
+
+message InstrumentMove {
+  uint32 move_lvl = 1;
+  uint32 move_kong = 2;
+  uint32 price = 3;
+}
+
+message FlagMove {
+  string flag = 1;
+  uint32 price = 2;
+}
+
+message EmptyMove {
+  // Empty entry
+}
+
+// All shuffle-related data
+message ShuffleData {
+  // Exit/loading zone shuffles
+  map<uint32, ExitDestination> shuffled_exits = 1;
+  
+  // Barrel/minigame shuffles
+  map<uint32, uint32> shuffled_barrels = 2;  // location ID -> MinigameType
+  
+  // Door shuffles
+  repeated DoorShuffle shuffled_doors = 3;
+  
+  // Kasplat shuffles
+  repeated KasplatShuffle kasplat_shuffles = 4;
+  
+  // Exit instructions for patching
+  repeated string exit_instructions = 5;
+  
+  // Port/warp shuffles
+  map<uint32, PortConnection> port_connections = 6;
+  
+  // Human-readable warp data
+  repeated WarpHumanReadable warp_data = 7;
+  
+  // Crown shuffles
+  repeated CrownPlacement crown_placements = 8;
+  
+  // Human-readable crown data
+  repeated CrownHumanReadable crown_data = 9;
+  
+  // Patch shuffles (dirt patches)
+  repeated PatchPlacement patch_placements = 10;
+  
+  // Crate shuffles (melon crates)
+  repeated CratePlacement crate_placements = 11;
+
+  // Shop location shuffles: {level -> {old_shop_region -> new_shop_region}}
+  repeated ShopLocationShuffle shuffled_shop_locations = 12;
+
+  // Kasplat location shuffles: kasplat_name -> kong_index
+  map<string, uint32> shuffled_kasplat_map = 13;
+
+  // Fairy location shuffles: level -> list of fairy indexes
+  repeated FairyLocationLevel fairy_locations = 14;
+
+  // Fairy data table: 20-entry array of fairy metadata
+  repeated FairyDataEntry fairy_data_table = 15;
+
+  // Bananaport replacements: list of (new_pad_index, visual_type)
+  repeated BananaportReplacement bananaport_replacements = 16;
+
+  // Warp locations: warp_id -> custom_location_id
+  map<uint32, uint32> warp_locations = 17;
+}
+
+message ShopLocationAssignment {
+  uint32 old_shop = 1;  // Regions enum
+  uint32 new_shop = 2;  // Regions enum
+}
+
+message ShopLocationShuffle {
+  uint32 level = 1;  // Levels enum
+  repeated ShopLocationAssignment assignments = 2;
+}
+
+message FairyLocationLevel {
+  uint32 level = 1;  // Levels enum
+  repeated uint32 fairy_indexes = 2;
+}
+
+message FairyDataEntry {
+  bool present = 1;         // false = empty slot
+  uint32 fairy_index = 2;
+  uint32 level = 3;         // Levels enum
+  int32 flag = 4;
+  int32 id = 5;
+  int32 shift = 6;
+  int32 script_id = 7;
+  int32 map_id = 8;
+}
+
+message BananaportReplacement {
+  uint32 new_pad_index = 1;
+  uint32 visual_type = 2;
+}
+
+message ExitDestination {
+  uint32 destination_region = 1;  // RegionId
+  uint32 reverse_transition = 2;  // TransitionId
+  string exit_name = 3;
+  string spoiler_name = 4;
+}
+
+message DoorShuffle {
+  uint32 level = 1;
+  repeated DoorEntry doors = 2;
+}
+
+message DoorEntry {
+  string door_type = 1;
+  uint32 door_location = 2;
+  // Additional door data as needed
+  // For wrinkly doors, the kong the door is assigned to (KongId). Unused for
+  // boss (T&S) and dk_portal entries; defaults to 0.
+  uint32 kong_assignee = 3;
+}
+
+message KasplatShuffle {
+  uint32 location_id = 1;
+  uint32 kong_id = 2;  // KongId
+}
+
+message PortConnection {
+  uint32 destination_region = 1;
+  uint32 destination_map = 2;
+  uint32 destination_exit = 3;
+}
+
+message WarpHumanReadable {
+  string from = 1;
+  string to = 2;
+}
+
+message CrownPlacement {
+  uint32 map_id = 1;
+  uint32 arena_id = 2;
+  uint32 level = 3;        // Levels enum value
+  uint32 crown_index = 4;  // index into CustomLocations[level]
+  uint32 subindex = 5;     // placement sub-index
+}
+
+message CrownHumanReadable {
+  string arena_name = 1;
+  uint32 map_id = 2;
+}
+
+message PatchPlacement {
+  uint32 map_id = 1;
+  uint32 patch_id = 2;
+  uint32 item_id = 3;  // ItemId
+  uint32 level = 4;    // Levels enum value
+  string name = 5;     // patch name for CustomLocations lookup
+}
+
+message CratePlacement {
+  uint32 map_id = 1;
+  uint32 crate_id = 2;
+  uint32 item_id = 3;  // ItemId
+  uint32 level = 4;    // Levels enum value
+  string name = 5;     // crate name for CustomLocations lookup
+}
+
+// Placement data for CBs, coins, enemies
+message PlacementData {
+  // Colored banana placements
+  repeated CBPlacement cb_placements = 1;
+  
+  // Balloon placements
+  repeated BalloonPlacement balloon_placements = 2;
+  
+  // Enemy replacements
+  repeated EnemyReplacement enemy_replacements = 3;
+  
+  // Coin requirements for races
+  map<uint32, uint32> coin_requirements = 4;  // map ID -> coin count
+  
+  // Coin placements
+  repeated CoinPlacement coin_placements = 5;
+  
+  // Race coin placements
+  repeated RaceCoinPlacement race_coin_placements = 6;
+  
+  // Pokemon Snap enemy data (for Krem Kapture win condition)
+  // Boolean array indicating which enemies spawn in Pokemon Snap
+  repeated bool pkmn_snap_data = 7;
+
+  // Per-map randomized enemy spawn data. Built by randomize_enemies_0 during
+  // the Fill and consumed by randomize_enemies at patch time. Maps container
+  // map_id -> list of enemy entries. Required for enemy rando to work
+  // through the proto-based patching flow.
+  map<uint32, EnemyRandoMapEntries> enemy_rando_data = 8;
+}
+
+// Wrapper so we can store a repeated list inside a proto map value.
+message EnemyRandoMapEntries {
+  repeated EnemyRandoEntry entries = 1;
+}
+
+message EnemyRandoEntry {
+  uint32 enemy = 1;            // Enemies enum value
+  repeated uint32 speeds = 2;  // [idle_speed, aggro_speed]
+  uint32 spawner_id = 3;       // Matches Spawner.index in the vanilla ROM data
+  string location = 4;         // Locations enum name (for spoiler display)
+}
+
+
+message CBPlacement {
+  uint32 id = 1;
+  string name = 2;
+  uint32 kong = 3;  // KongId
+  uint32 level = 4;  // LevelId
+  string type = 5;  // "cb" or "balloons"
+  uint32 map = 6;  // MapId
+  repeated CBLocation locations = 7;  // Only for "cb" type
+}
+
+message CBLocation {
+  uint32 amount = 1;
+  float scale = 2;
+  float x = 3;
+  float y = 4;
+  float z = 5;
+}
+
+message BalloonPlacement {
+  uint32 id = 1;
+  string name = 2;
+  uint32 kong = 3;  // KongId
+  uint32 level = 4;  // LevelId
+  uint32 map = 5;  // MapId
+  uint32 score = 6;
+}
+
+message EnemyReplacement {
+  uint32 container_map = 1;  // MapId
+  repeated KasplatSwap kasplat_swaps = 2;
+}
+
+message KasplatSwap {
+  uint32 vanilla_location = 1;  // KongId
+  uint32 replace_with = 2;  // KongId
+}
+
+message CoinLocation {
+  float scale = 1;
+  float x = 2;
+  float y = 3;
+  float z = 4;
+}
+
+message CoinPlacement {
+  uint32 level = 1;
+  uint32 map = 2;
+  uint32 kong = 3;
+  string type = 4;
+  string name = 5;
+  repeated CoinLocation locations = 6;
+}
+
+message RaceCoinPlacement {
+  uint32 map = 1;
+  uint32 count = 2;
+  uint32 level = 3;
+  string name = 4;
+  repeated CoinLocation locations = 5;
+}
+
+// Hint data
+message HintData {
+  // Wrinkly hint set
+  HintSet hint_set = 1;
+  
+  // Tied hint flags
+  map<string, uint32> tied_hint_flags = 2;
+  
+  // Tied hint regions (35 entries)
+  repeated uint32 tied_hint_regions = 3;  // HintRegionId
+  
+  // Microhint data
+  map<string, string> microhints = 4;
+  
+  // Spoiler hint data by level
+  map<uint32, LevelSpoilerHints> level_spoiler_hints = 5;
+  
+  // Human-readable spoiler hints
+  map<string, string> level_spoiler_human_readable = 6;
+}
+
+message HintSet {
+  repeated Hint hints = 1;
+  uint32 max_hints = 2;
+}
+
+message Hint {
+  uint32 location_id = 1;
+  string hint_text = 2;
+  bool important = 3;
+  uint32 priority = 4;
+}
+
+message Microhint {
+  uint32 item_id = 1;
+  uint32 level_id = 2;
+  uint32 kong_id = 3;
+}
+
+message LevelSpoilerHints {
+  repeated string vial_colors = 1;
+  int32 points = 2;
+  int32 woth_count = 3;
+  repeated LevelSpoilerItem level_items = 4;
+}
+
+message LevelSpoilerItem {
+  uint32 item = 1;    // Items enum
+  int32 points = 2;
+  uint32 flag = 3;
+}
+
+// Path data for WotH and playthrough
+message PathData {
+  // Way of the Hoard locations
+  repeated uint32 woth_locations = 1;  // LocationId
+  
+  // Way of the Hoard paths - map of destination location to path
+  map<uint32, LocationPath> woth_paths = 2;
+  
+  // K. Rool phase paths
+  map<string, LocationPath> krool_paths = 3;
+  
+  // Rabbit path (if rabbit win condition)
+  repeated uint32 rabbit_path = 4;
+  
+  // DK Rap verse paths
+  map<string, LocationPath> rap_win_con_paths = 5;
+  
+  // Other interesting item paths
+  map<uint32, LocationPath> other_paths = 6;
+  
+  // Playthrough spheres
+  repeated Sphere playthrough = 7;
+  
+  // Major items list
+  repeated uint32 major_items = 8;  // ItemId
+  
+  // Foolish region names
+  repeated string foolish_region_names = 9;
+  
+  // Pathless moves
+  repeated uint32 pathless_moves = 10;  // ItemId
+  
+  // Region hintable count
+  map<string, RegionItemCounts> region_hintable_count = 11;  // region_name -> item counts
+  
+  // Accessible hints for location (for WotH hints)
+  map<uint32, AccessibleHints> accessible_hints_for_location = 12;
+}
+
+message LocationPath {
+  repeated uint32 locations = 1;  // LocationId
+}
+
+message Sphere {
+  repeated SphereLocation locations = 1;
+}
+
+message SphereLocation {
+  uint32 location_id = 1;
+  uint32 item_id = 2;
+}
+
+message AccessibleHints {
+  repeated string hint_names = 1;
+}
+
+message RegionItemCounts {
+  map<string, RegionItemData> items = 1;  // item_name -> item data
+}
+
+message RegionItemData {
+  string plural = 1;
+  uint32 count = 2;
+  repeated uint32 shuffled_locations = 3;  // LocationId
+}
+
+// Miscellaneous patching data
+message MiscPatchingData {
+  // Item assignments for item rando
+  repeated ItemAssignment item_assignments = 1;
+  
+  // Item references for display
+  repeated ItemReference item_references = 2;
+  
+  // Valid photo items
+  repeated uint32 valid_photo_items = 3;  // ItemId
+  
+  // Special items
+  optional uint32 arcade_item_reward = 4;  // ItemId
+  optional uint32 jetpac_item_reward = 5;  // ItemId
+  
+  // Music data
+  map<uint32, uint32> music_bgm_data = 6;
+  map<uint32, uint32> music_majoritem_data = 7;
+  map<uint32, uint32> music_minoritem_data = 8;
+  map<uint32, uint32> music_event_data = 9;
+  
+  // Text file changes (file ID -> list of changes)
+  map<uint32, TextFileChanges> text_file_changes = 10;
+
+  // DK portal / level entry destinations (per level, length 8)
+  // Mirrors settings.level_portal_destinations, written by ASMPatcher.
+  // exit can be -1 (meaning "default entry for the map"); serialized signed.
+  repeated LevelPortalDestination level_portal_destinations = 11;
+  repeated uint32 level_void_maps = 12;
+  repeated common.KongId starting_kong_list = 13;
+  optional common.KongId resolved_starting_kong = 14;
+  repeated uint32 blocker_entry_counts = 15;  // BLockerEntryCount per level
+  repeated uint32 blocker_entry_items = 16;   // BarrierItems enum per level
+  repeated uint32 boss_bananas = 17;          // BossBananas (T&S CB count) per level
+  repeated uint32 pregiven_items = 18;                // ItemId list
+  optional uint32 first_move_item = 19;               // ItemId (fast_start=False only)
+  optional bool archipelago = 20;
+  optional string player_name = 21;
+  repeated uint32 krool_keys_required = 22;
+  optional uint32 ship_location_index = 23;
+  optional string ship_name = 24;
+  repeated uint32 switch_allocation = 25;
+  repeated SwitchsanityAssignment switchsanity_data = 26;
+  optional bool switchsanity_enabled = 27;
+}
+
+message SwitchsanityAssignment {
+  uint32 switch = 1;       // Switches enum value
+  uint32 kong = 2;         // Kongs enum value
+  uint32 switch_type = 3;  // SwitchType enum value
+}
+
+message LevelPortalDestination {
+  uint32 map = 1;     // Maps enum
+  sint32 exit = 2;    // Exit index, -1 means "use map default"
+}
+
+message ItemAssignment {
+  // Using sint32 where values are legitimately signed (-1 sentinel for
+  // "no flag", "no item", Kongs.any, etc). The previous uint32s silently
+  // turned negatives into huge unsigned numbers.
+  sint32 old_type = 1;       // Types enum; -1 = None
+  sint32 old_flag = 2;       // -1 = no flag
+  sint32 old_item = 12;      // Types enum; -1 = None (was missing)
+  sint32 old_kong = 13;      // Kongs enum; -1 means use default
+  // map_id -> actor_id / object_id. LocationSelection.placement_data.
+  map<uint32, uint32> maps_to_actor_ids = 3;
+  uint32 location = 4;       // LocationId
+  sint32 new_flag = 5;       // -1 = no flag
+  sint32 new_type = 6;       // Types enum; -1 = None
+  sint32 new_item = 7;       // ItemId; -1 = None
+  sint32 new_kong = 8;       // KongId; -1 = Kongs.any
+  bool shared = 9;
+  // placement_index is a LIST in LocationSelection (shared shop items hit
+  // multiple placement slots). Keeping it a repeated sint32 preserves that.
+  repeated sint32 placement_index = 10;
+  uint32 placement_subindex = 11;
+  // Remaining LocationSelection fields the patcher reads directly.
+  bool is_reward_point = 14;
+  bool is_shop = 15;
+  sint32 price = 16;         // Can be a list of prices; store first/common value
+  bool can_have_item = 17;
+  bool can_place_item = 18;
+  bool shop_locked = 19;
+  uint32 order = 20;
+  string name = 21;
+  string move_name = 22;
+}
+
+message ItemReference {
+  uint32 item = 1;  // ItemId
+  string item_name = 2;
+  repeated ItemReferenceLocation locations = 3;
+  repeated uint32 flags = 4;
+}
+
+message ItemReferenceLocation {
+  string location_name = 1;
+}
+
+message TextFileChanges {
+  repeated string changes = 1;
+}

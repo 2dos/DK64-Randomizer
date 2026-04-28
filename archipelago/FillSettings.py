@@ -336,14 +336,11 @@ def get_default_settings() -> dict[str, Any]:
 def handle_fake_generation_settings(settings: Settings, multiworld: MultiWorld) -> None:
     """Handle settings for fake generation (UT mode)."""
     if hasattr(multiworld, "generation_is_fake"):
+        settings.is_ut_generation = True
         if hasattr(multiworld, "re_gen_passthrough"):
             if "Donkey Kong 64" in multiworld.re_gen_passthrough:
                 passthrough = multiworld.re_gen_passthrough["Donkey Kong 64"]
                 settings.level_order = passthrough["LevelOrder"]
-
-                # Store custom location names for later restoration (after spoiler is created)
-                if passthrough.get("CustomLocationNames"):
-                    settings.ut_custom_location_names = passthrough["CustomLocationNames"]
 
                 # Switch logic lifted out of level shuffle due to static levels for UT
                 if settings.alter_switch_allocation:
@@ -398,7 +395,7 @@ def handle_fake_generation_settings(settings: Settings, multiworld: MultiWorld) 
                     switch_type = SwitchType[data["type"]]
                     settings.switchsanity_data[Switches[switch]] = SwitchInfo(switch, needed_kong, switch_type, 0, 0, [])
 
-                if passthrough["Shopkeepers"]:
+                if passthrough.get("Shopkeepers") or "shopkeepers" in (passthrough.get("ItemPool") or []):
                     settings.shuffled_location_types.append(Types.Cranky)
                     settings.shuffled_location_types.append(Types.Funky)
                     settings.shuffled_location_types.append(Types.Candy)
@@ -471,9 +468,6 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
         case _:
             settings_dict["galleon_water"] = GalleonWaterSetting.lowered
     settings_dict["no_consumable_upgrades"] = options.remove_bait_potions.value
-    settings_dict["crown_placement_rando"] = options.crown_placement_rando.value
-    settings_dict["random_crates"] = options.random_crates.value
-    settings_dict["random_patches"] = options.random_patches.value
 
     # Apply switch allocation settings
     slam_map = {
@@ -515,44 +509,70 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
         for i, blocker in enumerate(blocker_options):
             settings_dict[f"blocker_{i}"] = blocker
 
+    # Apply Troff n Scoff settings
+    troff_options: list[int] = [
+        options.level_troff.value.get("level_1", 0),
+        options.level_troff.value.get("level_2", 0),
+        options.level_troff.value.get("level_3", 0),
+        options.level_troff.value.get("level_4", 0),
+        options.level_troff.value.get("level_5", 0),
+        options.level_troff.value.get("level_6", 0),
+        options.level_troff.value.get("level_7", 0),
+        options.level_troff.value.get("level_8", 0),
+    ]
+    if options.randomize_troff.value:
+        settings_dict["troff_text"] = options.troff_max.value
+        settings_dict["tns_selection_behavior"] = TroffSetting.normal_random
+    else:
+        settings_dict["troff_text"] = options.troff_max.value
+        settings_dict["tns_selection_behavior"] = TroffSetting.pre_selected
+        for i, troff in enumerate(troff_options):
+            settings_dict[f"troff_{i}"] = troff
+
     # Apply item randomization settings
+    # Moves, Golden Bananas, Shops, Kongs, Keys, Races, Training Moves, and Shockwave are always forced on.
+    # All other categories come from the item_pool option.
     settings_dict["item_rando_list_selected"] = []
     settings_dict["item_rando_list_1"] = [
-        ItemRandoListSelected.shop,
         ItemRandoListSelected.moves,
         ItemRandoListSelected.banana,
-        ItemRandoListSelected.racebanana,
-        ItemRandoListSelected.gauntletbanana,
-        ItemRandoListSelected.crown,
-        ItemRandoListSelected.blueprint,
-        ItemRandoListSelected.key,
-        ItemRandoListSelected.medal,
-        ItemRandoListSelected.nintendocoin,
+        ItemRandoListSelected.shop,
         ItemRandoListSelected.kong,
-        ItemRandoListSelected.fairy,
-        ItemRandoListSelected.rainbowcoin,
-        ItemRandoListSelected.bean,
-        ItemRandoListSelected.pearl,
-        ItemRandoListSelected.crateitem,
-        ItemRandoListSelected.rarewarecoin,
-        ItemRandoListSelected.shockwave,
+        ItemRandoListSelected.key,
+        ItemRandoListSelected.racebanana,
         ItemRandoListSelected.trainingmoves,
+        ItemRandoListSelected.shockwave,
     ]
     settings_dict["decouple_item_rando"] = False
     settings_dict["filler_items_selected"] = [ItemRandoFiller.junkitem]
-    if options.hints_in_item_pool.value:
-        settings_dict["item_rando_list_1"].append(ItemRandoListSelected.hint)
-    if options.boulders_in_pool.value:
-        settings_dict["item_rando_list_1"].append(ItemRandoListSelected.boulderitem)
-    if options.dropsanity:
-        settings_dict["item_rando_list_1"].append(ItemRandoListSelected.enemies)
-    settings_dict["item_rando_list_1"].append(ItemRandoListSelected.shopowners)
-    if options.half_medals_in_pool.value:
-        settings_dict["item_rando_list_1"].append(ItemRandoListSelected.halfmedal)
-    if options.snide_turnins_to_pool.value:
-        settings_dict["item_rando_list_1"].append(ItemRandoListSelected.blueprintbanana)
-    if options.time_of_day.value:
-        settings_dict["item_rando_list_1"].append(ItemRandoListSelected.fungitime)
+
+    item_pool_selections = set(options.item_pool.value)
+    item_pool_key_to_enums: dict[str, list[ItemRandoListSelected]] = {
+        "crowns": [ItemRandoListSelected.crown],
+        "blueprints": [ItemRandoListSelected.blueprint],
+        "medals": [ItemRandoListSelected.medal],
+        "company_coins": [ItemRandoListSelected.nintendocoin, ItemRandoListSelected.rarewarecoin],
+        "fairies": [ItemRandoListSelected.fairy],
+        "rainbow_coins": [ItemRandoListSelected.rainbowcoin],
+        "bean": [ItemRandoListSelected.bean],
+        "pearls": [ItemRandoListSelected.pearl],
+        "crates": [ItemRandoListSelected.crateitem],
+        "battle_arenas": [ItemRandoListSelected.gauntletbanana],
+        "hints": [ItemRandoListSelected.hint],
+        "shopkeepers": [ItemRandoListSelected.shopowners],
+        "half_medals": [ItemRandoListSelected.halfmedal],
+        "snide_turnins": [ItemRandoListSelected.blueprintbanana],
+        "time_of_day": [ItemRandoListSelected.fungitime],
+        "boulders": [ItemRandoListSelected.boulderitem],
+        "balloons": [ItemRandoListSelected.balloon],
+        "breakables": [ItemRandoListSelected.breakable],
+        "dropsanity": [ItemRandoListSelected.enemies],
+    }
+    for key, enums in item_pool_key_to_enums.items():
+        if key in item_pool_selections:
+            for enum_value in enums:
+                if enum_value not in settings_dict["item_rando_list_1"]:
+                    settings_dict["item_rando_list_1"].append(enum_value)
 
     # Apply hard mode settings
     settings_dict["hard_mode_selected"] = []

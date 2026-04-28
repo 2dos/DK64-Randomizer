@@ -112,18 +112,10 @@ def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler, option
     # okay okay OKAY you get a logicVarHolder object for JUST THIS ONCE. Codes these days...
     logic_holder = LogicVarHolder(spoiler, player)
 
-    # Build location table from spoiler's LocationList (which may have custom locations)
     all_locations_dynamic = {
         spoiler.LocationList[location].name: (BASE_ID + index) for index, location in enumerate(DK64RLocation.LocationListOriginal) if spoiler.LocationList[location].type != Types.EnemyPhoto
     }
     all_locations_dynamic.update({"Victory": 0x00})  # Temp for generating goal location
-
-    # Debug: check for custom location names
-    custom_names = [name for name in all_locations_dynamic.keys() if "Battle Arena" in name or "Melon Crate" in name or "Dirt:" in name]
-    if custom_names and len(custom_names) > 0:
-        print(f"[DK64 create_regions] Found {len(custom_names)} custom locations, samples:")
-        for name in custom_names[:5]:
-            print(f"  {name}")
 
     # Pick random 10 shops to make shared
     # Only if shared shops are enabled in settings
@@ -244,11 +236,11 @@ def create_region(
                         should_skip = True
                 case Types.Shop:
                     if location_obj.kong == Kongs.any:
-                        if location_logic.id not in logic_holder.available_shared_shops:
+                        if (not hasattr(multiworld, "generation_is_fake")) and location_logic.id not in logic_holder.available_shared_shops:
                             should_skip = True
                     else:
                         vendor_level_key = (location_obj.level, location_obj.vendor)
-                        if vendor_level_key in logic_holder.shared_shop_vendors:
+                        if (not hasattr(multiworld, "generation_is_fake")) and vendor_level_key in logic_holder.shared_shop_vendors:
                             should_skip = True
                 case Types.EnemyPhoto:
                     if logic_holder.settings.win_condition_item != WinConditionComplex.krem_kapture:
@@ -684,7 +676,7 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
                 converted_logic = lambda state, player=world.player, exit=exit: hasDK64RTransition(state, player, exit)
 
             # Add time requirements if this transition has time restrictions
-            if world.options.time_of_day:
+            if "time_of_day" in world.options.item_pool:
                 if exit.time == Time.Day:
                     original_logic = converted_logic
                     converted_logic = lambda state, orig=original_logic: orig(state) and state.has("Day", world.player)

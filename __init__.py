@@ -10,9 +10,7 @@ import zipfile
 import codecs
 from io import BytesIO
 import pkgutil
-import shutil
 import sys
-import tempfile
 from typing import Any, TypedDict
 
 baseclasses_loaded = False
@@ -25,100 +23,6 @@ try:
 except ImportError:
     pass
 if baseclasses_loaded:
-
-    def display_error_box(title: str, text: str) -> bool | None:
-        """Display an error message box."""
-        from tkinter import Tk, messagebox
-
-        root = Tk()
-        root.withdraw()
-        ret = messagebox.showerror(title, text)
-        root.update()
-
-    def copy_dependencies(zip_path, file):
-        """Copy a ZIP file from the package to a temporary directory, extracts its contents.
-
-        Ensures the temporary directory exists.
-        Args:
-            zip_path (str): The relative path to the ZIP file within the package.
-        Behavior:
-            - Creates a temporary directory if it does not exist.
-            - Reads the ZIP file from the package using `pkgutil.get_data`.
-            - Writes the ZIP file to the temporary directory if it does not already exist.
-            - Extracts the contents of the ZIP file into the temporary directory.
-        Prints:
-            - A message if the ZIP file could not be read.
-            - A message when the ZIP file is successfully copied.
-            - A message when the ZIP file is successfully extracted.
-        """
-        # Create a temporary directory
-        temp_dir = tempfile.mkdtemp()
-
-        zip_dest = os.path.join(temp_dir, file)
-        try:
-            # Load the ZIP file from the package
-            zip_data = pkgutil.get_data(__name__, zip_path)
-            # Check if the zip already exists in the destination
-            if not os.path.exists(zip_dest):
-                if zip_data is None:
-                    print(f"Failed to read {zip_path}")
-                else:
-                    # Write the ZIP file to the destination
-                    with open(zip_dest, "wb") as f:
-                        f.write(zip_data)
-                    print(f"Copied {zip_path} to {zip_dest}")
-
-                    # Extract the ZIP file
-                    with zipfile.ZipFile(zip_dest, "r") as zip_ref:
-                        zip_ref.extractall(temp_dir)
-                    print(f"Extracted {zip_dest} into {temp_dir}")
-
-        except PermissionError:
-            display_error_box("Permission Error", "Unable to install Dependencies to AP, please try to install AP as an admin.")
-            raise PermissionError("Permission Error: Unable to install Dependencies to AP, please try to install AP as an admin.")
-
-        # Add the temporary directory to sys.path
-        if temp_dir not in sys.path:
-            sys.path.insert(0, temp_dir)
-
-    platform_type = sys.platform
-    python_version = f"{sys.version_info.major}{sys.version_info.minor}"
-    baseclasses_path = os.path.dirname(os.path.dirname(BaseClasses.__file__))
-    if not baseclasses_path.endswith("lib"):
-        baseclasses_path = os.path.join(baseclasses_path, "lib")
-    # Remove ANY PIL folders from the baseclasses_path
-    # Or Pyxdelta or pillow folders
-    try:
-        for folder in os.listdir(baseclasses_path):
-            if folder.startswith("PIL") or folder.startswith("pyxdelta") or folder.startswith("pillow"):
-                folder_path = os.path.join(baseclasses_path, folder)
-                if os.path.isdir(folder_path):
-                    shutil.rmtree(folder_path)
-                elif os.path.isfile(folder_path):
-                    os.remove(folder_path)
-            # Also if its windows.zip or linux.zip, remove it
-            if folder.startswith("windows.zip") or folder.startswith("linux.zip"):
-                os.remove(os.path.join(baseclasses_path, folder))
-    except Exception as e:
-        pass
-
-    match platform_type:
-        case "win32":
-            zip_path = "vendor/windows.zip"
-            copy_dependencies(zip_path, "windows.zip")
-        case "linux":
-            # Try version-specific zip first, fall back to generic
-            version_zip = f"vendor/linux_{python_version}.zip"
-            generic_zip = "vendor/linux.zip"
-            try:
-                copy_dependencies(version_zip, f"linux_{python_version}.zip")
-            except (FileNotFoundError, KeyError):
-                try:
-                    copy_dependencies(generic_zip, "linux.zip")
-                except (FileNotFoundError, KeyError):
-                    raise Exception(f"Could not find vendor dependencies for Linux Python {python_version}")
-        case _:
-            raise Exception(f"Unsupported platform: {platform_type}")
 
     # Add paths for APWorld context - use __file__ to get the correct base path
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -151,12 +55,11 @@ if baseclasses_loaded:
     from randomizer.Spoiler import Spoiler
     from randomizer.Settings import Settings
     from randomizer.ShuffleWarps import LinkWarps
-    from randomizer.Patching.ApplyRandomizer import patching_response
     from version import version
-    from randomizer.Patching.EnemyRando import randomize_enemies_0
     from randomizer.Fill import ShuffleItems, Generate_Spoiler, IdentifyMajorItems
     from randomizer.CompileHints import compileMicrohints
     from archipelago.Hints import CompileArchipelagoHints
+    from randomizer.ProtoSerializer import fill_result_to_proto
     from randomizer.Enums.Types import Types, BarrierItems
     from randomizer.Enums.Enemies import Enemies
     from randomizer.Enums.Kongs import Kongs
@@ -180,7 +83,7 @@ if baseclasses_loaded:
     from randomizer.Enums.SwitchTypes import SwitchType
     from randomizer.Enums.EnemySubtypes import EnemySubtype
     from randomizer.Lists import Item as DK64RItem
-    from randomizer.Lists.Location import ShopLocationReference
+    from randomizer.Lists.Location import ShopLocationReference, SharedShopLocations
     from randomizer.Lists.ShufflableExit import ShufflableExits
     from randomizer.Lists.Switches import SwitchInfo
     from randomizer.Lists.EnemyTypes import EnemyLoc, EnemyMetaData
@@ -189,9 +92,6 @@ if baseclasses_loaded:
     from archipelago.FillSettings import fillsettings
     from archipelago import Tracker
     from archipelago.Prices import generate_prices
-    from Utils import open_filename
-    import shutil
-    import zlib
 
     boss_map_names = {
         Maps.JapesBoss: "Army Dillo 1",
@@ -207,14 +107,6 @@ if baseclasses_loaded:
         Maps.KroolTinyPhase: "Tiny Phase",
         Maps.KroolChunkyPhase: "Chunky Phase",
     }
-
-    def crc32_of_file(file_path):
-        """Compute CRC32 checksum of a file."""
-        crc_value = 0
-        with open(file_path, "rb") as f:
-            for chunk in iter(lambda: f.read(4096), b""):
-                crc_value = zlib.crc32(chunk, crc_value)
-        return f"{crc_value & 0xFFFFFFFF:08X}"  # Convert to 8-character hex
 
     def launch_client():
         """Launch the DK64 client."""
@@ -671,31 +563,6 @@ if baseclasses_loaded:
         @classmethod
         def stage_assert_generate(cls, multiworld: MultiWorld):
             """Assert the stage and generate the world."""
-            # Check if dk64.z64 exists, if it doesn't prompt the user to provide it
-            # ANd then we will copy it to the root directory
-            crc_values = ["D44B4FC6"]
-            rom_file = "dk64.z64"
-            if not os.path.exists(rom_file):
-                print("Please provide a DK64 ROM file.")
-                file = open_filename("Select DK64 ROM", (("N64 ROM", (".z64", ".n64")),))
-                if not file:
-                    raise FileNotFoundError("No ROM file selected.")
-                crc = crc32_of_file(file)
-                print(f"CRC32: {crc}")
-                if crc not in crc_values:
-                    print("Invalid DK64 ROM file, please make sure your ROM is big endian.")
-                    raise FileNotFoundError("Invalid DK64 ROM file, please make sure your ROM is a vanilla DK64 file in big endian.")
-                # Copy the file to the root directory
-                try:
-                    shutil.copy(file, rom_file)
-                except Exception as e:
-                    raise FileNotFoundError(f"Failed to copy ROM file, this may be a permissions issue: {e}")
-            else:
-                crc = crc32_of_file(rom_file)
-                print(f"CRC32: {crc}")
-                if crc not in crc_values:
-                    print("Invalid DK64 ROM file, please make sure your ROM is big endian.")
-                    raise FileNotFoundError("Invalid DK64 ROM file, please make sure your ROM is a vanilla DK64 file in big endian.")
             check_version()
 
         def _get_slot_data(self):
@@ -703,42 +570,6 @@ if baseclasses_loaded:
             return {
                 # "death_link": self.options.death_link.value,
             }
-
-        def _restore_custom_location_names(self, custom_location_names: dict):
-            """Restore custom location names from slot data for UT regeneration."""
-            from randomizer.Lists.Location import LocationListOriginal as VanillaLocationList
-            from archipelago.Regions import BASE_ID
-
-            if not custom_location_names:
-                return
-
-            print(f"[DK64 UT] Restoring {len(custom_location_names)} custom location names")
-
-            # Build enum_to_index mapping
-            enum_to_index = {location: index for index, location in enumerate(VanillaLocationList)}
-            # Build reverse mapping: location_id -> location_enum
-            index_to_enum = {index: location for location, index in enum_to_index.items()}
-
-            restored_count = 0
-            sample_names = []
-            for loc_id_str, data in custom_location_names.items():
-                loc_id = int(loc_id_str)
-                # Calculate the enum from the location ID
-                index = loc_id - BASE_ID
-                if index in index_to_enum:
-                    location_enum = index_to_enum[index]
-                    if location_enum in self.spoiler.LocationList:
-                        # Restore the custom name
-                        if isinstance(data, dict) and "name" in data:
-                            new_name = data["name"]
-                            self.spoiler.LocationList[location_enum].name = new_name
-                            restored_count += 1
-                            if restored_count <= 5:
-                                sample_names.append(f"  {new_name}")
-
-            print(f"[DK64 UT] Restored {restored_count} names, samples:")
-            for name in sample_names:
-                print(name)
 
         def generate_early(self):
             """Generate the world."""
@@ -763,7 +594,7 @@ if baseclasses_loaded:
             # We need to process ALL DK64 worlds to build/update seed groups before any player applies settings
             dk64_worlds: tuple[DK64World] = self.multiworld.get_game_worlds("Donkey Kong 64")
             for world in dk64_worlds:
-                if world.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+                if world.options.loading_zone_rando.value != LoadingZoneRando.option_no:
                     # Only process custom seed group strings, not standard numeric option values
                     if isinstance(world.options.loading_zone_rando.value, str):
                         group = world.options.loading_zone_rando.value
@@ -844,150 +675,7 @@ if baseclasses_loaded:
             # Apply seed group settings and create group random if using a custom seed group BEFORE fillsettings
             self.group_random = None
             self.original_random = None
-            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
-                # Only apply seed group settings for custom string values, not standard numeric options
-                if isinstance(self.options.loading_zone_rando.value, str):
-                    group = self.options.loading_zone_rando.value
-                    if group in self.seed_groups:
-                        # Override player's options with seed group settings
-                        self.options.shuffle_helm_level_order.value = int(self.seed_groups[group]["shuffle_helm_level_order"])
-                        self.options.enable_chaos_blockers.value = int(self.seed_groups[group]["enable_chaos_blockers"])
-                        self.options.randomize_blocker_required_amounts.value = int(self.seed_groups[group]["randomize_blocker_required_amounts"])
-                        self.options.blocker_max.value = self.seed_groups[group]["blocker_max"]
-                        self.options.maximize_level8_blocker.value = int(self.seed_groups[group]["maximize_helm_blocker"])
-                        self.options.level_blockers.value = self.seed_groups[group]["level_blockers"]
-
-                        # Create group random for LZR seed synchronization and replace self.random
-                        combined_seed = f"{self.multiworld.seed}_{group}"
-                        from hashlib import sha256
-
-                        seed_hash = int(sha256(combined_seed.encode()).hexdigest()[:16], 16)
-                        from random import Random
-
-                        self.group_random = Random(seed_hash)
-                        self.original_random = self.random
-                        self.random = self.group_random
-
-            # Use the fillsettings function to configure all settings
-            settings = fillsettings(self.options, self.multiworld, self.random)
-            # Enable entrance randomization if the option is set (any value other than no/off/false/0)
-            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
-                settings.level_randomization = LevelRandomization.loadingzone
-                settings.shuffle_loading_zones = ShuffleLoadingZones.all
-            else:
-                settings.level_randomization = LevelRandomization.level_order_complex
-                settings.shuffle_loading_zones = ShuffleLoadingZones.levels
-            self.spoiler = Spoiler(settings)
-            # Undo any changes to this location's name, until we find a better way to prevent this from confusing the tracker and the AP code that is responsible for sending out items
-            self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
-            self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
-
-            # For UT regeneration, restore DK portal locations
-            if hasattr(settings, "ut_dk_portal_locations"):
-                self.spoiler.human_entry_doors = settings.ut_dk_portal_locations
-
-            # Handle custom location shuffling BEFORE regions are created
-            # This needs to happen early so the logic system knows about the new locations
-            from randomizer.Lists.CustomLocations import resetCustomLocations
-            from randomizer.ShuffleCrowns import ShuffleCrowns
-            from randomizer.ShuffleCrates import ShuffleMelonCrates
-            from randomizer.ShufflePatches import ShufflePatches
-
-            resetCustomLocations(self.spoiler)
-
-            # Check if this is a UT regeneration - use generation_is_fake flag
-            is_ut_regen = hasattr(self.multiworld, "generation_is_fake")
-            print(f"[DK64] Is UT regen: {is_ut_regen}, has generation_is_fake: {hasattr(self.multiworld, 'generation_is_fake')}")
-
-            # Store custom location flags
-            do_crown_shuffle = self.spoiler.settings.crown_placement_rando
-            do_patch_shuffle = self.spoiler.settings.random_patches
-            do_crate_shuffle = self.spoiler.settings.random_crates
-            print(f"[DK64] Shuffle flags - Crowns: {do_crown_shuffle}, Patches: {do_patch_shuffle}, Crates: {do_crate_shuffle}")
-
-            # Temporarily disable custom locations so Generate_Spoiler doesn't run them
-            self.spoiler.settings.crown_placement_rando = False
-            self.spoiler.settings.random_patches = False
-            self.spoiler.settings.random_crates = False
-
-            Generate_Spoiler(self.spoiler)
-
-            # Restore settings
-            self.spoiler.settings.crown_placement_rando = do_crown_shuffle
-            self.spoiler.settings.random_patches = do_patch_shuffle
-            self.spoiler.settings.random_crates = do_crate_shuffle
-
-            if not is_ut_regen:
-                # Normal generation - run custom location shuffles
-                if do_crown_shuffle:
-                    crown_replacements = {}
-                    crown_human_replacements = {}
-                    ShuffleCrowns(self.spoiler, crown_replacements, crown_human_replacements)
-                    self.spoiler.crown_locations = crown_replacements
-                    self.spoiler.human_crowns = dict(sorted(crown_human_replacements.items()))
-                    print(f"[DK64] Shuffled {len([c for crowns in crown_replacements.values() for c in crowns])} battle arenas")
-
-                if do_patch_shuffle:
-                    human_patches = {}
-                    self.spoiler.human_patches = ShufflePatches(self.spoiler, human_patches).copy()
-                    print(f"[DK64] Shuffled {len(self.spoiler.dirt_patch_placement)} dirt patches")
-
-                if do_crate_shuffle:
-                    human_crates = {}
-                    self.spoiler.human_crates = ShuffleMelonCrates(self.spoiler, human_crates).copy()
-                    print(f"[DK64] Shuffled {len(self.spoiler.meloncrate_placement)} melon crates")
-
-            # Store/retrieve blocker values for seed group synchronization
-            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
-                if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
-                    group = self.options.loading_zone_rando.value
-                    if group in self.seed_groups:
-                        # If this is the first player to generate, store the blocker values
-                        if self.seed_groups[group]["generated_blockers"] is None:
-                            blocker_values = [
-                                self.spoiler.settings.blocker_0,
-                                self.spoiler.settings.blocker_1,
-                                self.spoiler.settings.blocker_2,
-                                self.spoiler.settings.blocker_3,
-                                self.spoiler.settings.blocker_4,
-                                self.spoiler.settings.blocker_5,
-                                self.spoiler.settings.blocker_6,
-                                self.spoiler.settings.blocker_7,
-                            ]
-                            self.seed_groups[group]["generated_blockers"] = blocker_values
-                        else:
-                            # Use the stored blocker values from the first player
-                            blocker_values = self.seed_groups[group]["generated_blockers"]
-                            self.spoiler.settings.blocker_0 = blocker_values[0]
-                            self.spoiler.settings.blocker_1 = blocker_values[1]
-                            self.spoiler.settings.blocker_2 = blocker_values[2]
-                            self.spoiler.settings.blocker_3 = blocker_values[3]
-                            self.spoiler.settings.blocker_4 = blocker_values[4]
-                            self.spoiler.settings.blocker_5 = blocker_values[5]
-                            self.spoiler.settings.blocker_6 = blocker_values[6]
-                            self.spoiler.settings.blocker_7 = blocker_values[7]
-
-                            # randomize_blockers: if any player has it disabled, disable it for the group
-                            if not world.options.randomize_blocker_required_amounts.value:
-                                self.seed_groups[group]["randomize_blocker_required_amounts"] = False
-
-                            # blocker_max: use the lowest value in the group
-                            self.seed_groups[group]["blocker_max"] = min(self.seed_groups[group]["blocker_max"], int(world.options.blocker_max.value))
-
-                            # maximize_helm_blocker: if any player has it enabled, enable it for the group
-                            if world.options.maximize_level8_blocker.value:
-                                self.seed_groups[group]["maximize_helm_blocker"] = True
-
-                            # level blockers: use the lowest value in the group for each
-                            for level_num in range(1, 9):
-                                blocker_key = f"level_{level_num}"
-                                option_key = "level_blockers"
-                                self.seed_groups[group][option_key][blocker_key] = min(self.seed_groups[group][option_key][blocker_key], int(getattr(world.options, option_key)[blocker_key]))
-
-            # Apply seed group settings and create group random if using a custom seed group BEFORE fillsettings
-            self.group_random = None
-            self.original_random = None
-            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+            if world.options.loading_zone_rando.value != LoadingZoneRando.option_no:
                 if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
                     group = self.options.loading_zone_rando.value
                     if group in self.seed_groups:
@@ -1014,7 +702,7 @@ if baseclasses_loaded:
             # Use the fillsettings function to configure all settings
             settings = fillsettings(self.options, self.multiworld, self.random)
             # Enable entrance randomization if the option is set (any value other than no/off/false/0)
-            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+            if world.options.loading_zone_rando.value != LoadingZoneRando.option_no:
                 settings.level_randomization = LevelRandomization.loadingzone
                 settings.shuffle_loading_zones = ShuffleLoadingZones.all
             else:
@@ -1025,17 +713,14 @@ if baseclasses_loaded:
             self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
             self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
 
+            # For UT regeneration, restore DK portal locations
+            if hasattr(settings, "ut_dk_portal_locations"):
+                self.spoiler.human_entry_doors = settings.ut_dk_portal_locations
+
             Generate_Spoiler(self.spoiler)
 
-            # For UT: Restore custom location names after Generate_Spoiler
-            if hasattr(self.multiworld, "generation_is_fake") and hasattr(self.multiworld, "re_gen_passthrough"):
-                if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
-                    passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
-                    custom_location_names = passthrough.get("CustomLocationNames", {})
-                    self._restore_custom_location_names(custom_location_names)
-
             # Store/retrieve blocker values for seed group synchronization
-            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+            if world.options.loading_zone_rando.value != LoadingZoneRando.option_no:
                 if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
                     group = self.options.loading_zone_rando.value
                     if group in self.seed_groups:
@@ -1065,8 +750,6 @@ if baseclasses_loaded:
                             self.spoiler.settings.blocker_7 = blocker_values[7]
 
             if self.options.enable_shared_shops.value:
-                from randomizer.Lists.Location import SharedShopLocations
-
                 all_shared_shops = list(SharedShopLocations)
                 self.random.shuffle(all_shared_shops)
                 self.spoiler.settings.selected_shared_shops = set(all_shared_shops[:10])
@@ -1075,7 +758,7 @@ if baseclasses_loaded:
 
             # Generate custom shop prices for Archipelago
             generate_prices(self.spoiler, self.options, self.random)
-            # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
+            # Handle Loading Zones for Level Order shuffle. LZR shuffling happens in connect_entrances()
             if self.spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
                 if self.spoiler.settings.level_randomization != LevelRandomization.loadingzone:
                     # UT should not reshuffle the level order, but should update the exits
@@ -1506,8 +1189,7 @@ if baseclasses_loaded:
                 if ap_item_is_major_item and ap_major_item_type is not None:
                     spoiler.majorItems.append(ap_major_item_type)
 
-                # Generate patch with cumulative prices (what players see in-game)
-                patch_data, _ = patching_response(spoiler)
+                patch_data = fill_result_to_proto(spoiler).SerializeToString()
                 lanky = self.update_seed_results(patch_data, spoiler, self.player)
 
                 output_data = {
@@ -1690,8 +1372,7 @@ if baseclasses_loaded:
             # Zip all the data into a single file.
             zip_data = BytesIO()
             with zipfile.ZipFile(zip_data, "w") as zip_file:
-                # Write each variable to the zip file
-                zip_file.writestr("patch", patch)
+                zip_file.writestr("fill_result", patch)
                 zip_file.writestr("hash", str(hash))
                 zip_file.writestr("spoiler_log", str(json.dumps(spoiler_log)))
                 zip_file.writestr("generated_time", str(timestamp))
@@ -1756,76 +1437,8 @@ if baseclasses_loaded:
 
             return smaller_shops_data
 
-        def get_custom_location_names(self) -> dict:
-            """Get the mapping of location IDs to custom location data.
-
-            Returns a dictionary mapping location ID to a dict containing:
-            - 'name': the actual custom name assigned during shuffle
-            - 'flag': the flag ID used for checking completion in-game
-            Only includes locations whose names differ from the base location name.
-            """
-            from randomizer.Enums.Locations import Locations as DK64RLocations
-            from randomizer.Lists.Location import LocationListOriginal as VanillaLocationList
-            from archipelago.Regions import BASE_ID
-
-            custom_locations = {}
-
-            # Get all custom location IDs
-            # Battle Arenas are not in a contiguous range, so list them explicitly
-            battle_arena_locations = [
-                DK64RLocations.IslesBattleArena1,
-                DK64RLocations.IslesBattleArena2,
-                DK64RLocations.JapesBattleArena,
-                DK64RLocations.AztecBattleArena,
-                DK64RLocations.FactoryBattleArena,
-                DK64RLocations.GalleonBattleArena,
-                DK64RLocations.ForestBattleArena,
-                DK64RLocations.CavesBattleArena,
-                DK64RLocations.CastleBattleArena,
-                DK64RLocations.HelmBattleArena,
-            ]
-            dirt_range = range(DK64RLocations.RainbowCoin_Location00, DK64RLocations.RainbowCoin_Location15 + 1)
-            crate_range = range(DK64RLocations.MelonCrate_Location00, DK64RLocations.MelonCrate_Location12 + 1)
-
-            custom_location_ids = set(battle_arena_locations) | set(dirt_range) | set(crate_range)
-
-            # Build a mapping from enum to index in LocationListOriginal
-            enum_to_index = {location: index for index, location in enumerate(VanillaLocationList)}
-
-            for location_enum in custom_location_ids:
-                if location_enum in self.spoiler.LocationList:
-                    location_obj = self.spoiler.LocationList[location_enum]
-
-                    # Include all custom locations, even if names haven't changed
-                    # This is necessary because flags can be shuffled even if names stay the same
-                    if location_obj.name:
-                        # Calculate the AP location ID using the INDEX, not the enum value
-                        index = enum_to_index.get(location_enum)
-                        if index is None:
-                            continue
-                        location_id = BASE_ID + index
-                        # Get the flag ID from the location's default_mapid_data
-                        flag_id = None
-                        if location_obj.default_mapid_data and len(location_obj.default_mapid_data) > 0:
-                            flag_id = location_obj.default_mapid_data[0].flag
-                        custom_locations[location_id] = {"name": location_obj.name, "flag": flag_id}
-
-            return custom_locations
-
         def fill_slot_data(self) -> dict:
             """Fill the slot data."""
-            # Debug: Check if shuffle attributes exist
-            print(f"[DK64 fill_slot_data START] Checking spoiler attributes:")
-            print(f"  has crown_locations: {hasattr(self.spoiler, 'crown_locations')}")
-            print(f"  has dirt_patch_placement: {hasattr(self.spoiler, 'dirt_patch_placement')}")
-            print(f"  has meloncrate_placement: {hasattr(self.spoiler, 'meloncrate_placement')}")
-            if hasattr(self.spoiler, "crown_locations"):
-                print(f"  crown_locations length: {len(self.spoiler.crown_locations) if self.spoiler.crown_locations else 0}")
-            if hasattr(self.spoiler, "dirt_patch_placement"):
-                print(f"  dirt_patch_placement length: {len(self.spoiler.dirt_patch_placement) if self.spoiler.dirt_patch_placement else 0}")
-            if hasattr(self.spoiler, "meloncrate_placement"):
-                print(f"  meloncrate_placement length: {len(self.spoiler.meloncrate_placement) if self.spoiler.meloncrate_placement else 0}")
-
             # If hints are enabled, wait for hint compilation to complete
             if hasattr(self, "options") and self.options.hint_style > 0:
                 self.hint_compilation_complete.wait()
@@ -1836,8 +1449,6 @@ if baseclasses_loaded:
                 "Goal": self.options.goal.value,
                 "win_condition_item": self.spoiler.settings.win_condition_item.value,
                 "helm_hurry": self.spoiler.settings.helm_hurry,
-                "ClimbingShuffle": self.options.climbing_shuffle.value,
-                "CannonShuffle": self.options.cannon_shuffle.value,
                 "PlayerNum": self.player,
                 "death_link": self.options.death_link.value,
                 "ring_link": self.options.ring_link.value,
@@ -1899,9 +1510,17 @@ if baseclasses_loaded:
                     else ""
                 ),
                 "Junk": self.junked_locations,
-                "HintsInPool": self.options.hints_in_item_pool.value,
-                "BouldersInPool": self.options.boulders_in_pool.value,
-                "Dropsanity": self.options.dropsanity.value,
+                "ItemPool": sorted(self.options.item_pool.value),
+                "StartingMovePool1": list(self.options.starting_move_pool_1.value),
+                "StartingMovePool1Count": self.options.starting_move_pool_1_count.value,
+                "StartingMovePool2": list(self.options.starting_move_pool_2.value),
+                "StartingMovePool2Count": self.options.starting_move_pool_2_count.value,
+                "StartingMovePool3": list(self.options.starting_move_pool_3.value),
+                "StartingMovePool3Count": self.options.starting_move_pool_3_count.value,
+                "StartingMovePool4": list(self.options.starting_move_pool_4.value),
+                "StartingMovePool4Count": self.options.starting_move_pool_4_count.value,
+                "StartingMovePool5": list(self.options.starting_move_pool_5.value),
+                "StartingMovePool5Count": self.options.starting_move_pool_5_count.value,
                 "Version": self.ap_version,
                 "EnemyData": (
                     {
@@ -1909,11 +1528,9 @@ if baseclasses_loaded:
                         for location_id, enemy_loc in self.spoiler.enemy_location_list.items()
                         if EnemyMetaData[enemy_loc.enemy].e_type == EnemySubtype.GroundBeefy
                     }
-                    if self.options.dropsanity.value
+                    if "dropsanity" in self.options.item_pool
                     else {}
                 ),
-                "Shopkeepers": self.options.shopowners_in_pool.value,
-                "HalfMedals": self.options.half_medals_in_pool.value,
                 "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
                 "Autocomplete": self.options.auto_complete_bonus_barrels.value,
                 "HelmBarrelCount": self.options.helm_room_bonus_count.value,
@@ -1963,18 +1580,7 @@ if baseclasses_loaded:
                     else {}
                 ),
                 "DKPortalLocations": (self.spoiler.human_entry_doors if hasattr(self.spoiler, "human_entry_doors") and self.spoiler.human_entry_doors else {}),
-                "CustomLocationNames": self.get_custom_location_names(),
             }
-
-            # Debug logging for custom locations
-            custom_locs = slot_data.get("CustomLocationNames", {})
-            if custom_locs:
-                print(f"[DK64 Generation] Sending {len(custom_locs)} custom locations in slot_data")
-                for i, (loc_id, data) in enumerate(list(custom_locs.items())[:5]):
-                    if isinstance(data, dict):
-                        print(f"  Location {loc_id}: {data.get('name')} (flag: {data.get('flag')})")
-                    else:
-                        print(f"  Location {loc_id}: {data}")
 
             return slot_data
 
@@ -2278,20 +1884,15 @@ if baseclasses_loaded:
 
             if self.version_check(version, "1.1.0"):
                 tricks_selected = slot_data.get("TricksSelected", []).split(", ")
-                boulders_in_pool = slot_data.get("BouldersInPool", False)
-                dropsanity = slot_data.get("Dropsanity", False)
                 enemy_data = slot_data.get("EnemyData", {})
-                shopkeepers = slot_data.get("Shopkeepers", False)
             else:
                 raise ValueError(f"This world is generated with an old version of DK64 Randomizer. Please downgrade to the correct version: {version}.")
 
             # Added in half-medals/progressive medal reqs update
             if self.version_check(version, "1.1.11"):
                 medal_cb_requirement_level = list(map(lambda lvl_and_value: lvl_and_value[lvl_and_value.find(":") + 2 :], slot_data["MedalCBRequirementLevel"].split(", ")))
-                half_medals = slot_data["HalfMedals"]
             else:
                 medal_cb_requirement_level = {}
-                half_medals = False
 
             # Added in the bonus barrels update
             if self.version_check(version, "1.1.13"):
@@ -2340,13 +1941,17 @@ if baseclasses_loaded:
             starting_region = slot_data.get("StartingRegion", {})
             dk_portal_locations = slot_data.get("DKPortalLocations", {})
 
-            # Custom location names for UT regeneration
-            custom_location_names = slot_data.get("CustomLocationNames", {})
+            # Item pool list (replaces individual HintsInPool/BouldersInPool/Dropsanity/Shopkeepers/HalfMedals flags)
+            item_pool = slot_data.get("ItemPool", [])
 
-            # Custom location shuffle data for UT regeneration
-            crown_shuffle_data = slot_data.get("CrownShuffleData", None)
-            patch_shuffle_data = slot_data.get("PatchShuffleData", None)
-            crate_shuffle_data = slot_data.get("CrateShuffleData", None)
+            # Starting move pool selectors
+            starting_move_pools = [
+                {
+                    "items": slot_data.get(f"StartingMovePool{i}", []),
+                    "count": slot_data.get(f"StartingMovePool{i}Count", 0),
+                }
+                for i in range(1, 6)
+            ]
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -2380,11 +1985,12 @@ if baseclasses_loaded:
             relevant_data["JunkedLocations"] = junk
             relevant_data["BLockerEntryItems"] = [BarrierItems[item] for item in blocker_item_type]
             relevant_data["BLockerEntryCount"] = blocker_item_quantity
-            relevant_data["HintsInPool"] = slot_data["HintsInPool"]
-            relevant_data["BouldersInPool"] = boulders_in_pool
-            relevant_data["Dropsanity"] = dropsanity
+            relevant_data["ItemPool"] = item_pool
+            relevant_data["HintsInPool"] = "hints" in item_pool
+            relevant_data["BouldersInPool"] = "boulders" in item_pool
+            relevant_data["Dropsanity"] = "dropsanity" in item_pool
             relevant_data["EnemyData"] = enemy_data
-            relevant_data["Shopkeepers"] = shopkeepers
+            relevant_data["Shopkeepers"] = "shopkeepers" in item_pool
             relevant_data["MinigameData"] = minigame_data
             relevant_data["Autocomplete"] = autocomplete
             relevant_data["HelmBarrelCount"] = helm_barrel_count
@@ -2392,7 +1998,7 @@ if baseclasses_loaded:
             relevant_data["CrownDoorItemCount"] = crown_door_item_count
             relevant_data["CoinDoorItem"] = coin_door_item
             relevant_data["CoinDoorItemCount"] = coin_door_item_count
-            relevant_data["HalfMedals"] = half_medals
+            relevant_data["HalfMedals"] = "half_medals" in item_pool
             relevant_data["SmallerShopsData"] = smaller_shops_data
             relevant_data["ShopPrices"] = shop_prices
             relevant_data["EntranceRando"] = entrance_rando
@@ -2400,11 +2006,5 @@ if baseclasses_loaded:
             relevant_data["KongModels"] = kong_models
             relevant_data["StartingRegion"] = starting_region
             relevant_data["DKPortalLocations"] = dk_portal_locations
-            relevant_data["CustomLocationNames"] = custom_location_names
-            if crown_shuffle_data is not None:
-                relevant_data["CrownShuffleData"] = crown_shuffle_data
-            if patch_shuffle_data is not None:
-                relevant_data["PatchShuffleData"] = patch_shuffle_data
-            if crate_shuffle_data is not None:
-                relevant_data["CrateShuffleData"] = crate_shuffle_data
+            relevant_data["StartingMovePools"] = starting_move_pools
             return relevant_data

@@ -1,0 +1,47 @@
+// source: common/hint_type.proto
+/**
+ * @fileoverview
+ * @enhanceable
+ * @suppress {missingRequire} reports error on implicit type usages.
+ * @suppress {messageConventions} JS Compiler reports an error if a variable or
+ *     field starts with 'MSG_' and isn't a translatable message.
+ * @public
+ */
+// GENERATED CODE -- DO NOT EDIT!
+/* eslint-disable */
+// @ts-nocheck
+
+goog.provide('proto.randomizer.proto.common.HintType');
+
+/**
+ * @enum {number}
+ */
+proto.randomizer.proto.common.HintType = {
+  HINT_TYPE_UNSPECIFIED: 0,
+  HINT_TYPE_JOKE: 1,
+  HINT_TYPE_K_ROOL_ORDER: 2,
+  HINT_TYPE_HELM_ORDER: 3,
+  HINT_TYPE_MOVE_LOCATION: 4,
+  HINT_TYPE_DIRT_PATCH: 5,
+  HINT_TYPE_B_LOCKER: 6,
+  HINT_TYPE_TROFF_N_SCOFF: 7,
+  HINT_TYPE_KONG_LOCATION: 8,
+  HINT_TYPE_MEDALS_REQUIRED: 9,
+  HINT_TYPE_ENTRANCE: 10,
+  HINT_TYPE_ENTRANCE_V2: 11,
+  HINT_TYPE_REQUIRED_KONG_HINT: 12,
+  HINT_TYPE_REQUIRED_KEY_HINT: 13,
+  HINT_TYPE_REQUIRED_WIN_CONDITION_HINT: 14,
+  HINT_TYPE_REQUIRED_HELM_DOOR_HINT: 15,
+  HINT_TYPE_FULL_SHOP_WITH_ITEMS: 16,
+  HINT_TYPE_WOTH_LOCATION: 17,
+  HINT_TYPE_FOOLISH_MOVE: 18,
+  HINT_TYPE_FOOLISH_REGION: 19,
+  HINT_TYPE_FORESEEN_PATHLESS: 20,
+  HINT_TYPE_MULTIPATH: 21,
+  HINT_TYPE_REGION_ITEM_COUNT: 22,
+  HINT_TYPE_ITEM_HINTING: 23,
+  HINT_TYPE_PLANDO: 24,
+  HINT_TYPE_REQUIRED_SLAM_HINT: 25
+};
+

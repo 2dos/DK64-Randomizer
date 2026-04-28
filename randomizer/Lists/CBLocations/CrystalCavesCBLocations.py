@@ -2788,7 +2788,7 @@ BalloonList = [
         region=Regions.TinyCabin,
         vanilla=True,
         points=[[455, -99, 385], [432, 51, 384]],
-        banned_when_item_rando=True, # Over Pit
+        banned_when_item_rando=True,  # Over Pit
     ),
     Balloon(
         id=44,
@@ -2910,7 +2910,7 @@ BalloonList = [
         konglist=[Kongs.donkey],
         region=Regions.DonkeyCabin,
         points=[[414, 30, 337], [411, 100, 275], [417, 30, 216], [411, -70, 275]],
-        banned_when_item_rando=True, # Over pit
+        banned_when_item_rando=True,  # Over pit
     ),
     Balloon(
         id=57,

@@ -224,11 +224,15 @@ class ArchipelagoMapper:
             "shopowners_in_pool": "shuffle_shops",
             "snide_turnins_to_pool": "item_rando_list_1",
             "time_of_day": "item_rando_list_1",
+            "item_pool": "item_rando_list_1",
             "kong_models": "kong_model_dk",
             "krusha_model_mode": "kong_model_dk",
             "switchsanity": "switchsanity_enabled",
             "alter_switch_allocation": "alter_switch_allocation",
             "maximize_level8_blocker": "maximize_helm_blocker",
+            "randomize_troff": "tns_selection_behavior",
+            "troff_max": "troff_text",
+            "level_troff": "troff_text",
         }
 
         combined_mappings = {**auto_mappings, **manual_overrides}
@@ -516,6 +520,7 @@ class ArchipelagoMapper:
                 },
                 "helm_door_item_count": {"golden_bananas": 1, "blueprints": 1, "company_coins": 1, "keys": 1, "medals": 1, "crowns": 1, "fairies": 1, "rainbow_coins": 1, "bean": 1, "pearls": 1},
                 "level_blockers": {"level_1": 0, "level_2": 0, "level_3": 0, "level_4": 0, "level_5": 0, "level_6": 0, "level_7": 0, "level_8": 64},
+                "level_troff": {"level_1": 0, "level_2": 0, "level_3": 0, "level_4": 0, "level_5": 0, "level_6": 0, "level_7": 0, "level_8": 0},
                 "alter_switch_allocation": {"level_1": "green", "level_2": "green", "level_3": "green", "level_4": "green", "level_5": "blue", "level_6": "blue", "level_7": "red", "level_8": "red"},
                 "switchsanity": {
                     "isles_to_kroc_top": "off",
@@ -563,7 +568,67 @@ class ArchipelagoMapper:
         return value
 
     def _get_special_value(self, ap_field: str, settings_dict: Dict) -> Any:
+        # DK64R standalone uses dual pool sets:
+        #   pools 0..4 hold *items*   (pool 0 = unshuffled, 1..4 = shuffled buckets)
+        #   pools 5..9 hold *checks*  (pool 5 = unshuffled, 6..9 = shuffled buckets)
+        # Skip the unshuffled buckets (0 and 5) so items/checks the user parked there
+        # don't leak into item_pool. Mirrors static/js/rando_options.js::isItemShuffled.
+        item_rando_entries: list = []
+        for _i in range(10):
+            if _i == 0 or _i == 5:
+                continue
+            item_rando_entries.extend(settings_dict.get(f"item_rando_list_{_i}", []) or [])
         item_rando_list_1 = settings_dict.get("item_rando_list_1", [])
+
+        # Translate DK64R item_rando_list_* enums into the item_pool OptionSet keys.
+        # moves/banana/shop/kong/key/racebanana/trainingmoves/shockwave are always forced on and
+        # are not exposed as toggleable keys in the item_pool option.
+        enum_to_pool_key = {
+            "crown": "crowns",
+            "blueprint": "blueprints",
+            "medal": "medals",
+            "nintendocoin": "company_coins",
+            "rarewarecoin": "company_coins",
+            "fairy": "fairies",
+            "rainbowcoin": "rainbow_coins",
+            "bean": "bean",
+            "pearl": "pearls",
+            "crateitem": "crates",
+            "crate": "crates",
+            "crown": "battle_arenas",
+            "hint": "hints",
+            "dummyitem_boulderitem": "boulders",
+            "dummyitem_enemies": "dropsanity",
+            "dummyitem_balloon": "balloons",
+            "dummyitem_breakable": "breakables",
+            "shopowners": "shopkeepers",
+            "dummyitem_halfmedal": "half_medals",
+            "blueprintbanana": "snide_turnins",
+            "fungitime": "time_of_day",
+        }
+
+        def _iter_pool_names():
+            for item in item_rando_entries:
+                if hasattr(item, "name"):
+                    yield item.name
+                elif isinstance(item, str):
+                    yield item
+                elif isinstance(item, int):
+                    try:
+                        from randomizer.Enums.Settings import ItemRandoListSelected
+
+                        yield ItemRandoListSelected(item).name
+                    except Exception as e:
+                        logging.warning(f"Error converting item {item} to ItemRandoListSelected: {e}")
+
+        if ap_field == "item_pool":
+            keys = set()
+            for enum_name in _iter_pool_names():
+                mapped = enum_to_pool_key.get(enum_name)
+                if mapped is not None:
+                    keys.add(mapped)
+            return sorted(keys)
+
         item_list_checks = {
             "hints_in_item_pool": "hint",
             "boulders_in_pool": "dummyitem_boulderitem",
@@ -574,19 +639,9 @@ class ArchipelagoMapper:
         }
         if ap_field in item_list_checks:
             check_value = item_list_checks[ap_field]
-            for item in item_rando_list_1:
-                if hasattr(item, "name") and item.name == check_value:
+            for enum_name in _iter_pool_names():
+                if enum_name == check_value:
                     return True
-                elif isinstance(item, str) and item == check_value:
-                    return True
-                elif isinstance(item, int):
-                    try:
-                        from randomizer.Enums.Settings import ItemRandoListSelected
-
-                        if ItemRandoListSelected(item).name == check_value:
-                            return True
-                    except Exception as e:
-                        logging.warning(f"Error converting item {item} to ItemRandoListSelected: {e}")
             logging.info(f"{ap_field}: Looking for '{check_value}' in item_rando_list_1={item_rando_list_1}, not found")
             return False
 
@@ -733,7 +788,19 @@ class ArchipelagoMapper:
 
         if ap_field == "kong_models":
             try:
-                model_value_to_name = {0: "default", 1: "disco_chunky", 2: "krusha", 3: "krool_fight", 4: "krool_cutscene", 5: "cranky", 6: "candy", 7: "funky", 8: "disco_donkey", 9: "robokrem", 10: "rabbit"}
+                model_value_to_name = {
+                    0: "default",
+                    1: "disco_chunky",
+                    2: "krusha",
+                    3: "krool_fight",
+                    4: "krool_cutscene",
+                    5: "cranky",
+                    6: "candy",
+                    7: "funky",
+                    8: "disco_donkey",
+                    9: "robokrem",
+                    10: "rabbit",
+                }
                 result = {}
                 for kong in ["dk", "diddy", "lanky", "tiny", "chunky"]:
                     model = settings_dict.get(f"kong_model_{kong}")
@@ -785,6 +852,27 @@ class ArchipelagoMapper:
         if ap_field == "level_blockers":
             defaults = [0, 0, 0, 0, 0, 0, 0, 64]
             return {f"level_{i + 1}": int(settings_dict.get(f"blocker_{i}", defaults[i])) for i in range(8)}
+
+        if ap_field == "level_troff":
+            return {f"level_{i + 1}": int(settings_dict.get(f"troff_{i}", 0)) for i in range(8)}
+
+        if ap_field == "randomize_troff":
+            tns_behavior = settings_dict.get("tns_selection_behavior")
+            if tns_behavior is not None:
+                try:
+                    from randomizer.Enums.Settings import TroffSetting
+
+                    random_settings = [TroffSetting.normal_random, TroffSetting.hard_random]
+                    return tns_behavior in random_settings if hasattr(tns_behavior, "value") else tns_behavior in [s.value for s in random_settings]
+                except ImportError:
+                    pass
+            return True
+
+        if ap_field == "troff_max":
+            troff_text = settings_dict.get("troff_text")
+            if troff_text is not None:
+                return int(troff_text)
+            return 150
 
         if ap_field == "switchsanity":
             kong_value_names = {0: "donkey", 1: "diddy", 2: "lanky", 3: "tiny", 4: "chunky", 5: "random", 6: "any"}

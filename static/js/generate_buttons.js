@@ -101,12 +101,15 @@ async function setup_pyodide() {
         if (!window.pyodide) {
             pyodide = await loadPyodide();
             const url = window.location.origin;
+ 
+            await pyodide.loadPackage("protobuf");
             await pyodide.loadPackage(url + "/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl");
             await pyodide.loadPackage("pillow");
             if (location.hostname == "dev.dk64randomizer.com" || location.hostname == "dk64randomizer.com") {
                 await pyodide.loadPackage("micropip");
                 const micropip = pyodide.pyimport("micropip");
-                await micropip.install(url + "/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl");
+                // Force reinstall with timestamp to bypass cache
+                await micropip.install(url + "/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl?t=" + Date.now(), {keep_going: true});
             }
         }
     } catch (error) {
@@ -512,12 +515,16 @@ async function import_settings_string_internal(settingsString) {
     for (let key in settings) {
         try {
             if (typeof settings[key] === "boolean") {
-                if (settings[key] === false) {
-                    document.getElementsByName(key)[0].checked = false;
-                } else {
-                    document.getElementsByName(key)[0].checked = true;
+                const element = document.getElementsByName(key)[0];
+                if (!element) {
+                    continue;
                 }
-                document.getElementsByName(key)[0].removeAttribute("disabled");
+                if (settings[key] === false) {
+                    element.checked = false;
+                } else {
+                    element.checked = true;
+                }
+                element.removeAttribute("disabled");
             } else if (Array.isArray(settings[key])) {
                 if (key.startsWith("starting_moves_list_")) {
                     select = document.getElementById(key);
@@ -531,6 +538,9 @@ async function import_settings_string_internal(settingsString) {
                 }
 
                 const selector = document.getElementById(key);
+                if (!selector) {
+                    continue;
+                }
 
                 if (selector.tagName === "SELECT") {
                     let MapName = SettingsMap[key];
@@ -727,6 +737,9 @@ async function import_settings_string_internal(settingsString) {
                 }
             } else {
                 const selector = document.getElementById(key);
+                if (!selector) {
+                    continue;
+                }
                 if (selector.tagName === "SELECT" && key !== "random-weights") {
                     let MapName = SettingsMap[key];
                     // Flip the attributes so the value is the key and the key is the value

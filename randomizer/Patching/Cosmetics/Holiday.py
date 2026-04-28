@@ -1,7 +1,7 @@
 """All code associated with temporary holiday-based cosmetic effects."""
 
 import gzip
-from PIL import Image, ImageEnhance
+from randomizer.Patching.LazyPIL import Image, ImageEnhance
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Library.Generic import Holidays, getHoliday, IsColorOptionSelected
 from randomizer.Patching.Library.Image import (

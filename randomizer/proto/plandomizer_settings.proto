@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package randomizer.proto;
+
+import "common/item.proto";
+import "common/kong.proto";
+import "common/level.proto";
+import "common/map.proto";
+
+message BossAssignment {
+    optional common.MapId map_id = 1;
+    optional common.KongId kong_id = 2;
+}
+
+message CustomLocationAssignment {
+    string location_id = 1;
+
+    string chosen_location = 2;
+
+    optional common.ItemId reward = 3;
+}
+
+message PlandomizerSettings {
+    optional int32 starting_exit = 1;
+
+    repeated common.KongId starting_kongs = 2;
+
+    bool place_fairies = 3;
+    bool place_arenas = 4;
+    bool place_patches = 5;
+    bool place_kasplats = 6;
+    bool place_crates = 7;
+    bool place_wrinkly = 8;
+    bool place_tns = 9;
+
+    map<int32, common.LevelId> level_order = 10;
+
+    map<int32, common.MapId> krool_order = 11;
+
+    map<int32, BossAssignment> boss_order = 12;
+
+    map<int32, common.KongId> helm_order = 13;
+
+    map<int32, common.ItemId> item_assignments = 14;
+
+    map<int32, int32> minigame_assignments = 15;
+
+    map<int32, string> hint_assignments = 16;
+
+    map<int32, common.ItemId> shop_assignments = 17;
+
+    repeated CustomLocationAssignment custom_location_assignments = 18;
+}

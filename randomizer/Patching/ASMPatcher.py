@@ -45,7 +45,7 @@ from randomizer.Patching.ASM.Items import *
 from randomizer.Patching.ASM.Kaizo import *
 from randomizer.Patching.ASM.Save import saveUpdates
 from randomizer.Patching.ASM.TextFiles import writeNewTextFiles
-from PIL import Image
+from randomizer.Patching.LazyPIL import Image
 
 KEY_FLAG_ADDRESSES = [
     0x800258FA,
@@ -305,7 +305,7 @@ class MinigameImageLoader:
         """Convert associated image to bytes that can be written to ROM."""
         output_image = None
         if self.pull_from_repo:
-            output_image = Image.open(io.BytesIO(js.getFile(f"base-hack/assets/arcade_jetpac/{sub_dir}/{self.file_name}.png")))
+            output_image = Image.open(io.BytesIO(bytes(js.getFile(f"base-hack/assets/arcade_jetpac/{sub_dir}/{self.file_name}.png"))))
         else:
             new_im = getImageFile(ROM_COPY, self.table_index, self.file_index, self.table_index != 7, self.width, self.height, self.tex_format)
             width = self.width
@@ -812,10 +812,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
             "setting": settings.arcade_custom_minigame,
             "overlay": Overlay.Arcade,
         },
-        "jetpac": {
-            "setting": settings.jetpac_custom_minigame,
-            "overlay": Overlay.Jetpac
-        }
+        "jetpac": {"setting": settings.jetpac_custom_minigame, "overlay": Overlay.Jetpac},
     }
     for mg_name, mg_data in minigames.items():
         setting = mg_data["setting"]
@@ -826,7 +823,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
                 string_to_write = f"{settings.wordle_word.upper()}\0"
                 ROM_COPY.seek(addr)
                 ROM_COPY.writeBytes(bytes(string_to_write, "ascii"))
-            
+
     writeHook(ROM_COPY, 0x8073A544, Overlay.Static, "LogPercussion", offset_dict)
     writeHook(ROM_COPY, 0x8073543C, Overlay.Static, "InstIndexStore", offset_dict)
 
