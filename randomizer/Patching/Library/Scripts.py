@@ -4,6 +4,7 @@ from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Settings import SwitchsanityGone
 from randomizer.Patching.Library.DataTypes import short_to_ushort
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
@@ -838,194 +839,249 @@ def getKRoolShipControllerScript(item_id: int, radius: int) -> list[int]:
         ])
     ])
 
-def getHelmLobbyGrabScript(item_id: int) -> list[int]:
+def getHelmLobbyActivatorScript(item_id: int, activator: SwitchsanityGone, bonus_map: int, microhint: bool) -> list[int]:
     """Get the instance script for the Helm Lobby activator if it is a lever."""
-    microhints = True
-    return compileInstanceScript(
-        item_id,
-        [
-            ScriptBlock(
-                [
-                    FunctionData(1, [0, 0, 0]),
-                ],
-                [
-                    FunctionData(24, [1, 1, 0]),
-                    FunctionData(39, [1, 0, 0]),
-                    FunctionData(62, [0, 0, 0]),
-                    FunctionData(7, [125, short_to_ushort(-4), 0]),
-                ],
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(1, [0, 0, 0]),
-                ],
-                [
-                    FunctionData(20, [1, 85, 0]),
-                    FunctionData(22, [1, 1, 0]),
-                    FunctionData(40, [1, 0, 0]),
-                    FunctionData(1, [1, 0, 0]),
-                ],
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(1, [1, 0, 0]),
-                    FunctionData(18, [2, 2, 0]),
-                    FunctionData(6, [3, 0, 0]),
-                    FunctionData(52, [2, 3, 0]),
-                ],
-                [
-                    FunctionData(120, [1, 0, 0]),
-                    FunctionData(73, [8, 0, 0]),
-                    FunctionData(1, [1, 1, 0]),
-                    FunctionData(3, [0, 5, 0]),
-                ],
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(1, [1, 0, 0]),
-                    FunctionData(18, [2, 2, 0]),
-                    FunctionData(52, [2, 3, 0], True),
-                ],
-                [
-                    FunctionData(1, [7, 0, 0]),
-                ],
-                inclusion_lambda=lambda m: m,
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(1, [1, 1, 0]),
-                    FunctionData(4, [0, 0, 0]),
-                ],
-                [
-                    FunctionData(1, [0, 1, 0]),
-                ],
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(1, [1, 1, 0]),
-                    FunctionData(4, [0, 0, 0], True),
-                    FunctionData(23, [120, 0, 0]),
-                ],
-                [
-                    FunctionData(38, [1, 0, 0]),
-                    FunctionData(1, [2, 0, 0]),
-                    FunctionData(1, [0, 1, 0]),
-                ],
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(1, [2, 0, 0]),
-                    FunctionData(51, [0, 114, 0]),
-                ],
-                [
-                    FunctionData(40, [1, 1, 0]),
-                    FunctionData(17, [1, 1, 0]),
-                    FunctionData(15, [459, 0, 0]),
-                    FunctionData(1, [3, 0, 0]),
-                ],
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(1, [3, 0, 0]),
-                    FunctionData(51, [0, 155, 0]),
-                ],
-                [
-                    FunctionData(7, [125, short_to_ushort(-6), 0]),
-                    FunctionData(3, [0, 50, 0]),
-                    FunctionData(1, [4, 0, 0]),
-                ],
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(1, [4, 0, 0]),
-                    FunctionData(4, [0, 0, 0]),
-                ],
-                [
-                    FunctionData(5, [13, 10, 0]),
-                    FunctionData(84, [13, 1, 0]),
-                    FunctionData(3, [0, 180, 0]),
-                    FunctionData(1, [5, 0, 0]),
-                ],
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(1, [5, 0, 0]),
-                    FunctionData(4, [0, 0, 0]),
-                ],
-                [
-                    FunctionData(107, [397, 1, 0]),
-                    FunctionData(38, [2, 0, 0]),
-                ],
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(29, [1, 1, 0]),
-                    FunctionData(29, [0, 4, 0]),
-                    FunctionData(23, [120, 0, 0], True),
-                ],
-                [
-                    FunctionData(40, [1, 0, 0]),
-                    FunctionData(26, [1, 0, 0]),
-                    FunctionData(21, [1, 0, 0]),
-                    FunctionData(20, [1, 0, 0]),
-                ],
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(29, [1, 1, 0]),
-                    FunctionData(29, [0, 4, 0]),
-                    FunctionData(23, [120, 0, 0], True),
-                ],
-                [
-                    FunctionData(17, [1, 1, 0]),
-                    FunctionData(1, [10, 0, 0]),
-                ],
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(1, [10, 0, 0]),
-                ],
-                [
-                    FunctionData(18, [1, 0, 0]),
-                    FunctionData(1, [0, 0, 0]),
-                ],
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(1, [7, 0, 0]),
-                    FunctionData(52, [2, 3, 0]),
-                ],
-                [
-                    FunctionData(1, [1, 0, 0]),
-                ],
-                inclusion_lambda=lambda m: m,
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(1, [7, 0, 0]),
-                    FunctionData(52, [2, 3, 0], True),
-                    FunctionData(6, [7, short_to_ushort(-5), 0], True),
-                ],
-                [
-                    FunctionData(37, [3, 1, 0]),
-                    FunctionData(1, [8, 0, 0]),
-                ],
-                inclusion_lambda=lambda m: m,
-            ),
-            ScriptBlock(
-                [
-                    FunctionData(1, [8, 0, 0]),
-                    FunctionData(18, [2, 2, 0], True),
-                    FunctionData(35, [0, 0, 0], True),
-                ],
-                [
-                    FunctionData(1, [7, 0, 0]),
-                ],
-                inclusion_lambda=lambda m: m,
-            ),
-        ],
-        microhints,
-    )
+    # Gone
+    return compileInstanceScript(item_id, [
+        # Regive Gone upon exiting bonus
+        ScriptBlock([
+            FunctionData(50, [bonus_map, 0, 0]),
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(115, [65535, 0, 0]),
+            FunctionData(25, [58, 0, 0]),
+            FunctionData(1, [1, 1, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.gone_pad),
+        # Gong Init
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(62, [1, 0, 0]),
+            FunctionData(38, [3, 400, 0]),
+            FunctionData(39, [1, 0, 0]),
+            FunctionData(39, [2, 0, 0]),
+            FunctionData(39, [3, 0, 0]), 
+            FunctionData(39, [4, 0, 0]), 
+        ], lambda d: d["activator"] == SwitchsanityGone.gong),
+        # Lever Init
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(24, [1, 1, 0]),
+            FunctionData(39, [1, 0, 0]),
+            FunctionData(62, [0, 0, 0]),
+            FunctionData(20, [1, 85, 0]),
+            FunctionData(22, [1, 1, 0]),
+            FunctionData(40, [1, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.lever),
+        # Hide/Show pad with move
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(52, [6, 3, 0], True, lambda d: d["activator"] == SwitchsanityGone.gone_pad),  # Doesn't have gone
+            FunctionData(52, [4, 1, 0], True, lambda d: d["activator"] == SwitchsanityGone.gong),  # Doesn't have charge
+            FunctionData(52, [2, 3, 0], True, lambda d: d["activator"] == SwitchsanityGone.lever),  # Doesn't have grab
+            FunctionData(6, [7, short_to_ushort(-8), activator - SwitchsanityGone.bongos], True, lambda d: d["is_instrument"]),  # Doesn't have instrument
+        ], [
+            FunctionData(69, [1, 70, 255], False, lambda d: d["activator"] not in (SwitchsanityGone.gong, SwitchsanityGone.lever)),  # Make pad translucent
+            FunctionData(7, [125, short_to_ushort(-4), 0]),
+            FunctionData(1, [5, 0, 0], False, lambda d: d["microhint"]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(52, [6, 3, 0], False, lambda d: d["activator"] == SwitchsanityGone.gone_pad),  # Has Gone
+            FunctionData(52, [4, 1, 0], False, lambda d: d["activator"] == SwitchsanityGone.gong),  # Has charge
+            FunctionData(52, [2, 3, 0], False, lambda d: d["activator"] == SwitchsanityGone.lever),  # Has grab
+            FunctionData(6, [7, short_to_ushort(-8), activator - SwitchsanityGone.bongos], False, lambda d: d["is_instrument"]),  # Has Instrument
+        ], [
+            FunctionData(38, [3, 300, 0], False, lambda d: d["activator"] != SwitchsanityGone.gong),
+            FunctionData(7, [125, short_to_ushort(-4), 0]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+        # Activator script
+        ScriptBlock([
+            FunctionData(17, [6, 1, 0]),
+            FunctionData(52, [6, 3, 0]),
+        ], [
+            FunctionData(73, [4, 65535, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.gone_pad),
+        ScriptBlock([
+            FunctionData(17, [2 + (activator - SwitchsanityGone.bongos), 1, 0]),
+            FunctionData(6, [7, short_to_ushort(-8), activator - SwitchsanityGone.bongos]),
+            FunctionData(23, [103, 0, 0]),
+        ], [
+            FunctionData(38, [1, 0, 0]),
+            FunctionData(1, [7, 0, 0]),
+        ], lambda d: d["is_instrument"]),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(24, [3, 1, 0]),
+            FunctionData(23, [46, 1, 0]),
+        ], [
+            FunctionData(20, [1, 200, 0]),
+            FunctionData(26, [1, 0, 0]),
+            FunctionData(17, [1, 1, 0]),
+            FunctionData(3, [0, 50, 0]),
+            FunctionData(39, [1, 1, 0]),
+            FunctionData(39, [2, 1, 0]),
+            FunctionData(39, [3, 1, 0]),
+            FunctionData(39, [4, 1, 0]),
+            FunctionData(22, [1, 0, 0]),
+            FunctionData(15, [165, 12165, 60]),
+            FunctionData(38, [1, 0, 0]),
+            FunctionData(1, [8, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.gong),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(18, [2, 2, 0]),
+            FunctionData(6, [3, 0, 0]),
+            FunctionData(52, [2, 3, 0]),
+        ], [
+            FunctionData(120, [1, 0, 0]),
+            FunctionData(73, [8, 0, 0]),
+            FunctionData(1, [1, 1, 0]),
+            FunctionData(3, [0, 5, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.lever),
+        ScriptBlock([
+            FunctionData(1, [1, 1, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(1, [0, 1, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.lever),
+        ScriptBlock([
+            FunctionData(1, [1, 1, 0]),
+            FunctionData(4, [0, 0, 0], True),
+            FunctionData(23, [120, 0, 0]),
+        ], [
+            FunctionData(38, [1, 0, 0]),
+            FunctionData(1, [0, 1, 0]),
+            FunctionData(1, [9, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.lever),
+        # Is gone active - Then progress to cutscene
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(38, [0, 64, 0]),
+        ], [
+            FunctionData(3, [0, 15, 0]),
+            FunctionData(1, [2, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.gone_pad),
+        ScriptBlock([
+            FunctionData(1, [2, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+            FunctionData(1, [0, 1, 0]),
+        ], [
+            FunctionData(37, [1, 1, 0]),
+            FunctionData(3, [0, 200, 0]),
+            FunctionData(1, [1, 1, 0]),
+            FunctionData(1, [3, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [2, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+            FunctionData(1, [1, 1, 0]),
+        ], [
+            FunctionData(3, [0, 20, 0]),
+            FunctionData(1, [3, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [3, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(1, [4, 0, 0]),
+        ]),
+        # Hide the gong
+        ScriptBlock([
+            FunctionData(1, [4, 0, 0]),
+            FunctionData(21, [2, 0, 0], True),
+        ], [
+            FunctionData(16, [0, 0, 0]),
+            FunctionData(69, [1, 0, 255]),
+            FunctionData(70, [0, 0, 0]),
+            FunctionData(38, [2, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.gong),
+        # Microhint
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(52, [6, 3, 0], False, lambda d: d["activator"] == SwitchsanityGone.gone_pad),  # Has Gone
+            FunctionData(52, [4, 1, 0], False, lambda d: d["activator"] == SwitchsanityGone.gong),  # Has charge
+            FunctionData(52, [2, 3, 0], False, lambda d: d["activator"] == SwitchsanityGone.lever),  # Has grab
+            FunctionData(6, [7, short_to_ushort(-8), activator - SwitchsanityGone.bongos], False, lambda d: d["is_instrument"]),  # Has Instrument
+        ], [
+            FunctionData(69, [1, 255, 255]),
+            FunctionData(38, [3, 300, 0]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(52, [6, 3, 0], True, lambda d: d["activator"] == SwitchsanityGone.gone_pad),  # Doesn't have Gone
+            FunctionData(52, [4, 1, 0], True, lambda d: d["activator"] == SwitchsanityGone.gong),  # Doesn't have charge
+            FunctionData(52, [2, 3, 0], True, lambda d: d["activator"] == SwitchsanityGone.lever),  # Doesn't have grab
+            FunctionData(6, [7, short_to_ushort(-8), activator - SwitchsanityGone.bongos], True, lambda d: d["is_instrument"]),  # Doesn't have Instrument
+            FunctionData(6, [7, short_to_ushort(-5), 0]),
+            FunctionData(2, [0, 0, 0], False, lambda d: d["activator"] != SwitchsanityGone.gong),  # Standing on object
+            FunctionData(19, [20, 0, 0], False, lambda d: d["activator"] == SwitchsanityGone.gong),  # Close to object
+        ], [
+            FunctionData(37, [3, 1, 0]),
+            FunctionData(1, [6, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [6, 0, 0]),
+            FunctionData(2, [0, 0, 0], True, lambda d: d["activator"] != SwitchsanityGone.gong),  # Not standing on object
+            FunctionData(19, [20, 0, 0], True, lambda d: d["activator"] == SwitchsanityGone.gong),  # Not close to object
+            FunctionData(35, [0, 0, 0], True),
+        ], [
+            FunctionData(1, [5, 0, 0]),
+        ]),
+        # Instrument Handler
+        ScriptBlock([
+            FunctionData(1, [7, 0, 0]),
+            FunctionData(35, [0, 0, 0], True),
+        ], [
+            FunctionData(7, [125, short_to_ushort(-6), 0]),
+            FunctionData(3, [0, 15, 0]),
+            FunctionData(1, [2, 0, 0]),
+        ], lambda d: d["is_instrument"]),
+        # Gong Handler
+        ScriptBlock([
+            FunctionData(1, [8, 0, 0]),
+            FunctionData(4, [10, 0, 0]),
+        ], [
+            FunctionData(14, [282, 0, 12800]),
+            FunctionData(20, [2, 3, 0]),
+            FunctionData(17, [2, 1, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.gong),
+        ScriptBlock([
+            FunctionData(1, [8, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(39, [1, 0, 0]),
+            FunctionData(39, [2, 0, 0]),
+            FunctionData(39, [3, 0, 0]),
+            FunctionData(39, [4, 0, 0]),
+            FunctionData(7, [125, short_to_ushort(-6), 0]),
+            FunctionData(1, [2, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.gong),
+        # Lever Handler
+        ScriptBlock([
+            FunctionData(1, [9, 0, 0]),
+            FunctionData(51, [0, 114, 0]),
+        ], [
+            FunctionData(40, [1, 1, 0]),
+            FunctionData(17, [1, 1, 0]),
+            FunctionData(15, [459, 0, 0]),
+            FunctionData(1, [10, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.lever),
+        ScriptBlock([
+            FunctionData(1, [10, 0, 0]),
+            FunctionData(51, [0, 155, 0]),
+        ], [
+            FunctionData(7, [125, short_to_ushort(-6), 0]),
+            FunctionData(1, [2, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.lever),
+    ], {
+        "activator": activator,
+        "is_instrument": activator >= SwitchsanityGone.bongos and activator <= SwitchsanityGone.triangle,
+        "microhint": microhint
+    })
 
 
 def getObjectHideScript(item_id: int) -> list[int]:
@@ -1429,7 +1485,7 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
         elif stype == ScriptTypes.DeleteItem:
             subscript = getObjectHideScript(item_id)
         elif stype == ScriptTypes.HelmLobbyPadGrab:
-            subscript = getHelmLobbyGrabScript(item_id)
+            subscript = getHelmLobbyActivatorScript(item_id, extra_data["activator"], extra_data["bonus_map"], extra_data["microhint"])
         elif stype == ScriptTypes.GalleonShipwreckDoor:
             subscript = getFiveTwoDoorShipGateScript(item_id, extra_data[item_id]["flag_id"], extra_data[item_id]["timer"], extra_data[item_id]["timer_2"], extra_data[item_id]["tied_pad"])
         elif stype == ScriptTypes.FactoryBlastController:

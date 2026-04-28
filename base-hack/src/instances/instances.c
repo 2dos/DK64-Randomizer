@@ -332,11 +332,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case MAP_HELMLOBBY:
-				if (param2 == HELMLOBBY_GGONE) {
-					HelmLobbyGoneCode(behaviour_pointer, id);
-				}
-				break;
 			case MAP_JAPES:
 				if (param2 == JAPES_DKCAGEGB) {
 					if (index == 0) {

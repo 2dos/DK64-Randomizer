@@ -3,7 +3,9 @@
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.ScriptTypes import ScriptTypes
-from randomizer.Enums.Settings import MiscChangesSelected, FasterChecksSelected, ExtraCutsceneSkips, RemovedBarriersSelected
+from randomizer.Enums.Switches import Switches
+from randomizer.Enums.SwitchTypes import SwitchType
+from randomizer.Enums.Settings import MiscChangesSelected, FasterChecksSelected, ExtraCutsceneSkips, RemovedBarriersSelected, SwitchsanityGone, MicrohintsEnabled
 from randomizer.Lists.Minigame import MinigameRequirements
 from randomizer.Patching.Library.Generic import IsDDMSSelected
 from randomizer.Patching.Library.Scripts import replaceScriptLines, addNewScript
@@ -188,15 +190,34 @@ def patchScripts(spoiler, ROM_COPY):
         })
     # Chunky Cabin Minigame check
     cabin_minigame_map = 139
+    helm_lobby_minigame_map = 117
     if len(spoiler.settings.minigames_list_selected) > 0:
         for minigame_data in spoiler.shuffled_barrel_data.values():
             if minigame_data.map == Maps.CavesChunkyCabin:
                 cabin_minigame_map = MinigameRequirements[minigame_data.minigame].map
+            elif minigame_data.map == Maps.HideoutHelmLobby:
+                helm_lobby_minigame_map = MinigameRequirements[minigame_data.minigame].map
         replaceScriptLines(ROM_COPY, Maps.CavesChunkyCabin, [0x3, 0x4, 0x5, 0x6], {
             "COND 50 | 139 0 0": f"COND 50 | {cabin_minigame_map} 0 0"
         })
         replaceScriptLines(ROM_COPY, Maps.CavesChunkyCabin, [0x3, 0x4, 0x5, 0x6], {
             "CONDINV 50 | 139 0 0": f"CONDINV 50 | {cabin_minigame_map} 0 0"
+        })
+    gone_pad = SwitchsanityGone.gone_pad
+    gone_kong = spoiler.settings.switchsanity_data[Switches.IslesHelmLobbyGone].kong
+    gone_type = spoiler.settings.switchsanity_data[Switches.IslesHelmLobbyGone].switch_type
+    if gone_type == SwitchType.InstrumentPad:
+        gone_pad = SwitchsanityGone.bongos + (gone_kong - Kongs.donkey)
+    elif gone_type == SwitchType.MiscActivator:
+        if gone_kong == Kongs.donkey:
+            gone_pad = SwitchsanityGone.lever
+        elif gone_kong == Kongs.diddy:
+            gone_pad = SwitchsanityGone.gong
+    if gone_pad != SwitchsanityGone.gone_pad:
+        addNewScript(ROM_COPY, Maps.HideoutHelmLobby, [0x3], ScriptTypes.HelmLobbyPadGrab, {
+            "activator": gone_pad,
+            "bonus_map": helm_lobby_minigame_map,
+            "microhint": spoiler.settings.microhints_enabled != MicrohintsEnabled.off,
         })
     if isBarrierRemoved(spoiler, RemovedBarriersSelected.aztec_llama_switches):
         # Aztec Llama Switches
