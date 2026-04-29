@@ -20,7 +20,6 @@ boot_phrases = (
     "Crediting L. Godfrey",
     "Removing Stop n Swop",
     "Assembling the scraps",
-    "Blowing in the cartridge",
     "Backflipping in Chunky Phase",
     "Hiding 20 fairies",
     "Randomizing collision normals",
