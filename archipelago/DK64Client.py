@@ -20,7 +20,7 @@ import typing
 from archipelago.client.common import DK64MemoryMap, create_task_log_exception, check_version, get_ap_version
 from archipelago.client.emu_loader import EmuLoaderClient
 from archipelago.client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
-from archipelago.client.ap_item_packets import APItemPacket, get_packet_from_fed_id, ICE_TRAP_TYPES, REQITEM_ICETRAP, CONFIG_APPLY_HELM_HURRY, CONFIG_APPLY_ICE_TRAP, CONFIG_GIVE_COINS
+from archipelago.client.ap_item_packets import APItemPacket, build_packet, ICE_TRAP_TYPES, REQITEM_ICETRAP, REQITEM_GOLDENBANANA, REQITEM_MOVE, CONFIG_APPLY_ICE_TRAP
 from archipelago.client.check_flag_locations import location_flag_to_name, location_name_to_flag
 from archipelago.client.ap_check_ids import check_id_to_name, check_names_to_id
 from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop, ClientCommandProcessor
@@ -405,13 +405,10 @@ class DK64Client:
 
         should_display = self._message_handler.should_display_item(item_data, self.send_mode)
         if should_display:
-            # Check if this is an item that uses the CountStruct "item" system (like Golden Bananas)
-            # These show a counter in-game and shouldn't display text notifications
+            # Golden Banana shows a counter in the HUD, so its text notification is suppressed.
             count_id = item_data.get("count_id")
-            uses_item_system = isinstance(count_id, dict) and "item" in count_id
-
-            # Only queue text for items that don't use the item system
-            if not uses_item_system:
+            skip_text = isinstance(count_id, dict) and count_id.get("item") == 1
+            if not skip_text:
                 self.text_notification_queue.append({"item_name": item_name, "from_player": from_player, "item_id": item_id, "is_progression": item_data.get("progression", False)})
 
         # Process item data immediately (send to game)
@@ -439,25 +436,20 @@ class DK64Client:
         """Process the item data and apply it to the game."""
         if item_data.get("flag_id") is not None:
             flag_id = item_data.get("flag_id")
-            self.setFlag(flag_id)
-        elif item_data.get("fed_id") is not None:
-            # Legacy fed_id system - convert to packet
-            fed_id = item_data.get("fed_id")
-            packet = get_packet_from_fed_id(fed_id)
-            if packet:
-                await self.writeAPPacket(packet)
+            if flag_id in {962, 963, 964, 965}:
+                before = self.readFlag(flag_id)
+                self.setFlag(flag_id)
+                after = self.readFlag(flag_id)
+                logger.info(f"Shopkeeper flag {flag_id} ({item_name}): before={before} after={after}")
             else:
-                logger.warning(f"Unknown fed_id {fed_id} for item {item_name}")
+                self.setFlag(flag_id)
         elif item_data.get("count_id") is not None:
             await self.writeCountData(item_data.get("count_id"))
         else:
-            logger.warning(f"Item {item_name} has no flag, fed, or count id")
+            logger.warning(f"Item {item_name} has no flag or count id")
 
     async def writeAPPacket(self, packet: APItemPacket):
         """Write an AP item packet to the game.
-
-        This replaces the old writeFedData function with a generic packet-based approach.
-        The packet contains all parameters needed for giveItem in C code.
 
         Args:
             packet: APItemPacket containing item_type, level, kong, and config_flags
@@ -472,25 +464,6 @@ class DK64Client:
         # The C code will cast this to ap_item_packet* and read all 4 bytes
         packet_u32 = packet.to_u32()
         self.n64_client.write_u32(self.memory_pointer + 0x4, packet_u32)
-
-    async def writeFedData(self, fed_item):
-        """Write the fed item data to the game (DEPRECATED - use writeAPPacket).
-
-        This is kept for backward compatibility with any remaining fed_id usage.
-        """
-        # Convert fed_id to packet if possible
-        packet = get_packet_from_fed_id(fed_item)
-        if packet:
-            await self.writeAPPacket(packet)
-        else:
-            # Fallback to old behavior for unmapped fed_ids
-            current_fed_item = self.n64_client.read_u32(self.memory_pointer + DK64MemoryMap.arch_items)
-            while current_fed_item != 0:
-                current_fed_item = self.n64_client.read_u32(self.memory_pointer + DK64MemoryMap.arch_items)
-                await asyncio.sleep(0.1)
-                if current_fed_item == 0:
-                    break
-            self.n64_client.write_u8(self.memory_pointer + 0x7, fed_item)
 
     async def writeCountData(self, count_data):
         """Write count data directly to the CountStruct system."""
@@ -624,8 +597,7 @@ class DK64Client:
             helm_hurry_item_type = 0x054  # TRANSFER_ITEM_HELM_HURRY_FAIRY
 
         elif field == "rainbow_coins":
-            # Rainbow Coin - use packet system
-            packet = APItemPacket(item_type=0x0C, level=0, kong=0, config_flags=CONFIG_APPLY_HELM_HURRY | CONFIG_GIVE_COINS)  # REQITEM_RAINBOWCOIN
+            packet = build_packet(count_data)
             await self.writeAPPacket(packet)
             # Rainbow coins should trigger Helm Hurry with HHITEM_RAINBOWCOIN (6)
             if self.helm_hurry_enabled:
@@ -680,55 +652,18 @@ class DK64Client:
 
             self.n64_client.write_u8(address, new_value)
 
-        elif count_data.get("item") is not None and count_data.get("level") is not None:
-            # These are items with level/tier information (moves, slams, etc.)
-            # Use the new packet system
-            item_id = count_data.get("item")
-            level = count_data.get("level")
-            kong = count_data.get("kong", 0)
-
-            # Create packet for this item
-            # item_id here is actually a move/item index, need special handling
-            if item_id == 1:  # Golden Banana
-                packet = APItemPacket(item_type=0x03, level=0, kong=0, config_flags=CONFIG_APPLY_HELM_HURRY)  # REQITEM_GOLDENBANANA
-                await self.writeAPPacket(packet)
-                helm_hurry_item_type = 0x049  # TRANSFER_ITEM_GOLDENBANANA (if applicable)
-            elif item_id == 2:  # Slam upgrades
-                # Special handling for slam upgrades
-                if level == 3:
-                    # This is a slam upgrade - use level 10 to indicate slam
-                    packet = APItemPacket(item_type=0x02, level=10, kong=0, config_flags=CONFIG_APPLY_HELM_HURRY)  # REQITEM_MOVE  # Special level for slam
-                else:
-                    packet = APItemPacket(item_type=0x02, level=level, kong=kong, config_flags=CONFIG_APPLY_HELM_HURRY)  # REQITEM_MOVE
-                await self.writeAPPacket(packet)
-                helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
-            elif item_id >= 26 and item_id <= 55:  # Moves and upgrades
-                # Special moves: item 26-40 → fed 25-39 (0x019-0x027)
-                # Instruments: item 41-45 → fed 40-44 (0x028-0x02C)
-                # Guns: item 46-50 → fed 45-49 (0x02D-0x031)
-                # Shared upgrades: item 52-55 → fed 51-54 (0x033-0x036)
-                fed_id = item_id - 1
-                packet = get_packet_from_fed_id(fed_id)
-                if packet:
-                    await self.writeAPPacket(packet)
-                    helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
-                else:
-                    logger.warning(f"No packet mapping found for item_id {item_id} (fed_id {fed_id})")
-                    helm_hurry_item_type = 0x04C
-            else:
-                # Other item types - fall back to old behavior as last resort
-                logger.warning(f"Unmapped item_id {item_id}, falling back to fed_id")
-                fed_id = item_id
-                await self.writeFedData(fed_id)
-                helm_hurry_item_type = 0x04C
-
-        elif count_data.get("item") is not None and count_data.get("level") is None:
-            # These are requirement_item enum values
-            # Convert to packet
-            item_id = count_data.get("item")
-            packet = APItemPacket(item_type=item_id, level=0, kong=0, config_flags=CONFIG_APPLY_HELM_HURRY)
+        elif count_data.get("item") is not None:
+            packet = build_packet(count_data)
+            if packet is None:
+                logger.warning(f"Unmapped count_data: {count_data}")
+                return
             await self.writeAPPacket(packet)
-            helm_hurry_item_type = 0x04C
+            if packet.item_type == REQITEM_GOLDENBANANA:
+                helm_hurry_item_type = 0x049
+            elif packet.item_type == REQITEM_MOVE:
+                helm_hurry_item_type = 0x04C
+            else:
+                helm_hurry_item_type = 0x04C
 
         else:
             logger.warning(f"Unknown count_data field: {count_data}")
