@@ -38,7 +38,7 @@ if baseclasses_loaded:
     from entrance_rando import randomize_entrances, EntranceRandomizationError, disconnect_entrance_for_randomization
     import settings
     import logging
-
+    import enum
     import randomizer.ItemPool as DK64RItemPool
 
     from randomizer.Enums.Items import Items as DK64RItems
@@ -1365,6 +1365,16 @@ if baseclasses_loaded:
             spoiler_log["Generated Time"] = timestamp
             spoiler_log["Settings"] = {}
             spoiler_log["Cosmetics"] = {}
+
+            def _settings_default(obj):
+                if isinstance(obj, enum.Enum):
+                    return obj.name
+                if isinstance(obj, (set, frozenset)):
+                    return list(obj)
+                raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
+
+            settings_json = json.dumps(spoiler.settings.form_data, default=_settings_default)
+
             # Zip all the data into a single file.
             zip_data = BytesIO()
             with zipfile.ZipFile(zip_data, "w") as zip_file:
@@ -1375,6 +1385,7 @@ if baseclasses_loaded:
                 zip_file.writestr("version", version)
                 zip_file.writestr("seed_number", self.multiworld.get_out_file_name_base(self.player))
                 zip_file.writestr("seed_id", self.multiworld.get_out_file_name_base(self.player))
+                zip_file.writestr("settings", settings_json)
             zip_data.seek(0)
             # Convert the zip to a string of base64 data
             zip_conv = codecs.encode(zip_data.getvalue(), "base64").decode()
