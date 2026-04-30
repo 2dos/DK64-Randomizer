@@ -159,6 +159,24 @@ function should_clear_setting(select) {
 
 // Assuming Items and SettingsMap objects are already defined
 
+function get_cosmetic_music_field_names() {
+    /**
+     * Return the names of all form fields under the cosmetics and music nav sections.
+     * Used at patch-application time to overlay current-form cosmetic/music settings on
+     * top of the gameplay settings embedded in the patch file.
+     */
+    const names = new Set(["music_selections"]);
+    for (const sel of ["#nav-cosmetics", "#nav-music"]) {
+        const root = document.querySelector(sel);
+        if (!root) continue;
+        for (const el of root.querySelectorAll("input[name], select[name]")) {
+            names.add(el.name);
+        }
+    }
+    return Array.from(names);
+}
+window.get_cosmetic_music_field_names = get_cosmetic_music_field_names;
+
 function serialize_settings(include_plando = false) {
     /**
      * Serialize form settings into an enum-focused JSON object.

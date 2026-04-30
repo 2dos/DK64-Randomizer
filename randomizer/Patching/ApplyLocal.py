@@ -73,7 +73,6 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 # Store the extracted variable
                 variable_name = file_name.split(".")[0]
                 extracted_variables[variable_name] = variable_value
-    settings = Settings(json.loads(js.serialize_settings(include_plando=True)))
     seed_id = str(extracted_variables["seed_id"].decode("utf-8"))
     spoiler = json.loads(extracted_variables["spoiler_log"])
     if extracted_variables.get("version") is None:
@@ -94,12 +93,30 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
         await ProgressBar().reset()
         return
-    # elif settings.download_patch_file and from_patch_gen is False:
+    if "settings" in extracted_variables:
+        # Patch file embeds the original gameplay settings. Rehydrate those, then overlay
+        # cosmetic/music selections from the live form so the user can apply their own
+        # cosmetics to a shared patch without disturbing the original gameplay.
+        patch_settings = json.loads(extracted_variables["settings"])
+        form_settings = json.loads(js.serialize_settings(include_plando=True))
+        cosmetic_music_keys = set(js.get_cosmetic_music_field_names().to_py())
+        overrides = {k: v for k, v in form_settings.items() if k in cosmetic_music_keys}
+        merged = {**patch_settings, **overrides}
+        settings = Settings(merged)
+    else:
+        js.document.getElementById("patch_version_warning").hidden = False
+        js.document.getElementById("patch_warning_message").innerHTML = (
+            "This patch file was generated before settings were embedded in patches. "
+            "Please regenerate the seed from the original settings."
+        )
+        await ProgressBar().reset()
+        return
+    # if settings.download_patch_file and from_patch_gen is False:
     #     js.write_seed_history(seed_id, str(data), json.dumps(settings.seed_hash))
     #     js.load_old_seeds()
     #     js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
     #     return
-    elif from_patch_gen is True:
+    if from_patch_gen is True:
         if js.document.getElementById("download_patch_file").checked or js.document.getElementById("load_patch_file").checked:
             js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
 
