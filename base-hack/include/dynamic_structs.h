@@ -57,7 +57,7 @@ typedef struct FasterChecks {
 } FasterChecks;
 
 typedef enum ENUM_FasterChecks {
-	/* 0 */ FASTERCHECKS_ENUM_PIANO,
+	/* 0 */ FASTERCHECKS_ENUM_UNK0,
 	/* 1 */ FASTERCHECKS_ENUM_DIDDYRND,
 	/* 2 */ FASTERCHECKS_ENUM_MECHFISH,
 	/* 3 */ FASTERCHECKS_ENUM_ARCADEFIRSTROUND,

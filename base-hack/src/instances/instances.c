@@ -11,8 +11,6 @@
  */
 #include "../../include/common.h"
 
-#define AZTEC_SNOOPDOOR 0xA1
-#define LLAMA_SNOOPPAD 0x69
 #define JAPES_DKCAGEGB 0x44
 #define JAPES_DKCAGESWITCH 0x40
 #define JAPES_MOUNTAINGB 0x52
@@ -29,13 +27,7 @@
 #define CAVES_BOULDERDOME 0x2B
 #define CAVES_SMALLBOULDERPAD 0x2E
 #define CAVES_BIGBOULDERPAD 0x2F
-#define AZTEC_LLAMACOCONUT 0xD
-#define AZTEC_LLAMAGRAPE 0xE
-#define AZTEC_LLAMAFEATHER 0xF
 #define JAPES_DIDDYBAMBOOGATE 0x47
-#define JAPES_GATE0 0x2D
-#define JAPES_GATE1 0x2E
-#define JAPES_GATE2 0x2F
 #define LLAMA_LAVAGATE 0x18
 #define TTEMPLE_BAMBOOGATE 0x15
 #define FACTORY_FREESWITCH 0x24
@@ -54,21 +46,11 @@
 #define ISLES_CASTLEROCK 0x34
 #define ISLES_HELMJAW 0x1C
 
-#define ISLES_HIGHMONKEYPORT 0x37
-#define ISLES_LOWMONKEYPORT 0x38
-
-#define CHUNKY5DC_GGONE 0x6
-#define CHUNKY5DC_TARGET0 0x3
-#define CHUNKY5DC_TARGET1 0x4
-#define CHUNKY5DC_TARGET2 0x5
-#define HELMLOBBY_GGONE 0x3
-
 #define MILLREAR_CHUNKYCHECK_RATE 0xF
 #define FUNGI_BEAN 0x5
 #define FUNGI_BEANCONTROLLER 0x4D
 
 #define FACTORY_LARGEMETALSECTION 0x0
-#define FACTORY_PIANO 0x14
 #define ICE_MAZE 0x0
 
 #define HELM_COIN_DOOR 0x3
@@ -132,8 +114,6 @@ void loadWrinklyTextWrapper(actorData* actor, int file, int index) {
 	}
 	getTextPointer_0(actor, file, index);
 }
-
-#define MILL_CRUSHER_PROGRESS 1
 
 void portalWarpFix(maps map, int exit) {
 	if (map == MAP_HELM) {
@@ -467,9 +447,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (param2 == FACTORY_LARGEMETALSECTION) {
 					if (Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->current_state = 10;
-						unsigned char crusher_compontents[] = {1,3,8,9,4,10,11,12,13,2,5,6,7};
-						for (unsigned int component = 0; component < sizeof(crusher_compontents); component++) {
-							int index = convertIDToIndex(crusher_compontents[component]);
+						for (int i = 1; i < 14; i++) {
+							int index = convertIDToIndex(i + 1);
 							if (index > -1) {
 								behaviour_data* behaviour = ObjectModel2Pointer[index].behaviour_pointer;
 								if (behaviour) {
