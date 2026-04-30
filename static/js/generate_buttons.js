@@ -161,11 +161,10 @@ function should_clear_setting(select) {
 
 function get_cosmetic_music_field_names() {
     /**
-     * Return the names of all form fields under the cosmetics and music nav sections.
-     * Used at patch-application time to overlay current-form cosmetic/music settings on
-     * top of the gameplay settings embedded in the patch file.
+     * Return the names of all form fields whose values are allowed to override the
+     * settings embedded in a patch file at apply time
      */
-    const names = new Set(["music_selections"]);
+    const names = new Set(["music_selections", "homebrew_header", "homebrew_header_patch"]);
     for (const sel of ["#nav-cosmetics", "#nav-music"]) {
         const root = document.querySelector(sel);
         if (!root) continue;

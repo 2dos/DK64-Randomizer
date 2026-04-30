@@ -1373,7 +1373,8 @@ if baseclasses_loaded:
                     return list(obj)
                 raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
 
-            settings_json = json.dumps(spoiler.settings.form_data, default=_settings_default)
+            current_settings = {key: getattr(spoiler.settings, key, value) for key, value in spoiler.settings.form_data.items()}
+            settings_json = json.dumps(current_settings, default=_settings_default)
 
             # Zip all the data into a single file.
             zip_data = BytesIO()
