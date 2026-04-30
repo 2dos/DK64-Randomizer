@@ -800,7 +800,6 @@ if baseclasses_loaded:
 
                             # Update entry handler region exits to point to the restored DK Portal locations
                             # This matches the behavior in DoorData.assignDKPortal()
-                            from randomizer.Enums.Levels import Levels
                             from randomizer.Lists.DoorLocations import door_locations, LEVEL_ENTRY_HANDLER_REGIONS
                             from randomizer.LogicClasses import TransitionFront
 
@@ -834,9 +833,6 @@ if baseclasses_loaded:
 
                         # Restore starting region for yamlless generation
                         if passthrough.get("StartingRegion") and passthrough["StartingRegion"]:
-                            from randomizer.Enums.Regions import Regions
-                            from randomizer.Enums.Maps import Maps
-
                             starting_region_data = passthrough["StartingRegion"]
                             # Reconstruct the starting_region dictionary
                             self.spoiler.settings.starting_region = {
