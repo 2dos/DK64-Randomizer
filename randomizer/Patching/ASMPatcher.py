@@ -97,6 +97,7 @@ TS = True
 TEST_HUNKY_FIX = False
 BETTER_JUMPS = True
 INSTANCE_SCRIPT_ADJUSTMENTS = True
+PIANO_SFX_RANDO = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -2343,6 +2344,26 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
         writeValue(ROM_COPY, 0x8063E2BA, Overlay.Static, 0x6, offset_dict)  # exec count pointer
         # Freeing blocks
         writeValue(ROM_COPY, 0x8063DEA2, Overlay.Static, 0, offset_dict)  # Next block pointer
+    if PIANO_SFX_RANDO:
+        piano_sfx_addrs = [
+            0x8069E336,
+            0x8069E35E,
+            0x8069E37E,
+            0x8069E3AA,
+            0x8069E3D2,
+            0x8069E3FA,
+        ]
+        piano_variance_addrs = [
+            0x8069E32E,
+            0x8069E356,
+            0x8069E3A2,
+            0x8069E3CA,
+            0x8069E3F2,
+        ]
+        for index, addr in enumerate(piano_sfx_addrs):
+            writeValue(ROM_COPY, addr, Overlay.Static, settings.piano_game_sounds[index], offset_dict)
+        for addr in piano_variance_addrs:
+            writeValue(ROM_COPY, addr, Overlay.Static, 0, offset_dict)
     # Menu/Shop Stuff
     # Menu/Shop: Force enable cheats
     writeValue(ROM_COPY, 0x800280DC, Overlay.Menu, 0x1000, offset_dict)  # Force access to mystery menu
