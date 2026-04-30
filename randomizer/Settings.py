@@ -452,6 +452,7 @@ class Settings:
             (0x78, 0x60, 2),
         ]
         self.matching_game_sounds = [173, 171, 169, 174, 172, 175, 168, 170]
+        self.piano_game_order = [2, 1, 2, 3, 4, 2, 0]
         self.shuffle_shops = None
         # self.switchsanity = SwitchsanityLevel.off  # Deprecated
         self.switchsanity_enabled = False

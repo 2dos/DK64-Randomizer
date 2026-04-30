@@ -239,3 +239,7 @@ def patchScripts(spoiler, ROM_COPY):
         })
     if isBarrierRemoved(spoiler, RemovedBarriersSelected.japes_coconut_gates):
         addNewScript(ROM_COPY, Maps.JungleJapes, [0x2D, 0x2E, 0x2F], ScriptTypes.DeleteItem)
+    addNewScript(ROM_COPY, Maps.FranticFactory, [0x14], ScriptTypes.Piano, {
+        "piano_order": spoiler.settings.piano_game_order,
+        "fast_piano": IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_piano_game),
+    })

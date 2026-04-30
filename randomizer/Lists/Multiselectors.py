@@ -167,7 +167,7 @@ FasterCheckItems = [
     MultiselectorItem("Factory Toy Monster Fight", -1, "The toy monster fight in Factory will remove the initial enemy killing phase."),
     MultiselectorItem(
         "Factory Piano Game",
-        0,
+        -1,
         "The piano game in Factory will only require the 3, 5 and 7 long sequences to be recalled.",
     ),
     MultiselectorItem("Factory Diddy RnD", 1, "Only one enemy wave will need to be completed in the pincode room."),

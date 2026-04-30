@@ -1445,6 +1445,170 @@ def getHelmMonkeyport(item_id: int, kong: Kongs, microhint: bool):
         "microhint": microhint
     })
 
+def getPianoScript(item_id: int, piano_order: list[int], fast_piano: bool):
+    # A = 0, B = 1, C = 2, D = 3, E = 4, F = 5
+    cutscenes = {
+        # Key: Seq Length
+        3: {
+            "cutscene_index": 16,
+            "delta": 60,
+            "length": 160,
+        },
+        4: {
+            "cutscene_index": 17,
+            "delta": 20,
+            "length": 140,
+        },
+        5: {
+            "cutscene_index": 18,
+            "delta": 20,
+            "length": 170,
+        },
+        6: {
+            "cutscene_index": 19,
+            "delta": 20,
+            "length": 200,
+        },
+        7: {
+            "cutscene_index": 20,
+            "delta": 20,
+            "length": 230,
+        },
+    }
+    script = [
+        # Starting section
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(22, [1, 1, 0]),
+            FunctionData(22, [2, 1, 0]),
+            FunctionData(22, [3, 1, 0]),
+            FunctionData(22, [4, 1, 0]),
+            FunctionData(22, [5, 1, 0]),
+            FunctionData(22, [6, 1, 0]),
+            FunctionData(38, [2, 0, 0]),
+        ]),
+    ]
+    state_start = 10
+    failure_state = 250
+    for x in range(5):  # 5 repetitions of the sequence
+        if fast_piano and x in (1, 3):
+            continue
+        sequence_count = 3 + x
+        local_sequence = piano_order[:sequence_count]
+        delta = cutscenes[sequence_count]["delta"]
+        timer_total = cutscenes[sequence_count]["length"]
+        # Timer setup
+        burp_state = state_start
+        script.append(
+            ScriptBlock([
+                FunctionData(1, [state_start + 0, 0, 0]),
+                FunctionData(4, [0, 0, 0]),
+            ], [
+                FunctionData(37, [cutscenes[sequence_count]["cutscene_index"], 1, 0]),
+                FunctionData(3, [0, timer_total, 0]),
+                FunctionData(1, [state_start + 1, 0, 0]),
+            ])
+        )
+        for y in range(sequence_count):
+            # Play Kremling
+            script.append(
+                ScriptBlock([
+                    FunctionData(1, [state_start + 1, 0, 0]),
+                    FunctionData(4, [timer_total - (delta + (30 * y)), 0, 0]),
+                ], [
+                    FunctionData(94, [local_sequence[y] + 5, 0, 0]),  # Spawn Kremling
+                ]),
+            )
+        script.append(
+            ScriptBlock([
+                FunctionData(1, [state_start + 1, 0, 0]),
+                FunctionData(4, [0, 0, 0]),
+            ], [
+                FunctionData(1, [state_start + 2, 0, 0]),
+            ]),
+        )
+        state_start += 2
+        for y in range(sequence_count):
+            successful_kremling = [
+                FunctionData(94, [local_sequence[y] + 5, 0, 0]),  # Spawn Kremling
+                FunctionData(3, [0, 50, 0]),
+                FunctionData(17, [local_sequence[y] + 1, 2, 0]),
+                FunctionData(1, [state_start + 2, 0, 0]),
+            ]
+            if y == (sequence_count - 1):
+                successful_kremling.append(
+                    FunctionData(15, [673, 0, 0]),  # Play Ding
+                )
+            script.extend([
+                ScriptBlock([
+                    FunctionData(1, [state_start, 0, 0]),
+                    FunctionData(4, [0, 0, 0]),
+                ], [
+                    FunctionData(1, [state_start + 1, 0, 0]),
+                ]),
+                ScriptBlock([
+                    FunctionData(1, [state_start, 0, 0]),
+                    FunctionData(2, [0, 0, 0], True),  # Not on piano
+                ], [
+                    FunctionData(3, [0, 0, 0]),  # Set timer to 0
+                    FunctionData(1, [state_start + 1, 0, 0]),
+                ]),
+                ScriptBlock([
+                    FunctionData(1, [state_start + 1, 0, 0]),
+                    FunctionData(13, [local_sequence[y] + 1, 0, 0]),  # Is pressing right key
+                    FunctionData(23, [28, 0, 0]),  # Is slamming
+                ], successful_kremling),
+                ScriptBlock([
+                    FunctionData(1, [state_start + 1, 0, 0]),
+                    FunctionData(23, [28, 0, 0]),  # Is slamming
+                    FunctionData(6, [1, local_sequence[y] + 1, 0]),  # Is pressing wrong key
+                ], [
+                    FunctionData(1, [burp_state, 0, 0]),
+                    FunctionData(3, [0, 50, 0]),
+                    FunctionData(15, [0x98, 0, 0]),  # Error Sound
+                ]),
+            ])
+            state_start += 2
+    script.extend([
+        ScriptBlock([
+            FunctionData(1, [state_start, 0, 0]),
+            FunctionData(4, [20, 0, 0]),
+        ], [
+            FunctionData(5, [62, 10, 0]),
+            FunctionData(84, [62, 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [state_start, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(38, [2, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [failure_state, 0, 0]),
+        ], [
+            FunctionData(3, [0, 10, 0]),
+            FunctionData(1, [failure_state + 1, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [failure_state + 1, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(97, [42, 0, 0]),
+            FunctionData(3, [0, 90, 0]),
+            FunctionData(1, [failure_state + 2, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [failure_state + 2, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(5, [61, 10, 0]),
+            FunctionData(84, [61, 1, 0]),
+            FunctionData(38, [2, 0, 0]),
+        ]),
+    ])
+    return compileInstanceScript(item_id, script)
+
 def replaceScriptLines(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], replacement_mapping: dict) -> None:
     """Replace a script line with another."""
     script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
@@ -1566,6 +1730,8 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
             subscript = getHelmPadScript(item_id, extra_data[item_id]["temp_flags"], extra_data[item_id]["kong_id"], extra_data[item_id]["glass_panel"], extra_data[item_id]["hint_cs"], extra_data[item_id]["microhint"], extra_data[item_id]["req_minigames"], extra_data[item_id]["helm_order"])
         elif stype == ScriptTypes.KrocIslePort:
             subscript = getHelmMonkeyport(item_id, extra_data["kong"], extra_data["microhint"])
+        elif stype == ScriptTypes.Piano:
+            subscript = getPianoScript(item_id, extra_data["piano_order"], extra_data["fast_piano"])
         if subscript is not None:
             good_scripts.append(subscript)
     # Reconstruct File

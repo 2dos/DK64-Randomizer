@@ -442,29 +442,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == FACTORY_FREESWITCH) {
 					giveItemFromKongData(&kong_check_data[KONGCHECK_FACTORY], FLAG_KONG_CHUNKY);
-				} else if (param2 == FACTORY_PIANO) {
-					if (index < 7) {
-						// Kremling appears
-						spawnPianoKremling(Rando.piano_game_order[index] + 5,0);
-					} else if (index < 14) {
-						setAcceptablePianoKey(id, Rando.piano_game_order[index - 7] + 1,2);
-					} else if (index < 21) {
-						return checkSlamLocation(2, Rando.piano_game_order[index - 14] + 1, id);
-					} else if (index < 28) {
-						return checkContactSublocation(behaviour_pointer,id,Rando.piano_game_order[index - 21] + 1, 0);
-					} else if (index == 28) {
-						if (Rando.faster_checks.piano) {
-							behaviour_pointer->next_state = 26;
-						} else {
-							behaviour_pointer->next_state = 17;
-						}
-					} else if (index == 29) {
-						if (Rando.faster_checks.piano) {
-							behaviour_pointer->next_state = 50;
-						} else {
-							behaviour_pointer->next_state = 37;
-						}
-					}
 				} else if (param2 == FACTORY_3124_SWITCH || param2 == FACTORY_4231_SWITCH || param2 == FACTORY_1342_SWITCH) {
 					if (index == 0) {
 						return Rando.faster_checks.diddy_rnd != 0;

@@ -574,9 +574,7 @@ def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
             chosen_sounds.append(sfx)
             spoiler.settings.matching_game_sounds[matching_head] = sfx
         for piano_item in range(7):
-            ROM_COPY.seek(sav + 0x16C + piano_item)
-            key = spoiler.settings.random.randint(0, 5)
-            ROM_COPY.writeMultipleBytes(key, 1)
+            spoiler.settings.piano_game_order[piano_item] = spoiler.settings.random.randint(0, 5)
         spoiler.dk_face_puzzle = [None] * 9
         spoiler.chunky_face_puzzle = [None] * 9
         for face_puzzle_square in range(9):

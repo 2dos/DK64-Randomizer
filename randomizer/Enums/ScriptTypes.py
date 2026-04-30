@@ -21,3 +21,4 @@ class ScriptTypes(IntEnum):
     KRoolShip = auto()
     KRoolShipController = auto()
     KrocIslePort = auto()
+    Piano = auto()
