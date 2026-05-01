@@ -11,11 +11,6 @@ from randomizer.Patching.Library.ASM import getROMAddress, populateOverlayOffset
 from randomizer.Enums.Settings import FasterChecksSelected, PuzzleRando
 
 
-def chooseSFX(rando):
-    """Choose random SFX from bank of acceptable SFX."""
-    return rando.choice(TERMINATING_SFXS)
-
-
 def shiftCastleMinecartRewardZones(ROM_COPY: LocalROM):
     """Shifts the triggers for the reward point in castle minecart."""
     cont_map_lzs_address = getPointerLocation(TableNames.Triggers, Maps.CastleMinecarts)
@@ -560,23 +555,32 @@ def randomizeRaceRequirements(spoiler):
             selected_requirement = coinreq.selected_bound.generateRequirement(spoiler)
         spoiler.coin_requirements[coinreq.tied_map] = selected_requirement
 
+def chooseRandomSounds(rand, count: int):
+    """Choose a random series of sounds."""
+    chosen_sounds = []
+    output_sounds = []
+    for _ in range(count):
+        sfx = rand.choice(TERMINATING_SFXS)
+        while sfx in chosen_sounds:
+            sfx = rand.choice(TERMINATING_SFXS)
+        chosen_sounds.append(sfx)
+        output_sounds.append(sfx)
+        # Not funny joke is not funny
+        if sfx == 1017:
+            chosen_sounds.append(1018)
+        elif sfx == 1018:
+            chosen_sounds.append(1017)
+    return output_sounds
 
 def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
     """Shuffle elements of puzzles."""
     patchRaceRequirements(spoiler, ROM_COPY)
     sav = spoiler.settings.rom_data
     if spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
-        chosen_sounds = []
-        for matching_head in range(8):
-            sfx = spoiler.settings.random.choice(TERMINATING_SFXS)
-            while sfx in chosen_sounds:
-                sfx = spoiler.settings.random.choice(TERMINATING_SFXS)
-            chosen_sounds.append(sfx)
-            spoiler.settings.matching_game_sounds[matching_head] = sfx
+        spoiler.settings.matching_game_sounds = chooseRandomSounds(spoiler.settings.random, 8)
+        spoiler.settings.piano_game_sounds = chooseRandomSounds(spoiler.settings.random, 6)
         for piano_item in range(7):
-            ROM_COPY.seek(sav + 0x16C + piano_item)
-            key = spoiler.settings.random.randint(0, 5)
-            ROM_COPY.writeMultipleBytes(key, 1)
+            spoiler.settings.piano_game_order[piano_item] = spoiler.settings.random.randint(0, 5)
         spoiler.dk_face_puzzle = [None] * 9
         spoiler.chunky_face_puzzle = [None] * 9
         for face_puzzle_square in range(9):
@@ -597,14 +601,6 @@ def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
             "100m": 2,
         }
         spoiler.settings.random.shuffle(arcade_levels)
-        if False:  # Testing the feedback on just ditching this rule
-            # Make sure 75m isn't in the first 2 levels if faster arcade is enabled because 75m is hard
-            if IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.arcade):
-                for x in range(2):
-                    if arcade_levels[x] == "75m":
-                        temp_level = arcade_levels[2]
-                        arcade_levels[2] = arcade_levels[x]
-                        arcade_levels[x] = temp_level
         spoiler.arcade_order = [0] * 4
         for lvl_index, lvl in enumerate(arcade_levels):
             spoiler.arcade_order[lvl_index] = arcade_level_data[lvl]

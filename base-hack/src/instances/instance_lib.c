@@ -46,45 +46,6 @@ void getModelTwoItemFromActor(int actor, short* item, float* scale) {
 	}
 }
 
-int isBonus(maps map) {
-	/**
-	 * @brief Is map queried a bonus map
-	 * 
-	 * @param map Map index being queried
-	 * 
-	 * @return Is bonus map (bool)
-	 */
-	if (map == MAP_MAINMENU) {
-		return 0;
-	} else if (inBattleCrown(map)) {
-		return 0;
-	}
-	level_indexes level = levelIndexMapping[map];
-	return (level == LEVEL_BONUS) || (level == LEVEL_SHARED);
-}
-
 int standingOnM2Object(int index) {
 	return (Player->touching_object == 1) && (Player->standing_on_index == index);
-}
-
-int checkSlamLocation(int kong, int key, int id) {
-	/**
-	 * @brief Check slam location
-	 * 
-	 * @param kong Required kong
-	 * @param key Index in Object Model Two Array
-	 * @param id Object ID of target
-	 */
-	if (Character == kong) {
-		if (Player) {
-			if ((Player->obj_props_bitfield & 0x2000) == 0) {
-				if (standingOnM2Object(id)) {
-					if (Player->standing_on_subposition == key) {
-						return 1;
-					}
-				}
-			}
-		}
-	}
-	return 0;
 }

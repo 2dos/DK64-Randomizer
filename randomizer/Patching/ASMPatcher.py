@@ -97,6 +97,7 @@ TS = True
 TEST_HUNKY_FIX = False
 BETTER_JUMPS = True
 INSTANCE_SCRIPT_ADJUSTMENTS = True
+PIANO_SFX_RANDO = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -800,6 +801,14 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
                 spoiler.text_changes[file].append(data)
             else:
                 spoiler.text_changes[file] = [data]
+
+    # Piano QoL
+    writeValue(ROM_COPY, 0x8064AB8C, Overlay.Static, 0, offset_dict, 4)  # Disable lanky check
+    writeValue(ROM_COPY, 0x8064AB78, Overlay.Static, 0x9459005C, offset_dict, 4)  # Change prop read to be int bitfield
+    writeValue(ROM_COPY, 0x8064AB7E, Overlay.Static, 1, offset_dict)  # Change to check for player
+    writeValue(ROM_COPY, 0x8064AB80, Overlay.Static, 0x1140, offset_dict)  # Change BNE to BEQ
+
+    
 
     if settings.arcade_custom_minigame is not None:
         loadBin(ROM_COPY, 0x80024390, Overlay.Arcade, f"base-hack/minigame/{settings.arcade_custom_minigame}.bin", offset_dict)
@@ -2330,6 +2339,28 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
         writeValue(ROM_COPY, 0x8063E2D2, Overlay.Static, 0x0, offset_dict)  # Next block pointer
         writeHook(ROM_COPY, 0x8063E290, Overlay.Static, "InstanceGetExec_0", offset_dict)  # Get exec count (initial) and adjust exec pointer
         writeValue(ROM_COPY, 0x8063E2BA, Overlay.Static, 0x6, offset_dict)  # exec count pointer
+        # Freeing blocks
+        writeValue(ROM_COPY, 0x8063DEA2, Overlay.Static, 0, offset_dict)  # Next block pointer
+    if PIANO_SFX_RANDO:
+        piano_sfx_addrs = [
+            0x8069E336,
+            0x8069E35E,
+            0x8069E37E,
+            0x8069E3AA,
+            0x8069E3D2,
+            0x8069E3FA,
+        ]
+        piano_variance_addrs = [
+            0x8069E32E,
+            0x8069E356,
+            0x8069E3A2,
+            0x8069E3CA,
+            0x8069E3F2,
+        ]
+        for index, addr in enumerate(piano_sfx_addrs):
+            writeValue(ROM_COPY, addr, Overlay.Static, settings.piano_game_sounds[index], offset_dict)
+        for addr in piano_variance_addrs:
+            writeValue(ROM_COPY, addr, Overlay.Static, 0, offset_dict)
     # Menu/Shop Stuff
     # Menu/Shop: Force enable cheats
     writeValue(ROM_COPY, 0x800280DC, Overlay.Menu, 0x1000, offset_dict)  # Force access to mystery menu
