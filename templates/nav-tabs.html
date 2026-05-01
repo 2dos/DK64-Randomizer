@@ -15,41 +15,42 @@
         <input type="search" id="setting-search" />
     </div>
 </ul>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
 <script>
     document.getElementById("setting-search").addEventListener("input", (e) => {
-        const search_value = document.getElementById("setting-search").value.toLowerCase();
-        const containers = document.querySelectorAll("label.form-check-label, p.select-title");
-        let tabs = {};
-        containers.forEach(c => {
-            if (!c.closest(".modal.fade")) {
-                if (search_value.trim().length > 0) {
-                    const value = c.innerHTML.trim().toLowerCase();
-                    if (value.includes(search_value)) {
-                        const tab = c.closest("div[role=tabpanel]");
-                        const tabname = `${tab.getAttribute("id")}-badge`;
-                        if (!Object.keys(tabs).includes(tabname)) {
-                            tabs[tabname] = 0;
-                        }
-                        tabs[tabname]++;
-                        c.classList.add("found-item");
-                        return;
-                    }
-                }
-                c.classList.remove("found-item");
-            }
-        });
+        const search_value = document.getElementById("setting-search").value.trim();
+        const containers = Array.from(document.querySelectorAll("label.form-check-label, .select-title"))
+            .filter(c => !c.closest(".modal.fade"));
+
+        containers.forEach(c => c.classList.remove("found-item"));
+        const tabs = {};
+
+        if (search_value.length > 0) {
+            const fuse = new Fuse(containers, {
+                keys: [{ name: "text", getFn: c => c.innerHTML.trim() }],
+                threshold: 0.3,
+                ignoreLocation: true,
+                minMatchCharLength: 2,
+            });
+            fuse.search(search_value).forEach(({ item }) => {
+                const tab = item.closest("div[role=tabpanel]");
+                if (!tab) return;
+                const tabname = `${tab.getAttribute("id")}-badge`;
+                tabs[tabname] = (tabs[tabname] || 0) + 1;
+                item.classList.add("found-item");
+            });
+        }
+
         const badges = document.getElementsByClassName("navbadge");
         for (let b = 0; b < badges.length; b++) {
             const badge_container = badges[b];
             const badge_name = badge_container.getAttribute("id");
-            if (Object.keys(tabs).includes(badge_name)) {
-                if (tabs[badge_name] > 0) {
-                    badge_container.removeAttribute("hidden");
-                    badge_container.innerHTML = tabs[badge_name];
-                    continue;
-                }
+            if (tabs[badge_name] > 0) {
+                badge_container.removeAttribute("hidden");
+                badge_container.innerHTML = tabs[badge_name];
+            } else {
+                badge_container.setAttribute("hidden", "hidden");
             }
-            badge_container.setAttribute("hidden", "hidden");
         }
     });
 </script>
