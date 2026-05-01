@@ -152,19 +152,6 @@ class OpenLobbies(Toggle):
 
     display_name = "Open Lobbies"
 
-
-class ClimbingShuffle(Toggle):
-    """Whether or not you shuffle the Climbing ability into the world(s)."""
-
-    display_name = "Climbing Shuffle"
-
-
-class CannonShuffle(Toggle):
-    """Whether or not you shuffle the Cannon ability into the world(s)."""
-
-    display_name = "Cannon Shuffle"
-
-
 class StartingKongCount(Range):
     """Determines how many Kongs you start with."""
 
@@ -1958,8 +1945,6 @@ class DK64Options(PerGameCommonOptions):
     level_troff: LevelTroff
     open_lobbies: OpenLobbies
     switchsanity: SwitchsanityOptions
-    climbing_shuffle: ClimbingShuffle
-    cannon_shuffle: CannonShuffle
     starting_kong_count: StartingKongCount
     starting_move_pool_1: StartingMovePool1
     starting_move_pool_1_count: StartingMovePool1Count
@@ -2085,8 +2070,6 @@ dk64_option_groups: List[OptionGroup] = [
             StartingMovePool5,
             StartingMovePool5Count,
             HelmKeyLock,
-            ClimbingShuffle,
-            CannonShuffle,
             ItemPool,
             SnideMaximum,
         ],
