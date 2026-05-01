@@ -265,14 +265,14 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                 for _ in range(num_coins):
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Climbing:
-                if name in starting_moves or not world.options.climbing_shuffle:
+                if name in starting_moves:
                     world.multiworld.push_precollected(copy.copy(ap_item))
                 elif name in world.options.start_inventory:
                     continue
                 else:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Cannons:
-                if name in starting_moves or not world.options.cannon_shuffle:
+                if name in starting_moves:
                     world.multiworld.push_precollected(copy.copy(ap_item))
                 elif name in world.options.start_inventory:
                     continue
