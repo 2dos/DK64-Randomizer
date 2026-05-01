@@ -32,10 +32,6 @@
 #define TTEMPLE_BAMBOOGATE 0x15
 #define FACTORY_FREESWITCH 0x24
 
-#define FACTORY_4231_SWITCH 0x3F
-#define FACTORY_3124_SWITCH 0x40
-#define FACTORY_1342_SWITCH 0x41
-
 #define ISLES_JAPESBOULDER 0x3
 #define ISLES_AZTECDOOR 0x02
 #define ISLES_FACTORYPLATFORM 0x05
@@ -82,8 +78,6 @@
 
 #define JAPES_RAMBI_DOOR 0x115
 #define K_ROOL_SHIP 0x35
-
-ROM_RODATA_NUM static const unsigned char hands[] = {6, 7, 9, 10, 11, 12};
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
 	int world = getWorld(CurrentMap, 0);
@@ -152,40 +146,12 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case MAP_ISLES:
-				if (param2 == ISLES_JAPESBOULDER) {
-					if (Rando.lobbies_open_bitfield & 1) {
-						hideObject(behaviour_pointer);
-					}
-				} else if (param2 == ISLES_AZTECDOOR) {
-					if (Rando.lobbies_open_bitfield & 2) {
-						hideObject(behaviour_pointer);
-					}
-				} else if (param2 == ISLES_FACTORYPLATFORM) {
+				if (param2 == ISLES_FACTORYPLATFORM) {
 					if (Rando.lobbies_open_bitfield & 4) {
 						behaviour_pointer->next_state = 5;
 						unkObjFunction0(id,1,0);
 						unkObjFunction1(id,1,5);
 						unkObjFunction2(id,1,1);
-					}
-				} else if (param2 == ISLES_FACTORYDOOR) {
-					if (Rando.lobbies_open_bitfield & 4) {
-						hideObject(behaviour_pointer);
-					}
-				} else if (param2 == ISLES_GALLEONBARS) {
-					if (Rando.lobbies_open_bitfield & 8) {
-						hideObject(behaviour_pointer);
-					}
-				} else if (param2 == ISLES_FUNGIBOULDER) {
-					if (Rando.lobbies_open_bitfield & 0x10) {
-						hideObject(behaviour_pointer);
-					}
-				} else if (param2 == ISLES_CAVESBOULDER) {
-					if (Rando.lobbies_open_bitfield & 0x20) {
-						hideObject(behaviour_pointer);
-					}
-				} else if (param2 == ISLES_CASTLEROCK) {
-					if (Rando.lobbies_open_bitfield & 0x40) {
-						hideObject(behaviour_pointer);
 					}
 				} else if (param2 == ISLES_HELMJAW) {
 					if (Rando.lobbies_open_bitfield & 0x80) {
@@ -422,28 +388,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == FACTORY_FREESWITCH) {
 					giveItemFromKongData(&kong_check_data[KONGCHECK_FACTORY], FLAG_KONG_CHUNKY);
-				} else if (param2 == FACTORY_3124_SWITCH || param2 == FACTORY_4231_SWITCH || param2 == FACTORY_1342_SWITCH) {
-					if (index == 0) {
-						return Rando.faster_checks.diddy_rnd != 0;
-					} else if (index == 1) {
-						// Check if GB is in a state >= 3, this means it was spawned.
-						int index = convertIDToIndex(96);
-						if (index > -1) {
-							ModelTwoData* _object = &ObjectModel2Pointer[index];
-							behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
-							if (_object && behaviour) {
-								if(behaviour->current_state <= 3) {
-									behaviour_pointer->current_state = 5;
-								}
-							}
-						}
-					} else if (index == 2) {
-						if (Rando.faster_checks.diddy_rnd) {
-							disableDiddyRDDoors();
-						} else {
-							setScriptRunState(behaviour_pointer, RUNSTATE_PAUSED, 0);
-						}
-					}
 				} else if (param2 == FACTORY_LARGEMETALSECTION) {
 					if (Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->current_state = 10;
@@ -635,26 +579,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						//move on to state 3
 						behaviour_pointer->next_state = 3;
 					}
-				} else if (param2 == CRYPT_LT_SIMIAN_SWITCH) {
-					//activates the Goo Hands in Tiny's part of the Lanky/Tiny Crypt if all 6 of them are initialized
-					//activates the hands
-					for(unsigned int hand = 0; hand < sizeof(hands); hand++){
-						//obtain hand variables
-						// Get model two pointer of the Goo Hand in question
-						int slot = convertIDToIndex(hands[hand]);
-						ModelTwoData* handModelTwoPointer = &ObjectModel2Pointer[slot];
-						if (handModelTwoPointer) {
-							// If pointer exists with that id, check behaviour
-							behaviour_data* behaviour = handModelTwoPointer->behaviour_pointer;
-							if (behaviour) {
-								// If behaviour exists (always should do, but always good to check), activate the Goo Hand
-								setObjectScriptState(slot, 10, 0);
-								if(slot != -1){
-									setScriptRunState(behaviour, RUNSTATE_INIT, 0);
-								}
-							}
-						}
-					}
 				}
 				break;
 			case MAP_HELM:
@@ -741,18 +665,4 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		ItemInventory->turned_in_bp_count[getKong(0)]++;
 	}
 	return 0;
-}
-
-void disableDiddyRDDoors(void) {
-	/**
-	 * @brief Check whether to disable the Diddy R&D Doors
-	 * 
-	 */
-	for(int i = 63; i < 66; ++i) {
-		int index = convertIDToIndex(i);
-		behaviour_data* behaviour = ObjectModel2Pointer[index].behaviour_pointer;
-		if (behaviour) {
-			setScriptRunState(behaviour, RUNSTATE_PAUSED, 0);
-		}
-	}
 }
