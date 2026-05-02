@@ -367,14 +367,7 @@ class ProcessMemory:
                 break
 
             protect = mbi.Protect
-            if (
-                mbi.State == MEM_COMMIT
-                and mbi.Type == MEM_PRIVATE
-                and not (protect & PAGE_GUARD)
-                and not (protect & PAGE_NOACCESS)
-                and (protect & writable_mask)
-                and size >= min_size
-            ):
+            if mbi.State == MEM_COMMIT and mbi.Type == MEM_PRIVATE and not (protect & PAGE_GUARD) and not (protect & PAGE_NOACCESS) and (protect & writable_mask) and size >= min_size:
                 regions.append((base, size))
 
             address = base + size
@@ -574,7 +567,7 @@ class EmulatorInfo:
     def _scan_for_signature(self, pm: ProcessMemory) -> Optional[int]:
         """Scan anonymous heap regions for the DK64 ROM signature and return the RDRAM base."""
         # 0x52414D42 read little-endian back from memory, i.e. the bytes B M A R.
-        signature = b"\x42\x4D\x41\x52"
+        signature = b"\x42\x4d\x41\x52"
         signature_offset = 0x759290
         alignment = self.signature_alignment
 
