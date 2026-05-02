@@ -77,6 +77,26 @@ if IS_WINDOWS:
             ("szExeFile", ctypes.c_char * MAX_PATH),
         ]
 
+    class MEMORY_BASIC_INFORMATION(ctypes.Structure):
+        """Memory region descriptor returned by VirtualQueryEx."""
+
+        _fields_ = [
+            ("BaseAddress", ctypes.c_void_p),
+            ("AllocationBase", ctypes.c_void_p),
+            ("AllocationProtect", ctypes.wintypes.DWORD),
+            ("RegionSize", ctypes.c_size_t),
+            ("State", ctypes.wintypes.DWORD),
+            ("Protect", ctypes.wintypes.DWORD),
+            ("Type", ctypes.wintypes.DWORD),
+        ]
+
+    MEM_COMMIT = 0x1000
+    MEM_PRIVATE = 0x20000
+    PAGE_NOACCESS = 0x01
+    PAGE_READWRITE = 0x04
+    PAGE_EXECUTE_READWRITE = 0x40
+    PAGE_GUARD = 0x100
+
     def _get_windows_processes() -> List[Dict[str, Any]]:
         """Get running processes on Windows using native API."""
         processes: List[Dict[str, Any]] = []
@@ -157,20 +177,24 @@ class ModuleInfo:
 class ProcessMemory:
     """Class to handle process memory operations using ctypes on Windows and Linux."""
 
-    def __init__(self, process_name: str):
-        """Initialize with the process name."""
+    def __init__(self, process_name: str, pid: Optional[int] = None):
+        """Initialize with the process name. If pid is provided, attach to that specific PID instead of the first match by name."""
         self.process_name = process_name
         self.process_handle = None
         self.process_id = None
         self.mem_fd = None  # File descriptor for Linux /proc/pid/mem
-        self._attach_to_process()
+        self._attach_to_process(pid)
 
-    def _attach_to_process(self):
-        """Attach to the process by name."""
+    def _attach_to_process(self, target_pid: Optional[int] = None):
+        """Attach to the process by name, or by specific pid when provided."""
         processes = get_running_processes()
 
         for proc in processes:
-            if proc["name"] and proc["name"].lower().startswith(self.process_name.lower()):
+            if target_pid is not None:
+                matches = proc["pid"] == target_pid
+            else:
+                matches = bool(proc["name"]) and proc["name"].lower().startswith(self.process_name.lower())
+            if matches:
                 self.process_id = proc["pid"]
 
                 if IS_WINDOWS:
@@ -266,6 +290,96 @@ class ProcessMemory:
             pass
 
         return modules
+
+    def list_writable_regions(self, min_size: int = 0x800000) -> List[Tuple[int, int]]:
+        """List anonymous read/write memory regions of at least min_size bytes."""
+        if IS_WINDOWS:
+            return self._list_writable_regions_windows(min_size)
+        elif IS_LINUX:
+            return self._list_writable_regions_linux(min_size)
+        return []
+
+    def _list_writable_regions_linux(self, min_size: int) -> List[Tuple[int, int]]:
+        """Walk /proc/pid/maps for anonymous (heap-like) read/write mappings."""
+        regions: List[Tuple[int, int]] = []
+        if not self.process_id:
+            return regions
+
+        try:
+            with open(f"/proc/{self.process_id}/maps", "r") as maps_file:
+                for line in maps_file:
+                    parts = line.strip().split()
+                    if len(parts) < 5:
+                        continue
+                    address_range = parts[0]
+                    permissions = parts[1]
+                    pathname = parts[5] if len(parts) > 5 else ""
+
+                    if "r" not in permissions or "w" not in permissions:
+                        continue
+                    # Keep anonymous mappings, [heap], and [anon:*]; skip file-backed and [stack]/[vdso]/etc.
+                    if pathname and pathname != "[heap]" and not pathname.startswith("[anon"):
+                        continue
+
+                    try:
+                        start_str, end_str = address_range.split("-")
+                        start_addr = int(start_str, 16)
+                        end_addr = int(end_str, 16)
+                    except ValueError:
+                        continue
+
+                    size = end_addr - start_addr
+                    if size >= min_size:
+                        regions.append((start_addr, size))
+        except (OSError, IOError):
+            pass
+
+        return regions
+
+    def _list_writable_regions_windows(self, min_size: int) -> List[Tuple[int, int]]:
+        """Walk address space via VirtualQueryEx for committed private read/write regions."""
+        regions: List[Tuple[int, int]] = []
+        if not self.process_handle:
+            return regions
+
+        VirtualQueryEx = ctypes.windll.kernel32.VirtualQueryEx
+        VirtualQueryEx.argtypes = [
+            ctypes.wintypes.HANDLE,
+            ctypes.c_void_p,
+            ctypes.POINTER(MEMORY_BASIC_INFORMATION),
+            ctypes.c_size_t,
+        ]
+        VirtualQueryEx.restype = ctypes.c_size_t
+
+        mbi = MEMORY_BASIC_INFORMATION()
+        mbi_size = ctypes.sizeof(MEMORY_BASIC_INFORMATION)
+        max_address = 0x7FFFFFFFFFFF if ctypes.sizeof(ctypes.c_void_p) == 8 else 0x7FFFFFFF
+        writable_mask = PAGE_READWRITE | PAGE_EXECUTE_READWRITE
+
+        address = 0
+        while address < max_address:
+            if VirtualQueryEx(self.process_handle, ctypes.c_void_p(address), ctypes.byref(mbi), mbi_size) == 0:
+                break
+
+            base = mbi.BaseAddress or 0
+            size = mbi.RegionSize
+            if size == 0:
+                break
+
+            protect = mbi.Protect
+            if (
+                mbi.State == MEM_COMMIT
+                and mbi.Type == MEM_PRIVATE
+                and not (protect & PAGE_GUARD)
+                and not (protect & PAGE_NOACCESS)
+                and (protect & writable_mask)
+                and size >= min_size
+            ):
+                regions.append((base, size))
+
+            address = base + size
+
+        return regions
 
     def read_bytes(self, address: int, size: int) -> bytes:
         """Read bytes from process memory."""
@@ -369,6 +483,8 @@ class Emulators(IntEnum):
     ParallelLauncher = auto()
     ParallelLauncher903 = auto()
     RetroArch = auto()
+    Gopher64 = auto()
+    Ares = auto()
 
 
 class EmulatorInfo:
@@ -387,6 +503,8 @@ class EmulatorInfo:
         range_step: int = 16,
         extra_offset: int = 0,
         linux_dll_name: Optional[str] = None,
+        scan_memory_for_signature: bool = False,
+        signature_alignment: int = 0x10000,
     ):
         """Initialize with given parameters."""
         self.id = id
@@ -400,6 +518,8 @@ class EmulatorInfo:
         self.upper_offset_range = upper_offset_range
         self.range_step = range_step
         self.extra_offset = extra_offset
+        self.scan_memory_for_signature = scan_memory_for_signature
+        self.signature_alignment = signature_alignment
         self.connected_process: Optional[ProcessMemory] = None
         self.connected_offset: Optional[int] = None
         self.connection_error: Optional[str] = None
@@ -451,23 +571,60 @@ class EmulatorInfo:
         print(msg)
         self.connection_error = msg
 
+    def _scan_for_signature(self, pm: ProcessMemory) -> Optional[int]:
+        """Scan anonymous heap regions for the DK64 ROM signature and return the RDRAM base."""
+        # 0x52414D42 read little-endian back from memory, i.e. the bytes B M A R.
+        signature = b"\x42\x4D\x41\x52"
+        signature_offset = 0x759290
+        alignment = self.signature_alignment
+
+        for region_start, region_size in pm.list_writable_regions():
+            max_base = region_size - signature_offset - 4
+            if max_base < 0:
+                continue
+            for base in range(0, max_base + 1, alignment):
+                try:
+                    sample = pm.read_bytes(region_start + base + signature_offset, 4)
+                except Exception:
+                    continue
+                if sample == signature:
+                    return region_start + base
+        return None
+
     def attach_to_emulator(self) -> Optional[Tuple[ProcessMemory, int]]:
         """Grab  memory addresses of where emulated RDRAM is."""
         # Reset
         self.connected_process = None
         self.connected_offset = None
-        # Find process by name
-        target_proc = None
+        # Find processes by name
         processes = get_running_processes()
-
-        for proc in processes:
-            if proc["name"] and proc["name"].lower().startswith(self.process_name.lower()):
-                target_proc = proc
-                break
-        if not target_proc:
+        matching_procs = [p for p in processes if p["name"] and p["name"].lower().startswith(self.process_name.lower())]
+        if not matching_procs:
             self.raiseError(f"Could not find process '{self.process_name}'")
             return None
 
+        if self.scan_memory_for_signature:
+            # Multiple processes may match (e.g. gopher64 launches a child for the actual emu).
+            # Try each one until one yields the DK64 signature.
+            last_error: Optional[str] = None
+            for proc in matching_procs:
+                try:
+                    pm = ProcessMemory(self.process_name, pid=proc["pid"])
+                except Exception as e:
+                    last_error = f"Failed to attach to process pid {proc['pid']}: {e}"
+                    continue
+                rdram_base = self._scan_for_signature(pm)
+                if rdram_base is None:
+                    pm.close()
+                    continue
+                self.connected_process = pm
+                self.connected_offset = rdram_base
+                self.writeBytes(0x807ED6A0, 4, 1)  # Connection validation
+                return (pm, rdram_base)
+            self.raiseError(last_error or f"Could not locate DK64 signature in any {self.readable_emulator_name} memory region")
+            return None
+
+        target_proc = matching_procs[0]
         try:
             pm = ProcessMemory(target_proc["name"])
         except Exception as e:
@@ -650,6 +807,8 @@ EMULATOR_CONFIGS = {
         Emulators.RetroArch, "RetroArch", "retroarch", True, "mupen64plus_next_libretro.dll", True, 0, 0xFFFFFF, range_step=4, linux_dll_name="mupen64plus_next_libretro.so"
     ),
     Emulators.Project64: EmulatorInfo(Emulators.Project64, "Project64", "project64", False, None, False, 0xDFD00000, 0xE01FFFFF),
+    Emulators.Gopher64: EmulatorInfo(Emulators.Gopher64, "Gopher64", "gopher64", False, None, False, 0, 0, scan_memory_for_signature=True),
+    Emulators.Ares: EmulatorInfo(Emulators.Ares, "ares", "ares", False, None, False, 0, 0, scan_memory_for_signature=True, signature_alignment=0x1000),
 }
 
 
