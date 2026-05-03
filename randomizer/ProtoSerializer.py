@@ -1117,7 +1117,7 @@ def _populate_shuffle_data(spoiler: "Spoiler", proto: fill_result_pb2.ShuffleDat
             "container_map": int(instruction["container_map"]),
             "zones": [{k: int(v) for k, v in zone.items()} for zone in instruction.get("zones", [])],
         }
-        proto.exit_instructions.append(str(serializable))
+        proto.exit_instructions.append(json.dumps(serializable))
 
     # Port connections
     if hasattr(spoiler, "port_connections"):

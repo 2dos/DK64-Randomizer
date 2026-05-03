@@ -239,6 +239,7 @@ base-hack/asm/minigames/*/main.asm
 base-hack/asm/minigames/*/objects.asm
 base-hack/instance_scripts_data.json
 base-hack/modelling/*.obj
+tools/dump_lanky.py
 *.apworld
 /dk64/
 *.rgba32
