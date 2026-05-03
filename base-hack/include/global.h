@@ -28,7 +28,6 @@ extern int ReadFileSimple(int data);
 extern void SaveFileSimple(int data, int value);
 
 extern int isModelTwoTiedFlag_new(maps map, setup_item * item);
-extern float getModelTwoScale(int obj_id);
 extern void getBPCountStats(int kong, unsigned char *has, unsigned char *turned);
 extern int getTurnedCount(int kong);
 extern int turnedAllIn(void);
@@ -332,7 +331,6 @@ extern void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id
 extern void activateGonePad(void);
 extern int canOpenSpecificBLocker(int level);
 extern int canOpenXBlockers(int count);
-extern void getModelTwoItemFromActor(int actor, short* item, float* scale);
 extern void setObjectOpacity(behaviour_data* behaviour_pointer, int opacity);
 extern int standingOnM2Object(int index);
 

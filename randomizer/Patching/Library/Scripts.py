@@ -1752,6 +1752,18 @@ def getDiddyRNDDoorScript(item_id: int, fast_rnd: bool, cutscene_id: int, pen_id
         "fast": fast_rnd
     })
 
+def getIntangibleObjectPreview(item_id) -> list[int]:
+    """Get the instance script associated with intangible item previews."""
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(70, [0, 0, 0]),
+            FunctionData(69, [1, 255, 255]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+    ])
+
 def replaceScriptLines(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], replacement_mapping: dict) -> None:
     """Replace a script line with another."""
     script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
@@ -1877,6 +1889,8 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
             subscript = getPianoScript(item_id, extra_data["piano_order"], extra_data["fast_piano"])
         elif stype == ScriptTypes.DiddyRNDDoors:
             subscript = getDiddyRNDDoorScript(item_id, extra_data[item_id]["fast_rnd"], extra_data[item_id]["cutscene_id"], extra_data[item_id]["pen_id"], extra_data[item_id]["enemy_ids"])
+        elif stype == ScriptTypes.IntangibleObject:
+            subscript = getIntangibleObjectPreview(item_id)
         if subscript is not None:
             good_scripts.append(subscript)
     # Reconstruct File

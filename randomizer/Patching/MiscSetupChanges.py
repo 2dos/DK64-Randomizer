@@ -17,11 +17,13 @@ from randomizer.Enums.Settings import (
     HardBossesSelected,
     WinConditionComplex,
 )
+from randomizer.Enums.Types import Types
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable
 from randomizer.Patching.Library.Generic import IsDDMSSelected
 from randomizer.Patching.Library.DataTypes import float_to_hex
+from randomizer.Patching.Library.ItemRando import getItemDBEntry
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
 
@@ -163,6 +165,77 @@ def SpeedUpFungiRabbit(ROM_COPY: LocalROM, factor: float = 1.0):
             ROM_COPY.seek(file_start + init_offset + 0xD)
             ROM_COPY.write(int(136 * speed_buff))
 
+def addCrownPreviews(spoiler, ROM_COPY):
+    """Add battle crown previews."""
+    if not spoiler.settings.item_reward_previews:
+        return
+    crown_previews = []
+    for _ in range(10):
+        crown_previews.append({
+            "item": 0x18D,
+            "scale": 0.25
+        })
+    crown_flags = [0x261, 0x262, 0x263, 0x264, 0x265, 0x268, 0x269, 0x266, 0x26A, 0x267]
+    crown_maps = [
+        Maps.JapesCrown,
+        Maps.AztecCrown,
+        Maps.FactoryCrown,
+        Maps.GalleonCrown,
+        Maps.ForestCrown,
+        Maps.CavesCrown,
+        Maps.CastleCrown,
+        Maps.LobbyCrown,
+        Maps.HelmCrown,
+        Maps.SnidesCrown,
+    ]
+    if spoiler.settings.shuffle_items:
+        for item in spoiler.item_assignment:
+            if item.can_have_item and item.old_item == Types.Crown:
+                crown_index = crown_flags.index(item.old_flag)
+                item_type = item.new_type
+                if item_type is None:
+                    item_type = Types.NoItem
+                entry = getItemDBEntry(item_type)
+                index = entry.index_getter(item.new_item)
+                crown_previews[crown_index] = {
+                    "item": entry.model_two_index[index],
+                    "scale": entry.scale
+                }
+    for crown_index_local, cont_map_id in enumerate(crown_maps):
+        file_data = []
+        cont_map_setup_address = getPointerLocation(TableNames.Setups, cont_map_id)
+        ROM_COPY.seek(cont_map_setup_address)
+        model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        file_data.append(model2_count + 1)
+        for _ in range(model2_count * 12):
+            file_data.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
+        crown_data = crown_previews[crown_index_local]
+        file_data.extend([
+            int(float_to_hex(730), 16),
+            int(float_to_hex(267), 16),
+            int(float_to_hex(728), 16),
+            int(float_to_hex(crown_data["scale"]), 16),
+            0x027B0002,
+            0x05800640,
+            0,
+            0,
+            0,
+            0,
+            (crown_data["item"] << 16) | 4,
+            1 << 16,
+        ])
+        mys_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        file_data.append(mys_count)
+        for _ in range(mys_count * 9):
+            file_data.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
+        act_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        file_data.append(act_count)
+        for _ in range(act_count * 14):
+            file_data.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
+        ROM_COPY.seek(cont_map_setup_address)
+        for data in file_data:
+            ROM_COPY.writeMultipleBytes(data, 4)
+        
 
 def getRandomGalleonStarLocation(random) -> tuple:
     """Get location for the DK Star which opens the treasure room."""
@@ -322,6 +395,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
         spoiler.settings.remove_barriers_selected,
         RemovedBarriersSelected.castle_crypt_doors,
     )
+    addCrownPreviews(spoiler, ROM_COPY)
     for cont_map_id in range(216):
         cont_map_setup_address = getPointerLocation(TableNames.Setups, cont_map_id)
         ROM_COPY.seek(cont_map_setup_address)
@@ -470,7 +544,6 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
                 if size_down:
                     ROM_COPY.seek(item_start + 0xC)
                     ROM_COPY.writeMultipleBytes(0, 4)
-
         if spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
             if len(positions) > 0 and len(offsets) > 0:
                 spoiler.settings.random.shuffle(positions)

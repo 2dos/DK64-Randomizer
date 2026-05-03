@@ -8,7 +8,7 @@ extern actor_spawn_packet bp_item_table[40];
 extern item_packet medal_item_table[85];
 extern item_packet wrinkly_item_table[35];
 extern actor_spawn_packet crown_item_table[10];
-extern actor_spawn_packet key_item_table[8];
+extern key_packet key_item_table[8];
 extern model_item_data fairy_item_table[20];
 extern actor_spawn_packet rcoin_item_table[16];
 extern actor_spawn_packet crate_item_table[16];

@@ -273,3 +273,19 @@ def patchScripts(spoiler, ROM_COPY):
             0x1B,  # Caves Boulder
             0x34,  # Castle Rock
         ], ScriptTypes.DeleteItem)
+    if spoiler.settings.item_reward_previews:
+        preview_maps = {
+            Maps.JapesCrown: 4,
+            Maps.AztecCrown: 4,
+            Maps.FactoryCrown: 4,
+            Maps.GalleonCrown: 4,
+            Maps.ForestCrown: 4,
+            Maps.CavesCrown: 4,
+            Maps.CastleCrown: 4,
+            Maps.LobbyCrown: 4,
+            Maps.HelmCrown: 4,
+            Maps.SnidesCrown: 4,
+            Maps.TroffNScoff: 0xF,
+        }
+        for map_id, obj_id in preview_maps.items():
+            addNewScript(ROM_COPY, map_id, [obj_id], ScriptTypes.IntangibleObject)

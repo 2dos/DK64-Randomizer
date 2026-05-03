@@ -157,7 +157,7 @@ void spawnBossReward(int object, float x, float y, float z, int unk0, int cutsce
      * @param unk1 Unknown
      */
     int table_index = getKeyIndex(flag);
-    int new_obj = key_item_table[table_index].actor;
+    int new_obj = key_item_table[table_index].spawn_packet.actor;
     if (new_obj != 0) {
         object = new_obj;
     }
@@ -177,7 +177,7 @@ void spawnBossReward(int object, float x, float y, float z, int unk0, int cutsce
             // AD2/MJ
             cutscene = 1;
         }
-        spawnActorWithFlagHandler(object, x, y, z, unk0, cutscene, flag, unk1, key_item_table[table_index].item_level, key_item_table[table_index].item_kong);
+        spawnActorWithFlagHandler(object, x, y, z, unk0, cutscene, flag, unk1, key_item_table[table_index].spawn_packet.item_level, key_item_table[table_index].spawn_packet.item_kong);
         // Fix items which have short spawn ranges
         ActorSpawnerPointer->spawn_range = 4000000.0f;
     }
