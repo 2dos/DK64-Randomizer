@@ -289,6 +289,8 @@ class DK64Client:
                     "RetroArch": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-RetroArch",
                     "BizHawk": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-BizHawk-DK64-Edition",
                     "Simple64": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Simple64",
+                    "Gopher64": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Gopher64",
+                    "Ares": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Ares",
                 }
 
                 emulator_id = self.n64_client.emulator_info.id.name
