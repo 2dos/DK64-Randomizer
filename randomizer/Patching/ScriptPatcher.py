@@ -225,3 +225,33 @@ def patchScripts(spoiler, ROM_COPY):
         "piano_order": spoiler.settings.piano_game_order,
         "fast_piano": IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_piano_game),
     })
+    addNewScript(ROM_COPY, Maps.FranticFactory, [0x3F, 0x40, 0x41], ScriptTypes.DiddyRNDDoors, {
+        0x3F: {
+            "fast_rnd": IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_diddy_rnd),
+            "cutscene_id": 27,
+            "pen_id": 23,
+            "enemy_ids": [55, 56],
+        },
+        0x40: {
+            "fast_rnd": IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_diddy_rnd),
+            "cutscene_id": 26,
+            "pen_id": 22,
+            "enemy_ids": [52, 53, 54],
+        },
+        0x41: {
+            "fast_rnd": IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_diddy_rnd),
+            "cutscene_id": 25,
+            "pen_id": 21,
+            "enemy_ids": [49, 50, 51],
+        },
+    })
+    if spoiler.settings.open_lobbies:
+        addNewScript(ROM_COPY, Maps.Isles, [
+            0x03,  # Japes Boulder
+            0x02,  # Aztec Door
+            0x06,  # Factory Door
+            0x1A,  # Galleon Gate
+            0x21,  # Fungi Boulder
+            0x1B,  # Caves Boulder
+            0x34,  # Castle Rock
+        ], ScriptTypes.DeleteItem)

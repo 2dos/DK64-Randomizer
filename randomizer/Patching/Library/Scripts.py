@@ -1726,6 +1726,149 @@ def getPianoScript(item_id: int, piano_order: list[int], fast_piano: bool):
     ])
     return compileInstanceScript(item_id, script)
 
+def getDiddyRNDDoorScript(item_id: int, fast_rnd: bool, cutscene_id: int, pen_id: int, enemy_ids: list[int]) -> list[int]:
+    """Get the script associated with the Diddy R&D Doors."""
+    door_ids = [63, 64, 65]
+    remaining_door_ids = [x for x in door_ids if x != item_id]
+    
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(29, [1, 0, 0]),
+            FunctionData(29, [0, 5, 0]),
+        ], [
+            FunctionData(1, [0, 0, 0]),        
+        ]),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(58, [0, 0, 0], True),
+        ], [
+            FunctionData(7, [67, 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [2, 0, 0]),
+            FunctionData(58, [0, 0, 0], True),
+        ], [
+            FunctionData(7, [67, 2, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [3, 0, 0]),
+            FunctionData(58, [0, 0, 0], True),
+        ], [
+            FunctionData(7, [67, 3, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [4, 0, 0]),
+            FunctionData(58, [0, 0, 0], True),
+        ], [
+            FunctionData(7, [67, 4, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(49, [96, 0, 0]),
+        ], [
+            FunctionData(1, [6, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(49, [96, 1, 0]),
+        ], [
+            FunctionData(1, [6, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(49, [96, 2, 0]),
+        ], [
+            FunctionData(1, [6, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [6, 0, 0]),
+        ], [
+            FunctionData(129, [0, 0, 0]),
+            FunctionData(5, [remaining_door_ids[0], 50, 0]),
+            FunctionData(5, [remaining_door_ids[1], 50, 0]),
+            FunctionData(38, [1, 0, 0]),
+            FunctionData(3, [0, 120, 0]),
+            FunctionData(1, [7, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [7, 0, 0]),
+            FunctionData(4, [100, 0, 0]),
+        ], [
+            FunctionData(37, [cutscene_id, 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [7, 0, 0]),
+            FunctionData(4, [90, 0, 0]),
+        ], [
+            FunctionData(5, [319, 10, 0]),
+            FunctionData(84, [319, 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [7, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(1, [8, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [8, 0, 0]),
+        ], [
+            FunctionData(22, [1, 1, 0]),
+            FunctionData(20, [1, 20, 0]),
+            FunctionData(17, [1, 1, 0]),
+            FunctionData(3, [0, 100, 0]),
+            FunctionData(15, [385, 20, 0]),
+            FunctionData(92, [pen_id, 0, 1]),
+            FunctionData(1, [9, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [9, 0, 0]),
+            FunctionData(4, [90, 0, 0]),
+        ], [FunctionData(86, [x, 0, 0]) for x in enemy_ids] + [
+            FunctionData(97, [104, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [9, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(15, [415, 20, 0]),
+            FunctionData(17, [1, 1, 0]),
+            FunctionData(1, [10, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [10, 0, 0]),
+            FunctionData(21, [1, 0, 0], True),
+        ], [
+            FunctionData(92, [pen_id, 0, 0]),
+            FunctionData(15, [151, 20, 0]),
+            FunctionData(38, [0, 0, 0]),
+            FunctionData(1, [11, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [11, 0, 0]),
+        ] + [FunctionData(30, [x, 0, 0], True) for x in enemy_ids], [
+            FunctionData(130, [0, 0, 0]),
+            FunctionData(111, [104, 0, 0]),
+            FunctionData(5, [319, 20, 0]),
+            FunctionData(84, [319, 1, 0]),
+            FunctionData(28, [96, 0, 3 if fast_rnd else 1]),
+            FunctionData(84, [96, 1, 0]),
+            FunctionData(83, [49, 0, 0]),
+        ] + [
+            FunctionData(84, [x, 2, 0], False, lambda d: d["fast"])  # Disable other doors
+            for x in remaining_door_ids
+        ] + [
+            FunctionData(38, [2, 0, 0])  # Disable this door
+        ]),
+        ScriptBlock([
+            FunctionData(1, [50, 0, 0]),
+        ], [
+            FunctionData(7, [67, 65535, 0]),
+            FunctionData(1, [51, 0, 0]),
+        ]),
+    ], {
+        "fast": fast_rnd
+    })
+
 def replaceScriptLines(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], replacement_mapping: dict) -> None:
     """Replace a script line with another."""
     script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
@@ -1849,6 +1992,8 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
             subscript = getHelmMonkeyport(item_id, extra_data["kong"], extra_data["microhint"])
         elif stype == ScriptTypes.Piano:
             subscript = getPianoScript(item_id, extra_data["piano_order"], extra_data["fast_piano"])
+        elif stype == ScriptTypes.DiddyRNDDoors:
+            subscript = getDiddyRNDDoorScript(item_id, extra_data[item_id]["fast_rnd"], extra_data[item_id]["cutscene_id"], extra_data[item_id]["pen_id"], extra_data[item_id]["enemy_ids"])
         if subscript is not None:
             good_scripts.append(subscript)
     # Reconstruct File
