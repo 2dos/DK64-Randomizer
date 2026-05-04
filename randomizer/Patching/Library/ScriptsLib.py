@@ -1,5 +1,6 @@
 """Library classes for compiling instance scripts."""
 from enum import IntEnum, auto
+from randomizer.Enums.Kongs import Kongs
 
 class FunctionData:
     """Function Data Class."""
