@@ -6,7 +6,6 @@ Thanks,
 		Ballaam
 */
 extern const short acceptable_items[45];
-extern const item_conversion_info item_conversions[49];
 extern const unsigned short bounce_objects[39];
 extern const unsigned short actor_drops[50];
 extern const item_scale_info item_scales[50];

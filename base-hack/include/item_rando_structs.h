@@ -121,6 +121,12 @@ typedef struct actor_spawn_packet {
     /* 0x003 */ unsigned char item_kong;
 } actor_spawn_packet;
 
+typedef struct key_packet {
+    /* 0x000 */ actor_spawn_packet spawn_packet;
+    /* 0x004 */ unsigned short model2_item;
+    /* 0x006 */ unsigned short scale; // Scaled up by a factor of 100
+} key_packet;
+
 typedef struct enemy_item_memory_item {
 	/* 0x000 */ unsigned short actor;
 	/* 0x002 */ unsigned short flag;
@@ -149,6 +155,6 @@ typedef struct model_item_data {
 
 typedef struct snide_packet {
     /* 0x000 */ unsigned short object_id;
-    /* 0x002 */ char pad[2];
+    /* 0x002 */ unsigned short scale; // Scaled up by 100
     /* 0x004 */ item_packet item;
 } snide_packet;

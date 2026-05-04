@@ -137,15 +137,6 @@ void candyCodeHandler(void) {
     missingShopOwnerCode(7);
 }
 
-float getModelTwoScale(int obj_id) {
-    for (unsigned int i = 0; i < (sizeof(item_conversions) / sizeof(item_conversion_info)); i++) {
-        if (item_conversions[i].model_two == obj_id) {
-            return item_conversions[i].scale;
-        }
-    }
-    return 0.25f;
-}
-
 void snideCodeHandler(void) {
     if (checkFlag(FLAG_ITEM_SNIDE, FLAGTYPE_PERMANENT)) {
         snideCode();

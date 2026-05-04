@@ -43,7 +43,6 @@
 #define ICE_MAZE 0x0
 
 #define HELM_COIN_DOOR 0x3
-
 #define FUNGI_SWITCH_LANKY_MUSHROOM 0XEB
 
 #define JAPES_CAVE_GATE 0x2B
@@ -55,10 +54,6 @@
 #define ITEM_RAREWARE_COIN 0x2
 
 #define TNS_NUMBER 0x15
-#define TNS_ITEMINDICATOR 0xF
-
-#define CROWN_CONTROLLER 0x0
-#define CROWN_INDICATOR 0x4
 
 #define FACTORY_BLOCKELEVATOR_0 0x18
 #define FACTORY_BLOCKELEVATOR_1 0x19
@@ -177,52 +172,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case MAP_BATTLEARENA_BEAVERBRAWL:
-			case MAP_BATTLEARENA_KRITTERKARNAGE:
-			case MAP_BATTLEARENA_ARENAAMBUSH:
-			case MAP_BATTLEARENA_MOREKRITTERKARNAGE:
-			case MAP_BATTLEARENA_FORESTFRACAS:
-			case MAP_BATTLEARENA_BISHBASHBRAWL:
-			case MAP_BATTLEARENA_KAMIKAZEKREMLINGS:
-			case MAP_BATTLEARENA_PLINTHPANIC:
-			case MAP_BATTLEARENA_PINNACLEPALAVER:
-			case MAP_BATTLEARENA_SHOCKWAVESHOWDOWN:
-				if (Rando.location_visuals.crowns) {
-					if (param2 == CROWN_CONTROLLER) {
-						float x = 730.0f;
-						float y = 267.0f;
-						float z = 728.0f;
-						short crown_index = getCrownIndex(CurrentMap);
-						short actor = crown_item_table[crown_index].actor;
-						short item = -1;
-						float scale = 0.0f;
-						if (actor != 0) {
-							getModelTwoItemFromActor(actor, &item, &scale);
-							if (item >= 0) {
-								spawnModelTwo(item, x, y, z, scale, 0x4);
-								int i = 0;
-								while (i < ObjectModel2Count) {
-									ModelTwoData* object = (ModelTwoData*)&ObjectModel2Pointer[i];
-									if (object) {
-										if (object->object_id == 0x4) {
-											model_struct* _model = object->model_pointer;
-											if (_model) {
-												_model->scale = scale;
-											}
-											break;
-										}
-									}
-									i++;
-								}
-							}
-						}
-					} else if (param2 == CROWN_INDICATOR) {
-						behaviour_pointer->unk_70 = 0;
-						behaviour_pointer->unk_60 = 1;
-						behaviour_pointer->unk_62 = 100;
-					}
-				}
-				break;
 			case MAP_TROFFNSCOFF:
 				if (Rando.location_visuals.boss_doors) {
 					if (param2 == TNS_NUMBER) {
@@ -235,7 +184,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						if (world < 7) {
 							int flag = normal_key_flags[world];
 							int key_index = getKeyIndex(flag);
-							getModelTwoItemFromActor(key_item_table[key_index].actor, &item, &scale);
+							item = key_item_table[key_index].model2_item;
+							scale = (float)key_item_table[key_index].scale / 100.0f;
 							if (item >= 0) {
 								spawnModelTwo(item, x, y, z, scale, 0x16);
 								int i = 0;
@@ -245,7 +195,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 										if (object->object_id == 0xF) {
 											model_struct* _model = object->model_pointer;
 											if (_model) {
-												_model->scale = 2 * scale;
+												_model->scale = scale;
 											}
 											break;
 										}
@@ -255,10 +205,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 
 							}
 						}
-					} else if (param2 == TNS_ITEMINDICATOR) {
-						behaviour_pointer->unk_70 = 0;
-						behaviour_pointer->unk_60 = 1;
-						behaviour_pointer->unk_62 = 100;
 					}
 				}
 				break;

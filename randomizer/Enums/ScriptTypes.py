@@ -23,3 +23,4 @@ class ScriptTypes(IntEnum):
     KrocIslePort = auto()
     Piano = auto()
     DiddyRNDDoors = auto()
+    IntangibleObject = auto()

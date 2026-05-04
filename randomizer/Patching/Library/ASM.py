@@ -244,7 +244,7 @@ item_type_table_conversion = {
     Types.HalfMedal: ("medal_item_table", 4),
     Types.Hint: ("wrinkly_item_table", 4),
     Types.Crown: ("crown_item_table", 4),
-    Types.Key: ("key_item_table", 4),
+    Types.Key: ("key_item_table", 8),
     Types.Fairy: ("fairy_item_table", 8),
     Types.RainbowCoin: ("rcoin_item_table", 4),
     Types.CrateItem: ("crate_item_table", 4),

@@ -303,7 +303,6 @@ warning_text = "/*\n\t" + "\n\t".join(warning_text_data) + "\n*/\n"
 with open("include/item_data.h", "w") as fh:
     fh.write(warning_text)
     fh.write(f"extern const short acceptable_items[{len(dance_acceptable_items)}];\n")
-    fh.write(f"extern const item_conversion_info item_conversions[{len(boss_enabled_items)}];\n")
     fh.write(f"extern const unsigned short bounce_objects[{len(bounce_items)}];\n")
     fh.write(f"extern const unsigned short actor_drops[{len(actor_drops)}];\n")
     # fh.write(f"extern const unsigned short danceless_items[{len(danceless_items)}];\n")
@@ -319,7 +318,6 @@ with open("src/lib_items.c", "w") as fh:
     fh.write('#include "../include/common.h"\n\n')
     fh.write(warning_text)
     fh.write("\nconst short acceptable_items[] = {" + ",".join([hex(x.model_two) for x in dance_acceptable_items]) + "};")
-    fh.write("\nconst item_conversion_info item_conversions[] = {\n\t" + ",\n\t".join([f"{{.actor={x.actor}, .model_two={x.model_two}, .scale={x.scale:.2f}f}}" for x in boss_enabled_items]) + "\n};")
     fh.write("\nconst unsigned short bounce_objects[] = {" + ",".join([str(x.actor) for x in bounce_items]) + "};")
     fh.write("\nconst unsigned short actor_drops[] = {" + ",".join([str(x.actor) for x in actor_drops]) + "};")
     # fh.write("\nconst unsigned short danceless_items[] = {" + ",".join([str(x.actor) for x in danceless_items]) + "};")

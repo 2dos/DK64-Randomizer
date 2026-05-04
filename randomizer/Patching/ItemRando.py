@@ -977,7 +977,11 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     else:
                         obj_index = getPropFromItem(item.new_item, item.new_type)
                         ROM_COPY.writeMultipleBytes(obj_index, 2)
-                        ROM_COPY.writeMultipleBytes(0, 2)
+                        item_type = item.new_type
+                        if item_type is None:
+                            item_type = Types.NoItem
+                        item_db_entry = getItemDBEntry(item_type)
+                        ROM_COPY.writeMultipleBytes(int(item_db_entry.scale * 100), 2)
                     ROM_COPY.writeMultipleBytes(item_properties.response_type, 1)
                     ROM_COPY.writeMultipleBytes(item_properties.level, 1)
                     ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
@@ -1070,6 +1074,14 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
                         ROM_COPY.writeMultipleBytes(item_properties.level, 1)
                         ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
+                        item_type = item.new_type
+                        if item_type is None:
+                            item_type = Types.NoItem
+                        item_db_entry = getItemDBEntry(item_type)
+                        index = item_db_entry.index_getter(item.new_item)
+                        m2_obj = item_db_entry.model_two_index[index]
+                        ROM_COPY.writeMultipleBytes(m2_obj, 2)
+                        ROM_COPY.writeMultipleBytes(int(200 * item_db_entry.scale), 2)
                     elif item.old_item == Types.RainbowCoin:
                         index = item.location - Locations.RainbowCoin_Location00
                         if index < 16:

@@ -29,23 +29,6 @@ void hideObject(behaviour_data* behaviour_pointer) {
 	setScriptRunState(behaviour_pointer, RUNSTATE_PAUSED, 0);
 }
 
-void getModelTwoItemFromActor(int actor, short* item, float* scale) {
-	/**
-	 * @brief Converts actor into it's model two equivalent
-	 * 
-	 * @param actor Actor Index
-	 * @param item Address to store item model two index
-	 * @param scale Address to store item scale
-	 */
-	for (unsigned int i = 0; i < (sizeof(item_conversions) / sizeof(item_conversion_info)); i++) {
-		if (actor == item_conversions[i].actor) {
-			*item = item_conversions[i].model_two;
-			*scale = item_conversions[i].scale;
-			return;
-		}	
-	}
-}
-
 int standingOnM2Object(int index) {
 	return (Player->touching_object == 1) && (Player->standing_on_index == index);
 }

@@ -675,8 +675,9 @@ if baseclasses_loaded:
             # Apply seed group settings and create group random if using a custom seed group BEFORE fillsettings
             self.group_random = None
             self.original_random = None
-            if world.options.loading_zone_rando.value != LoadingZoneRando.option_no:
-                if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
+            if self.options.loading_zone_rando.value != LoadingZoneRando.option_no:
+                # Only apply seed group settings for custom string values, not standard numeric options
+                if isinstance(self.options.loading_zone_rando.value, str):
                     group = self.options.loading_zone_rando.value
                     if group in self.seed_groups:
                         # Override player's options with seed group settings
@@ -687,22 +688,21 @@ if baseclasses_loaded:
                         self.options.maximize_level8_blocker.value = int(self.seed_groups[group]["maximize_helm_blocker"])
                         self.options.level_blockers.value = self.seed_groups[group]["level_blockers"]
 
-                        # Apply synchronized logic and glitch settings
-                        self.options.logic_type.value = self.seed_groups[group]["logic_type"]
-                        self.options.tricks_selected.value = list(self.seed_groups[group]["tricks_selected"])
-                        self.options.glitches_selected.value = list(self.seed_groups[group]["glitches_selected"])
-
                         # Create group random for LZR seed synchronization and replace self.random
+                        combined_seed = f"{self.multiworld.seed}_{group}"
+                        from hashlib import sha256
+
+                        seed_hash = int(sha256(combined_seed.encode()).hexdigest()[:16], 16)
                         from random import Random
 
-                        self.group_random = Random(group)
+                        self.group_random = Random(seed_hash)
                         self.original_random = self.random
                         self.random = self.group_random
 
             # Use the fillsettings function to configure all settings
             settings = fillsettings(self.options, self.multiworld, self.random)
             # Enable entrance randomization if the option is set (any value other than no/off/false/0)
-            if world.options.loading_zone_rando.value != LoadingZoneRando.option_no:
+            if self.options.loading_zone_rando.value != LoadingZoneRando.option_no:
                 settings.level_randomization = LevelRandomization.loadingzone
                 settings.shuffle_loading_zones = ShuffleLoadingZones.all
             else:
@@ -765,7 +765,6 @@ if baseclasses_loaded:
                     if not hasattr(self.multiworld, "generation_is_fake"):
                         ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
                     self.spoiler.UpdateExits()
-                # else: LZR shuffling happens in connect_entrances()
 
             # Repopulate any spoiler-related stuff at this point from slot data
             if hasattr(self.multiworld, "generation_is_fake"):

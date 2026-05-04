@@ -148,7 +148,13 @@ int isCollidingWithSphere(item_collision* item, player_collision_info* player_co
     return dist < (radius * radius);
 }
 
-int isCollidingWithCylinder(item_collision* item, player_collision_info* player_collision, playerData* player) {
+int isCollidingWithCylinder(int item_id, item_collision* item, player_collision_info* player_collision, playerData* player) {
+    if ((CurrentMap == MAP_TROFFNSCOFF) && (item_id == 0xF)) {
+        return 0;
+    }
+    if (inU8List(CurrentMap, &crown_maps[0], 10) && (item_id == 0x4)) {
+        return 0;
+    }
     if (inShortList(item->obj_type, &spherical_items[0], sizeof(spherical_items)>>1)) {
         return isCollidingWithSphere(item, player_collision, player);
     }
@@ -194,7 +200,7 @@ void checkModelTwoItemCollision(item_collision* obj_collision, int player_index,
             if (isValidKongCollision(obj_collision, player)) {
                 if (isObjectTangible(obj_collision->id)) {
                     if (getObjectCollectability(obj_collision->id, player_index, obj_collision->obj_type)) {
-                        if (isCollidingWithCylinder(obj_collision, player_collision, player)) {
+                        if (isCollidingWithCylinder(obj_collision->id, obj_collision, player_collision, player)) {
                             obj_collision->colliding = 1;
                             unkCollisionFunc_0(obj_collision->id, 1);
                             if (obj_collision->flag != -1) {
