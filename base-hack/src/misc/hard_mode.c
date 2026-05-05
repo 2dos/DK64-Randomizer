@@ -539,6 +539,7 @@ int hitlessDeath(void) {
             initiateTransitionGamemode(MAP_MAINMENU, 0, GAMEMODE_MAINMENU);
             return 1;
         }
+        playSFX(0x2BF);
     }
     return 0;
 }
@@ -555,6 +556,20 @@ void hitlessDeathWrapper1(int map, int exit) {
     }
 }
 
+ROM_DATA static int last_lives_render_frame = -1;
+ROM_DATA static char lives_text[] = "12345\0";
+Gfx *livesDisplay(Gfx *dl, int texture_index, int unk3, codecs codec_index, int width, int height, int x, int y, float xScale, float yScale, int unk11, float unk12) {
+    dl = displayImage(dl, texture_index, unk3, codec_index, width, height, x, y, xScale, yScale, unk11, unk12);
+    if (ItemInventory) {
+        if (ObjectModel2Timer != last_lives_render_frame) {
+            dk_strFormat(lives_text, "%d", ItemInventory->lives);
+	        gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+            dl = printText(dl, 0x340, y - 0x60, 1.0f, lives_text);
+        }
+    }
+    last_lives_render_frame = ObjectModel2Timer;
+    return dl;
+}
 
 void setHardPathSpeed(int index, int speed) {
     unkObjFunction6(index, speed << 2);
