@@ -54,7 +54,7 @@ from randomizer.Patching.Library.Generic import IsItemSelected, HelmDoorInfo, He
 from randomizer.Patching.CoinPlacer import gen_mayhem_coins
 from randomizer.Patching.Library.Wordle import wordle_words
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
-from randomizer.SettingStrings import encrypt_settings_string_enum
+from randomizer.ProtoSerializer import serialize_settings_to_base64, deserialize_settings_from_base64, proto_to_settings
 from randomizer.ShuffleBosses import (
     BossMapList,
     KRoolMaps,
@@ -256,13 +256,10 @@ class Settings:
 
         self.resolve_settings()
 
-        # Generate the settings string - DO THIS LAST because the encryption method alters the form data
-        try:
-            logger = logging.getLogger(__name__)
-            self.settings_string = encrypt_settings_string_enum(form_data)
-            # logger.warning("Using settings string: " + self.settings_string)
-        except Exception as ex:
-            raise Ex.SettingsIncompatibleException("Settings string is in an invalid state. Try applying a preset and recreating your changes.")
+        # Proto serialization moved to only happen when needed (generate_output or Generate_Spoiler)
+        # This avoids loading patching modules during Settings initialization
+        # self.settings_string = self.to_proto_string()
+        self.settings_string = ""  # Will be populated when proto is actually needed
 
     def apply_form_data(self, form_data):
         """Convert and apply the provided form data to this class."""
@@ -1099,6 +1096,14 @@ class Settings:
             self.starting_moves_list_count_5,
         ]
         self.starting_moves_lists = [self.starting_moves_list_1, self.starting_moves_list_2, self.starting_moves_list_3, self.starting_moves_list_4, self.starting_moves_list_5]
+
+        # Preserve original starting moves lists for proto serialization before conversion
+        self.original_starting_moves_list_1 = self.starting_moves_list_1.copy()
+        self.original_starting_moves_list_2 = self.starting_moves_list_2.copy()
+        self.original_starting_moves_list_3 = self.starting_moves_list_3.copy()
+        self.original_starting_moves_list_4 = self.starting_moves_list_4.copy()
+        self.original_starting_moves_list_5 = self.starting_moves_list_5.copy()
+
         for i in range(len(self.starting_moves_lists)):
             copy_of_list = self.starting_moves_lists[i].copy()
             for item in copy_of_list:
@@ -3415,6 +3420,14 @@ class Settings:
             str: Json string of the dict.
         """
         return json.dumps(self.__dict__)
+
+    def to_proto_string(self):
+        """Export settings as a protobuf-encoded base64 string.
+
+        Returns:
+            str: Base64-encoded protobuf string representing the settings.
+        """
+        return serialize_settings_to_base64(self)
 
     def __setattr__(self, name, value):
         """Set an attributes value but only after verifying our hash."""

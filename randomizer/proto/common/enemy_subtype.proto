@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package randomizer.proto.common;
+
+enum EnemySubtype {
+    ENEMY_SUBTYPE_UNSPECIFIED = 0;
+    ENEMY_SUBTYPE_GROUND_SIMPLE = 1;
+    ENEMY_SUBTYPE_GROUND_BEEFY = 2;
+    ENEMY_SUBTYPE_AIR = 3;
+    ENEMY_SUBTYPE_WATER = 4;
+    ENEMY_SUBTYPE_NO_TYPE = 5;
+}

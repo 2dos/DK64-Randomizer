@@ -50,6 +50,8 @@ class BooleanProperties:
 
 async def patching_response(data, from_patch_gen=False, lanky_from_history=False, gen_history=False):
     """Apply the patch data to the ROM in the BROWSER not the server."""
+    import js as js_module
+
     # Unzip the data_passed
     loop = asyncio.get_event_loop()
     # Base64 decode the data
@@ -71,7 +73,6 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 # Store the extracted variable
                 variable_name = file_name.split(".")[0]
                 extracted_variables[variable_name] = variable_value
-    settings = Settings(json.loads(js.serialize_settings(include_plando=True)))
     seed_id = str(extracted_variables["seed_id"].decode("utf-8"))
     spoiler = json.loads(extracted_variables["spoiler_log"])
     if extracted_variables.get("version") is None:
@@ -82,26 +83,58 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         hash_id = str(extracted_variables["seed_number"].decode("utf-8"))
     except Exception:
         hash_id = None
+
+    # Check if this is a proto-based patch (new format) or xdelta-based (legacy)
+    is_proto_patch = "fill_result" in extracted_variables
+
     # Make sure we re-load the seed id for patch file creation
     js.event_response_data = data
     if lanky_from_history:
         js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
         await ProgressBar().reset()
         return
-    # elif settings.download_patch_file and from_patch_gen is False:
+    if "settings" in extracted_variables:
+        # Patch file embeds the original gameplay settings. Rehydrate those, then overlay
+        # cosmetic/music selections from the live form so the user can apply their own
+        # cosmetics to a shared patch without disturbing the original gameplay.
+        patch_settings = json.loads(extracted_variables["settings"])
+        form_settings = json.loads(js.serialize_settings(include_plando=True))
+        cosmetic_music_keys = set(js.get_cosmetic_music_field_names().to_py())
+        overrides = {k: v for k, v in form_settings.items() if k in cosmetic_music_keys}
+        merged = {**patch_settings, **overrides}
+        settings = Settings(merged)
+    else:
+        js.document.getElementById("patch_version_warning").hidden = False
+        js.document.getElementById("patch_warning_message").innerHTML = (
+            "This patch file was generated before settings were embedded in patches. "
+            "Please regenerate the seed from the original settings."
+        )
+        await ProgressBar().reset()
+        return
+    # if settings.download_patch_file and from_patch_gen is False:
     #     js.write_seed_history(seed_id, str(data), json.dumps(settings.seed_hash))
     #     js.load_old_seeds()
     #     js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
     #     return
-    elif from_patch_gen is True:
+    if from_patch_gen is True:
         if js.document.getElementById("download_patch_file").checked or js.document.getElementById("load_patch_file").checked:
             js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
-        # gif_fairy = get_hash_images("browser", "loading-fairy")
-        # gif_dead = get_hash_images("browser", "loading-dead")
-        # js.document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0]
-        # js.document.getElementById("progress-dead").src = "data:image/jpeg;base64," + gif_dead[0]
-        # Apply the base patch
-        await js.apply_patch(data)
+
+        if is_proto_patch:
+            # New proto-based path - deserialize and apply proto to ROM
+            from randomizer.proto_gen import fill_result_pb2
+            from randomizer.Patching import ApplyRandomizer
+
+            fill_result = fill_result_pb2.FillResult()
+            fill_result.ParseFromString(extracted_variables["fill_result"])
+
+            # Note: Don't create ROM here - it will be created below at line 143
+            # where cosmetic patches are applied. Just store the proto for now.
+            extracted_variables["fill_result_proto"] = fill_result
+        else:
+            # Legacy xdelta-based path
+            await js.apply_patch(data)
+
         if gen_history is False:
             js.write_seed_history(seed_id, str(data), json.dumps(settings.seed_hash))
             js.load_old_seeds()
@@ -119,6 +152,24 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     patch = split_data[2]
 
     ROM_COPY = ROM()
+
+    # Apply proto patches if this is a proto-based patch file
+    if "fill_result_proto" in extracted_variables:
+        from randomizer.Patching import ApplyRandomizer
+
+        fill_result = extracted_variables["fill_result_proto"]
+
+        if not hasattr(js, "patchedRom") or js.patchedRom is None:
+            raise RuntimeError("Proto patch flow: js.patchedRom is not initialized. " "apply_base_hack_bps() must run before patching_response().")
+        for _global_name in ("rom_symbols", "pointer_addresses"):
+            _val = getattr(js, _global_name, None)
+            if _val is not None and hasattr(_val, "to_py"):
+                setattr(js, _global_name, _val.to_py())
+
+        # Create new ROM object that uses the base-hack patchedRom
+        ROM_COPY = ROM()
+        ApplyRandomizer.patching_response(fill_result, settings, ROM_COPY)
+
     if major != patch_major or minor != patch_minor:
         js.document.getElementById("patch_version_warning").hidden = False
         js.document.getElementById("patch_warning_message").innerHTML = (

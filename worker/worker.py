@@ -22,18 +22,9 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry._logs import set_logger_provider
 from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
-from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
-from randomizer.Enums.Types import ItemRandoSelector, KeySelector, ItemRandoFillerSelector
-from randomizer.Lists.EnemyTypes import EnemySelector
-from randomizer.Lists.HardMode import HardBossSelector, HardSelector
-from randomizer.Lists.Item import CustomStartingMoveSelector, HHItemSelector
-from randomizer.Lists.Logic import GlitchSelector, TrickSelector
-from randomizer.Lists.Minigame import MinigameSelector
-from randomizer.Lists.Multiselectors import FasterCheckSelector, QoLSelector, RemovedBarrierSelector, CBRandoSelector, RandomColorSelector, BossesSelector
-from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableCustomLocations, PlannableItems, PlannableKroolPhases, PlannableMinigames, PlannableSpawns
-from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectionPanel, PlannableSongs, SongFilteringSelector
-from randomizer.Lists.Warps import VanillaBananaportSelector
-from randomizer.Lists.WrinklyHints import PointSpreadSelector
+from randomizer.Settings import Settings
+from randomizer.ProtoSerializer import serialize_settings_to_base64, deserialize_settings_from_base64, proto_to_settings, settings_to_proto
+
 from version import version
 import logging
 import sys
@@ -41,6 +32,7 @@ from tasks import generate_seed
 from opentelemetry_instrumentation_rq import RQInstrumentor
 from randomizer.Lists.Exceptions import SettingsIncompatibleException, PlandoIncompatibleException
 from opentelemetry.instrumentation.redis import RedisInstrumentor
+from types import SimpleNamespace
 
 BRANCH = os.environ.get("BRANCH", "LOCAL")
 listen_branch = BRANCH
@@ -97,58 +89,25 @@ if __name__ == "__main__" and os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     logger.addHandler(handler)
 
 
-@api.route("/get_selector_info", methods=["GET"])
-def get_selector_info():
-    """Get the selector data for the randomizer."""
-    selector_data = {
-        "minigames": MinigameSelector,
-        "misc_changes": QoLSelector,
-        "bosses": BossesSelector,
-        "hard_mode": HardSelector,
-        "hard_bosses": HardBossSelector,
-        "enemies": EnemySelector,
-        "excluded_songs": ExcludedSongsSelector,
-        "random_colors": RandomColorSelector,
-        "song_filters": SongFilteringSelector,
-        "itemRando": ItemRandoSelector,
-        "item_filler": ItemRandoFillerSelector,
-        "keys": KeySelector,
-        "glitches": GlitchSelector,
-        "tricks": TrickSelector,
-        "helm_hurry_items": HHItemSelector,
-        "vanilla_warps": VanillaBananaportSelector,
-        "plando_custom_locations": PlannableCustomLocations,
-        "plando_items": PlannableItems,
-        "plando_minigames": PlannableMinigames,
-        "plando_panels": PlandomizerPanels,
-        "plando_phases": PlannableKroolPhases,
-        "plando_spawns": PlannableSpawns,
-        "points_spread": PointSpreadSelector,
-        "custom_starting_moves": CustomStartingMoveSelector,
-        "select_song_panel": MusicSelectionPanel,
-        "select_songs": PlannableSongs,
-        "remove_barriers": RemovedBarrierSelector,
-        "faster_checks": FasterCheckSelector,
-        "cb_rando_levels": CBRandoSelector,
-    }
-    return json.dumps(selector_data, sort_keys=False)
-
 
 @api.route("/convert_settings", methods=["POST"])
 def convert_settings():
-    """Convert settings between JSON and encrypted string formats."""
+    """Convert settings between JSON and protobuf string formats."""
     data = request.get_json()
     if "settings" in data:
         try:
             # Attempt to interpret `settings` as JSON
             settings_json = json.loads(data["settings"])
-            # If successful, encrypt it
-            encrypted = encrypt_settings_string_enum(settings_json)
-            return jsonify({"settings_string": encrypted})
+            # If successful, convert to Settings object and serialize to proto
+            settings_obj = Settings(settings_json)
+            proto_string = settings_obj.to_proto_string()
+            return jsonify({"settings_string": proto_string})
         except json.JSONDecodeError:
-            # If `settings` is not JSON, decrypt it
-            decrypted = decrypt_settings_string_enum(data["settings"])
-            return jsonify(decrypted)
+            # If `settings` is not JSON, deserialize from proto string
+            proto = deserialize_settings_from_base64(data["settings"])
+            settings_container = SimpleNamespace()
+            proto_to_settings(proto, settings_container)
+            return jsonify(settings_container.__dict__)
     else:
         return jsonify({"error": "Invalid data"}), 400
 
@@ -167,11 +126,14 @@ def export_archipelago_yaml():
         game_version = data.get("game_version", "0.6.6")
 
         # Settings should already be a dict from serialize_settings()
-        # Only decrypt if it's actually an encrypted string (starts with valid base64-like chars, not '{')
+        # Only deserialize if it's actually a proto string (not JSON)
         if isinstance(settings_data, str):
-            # Check if it looks like an encrypted string (not JSON)
+            # Check if it looks like a proto string (not JSON)
             if not settings_data.strip().startswith("{"):
-                settings_data = decrypt_settings_string_enum(settings_data)
+                proto = deserialize_settings_from_base64(settings_data)
+                from google.protobuf.json_format import MessageToDict
+
+                settings_data = MessageToDict(proto, preserving_proto_field_name=True)
             else:
                 # It's a JSON string, parse it
                 settings_data = json.loads(settings_data)

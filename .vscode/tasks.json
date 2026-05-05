@@ -65,8 +65,10 @@
         "Validate Docstrings",
         // "Validate C",
         "Update Custom Location Lists",
+        "Generate Protobuf code",
         "Generate PyI Stubs",
         "Update CB requirements",
+        "Generate Selector Info",
       ],
       "problemMatcher": []
     },
@@ -109,6 +111,20 @@
       "problemMatcher": []
     },
     {
+      "label": "Generate Protobuf code",
+      "type": "shell",
+      "windows": {
+        "command": "protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/*.proto && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/common/*.proto && cd randomizer/proto_gen && for %%f in (*_pb2.py) do (python -c \"import sys; content = open('%%f').read(); content = content.replace('import endgame_settings_pb2', 'from . import endgame_settings_pb2').replace('import item_settings_pb2', 'from . import item_settings_pb2').replace('import overworld_settings_pb2', 'from . import overworld_settings_pb2').replace('import plandomizer_settings_pb2', 'from . import plandomizer_settings_pb2').replace('import qol_settings_pb2', 'from . import qol_settings_pb2').replace('import requirement_settings_pb2', 'from . import requirement_settings_pb2').replace('import fill_result_pb2', 'from . import fill_result_pb2').replace('from common import', 'from .common import'); open('%%f', 'w').write(content)\") && echo # Generated protobuf common package > common/__init__.py && cd ${workspaceFolder} && ${command:python.interpreterPath} -m black -l 200 randomizer/proto_gen",
+      },
+      "linux": {
+        "command": "source /etc/profile.d/protoc-gen-js.sh && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/*.proto && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/common/*.proto && cd randomizer/proto_gen && for file in *_pb2.py; do sed -i 's/^import \\(.*_pb2\\) as /from . import \\1 as /g; s/^from common import /from .common import /g' \"$file\"; done && echo '# Generated protobuf common package' > common/__init__.py && cd ${workspaceFolder} && ${command:python.interpreterPath} -m black -l 200 randomizer/proto_gen"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
       "label": "Generate PyI Stubs",
       "type": "shell",
       "command": "${command:python.interpreterPath} ./generate_stubs.py ${workspaceFolder}",
@@ -134,6 +150,19 @@
       "type": "shell",
       "command": "${command:python.interpreterPath} ./tools/package_apworld.py",
       "problemMatcher": [],
+    },
+    {
+      "label": "Generate Selector Info",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} ./tools/generate_selector_info.py",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": [
+        "Generate Protobuf code"
+      ]
     }
   ]
 }

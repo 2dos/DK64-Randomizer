@@ -179,18 +179,48 @@ class PointerTableFile:
             self.is_compressed = table_functions[table].rando_compressed
 
 
+def _get_pointer_addresses():
+    """Return ``js.pointer_addresses`` as a native Python object, cached.
+
+    Converting the JsProxy via ``.to_py()`` walks the entire pointer-table
+    structure (32 tables, each with hundreds of entries). The patching code
+    calls ``getPointerLocation`` / ``getPointerFile`` thousands of times, so
+    doing the conversion on every call dominates patch time in Pyodide.
+
+    The underlying ``js.pointer_addresses`` is set once when the ROM's
+    pointer tables are loaded and never mutated from Python afterwards, so
+    a process-lifetime cache is safe. We also cache the identity of the
+    original JsProxy / Python object to invalidate if it ever does change.
+    """
+    raw = js.pointer_addresses
+    cached = _get_pointer_addresses._cache
+    if cached is not None and cached[0] is raw:
+        return cached[1]
+    if hasattr(raw, "to_py"):
+        converted = raw.to_py()
+    else:
+        converted = raw  # Already Python (server path).
+    _get_pointer_addresses._cache = (raw, converted)
+    return converted
+
+
+_get_pointer_addresses._cache = None
+
+
 def getPointerLocation(table: TableNames, file_index: int) -> int:
     """Get the address of a pointer table file."""
-    return js.pointer_addresses[table]["entries"][file_index]["pointing_to"]
+    return _get_pointer_addresses()[table]["entries"][file_index]["pointing_to"]
 
 
 def getPointerFile(table: TableNames, file_index: int, is_compressed: bool = None) -> PointerTableFile:
     """Get pointer table file information."""
-    start = getPointerLocation(table, file_index)
-    if "compressed_size" in js.pointer_addresses[table]["entries"][file_index]:
-        file_size = js.pointer_addresses[table]["entries"][file_index]["compressed_size"]
+    pointer_data = _get_pointer_addresses()
+    entry = pointer_data[table]["entries"][file_index]
+    start = entry["pointing_to"]
+    if "compressed_size" in entry:
+        file_size = entry["compressed_size"]
     else:
-        file_end = getPointerLocation(table, file_index + 1)
+        file_end = pointer_data[table]["entries"][file_index + 1]["pointing_to"]
         file_size = file_end - start
     end = start + file_size
     return PointerTableFile(table, start, end, is_compressed)
@@ -241,13 +271,15 @@ def encodeFile(ROM_COPY: LocalROM | ROM, table: TableNames, file_index: int, dat
 
 def getRawFile(ROM_COPY: Union[ROM, LocalROM], table_index: TableNames, file_index: int, compressed: bool):
     """Get raw file from ROM."""
-    file_start = getPointerLocation(table_index, file_index)
-    if "compressed_size" in js.pointer_addresses[table_index]["entries"][file_index]:
-        file_size = js.pointer_addresses[table_index]["entries"][file_index]["compressed_size"]
+    pointer_data = _get_pointer_addresses()
+    entry = pointer_data[table_index]["entries"][file_index]
+    file_start = entry["pointing_to"]
+    if "compressed_size" in entry:
+        file_size = entry["compressed_size"]
         if file_size is None:
             return bytes(bytearray([]))
     else:
-        file_end = getPointerLocation(table_index, file_index + 1)
+        file_end = pointer_data[table_index]["entries"][file_index + 1]["pointing_to"]
         file_size = file_end - file_start
     ROM_COPY.seek(file_start)
     data = ROM_COPY.readBytes(file_size)
@@ -258,11 +290,13 @@ def getRawFile(ROM_COPY: Union[ROM, LocalROM], table_index: TableNames, file_ind
 
 def writeRawFile(table_index: TableNames, file_index: int, compressed: bool, data: bytearray, ROM_COPY):
     """Write raw file from ROM."""
-    file_start = getPointerLocation(table_index, file_index)
-    if "compressed_size" in js.pointer_addresses[table_index]["entries"][file_index]:
-        file_size = js.pointer_addresses[table_index]["entries"][file_index]["compressed_size"]
+    pointer_data = _get_pointer_addresses()
+    entry = pointer_data[table_index]["entries"][file_index]
+    file_start = entry["pointing_to"]
+    if "compressed_size" in entry:
+        file_size = entry["compressed_size"]
     else:
-        file_end = getPointerLocation(table_index, file_index + 1)
+        file_end = pointer_data[table_index]["entries"][file_index + 1]["pointing_to"]
         file_size = file_end - file_start
     write_data = bytes(data)
     if compressed:

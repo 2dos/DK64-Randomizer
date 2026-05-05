@@ -1,0 +1,157 @@
+syntax = "proto3";
+
+package randomizer.proto;
+
+message MiscChanges {
+    bool auto_dance_skip = 1;
+    bool fast_boot = 2;
+    bool calm_caves = 3;
+    bool animal_buddies_grab_items = 4;
+    bool reduced_lag = 5;
+    bool remove_extraneous_cutscenes = 6;
+    bool hint_textbox_hold = 7;
+    bool remove_wrinkly_puzzles = 8;
+    bool fast_picture_taking = 9;
+    bool hud_hotkey = 10;
+    bool ammo_swap = 11;
+    bool homing_balloons = 12;
+    bool fast_transform_animation = 13;
+    bool troff_n_scoff_audio_indicator = 14;
+    bool lowered_aztec_lobby_bonus = 15;
+    bool quicker_galleon_star = 16;
+    bool vanilla_bug_fixes = 17;
+    bool save_k_rool_progress = 18;
+    bool small_bananas_always_visible = 19;
+    bool fast_hints = 20;
+    bool brighten_mad_maze_maul_enemies = 21;
+    bool raise_fungi_dirt_patch = 22;
+    bool global_instrument = 23;
+    bool fast_pause_transitions = 24;
+    bool cannon_game_better_control = 25;
+    bool better_fairy_camera = 26;
+    bool remove_enemy_cabin_timer = 27;
+    bool remove_galleon_ship_timers = 28;
+    bool japes_bridge_permanently_extended = 29;
+    bool move_spring_cabin_rocketbarrel = 30;
+}
+
+enum CutsceneSkips {
+    CUTSCENE_SKIPS_UNSPECIFIED = 0;
+    CUTSCENE_SKIPS_OFF = 1;
+    CUTSCENE_SKIPS_PRESS_START = 2;
+    CUTSCENE_SKIPS_AUTO = 3;
+}
+
+enum WrinklyHints {
+    WRINKLY_HINTS_UNSPECIFIED = 0;
+    WRINKLY_HINTS_OFF = 1;
+    WRINKLY_HINTS_STANDARD = 2;
+    WRINKLY_HINTS_CRYPTIC = 3;
+    WRINKLY_HINTS_ITEM_HINTING = 4;
+    WRINKLY_HINTS_ITEM_HINTING_ADVANCED = 5;
+}
+
+enum ProgressiveHintItem {
+    PROGRESSIVE_HINT_ITEM_UNSPECIFIED = 0;
+    PROGRESSIVE_HINT_ITEM_OFF = 1;
+    PROGRESSIVE_HINT_ITEM_GOLDEN_BANANAS = 2;
+    PROGRESSIVE_HINT_ITEM_BLUEPRINTS = 3;
+    PROGRESSIVE_HINT_ITEM_KEYS = 4;
+    PROGRESSIVE_HINT_ITEM_MEDALS = 5;
+    PROGRESSIVE_HINT_ITEM_CROWNS = 6;
+    PROGRESSIVE_HINT_ITEM_FAIRIES = 7;
+    PROGRESSIVE_HINT_ITEM_RAINBOW_COINS = 8;
+    PROGRESSIVE_HINT_ITEM_BEAN = 9;
+    PROGRESSIVE_HINT_ITEM_PEARLS = 10;
+    PROGRESSIVE_HINT_ITEM_COLORED_BANANAS = 11;
+}
+
+enum SpoilerHintsType {
+    SPOILER_HINTS_TYPE_UNSPECIFIED = 0;
+    SPOILER_HINTS_TYPE_OFF = 1;
+    SPOILER_HINTS_TYPE_VIAL_COLORS = 2;
+    SPOILER_HINTS_TYPE_POINTS = 3;
+}
+
+enum ExtraHints {
+    EXTRA_HINTS_UNSPECIFIED = 0;
+    EXTRA_HINTS_OFF = 1;
+    EXTRA_HINTS_SOME = 2;
+    EXTRA_HINTS_ALL = 3;
+}
+
+message SpoilerHintsPoints {
+    int32 kongs = 1;
+    int32 keys = 2;
+    int32 shopkeepers = 3;
+    int32 guns = 4;
+    int32 instruments = 5;
+    int32 training_moves = 6;
+    int32 important_shared = 7;
+    int32 fairy_moves = 8;
+    int32 pad_moves = 9;
+    int32 barrel_moves = 10;
+    int32 active_moves = 11;
+    int32 bean = 12;
+}
+
+message SpoilerHintsConfig {
+    SpoilerHintsType type = 1;
+    SpoilerHintsPoints points = 2;
+    bool include_woth_count = 3;
+    bool include_level_order = 4;
+}
+
+message ProgressiveHints {
+    ProgressiveHintItem item = 1;
+    int32 count_for_35th_hint = 2;
+    ProgressiveHintCurve hint_curve = 3;
+}
+
+message HintSettings {
+    WrinklyHints wrinkly_hints = 1;
+    ProgressiveHints progressive_hints = 2;
+    bool dim_solved_hints = 3;
+    bool no_joke_hints = 4;
+    bool kongless_hint_doors = 5;
+    bool shop_hints = 6;
+    SpoilerHintsConfig spoiler_hints = 7;
+    ExtraHints extra_hints = 8;
+}
+
+enum ProgressiveHintCurve {
+    HINT_CURVE_UNSPECIFIED = 0;
+    HINT_CURVE_SLOW = 1;
+    HINT_CURVE_MEDIUM = 2;
+    HINT_CURVE_FAST = 3;
+}
+
+message QualityOfLifeSettings {
+    MiscChanges misc_changes = 1;
+
+    CutsceneSkips cutscene_skips = 2;
+
+    bool shorten_boss_fights = 3;
+
+    bool tag_anywhere = 4;
+
+    bool shop_indicator = 5;
+    
+    bool warp_to_isles = 6;
+
+    bool fast_warps = 7;
+
+    bool auto_key_turn_ins = 8;
+
+    bool portal_numbers = 9;
+
+    bool item_reward_previews = 10;
+
+    bool enemy_kill_crown_timer = 11;
+
+    bool disable_racing_patches = 12;
+
+    bool less_fragile_boulders = 13;
+
+    HintSettings hints = 14;
+}

@@ -12,14 +12,11 @@
 #include "../../include/common.h"
 
 ROM_DATA static archipelago_data ap_info;
-ROM_DATA static char main_title[0x30];
-ROM_DATA static char sub_title[0x30];
+ROM_DATA static char main_title[0x21];
+ROM_DATA static char sub_title[0x21];
 
 int isAPEnabled(void) {
-    if (Rando.rom_flags.archipelago) {
-        return 1;
-    }
-    return 0;
+    return Rando.rom_flags.archipelago;
 }
 
 void initAP(void) {
@@ -42,16 +39,9 @@ void saveAPCounter(void) {
     }
 }
 
-void sendTrap(ICE_TRAP_TYPES trap_type) {
-    giveItem(REQITEM_ICETRAP, 0, trap_type, (giveItemConfig){.display_item_text = 0, .apply_ice_trap = 1});
-}
-
 void handleSentItem(void) {
-    // New generic packet-based approach
-    // Python sends an ap_item_packet struct with all giveItem parameters
     ap_item_packet *packet = (ap_item_packet*)&ap_info.fed_item;
-    
-    // Unpack config flags into giveItemConfig struct
+
     giveItemConfig config = {
         .display_item_text = (packet->config_flags & 0x01) ? 1 : 0,
         .apply_helm_hurry = (packet->config_flags & 0x02) ? 1 : 0,
@@ -59,26 +49,17 @@ void handleSentItem(void) {
         .apply_ice_trap = (packet->config_flags & 0x08) ? 1 : 0,
         .force_display_item_text = (packet->config_flags & 0x10) ? 1 : 0,
     };
-    
-    // Special handling for certain item types
+
     requirement_item item_type = (requirement_item)packet->item_type;
-    
+
     switch (item_type) {
         case REQITEM_GOLDENBANANA:
-            // GB has its own function
             giveGB(1);
             break;
         case REQITEM_ICETRAP:
-            // Ice traps use kong field as trap_type
-            sendTrap((ICE_TRAP_TYPES)packet->kong);
-            break;
-        case REQITEM_MOVE:
-            // Special moves (item_type=2) can use direct bitfield manipulation for speed
-            // but we'll keep giveItem for consistency
-            giveItem(item_type, packet->level, packet->kong, config);
+            giveItem(REQITEM_ICETRAP, 0, packet->kong, (giveItemConfig){.display_item_text = 0, .apply_ice_trap = 1});
             break;
         default:
-            // All other items use the generic giveItem function
             giveItem(item_type, packet->level, packet->kong, config);
             break;
     }

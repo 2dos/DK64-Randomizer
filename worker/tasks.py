@@ -47,11 +47,12 @@ def generate_seed(settings_dict):
         except Exception as e:
             logger.info(e)
         # load_base_rom(default_file=patched)
+        original_settings_json = json.dumps(settings_dict)
         settings_obj = Settings(cleanup_settings(settings_dict))
         spoiler = Spoiler(settings_obj)
         patch, spoiler, password = Generate_Spoiler(spoiler)
         spoiler.FlushAllExcessSpoilerData()
-        return update_seed_results(patch, spoiler, settings_dict, password, delayed_timestamp)
+        return update_seed_results(patch, spoiler, settings_dict, password, delayed_timestamp, original_settings_json)
 
     except Exception as e:
         logger.info(traceback.format_exc())
@@ -86,7 +87,7 @@ def cleanup_settings(settings):
     return settings
 
 
-def update_seed_results(patch, spoiler, settings_dict, password, delayed_timestamp):
+def update_seed_results(patch, spoiler, settings_dict, password, delayed_timestamp, original_settings_json):
     """Update the seed results."""
     # Assuming post_body.get("delayed_spoilerlog_release") is an int, and its the number of hours to delay the spoiler log release convert that to time.time() + hours as seconds.
     try:
@@ -144,14 +145,15 @@ def update_seed_results(patch, spoiler, settings_dict, password, delayed_timesta
     zip_data = BytesIO()
 
     with zipfile.ZipFile(zip_data, "w") as zip_file:
-        # Write each variable to the zip file
-        zip_file.writestr("patch", patch)
+        # Write proto instead of xdelta patch (new proto-based format)
+        zip_file.writestr("fill_result", patch)
         zip_file.writestr("hash", str(hash))
         zip_file.writestr("spoiler_log", str(json.dumps(spoiler_log)))
         zip_file.writestr("seed_id", str(spoiler.settings.seed_id))
         zip_file.writestr("generated_time", str(timestamp))
         zip_file.writestr("version", version)
         zip_file.writestr("seed_number", str(current_seed_number))
+        zip_file.writestr("settings", original_settings_json)
     zip_data.seek(0)
     # Convert the zip to a string of base64 data
     zip_conv = codecs.encode(zip_data.getvalue(), "base64").decode()

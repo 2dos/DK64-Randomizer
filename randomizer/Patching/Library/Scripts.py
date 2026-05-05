@@ -639,6 +639,7 @@ def getCrateScript(item_id: int) -> list[int]:
         ],
     )
 
+
 def getFiveTwoDoorShipGateScript(item_id: int, flag_id: int, timer: int, timer_2: int, tied_pad: int) -> list[int]:
     is_slam_switch = flag_id in (0x2FE, 0x2FF)
     return compileInstanceScript(item_id, [
@@ -1143,6 +1144,7 @@ def getWrinklyScript(map_id: Maps, kong: Kongs, item_id: int) -> list[int]:
             ),
         ],
     )
+
 
 def getHelmPadScript(item_id: int, temp_flags: list, kong_id: Kongs, glass_panel: int, hint_cs: int, helm_micro_enabled: bool, req_helm_minigames: int, helm_order: list) -> list[int]:
     """Get the instance script for the Helm music pads."""

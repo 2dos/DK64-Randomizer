@@ -6,7 +6,7 @@ import gzip
 from typing import List, Tuple
 from io import BytesIO
 
-from PIL import Image, ImageDraw, ImageEnhance
+from randomizer.Patching.LazyPIL import Image, ImageDraw, ImageEnhance
 
 import js
 from randomizer.Enums.Kongs import Kongs
@@ -357,6 +357,7 @@ SHOCKWAVE_START = [4897, 4903, 4712, 4950, 4925]
 BLUEPRINT_START = [5624, 5608, 5519, 5632, 5616]
 COIN_START = [224, 256, 248, 216, 264]
 BUNCH_START = [274, 854, 818, 842, 830]
+
 
 def overwrite_object_colors(settings, ROM_COPY: ROM):
     """Overwrite object colors."""
@@ -735,17 +736,17 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
         output_image = output_image.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
         writeWinConImage(settings, output_image, ROM_COPY)
     if helmhurry:
-        output_image = Image.open(BytesIO(js.getFile("base-hack/assets/displays/treasurechest.png")))
+        output_image = Image.open(BytesIO(bytes(js.getFile("base-hack/assets/displays/treasurechest.png"))))
         output_image = output_image.resize((32, 32))
         writeWinConImage(settings, output_image, ROM_COPY)
         return
     if win_con == WinConditionComplex.get_key8:
-        output_image = Image.open(BytesIO(js.getFile("base-hack/assets/displays/key8.png")))
+        output_image = Image.open(BytesIO(bytes(js.getFile("base-hack/assets/displays/key8.png"))))
         output_image = output_image.resize((32, 32))
         writeWinConImage(settings, output_image, ROM_COPY)
         return
     if win_con == WinConditionComplex.req_bean:
-        output_image = Image.open(BytesIO(js.getFile("base-hack/assets/arcade_jetpac/arcade/bean.png")))
+        output_image = Image.open(BytesIO(bytes(js.getFile("base-hack/assets/arcade_jetpac/arcade/bean.png"))))
         output_image = output_image.resize((32, 32))
         writeWinConImage(settings, output_image, ROM_COPY)
         return
@@ -759,7 +760,7 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
         writeWinConImage(settings, item_im, ROM_COPY)
         return
     if win_con == WinConditionComplex.kill_the_rabbit:
-        output_image = Image.open(BytesIO(js.getFile("base-hack/assets/displays/kill_the_rabbit.png")))
+        output_image = Image.open(BytesIO(bytes(js.getFile("base-hack/assets/displays/kill_the_rabbit.png"))))
         output_image = output_image.resize((32, 32))
         writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
         return
@@ -780,7 +781,7 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
         return
     item_data = win_con_data[win_con]
     if win_con == WinConditionComplex.req_pearl:
-        base_im = Image.open(BytesIO(js.getFile("base-hack/assets/arcade_jetpac/arcade/pearl.png")))
+        base_im = Image.open(BytesIO(bytes(js.getFile("base-hack/assets/arcade_jetpac/arcade/pearl.png"))))
     else:
         item_im = getImageFile(
             ROM_COPY,

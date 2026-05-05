@@ -4,6 +4,7 @@ import json
 import os
 from datetime import datetime as Datetime
 from datetime import timezone
+from functools import cached_property
 import time
 from tempfile import mktemp
 from randomizer.Enums.Settings import (
@@ -36,8 +37,19 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.ScriptTypes import ScriptTypes
+from randomizer.Enums.DoorType import DoorType
+from randomizer.Enums.Enemies import Enemies
+from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Minigames import Minigames
+from randomizer.Enums.Regions import Regions
+from randomizer.Lists.EnemyTypes import enemy_location_list
+from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations
+from randomizer.Lists.Minigame import BarrelMetaData, MinigameLocationData
+from randomizer.Logic import RegionsOriginal
+from randomizer.LogicClasses import TransitionFront
 from randomizer.Lists.HardMode import HardSelector
 from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector
+from randomizer.Lists.Switches import SwitchData
 from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.BananaPortRando import randomize_bananaport, move_bananaports
 from randomizer.Patching.BarrelRando import randomize_barrels
@@ -78,6 +90,7 @@ from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomiz
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
+from randomizer.Patching.ProtoAdapter import create_patching_adapter
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
 from randomizer.Patching.ShipPlacer import PlaceShip
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
@@ -92,6 +105,8 @@ from randomizer.Patching.ASMPatcher import patchAssembly, precalcBoot
 from randomizer.Patching.ScriptPatcher import patchScripts
 from randomizer.Patching.MirrorMode import ApplyMirrorMode
 from randomizer.CompileHints import getHelmOrderHint
+from collections import defaultdict
+from copy import deepcopy
 
 # from randomizer.Spoiler import Spoiler
 
@@ -139,20 +154,95 @@ def encPass(spoiler) -> int:
         return 0, 0
 
 
-def patching_response(spoiler):
-    """Apply the patch data to the ROM in the local server to be returned to the client."""
+def patching_response(fill_result_or_spoiler, settings=None, rom=None):
+    """Apply the patch data to the ROM in the local server to be returned to the client.
+
+    Args:
+        fill_result_or_spoiler: Either a FillResult proto (new path) or Spoiler object (legacy path)
+        settings: Settings object (required when fill_result_or_spoiler is a FillResult proto)
+        rom: Optional ROM object to patch (browser case). If None, loads from file (server case).
+    """
+    # Handle both old (Spoiler) and new (FillResult proto + Settings) APIs
+    from randomizer.proto_gen import fill_result_pb2
+
+    if isinstance(fill_result_or_spoiler, fill_result_pb2.FillResult):
+        # New proto-based path - convert proto to adapter object
+        fill_result = fill_result_or_spoiler
+        if settings is None:
+            raise ValueError("settings parameter required when using FillResult proto")
+        spoiler = create_patching_adapter(fill_result, settings)
+
+        # Apply Fill-phase mutations of settings that travel through the proto.
+        # The settings object was deserialized from user-input settings and does
+        # not reflect per-level changes made during the Fill (e.g. assignDKPortal
+        # writes exit=-1 into level_portal_destinations). ASMPatcher reads these
+        # fields off `settings` directly, so restore them here.
+        if len(fill_result.misc_data.level_portal_destinations) > 0:
+            settings.level_portal_destinations = [{"map": int(dest.map), "exit": int(dest.exit)} for dest in fill_result.misc_data.level_portal_destinations]
+        if len(fill_result.misc_data.level_void_maps) > 0:
+            settings.level_void_maps = [int(m) for m in fill_result.misc_data.level_void_maps]
+
+        if fill_result.misc_data.HasField("archipelago"):
+            settings.archipelago = bool(fill_result.misc_data.archipelago)
+        if fill_result.misc_data.HasField("player_name"):
+            settings.player_name = str(fill_result.misc_data.player_name)
+        elif not hasattr(settings, "player_name"):
+            settings.player_name = ""
+        if len(fill_result.misc_data.krool_keys_required) > 0:
+            from randomizer.Enums.Events import Events as _EventsEnum
+
+            settings.krool_keys_required = [_EventsEnum(int(e)) for e in fill_result.misc_data.krool_keys_required]
+        if len(fill_result.misc_data.starting_kong_list) > 0:
+            from randomizer.Enums.Kongs import Kongs as _KongEnum
+
+            settings.starting_kong_list = [_KongEnum(int(k)) for k in fill_result.misc_data.starting_kong_list]
+            # Keep the derived count honest.
+            settings.starting_kongs_count = len(settings.starting_kong_list)
+        if fill_result.misc_data.HasField("resolved_starting_kong"):
+            from randomizer.Enums.Kongs import Kongs as _KongEnum
+
+            settings.starting_kong = _KongEnum(int(fill_result.misc_data.resolved_starting_kong))
+
+        # Restore Fill-mutated B.Locker / T&S arrays. ASMPatcher reads these
+        # directly off `settings` (see ASMPatcher.py writes to BossBananas and
+        # BLockerEntryCount). In chaos mode and when ShuffleExits reorders
+        # levels, the post-Fill values differ from the user-input settings.
+        if len(fill_result.misc_data.blocker_entry_counts) > 0:
+            settings.BLockerEntryCount = [int(c) for c in fill_result.misc_data.blocker_entry_counts]
+        if len(fill_result.misc_data.blocker_entry_items) > 0:
+            from randomizer.Enums.Types import BarrierItems as _BarrierItems
+
+            settings.BLockerEntryItems = [_BarrierItems(int(i)) for i in fill_result.misc_data.blocker_entry_items]
+        if len(fill_result.misc_data.boss_bananas) > 0:
+            settings.BossBananas = [int(c) for c in fill_result.misc_data.boss_bananas]
+
+        # Initialize valid_locations on settings - required for patching functions
+        settings.update_valid_locations(spoiler)
+
+    else:
+        # Legacy path - treat as Spoiler object
+        spoiler = fill_result_or_spoiler
+
     # Make sure we re-load the seed id
     spoiler.settings.set_seed()
 
     # Write date to ROM for debugging purposes
     try:
         temp_json = json.loads(spoiler.json)
+        if "Settings" not in temp_json:
+            temp_json["Settings"] = {}
     except Exception:
         temp_json = {"Settings": {}}
     dt = Datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
     temp_json["Settings"]["Generation Timestamp"] = dt
     spoiler.json = json.dumps(temp_json, indent=4)
-    ROM_COPY = LocalROM()
+
+    # Use provided ROM if available (browser case), otherwise load from file (server case)
+    if rom is not None:
+        ROM_COPY = rom
+    else:
+        ROM_COPY = LocalROM()
+
     ROM_COPY.seek(0x1FFF200)
     ROM_COPY.writeBytes(dt.encode("ascii"))
     # Initialize Text Changes
@@ -833,26 +923,30 @@ def patching_response(spoiler):
 
     # Create a dummy time to attach to the end of the file name non decimal
     str(time.time()).replace(".", "")
-    if "PYTEST_CURRENT_TEST" not in os.environ:
-        created_tempfile = mktemp()
-        delta_tempfile = mktemp()
-        # Write the LocalROM.rom bytesIo to a file
-        with open(created_tempfile, "wb") as f:
-            f.write(ROM_COPY.rom.getvalue())
 
-        import pyxdelta
-
-        pyxdelta.run("dk64.z64", created_tempfile, delta_tempfile)
-        # Read the patch file
-        with open(delta_tempfile, "rb") as f:
-            patch = f.read()
-        # Delete the patch.z64 file
-        os.remove(created_tempfile)
-        os.remove(delta_tempfile)
+    # Check if this is the browser path (applying proto to provided ROM)
+    # or the server path (creating proto for .lanky file)
+    if rom is not None:
+        # Browser path: ROM patching is complete, don't delete ROM, don't return proto
+        # ROM_COPY is the provided rom parameter - caller will handle it
+        return None, password
     else:
-        patch = None
-    del ROM_COPY
-    return patch, password
+        # Server path: Return serialized FillResult proto for .lanky file creation
+        # The proto contains all fill data needed to reconstruct the ROM patch client-side
+        if isinstance(fill_result_or_spoiler, fill_result_pb2.FillResult):
+            # Already have proto - serialize it to bytes
+            proto_bytes = fill_result_or_spoiler.SerializeToString()
+            patch = proto_bytes
+        else:
+            # Legacy path - convert spoiler to proto then serialize
+            from randomizer.ProtoSerializer import fill_result_to_proto
+
+            fill_result_proto = fill_result_to_proto(spoiler)
+            proto_bytes = fill_result_proto.SerializeToString()
+            patch = proto_bytes
+
+        del ROM_COPY
+        return patch, password
 
 
 def FormatSpoiler(value):

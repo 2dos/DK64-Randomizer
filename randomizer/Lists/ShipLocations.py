@@ -1,10 +1,11 @@
 """Stores the data for each potential crashed ship location."""
+
 import math
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
 
 
-def offset_position(x0, y0, z0, rot_x, rot_y, rot_z, rot_x_offset = 0, rot_y_offset = 130.9, dist=275.282):
+def offset_position(x0, y0, z0, rot_x, rot_y, rot_z, rot_x_offset=0, rot_y_offset=130.9, dist=275.282):
     # Convert degrees to radians
     yaw = math.radians(rot_y + rot_y_offset)
     pitch = math.radians(rot_x + rot_x_offset)
@@ -19,8 +20,21 @@ def offset_position(x0, y0, z0, rot_x, rot_y, rot_z, rot_x_offset = 0, rot_y_off
 
     return new_x, new_y, new_z
 
+
 class ShipObject:
-    def __init__(self, name: str, map_index: Maps, coords: list[float], region: Regions, logic=None, euler_rotation: list[int] = [0, 0, 0], lz_position: list[int] = None, rotation: list[float]=[0, 0, 0], scale: float=0.25, is_vanilla: bool=False):
+    def __init__(
+        self,
+        name: str,
+        map_index: Maps,
+        coords: list[float],
+        region: Regions,
+        logic=None,
+        euler_rotation: list[int] = [0, 0, 0],
+        lz_position: list[int] = None,
+        rotation: list[float] = [0, 0, 0],
+        scale: float = 0.25,
+        is_vanilla: bool = False,
+    ):
         self.name = name
         self.map_index = map_index
         self.coords = coords
@@ -37,6 +51,7 @@ class ShipObject:
             self.lz_position = lz_position
         self.scale = scale
         self.is_vanilla = is_vanilla
+
 
 ship_locations: list[ShipObject] = [
     ShipObject(
