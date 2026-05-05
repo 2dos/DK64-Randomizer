@@ -83,12 +83,27 @@ class IScript_IsState(FunctionData):
         """Initialize with given variables."""
         super().__init__(1, [state, index, 0], inverted, inclusion_lambda)
 
+class IScript_IsExternalState(FunctionData):
+    """Is an external object instance within a certain state."""
+
+    def __init__(self, obj_instance_id: int, state: int, index=0, inverted=False, inclusion_lambda=None):
+        """Initialize with given variables."""
+        super().__init__(49, [obj_instance_id, state, index], inverted, inclusion_lambda)
+
 class IScript_SetState(FunctionData):
     """Set the instance script to a certain state."""
 
     def __init__(self, state, index=0, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(1, [state, index, 0], False, inclusion_lambda)
+
+
+class IScript_SetExternalState(FunctionData):
+    """Set the instance script of another object instance to a certain state."""
+
+    def __init__(self, obj_instance_id: int, state, index=0, inclusion_lambda=None):
+        """Initialize with given variables."""
+        super().__init__(5, [obj_instance_id, state, index], False, inclusion_lambda)
 
 class IScript_True(FunctionData):
     """Always returns true, unless inverted, in which case always returns false."""
@@ -110,6 +125,27 @@ class IScript_SetTimer(FunctionData):
     def __init__(self, timer, index=0, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(3, [0, timer, index], False, inclusion_lambda)
+
+class IScript_IsKong(FunctionData):
+    """Is the player a certain kong."""
+
+    def __init__(self, kong: Kongs, inverted=False, inclusion_lambda=None):
+        """Initialize with given variables."""
+        super().__init__(25, [kong + 2, 0, 0], inverted, inclusion_lambda)
+
+class IScript_SetOpacity(FunctionData):
+    """Set various opacity vars."""
+
+    def __init__(self, opacity_enabled: bool, opacity: int, opacity_change_rate: int, inclusion_lambda=None):
+        """Initialize with given variables."""
+        super().__init__(69, [1 if opacity_enabled else 0, opacity, opacity_change_rate], False, inclusion_lambda)
+
+class IScript_SetTangibility(FunctionData):
+    """Set whether the object is tangible or not."""
+
+    def __init__(self, tangible: bool, inclusion_lambda=None):
+        """Initialize with given variables."""
+        super().__init__(70, [1 if tangible else 0, 0, 0], False, inclusion_lambda)
 
 class FlagType(IntEnum):
     """Flag Type enum."""
@@ -168,15 +204,29 @@ class IScript_SetScriptRunState(FunctionData):
         """Initialize with given variables."""
         super().__init__(38, [state, distance, 0], False, inclusion_lambda)
 
+class IScript_SetExternalScriptRunState(FunctionData):
+    """Set the script run state of the an external object instance id."""
+
+    def __init__(self, obj_instance_id: int, state: RunState, distance: int=0, inclusion_lambda=None):
+        """Initialize with given variables."""
+        super().__init__(84, [obj_instance_id, state, distance], False, inclusion_lambda)
+
 class IScript_PlayCutscene(FunctionData):
-    """Set the script run state of the object tied to the script."""
+    """Play a cutscene tied to this instance."""
 
     def __init__(self, cutscene_index: int, extra_args: int = 1, tied_spawner_index: int = 0, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(37, [cutscene_index, extra_args, tied_spawner_index], False, inclusion_lambda)
 
+class IScript_SetAction(FunctionData):
+    """Set the player to a current action state."""
+
+    def __init__(self, action_index: int, inclusion_lambda=None):
+        """Initialize with given variables."""
+        super().__init__(25, [action_index, 0, 0], False, inclusion_lambda)
+
 class IScript_HasSpecialMove(FunctionData):
-    """Set the script run state of the object tied to the script."""
+    """Does the player have a certain move."""
 
     def __init__(self, kong: Kongs, move_index: int, inverted=False, inclusion_lambda=None):
         """Initialize with given variables."""
@@ -188,6 +238,13 @@ class IScript_IsStandingOnObject(FunctionData):
     def __init__(self, inverted=False, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(2, [0, 0, 0], inverted, inclusion_lambda)
+
+class IScript_IsKongStandingOnObject(FunctionData):
+    """Is standing on the object tied to the script."""
+
+    def __init__(self, kong: Kongs, inverted=False, inclusion_lambda=None):
+        """Initialize with given variables."""
+        super().__init__(17, [kong + 2, 1, 0], inverted, inclusion_lambda)
 
 class IScript_InControlState(FunctionData):
     """Is the player is in a certain control state."""
@@ -202,3 +259,34 @@ class IScript_InControlStateAndProgress(FunctionData):
     def __init__(self, control_state: int, progress: int, inverted=False, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(23, [control_state, progress, 0], inverted, inclusion_lambda)
+
+class IScript_PlaySong(FunctionData):
+    """Play a song."""
+
+    def __init__(self, song_index: int, volume: float = 1, inclusion_lambda=None):
+        """Initialize with given variables."""
+        super().__init__(97, [song_index, 0, 0 if volume == 1 else int(volume * 255)], False, inclusion_lambda)
+
+class IScript_SpawnEnemy(FunctionData):
+    """Spawn an enemy within the current map."""
+
+    def __init__(self, spawner_id: int, inclusion_lambda=None):
+        """Initialize with given variables."""
+        super().__init__(86, [spawner_id, 0, 0], False, inclusion_lambda)
+
+class IScript_PlaySFX(FunctionData):
+    """Plays a SFX at the object's XYZ Position."""
+
+    def __init__(self, sfx: int, volume: int = 0, speed: int = 0, volume_unk_mult: int = 0, pitch_variance: int = 0, inclusion_lambda=None):
+        """Initialize with given variables."""
+        # Param 2: ssss ssss sppp pppp
+        # Param 3: vvvv vvvv vbbb bbbb
+        # s = speed
+        # b = vol_unk_mult
+        # p = pitch variance
+        # v = vol
+        volume = min(511, volume)
+        speed = min(511, speed)
+        volume_unk_mult = min(127, volume_unk_mult)
+        pitch_variance = min(127, pitch_variance)
+        super().__init__(15, [sfx, (speed << 7) | pitch_variance, (volume << 7) | volume_unk_mult], False, inclusion_lambda)
