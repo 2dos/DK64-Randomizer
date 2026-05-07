@@ -1,0 +1,181 @@
+{
+    "index": 14,
+    "ignore": true,
+    "point_data": [
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                4,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 24,
+                "params": [
+                    11,
+                    "enums.CompTextFiles.PreviewsFlavor",
+                    "enums.ItemPreview.LlamaRescue",
+                    0
+                ]
+            },
+            "duration": 140
+        },
+        {
+            "unk0": 0,
+            "command": 4,
+            "head": [
+                10,
+                128
+            ],
+            "point_start": {
+                "x": 4,
+                "y": 18687,
+                "z": 8064,
+                "rot": {
+                    "x": 360,
+                    "y": 7879,
+                    "z": 0
+                },
+                "zoom": 254,
+                "roll": 128
+            },
+            "point_end": {
+                "x": -1696,
+                "y": 11853,
+                "z": 18431,
+                "rot": {
+                    "x": 8217,
+                    "y": 360,
+                    "z": 8077
+                },
+                "zoom": 0,
+                "roll": 0
+            },
+            "points": [
+                {
+                    "x": 3021,
+                    "y": 943,
+                    "z": 863,
+                    "rot": {
+                        "x": 63952,
+                        "y": 58000,
+                        "z": 3485
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 2788,
+                    "y": 472,
+                    "z": 996,
+                    "rot": {
+                        "x": 60986,
+                        "y": 60652,
+                        "z": 5173
+                    },
+                    "zoom": 45,
+                    "roll": 236
+                },
+                {
+                    "x": 2374,
+                    "y": 328,
+                    "z": 1276,
+                    "rot": {
+                        "x": 62474,
+                        "y": 62053,
+                        "z": 8753
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 2209,
+                    "y": 290,
+                    "z": 1392,
+                    "rot": {
+                        "x": 65506,
+                        "y": 62015,
+                        "z": 10361
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 180
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                4,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 29,
+                "params": [
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 255,
+            "command": 8,
+            "read": [],
+            "head": [
+                31,
+                75
+            ],
+            "duration": 30
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 14,
+                "params": [
+                    11,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 21,
+                "params": [
+                    38,
+                    10,
+                    0,
+                    0
+                ]
+            },
+            "duration": 60
+        },
+        {
+            "unk0": 255,
+            "command": 8,
+            "read": [],
+            "head": [
+                31,
+                75
+            ],
+            "duration": 170
+        }
+    ]
+}

@@ -46,8 +46,8 @@ void adjustGunBone(playerData* player) {
     }
 }
 
-static const unsigned char kong_vanilla_models[] = {3, 0, 5, 8, 0xB};
-static const unsigned char model_swap_base_index[] = {
+ROM_RODATA_NUM static const unsigned char kong_vanilla_models[] = {3, 0, 5, 8, 0xB};
+ROM_RODATA_NUM static const unsigned char model_swap_base_index[] = {
     0x00, // /* 0x000 */ KONGMODEL_DEFAULT,
 	0x03, // /* 0x001 */ KONGMODEL_DK,
 	0x00, // /* 0x002 */ KONGMODEL_DIDDY,
@@ -61,6 +61,7 @@ static const unsigned char model_swap_base_index[] = {
 	0x10, // /* 0x00A */ KONGMODEL_CRANKY,
 	0x12, // /* 0x00B */ KONGMODEL_CANDY,
 	0x11, // /* 0x00C */ KONGMODEL_FUNKY,
+    0x03, // /* 0x00D */ KONGMODEL_DISCODONKEY,
 };
 
 int getCutsceneModelTableIndex(int vanilla_index) {
@@ -76,7 +77,7 @@ int getCutsceneModelTableIndex(int vanilla_index) {
     return slot;
 }
 
-static short model_no_shift[] = {KONGMODEL_DEFAULT, KONGMODEL_KRUSHA, KONGMODEL_KROOL_CUTSCENE, KONGMODEL_KROOL_FIGHT};
+ROM_RODATA_NUM static const short model_no_shift[] = {KONGMODEL_DEFAULT, KONGMODEL_KRUSHA, KONGMODEL_KROOL_CUTSCENE, KONGMODEL_KROOL_FIGHT};
 
 void fixCutsceneModels(void) {
     for (int i = 0; i < 5; i++) {
@@ -145,7 +146,7 @@ void adjustAnimationTables(void) {
                     }
                 */
                 int excl_base = 0;
-                int dances[] = {0x43A, 0x434};
+                int dances[] = {0x1DC, 0x43A, 0x1DC};  // 0x434 for failure anim
                 if (i == 0x5A) {
                     // Instrument
                     excl_base = 1;
@@ -161,11 +162,7 @@ void adjustAnimationTables(void) {
                     excl_base = 1;
                 } else if ((i >= 0x8A) && (i <= 0x8C)) {
                     // Tag Animation
-                    int dance = dances[1];
-                    if (i == 0x8B) {
-                        dance = dances[0];
-                    }
-                    AnimationTable1[(7 * i) + slot] = dance;
+                    AnimationTable1[(7 * i) + slot] = dances[i - 0x8A];
                     excl_base = 1;
                 }
                 if (!excl_base) {
@@ -242,24 +239,6 @@ void adaptKrushaZBAnimation_Charge(actorData* actor, int anim) {
     }
 }
 
-void updateCutsceneModels(actorData* actor, int size) {
-    /**
-     * @brief Change cutscene models to account for Krusha
-     * 
-     * @param actor Player actor
-     * @param size Player scale
-     */
-    short* model = actor->paad3;
-    // if (*model == 0xDB) {
-    //     TiedCharacterSpawner->unk_46 |= 0x1000;
-    //     CurrentActorPointer_0->obj_props_bitfield |= 0x1400;
-    //     CurrentActorPointer_0->unk_CC = 1;
-    //     unkCutsceneKongFunction_0(2, 1);
-    //     clearGun(actor);
-    // }
-    updateModelScales(actor, size);
-}
-
 void* DiddySwimFix(int ptr, int file, int c0, int c1) {
     /**
      * @brief Fix Diddy & Lanky's swimming animations
@@ -326,7 +305,7 @@ typedef struct KrushaProjectileColorStruct {
     unsigned char blue;
 } KrushaProjectileColorStruct;
 
-static KrushaProjectileColorStruct krusha_projectile_colors[] = {
+ROM_RODATA_NUM static const KrushaProjectileColorStruct krusha_projectile_colors[] = {
     {.pellet = 48, .red = 0xC0, .green = 0xFF, .blue = 0x00},
     {.pellet = 36, .red = 0xFF, .green = 0x40, .blue = 0x40},
     {.pellet = 42, .red = 0x18, .green = 0x18, .blue = 0xFF},
@@ -337,7 +316,7 @@ static KrushaProjectileColorStruct krusha_projectile_colors[] = {
 void setKrushaAmmoColor(void) {
     int currentPellet = CurrentActorPointer_0->actorType;
     for (int i = 0; i < 5; i++) {
-        KrushaProjectileColorStruct *data = &krusha_projectile_colors[i];
+        const KrushaProjectileColorStruct *data = &krusha_projectile_colors[i];
         if ((currentPellet == data->pellet) || (i == 4)) {
             changeActorColor(data->red, data->green, data->blue, 0xFF);
             return;
@@ -376,7 +355,7 @@ void OrangeGunCode(void) {
         CurrentActorPointer_0->noclip_byte = 0x3C;
         unkProjectileCode_0(CurrentActorPointer_0, 60.0f);
         unkProjectileCode_1(CurrentActorPointer_0, 0.0f, 0.0f, 0.0f, 50.0f, -1);
-        allocateBone(CurrentActorPointer_0, 0, 0, 0, -1);
+        colorRainbowAmmo(CurrentActorPointer_0, 0.0f, 0.0f, 0.0f, -1);
         unkSpriteRenderFunc(-1);
         unkSpriteRenderFunc_1(1);
         unkSpriteRenderFunc_2(4);

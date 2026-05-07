@@ -18,7 +18,7 @@ typedef struct pad_refresh_struct {
     /* 0x006 */ unsigned short unk6;
 } pad_refresh_struct;
 
-static pad_refresh_struct pads[] = {
+ROM_DATA static pad_refresh_struct pads[] = {
     // BBlast Pads
     {
         .map = MAP_JAPES,
@@ -323,13 +323,12 @@ void refreshPads(pad_refresh_signals signal) {
         }
     } else {
         int _count = ObjectModel2Count;
-        int *m2location = (int *)ObjectModel2Pointer;
         for (int i = 0; i < (int)(sizeof(pads) / sizeof(pad_refresh_struct)); i++) {
             if ((CurrentMap == pads[i].map) && (signal == pads[i].requirement)) {
                 int found_item = 0;
                 int j = 0;
                 while ((!found_item) && (j < _count)) {
-                    ModelTwoData*_object = getObjectArrayAddr(m2location, 0x90, j);
+                    ModelTwoData*_object = &ObjectModel2Pointer[j];
                     if (_object->object_id == pads[i].object_id) {
                         behaviour_data* behavior = _object->behaviour_pointer;
                         if (behavior) {
@@ -348,4 +347,25 @@ void refreshPads(pad_refresh_signals signal) {
             }
         }
     }
+}
+
+int isModelTwoTiedFlag_new(maps map, setup_item * item) {
+    int output = isModelTwoTiedFlagSet(map, item->id);
+    if ((output) || (map != MAP_SNIDE)) {
+        return output;
+    }
+    unsigned char bp_has;
+    unsigned char bp_turn;
+    getBPCountStats(Character, &bp_has, &bp_turn);
+    int total_unturned_count = bp_has - bp_turn;
+    for (int i = 0; i < total_unturned_count; i++) {
+        int idx = (total_unturned_count - i) - 1;
+        if (SnideRewardIDs[idx] == item->id) {
+            int snide_index = getFirstEmptySnideReward(i);
+            snide_packet *reward = &snide_rewards[snide_index];
+            item->item_type = reward->object_id;
+            item->scale = getModelTwoScale(reward->object_id);
+        }
+    }
+    return output;
 }

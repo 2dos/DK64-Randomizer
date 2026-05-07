@@ -39,23 +39,23 @@ typedef enum regions {
 	/* 0x01C */ REGION_JAPESHIGH, // Japes Hillside
 	/* 0x01D */ REGION_JAPESSTORM, // Stormy Tunnel Area
 	/* 0x01E */ REGION_JAPESHIVE, // Hive Tunnel Area
-	/* 0x01F */ REGION_JAPESCAVERNS, // Japes Caves and Mines
-	/* 0x020 */ REGION_AZTECOASISTOTEM, // Aztec Oasis and Totem Area
+	/* 0x01F */ REGION_JAPESCAVERNS, // Japes Caves & Mines
+	/* 0x020 */ REGION_AZTECOASISTOTEM, // Aztec Oasis & Totem Area
 	/* 0x021 */ REGION_AZTECTINY, // Tiny Temple
 	/* 0x022 */ REGION_AZTECGETOUT, // 5 Door Temple
 	/* 0x023 */ REGION_AZTECLLAMA, // Llama Temple
 	/* 0x024 */ REGION_AZTECTUNNELS, // Various Aztec Tunnels
-	/* 0x025 */ REGION_FACTORYSTART, // Frantic Factory Start
+	/* 0x025 */ REGION_FACTORYSTART, // Frantic Factory Foyer
 	/* 0x026 */ REGION_FACTORYTESTING, // Testing Area
-	/* 0x027 */ REGION_FACTORYRESEARCH, // Research and Development Area
-	/* 0x028 */ REGION_FACTORYSTORAGE, // Storage and Arcade
+	/* 0x027 */ REGION_FACTORYRESEARCH, // R&D Area
+	/* 0x028 */ REGION_FACTORYSTORAGE, // Storage & Arcade
 	/* 0x029 */ REGION_FACTORYPROD, // Production Room
 	/* 0x02A */ REGION_GALLEONCAVERNS, // Galleon Caverns
 	/* 0x02B */ REGION_GALLEONLIGHTHOUSE, // Lighthouse Area
 	/* 0x02C */ REGION_GALLEONSHIPYARD, // Shipyard Outskirts
 	/* 0x02D */ REGION_GALLEONTREASURE, // Treasure Room
 	/* 0x02E */ REGION_GALLEONSHIP, // 5 Door Ship
-	/* 0x02F */ REGION_FORESTSTART, // Forest Center and Beanstalk
+	/* 0x02F */ REGION_FORESTSTART, // Forest Center & Beanstalk
 	/* 0x030 */ REGION_FORESTGMEXT, // Giant Mushroom Exterior
 	/* 0x031 */ REGION_FORESTGMINT, // Giant Mushroom Insides
 	/* 0x032 */ REGION_FORESTOWL, // Owl Tree
@@ -68,6 +68,13 @@ typedef enum regions {
 	/* 0x039 */ REGION_CASTLEUNDERGROUND, // Castle Underground
 	/* 0x03A */ REGION_OTHERHELM, // Hideout Helm
 	/* 0x03B */ REGION_OTHERTNS, // Troff n Scoff
-	/* 0x03C */ REGION_ERROR, // This should not be hinted
+	/* 0x03C */ REGION_OTHERSNIDE, // Snide HQ
+	/* 0x03D */ REGION_OTHERSNIDEREWARDS1, // 1st to 8th Blueprint Rewards
+	/* 0x03E */ REGION_OTHERSNIDEREWARDS2, // 9th to 16th Blueprint Rewards
+	/* 0x03F */ REGION_OTHERSNIDEREWARDS3, // 17th to 24th Blueprint Rewards
+	/* 0x040 */ REGION_OTHERSNIDEREWARDS4, // 25th to 32nd Blueprint Rewards
+	/* 0x041 */ REGION_OTHERSNIDEREWARDS5, // 33rd to 40th Blueprint Rewards
+	/* 0x042 */ REGION_ERROR, // This should not be hinted
 } regions;
-extern char* hint_region_names[61];extern char* unknown_hints[5];
+extern char* hint_region_names[67];
+extern FastTextStruct unknown_hints[5];

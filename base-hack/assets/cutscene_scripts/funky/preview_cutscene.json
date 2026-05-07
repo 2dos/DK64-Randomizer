@@ -12,8 +12,8 @@
                 "sub_command": 24,
                 "params": [
                     0,
-                    19,
-                    36,
+                    "enums.CompTextFiles.PreviewsFlavor",
+                    "enums.ItemPreview.FunkyMicro",
                     0
                 ]
             },

@@ -111,8 +111,6 @@
         {% for panelName, panel in plando_panels %}
             {% if panelName == "Shops" %}
                 {% include 'plandomizer/plandomizer_shops.html' %}
-            {% elif panelName == "Switches" %}
-                {% include 'plandomizer/plandomizer_switches.html' %}
             {% elif panelName == "Locations" %}
                 {% include 'plandomizer/plandomizer_locations.html' %}
             {% elif panelName == "Minigames" %}
@@ -129,11 +127,11 @@
     $(function() {
         $('[data-toggle="tooltip"]').tooltip({
             trigger: 'hover'
-        })
-    })
+        });
+    });
     $("#plando_string_copy").on('click', function (event) {
         var input = $("#plando_string");
         input.select();
         navigator.clipboard.writeText(input.val());
-    })
+    });
 </script>

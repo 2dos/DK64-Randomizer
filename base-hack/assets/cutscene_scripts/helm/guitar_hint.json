@@ -29,8 +29,8 @@
             "detailed_command": {
                 "sub_command": 30,
                 "params": [
-                    19,
-                    31,
+                    "enums.CompTextFiles.PreviewsFlavor",
+                    "enums.ItemPreview.GuitarMicro",
                     0,
                     0
                 ]

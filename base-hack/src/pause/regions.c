@@ -10,14 +10,15 @@
  */
 #include "../../include/common.h"
 
+#define REFERENCE_SHOP -4
 #define REFERENCE_PARENT -3
 #define NO_HINT_REGION -2
 #define INCONSISTENT_HINT_REGION -1
 
-static char last_safe_parent = -1;
-static char hint_region_text[32] = "";
+ROM_DATA static char last_safe_parent = -1;
+ROM_DATA static char hint_region_text[32] = "";
 
-static const char map_hint_regions[] = {
+ROM_RODATA_NUM static const char map_hint_regions[] = {
     /*
         Only for situations where an entire map is a singular hint region
         Key:
@@ -27,11 +28,11 @@ static const char map_hint_regions[] = {
             >= 0 = Hint region is always a certain enum value
     */
     NO_HINT_REGION, // test_map
-    REFERENCE_PARENT, // funkys_store
+    REFERENCE_SHOP, // funkys_store
     REGION_FACTORYSTORAGE, // dk_arcade
     REFERENCE_PARENT, // k_rool_barrel_lankys_maze
     REGION_JAPESCAVERNS, // jungle_japes_mountain
-    REFERENCE_PARENT, // crankys_lab
+    REFERENCE_SHOP, // crankys_lab
     REGION_JAPESCAVERNS, // jungle_japes_minecart
     INCONSISTENT_HINT_REGION, // jungle_japes
     REGION_OTHERTNS, // jungle_japes_army_dillo
@@ -41,7 +42,7 @@ static const char map_hint_regions[] = {
     REGION_JAPESHIVE, // jungle_japes_shell
     REGION_JAPESCAVERNS, // jungle_japes_lankys_cave
     REGION_AZTECOASISTOTEM, // angry_aztec_beetle_race
-    REFERENCE_PARENT, // snides_hq
+    REGION_OTHERSNIDE, // snides_hq
     REGION_AZTECTINY, // angry_aztec_tinys_temple
     REGION_OTHERHELM, // hideout_helm
     REFERENCE_PARENT, // teetering_turtle_trouble_very_easy
@@ -51,7 +52,7 @@ static const char map_hint_regions[] = {
     REGION_AZTECGETOUT, // angry_aztec_five_door_temple_tiny
     REGION_AZTECGETOUT, // angry_aztec_five_door_temple_lanky
     REGION_AZTECGETOUT, // angry_aztec_five_door_temple_chunky
-    REFERENCE_PARENT, // candys_music_shop
+    REFERENCE_SHOP, // candys_music_shop
     INCONSISTENT_HINT_REGION, // frantic_factory
     REGION_FACTORYRESEARCH, // frantic_factory_car_race
     NO_HINT_REGION, // hideout_helm_level_intros_game_over
@@ -242,6 +243,32 @@ static const char map_hint_regions[] = {
     NO_HINT_REGION, // k_lumsy_ending
     REGION_ISLESKROOL, // k_rools_shoe
     REGION_ISLESKROOL, // k_rools_arena
+    REFERENCE_PARENT, // arcade_25m
+    REFERENCE_PARENT, // arcade_50m
+    REFERENCE_PARENT, // arcade_75m
+    REFERENCE_PARENT, // arcade_100m
+    REFERENCE_PARENT, // jetpac_rocket
+};
+
+ROM_RODATA_NUM static const char fungi_chunk_regions[] = {
+    REGION_FORESTSTART, // 0 = Starting area
+    REGION_FORESTMILLS, // 1 = Blue Tunnel
+    REGION_FORESTMILLS, // 2 = Mills Main
+    REGION_FORESTMILLS, // 3 = Snide Area
+    REGION_FORESTMILLS, // 4 = Dark Attic Area
+    REGION_FORESTMILLS, // 5 = Thornvine Area
+    REGION_FORESTMILLS, // 6 = Rear of Thornvine Barn
+    REGION_FORESTSTART, // 7 = Green Tunnel
+    REGION_FORESTSTART, // 8 = Apple area
+    REGION_FORESTSTART, // 9 = Beanstalk Area
+    REGION_FORESTGMEXT, // 10
+    REGION_FORESTGMEXT, // 11
+    REGION_FORESTOWL, // 12 = Yellow Tunnel
+    REGION_FORESTOWL, // 13 = Start of owl tree area
+    REGION_FORESTOWL, // 14 = Owl Tree Area Main
+    REGION_FORESTOWL, // 15 = Rabbit Race Area
+    REGION_FORESTOWL, // 16 = Anthill Area
+    REGION_FORESTOWL, // 17 = Owl Tree Rocketbarrel Area
 };
 
 int setHintRegion(void) {
@@ -250,26 +277,24 @@ int setHintRegion(void) {
         return current_region;
     } else if (current_region == NO_HINT_REGION) {
         return -1;
+    } else if (current_region == REFERENCE_SHOP) {
+        int level = getWorld(CurrentMap, 1);
+        if (level == 7) {
+            return REGION_SHOPISLES;
+        }
+        if (level < 7) {
+            return REGION_SHOPJAPES + level;
+        }
     } else if (current_region == REFERENCE_PARENT) {
-        if (inShop(CurrentMap, 1)) {
-            int level = getWorld(CurrentMap, 1);
-            if (level == 7) {
-                return REGION_SHOPISLES;
-            }
-            if (level < 7) {
-                return REGION_SHOPJAPES + level;
-            }
-        } else {
-            int parent_map = 0;
-            int parent_exit = 0;
-            getParentMap(&parent_map, &parent_exit);
-            if ((parent_map >= 0) && (parent_map < 216)) {
-                current_region = map_hint_regions[parent_map];
-                if (current_region >= 0) {
-                    return current_region;
-                } else if (last_safe_parent >= 0) {
-                    return last_safe_parent;
-                }
+        int parent_map = 0;
+        int parent_exit = 0;
+        getParentMap(&parent_map, &parent_exit);
+        if ((parent_map >= 0) && (parent_map < 216)) {
+            current_region = map_hint_regions[parent_map];
+            if (current_region >= 0) {
+                return current_region;
+            } else if (last_safe_parent >= 0) {
+                return last_safe_parent;
             }
         }
     }
@@ -293,27 +318,7 @@ int setHintRegion(void) {
                 }
                 return REGION_CAVESMAIN;
             case MAP_FUNGI:
-                if ((chunk == 0) || (chunk == 7) || (chunk == 8) || (chunk == 9)) {
-                    // 0 = Starting area, 7 = Green Tunnel, 8 = Apple area, 9 = Beanstalk Area
-                    return REGION_FORESTSTART;
-                } else if ((chunk >= 1) && (chunk <= 6)) {
-                    // 1 = Blue Tunnel
-                    // 2 = Mills Main
-                    // 3 = Snide Area
-                    // 4 = Dark Attic Area
-                    // 5 = Thornvine Area
-                    // 6 = Rear of Thornvine Barn
-                    return REGION_FORESTMILLS;
-                } else if ((chunk >= 12) && (chunk <= 17)) {
-                    // 12 = Yellow Tunnel
-                    // 13 = Start of owl tree area
-                    // 14 = Owl Tree Area Main
-                    // 15 = Rabbit Race Area
-                    // 16 = Anthill Area
-                    // 17 = Owl Tree Rocketbarrel Area
-                    return REGION_FORESTOWL;
-                }
-                return REGION_FORESTGMEXT;
+                return fungi_chunk_regions[chunk];
             case MAP_AZTEC:
                 if ((chunk == 4) || (chunk == 12)) {
                     // 4 = Oasis, 12 = Totem
@@ -340,7 +345,6 @@ int setHintRegion(void) {
                         return REGION_ISLESOUTER;
                     }
                     return REGION_ISLESMAIN;
-                    
                 }
             case MAP_GALLEON:
                 if ((chunk >= 9) && (chunk <= 11)) {

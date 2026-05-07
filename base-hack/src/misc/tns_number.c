@@ -1,10 +1,8 @@
 #include "../../include/common.h"
 
 void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype) {
-	int* m2location = (int*)ObjectModel2Pointer;
 	int slot = convertIDToIndex(id);
-	ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
-	model_struct* _model = _object->model_pointer;
+	model_struct* _model = ObjectModel2Pointer[slot].model_pointer;
 	if (_model) {
 		if (subtype == 0) {
 			drawNumberObject(_model->unk_B8,param2,imageindex,param4);
@@ -16,10 +14,8 @@ void displayNumberOnObject(int id, int param2, int imageindex, int param4, int s
 
 void shiftBrokenJapesPortal(void) {
 	if (CurrentMap == MAP_JAPES) {
-		int* m2location = (int*)ObjectModel2Pointer;
 		int slot = convertIDToIndex(0x220);
-		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
-		model_struct* _model = _object->model_pointer;
+		model_struct* _model = ObjectModel2Pointer[slot].model_pointer;
 		if (_model) {
 			_model->x = 722.473f;
 			_model->z = 2386.608f;
@@ -27,7 +23,7 @@ void shiftBrokenJapesPortal(void) {
 	}
 }
 
-static const unsigned char tns_maps[] = {
+ROM_RODATA_NUM static const unsigned char tns_maps[] = {
 	MAP_JAPES, // Japes
 	MAP_FACTORY, // Factory
 	MAP_GALLEON, // Galleon
@@ -39,7 +35,7 @@ static const unsigned char tns_maps[] = {
 	MAP_CASTLECRYPT, // Castle Crypt
 };
 
-static const unsigned char tns_count[] = {
+ROM_RODATA_NUM static const unsigned char tns_count[] = {
 	3,
 	5,
 	5,
@@ -52,12 +48,7 @@ static const unsigned char tns_count[] = {
 };
 
 void displayNumberOnTns(void) {
-	int in_tns_map = -1;
-	for (int i = 0; i < 9; i++) {
-		if (tns_maps[i] == CurrentMap) {
-			in_tns_map = i;
-		}
-	}
+	int in_tns_map = inU8List(CurrentMap, &tns_maps[0], sizeof(tns_maps)) - 1;
 	if (in_tns_map > -1) {
 		int world_index = getWorld(CurrentMap, 0);
 		if (world_index <= 7) {
@@ -73,11 +64,9 @@ void displayNumberOnTns(void) {
 					}
 				}
 			} else {
-				int* m2location = (int*)ObjectModel2Pointer;
 				for (int j = 0; j < tns_count[in_tns_map]; j++) {
 					int slot = convertIDToIndex(0x220 + j);
-					ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
-					model_struct* _model = _object->model_pointer;
+					model_struct* _model = ObjectModel2Pointer[slot].model_pointer;
 					if (_model) {
 						_model->scale = 0.0f;
 					}

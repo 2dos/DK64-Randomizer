@@ -29,62 +29,11 @@ void spriteCode(int sprite_index, float scale) {
     }
 }
 
-void ninCoinCode(void) {
-    /**
-     * @brief Nintendo Coin Actor Code
-     */
-    GoldenBananaCode();
-}
-
-void rwCoinCode(void) {
-    /**
-     * @brief Rareware Coin Actor Code
-     */
-    GoldenBananaCode();
-}
-
-void medalCode(void) {
-    /**
-     * @brief Medal Actor Code
-     */
-    GoldenBananaCode();
-}
-
-void beanCode(void) {
-    /**
-     * @brief Bean Actor Code
-     */
-    GoldenBananaCode();
-}
-
-void pearlCode(void) {
-    /**
-     * @brief Pearl Actor Code
-     */
-    GoldenBananaCode();
-}
-
 void NothingCode(void) {
     /**
      * @brief Null Item Actor Code
      */
     deleteActorContainer(CurrentActorPointer_0);
-}
-
-void scaleBounceDrop(float scale) {
-    /**
-     * @brief Change the visual scale of a bounce drop
-     * 
-     * @param scale New Scale of the object
-     */
-    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        renderingParamsData* render = CurrentActorPointer_0->render;
-        if (render) {
-            render->scale_x = scale;
-            render->scale_y = scale;
-            render->scale_z = scale;
-        }
-    }
 }
 
 void KongDropCode(void) {
@@ -93,8 +42,7 @@ void KongDropCode(void) {
      */
     GoldenBananaCode();
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        int current_type = CurrentActorPointer_0->actorType - CUSTOM_ACTORS_START;
-        int kong = current_type - NEWACTOR_KONGDK;
+        int kong = CurrentActorPointer_0->actorType - NEWACTOR_KONGDK;
         if (kong >= 0) {
             updateActorHandStates(CurrentActorPointer_0, kong + 2);
             playActorAnimation(CurrentActorPointer_0, AnimationTable1[(0x8B * 7) + kong]);
@@ -123,7 +71,7 @@ void fairyDuplicateCode(void) {
     playActorAnimation(CurrentActorPointer_0, 0x2B5);
 }
 
-static const short shop_owner_anims[] = {
+ROM_DATA static short shop_owner_anims[] = {
     622, // Cranky Idle
     624, // Funky Idle
     626, // Candy Idle
@@ -137,8 +85,7 @@ void shopOwnerItemCode(void) {
     GoldenBananaCode();
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF; // Make color blends work
-        int current_type = CurrentActorPointer_0->actorType - CUSTOM_ACTORS_START;
-        int owner = current_type - NEWACTOR_CRANKYITEM;
+        int owner = CurrentActorPointer_0->actorType - NEWACTOR_CRANKYITEM;
         playActorAnimation(CurrentActorPointer_0, shop_owner_anims[owner]);
     }
 }
@@ -167,7 +114,7 @@ void missingShopOwnerCode(int cutscene) {
 }
 
 void crankyCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_CRANKY, FLAGTYPE_PERMANENT)) {
+    if (checkFlag(FLAG_ITEM_CRANKY, FLAGTYPE_PERMANENT)) {
         crankyCode();
         return;
     }
@@ -175,7 +122,7 @@ void crankyCodeHandler(void) {
 }
 
 void funkyCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_FUNKY, FLAGTYPE_PERMANENT)) {
+    if (checkFlag(FLAG_ITEM_FUNKY, FLAGTYPE_PERMANENT)) {
         funkyCode();
         return;
     }
@@ -183,21 +130,37 @@ void funkyCodeHandler(void) {
 }
 
 void candyCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_CANDY, FLAGTYPE_PERMANENT)) {
+    if (checkFlag(FLAG_ITEM_CANDY, FLAGTYPE_PERMANENT)) {
         candyCode();
         return;
     }
     missingShopOwnerCode(7);
 }
 
+float getModelTwoScale(int obj_id) {
+    for (unsigned int i = 0; i < (sizeof(item_conversions) / sizeof(item_conversion_info)); i++) {
+        if (item_conversions[i].model_two == obj_id) {
+            return item_conversions[i].scale;
+        }
+    }
+    return 0.25f;
+}
+
 void snideCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_SNIDE, FLAGTYPE_PERMANENT)) {
+    if (checkFlag(FLAG_ITEM_SNIDE, FLAGTYPE_PERMANENT)) {
         snideCode();
         return;
     }
     missingShopOwnerCode(13);
 }
 
+void FakeKeyCode(void) {
+    /**
+     * @brief Actor code for the fake item (commonly known as "Ice Traps") actor
+     */
+    BossKeyCode();
+    CurrentActorPointer_0->rot_y -= 0xE4; // Spin in reverse
+}
 void FakeGBCode(void) {
     /**
      * @brief Actor code for the fake item (commonly known as "Ice Traps") actor
@@ -206,15 +169,17 @@ void FakeGBCode(void) {
     CurrentActorPointer_0->rot_y -= 0xE4; // Spin in reverse
 }
 
+void FakeFairyCode(void) {
+    fairyDuplicateCode();
+    CurrentActorPointer_0->rot_y -= 0xE4; // Spin in reverse
+}
+
 void mermaidCheck(void) {
     /**
      * @brief Set the mermaid control state based on the amount of pearls you have
      */
-    int count = 0;
-    for (int i = 0; i < 5; i++) {
-        count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
-    }
-    if (count == 0) {
+    int count = getItemCount_new(REQITEM_PEARL, 0, 0);
+    if ((count == 0) && (Rando.mermaid_requirement > 0)) {
         CurrentActorPointer_0->control_state = 0x1E;
     } else if (count < Rando.mermaid_requirement) {
         CurrentActorPointer_0->control_state = 0x1F;
@@ -228,12 +193,8 @@ int fairyQueenCutsceneInit(int start, int count, flagtypes type) {
     /**
      * @brief Set BFI Queen control state based on the amount of fairies you have
      */
-    int fairies_in_possession = countFlagsDuplicate(start, count, type); 
-    int fairy_limit = 20;
-    if (Rando.rareware_gb_fairies > 0) {
-        fairy_limit = Rando.rareware_gb_fairies;
-    }
-    if (fairies_in_possession < fairy_limit) {
+    int fairies_in_possession = getItemCount_new(REQITEM_FAIRY, 0, 0);
+    if (fairies_in_possession < Rando.rareware_gb_fairies) {
         // Not enough fairies
         CurrentActorPointer_0->control_state = 10;
     } else {
@@ -267,9 +228,10 @@ void fairyQueenCheckSpeedup(void *actor, int unk) {
 }
 
 #define STORED_COUNT 18
-static int stored_maps[STORED_COUNT] = {};
-static unsigned char stored_kasplat[STORED_COUNT] = {};
-static unsigned char stored_enemies[ENEMY_REWARD_CACHE_SIZE][STORED_COUNT] = {};
+ROM_DATA static int stored_maps[STORED_COUNT] = {};
+ROM_DATA static unsigned char stored_kasplat[STORED_COUNT] = {};
+ROM_DATA static unsigned char stored_enemies[ENEMY_REWARD_CACHE_SIZE][STORED_COUNT] = {};
+ROM_DATA static unsigned short stored_holdable;
 
 int setupHook(int map) {
     /**
@@ -294,6 +256,7 @@ int setupHook(int map) {
     for (int i = 0; i < STORED_COUNT; i++) {
         if (stored_maps[i] == PreviousMap) {
             place_new = 0;
+            stored_holdable = HoldableSpawnBitfield;
             stored_kasplat[i] = KasplatSpawnBitfield;
             for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                 stored_enemies[j][i] = enemy_rewards_spawned[j];
@@ -304,6 +267,7 @@ int setupHook(int map) {
         for (int i = 0; i < STORED_COUNT; i++) {
             if (place_new) {
                 if (stored_maps[i] == -1) {
+                    stored_holdable = HoldableSpawnBitfield;
                     stored_kasplat[i] = KasplatSpawnBitfield;
                     for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                         stored_enemies[j][i] = enemy_rewards_spawned[j];
@@ -326,6 +290,7 @@ int setupHook(int map) {
                     enemy_rewards_spawned[j] = 0;
                 }
             }
+            HoldableSpawnBitfield = stored_holdable;
             KasplatSpawnBitfield = stored_kasplat[i];
             for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                 enemy_rewards_spawned[j] = stored_enemies[j][i];
@@ -334,6 +299,7 @@ int setupHook(int map) {
     }
     if (!in_chain) {
         KasplatSpawnBitfield = 0;
+        HoldableSpawnBitfield = 0;
         for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
             enemy_rewards_spawned[j] = 0;
         }
@@ -350,7 +316,7 @@ void CheckKasplatSpawnBitfield(void) {
         while (1 == 1) {
             if (referenced_spawner) {
                 int actor_type = referenced_spawner->actor_type + 0x10;
-                int is_drop = inShortList(actor_type, &actor_drops, sizeof(actor_drops) >> 1);
+                int is_drop = inShortList(actor_type, (short*)&actor_drops[0], sizeof(actor_drops) >> 1);
                 if (is_drop) {
                     int flag = referenced_spawner->flag;
                     if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
@@ -361,6 +327,9 @@ void CheckKasplatSpawnBitfield(void) {
                     } else if (isFlagInRange(flag, FLAG_ENEMY_KILLED_0, ENEMIES_TOTAL)) {
                         // Is Enemy Drop
                         setSpawnBitfieldFromFlag(flag, 0);
+                    } else if (isFlagInRange(flag, FLAG_GRABBABLES_DESTROYED, 16)) {
+                        // Is Holdable
+                        HoldableSpawnBitfield |= (1 << (flag - FLAG_GRABBABLES_DESTROYED));
                     }
                 }
                 // Get Next Spawner

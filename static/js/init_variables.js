@@ -308,7 +308,7 @@ window["MusicSelectionPanel"] = {
         type: "BGM",
         songs: [
           { name: "Creepy Castle", value: "Castle" },
-          { name: "Fungi Forest (Winch)", value: "CastleShed" },
+          { name: "Creepy Castle (Shed)", value: "CastleShed" },
           { name: "Creepy Castle (Tree)", value: "CastleTree" },
           { name: "Creepy Castle (Tunnels)", value: "CastleTunnels" },
           { name: "Creepy Castle (Crypt)", value: "CastleCrypt" },

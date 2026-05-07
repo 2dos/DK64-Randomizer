@@ -11,7 +11,8 @@ typedef struct boss_spawn_info {
 	/* 0x00B */ char spawn_location; // 0 = respond to xyz, 1 = at boss, 2 = at player
 } boss_spawn_info;
 
-static const boss_spawn_info boss_spawn_data[] = {
+ROM_DATA static unsigned char k_rool_phase = 0;
+ROM_RODATA_NUM static const boss_spawn_info boss_spawn_data[] = {
 	{.map_id = MAP_JAPESDILLO, .pen_id = 4, .x = 0, .y=0, .z=0, .unk0 = 0x800, .unk1 = 6, .spawn_location=0}, // Japes Dillo
 	{.map_id = MAP_CAVESDILLO, .pen_id = -1, .x = 0, .y=0, .z=0, .unk0 = 0x800, .unk1 = 5, .spawn_location=1}, // Caves Dillo - Spawns at boss, not sure what unk0 is
 	{.map_id = MAP_GALLEONPUFFTOSS, .pen_id = -1, .x=0, .y=0, .z=0, .unk0 = 0x5DC, .unk1 = 1, .spawn_location=1}, // Pufftoss - Spawns at boss
@@ -33,11 +34,11 @@ static const boss_spawn_info boss_spawn_data[] = {
 */
 
 typedef struct boss_map_to_model {
-	/* 0x000 */ short map;
-	/* 0x002 */ short model;
+	/* 0x000 */ unsigned char map;
+	/* 0x002 */ unsigned char model;
 } boss_map_to_model;
 
-static const boss_map_to_model model_data[] = {
+ROM_RODATA_NUM static const boss_map_to_model model_data[] = {
 	{.map = MAP_JAPESDILLO, .model=0x38}, // Dillo - With Shell
 	{.map = MAP_AZTECDOGADON, .model=0x3C}, // Dogadon
 	{.map = MAP_FACTORYJACK, .model=0x25}, // Mad Jack
@@ -65,7 +66,7 @@ void swap_ending_cutscene_model(void) {
 	*(short*)(0x80755764) = model;
 }
 
-static unsigned char maps_with_extended_end_cs[] = {
+ROM_RODATA_NUM static const unsigned char maps_with_extended_end_cs[] = {
 	// MAP_KROOLDK, // n64 lol
 	// MAP_KROOLDIDDY, // n64 lol
 	// MAP_KROOLLANKY, // n64 lol
@@ -75,55 +76,57 @@ static unsigned char maps_with_extended_end_cs[] = {
 
 void completeBoss(void) {
 	// Spawn Key
-	for (int i = 0; i < 7; i++) {
-		if (BossMapArray[i] == CurrentMap) {
-			for (int j = 0; j < sizeof(boss_spawn_data) / sizeof(boss_spawn_info); j++) {
-				boss_spawn_info* tied_data = &boss_spawn_data[j];
-				if (tied_data->map_id == CurrentMap) {
-					if (tied_data->spawn_location == 1) {
-						spawnKey(normal_key_flags[i], CurrentActorPointer_0->xPos + tied_data->x, CurrentActorPointer_0->yPos + tied_data->y, CurrentActorPointer_0->zPos + tied_data->z, tied_data->unk0, tied_data->unk1);
-					} else if (tied_data->spawn_location == 2) {
-						spawnKey(normal_key_flags[i], Player->xPos + tied_data->x, Player->yPos + tied_data->y, Player->zPos + tied_data->z, tied_data->unk0, tied_data->unk1);
-					} else if (tied_data->pen_id > -1) {
-						pen_a_data* tied_pen = &FenceInformation->pen_A[tied_data->pen_id];
-						spawnKey(normal_key_flags[i], tied_pen->x, tied_pen->y, tied_pen->z, tied_data->unk0, tied_data->unk1);
-					} else {
-						spawnKey(normal_key_flags[i], tied_data->x, tied_data->y, tied_data->z, tied_data->unk0, tied_data->unk1);
-					}
-					return;
+	level_indexes level = getWorld(CurrentMap, 0);
+	if (level <= LEVEL_ISLES) {
+		for (unsigned int j = 0; j < sizeof(boss_spawn_data) / sizeof(boss_spawn_info); j++) {
+			boss_spawn_info* tied_data = (boss_spawn_info*)&boss_spawn_data[j];
+			if (tied_data->map_id == CurrentMap) {
+				if (tied_data->spawn_location == 1) {
+					spawnKey(normal_key_flags[level], CurrentActorPointer_0->xPos + tied_data->x, CurrentActorPointer_0->yPos + tied_data->y, CurrentActorPointer_0->zPos + tied_data->z, tied_data->unk0, tied_data->unk1);
+				} else if (tied_data->spawn_location == 2) {
+					spawnKey(normal_key_flags[level], Player->xPos + tied_data->x, Player->yPos + tied_data->y, Player->zPos + tied_data->z, tied_data->unk0, tied_data->unk1);
+				} else if (tied_data->pen_id > -1) {
+					pen_a_data* tied_pen = &FenceInformation->pen_A[(int)tied_data->pen_id];
+					spawnKey(normal_key_flags[level], tied_pen->x, tied_pen->y, tied_pen->z, tied_data->unk0, tied_data->unk1);
+				} else {
+					spawnKey(normal_key_flags[level], tied_data->x, tied_data->y, tied_data->z, tied_data->unk0, tied_data->unk1);
 				}
+				return;
 			}
-			return;
 		}
+		return;
 	}
 	// Go to next boss in sequence
-	for (int i = 0; i < 5; i++) {
-		if (Rando.k_rool_order[i] == CurrentMap) {
-			if ((i == 4) || (Rando.k_rool_order[i + 1] == 0xFF)) {
-				// Ending phase
-				setPermFlag(FLAG_GAME_BEATEN);
-				if (inU8List(CurrentMap, &maps_with_extended_end_cs, sizeof(maps_with_extended_end_cs))) {
-					playCutscene(CurrentActorPointer_0, 0x1A, 1);
-					renderingParamsData* render = Player->rendering_param_pointer;
-					render->scale_x = 0.0f;
-					render->scale_y = 0.0f;
-					render->scale_z = 0.0f;
-				} else {
-					initiateTransitionFade(MAP_ISLES, 29, GAMEMODE_ADVENTURE);
-				}
-			} else {
-				maps next_map = Rando.k_rool_order[i + 1];
-				initiateTransition(next_map, 0);
-				// Some minor logic to prevent unbeatable bosses with no K Rool progress save
-				if (next_map == MAP_FUNGIDOGADON) {
-					Character = KONG_CHUNKY;
-				} else if (next_map == MAP_FACTORYJACK) {
-					Character = KONG_TINY;
-				}
-			}
-			return;
+	if ((k_rool_phase == 4) || (Rando.k_rool_order[k_rool_phase + 1] == 0xFF)) {
+		// Ending phase
+		setPermFlag(FLAG_GAME_BEATEN);
+    	save();
+		if (inU8List(CurrentMap, &maps_with_extended_end_cs[0], sizeof(maps_with_extended_end_cs))) {
+			playCutscene(CurrentActorPointer_0, 0x1A, 1);
+			renderingParamsData* render = (renderingParamsData*)Player->rendering_param_pointer;
+			render->scale_x = 0.0f;
+			render->scale_y = 0.0f;
+			render->scale_z = 0.0f;
+		} else {
+			initiateTransitionFade(MAP_ISLES, 29, GAMEMODE_ADVENTURE);
+		}
+		for (int i = 0; i < 5; i++) {
+			setFlag(FLAG_KROOL_ENTERED + i, 0, FLAGTYPE_PERMANENT);
+		}
+		k_rool_phase = 0;
+	} else {
+		maps next_map = Rando.k_rool_order[k_rool_phase + 1];
+		initiateTransition(next_map, 0);
+		k_rool_phase++;
+		setPermFlag(FLAG_KROOL_ENTERED + k_rool_phase);
+		// Some minor logic to prevent unbeatable bosses with no K Rool progress save
+		if (next_map == MAP_FUNGIDOGADON) {
+			Character = KONG_CHUNKY;
+		} else if (next_map == MAP_FACTORYJACK) {
+			Character = KONG_TINY;
 		}
 	}
+	return;
 }
 
 void fixKRoolKong(void) {
@@ -139,46 +142,32 @@ void fixKRoolKong(void) {
 	}
 }
 
-static unsigned char valid_lz_types[] = {9, 12, 13, 16};
+ROM_RODATA_NUM static const unsigned char valid_lz_types[] = {9, 12, 13, 16};
 void handleKRoolSaveProgress(void) {
-	if (Rando.quality_of_life.save_krool_progress) {
-		// Save Progress
-		for (int i = 0; i < 5; i++) {
-			if (Rando.k_rool_order[i] == CurrentMap) {
-				setFlag(FLAG_KROOL_ENTERED + i, 1, FLAGTYPE_PERMANENT);
+	if (!Rando.quality_of_life.save_krool_progress) {
+		return;
+	}
+	if (CurrentMap != MAP_ISLES) {
+		return;
+	}
+	// Load Progress
+	int latest_map = -1;
+	for (int i = 1; i < 5; i++) {
+		if (checkFlag(FLAG_KROOL_ENTERED + i, FLAGTYPE_PERMANENT)) {
+			if (Rando.k_rool_order[i] != 0xFF) {
+				k_rool_phase = i;
+				latest_map = Rando.k_rool_order[i];
 			}
 		}
-		if (CurrentMap == MAP_ISLES) {
-			// Wipe Progress
-			if (
-				((CutsceneActive == 1) && (CutsceneIndex == 29) && ((CutsceneStateBitfield & 4) == 0)) ||
-				((CutsceneFadeActive) && (CutsceneFadeIndex == 29))	
-			) {
-				// K Rool flying cutscene
-				for (int i = 0; i < 5; i++) {
-					setFlag(FLAG_KROOL_ENTERED + i, 0, FLAGTYPE_PERMANENT);
-				}
-			}
-			// Load Progress
-			int latest_map = -1;
-			for (int i = 1; i < 5; i++) {
-				if (checkFlag(FLAG_KROOL_ENTERED + i, FLAGTYPE_PERMANENT)) {
-					if (Rando.k_rool_order[i] != 0xFF) {
-						latest_map = Rando.k_rool_order[i];
-					}
-				}
-			}
-			if (latest_map > -1) {
-				for (int i = 0; i < TriggerSize; i++) {
-					if (inBossMap(TriggerArray[i].map, 1, 1, 1)) {
-						for (int j = 0; j < sizeof(valid_lz_types); j++) {
-							if (TriggerArray[i].type == valid_lz_types[j]) {
-								TriggerArray[i].map = latest_map;
-								return;
-							}
-						}
-					}
-				}
+	}
+	if (latest_map < 0) {
+		return;
+	}
+	for (int i = 0; i < TriggerSize; i++) {
+		if (inBossMap(TriggerArray[i].map, 1, 1, 1)) {
+			if (inU8List(TriggerArray[i].type, &valid_lz_types[0], sizeof(valid_lz_types))) {
+				TriggerArray[i].map = latest_map;
+				return;
 			}
 		}
 	}

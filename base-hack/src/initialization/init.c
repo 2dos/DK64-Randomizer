@@ -12,10 +12,9 @@
  */
 #include "../../include/common.h"
 
-static char music_storage[MUSIC_SIZE];
-unsigned char HeadSize[MODEL_COUNT];
+ROM_DATA static char music_storage[MUSIC_SIZE + 0xF];
 
-char music_types[SONG_COUNT] = {
+ROM_RODATA_NUM const char music_types[SONG_COUNT] = {
 	-1,
 	SONGTYPE_BGM,
 	SONGTYPE_BGM,
@@ -91,7 +90,7 @@ char music_types[SONG_COUNT] = {
 	SONGTYPE_BGM,
 	SONGTYPE_BGM,
 	SONGTYPE_BGM,
-	SONGTYPE_BGM,
+	-1,
 	SONGTYPE_MAJORITEM,
 	SONGTYPE_BGM,
 	SONGTYPE_BGM,
@@ -191,12 +190,8 @@ char music_types[SONG_COUNT] = {
 	SONGTYPE_EVENT,
 	-1,
 	SONGTYPE_BGM,
-	-1
+	-1,
 };
-
-typedef struct musicInfo {
-	/* 0x000 */ short data[0xB0];
-} musicInfo;
 
 void fixMusicRando(void) {
 	/**
@@ -205,64 +200,8 @@ void fixMusicRando(void) {
 	 */
 	if (Rando.music_rando_on) {
 		// Type indexes
-		int size = SONG_COUNT;
-		char* write_space_0 = getFile(size, 0x1FEE200);
-		for (int i = 0; i < SONG_COUNT; i++) {
-			// Handle Type Index
-			if (write_space_0[i] > -1) {
-				song_types type = write_space_0[i];
-				music_types[i] = type;
-			}
-		}
-		*(short*)(0x806CA97E) = 0x560 | ((songData[0x6B] >> 1) & 3); // Baboon Balloon
-		*(float*)(0x807565D8) = 1.0f; // Funky and Candy volumes
-		*(int*)(0x80604B50) = 0; // Disable galleon outside track isolation
-		*(int*)(0x80604A54) = 0; // Disable galleon outside track isolation
-		complex_free(write_space_0);
+		*(short*)(0x806CA97E) = 0x560 | ((songData[SONG_BABOONBALLOON] >> 1) & 3); // Baboon Balloon
 	}
-	/*
-	// Music
-	if (Rando.music_rando_on) {
-		// Type bitfields
-		int size = SONG_COUNT << 1;
-		musicInfo* write_space = dk_malloc(size);
-		int* file_size;
-		*(int*)(&file_size) = size;
-		copyFromROM(0x1FFF000,write_space,&file_size,0,0,0,0);
-		// Type indexes
-		size = SONG_COUNT;
-		char* write_space_0 = dk_malloc(size);
-		*(int*)(&file_size) = size;
-		copyFromROM(0x1FEE200,write_space_0,&file_size,0,0,0,0);
-		for (int i = 0; i < SONG_COUNT; i++) {
-			// Handle Bitfield
-			int subchannel = (write_space->data[i] & 6) >> 1;
-			int channel = (write_space->data[i] & 0x78) >> 3;
-			songData[i] &= 0xFF81;
-			songData[i] |= (subchannel & 3) << 1;
-			songData[i] |= (channel & 0xF) << 3;
-
-			// Handle Type Index
-			music_types[i] = write_space_0[i];
-			if (write_space_0[i] > -1) {
-				song_types type = write_space_0[i];
-				int volume = 0;
-				if (type == SONGTYPE_BGM) {
-					volume = 23000;
-				} else if (type == SONGTYPE_MAJORITEM) {
-					volume = 27000;
-				} else {
-					// Event or Minor Item
-					volume = 25000;
-				}
-				songVolumes[i] = volume;
-			}
-		}
-		complex_free(write_space);
-		complex_free(write_space_0);
-
-	}
-	*/
 }
 
 void writeEndSequence(void) {
@@ -281,18 +220,14 @@ float getOscillationDelta(void) {
 }
 
 void loadHooks(void) {
-	for (int i = 0; i < 5; i++) {
-		if (Rando.kong_models[i] == KONGMODEL_KRUSHA) {
-			loadSingularHook(0x806F97B8, &FixKrushaAmmoHUDColor);
-			loadSingularHook(0x806F97E8, &FixKrushaAmmoHUDSize);
-			break;
-		}
-	}
 	if (MenuDarkness != 0) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);
 	}
-	loadSingularHook(0x8061A4C8, &AlterHeadSize);
-	loadSingularHook(0x806198D4, &AlterHeadSize_0);
+	if(Rando.isles_cool_musical != 0){
+		// Make Isles Fully Musical (make it never play song 0 as bgm in Isles)
+		loadSingularHook(0x80603784, &pleaseDontStopIslesMusic);
+		*(int*)(0x80603788) = 0x3C018077;  // LUI at, 0x8077
+	}
 }
 
 void initHack(int source) {
@@ -304,29 +239,21 @@ void initHack(int source) {
 	 */
 	if (LoadedHooks == 0) {
 		if ((source == 1) || (CurrentMap == MAP_NINTENDOLOGO)) {
-			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
+			*(int*)(0x8076BF38) = ((int)(&music_storage[0]) + 0xF) & 0xFFFFFFF0; // Increase music storage. Ensure it's 0x10 aligned
 			grab_lock_timer = -1;
-			preventTagSpawn = Rando.prevent_tag_spawn;
 			bonusAutocomplete = Rando.resolve_bonus;
 			TextHoldOn = Rando.quality_of_life.textbox_hold;
 			ToggleAmmoOn = Rando.quality_of_life.ammo_swap;
 			LobbiesOpen = Rando.lobbies_open_bitfield;
 			ShorterBosses = Rando.short_bosses;
-			WinCondition = Rando.win_condition;
 			ItemRandoOn = Rando.item_rando;
 			KrushaSlot = Rando.krusha_slot;
 			RandomSwitches = Rando.random_switches;
 			DamageMultiplier = Rando.damage_multiplier; // Keep for Crowd Control. Needs it to know what to set damage mult back to
+			initItemRandoPointer();
 			initAP();
-			// HUD Re-allocation fixes
-			*(short*)(0x806FB246) = ITEMID_TERMINATOR;
-			*(short*)(0x806FABAA) = ITEMID_TERMINATOR;
-			*(short*)(0x806F9992) = ITEMID_RESERVED_FUNKY;
-			*(short*)(0x806F99AA) = ITEMID_RESERVED_CRANKY;
-			*(short*)(0x806F9986) = ITEMID_RESERVED_SCOFF;
-			*(short*)(0x806F99C6) = ITEMID_RESERVED_CANDY;
-			*(short*)(0x806F99DA) = ITEMID_RESERVED_DK;
-			RandomizerVersion = 4;
+			RandomizerVersion = 5;
+			RandomizerSubVersion = 1;  // Use this for tracker changes
 			for (int i = 0; i < 7; i++) {
 				SwitchLevel[i] = Rando.slam_level[i];
 			}
@@ -344,18 +271,14 @@ void initHack(int source) {
 				}
 			}
 			// Kong Rando
-			initKongRando();
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
 			initCosmetic();
 			initTextChanges();
 
-			replace_zones(1);
 			loadHooks();
-			loadExtraHooks();
 			// Place Move Data
 			moveTransplant();
-			priceTransplant();
 			
 			fixMusicRando();
 			
@@ -376,26 +299,7 @@ void initHack(int source) {
 			style128Mtx[0xF] = 100;
 			writeEndSequence();
 			
-			int kko_phase_rando = 0;
-			for (int i = 0; i < 3; i++) {
-				KKOPhaseOrder[i] = Rando.kut_out_phases[i];
-				if (Rando.kut_out_phases[i]) {
-					kko_phase_rando = 1;
-				}
-			}
-			KKOPhaseRandoOn = kko_phase_rando;
-			
-			initPauseMenu(); // Changes to enable more items
-			// Model Stuff
-			if (Rando.kong_models[KONG_DK] == KONGMODEL_CRANKY) {
-				KongModelData[KONG_DK].props_or = 0;
-			}
-			if (Rando.kong_models[KONG_TINY] == KONGMODEL_CANDY) {
-				KongModelData[KONG_TINY].props_or = 0;
-			}
-			if (Rando.kong_models[KONG_DIDDY] == KONGMODEL_FUNKY) {
-				KongModelData[KONG_DIDDY].props_or = 0;
-			}
+			initHintFlags(); // Changes to enable more items
 			fixCutsceneModels();
 			if (Rando.hard_mode.lava_water) {
 				// Dynamic Textures
@@ -417,12 +321,6 @@ void initHack(int source) {
 				writeFunction(0x80660994, &getOscillationDelta);
         		writeFunction(0x806609BC, &getOscillationDelta);
 			}
-			initSwitchsanityChanges();
-
-			SFXVolume = Rando.default_sfx_volume;
-			MusicVolume = Rando.default_music_volume;
-			ScreenRatio = Rando.default_screen_ratio;
-			SoundType = Rando.default_sound_type;
 			int sound_subtype = 1;
 			if (SoundType == 0) {
 				sound_subtype = 2;
@@ -451,5 +349,3 @@ void quickInit(void) {
 	Gamemode = GAMEMODE_MAINMENU;
 	Mode = GAMEMODE_MAINMENU;
 }
-
-int balloon_path_pointers[PATH_CAP];

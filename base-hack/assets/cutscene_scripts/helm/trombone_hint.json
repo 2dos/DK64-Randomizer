@@ -29,8 +29,8 @@
             "detailed_command": {
                 "sub_command": 30,
                 "params": [
-                    19,
-                    30,
+                    "enums.CompTextFiles.PreviewsFlavor",
+                    "enums.ItemPreview.TromboneMicro",
                     0,
                     0
                 ]

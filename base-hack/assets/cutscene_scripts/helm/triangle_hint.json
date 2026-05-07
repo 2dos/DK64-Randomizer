@@ -29,8 +29,8 @@
             "detailed_command": {
                 "sub_command": 30,
                 "params": [
-                    19,
-                    28,
+                    "enums.CompTextFiles.PreviewsFlavor",
+                    "enums.ItemPreview.TriangleMicro",
                     0,
                     0
                 ]

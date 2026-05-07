@@ -21,11 +21,11 @@ void handleFootProgress(actorData* actor) {
         setNextTransitionType(1);
         ISGActive = 1;
         initiateTransition(MAP_KROOLTINY,0);
-        setFlag(FLAG_KROOL_TOE_1 + progress,1, FLAGTYPE_TEMPORARY);
+        setFlag(FLAG_KROOL_TOE_1 + progress, 1, FLAGTYPE_TEMPORARY);
         actor->control_state_progress += 1;
     } else {
         // Stay
-        setFlag(FLAG_KROOL_TOE_1 + progress,1, FLAGTYPE_TEMPORARY);
+        setFlag(FLAG_KROOL_TOE_1 + progress, 1, FLAGTYPE_TEMPORARY);
         if (checkFlag(FLAG_KROOL_TOE_1, FLAGTYPE_TEMPORARY)) {
             setToeTexture(actor,4);
             actor->sub_state = 2;

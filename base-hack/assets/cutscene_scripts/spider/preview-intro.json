@@ -282,8 +282,8 @@
                 "sub_command": 24,
                 "params": [
                     1,
-                    19,
-                    32
+                    "enums.CompTextFiles.PreviewsFlavor",
+                    "enums.ItemPreview.SpiderIntro"
                 ]
             },
             "head": [

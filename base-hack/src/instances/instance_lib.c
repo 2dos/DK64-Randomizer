@@ -37,7 +37,7 @@ void getModelTwoItemFromActor(int actor, short* item, float* scale) {
 	 * @param item Address to store item model two index
 	 * @param scale Address to store item scale
 	 */
-	for (int i = 0; i < (sizeof(item_conversions) / sizeof(item_conversion_info)); i++) {
+	for (unsigned int i = 0; i < (sizeof(item_conversions) / sizeof(item_conversion_info)); i++) {
 		if (actor == item_conversions[i].actor) {
 			*item = item_conversions[i].model_two;
 			*scale = item_conversions[i].scale;
@@ -146,9 +146,7 @@ int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, int ID)
 		if (behaviour_pointer->contact_actor_type == bullet_type) {
 			if (canHitSwitch()) {
 				int index = convertSubIDToIndex(ID);
-				int* m2location = (int*)ObjectModel2Pointer;
-				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
-				setSomeTimer(_object->object_type);
+				setSomeTimer(ObjectModel2Pointer[index].object_type);
 				return 1;
 			}
 		}

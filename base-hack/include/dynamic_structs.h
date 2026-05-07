@@ -23,6 +23,8 @@ typedef struct RemovedBarriers {
 	unsigned char fungi_yellow_tunnel : 1; // 0x10 
 	unsigned char shipwreck_gate : 1; // 0x8 
 	unsigned char llama_switches : 1; // 0x4 
+	unsigned char helm_star_gates : 1; // 0x2 
+	unsigned char helm_punch_gates : 1; // 0x1 
 } RemovedBarriers;
 
 typedef enum ENUM_RemovedBarriers {
@@ -40,6 +42,8 @@ typedef enum ENUM_RemovedBarriers {
 	/* 11 */ REMOVEDBARRIERS_ENUM_FUNGIYELLOWTUNNEL,
 	/* 12 */ REMOVEDBARRIERS_ENUM_SHIPWRECKGATE,
 	/* 13 */ REMOVEDBARRIERS_ENUM_LLAMASWITCHES,
+	/* 14 */ REMOVEDBARRIERS_ENUM_HELMSTARGATES,
+	/* 15 */ REMOVEDBARRIERS_ENUM_HELMPUNCHGATES,
 } ENUM_RemovedBarriers;
 
 typedef struct FasterChecks {

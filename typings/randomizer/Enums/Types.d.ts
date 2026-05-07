@@ -33,6 +33,19 @@ export enum Types {
     IslesMedal = 32,
     ProgressiveHint = 33,
     ArchipelagoItem = 34,
+    BoulderItem = 35,
+    FillerPearl = 36,
+    FillerBanana = 37,
+    FillerFairy = 38,
+    FillerCrown = 39,
+    FillerMedal = 40,
+    HelmMedal = 41,
+    HelmKey = 42,
+    EnemyPhoto = 43,
+    HalfMedal = 44,
+    RaceBanana = 45,
+    GauntletBanana = 46,
+    FillerRainbowCoin = 47,
 }
 
 export enum BarrierItems {

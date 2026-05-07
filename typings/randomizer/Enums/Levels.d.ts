@@ -9,4 +9,5 @@ export enum Levels {
     HideoutHelm = 7,
     DKIsles = 8,
     Shops = 9,
+    Snide = 10,
 }

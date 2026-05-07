@@ -71,7 +71,7 @@ void quickWrinklyTextboxes(void) {
     unkTextFunction(CurrentActorPointer_0);
 }
 
-static char boot_speedup_done = 0;
+ROM_DATA static char boot_speedup_done = 0;
 void bootSpeedup(void) {
     /**
      * @brief Speed up the boot process by reducing the amount of setups the game is loading
@@ -114,7 +114,7 @@ void bootSpeedup(void) {
 				if (model2_count > 0) {
 					for (int j = 0; j < model2_count; j++) {
                         unsigned short m2_obj_type = *(unsigned short*)(focused_model2 + 0x28);
-						coloredBananaCounts[world] += isSingleOrBunch(m2_obj_type);
+						coloredBananaCounts[world] += isDynFlag(m2_obj_type, i);
                         if (m2_obj_type == 181) {
                             populateCrateItem(*(short*)((int)focused_model2 + 0x2A), i, crate_index, subworld);
                             crate_index += 1;
@@ -141,8 +141,8 @@ void initQoL_FastWarp(void) {
     }
 }
 
-static const char exittoisles[] = "EXIT TO ISLES";
-static const char exittospawn[] = "EXIT TO SPAWN";
+ROM_RODATA_NUM static const char exittoisles[] = "EXIT TO ISLES";
+ROM_RODATA_NUM static const char exittospawn[] = "EXIT TO SPAWN";
 
 void writeSpawn(int map, int exit) {
     *(short*)(0x8071454A) = map;

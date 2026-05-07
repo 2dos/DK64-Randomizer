@@ -11,8 +11,7 @@
 
 #include "../../include/common.h"
 
-static char skip_cutscenes = 0;
-char enable_skip_check = 0;
+ROM_DATA static char skip_cutscenes = 0;
 
 void updateSkipCheck(void) {
 	enable_skip_check = Rando.cutscene_skip_setting == CSSKIP_AUTO;

@@ -3,6 +3,33 @@ var jquery = $;
 const listeners = [];
 const progression_presets = [];
 const random_settings_presets = [];
+let random_settings_settings = {};
+const default_trap_weights = {
+  "trap_weight_bubble": 3,
+  "trap_weight_reverse": 3,
+  "trap_weight_slow": 3,
+  "trap_weight_disablea": 1,
+  "trap_weight_disableb": 1,
+  "trap_weight_disablez": 1,
+  "trap_weight_disablecu": 1,
+  "trap_weight_getout": 1,
+  "trap_weight_dry": 2,
+  "trap_weight_flip": 2,
+  "trap_weight_icefloor": 2,
+  "trap_weight_paper": 2,
+  "trap_weight_slip": 3,
+  "trap_weight_animal": 1,
+  "trap_weight_rockfall": 1,
+  "trap_weight_disabletag": 2
+};
+const default_item_counts = {
+  "total_gbs": 161,
+  "total_medals": 40,
+  "total_fairies": 20,
+  "total_crowns": 10,
+  "total_rainbow_coins": 16,
+  "total_pearls": 5,
+};
 
 // Determine the correct URL for fetching presets based on the hostname
 let base_url;
@@ -34,13 +61,14 @@ $.ajax({
   },
 });
 $.ajax({
-  url: "static/presets/weights/weights_files.json",
+  url: "static/presets/weights/weight_files_raw.json",
   dataType: "json",
   async: false,
   success: function (data) {
-    data.forEach((file) => {
+    data.presets.forEach((file) => {
       random_settings_presets.push(file);
     });
+    random_settings_settings = data.settings;
   },
 });
 
@@ -160,14 +188,14 @@ function save_text_as_file(text, file) {
 }
 
 window.onerror = function (error) {
-  banned_errors_text = [
+  const banned_errors_text = [
     '"undefined" is not valid JSON', // Loading up the site without any cookies
     "Unexpected non-whitespace character after JSON at position", // Loading up the site when your cookies reflect a prior version
     "Unexpected non-whitespace character after JSON data at line", // Same as above
     "Unexpected token ; in JSON", // Token Error
     "Uncaught Error: Invalid Rom", // Token Error
   ];
-  is_banned = false;
+  let is_banned = false;
   banned_errors_text.forEach((item) => {
     if (error.toString().toLowerCase().indexOf(item.toLowerCase()) > -1) {
       is_banned = true;
@@ -202,6 +230,18 @@ function validFilename(filename, dir, valid_extension = null) {
           return true;
         }
       }
+    } else if (valid_extension == "image")  {
+      const f_spl = filename.split(".");
+      const f_ext = f_spl[f_spl.length - 1];
+      return ["png", "jpg", "jpeg", "webp"].includes(f_ext);
+    } else if (valid_extension == "image_gif")  {
+      const f_spl = filename.split(".");
+      const f_ext = f_spl[f_spl.length - 1];
+      return ["png", "jpg", "jpeg", "webp", "gif"].includes(f_ext);
+    } else if (valid_extension == "png_gif")  {
+      const f_spl = filename.split(".");
+      const f_ext = f_spl[f_spl.length - 1];
+      return ["png", "gif"].includes(f_ext);
     } else {
       if (filename.slice(0 - valid_extension.length) == valid_extension) {
         return true;
@@ -244,8 +284,8 @@ function createMusicLoadPromise(jszip, filename) {
 
 function sortLoadedMusic(musicList) {
   musicList.sort((a, b) => {
-    aName = a.name.toUpperCase();
-    bName = b.name.toUpperCase();
+    const aName = a.name.toUpperCase();
+    const bName = b.name.toUpperCase();
     if (aName < bName) {
       return -1;
     } else if (aName > bName) {
@@ -327,6 +367,9 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let transition_promises = [];
       let portal_promises = [];
       let painting_promises = [];
+      let arcade_promises = [];
+      let reel_promises = [];
+      let item_promises = [];
 
       for (var filename of Object.keys(new_zip.files)) {
         if (validFilename(filename, "bgm/")) {
@@ -339,10 +382,16 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
           event_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/transitions/", ".png")) {
           transition_promises.push(createMusicLoadPromise(new_zip, filename));
-        } else if (validFilename(filename, "textures/tns_portal/", ".png")) {
+        } else if (validFilename(filename, "textures/tns_portal/", "image")) {
           portal_promises.push(createMusicLoadPromise(new_zip, filename));
-        } else if (validFilename(filename, "textures/paintings/", ".png")) {
+        } else if (validFilename(filename, "textures/paintings/", "image")) {
           painting_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "textures/arcade_sprites/", ".png")) {
+          arcade_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "textures/reels/", ".png")) {
+          reel_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "textures/items/", ".png")) {
+          item_promises.push(createMusicLoadPromise(new_zip, filename));
         }
       }
 
@@ -357,65 +406,44 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let transition_files = await Promise.all(transition_promises);
       let portal_files = await Promise.all(portal_promises);
       let painting_files = await Promise.all(painting_promises);
+      let arcade_files = await Promise.all(arcade_promises);
+      let reel_files = await Promise.all(reel_promises);
+      let item_files = await Promise.all(item_promises);
 
-      // BGM
-      let bgm = bgm_files.map((x) => x.file);
-      let bgm_names = bgm_files.map((x) => x.name);
-      let bgm_ext = bgm_files.map((x) => x.extension);
-
-      // Major Items
-      let majoritems = majoritem_files.map((x) => x.file);
-      let majoritem_names = majoritem_files.map((x) => x.name);
-      let majoritem_ext = majoritem_files.map((x) => x.extension);
-
-      // Minor Items
-      let minoritems = minoritem_files.map((x) => x.file);
-      let minoritem_names = minoritem_files.map((x) => x.name);
-      let minoritem_ext = minoritem_files.map((x) => x.extension);
-
-      // Events
-      let events = event_files.map((x) => x.file);
-      let event_names = event_files.map((x) => x.name);
-      let event_ext = event_files.map((x) => x.extension);
-
-      // Transitions
-      let transitions = transition_files.map((x) => x.file);
-      let transition_names = transition_files.map((x) => x.name);
-
-      // T&S Portals
-      let tns_portals = portal_files.map((x) => x.file);
-      let tns_portal_names = portal_files.map((x) => x.name);
-
-      // Paintings
-      let paintings = painting_files.map((x) => x.file);
-      let painting_names = painting_files.map((x) => x.name);
+      let has_music = bgm_files.length > 0 || event_files.length > 0 || majoritem_files.length > 0 || minoritem_files.length > 0;
 
       cosmetics = {
-        bgm: bgm,
-        majoritems: majoritems,
-        minoritems: minoritems,
-        events: events,
-        transitions: transitions,
-        tns_portals: tns_portals,
-        paintings: paintings,
+        bgm: bgm_files.map((x) => x.file),
+        majoritems: majoritem_files.map((x) => x.file),
+        minoritems: minoritem_files.map((x) => x.file),
+        events: event_files.map((x) => x.file),
+        transitions: transition_files.map((x) => x.file),
+        tns_portals: portal_files.map((x) => x.file),
+        paintings: painting_files.map((x) => x.file),
+        arcade_sprites: arcade_files.map((x) => x.file),
+        reel_sprites: reel_files.map((x) => x.file),
+        item_sprites: item_files.map((x) => x.file),
       };
       cosmetic_names = {
-        bgm: bgm_names,
-        majoritems: majoritem_names,
-        minoritems: minoritem_names,
-        events: event_names,
-        transitions: transition_names,
-        tns_portals: tns_portal_names,
-        paintings: painting_names,
+        bgm: bgm_files.map((x) => x.name),
+        majoritems: majoritem_files.map((x) => x.name),
+        minoritems: minoritem_files.map((x) => x.name),
+        events: event_files.map((x) => x.name),
+        transitions: transition_files.map((x) => x.name),
+        tns_portals: portal_files.map((x) => x.name),
+        paintings: painting_files.map((x) => x.name),
+        arcade_sprites: arcade_files.map((x) => x.name),
+        reel_sprites: reel_files.map((x) => x.name),
+        item_sprites: item_files.map((x) => x.name),
       };
       cosmetic_extensions = {
-        bgm: bgm_ext,
-        majoritems: majoritem_ext,
-        minoritems: minoritem_ext,
-        events: event_ext,
+        bgm: bgm_files.map((x) => x.extension),
+        majoritems: majoritem_files.map((x) => x.extension),
+        minoritems: minoritem_files.map((x) => x.extension),
+        events: event_files.map((x) => x.extension),
       };
 
-      update_music_select_options(isInitialLoad);
+      update_music_select_options(isInitialLoad, has_music);
     });
   };
 
@@ -432,19 +460,40 @@ function get_custom_song_display_name(songName) {
   return `Custom Song: ${trimmedName}`;
 }
 
-async function update_music_select_options(isInitialLoad) {
-  customSongDict = {
+async function update_music_select_options(isInitialLoad, has_custom_music) {
+  let customSongDict = {
     BGM: cosmetic_names.bgm,
     MajorItem: cosmetic_names.majoritems,
     MinorItem: cosmetic_names.minoritems,
     Event: cosmetic_names.events,
   };
+  // Reset the global object storing truncated names.
   cosmetic_truncated_names = {
     bgm: [],
     majoritems: [],
     minoritems: [],
     events: [],
   };
+  // Fix the music rando selections
+  const els_no_music = document.getElementsByClassName("ui-music-no-cosmetic");
+  const els_has_music = document.getElementsByClassName("ui-music-has-cosmetic");
+  document.getElementById("music_is_custom").checked = has_custom_music;
+  if (has_custom_music) {
+    for (const el_0 of els_no_music) {
+      el_0.setAttribute("hidden", "hidden");
+    }
+    for (const el_1 of els_has_music) {
+      el_1.removeAttribute("hidden");
+    }
+  } else {
+    for (const el_0 of els_no_music) {
+      el_0.removeAttribute("hidden");
+    }
+    for (const el_1 of els_has_music) {
+      el_1.setAttribute("hidden", "hidden");
+    }
+  }
+
   for (const [category, songs] of Object.entries(customSongDict)) {
     // Map each song's truncated name to its full string path.
     for (const song of songs) {
@@ -464,9 +513,10 @@ async function update_music_select_options(isInitialLoad) {
       // Only remove the custom-song options by setting innerHTML directly if needed
       let customOptionsExist = dropdown.querySelector(".custom-song");
       if (customOptionsExist) {
-        dropdown
-          .querySelectorAll(".custom-song")
-          .forEach((option) => option.remove());
+        const song_el = dropdown.getElementsByClassName("custom-song");
+        for (let option of song_el) {
+          option.remove();
+        }
         // Clear the dropdown value if it was set to a custom song
         if (
           dropdown.value &&
@@ -520,7 +570,8 @@ async function savesettings() {
   const json = Object.fromEntries(formData.entries());
 
   // Handle <select> elements
-  document.querySelectorAll("select").forEach((select) => {
+  const selects = document.getElementsByTagName("select");
+  for (let select of selects) {
     if (select.classList.contains("selected")) {
       json[select.name] = Array.from(select.options)
         .filter((option) => option.selected)
@@ -532,7 +583,27 @@ async function savesettings() {
         option.id.slice(14)
       );
     }
-  });
+  }
+
+  // Handle dropdown multiselectors
+  console.log("Saving Settings");
+  let ddms_containers = document.getElementsByClassName("dropdown-multiselect");
+  for (let ddms_ctr of ddms_containers) {
+    const ddms = ddms_ctr.getElementsByClassName("dropdown-menu")[0];
+    const checkboxes = Array.from(ddms.getElementsByTagName("input"));
+    const checkedValues = checkboxes
+      .filter((cb) => cb.checked)
+      .map((cb) => cb.value);
+    
+    json[ddms.getAttribute('name')] = checkedValues;
+  }
+
+  let sjs_containers = document.getElementsByClassName("sortablejs");
+  for (let element of sjs_containers) {
+    const options = Array.from(element.getElementsByTagName("li"));
+    json[element.getAttribute('name')] = options.map((option) => option.getAttribute("value"));
+    // console.log(element.getAttribute('name'), json[element.getAttribute('name')])
+  }
 
   // Handle inputs with specific naming convention
   // Changed with the new selectors list
@@ -561,14 +632,59 @@ async function savesettings() {
 //   await saveDataToIndexedDB("saved_music", JSON.stringify(musicJson));
 // }
 
-document.querySelectorAll("#form input").forEach((input) => {
-  input.addEventListener("input", savesettings);
-  input.addEventListener("change", savesettings);
-});
+const form_container = document.getElementById("form");
+const form_inputs = form_container.getElementsByTagName("input");
+const form_selects = form_container.getElementsByTagName("select");
+const form_ddms = form_container.getElementsByClassName("dropdown-multiselect");
+const form_sortable = form_container.getElementsByClassName("sortablejs");
+for (let el of form_inputs) {
+  el.addEventListener("input", scheduleSave);
+  el.addEventListener("change", scheduleSave);
+}
+for (let el of form_selects) {
+  el.addEventListener("click", scheduleSave);
+  el.addEventListener("change", scheduleSave);
+}
+for (let el of form_selects) {
+  el.addEventListener("change", scheduleSave);
+}
+for (let el of form_sortable) {
+  el.addEventListener("change", scheduleSave);
+}
 
-document.querySelectorAll("#form select").forEach((select) => {
-  select.addEventListener("change", savesettings);
-  select.addEventListener("click", savesettings);
+// Sync homebrew_header checkboxes between Normal Generation and Patch File tabs
+const homebrewHeaderNormal = document.getElementById("homebrew_header");
+const homebrewHeaderPatch = document.getElementById("homebrew_header_patch");
+
+if (homebrewHeaderNormal && homebrewHeaderPatch) {
+  homebrewHeaderNormal.addEventListener("change", function() {
+    if (homebrewHeaderPatch.checked !== this.checked) {
+      homebrewHeaderPatch.checked = this.checked;
+    }
+  });
+
+  homebrewHeaderPatch.addEventListener("change", function() {
+    if (homebrewHeaderNormal.checked !== this.checked) {
+      homebrewHeaderNormal.checked = this.checked;
+    }
+  });
+}
+
+let saveTimeout;
+function scheduleSave() {
+  if (saveTimeout) {
+    clearTimeout(saveTimeout);
+  }
+  saveTimeout = setTimeout(() => {
+    savesettings();
+  }, 5000); // Save settings after 5s of inactivity after a call
+}
+
+window.addEventListener("beforeunload", () => {
+  if (saveTimeout) {
+    clearTimeout(saveTimeout);
+    savesettings();
+  }
 });
 
 function filebox() {
@@ -825,15 +941,15 @@ let previous_queue_position = null;
 
 function pushToHistory(message, emphasize = false) {
   let prog_hist = document.getElementById("progress-history");
-  old_history = prog_hist.innerHTML;
-  dt = new Date();
-  emph_start = "";
-  emph_end = "";
+  const old_history = prog_hist.innerHTML;
+  var dt = new Date();
+  let emph_start = "";
+  let emph_end = "";
   if (emphasize) {
     emph_start = "<span style='font-size:21px'>";
     emph_end = "</span>";
   }
-  new_history = `${old_history}${emph_start}[${to2Digit(
+  const new_history = `${old_history}${emph_start}[${to2Digit(
     dt.getHours()
   )}:${to2Digit(dt.getMinutes())}:${to2Digit(
     dt.getSeconds()
@@ -854,10 +970,10 @@ function postToastMessage(message, is_warning, progress_ratio) {
       .replace(/'/g, "&#039;")
   );
   // Handle Progress Bar
-  perc = Math.floor(100 * progress_ratio);
+  let perc = Math.floor(100 * progress_ratio);
   if (is_warning) {
     document.getElementById("progress-fairy").style.display = "none";
-    img_data = document.getElementById("progress-dead").src;
+    const img_data = document.getElementById("progress-dead").src;
     document.getElementById("progress-dead").style.display = "";
     document.getElementById("progress-dead").src = "";
     document.getElementById("progress-dead").src = img_data;
@@ -900,7 +1016,7 @@ function query_seed_status(url, task_id) {
     success: function (data, textStatus, xhr) {
       if (data["status"] == "queued") {
         console.log("seed gen waiting in queue");
-        position = data["position"];
+        const position = data["position"];
         postToastMessage("Seed is in Position: " + position, false, 0.4);
         sent_generating_status = false;
         setTimeout(function () {
@@ -924,7 +1040,7 @@ function query_seed_status(url, task_id) {
         sent_generating_status = false;
         window.apply_patch(data["result"]["patch"], true);
       } else if (data["status"] == "failed") {
-        resp = data["responseJSON"];
+        const resp = data["responseJSON"];
         if (resp && resp["error"]) {
           postToastMessage(resp["error"], true, 1);
         } else {
@@ -934,7 +1050,7 @@ function query_seed_status(url, task_id) {
       }
     },
     error: function (data, textStatus, xhr) {
-      resp = data["responseJSON"];
+      const resp = data["responseJSON"];
       if (resp && resp["error"]) {
         postToastMessage(resp["error"], true, 1);
       } else {
@@ -953,8 +1069,8 @@ function submit_seed_generation(url, json, branch) {
     }),
     contentType: "application/json",
     success: function (data, textStatus, xhr) {
-      task_id = data["task_id"];
-      priority = data["priority"];
+      const task_id = data["task_id"];
+      const priority = data["priority"];
       postToastMessage(
         "Seed has been queued in the " + priority + " Priority Queue",
         false,
@@ -1022,15 +1138,15 @@ function loadDataFromIndexedDB(key) {
   return new Promise((resolve, reject) => {
     try {
       var settingsdb = settingsdatabase.result;
-      transaction = settingsdb.transaction("saved_settings", "readonly");
-      objectStore = transaction.objectStore("saved_settings");
-      request = objectStore.get(key);
+      let transaction = settingsdb.transaction("saved_settings", "readonly");
+      let objectStore = transaction.objectStore("saved_settings");
+      var request = objectStore.get(key);
       request.onerror = function (event) {
         reject("Transaction error: " + event.target.errorCode);
       };
 
       request.onsuccess = function (event) {
-        value = event.target.result;
+        var value = event.target.result;
         resolve(value);
       };
     } catch {
@@ -1252,127 +1368,11 @@ function trigger_preset_event(event) {
     // Define a queue to batch DOM updates
     const updateQueue = [];
 
-    const settings = decrypt_settings_string_enum(presets.settings_string);
-
-    for (const select of document.getElementsByTagName("select")) {
-      if (should_reset_select_on_preset(select)) {
-        select.selectedIndex = -1;
-      }
-    }
-
-    // Uncheck all starting move radio buttons
-    for (const starting_move_button of document.querySelectorAll(
-      "input[name^='starting_move_box_']"
-    )) {
-      updateQueue.push(() => {
-        if (starting_move_button.checked) {
-          starting_move_button.checked = false;
-          starting_move_button.dispatchEvent(new Event("click"));
-        }
-      });
-    }
-
-    // Reset the "presets" select to default
-    updateQueue.push(() => {
-      if (document.getElementById("presets").selectedIndex !== 0) {
-        document.getElementById("presets").selectedIndex = 0;
-      }
-    });
-
-    // Apply new settings
-    for (let key in settings) {
-      updateQueue.push(() => {
-        try {
-          const element =
-            document.getElementsByName(key)[0] || document.getElementById(key);
-          if (!element) return;
-
-          if (typeof settings[key] === "boolean") {
-            if (element.checked !== settings[key]) {
-              element.checked = settings[key];
-              element.dispatchEvent(new Event("click"));
-            }
-            element.removeAttribute("disabled");
-          } else if (Array.isArray(settings[key])) {
-            if (key.startsWith("starting_moves_list_")) {
-              const select = document.getElementById(key);
-              settings[key].forEach((value) => {
-                const existing_option = document.getElementById(
-                  "starting_move_" + value
-                );
-                if (existing_option.parentNode !== select) {
-                  existing_option.parentNode.removeChild(existing_option);
-                  select.appendChild(existing_option);
-                }
-              });
-            } else {
-              const selector = document.getElementById(key);
-              if (selector && selector.tagName === "SELECT") {
-                const MapName = SettingsMap[key];
-                const flipped = Object.fromEntries(
-                  Object.entries(MapName).map(([k, v]) => [v, k])
-                );
-                const currentSelections = Array.from(
-                  selector.selectedOptions
-                ).map((opt) => opt.value);
-                const newSelections = settings[key].map(
-                  (item) => flipped[item]
-                );
-
-                if (
-                  JSON.stringify(currentSelections) !==
-                  JSON.stringify(newSelections)
-                ) {
-                  Array.from(selector.options).forEach((option) => {
-                    option.selected = newSelections.includes(option.value);
-                  });
-                }
-              }
-            }
-          } else {
-            const selector = document.getElementById(key);
-            if (selector.tagName === "SELECT" && key !== "random-weights") {
-              const MapName = SettingsMap[key];
-              const flipped = Object.fromEntries(
-                Object.entries(MapName).map(([k, v]) => [v, k])
-              );
-              if (selector.value !== flipped[settings[key]]) {
-                selector.value = flipped[settings[key]];
-                Array.from(selector.options).forEach((option) => {
-                  option.selected = option.value === flipped[settings[key]];
-                });
-              }
-            } else if (selector.value !== settings[key]) {
-              selector.value = settings[key];
-            }
-            selector.removeAttribute("disabled");
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
-    }
-
-    // Process the update queue
-    function processQueue() {
-      const batchSize = 10; // Adjust batch size based on performance
-      for (let i = 0; i < batchSize && updateQueue.length; i++) {
-        const updateFn = updateQueue.shift();
-        updateFn();
-      }
-
-      if (updateQueue.length > 0) {
-        requestAnimationFrame(processQueue);
-      } else {
-        update_ui_states(null);
-      }
-    }
-
-    requestAnimationFrame(processQueue);
+    import_settings_string_internal(presets.settings_string);
+    generateToast(
+      `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
+    );
   }
-  generateToast(
-    `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
-  );
 }
 
 // on the id presets if the index is changed to not 0 enable the apply_preset button
@@ -1391,6 +1391,9 @@ document
 document
   .getElementById("apply_preset")
   .addEventListener("click", preset_select_changed);
+
+
+
 function set_preset_options() {
   // Set the Blocker presets on the page
 
@@ -1424,14 +1427,25 @@ function set_preset_options() {
   // Disable the apply_preset button
   document.getElementById("apply_preset").disabled = true;
   // Toggle elements and update the page according to the preset
-  toggle_counts_boxes(null);
-  toggle_b_locker_boxes(null);
   toggle_logic_type(null);
-  toggle_bananaport_selector(null);
-  update_door_one_num_access(null);
-  update_door_two_num_access(null);
-  update_win_con_num_access(null);
-  update_prog_hint_num_access(null);
+  toggle_bananaport_selector();
+  update_door_one_num_access();
+  update_door_two_num_access();
+  update_win_con_num_access();
+  update_prog_hint_num_access();
+  update_blocker_num_access();
+  update_ice_trap_count();
+  update_all_trap_weights();
+  getTotalItemCounts();
+  let local_trap_weight_reset = false;
+  Object.keys(default_trap_weights).forEach(stg => {
+    local_trap_weight_reset = update_trap_weight(document.getElementById(stg), default_trap_weights[stg], local_trap_weight_reset);
+  })
+  update_troff_number_access();
+  item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 0, 40);
+  item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 0, 5);
+  item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 0, 20);
+  item_req_update("cb_medal_behavior_new", "cb_medal_behavior_new_container", "medal_cb_req", 1, 100);
 
   // // Load the data
   // load_data();
@@ -1519,11 +1533,21 @@ function load_settings(json) {
   if (json["enable_plandomizer"]) {
     delete json["enable_plandomizer"];
   }
-  all_elements = document.querySelectorAll("#form input, #form select");
+  const form = document.getElementById("form");
+  const inputs = form.getElementsByTagName("input");
+  const selects = form.getElementsByTagName("select");
+  const dropdowns = form.querySelectorAll(".dropdown-multiselect .dropdown-menu");
+  const sortables = form.getElementsByClassName("sortablejs");
+  const all_elements = [
+    ...inputs,
+    ...selects,
+    ...dropdowns,
+    ...sortables,
+  ];
   const elementsCache = Object.fromEntries(
     Object.keys(json).map((key) => [
       key,
-      Array.from(all_elements).filter((el) => el.name === key),
+      Array.from(all_elements).filter((el) => el.getAttribute("name") === key),
     ])
   );
 
@@ -1560,8 +1584,8 @@ function load_settings(json) {
       }
 
       if (
-        element.name.startsWith("starting_moves_list_") &&
-        !element.name.startsWith("starting_moves_list_count")
+        element.getAttribute("name").startsWith("starting_moves_list_") &&
+        !element.getAttribute("name").startsWith("starting_moves_list_count")
       ) {
         const select = document.getElementById(key);
         json[key].forEach((value) => {
@@ -1603,6 +1627,148 @@ function load_settings(json) {
             valueChanged = true;
           }
         }
+
+        // Dropdown Multiselector
+        if (element.classList.contains("dropdown-menu")) {
+          const checkboxes = Array.from(element.getElementsByTagName("input"));
+          const currentValues = checkboxes.filter(option => option.checked).map(option => option.value);
+          let selectedCount = 0;
+          if (JSON.stringify(currentValues) !== JSON.stringify(value)) {
+            checkboxes.forEach((option) => {
+              option.checked = value.includes(option.value);
+              if (value.includes(option.value)) {
+                selectedCount++;
+              }
+            });
+            valueChanged = true;
+          }
+          element.parentNode.querySelector(".dropdown-toggle>span").innerText = `${selectedCount} item${selectedCount == 1 ? '' : 's'} selected`;
+        }
+
+        if (element.classList.contains("sortablejs")) {
+          const options = Array.from(element.getElementsByTagName("li"));
+          const currentValues = options.map(option => option.value);
+          const grandparent = element.parentElement.parentElement;
+          const items_list = JSON.parse(grandparent.getAttribute("data-items")).filter(k => !k.is_check);
+          const checks_list = JSON.parse(grandparent.getAttribute("data-items")).filter(k => k.is_check);
+          const list_count = parseInt(grandparent.getAttribute("data-count"));
+          const list_predicate = grandparent.getAttribute("data-predicate");
+          let valid = true;
+          if (list_predicate == "item_rando_list_") {
+              let total_settings_list_items = [];
+              let total_settings_list_checks = [];
+              for (let i = 0; i < list_count; i++) {
+                  total_settings_list_items = total_settings_list_items.concat(json[`${list_predicate}${i}`]);
+                  total_settings_list_checks = total_settings_list_checks.concat(json[`${list_predicate}${i + list_count}`]);
+              }
+              if ([...new Set(total_settings_list_items)].length != items_list.length) {
+                  valid = false;
+              }
+              if ([...new Set(total_settings_list_checks)].length != checks_list.length) {
+                  valid = false;
+              }
+              total_settings_list_items.forEach(value => {
+                  if (items_list.filter(k => k.value == value).length == 0) {
+                      valid = false;
+                  }
+              });
+              total_settings_list_checks.forEach(value => {
+                  if (checks_list.filter(k => k.value == value).length == 0) {
+                      valid = false;
+                  }
+              });
+          } else {
+              let total_settings_list = [];
+              for (let i = 0; i < list_count; i++) {
+                  total_settings_list = total_settings_list.concat(json[`${list_predicate}${i}`]);
+              }
+              valid = total_settings_list.length == items_list.length;
+              total_settings_list.forEach(value => {
+                  if (items_list.filter(k => k.value == value).length == 0) {
+                      valid = false;
+                  }
+              });
+          }
+          if (valid) {
+            if (JSON.stringify(currentValues) !== JSON.stringify(value)) {
+              // Find the selected option by the value of the option
+              element.innerHTML = "";
+              value.forEach(opt => {
+                const option = document.createElement("li");
+                option.classList.add("list-group-item");
+                option.classList.add("d-flex");
+                option.setAttribute("value", opt);
+                const span0 = document.createElement("span");
+                span0.classList.add("fs-6");
+                span0.classList.add("d-flex");
+                const i_handle = document.createElement("i");
+                i_handle.classList.add("fas");
+                i_handle.classList.add("fa-arrows-alt");
+                i_handle.classList.add("handle");
+                i_handle.style.height = "20px";
+                i_handle.style.width = "20px";
+                i_handle.style["padding-right"] = "5px";
+                i_handle.setAttribute("title", "Drag to Move");
+                const i_clone = document.createElement("i");
+                i_clone.classList.add("fas");
+                i_clone.classList.add("fa-clone");
+                i_clone.classList.add("clone-btn");
+                i_clone.style.height = "20px";
+                i_clone.style.width = "20px";
+                i_clone.style["padding-right"] = "5px";
+                i_clone.setAttribute("title", "Drag to Clone");
+                span0.appendChild(i_handle)
+                span0.appendChild(i_clone)
+                option.appendChild(span0)
+                const span1 = document.createElement("span");
+                span1.classList.add("flex-grow-1");
+                let opt_name = "";
+                let opt_tooltip = "";
+                let opt_checks = "";
+                let opt_items = "";
+                let opt_tied_item = "";
+                items_list.concat(checks_list).forEach(k => {
+                  if (k.value == opt) {
+                      opt_name = k.name;
+                      opt_tooltip = k.tooltip;
+                      if (list_predicate == "item_rando_list_") {
+                        opt_checks = k.check_count;
+                        opt_items = k.item_count;
+                        if (k.is_check) {
+                          option.classList.add("ischeck");
+                        } else if (k.is_dummy) {
+                          option.classList.add("show-if-ir-decouple");
+                          if (json["decouple_item_rando"] == "True") {
+                            option.classList.remove("d-flex");
+                            option.classList.add("d-none");
+                          }
+                        }
+                        opt_tied_item = k.tied ? k.tied : "";
+                      }
+                  }
+                })
+                if (opt_name != "") {
+                  span1.innerText = opt_name; // Not sure what to do for this
+                  option.title = opt_tooltip;
+                  if (list_predicate == "item_rando_list_") {
+                    option.setAttribute("check_count", opt_checks);
+                    option.setAttribute("items_count", opt_items);
+                    option.setAttribute("tied_item", opt_tied_item);
+                  }
+                  option.appendChild(span1);
+                  element.appendChild(option);
+                }
+              });
+              valueChanged = true;
+            }
+          } else {
+            console.log("Invalid sortable during init");
+          }
+          if (list_predicate == "item_rando_list_") {
+            // console.log("Dispatching list predicate event")
+            updateCheckItemCounter(grandparent);
+          }
+        }
       } catch (e) {
         console.error(`Error setting value for ${key}:`, e);
       }
@@ -1630,6 +1796,19 @@ function load_settings(json) {
   }
 
   requestAnimationFrame(processQueue);
+  
+  // Sync homebrew_header checkboxes after loading settings
+  const homebrewHeaderNormal = document.getElementById("homebrew_header");
+  const homebrewHeaderPatch = document.getElementById("homebrew_header_patch");
+  if (homebrewHeaderNormal && homebrewHeaderPatch) {
+    // If either checkbox has a value from saved settings, sync both
+    if (json["homebrew_header"] !== undefined) {
+      homebrewHeaderPatch.checked = homebrewHeaderNormal.checked;
+    } else if (json["homebrew_header_patch"] !== undefined) {
+      homebrewHeaderNormal.checked = homebrewHeaderPatch.checked;
+    }
+  }
+  
   // // Dispatch all the click events after the values have been set
   // // Batch dispatch click events to avoid performance issues
   // function batchDispatchClickEvents(elements) {
@@ -1667,11 +1846,12 @@ async function initialize() {
   await toggleDelayedSpoilerLogInput();
   await check_seed_info_tab();
   // check on any button with the nav-item class is clicked
-  document.querySelectorAll(".nav-item").forEach((item) => {
+  const nav_items = document.getElementById("rando_tabs").getElementsByTagName("a");
+  for (let item of nav_items) {
     item.addEventListener("click", async () => {
       await check_seed_info_tab();
     });
-  });
+  }
   await set_preset_options();
   await disable_apply_preset_button();
   await set_random_weights_options();

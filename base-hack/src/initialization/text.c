@@ -11,7 +11,6 @@
 
 #include "../../include/common.h"
 
-unsigned int base_text_color = 0x00000000;
 unsigned int emph_text_colors[] = {
     0xA3620000,
     0xB0000000,
@@ -77,8 +76,7 @@ void initTextChanges(void) {
             emph_text_colors[i] = dark_mode_colors[i];
         }
     } else {
-        float opacity = 200.0f;
-        *(short*)(0x806A45C6) = *(short*)(&opacity);
+        *(short*)(0x806A45C6) = 0x4348; // 200.0f
     }
     // Text
     *(int*)(0x806A3B38) = 0xAFB10014; // Pass in effect bitfield as the last arg

@@ -10,8 +10,25 @@
  */
 #include "../../include/common.h"
 
-static char igt_text[20] = "IGT: 0000:00:00";
-static int stored_igt = 0;
+ROM_DATA static char igt_text[20] = "IGT: 0000:00:00";
+ROM_DATA static char points_text[21] = "420l801 POINTS LEFT";
+ROM_DATA static int stored_igt = 0;
+
+void getLevelPoints(int level, unsigned short *points, unsigned short *total_points) {
+    int points_left = 0;
+    int points_total = 0;
+    for (int i = 0; i < SPOILER_COUNT; i++) {
+        spoiler_struct *info = &spoiler_items[i];
+        if (info->level == level) {
+            if (!checkFlag(info->flag, FLAGTYPE_PERMANENT)) {
+                points_left += info->points;
+            }
+            points_total += info->points;
+        }
+    }
+    *points = points_left;
+    *total_points = points_total;
+}
 
 Gfx* printLevelIGT(Gfx* dl, int x, int y, float scale, char* str) {
     /**
@@ -24,23 +41,31 @@ Gfx* printLevelIGT(Gfx* dl, int x, int y, float scale, char* str) {
             level_index = i;
         }
     }
-    int igt_data = 0;
-    if (level_index < 9) {
-        igt_data = ReadExtraData(EGD_LEVELIGT, level_index);
-    }
-    int igt_h = igt_data / 3600;
-    int igt_m = (igt_data / 60) % 60;
-    int igt_s = igt_data % 60;
-    if (igt_data < 3600) {
-        dk_strFormat(igt_text, "TIME: %02d:%02d", igt_m, igt_s);
+    if (Rando.spoiler_hints == 2) {
+        unsigned short left = 0;
+        unsigned short total = 0;
+        getLevelPoints(level_index, &left, &total);
+        dk_strFormat(points_text, "%dl%d POINTS LEFT", left, total);
+        dl = printText(dl, x, y + 0x38, 0.5f, (char*)points_text);
     } else {
-        dk_strFormat(igt_text, "TIME: %d:%02d:%02d", igt_h, igt_m, igt_s);
+        int igt_data = 0;
+        if (level_index < 9) {
+            igt_data = ReadFile(DATA_IGT_JAPES + level_index, 0, 0, FileIndex);
+        }
+        int igt_h = igt_data / 3600;
+        int igt_m = (igt_data / 60) % 60;
+        int igt_s = igt_data % 60;
+        if (igt_data < 3600) {
+            dk_strFormat(igt_text, "TIME: %02d:%02d", igt_m, igt_s);
+        } else {
+            dk_strFormat(igt_text, "TIME: %d:%02d:%02d", igt_h, igt_m, igt_s);
+        }
+        dl = printText(dl, x, y + 0x38, 0.5f, (char*)igt_text);
     }
-    dl = printText(dl, x, y + 0x38, 0.5f, (char*)igt_text);
     return dl;
 }
 
-static char* items[] = {
+ROM_RODATA_PTR static const char* items[] = {
     "GOLDEN BANANAS",
     "CROWN PADS",
     "BOSSES AND FINAL KEY",
@@ -55,8 +80,13 @@ static char* items[] = {
     "DIRT PATCHES",
     "WRINKLY DOORS",
     "MELON CRATES",
+    "SHOPS",
+    "SNIDE REWARDS",
+    "HOLDABLES",
+    "ENEMY DROPS",
+    "HALF-MEDALS",
 };
-static char* raw_items[] = {
+ROM_RODATA_PTR static const char* raw_items[] = {
     "GOLDEN BANANAS",
     "BATTLE CROWNS",
     "BOSS KEYS",
@@ -71,10 +101,15 @@ static char* raw_items[] = {
     "RAINBOW COINS",
     "HINTS",
     "JUNK ITEMS",
+    "MOVES",
+    "SNIDE REWARDS",
+    "HOLDABLES",
+    "ENEMY DROPS",
+    "HALF-MEDALS",
 };
 
-static char check_level = 0;
-static char level_check_text[0x18] = "";
+ROM_DATA static char check_level = 0;
+ROM_DATA static char level_check_text[0x18] = "";
 
 typedef struct CheckDataLevelStruct {
     unsigned char level[9];
@@ -90,28 +125,42 @@ typedef struct CheckDataStruct {
 } CheckDataStruct;
 
 // 7 main levels, isles, helm
-static CheckDataStruct check_data = {
+ROM_DATA static CheckDataStruct check_data = {
     .denominator = {
-        .type[CHECK_GB] =      {.level = {20, 20, 20, 20, 20, 20, 20, 21, 0}},
-        .type[CHECK_CROWN] =   {.level = {1, 1, 1, 1, 1, 1, 1, 2, 1}},
-        .type[CHECK_KEY] =     {.level = {1, 1, 1, 1, 1, 1, 1, 0, 1}},
-        .type[CHECK_MEDAL] =   {.level = {5, 5, 5, 5, 5, 5, 5, 0, 5}},
-        .type[CHECK_RWCOIN] =  {.level = {1, 0, 0, 0, 0, 0, 0, 0, 0}},
-        .type[CHECK_FAIRY] =   {.level = {2, 2, 2, 2, 2, 2, 2, 4, 2}},
-        .type[CHECK_NINCOIN] = {.level = {1, 0, 0, 0, 0, 0, 0, 0, 0}},
-        .type[CHECK_BP] =      {.level = {5, 5, 5, 5, 5, 5, 5, 5, 0}},
-        .type[CHECK_KONG] =    {.level = {5, 0, 0, 0, 0, 0, 0, 0, 0}},
-        .type[CHECK_BEAN] =    {.level = {0, 0, 0, 0, 1, 0, 0, 0, 0}},
-        .type[CHECK_PEARLS] =  {.level = {0, 0, 0, 5, 0, 0, 0, 0, 0}},
-        .type[CHECK_RAINBOW] = {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
-        .type[CHECK_HINTS] =   {.level = {5, 5, 5, 5, 5, 5, 5, 0, 0}},
-        .type[CHECK_CRATE] =   {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_GB] =           {.level = {20, 20, 20, 20, 20, 20, 20, 21, 0}},
+        .type[CHECK_CROWN] =        {.level = {1, 1, 1, 1, 1, 1, 1, 2, 1}},
+        .type[CHECK_KEY] =          {.level = {1, 1, 1, 1, 1, 1, 1, 0, 1}},
+        .type[CHECK_MEDAL] =        {.level = {5, 5, 5, 5, 5, 5, 5, 0, 5}},
+        .type[CHECK_RWCOIN] =       {.level = {1, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_FAIRY] =        {.level = {2, 2, 2, 2, 2, 2, 2, 4, 2}},
+        .type[CHECK_NINCOIN] =      {.level = {1, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_BP] =           {.level = {5, 5, 5, 5, 5, 5, 5, 5, 0}},
+        .type[CHECK_KONG] =         {.level = {5, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_BEAN] =         {.level = {0, 0, 0, 0, 1, 0, 0, 0, 0}},
+        .type[CHECK_PEARLS] =       {.level = {0, 0, 0, 5, 0, 0, 0, 0, 0}},
+        .type[CHECK_RAINBOW] =      {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_HINTS] =        {.level = {5, 5, 5, 5, 5, 5, 5, 0, 0}},
+        .type[CHECK_CRATE] =        {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_SHOPS] =        {.level = {10, 15, 15, 15, 10, 15, 15, 5, 0}},
+        .type[CHECK_SNIDE] =        {.level = {5, 5, 5, 5, 5, 5, 5, 5, 0}},
+        .type[CHECK_BOULDERS] =     {.level = {0, 5, 0, 0, 3, 2, 1, 5, 0}},
+        .type[CHECK_ENEMIES] =      {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_HALFMEDALS] =   {.level = {5, 5, 5, 5, 5, 5, 5, 0, 0}},
     }
 };
+
+int getLevelOfDropsanity(int offset) {
+    int value = dropsanity_levels[offset >> 1];
+    if ((offset & 1) == 0) {
+        value >>= 4;
+    }
+    return value & 0xF;
+}
 
 void initItemCheckDenominators(void) {
     if (Rando.isles_cb_rando) {
         check_data.denominator.type[CHECK_MEDAL].level[LEVEL_ISLES] = 5;
+        check_data.denominator.type[CHECK_HALFMEDALS].level[LEVEL_ISLES] = 5;
     }
     for (int lvl = 0; lvl < 9; lvl++) {
         int rainbow_count = 0;
@@ -128,8 +177,40 @@ void initItemCheckDenominators(void) {
         }
         check_data.denominator.type[CHECK_RAINBOW].level[lvl] = rainbow_count;
         check_data.denominator.type[CHECK_CRATE].level[lvl] = crate_count;
+        check_data.denominator.type[CHECK_ENEMIES].level[lvl] = 0;
+        
+        if (!Rando.include_half_medals) {
+            check_data.denominator.type[CHECK_HALFMEDALS].level[lvl] = 0;
+        }
+    }
+    if (Rando.enemy_item_rando) {
+        for (unsigned int i = 0; i < sizeof(dropsanity_levels) << 1; i++) {
+            int lvl = getLevelOfDropsanity(i);
+            if (lvl != 9) {
+                check_data.denominator.type[CHECK_ENEMIES].level[lvl]++;
+            }
+        }
     }
 }
+
+ROM_RODATA_NUM static const unsigned char holdable_levels[] = {
+    LEVEL_ISLES, // GRABBABLE_ISLES_NEARAZTEC
+    LEVEL_ISLES, // GRABBABLE_ISLES_NEARCAVES
+    LEVEL_AZTEC, // GRABBABLE_AZTEC_BOULDER
+    LEVEL_CAVES, // GRABBABLE_CAVES_SMALL
+    LEVEL_CAVES, // GRABBABLE_CAVES_LARGE
+    LEVEL_CASTLE, // GRABBABLE_MUSEUM_BOULDER
+    LEVEL_ISLES, // GRABBABLE_JAPES_LOBBY
+    LEVEL_ISLES, // GRABBABLE_CASTLE_LOBBY
+    LEVEL_ISLES, // GRABBABLE_CAVES_LOBBY
+    LEVEL_FUNGI, // GRABBABLE_MILL_FRONT_NEAR
+    LEVEL_FUNGI, // GRABBABLE_MILL_FRONT_FAR
+    LEVEL_FUNGI, // GRABBABLE_MILL_REAR
+    LEVEL_AZTEC, // GRABBABLE_VASE_CIRCLE
+    LEVEL_AZTEC, // GRABBABLE_VASE_COLON
+    LEVEL_AZTEC, // GRABBABLE_VASE_TRIANGLE
+    LEVEL_AZTEC, // GRABBABLE_VASE_PLUS
+};
 
 void checkItemDB(void) {
     /**
@@ -140,7 +221,7 @@ void checkItemDB(void) {
     initHints();
     stored_igt = getNewSaveTime();
     if (Rando.helm_hurry_mode) {
-        if (ReadExtraData(EGD_HELMHURRYDISABLE, 0)) {
+        if (checkFlag(FLAG_HELM_HURRY_DISABLED, FLAGTYPE_PERMANENT)) {
             stored_igt = IGT;
         }
     }
@@ -150,7 +231,7 @@ void checkItemDB(void) {
             check_data.numerator.type[i].level[j] = 0;
         }
         // Check FLUT
-        for (int k = 0; k < (sizeof(item_db) / sizeof(check_struct)); k++) {
+        for (unsigned int k = 0; k < (sizeof(item_db) / sizeof(check_struct)); k++) {
             if (item_db[k].type == i) {
                 int lvl = item_db[k].associated_level;
                 check_data.numerator.type[i].level[lvl] += checkFlag(item_db[k].flag, FLAGTYPE_PERMANENT);
@@ -167,6 +248,51 @@ void checkItemDB(void) {
         }
         int hint_level = k / 5;
         check_data.numerator.type[CHECK_HINTS].level[hint_level] += checkFlag(FLAG_WRINKLYVIEWED + k, FLAGTYPE_PERMANENT);
+    }
+    for (int level = 0; level < 8; level++) {
+        for (int vendor = 0; vendor < 3; vendor++) {
+            if ((level == 0) || (level == 4)) {
+                if (vendor == SHOP_CANDY) {
+                    continue;
+                }
+            } else if (level == 7) {
+                if (vendor != SHOP_CRANKY) {
+                    continue;
+                }
+            }
+            for (int kong = 0; kong < 5; kong++) {
+                check_data.numerator.type[CHECK_SHOPS].level[level] += isShopEmpty(vendor, level, kong);
+            }
+        }
+    }
+    for (int i = 0; i < 16; i++) {
+        int item = isValidBoulderObject(i);
+        if ((!item) || (checkFlag(FLAG_GRABBABLES_DESTROYED + i, FLAGTYPE_PERMANENT))) {
+            int lvl = holdable_levels[i];
+            check_data.numerator.type[CHECK_BOULDERS].level[lvl]++;
+        }
+    }
+    for (int i = 0; i < 40; i++) {
+        int lvl = i / 5;
+        check_data.numerator.type[CHECK_SNIDE].level[lvl] += checkFlag(FLAG_SNIDE_REWARD + i, FLAGTYPE_PERMANENT);
+    }
+    if (Rando.enemy_item_rando) {
+        for (unsigned int i = 0; i < sizeof(dropsanity_levels) << 1; i++) {
+            int lvl = getLevelOfDropsanity(i);
+            if (lvl != 9) {
+                if (checkFlag(FLAG_ENEMY_KILLED_0 + i, FLAGTYPE_PERMANENT)) {
+                    check_data.numerator.type[CHECK_ENEMIES].level[lvl]++;
+                }
+            }
+        }
+    }
+    if (Rando.include_half_medals) {
+        for (int i = 0; i < 40; i++) {
+            if ((i < 35) || (Rando.isles_cb_rando)) {
+                int lvl = i / 5;
+                check_data.numerator.type[CHECK_HALFMEDALS].level[lvl] += checkFlag(FLAG_HALF_MEDAL_JAPES_DK + i, FLAGTYPE_PERMANENT);
+            }
+        }
     }
 }
 
@@ -217,7 +343,7 @@ Gfx* pauseScreen3And4Header(Gfx* dl) {
     return dl;
 }
 
-static char teststr[5] = "";
+ROM_DATA static char teststr[5] = "";
 
 Gfx* drawTextPointers(Gfx* dl) {
     if ((TBVoidByte & 2) && (display_billboard_fix)) {
@@ -232,11 +358,10 @@ Gfx* pauseScreen3And4ItemName(Gfx* dl, int x, int y, float scale, char* text) {
      * @brief Changes the item name depending on the screen you're on
      */
     pause_paad* paad = CurrentActorPointer_0->paad;
-    int item_index = MenuActivatedItems[ViewedPauseItem];
     if (paad->screen == PAUSESCREEN_TOTALS) {
-        return printText(dl, x, y, scale, raw_items[item_index]);
+        return printText(dl, x, y, scale, raw_items[(int)ViewedPauseItem]);
     } else if (paad->screen == PAUSESCREEN_CHECKS) {
-        return printText(dl, x, y, scale, items[item_index]);
+        return printText(dl, x, y, scale, items[(int)ViewedPauseItem]);
     }
     return dl;
 }
@@ -249,7 +374,7 @@ Gfx* pauseScreen3And4Counter(int x, int y, int top, int bottom, Gfx* dl, int unk
     if (paad->screen == PAUSESCREEN_TOTALS) {
         return printOutOfCounter(x, y, top, bottom, dl, unk0, scale);
     } else if (paad->screen == PAUSESCREEN_CHECKS) {
-        int item_index = MenuActivatedItems[ViewedPauseItem];
+        int item_index = ViewedPauseItem;
         int top_num = 0;
         int bottom_num = 0;
         if (check_level == 0) {
@@ -320,11 +445,27 @@ Gfx* handleOutOfCounters(int x, int y, int top, int bottom, Gfx* dl, int unk0, i
     return printOutOfCounter(x, y, top, bottom, dl, unk0, scale);
 }
 
-void initPauseMenu(void) {
-    /**
-     * @brief Initialize the pause menu changes for Rando
-     */
-    
-    initCarousel_onBoot();
-    initHintFlags();
+void exitMap(maps map, int lobby_is_isles) {
+    int world = getWorld(map, lobby_is_isles);
+    int helm_timer_enabled = (world == LEVEL_HELM) && HelmTimerShown;
+    *(char*)(0x807FC8B8) = 1;
+    switch (PauseType) {
+        case PAUSETYPE_DEFAULT:
+            if (inBossMap(map, 1, 1, 1)) {
+                exitBoss();
+                return;
+            }
+            if (helm_timer_enabled || (world == LEVEL_ISLES)) {
+                QuitGame();
+                return;
+            }
+            helmTime_exitLevel(world);
+            return;
+        case PAUSETYPE_RACE:
+            helmTime_exitRace();
+            return;
+        case PAUSETYPE_BONUS:
+            helmTime_exitBonus();
+            return;
+    }
 }

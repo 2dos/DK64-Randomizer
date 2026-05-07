@@ -75,9 +75,8 @@ item_collision* writeItemScale(int id) {
      * @return collision object
      */
     item_collision* data = dk_malloc(0x20);
-    int* m2location = (int*)ObjectModel2Pointer;
     for (int i = 0; i < ObjectModel2Count; i++) {
-        ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
+        ModelTwoData* _object = &ObjectModel2Pointer[i];
         if (_object->object_id == id) {
             for (int j = 0; j < (int)(sizeof(item_scales) / sizeof(item_scale_info)); j++) {
                 if (item_scales[j].type == _object->object_type) {
@@ -117,34 +116,7 @@ int getItemRequiredKong(maps map, int id) {
     return 0;
 }
 
-static const short helm_temp_flags[] = {0x4B, 0x4C, 0x4E, 0x4D, 0x4F};
-// Flag order: DK, Chunky, Tiny, Lanky, Diddy
-// ID order: DK, Chunky, Lanky, Tiny, Diddy
-
-int isObjectTangible_detailed(int id) {
-    /**
-     * @brief Override function for object tangibility
-     * 
-     * @param id Object id
-     * 
-     * @return Object tangibility, boolean
-     */
-    if ((CurrentMap == MAP_FUNGIMILLFRONT) && (id == 0xA)) {
-        return 0;
-    }
-    // if (CurrentMap == MAP_HELM) {
-    //     if (!checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT)) {
-    //         if ((id >= 0x5D) && (id <= 0x61)) {
-    //             if (!checkFlag(helm_temp_flags[id - 0x5D], FLAGTYPE_TEMPORARY)) {
-    //                 return 0;
-    //             }
-    //         }
-    //     }
-    // }
-    return isObjectTangible(id);
-}
-
-static short spherical_items[] = {
+ROM_RODATA_NUM static const short spherical_items[] = {
     // CB Single
     0x0A,
     0x0D,
@@ -220,7 +192,7 @@ void checkModelTwoItemCollision(item_collision* obj_collision, int player_index,
     while (1) {
         if (!obj_collision->colliding) {
             if (isValidKongCollision(obj_collision, player)) {
-                if (isObjectTangible_detailed(obj_collision->id)) {
+                if (isObjectTangible(obj_collision->id)) {
                     if (getObjectCollectability(obj_collision->id, player_index, obj_collision->obj_type)) {
                         if (isCollidingWithCylinder(obj_collision, player_collision, player)) {
                             obj_collision->colliding = 1;
@@ -251,7 +223,7 @@ void checkModelTwoItemCollision(item_collision* obj_collision, int player_index,
                             } else if ((obj_type == 0x2B) || ((obj_type >= 0x205) && (obj_type <= 0x208))) {
                                 bunchHandle(player_index, obj_collision->id, player);
                             } else if (player_count > 1) {
-                                coinCBCollectHandle(player_index, obj_type, obj_collision->unk13);
+                                updateItemTotalsHandler(player_index, obj_type, obj_collision->unk13, obj_collision->id);
                             }
                             if (player_count > 1) {
                                 getItem(obj_collision->obj_type);

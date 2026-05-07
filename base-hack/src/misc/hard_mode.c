@@ -26,7 +26,7 @@
     - Mermaid is not working properly?
 */
 
-static const map_bitfield is_dark_world_mc = {
+ROM_RODATA_NUM static const map_bitfield is_dark_world_mc = {
     .test_map = 0,
     .funkys_store = 0,
     .dk_arcade = 0,
@@ -243,6 +243,11 @@ static const map_bitfield is_dark_world_mc = {
     .k_lumsy_ending = 1,
     .k_rools_shoe = 0,
     .k_rools_arena = 0,
+    .arcade_25m = 0,
+    .arcade_50m = 0,
+    .arcade_75m = 0,
+    .arcade_100m = 0,
+    .jetpac_rocket = 0,
 };
 
 typedef enum challenge_type {
@@ -251,10 +256,15 @@ typedef enum challenge_type {
     /* 0x002 */ CHALLENGE_DARK_WORLD,
 } challenge_type;
 
-static unsigned char banned_challenge_maps[] = {
+ROM_RODATA_NUM static const unsigned char banned_challenge_maps[] = {
     MAP_TESTMAP,
     MAP_DKARCADE,
+    MAP_ARCADE25M_ONLY,
+    MAP_ARCADE50M_ONLY,
+    MAP_ARCADE75M_ONLY,
+    MAP_ARCADE100M_ONLY,
     MAP_JETPAC,
+    MAP_JETPAC_ROCKET,
     MAP_SNOOP_NORMALNOLOGO,
     MAP_NINTENDOLOGO,
     MAP_FUNGIDIDDYBARN,
@@ -267,13 +277,13 @@ challenge_type getMemoryChallengeType(maps map) {
     if (inU8List(map, &banned_challenge_maps[0], sizeof(banned_challenge_maps))) {
         return CHALLENGE_NONE;
     }
-    if (getBitArrayValue(&is_dark_world_mc, map)) {
+    if (getBitArrayValue((unsigned char*)&is_dark_world_mc, map)) {
         return CHALLENGE_DARK_WORLD;
     }
     return CHALLENGE_SKY;
 }
 
-static unsigned char blast_maps[] = {
+ROM_RODATA_NUM static const unsigned char blast_maps[] = {
     MAP_JAPESBBLAST,
     MAP_AZTECBBLAST,
     MAP_FACTORYBBLAST,
@@ -377,7 +387,7 @@ Gfx* displayNoGeoChunk(Gfx* dl, int chunk_index, int shift) {
     return dl;
 }
 
-static unsigned char fall_damage_immunity = 0;
+ROM_DATA static unsigned char fall_damage_immunity = 0;
 
 void setFallDamageImmunity(int value) {
     fall_damage_immunity = value;
@@ -422,19 +432,19 @@ void fallDamageWrapper(int action, void* actor, int player_index) {
     setAction(action, actor, player_index);
 }
 
-static unsigned char stalactite_spawn_bans[] = {
+ROM_RODATA_NUM static const unsigned char stalactite_spawn_bans[] = {
     0x6E, // Baboon Balloon
     0x3E, // Backflip
     0x87, // Entering Portal
     0x88, // Exiting Portal
 };
 
-void* spawnStalactite(short actor, float x, float y, float z, int unk0, int unk1, int unk2, void* unk3) {
+void* spawnStalactite(short actor, float x, float y, float z, int unk0, float unk1, void *unk2, void* unk3) {
     if (ObjectModel2Timer < 90) { // Prevent 
         return (void*)0;
     }
     if (Player) {
-        if (inU8List(Player->control_state, &stalactite_spawn_bans, sizeof(stalactite_spawn_bans))) {
+        if (inU8List(Player->control_state, &stalactite_spawn_bans[0], sizeof(stalactite_spawn_bans))) {
             return (void*)0;
         }
     }
@@ -446,13 +456,13 @@ typedef struct balloon_data {
     /* 0x004 */ int speed;
 } balloon_data;
 
-static float pop_x;
-static float pop_z;
-static int pop_timer;
+ROM_DATA static float pop_x;
+ROM_DATA static float pop_z;
+ROM_DATA static int pop_timer;
 
 void spawnKRoolLankyBalloon(void) {
     balloon_data data = {.path = 1, .speed = 5};
-    spawnActorSpawnerContainer(147, 796.0f, 106.0f, 745.0f, 0, 0x3F000000, 0, &data);
+    spawnActorSpawnerContainer(147, 796.0f, 106.0f, 745.0f, 0, 0.5f, 0, &data);
 }
 
 void popExistingBalloon(void) {
@@ -515,4 +525,16 @@ void parseControllerInput(Controller * cont) {
         }
     }
     cont->stickX = -cont->stickX;
+}
+
+void hitlessDeath(void) {
+    WipeFile(FileIndex, 1);
+    resetMap(); // Resets parent chain to prevent SirSmack causing memes
+    LoadGameOver();
+    SaveToFile(0xD, 0, 0, FileIndex, 0);
+    performEEPROMAction(1);
+}
+
+void setHardPathSpeed(int index, int speed) {
+    unkObjFunction6(index, speed << 2);
 }

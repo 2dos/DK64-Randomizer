@@ -32,7 +32,6 @@ extern void DynamicCodeFixes(void);
 extern void permaLossTagCheck(void);
 extern void permaLossTagSet(void);
 extern void permaLossTagDisplayCheck(void);
-extern void tagPreventCode(void);
 extern void destroyAllBarrelsCode(void);
 extern void KeyCompressionCode(void);
 extern void CannonForceCode(void);
@@ -90,8 +89,6 @@ extern void blockTreeClimbing(void);
 extern void GoToPassword(void);
 
 extern void KRoolLankyPhaseFix(void);
-extern void KKOPhaseHandler(void);
-extern void KKOInitPhase(void);
 extern void MadJackShort(void);
 extern void PufftossShort(void);
 extern void DogadonRematchShort(void);
@@ -104,7 +101,19 @@ extern void storeFairyData(void);
 extern void setSadFace(void);
 extern void setHappyFace(void);
 extern void checkKRoolPause(void);
+extern void ArcadeMapCheck(void);
+extern void ArcadeIntroCheck(void);
+extern void spawnHoldableObject(void);
 extern void fixDiddySlamCrash(void);
 
 extern void fixNullLagBoost(void);
 extern void fixBLockerRange(void);
+extern void storeWaterSurfaceCount(void);
+
+extern void dynflagcheck_0(void);
+extern void dynflagcheck_1(void);
+extern void dynflagcheck_2(void);
+extern void dynflagcheck_3(void);
+extern void pleaseDontStopIslesMusic(void);
+
+extern void banana_medal_handler(void);

@@ -46,7 +46,7 @@
                 {"function": 69, "parameters": [1, 0, 30]},
                 {"function": 7, "parameters": [25, 0, 0]},
                 {"function": 15, "parameters": [35, 20, 0]},
-                {"function": 3, "parameters": [0, 60, 0]}
+                {"function": 3, "parameters": [0, 30, 0]}
             ]
         },
         {
@@ -64,7 +64,7 @@
         {
             "conditions": [
                 {"function": 1, "inverted": false, "parameters": [2, 0, 0]},
-                {"function": 4, "inverted": false, "parameters": [55, 0, 0]}
+                {"function": 4, "inverted": false, "parameters": [25, 0, 0]}
             ],
             "executions": [
                 {"function": 70, "parameters": [0, 0, 0]},

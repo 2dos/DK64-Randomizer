@@ -29,8 +29,8 @@
             "detailed_command": {
                 "sub_command": 30,
                 "params": [
-                    19,
-                    29,
+                    "enums.CompTextFiles.PreviewsFlavor",
+                    "enums.ItemPreview.SaxMicro",
                     0,
                     0
                 ]

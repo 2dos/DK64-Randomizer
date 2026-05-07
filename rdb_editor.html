@@ -96,14 +96,14 @@
                 var text = ""
                 extra_lines.forEach(line => {
                     text += "\r\n" + line
-                })
+                });
                 var enc = new TextEncoder();
                 var arr = [...new Uint8Array(data), ...enc.encode(text)]
                 console.log(arr)
                 downloadBlob(new Uint8Array(arr),"Project64.rdb","application/octet-stream")
 			};
 			fr.readAsArrayBuffer(document.getElementById("input-rdb").files[0]);
-        })
+        });
 
         // Download file
         var downloadBlob, downloadURL;

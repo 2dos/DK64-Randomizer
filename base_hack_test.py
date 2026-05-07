@@ -2,23 +2,28 @@
 
 import sys
 import json
+import platform
 from typing import BinaryIO
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 from randomizer.Patching.ASMPatcher import patchAssembly, patchAssemblyCosmetic
+from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Items import Items
+from randomizer.Patching.MirrorMode import truncateFiles
 
+print("Building Test Instance")
 APPLY_VARIABLES = True
 ROM_FILE = "./base-hack/rom/dk64-randomizer-base-dev.z64"
 DEBUG_PRINT = False
-IO_LOGGING = False
+IO_LOGGING = True
+ROM_HEADER = platform.system() == "Linux"
 
 if not APPLY_VARIABLES:
     sys.exit()
 
-settings_string = "fjNPw8MxDKY6IJUtjnqSszmCCXBHofUA4IhkQlS2Nc+EZ+PxGiUiWxClFcdqgQmC9AAO/AAbBAADDAADFAACbzgSGIyGOhbgKQWiltsC3ASSAaZM1UQoxSClFMBkyyvV+CgLcAQYCbwEDgbgAwgEcQIEgrkBQoGcwMFg7oBwwIuQQmQ1AdWRXgAynEpq1hJQlHdVqyWJGZitIEcnaFalL0VEWARMRQBWLLHI3ZLxd5FA5DsZe09AzycYcgDKpwRCAAXCgAXDAATDgATEAAPWgAPEgALFAAHFgAPGAALGgAHXAAWnyvQJLlS2eyyejYfAwjmSu1gYDOXVYDiqKymVFoxxSgBQVg0oBOKi0SRcQyKnjWlkGkRGujsADoBeEIQEhQWHVhGWCAiJEhaKCosSlwwMjRMXjg6PE5gQEJEUFN8DGpoGBpWZYAGVGZjhAGIAToBZACiAA"
+settings_string = "fmEAABCgOFgcMA4aAw4Bh4DEAGIgMSAomBRQCioFFgOL5MYKI4KRsKjIhGgWO0L0AA1+AAzBAAJhgAAxQAAf6BpkBQEDAQHAwQCAkFBQMCwcGBEATqljcADeADgADiADkADmADoAFyACZgITh6BChAYGGEGhIJrIBWgWiWkWmWomqms2u2xbNbUNttxt1O6t5uEuAt8O+vCuIOcuMOROVuYOgOkuqOtOxu2GiJKakyi4wDrVEqAQUQKMFIClBTAQRcE9TZPlm2YhGyyH6fhkJZWwFuAkZjFNIEOh8QpqSXosQti9U6FRCwCEzCiASJHaqqsoGMsOTJO8RQHK8gVjg88ljAyAABVM8Q3QQT4SyqgxWC6LY9meLIMEcMAzmSWBdgcKYqFoY4rA0FYhiKNYXE8JIQn8SxBkiXReEQZCALFgUEYmEQSEotFAgDgeBQYDQkE4dEINBwVF41CwpCIJGAuBC+BhoDBWMVYX2ABl4uF1hAYqGQzYgAdgB+gIpwJDEZDpWx6dDxI0VniavN7w6R4wCHdcQZaxCC9fP4Bs8fDCaOd3Ur2VmZxTZ1bF8KcKAeEQyGQlS2Nc+ET+ALIAgoG1CiPBEMhTHQlS2Nc+EZTpW18Z1vnfPIGUimonse4PXLfIrBG8w8IMUkow9JZhpx6Gl8CQIg1txBZpyCKa7Lbr9T0AHyAPUAfQA9gB9gA"
 setting_data = decrypt_settings_string_enum(settings_string)
 settings = Settings(setting_data)
 spoiler = Spoiler(settings)
@@ -31,6 +36,7 @@ spoiler.japes_rock_actor = 45
 spoiler.aztec_vulture_actor = 45
 spoiler.arcade_item_reward = Items.NintendoCoin
 spoiler.jetpac_item_reward = Items.RarewareCoin
+spoiler.item_assignment = []
 spoiler.coin_requirements = {
     Maps.CavesLankyRace: 50,
     Maps.AztecTinyRace: 50,
@@ -82,11 +88,21 @@ class TestROM:
             io_logs.append({"action": "write", "value": value, "size": size})
         self.stream.write(value.to_bytes(size, "big"))
 
+    def writeFloat(self, value: float):
+        """Binary IO write floating point value."""
+        if IO_LOGGING:
+            io_logs.append({"action": "write", "value": value, "size": "float"})
+        self.writeMultipleBytes(int(float_to_hex(value), 16), 4)
+
     def writeBytes(self, bytes):
         """Binary IO write."""
         if IO_LOGGING:
             io_logs.append({"action": "write", "value": 0, "size": len(bytes)})
         self.stream.write(bytes)
+
+    def write(self, value: int):
+        """Write U8 value."""
+        self.writeMultipleBytes(value, 1)
 
 
 set_variables = {}
@@ -312,10 +328,21 @@ with open("./base-hack/include/variable_space_structs.h", "r") as varspace:
 
 with open(ROM_FILE, "r+b") as rom:
     ROM_COPY = TestROM(rom)
+    print("Patching Assembly")
     patchAssembly(ROM_COPY, spoiler)
+    print("Patching Cosmetics")
     patchAssemblyCosmetic(ROM_COPY, settings, False)
     rom.seek(0x1FF3000)
     rom.write(b"BALLAAM\x00")
+    truncateFiles(ROM_COPY)
+    if ROM_HEADER:
+        # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
+        ROM_COPY.seek(0x3C)
+        CARTRIDGE_ID = "ED"
+        ROM_COPY.writeBytes(CARTRIDGE_ID.encode("ascii"))
+        ROM_COPY.seek(0x3F)
+        SAVE_TYPE = 2  # 16K EEPROM
+        ROM_COPY.writeMultipleBytes(SAVE_TYPE << 4, 1)
 
 
 if IO_LOGGING:
@@ -338,3 +365,4 @@ if IO_LOGGING:
                 value = x["value"]
                 fh.write(f"- Wrote {hex(value)} ({size} bytes) to {hex(seek_pointer)}\n")
                 seek_pointer += size
+print("Build done")

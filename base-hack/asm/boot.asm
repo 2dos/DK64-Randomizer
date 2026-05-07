@@ -1,9 +1,9 @@
 .definelabel dataStart, 0x01FED020
 .definelabel dataRDRAM, 0x807FF800
 .definelabel musicInfo, 0x01FFF000
-.definelabel itemROM, 0x01FF2000
+.definelabel itemROM, 0x01FF3000
 .definelabel codeEnd, 0x805FAE00
-.definelabel itemdatasize, 0xD00
+.definelabel itemdatasize, 0x30
 
 START:
 	displacedBootCode:
@@ -24,9 +24,9 @@ START:
 		LUI a1, hi(itemROM + itemdatasize)
 		ADDIU a1, a1, lo(itemROM + itemdatasize)
 		ADDIU a0, a0, lo(itemROM)
-		LUI a2, hi(ItemRando_FLUT)
+		LUI a2, hi(APName)
 		JAL dmaFileTransfer
-		ADDIU a2, a2, lo(ItemRando_FLUT)
+		ADDIU a2, a2, lo(APName)
     
 		//
 		LUI v0, 0x8001
@@ -54,36 +54,8 @@ START:
 		//end of boot code
 		/////////////////////////////////////////////////////
 
-LobbyReplaceCode1:
-	LUI t7, hi(ReplacementLobbiesArray)
-	ADDIU t7, t7, lo(ReplacementLobbiesArray)
-LobbyReplaceCode2:
-	LUI a0, hi(ReplacementLobbiesArray)
-	LHU a0, lo(ReplacementLobbiesArray) (a0)
 initHook:
 	J 	initCode
-	NOP
-
-loadExtraHooks:	
-	LUI t3, hi(LobbyReplaceCode1)
-	LW t3, lo(LobbyReplaceCode1) (t3)
-	LUI t4, 0x8069
-	SW t3, 0xABE8 (t4)
-	LUI t3, hi(LobbyReplaceCode1)
-	ADDIU t3, t3, 4
-	LW t3, lo(LobbyReplaceCode1) (t3)
-	SW t3, 0xABEC (t4)
-
-	LUI t3, hi(LobbyReplaceCode2)
-	LW t3, lo(LobbyReplaceCode2) (t3)
-	LUI t4, 0x8060
-	SW t3, 0x0058 (t4)
-	LUI t3, hi(LobbyReplaceCode2)
-	ADDIU t3, t3, 4
-	LW t3, lo(LobbyReplaceCode2) (t3)
-	SW t3, 0x006C (t4)
-
-	JR ra
 	NOP
 
 getObjectArrayAddr:
@@ -106,11 +78,10 @@ callFunc:
 	addi $sp, $sp, -8
 	sw $ra, 0x4 ($sp)
 	jalr $a0
-	nop
+	or $a0, $a1, $zero
 	lw $ra, 0x4 ($sp)
 	jr $ra
 	addiu $sp, $sp, 8
-
 	
 .align 0x10
 END:

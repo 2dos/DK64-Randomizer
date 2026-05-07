@@ -12,9 +12,22 @@ import math
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems, Types
-from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency, ProgressiveHintItem
+from randomizer.Enums.Settings import (
+    BLockerDifficulty,
+    BLockerSetting,
+    HardModeSelected,
+    MiscChangesSelected,
+    HelmDoorItem,
+    IceTrapFrequency,
+    ProgressiveHintItem,
+    ProgressiveHintAlgorithm,
+    HelmSetting,
+    HelmBonuses,
+    ColorOptions,
+)
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.DataTypes import short_to_ushort
 
@@ -30,6 +43,34 @@ class MenuTextDim(IntEnum):
     size_w64_h32 = auto()
 
 
+class ReqItems(IntEnum):
+    """Definition of all requirement items."""
+
+    Null = 0
+    Kong = auto()
+    Move = auto()
+    GoldenBanana = auto()
+    Blueprint = auto()
+    Fairy = auto()
+    Key = auto()
+    Crown = auto()
+    CompanyCoin = auto()
+    Medal = auto()
+    Bean = auto()
+    Pearl = auto()
+    RainbowCoin = auto()
+    IceTrap = auto()
+    GamePercentage = auto()
+    ColoredBanana = auto()
+    Bosses = auto()
+    Bonuses = auto()
+    JunkItem = auto()
+    Hint = auto()
+    Shopkeeper = auto()
+    ArchipelagoItem = auto()
+    RaceCoin = auto()
+
+
 class MenuTexture:
     """Class to store information regarding a texture compatible with the main menu background."""
 
@@ -40,48 +81,6 @@ class MenuTexture:
         self.table = table
         self.weight = weight
         self.is_color = is_color
-
-
-class CustomActors(IntEnum):
-    """Custom Actors Enum."""
-
-    NintendoCoin = 0x8000  # Starts at 0x8000
-    RarewareCoin = auto()
-    Null = auto()
-    PotionDK = auto()
-    PotionDiddy = auto()
-    PotionLanky = auto()
-    PotionTiny = auto()
-    PotionChunky = auto()
-    PotionAny = auto()
-    KongDK = auto()
-    KongDiddy = auto()
-    KongLanky = auto()
-    KongTiny = auto()
-    KongChunky = auto()
-    KongDisco = auto()
-    KongKrusha = auto()
-    Bean = auto()
-    Pearl = auto()
-    Fairy = auto()
-    IceTrapBubble = auto()
-    IceTrapReverse = auto()
-    IceTrapSlow = auto()
-    Medal = auto()
-    JetpacItemOverlay = auto()
-    CrankyItem = auto()
-    FunkyItem = auto()
-    CandyItem = auto()
-    SnideItem = auto()
-    ZingerFlamethrower = auto()
-    Scarab = auto()
-    HintItemDK = auto()
-    KopDummy = auto()
-    HintItemDiddy = auto()
-    HintItemLanky = auto()
-    HintItemTiny = auto()
-    HintItemChunky = auto()
-    ArchipelagoItem = auto()
 
 
 compatible_background_textures = {
@@ -423,6 +422,16 @@ def IsItemSelected(
     return is_item_selected_cached(bool_setting, tuple(multiselector_setting), check, result_if_empty)
 
 
+def IsDDMSSelected(multiselector_setting: List[Union["MiscChangesSelected", Any]], check: Union["HardModeSelected", "MiscChangesSelected"]):
+    """Determine whether a multiselector item that doesn't utilize the multiselector modal is selected."""
+    return is_item_selected_cached(True, tuple(multiselector_setting), check, False)
+
+
+def IsColorOptionSelected(settings, color_option: ColorOptions) -> bool:
+    """Determine whether an option within the random colors multiselector is enabled."""
+    return color_option.name in settings.random_colors_selected
+
+
 class SpawnerChange:
     """Information regarding a spawner change."""
 
@@ -522,23 +531,28 @@ def getItemNumberString(count: int, item_type: Types) -> str:
     """Get a string which displays the number of items and the item name."""
     names = {
         Types.Banana: "Golden Banana",
+        Types.FillerBanana: "Golden Banana",
         Types.BlueprintBanana: "Golden Banana",
         Types.Shop: "Move",
         Types.Blueprint: "Blueprint",
         Types.Fairy: "Fairy",
+        Types.FillerFairy: "Fairy",
         Types.Key: "Key",
         Types.Crown: "Crown",
+        Types.FillerCrown: "Crown",
         Types.Coin: "Company Coin",
         Types.TrainingBarrel: "Move",
         Types.Climbing: "Move",
         Types.Kong: "Kong",
         Types.Medal: "Medal",
+        Types.FillerMedal: "Medal",
         Types.Shockwave: "Move",
         Types.Bean: "Bean",
         Types.Pearl: "Pearl",
+        Types.FillerPearl: "Pearl",
         Types.RainbowCoin: "Rainbow Coin",
+        Types.FillerRainbowCoin: "Rainbow Coin",
         Types.FakeItem: "Ice Trap",
-        Types.ToughBanana: "Golden Banana",
         Types.JunkItem: "Junk Item",
         Types.Hint: "Hint",
         Types.PreGivenMove: "Move",
@@ -585,16 +599,16 @@ def recalculatePointerJSON(ROM_COPY: ROM):
     js.pointer_addresses = new_data
 
 
-def setItemReferenceName(spoiler, item: Items, index: int, new_name: str):
+def setItemReferenceName(spoiler, item: Items, index: int, new_name: str, flag: int):
     """Set new name for a location of an item."""
     try:
         if item == Items.CameraAndShockwave:
-            setItemReferenceName(spoiler, Items.Camera, index, new_name)
-            setItemReferenceName(spoiler, Items.Shockwave, index, new_name)
+            setItemReferenceName(spoiler, Items.Camera, index, new_name, flag)
+            setItemReferenceName(spoiler, Items.Shockwave, index, new_name, flag)
         else:
             for loc in spoiler.location_references:
                 if loc.item == item:
-                    loc.setLocation(index, new_name)
+                    loc.setLocation(index, new_name, flag)
     except Exception:
         pass
 
@@ -622,47 +636,64 @@ def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool = False, is_cro
     return converter.get(item, BarrierItems.Nothing)
 
 
-def getIceTrapCount(settings) -> int:
-    """Get the amount of Ice Traps the game will attempt to place."""
-    if settings.archipelago:
-        return settings.ice_trap_count
-
-    ice_trap_freqs = {
-        IceTrapFrequency.rare: 4,
-        IceTrapFrequency.mild: 10,
-        IceTrapFrequency.common: 32,
-        IceTrapFrequency.frequent: 64,
-        IceTrapFrequency.pain: 100,
-    }
-    return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
+blocker_min_thresholds = {
+    BLockerSetting.easy_random: 0.2,
+    BLockerSetting.normal_random: 0.4,
+    BLockerSetting.hard_random: 0.6,
+}
+blocker_max_thresholds = {
+    BLockerSetting.easy_random: 0.5,
+    BLockerSetting.normal_random: 0.7,
+    BLockerSetting.hard_random: 0.95,
+}
 
 
-EXPONENT = 1.7
-OFFSET_DIVISOR = 15
+def getBLockerThresholds(settings) -> tuple:
+    """Get the B. Locker thresholds based on settings."""
+    min_v = blocker_min_thresholds.get(settings.blocker_selection_behavior, 0.4)
+    max_v = blocker_max_thresholds.get(settings.blocker_selection_behavior, 0.7)
+    return (min_v, max_v)
 
 
-def getHintRequirement(slot: int, cap: int):
-    """Get the hint requirement for a slot index."""
+MEDAL_PROGRESSIVE_RATIOS = [
+    0.50,
+    0.57,
+    0.64,
+    0.71,
+    0.79,
+    0.86,
+    0.93,
+    1.00,
+]
+
+
+def getHintRequirement(slot: int, cap: int, algorithm: ProgressiveHintAlgorithm):
+    """Get the hint requirement for a slot index from a power-warped linear function."""
     if slot == 34:
         return cap
-    offset = cap / OFFSET_DIVISOR
     hint_slot = slot & 0xFC
-    multiplier = cap - offset
-    final_offset = (cap + offset) / 2
-    exp_result = 1 + (math.pow(hint_slot, EXPONENT) / math.pow(34, EXPONENT))
-    z = math.pi * exp_result
-    required_gb_count = int(multiplier * 0.5 * math.cos(z) + final_offset)
-    if required_gb_count == 0:
-        return 1
-    return required_gb_count
+    # Only thing to adjust here is the ramping factor, which determines how quickly it reaches linear scaling.
+    # A higher factor means it ramps slower, costing less for longer
+    # A lower factor means it becomes linear faster, becoming costlier sooner
+    if algorithm == ProgressiveHintAlgorithm.fast:
+        ramping_factor = 1.8
+    elif algorithm == ProgressiveHintAlgorithm.medium:
+        ramping_factor = 1.5
+    else:  # algorithm == ProgressiveHintAlgorithm.slow
+        ramping_factor = 1.25
+    g = lambda slot: math.log(1 + math.exp(ramping_factor * (slot - 1)))
+    # This calculation normalizes the function between 1 and 100 given the inputs will be 1 to 35
+    percent_of_cap = 1 + 99 * math.pow((hint_slot / 34.0), ramping_factor)
+    # The cost of the hint is simply that percentage times the cap, with a minimum of 1 and a maximum of the cap as guard rails
+    return min(cap, max(1, int((percent_of_cap / 100) * cap)))
 
 
-def getHintRequirementBatch(batch: int, cap: int):
+def getHintRequirementBatch(batch: int, cap: int, algorithm: ProgressiveHintAlgorithm):
     """Get the hint requirement for a batch index."""
     slot = 34
     if batch < 9:
         slot = batch * 4
-    return getHintRequirement(slot, cap)
+    return getHintRequirement(slot, cap, algorithm)
 
 
 def getProgHintBarrierItem(item: ProgressiveHintItem) -> BarrierItems:
@@ -692,6 +723,71 @@ def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
     return value
 
 
+def getCompletableBonuses(settings) -> list:
+    """Get a list of bonus barrels that can be completed in a seed."""
+    locations = [
+        Locations.JapesLankyGrapeGate,
+        Locations.JapesTinyFeatherGateBarrel,
+        Locations.JapesChunkyGiantBonusBarrel,
+        Locations.JapesLankySlope,
+        Locations.AztecLankyLlamaTempleBarrel,
+        Locations.AztecLanky5DoorTemple,
+        Locations.AztecChunky5DoorTemple,
+        Locations.FactoryDiddyBlockTower,
+        Locations.FactoryDiddyChunkyRoomBarrel,
+        Locations.FactoryTinyProductionRoom,
+        Locations.FactoryLankyTestingRoomBarrel,
+        Locations.FactoryChunkybyArcade,
+        Locations.GalleonLankyGoldTower,
+        Locations.GalleonDiddyGoldTower,
+        Locations.IslesDiddySummit,
+        Locations.AztecChunkyCagedBarrel,
+        Locations.AztecDonkeyQuicksandCave,
+        Locations.GalleonChunky5DoorShip,
+        Locations.GalleonDiddy5DoorShip,
+        Locations.GalleonDonkey5DoorShip,
+        Locations.GalleonTiny2DoorShip,
+        Locations.ForestDiddyOwlRace,
+        Locations.ForestDiddyTopofMushroom,
+        Locations.ForestDonkeyBarn,
+        Locations.ForestLankyColoredMushrooms,
+        Locations.ForestTinyMushroomBarrel,
+        Locations.CavesDiddyJetpackBarrel,
+        Locations.CavesTinyCaveBarrel,
+        Locations.CastleDiddyAboveCastle,
+        Locations.CastleDiddyBallroom,
+        Locations.CavesChunky5DoorCabin,
+        Locations.CastleLankyTower,
+        Locations.CastleChunkyCrypt,
+        Locations.CastleLankyDungeon,
+        Locations.CastleTinyOverChasm,
+        Locations.CastleChunkyTree,
+        Locations.IslesChunkyHelmLobby,
+        Locations.IslesTinyAztecLobby,
+        Locations.GalleonTinySubmarine,
+        Locations.CavesDonkeyBaboonBlast,
+        Locations.ForestDonkeyBaboonBlast,
+        Locations.IslesLankyCastleLobby,
+        Locations.IslesDiddySnidesLobby,
+    ]
+    if settings.helm_setting != HelmSetting.skip_all and settings.helm_room_bonus_count != HelmBonuses.zero:
+        helm_rooms = [settings.helm_donkey, settings.helm_diddy, settings.helm_lanky, settings.helm_tiny, settings.helm_chunky]
+        helm_locations = [
+            [Locations.HelmDonkey2, Locations.HelmDonkey1],
+            [Locations.HelmDiddy1, Locations.HelmDiddy2],
+            [Locations.HelmLanky1, Locations.HelmLanky2],
+            [Locations.HelmTiny2, Locations.HelmTiny1],
+            [Locations.HelmChunky1, Locations.HelmChunky2],
+        ]
+        limit = 2
+        if settings.helm_room_bonus_count == HelmBonuses.one:
+            limit = 1
+        for room_index, room in enumerate(helm_rooms):
+            if room:
+                locations.extend(helm_locations[room_index][:limit])
+    return locations
+
+
 class Holidays(IntEnum):
     """Holiday Enum."""
 
@@ -699,6 +795,11 @@ class Holidays(IntEnum):
     Christmas = auto()
     Halloween = auto()
     Anniv25 = auto()
+
+
+def sumChecks(spoiler, ownedItems, locations: list) -> int:
+    """Sum the amount of checks in a list that have been checked."""
+    return sum(spoiler.LocationList[loc].inaccessible or spoiler.LocationList[loc].item in [None, Items.NoItem] or spoiler.LocationList[loc].item in ownedItems for loc in locations)
 
 
 def getHolidaySetting(settings):
@@ -717,13 +818,21 @@ def getHoliday(settings):
 
 
 plando_colors = {
+    "\x01": [
+        "wobble",
+    ],
+    "\x02": [
+        "pop",
+    ],
+    "\x03": [
+        "spin",
+    ],
     "\x04": [
         "orange",
         "woth",
         "keys",
         "donkey",
         "aztec",
-        "freekongs",
         "dogadon1",
     ],
     "\x05": [
@@ -761,6 +870,7 @@ plando_colors = {
         "caves",
         "fridge",
         "dillo2",
+        "freekongs",
     ],
     "\x0b": [
         "rust",

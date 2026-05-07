@@ -1,0 +1,48 @@
+{
+    "id": 45,
+    "behav_9C": 0,
+    "ignore": false,
+    "output_version": 2,
+    "script": [
+        {
+            "conditions": [
+                {"function":1,"inverted":false,"parameters":[0,0,0]},
+                {"function":45,"inverted":false,"parameters":[223,0,0]}
+            ],
+            "executions": [
+                {"function":69,"parameters":[1,0,255]},
+                {"function":70,"parameters":[0,0,0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function":1,"inverted":false,"parameters":[10,0,0]}
+            ],
+            "executions": [
+                {"function":37,"parameters":[11,1,0]},
+                {"function":70,"parameters":[0,0,0]},
+                {"function":69,"parameters":[1,0,255]},
+                {"function":3,"parameters":[0,80,0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function":1,"inverted":false,"parameters":[10,0,0]}
+            ],
+            "executions": [
+                {"function":1,"parameters":[11,0,0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function":1,"inverted":false,"parameters":[11,0,0]},
+                {"function":4,"inverted":false,"parameters":[0,0,0]}
+            ],
+            "executions": [
+                {"function":38,"parameters":[2,0,0]},
+                {"function":93,"parameters":[0,0,0]},
+                {"function":49,"parameters":[62,0,0]}
+            ]
+        }
+    ]
+}
