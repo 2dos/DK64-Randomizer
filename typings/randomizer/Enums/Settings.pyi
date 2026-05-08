@@ -98,6 +98,8 @@ class DKPortalRando(IntEnum):
     off = 0
     main_only = 1
     on = 2
+    main_only_underwater = 3
+    on_underwater = 4
 
 class KroolInBossPool(IntEnum):
     off = 0
