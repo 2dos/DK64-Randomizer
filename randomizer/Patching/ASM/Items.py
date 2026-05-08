@@ -263,6 +263,8 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeValue(ROM_COPY, 0x806C46AA, Overlay.Static, 0x4100, offset_dict)  # Bring squawks closer to the player for minecarts (X)
     writeValue(ROM_COPY, 0x806C46E2, Overlay.Static, 0x4100, offset_dict)  # Bring squawks closer to the player for minecarts (Z)
     writeValue(ROM_COPY, 0x806C45C2, Overlay.Static, 0x0013, offset_dict)  # Y Offset squawks reward
+    # Disable any horizontal movement for sprite items
+    writeValue(ROM_COPY, 0x806A6900, Overlay.Static, 0, offset_dict, 4)
     # Flag Mapping
     flag_map_hi = getHiSym("new_flag_mapping")
     flag_map_lo = getLoSym("new_flag_mapping")
