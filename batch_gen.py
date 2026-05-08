@@ -16,15 +16,15 @@ def genSeed(index, name:str, sdata: str):
 # Example usage
 settings_data = {}
 batch_dir = './batch_spoilers'
-if os.path.exists(batch_dir):
-    shutil.rmtree(batch_dir)
-
-os.mkdir(batch_dir)
+if not os.path.exists(batch_dir):
+    os.mkdir(batch_dir)
 
 SEED_GEN_COUNT = 250
 THREAD_COUNT = 16
 
 for name, settings in settings_data.items():
+    if os.path.exists(f"{batch_dir}/{name}"):
+        shutil.rmtree(f"{batch_dir}/{name}")
     os.mkdir(f"{batch_dir}/{name}")
 
     print(f"[CONSOLE] Generating {SEED_GEN_COUNT} seeds")
