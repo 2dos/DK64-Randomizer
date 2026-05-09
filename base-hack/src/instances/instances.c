@@ -224,19 +224,30 @@ void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk
 	int world = getWorld(CurrentMap, 0);
 	int wrinkly_index = kong + (5 * world);
 	int flag = FLAG_WRINKLYVIEWED + wrinkly_index;
-	if (Rando.hints_are_items) {
-		if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
-			item_packet *item_send = &wrinkly_item_table[wrinkly_index];
-			displayMedalOverlay(flag, item_send);
+	int locked = 0;
+	if (Rando.item_locked_wrinkly_doors) {
+		if (getItemCountReq(Rando.prog_hint_item) < Rando.progressive_bounds[world]) {
+			locked = 1;
 		}
-	} else {
-		setPermFlag(flag);
-		giveItem(REQITEM_HINT, world, kong, (giveItemConfig){.apply_helm_hurry = 1});
 	}
-	if ((CurrentMap != MAP_FUNGILOBBY) || (Rando.quality_of_life.no_wrinkly_puzzles)) {
-		// Display hint tick
-		displayImageOnObject(index, 1, 2, 0);
-		displayImageOnObject(index, 2, 2, 0);
+	if (locked) {
+		kong = 5;
+		textParameter = Rando.progressive_bounds[world];
+	} else {
+		if (Rando.hints_are_items) {
+			if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
+				item_packet *item_send = &wrinkly_item_table[wrinkly_index];
+				displayMedalOverlay(flag, item_send);
+			}
+		} else {
+			setPermFlag(flag);
+			giveItem(REQITEM_HINT, world, kong, (giveItemConfig){.apply_helm_hurry = 1});
+		}
+		if ((CurrentMap != MAP_FUNGILOBBY) || (Rando.quality_of_life.no_wrinkly_puzzles)) {
+			// Display hint tick
+			displayImageOnObject(index, 1, 2, 0);
+			displayImageOnObject(index, 2, 2, 0);
+		}
 	}
 	//
 	spawnWrinkly(behaviour, index, kong, unk0);
