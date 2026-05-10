@@ -250,3 +250,5 @@ tools/dump_lanky.py
 *.ia8
 base-hack/modelling/*.obj
 dk64_full_item_table.txt
+randomizer/Patching/Library/ScriptOld.py
+batch_spoilers/

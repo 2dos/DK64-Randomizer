@@ -239,3 +239,5 @@ def hitless(ROM_COPY: LocalROM, settings, offset_dict: dict):
         writeFunction(ROM_COPY, 0x8071292C, Overlay.Static, "hitlessDeathWrapper0", offset_dict)
         writeFunction(ROM_COPY, 0x807128FC, Overlay.Static, "hitlessDeathWrapper1", offset_dict)
         writeFunction(ROM_COPY, 0x807128C8, Overlay.Static, "hitlessDeathWrapper1", offset_dict)
+        writeFunction(ROM_COPY, 0x806A96FC, Overlay.Static, "livesDisplay", offset_dict)
+        writeFunction(ROM_COPY, 0x807089EC, Overlay.Static, "livesDisplay", offset_dict)

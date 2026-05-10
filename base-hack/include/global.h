@@ -24,6 +24,8 @@ extern void* replaceWaterTexture(int table, int file, int unk0, int unk1);
 extern void* replaceWaterTexture_spooky(int table, int file, int unk0, int unk1);
 extern int isBounceObject(int object);
 
+extern Gfx *livesDisplay(Gfx *dl, int texture_index, int unk3, codecs codec_index, int width, int height, int x, int y, float xScale, float yScale, int unk11, float unk12);
+
 extern int ReadFileSimple(int data);
 extern void SaveFileSimple(int data, int value);
 
