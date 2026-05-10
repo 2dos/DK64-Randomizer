@@ -10,6 +10,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import SlamRequirement
@@ -171,6 +172,31 @@ def create_patching_adapter(fill_result: Any, settings: Any) -> Any:
                 settings.lanky_freeing_kong = settings.switchsanity_data[Switches.AztecLlamaPuzzle].kong
                 settings.tiny_freeing_kong = settings.switchsanity_data[Switches.AztecOKONGPuzzle].kong
                 settings.chunky_freeing_kong = settings.switchsanity_data[Switches.FactoryFreeKong].kong
+
+            # Boss shuffle data
+            if list(fill_result.misc_data.boss_kongs):
+                settings.boss_kongs = [Kongs(int(k)) for k in fill_result.misc_data.boss_kongs]
+            if list(fill_result.misc_data.boss_maps):
+                settings.boss_maps = [Maps(int(m)) for m in fill_result.misc_data.boss_maps]
+            if list(fill_result.misc_data.kutout_kongs):
+                settings.kutout_kongs = [Kongs(int(k)) for k in fill_result.misc_data.kutout_kongs]
+            if list(fill_result.misc_data.kko_phase_order):
+                settings.kko_phase_order = [int(p) for p in fill_result.misc_data.kko_phase_order]
+            if list(fill_result.misc_data.toe_order):
+                settings.toe_order = [int(t) for t in fill_result.misc_data.toe_order]
+
+            # Hideout Helm room order
+            if list(fill_result.misc_data.helm_order):
+                settings.helm_order = [int(s) for s in fill_result.misc_data.helm_order]
+            if list(fill_result.misc_data.kong_helm_order):
+                settings.kong_helm_order = [Kongs(int(k)) for k in fill_result.misc_data.kong_helm_order]
+            if list(fill_result.misc_data.helm_kong_flags):
+                flags = list(fill_result.misc_data.helm_kong_flags)
+                settings.helm_donkey = bool(flags[0])
+                settings.helm_diddy = bool(flags[1])
+                settings.helm_lanky = bool(flags[2])
+                settings.helm_tiny = bool(flags[3])
+                settings.helm_chunky = bool(flags[4])
 
             # Ship location rando result
             self.ship_location_index = None

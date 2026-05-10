@@ -544,6 +544,14 @@ message MiscPatchingData {
   repeated uint32 switch_allocation = 25;
   repeated SwitchsanityAssignment switchsanity_data = 26;
   optional bool switchsanity_enabled = 27;
+  repeated uint32 boss_kongs = 28;        // Kongs enum, length 7
+  repeated uint32 boss_maps = 29;         // Maps enum, length 7
+  repeated uint32 kutout_kongs = 30;      // Kongs enum, length 5
+  repeated uint32 kko_phase_order = 31;   // 0..3, length 4
+  repeated uint32 toe_order = 32;         // bitfield ints, length 10
+  repeated uint32 helm_order = 33;
+  repeated uint32 kong_helm_order = 34;   // Kongs enum
+  repeated bool helm_kong_flags = 35;     // length 5
 }
 
 message SwitchsanityAssignment {

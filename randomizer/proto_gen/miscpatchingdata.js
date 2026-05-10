@@ -51,7 +51,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.randomizer.proto.MiscPatchingData.repeatedFields_ = [1,2,3,11,12,13,15,16,17,18,22,25,26];
+proto.randomizer.proto.MiscPatchingData.repeatedFields_ = [1,2,3,11,12,13,15,16,17,18,22,25,26,28,29,30,31,32,33,34,35];
 
 
 
@@ -114,7 +114,15 @@ shipName: (f = jspb.Message.getField(msg, 24)) == null ? undefined : f,
 switchAllocationList: (f = jspb.Message.getRepeatedField(msg, 25)) == null ? undefined : f,
 switchsanityDataList: jspb.Message.toObjectList(msg.getSwitchsanityDataList(),
     proto.randomizer.proto.SwitchsanityAssignment.toObject, includeInstance),
-switchsanityEnabled: (f = jspb.Message.getBooleanField(msg, 27)) == null ? undefined : f
+switchsanityEnabled: (f = jspb.Message.getBooleanField(msg, 27)) == null ? undefined : f,
+bossKongsList: (f = jspb.Message.getRepeatedField(msg, 28)) == null ? undefined : f,
+bossMapsList: (f = jspb.Message.getRepeatedField(msg, 29)) == null ? undefined : f,
+kutoutKongsList: (f = jspb.Message.getRepeatedField(msg, 30)) == null ? undefined : f,
+kkoPhaseOrderList: (f = jspb.Message.getRepeatedField(msg, 31)) == null ? undefined : f,
+toeOrderList: (f = jspb.Message.getRepeatedField(msg, 32)) == null ? undefined : f,
+helmOrderList: (f = jspb.Message.getRepeatedField(msg, 33)) == null ? undefined : f,
+kongHelmOrderList: (f = jspb.Message.getRepeatedField(msg, 34)) == null ? undefined : f,
+helmKongFlagsList: (f = jspb.Message.getRepeatedBooleanField(msg, 35)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -290,6 +298,54 @@ proto.randomizer.proto.MiscPatchingData.deserializeBinaryFromReader = function(m
     case 27:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setSwitchsanityEnabled(value);
+      break;
+    case 28:
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addBossKongs(values[i]);
+      }
+      break;
+    case 29:
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addBossMaps(values[i]);
+      }
+      break;
+    case 30:
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addKutoutKongs(values[i]);
+      }
+      break;
+    case 31:
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addKkoPhaseOrder(values[i]);
+      }
+      break;
+    case 32:
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addToeOrder(values[i]);
+      }
+      break;
+    case 33:
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addHelmOrder(values[i]);
+      }
+      break;
+    case 34:
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addKongHelmOrder(values[i]);
+      }
+      break;
+    case 35:
+      var values = /** @type {!Array<boolean>} */ (reader.isDelimited() ? reader.readPackedBool() : [reader.readBool()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addHelmKongFlags(values[i]);
+      }
       break;
     default:
       reader.skipField();
@@ -495,6 +551,62 @@ proto.randomizer.proto.MiscPatchingData.serializeBinaryToWriter = function(messa
   if (f != null) {
     writer.writeBool(
       27,
+      f
+    );
+  }
+  f = message.getBossKongsList();
+  if (f.length > 0) {
+    writer.writePackedUint32(
+      28,
+      f
+    );
+  }
+  f = message.getBossMapsList();
+  if (f.length > 0) {
+    writer.writePackedUint32(
+      29,
+      f
+    );
+  }
+  f = message.getKutoutKongsList();
+  if (f.length > 0) {
+    writer.writePackedUint32(
+      30,
+      f
+    );
+  }
+  f = message.getKkoPhaseOrderList();
+  if (f.length > 0) {
+    writer.writePackedUint32(
+      31,
+      f
+    );
+  }
+  f = message.getToeOrderList();
+  if (f.length > 0) {
+    writer.writePackedUint32(
+      32,
+      f
+    );
+  }
+  f = message.getHelmOrderList();
+  if (f.length > 0) {
+    writer.writePackedUint32(
+      33,
+      f
+    );
+  }
+  f = message.getKongHelmOrderList();
+  if (f.length > 0) {
+    writer.writePackedUint32(
+      34,
+      f
+    );
+  }
+  f = message.getHelmKongFlagsList();
+  if (f.length > 0) {
+    writer.writePackedBool(
+      35,
       f
     );
   }
@@ -1422,6 +1534,302 @@ proto.randomizer.proto.MiscPatchingData.prototype.clearSwitchsanityEnabled = fun
  */
 proto.randomizer.proto.MiscPatchingData.prototype.hasSwitchsanityEnabled = function() {
   return jspb.Message.getField(this, 27) != null;
+};
+
+
+/**
+ * repeated uint32 boss_kongs = 28;
+ * @return {!Array<number>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getBossKongsList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 28));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setBossKongsList = function(value) {
+  return jspb.Message.setField(this, 28, value || []);
+};
+
+
+/**
+ * @param {number} value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addBossKongs = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 28, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearBossKongsList = function() {
+  return this.setBossKongsList([]);
+};
+
+
+/**
+ * repeated uint32 boss_maps = 29;
+ * @return {!Array<number>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getBossMapsList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 29));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setBossMapsList = function(value) {
+  return jspb.Message.setField(this, 29, value || []);
+};
+
+
+/**
+ * @param {number} value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addBossMaps = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 29, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearBossMapsList = function() {
+  return this.setBossMapsList([]);
+};
+
+
+/**
+ * repeated uint32 kutout_kongs = 30;
+ * @return {!Array<number>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getKutoutKongsList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 30));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setKutoutKongsList = function(value) {
+  return jspb.Message.setField(this, 30, value || []);
+};
+
+
+/**
+ * @param {number} value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addKutoutKongs = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 30, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearKutoutKongsList = function() {
+  return this.setKutoutKongsList([]);
+};
+
+
+/**
+ * repeated uint32 kko_phase_order = 31;
+ * @return {!Array<number>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getKkoPhaseOrderList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 31));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setKkoPhaseOrderList = function(value) {
+  return jspb.Message.setField(this, 31, value || []);
+};
+
+
+/**
+ * @param {number} value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addKkoPhaseOrder = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 31, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearKkoPhaseOrderList = function() {
+  return this.setKkoPhaseOrderList([]);
+};
+
+
+/**
+ * repeated uint32 toe_order = 32;
+ * @return {!Array<number>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getToeOrderList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 32));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setToeOrderList = function(value) {
+  return jspb.Message.setField(this, 32, value || []);
+};
+
+
+/**
+ * @param {number} value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addToeOrder = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 32, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearToeOrderList = function() {
+  return this.setToeOrderList([]);
+};
+
+
+/**
+ * repeated uint32 helm_order = 33;
+ * @return {!Array<number>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getHelmOrderList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 33));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setHelmOrderList = function(value) {
+  return jspb.Message.setField(this, 33, value || []);
+};
+
+
+/**
+ * @param {number} value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addHelmOrder = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 33, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearHelmOrderList = function() {
+  return this.setHelmOrderList([]);
+};
+
+
+/**
+ * repeated uint32 kong_helm_order = 34;
+ * @return {!Array<number>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getKongHelmOrderList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 34));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setKongHelmOrderList = function(value) {
+  return jspb.Message.setField(this, 34, value || []);
+};
+
+
+/**
+ * @param {number} value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addKongHelmOrder = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 34, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearKongHelmOrderList = function() {
+  return this.setKongHelmOrderList([]);
+};
+
+
+/**
+ * repeated bool helm_kong_flags = 35;
+ * @return {!Array<boolean>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getHelmKongFlagsList = function() {
+  return /** @type {!Array<boolean>} */ (jspb.Message.getRepeatedBooleanField(this, 35));
+};
+
+
+/**
+ * @param {!Array<boolean>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setHelmKongFlagsList = function(value) {
+  return jspb.Message.setField(this, 35, value || []);
+};
+
+
+/**
+ * @param {boolean} value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addHelmKongFlags = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 35, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearHelmKongFlagsList = function() {
+  return this.setHelmKongFlagsList([]);
 };
 
 
