@@ -214,6 +214,7 @@ def create_region(
         # And Isles Medals locations aren't real unless the setting is enabled.
         if region_name == "DKIslesMedals" and not IsItemSelected(logic_holder.settings.cb_rando_enabled, logic_holder.settings.cb_rando_list_selected, Levels.DKIsles):
             location_logics = []
+        banned_balloon_locations = set(logic_holder.settings.getBannedBalloonLocations())
         for location_logic in location_logics:
             location_obj = logic_holder.spoiler.LocationList[location_logic.id]
 
@@ -233,6 +234,8 @@ def create_region(
                         should_skip = True
                 case Types.Balloon:
                     if Types.Balloon not in logic_holder.settings.shuffled_location_types:
+                        should_skip = True
+                    elif location_logic.id in banned_balloon_locations:
                         should_skip = True
                 case Types.Shop:
                     if location_obj.kong == Kongs.any:

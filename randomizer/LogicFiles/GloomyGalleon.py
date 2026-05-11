@@ -110,7 +110,7 @@ LogicRegions = {
 
     Regions.LighthousePlatform: Region("Lighthouse Platform", HintRegion.Lighthouse, Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonDiddyShipSwitch, lambda l: Events.ActivatedLighthouse in l.Events and l.jetpack and l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.isdiddy),
-        LocationLogic(Locations.Balloon044, lambda l: l.isdiddy and l.peanut and l.Swim),
+        LocationLogic(Locations.Balloon044, lambda l: l.isdiddy and l.peanut and l.swim),
         LocationLogic(Locations.Balloon045, lambda l: l.isdonkey and l.coconut),
     ], [
         Event(Events.MechafishSummoned, lambda l: l.jetpack and l.guitar and l.canTravelToMechFish() and l.isdiddy),
@@ -201,8 +201,8 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_GalleonNPC_Seal, lambda l: l.camera and Events.SealReleased in l.Events),
         LocationLogic(Locations.Balloon039, lambda l: l.diddy and l.peanut),
         LocationLogic(Locations.Balloon043, lambda l: l.chunky and l.pineapple),
-        LocationLogic(Locations.Balloon049, lambda l: l.chunky and l.pineapple and l.Swim),
-        LocationLogic(Locations.Balloon050, lambda l: l.lanky and l.grape and l.Swim),
+        LocationLogic(Locations.Balloon049, lambda l: l.chunky and l.pineapple and l.swim),
+        LocationLogic(Locations.Balloon050, lambda l: l.lanky and l.grape and l.swim),
     ], [
         Event(Events.ShipyardTreasureRoomOpened, lambda l: (Events.ShipyardEnguarde in l.Events and (Events.WaterRaised in l.Events or l.monkey_maneuvers)) or l.checkBarrier(RemovedBarriersSelected.galleon_treasure_room)),
         Event(Events.GalleonDonkeyPad, lambda l: l.bongos and l.isdonkey and (l.swim or l.galleonGatesStayOpen())),
@@ -258,8 +258,8 @@ LogicRegions = {
 
     Regions.TreasureRoom: Region("Treasure Room", HintRegion.TreasureRoom, Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.GalleonLankyGoldTower, lambda l: ((Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.monkey_maneuvers)) and l.balloon and l.islanky) or (l.CanMoonkick() and l.settings.free_trade_items), MinigameType.BonusBarrel),
-        LocationLogic(Locations.Balloon047, lambda l: l.isdiddy and l.peanut and l.Swim),
-        LocationLogic(Locations.Balloon052, lambda l: l.istiny and l.feather and l.Swim),
+        LocationLogic(Locations.Balloon047, lambda l: l.isdiddy and l.peanut and l.swim),
+        LocationLogic(Locations.Balloon052, lambda l: l.istiny and l.feather and l.swim),
     ], [
         Event(Events.WaterLowered, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.lowered),
         Event(Events.WaterRaised, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.raised),
