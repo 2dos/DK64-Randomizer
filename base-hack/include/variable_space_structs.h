@@ -74,7 +74,7 @@ typedef struct varspace {
 	/* 0x110 */ unsigned char arcade_reward; // Reward Index for R2 of Arcade
 	/* 0x111 */ unsigned char jetpac_reward; // Reward Index for Jetpac 5000 Pts
 	/* 0x112 */ char rainbow_ammo;
-	/* 0x113 */ char item_locked_wrinkly_doors;
+	/* 0x113 */ char unk_113;
 	/* 0x114 */ char fix_lanky_tiny_prod;
 	/* 0x115 */ unsigned char progressive_hint_gb_cap; // 0 = Off, 1 or more = Hints are rewarded for collecting GBs, rather than hint doors, 35th hint is unlocked at x
 	/* 0x116 */ char cutscene_skip_setting; // 0 = Off, 1 = On Button Press, 2 = Automatic
@@ -98,7 +98,8 @@ typedef struct varspace {
 	/* 0x139 */ char dpad_visual_enabled; // 0 = Vanilla, 1 = Visual shown
 	/* 0x13A */ char fast_warp; // 0 = Vanilla, 1 = Use Multiplayer warp
 	/* 0x13B */ char short_bosses; // 0 = Vanilla fights, 1 = Short fights
-	/* 0x13C */ char unk_13c[0x14C - 0x13C];
+	/* 0x13C */ unsigned short hint_door_item_requirement[7];
+	/* 0x14a */ char unk_14a[0x14C - 0x14A];
 	/* 0x14C */ unsigned char lobbies_open_bitfield; // hccf gfaj
 	/* 0x14D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
 	/* 0x14E */ char unk_14E[2];
@@ -135,14 +136,15 @@ typedef struct varspace {
 	/* 0x1C6 */ RandomSwitchesSetting switchsanity; // Size 0x15
 	/* 0x1DB */ unsigned char fungi_time_of_day_setting; // See fungi_time enum
 	/* 0x1DC */ unsigned char galleon_water_raised;
-	/* 0x1DD */ unsigned char unk_1dd;
+	/* 0x1DD */ unsigned char disable_hint_screen;
 	/* 0x1DE */ RemovedBarriers removed_barriers; // Size: 2
 	/* 0x1E0 */ FasterChecks faster_checks; // Size: 1
 	/* 0x1E1 */ char big_head_mode; // 0 = off, 1 = on, 2 = small head
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
 	/* 0x1E3 */ unsigned char chunky_phase_krool_slam_req; // Slam level required for Chunky Phase
   	/* 0x1E4 */ unsigned char pause_hints_colored;
-	/* 0x1E5 */ char unk_1e5[0x1E8-0x1E5];
+	/* 0x1E5 */ unsigned char wrinkly_door_unlock_item;
+	/* 0x1E6 */ char unk_1e6[0x1E8-0x1E6];
 	/* 0x1E8 */ unsigned char jetman_rgb[3];
 	/* 0x1EB */ unsigned char mermaid_requirement; // Amount of pearls to get the mermaid reward
 	/* 0x1EC */ unsigned char check_shop_flags; // Bitfield of pre-given shops: rfcs 0000. r = Cranky, f = Funky, c = Candy, s = Snide

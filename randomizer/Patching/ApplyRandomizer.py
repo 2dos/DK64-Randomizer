@@ -208,6 +208,7 @@ def patching_response(spoiler):
         BooleanProperties(IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, Levels.DKIsles), 0x10B),  # 5 extra medal handling
         BooleanProperties(spoiler.settings.helm_hurry, 0xAE),  # Helm Hurry
         BooleanProperties(spoiler.settings.wrinkly_available, 0x52),  # Remove Wrinkly Kong Checks
+        BooleanProperties(spoiler.settings.no_pause_hints, 0x1DD),  # Disable Pause Screen Hints
         BooleanProperties(
             spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled),
             0x47,
@@ -382,6 +383,18 @@ def patching_response(spoiler):
             ROM_COPY.writeMultipleBytes(getHintRequirementBatch(x, count, spoiler.settings.progressive_hint_algorithm), 2)
     ROM_COPY.seek(sav + 0x115)
     ROM_COPY.writeMultipleBytes(count, 1)
+
+    # Item Locked Hint Doors
+    if spoiler.settings.hint_door_item != ProgressiveHintItem.off:
+        count = spoiler.settings.hint_door_item_count
+        ROM_COPY.seek(sav + 0x1E5)
+        ROM_COPY.write(getProgHintBarrierItem(spoiler.settings.hint_door_item))
+        for x in range(7):
+            ROM_COPY.seek(sav + 0x13C + (x * 2))
+            req = int(count / 7) * (x + 1)
+            if req > count:
+                req = count
+            ROM_COPY.writeMultipleBytes(req, 2)
 
     # Microhints
     ROM_COPY.seek(sav + 0x102)

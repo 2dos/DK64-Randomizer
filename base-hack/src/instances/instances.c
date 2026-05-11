@@ -225,14 +225,14 @@ void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk
 	int wrinkly_index = kong + (5 * world);
 	int flag = FLAG_WRINKLYVIEWED + wrinkly_index;
 	int locked = 0;
-	if (Rando.item_locked_wrinkly_doors) {
-		if (getItemCountReq(Rando.prog_hint_item) < Rando.progressive_bounds[world]) {
+	if (Rando.wrinkly_door_unlock_item) {
+		if (getItemCountReq(Rando.wrinkly_door_unlock_item) < Rando.hint_door_item_requirement[world]) {
 			locked = 1;
 		}
 	}
 	if (locked) {
 		kong = 5;
-		textParameter = Rando.progressive_bounds[world];
+		textParameter = Rando.hint_door_item_requirement[world];
 	} else {
 		if (Rando.hints_are_items) {
 			if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {

@@ -687,6 +687,9 @@ void initItemRando(void) {
         
     // Checks Screen
     pausescreenlist screen_count = PAUSESCREEN_TERMINATOR; // 4 screens vanilla + hint screen + check screen + move tracker
+    if (Rando.disable_hint_screen) {
+        screen_count--;
+    }
     *(short*)(0x806A8672) = screen_count - 1; // Screen decrease cap
     *(short*)(0x806A8646) = screen_count; // Screen increase cap
 

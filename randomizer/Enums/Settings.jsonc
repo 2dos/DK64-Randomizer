@@ -1442,7 +1442,10 @@
     "no_consumable_upgrades": 295,
     "bosses_selected": 296,
     "ice_trap_model_v2": 297,
-    "progressive_hint_algorithm": 298
+    "progressive_hint_algorithm": 298,
+    "no_pause_hints": 299,
+    "hint_door_item": 300,
+    "hint_door_item_count": 301
   },
   /*
     SettingsStringDataType:
@@ -1552,6 +1555,7 @@
     "chunky_phase_slam_req": { "obj": "SlamRequirement" },
     "puzzle_rando_difficulty": { "obj": "PuzzleRando" },
     "progressive_hint_item": { "obj": "ProgressiveHintItem" },
+    "hint_door_item": { "obj": "ProgressiveHintItem" },
     "progressive_hint_algorithm": { "obj": "ProgressiveHintAlgorithm" },
     "starting_moves_list_1": { "obj": "Items" },
     "starting_moves_list_2": { "obj": "Items" },
@@ -1954,6 +1958,9 @@
     "SettingsStringEnum.wrinkly_available": {
       "obj": "SettingsStringDataType.bool"
     },
+    "SettingsStringEnum.no_pause_hints": {
+      "obj": "SettingsStringDataType.bool"
+    },
     "SettingsStringEnum.wrinkly_hints": { "obj": "WrinklyHints" },
     "SettingsStringEnum.wrinkly_location_rando": {
       "obj": "SettingsStringDataType.bool"
@@ -2008,6 +2015,9 @@
       "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.progressive_hint_count": {
+      "obj": "SettingsStringDataType.u16"
+    },
+    "SettingsStringEnum.hint_door_item_count": {
       "obj": "SettingsStringDataType.u16"
     },
     "SettingsStringEnum.random_starting_move_list_selected": {
@@ -2086,6 +2096,7 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.progressive_hint_item": { "obj": "ProgressiveHintItem" },
+    "SettingsStringEnum.hint_door_item": { "obj": "ProgressiveHintItem" },
     "SettingsStringEnum.progressive_hint_algorithm": { "obj": "ProgressiveHintAlgorithm" },
     "SettingsStringEnum.starting_moves_list_1": {
       "obj": "SettingsStringDataType.list"
@@ -2307,6 +2318,7 @@
     "SettingsStringEnum.troff_text": { "max": 500, "min": 0 },
     "SettingsStringEnum.progressive_hint_text": { "max": 201, "min": 0 },
     "SettingsStringEnum.progressive_hint_count": { "max": 3500, "min": 0 },
+    "SettingsStringEnum.hint_door_item_count": { "max": 3500, "min": 0 },
     "SettingsStringEnum.win_condition_count": { "max": 255, "min": 0 }
   }
 }
