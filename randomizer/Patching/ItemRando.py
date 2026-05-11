@@ -1243,21 +1243,31 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                 elif item.new_item != Items.NoItem and item.new_type is not None:
                     raise Exception(f"Invalid item {item.new_item.name} placed in shopkeeper slot. This shouldn't happen.")
         # Patch pre-given shops
-        if pregiven_shop_owners is not None:  # Shop owners in pool
-            data = 0
-            or_data = {
-                Types.Cranky: 0x80,
-                Types.Funky: 0x40,
-                Types.Candy: 0x20,
-                Types.Snide: 0x10,
-            }
-            for x in or_data:
-                if x not in spoiler.settings.shuffled_location_types:
-                    data |= or_data[x]
-            for x in pregiven_shop_owners:
-                data |= or_data[x]
-            ROM_COPY.seek(sav + 0x1EC)
-            ROM_COPY.writeMultipleBytes(data, 1)
+        or_data = {
+            Types.Cranky: 0x80,
+            Types.Funky: 0x40,
+            Types.Candy: 0x20,
+            Types.Snide: 0x10,
+        }
+        item_to_shop_type = {
+            Items.Cranky: Types.Cranky,
+            Items.Funky: Types.Funky,
+            Items.Candy: Types.Candy,
+            Items.Snide: Types.Snide,
+        }
+        data = 0
+        for shop_type, bit in or_data.items():
+            if shop_type not in spoiler.settings.shuffled_location_types:
+                data |= bit
+        if pregiven_shop_owners is not None:
+            for shop_type in pregiven_shop_owners:
+                data |= or_data[shop_type]
+        for item in spoiler.pregiven_items:
+            shop_type = item_to_shop_type.get(item)
+            if shop_type is not None:
+                data |= or_data[shop_type]
+        ROM_COPY.seek(sav + 0x1EC)
+        ROM_COPY.writeMultipleBytes(data, 1)
 
         # Update Diddy Cage text to the actual Freeing Kong rather than Funky
         kong_name = kong_list[spoiler.settings.diddy_freeing_kong].upper()
