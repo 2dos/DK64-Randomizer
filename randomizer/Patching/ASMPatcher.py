@@ -1588,6 +1588,7 @@ def patchAssembly(ROM_COPY, spoiler):
     if spoiler.settings.pause_hints_setting == PauseHintSetting.lockout:
         # Adjust function for pause menu
         updateActorFunction(ROM_COPY, 95, "handleHintScreenLockout")
+        writeHook(ROM_COPY, 0x806AC05C, Overlay.Static, "SetBackdropColor", offset_dict)
 
     # Uncontrollable Fixes
     writeFunction(ROM_COPY, 0x806F56E0, Overlay.Static, "getFlagIndex_Corrected", offset_dict)  # BP Acquisition - Correct for character

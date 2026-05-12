@@ -891,6 +891,7 @@ extern unsigned char PauseText;
 extern unsigned char ShorterBosses;
 extern char ForceStandardAmmo;
 extern char KKOPhaseRandoOn;
+extern unsigned char PauseBackdropRedness;
 extern unsigned short MultiBunchCount;
 extern char QueueHelmTimer;
 extern char ToggleAmmoOn;

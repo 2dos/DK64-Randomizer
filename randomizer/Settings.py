@@ -1050,6 +1050,7 @@ class Settings:
         self.progressive_hint_algorithm = ProgressiveHintAlgorithm.medium
         self.hint_door_item = ProgressiveHintItem.off
         self.hint_door_item_count = 0
+        self.hint_door_item_counts_level = [0] * 7
         # Misc
         self.archipelago = False
 
@@ -2087,6 +2088,11 @@ class Settings:
                 self.random.shuffle(allocation)
                 allocation.append(self.prog_slam_level_8)
             self.switch_allocation = allocation.copy()
+
+        if self.hint_door_item != ProgressiveHintItem.off:
+            hint_requirements = [int((x + 1) * (self.hint_door_item_count / 7)) for x in range(7)]
+            self.random.shuffle(hint_requirements)
+            self.hint_door_item_counts_level = hint_requirements.copy()
 
         if self.crown_enemy_difficulty != CrownEnemyDifficulty.vanilla:
             self.crown_difficulties = [self.crown_enemy_difficulty] * 10

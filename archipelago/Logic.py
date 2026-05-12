@@ -1310,11 +1310,7 @@ class LogicVarHolder:
         barrier_item = getProgHintBarrierItem(req_item)
         if barrier_item is None:
             raise Exception("Invalid Item for locking hint doors")
-        cap = self.settings.hint_door_item_count
-        value = (cap / 7) * (level + 1)
-        if value > cap:
-            value = cap
-        return self.ItemCheck(barrier_item, value)
+        return self.ItemCheck(barrier_item, self.settings.hint_door_item_counts_level[level])
 
     def CanMoontail(self):
         """Determine whether the player can perform a Moontail."""
