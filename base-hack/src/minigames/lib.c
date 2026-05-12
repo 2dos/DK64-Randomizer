@@ -146,7 +146,7 @@ void gameInit(void) {
 
 ROM_RODATA_NUM static const short barrel_types[3] = {0x1C, 0x86, 0x6B};
 void exitMinigame(const MinigameSignalStruct *data) {
-    if (data->exit_map == 0) {
+    if ((data->exit_map == 0) || (CurrentMap != data->main_map_id)) {
         ExitFromBonus();
     } else {
         initiateTransition(data->exit_map, 0);
@@ -155,9 +155,11 @@ void exitMinigame(const MinigameSignalStruct *data) {
 
 void gameExit(void) {
     // Exits the game. Call this for an exit from the game which does not yield the reward
-    if (game_exited) {
-        return;
-    }
+    if ((enable_reward) && (!in_story)) {
+    int b = 0;
+    int index = getSpawnerIndexOfResolvedBonus(&barrel_types, 3, &b);
+    resolveBonus(b, index, 7, 2.0f);
+}
     const MinigameSignalStruct *ref_data = getMinigameSlot();
     if (CurrentMap == ref_data->main_map_id) {
         if ((enable_reward) && (in_story)) {
