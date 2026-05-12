@@ -806,6 +806,16 @@
   },
 
   /*
+    PauseHintSetting:
+    - Determines how the pause hint screen will interact
+  */
+  "PauseHintSetting": {
+    "normal": 1,
+    "off": 2,
+    "lockout": 3
+  },
+
+  /*
     ProgressiveHintItem:
     - The item required to obtain hints via the progressive hint system.
   */
@@ -1443,9 +1453,10 @@
     "bosses_selected": 296,
     "ice_trap_model_v2": 297,
     "progressive_hint_algorithm": 298,
-    "no_pause_hints": 299,
+    "pause_hints_setting": 299,
     "hint_door_item": 300,
-    "hint_door_item_count": 301
+    "hint_door_item_count": 301,
+    "pause_hints_lockout_timer": 302
   },
   /*
     SettingsStringDataType:
@@ -1542,6 +1553,7 @@
     "random_starting_region_new": { "obj": "RandomStartingRegion" },
     "cb_medal_behavior_new": { "obj": "CBRequirement" },
     "wrinkly_hints": { "obj": "WrinklyHints" },
+    "pause_hints_setting": { "obj": "PauseHintSetting" },
     "spoiler_hints": { "obj": "SpoilerHints" },
     "starting_kong": { "obj": "Kongs" },
     "remove_barriers_selected": { "obj": "RemovedBarriersSelected" },
@@ -1958,8 +1970,8 @@
     "SettingsStringEnum.wrinkly_available": {
       "obj": "SettingsStringDataType.bool"
     },
-    "SettingsStringEnum.no_pause_hints": {
-      "obj": "SettingsStringDataType.bool"
+    "SettingsStringEnum.pause_hints_setting": {
+      "obj": "PauseHintSetting"
     },
     "SettingsStringEnum.wrinkly_hints": { "obj": "WrinklyHints" },
     "SettingsStringEnum.wrinkly_location_rando": {
@@ -2019,6 +2031,9 @@
     },
     "SettingsStringEnum.hint_door_item_count": {
       "obj": "SettingsStringDataType.u16"
+    },
+    "SettingsStringEnum.pause_hints_lockout_timer": {
+      "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.random_starting_move_list_selected": {
       "obj": "SettingsStringDataType.list"
@@ -2319,6 +2334,7 @@
     "SettingsStringEnum.progressive_hint_text": { "max": 201, "min": 0 },
     "SettingsStringEnum.progressive_hint_count": { "max": 3500, "min": 0 },
     "SettingsStringEnum.hint_door_item_count": { "max": 3500, "min": 0 },
+    "SettingsStringEnum.pause_hints_lockout_timer": { "max": 255, "min": 0 },
     "SettingsStringEnum.win_condition_count": { "max": 255, "min": 0 }
   }
 }

@@ -1335,6 +1335,32 @@ function update_hint_door_num_access() {
   }
 }
 
+function update_pause_hint_num_access() {
+  const DISABLED_PAUSE_HINT_VALUES = [
+    "normal",
+    "off",
+  ];
+
+  const pauseHintSelection = document.getElementById("pause_hints_setting");
+  const pauseHintContainer = document.getElementById("pause_hints_container");
+  const pauseHintReq = document.getElementById("pause_hints_lockout_timer");
+  const disabled = DISABLED_PAUSE_HINT_VALUES.includes(pauseHintSelection.value);
+
+  if (disabled) {
+    pauseHintContainer.classList.add("hide-input");
+  } else {
+    pauseHintContainer.classList.remove("hide-input");
+  }
+
+  if (!pauseHintReq.value) {
+    pauseHintReq.value = 1;
+  } else {
+    if (parseInt(pauseHintReq.value) > 255) {
+      pauseHintReq.value = 255;
+    }
+  }
+}
+
 document
   .getElementById("progressive_hint_item")
   .addEventListener("change", update_prog_hint_num_access);
@@ -1343,6 +1369,10 @@ document
 document
   .getElementById("hint_door_item")
   .addEventListener("change", update_hint_door_num_access);
+
+document
+  .getElementById("pause_hints_setting")
+  .addEventListener("change", update_pause_hint_num_access);
 
 // Validate blocker input on loss of focus
 function max_randomized_blocker() {
@@ -2198,6 +2228,7 @@ function update_ui_states() {
   refreshItemRandoSortable();
   update_prog_hint_num_access();
   update_hint_door_num_access();
+  update_pause_hint_num_access();
   update_blocker_num_access();
   update_ice_trap_count();
   getTotalItemCounts();

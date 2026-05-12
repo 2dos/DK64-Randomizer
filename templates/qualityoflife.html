@@ -269,62 +269,95 @@
                         </select>
                     </div>
                 </div>
-            </div>
-            <div class="item-select">
-                <p class="select-title" style="margin-bottom:5px;">Hint Door Locking Item</p>
-                <div class="d-flex select-number-container" id="hint_door_item_container">
-                    <select name="hint_door_item"
-                            id="hint_door_item"
-                            display_name="Hint Door Locking Item"
-                            class="form-select center-div"
-                            aria-label="Hint Door Locking Item"
-                            data-toggle="tooltip"
-                            title="The item required access hint doors. ">
-                        <option selected id="off" value="off" title="">
-                            Not Locked
-                        </option>
-                        <option id="req_gb" value="req_gb">
-                            Golden Bananas
-                        </option>
-                        <option id="req_bp" value="req_bp">
-                            Blueprints
-                        </option>
-                        <option id="req_key" value="req_key">
-                            Keys
-                        </option>
-                        <option id="req_medal" value="req_medal">
-                            Medals
-                        </option>
-                        <option id="req_crown" value="req_crown">
-                            Crowns
-                        </option>
-                        <option id="req_fairy" value="req_fairy">
-                            Fairies
-                        </option>
-                        <option id="req_rainbowcoin" value="req_rainbowcoin">
-                            Rainbow Coins
-                        </option>
-                        {# <option id="req_bean" value="req_bean">
-                            Bean
-                        </option> #}
-                        <option id="req_pearl" value="req_pearl">
-                            Pearls
-                        </option>
-                        <option id="req_cb" value="req_cb">
-                            Colored Bananas
-                        </option>
-                    </select>
-                    <input min="1"
-                            max="3500"
-                            name="hint_door_item_count"
-                            id="hint_door_item_count"
-                            display_name="Final Level Hint Door Requirement"
-                            class="form-control center-div"
-                            type="number"
-                            data-toggle="tooltip"
-                            title="Item count for the last level's hint doors."
-                            default="1"
-                            placeholder="1"/>
+                <div class="item-select">
+                    <p class="select-title" style="margin-bottom:5px;">Hint Door Locking Item</p>
+                    <div class="d-flex select-number-container" id="hint_door_item_container">
+                        <select name="hint_door_item"
+                                id="hint_door_item"
+                                display_name="Hint Door Locking Item"
+                                class="form-select center-div"
+                                aria-label="Hint Door Locking Item"
+                                data-toggle="tooltip"
+                                title="The item required access hint doors. ">
+                            <option selected id="off" value="off" title="">
+                                Not Locked
+                            </option>
+                            <option id="req_gb" value="req_gb">
+                                Golden Bananas
+                            </option>
+                            <option id="req_bp" value="req_bp">
+                                Blueprints
+                            </option>
+                            <option id="req_key" value="req_key">
+                                Keys
+                            </option>
+                            <option id="req_medal" value="req_medal">
+                                Medals
+                            </option>
+                            <option id="req_crown" value="req_crown">
+                                Crowns
+                            </option>
+                            <option id="req_fairy" value="req_fairy">
+                                Fairies
+                            </option>
+                            <option id="req_rainbowcoin" value="req_rainbowcoin">
+                                Rainbow Coins
+                            </option>
+                            {# <option id="req_bean" value="req_bean">
+                                Bean
+                            </option> #}
+                            <option id="req_pearl" value="req_pearl">
+                                Pearls
+                            </option>
+                            <option id="req_cb" value="req_cb">
+                                Colored Bananas
+                            </option>
+                        </select>
+                        <input min="1"
+                                max="3500"
+                                name="hint_door_item_count"
+                                id="hint_door_item_count"
+                                display_name="Final Level Hint Door Requirement"
+                                class="form-control center-div"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Item count for the last level's hint doors."
+                                default="1"
+                                placeholder="1"/>
+                    </div>
+                </div>
+                <div class="item-select">
+                    <p class="select-title" style="margin-bottom:5px;">Pause Menu Hints</p>
+                    <div class="d-flex select-number-container" id="pause_hints_container">
+                        <select name="pause_hints_setting"
+                                id="pause_hints_setting"
+                                display_name="Pause Menu Hints"
+                                class="form-select center-div"
+                                aria-label="Pause Menu Hints"
+                                data-toggle="tooltip"
+                                title="Determines whether the pause menu will display hints, and how that screen behaves:&#10;- Enabled: Pause Menu will display hints on the last screen.&#10;- Disabled: The pause menu hints screen will not be available&#10;- Cooldown timer: Upon viewing the pause hint screen with new hints unlocked, you will be locked out of closing the pause menu for a user-defined amount of seconds per set of 4 unlocked hints.">
+                            <option selected id="normal" value="normal" title="">
+                                Enabled
+                            </option>
+                            <option id="off" value="off">
+                                Disabled
+                            </option>
+                            <option id="lockout" value="lockout">
+                                Cooldown timer
+                            </option>
+                        </select>
+                        <input min="1"
+                                max="255"
+                                name="pause_hints_lockout_timer"
+                                id="pause_hints_lockout_timer"
+                                display_name="Hint Lockout Timer"
+                                class="form-control center-div"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="The amount of seconds you will be locked out of closing the pause menu for viewing the hints screen (per set of 4) on the pause menu."
+                                default="1"
+                                placeholder="1"/>
+                    </div>
                 </div>
             </div>
             <div class="flex-container">
@@ -361,17 +394,6 @@
                                 display_name="Kongless Hint Doors"
                                 value="True"/>
                         Kongless Hint Doors
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Disables hints being displayed on the pause menu.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="no_pause_hints"
-                                display_name="Disable Pause Screen Hints"
-                                value="True"/>
-                        Disable Pause Screen Hints
                     </label>
                 </div>
                 <div class="form-check form-switch item-switch">

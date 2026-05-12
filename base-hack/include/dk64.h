@@ -132,6 +132,7 @@ extern int unkTextFunction1(int unk0, void *text, int unk2, float unk3, float un
 extern int getObjectID(int index);
 extern void HUDSpriteUpdate(sprite_info *sprite);
 extern void PauseSpriteUpdate(sprite_info *sprite);
+extern void pauseMenuCode(void);
 
 extern void warpActorToParent(void *actor, void *parent, float scale);
 

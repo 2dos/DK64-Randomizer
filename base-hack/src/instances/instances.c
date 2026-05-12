@@ -231,7 +231,7 @@ void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk
 		}
 	}
 	if (locked) {
-		kong = 5;
+		kong = 35 - (world * 5);
 		textParameter = Rando.hint_door_item_requirement[world];
 	} else {
 		if (Rando.hints_are_items) {

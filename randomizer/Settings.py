@@ -774,7 +774,8 @@ class Settings:
         self.helm_room_bonus_count = HelmBonuses.two
         # self.quality_of_life = None  # Deprecated
         self.wrinkly_available = False
-        self.no_pause_hints = False
+        self.pause_hints_setting = PauseHintSetting.normal
+        self.pause_hints_lockout_timer = 0
         self.shorten_boss = False
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None

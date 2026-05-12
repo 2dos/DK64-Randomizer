@@ -372,23 +372,6 @@ typedef struct ISGFadeoutData {
 	/* 0x005 */ char unk_05[0x3];
 } ISGFadeoutData;
 
-typedef struct SwapObjectData {
-	/* 0x000 */ char unk_00[0x4];
-	/* 0x004 */ playerData* player;
-	/* 0x008 */ char unk_08[0x210-0x8];
-	/* 0x210 */ floatPos cameraPositions[4];
-	/* 0x240 */ char unk_21C[0x284-0x240];
-	/* 0x284 */ float near;
-	/* 0x288 */ char unk_288[0x290-0x288];
-	/* 0x290 */ short chunk;
-	/* 0x292 */ char unk_292[0x29C-0x292];
-	/* 0x29C */ short action_type;
-	/* 0x29E */ char unk_29E[0x2C0 - 0x29E];
-	/* 0x2C0 */ char size;
-	/* 0x2C1 */ char unk_2C1[0x2E2 - 0x2C1];
-	/* 0x2E2 */ unsigned short unk_2e2;
-} SwapObjectData;
-
 typedef struct behaviour_data {
 	/* 0x000 */ void* extra_data;
 	/* 0x004 */ char unk_04[0x10-0x4];
@@ -1638,6 +1621,24 @@ typedef struct Controller {
 	/* 0x002 */ char stickX;
 	/* 0x003 */ char stickY;
 } Controller;
+
+typedef struct SwapObjectData {
+	/* 0x000 */ char unk_00[0x4];
+	/* 0x004 */ playerData* player;
+	/* 0x008 */ char unk_08[0x210-0x8];
+	/* 0x210 */ floatPos cameraPositions[4];
+	/* 0x240 */ char unk_21C[0x284-0x240];
+	/* 0x284 */ float near;
+	/* 0x288 */ char unk_288[0x290-0x288];
+	/* 0x290 */ short chunk;
+	/* 0x292 */ char unk_292[0x298-0x292];
+	/* 0x298 */ Controller *new_inputs;
+	/* 0x29C */ short action_type;
+	/* 0x29E */ char unk_29E[0x2C0 - 0x29E];
+	/* 0x2C0 */ char size;
+	/* 0x2C1 */ char unk_2C1[0x2E2 - 0x2C1];
+	/* 0x2E2 */ unsigned short unk_2e2;
+} SwapObjectData;
 
 typedef struct Border {
 	/* 0x000 */ char player_count;

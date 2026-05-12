@@ -37,6 +37,7 @@ from randomizer.Enums.Settings import (
     LogicType,
     MinigameBarrels,
     MoveRando,
+    PauseHintSetting,
     ProgressiveHintItem,
     RandomPrices,
     RandomStartingRegion,
@@ -4391,7 +4392,7 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
         found_incompatibilities += "No non-K Rool bosses selected with K. Rool banned from T&S. "
     if settings.krool_in_boss_pool_v2 != KroolInBossPool.full_shuffle and len([x for x in settings.bosses_selected if x in krool_maps]) == 0:
         found_incompatibilities += "No K Rool bosses selected with regular bosses banned from final boss sequence. "
-    if settings.no_pause_hints:
+    if settings.pause_hints_setting == PauseHintSetting.off:
         # Check for any settings which would require the pause hint screen
         if settings.progressive_hint_item != ProgressiveHintItem.off:
             found_incompatibilities += "Progressive hints cannot be enabled if pause screen hint display is turned off. "

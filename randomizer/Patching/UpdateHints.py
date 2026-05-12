@@ -6,7 +6,7 @@ from randomizer.Patching.Library.Generic import getProgHintBarrierItem
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.ASMPatcher import writeItemReferenceFlags
 from randomizer.Enums.Types import BarrierItems
-from randomizer.Enums.Settings import WinConditionComplex
+from randomizer.Enums.Settings import WinConditionComplex, ProgressiveHintItem
 
 MAX_LINES = 3
 MAX_LINE_LENGTH = 400
@@ -247,8 +247,8 @@ def PushHints(spoiler, ROM_COPY: LocalROM):
             hint_arr.append([hint_info.hint.upper()])
         else:
             item_name = "SOMETHINGS"
-            if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
-                item = getProgHintBarrierItem(spoiler.settings.progressive_hint_item)
+            if spoiler.settings.hint_door_item != ProgressiveHintItem.off:
+                item = getProgHintBarrierItem(spoiler.settings.hint_door_item)
                 mapping_table = {
                     BarrierItems.GoldenBanana: "GOLDEN BANANAS",
                     BarrierItems.Blueprint: "BLUEPRINTS",
