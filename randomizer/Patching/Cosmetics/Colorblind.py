@@ -22,7 +22,7 @@ from randomizer.Patching.Library.ASM import getROMAddress, populateOverlayOffset
 from randomizer.Patching.Patcher import ROM
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Types import Types
-from PIL import ImageEnhance, Image
+from randomizer.Patching.LazyPIL import Image, ImageEnhance
 
 
 def changeVertexColor(num_data: list[int], offset: int, new_color: list[int]) -> list[int]:
@@ -850,14 +850,17 @@ def recolorHintItem(mode: ColorblindMode, ROM_COPY: ROM):
         im = Image.new("RGBA", (32, 32), color)
         writeColorImageToROM(im, 25, texture, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
 
+
 BALLOON_START = [5835, 5827, 5843, 5851, 5819]
+
+
 def addBalloonBulb(settings, ROM_COPY, mode: ColorblindMode):
     """Add the bulb portion of the balloon to not include the colored banana icon."""
     if Types.Balloon not in settings.shuffled_location_types:
         return
     for kong in range(5):
         color = getKongItemColor(mode, kong, True)
-        bulb_image = Image.open(BytesIO(js.getFile("base-hack/assets/displays/balloon_bulb.png")))
+        bulb_image = Image.open(BytesIO(bytes(js.getFile("base-hack/assets/displays/balloon_bulb.png"))))
         w, h = bulb_image.size
         px = bulb_image.load()
         for y in range(h):

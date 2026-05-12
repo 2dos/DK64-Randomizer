@@ -121,7 +121,55 @@ class ROM:
         Returns:
             bytes: List of bytes read from current position.
         """
-        return bytes(self.rom.readBytes(len))
+        if self.rom is None:
+            raise RuntimeError("ROM object is None - ROM not initialized")
+
+        # Check if ROM has readBytes method
+        if not hasattr(self.rom, "readBytes"):
+            raise RuntimeError(f"ROM object does not have readBytes method. Type: {type(self.rom)}")
+
+        try:
+            result = self.rom.readBytes(len)
+        except Exception as e:
+            # Get current file position for debugging
+            offset = self.rom.offset if hasattr(self.rom, "offset") else "unknown"
+            raise RuntimeError(f"Failed to read {len} bytes at offset {offset}: {str(e)}") from e
+
+        # Convert JsProxy to Python bytes (for Pyodide compatibility)
+        if hasattr(result, "to_py"):
+            result = result.to_py()
+
+        if result is None:
+            offset = self.rom.offset if hasattr(self.rom, "offset") else "unknown"
+            raise RuntimeError(
+                f"readBytes returned None for len={len} at offset {offset}. "
+                f"This usually means the ROM file position is invalid or the ROM wasn't properly initialized. "
+                f"For proto-based patches, ensure patchedRom.convert() was called."
+            )
+
+        # Detect past-EOF reads: Pyodide turns JS `undefined` (from reading
+        # past _u8array's end) into Python None inside the result list. The
+        # outer object isn't None, but its elements are, which makes the
+        # subsequent `bytes(result)` raise a cryptic
+        # `TypeError: 'NoneType' object cannot be interpreted as an integer`.
+        # Surface a clearer message instead so the real cause (ROM not
+        # base-hack-converted / read past EOF) is obvious.
+        try:
+            has_none_element = any(b is None for b in result)
+        except TypeError:
+            has_none_element = False
+        if has_none_element:
+            offset = self.rom.offset if hasattr(self.rom, "offset") else "unknown"
+            file_size = self.rom.fileSize if hasattr(self.rom, "fileSize") else "unknown"
+            raise RuntimeError(
+                f"readBytes read past end of ROM: tried to read {len} bytes "
+                f"at offset {offset} (fileSize={file_size}). This usually "
+                f"means the ROM is not the expanded base-hack image - for "
+                f"proto-based (.lanky) patches, make sure apply_base_hack_bps() "
+                f"ran before patching_response()."
+            )
+
+        return bytes(result)
 
     def fixChecksum(self):
         """Fix the checksum of the current file."""
@@ -145,7 +193,7 @@ def load_base_rom() -> None:
             patch = open("./static/patches/shrink-dk64.bps", "rb")
         except Exception:
             try:
-                patch = BytesIO(js.getFile("static/patches/shrink-dk64.bps"))
+                patch = BytesIO(bytes(js.getFile("static/patches/shrink-dk64.bps")))
             except Exception:
                 patch = open("./worlds/dk64/static/patches/shrink-dk64.bps", "rb")
 

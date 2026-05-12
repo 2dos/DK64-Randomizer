@@ -182,10 +182,10 @@ LogicRegions = {
         TransitionFront(Regions.KremIsle, lambda _: True),
         TransitionFront(Regions.IslesHill, lambda l: l.climbing or l.assumeUpperIslesAccess),
         TransitionFront(Regions.CabinIsle, lambda l: (l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events) and l.cannons),
-        TransitionFront(Regions.FungiForestLobby, lambda l: (l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events) and ((l.cannons or l.assumeLevel5Entry))),
         TransitionFront(Regions.CreepyCastleLobby, lambda l: (l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events) and (l.cannons or l.assumeLevel7Entry), Transitions.IslesMainToCastleLobby),
         TransitionFront(Regions.KremIsleTopLevel, lambda l: l.tbs),
         TransitionFront(Regions.KRool, lambda l: l.CanAccessKRool() or l.assumeKRoolAccess),
+        TransitionFront(Regions.CabinDoor, lambda l: l.assumeLevel5Entry),
     ]),
 
     Regions.OuterIsles: Region("Outer Isles", HintRegion.OuterIsles, Levels.DKIsles, False, None, [
@@ -401,7 +401,13 @@ LogicRegions = {
         TransitionFront(Regions.IslesMainUpper, lambda l: l.twirl and l.istiny and l.monkey_maneuvers),
         TransitionFront(Regions.IslesAboveWaterfall, lambda l: l.monkey_maneuvers and (((l.isdiddy or l.isdonkey or l.ischunky) and not l.isKrushaAdjacent(l.kong)) or (l.istiny and l.twirl))),
         TransitionFront(Regions.IslesAirspace, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy),
-        TransitionFront(Regions.FungiForestLobby, lambda _: True, Transitions.IslesMainToForestLobby),
+        TransitionFront(Regions.CabinDoor, lambda _: True,),
+    ]),
+
+    Regions.CabinDoor: Region("Cabin Door", HintRegion.OuterIsles, Levels.DKIsles, False, None, [
+        ], [], [
+            TransitionFront(Regions.CabinIsle, lambda l: not l.assumeLevel5Entry),
+            TransitionFront(Regions.FungiForestLobby, lambda _: True, Transitions.IslesMainToForestLobby),
     ]),
 
     Regions.IslesAboveWaterfall: Region("Isles Above Waterfall", HintRegion.MainIsles, Levels.DKIsles, False, None, [

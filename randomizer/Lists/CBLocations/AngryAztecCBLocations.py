@@ -2921,7 +2921,7 @@ BalloonList = [
         region=Regions.BetweenVinesByPortal,
         logic=lambda l: l.pineapple,
         points=[[98, 195, 644], [38, 195, 592], [136, 195, 487], [38, 195, 592]],
-        banned_when_item_rando=True, # Over quicksand
+        banned_when_item_rando=True,  # Over quicksand
     ),
     Balloon(
         id=2,
@@ -2932,7 +2932,7 @@ BalloonList = [
         region=Regions.BetweenVinesByPortal,
         logic=lambda l: l.pineapple,
         points=[[558, 195, 455], [527, 195, 587], [493, 195, 704]],
-        banned_when_item_rando=True, # Over quicksand
+        banned_when_item_rando=True,  # Over quicksand
     ),
     Balloon(
         id=3,
@@ -2990,7 +2990,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecOasis,
         points=[[2218, 50, 1087], [2225, 80, 1080], [2230, 110, 1085], [2223, 140, 1092]],
-        banned_when_item_rando=True, # Goes out of bounds
+        banned_when_item_rando=True,  # Goes out of bounds
     ),
     Balloon(
         id=9,
@@ -3016,7 +3016,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecConnectorTunnel,
         points=[[3353, 180, 2186], [3363, 180, 2342], [3275, 180, 2434]],
-        banned_when_item_rando=True, # Over quicksand
+        banned_when_item_rando=True,  # Over quicksand
     ),
     Balloon(
         id=11,
@@ -3157,7 +3157,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LlamaTempleBack,
         points=[[948, 490, 3779], [1058, 480, 4098], [1326, 490, 3994], [1214, 510, 3826]],
-        banned_when_item_rando=True, # Over Lava
+        banned_when_item_rando=True,  # Over Lava
     ),
     Balloon(
         id=24,
@@ -3281,7 +3281,7 @@ BalloonList = [
         region=Regions.AngryAztecMain,
         vanilla=True,
         points=[[2870, 169, 2606], [2984, 191, 2547], [3010, 187, 2463]],
-        banned_when_item_rando=True, # Over quicksand
+        banned_when_item_rando=True,  # Over quicksand
     ),
     Balloon(
         id=35,
@@ -3299,7 +3299,7 @@ BalloonList = [
         name="Behind Llama Temple",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        item_rando_konglist = [Kongs.donkey],
+        item_rando_konglist=[Kongs.donkey],
         item_logic=lambda l: l.strongKong and l.donkey,
         region=Regions.AngryAztecMain,
         vanilla=True,
@@ -3314,7 +3314,7 @@ BalloonList = [
         region=Regions.AngryAztecMain,
         vanilla=True,
         points=[[2811, 196, 2402], [2873, 195, 2318], [2956, 189, 2247]],
-        banned_when_item_rando=True, # Over quicksand
+        banned_when_item_rando=True,  # Over quicksand
     ),
     Balloon(
         id=38,
@@ -3337,7 +3337,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BetweenVinesByPortal,
         points=[[1154, 160, 1224], [934, 156, 1183], [823, 155, 1047], [791, 160, 563], [823, 155, 1047], [934, 156, 1183]],
-        banned_when_item_rando=True, # Over quicksnad
+        banned_when_item_rando=True,  # Over quicksnad
     ),
     Balloon(
         id=40,
@@ -3356,7 +3356,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecOasis,
         points=[[2248, 110, 612], [2362, 115, 656], [2458, 110, 599], [2362, 110, 656]],
-        banned_when_item_rando=True, # Over quicksand
+        banned_when_item_rando=True,  # Over quicksand
     ),
     Balloon(
         id=42,
@@ -3537,7 +3537,7 @@ BalloonList = [
         konglist=[Kongs.lanky],
         region=Regions.LlamaTempleMatching,
         points=[[696, 666, 2510], [696, 860, 2510], [719, 640, 2292], [719, 888, 2292]],
-        banned_when_item_rando=True, # Over lava
+        banned_when_item_rando=True,  # Over lava
     ),
     Balloon(
         id=60,
@@ -3556,7 +3556,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LlamaTempleBack,
         points=[[1202, 400, 3985], [1128, 500, 3954], [1070, 402, 3886], [1168, 290, 3927]],
-        banned_when_item_rando=True, # Over Lava
+        banned_when_item_rando=True,  # Over Lava
     ),
     Balloon(
         id=62,

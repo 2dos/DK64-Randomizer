@@ -2279,7 +2279,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesCatacomb,
         points=[[970, 85, 545], [1078, 80, 981], [809, 80, 722]],
-        banned_when_item_rando=True, # Over Pit
+        banned_when_item_rando=True,  # Over Pit
     ),
     Balloon(
         id=33,
@@ -2289,7 +2289,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesCatacomb,
         points=[[737, 80, 549], [735, 80, 690], [857, 60, 888]],
-        banned_when_item_rando=True, # Over Pit
+        banned_when_item_rando=True,  # Over Pit
     ),
     Balloon(
         id=34,

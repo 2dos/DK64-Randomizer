@@ -393,7 +393,7 @@ LogicRegions = {
         LocationLogic(Locations.HoldableKegMillFrontFar, lambda l: l.barrels and l.ischunky),
         LocationLogic(Locations.HoldableKegMillFrontNear, lambda l: l.barrels and l.ischunky),
         LocationLogic(Locations.BreakableForestMillFront, lambda l: l.Slam),
-        LocationLogic(Locations.Balloon066, lambda l: l.isdonkey and l.coconut and l.Slam and l.CanSlamSwitch(Levels.FungiForest, 2)),
+        LocationLogic(Locations.Balloon066, lambda l: l.isdonkey and l.coconut and l.CanSlamSwitch(Levels.FungiForest, 2)),
     ], [
         Event(Events.ConveyorActivated, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.CanPhase() or l.generalclips) and l.grab and l.donkey),
     ], [

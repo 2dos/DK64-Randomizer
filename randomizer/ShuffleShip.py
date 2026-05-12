@@ -1,7 +1,9 @@
 """Shuffle the final boss location within the game."""
+
 from randomizer.Lists.ShipLocations import ship_locations
 from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import TransitionFront
+
 
 def ShuffleShip(spoiler):
     """Shuffle ship function based on settings."""
@@ -20,6 +22,4 @@ def ShuffleShip(spoiler):
     for reg in spoiler.RegionList:
         spoiler.RegionList[reg].exits = [x for x in spoiler.RegionList[reg].exits if x.dest != Regions.KRool]
     # Add the new link
-    spoiler.RegionList[loc.region].exits.append(
-        TransitionFront(Regions.KRool, lambda l: (l.CanAccessKRool() and loc.logic(l)) or l.assumeKRoolAccess)
-    )
+    spoiler.RegionList[loc.region].exits.append(TransitionFront(Regions.KRool, lambda l: (l.CanAccessKRool() and loc.logic(l)) or l.assumeKRoolAccess))

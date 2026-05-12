@@ -293,3 +293,4 @@ class Regions(IntEnum):
     SnideLastGroup = 290
     FactoryArcadePole = 291
     MushroomVeryTopExterior = 292
+    CabinDoor = 293

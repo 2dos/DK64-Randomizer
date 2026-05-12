@@ -8,7 +8,7 @@ from randomizer.Settings import Settings
 from randomizer.Patching.Library.ASM import getROMAddress, populateOverlayOffsets, Overlay
 from randomizer.Patching.Library.Image import writeColorImageToROM, TextureFormat, getImageFile, writeColorImageToAddress, ExtraTextures, getBonusSkinOffset
 from randomizer.Patching.Patcher import ROM
-from PIL import Image
+from randomizer.Patching.LazyPIL import Image
 
 
 def writeTransition(settings: Settings, ROM_COPY: ROM) -> None:

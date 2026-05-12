@@ -5,7 +5,7 @@ import random
 import gzip
 import math
 from enum import IntEnum, auto
-from PIL import Image, ImageEnhance
+from randomizer.Patching.LazyPIL import Image, ImageEnhance
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import ColorblindMode
 from randomizer.Enums.Kongs import Kongs

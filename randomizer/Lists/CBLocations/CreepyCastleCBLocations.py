@@ -2830,7 +2830,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
         points=[[586, 330, 325], [404, 330, 340]],
-        banned_when_item_rando=True, # No Land
+        banned_when_item_rando=True,  # No Land
     ),
     Balloon(
         id=2,
@@ -2896,7 +2896,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
         points=[[1228, 910, 2110], [850, 890, 2136]],
-        banned_when_item_rando=True, # No land
+        banned_when_item_rando=True,  # No land
     ),
     Balloon(
         id=9,
@@ -2915,7 +2915,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
         points=[[1279, 1060, 984], [1132, 1060, 1002]],
-        banned_when_item_rando=True, # Might stick to wall
+        banned_when_item_rando=True,  # Might stick to wall
     ),
     Balloon(
         id=11,
@@ -2950,7 +2950,7 @@ BalloonList = [
             [2080, 1495, 1142],
             [2085, 1480, 1331],
         ],
-        banned_when_item_rando=True, # No Land
+        banned_when_item_rando=True,  # No Land
     ),
     Balloon(
         id=14,
@@ -3095,7 +3095,7 @@ BalloonList = [
         konglist=[Kongs.lanky, Kongs.tiny],
         region=Regions.Mausoleum,
         points=[[1002, 220, 1731], [1002, 0, 1731]],
-        banned_when_item_rando=True, # Over Acid
+        banned_when_item_rando=True,  # Over Acid
     ),
     Balloon(
         id=28,
@@ -3106,7 +3106,7 @@ BalloonList = [
         region=Regions.Mausoleum,
         logic=lambda l: l.twirl or (l.monkey_maneuvers and (not l.isKrushaAdjacent(Kongs.tiny))),
         points=[[1304, 240, 2150], [967, 230, 2140]],
-        banned_when_item_rando=True, # Over Acid
+        banned_when_item_rando=True,  # Over Acid
     ),
     Balloon(
         id=29,
@@ -3134,7 +3134,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.UpperCave,
         points=[[900, 240, 820], [900, 0, 820]],
-        banned_when_item_rando=True, # Over Pit
+        banned_when_item_rando=True,  # Over Pit
     ),
     Balloon(
         id=32,
@@ -3221,7 +3221,7 @@ BalloonList = [
         vanilla=True,
         logic=lambda l: l.sprint or l.generalclips or l.CanPhase(),
         points=[[2366, 134, 465], [2399, 124, 652], [2270, 126, 563]],
-        banned_when_item_rando=True, #Over Acid
+        banned_when_item_rando=True,  # Over Acid
     ),
     Balloon(
         id=41,
@@ -3371,7 +3371,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleMain,
         points=[[154, 477, 437], [69, 477, 569], [64, 477, 747], [69, 477, 569]],
-        banned_when_item_rando=True, # Over Pit
+        banned_when_item_rando=True,  # Over Pit
     ),
     Balloon(
         id=56,
@@ -3408,7 +3408,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CastleVeryBottom,
         points=[[1020, 400, 2044], [1006, 444, 2140], [1003, 319, 2089]],
-        banned_when_item_rando=True, # Over Void
+        banned_when_item_rando=True,  # Over Void
     ),
     Balloon(
         id=60,
@@ -3527,7 +3527,7 @@ BalloonList = [
         speed=13,
         konglist=[Kongs.donkey],
         region=Regions.LibraryPastSlam,
-        item_logic= lambda l: l.strongKong and l.donkey,
+        item_logic=lambda l: l.strongKong and l.donkey,
         points=[[2266, 200, 470], [2266, 200, 270], [2376, 260, 270], [2376, 260, 470], [2467, 215, 470], [2467, 215, 270], [2556, 280, 270], [2556, 280, 470]],
     ),
     Balloon(

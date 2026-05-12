@@ -1,6 +1,11 @@
-"""AP Item Packet mappings - converts items to giveItem parameters."""
+"""AP item packet construction for the DK64 client.
 
-from typing import Dict, Any, Optional
+Single source of truth for converting the items.py count_id schema into the
+4-byte ap_item_packet that the C side reads (see base-hack/src/item rando/
+archipelago.c::handleSentItem and item_handler.c::giveItem).
+"""
+
+from typing import Dict, Any, Optional, Tuple
 
 # requirement_item enum values from common_enums.h
 REQITEM_NONE = 0x00
@@ -27,7 +32,7 @@ REQITEM_SHOPKEEPER = 0x14
 REQITEM_AP = 0x15
 REQITEM_RACECOIN = 0x16
 
-# Config flag bitfield values
+# giveItemConfig bitfield values
 CONFIG_DISPLAY_ITEM_TEXT = 0x01
 CONFIG_APPLY_HELM_HURRY = 0x02
 CONFIG_GIVE_COINS = 0x04
@@ -58,7 +63,7 @@ ICE_TRAP_TYPES = {
 
 
 class APItemPacket:
-    """Represents an AP item packet for sending to the C code."""
+    """4-byte packet matching the C-side ap_item_packet struct."""
 
     def __init__(self, item_type: int, level: int = 0, kong: int = 0, config_flags: int = 0):
         """Initialize an AP item packet.
@@ -66,7 +71,7 @@ class APItemPacket:
         Args:
             item_type: requirement_item enum value
             level: Level/tier parameter for giveItem
-            kong: Kong index or other context parameter
+            kong: Kong index or other context parameter (e.g. ice trap type)
             config_flags: Packed giveItemConfig bitfield
         """
         self.item_type = item_type
@@ -74,118 +79,99 @@ class APItemPacket:
         self.kong = kong
         self.config_flags = config_flags
 
-    def to_bytes(self) -> bytes:
-        """Convert the packet to 4 bytes for writing to memory (little-endian)."""
-        return bytes([self.item_type, self.level, self.kong, self.config_flags])
-
     def to_u32(self) -> int:
-        """Convert the packet to a 32-bit integer for writing to memory."""
+        """Pack the packet into a big-endian 32-bit word for write_u32."""
         return (self.item_type << 24) | (self.level << 16) | (self.kong << 8) | self.config_flags
 
 
-def get_item_packet(count_data: Dict[str, Any]) -> Optional[APItemPacket]:
-    """Convert count_data to an APItemPacket.
+# REQITEM_MOVE (level, kong) parameters keyed by count_id["item"] from items.py.
+#
+# Levels match the C handler in item_handler.c::giveItem REQITEM_MOVE switch:
+#   0..2 = special move bit (kong-specific)
+#   3    = slam upgrade (giveSlamLevel)
+#   4    = gun (kong-specific weapon bit)
+#   5    = homing ammo (all kongs)
+#   6    = sniper sight (all kongs)
+#   7    = ammo belt (all kongs)
+#   8    = instrument (kong-specific)
+#   9    = progressive instrument upgrade (all kongs)
+#
+ITEM_ID_TO_MOVE_PARAMS: Dict[int, Tuple[int, int]] = {
+    # Slam upgrade
+    2: (3, 0),
+    # DK special moves
+    26: (0, 0),  # Baboon Blast
+    27: (1, 0),  # Strong Kong
+    28: (2, 0),  # Gorilla Grab
+    # Diddy special moves
+    29: (0, 1),  # Chimpy Charge
+    30: (1, 1),  # Rocketbarrel Boost
+    31: (2, 1),  # Simian Spring
+    # Lanky special moves
+    32: (0, 2),  # Orangstand
+    33: (1, 2),  # Baboon Balloon
+    34: (2, 2),  # Orangstand Sprint
+    # Tiny special moves
+    35: (0, 3),  # Mini Monkey
+    36: (1, 3),  # Pony Tail Twirl
+    37: (2, 3),  # Monkeyport
+    # Chunky special moves
+    38: (0, 4),  # Hunky Chunky
+    39: (1, 4),  # Primate Punch
+    40: (2, 4),  # Gorilla Gone
+    # Instruments
+    41: (8, 0),  # Bongos
+    42: (8, 1),  # Guitar
+    43: (8, 2),  # Trombone
+    44: (8, 3),  # Saxophone
+    45: (8, 4),  # Triangle
+    # Guns
+    46: (4, 0),  # Coconut
+    47: (4, 1),  # Peanut
+    48: (4, 2),  # Grape
+    49: (4, 3),  # Feather
+    50: (4, 4),  # Pineapple
+    # Shared upgrades
+    52: (5, 0),  # Homing Ammo
+    53: (6, 0),  # Sniper Sight
+    54: (7, 0),  # Ammo Belt
+    55: (9, 0),  # Instrument Upgrade
+}
 
-    This function maps the count_id data structure to the generic packet format
-    that the C code expects.
 
-    Args:
-        count_data: The count_id dictionary from item_ids
+def build_packet(count_data: Dict[str, Any]) -> Optional[APItemPacket]:
+    """Build an APItemPacket from a count_id dict.
 
-    Returns:
-        APItemPacket or None if this item should not use the fed system
+    Returns None for items that should not use the packet system (those are
+    written directly to CountStruct by the caller).
     """
     if not isinstance(count_data, dict):
         return None
 
-    # Default config: display=0, helm_hurry=1 (most items)
-    config = CONFIG_APPLY_HELM_HURRY
-
-    # Check for ice trap
+    # Ice traps: kong field carries the trap type
     if "ice_trap_type" in count_data:
-        trap_type = count_data.get("ice_trap_type", "bubble")
-        trap_kong = ICE_TRAP_TYPES.get(trap_type, 1)  # Default to bubble
-        return APItemPacket(item_type=REQITEM_ICETRAP, level=0, kong=trap_kong, config_flags=CONFIG_APPLY_ICE_TRAP)  # Ice traps should have ice trap flag
+        trap_kong = ICE_TRAP_TYPES.get(count_data["ice_trap_type"], 1)
+        return APItemPacket(REQITEM_ICETRAP, 0, trap_kong, CONFIG_APPLY_ICE_TRAP)
 
-    # Handle items with specific item/level structure (moves, slams, etc.)
-    if "item" in count_data and "level" in count_data:
-        item_id = count_data.get("item")
-        level = count_data.get("level")
-        kong = count_data.get("kong", 0)  # Some moves have kong parameter
+    # Rainbow coins: special config flag triggers coin spawn
+    if count_data.get("field") == "rainbow_coins":
+        return APItemPacket(REQITEM_RAINBOWCOIN, 0, 0, CONFIG_APPLY_HELM_HURRY | CONFIG_GIVE_COINS)
 
-        # These items are typically moves that come via AP fed system
-        # The item_id here is actually a move index that we need to map
-        # For now, items with item/level structure should continue using CountStruct
-        # as they are already handled properly there
+    item = count_data.get("item")
+    if item is None:
         return None
 
-    # Items with just "item" field
-    if "item" in count_data and "level" not in count_data:
-        # These should also stay in CountStruct
-        return None
-
-    # Default: items without these structures should use CountStruct
-    return None
-
-
-# Legacy fed_id mappings for reference (these will be replaced by packet data)
-# This dict maps old fed_id values to their packet equivalents
-LEGACY_FED_ID_TO_PACKET = {
     # Golden Banana
-    0x000: APItemPacket(REQITEM_GOLDENBANANA, 0, 0, CONFIG_APPLY_HELM_HURRY),
-    # Rainbow Coin
-    0x001: APItemPacket(REQITEM_RAINBOWCOIN, 0, 0, CONFIG_APPLY_HELM_HURRY | CONFIG_GIVE_COINS),
-    # Special Moves (Baboon Blast through Gorilla Gone)
-    # DK (0-2)
-    0x019: APItemPacket(REQITEM_MOVE, 0, 0, CONFIG_APPLY_HELM_HURRY),  # Baboon Blast
-    0x01A: APItemPacket(REQITEM_MOVE, 1, 0, CONFIG_APPLY_HELM_HURRY),  # Strong Kong
-    0x01B: APItemPacket(REQITEM_MOVE, 2, 0, CONFIG_APPLY_HELM_HURRY),  # Gorilla Grab
-    # Diddy (3-5)
-    0x01C: APItemPacket(REQITEM_MOVE, 0, 1, CONFIG_APPLY_HELM_HURRY),  # Chimpy Charge
-    0x01D: APItemPacket(REQITEM_MOVE, 1, 1, CONFIG_APPLY_HELM_HURRY),  # Rocketbarrel Boost
-    0x01E: APItemPacket(REQITEM_MOVE, 2, 1, CONFIG_APPLY_HELM_HURRY),  # Simian Spring
-    # Lanky (6-8)
-    0x01F: APItemPacket(REQITEM_MOVE, 0, 2, CONFIG_APPLY_HELM_HURRY),  # Orangstand
-    0x020: APItemPacket(REQITEM_MOVE, 1, 2, CONFIG_APPLY_HELM_HURRY),  # Baboon Balloon
-    0x021: APItemPacket(REQITEM_MOVE, 2, 2, CONFIG_APPLY_HELM_HURRY),  # Orangstand Sprint
-    # Tiny (9-11)
-    0x022: APItemPacket(REQITEM_MOVE, 0, 3, CONFIG_APPLY_HELM_HURRY),  # Mini Monkey
-    0x023: APItemPacket(REQITEM_MOVE, 1, 3, CONFIG_APPLY_HELM_HURRY),  # Pony Tail Twirl
-    0x024: APItemPacket(REQITEM_MOVE, 2, 3, CONFIG_APPLY_HELM_HURRY),  # Monkeyport
-    # Chunky (12-14)
-    0x025: APItemPacket(REQITEM_MOVE, 0, 4, CONFIG_APPLY_HELM_HURRY),  # Hunky Chunky
-    0x026: APItemPacket(REQITEM_MOVE, 1, 4, CONFIG_APPLY_HELM_HURRY),  # Primate Punch
-    0x027: APItemPacket(REQITEM_MOVE, 2, 4, CONFIG_APPLY_HELM_HURRY),  # Gorilla Gone
-    # Instruments (level 8)
-    0x028: APItemPacket(REQITEM_MOVE, 8, 0, CONFIG_APPLY_HELM_HURRY),  # Bongos
-    0x029: APItemPacket(REQITEM_MOVE, 8, 1, CONFIG_APPLY_HELM_HURRY),  # Guitar
-    0x02A: APItemPacket(REQITEM_MOVE, 8, 2, CONFIG_APPLY_HELM_HURRY),  # Trombone
-    0x02B: APItemPacket(REQITEM_MOVE, 8, 3, CONFIG_APPLY_HELM_HURRY),  # Sax
-    0x02C: APItemPacket(REQITEM_MOVE, 8, 4, CONFIG_APPLY_HELM_HURRY),  # Triangle
-    # Guns (level 4)
-    0x02D: APItemPacket(REQITEM_MOVE, 4, 0, CONFIG_APPLY_HELM_HURRY),  # Coconut
-    0x02E: APItemPacket(REQITEM_MOVE, 4, 1, CONFIG_APPLY_HELM_HURRY),  # Peanut
-    0x02F: APItemPacket(REQITEM_MOVE, 4, 2, CONFIG_APPLY_HELM_HURRY),  # Grape
-    0x030: APItemPacket(REQITEM_MOVE, 4, 3, CONFIG_APPLY_HELM_HURRY),  # Feather
-    0x031: APItemPacket(REQITEM_MOVE, 4, 4, CONFIG_APPLY_HELM_HURRY),  # Pineapple
-    # Shared upgrades
-    0x032: APItemPacket(REQITEM_MOVE, 5, 0, CONFIG_APPLY_HELM_HURRY),  # Homing Ammo
-    0x033: APItemPacket(REQITEM_MOVE, 10, 0, CONFIG_APPLY_HELM_HURRY),  # Slam (level 10 = slam upgrade)
-    0x034: APItemPacket(REQITEM_MOVE, 6, 0, CONFIG_APPLY_HELM_HURRY),  # Sniper Sight
-    0x035: APItemPacket(REQITEM_MOVE, 7, 0, CONFIG_APPLY_HELM_HURRY),  # Ammo Belt
-    0x036: APItemPacket(REQITEM_MOVE, 9, 0, CONFIG_APPLY_HELM_HURRY),  # Instrument Upgrade
-}
+    if item == 1:
+        return APItemPacket(REQITEM_GOLDENBANANA, 0, 0, CONFIG_APPLY_HELM_HURRY)
 
+    # Moves/upgrades indexed by item_id (with level field present)
+    if "level" in count_data and item in ITEM_ID_TO_MOVE_PARAMS:
+        level, kong = ITEM_ID_TO_MOVE_PARAMS[item]
+        return APItemPacket(REQITEM_MOVE, level, kong, CONFIG_APPLY_HELM_HURRY)
 
-def get_packet_from_fed_id(fed_id: int) -> Optional[APItemPacket]:
-    """Get an AP packet from a legacy fed_id value.
+    # Raw requirement_item enum (item field with no level) — defensive fallback
+    if "level" not in count_data:
+        return APItemPacket(item, 0, 0, CONFIG_APPLY_HELM_HURRY)
 
-    This is for backward compatibility during the transition.
-
-    Args:
-        fed_id: The old archipelago_items enum value
-
-    Returns:
-        APItemPacket or None if not found
-    """
-    return LEGACY_FED_ID_TO_PACKET.get(fed_id)
+    return None

@@ -119,12 +119,16 @@ class TaskThread(threading.Thread):
         self.kwargs = kwargs
         self.result_complete = False
         self.result = None
+        self.error = None
 
     def run(self):
         """Run the task in the background."""
         if not self.result_complete:
             self.result_complete = True
-            self.result = self.target(self.kwargs.get("args")[0])
+            try:
+                self.result = self.target(self.kwargs.get("args")[0])
+            except Exception as e:
+                self.error = str(type(e).__name__) + ": " + str(e)
 
 
 task_queue_high_stable = Queue("tasks_high_priority_stable", connection=redis_conn, default_timeout=JOB_TIMEOUT)  # High-priority queue
@@ -298,6 +302,8 @@ def task_status(task_id):
                 task_thread.run()
             if task_thread.is_alive():
                 return jsonify({"task_id": task_id, "status": "started", "priority": "High"}), 200
+            elif task_thread.error:
+                return set_response(json.dumps({"error": task_thread.error}), 500)
             else:
                 result = task_thread.result
                 return set_response(json.dumps({"result": result, "status": "finished"}), 200)
@@ -598,19 +604,6 @@ def get_total_info():
         with open("last_generated_time.cfg", "w") as f:
             f.write(last_generated_time.isoformat())
     return current_total, last_generated_time
-
-
-@api.route("/get_selector_info", methods=["GET"])
-@enforce_api_restrictions()
-def get_selector_info():
-    """Get the selector data for the randomizer."""
-    # If the branch arg is master call os.environ.get("WORKER_URL_MASTER") with requests
-    # Else call os.environ.get("WORKER_URL_DEV") with requests
-    url = environ.get("WORKER_URL_DEV") if request.args.get("branch") == "dev" else environ.get("WORKER_URL_MASTER")
-    if not url:
-        url = "http://127.0.0.1:8000"
-    response = requests.get(f"{url}/get_selector_info")
-    return set_response(response.text, response.status_code)
 
 
 @api.route("/convert_settings", methods=["POST"])

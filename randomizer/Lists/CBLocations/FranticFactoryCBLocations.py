@@ -2442,7 +2442,7 @@ BalloonList = [
         region=Regions.InsideCore,
         vanilla=True,
         points=[[286, 44, 508], [272, 38, 415]],
-        banned_when_item_rando=True, # Banned in vanilla
+        banned_when_item_rando=True,  # Banned in vanilla
     ),
     # Wave 2 by Snap
     Balloon(

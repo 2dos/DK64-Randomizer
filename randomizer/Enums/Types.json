@@ -175,7 +175,7 @@
         {
             "name": "Nintendo Coin",
             "value": "nintendocoin",
-            "tooltip": "Nintendo Coin is in the Pool.",
+            "tooltip": "The Company Coin obtained on DK Arcade Round 2 is in the Pool.",
             "check_count": 0,
             "item_count": 1,
             "is_check": false
@@ -192,7 +192,7 @@
         {
             "name": "Rareware Coin",
             "value": "rarewarecoin",
-            "tooltip": "Rareware Coin is in the Pool.",
+            "tooltip": "The Company Coin obtained on Cranky's Jetpac is in the Pool.",
             "check_count": 0,
             "item_count": 1,
             "is_check": false

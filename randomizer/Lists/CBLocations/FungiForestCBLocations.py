@@ -3472,7 +3472,7 @@ BalloonList = [
         konglist=[Kongs.tiny],
         region=Regions.Anthill,
         points=[[499, 277, 671], [440, 262, 864], [324, 285, 731]],
-        banned_when_item_rando=True, # Over Pit
+        banned_when_item_rando=True,  # Over Pit
     ),
     Balloon(
         id=54,

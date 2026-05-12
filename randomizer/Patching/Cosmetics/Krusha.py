@@ -14,7 +14,7 @@ from randomizer.Patching.Library.Image import (
 )
 from randomizer.Patching.Library.Assets import TableNames, getRawFile, writeRawFile
 from randomizer.Enums.Kongs import Kongs
-from PIL import Image
+from randomizer.Patching.LazyPIL import Image
 
 DK_SCALE = 0.75
 GENERIC_SCALE = 0.49
