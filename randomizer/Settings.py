@@ -2483,7 +2483,7 @@ class Settings:
         elif self.progressive_hint_count > prog_max:
             # Cap at prog max
             self.progressive_hint_count = prog_max
-        # 
+        #
         prog_max = prog_hint_max.get(self.hint_door_item, 0)
         if self.hint_door_item_count <= 0:
             # Disable progressive hints if hint text is 0, or less than 0
