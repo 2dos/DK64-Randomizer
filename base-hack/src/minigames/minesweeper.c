@@ -141,35 +141,35 @@ void generateBoard(void) {
     calculateGrid();
 }
 
-void digCellZeroCheck(int x, int y, int skip_zero_mines) {
-    if ((x < 0) || (y < 0)) {
+void digCellZeroCheck(int x, int y) {
+    // 1. Boundary Check
+    if ((x < 0) || (y < 0) || (x >= GRID_DIMENSIONS) || (y >= GRID_DIMENSIONS)) {
         return;
     }
-    if ((x >= GRID_DIMENSIONS) || (y >= GRID_DIMENSIONS)) {
+
+    TileStruct *tile = &tiles[x][y];
+
+    // 2. Stop if already uncovered, is a mine, or is flagged
+    if (tile->uncovered || tile->has_mine || tile->flagged) {
         return;
     }
-    if (tiles[x][y].adjacent_mines != 0) {
-        if (skip_zero_mines) {
-            skip_zero_mines = 0;
-        } else {
-            return;
+
+    // 3. Uncover the current tile
+    tile->uncovered = 1;
+
+    // 4. If this tile has adjacent mines, STOP recursing. 
+    // We want to show the number but not open its neighbors.
+    if (tile->adjacent_mines != 0) {
+        return;
+    }
+
+    // 5. If we are here, the tile is a '0'. Recurse into all 8 neighbors.
+    for (int dx = -1; dx <= 1; dx++) {
+        for (int dy = -1; dy <= 1; dy++) {
+            if (dx == 0 && dy == 0) continue; // Skip self
+            digCellZeroCheck(x + dx, y + dy);
         }
     }
-    if (tiles[x][y].has_mine) {
-        return;
-    }
-    if (tiles[x][y].uncovered) {
-        return;
-    }
-    tiles[x][y].uncovered = 1;
-    digCellZeroCheck(x - 1, y - 1, skip_zero_mines);
-    digCellZeroCheck(x - 1, y, skip_zero_mines);
-    digCellZeroCheck(x - 1, y + 1, skip_zero_mines);
-    digCellZeroCheck(x + 1, y - 1, skip_zero_mines);
-    digCellZeroCheck(x + 1, y, skip_zero_mines);
-    digCellZeroCheck(x + 1, y + 1, skip_zero_mines);
-    digCellZeroCheck(x, y - 1, skip_zero_mines);
-    digCellZeroCheck(x, y + 1, skip_zero_mines);
 }
 
 int victoryCheck(void) {
@@ -194,31 +194,32 @@ void checkWin(void) {
 
 void digCell(void) {
     TileStruct *tile = &tiles[selected_x][selected_y];
-    if (tile->uncovered) {
+    
+    // Don't dig if already uncovered or flagged
+    if (tile->uncovered || tile->flagged) {
         return;
     }
+
+    // First click protection
     if ((guess_count == 0) && tile->has_mine) {
-        placeMine(); // Place this mine somewhere else to prevent a first-cell death
         tile->has_mine = 0;
+        placeMine(); 
         calculateGrid();
+        // Re-reference tile as calculateGrid might have updated it
+        tile = &tiles[selected_x][selected_y];
     }
+
     guess_count++;
-    tile->uncovered = 1;
+
     if (tile->has_mine) {
+        tile->uncovered = 1;
         game_state = GAMESTATE_MINE;
         ending_timer = 120;
         playSFXWrapper(246);
     } else {
-        if (tile->adjacent_mines == 0) {
-            digCellZeroCheck(selected_x - 1, selected_y - 1, 1);
-            digCellZeroCheck(selected_x - 1, selected_y, 1);
-            digCellZeroCheck(selected_x - 1, selected_y + 1, 1);
-            digCellZeroCheck(selected_x + 1, selected_y - 1, 1);
-            digCellZeroCheck(selected_x + 1, selected_y, 1);
-            digCellZeroCheck(selected_x + 1, selected_y + 1, 1);
-            digCellZeroCheck(selected_x, selected_y - 1, 1);
-            digCellZeroCheck(selected_x, selected_y + 1, 1);
-        }
+        // This will now correctly ripple out for 0-tiles
+        // and stop at the numbered borders.
+        digCellZeroCheck(selected_x, selected_y);
         checkWin();
     }
     playSFXWrapper(3);

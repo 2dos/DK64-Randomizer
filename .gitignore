@@ -254,3 +254,4 @@ base-hack/modelling/*.obj
 dk64_full_item_table.txt
 randomizer/Patching/Library/ScriptOld.py
 batch_spoilers/
+base-hack/src/minigames/rom_cache.txt
