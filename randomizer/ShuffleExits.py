@@ -242,9 +242,6 @@ def ShuffleExits(spoiler):
             for x in range(8):
                 level = settings.level_order[x + 1]
                 settings.switch_allocation[level] = allocation[x]
-        if settings.hint_door_item != ProgressiveHintItem.off:
-            hint_requirements = [int((x + 1) * (settings.hint_door_item_count / 7)) for x in range(7)]
-            settings.hint_door_item_counts_level[level] = hint_requirements[x]
         if settings.cb_medal_behavior_new == CBRequirement.progressive:
             ratios = MEDAL_PROGRESSIVE_RATIOS.copy()
             if not IsItemSelected(settings.cb_rando_enabled, settings.cb_rando_list_selected, Levels.DKIsles):

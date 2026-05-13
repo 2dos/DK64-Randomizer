@@ -2089,11 +2089,6 @@ class Settings:
                 allocation.append(self.prog_slam_level_8)
             self.switch_allocation = allocation.copy()
 
-        if self.hint_door_item != ProgressiveHintItem.off:
-            hint_requirements = [int((x + 1) * (self.hint_door_item_count / 7)) for x in range(7)]
-            self.random.shuffle(hint_requirements)
-            self.hint_door_item_counts_level = hint_requirements.copy()
-
         if self.crown_enemy_difficulty != CrownEnemyDifficulty.vanilla:
             self.crown_difficulties = [self.crown_enemy_difficulty] * 10
             if self.crown_enemy_difficulty == CrownEnemyDifficulty.progressive:
@@ -2491,6 +2486,9 @@ class Settings:
         elif self.hint_door_item_count > prog_max:
             # Cap at prog max
             self.hint_door_item_count = prog_max
+        if self.hint_door_item != ProgressiveHintItem.off:
+            hint_requirements = [int((x + 1) * (self.hint_door_item_count / 7)) for x in range(7)]
+            self.hint_door_item_counts_level = hint_requirements.copy()
 
         self.excluded_bp_locations = []
         if Types.BlueprintBanana in self.shuffled_location_types and self.most_snide_rewards < 40:

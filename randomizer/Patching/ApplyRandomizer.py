@@ -397,7 +397,7 @@ def patching_response(spoiler):
         ROM_COPY.write(getProgHintBarrierItem(spoiler.settings.hint_door_item))
         for x in range(7):
             ROM_COPY.seek(sav + 0x13C + (x * 2))
-            req = int(count / 7) * (x + 1)
+            req = spoiler.settings.hint_door_item_counts_level[x]
             if req > count:
                 req = count
             ROM_COPY.writeMultipleBytes(req, 2)

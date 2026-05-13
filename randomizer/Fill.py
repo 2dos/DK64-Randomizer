@@ -3449,6 +3449,16 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
     settings.owned_kongs_by_level = ownedKongs
     settings.owned_moves_by_level = ownedMoves
 
+    # Alter the hint costs to match the expected level order progression based on the order we entered levels
+    if settings.hint_door_item != ProgressiveHintItem.off:
+        hint_costs_reordered = [0] * 7
+        for i in range(8):
+            # Aint no hints in Helm
+            if i >= 7 or settings.level_order[i + 1] == Levels.HideoutHelm:
+                continue
+            hint_costs_reordered[settings.level_order[i + 1]] = settings.hint_door_item_counts_level[i]
+        settings.hint_door_item_counts_level = hint_costs_reordered
+
 
 def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     """Set level progression requirements based on a random path of accessible levels."""
@@ -3862,6 +3872,17 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
             ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs, ownedMoves)
         settings.owned_kongs_by_level = ownedKongs
         settings.owned_moves_by_level = ownedMoves
+
+    # Alter the hint costs to match the expected level order progression based on the order we entered levels
+    # In CLO it's less clear cut, but this should generally match B. Locker progression.
+    if settings.hint_door_item != ProgressiveHintItem.off:
+        hint_costs_reordered = [0] * 7
+        for i in range(8):
+            # Aint no hints in Helm
+            if i >= 7 or levelsProgressed[i] == Levels.HideoutHelm:
+                continue
+            hint_costs_reordered[levelsProgressed[i]] = settings.hint_door_item_counts_level[i]
+        settings.hint_door_item_counts_level = hint_costs_reordered
 
     # After setting all the progression, make sure we did it right
     # Technically the coin logic check after this will cover it, but this will help identify issues better
