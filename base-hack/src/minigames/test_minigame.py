@@ -28,7 +28,7 @@ def replaceMinigame(fh: BinaryIO, ovl_index: int, data: bytes, kb_limit: int, lo
     fh.write((0x0C000000 | ((loop_addr & 0xFFFFFF) >> 2)).to_bytes(4, "big"))
 
 bin_path = f"../../minigame/{sys.argv[1]}.bin" if len(sys.argv) > 1 else None
-load_style = sys.argv[2] == "fast" if len(sys.argv) > 1 else False
+load_style = sys.argv[2] == "fast" if len(sys.argv) > 2 else False
 
 if os.path.exists(ROM_BASE_CACHE):
     with open(ROM_BASE_CACHE, "r") as fh:
