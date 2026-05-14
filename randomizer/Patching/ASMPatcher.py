@@ -24,6 +24,7 @@ from randomizer.Enums.Settings import (
     WinConditionComplex,
     ExtraCutsceneSkips,
     ProgressiveHintItem,
+    PauseHintSetting,
     WrinklyHints,
 )
 from randomizer.Enums.Enemies import Enemies
@@ -1583,6 +1584,11 @@ def patchAssembly(ROM_COPY, spoiler):
 
     expandActorTable(ROM_COPY, settings, offset_dict)
     writeValue(ROM_COPY, 0x80755DCC, Overlay.Static, 93, offset_dict)
+
+    if spoiler.settings.pause_hints_setting == PauseHintSetting.lockout:
+        # Adjust function for pause menu
+        updateActorFunction(ROM_COPY, 95, "handleHintScreenLockout")
+        writeHook(ROM_COPY, 0x806AC05C, Overlay.Static, "SetBackdropColor", offset_dict)
 
     # Uncontrollable Fixes
     writeFunction(ROM_COPY, 0x806F56E0, Overlay.Static, "getFlagIndex_Corrected", offset_dict)  # BP Acquisition - Correct for character
