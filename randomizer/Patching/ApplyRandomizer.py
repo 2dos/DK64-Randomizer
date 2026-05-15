@@ -203,6 +203,10 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
 
             settings.starting_kong = _KongEnum(int(fill_result.misc_data.resolved_starting_kong))
 
+        # Display hash
+        if len(fill_result.misc_data.seed_hash) > 0:
+            settings.seed_hash = [int(d) for d in fill_result.misc_data.seed_hash]
+
         # Restore Fill-mutated B.Locker / T&S arrays. ASMPatcher reads these
         # directly off `settings` (see ASMPatcher.py writes to BossBananas and
         # BLockerEntryCount). In chaos mode and when ShuffleExits reorders

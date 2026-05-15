@@ -51,7 +51,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.randomizer.proto.MiscPatchingData.repeatedFields_ = [1,2,3,11,12,13,15,16,17,18,22,25,26,28,29,30,31,32,33,34,35];
+proto.randomizer.proto.MiscPatchingData.repeatedFields_ = [1,2,3,11,12,13,15,16,17,18,22,25,26,28,29,30,31,32,33,34,35,36];
 
 
 
@@ -122,7 +122,8 @@ kkoPhaseOrderList: (f = jspb.Message.getRepeatedField(msg, 31)) == null ? undefi
 toeOrderList: (f = jspb.Message.getRepeatedField(msg, 32)) == null ? undefined : f,
 helmOrderList: (f = jspb.Message.getRepeatedField(msg, 33)) == null ? undefined : f,
 kongHelmOrderList: (f = jspb.Message.getRepeatedField(msg, 34)) == null ? undefined : f,
-helmKongFlagsList: (f = jspb.Message.getRepeatedBooleanField(msg, 35)) == null ? undefined : f
+helmKongFlagsList: (f = jspb.Message.getRepeatedBooleanField(msg, 35)) == null ? undefined : f,
+seedHashList: (f = jspb.Message.getRepeatedField(msg, 36)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -345,6 +346,12 @@ proto.randomizer.proto.MiscPatchingData.deserializeBinaryFromReader = function(m
       var values = /** @type {!Array<boolean>} */ (reader.isDelimited() ? reader.readPackedBool() : [reader.readBool()]);
       for (var i = 0; i < values.length; i++) {
         msg.addHelmKongFlags(values[i]);
+      }
+      break;
+    case 36:
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addSeedHash(values[i]);
       }
       break;
     default:
@@ -607,6 +614,13 @@ proto.randomizer.proto.MiscPatchingData.serializeBinaryToWriter = function(messa
   if (f.length > 0) {
     writer.writePackedBool(
       35,
+      f
+    );
+  }
+  f = message.getSeedHashList();
+  if (f.length > 0) {
+    writer.writePackedUint32(
+      36,
       f
     );
   }
@@ -1830,6 +1844,43 @@ proto.randomizer.proto.MiscPatchingData.prototype.addHelmKongFlags = function(va
  */
 proto.randomizer.proto.MiscPatchingData.prototype.clearHelmKongFlagsList = function() {
   return this.setHelmKongFlagsList([]);
+};
+
+
+/**
+ * repeated uint32 seed_hash = 36;
+ * @return {!Array<number>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getSeedHashList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 36));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setSeedHashList = function(value) {
+  return jspb.Message.setField(this, 36, value || []);
+};
+
+
+/**
+ * @param {number} value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addSeedHash = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 36, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearSeedHashList = function() {
+  return this.setSeedHashList([]);
 };
 
 
