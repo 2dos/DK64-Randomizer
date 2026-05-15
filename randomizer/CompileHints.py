@@ -1939,6 +1939,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 Regions.MillArea,
                 Regions.ThornvineArea,
                 Regions.MushroomVeryTopExterior,
+                Regions.SnideArea,
             ],
             [Regions.CrystalCavesEntryHandler, Regions.CrystalCavesMain, Regions.IglooArea, Regions.CabinArea],
             [Regions.CreepyCastleEntryHandler, Regions.CreepyCastleMain, Regions.CastleWaterfall],
