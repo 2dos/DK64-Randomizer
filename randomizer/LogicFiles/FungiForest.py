@@ -359,7 +359,6 @@ LogicRegions = {
         TransitionFront(Regions.MillArea, lambda _: True, time=Time.Day),
         TransitionFront(Regions.Snide, lambda _: True),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
-
     ]),
 
     Regions.MillChunkyTinyArea: Region("Mill Back Room", HintRegion.Mills, Levels.FungiForest, False, -1, [

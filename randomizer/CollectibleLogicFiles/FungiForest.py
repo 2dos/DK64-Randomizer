@@ -148,8 +148,8 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.climbing, None, 3),  # On mushroom near rafters attic
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.climbing, None, 3),  # On mushroom near Chunky minecart exit
     ],
-    Regions.SnideArea:[
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1) # Near Snide
+    Regions.SnideArea: [
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1)  # Near Snide
     ],
     Regions.MillChunkyTinyArea: [
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 1),
