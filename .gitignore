@@ -246,6 +246,3 @@ base-hack/modelling/*.obj
 *.ia4
 *.i8
 *.ia8
-seed.textproto
-tools/dump_lanky.py
-tools/pack_lanky.py

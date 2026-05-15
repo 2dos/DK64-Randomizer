@@ -4,7 +4,6 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Enums.Maps import Maps
-from randomizer.Enums.Time import Time
 from randomizer.LogicClasses import TransitionFront
 
 
@@ -91,18 +90,6 @@ def ShuffleShopLocations(spoiler):
         if level == Levels.DKIsles and (spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all or not spoiler.settings.fast_start_beginning_of_game):
             continue
         shop_array = available_shops[level]
-        # Capture each slot's original time-of-day requirement before exits are stripped,
-        # so it can be re-applied to whichever shop ends up in this slot.
-        slot_times = {}
-        for slot in shop_array:
-            if slot.locked:
-                continue
-            containing = spoiler.RegionList[slot.containing_region]
-            for slot_exit in containing.exits:
-                if slot_exit.dest == slot.shop_exit:
-                    slot_times[slot.containing_region] = slot_exit.time
-                    break
-            slot_times.setdefault(slot.containing_region, Time.Both)
         # Get list of shops in level
         shops_in_levels = []
         if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_shop_location_rando"] != -1:
@@ -156,15 +143,14 @@ def ShuffleShopLocations(spoiler):
                 placement_index += 1
                 # Add exit to new containing region for logical access
                 region = spoiler.RegionList[shop.containing_region]
-                slot_time = slot_times.get(shop.containing_region, Time.Both)
                 if shop.new_shop == Regions.CrankyGeneric:
-                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.crankyAccess, time=slot_time))
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.crankyAccess))
                 elif shop.new_shop == Regions.FunkyGeneric:
-                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.funkyAccess, time=slot_time))
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.funkyAccess))
                 elif shop.new_shop == Regions.CandyGeneric:
                     region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.candyAccess))
                 elif shop.new_shop == Regions.Snide:
-                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.snideAccess, time=slot_time))
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.snideAccess))
         assortment[level] = assortment_in_level
     # Write Assortment to spoiler
     spoiler.shuffled_shop_locations = assortment
