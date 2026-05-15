@@ -393,9 +393,9 @@ LogicRegions = {
         LocationLogic(Locations.HoldableKegMillFrontFar, lambda l: l.barrels and l.ischunky),
         LocationLogic(Locations.HoldableKegMillFrontNear, lambda l: l.barrels and l.ischunky),
         LocationLogic(Locations.BreakableForestMillFront, lambda l: l.Slam),
-        LocationLogic(Locations.Balloon066, lambda l: l.isdonkey and l.coconut and l.CanSlamSwitch(Levels.FungiForest, 2)),
+        LocationLogic(Locations.Balloon066, lambda l: l.isdonkey and l.coconut and l.CanSlamSwitch(Levels.FungiForest, 2) and l.Slam),
     ], [
-        Event(Events.ConveyorActivated, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.CanPhase() or l.generalclips) and l.grab and l.donkey),
+        Event(Events.ConveyorActivated, lambda l: ((l.CanSlamSwitch(Levels.FungiForest, 2) and l.Slam) or l.CanPhase() or l.generalclips) and l.grab and l.donkey),
     ], [
         TransitionFront(Regions.MillArea, lambda _: True, Transitions.ForestGrinderToMain, time=Time.Day),
         TransitionFront(Regions.MillChunkyTinyArea, lambda l: (l.mini and l.istiny) or l.CanPhase() or l.generalclips, Transitions.ForestGrinderToTinyMill),
@@ -443,7 +443,7 @@ LogicRegions = {
     ]),
 
     Regions.ThornvineBarn: Region("Thornvine Barn", HintRegion.Mills, Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FungiForest, 1) and l.isdonkey and ((l.climbing and (l.can_use_vines or l.monkey_maneuvers)) or l.settings.bonus_barrels == MinigameBarrels.skip), MinigameType.BonusBarrel),  # Krusha can make it by jumping onto the beam first.
+        LocationLogic(Locations.ForestDonkeyBarn, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 1) and l.Slam) and l.isdonkey and ((l.climbing and (l.can_use_vines or l.monkey_maneuvers)) or l.settings.bonus_barrels == MinigameBarrels.skip), MinigameType.BonusBarrel),  # Krusha can make it by jumping onto the beam first.
         LocationLogic(Locations.MelonCrate_Location11, lambda _: True),
         LocationLogic(Locations.ForestThornBarnEnemy_Enemy, lambda _: True),
         LocationLogic(Locations.KremKap_ForestThornBarnEnemy_Enemy, lambda l: l.camera),

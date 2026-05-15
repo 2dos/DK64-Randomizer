@@ -1579,10 +1579,10 @@ def _populate_fill_time_settings(spoiler_settings: Any, proto: fill_result_pb2.M
     # Boss shuffle results
     for kong in getattr(spoiler_settings, "boss_kongs", []) or []:
         proto.boss_kongs.append(int(_enum_value(kong)))
-        
+
     for boss_map in getattr(spoiler_settings, "boss_maps", []) or []:
         proto.boss_maps.append(int(_enum_value(boss_map)))
-        
+
     for kong in getattr(spoiler_settings, "kutout_kongs", []) or []:
         proto.kutout_kongs.append(int(_enum_value(kong)))
 
@@ -1622,6 +1622,10 @@ def _populate_fill_time_settings(spoiler_settings: Any, proto: fill_result_pb2.M
         assignment.switch = int(_enum_value(switch_enum))
         assignment.kong = int(_enum_value(kong))
         assignment.switch_type = int(_enum_value(switch_type))
+
+    # Hash
+    for digit in getattr(spoiler_settings, "seed_hash", []) or []:
+        proto.seed_hash.append(int(digit))
 
 
 def _populate_misc_patching_data(spoiler: "Spoiler", proto: fill_result_pb2.MiscPatchingData) -> None:

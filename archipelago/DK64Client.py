@@ -837,6 +837,13 @@ class DK64Client:
         username = username.replace("\x00", "")
         self.auth = username
 
+    def read_seed_hash(self):
+        """Read the 5-byte seed hash baked into the loaded ROM's varspace."""
+        try:
+            return [self.n64_client.read_u8(DK64MemoryMap.seed_hash + i) for i in range(5)]
+        except Exception:
+            return None
+
     def started_file(self):
         """Check if the file has been started."""
         # Checks to see if the file has been started
@@ -1278,6 +1285,16 @@ class DK64Context(CommonContext):
                 if server_patch != ap_patch:
                     logger.warning("Your DK64 APworld does not match with the generated world, but this should not be a breaking change.")
                     logger.warning("While we try to maintain backwards compatibility on patch versions, be warned that something might break.")
+            expected_hash = self.slot_data.get("seed_hash")
+            if expected_hash is not None:
+                rom_hash = self.client.read_seed_hash()
+                if rom_hash is None or list(expected_hash) != list(rom_hash):
+                    logger.error("Seed hash mismatch — the loaded ROM does not belong to this multiworld slot.")
+                    self.had_invalid_slot_data = True
+                    self.auth = None
+                    self.disconnected_intentionally = True
+                    create_task_log_exception(self.disconnect())
+                    raise Exception("Seed hash mismatch — the loaded ROM does not match the generated multiworld slot.")
             if self.slot_data.get("death_link"):
                 if "DeathLink" not in self.tags:
                     create_task_log_exception(self.update_death_link(True))

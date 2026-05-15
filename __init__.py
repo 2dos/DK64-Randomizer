@@ -1529,6 +1529,7 @@ if baseclasses_loaded:
                 "StartingMovePool5": list(self.options.starting_move_pool_5.value),
                 "StartingMovePool5Count": self.options.starting_move_pool_5_count.value,
                 "Version": self.ap_version,
+                "seed_hash": list(self.spoiler.settings.seed_hash),
                 "EnemyData": (
                     {
                         location_id.name: {"map": enemy_loc.map.name, "enemy": enemy_loc.enemy.name}

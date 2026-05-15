@@ -110,7 +110,7 @@ LogicRegions = {
     ]),
 
     Regions.RandD: Region("R&D", HintRegion.ResearchAndDevelopment, Levels.FranticFactory, True, None, [
-        LocationLogic(Locations.FactoryLankyRandD, lambda l: (((l.trombone or l.CanAccessRNDRoom()) and l.CanSlamSwitch(Levels.FranticFactory, 1)) or (l.CanOStandTBSNoclip() and l.spawn_snags)) and l.islanky),
+        LocationLogic(Locations.FactoryLankyRandD, lambda l: (((l.trombone or l.CanAccessRNDRoom()) and (l.CanSlamSwitch(Levels.FranticFactory, 1) and l.Slam)) or (l.CanOStandTBSNoclip() and l.spawn_snags)) and l.islanky),
         LocationLogic(Locations.Balloon027, lambda l: l.islanky and l.grape and (l.trombone or l.CanAccessRNDRoom())),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToRace0, lambda _: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToRace1, lambda _: True),

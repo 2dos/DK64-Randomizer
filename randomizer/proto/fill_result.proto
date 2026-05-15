@@ -552,6 +552,7 @@ message MiscPatchingData {
   repeated uint32 helm_order = 33;
   repeated uint32 kong_helm_order = 34;   // Kongs enum
   repeated bool helm_kong_flags = 35;     // length 5
+  repeated uint32 seed_hash = 36;         // 5 digits (0..9) baked into the ROM at varspace +0x129
 }
 
 message SwitchsanityAssignment {
