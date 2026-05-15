@@ -59,3 +59,4 @@
 .definelabel spriteSetParams, 0x8070F2C8
 .definelabel unkGuMacro, 0x80612CA0
 .definelabel unkGuMacro2, 0x80704444
+.definelabel guMtxIdent, 0x8000A848

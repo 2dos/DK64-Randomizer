@@ -56,21 +56,8 @@ ROM_DATA static Vtx center_hex[2][12];
 ROM_DATA static Vtx background[2][24];
 ROM_DATA static Vtx player[2][3];
 ROM_DATA static Vtx hex_walls_vtx[2][WALL_BUFFER_COUNT * 4] = {};
-
-
-ROM_DATA static int identity_mtx[] = {
-    0x00010000, 0x00000000,
-    0x00000000, 0x00000000,
-
-    0x00000000, 0x00000000,
-    0x00010000, 0x00000000,
-
-    0x00000000, 0x00000000,
-    0x00000000, 0x00000000,
-
-    0x00000000, 0x00000000,
-    0x00010000, 0x00000000,
-};
+ROM_DATA static Vtx timer_backdrop[2][8];
+ROM_DATA static Vtx press_start_backdrop[2][8];
 
 ROM_DATA static rgb hex_colors[] = {
     {.red = 0xFF, .green = 0x00, .blue = 0x00 }, // COLORSTATE_CENTERHEX_BORDER,
@@ -98,7 +85,7 @@ ROM_DATA static float approach_speed = 1.0f;
 ROM_DATA static unsigned char burst_timer = 0;
 ROM_DATA static unsigned char frame_counter = 0;
 ROM_DATA static unsigned short second_counter = 0;
-ROM_DATA static char timer_text[] = "0.00";
+ROM_DATA static char timer_text[10] = "0.00";
 ROM_RODATA_NUM const char music_types[SONG_COUNT] = {
 	-1,
 	SONGTYPE_BGM,
@@ -308,65 +295,6 @@ void cancelCurrentSong(void) {
     cancelMusic(current_song, 1);
 }
 
-void handleState_title(Gfx **dl_ptr) {
-    Gfx *dl = *dl_ptr;
-    *dl_ptr = dl;
-}
-
-void resetGame(void) {
-    summon_timer = 90;
-    last_wall = 0;
-    wall_element_counter = 0;
-    effect_timer = 300;
-    rotation_speed = 1.0f;
-    approach_speed = 1.0f;
-    frame_counter = 0;
-    second_counter = 0;
-    burst_timer = 0;
-    for (int i = 0; i < WALL_BUFFER_COUNT; i++) {
-        hex_walls[i].used = 0;
-    }
-}
-
-void startGame(void) {
-    game_state = GAMESTATE_NORMAL;
-    playRandomBGM();
-    resetGame();
-}
-
-void handleState_init(Gfx **dl_ptr) {
-    Gfx *dl = *dl_ptr;
-    resetGame();
-    gameInit();
-    game_state = GAMESTATE_MUSICCORRECT_INIT;
-    // Play song & get music playing
-    setBaseSlotVolume(0, 1.0f);
-    setBaseSlotVolume(1, 1.0f);
-    setBaseSlotVolume(2, 1.0f);
-    *(float*)(0x8075DF88) = 0.0f; // Make LZFadeoutProgress insignificant to the output volume
-    *dl_ptr = dl;
-}
-
-void fixFading(void) {
-    *(int*)(0x8075DF88) = 0x3D042108;  // Restore value back to original glory
-}
-
-void handleState_musicCorrect_init(void) {
-    music_init_timer--;
-    if (music_init_timer == 1) {
-        preventSongPlaying = 1;
-        // playSong(SONG_KROOLTAKEOFF, 1.0f);
-        TransitionSpeed = 1.0f;
-    } else if (music_init_timer == 0) {
-        game_state = GAMESTATE_MUSICCORRECT;
-    }
-}
-
-void handleState_musicCorrect(void) {
-    startGame();
-    TransitionSpeed = -1.0f;
-}
-
 float angleAdd(float angle0, float angle1) {
     angle0 += angle1;
     while (angle0 < 0.0f) {
@@ -382,7 +310,7 @@ void getPoint(short *output, float dist, float angle) {
     angle = angleAdd(angle, angle_offset);
     float rad = (angle / 180) * 3.1415926535f;
     output[0] = 160 + (dist * dk_cos(rad));
-    output[1] = 140 + (dist * dk_sin(rad));
+    output[1] = 120 + (dist * dk_sin(rad));
 }
 
 ROM_DATA static short backdrop_coords[48] = {}; // Has to be outside function otherwise you get a memset error
@@ -418,6 +346,128 @@ void renderBackdrop(Gfx **dl_ptr) {
         color_offset ^= 1;
     }
     *dl_ptr = dl;
+}
+
+void resetGame(void) {
+    summon_timer = 90;
+    last_wall = 0;
+    wall_element_counter = 0;
+    effect_timer = 300;
+    rotation_speed = 1.0f;
+    approach_speed = 1.0f;
+    frame_counter = 0;
+    second_counter = 0;
+    burst_timer = 0;
+    for (int i = 0; i < WALL_BUFFER_COUNT; i++) {
+        hex_walls[i].used = 0;
+    }
+}
+
+void startGame(void) {
+    game_state = GAMESTATE_NORMAL;
+    playRandomBGM();
+    resetGame();
+}
+#define TIMER_BACKDROP_WIDTH 60
+#define TIMER_BACKDROP_HEIGHT 20
+#define TIMER_BACKDROP_BORDER 5
+#define TIMER_BACKDROP_INSET 10
+#define PRESS_START_X_OFFSET 80
+#define PRESS_START_Y_OFFSET 200
+#define PRESS_START_HEIGHT 20
+#define GENERATE_PARALLELOGRAM_COORDS(x, y, w, h, slant, border) { \
+    /* --- Outer Parallelogram (Clockwise Fan) --- */ \
+    (short)(x),             (short)(y),       /* 0: Top-Left     */ \
+    (short)((x) + (w)),     (short)(y),       /* 1: Top-Right    */ \
+    (short)((x) + (w) - (slant)), (short)((y) + (h)), /* 2: Bottom-Right */ \
+    (short)((x) - (slant)),       (short)((y) + (h)), /* 3: Bottom-Left  */ \
+                                                                            \
+    /* --- Inner Parallelogram (Clockwise Fan) --- */ \
+    (short)((x) + (border) + ((float)(border) / (h) * (slant))),            \
+    (short)((y) + (border)),                          /* 4: Inner Top-Left     */ \
+                                                                            \
+    (short)((x) + (w) - (border) + ((float)(border) / (h) * (slant))),      \
+    (short)((y) + (border)),                          /* 5: Inner Top-Right    */ \
+                                                                            \
+    (short)((x) + (w) - (slant) - (border) - ((float)(border) / (h) * (slant))),\
+    (short)((y) + (h) - (border)),                    /* 6: Inner Bottom-Right */ \
+                                                                            \
+    (short)((x) - (slant) + (border) - ((float)(border) / (h) * (slant))),  \
+    (short)((y) + (h) - (border))                     /* 7: Inner Bottom-Left  */ \
+}
+
+ROM_RODATA_NUM static const short press_start_coords[] = GENERATE_PARALLELOGRAM_COORDS(
+    PRESS_START_X_OFFSET,
+    PRESS_START_Y_OFFSET,
+    320 - (2 * PRESS_START_X_OFFSET),
+    PRESS_START_HEIGHT,
+    TIMER_BACKDROP_INSET,
+    TIMER_BACKDROP_BORDER
+);
+
+void renderParallelogram(Gfx **dl_ptr, Vtx *backdrop, short *coords) {
+    Gfx *dl = *dl_ptr;
+    dl = drawTriangleSeries(dl,
+        &backdrop[0],
+        (short*)&coords[0], 
+        hex_colors[COLORSTATE_BACK_1].red + hex_colors[COLORSTATE_BACK_0].red, 
+        hex_colors[COLORSTATE_BACK_1].green + hex_colors[COLORSTATE_BACK_0].green, 
+        hex_colors[COLORSTATE_BACK_1].blue + hex_colors[COLORSTATE_BACK_0].blue, 4);
+    dl = drawTriangleSeries(dl,
+        &backdrop[4],
+        (short*)&coords[8], 
+        hex_colors[COLORSTATE_BACK_0].red, 
+        hex_colors[COLORSTATE_BACK_0].green, 
+        hex_colors[COLORSTATE_BACK_0].blue, 4);
+    *dl_ptr = dl;
+}
+
+void handleState_title(Gfx **dl_ptr) {
+    Gfx *dl = *dl_ptr;
+    renderBackdrop(&dl);
+    renderText(&dl, 95, 90, 255, 255, 255, 255, "SUPER HEXAGON");
+    renderParallelogram(&dl, &press_start_backdrop[(int)SelectedDLIndex][0], (short*)&press_start_coords[0]);
+    renderText(&dl, 95, 200, 255, 255, 255, 255, "PRESS START");
+    angle_offset = angleAdd(angle_offset, 1.0f);
+    if (p1PressedButtons & START_BUTTON) {
+        startGame();
+    } else if (p1PressedButtons & B_BUTTON) {
+        gameExit();
+    }
+    *dl_ptr = dl;
+}
+
+void handleState_init(Gfx **dl_ptr) {
+    Gfx *dl = *dl_ptr;
+    resetGame();
+    gameInit();
+    game_state = GAMESTATE_MUSICCORRECT_INIT;
+    // Play song & get music playing
+    setBaseSlotVolume(0, 1.0f);
+    setBaseSlotVolume(1, 1.0f);
+    setBaseSlotVolume(2, 1.0f);
+    *(float*)(0x8075DF88) = 0.0f; // Make LZFadeoutProgress insignificant to the output volume
+    *dl_ptr = dl;
+}
+
+void fixFading(void) {
+    *(int*)(0x8075DF88) = 0x3D042108;  // Restore value back to original glory
+}
+
+void handleState_musicCorrect_init(void) {
+    music_init_timer--;
+    if (music_init_timer == 1) {
+        preventSongPlaying = 1;
+        // playSong(SONG_KROOLTAKEOFF, 1.0f);
+        TransitionSpeed = 1.0f;
+    } else if (music_init_timer == 0) {
+        game_state = GAMESTATE_MUSICCORRECT;
+    }
+}
+
+void handleState_musicCorrect(void) {
+    game_state = GAMESTATE_TITLE;
+    TransitionSpeed = -1.0f;
 }
 
 void renderCenterHexagon(Gfx **dl_ptr) {
@@ -635,18 +685,41 @@ void renderWalls(Gfx **dl_ptr) {
     *dl_ptr = dl;
 }
 
+ROM_RODATA_NUM static const short timer_backdrop_coords[] = {
+    0, 0,
+    TIMER_BACKDROP_WIDTH + TIMER_BACKDROP_BORDER, 0,
+    (TIMER_BACKDROP_WIDTH - TIMER_BACKDROP_INSET) + 2, TIMER_BACKDROP_HEIGHT + TIMER_BACKDROP_BORDER,
+    0, TIMER_BACKDROP_HEIGHT + TIMER_BACKDROP_BORDER,
+    0, 0,
+    TIMER_BACKDROP_WIDTH, 0,
+    TIMER_BACKDROP_WIDTH - TIMER_BACKDROP_INSET, TIMER_BACKDROP_HEIGHT,
+    0, TIMER_BACKDROP_HEIGHT,
+};
+
 void renderTime(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
-    gDPPipeSync(dl++);
-	gDPSetCycleType(dl++, G_CYC_FILL);
-	gDPSetRenderMode(dl++, G_RM_NOOP, G_RM_NOOP2);
-	gSPClearGeometryMode(dl++, G_ZBUFFER);
-	gDPSetFillColor(dl++, 1);
-	gDPFillRectangle(dl++, 0, 0, 60, 16);
     float time_val = frame_counter / 60.0f;
     time_val += second_counter;
+    dl = drawTriangleSeries(dl,
+        &timer_backdrop[(int)SelectedDLIndex][0],
+        (short*)&timer_backdrop_coords[0], 
+        hex_colors[COLORSTATE_BACK_1].red + hex_colors[COLORSTATE_BACK_0].red, 
+        hex_colors[COLORSTATE_BACK_1].green + hex_colors[COLORSTATE_BACK_0].green, 
+        hex_colors[COLORSTATE_BACK_1].blue + hex_colors[COLORSTATE_BACK_0].blue, 4);
+    dl = drawTriangleSeries(dl,
+        &timer_backdrop[(int)SelectedDLIndex][4],
+        (short*)&timer_backdrop_coords[8], 
+        hex_colors[COLORSTATE_BACK_0].red, 
+        hex_colors[COLORSTATE_BACK_0].green, 
+        hex_colors[COLORSTATE_BACK_0].blue, 4);
     dk_strFormat(&timer_text[0], "%.2f", time_val);
-    renderText(&dl, 6, 6, 0xFF, 0xFF, 0xFF, 0xFF, timer_text);
+    if (time_val > 30.0f) {
+        if (game_state == GAMESTATE_NORMAL) {
+            playSFXWrapper(71);
+            gameVictory();
+        }
+    }
+    renderText(&dl, 6, 8, 0xFF, 0xFF, 0xFF, 0xFF, timer_text);
     *dl_ptr = dl;
 }
 
@@ -728,12 +801,12 @@ void handleState_normal(Gfx **dl_ptr) {
         }
     }
     if ((MinigameInput->stickX < -0x20) || (MinigameInput->Buttons.d_left)) {
-        if (canMove(player_angle, 6.0f)) {
-            player_angle = angleAdd(player_angle, 6.0f);
+        if (canMove(player_angle, -6.0f)) {
+            player_angle = angleAdd(player_angle, -6.0f);
         }
     } else if ((MinigameInput->stickX > 0x20) || (MinigameInput->Buttons.d_right)) {
-        if (canMove(player_angle, -6.0f)) {
-          player_angle = angleAdd(player_angle, -6.0f);
+        if (canMove(player_angle, 6.0f)) {
+          player_angle = angleAdd(player_angle, 6.0f);
         }
     }
     if (effect_timer > 0) {
@@ -765,6 +838,8 @@ void handleState_gameover(Gfx **dl_ptr) {
     *dl_ptr = dl;
 }
 
+ROM_DATA static Mtx ortho_mtx;
+ROM_DATA static Mtx identity_mtx_model;
 ROM_DATA static Vp viewport = {
     .vp = {
         .vscale = { 640, 480, 511, 0 }, // Scale (Screen size * 2)
@@ -774,10 +849,18 @@ ROM_DATA static Vp viewport = {
 
 void loop(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
-   if (game_state != GAMESTATE_INIT) {
+    if (game_state != GAMESTATE_INIT) {
         dl = minigame_dl_init(dl, 0, 0, 0, 0);
+        // Build ortho matrix once: maps (0,0)-(320,240) to screen
+        guOrtho(&ortho_mtx, 0.0f, 320.0f, 240.0f, 0.0f, -1.0f, 1.0f, 1.0f);
+        guMtxIdent(&identity_mtx_model);
         gSPViewport(dl++, &viewport);
-    } 
+        // Force ortho projection regardless of what D_1000090/D_1000040 set up
+        gSPMatrix(dl++, &ortho_mtx,
+            G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
+        gSPMatrix(dl++, &identity_mtx_model,
+            G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
+    }
     switch(game_state) {
         case GAMESTATE_INIT:
             handleState_init(&dl);
