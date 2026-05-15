@@ -354,8 +354,7 @@ LogicRegions = {
         TransitionFront(Regions.ForestMillTopOfNightCage, lambda l: l.isdiddy or l.istiny or l.ischunky),
     ]),
 
-    Regions.SnideArea: Region("Snide Area", HintRegion.Mills, Levels.FungiForest, False, None, [], [],
-    [
+    Regions.SnideArea: Region("Snide Area", HintRegion.Mills, Levels.FungiForest, False, None, [], [], [
         TransitionFront(Regions.MillArea, lambda _: True, time=Time.Day),
         TransitionFront(Regions.Snide, lambda _: True),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
