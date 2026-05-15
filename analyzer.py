@@ -78,6 +78,7 @@ def check_common_elements(list1, list2):
 if os.path.exists(f"{output}/analysis/{final_folder}"):
     shutil.rmtree(f"{output}/analysis/{final_folder}")
 os.makedirs(f"{output}/analysis/{final_folder}", exist_ok=True)
+UNHINTED_GRANULARITY = 3
 
 def post(string: str, dump_file_name: str = None):
     f_n = None
@@ -241,7 +242,7 @@ with ZipFile(f"{output}/analysis_{final_folder}.zip", "w") as zObject:
                         data["woth_count"][woth_count] = 0
                     data["woth_count"][woth_count] += 1
                 elif dump == DumpData.UnhintedScore:
-                    unhinted_score = int(10 * json_data["Unhinted Score"]) / 10
+                    unhinted_score = int(UNHINTED_GRANULARITY * json_data["Unhinted Score"]) / UNHINTED_GRANULARITY
                     if unhinted_score not in data["unhinted_score"]:
                         data["unhinted_score"][unhinted_score] = 0
                     data["unhinted_score"][unhinted_score] += 1
@@ -263,7 +264,7 @@ with ZipFile(f"{output}/analysis_{final_folder}.zip", "w") as zObject:
                         if score > worst_unhinted_score:
                             worst_unhinted_score = score
                             worst_unhinted_location = loc
-                    worst_unhinted_score = int(worst_unhinted_score * 10) / 10
+                    worst_unhinted_score = int(worst_unhinted_score * UNHINTED_GRANULARITY) / UNHINTED_GRANULARITY
                     if worst_unhinted_score not in data["unhinted_worst_score"]:
                         data["unhinted_worst_score"][worst_unhinted_score] = 0
                     if worst_unhinted_location not in data["unhinted_worst_location"]:

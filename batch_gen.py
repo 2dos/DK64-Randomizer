@@ -11,6 +11,7 @@ import threading
 
 def genSeed(index, name:str, sdata: str):
     """Confirm that settings strings decryption is working and generate a spoiler log with it."""
+    print("Genning: ", index)
     subprocess.run(["python", "./cli.py", "--settings_string", sdata, "--output", f"./batch_spoilers/{name}/seed{index}.z64", "--batch", "True"])
 
 # Example usage
@@ -19,7 +20,7 @@ batch_dir = './batch_spoilers'
 if not os.path.exists(batch_dir):
     os.mkdir(batch_dir)
 
-SEED_GEN_COUNT = 250
+SEED_GEN_COUNT = 1000
 THREAD_COUNT = 16
 
 for name, settings in settings_data.items():
