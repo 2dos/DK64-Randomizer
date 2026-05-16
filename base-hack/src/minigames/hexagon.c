@@ -86,6 +86,7 @@ ROM_DATA static unsigned char burst_timer = 0;
 ROM_DATA static unsigned char frame_counter = 0;
 ROM_DATA static unsigned short second_counter = 0;
 ROM_DATA static char timer_text[10] = "0.00";
+ROM_DATA static char warping_out = 0;
 ROM_RODATA_NUM const char music_types[SONG_COUNT] = {
 	-1,
 	SONGTYPE_BGM,
@@ -372,9 +373,10 @@ void startGame(void) {
 #define TIMER_BACKDROP_HEIGHT 20
 #define TIMER_BACKDROP_BORDER 5
 #define TIMER_BACKDROP_INSET 10
+
 #define PRESS_START_X_OFFSET 80
-#define PRESS_START_Y_OFFSET 200
-#define PRESS_START_HEIGHT 20
+#define PRESS_START_Y_OFFSET 190
+#define PRESS_START_HEIGHT 30
 #define GENERATE_PARALLELOGRAM_COORDS(x, y, w, h, slant, border) { \
     /* --- Outer Parallelogram (Clockwise Fan) --- */ \
     (short)(x),             (short)(y),       /* 0: Top-Left     */ \
@@ -386,15 +388,26 @@ void startGame(void) {
     (short)((x) + (border) + ((float)(border) / (h) * (slant))),            \
     (short)((y) + (border)),                          /* 4: Inner Top-Left     */ \
                                                                             \
-    (short)((x) + (w) - (border) + ((float)(border) / (h) * (slant))),      \
+    (short)((x) + (w) - (border) - ((float)(border) / (h) * (slant))),      \
     (short)((y) + (border)),                          /* 5: Inner Top-Right    */ \
                                                                             \
     (short)((x) + (w) - (slant) - (border) - ((float)(border) / (h) * (slant))),\
     (short)((y) + (h) - (border)),                    /* 6: Inner Bottom-Right */ \
                                                                             \
-    (short)((x) - (slant) + (border) - ((float)(border) / (h) * (slant))),  \
+    (short)((x) - (slant) + (border) + ((float)(border) / (h) * (slant))),  \
     (short)((y) + (h) - (border))                     /* 7: Inner Bottom-Left  */ \
 }
+
+ROM_RODATA_NUM static const short timer_backdrop_coords[] = {
+    0, 0,
+    TIMER_BACKDROP_WIDTH + TIMER_BACKDROP_BORDER, 0,
+    (TIMER_BACKDROP_WIDTH - TIMER_BACKDROP_INSET) + 2, TIMER_BACKDROP_HEIGHT + TIMER_BACKDROP_BORDER,
+    0, TIMER_BACKDROP_HEIGHT + TIMER_BACKDROP_BORDER,
+    0, 0,
+    TIMER_BACKDROP_WIDTH, 0,
+    TIMER_BACKDROP_WIDTH - TIMER_BACKDROP_INSET, TIMER_BACKDROP_HEIGHT,
+    0, TIMER_BACKDROP_HEIGHT,
+};
 
 ROM_RODATA_NUM static const short press_start_coords[] = GENERATE_PARALLELOGRAM_COORDS(
     PRESS_START_X_OFFSET,
@@ -425,14 +438,17 @@ void renderParallelogram(Gfx **dl_ptr, Vtx *backdrop, short *coords) {
 void handleState_title(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
     renderBackdrop(&dl);
-    renderText(&dl, 95, 90, 255, 255, 255, 255, "SUPER HEXAGON");
     renderParallelogram(&dl, &press_start_backdrop[(int)SelectedDLIndex][0], (short*)&press_start_coords[0]);
-    renderText(&dl, 95, 200, 255, 255, 255, 255, "PRESS START");
+    renderText(&dl, 95, 90, 255, 255, 255, 255, "SUPER HEXAGON");
+    renderText(&dl, 110, 200, 255, 255, 255, 255, "PRESS START");
     angle_offset = angleAdd(angle_offset, 1.0f);
-    if (p1PressedButtons & START_BUTTON) {
-        startGame();
-    } else if (p1PressedButtons & B_BUTTON) {
-        gameExit();
+    if (!warping_out) {
+        if (p1PressedButtons & START_BUTTON) {
+            startGame();
+        } else if (p1PressedButtons & B_BUTTON) {
+            gameExit();
+            warping_out = 1;
+        }
     }
     *dl_ptr = dl;
 }
@@ -636,7 +652,7 @@ void renderWalls(Gfx **dl_ptr) {
     for (int i = 0; i < WALL_BUFFER_COUNT; i++) {
         wallStruct *ref_wall = &hex_walls[i];
         if (ref_wall->used) {
-            if (game_state == GAMESTATE_NORMAL) {
+            if ((game_state == GAMESTATE_NORMAL) && (!warping_out)) {
                 ref_wall->dist -= approach_speed;
             }
             if (ref_wall->dist < 10.0f) {
@@ -666,7 +682,7 @@ void renderWalls(Gfx **dl_ptr) {
                     hex_colors[COLORSTATE_CENTERHEX_BORDER].green, 
                     hex_colors[COLORSTATE_CENTERHEX_BORDER].blue, 4);
                 // Collision Detection
-                if (game_state == GAMESTATE_NORMAL) {
+                if ((game_state == GAMESTATE_NORMAL) && (!warping_out)) {
                     int player_angle_int = player_angle;
                     int player_wall = player_angle_int / 60;
                     if (ref_wall->dist <= (33)) {
@@ -685,17 +701,6 @@ void renderWalls(Gfx **dl_ptr) {
     *dl_ptr = dl;
 }
 
-ROM_RODATA_NUM static const short timer_backdrop_coords[] = {
-    0, 0,
-    TIMER_BACKDROP_WIDTH + TIMER_BACKDROP_BORDER, 0,
-    (TIMER_BACKDROP_WIDTH - TIMER_BACKDROP_INSET) + 2, TIMER_BACKDROP_HEIGHT + TIMER_BACKDROP_BORDER,
-    0, TIMER_BACKDROP_HEIGHT + TIMER_BACKDROP_BORDER,
-    0, 0,
-    TIMER_BACKDROP_WIDTH, 0,
-    TIMER_BACKDROP_WIDTH - TIMER_BACKDROP_INSET, TIMER_BACKDROP_HEIGHT,
-    0, TIMER_BACKDROP_HEIGHT,
-};
-
 void renderTime(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
     float time_val = frame_counter / 60.0f;
@@ -713,10 +718,13 @@ void renderTime(Gfx **dl_ptr) {
         hex_colors[COLORSTATE_BACK_0].green, 
         hex_colors[COLORSTATE_BACK_0].blue, 4);
     dk_strFormat(&timer_text[0], "%.2f", time_val);
-    if (time_val > 30.0f) {
-        if (game_state == GAMESTATE_NORMAL) {
-            playSFXWrapper(71);
-            gameVictory();
+    if (!warping_out) {
+        if (time_val > 30.0f) {
+            if (game_state == GAMESTATE_NORMAL) {
+                playSFXWrapper(71);
+                gameVictory();
+                warping_out = 1;
+            }
         }
     }
     renderText(&dl, 6, 8, 0xFF, 0xFF, 0xFF, 0xFF, timer_text);
