@@ -362,19 +362,22 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
         settings_dict["galleon_water"] = GalleonWaterSetting.vanilla
     settings_dict["no_consumable_upgrades"] = options.remove_bait_potions.value
 
+def generate_blocker(option_value: String, random: Random):
+    """Calculate bounds of wincon value."""
+    upper_bound = 201 if option_value == "random" else int(option_value.split("-")[1])) + 1
+    lower_bound = 0 if option_value == "random" else int(option_value.split("-")[0])
+    return random.randrange(lower_bound, upper_bound)
 
-def apply_blocker_settings(settings_dict: dict, options) -> None:
+
+def apply_blocker_settings(settings_dict: dict, options, random_obj) -> None:
     """Apply level blocker settings."""
-    blocker_options = [
-        options.level_blockers.value.get("level_1", 0),
-        options.level_blockers.value.get("level_2", 0),
-        options.level_blockers.value.get("level_3", 0),
-        options.level_blockers.value.get("level_4", 0),
-        options.level_blockers.value.get("level_5", 0),
-        options.level_blockers.value.get("level_6", 0),
-        options.level_blockers.value.get("level_7", 0),
-        options.level_blockers.value.get("level_8", 64),
-    ]
+    blocker_options = [0,0,0,0,0,0,0,0]
+    for blocker, amount in options.level_blockers.values:
+        blocker_number = int(blocker.removeprefix("level_")) - 1
+        if amount == "random" or len(amount.split("-")) == 2:
+            blocker_options[blocker_number] = generate_blocker(amount, random_obj)
+        else:
+            blocker_options[blocker_number] = int(amount)
 
     # Blocker settings - prioritize chaos blockers, then randomization setting
     settings_dict["maximize_helm_blocker"] = options.maximize_level8_blocker.value
@@ -866,7 +869,7 @@ def fillsettings(options, multiworld, random_obj):
 
     # Apply all setting categories
     apply_archipelago_settings(settings_dict, options, multiworld)
-    apply_blocker_settings(settings_dict, options)
+    apply_blocker_settings(settings_dict, options, random_obj)
     apply_item_randomization_settings(settings_dict, options)
     apply_hard_mode_settings(settings_dict, options)
     apply_kong_settings(settings_dict, options)
