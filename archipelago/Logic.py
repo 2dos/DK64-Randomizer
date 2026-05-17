@@ -1494,6 +1494,7 @@ class LogicVarHolder:
         return self.hasMoveSwitchsanity(Switches.JapesFreeKong)
 
     def CanOpenJapesGates(self):
+        """Check if we can pick up the item inside Diddy's cage, thus opening the gates in Japes."""
         return self.CanFreeDiddy()
 
     def CanFreeTiny(self):
