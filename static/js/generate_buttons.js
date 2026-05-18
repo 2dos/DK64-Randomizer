@@ -497,7 +497,7 @@ async function import_settings_string_internal(settingsString) {
     const selects = document.getElementsByTagName("select");
     for (let select of selects) {
         if (should_clear_setting(select)) {
-            select.selectedIndex = -1;
+            select.selectedIndex = 0; // Prevents null selects as the first option is *usually* what the status quo is
         }
     }
 

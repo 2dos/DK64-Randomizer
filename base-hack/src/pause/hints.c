@@ -569,3 +569,67 @@ Gfx* drawItemLocationScreen(Gfx* dl, int level_x) {
     }
     return dl;
 }
+
+ROM_DATA static unsigned short hint_lockout = 0;
+ROM_DATA static unsigned char hint_lockout_enacted[5] = {0, 0, 0, 0, 0};
+ROM_DATA static unsigned char applied_hint_lockout_enacted[5] = {0, 0, 0, 0, 0};
+ROM_DATA static unsigned char lockout_mult = 0;
+
+void initLockout(void) {
+    for (int i = 0; i < 5; i++) {
+        int base = i * 7;
+        int bits = 0;
+
+        for (int j = 0; j < 7; j++) {
+            if (showHint(base + j)) {
+                bits |= (1 << j);
+            }
+        }
+
+        applied_hint_lockout_enacted[i] = bits;
+    }
+}
+
+void handleHintScreenLockout(void) {
+    PauseBackdropRedness = 0;
+    if (CurrentActorPointer_0->obj_props_bitfield & 0x10) {
+        if (hint_lockout) {
+            if (--hint_lockout) {
+                SwapObject->new_inputs->Buttons_as_short &= ~(A_BUTTON | B_BUTTON | START_BUTTON);
+                PauseBackdropRedness = 0x80;
+            }
+        } else if (lockout_mult) {
+            pause_paad *paad = CurrentActorPointer_0->paad;
+
+            if (paad->screen == PAUSESCREEN_HINTS) {
+                hint_lockout = Rando.hint_screen_lockout * lockout_mult;
+                lockout_mult = 0;
+                for (int i = 0; i < 5; i++) {
+                    applied_hint_lockout_enacted[i] |= hint_lockout_enacted[i];
+                }
+            }
+        }
+    } else {
+        lockout_mult = 0;
+
+        for (int i = 0; i < 5; i++) {
+            int base = i * 7;
+            int bits = 0;
+
+            for (int j = 0; j < 7; j++) {
+                if (showHint(base + j) &&
+                    !(applied_hint_lockout_enacted[i] & (1 << j))) {
+                    bits |= (1 << j);
+                    if ((base + j) < 28) {
+                        // Disable lockout adding to the multiplier for batches 8, 9 and 10
+                        lockout_mult++;
+                    }
+                }
+            }
+
+            hint_lockout_enacted[i] = bits;
+        }
+    }
+
+    pauseMenuCode();
+}

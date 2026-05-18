@@ -103,3 +103,9 @@ ExitMapHook:
     addiu $a1, $zero, 1
     j 0x806A8A20
     nop
+
+SetBackdropColor:
+    lui $a1, hi(PauseBackdropRedness)
+    lbu $a1, lo(PauseBackdropRedness) ($a1)
+    j 0x806AC064
+    or $a2, $zero, $zero

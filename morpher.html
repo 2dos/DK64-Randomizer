@@ -750,6 +750,11 @@
                     console.log("Porting the ice trap model variable to the new value.")
                     setting_data.ice_trap_model_v2 = setting_data.ice_trap_model;
                 }
+                if (sel_version_num < numericVersion("5.14.51")) {
+                    console.log("Setting default values for new hint settings.")
+                    setting_data.hint_door_item = "off";
+                    setting_data.pause_hints_setting = "normal";
+                }
                 // Update to include all unhandled options to unsorted
                 const all_valid_items = Object.keys(output_json.ItemRandoListSelected);
                 let mentioned_items = [];
