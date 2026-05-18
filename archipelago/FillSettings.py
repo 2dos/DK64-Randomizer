@@ -4,6 +4,8 @@ This module contains all the settings configuration logic
 that was previously in the generate_early method.
 """
 
+from random import Random
+
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
@@ -362,9 +364,9 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
         settings_dict["galleon_water"] = GalleonWaterSetting.vanilla
     settings_dict["no_consumable_upgrades"] = options.remove_bait_potions.value
 
-def generate_blocker(option_value: String, random: Random):
+def generate_blocker(option_value: str, random: Random):
     """Calculate bounds of wincon value."""
-    upper_bound = 201 if option_value == "random" else int(option_value.split("-")[1])) + 1
+    upper_bound = 201 if option_value == "random" else int(option_value.split("-")[1]) + 1
     lower_bound = 0 if option_value == "random" else int(option_value.split("-")[0])
     return random.randrange(lower_bound, upper_bound)
 
@@ -372,12 +374,13 @@ def generate_blocker(option_value: String, random: Random):
 def apply_blocker_settings(settings_dict: dict, options, random_obj) -> None:
     """Apply level blocker settings."""
     blocker_options = [0,0,0,0,0,0,0,0]
-    for blocker, amount in options.level_blockers.values:
+    for blocker, amount in options.level_blockers.value.items():
         blocker_number = int(blocker.removeprefix("level_")) - 1
-        if amount == "random" or len(amount.split("-")) == 2:
-            blocker_options[blocker_number] = generate_blocker(amount, random_obj)
-        else:
+        try:
             blocker_options[blocker_number] = int(amount)
+        except (TypeError, ValueError):
+            blocker_options[blocker_number] = generate_blocker(amount, random_obj)
+            
 
     # Blocker settings - prioritize chaos blockers, then randomization setting
     settings_dict["maximize_helm_blocker"] = options.maximize_level8_blocker.value
