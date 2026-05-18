@@ -154,3 +154,4 @@
 .definelabel cutsceneTinyCode, 0x806C1B50
 .definelabel cutsceneChunkyCode, 0x806C1CCC
 .definelabel warpActorToParent, 0x8067B238
+.definelabel pauseMenuCode, 0x806A8158

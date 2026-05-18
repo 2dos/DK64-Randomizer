@@ -139,7 +139,6 @@ LogicRegions = {
     Regions.MillArea: [
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 1),  # Mill roof
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Behind Barn
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut and (l.TimeAccess(Regions.MillArea, Time.Day) or l.monkey_maneuvers), None, 1),  # Snide
         Collectible(Collectibles.banana, Kongs.diddy, lambda _: True, None, 3),  # Near Rafter Barn
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.spring or l.CanMoontail(), None, 1),  # Near Rafter Barn
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: l.swim, None, 17),  # Underwater
@@ -148,6 +147,9 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.climbing, None, 3),  # On mushroom near back Tag Barrel
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.climbing, None, 3),  # On mushroom near rafters attic
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.climbing, None, 3),  # On mushroom near Chunky minecart exit
+    ],
+    Regions.SnideArea: [
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1)  # Near Snide
     ],
     Regions.MillChunkyTinyArea: [
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 1),

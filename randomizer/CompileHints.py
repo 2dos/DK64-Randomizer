@@ -1823,8 +1823,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                     sorted_unhinted_locs = sorted(hintset.wothLocationUnhintedScores.items(), key=lambda x: x[1], reverse=True)
                     # Find the first location in the sorted list that is in a region we can hint
                     while region_name_to_hint is None and any(sorted_unhinted_locs):
-                        # If no score is over 0, there's no point in using this system, just get a random one
-                        if not any(score > 0 for score in hintset.wothLocationUnhintedScores.values()):
+                        # If no score is over 0.8, there's no point in using this system, just get a random one
+                        if not any(score > 0.8 for score in hintset.wothLocationUnhintedScores.values()):
                             break
                         candidate_loc = sorted_unhinted_locs.pop(0)[0]
                         # The unhinted item in question must be a vial for this hint to make any sense
@@ -1939,6 +1939,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 Regions.MillArea,
                 Regions.ThornvineArea,
                 Regions.MushroomVeryTopExterior,
+                Regions.SnideArea,
             ],
             [Regions.CrystalCavesEntryHandler, Regions.CrystalCavesMain, Regions.IglooArea, Regions.CabinArea],
             [Regions.CreepyCastleEntryHandler, Regions.CreepyCastleMain, Regions.CastleWaterfall],

@@ -207,7 +207,7 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
                     # Add logic for the new door location
                     doorLocation = GetDoorLocationForKongAndLevel(kong, level)  # If testing all locations, replace "kong" with "kong % 5"
                     region = spoiler.RegionList[selected_door.logicregion]
-                    region.locations.append(LocationLogic(doorLocation, selected_door.logic))
+                    region.locations.append(LocationLogic(doorLocation, lambda l: selected_door.logic(l) and l.canUnlockHintDoor(level)))
                     spoiler.LocationList[doorLocation].name = f"{level_to_name[level]} Hint Door ({selected_door.name})"
         elif disable_wrinkly_puzzles:
             # place vanilla wrinkly doors

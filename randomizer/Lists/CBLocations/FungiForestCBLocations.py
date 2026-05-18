@@ -3207,7 +3207,7 @@ BalloonList = [
         name="In front of Snide (Diddy)",
         speed=9,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MillArea,
+        region=Regions.SnideArea,
         vanilla=True,
         points=[[3233, 349, 3638], [3242, 327, 3550], [3180, 345, 3477]],
     ),

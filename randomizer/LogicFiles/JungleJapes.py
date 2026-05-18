@@ -123,7 +123,7 @@ LogicRegions = {
         Event(Events.JapesW3aTagged, lambda _: True),
     ], [
         TransitionFront(Regions.JungleJapesStart, lambda _: True),
-        TransitionFront(Regions.JapesCannonPlatform, lambda l: (l.handstand and l.lanky and l.monkey_maneuvers) or (l.tiny and l.slope_resets)),
+        TransitionFront(Regions.JapesCannonPlatform, lambda l: (l.handstand and l.lanky and l.monkey_maneuvers) or (not l.isKrushaAdjacent(Kongs.tiny) and l.tiny and l.slope_resets)),
         TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates) or Events.JapesFreeKongOpenGates in l.Events or l.CanPhase() or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
         TransitionFront(Regions.JapesPaintingRoomHill, lambda l: (l.handstand and l.islanky) or (l.twirl and l.istiny and l.climbing) or l.CanMoonkick() or l.CanSkew(True) or l.CanSkew(False) or l.slope_resets),
         TransitionFront(Regions.JapesLankyCave, lambda l: ((l.hasMoveSwitchsanity(Switches.JapesPainting, False) or l.CanSkew(True) or l.CanSkew(False)) and ((l.handstand and l.islanky) or (l.twirl and l.istiny and l.climbing) or l.CanMoonkick() or l.slope_resets)) or (l.CanMoonkick() and (l.CanPhase() or l.CanSkew(True) or l.CanSkew(False))) or ((l.CanPhase() or l.generalclips or l.CanSkew(True) or l.CanSkew(False)) and (l.isdiddy or l.istiny)), Transitions.JapesMainToLankyCave, isGlitchTransition=True),
