@@ -364,9 +364,9 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
         settings_dict["galleon_water"] = GalleonWaterSetting.vanilla
     settings_dict["no_consumable_upgrades"] = options.remove_bait_potions.value
 
-def generate_blocker(option_value: str, random: Random):
-    """Calculate bounds of wincon value."""
-    upper_bound = 201 if option_value == "random" else int(option_value.split("-")[1]) + 1
+def generate_blocker(option_value: str, blocker_max: int, random: Random):
+    """Randomize a B. Locker value, either within a range or up to the maximum."""
+    upper_bound = blocker_max if option_value == "random" else int(option_value.split("-")[1]) + 1
     lower_bound = 0 if option_value == "random" else int(option_value.split("-")[0])
     return random.randrange(lower_bound, upper_bound)
 
@@ -379,7 +379,7 @@ def apply_blocker_settings(settings_dict: dict, options, random_obj) -> None:
         try:
             blocker_options[blocker_number] = int(amount)
         except (TypeError, ValueError):
-            blocker_options[blocker_number] = generate_blocker(amount, random_obj)
+            blocker_options[blocker_number] = generate_blocker(amount, options.blocker_max.value, random_obj)
             
 
     # Blocker settings - prioritize chaos blockers, then randomization setting
