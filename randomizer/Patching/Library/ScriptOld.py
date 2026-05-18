@@ -1,0 +1,1885 @@
+"""Instance Script library functions and classes."""
+
+from randomizer.Enums.ScriptTypes import ScriptTypes
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Settings import SwitchsanityGone
+from randomizer.Patching.Library.DataTypes import short_to_ushort
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
+from randomizer.Patching.Patcher import LocalROM
+from randomizer.Patching.Library.ScriptsLib import FunctionData, ScriptBlock, compileInstanceScript
+
+
+def getCScript(index: int, item_id: int):
+    """Get the generic c script caller."""
+    return compileInstanceScript(item_id, [ScriptBlock([], [FunctionData(7, [125, short_to_ushort(index), item_id])])])
+
+
+level_map_mapping = {
+    Levels.DKIsles: [
+        Maps.Isles,
+        Maps.BananaFairyRoom,
+        Maps.JungleJapesLobby,
+        Maps.AngryAztecLobby,
+        Maps.IslesSnideRoom,
+        Maps.FranticFactoryLobby,
+        Maps.GloomyGalleonLobby,
+        Maps.FungiForestLobby,
+        Maps.CrystalCavesLobby,
+        Maps.CreepyCastleLobby,
+        Maps.HideoutHelmLobby,
+        Maps.TrainingGrounds,
+        Maps.Treehouse,
+        Maps.KLumsy,
+    ],
+    Levels.JungleJapes: [
+        Maps.JungleJapes,
+        Maps.JapesTinyHive,
+        Maps.JapesLankyCave,
+        Maps.JapesMountain,
+        Maps.JapesMinecarts,
+        Maps.JapesUnderGround,
+        Maps.JapesBaboonBlast,
+    ],
+    Levels.AngryAztec: [
+        Maps.AngryAztec,
+        Maps.AztecTinyTemple,
+        Maps.AztecDonkey5DTemple,
+        Maps.AztecDiddy5DTemple,
+        Maps.AztecLanky5DTemple,
+        Maps.AztecTiny5DTemple,
+        Maps.AztecChunky5DTemple,
+        Maps.AztecTinyRace,
+        Maps.AztecLlamaTemple,
+        Maps.AztecBaboonBlast,
+    ],
+    Levels.FranticFactory: [
+        Maps.FranticFactory,
+        Maps.FactoryTinyRace,
+        Maps.FactoryPowerHut,
+        Maps.FactoryCrusher,
+        Maps.FactoryBaboonBlast,
+    ],
+    Levels.GloomyGalleon: [
+        Maps.GloomyGalleon,
+        Maps.GalleonLighthouse,
+        Maps.GalleonMermaidRoom,
+        Maps.GalleonSickBay,
+        Maps.GalleonSealRace,
+        Maps.GalleonTreasureChest,
+        Maps.GalleonSubmarine,
+        Maps.GalleonMechafish,
+        Maps.Galleon5DShipDKTiny,
+        Maps.Galleon5DShipDiddyLankyChunky,
+        Maps.Galleon2DShip,
+        Maps.GalleonBaboonBlast,
+    ],
+    Levels.FungiForest: [
+        Maps.FungiForest,
+        Maps.ForestMinecarts,
+        Maps.ForestGiantMushroom,
+        Maps.ForestChunkyFaceRoom,
+        Maps.ForestLankyZingersRoom,
+        Maps.ForestLankyMushroomsRoom,
+        Maps.ForestAnthill,
+        Maps.ForestMillFront,
+        Maps.ForestMillBack,
+        Maps.ForestSpider,
+        Maps.ForestRafters,
+        Maps.ForestWinchRoom,
+        Maps.ForestMillAttic,
+        Maps.ForestThornvineBarn,
+        Maps.ForestBaboonBlast,
+    ],
+    Levels.CrystalCaves: [
+        Maps.CrystalCaves,
+        Maps.CavesLankyRace,
+        Maps.CavesFrozenCastle,
+        Maps.CavesDonkeyIgloo,
+        Maps.CavesDiddyIgloo,
+        Maps.CavesLankyIgloo,
+        Maps.CavesTinyIgloo,
+        Maps.CavesChunkyIgloo,
+        Maps.CavesRotatingCabin,
+        Maps.CavesDonkeyCabin,
+        Maps.CavesDiddyLowerCabin,
+        Maps.CavesDiddyUpperCabin,
+        Maps.CavesLankyCabin,
+        Maps.CavesTinyCabin,
+        Maps.CavesChunkyCabin,
+        Maps.CavesBaboonBlast,
+    ],
+    Levels.CreepyCastle: [
+        Maps.CreepyCastle,
+        Maps.CastleTree,
+        Maps.CastleLibrary,
+        Maps.CastleBallroom,
+        Maps.CastleMuseum,
+        Maps.CastleTinyRace,
+        Maps.CastleTower,
+        Maps.CastleGreenhouse,
+        Maps.CastleTrashCan,
+        Maps.CastleShed,
+        Maps.CastleLowerCave,
+        Maps.CastleCrypt,
+        Maps.CastleMinecarts,
+        Maps.CastleMausoleum,
+        Maps.CastleUpperCave,
+        Maps.CastleDungeon,
+        Maps.CastleBaboonBlast,
+    ],
+    Levels.HideoutHelm: [
+        Maps.HideoutHelm,
+    ],
+}
+level_key_flag_mapping = {
+    Levels.JungleJapes: 0x1A,
+    Levels.AngryAztec: 0x4A,
+    Levels.FranticFactory: 0x8A,
+    Levels.GloomyGalleon: 0xA8,
+    Levels.FungiForest: 0xEC,
+    Levels.CrystalCaves: 0x124,
+    Levels.CreepyCastle: 0x13D,
+}
+level_portal_flag_mapping = {
+    Levels.JungleJapes: 0x2E,
+    Levels.AngryAztec: 0x6C,
+    Levels.FranticFactory: 0x98,
+    Levels.GloomyGalleon: 0xCB,
+    Levels.FungiForest: 0x102,
+    Levels.CrystalCaves: 0x12E,
+    Levels.CreepyCastle: 0x160,
+}
+
+
+def getLevel(map_id: Maps, source: str, lobby_is_isles: bool = True) -> Levels:
+    """Get the level associated with a map."""
+    if not lobby_is_isles:
+        lobby_mapping = {
+            Maps.JungleJapesLobby: Levels.JungleJapes,
+            Maps.AngryAztecLobby: Levels.AngryAztec,
+            Maps.FranticFactoryLobby: Levels.FranticFactory,
+            Maps.GloomyGalleonLobby: Levels.GloomyGalleon,
+            Maps.FungiForestLobby: Levels.FungiForest,
+            Maps.CrystalCavesLobby: Levels.CrystalCaves,
+            Maps.CreepyCastleLobby: Levels.CreepyCastle,
+            Maps.HideoutHelmLobby: Levels.HideoutHelm,
+        }
+        if map_id in lobby_mapping:
+            return lobby_mapping[map_id]
+    for lvl, map_ids in level_map_mapping.items():
+        if map_id in map_ids:
+            return lvl
+    raise Exception(f"Invalid level for {source}")
+
+
+def getTroffPortalScript(map_id: Maps, item_id: int, exit_id: int) -> list[int]:
+    """Get the instance script for a troff and scoff portal."""
+    level_id: Levels = None
+    boss_flag = level_key_flag_mapping[Levels.JungleJapes]
+    portal_flag = level_portal_flag_mapping[Levels.JungleJapes]
+    portal_range = 90
+    if map_id != Maps.TroffNScoff:
+        portal_range = 60
+        level_id = getLevel(map_id, "portal")
+        portal_flag = level_portal_flag_mapping[level_id]
+        boss_flag = level_key_flag_mapping[level_id]
+    return compileInstanceScript(
+        item_id,
+        [
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(22, [1, 0, 0]),
+                    FunctionData(20, [1, 160, 0]),
+                    FunctionData(22, [3, 0, 0]),
+                    FunctionData(20, [3, 115, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                    FunctionData(45, [portal_flag, 0, 0]),
+                ],
+                [
+                    FunctionData(69, [1, 0, 255]),
+                    FunctionData(70, [0, 0, 0]),
+                    FunctionData(1, [20, 0, 0]),
+                ],
+                lambda m: m != Maps.TroffNScoff,
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                    FunctionData(45, [boss_flag, 0, 0], True, lambda m: m != Maps.TroffNScoff),
+                ],
+                [
+                    FunctionData(17, [1, 65535, 0]),
+                    FunctionData(17, [3, 65535, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                    FunctionData(45, [portal_flag, 0, 0], True, lambda m: m != Maps.TroffNScoff),
+                ],
+                [
+                    FunctionData(3, [0, 45, 0]),
+                    FunctionData(1, [1, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [1, 0, 0]),
+                    FunctionData(19, [portal_range, 0, 0]),
+                    FunctionData(35, [0, 0, 0], True, lambda m: m == Maps.TroffNScoff),
+                ],
+                [
+                    FunctionData(3, [60, 0, 0], inclusion_lambda=lambda m: m != Maps.TroffNScoff),
+                    FunctionData(3, [0, 60, 0], inclusion_lambda=lambda m: m == Maps.TroffNScoff),
+                    FunctionData(7, [116, 0, 1]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [1, 0, 0]),
+                    FunctionData(19, [portal_range, 0, 0]),
+                    FunctionData(35, [0, 0, 0], True, lambda m: m == Maps.TroffNScoff),
+                ],
+                [
+                    FunctionData(110, [1, 0, 0]),
+                    FunctionData(37, [29, 0, 15]),
+                    FunctionData(25, [90, 0, 0]),
+                    FunctionData(1, [100, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [100, 0, 0]),
+                    FunctionData(4, [0, 0, 0]),
+                    FunctionData(45, [boss_flag, 0, 0]),
+                ],
+                [
+                    FunctionData(3, [0, 60, 0]),
+                    FunctionData(107, [portal_flag, 1, 0]),
+                    FunctionData(1, [40, 0, 0]),
+                ],
+                lambda m: m != Maps.TroffNScoff,
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [100, 0, 0]),
+                    FunctionData(4, [0, 0, 0]),
+                    FunctionData(45, [boss_flag, 0, 0], True, lambda m: m != Maps.TroffNScoff),
+                ],
+                [
+                    FunctionData(1, [2, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [40, 0, 0]),
+                    FunctionData(4, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(69, [1, 0, 4]),
+                    FunctionData(70, [0, 0, 0]),
+                    FunctionData(15, [994, 20, 10]),
+                ],
+                lambda m: m != Maps.TroffNScoff,
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [40, 0, 0]),
+                    FunctionData(4, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(1, [41, 0, 0]),
+                ],
+                lambda m: m != Maps.TroffNScoff,
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [41, 0, 0]),
+                    FunctionData(21, [2, 0, 0]),
+                ],
+                [
+                    FunctionData(7, [116, 0, 2]),
+                ],
+                lambda m: m != Maps.TroffNScoff,
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [41, 0, 0]),
+                    FunctionData(21, [2, 0, 0], True),
+                ],
+                [
+                    FunctionData(1, [20, 0, 0]),
+                ],
+                lambda m: m != Maps.TroffNScoff,
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [1, 0, 0]),
+                    FunctionData(19, [60, 0, 0], True),
+                ],
+                [
+                    FunctionData(1, [2, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [1, 0, 0]),
+                    FunctionData(35, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(1, [2, 0, 0]),
+                ],
+                lambda m: m == Maps.TroffNScoff,
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [2, 0, 0]),
+                    FunctionData(4, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(90, [60, 60, 60]),
+                    FunctionData(61, [3, 0, 0]),
+                    FunctionData(1, [3, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [3, 0, 0]),
+                    FunctionData(45, [portal_flag, 0, 0]),
+                ],
+                [
+                    FunctionData(69, [1, 0, 255]),
+                    FunctionData(70, [0, 0, 0]),
+                    FunctionData(1, [20, 0, 0]),
+                ],
+                lambda m: m != Maps.TroffNScoff,
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [3, 0, 0]),
+                    FunctionData(16, [1, 1, 0]),
+                ],
+                [
+                    FunctionData(3, [0, 5, 0]),
+                    FunctionData(7, [116, 0, 0]),
+                    FunctionData(110, [1, 0, 0]),
+                    FunctionData(37, [28, 0, 15]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [3, 0, 0]),
+                    FunctionData(16, [1, 1, 0]),
+                ],
+                [
+                    FunctionData(25, [89, 0, 0]),
+                    FunctionData(1, [4, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [4, 0, 0]),
+                    FunctionData(4, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(134, [short_to_ushort(exit_id), 0, 0], inclusion_lambda=lambda m: m != Maps.TroffNScoff),
+                    FunctionData(135, [0, 0, 0], inclusion_lambda=lambda m: m == Maps.TroffNScoff),
+                    FunctionData(1, [5, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(0, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(7, [125, short_to_ushort(-3), item_id]),
+                ],
+            ),
+        ],
+        map_id,
+    )
+
+
+level_crown_map_mapping = {
+    Levels.JungleJapes: [Maps.JapesCrown],
+    Levels.AngryAztec: [Maps.AztecCrown],
+    Levels.FranticFactory: [Maps.FactoryCrown],
+    Levels.GloomyGalleon: [Maps.GalleonCrown],
+    Levels.FungiForest: [Maps.ForestCrown],
+    Levels.CrystalCaves: [Maps.CavesCrown],
+    Levels.CreepyCastle: [Maps.CastleCrown],
+    Levels.HideoutHelm: [Maps.HelmCrown],
+    Levels.DKIsles: [Maps.LobbyCrown, Maps.SnidesCrown],
+}
+level_crown_flag_mapping = {
+    Levels.JungleJapes: [0x261],
+    Levels.AngryAztec: [0x262],
+    Levels.FranticFactory: [0x263],
+    Levels.GloomyGalleon: [0x264],
+    Levels.FungiForest: [0x265],
+    Levels.CrystalCaves: [0x268],
+    Levels.CreepyCastle: [0x269],
+    Levels.HideoutHelm: [0x26A],
+    Levels.DKIsles: [0x266, 0x267],
+}
+
+
+def getCrownScript(container_map_id: Maps, item_id: int, isIsles2: bool = False) -> list[int]:
+    """Get the instance script for the battle crown pad."""
+    level_id = getLevel(container_map_id, "crown pad")
+    map_list = level_crown_map_mapping[level_id]
+    flag_list = level_crown_flag_mapping[level_id]
+    crown_target_map = Maps.JapesCrown
+    flag_id = 0
+    if isIsles2:
+        crown_target_map = map_list[1]
+        flag_id = flag_list[1]
+    else:
+        crown_target_map = map_list[0]
+        flag_id = flag_list[0]
+    return compileInstanceScript(
+        item_id,
+        [
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(38, [3, 900, 0]),
+                    FunctionData(1, [1, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(45, [flag_id, 0, 0]),
+                ],
+                [
+                    FunctionData(71, [0, 0, 0]),
+                    FunctionData(69, [1, 0, 255]),
+                    FunctionData(38, [2, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(18, [4, 2, 0]),
+                    FunctionData(29, [1, 0, 0]),
+                ],
+                [
+                    FunctionData(73, [7, crown_target_map, 2]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(18, [3, 2, 0]),
+                    FunctionData(29, [1, 0, 0]),
+                ],
+                [
+                    FunctionData(73, [7, crown_target_map, 2]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(18, [2, 2, 0]),
+                    FunctionData(29, [1, 0, 0]),
+                ],
+                [
+                    FunctionData(73, [7, crown_target_map, 2]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(18, [5, 2, 0]),
+                    FunctionData(29, [1, 0, 0]),
+                ],
+                [
+                    FunctionData(73, [7, crown_target_map, 2]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(18, [6, 2, 0]),
+                    FunctionData(29, [1, 0, 0]),
+                ],
+                [
+                    FunctionData(73, [7, crown_target_map, 2]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [1, 0, 0]),
+                    FunctionData(13, [2, 0, 0]),
+                    FunctionData(45, [358, 0, 0], True),
+                ],
+                [
+                    FunctionData(107, [358, 1, 0]),
+                    FunctionData(110, [1, 0, 0]),
+                    FunctionData(37, [24, 1, 0]),
+                    FunctionData(1, [2, 0, 0]),
+                ],
+            ),
+        ],
+    )
+
+
+def getCrateScript(item_id: int) -> list[int]:
+    """Get the instance script for a melon crate."""
+    return compileInstanceScript(
+        item_id,
+        [
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(90, [50, 50, 50]),
+                    FunctionData(61, [4, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(20, [1, 255, 0]),
+                    FunctionData(17, [1, 65535, 0]),
+                    FunctionData(38, [3, 500, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(24, [1, 1, 0]),
+                    FunctionData(1, [1, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [1, 0, 0]),
+                    FunctionData(1, [0, 1, 0]),
+                    FunctionData(55, [1, 18, 0]),
+                ],
+                [
+                    FunctionData(15, [757, 20, 12880]),
+                    FunctionData(1, [1, 1, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [1, 0, 0]),
+                    FunctionData(1, [0, 1, 0]),
+                    FunctionData(55, [1, 19, 0]),
+                ],
+                [
+                    FunctionData(15, [757, 20, 12870]),
+                    FunctionData(1, [1, 1, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [1, 0, 0]),
+                    FunctionData(1, [1, 1, 0]),
+                    FunctionData(55, [1, 18, 0], True),
+                    FunctionData(55, [1, 19, 0], True),
+                ],
+                [
+                    FunctionData(1, [0, 1, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [1, 0, 0]),
+                    FunctionData(16, [4, 1, 0]),
+                ],
+                [
+                    FunctionData(1, [2, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [1, 0, 0]),
+                    FunctionData(23, [28, 0, 0]),
+                    FunctionData(2, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(1, [2, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [1, 0, 0]),
+                    FunctionData(16, [1, 1, 0]),
+                    FunctionData(57, [2040, 0, 0]),
+                ],
+                [
+                    FunctionData(1, [2, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [2, 0, 0]),
+                ],
+                [
+                    FunctionData(97, [47, 0, 0]),
+                    FunctionData(15, [35, 0, 0]),
+                    FunctionData(7, [16, 0, 0]),
+                    FunctionData(79, [65534, 0, 0]),
+                ],
+            ),
+        ],
+    )
+
+def getFiveTwoDoorShipGateScript(item_id: int, flag_id: int, timer: int, timer_2: int, tied_pad: int) -> list[int]:
+    is_slam_switch = flag_id in (0x2FE, 0x2FF)
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(45, [flag_id, 0, 0]),
+        ], [
+            FunctionData(1, [10, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(45, [flag_id, 0, 0], True),
+        ], [
+            FunctionData(20, [1 if is_slam_switch else 2, 2, 0], False, lambda f: f != 0x2FC),  # Not Chunky
+            FunctionData(22, [1 if is_slam_switch else 2, 1, 0], False, lambda f: f != 0x2FC),  # Not Chunky
+            FunctionData(38, [2, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [10, 0, 0]),
+        ], [
+            FunctionData(20, [2, 2, 0], False, lambda f: f == 0x2FC),  # Chunky
+            FunctionData(22, [2, 1, 0], False, lambda f: f == 0x2FC),  # Chunky
+            FunctionData(3, [0, 300 if flag_id == 0x2FF else 250, 0]),
+            FunctionData(1, [11, 0, 0]),
+            FunctionData(107, [flag_id, 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [11, 0, 0]),
+            FunctionData(4, [timer, 0, 0]),
+        ], [
+            FunctionData(17, [1 if is_slam_switch else 2, 1, 0]),
+            FunctionData(14, [288, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [11, 0, 0]),
+            FunctionData(4, [timer_2, 0, 0]),
+        ], [
+            FunctionData(16, [0, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [11, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(38, [2, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [20, 0, 0]),
+            FunctionData(19, [200 if is_slam_switch else 100, 0, 0], True),
+        ], [
+            FunctionData(17, [1 if is_slam_switch else 2, 1, 0]),
+            FunctionData(14, [288, 0, 0]),
+            FunctionData(3, [0, 70 if is_slam_switch else 75, 0]),
+            FunctionData(1, [21, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [21, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(16, [0, 0, 0]),
+            FunctionData(5, [tied_pad, 20 if is_slam_switch else 0, 0]),
+            FunctionData(84, [tied_pad, 1, 0]),
+            FunctionData(38, [2, 0, 0]),
+        ]),
+    ], flag_id)
+
+def getFactoryBlastControllerScript(item_id) -> list[int]:
+    """Get the instance script for the controller within Factory blast."""
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(0, [0, 0, 0]),
+        ], [
+            FunctionData(7, [15, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(45, [129, 1, 0], True),
+            FunctionData(45, [130, 1, 0]),
+        ], [
+            FunctionData(88, [Maps.FranticFactory, 45, 10]),
+            FunctionData(93, [0, 0, 0]),
+            FunctionData(49, [Maps.FranticFactory, 15, 0x100]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+    ])
+
+def getKRoolShipScript(item_id: int) -> list[int]:
+    """Get the instance script associated with the crashed ship."""
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(69, [1, 0, 255]),
+            FunctionData(70, [0, 0, 0]),
+            FunctionData(71, [0, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(6, [7, short_to_ushort(-9), 0]),
+        ], [
+            FunctionData(69, [1, 255, 255]),
+            FunctionData(70, [1, 0, 0]),
+            FunctionData(71, [1, 0, 0]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+        ], [
+            FunctionData(38, [2, 0, 0]),
+            FunctionData(1, [2, 0, 0]),
+        ]),
+    ])
+
+def getKRoolShipControllerScript(item_id: int, radius: int) -> list[int]:
+    """Get the instance script associated with the controller object for a custom ship."""
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(6, [7, short_to_ushort(-9), 0]),
+            FunctionData(19, [radius, 0, 0]),
+        ], [
+            FunctionData(7, [125, short_to_ushort(-10), 0]),
+            FunctionData(1, [1, 0, 0]),
+        ])
+    ])
+
+def getHelmLobbyActivatorScript(item_id: int, activator: SwitchsanityGone, bonus_map: int, microhint: bool) -> list[int]:
+    """Get the instance script for the Helm Lobby activator if it is a lever."""
+    # Gone
+    return compileInstanceScript(item_id, [
+        # Regive Gone upon exiting bonus
+        ScriptBlock([
+            FunctionData(50, [bonus_map, 0, 0]),
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(115, [65535, 0, 0]),
+            FunctionData(25, [58, 0, 0]),
+            FunctionData(1, [1, 1, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.gone_pad),
+        # Gong Init
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(62, [1, 0, 0]),
+            FunctionData(38, [3, 400, 0]),
+            FunctionData(39, [1, 0, 0]),
+            FunctionData(39, [2, 0, 0]),
+            FunctionData(39, [3, 0, 0]), 
+            FunctionData(39, [4, 0, 0]), 
+        ], lambda d: d["activator"] == SwitchsanityGone.gong),
+        # Lever Init
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(24, [1, 1, 0]),
+            FunctionData(39, [1, 0, 0]),
+            FunctionData(62, [0, 0, 0]),
+            FunctionData(20, [1, 85, 0]),
+            FunctionData(22, [1, 1, 0]),
+            FunctionData(40, [1, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.lever),
+        # Hide/Show pad with move
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(52, [6, 3, 0], True, lambda d: d["activator"] == SwitchsanityGone.gone_pad),  # Doesn't have gone
+            FunctionData(52, [3, 1, 0], True, lambda d: d["activator"] == SwitchsanityGone.gong),  # Doesn't have charge
+            FunctionData(52, [2, 3, 0], True, lambda d: d["activator"] == SwitchsanityGone.lever),  # Doesn't have grab
+            FunctionData(6, [7, short_to_ushort(-8), activator - SwitchsanityGone.bongos], True, lambda d: d["is_instrument"]),  # Doesn't have instrument
+        ], [
+            FunctionData(69, [1, 70, 255], False, lambda d: d["activator"] not in (SwitchsanityGone.gong, SwitchsanityGone.lever)),  # Make pad translucent
+            FunctionData(7, [125, short_to_ushort(-4), 0]),
+            FunctionData(1, [5, 0, 0], False, lambda d: d["microhint"]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(52, [6, 3, 0], False, lambda d: d["activator"] == SwitchsanityGone.gone_pad),  # Has Gone
+            FunctionData(52, [3, 1, 0], False, lambda d: d["activator"] == SwitchsanityGone.gong),  # Has charge
+            FunctionData(52, [2, 3, 0], False, lambda d: d["activator"] == SwitchsanityGone.lever),  # Has grab
+            FunctionData(6, [7, short_to_ushort(-8), activator - SwitchsanityGone.bongos], False, lambda d: d["is_instrument"]),  # Has Instrument
+        ], [
+            FunctionData(38, [3, 300, 0], False, lambda d: d["activator"] != SwitchsanityGone.gong),
+            FunctionData(7, [125, short_to_ushort(-4), 0]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+        # Activator script
+        ScriptBlock([
+            FunctionData(17, [6, 1, 0]),
+            FunctionData(52, [6, 3, 0]),
+        ], [
+            FunctionData(73, [4, 65535, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.gone_pad),
+        ScriptBlock([
+            FunctionData(17, [2 + (activator - SwitchsanityGone.bongos), 1, 0]),
+            FunctionData(6, [7, short_to_ushort(-8), activator - SwitchsanityGone.bongos]),
+            FunctionData(23, [103, 0, 0]),
+        ], [
+            FunctionData(38, [1, 0, 0]),
+            FunctionData(1, [7, 0, 0]),
+        ], lambda d: d["is_instrument"]),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(24, [3, 1, 0]),
+            FunctionData(23, [46, 1, 0]),
+        ], [
+            FunctionData(20, [1, 200, 0]),
+            FunctionData(26, [1, 0, 0]),
+            FunctionData(17, [1, 1, 0]),
+            FunctionData(3, [0, 50, 0]),
+            FunctionData(39, [1, 1, 0]),
+            FunctionData(39, [2, 1, 0]),
+            FunctionData(39, [3, 1, 0]),
+            FunctionData(39, [4, 1, 0]),
+            FunctionData(22, [1, 0, 0]),
+            FunctionData(15, [165, 12165, 60]),
+            FunctionData(38, [1, 0, 0]),
+            FunctionData(1, [8, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.gong),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(18, [2, 2, 0]),
+            FunctionData(6, [3, 0, 0]),
+            FunctionData(52, [2, 3, 0]),
+        ], [
+            FunctionData(120, [1, 0, 0]),
+            FunctionData(73, [8, 0, 0]),
+            FunctionData(1, [1, 1, 0]),
+            FunctionData(3, [0, 5, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.lever),
+        ScriptBlock([
+            FunctionData(1, [1, 1, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(1, [0, 1, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.lever),
+        ScriptBlock([
+            FunctionData(1, [1, 1, 0]),
+            FunctionData(4, [0, 0, 0], True),
+            FunctionData(23, [120, 0, 0]),
+        ], [
+            FunctionData(38, [1, 0, 0]),
+            FunctionData(1, [0, 1, 0]),
+            FunctionData(1, [9, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.lever),
+        # Is gone active - Then progress to cutscene
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(38, [0, 64, 0]),
+        ], [
+            FunctionData(3, [0, 15, 0]),
+            FunctionData(1, [2, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.gone_pad),
+        ScriptBlock([
+            FunctionData(1, [2, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+            FunctionData(1, [0, 1, 0]),
+        ], [
+            FunctionData(37, [1, 1, 0]),
+            FunctionData(3, [0, 200, 0]),
+            FunctionData(1, [1, 1, 0]),
+            FunctionData(1, [3, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [2, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+            FunctionData(1, [1, 1, 0]),
+        ], [
+            FunctionData(3, [0, 20, 0]),
+            FunctionData(1, [3, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [3, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(1, [4, 0, 0]),
+        ]),
+        # Hide the gong
+        ScriptBlock([
+            FunctionData(1, [4, 0, 0]),
+            FunctionData(21, [2, 0, 0], True),
+        ], [
+            FunctionData(16, [0, 0, 0]),
+            FunctionData(69, [1, 0, 255]),
+            FunctionData(70, [0, 0, 0]),
+            FunctionData(38, [2, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.gong),
+        # Microhint
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(52, [6, 3, 0], False, lambda d: d["activator"] == SwitchsanityGone.gone_pad),  # Has Gone
+            FunctionData(52, [3, 1, 0], False, lambda d: d["activator"] == SwitchsanityGone.gong),  # Has charge
+            FunctionData(52, [2, 3, 0], False, lambda d: d["activator"] == SwitchsanityGone.lever),  # Has grab
+            FunctionData(6, [7, short_to_ushort(-8), activator - SwitchsanityGone.bongos], False, lambda d: d["is_instrument"]),  # Has Instrument
+        ], [
+            FunctionData(69, [1, 255, 255]),
+            FunctionData(38, [3, 300, 0]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(52, [6, 3, 0], True, lambda d: d["activator"] == SwitchsanityGone.gone_pad),  # Doesn't have Gone
+            FunctionData(52, [3, 1, 0], True, lambda d: d["activator"] == SwitchsanityGone.gong),  # Doesn't have charge
+            FunctionData(52, [2, 3, 0], True, lambda d: d["activator"] == SwitchsanityGone.lever),  # Doesn't have grab
+            FunctionData(6, [7, short_to_ushort(-8), activator - SwitchsanityGone.bongos], True, lambda d: d["is_instrument"]),  # Doesn't have Instrument
+            FunctionData(6, [7, short_to_ushort(-5), 0]),
+            FunctionData(2, [0, 0, 0], False, lambda d: d["activator"] != SwitchsanityGone.gong),  # Standing on object
+            FunctionData(19, [20, 0, 0], False, lambda d: d["activator"] == SwitchsanityGone.gong),  # Close to object
+        ], [
+            FunctionData(37, [3, 1, 0]),
+            FunctionData(1, [6, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [6, 0, 0]),
+            FunctionData(2, [0, 0, 0], True, lambda d: d["activator"] != SwitchsanityGone.gong),  # Not standing on object
+            FunctionData(19, [20, 0, 0], True, lambda d: d["activator"] == SwitchsanityGone.gong),  # Not close to object
+            FunctionData(35, [0, 0, 0], True),
+        ], [
+            FunctionData(1, [5, 0, 0]),
+        ]),
+        # Instrument Handler
+        ScriptBlock([
+            FunctionData(1, [7, 0, 0]),
+            FunctionData(35, [0, 0, 0], True),
+        ], [
+            FunctionData(7, [125, short_to_ushort(-6), 0]),
+            FunctionData(3, [0, 15, 0]),
+            FunctionData(1, [2, 0, 0]),
+        ], lambda d: d["is_instrument"]),
+        # Gong Handler
+        ScriptBlock([
+            FunctionData(1, [8, 0, 0]),
+            FunctionData(4, [10, 0, 0]),
+        ], [
+            FunctionData(14, [282, 0, 12800]),
+            FunctionData(20, [2, 3, 0]),
+            FunctionData(17, [2, 1, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.gong),
+        ScriptBlock([
+            FunctionData(1, [8, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(39, [1, 0, 0]),
+            FunctionData(39, [2, 0, 0]),
+            FunctionData(39, [3, 0, 0]),
+            FunctionData(39, [4, 0, 0]),
+            FunctionData(7, [125, short_to_ushort(-6), 0]),
+            FunctionData(1, [2, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.gong),
+        # Lever Handler
+        ScriptBlock([
+            FunctionData(1, [9, 0, 0]),
+            FunctionData(51, [0, 114, 0]),
+        ], [
+            FunctionData(40, [1, 1, 0]),
+            FunctionData(17, [1, 1, 0]),
+            FunctionData(15, [459, 0, 0]),
+            FunctionData(1, [10, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.lever),
+        ScriptBlock([
+            FunctionData(1, [10, 0, 0]),
+            FunctionData(51, [0, 155, 0]),
+        ], [
+            FunctionData(7, [125, short_to_ushort(-6), 0]),
+            FunctionData(1, [2, 0, 0]),
+        ], lambda d: d["activator"] == SwitchsanityGone.lever),
+    ], {
+        "activator": activator,
+        "is_instrument": activator >= SwitchsanityGone.bongos and activator <= SwitchsanityGone.triangle,
+        "microhint": microhint
+    })
+
+
+def getObjectHideScript(item_id: int) -> list[int]:
+    """Get the instance script associated with instantly hiding an object."""
+    return compileInstanceScript(
+        item_id,
+        [
+            ScriptBlock(
+                [],
+                [
+                    FunctionData(69, [1, 0, 255]),
+                    FunctionData(70, [0, 0, 0]),
+                    FunctionData(71, [0, 0, 0]),
+                    FunctionData(38, [2, 0, 0]),
+                ],
+            ),
+        ],
+    )
+
+
+def getWrinklyScript(map_id: Maps, kong: Kongs, item_id: int) -> list[int]:
+    """Get the instance script associated with a wrinkly door."""
+    level_id = getLevel(map_id, "wrinkly", False)
+    view_flag = 0x384 + (level_id * 5) + kong
+    return compileInstanceScript(
+        item_id,
+        [
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(39, [1, 0, 0]),
+                    FunctionData(39, [2, 0, 0]),
+                    FunctionData(40, [1, 1, 0]),
+                    FunctionData(40, [2, 1, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                ],
+                [
+                    FunctionData(22, [1, 1, 0]),
+                    FunctionData(20, [1, 10, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                    FunctionData(6, [7, short_to_ushort(-7), 0], True),
+                ],
+                [
+                    FunctionData(1, [20, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                    FunctionData(6, [7, short_to_ushort(-7), 0]),
+                    FunctionData(45, [view_flag, 0, 0]),
+                ],
+                [
+                    FunctionData(40, [1, 2, 0]),
+                    FunctionData(40, [2, 2, 0]),
+                    FunctionData(1, [1, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [0, 0, 0]),
+                    FunctionData(6, [7, short_to_ushort(-7), 0]),
+                    FunctionData(45, [view_flag, 0, 0], True),
+                ],
+                [
+                    FunctionData(40, [1, 0, 0]),
+                    FunctionData(40, [2, 0, 0]),
+                    FunctionData(1, [1, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [1, 0, 0]),
+                    FunctionData(19, [40, 0, 0]),
+                    FunctionData(6, [18, 0, 0]),
+                ],
+                [
+                    FunctionData(17, [1, 1, 0]),
+                    FunctionData(7, [105, kong, 0]),
+                    FunctionData(15, [19, 20, 0]),
+                    FunctionData(1, [2, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [1, 0, 0]),
+                    FunctionData(19, [40, 0, 0]),
+                    FunctionData(6, [18, 0, 0]),
+                ],
+                [
+                    FunctionData(7, [125, short_to_ushort(-16), 1]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [2, 0, 0]),
+                    FunctionData(6, [12, 0, 0]),
+                ],
+                [
+                    FunctionData(17, [1, 1, 0]),
+                    FunctionData(15, [19, 20, 0]),
+                    FunctionData(1, [3, 0, 0]),
+                    FunctionData(7, [125, short_to_ushort(-16), 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [3, 0, 0]),
+                    FunctionData(21, [1, 0, 0], True),
+                ],
+                [
+                    FunctionData(15, [50, 0, 60]),
+                    FunctionData(1, [4, 0, 0]),
+                ],
+            ),
+            ScriptBlock(
+                [
+                    FunctionData(1, [4, 0, 0]),
+                    FunctionData(19, [60, 0, 0], True),
+                ],
+                [
+                    FunctionData(1, [1, 0, 0]),
+                ],
+            ),
+        ],
+    )
+
+def getHelmPadScript(item_id: int, temp_flags: list, kong_id: Kongs, glass_panel: int, hint_cs: int, helm_micro_enabled: bool, req_helm_minigames: int, helm_order: list) -> list[int]:
+    """Get the instance script for the Helm music pads."""
+    helm_order = helm_order.copy()
+    if len(helm_order) < 5:
+        delta = 5 - len(helm_order)
+        for _ in range(delta):
+            helm_order.append(None)
+    slots = {
+        Kongs.donkey: 0,
+        Kongs.chunky: 1,
+        Kongs.tiny: 2,
+        Kongs.lanky: 3,
+        Kongs.diddy: 4,
+    }
+    power_beams = [11, 8, 12, 10, 9]
+    power_beams_0 = [16, 14, 13, 15, 17]
+    power_beams_1 = [30, 32, 34, 36, 38]
+    current_slot = None
+    next_slot = None
+    previous_slot = None
+    for x in range(5):
+        if helm_order[x] == slots[kong_id]:
+            current_slot = x
+            if x > 0:
+                previous_slot = helm_order[x - 1]
+            if x < 4:
+                next_slot = helm_order[x + 1]
+    in_helm_sequence = slots[kong_id] in helm_order
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(54, [temp_flags[0], 0, 0]),
+            FunctionData(54, [temp_flags[1], 0, 0]),
+            FunctionData(54, [temp_flags[2], 0, 0], True),
+        ], [
+            # Turn off power beams instantly - fixes the 2f quirk of cs skips
+            FunctionData(5, [power_beams[slots[kong_id]], 10, 0]),
+            FunctionData(5, [power_beams_0[slots[kong_id]], 10, 0]),
+            FunctionData(5, [power_beams_1[slots[kong_id]], 10, 0]),
+            # Helm Complete stuff
+            FunctionData(37, [8, 1, 0], False, lambda m: m["next_slot"] is None and m["current_slot"] is not None),  # Play CS
+            FunctionData(107, [0x302, 1, 0], False, lambda m: m["next_slot"] is None and m["current_slot"] is not None),  # Turn off BoM
+            FunctionData(121, [0x50, 1, 0], False, lambda m: m["next_slot"] is None and m["current_slot"] is not None),  # Helm temp flag
+            # Go to next stuff
+            FunctionData(37, [8 if current_slot is None else 4 + current_slot, 1, 0], False, lambda m: m["next_slot"] is not None),  # Play CS
+            FunctionData(121, [temp_flags[2], 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(6, [7, short_to_ushort(-8), kong_id], True),  # Does not have instrument
+        ], [
+            FunctionData(1, [20, 0, 0]),
+        ], inclusion_lambda=lambda m: m["micro"]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(116, [2, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(45, [770, 0, 0]),
+        ], [
+            FunctionData(69, [0, 0, 20]),
+            FunctionData(38, [3, 500, 0]),
+            FunctionData(1, [11, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(54, [0 if previous_slot is None else 0x4B + previous_slot, 0, 0], False, lambda m: m["previous_slot"] is not None),
+        ], [
+            FunctionData(69, [0, 0, 20]),
+            FunctionData(38, [3, 500, 0]),
+            FunctionData(1, [11, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(54, [0 if previous_slot is None else 0x4B + previous_slot, 0, 0], True),
+            FunctionData(45, [770, 0, 0], True),
+        ], [
+            FunctionData(38, [3, 300, 0]),
+            FunctionData(69, [1, 0, 255]),
+            FunctionData(71, [0, 0, 0]),
+            FunctionData(1 if kong_id == Kongs.diddy else 38, [99 if kong_id == Kongs.diddy else 2, 0, 0]),  # Diddy has a separate call for this?
+        ], lambda m: m["previous_slot"] is not None),
+        ScriptBlock([
+            FunctionData(1, [10, 0, 0]),
+        ], [
+            FunctionData(69, [0, 0, 20]),
+            FunctionData(71, [1, 0, 0]),
+            FunctionData(1, [11, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [11, 0, 0]),
+            FunctionData(6, [7, short_to_ushort(-8), kong_id], True),  # Does not have instrument
+        ], [
+            FunctionData(1, [20, 0, 0]),
+        ], inclusion_lambda=lambda m: m["micro"]),
+        ScriptBlock([
+            FunctionData(1, [11, 0, 0]),
+            FunctionData(13, [2, 0, 0]),
+            FunctionData(25, [kong_id + 2, 0, 0]),
+            FunctionData(23, [103, 0, 0]),
+        ], [
+            FunctionData(1, [12, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [12, 0, 0]),
+            FunctionData(35, [0, 0, 0], True),
+        ], [
+            # Set minigame flags
+            FunctionData(121, [temp_flags[0], 1, 0]),
+            FunctionData(121, [temp_flags[1], 1, 0]),
+            FunctionData(37, [9 + (item_id - 0x2C), 1, 0], False, inclusion_lambda=lambda m: not m["in_helm_sequence"]),
+        ], inclusion_lambda=lambda m: m["minis"] == 0),
+        ScriptBlock([
+            FunctionData(1, [12, 0, 0]),
+            FunctionData(35, [0, 0, 0], True),
+        ], [
+            FunctionData(37, [9 + (item_id - 0x2C), 1, 0], False, inclusion_lambda=lambda m: m["minis"] > 0),
+            FunctionData(84, [glass_panel, 1, 0]),
+            FunctionData(5, [glass_panel, 10, 0]),
+            FunctionData(1, [13, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [13, 0, 0]),
+            FunctionData(35, [0, 0, 0], True),
+        ], [
+            FunctionData(1, [11, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [20, 0, 0]),
+            FunctionData(6, [7, short_to_ushort(-8), kong_id]),  # Has instrument
+        ], [
+            FunctionData(1, [0, 0, 0]),
+        ], inclusion_lambda=lambda m: m["micro"]),
+        ScriptBlock([
+            FunctionData(1, [20, 0, 0]),
+            FunctionData(2, [0, 0, 0]),
+        ], [
+            FunctionData(37, [hint_cs, 1, 0]),
+            FunctionData(1, [21, 0, 0]),
+        ], inclusion_lambda=lambda m: m["micro"]),
+        ScriptBlock([
+            FunctionData(1, [21, 0, 0]),
+            FunctionData(2, [0, 0, 0], True),
+            FunctionData(35, [0, 0, 0], True),
+        ], [
+            FunctionData(1, [20, 0, 0]),
+        ], inclusion_lambda=lambda m: m["micro"]),
+    ], {
+        "micro": helm_micro_enabled,
+        "minis": req_helm_minigames,
+        "in_helm_sequence": in_helm_sequence,
+        "previous_slot": previous_slot,
+        "next_slot": next_slot,
+        "current_slot": current_slot,
+    })
+
+def getHelmMonkeyport(item_id: int, kong: Kongs, microhint: bool):
+    """Get the script associated with getting to the top of Krem Isle."""
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(52, [5, 3, 0], True, lambda d: d["kong"] == Kongs.tiny),  # Doesn't have mport
+            FunctionData(52, [2, 1, 0], True, lambda d: d["kong"] == Kongs.donkey),  # Doesn't have blast
+            FunctionData(52, [4, 2, 0], True, lambda d: d["kong"] == Kongs.lanky),  # Doesn't have balloon
+        ], [
+            FunctionData(69, [1, 70, 255]),
+            FunctionData(1, [5, 0, 0], False, lambda d: d["microhint"]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+            FunctionData(52, [5, 3, 0], False, lambda d: d["kong"] == Kongs.tiny),  # Has mport
+            FunctionData(52, [2, 1, 0], False, lambda d: d["kong"] == Kongs.donkey),  # Has blast
+            FunctionData(52, [4, 2, 0], False, lambda d: d["kong"] == Kongs.lanky),  # Has balloon
+        ], [
+            FunctionData(69, [1, 255, 255]),
+            FunctionData(38, [3, 300, 0]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(17, [2 + kong, 1, 0]),
+        ], [
+            FunctionData(5, [55, 20, 0], False, lambda d: d["kong"] == Kongs.tiny),  # Activate other pad (mport)
+            FunctionData(84, [55, 1, 0], False, lambda d: d["kong"] == Kongs.tiny),  # Activate other pad (mport)
+            FunctionData(73, [0, Maps.Isles, 0], False, lambda d: d["kong"] == Kongs.donkey),  # Activate blast pad (dk)
+            FunctionData(73, [6, 15, 0], False, lambda d: d["kong"] == Kongs.lanky),  # Activate balloon (lanky)
+        ]),
+        ScriptBlock([
+            FunctionData(1, [20, 0, 0]),
+        ], [
+            FunctionData(73, [3, 0, 0]),
+            FunctionData(1, [0, 0, 0]),
+        ], lambda d: d["kong"] == Kongs.tiny),
+        # Microhint handling
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(52, [5, 3, 0], True, lambda d: d["kong"] == Kongs.tiny),  # Doesn't have mport
+            FunctionData(52, [2, 1, 0], True, lambda d: d["kong"] == Kongs.donkey),  # Doesn't have blast
+            FunctionData(52, [4, 2, 0], True, lambda d: d["kong"] == Kongs.lanky),  # Doesn't have balloon
+            FunctionData(6, [7, short_to_ushort(-11), 7]),  # Can open 7 B Lockers
+            FunctionData(2, [0, 0, 0]),  # Standing on object
+        ], [
+            FunctionData(37, [24, 1, 0]),  # Play CS
+            FunctionData(1, [6, 0, 0]),
+        ], lambda d: d["microhint"]),
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(52, [5, 3, 0], False, lambda d: d["kong"] == Kongs.tiny),  # Has mport
+            FunctionData(52, [2, 1, 0], False, lambda d: d["kong"] == Kongs.donkey),  # Has blast
+            FunctionData(52, [4, 2, 0], False, lambda d: d["kong"] == Kongs.lanky),  # Has balloon
+        ], [
+            FunctionData(1, [0, 0, 0]),
+        ], lambda d: d["microhint"]),
+        ScriptBlock([
+            FunctionData(1, [6, 0, 0]),
+            FunctionData(2, [0, 0, 0], True),  # Not standing on object
+            FunctionData(35, [0, 0, 0], True),  # CS not playing
+        ], [
+            FunctionData(1, [5, 0, 0]),
+        ], lambda d: d["microhint"]),
+    ], {
+        "kong": kong,
+        "microhint": microhint
+    })
+
+def getPianoScript(item_id: int, piano_order: list[int], fast_piano: bool):
+    # A = 0, B = 1, C = 2, D = 3, E = 4, F = 5
+    cutscenes = {
+        # Key: Seq Length
+        3: {
+            "cutscene_index": 16,
+            "delta": 60,
+            "length": 160,
+        },
+        4: {
+            "cutscene_index": 17,
+            "delta": 20,
+            "length": 140,
+        },
+        5: {
+            "cutscene_index": 18,
+            "delta": 20,
+            "length": 170,
+        },
+        6: {
+            "cutscene_index": 19,
+            "delta": 20,
+            "length": 200,
+        },
+        7: {
+            "cutscene_index": 20,
+            "delta": 20,
+            "length": 230,
+        },
+    }
+    script = [
+        # Starting section
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(22, [1, 1, 0]),
+            FunctionData(22, [2, 1, 0]),
+            FunctionData(22, [3, 1, 0]),
+            FunctionData(22, [4, 1, 0]),
+            FunctionData(22, [5, 1, 0]),
+            FunctionData(22, [6, 1, 0]),
+            FunctionData(38, [2, 0, 0]),
+        ]),
+    ]
+    state_start = 10
+    failure_state = 250
+    for x in range(5):  # 5 repetitions of the sequence
+        if fast_piano and x in (1, 3):
+            continue
+        sequence_count = 3 + x
+        local_sequence = piano_order[:sequence_count]
+        delta = cutscenes[sequence_count]["delta"]
+        timer_total = cutscenes[sequence_count]["length"]
+        # Timer setup
+        burp_state = state_start
+        script.append(
+            ScriptBlock([
+                FunctionData(1, [state_start + 0, 0, 0]),
+                FunctionData(4, [0, 0, 0]),
+            ], [
+                FunctionData(37, [cutscenes[sequence_count]["cutscene_index"], 1, 0]),
+                FunctionData(3, [0, timer_total, 0]),
+                FunctionData(1, [state_start + 1, 0, 0]),
+            ])
+        )
+        for y in range(sequence_count):
+            # Play Kremling
+            script.append(
+                ScriptBlock([
+                    FunctionData(1, [state_start + 1, 0, 0]),
+                    FunctionData(4, [timer_total - (delta + (30 * y)), 0, 0]),
+                ], [
+                    FunctionData(94, [local_sequence[y] + 5, 0, 0]),  # Spawn Kremling
+                ]),
+            )
+        script.append(
+            ScriptBlock([
+                FunctionData(1, [state_start + 1, 0, 0]),
+                FunctionData(4, [0, 0, 0]),
+            ], [
+                FunctionData(1, [state_start + 2, 0, 0]),
+            ]),
+        )
+        state_start += 2
+        for y in range(sequence_count):
+            successful_kremling = [
+                FunctionData(94, [local_sequence[y] + 5, 0, 0]),  # Spawn Kremling
+                FunctionData(3, [0, 50, 0]),
+                FunctionData(17, [local_sequence[y] + 1, 2, 0]),
+                FunctionData(1, [state_start + 2, 0, 0]),
+            ]
+            if y == (sequence_count - 1):
+                successful_kremling.append(
+                    FunctionData(15, [673, 0, 0]),  # Play Ding
+                )
+            script.extend([
+                ScriptBlock([
+                    FunctionData(1, [state_start, 0, 0]),
+                    FunctionData(4, [0, 0, 0]),
+                ], [
+                    FunctionData(1, [state_start + 1, 0, 0]),
+                ]),
+                ScriptBlock([
+                    FunctionData(1, [state_start, 0, 0]),
+                    FunctionData(2, [0, 0, 0], True),  # Not on piano
+                ], [
+                    FunctionData(3, [0, 0, 0]),  # Set timer to 0
+                    FunctionData(1, [state_start + 1, 0, 0]),
+                ]),
+                ScriptBlock([
+                    FunctionData(1, [state_start + 1, 0, 0]),
+                    FunctionData(13, [local_sequence[y] + 1, 0, 0]),  # Is pressing right key
+                    FunctionData(23, [28, 0, 0]),  # Is slamming
+                ], successful_kremling),
+                ScriptBlock([
+                    FunctionData(1, [state_start + 1, 0, 0]),
+                    FunctionData(23, [28, 0, 0]),  # Is slamming
+                    FunctionData(6, [1, local_sequence[y] + 1, 0]),  # Is pressing wrong key
+                ], [
+                    FunctionData(1, [burp_state, 0, 0]),
+                    FunctionData(3, [0, 50, 0]),
+                    FunctionData(15, [0x98, 0, 0]),  # Error Sound
+                ]),
+            ])
+            state_start += 2
+    script.extend([
+        ScriptBlock([
+            FunctionData(1, [state_start, 0, 0]),
+            FunctionData(4, [20, 0, 0]),
+        ], [
+            FunctionData(5, [62, 10, 0]),
+            FunctionData(84, [62, 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [state_start, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(38, [2, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [failure_state, 0, 0]),
+        ], [
+            FunctionData(3, [0, 10, 0]),
+            FunctionData(1, [failure_state + 1, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [failure_state + 1, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(97, [42, 0, 0]),
+            FunctionData(3, [0, 90, 0]),
+            FunctionData(1, [failure_state + 2, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [failure_state + 2, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(5, [61, 10, 0]),
+            FunctionData(84, [61, 1, 0]),
+            FunctionData(38, [2, 0, 0]),
+        ]),
+    ])
+    return compileInstanceScript(item_id, script)
+
+def getDiddyRNDDoorScript(item_id: int, fast_rnd: bool, cutscene_id: int, pen_id: int, enemy_ids: list[int]) -> list[int]:
+    """Get the script associated with the Diddy R&D Doors."""
+    door_ids = [63, 64, 65]
+    remaining_door_ids = [x for x in door_ids if x != item_id]
+    
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(29, [1, 0, 0]),
+            FunctionData(29, [0, 5, 0]),
+        ], [
+            FunctionData(1, [0, 0, 0]),        
+        ]),
+        ScriptBlock([
+            FunctionData(1, [1, 0, 0]),
+            FunctionData(58, [0, 0, 0], True),
+        ], [
+            FunctionData(7, [67, 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [2, 0, 0]),
+            FunctionData(58, [0, 0, 0], True),
+        ], [
+            FunctionData(7, [67, 2, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [3, 0, 0]),
+            FunctionData(58, [0, 0, 0], True),
+        ], [
+            FunctionData(7, [67, 3, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [4, 0, 0]),
+            FunctionData(58, [0, 0, 0], True),
+        ], [
+            FunctionData(7, [67, 4, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(49, [96, 0, 0]),
+        ], [
+            FunctionData(1, [6, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(49, [96, 1, 0]),
+        ], [
+            FunctionData(1, [6, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [5, 0, 0]),
+            FunctionData(49, [96, 2, 0]),
+        ], [
+            FunctionData(1, [6, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [6, 0, 0]),
+        ], [
+            FunctionData(129, [0, 0, 0]),
+            FunctionData(5, [remaining_door_ids[0], 50, 0]),
+            FunctionData(5, [remaining_door_ids[1], 50, 0]),
+            FunctionData(38, [1, 0, 0]),
+            FunctionData(3, [0, 120, 0]),
+            FunctionData(1, [7, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [7, 0, 0]),
+            FunctionData(4, [100, 0, 0]),
+        ], [
+            FunctionData(37, [cutscene_id, 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [7, 0, 0]),
+            FunctionData(4, [90, 0, 0]),
+        ], [
+            FunctionData(5, [319, 10, 0]),
+            FunctionData(84, [319, 1, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [7, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(1, [8, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [8, 0, 0]),
+        ], [
+            FunctionData(22, [1, 1, 0]),
+            FunctionData(20, [1, 20, 0]),
+            FunctionData(17, [1, 1, 0]),
+            FunctionData(3, [0, 100, 0]),
+            FunctionData(15, [385, 20, 0]),
+            FunctionData(92, [pen_id, 0, 1]),
+            FunctionData(1, [9, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [9, 0, 0]),
+            FunctionData(4, [90, 0, 0]),
+        ], [FunctionData(86, [x, 0, 0]) for x in enemy_ids] + [
+            FunctionData(97, [104, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [9, 0, 0]),
+            FunctionData(4, [0, 0, 0]),
+        ], [
+            FunctionData(15, [415, 20, 0]),
+            FunctionData(17, [1, 1, 0]),
+            FunctionData(1, [10, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [10, 0, 0]),
+            FunctionData(21, [1, 0, 0], True),
+        ], [
+            FunctionData(92, [pen_id, 0, 0]),
+            FunctionData(15, [151, 20, 0]),
+            FunctionData(38, [0, 0, 0]),
+            FunctionData(1, [11, 0, 0]),
+        ]),
+        ScriptBlock([
+            FunctionData(1, [11, 0, 0]),
+        ] + [FunctionData(30, [x, 0, 0], True) for x in enemy_ids], [
+            FunctionData(130, [0, 0, 0]),
+            FunctionData(111, [104, 0, 0]),
+            FunctionData(5, [319, 20, 0]),
+            FunctionData(84, [319, 1, 0]),
+            FunctionData(28, [96, 0, 3 if fast_rnd else 1]),
+            FunctionData(84, [96, 1, 0]),
+            FunctionData(83, [49, 0, 0]),
+        ] + [
+            FunctionData(84, [x, 2, 0], False, lambda d: d["fast"])  # Disable other doors
+            for x in remaining_door_ids
+        ] + [
+            FunctionData(38, [2, 0, 0])  # Disable this door
+        ]),
+        ScriptBlock([
+            FunctionData(1, [50, 0, 0]),
+        ], [
+            FunctionData(7, [67, 65535, 0]),
+            FunctionData(1, [51, 0, 0]),
+        ]),
+    ], {
+        "fast": fast_rnd
+    })
+
+def getIntangibleObjectPreview(item_id) -> list[int]:
+    """Get the instance script associated with intangible item previews."""
+    return compileInstanceScript(item_id, [
+        ScriptBlock([
+            FunctionData(1, [0, 0, 0]),
+        ], [
+            FunctionData(70, [0, 0, 0]),
+            FunctionData(69, [1, 255, 255]),
+            FunctionData(1, [1, 0, 0]),
+        ]),
+    ])
+
+def replaceScriptLines(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], replacement_mapping: dict) -> None:
+    """Replace a script line with another."""
+    script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
+    ROM_COPY.seek(script_table)
+    script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+    # Construct good pre-existing scripts
+    file_offset = 2
+    for _ in range(script_count):
+        ROM_COPY.seek(script_table + file_offset)
+        script_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        block_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        file_offset += 6
+        for _ in range(block_count):
+            ROM_COPY.seek(script_table + file_offset)
+            cond_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            file_offset += 2
+            for _ in range(cond_count):
+                func = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                params = []
+                for _ in range(3):
+                    params.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+                if script_id in item_ids:
+                    constructed = f"{'CONDINV' if func & 0x8000 else 'COND'} {func & 0x7FFF} | {params[0]} {params[1]} {params[2]}"
+                    if constructed in replacement_mapping:
+                        new_output = replacement_mapping[constructed]
+                        segs = new_output.split(" ")
+                        func = 0x8000 if "CONDINV" in new_output else 0
+                        func |= int(segs[1])
+                        params = [
+                            int(segs[3]),
+                            int(segs[4]),
+                            int(segs[5]),
+                        ]
+                        ROM_COPY.seek(script_table + file_offset)
+                        ROM_COPY.writeMultipleBytes(func, 2)
+                        for p in params:
+                            ROM_COPY.writeMultipleBytes(p, 2)
+                file_offset += 8
+            ROM_COPY.seek(script_table + file_offset)
+            exec_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            file_offset += 2
+            for _ in range(exec_count):
+                func = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                params = []
+                for _ in range(3):
+                    params.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+                if script_id in item_ids:
+                    constructed = f"EXEC {func} | {params[0]} {params[1]} {params[2]}"
+                    if constructed in replacement_mapping:
+                        new_output = replacement_mapping[constructed]
+                        segs = new_output.split(" ")
+                        func = int(segs[1])
+                        params = [
+                            int(segs[3]),
+                            int(segs[4]),
+                            int(segs[5]),
+                        ]
+                        ROM_COPY.seek(script_table + file_offset)
+                        ROM_COPY.writeMultipleBytes(func, 2)
+                        for p in params:
+                            ROM_COPY.writeMultipleBytes(p, 2)
+                file_offset += 8
+
+
+def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], stype: ScriptTypes, extra_data: dict = {}) -> None:
+    """Append a new script to the script database. Has to be just 1 execution and 1 endblock."""
+    script_table = getPointerLocation(TableNames.InstanceScripts, cont_map_id)
+    ROM_COPY.seek(script_table)
+    script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+    good_scripts = []
+    # Construct good pre-existing scripts
+    file_offset = 2
+    for _ in range(script_count):
+        ROM_COPY.seek(script_table + file_offset)
+        script_start = script_table + file_offset
+        script_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        block_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        file_offset += 6
+        for _ in range(block_count):
+            ROM_COPY.seek(script_table + file_offset)
+            cond_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            file_offset += 2 + (8 * cond_count)
+            ROM_COPY.seek(script_table + file_offset)
+            exec_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            file_offset += 2 + (8 * exec_count)
+        script_end = script_table + file_offset
+        if script_id not in item_ids:
+            script_data = []
+            ROM_COPY.seek(script_start)
+            for x in range(int((script_end - script_start) / 2)):
+                script_data.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+            good_scripts.append(script_data)
+    # Get new script data
+    for item_id in item_ids:
+        subscript = None
+        if stype == ScriptTypes.Bananaport:
+            subscript = getCScript(-1, item_id)
+        elif stype == ScriptTypes.Wrinkly:
+            subscript = getWrinklyScript(cont_map_id, extra_data[item_id]["kong_id"], item_id)
+        elif stype == ScriptTypes.TnsPortal:
+            subscript = getTroffPortalScript(cont_map_id, item_id, extra_data[item_id]["exit_id"])
+        elif stype in (ScriptTypes.CrownMain, ScriptTypes.CrownIsles2):
+            subscript = getCrownScript(cont_map_id, item_id, stype == ScriptTypes.CrownIsles2)
+        elif stype == ScriptTypes.MelonCrate:
+            subscript = getCrateScript(item_id)
+        elif stype == ScriptTypes.DeleteItem:
+            subscript = getObjectHideScript(item_id)
+        elif stype == ScriptTypes.HelmLobbyPadGrab:
+            subscript = getHelmLobbyActivatorScript(item_id, extra_data["activator"], extra_data["bonus_map"], extra_data["microhint"])
+        elif stype == ScriptTypes.GalleonShipwreckDoor:
+            subscript = getFiveTwoDoorShipGateScript(item_id, extra_data[item_id]["flag_id"], extra_data[item_id]["timer"], extra_data[item_id]["timer_2"], extra_data[item_id]["tied_pad"])
+        elif stype == ScriptTypes.FactoryBlastController:
+            subscript = getFactoryBlastControllerScript(item_id)
+        elif stype == ScriptTypes.KRoolShip:
+            subscript = getKRoolShipScript(item_id)
+        elif stype == ScriptTypes.KRoolShipController:
+            subscript = getKRoolShipControllerScript(item_id, extra_data[item_id]["radius"])
+        elif stype == ScriptTypes.HelmInstrumentPad:
+            subscript = getHelmPadScript(item_id, extra_data[item_id]["temp_flags"], extra_data[item_id]["kong_id"], extra_data[item_id]["glass_panel"], extra_data[item_id]["hint_cs"], extra_data[item_id]["microhint"], extra_data[item_id]["req_minigames"], extra_data[item_id]["helm_order"])
+        elif stype == ScriptTypes.KrocIslePort:
+            subscript = getHelmMonkeyport(item_id, extra_data["kong"], extra_data["microhint"])
+        elif stype == ScriptTypes.Piano:
+            subscript = getPianoScript(item_id, extra_data["piano_order"], extra_data["fast_piano"])
+        elif stype == ScriptTypes.DiddyRNDDoors:
+            subscript = getDiddyRNDDoorScript(item_id, extra_data[item_id]["fast_rnd"], extra_data[item_id]["cutscene_id"], extra_data[item_id]["pen_id"], extra_data[item_id]["enemy_ids"])
+        elif stype == ScriptTypes.IntangibleObject:
+            subscript = getIntangibleObjectPreview(item_id)
+        if subscript is not None:
+            good_scripts.append(subscript)
+    # Reconstruct File
+    ROM_COPY.seek(script_table)
+    ROM_COPY.writeMultipleBytes(len(good_scripts), 2)
+    for script in good_scripts:
+        for x in script:
+            ROM_COPY.writeMultipleBytes(x, 2)
+
+
+slammable_switches = {
+    Maps.JungleJapes: [0x1A, 0x40, 0x41, 0x3F, 0x3E, 0x3D],
+    Maps.JapesMountain: [0xB, 0xA, 0x6],
+    Maps.JapesTinyHive: [0x2, 0x3],
+    Maps.AngryAztec: [0x28],
+    Maps.AztecLlamaTemple: [0x69, 0x29, 0xE, 0xF, 0x10],
+    Maps.AztecTinyTemple: [0x0, 0x1A],
+    Maps.FranticFactory: [0x79, 0x31, 0x7A, 0x24, 0x30, 0x3D, 0x2F, 0x80, 0x2E, 0x61],
+    Maps.GloomyGalleon: [0x2A, 0x1D, 0x1C, 0x27],
+    Maps.GloomyGalleonLobby: [0xA],
+    Maps.FungiForest: [0xEC, 0x10, 0xF, 0xEB],
+    Maps.ForestThornvineBarn: [0x0],
+    Maps.ForestMillFront: [0x1, 0x2],
+    Maps.ForestGiantMushroom: [0x1, 0x0],
+    Maps.ForestMillAttic: [0x0],
+    Maps.ForestChunkyFaceRoom: [0x1],
+    Maps.CrystalCaves: [0xD, 0x144],
+    Maps.CreepyCastle: [0x12, 0x17, 0x16, 0xF, 0x19],
+    Maps.CastleDungeon: [0x5, 0x4, 0x6],
+    Maps.CastleMausoleum: [0x4],
+    Maps.CastleLibrary: [0x4],
+}
+
+
+def setProgSlamStrength(ROM_COPY: LocalROM, settings):
+    """Update the instance scripts for all slam switches impacted by prog slam strength."""
+    for map_id, obj_ids in slammable_switches.items():
+        level_id = getLevel(map_id, "slam switches", False)
+        slam_strength = settings.switch_allocation[level_id]
+        if slam_strength > 0:
+            for x in range(4):
+                replaceScriptLines(
+                    ROM_COPY,
+                    map_id,
+                    obj_ids,
+                    {
+                        f"COND 37 | {x} 0 0": f"COND 37 | {slam_strength} 0 0",
+                    },
+                )
+        else:
+            for x in range(4):
+                replaceScriptLines(
+                    ROM_COPY,
+                    map_id,
+                    obj_ids,
+                    {
+                        f"COND 37 | {x} 0 0": "COND 0 | 0 0 0",
+                    },
+                )
+            replaceScriptLines(
+                ROM_COPY,
+                map_id,
+                obj_ids,
+                {
+                    "COND 23 | 28 0 0": "COND 0 | 0 0 0",
+                },
+            )

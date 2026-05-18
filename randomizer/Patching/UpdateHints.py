@@ -243,7 +243,7 @@ def PushHints(spoiler, ROM_COPY: LocalROM):
     for index, hint_info in enumerate(spoiler.hintset.hints):
         if hint_info.hint == "":
             hint_info.hint = "error: missing hint - report this error to the discord"
-        if index < 35:
+        if index < 36:
             hint_arr.append([hint_info.hint.upper()])
         else:
             item_name = "SOMETHINGS"
