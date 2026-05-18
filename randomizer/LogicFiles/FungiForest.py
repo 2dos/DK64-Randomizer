@@ -347,12 +347,17 @@ LogicRegions = {
         TransitionFront(Regions.MillRafters, lambda l: (l.spring or l.CanMoontail()) and l.isdiddy, Transitions.ForestMainToRafters, time=Time.Night),
         TransitionFront(Regions.ThornvineArea, lambda _: True, time=Time.Night),
         TransitionFront(Regions.ThornvineArea, lambda l: l.CanPhaseswim()),
-        TransitionFront(Regions.Snide, lambda l: l.snideAccess, time=Time.Day),
-        TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando, time=Time.Day),
+        TransitionFront(Regions.SnideArea, lambda _: True, time=Time.Day),
         TransitionFront(Regions.ThornvineBarn, lambda l: l.CanPhaseswim(), Transitions.ForestMainToBarn, isGlitchTransition=True),
         TransitionFront(Regions.ForestVeryTopOfMill, lambda l: l.climbing),
         TransitionFront(Regions.ForestTopOfMill, lambda l: l.balloon and l.islanky),
         TransitionFront(Regions.ForestMillTopOfNightCage, lambda l: l.isdiddy or l.istiny or l.ischunky),
+    ]),
+
+    Regions.SnideArea: Region("Snide Area", HintRegion.Mills, Levels.FungiForest, False, None, [], [], [
+        TransitionFront(Regions.MillArea, lambda _: True, time=Time.Day),
+        TransitionFront(Regions.Snide, lambda l: l.snideAccess),
+        TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.MillChunkyTinyArea: Region("Mill Back Room", HintRegion.Mills, Levels.FungiForest, False, -1, [

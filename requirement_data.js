@@ -282,7 +282,7 @@ const requirement_data = {
         ],
         "Diddy": [
             new Requirement(28, [[Moves.Moveless]]), // 1 bunch, 2 bunches in FungiForestStart; 2 bunches in GiantMushroomArea; 3 bananas in MillArea
-            new Requirement(10, [[Moves.Peanut]]), // 1 balloon in MillArea
+            new Requirement(10, [[Moves.Peanut]]), // 1 balloon in SnideArea
             new Requirement(5, [[Moves.Spring]]), // 1 bunch in MillArea
             new Requirement(15, [[Moves.ForestYellowTunnel]]), // 1 bunch, 10 bananas in HollowTreeArea
             new Requirement(5, [[Moves.Rocket, Moves.ForestYellowTunnel]]), // 1 bunch in HollowTreeArea

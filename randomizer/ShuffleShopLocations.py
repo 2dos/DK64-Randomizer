@@ -57,7 +57,7 @@ available_shops = {
     Levels.FungiForest: [
         ShopLocation(Regions.CrankyGeneric, Maps.FungiForest, Regions.GiantMushroomArea, Regions.CrankyForest),
         ShopLocation(Regions.FunkyGeneric, Maps.FungiForest, Regions.WormArea, Regions.FunkyForest),
-        ShopLocation(Regions.Snide, Maps.FungiForest, Regions.MillArea, Regions.Snide),
+        ShopLocation(Regions.Snide, Maps.FungiForest, Regions.SnideArea, Regions.Snide),
     ],
     Levels.CrystalCaves: [
         ShopLocation(Regions.CrankyGeneric, Maps.CrystalCaves, Regions.CrystalCavesMain, Regions.CrankyCaves),
