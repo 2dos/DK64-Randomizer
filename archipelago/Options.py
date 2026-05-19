@@ -640,7 +640,7 @@ class LevelBlockers(OptionDict):
     }
 
     def verify(self, world: type[World], player_name: str, plando_options: PlandoOptions) -> None:
-        """Verify B. Lockers"""
+        """Verify B. Lockers."""
         super(LevelBlockers, self).verify(world, player_name, plando_options)
 
         for key in self.value.keys():
