@@ -2656,11 +2656,9 @@ door_locations = {
         DoorData(
             name="Near Mills Shop",
             map=Maps.FungiForest,
-            logicregion=Regions.MillArea,
+            logicregion=Regions.SnideArea,
             location=[3240.033, 268.5, 3718.017, 178.0],
             group=4,
-            moveless=False,
-            logic=lambda l: Events.Day in l.Events,
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
             dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),

@@ -1073,6 +1073,7 @@ void startFile(void) {
 		determineStartKong_PermaLossMode();
 		giveCollectables();
 	}
+	initLockout();
 	initAPCounter();
 	resetProgressive();
 	updateBarrierCounts();

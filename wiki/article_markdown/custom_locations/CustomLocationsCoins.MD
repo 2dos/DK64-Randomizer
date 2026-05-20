@@ -565,7 +565,7 @@
 | On the Green Tunnel Roof | 3 | `l.twirl and l.istiny` | 
 | On a mushroom in the Worm Area | 4 | `self.logic = lambda _: True` | 
 | On the waterwheel | 5 | `self.logic = lambda _: True` | 
-| In the Snide's area | 4 | `(l.TimeAccess(Regions.MillArea, Time.Day))` | 
+| In the Snide's area | 4 | `self.logic = lambda _: True` | 
 | Near the entrance to the Dark Rafters | 4 | `self.logic = lambda _: True` | 
 | Hanging off the mill roof | 3 | `self.logic = lambda _: True` | 
 | In front of the mill in the air | 3 | `l.balloon and l.islanky` | 

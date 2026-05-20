@@ -251,7 +251,7 @@
 | Fungi Forest | Behind Clock |  | `self.logic = lambda _: True` | 
 | Fungi Forest | In front of Clock |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Near Blue Tunnel |  | `self.logic = lambda _: True` | 
-| Fungi Forest | Near Mills shop |  | `(l.TimeAccess(Regions.MillArea, Time.Day))` | 
+| Fungi Forest | Near Mills shop |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Behind rafters barn |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Left of rafters barn |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Next to Diddy Pad |  | `self.logic = lambda _: True` | 
