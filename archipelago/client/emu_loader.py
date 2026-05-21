@@ -472,6 +472,7 @@ class Emulators(IntEnum):
     BizHawk = auto()
     Project64_v4 = auto()
     RMG = auto()
+    RMG_Flatpak = auto()
     Simple64 = auto()
     ParallelLauncher = auto()
     ParallelLauncher903 = auto()
@@ -789,6 +790,19 @@ EMULATOR_CONFIGS = {
     Emulators.Project64_v4: EmulatorInfo(Emulators.Project64_v4, "Project64 4.0", "project64", False, None, False, 0xFDD00000, 0xFE1FFFFF, scan_memory_for_signature=True),
     Emulators.BizHawk: EmulatorInfo(Emulators.BizHawk, "Bizhawk", "emuhawk", True, "mupen64plus.dll", False, 0x5A000, 0x5658DF, linux_dll_name="libmupen64plus.so"),
     Emulators.RMG: EmulatorInfo(Emulators.RMG, "Rosalie's Mupen GUI", "rmg", True, "mupen64plus.dll", True, 0x29C15D8, 0x2FC15D8, extra_offset=0x80000000, linux_dll_name="libmupen64plus.so"),
+    Emulators.RMG_Flatpak: EmulatorInfo(
+        Emulators.RMG_Flatpak,
+        "Rosalie's Mupen GUI (Flatpak)",
+        "rmg",
+        True,
+        dll_name=None,
+        additional_lookup=True,
+        lower_offset_range=0x0,
+        upper_offset_range=0x60000,
+        range_step=8,
+        extra_offset=0,
+        linux_dll_name="libmupen64plus.so",
+    ),
     Emulators.Simple64: EmulatorInfo(Emulators.Simple64, "simple64", "simple64-gui", True, "libmupen64plus.dll", True, 0x1380000, 0x29C95D8, linux_dll_name="libmupen64plus.so"),
     Emulators.ParallelLauncher: EmulatorInfo(
         Emulators.ParallelLauncher, "Parallel Launcher", "retroarch", True, "parallel_n64_next_libretro.dll", True, 0x845000, 0xD56000, linux_dll_name="parallel_n64_next_libretro.so"
