@@ -260,11 +260,11 @@ LogicRegions = {
     # All lobbies take you to themselves when you die
     Regions.JungleJapesLobby: Region("Jungle Japes Lobby", HintRegion.EarlyLobbies, Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesLankyInstrumentPad, lambda l: l.chunky and l.trombone and l.lanky and l.barrels),
-        LocationLogic(Locations.JapesDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.JapesDiddyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.JapesLankyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.JapesTinyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.JapesChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
+        LocationLogic(Locations.JapesDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(0)),
+        LocationLogic(Locations.JapesDiddyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(0)),
+        LocationLogic(Locations.JapesLankyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(0)),
+        LocationLogic(Locations.JapesTinyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(0)),
+        LocationLogic(Locations.JapesChunkyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(0)),
         LocationLogic(Locations.JapesLobbyEnemy_Enemy0, lambda _: True),
         LocationLogic(Locations.JapesLobbyEnemy_Enemy1, lambda _: True),
         LocationLogic(Locations.KremKap_JapesLobbyEnemy_Enemy0, lambda l: l.camera),
@@ -279,11 +279,11 @@ LogicRegions = {
 
     Regions.AngryAztecLobby: Region("Angry Aztec Lobby", HintRegion.EarlyLobbies, Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesTinyAztecLobby, lambda l: (((l.charge and l.diddy and l.twirl) or l.settings.bonus_barrels == MinigameBarrels.skip) and l.istiny) or (l.settings.bonus_barrels == MinigameBarrels.skip and l.settings.free_trade_items), MinigameType.BonusBarrel),
-        LocationLogic(Locations.AztecDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.AztecDiddyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.AztecLankyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.AztecTinyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.AztecChunkyDoor, lambda l: not l.settings.wrinkly_location_rando and (l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()) and ((l.chunky and l.hunkyChunky) or l.settings.remove_wrinkly_puzzles)),
+        LocationLogic(Locations.AztecDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(1)),
+        LocationLogic(Locations.AztecDiddyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(1)),
+        LocationLogic(Locations.AztecLankyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(1)),
+        LocationLogic(Locations.AztecTinyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(1)),
+        LocationLogic(Locations.AztecChunkyDoor, lambda l: not l.settings.wrinkly_location_rando and (l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()) and ((l.chunky and l.hunkyChunky) or l.settings.remove_wrinkly_puzzles) and l.canUnlockHintDoor(1)),
     ], [
         Event(Events.AztecLobbyAccessed, lambda _: True),
     ], [
@@ -355,11 +355,11 @@ LogicRegions = {
         LocationLogic(Locations.IslesDonkeyInstrumentPad, lambda l: (l.grab or l.CanMoonkick()) and l.bongos and l.donkey),
         LocationLogic(Locations.IslesKasplatFactoryLobby, lambda l: not l.settings.kasplat_rando and l.punch and l.chunky),
         LocationLogic(Locations.IslesBananaFairyFactoryLobby, lambda l: l.camera and l.punch and l.chunky),
-        LocationLogic(Locations.FactoryDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.FactoryDiddyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.grab and l.donkey) or l.CanMoonkick() or (l.monkey_maneuvers and (l.istiny or l.isdiddy)))),
-        LocationLogic(Locations.FactoryLankyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.grab and l.donkey) or l.CanMoonkick() or l.monkey_maneuvers)),
-        LocationLogic(Locations.FactoryTinyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.grab and l.donkey) or l.CanMoonkick() or (l.monkey_maneuvers and (l.istiny or l.isdiddy)))),
-        LocationLogic(Locations.FactoryChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
+        LocationLogic(Locations.FactoryDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(2)),
+        LocationLogic(Locations.FactoryDiddyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.grab and l.donkey) or l.CanMoonkick() or (l.monkey_maneuvers and (l.istiny or l.isdiddy))) and l.canUnlockHintDoor(2)),
+        LocationLogic(Locations.FactoryLankyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.grab and l.donkey) or l.CanMoonkick() or l.monkey_maneuvers) and l.canUnlockHintDoor(2)),
+        LocationLogic(Locations.FactoryTinyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.grab and l.donkey) or l.CanMoonkick() or (l.monkey_maneuvers and (l.istiny or l.isdiddy))) and l.canUnlockHintDoor(2)),
+        LocationLogic(Locations.FactoryChunkyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(2)),
         LocationLogic(Locations.FactoryLobbyEnemy_Enemy0, lambda _: True),
         LocationLogic(Locations.KremKap_FactoryLobbyEnemy_Enemy0, lambda l: l.camera),
     ], [
@@ -377,11 +377,11 @@ LogicRegions = {
     Regions.GloomyGalleonLobby: Region("Gloomy Galleon Lobby", HintRegion.EarlyLobbies, Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesTinyGalleonLobby, lambda l: ((l.chunky and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.mini and l.twirl and l.swim and l.tiny) or (l.CanPhaseswim() and (l.istiny or l.settings.free_trade_items))) and (not l.IsLavaWater() or l.Melons >= 3)),
         LocationLogic(Locations.IslesKasplatGalleonLobby, lambda l: not l.settings.kasplat_rando),
-        LocationLogic(Locations.GalleonDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.GalleonDiddyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.GalleonLankyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.GalleonTinyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.GalleonChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
+        LocationLogic(Locations.GalleonDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(3)),
+        LocationLogic(Locations.GalleonDiddyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(3)),
+        LocationLogic(Locations.GalleonLankyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(3)),
+        LocationLogic(Locations.GalleonTinyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(3)),
+        LocationLogic(Locations.GalleonChunkyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(3)),
     ], [
         Event(Events.GalleonLobbyAccessed, lambda _: True),
     ], [
@@ -431,11 +431,11 @@ LogicRegions = {
     Regions.FungiForestLobby: Region("Fungi Forest Lobby", HintRegion.EarlyLobbies, Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesBattleArena2, lambda l: not l.settings.crown_placement_rando and (l.CanOpenForestLobbyGoneDoor() and l.gorillaGone and l.ischunky)),
         LocationLogic(Locations.IslesBananaFairyForestLobby, lambda l: l.camera and l.hasMoveSwitchsanity(Switches.IslesFungiLobbyFeather, False)),
-        LocationLogic(Locations.ForestDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando),  # These might look strange
-        LocationLogic(Locations.ForestDiddyDoor, lambda l: not l.settings.wrinkly_location_rando),  # But they're all covered
-        LocationLogic(Locations.ForestLankyDoor, lambda l: not l.settings.wrinkly_location_rando),  # Check HintAccess() in Logic.py
-        LocationLogic(Locations.ForestTinyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.ForestChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
+        LocationLogic(Locations.ForestDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(4)),  # These might look strange
+        LocationLogic(Locations.ForestDiddyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(4)),  # But they're all covered
+        LocationLogic(Locations.ForestLankyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(4)),  # Check HintAccess() in Logic.py
+        LocationLogic(Locations.ForestTinyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(4)),
+        LocationLogic(Locations.ForestChunkyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(4)),
     ], [
         Event(Events.ForestLobbyAccessed, lambda _: True),
     ], [
@@ -447,11 +447,11 @@ LogicRegions = {
         LocationLogic(Locations.IslesDonkeyLavaBanana, lambda l: ((l.punch and l.chunky and l.strongKong) or l.CanPhase()) and l.donkey),
         LocationLogic(Locations.IslesDiddyInstrumentPad, lambda l: l.jetpack and l.guitar and l.diddy),
         LocationLogic(Locations.IslesKasplatCavesLobby, lambda l: not l.settings.kasplat_rando and ((l.punch and l.chunky) or l.CanPhase() or l.ledgeclip)),
-        LocationLogic(Locations.CavesDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles)),
-        LocationLogic(Locations.CavesDiddyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles) and ((l.isdiddy and l.jetpack) or l.CanMoonkick())),
-        LocationLogic(Locations.CavesLankyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles)),
-        LocationLogic(Locations.CavesTinyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles)),
-        LocationLogic(Locations.CavesChunkyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles)),
+        LocationLogic(Locations.CavesDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles) and l.canUnlockHintDoor(5)),
+        LocationLogic(Locations.CavesDiddyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles) and ((l.isdiddy and l.jetpack) or l.CanMoonkick()) and l.canUnlockHintDoor(5)),
+        LocationLogic(Locations.CavesLankyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles) and l.canUnlockHintDoor(5)),
+        LocationLogic(Locations.CavesTinyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles) and l.canUnlockHintDoor(5)),
+        LocationLogic(Locations.CavesChunkyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles) and l.canUnlockHintDoor(5)),
         LocationLogic(Locations.HoldableBoulderCavesLobby, lambda l: l.barrels and l.chunky and (l.punch or l.CanPhase())),
     ], [
         Event(Events.CavesLobbyAccessed, lambda _: True),
@@ -463,11 +463,11 @@ LogicRegions = {
     Regions.CreepyCastleLobby: Region("Creepy Castle Lobby", HintRegion.LateLobbies, Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesLankyCastleLobby, lambda l: (l.chunky and l.balloon and l.islanky and l.barrels) or ((l.CanMoonkick() or (l.monkey_maneuvers and l.istiny and l.twirl and (not l.isKrushaAdjacent(Kongs.tiny)))) and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.IslesKasplatCastleLobby, lambda l: not l.settings.kasplat_rando and ((l.coconut and l.donkey) or l.CanPhase())),
-        LocationLogic(Locations.CastleDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.CastleDiddyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.CastleLankyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.CastleTinyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.CastleChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
+        LocationLogic(Locations.CastleDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(6)),
+        LocationLogic(Locations.CastleDiddyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(6)),
+        LocationLogic(Locations.CastleLankyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(6)),
+        LocationLogic(Locations.CastleTinyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(6)),
+        LocationLogic(Locations.CastleChunkyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(6)),
         LocationLogic(Locations.RainbowCoin_Location15, lambda l: (l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.monkey_maneuvers and l.istiny and l.twirl and (not l.isKrushaAdjacent(Kongs.tiny)))),
         LocationLogic(Locations.CastleLobbyEnemy_Left, lambda _: True),
         LocationLogic(Locations.CastleLobbyEnemy_FarRight, lambda _: True),

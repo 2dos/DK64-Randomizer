@@ -246,6 +246,7 @@ base-hack/modelling/*.obj
 *.ia4
 *.i8
 *.ia8
+batch_spoilers/
 seed.textproto
 tools/dump_lanky.py
 tools/pack_lanky.py

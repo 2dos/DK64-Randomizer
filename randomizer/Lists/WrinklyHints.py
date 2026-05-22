@@ -150,6 +150,13 @@ def getDefaultHintList() -> List[HintLocation]:
         HintLocation("Castle Lanky", Kongs.lanky, WrinklyLocation.castle, "", Levels.CreepyCastle),
         HintLocation("Castle Tiny", Kongs.tiny, WrinklyLocation.castle, "", Levels.CreepyCastle),
         HintLocation("Castle Chunky", Kongs.chunky, WrinklyLocation.castle, "", Levels.CreepyCastle),
+        HintLocation(
+            "Locked Hint Talk",
+            Kongs.any,
+            WrinklyLocation.locked,
+            "OOOOOOO.... I WILL NOT REVEAL MY PRECIOUS REWARD UNTIL @ CROWNS. GO FIND SOME MORE.",
+            Levels.DKIsles,
+        ),
     ]
 
 

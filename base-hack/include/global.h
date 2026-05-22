@@ -39,6 +39,8 @@ extern void applyPaperMode(void);
 extern void checkDimCache(void);
 
 extern void resolveBonusContainer(void);
+extern void handleHintScreenLockout(void);
+extern void initLockout(void);
 
 extern enemy_item_db_item *getEnemyItem(int id);
 extern int getEnemyFlag(int id);

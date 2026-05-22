@@ -1302,6 +1302,16 @@ class LogicVarHolder:
             raise Exception("Invalid Item for progressive hints")
         return self.ItemCheck(barrier_item, value)
 
+    def canUnlockHintDoor(self, level: int) -> bool:
+        """Determine whether the player can unlock a hint door."""
+        req_item = self.settings.hint_door_item
+        if req_item == ProgressiveHintItem.off:
+            return True
+        barrier_item = getProgHintBarrierItem(req_item)
+        if barrier_item is None:
+            raise Exception("Invalid Item for locking hint doors")
+        return self.ItemCheck(barrier_item, self.settings.hint_door_item_counts_level[level])
+
     def CanMoontail(self):
         """Determine whether the player can perform a Moontail."""
         return self.moontail and self.isdiddy and self.settings.kong_model_diddy == KongModels.default  # Krusha doesnt have the jump height that Diddy has

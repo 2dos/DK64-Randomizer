@@ -1433,6 +1433,8 @@ function set_preset_options() {
   update_door_two_num_access();
   update_win_con_num_access();
   update_prog_hint_num_access();
+  update_hint_door_num_access();
+  update_pause_hint_num_access();
   update_blocker_num_access();
   update_ice_trap_count();
   update_all_trap_weights();
