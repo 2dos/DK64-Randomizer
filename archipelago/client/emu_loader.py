@@ -787,7 +787,7 @@ class EmulatorInfo:
 
 
 EMULATOR_CONFIGS = {
-    Emulators.Project64_v4: EmulatorInfo(Emulators.Project64_v4, "Project64 4.0", "project64", False, None, False, 0xFDD00000, 0xFE1FFFFF, scan_memory_for_signature=True),
+    Emulators.Project64_v4: EmulatorInfo(Emulators.Project64_v4, "Project64 4.0", "project64", False, None, False, 0xFDD00000, 0xFE1FFFFF),
     Emulators.BizHawk: EmulatorInfo(Emulators.BizHawk, "Bizhawk", "emuhawk", True, "mupen64plus.dll", False, 0x5A000, 0x5658DF, linux_dll_name="libmupen64plus.so"),
     Emulators.RMG: EmulatorInfo(Emulators.RMG, "Rosalie's Mupen GUI", "rmg", True, "mupen64plus.dll", True, 0x29C15D8, 0x2FC15D8, extra_offset=0x80000000, linux_dll_name="libmupen64plus.so"),
     Emulators.RMG_Flatpak: EmulatorInfo(
@@ -813,7 +813,7 @@ EMULATOR_CONFIGS = {
     Emulators.RetroArch: EmulatorInfo(
         Emulators.RetroArch, "RetroArch", "retroarch", True, "mupen64plus_next_libretro.dll", True, 0, 0xFFFFFF, range_step=4, linux_dll_name="mupen64plus_next_libretro.so"
     ),
-    Emulators.Project64: EmulatorInfo(Emulators.Project64, "Project64", "project64", False, None, False, 0xDFD00000, 0xE01FFFFF, scan_memory_for_signature=True),
+    Emulators.Project64: EmulatorInfo(Emulators.Project64, "Project64", "project64", False, None, False, 0xDFD00000, 0xE01FFFFF),
     Emulators.Gopher64: EmulatorInfo(Emulators.Gopher64, "Gopher64", "gopher64", False, None, False, 0, 0, scan_memory_for_signature=True),
     Emulators.Ares: EmulatorInfo(Emulators.Ares, "ares", "ares", False, None, False, 0, 0, scan_memory_for_signature=True, signature_alignment=0x1000),
 }
