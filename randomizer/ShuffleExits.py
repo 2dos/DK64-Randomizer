@@ -274,6 +274,8 @@ def ShuffleExits(spoiler):
     # If levels rando is on, need to update Blocker and T&S requirements to match
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
         UpdateLevelProgression(settings)
+        if settings.hint_door_item != ProgressiveHintItem.off:
+            ReshuffleHintDoorRequirements(settings)
 
 
 def ExitShuffle(spoiler, skip_verification=False):
@@ -324,6 +326,25 @@ def UpdateLevelProgression(settings: Settings):
     settings.BLockerEntryItems = newBLockerEntryItems
     settings.BLockerEntryCount = newBLockerEntryCount
     settings.BossBananas = newBossBananas
+
+
+def ReshuffleHintDoorRequirements(settings: Settings) -> None:
+    """Alter the hint costs to match the expected level order progression based on the order we entered levels."""
+    if settings.hint_door_item == ProgressiveHintItem.off:
+        return
+    # This is the linear formula for calculating hint door costs:
+    linear_cost_requirements = [int((x + 1) * (settings.hint_door_item_count / 7)) for x in range(7)]
+    # If we're reshuffling the level order, we have no idea what each level will cost in CLO
+    if settings.hard_level_progression:
+        # Therefore we need to max out all the doors and correct them later
+        settings.hint_door_item_counts_level = [linear_cost_requirements[6]] * 7
+    hint_costs_reordered = [0] * 7
+    for i in range(8):
+        # Aint no hints in Helm
+        if i >= 7 or settings.level_order[i + 1] == Levels.HideoutHelm:
+            continue
+        hint_costs_reordered[settings.level_order[i + 1]] = linear_cost_requirements[i]
+    settings.hint_door_item_counts_level = hint_costs_reordered
 
 
 def ShuffleLevelExits(settings: Settings, newLevelOrder: dict = None):
