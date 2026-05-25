@@ -742,6 +742,8 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     writeValue(ROM_COPY, 0x8060006E, Overlay.Static, getLoSym("replacement_lobbies_array"), offset_dict)
 
     pause_screen_count = getEnum("PAUSESCREEN_TERMINATOR")
+    if spoiler.settings.pause_hints_setting == PauseHintSetting.off:
+        pause_screen_count -= 1
     writeValue(ROM_COPY, 0x806A8672, Overlay.Static, pause_screen_count - 1, offset_dict)  # Screen decrease cap
     writeValue(ROM_COPY, 0x806A8646, Overlay.Static, pause_screen_count, offset_dict)  # Screen increase cap
 

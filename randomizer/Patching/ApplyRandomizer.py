@@ -301,7 +301,6 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
         BooleanProperties(IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, Levels.DKIsles), 0x10B),  # 5 extra medal handling
         BooleanProperties(spoiler.settings.helm_hurry, 0xAE),  # Helm Hurry
         BooleanProperties(spoiler.settings.wrinkly_available, 0x52),  # Remove Wrinkly Kong Checks
-        BooleanProperties(spoiler.settings.pause_hints_setting == PauseHintSetting.off, 0x1DD),  # Disable Pause Screen Hints
         BooleanProperties(
             spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled),
             0x47,

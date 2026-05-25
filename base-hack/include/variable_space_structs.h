@@ -116,9 +116,7 @@ typedef struct varspace {
 	/* 0x1C7 */ unsigned char switchsanity_gone; // 0 = gone, 1-5 = instrument
 	/* 0x1C8 */ char unk_1cd[0x1DB - 0x1C8];
 	/* 0x1DB */ unsigned char fungi_time_of_day_setting; // See fungi_time enum
-	/* 0x1DC */ char unk_1dc;
-  /* 0x1DD */ unsigned char disable_hint_screen;
-  /* 0x1DE */ char unk_1de[2]; 
+	/* 0x1DC */ char unk_1dc[4];
 	/* 0x1E0 */ FasterChecks faster_checks; // Size: 1
 	/* 0x1E1 */ char unk_1e1;
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
