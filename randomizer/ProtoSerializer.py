@@ -1353,19 +1353,24 @@ def _populate_hint_data(spoiler: "Spoiler", proto: fill_result_pb2.HintData) -> 
 
     if hasattr(spoiler, "level_spoiler"):
         for level_id, level_hints in spoiler.level_spoiler.items():
-            level_proto = proto.level_spoiler_hints[int(level_id)]
-            if hasattr(level_hints, "vial_colors"):
-                level_proto.vial_colors.extend(level_hints.vial_colors)
-            if hasattr(level_hints, "points"):
-                level_proto.points = level_hints.points
-            if hasattr(level_hints, "woth_count"):
-                level_proto.woth_count = level_hints.woth_count
-            if hasattr(level_hints, "level_items"):
-                for item_entry in level_hints.level_items:
-                    item_proto = level_proto.level_items.add()
-                    item_proto.item = int(_enum_value(item_entry.get("item", 0)))
-                    item_proto.points = int(item_entry.get("points", 0))
-                    item_proto.flag = int(item_entry.get("flag", 0))
+            try:
+                level_id_new = int(level_id)
+            except:
+                level_id_new = level_id
+            if not isinstance(level_id_new, str):
+                level_proto = proto.level_spoiler_hints[level_id_new]
+                if hasattr(level_hints, "vial_colors"):
+                    level_proto.vial_colors.extend(level_hints.vial_colors)
+                if hasattr(level_hints, "points"):
+                    level_proto.points = level_hints.points
+                if hasattr(level_hints, "woth_count"):
+                    level_proto.woth_count = level_hints.woth_count
+                if hasattr(level_hints, "level_items"):
+                    for item_entry in level_hints.level_items:
+                        item_proto = level_proto.level_items.add()
+                        item_proto.item = int(_enum_value(item_entry.get("item", 0)))
+                        item_proto.points = int(item_entry.get("points", 0))
+                        item_proto.flag = int(item_entry.get("flag", 0))
 
     if hasattr(spoiler, "level_spoiler_human_readable"):
         for level_name, hint_text in spoiler.level_spoiler_human_readable.items():

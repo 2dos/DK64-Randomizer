@@ -2737,8 +2737,8 @@ class Settings:
                 for location in shuffledLocations  # Placing a shop owner in a shop owner location is boring and we don't want to do it ever
                 if spoiler.LocationList[location].type
                 not in (
-                    Types.Shop,
-                    Types.Shockwave,
+                    # Types.Shop,
+                    # Types.Shockwave,
                     Types.PreGivenMove,
                     Types.TrainingBarrel,
                     Types.Climbing,
