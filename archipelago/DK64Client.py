@@ -26,6 +26,7 @@ from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, se
 from NetUtils import ClientStatus
 from randomizer.Patching.ItemRando import normalize_location_name
 
+
 def validate_dk64_rom(client: EmuLoaderClient) -> bool:
     """Validate that the correct DK64 Archipelago ROM is loaded."""
     try:
