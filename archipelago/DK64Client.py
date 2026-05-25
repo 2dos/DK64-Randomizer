@@ -176,7 +176,6 @@ class DK64Client:
     game = None
     auth = None
     memory_pointer = None
-    stop_bizhawk_spam = False
     seed_started = False
     locations_scouted = {}
     recvd_checks = {}
@@ -202,17 +201,6 @@ class DK64Client:
     last_hint_bitfield = [0] * HINT_BITFIELD_SIZE
     sent_hints = set()
     helm_hurry_enabled = False
-
-    # ==================== CONNECTION METHODS ====================
-
-    async def wait_for_pj64(self):
-        """Wait for emulator to connect to the game."""
-        if not self.stop_bizhawk_spam:
-            self.n64_client = EmuLoaderClient()
-            self.stop_bizhawk_spam = True
-        await self.n64_client.wait_for_emulator(validate=validate_dk64_rom)
-        self.stop_bizhawk_spam = False
-        logger.info("Emulator Connected to ROM!")
 
     # ==================== GAME STATE METHODS ====================
 
@@ -1649,17 +1637,17 @@ class DK64Context(CommonContext):
             self.new_checks(built_checks_list)
 
         # yield to allow UI to start
+        self.client.n64_client = EmuLoaderClient()
         await asyncio.sleep(0)
         while True:
             await asyncio.sleep(3)
 
             try:
-                if not self.client.stop_bizhawk_spam:
-                    logger.info("(Re)Starting game loop")
+                logger.info("(Re)Starting game loop")
                 # On restart of game loop, clear all checks, just in case we swapped ROMs
                 # this isn't totally neccessary, but is extra safety against cross-ROM contamination
                 self.reset_checks()
-                await self.client.wait_for_pj64()
+                await self.client.n64_client.wait_for_emulator(validate=validate_dk64_rom)
 
                 async def disconnect_check():
                     if self.auth and self.client.auth != self.auth:
