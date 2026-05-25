@@ -589,15 +589,15 @@
 | Corners of Car race room (left) | 10 | `l.mini or l.CanPhase()` | 
 | Diddy R&D room | 10 | `l.guitar or l.CanPhase()` | 
 | Diddy R&D room in front of 4 buttons | 20 | `l.guitar or l.CanPhase()` | 
-| Leading to Chunky R&D room | 2 | `l.punch and l.chunky and l.climbing` | 
+| Leading to Chunky R&D room | 2 | `l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.climbing` | 
 | Leading to Chunky R&D room | 3 | `self.logic = lambda _: True` | 
-| Chunky R&D room behind chest | 10 | `l.CanAccessRNDRoom() or (l.punch and l.triangle and l.climbing)` | 
+| Chunky R&D room behind chest | 10 | `l.CanAccessRNDRoom() or (l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing)` | 
 | Lanky R&D room upper 3 barrels | 15 | `l.CanAccessRNDRoom() or l.trombone` | 
 | Lanky R&D room lower 3 barrels | 15 | `l.CanAccessRNDRoom() or l.trombone` | 
 | On F Key | 5 | `l.CanAccessRNDRoom() or l.trombone` | 
 | Side walls of Lanky R&D room | 10 | `l.CanAccessRNDRoom() or l.trombone` | 
 | In fall from the hatch to power shed | 5 | `self.logic = lambda _: True` | 
-| In Dark room on box | 5 | `l.punch or l.CanPhase()` | 
+| In Dark room on box | 5 | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()` | 
 | On Simian Spring ledge with coins | 10 | `((l.spring or l.CanMoontail()) and l.isdiddy) or l.CanPhase()` | 
 | On box in stack of boxes to Candy/Cranky - left | 5 | `self.logic = lambda _: True` | 
 | On box in stack of boxes to Candy/Cranky - right | 5 | `self.logic = lambda _: True` | 
@@ -622,7 +622,7 @@
 | Pole room to arcade | 10 | `self.logic = lambda _: True` | 
 | Pole room to arcade around pole | 10 | `self.logic = lambda _: True` | 
 | Tunnel to Stash Snatch | 5 | `self.logic = lambda _: True` | 
-| Stash Snatch room | 10 | `l.punch` | 
+| Stash Snatch room | 10 | `l.hasMoveSwitchsanity(Switches.FactoryArcadeTunnelGrate, False)` | 
 | Under W5 table | 5 | `self.logic = lambda _: True` | 
 | Under table to Mini Monkey GB | 15 | `self.logic = lambda _: True` | 
 | On table to Mini Monkey GB | 10 | `self.logic = lambda _: True` | 
@@ -637,7 +637,7 @@
 | Bunches around Funky's store | 15 | `self.logic = lambda _: True` | 
 | Production room spinning arms, inside ring (Chunky) | 10 | `self.logic = lambda _: True` | 
 | Production room spinning arms, outside ring (Chunky) | 10 | `self.logic = lambda _: True` | 
-| Dark room above moving platforms (Chunky) | 15 | `l.punch` | 
+| Dark room above moving platforms (Chunky) | 15 | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False)` | 
 | Tunnel from entrance to hatch (Donkey) | 5 | `self.logic = lambda _: True` | 
 | Block tower (set of 3 bunches) (Diddy) | 15 | `l.spring or l.CanMoontail()` | 
 | Block tower (set of 2 bunches) (Diddy) | 10 | `l.spring or l.CanMoontail()` | 
@@ -663,8 +663,8 @@
 | In Spinning wheel room (Tiny) | 5 | `l.mini or l.CanPhase()` | 
 | By middle window outside of production room (Tiny) | 10 | `self.logic = lambda _: True` | 
 | On pole down hatch (Chunky) | 10 | `Events.HatchOpened in l.Events` | 
-| Chunky R&D room left side (Chunky) | 5 | `(l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
-| Chunky R&D room right side (Chunky) | 5 | `(l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
+| Chunky R&D room left side (Chunky) | 5 | `(l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
+| Chunky R&D room right side (Chunky) | 5 | `(l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
 | W1 (Chunky) | 5 | `self.logic = lambda _: True` | 
 | W1 (Chunky) | 5 | `self.logic = lambda _: True` | 
 | Entrance portal | 5 | `self.logic = lambda _: True` | 
@@ -690,8 +690,8 @@
 | Among the storage boxes | 10 | `self.logic = lambda _: True` | 
 | Between the storage shops | 5 | `self.logic = lambda _: True` | 
 | Between boxes near the storage shops | 10 | `self.logic = lambda _: True` | 
-| Dark room entrance | 5 | `l.chunky and l.punch` | 
-| Box in a corner of dark room | 5 | `l.chunky and l.punch` | 
+| Dark room entrance | 5 | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False)` | 
+| Box in a corner of dark room | 5 | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False)` | 
 | On the table around warp 5 | 10 | `self.logic = lambda _: True` | 
 | Lower step of Snide | 5 | `self.logic = lambda _: True` | 
 | Testing factory-map | 5 | `self.logic = lambda _: True` | 
@@ -708,7 +708,7 @@
 | Toy sales board in the lever room | 5 | `self.logic = lambda _: True` | 
 | On the R&D trombone pad | 5 | `self.logic = lambda _: True` | 
 | On the R&D guitar pad | 5 | `self.logic = lambda _: True` | 
-| On the R&D triangle pad | 5 | `l.chunky and l.punch and l.climbing` | 
+| On the R&D triangle pad | 5 | `l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.climbing` | 
 | Power hut coconut switch | 5 | `self.logic = lambda _: True` | 
 | First room left corner | Balloon | `self.logic = lambda _: True` | 
 | First room right side | Balloon | `self.logic = lambda _: True` | 
@@ -732,11 +732,11 @@
 | Piano game right side | Balloon | `l.trombone or l.CanAccessRNDRoom()` | 
 | In window by car race Mini Monkey | Balloon | `self.logic = lambda _: True` | 
 | Tunnel to car race | Balloon | `self.logic = lambda _: True` | 
-| Chunky R&D room | Balloon | `(l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
+| Chunky R&D room | Balloon | `(l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
 | Cranky/Candy room | Balloon | `self.logic = lambda _: True` | 
 | Chunky room above blue switch | Balloon | `self.logic = lambda _: True` | 
 | Chunky room above dark room entrance | Balloon | `self.logic = lambda _: True` | 
-| Dark room | Balloon | `l.punch or l.CanPhase()` | 
+| Dark room | Balloon | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()` | 
 | Arcade room | Balloon | `self.logic = lambda _: True` | 
 | Production room very top | Balloon | `self.logic = lambda _: True` | 
 | Production room near wall under Lanky pipe | Balloon | `self.logic = lambda _: True` | 
@@ -755,7 +755,7 @@
 | Prod room, by center (Tiny) | Balloon | `self.logic = lambda _: True` | 
 | In front of Funky (Tiny) | Balloon | `self.logic = lambda _: True` | 
 | Prod room, by highest tag barrel (Lanky) | Balloon | `self.logic = lambda _: True` | 
-| Chunky R&D room (Chunky) | Balloon | `((l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom())` | 
+| Chunky R&D room (Chunky) | Balloon | `((l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom())` | 
 | Top of the hatch | Balloon | `self.logic = lambda _: True` | 
 | Tunnel from hatch to production | Balloon | `self.logic = lambda _: True` | 
 | Around the lower production pipe | Balloon | `self.logic = lambda _: True` | 
@@ -1077,9 +1077,9 @@
 | Around the roof of minecart | 10 | `((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy)` | 
 | Mushroom by blue tunnel | 5 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | Stumps leading to pendulum | 15 | `self.logic = lambda _: True` | 
-| Up the pendulum | 5 | `self.logic = lambda _: True` | 
-| Behind clock | 5 | `self.logic = lambda _: True` | 
-| Cannon trajectory | 10 | `self.logic = lambda _: True` | 
+| Up the pendulum | 5 | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
+| Behind clock | 5 | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
+| Cannon trajectory | 10 | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
 | Under W2 Tag Barrel | 5 | `self.logic = lambda _: True` | 
 | Bouncy shroom by pink tunnel | 5 | `self.logic = lambda _: True` | 
 | On pink tunnel lip | 5 | `(l.jetpack and l.isdiddy) or l.ischunky or (l.twirl and l.istiny)` | 
@@ -1187,7 +1187,7 @@
 | On the green tunnel lip (center side) | 5 | `(l.jetpack and l.isdiddy) or l.ischunky or (l.twirl and l.istiny)` | 
 | Under the pendulum | 5 | `self.logic = lambda _: True` | 
 | The one branch of the clock tree | 5 | `l.jetpack` | 
-| Day and night switches | 10 | `self.logic = lambda _: True` | 
+| Day and night switches | 10 | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
 | Grass between pink tunnel and minecart | 5 | `self.logic = lambda _: True` | 
 | Grass near portal | 5 | `self.logic = lambda _: True` | 
 | Grass near blue tunnel | 5 | `self.logic = lambda _: True` | 
@@ -1231,7 +1231,7 @@
 | By blue wall near Minecart | Balloon | `self.logic = lambda _: True` | 
 | Around roof of minecart | Balloon | `self.logic = lambda _: True` | 
 | High against wall between pink tunnel and minecart | Balloon | `self.logic = lambda _: True` | 
-| Behind clock | Balloon | `self.logic = lambda _: True` | 
+| Behind clock | Balloon | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
 | Near blue tunnel mill side | Balloon | `self.logic = lambda _: True` | 
 | Next to conveyor GB box | Balloon | `self.logic = lambda _: True` | 
 | Side of Mill where back entrance is | Balloon | `self.logic = lambda _: True` | 
@@ -1256,7 +1256,7 @@
 | Blue tunnel | Balloon | `self.logic = lambda _: True` | 
 | Pink tunnel | Balloon | `self.logic = lambda _: True` | 
 | Around the clock tree trunk | Balloon | `self.logic = lambda _: True` | 
-| Cuckoo! Tweet tweet !! | Balloon | `self.logic = lambda _: True` | 
+| Cuckoo! Tweet tweet !! | Balloon | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
 | Green tunnel | Balloon | `l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.CanPhase() or l.CanPhaseswim()` | 
 | Above the apple | Balloon | `self.logic = lambda _: True` | 
 | Minecart well | Balloon | `self.logic = lambda _: True` | 

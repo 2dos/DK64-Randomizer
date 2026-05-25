@@ -52,8 +52,9 @@ from randomizer.Lists.Songs import song_data
 from randomizer.Lists.Switches import SwitchData
 from randomizer.Patching.Library.Generic import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem, getCompletableBonuses, IsDDMSSelected, MEDAL_PROGRESSIVE_RATIOS
 from randomizer.Patching.CoinPlacer import gen_mayhem_coins
+from randomizer.Patching.Library.Wordle import wordle_words
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
-from randomizer.SettingStrings import encrypt_settings_string_enum
+from randomizer.ProtoSerializer import serialize_settings_to_base64, deserialize_settings_from_base64, proto_to_settings
 from randomizer.ShuffleBosses import (
     BossMapList,
     KRoolMaps,
@@ -196,9 +197,12 @@ class Settings:
             ItemRandoListSelected.crateitem: [0, 13],
             ItemRandoListSelected.halfmedal: [0, 40],
             ItemRandoListSelected.shopowners: [0, 0],  # Max is 4, calculated during post-processing
+            ItemRandoListSelected.fungitime: [0, 0],
             ItemRandoListSelected.hint: [35, 0],
             ItemRandoListSelected.wrinkly: [0, 35],
             ItemRandoListSelected.boulderitem: [0, 16],
+            ItemRandoListSelected.breakable: [0, 24],
+            ItemRandoListSelected.balloon: [0, 104],
             ItemRandoListSelected.enemies: [0, 289],
             ItemRandoListSelected.trainingmoves: [4, 0],
             ItemRandoListSelected.trainingbarrels: [0, 4],
@@ -252,13 +256,10 @@ class Settings:
 
         self.resolve_settings()
 
-        # Generate the settings string - DO THIS LAST because the encryption method alters the form data
-        try:
-            logger = logging.getLogger(__name__)
-            self.settings_string = encrypt_settings_string_enum(form_data)
-            # logger.warning("Using settings string: " + self.settings_string)
-        except Exception as ex:
-            raise Ex.SettingsIncompatibleException("Settings string is in an invalid state. Try applying a preset and recreating your changes.")
+        # Proto serialization moved to only happen when needed (generate_output or Generate_Spoiler)
+        # This avoids loading patching modules during Settings initialization
+        # self.settings_string = self.to_proto_string()
+        self.settings_string = ""  # Will be populated when proto is actually needed
 
     def apply_form_data(self, form_data):
         """Convert and apply the provided form data to this class."""
@@ -447,6 +448,9 @@ class Settings:
             (0x20, 0x48, 4),
             (0x78, 0x60, 2),
         ]
+        self.matching_game_sounds = [173, 171, 169, 174, 172, 175, 168, 170]
+        self.piano_game_order = [2, 1, 2, 3, 4, 2, 0]
+        self.piano_game_sounds = [0x1D7, 0x1D8, 0x1D9, 0x1DA, 0x1DB, 0x1DC]
         self.shuffle_shops = None
         # self.switchsanity = SwitchsanityLevel.off  # Deprecated
         self.switchsanity_enabled = False
@@ -475,6 +479,16 @@ class Settings:
         self.switchsanity_switch_fungi_yellow_tunnel = SwitchsanityKong.lanky
         self.switchsanity_switch_fungi_green_tunnel_near = SwitchsanityKong.tiny
         self.switchsanity_switch_fungi_green_tunnel_far = SwitchsanityKong.chunky
+        self.switchsanity_switch_factory_dark_grate = SwitchsanityKong.chunky
+        self.switchsanity_switch_factory_bonus_grate = SwitchsanityKong.chunky
+        self.switchsanity_switch_factory_monster_grate = SwitchsanityKong.chunky
+        self.switchsanity_switch_caves_gone_cave = SwitchsanityKong.chunky
+        self.switchsanity_switch_caves_snide_cave = SwitchsanityKong.chunky
+        self.switchsanity_switch_caves_boulder_cave = SwitchsanityKong.chunky
+        self.switchsanity_switch_caves_lobby_blueprint = SwitchsanityKong.chunky
+        self.switchsanity_switch_caves_lobby_lava = SwitchsanityKong.chunky
+        self.switchsanity_switch_aztec_gong_tower = SwitchsanityKong.diddy
+        self.switchsanity_switch_aztec_lobby_gong = SwitchsanityKong.diddy
         self.diddy_freeing_kong = Kongs.donkey
         self.lanky_freeing_kong = Kongs.donkey
         self.tiny_freeing_kong = Kongs.diddy
@@ -498,6 +512,10 @@ class Settings:
 
         # In item rando, can any Kong collect any item?
         self.free_trade_setting = False
+
+        # Minigames
+        self.arcade_custom_minigame = None
+        self.jetpac_custom_minigame = None
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
@@ -596,6 +614,7 @@ class Settings:
         # damage multiplier: DamageAmount
         self.damage_amount = DamageAmount.default
         self.wipe_file_on_death = False
+        self.lives = 5
 
         # logic_type: LogicType
         # nologic - No Logical considerations
@@ -622,6 +641,11 @@ class Settings:
         # normal
         # shuffled
         self.climbing_status = ClimbingStatus.normal
+
+        # cannon_status: CannonStatus
+        # normal
+        # shuffled
+        self.cannon_status = CannonStatus.normal
 
         # The status of camera & shockwave: ShockwaveStatus
         # vanilla - both located at Banana Fairy Isle
@@ -671,6 +695,8 @@ class Settings:
         self.beetle_model = Model.Beetle
         self.rabbit_model = Model.Rabbit
         self.panic_fairy_model = Model.BananaFairy
+        self.menu_kong = Kongs.donkey
+        self.boot_sfx = 0x23C
         self.turtle_model = Model.Turtle
         self.panic_klaptrap_model = Model.KlaptrapGreen
         self.seek_klaptrap_model = Model.KlaptrapGreen
@@ -780,7 +806,7 @@ class Settings:
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
         self.krool_access = False
-        self.win_condition_spawns_ship = 0  # 0 = Key-based, 1 = Win condition-based
+        self.win_condition_spawns_ship = False  # 0 = Key-based, 1 = Win condition-based
         self.helm_phase_order_rando = None
         self.open_lobbies = None
         self.randomize_pickups = False
@@ -847,6 +873,7 @@ class Settings:
         self.tns_selection_behavior = TroffSetting.normal_random
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
+        self.ship_location_rando = False
         # self.dk_portal_location_rando = False  # Deprecated
         self.dk_portal_location_rando_v2 = DKPortalRando.off
         self.level_portal_destinations = [
@@ -1074,6 +1101,14 @@ class Settings:
             self.starting_moves_list_count_5,
         ]
         self.starting_moves_lists = [self.starting_moves_list_1, self.starting_moves_list_2, self.starting_moves_list_3, self.starting_moves_list_4, self.starting_moves_list_5]
+
+        # Preserve original starting moves lists for proto serialization before conversion
+        self.original_starting_moves_list_1 = self.starting_moves_list_1.copy()
+        self.original_starting_moves_list_2 = self.starting_moves_list_2.copy()
+        self.original_starting_moves_list_3 = self.starting_moves_list_3.copy()
+        self.original_starting_moves_list_4 = self.starting_moves_list_4.copy()
+        self.original_starting_moves_list_5 = self.starting_moves_list_5.copy()
+
         for i in range(len(self.starting_moves_lists)):
             copy_of_list = self.starting_moves_lists[i].copy()
             for item in copy_of_list:
@@ -1144,6 +1179,16 @@ class Settings:
                 Switches.FungiYellow: self.switchsanity_switch_fungi_yellow_tunnel,
                 Switches.FungiGreenFeather: self.switchsanity_switch_fungi_green_tunnel_near,
                 Switches.FungiGreenPineapple: self.switchsanity_switch_fungi_green_tunnel_far,
+                Switches.FactoryDarkRoomGrate: self.switchsanity_switch_factory_dark_grate,
+                Switches.FactoryArcadeTunnelGrate: self.switchsanity_switch_factory_bonus_grate,
+                Switches.FactoryToyMonsterGrate: self.switchsanity_switch_factory_monster_grate,
+                Switches.CavesGoneCave: self.switchsanity_switch_caves_gone_cave,
+                Switches.CavesSnideCave: self.switchsanity_switch_caves_snide_cave,
+                Switches.CavesBoulderCave: self.switchsanity_switch_caves_boulder_cave,
+                Switches.CavesLobbyBP: self.switchsanity_switch_caves_lobby_blueprint,
+                Switches.CavesLobbyLava: self.switchsanity_switch_caves_lobby_lava,
+                Switches.AztecGongTower: self.switchsanity_switch_aztec_gong_tower,
+                Switches.AztecLobbyGong: self.switchsanity_switch_aztec_lobby_gong,
             }
 
             kongs = GetKongs()
@@ -1176,6 +1221,8 @@ class Settings:
                         SwitchsanityKong.any: Kongs.any,
                     }
                     bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
+                    if self.switchsanity_data[slot].switch_type in (SwitchType.PunchGrate, SwitchType.IceWall, SwitchType.Gong):
+                        bad_kongs.extend([SwitchsanityKong.donkey, SwitchsanityKong.lanky, SwitchsanityKong.tiny])
                     options = [
                         SwitchsanityKong.donkey,
                         SwitchsanityKong.diddy,
@@ -1216,6 +1263,10 @@ class Settings:
         self.lanky_freeing_kong = self.switchsanity_data[Switches.AztecLlamaPuzzle].kong
         self.tiny_freeing_kong = self.switchsanity_data[Switches.AztecOKONGPuzzle].kong
         self.chunky_freeing_kong = self.switchsanity_data[Switches.FactoryFreeKong].kong
+
+        self.wordle_word = None
+        if self.arcade_custom_minigame == "wordle" or self.jetpac_custom_minigame == "wordle":
+            self.wordle_word = self.random.choice(wordle_words)
 
         # Determine item requirements if random
         req_data = {
@@ -1289,23 +1340,6 @@ class Settings:
         if self.vanilla_door_rando:
             self.wrinkly_location_rando = True
             self.tns_location_rando = True
-
-        # Krusha Kong
-        # if self.krusha_ui == KrushaUi.random:
-        #     slots = [x for x in range(5) if x != Kongs.chunky or not self.disco_chunky]  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
-        #     self.krusha_kong = self.random.choice(slots)
-        # else:
-        #     self.krusha_kong = None
-        #     krusha_conversion = {
-        #         KrushaUi.no_slot: None,
-        #         KrushaUi.dk: Kongs.donkey,
-        #         KrushaUi.diddy: Kongs.diddy,
-        #         KrushaUi.lanky: Kongs.lanky,
-        #         KrushaUi.tiny: Kongs.tiny,
-        #         KrushaUi.chunky: Kongs.chunky,
-        #     }
-        #     if self.krusha_ui in krusha_conversion:
-        #         self.krusha_kong = krusha_conversion[self.krusha_ui]
 
         # Fungi Time of Day
         if self.fungi_time == FungiTimeSetting.random:
@@ -1591,12 +1625,17 @@ class Settings:
                 ItemRandoListSelected.anthillreward: (Types.Bean, Types.Bean, True),
                 ItemRandoListSelected.crateitem: (Types.CrateItem, Types.CrateItem, True),
                 ItemRandoListSelected.shopowners: (Types.Cranky, Types.Cranky, False),
+                ItemRandoListSelected.fungitime: (Types.FungiTime, Types.FungiTime, False),
                 ItemRandoListSelected.hint: (Types.Hint, Types.Hint, False),
                 ItemRandoListSelected.wrinkly: (Types.Hint, Types.Hint, True),
                 ItemRandoListSelected.boulderitem: (Types.BoulderItem, Types.BoulderItem, True),
+                ItemRandoListSelected.breakable: (Types.Breakable, Types.Breakable, True),
+                ItemRandoListSelected.balloon: (Types.Balloon, Types.Balloon, True),
                 ItemRandoListSelected.enemies: (Types.Enemies, Types.Enemies, True),
                 ItemRandoListSelected.dummyitem_enemies: (Types.Enemies, Types.Enemies, False),
                 ItemRandoListSelected.dummyitem_boulderitem: (Types.BoulderItem, Types.BoulderItem, False),
+                ItemRandoListSelected.dummyitem_breakable: (Types.Breakable, Types.Breakable, False),
+                ItemRandoListSelected.dummyitem_balloon: (Types.Balloon, Types.Balloon, False),
                 ItemRandoListSelected.dummyitem_crateitem: (Types.CrateItem, Types.CrateItem, False),
                 ItemRandoListSelected.trainingmoves: (Types.TrainingBarrel, Types.TrainingBarrel, False),
                 ItemRandoListSelected.trainingbarrels: (Types.TrainingBarrel, Types.TrainingBarrel, True),
@@ -1622,6 +1661,8 @@ class Settings:
                 ItemRandoListSelected.dummyitem_boulderitem,
                 ItemRandoListSelected.dummyitem_crateitem,
                 ItemRandoListSelected.dummyitem_halfmedal,
+                ItemRandoListSelected.dummyitem_breakable,
+                ItemRandoListSelected.dummyitem_balloon,
             ]
             dummy_location_types = [Types.HelmKey, Types.HelmMedal]
             self.item_search = [
@@ -1679,8 +1720,14 @@ class Settings:
                             self.climbing_status = ClimbingStatus.normal
                         else:
                             self.climbing_status = ClimbingStatus.shuffled
+                        if Items.Cannons in guaranteed_starting_moves:
+                            self.cannon_status = CannonStatus.normal
+                        else:
+                            self.cannon_status = CannonStatus.shuffled
                         if self.climbing_status != ClimbingStatus.normal:
                             selector_types.append(Types.Climbing)
+                        if self.cannon_status != CannonStatus.normal:
+                            selector_types.append(Types.Cannons)
                     elif selector_type == Types.Medal and IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
                         selector_types = [Types.Medal, Types.IslesMedal]
                     # Add items which are in the designated pools
@@ -1702,6 +1749,8 @@ class Settings:
                                     self.climbing_status = ClimbingStatus.shuffled
                                 if self.climbing_status != ClimbingStatus.normal:
                                     item_types.append(Types.Climbing)
+                                if self.cannon_status != CannonStatus.normal:
+                                    item_types.append(Types.Cannons)
                         elif item_type == Types.Medal and IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
                             item_types = [Types.Medal, Types.IslesMedal]
                         for x in selector_types:
@@ -2053,7 +2102,7 @@ class Settings:
         if self.level_randomization == LevelRandomization.vanilla:
             self.alter_switch_allocation = False
         if self.alter_switch_allocation:
-            slams = [SlamRequirement.green, SlamRequirement.blue, SlamRequirement.red]
+            slams = [SlamRequirement.no_slam, SlamRequirement.green, SlamRequirement.blue, SlamRequirement.red]
             if self.prog_slam_level_1 == SlamRequirement.random:
                 self.prog_slam_level_1 = self.random.choice(slams)
             if self.prog_slam_level_2 == SlamRequirement.random:
@@ -2384,10 +2433,7 @@ class Settings:
         # Force win_condition_spawns_ship based on win condition
         # Krool's Challenge always requires beating K. Rool
         if self.win_condition_item == WinConditionComplex.krools_challenge:
-            self.win_condition_spawns_ship = 1
-        # Kill the Rabbit cannot require beating K. Rool (would softlock)
-        elif self.win_condition_item == WinConditionComplex.kill_the_rabbit:
-            self.win_condition_spawns_ship = 0
+            self.win_condition_spawns_ship = True
 
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
         if self.win_condition_item == WinConditionComplex.req_fairy or self.crown_door_item == BarrierItems.Fairy or self.coin_door_item == BarrierItems.Fairy:
@@ -2544,6 +2590,21 @@ class Settings:
                 is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm) or location.type == Types.Shockwave
         return is_bad
 
+    def getBannedBalloonLocations(self) -> list[Locations]:
+        """Get a list of banned balloon locations based on settings."""
+        if self.cb_rando_enabled:
+            return []
+        return [
+            Locations.Balloon053,  # Lanky Crusher
+            Locations.Balloon054,  # DK Snake Road
+            Locations.Balloon057,  # DK Snake Road
+            Locations.Balloon081,  # DK 5DI
+            Locations.Balloon084,  # Tiny 5DC
+            Locations.Balloon089,  # Lanky Mauso
+            Locations.Balloon095,  # Lanky Dungeon
+            Locations.Balloon097,  # Lanky Dungeon
+        ]
+
     def finalize_world_settings(self, spoiler):
         """Finalize the world state after settings initialization."""
         # Starting Region Randomization
@@ -2587,6 +2648,8 @@ class Settings:
 
         if self.climbing_status == ClimbingStatus.shuffled:
             spoiler.LocationList[Locations.IslesClimbing].inaccessible = True
+        if self.cannon_status == CannonStatus.shuffled:
+            spoiler.LocationList[Locations.IslesCannons].inaccessible = True
 
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
@@ -2642,6 +2705,12 @@ class Settings:
             spoiler.LocationList[Locations.ShopOwner_Location02].inaccessible = True
         if Types.Snide in self.shuffled_location_types:
             spoiler.LocationList[Locations.ShopOwner_Location03].inaccessible = True
+        if Types.FungiTime in self.shuffled_location_types:
+            spoiler.LocationList[Locations.TimeLocationDay].inaccessible = True
+            spoiler.LocationList[Locations.TimeLocationNight].inaccessible = True
+        banned_blns = self.getBannedBalloonLocations()
+        for loc in banned_blns:
+            spoiler.LocationList[loc].inaccessible = True
 
         # Designate the Rock GB as a location for the starting kong
         spoiler.LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong
@@ -2655,10 +2724,13 @@ class Settings:
         self.valid_locations[Types.Kong] = self.kong_locations.copy()
         if self.shuffle_items and any(self.shuffled_location_types):
             # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) and Shop Owner Locations - those can only be Kongs and Shop Owners respectively
+            banned_single_locations = self.getBannedBalloonLocations()
             shuffledLocations = [
                 location
                 for location in spoiler.LocationList
-                if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
+                if spoiler.LocationList[location].type in self.shuffled_location_types
+                and spoiler.LocationList[location].type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime)
+                and location not in banned_single_locations
             ]
             shuffledLocationsShopOwner = [
                 location
@@ -2670,6 +2742,7 @@ class Settings:
                     Types.PreGivenMove,
                     Types.TrainingBarrel,
                     Types.Climbing,
+                    Types.Cannons,
                 )
             ]
             shuffledNonMoveLocations = [location for location in shuffledLocations if spoiler.LocationList[location].type != Types.PreGivenMove]
@@ -2692,6 +2765,8 @@ class Settings:
                     self.valid_locations[Types.TrainingBarrel] = locations_excluding_kong_shops.copy()
                 if Types.Climbing in self.shuffled_location_types:
                     self.valid_locations[Types.Climbing] = locations_excluding_kong_shops.copy()
+                if Types.Cannons in self.shuffled_location_types:
+                    self.valid_locations[Types.Cannons] = locations_excluding_kong_shops.copy()
                 self.valid_locations[Types.Shop][Kongs.any] = locations_excluding_kong_shops.copy()
                 # Kong-specific moves can go in any non-shared shop location
                 locations_excluding_shared_shops = [location for location in shuffledLocations if location not in SharedShopLocations]
@@ -2752,6 +2827,7 @@ class Settings:
                 Types.FillerCrown,
                 Types.FillerFairy,
                 Types.FillerPearl,
+                Types.FungiTime,
             )
             for item in regular_items:
                 if item in self.shuffled_location_types:
@@ -2771,7 +2847,9 @@ class Settings:
             for item in (Types.RainbowCoin, Types.FillerRainbowCoin):
                 if item in self.shuffled_location_types:
                     self.valid_locations[item] = [
-                        x for x in shuffledNonMoveLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing)
+                        x
+                        for x in shuffledNonMoveLocations
+                        if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing, Types.Cannons)
                     ]
             if Types.FakeItem in self.shuffled_location_types:
                 bad_fake_locations = (
@@ -2853,6 +2931,7 @@ class Settings:
                         Types.PreGivenMove,
                         Types.CrateItem,
                         Types.BoulderItem,
+                        Types.Breakable,
                         Types.Enemies,
                     )
                     and (spoiler.LocationList[x].type != Types.Key or spoiler.LocationList[x].level == Levels.HideoutHelm)
@@ -3132,6 +3211,7 @@ class Settings:
             self.item_check_counts[ItemRandoListSelected.medal_checks] = [0, 40]
         self.item_check_counts[ItemRandoListSelected.kong][0] = 5 - len(self.starting_kong_list)
         self.item_check_counts[ItemRandoListSelected.shopowners][0] = 0  # Reset it back to a default state every time
+        self.item_check_counts[ItemRandoListSelected.fungitime][0] = 0  # Reset it back to a default state every time
         if Types.Cranky in self.shuffled_location_types:
             self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
         if Types.Funky in self.shuffled_location_types:
@@ -3140,6 +3220,8 @@ class Settings:
             self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
         if Types.Snide in self.shuffled_location_types:
             self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
+        if Types.FungiTime in self.shuffled_location_types:
+            self.item_check_counts[ItemRandoListSelected.fungitime][0] += 2
         self.item_check_counts[ItemRandoListSelected.medal][0] = self.total_medals
         self.item_check_counts[ItemRandoListSelected.banana][0] = self.total_gbs - 40  # Blueprint GBs are their own category for item pool calculations
         self.item_check_counts[ItemRandoListSelected.fairy][0] = self.total_fairies
@@ -3181,6 +3263,9 @@ class Settings:
                 return False
         if Types.Snide in self.shuffled_location_types:
             if len(self.valid_locations[Types.Snide]) <= 0:
+                return False
+        if Types.FungiTime in self.shuffled_location_types:
+            if len(self.valid_locations[Types.FungiTime]) <= 0:
                 return False
 
         def check_distribution(liquids, buckets):
@@ -3351,6 +3436,14 @@ class Settings:
             str: Json string of the dict.
         """
         return json.dumps(self.__dict__)
+
+    def to_proto_string(self):
+        """Export settings as a protobuf-encoded base64 string.
+
+        Returns:
+            str: Base64-encoded protobuf string representing the settings.
+        """
+        return serialize_settings_to_base64(self)
 
     def __setattr__(self, name, value):
         """Set an attributes value but only after verifying our hash."""

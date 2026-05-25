@@ -23,6 +23,7 @@ VanillaPrices = {
     Items.Barrels: 0,
     Items.Oranges: 0,
     Items.Climbing: 0,
+    Items.Cannons: 0,
     Items.Camera: 0,
     Items.Shockwave: 0,
     Items.CameraAndShockwave: 0,

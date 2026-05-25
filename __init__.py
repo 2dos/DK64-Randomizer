@@ -10,9 +10,7 @@ import zipfile
 import codecs
 from io import BytesIO
 import pkgutil
-import shutil
 import sys
-import tempfile
 from typing import Any, TypedDict
 
 baseclasses_loaded = False
@@ -25,99 +23,6 @@ try:
 except ImportError:
     pass
 if baseclasses_loaded:
-
-    def display_error_box(title: str, text: str) -> bool | None:
-        """Display an error message box."""
-        from tkinter import Tk, messagebox
-
-        root = Tk()
-        root.withdraw()
-        ret = messagebox.showerror(title, text)
-        root.update()
-
-    def copy_dependencies(zip_path, file):
-        """Copy a ZIP file from the package to a temporary directory, extracts its contents.
-
-        Ensures the temporary directory exists.
-        Args:
-            zip_path (str): The relative path to the ZIP file within the package.
-        Behavior:
-            - Creates a temporary directory if it does not exist.
-            - Reads the ZIP file from the package using `pkgutil.get_data`.
-            - Writes the ZIP file to the temporary directory if it does not already exist.
-            - Extracts the contents of the ZIP file into the temporary directory.
-        Prints:
-            - A message if the ZIP file could not be read.
-            - A message when the ZIP file is successfully copied.
-            - A message when the ZIP file is successfully extracted.
-        """
-        # Create a temporary directory
-        temp_dir = tempfile.mkdtemp()
-
-        zip_dest = os.path.join(temp_dir, file)
-        try:
-            # Load the ZIP file from the package
-            zip_data = pkgutil.get_data(__name__, zip_path)
-            # Check if the zip already exists in the destination
-            if not os.path.exists(zip_dest):
-                if zip_data is None:
-                    print(f"Failed to read {zip_path}")
-                else:
-                    # Write the ZIP file to the destination
-                    with open(zip_dest, "wb") as f:
-                        f.write(zip_data)
-                    print(f"Copied {zip_path} to {zip_dest}")
-
-                    # Extract the ZIP file
-                    with zipfile.ZipFile(zip_dest, "r") as zip_ref:
-                        zip_ref.extractall(temp_dir)
-                    print(f"Extracted {zip_dest} into {temp_dir}")
-
-        except PermissionError:
-            display_error_box("Permission Error", "Unable to install Dependencies to AP, please try to install AP as an admin.")
-            raise PermissionError("Permission Error: Unable to install Dependencies to AP, please try to install AP as an admin.")
-
-        # Add the temporary directory to sys.path
-        if temp_dir not in sys.path:
-            sys.path.insert(0, temp_dir)
-
-    platform_type = sys.platform
-    python_version = f"{sys.version_info.major}{sys.version_info.minor}"
-    baseclasses_path = os.path.dirname(os.path.dirname(BaseClasses.__file__))
-    if not baseclasses_path.endswith("lib"):
-        baseclasses_path = os.path.join(baseclasses_path, "lib")
-    # Remove ANY PIL folders from the baseclasses_path
-    # Or Pyxdelta or pillow folders
-    try:
-        for folder in os.listdir(baseclasses_path):
-            if folder.startswith("PIL") or folder.startswith("pyxdelta") or folder.startswith("pillow"):
-                folder_path = os.path.join(baseclasses_path, folder)
-                if os.path.isdir(folder_path):
-                    shutil.rmtree(folder_path)
-                elif os.path.isfile(folder_path):
-                    os.remove(folder_path)
-            # Also if its windows.zip or linux.zip, remove it
-            if folder.startswith("windows.zip") or folder.startswith("linux.zip"):
-                os.remove(os.path.join(baseclasses_path, folder))
-    except Exception as e:
-        pass
-
-    if platform_type == "win32":
-        zip_path = "vendor/windows.zip"  # Path inside the package
-        copy_dependencies(zip_path, "windows.zip")
-    elif platform_type == "linux":
-        # Try version-specific zip first, fall back to generic
-        version_zip = f"vendor/linux_{python_version}.zip"
-        generic_zip = "vendor/linux.zip"
-        try:
-            copy_dependencies(version_zip, f"linux_{python_version}.zip")
-        except (FileNotFoundError, KeyError):
-            try:
-                copy_dependencies(generic_zip, "linux.zip")
-            except (FileNotFoundError, KeyError):
-                raise Exception(f"Could not find vendor dependencies for Linux Python {python_version}")
-    else:
-        raise Exception(f"Unsupported platform: {platform_type}")
 
     # Add paths for APWorld context - use __file__ to get the correct base path
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -133,13 +38,14 @@ if baseclasses_loaded:
     from entrance_rando import randomize_entrances, EntranceRandomizationError, disconnect_entrance_for_randomization
     import settings
     import logging
-
+    import enum
     import randomizer.ItemPool as DK64RItemPool
 
     from randomizer.Enums.Items import Items as DK64RItems
     from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity, pp_wincon
     from archipelago.Items import DK64Item, full_item_table, setup_items
-    from archipelago.Options import DK64Options, Goal, SwitchSanity, SelectStartingKong, dk64_option_groups, LoadingZoneRando
+    from archipelago.Options import DK64Options, Goal, SwitchsanityOptions, SelectStartingKong, dk64_option_groups, LoadingZoneRando
+    from archipelago.Prices import generate_prices
     from archipelago.Regions import all_locations, create_regions, connect_regions, connect_exit_level_and_deathwarp, connect_glitch_transitions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
@@ -149,12 +55,11 @@ if baseclasses_loaded:
     from randomizer.Spoiler import Spoiler
     from randomizer.Settings import Settings
     from randomizer.ShuffleWarps import LinkWarps
-    from randomizer.Patching.ApplyRandomizer import patching_response
     from version import version
-    from randomizer.Patching.EnemyRando import randomize_enemies_0
     from randomizer.Fill import ShuffleItems, Generate_Spoiler, IdentifyMajorItems
     from randomizer.CompileHints import compileMicrohints
     from archipelago.Hints import CompileArchipelagoHints
+    from randomizer.ProtoSerializer import fill_result_to_proto
     from randomizer.Enums.Types import Types, BarrierItems
     from randomizer.Enums.Enemies import Enemies
     from randomizer.Enums.Kongs import Kongs
@@ -162,6 +67,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Maps import Maps
     from randomizer.Enums.Minigames import Minigames
     from randomizer.Enums.Locations import Locations as DK64RLocations
+    from randomizer.Enums.Regions import Regions
     from randomizer.Enums.Settings import (
         Enemies,
         GlitchesSelected,
@@ -184,10 +90,8 @@ if baseclasses_loaded:
     from worlds.LauncherComponents import Component, SuffixIdentifier, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
     from archipelago.FillSettings import fillsettings
+    from archipelago import Tracker
     from archipelago.Prices import generate_prices
-    from Utils import open_filename
-    import shutil
-    import zlib
 
     boss_map_names = {
         Maps.JapesBoss: "Army Dillo 1",
@@ -203,14 +107,6 @@ if baseclasses_loaded:
         Maps.KroolTinyPhase: "Tiny Phase",
         Maps.KroolChunkyPhase: "Chunky Phase",
     }
-
-    def crc32_of_file(file_path):
-        """Compute CRC32 checksum of a file."""
-        crc_value = 0
-        with open(file_path, "rb") as f:
-            for chunk in iter(lambda: f.read(4096), b""):
-                crc_value = zlib.crc32(chunk, crc_value)
-        return f"{crc_value & 0xFFFFFFFF:08X}"  # Convert to 8-character hex
 
     def launch_client():
         """Launch the DK64 client."""
@@ -284,8 +180,19 @@ if baseclasses_loaded:
             This allows hosts to disable the minimal logic option if they don't want it on their server.
             """
 
+        class UTPackPath(settings.UserFilePath):
+            """Path to external Universal Tracker pack .zip file.
+
+            Download the DK64 tracker pack from https://github.com/UmedMuzl/dk64pt/releases
+            and point this setting to the downloaded .zip file to enable map tracking in Universal Tracker.
+            Leave empty to disable map tracking.
+            """
+
+            description = "Universal Tracker Pack Path (Optional)"
+
         release_branch: ReleaseVersion = ReleaseVersion("master")
         enable_minimal_logic_dk64: EnableMinimalLogic | bool = False
+        ut_pack_path: typing.Union[UTPackPath, str] = UTPackPath("")
 
     class DK64Web(WebWorld):
         """WebWorld for DK64."""
@@ -326,6 +233,7 @@ if baseclasses_loaded:
 
         item_name_to_id = {name: data.code for name, data in full_item_table.items()}
         location_name_to_id = all_locations
+        tracker_world: typing.ClassVar = Tracker.tracker_world
 
         def blueprint_item_group() -> str:
             """Item group for blueprints."""
@@ -356,7 +264,7 @@ if baseclasses_loaded:
         def shared_item_group() -> str:
             """Item group for Training Moves."""
             res = set()
-            training_items = ["Vines", "Diving", "Oranges", "Barrels", "Climbing", "progression Slam", "Fairy Camera", "Shockwave"]
+            training_items = ["Vines", "Diving", "Oranges", "Barrels", "Climbing", "Cannons", "progression Slam", "Fairy Camera", "Shockwave"]
             for item in training_items:
                 if item in full_item_table:
                     res.add(item)
@@ -641,12 +549,6 @@ if baseclasses_loaded:
             "Bosses": boss_locations(),
         }
 
-        # with open("donklocations.txt", "w") as f:
-        #     print(location_name_to_id, file=f)
-
-        # with open("donkitems.txt", "w") as f:
-        #     print(item_name_to_id, file=f)
-
         web = DK64Web()
 
         def __init__(self, multiworld: MultiWorld, player: int):
@@ -661,32 +563,13 @@ if baseclasses_loaded:
         @classmethod
         def stage_assert_generate(cls, multiworld: MultiWorld):
             """Assert the stage and generate the world."""
-            # Check if dk64.z64 exists, if it doesn't prompt the user to provide it
-            # ANd then we will copy it to the root directory
-            crc_values = ["D44B4FC6"]
-            rom_file = "dk64.z64"
-            if not os.path.exists(rom_file):
-                print("Please provide a DK64 ROM file.")
-                file = open_filename("Select DK64 ROM", (("N64 ROM", (".z64", ".n64")),))
-                if not file:
-                    raise FileNotFoundError("No ROM file selected.")
-                crc = crc32_of_file(file)
-                print(f"CRC32: {crc}")
-                if crc not in crc_values:
-                    print("Invalid DK64 ROM file, please make sure your ROM is big endian.")
-                    raise FileNotFoundError("Invalid DK64 ROM file, please make sure your ROM is a vanilla DK64 file in big endian.")
-                # Copy the file to the root directory
-                try:
-                    shutil.copy(file, rom_file)
-                except Exception as e:
-                    raise FileNotFoundError(f"Failed to copy ROM file, this may be a permissions issue: {e}")
-            else:
-                crc = crc32_of_file(rom_file)
-                print(f"CRC32: {crc}")
-                if crc not in crc_values:
-                    print("Invalid DK64 ROM file, please make sure your ROM is big endian.")
-                    raise FileNotFoundError("Invalid DK64 ROM file, please make sure your ROM is a vanilla DK64 file in big endian.")
             check_version()
+
+        def _get_slot_data(self):
+            """Get the slot data."""
+            return {
+                # "death_link": self.options.death_link.value,
+            }
 
         def generate_early(self):
             """Generate the world."""
@@ -771,14 +654,17 @@ if baseclasses_loaded:
                             current_logic = self.seed_groups[group]["logic_type"]
                             new_logic = int(world.options.logic_type.value)
 
-                            # If current is glitched (2) and new is anything else, use new (more restrictive)
-                            if current_logic == 2 and new_logic != 2:
-                                self.seed_groups[group]["logic_type"] = new_logic
-                            # If current is advanced_glitchless (0) and new is glitchless (1), use glitchless
-                            elif current_logic == 0 and new_logic == 1:
-                                self.seed_groups[group]["logic_type"] = 1
-                            # If current is glitchless (1), keep it (most restrictive)
-                            # If new is glitched (2), keep current (more restrictive)
+                            # Determine most restrictive logic type
+                            match (current_logic, new_logic):
+                                case (2, n) if n != 2:
+                                    # Current is glitched and new is not - use new (more restrictive)
+                                    self.seed_groups[group]["logic_type"] = new_logic
+                                case (0, 1):
+                                    # Current is advanced_glitchless and new is glitchless - use glitchless
+                                    self.seed_groups[group]["logic_type"] = 1
+                                case _:
+                                    # Current is glitchless (keep it) or new is glitched (keep current)
+                                    pass
 
                             # tricks_selected: intersection of all players' tricks (only tricks ALL players have)
                             self.seed_groups[group]["tricks_selected"] = self.seed_groups[group]["tricks_selected"].intersection(set(world.options.tricks_selected.value))
@@ -827,10 +713,14 @@ if baseclasses_loaded:
             self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
             self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
 
+            # For UT regeneration, restore DK portal locations
+            if hasattr(settings, "ut_dk_portal_locations"):
+                self.spoiler.human_entry_doors = settings.ut_dk_portal_locations
+
             Generate_Spoiler(self.spoiler)
 
             # Store/retrieve blocker values for seed group synchronization
-            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+            if world.options.loading_zone_rando.value != LoadingZoneRando.option_no:
                 if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
                     group = self.options.loading_zone_rando.value
                     if group in self.seed_groups:
@@ -868,7 +758,6 @@ if baseclasses_loaded:
 
             # Generate custom shop prices for Archipelago
             generate_prices(self.spoiler, self.options, self.random)
-
             # Handle Loading Zones for Level Order shuffle. LZR shuffling happens in connect_entrances()
             if self.spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
                 if self.spoiler.settings.level_randomization != LevelRandomization.loadingzone:
@@ -882,6 +771,8 @@ if baseclasses_loaded:
                 if hasattr(self.multiworld, "re_gen_passthrough"):
                     if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
                         passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
+
+                        # Restore enemy, minigame, shop, and portal data
                         if passthrough["EnemyData"]:
                             for location, data in passthrough["EnemyData"].items():
                                 self.spoiler.enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], 0, [], False)
@@ -902,6 +793,58 @@ if baseclasses_loaded:
                                 except (KeyError, AttributeError):
                                     print(f"Warning: Could not restore price for location {location_name}")
                             self.spoiler.settings.prices = restored_prices
+                        if passthrough.get("DKPortalLocations") and passthrough["DKPortalLocations"]:
+                            # Restore DK Portal locations
+                            self.spoiler.human_entry_doors = passthrough["DKPortalLocations"]
+
+                            # Update entry handler region exits to point to the restored DK Portal locations
+                            # This matches the behavior in DoorData.assignDKPortal()
+                            from randomizer.Lists.DoorLocations import door_locations, LEVEL_ENTRY_HANDLER_REGIONS
+                            from randomizer.LogicClasses import TransitionFront
+
+                            level_name_to_enum = {
+                                "Jungle Japes": Levels.JungleJapes,
+                                "Angry Aztec": Levels.AngryAztec,
+                                "Frantic Factory": Levels.FranticFactory,
+                                "Gloomy Galleon": Levels.GloomyGalleon,
+                                "Fungi Forest": Levels.FungiForest,
+                                "Crystal Caves": Levels.CrystalCaves,
+                                "Creepy Castle": Levels.CreepyCastle,
+                            }
+
+                            for level_name, door_name in self.spoiler.human_entry_doors.items():
+                                if door_name != "Vanilla":
+                                    level_enum = level_name_to_enum.get(level_name)
+                                    if level_enum is not None:
+                                        # Find the door with this name in the door_locations list
+                                        for door_data in door_locations[level_enum]:
+                                            if door_data.name == door_name:
+                                                # Update the entry handler region's exit to point to this door's logic region
+                                                placement_region = LEVEL_ENTRY_HANDLER_REGIONS[level_enum]
+                                                self.spoiler.RegionList[placement_region].exits[1] = TransitionFront(door_data.logicregion, lambda _: True)
+                                                break
+
+                        # Restore entrance randomization connections for yamlless generation
+                        if passthrough.get("EntranceRando") and passthrough["EntranceRando"]:
+                            # Store entrance connections for later restoration
+                            # These will be applied in connect_entrances when we detect yamlless generation
+                            self.saved_entrance_connections = passthrough["EntranceRando"]
+
+                        # Restore starting region for yamlless generation
+                        if passthrough.get("StartingRegion") and passthrough["StartingRegion"]:
+                            starting_region_data = passthrough["StartingRegion"]
+                            # Reconstruct the starting_region dictionary
+                            self.spoiler.settings.starting_region = {
+                                "region": Regions[starting_region_data["region"]],
+                                "map": Maps[starting_region_data["map"]],
+                                "exit": starting_region_data["exit"],
+                                "region_name": starting_region_data["region_name"],
+                                "exit_name": starting_region_data["exit_name"],
+                            }
+                            # Update GameStart region exits to point to the restored starting region
+                            # This matches the behavior in Settings.RandomizeStartingLocation()
+                            for x in range(2):
+                                self.spoiler.RegionList[Regions.GameStart].exits[x + 1].dest = self.spoiler.settings.starting_region["region"]
 
             # Handle hint preparation by initiating some variables
             self.hint_data = {
@@ -963,7 +906,7 @@ if baseclasses_loaded:
         def connect_entrances(self) -> None:
             """Randomize and connect entrances if LZR is on."""
             LinkWarps(self.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
-            connect_regions(self, self.spoiler.settings)
+            connect_regions(self, self.spoiler.settings, self.spoiler)
 
             if (
                 self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]
@@ -1073,6 +1016,12 @@ if baseclasses_loaded:
         def generate_output(self, output_directory: str):
             """Generate the output."""
             try:
+                # # Write location and item mappings to files for debugging
+                # with open(os.path.join(output_directory, f"donklocations_{self.player}.txt"), "w") as f:
+                #     print(self.location_name_to_id, file=f)
+                # with open(os.path.join(output_directory, f"donkitems_{self.player}.txt"), "w") as f:
+                #     print(self.item_name_to_id, file=f)
+
                 spoiler = self.spoiler
                 spoiler.settings.archipelago = True
                 spoiler.settings.random = self.random
@@ -1084,7 +1033,7 @@ if baseclasses_loaded:
                 for item in self.multiworld.precollected_items[self.player]:
                     dk64_item = logic_item_name_to_id[item.name]
                     # Only moves can be pushed to the pregiven_items list
-                    if DK64RItem.ItemList[dk64_item].type in [Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
+                    if DK64RItem.ItemList[dk64_item].type in [Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cannons, Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
                         spoiler.pregiven_items.append(dk64_item)
                 local_trap_count = 0
                 ap_item_is_major_item = False
@@ -1190,16 +1139,19 @@ if baseclasses_loaded:
                         shopkeepers = [DK64RItems.Candy, DK64RItems.Cranky, DK64RItems.Funky, DK64RItems.Snide]
                     else:
                         shopkeepers = []
-                    # Define helm_prog_items only when microhints is "some" or "all"
-                    if self.options.microhints.value in [1, 2]:  # some or all
-                        helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
-                    else:
-                        helm_prog_items = []
-                    # Define instruments only when microhints is "all"
-                    if self.options.microhints.value == 2:  # all
-                        instruments = [DK64RItems.Bongos, DK64RItems.Guitar, DK64RItems.Trombone, DK64RItems.Saxophone, DK64RItems.Triangle]
-                    else:
-                        instruments = []
+
+                    # Define items based on microhints level
+                    match self.options.microhints.value:
+                        case 2:  # all
+                            helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
+                            instruments = [DK64RItems.Bongos, DK64RItems.Guitar, DK64RItems.Trombone, DK64RItems.Saxophone, DK64RItems.Triangle]
+                        case 1:  # some
+                            helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
+                            instruments = []
+                        case _:
+                            helm_prog_items = []
+                            instruments = []
+
                     hinted_slams = []
                     if DK64RItems.ProgressiveSlam in self.foreignMicroHints.keys() and DK64RItem.ItemList[DK64RItems.ProgressiveSlam].name in self.spoiler.microhints.keys():
                         # Break down the slam hint to retrieve raw data
@@ -1232,8 +1184,7 @@ if baseclasses_loaded:
                 if ap_item_is_major_item and ap_major_item_type is not None:
                     spoiler.majorItems.append(ap_major_item_type)
 
-                # Generate patch with cumulative prices (what players see in-game)
-                patch_data, _ = patching_response(spoiler)
+                patch_data = fill_result_to_proto(spoiler).SerializeToString()
                 lanky = self.update_seed_results(patch_data, spoiler, self.player)
 
                 output_data = {
@@ -1413,17 +1364,28 @@ if baseclasses_loaded:
             spoiler_log["Generated Time"] = timestamp
             spoiler_log["Settings"] = {}
             spoiler_log["Cosmetics"] = {}
+
+            def _settings_default(obj):
+                if isinstance(obj, enum.Enum):
+                    return obj.name
+                if isinstance(obj, (set, frozenset)):
+                    return list(obj)
+                raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
+
+            current_settings = {key: getattr(spoiler.settings, key, value) for key, value in spoiler.settings.form_data.items()}
+            settings_json = json.dumps(current_settings, default=_settings_default)
+
             # Zip all the data into a single file.
             zip_data = BytesIO()
             with zipfile.ZipFile(zip_data, "w") as zip_file:
-                # Write each variable to the zip file
-                zip_file.writestr("patch", patch)
+                zip_file.writestr("fill_result", patch)
                 zip_file.writestr("hash", str(hash))
                 zip_file.writestr("spoiler_log", str(json.dumps(spoiler_log)))
                 zip_file.writestr("generated_time", str(timestamp))
                 zip_file.writestr("version", version)
                 zip_file.writestr("seed_number", self.multiworld.get_out_file_name_base(self.player))
                 zip_file.writestr("seed_id", self.multiworld.get_out_file_name_base(self.player))
+                zip_file.writestr("settings", settings_json)
             zip_data.seek(0)
             # Convert the zip to a string of base64 data
             zip_conv = codecs.encode(zip_data.getvalue(), "base64").decode()
@@ -1494,7 +1456,6 @@ if baseclasses_loaded:
                 "Goal": self.options.goal.value,
                 "win_condition_item": self.spoiler.settings.win_condition_item.value,
                 "helm_hurry": self.spoiler.settings.helm_hurry,
-                "ClimbingShuffle": self.options.climbing_shuffle.value,
                 "PlayerNum": self.player,
                 "death_link": self.options.death_link.value,
                 "ring_link": self.options.ring_link.value,
@@ -1556,21 +1517,28 @@ if baseclasses_loaded:
                     else ""
                 ),
                 "Junk": self.junked_locations,
-                "HintsInPool": self.options.hints_in_item_pool.value,
-                "BouldersInPool": self.options.boulders_in_pool.value,
-                "Dropsanity": self.options.dropsanity.value,
+                "ItemPool": sorted(self.options.item_pool.value),
+                "StartingMovePool1": list(self.options.starting_move_pool_1.value),
+                "StartingMovePool1Count": self.options.starting_move_pool_1_count.value,
+                "StartingMovePool2": list(self.options.starting_move_pool_2.value),
+                "StartingMovePool2Count": self.options.starting_move_pool_2_count.value,
+                "StartingMovePool3": list(self.options.starting_move_pool_3.value),
+                "StartingMovePool3Count": self.options.starting_move_pool_3_count.value,
+                "StartingMovePool4": list(self.options.starting_move_pool_4.value),
+                "StartingMovePool4Count": self.options.starting_move_pool_4_count.value,
+                "StartingMovePool5": list(self.options.starting_move_pool_5.value),
+                "StartingMovePool5Count": self.options.starting_move_pool_5_count.value,
                 "Version": self.ap_version,
+                "seed_hash": list(self.spoiler.settings.seed_hash),
                 "EnemyData": (
                     {
                         location_id.name: {"map": enemy_loc.map.name, "enemy": enemy_loc.enemy.name}
                         for location_id, enemy_loc in self.spoiler.enemy_location_list.items()
                         if EnemyMetaData[enemy_loc.enemy].e_type == EnemySubtype.GroundBeefy
                     }
-                    if self.options.dropsanity.value
+                    if "dropsanity" in self.options.item_pool
                     else {}
                 ),
-                "Shopkeepers": self.options.shopowners_in_pool.value,
-                "HalfMedals": self.options.half_medals_in_pool.value,
                 "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
                 "Autocomplete": self.options.auto_complete_bonus_barrels.value,
                 "HelmBarrelCount": self.options.helm_room_bonus_count.value,
@@ -1595,7 +1563,33 @@ if baseclasses_loaded:
                     if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and self.spoiler.shuffled_exit_data
                     else {}
                 ),
+                "KongModels": {
+                    "DK": self.spoiler.settings.kong_model_dk.name,
+                    "Diddy": self.spoiler.settings.kong_model_diddy.name,
+                    "Lanky": self.spoiler.settings.kong_model_lanky.name,
+                    "Tiny": self.spoiler.settings.kong_model_tiny.name,
+                    "Chunky": self.spoiler.settings.kong_model_chunky.name,
+                },
+                "StartingRegion": (
+                    {
+                        "region": (
+                            self.spoiler.settings.starting_region["region"].name
+                            if hasattr(self.spoiler.settings.starting_region["region"], "name")
+                            else str(self.spoiler.settings.starting_region["region"])
+                        ),
+                        "map": (
+                            self.spoiler.settings.starting_region["map"].name if hasattr(self.spoiler.settings.starting_region["map"], "name") else str(self.spoiler.settings.starting_region["map"])
+                        ),
+                        "exit": self.spoiler.settings.starting_region["exit"],
+                        "region_name": self.spoiler.settings.starting_region["region_name"],
+                        "exit_name": self.spoiler.settings.starting_region["exit_name"],
+                    }
+                    if hasattr(self.spoiler.settings, "starting_region") and self.spoiler.settings.starting_region
+                    else {}
+                ),
+                "DKPortalLocations": (self.spoiler.human_entry_doors if hasattr(self.spoiler, "human_entry_doors") and self.spoiler.human_entry_doors else {}),
             }
+
             return slot_data
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
@@ -1614,6 +1608,16 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("Starting Kongs: " + ", ".join([kong.name for kong in self.spoiler.settings.starting_kong_list]))
             spoiler_handle.write("\n")
+            if hasattr(self.spoiler.settings, "starting_region") and self.spoiler.settings.starting_region:
+                spoiler_handle.write(f"Starting Region: {self.spoiler.settings.starting_region['region_name']} ({self.spoiler.settings.starting_region['exit_name']})")
+                spoiler_handle.write("\n")
+            if hasattr(self.spoiler, "human_entry_doors") and self.spoiler.human_entry_doors:
+                spoiler_handle.write("DK Portal Locations:")
+                spoiler_handle.write("\n")
+                for level, location in self.spoiler.human_entry_doors.items():
+                    if location != "Vanilla":
+                        spoiler_handle.write(f"  {level}: {location}")
+                        spoiler_handle.write("\n")
             spoiler_handle.write("Helm Order: " + ", ".join([Kongs(room).name for room in self.spoiler.settings.helm_order]))
             spoiler_handle.write("\n")
             spoiler_handle.write("K. Rool Order: " + ", ".join([phase.name for phase in self.spoiler.settings.krool_order]))
@@ -1862,8 +1866,6 @@ if baseclasses_loaded:
             """Parse slot data for any logical bits that need to match the real generation. Used by Universal Tracker."""
             # Parse the string data
             version = slot_data["Version"]
-            if version != self.ap_version:
-                print(f"Version mismatch: {version} != {self.ap_version}. You may experience unexpected behavior.")
 
             level_order = slot_data["LevelOrder"].split(", ")
             starting_kongs = slot_data["StartingKongs"].split(", ")
@@ -1890,20 +1892,15 @@ if baseclasses_loaded:
 
             if self.version_check(version, "1.1.0"):
                 tricks_selected = slot_data.get("TricksSelected", []).split(", ")
-                boulders_in_pool = slot_data.get("BouldersInPool", False)
-                dropsanity = slot_data.get("Dropsanity", False)
                 enemy_data = slot_data.get("EnemyData", {})
-                shopkeepers = slot_data.get("Shopkeepers", False)
             else:
                 raise ValueError(f"This world is generated with an old version of DK64 Randomizer. Please downgrade to the correct version: {version}.")
 
             # Added in half-medals/progressive medal reqs update
             if self.version_check(version, "1.1.11"):
                 medal_cb_requirement_level = list(map(lambda lvl_and_value: lvl_and_value[lvl_and_value.find(":") + 2 :], slot_data["MedalCBRequirementLevel"].split(", ")))
-                half_medals = slot_data["HalfMedals"]
             else:
                 medal_cb_requirement_level = {}
-                half_medals = False
 
             # Added in the bonus barrels update
             if self.version_check(version, "1.1.13"):
@@ -1942,6 +1939,28 @@ if baseclasses_loaded:
             # Added entrance randomization data
             entrance_rando = slot_data.get("EntranceRando", [])
 
+            # Added Krusha kong models
+            if self.version_check(version, "2.0.0"):
+                kong_models = slot_data.get("KongModels", {})
+            else:
+                kong_models = {}
+
+            # Added starting region and DK portal locations
+            starting_region = slot_data.get("StartingRegion", {})
+            dk_portal_locations = slot_data.get("DKPortalLocations", {})
+
+            # Item pool list (replaces individual HintsInPool/BouldersInPool/Dropsanity/Shopkeepers/HalfMedals flags)
+            item_pool = slot_data.get("ItemPool", [])
+
+            # Starting move pool selectors
+            starting_move_pools = [
+                {
+                    "items": slot_data.get(f"StartingMovePool{i}", []),
+                    "count": slot_data.get(f"StartingMovePool{i}Count", 0),
+                }
+                for i in range(1, 6)
+            ]
+
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
             relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
@@ -1974,11 +1993,12 @@ if baseclasses_loaded:
             relevant_data["JunkedLocations"] = junk
             relevant_data["BLockerEntryItems"] = [BarrierItems[item] for item in blocker_item_type]
             relevant_data["BLockerEntryCount"] = blocker_item_quantity
-            relevant_data["HintsInPool"] = slot_data["HintsInPool"]
-            relevant_data["BouldersInPool"] = boulders_in_pool
-            relevant_data["Dropsanity"] = dropsanity
+            relevant_data["ItemPool"] = item_pool
+            relevant_data["HintsInPool"] = "hints" in item_pool
+            relevant_data["BouldersInPool"] = "boulders" in item_pool
+            relevant_data["Dropsanity"] = "dropsanity" in item_pool
             relevant_data["EnemyData"] = enemy_data
-            relevant_data["Shopkeepers"] = shopkeepers
+            relevant_data["Shopkeepers"] = "shopkeepers" in item_pool
             relevant_data["MinigameData"] = minigame_data
             relevant_data["Autocomplete"] = autocomplete
             relevant_data["HelmBarrelCount"] = helm_barrel_count
@@ -1986,9 +2006,13 @@ if baseclasses_loaded:
             relevant_data["CrownDoorItemCount"] = crown_door_item_count
             relevant_data["CoinDoorItem"] = coin_door_item
             relevant_data["CoinDoorItemCount"] = coin_door_item_count
-            relevant_data["HalfMedals"] = half_medals
+            relevant_data["HalfMedals"] = "half_medals" in item_pool
             relevant_data["SmallerShopsData"] = smaller_shops_data
             relevant_data["ShopPrices"] = shop_prices
             relevant_data["EntranceRando"] = entrance_rando
             relevant_data["GalleonWater"] = galleon_water
+            relevant_data["KongModels"] = kong_models
+            relevant_data["StartingRegion"] = starting_region
+            relevant_data["DKPortalLocations"] = dk_portal_locations
+            relevant_data["StartingMovePools"] = starting_move_pools
             return relevant_data

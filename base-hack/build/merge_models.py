@@ -3,6 +3,20 @@
 from BuildLib import main_pointer_table_offset, intf_to_float, float_to_hex
 from BuildEnums import TableNames
 import zlib
+import math
+
+
+def rotate(x, y, angle):
+    """Rotate an xy point around (0, 0) through an angle."""
+    theta = math.radians(-angle)
+
+    cos_t = math.cos(theta)
+    sin_t = math.sin(theta)
+
+    x_new = x * cos_t - y * sin_t
+    y_new = x * sin_t + y * cos_t
+
+    return x_new, y_new
 
 
 def mergeModel(
@@ -15,6 +29,8 @@ def mergeModel(
     t_to_a_pose: bool = False,
     left_arm_bones: list = [],
     right_arm_bones: list = [],
+    rerigged_bones: dict = {},
+    manual_rerig_inclusions: list = [],
 ):
     """Merge two models."""
     with open("rom/dk64.z64", "rb") as rom:
@@ -108,10 +124,11 @@ def mergeModel(
             original_pointer += col_size_increase + bone_size_increase
             fh.seek(0x10)
             fh.write(original_pointer.to_bytes(4, "big"))
+            fh.seek(0x20)
+            bone_count = int.from_bytes(fh.read(1), "big")
             if t_to_a_pose:
                 # Discount shoulder bones
                 arms = left_arm_bones[1:] + right_arm_bones[1:]
-                print(arms)
                 fh.seek(0x0)
                 head = int.from_bytes(fh.read(4), "big")
                 fh.seek(0x8)
@@ -126,17 +143,13 @@ def mergeModel(
                         dx = intf_to_float(int.from_bytes(fh.read(4), "big"))
                         dy = intf_to_float(int.from_bytes(fh.read(4), "big"))
                         if connecting_bone in left_arm_bones:
-                            new_dy = dx
-                            new_dx = -dy
+                            new_dx, new_dy = rotate(dx, dy, -70)
                         else:
-                            new_dy = -dx
-                            new_dx = dy
-                        # print(f"{connecting_bone}: {dx}->{new_dx} | {dy}->{new_dy}")
+                            new_dx, new_dy = rotate(dx, dy, 70)
                         fh.seek(collision_head + (x * 0x10) + 4)
                         fh.write(int(float_to_hex(new_dx), 16).to_bytes(4, "big"))
                         fh.write(int(float_to_hex(new_dy), 16).to_bytes(4, "big"))
                 vert_rotation = left_arm_bones[:] + right_arm_bones[:]
-                # vert_rotation = [left_arm_bones[0], right_arm_bones[0]]
                 fh.seek(0x4)
                 dl_end = (int.from_bytes(fh.read(4), "big") - head) + 0x28
                 fh.seek(dl_end)
@@ -149,7 +162,10 @@ def mergeModel(
                 translated_verts = []
                 translated_verts_opp = []
                 untouched_verts = []
-                touched_verts = []
+                ignored_verts = []
+                ignored_rerigged_verts = {}
+                rerigged_verts = {}
+                rerigged_verts_flat = []
                 vert_size = int((dl_start - 0x28) / 0x10)
                 for x in range(vert_size):
                     untouched_verts.append(x * 0x10)
@@ -159,10 +175,13 @@ def mergeModel(
                     if command == 0xDA:
                         fh.seek(dl_start + (8 * x) + 6)
                         bone = int(int.from_bytes(fh.read(2), "big") / 0x40)
+                        for target_bone, joined_bones in rerigged_bones.items():
+                            if bone in joined_bones:
+                                fh.seek(dl_start + (8 * x) + 6)
+                                val = target_bone * 0x40
+                                fh.write(val.to_bytes(2, "big"))
                         in_bone = bone in vert_rotation
                         focused_bone = bone
-                        # if in_bone:
-                        #     print(f"Bone {bone} ({hex(dl_start + (8 * x))})")
                     elif command == 1:
                         fh.seek(dl_start + (8 * x) + 1)
                         load_count = int.from_bytes(fh.read(2), "big") >> 4
@@ -172,84 +191,132 @@ def mergeModel(
                         vert_buffer_start = (delay >> 1) - load_count
                         fh.seek(dl_start + (8 * x) + 5)
                         vert_start = int.from_bytes(fh.read(3), "big")
-                        if in_bone:
-                            fh.seek(dl_start + (8 * x))
-                            # print(hex(int.from_bytes(fh.read(8), "big")))
-                        for y in range(load_count):
-                            if (vert_buffer_start + y) < 32:
-                                vert_buffer[vert_buffer_start + y] = vert_start + (y * 0x10)
-                                # Test this out
+                        offset = 0
+                        vert_cap = 0xFFFFFFFFF
+                        i_load_vert = (vert_start + offset) >> 4
+                        i_load_vert_end = min(i_load_vert + load_count, vert_cap)
+                        range_count = (i_load_vert_end - i_load_vert) + 1
+                        for yi in range(range_count):
+                            if vert_buffer_start + yi < 32:
+                                vert_buffer[vert_buffer_start + yi] = vert_start + (yi * 0x10)
+                                offset = vert_start + (yi * 0x10) + 0x28
                                 if in_bone:
                                     if focused_bone in left_arm_bones:
-                                        polarity = 0 if (left_arm_bones.index(focused_bone) % 2) == 0 else 1
+                                        if offset not in translated_verts:
+                                            translated_verts.append(offset)
                                     else:
-                                        polarity = 1 if (right_arm_bones.index(focused_bone) % 2) == 0 else 0
-                                    if polarity == 0:
-                                        translated_verts.append(vert_start + (y * 0x10))
-                                    else:
-                                        translated_verts_opp.append(vert_start + (y * 0x10))
-                            # else:
-                            #     print(vert_start + (y * 0x10))
+                                        if offset not in translated_verts_opp:
+                                            translated_verts_opp.append(offset)
+                                else:
+                                    if offset not in ignored_verts:
+                                        ignored_verts.append(offset)
+                                for target_bone, joined_bones in rerigged_bones.items():
+                                    if bone in joined_bones:
+                                        if offset not in rerigged_verts_flat:
+                                            rerigged_verts_flat.append(offset)
+                                            if bone not in rerigged_verts:
+                                                rerigged_verts[bone] = []
+                                            rerigged_verts[bone].append(offset)
+                                    elif offset not in manual_rerig_inclusions:
+                                        if target_bone not in ignored_rerigged_verts:
+                                            ignored_rerigged_verts[target_bone] = []
+                                        ignored_rerigged_verts[target_bone].append(offset)
                     elif command in (5, 6, 7):
                         continue
-                        groups = [1] if command == 5 else [1, 5]
-                        for group in groups:
-                            fh.seek(dl_start + (8 * x) + group)
-                            for _ in range(3):
-                                index = int.from_bytes(fh.read(1), "big") >> 1
-                                if vert_buffer[index] in untouched_verts:
-                                    untouched_verts = [y for y in untouched_verts if y != vert_buffer[index]]
-                                if in_bone:
-                                    touched_verts.append(vert_buffer[index])
-                                    if focused_bone in left_arm_bones:
-                                        polarity = 0 if (left_arm_bones.index(focused_bone) % 2) == 0 else 1
-                                    else:
-                                        polarity = 1 if (right_arm_bones.index(focused_bone) % 2) == 0 else 0
-                                    if polarity == 0:
-                                        translated_verts.append(vert_buffer[index])
-                                    else:
-                                        translated_verts_opp.append(vert_buffer[index])
-                        if in_bone:
-                            fh.seek(dl_start + (8 * x))
-                            print(hex(int.from_bytes(fh.read(8), "big")))
-                translated_verts = list(set(translated_verts))
-                translated_verts_opp = list(set(translated_verts_opp))
-                for xi, vert_group in enumerate([translated_verts, translated_verts_opp]):
-                    # print(xi, len(vert_group))
-                    for x in vert_group:
-                        fh.seek(0x28 + x)
-                        coords = []
-                        for _ in range(2):
-                            v = int.from_bytes(fh.read(2), "big")
-                            if v > 0x7FFF:
-                                v -= 0x10000
-                            coords.append(v)
-                        temp = coords[0]
-                        temp2 = coords[1]
-                        if xi == 0:
-                            coords[0] = -temp2
-                            coords[1] = temp
-                        else:
-                            coords[0] = temp2
-                            coords[1] = -temp
-                        fh.seek(0x28 + x)
-                        for c in coords:
-                            if c < 0:
-                                c += 0x10000
-                            fh.write(c.to_bytes(2, "big"))
-                # print("Untouched")
-                # print(sorted(list(set(untouched_verts))))
-                # print("Touched")
-                # print(sorted(list(set(touched_verts))))
+                vert_rotation_data = [
+                    {
+                        "verts": translated_verts,
+                        "angle": -70
+                    },
+                    {
+                        "verts": translated_verts_opp,
+                        "angle": 70
+                    },
+                ]
+                for vrd in vert_rotation_data:
+                    for v in vrd["verts"]:
+                        if v not in ignored_verts:
+                            fh.seek(v)
+                            x = int.from_bytes(fh.read(2), "big")
+                            if x > 0x7FFF:
+                                x -= 0x10000
+                            y = int.from_bytes(fh.read(2), "big")
+                            if y > 0x7FFF:
+                                y -= 0x10000
+                            nx, ny = rotate(x, y, vrd["angle"])
+                            nx = int(nx)
+                            ny = int(ny)
+                            if nx < 0:
+                                nx += 0x10000
+                            if ny < 0:
+                                ny += 0x10000
+                            fh.seek(v)
+                            fh.write(nx.to_bytes(2, "big"))
+                            fh.write(ny.to_bytes(2, "big"))
+            fh.seek(0x0)
+            source_head = int.from_bytes(fh.read(4), "big")
+            fh.seek(0x8)
+            bone_head = (int.from_bytes(fh.read(4), "big") - source_head) + 0x28
+            bone_offsets = []
+            bone_master = [0] * bone_count
+            bone_bases = []
+            for b in range(bone_count):
+                bone_offsets.append([0, 0, 0])  # Same ^
+                bone_bases.append([0, 0, 0])  # Same ^
+            for b in range(bone_count):
+                fh.seek(bone_head + (b * 0x10))
+                base_bone = int.from_bytes(fh.read(1), "big")
+                local_bone = int.from_bytes(fh.read(1), "big")
+                master_bone = int.from_bytes(fh.read(1), "big")
+                coords = [0, 0, 0]
+                if base_bone != 0xFF:
+                    coords = bone_offsets[base_bone].copy()
+                fh.seek(bone_head + (b * 0x10) + 4)
+                for c in range(3):
+                    coords[c] += intf_to_float(int.from_bytes(fh.read(4), "big"))
+                bone_offsets[local_bone] = coords.copy()
+                if master_bone < bone_count:
+                    bone_bases[master_bone] = coords.copy()
+                else:
+                    print("Boney boy")
+                    bone_bases.append(coords.copy())
+                bone_master[local_bone] = master_bone
+            for target_bone, joined_bones in rerigged_bones.items():
+                for bn in joined_bones:
+                    for v in rerigged_verts[bn]:
+                        if target_bone not in ignored_rerigged_verts or v not in ignored_rerigged_verts[target_bone]:
+                            for x in range(3):
+                                fh.seek(v + (2 * x))
+                                val = int.from_bytes(fh.read(2), "big")
+                                if val > 0x7FFF:
+                                    val -= 0x10000
+                                val += (bone_offsets[bn][x] - bone_offsets[target_bone][x])
+                                fh.seek(v + (2 * x))
+                                val = int(val)
+                                if val < 0:
+                                    val += 0x10000
+                                fh.write(val.to_bytes(2, "big"))
 
 
 mergeModel(
-    0x48, 0xDA, "k_rool_cutscene.bin", False, True, 1.377, True, [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33], [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+    0x48, 0xDA,
+    "k_rool_cutscene.bin",
+    False, True, 1.377, True,
+    [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33],
+    [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    {
+        1: [34, 35, 36, 37]
+    },
+    [0x2DE8]
 )  # CS Version
 mergeModel(0x67, 0xDA, "k_rool_fight.bin", False, True, 1.377, True, [5, 6, 7, 8, 9, 10, 11], [2, 3, 4])  # Fight Version
 mergeModel(0x10, 3, "cranky_model.bin", False, True, None, True, [16, 17, 18, 19, 20, 21, 22, 23], [8, 9, 10, 11, 12, 13, 14, 15])
 mergeModel(0x12, 8, "candy_model.bin", False, True, None, True, [22, 23, 24, 25, 26, 27, 28], [15, 16, 17, 18, 19, 20, 21])
 mergeModel(0x11, 0, "funky_model.bin", False, True, None, True, [7, 8, 9], [4, 5, 6])
+mergeModel(0x2B, 0xDA, "ricardo_model.bin", False, True, 1.377, True, [9, 10, 11], [6, 7, 8])
+mergeModel(0x46, 0, "rabbit_model.bin", False, True, None, True, [12, 13, 14], [9, 10, 11])
+mergeModel(0x39, 6, "klump_model.bin", False, True, None, True, [10, 11, 12], [13, 14, 15])
+# modifyModel(0x11, "funky_model.bin", [7, 8, 9], [4, 5, 6])
 
 with open("k_rool_fight.bin", "r+b") as fh:
     # Remove DL Call

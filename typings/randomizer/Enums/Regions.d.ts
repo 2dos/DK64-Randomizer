@@ -291,5 +291,6 @@ export enum Regions {
     SnideLastGroup = 290,
     FactoryArcadePole = 291,
     MushroomVeryTopExterior = 292,
-    SnideArea = 293,
+    CabinDoor = 293,
+    SnideArea = 294,
 }

@@ -212,11 +212,42 @@ function toast_alert(text) {
   generateToast(text, true);
 }
 function getFile(file) {
-  return $.ajax({
-    type: "GET",
-    url: file,
-    async: false,
-  }).responseText;
+  // Synchronous XHR returning a Uint8Array of the raw bytes.
+  //
+  // This used to be an `$.ajax` call returning `responseText`, which worked
+  // for text files but corrupted binary assets (PNGs, BPS, .bin) because
+  // responseText normally decodes bytes as UTF-8. Every Python caller of
+  // this helper wraps the result in `BytesIO(...)` / `Image.open(...)`,
+  // so we need to return raw bytes.
+  //
+  // We keep this synchronous because all Python callers assume it is.
+  //
+  // Browsers (notably Firefox) forbid setting `responseType` on a sync XHR
+  // in a window context, so we use the classic
+  //   overrideMimeType("text/plain; charset=x-user-defined")
+  // trick: the response becomes a string where each UTF-16 code unit
+  // holds one raw byte in its low 8 bits. We then copy those into a
+  // Uint8Array. This works in every modern browser.
+  try {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", file, false);
+    if (typeof xhr.overrideMimeType === "function") {
+      xhr.overrideMimeType("text/plain; charset=x-user-defined");
+    }
+    xhr.send(null);
+    if (xhr.status !== 0 && (xhr.status < 200 || xhr.status >= 300)) {
+      throw new Error("HTTP " + xhr.status + " for " + file);
+    }
+    var text = xhr.responseText || "";
+    var out = new Uint8Array(text.length);
+    for (var i = 0; i < text.length; i++) {
+      out[i] = text.charCodeAt(i) & 0xff;
+    }
+    return out;
+  } catch (e) {
+    console.error("getFile failed for", file, e);
+    throw e;
+  }
 }
 
 var valid_extensions = [".bin", ".candy"];
@@ -370,6 +401,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let arcade_promises = [];
       let reel_promises = [];
       let item_promises = [];
+      let puzzle_promises = [];
 
       for (var filename of Object.keys(new_zip.files)) {
         if (validFilename(filename, "bgm/")) {
@@ -392,6 +424,8 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
           reel_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/items/", ".png")) {
           item_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "textures/facepuzzle/", "image")) {
+          puzzle_promises.push(createMusicLoadPromise(new_zip, filename));
         }
       }
 
@@ -409,6 +443,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let arcade_files = await Promise.all(arcade_promises);
       let reel_files = await Promise.all(reel_promises);
       let item_files = await Promise.all(item_promises);
+      let puzzle_files = await Promise.all(puzzle_promises);
 
       let has_music = bgm_files.length > 0 || event_files.length > 0 || majoritem_files.length > 0 || minoritem_files.length > 0;
 
@@ -423,6 +458,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         arcade_sprites: arcade_files.map((x) => x.file),
         reel_sprites: reel_files.map((x) => x.file),
         item_sprites: item_files.map((x) => x.file),
+        face_puzzles: puzzle_files.map((x) => x.file),
       };
       cosmetic_names = {
         bgm: bgm_files.map((x) => x.name),
@@ -435,6 +471,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         arcade_sprites: arcade_files.map((x) => x.name),
         reel_sprites: reel_files.map((x) => x.name),
         item_sprites: item_files.map((x) => x.name),
+        face_puzzles: puzzle_files.map((x) => x.name),
       };
       cosmetic_extensions = {
         bgm: bgm_files.map((x) => x.extension),

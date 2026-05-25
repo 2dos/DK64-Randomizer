@@ -52,6 +52,7 @@ class DK64MemoryMap:
     memory_pointer = 0x807FFF1C
     rom_flags = 0x807FF8C4
     rom_flag_ap_status = 0x10
+    seed_hash = 0x807FF929
     counter_offset = 0x000
     start_flag = 0x002
     arch_items = 0x004

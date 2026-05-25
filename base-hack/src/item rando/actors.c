@@ -137,15 +137,6 @@ void candyCodeHandler(void) {
     missingShopOwnerCode(7);
 }
 
-float getModelTwoScale(int obj_id) {
-    for (unsigned int i = 0; i < (sizeof(item_conversions) / sizeof(item_conversion_info)); i++) {
-        if (item_conversions[i].model_two == obj_id) {
-            return item_conversions[i].scale;
-        }
-    }
-    return 0.25f;
-}
-
 void snideCodeHandler(void) {
     if (checkFlag(FLAG_ITEM_SNIDE, FLAGTYPE_PERMANENT)) {
         snideCode();
@@ -227,11 +218,28 @@ void fairyQueenCheckSpeedup(void *actor, int unk) {
     fairyQueenCutsceneInit(0x24D, 20, FLAGTYPE_PERMANENT);
 }
 
+void cannonCodeWrapper(void) {
+    if (CurrentActorPointer_0->control_state == 0) {
+        if (checkFlag(FLAG_ABILITY_CANNON, FLAGTYPE_PERMANENT)) {
+            CurrentActorPointer_0->noclip_byte = 2;
+            CurrentActorPointer_0->obj_props_bitfield |= 0x8000;
+            CurrentActorPointer_0->shadow_intensity = 0xFF;
+        } else {
+            CurrentActorPointer_0->noclip_byte = 1;
+            CurrentActorPointer_0->obj_props_bitfield &= ~0x8000;
+            CurrentActorPointer_0->shadow_intensity = 0x80;
+        }
+    }
+    cannonCode();
+}
+
 #define STORED_COUNT 18
 ROM_DATA static int stored_maps[STORED_COUNT] = {};
 ROM_DATA static unsigned char stored_kasplat[STORED_COUNT] = {};
 ROM_DATA static unsigned char stored_enemies[ENEMY_REWARD_CACHE_SIZE][STORED_COUNT] = {};
 ROM_DATA static unsigned short stored_holdable;
+ROM_DATA static unsigned int stored_breakable;
+ROM_DATA static unsigned char stored_balloons[13] = {};
 
 int setupHook(int map) {
     /**
@@ -257,7 +265,11 @@ int setupHook(int map) {
         if (stored_maps[i] == PreviousMap) {
             place_new = 0;
             stored_holdable = HoldableSpawnBitfield;
+            stored_breakable = BreakableSpawnBitfield;
             stored_kasplat[i] = KasplatSpawnBitfield;
+            for (int j = 0; j < 13; j++) {
+                stored_balloons[j] = BalloonSpawnBitfield[j];
+            }
             for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                 stored_enemies[j][i] = enemy_rewards_spawned[j];
             }
@@ -268,7 +280,11 @@ int setupHook(int map) {
             if (place_new) {
                 if (stored_maps[i] == -1) {
                     stored_holdable = HoldableSpawnBitfield;
+                    stored_breakable = BreakableSpawnBitfield;
                     stored_kasplat[i] = KasplatSpawnBitfield;
+                    for (int j = 0; j < 13; j++) {
+                        stored_balloons[j] = BalloonSpawnBitfield[j];
+                    }
                     for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                         stored_enemies[j][i] = enemy_rewards_spawned[j];
                     }
@@ -291,7 +307,11 @@ int setupHook(int map) {
                 }
             }
             HoldableSpawnBitfield = stored_holdable;
+            BreakableSpawnBitfield = stored_breakable;
             KasplatSpawnBitfield = stored_kasplat[i];
+            for (int j = 0; j < 13; j++) {
+                BalloonSpawnBitfield[j] = stored_balloons[j];
+            }
             for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                 enemy_rewards_spawned[j] = stored_enemies[j][i];
             }
@@ -300,6 +320,10 @@ int setupHook(int map) {
     if (!in_chain) {
         KasplatSpawnBitfield = 0;
         HoldableSpawnBitfield = 0;
+        BreakableSpawnBitfield = 0;
+        for (int j = 0; j < 13; j++) {
+            BalloonSpawnBitfield[j] = 0;
+        }
         for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
             enemy_rewards_spawned[j] = 0;
         }
@@ -330,6 +354,12 @@ void CheckKasplatSpawnBitfield(void) {
                     } else if (isFlagInRange(flag, FLAG_GRABBABLES_DESTROYED, 16)) {
                         // Is Holdable
                         HoldableSpawnBitfield |= (1 << (flag - FLAG_GRABBABLES_DESTROYED));
+                    } else if (isFlagInRange(flag, FLAG_BREAKABLE_DESTROYED, 32)) {
+                        // Is Holdable
+                        BreakableSpawnBitfield |= (1 << (flag - FLAG_BREAKABLE_DESTROYED));
+                    } else if (isFlagInRange(flag, FLAG_BALLOON_ITEM, 104)) {
+                        int offset = flag - FLAG_BALLOON_ITEM;
+                        BalloonSpawnBitfield[offset >> 3] |= (1 << (offset & 7));
                     }
                 }
                 // Get Next Spawner

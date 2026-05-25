@@ -49,7 +49,9 @@ def ShuffleItems(spoiler):
                     item_location.type == Types.TrainingBarrel and not item_location.constant
                 )  # Depending on starting moves, training barrels can be empty (only when constant). This quick check prevents weirdness later in this method.
             )
-            and (not item_location.inaccessible or item_location.type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide))  # Shopkeepers' locations are either inaccessible or vanilla
+            and (
+                not item_location.inaccessible or item_location.type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime)
+            )  # Shopkeepers' locations are either inaccessible or vanilla
             and item_location.type in spoiler.settings.shuffled_location_types
         ):
             # Create placement info for the patcher to use
@@ -114,7 +116,7 @@ def ShuffleItems(spoiler):
                 flag=old_flag,
                 placement_data=placement_info,
                 is_reward_point=item_location.is_reward,
-                is_shop=item_location.type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing),
+                is_shop=item_location.type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing, Types.Cannons),
                 price=price,
                 placement_index=placement_index,
                 kong=old_kong,

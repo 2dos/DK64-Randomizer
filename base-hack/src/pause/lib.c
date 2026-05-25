@@ -50,7 +50,7 @@ Gfx* printLevelIGT(Gfx* dl, int x, int y, float scale, char* str) {
     } else {
         int igt_data = 0;
         if (level_index < 9) {
-            igt_data = ReadFile(DATA_IGT_JAPES + level_index, 0, 0, FileIndex);
+            igt_data = ReadFileSimple(DATA_IGT_JAPES + level_index);
         }
         int igt_h = igt_data / 3600;
         int igt_m = (igt_data / 60) % 60;

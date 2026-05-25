@@ -98,7 +98,8 @@ async function apply_patch(data, run_async) {
         // Extract the file content as a string or other appropriate format
         // Store the file content in a variable with a name derived from the file name
         fileName = zipEntry.name.replace(/[^a-zA-Z0-9]/g, "_");
-        if (fileName == "patch") {
+        // Check for both "patch" (legacy xdelta) and "fill_result" (new proto format)
+        if (fileName == "patch" || fileName == "fill_result") {
           // Create a promise for each async operation and add it to the array
           const promise = zipEntry
             .async("uint8array")
@@ -106,9 +107,17 @@ async function apply_patch(data, run_async) {
               if (run_async == true) {
                 // load pyodide
                 await setup_pyodide();
-                console.log("Applying Xdelta Patch");
+                
+                // Only apply xdelta for legacy "patch" files, not proto "fill_result"
+                if (fileName == "patch") {
+                  console.log("Applying Xdelta Patch (legacy format)");
+                  apply_xdelta(fileContent);
+                } else {
+                  
+                  await apply_base_hack_bps();
+                }
+                
                 apply_conversion();
-                apply_xdelta(fileContent);
                 if (ischunkyFile) {
                   window["event_response_data"] = extracted_data;
                 }
@@ -116,6 +125,8 @@ async function apply_patch(data, run_async) {
                   window["event_response_data"] = data;
                 }
                 // Return the promise for pyodide.runPythonAsync
+                console.log("[JS] About to call ApplyLocal.patching_response via Pyodide");
+                console.log("[JS] event_response_data length:", window.event_response_data ? window.event_response_data.length : "undefined");
                 return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
 try:
   register_hook("/")  # type: ignore  # noqa

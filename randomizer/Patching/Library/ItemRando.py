@@ -136,6 +136,7 @@ move_indexes = {
         Items.Shockwave,
         Items.CameraAndShockwave,
         Items.Climbing,
+        Items.Cannons,
         Items.SniperSight,
         Items.HomingAmmo,
     ],
@@ -208,6 +209,8 @@ class CustomActors(IntEnum):
     GuardDisableZ = auto()
     GuardGetOut = auto()
     GuardTag = auto()
+    DayItem = auto()
+    NightItem = auto()
 
 
 class GraphicOverlay(IntEnum):
@@ -283,6 +286,8 @@ class ArcadeRewards(IntEnum):
     BPTiny = auto()
     BPChunky = auto()
     APItem = auto()
+    DayItem = auto()
+    NightItem = auto()
 
 
 class JetpacRewards(IntEnum):
@@ -309,6 +314,8 @@ class JetpacRewards(IntEnum):
     Snide = auto()
     Hint = auto()
     APItem = auto()
+    DayItem = auto()
+    NightItem = auto()
 
 
 class BuyText(IntEnum):
@@ -445,6 +452,9 @@ class TrackerItems(IntEnum):
     CANDY = auto()
     SNIDE = auto()
     CLIMB = auto()
+    CANNON = auto()
+    DAY = auto()
+    NIGHT = auto()
     TERMINATOR = auto()
 
 
@@ -541,6 +551,7 @@ pregiven_item_order = [
     Items.Camera,
     Items.Shockwave,
     Items.Climbing,
+    Items.Cannons,
 ]
 
 
@@ -695,6 +706,19 @@ item_db = {
         },
     ),
     Types.Climbing: ItemPlacementData(
+        model_index=[0xFB],
+        model_two_index=[0x1F6],
+        actor_index=[CustomActors.PotionAny],
+        arcade_reward_index=[ArcadeRewards.PotionAny],
+        jetpac_reward_index=[JetpacRewards.Potion],
+        overlay=[GraphicOverlay.TrainingBarrel],
+        preview_text="POTION",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "BOTTLE OF GROG",
+            Locations.ForestDiddyOwlRace: "STRANGE BREW",
+        },
+    ),
+    Types.Cannons: ItemPlacementData(
         model_index=[0xFB],
         model_two_index=[0x1F6],
         actor_index=[CustomActors.PotionAny],
@@ -965,6 +989,20 @@ item_db = {
             Locations.ForestDiddyOwlRace: ["A RABBIT'S FOOT", "A PENNY", "A BLACK CAT", "A RABBTI'S FOOT"],
         },
     ),
+    Types.FungiTime: ItemPlacementData(
+        model_index=[0x13D, 0x13E],
+        model_two_index=[0x29A, 0x29B],
+        actor_index=[CustomActors.DayItem, CustomActors.NightItem],
+        arcade_reward_index=[ArcadeRewards.DayItem, ArcadeRewards.NightItem],
+        jetpac_reward_index=[JetpacRewards.DayItem, JetpacRewards.NightItem],
+        overlay=[GraphicOverlay.Hint] * 2,
+        index_getter=lambda item: [Items.Day, Items.Night].index(item),
+        preview_text=["DAY", "NIGHT"],
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "YE CLOCK OF THE WAVES",
+            Locations.ForestDiddyOwlRace: "TURNING OF LIGHT",
+        },
+    ),
 }
 
 FILLER_MAPPING = {
@@ -1104,6 +1142,7 @@ item_shop_text_mapping = {
     Items.Oranges: (BuyText.orange, NoBuyText.training_move),
     Items.Barrels: (BuyText.barrel, NoBuyText.training_move),
     Items.Climbing: (BuyText.climb, NoBuyText.training_move),
+    Items.Cannons: (BuyText.climb, NoBuyText.training_move),
     # Slams
     Items.ProgressiveSlam: (BuyText.slam, NoBuyText.slam),
     Items.ProgressiveSlam2: (BuyText.slam, NoBuyText.slam),

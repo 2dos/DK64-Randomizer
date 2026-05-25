@@ -11,6 +11,10 @@
 
 #include "../../include/common.h"
 
+int hasChunkyPhaseSlam(void) {
+	return MovesBase[KONG_CHUNKY].simian_slam >= Rando.chunky_phase_krool_slam_req;
+}
+
 void overlay_mod_boss(void) {
 	// Add chunky phase microhint
 	if ((Rando.microhints != MICROHINTS_NONE) && (!hasChunkyPhaseSlam())) {

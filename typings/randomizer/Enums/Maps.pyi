@@ -202,3 +202,4 @@ class Maps(IntEnum):
     Arcade100 = 219
     JetpacRocket = 220
     DKRap = 76
+    TroffNScoff = 42

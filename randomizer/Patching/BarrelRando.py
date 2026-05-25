@@ -1,6 +1,6 @@
 """Apply Boss Locations."""
 
-from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
+from randomizer.Lists.Minigame import MinigameRequirements
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 

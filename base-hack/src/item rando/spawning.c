@@ -157,7 +157,7 @@ void spawnBossReward(int object, float x, float y, float z, int unk0, int cutsce
      * @param unk1 Unknown
      */
     int table_index = getKeyIndex(flag);
-    int new_obj = key_item_table[table_index].actor;
+    int new_obj = key_item_table[table_index].spawn_packet.actor;
     if (new_obj != 0) {
         object = new_obj;
     }
@@ -177,7 +177,7 @@ void spawnBossReward(int object, float x, float y, float z, int unk0, int cutsce
             // AD2/MJ
             cutscene = 1;
         }
-        spawnActorWithFlagHandler(object, x, y, z, unk0, cutscene, flag, unk1, key_item_table[table_index].item_level, key_item_table[table_index].item_kong);
+        spawnActorWithFlagHandler(object, x, y, z, unk0, cutscene, flag, unk1, key_item_table[table_index].spawn_packet.item_level, key_item_table[table_index].spawn_packet.item_kong);
         // Fix items which have short spawn ranges
         ActorSpawnerPointer->spawn_range = 4000000.0f;
     }
@@ -311,7 +311,25 @@ int isValidBoulderObject(int index) {
     if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
         return 0;
     }
-    int item = getBoulderItem(index);
+    int item = boulder_item_table[index].item;
+    if (item == NEWACTOR_NULL) {
+        return 0;
+    }
+    return item;
+}
+
+int isValidBreakableObject(int index) {
+    if (index < 0) {
+        return 0;
+    }
+    if (BreakableSpawnBitfield & (1 << index)) {
+        return 0;
+    }
+    int flag = FLAG_BREAKABLE_DESTROYED + index;
+    if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
+        return 0;
+    }
+    int item = box_item_table[index].actor;
     if (item == NEWACTOR_NULL) {
         return 0;
     }
@@ -339,6 +357,26 @@ void spawnBoulderObject(actorData *actor) {
     HoldableSpawnBitfield |= (1 << index);
 }
 
+void spawnBreakableObject(int index) {
+    int item = isValidBreakableObject(index);
+    if (!item) {
+        return;
+    }
+    int cutscene = 1;
+    if (isBounceObject(item)) {
+        cutscene = 2;
+    }
+    spawnActorWithFlagHandler(item,
+        collisionPos[0],
+        collisionPos[1] + 10.0f,
+        collisionPos[2],
+        0, cutscene,
+        FLAG_BREAKABLE_DESTROYED + index, 0,
+        box_item_table[index].item_level,
+        box_item_table[index].item_kong);
+    BreakableSpawnBitfield |= (1 << index);
+}
+
 void renderBoulderSparkles(actorData *actor) {
     unkBonusFunction(actor);
     int index = getBoulderIndex();
@@ -355,4 +393,82 @@ void renderBoulderSparkles(actorData *actor) {
         scale = 3.0f;
     }
     renderSparkles(scale);
+}
+
+// Balloons
+int shouldDeleteBalloon(int cb_flag, flagtypes flag_type) {
+    if (checkFlag(cb_flag, flag_type)) {
+        int balloon_offset = *(short*)(0x80688BCE);
+        return checkFlag((cb_flag - balloon_offset) + FLAG_BALLOON_ITEM, FLAGTYPE_PERMANENT);
+    }
+    return 0;
+}
+
+int isValidBalloonObject(int index) {
+    if (index < 0) {
+        return 0;
+    }
+    if (BalloonSpawnBitfield[index >> 3] & (1 << (index & 7))) {
+        return 0;
+    }
+    int flag = FLAG_BALLOON_ITEM + index;
+    if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
+        return 0;
+    }
+    int item = balloon_item_table[index].actor;
+    if (item == NEWACTOR_NULL) {
+        return 0;
+    }
+    return item;
+}
+
+void balloonVisHandler(sprite_struct * sprite, int cb_flag) {
+    int balloon_offset = *(short*)(0x80688BCE);
+    int index = cb_flag - balloon_offset;
+    int item = isValidBalloonObject(index);
+    if (!item) {
+        return;
+    }
+    sprite->balloon_image = BALLOON_IMAGE_START + getBarrelSkinIndex(item);
+    sprite->vert_set[1] = sprite->vert_set[0];
+}
+
+Gfx *balloonVisHandler2(sprite_struct *sprite, Gfx *dl, short unk2) {
+    int old_count = sprite->image_count;
+    if (sprite->balloon_image) {
+        sprite->image[1] = getMapData(25, sprite->balloon_image, 0, 0);
+        sprite->image_count = 2;
+    }
+    dl = writeSpriteToDL(sprite, dl, unk2);
+    sprite->image_count = old_count;
+    return dl;
+}
+
+void balloonItemHandler(int flag, int state, flagtypes flag_type) {
+    if (!checkFlag(flag, flag_type)) {
+        // Doesn't have CBs, give them
+        setFlag(flag, state, flag_type);
+        displayItemOnHUD(0, 0, 0);
+        addHelmTime(HHITEM_CB, 10);
+        changeCollectableCount(0, 0, 10);
+    }
+    int balloon_offset = *(short*)(0x80688BCE);
+    int index = flag - balloon_offset;
+    int item = isValidBalloonObject(index);
+    if (!item) {
+        return;
+    }
+    int cutscene = 1;
+    if (isBounceObject(item)) {
+        cutscene = 2;
+    }
+    spawnActorWithFlagHandler(item,
+        CurrentActorPointer_0->xPos,
+        CurrentActorPointer_0->yPos + 10.0f,
+        CurrentActorPointer_0->zPos,
+        0, cutscene,
+        FLAG_BALLOON_ITEM + index, 0,
+        balloon_item_table[index].item_level,
+        balloon_item_table[index].item_kong);
+    BalloonSpawnBitfield[index >> 3] |= (1 << (index & 7));
 }

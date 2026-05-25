@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package randomizer.proto.common;
+
+enum KongId {
+    KONG_ID_UNSPECIFIED = 0;
+    KONG_ID_DONKEY = 1;
+    KONG_ID_DIDDY = 2;
+    KONG_ID_LANKY = 3;
+    KONG_ID_TINY = 4;
+    KONG_ID_CHUNKY = 5;
+}

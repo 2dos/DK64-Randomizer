@@ -11,40 +11,205 @@
 #include "../../include/common.h"
 
 typedef struct item_info {
-    /* 0x000 */ songs song;
-    /* 0x004 */ int sprite;
-    /* 0x008 */ helm_hurry_items helm_hurry_item;
+    /* 0x000 */ const unsigned char song;
+    /* 0x001 */ const unsigned char req_item;
+    /* 0x002 */ const char item_kong;
+    /* 0x003 */ const unsigned char helm_hurry_item;
+    /* 0x004 */ const sprite_data_struct *sprite;
 } item_info;
 
 ROM_DATA static unsigned char bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
 ROM_DATA static unsigned char instrument_songs[] = {SONG_BONGOS, SONG_GUITAR, SONG_TROMBONE, SONG_SAXOPHONE, SONG_TRIANGLE};
 
-ROM_DATA static item_info item_detection_data[] = {
-    {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_NONE
-	{.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_KONG
-	{.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_MOVE}, // REQITEM_MOVE
-	{.song = SONG_GBGET, .sprite = 0x3B, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_GOLDENBANANA
-	{.song = SONG_BLUEPRINTGET, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_BLUEPRINT
-	{.song = SONG_FAIRYTICK, .sprite = 0x89, .helm_hurry_item = HHITEM_FAIRY}, // REQITEM_FAIRY
-	{.song = SONG_GBGET, .sprite = 0x8A, .helm_hurry_item = HHITEM_KEY}, // REQITEM_KEY
-	{.song = SONG_BANANAMEDALGET, .sprite = 0x8B, .helm_hurry_item = HHITEM_CROWN}, // REQITEM_CROWN
-	{.song = SONG_COMPANYCOINGET, .sprite = -1, .helm_hurry_item = HHITEM_COMPANYCOIN}, // REQITEM_COMPANYCOIN
-	{.song = SONG_BANANAMEDALGET, .sprite = 0x3C, .helm_hurry_item = HHITEM_MEDAL}, // REQITEM_MEDAL
-	{.song = SONG_BEANGET, .sprite = -1, .helm_hurry_item = HHITEM_BEAN}, // REQITEM_BEAN
-	{.song = SONG_PEARLGET, .sprite = -1, .helm_hurry_item = HHITEM_PEARL}, // REQITEM_PEARL
-	{.song = SONG_RAINBOWCOINGET, .sprite = 0xA0, .helm_hurry_item = HHITEM_RAINBOWCOIN}, // REQITEM_RAINBOWCOIN
-	{.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM}, // REQITEM_ICETRAP
-	{.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_GAMEPERCENTAGE
-	{.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_COLOREDBANANA
-	{.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_BOSSES
-	{.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_BONUSES
-	{.song = SONG_MELONSLICEGET, .sprite = 0x46, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_JUNK
-	{.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_HINT
-	{.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_KONG}, // REQITEM_SHOPKEEPER
-    {.song = SONG_BLUEPRINTGET, .sprite = 0x92, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_AP
+ROM_RODATA_NUM static const item_info item_detection_data[] = {
+    {
+        .req_item = REQITEM_NONE,
+        .item_kong = -1,
+        .sprite = (sprite_data_struct *)0x80721158,
+    },
+	{
+        .req_item = REQITEM_KONG,
+        .item_kong = KONG_DK,
+        .song = SONG_BONGOS,
+        .sprite = (sprite_data_struct *)0x807214A0,
+    },
+    {
+        .req_item = REQITEM_KONG,
+        .item_kong = KONG_DIDDY,
+        .song = SONG_GUITAR,
+        .sprite = (sprite_data_struct *)0x807214B8,
+    },
+    {
+        .req_item = REQITEM_KONG,
+        .item_kong = KONG_LANKY,
+        .song = SONG_TROMBONE,
+        .sprite = (sprite_data_struct *)0x807214D0,
+    },
+    {
+        .req_item = REQITEM_KONG,
+        .item_kong = KONG_TINY,
+        .song = SONG_SAXOPHONE,
+        .sprite = (sprite_data_struct *)0x807214E8,
+    },
+    {
+        .req_item = REQITEM_KONG,
+        .item_kong = KONG_CHUNKY,
+        .song = SONG_TRIANGLE,
+        .sprite = (sprite_data_struct *)0x80721500,
+    },
+	{
+        .req_item = REQITEM_MOVE,
+        .item_kong = -1,
+        .song = SONG_GUNGET,
+        .sprite = &potion_sprite,
+    },
+	{
+        .req_item = REQITEM_GOLDENBANANA,
+        .item_kong = -1,
+        .song = SONG_GBGET,
+        .sprite = (sprite_data_struct *)0x8072052C,
+    },
+	{
+        .req_item = REQITEM_BLUEPRINT,
+        .item_kong = KONG_DK,
+        .sprite = (sprite_data_struct *)0x80720A34,
+        .song = SONG_BLUEPRINTGET,
+    },
+    {
+        .req_item = REQITEM_BLUEPRINT,
+        .item_kong = KONG_DIDDY,
+        .sprite = (sprite_data_struct *)0x807209EC,
+        .song = SONG_BLUEPRINTGET,
+    },
+    {
+        .req_item = REQITEM_BLUEPRINT,
+        .item_kong = KONG_LANKY,
+        .sprite = (sprite_data_struct *)0x807207E0,
+        .song = SONG_BLUEPRINTGET,
+    },
+    {
+        .req_item = REQITEM_BLUEPRINT,
+        .item_kong = KONG_TINY,
+        .sprite = (sprite_data_struct *)0x80720A58,
+        .song = SONG_BLUEPRINTGET,
+    },
+    {
+        .req_item = REQITEM_BLUEPRINT,
+        .item_kong = KONG_CHUNKY,
+        .sprite = (sprite_data_struct *)0x80720A10,
+        .song = SONG_BLUEPRINTGET,
+    },
+	{
+        .req_item = REQITEM_FAIRY,
+        .item_kong = -1,
+        .song = SONG_FAIRYTICK,
+        .sprite = (sprite_data_struct *)0x80721094,
+    },
+	{
+        .req_item = REQITEM_KEY,
+        .item_kong = -1,
+        .song = SONG_GBGET,
+        .sprite = (sprite_data_struct *)0x807210B8,
+    },
+	{
+        .req_item = REQITEM_CROWN,
+        .item_kong = -1,
+        .song = SONG_BANANAMEDALGET,
+        .sprite = (sprite_data_struct *)0x807210EC,
+    },
+	{
+        .req_item = REQITEM_COMPANYCOIN,
+        .item_kong = 0,
+        .sprite = (sprite_data_struct *)0x80721134,
+        .song = SONG_COMPANYCOINGET,
+    },
+    {
+        .req_item = REQITEM_COMPANYCOIN,
+        .item_kong = 1,
+        .sprite = (sprite_data_struct *)0x80721110,
+        .song = SONG_COMPANYCOINGET,
+    },
+	{
+        .req_item = REQITEM_MEDAL,
+        .item_kong = -1,
+        .song = SONG_BANANAMEDALGET,
+        .sprite = (sprite_data_struct *)0x80720558,
+    },
+	{
+        .req_item = REQITEM_BEAN,
+        .item_kong = -1,
+        .song = SONG_BEANGET,
+        .sprite = &bean_sprite,
+    },
+	{
+        .req_item = REQITEM_PEARL,
+        .item_kong = -1,
+        .song = SONG_PEARLGET,
+        .sprite = &pearl_sprite,
+    },
+	{
+        .req_item = REQITEM_RAINBOWCOIN,
+        .item_kong = -1,
+        .song = SONG_RAINBOWCOINGET,
+        .sprite = (sprite_data_struct *)0x80721378,
+    },
+	{
+        .req_item = REQITEM_ICETRAP,
+        .item_kong = -1,
+        .sprite = &fool_overlay_sprite,
+    },
+	{
+        .req_item = REQITEM_JUNK,
+        .item_kong = -1,
+        .song = SONG_MELONSLICEGET,
+        .sprite = (sprite_data_struct *)0x80720710,
+    },
+	{
+        .req_item = REQITEM_HINT,
+        .item_kong = -1,
+        .sprite = (sprite_data_struct *)0x80721530,
+    },
+	{
+        .req_item = REQITEM_SHOPKEEPER,
+        .item_kong = 0,
+        .song = SONG_GUNGET,
+        .sprite = (sprite_data_struct *)0x8072121C,
+    },
+    {
+        .req_item = REQITEM_SHOPKEEPER,
+        .item_kong = 1,
+        .song = SONG_GUNGET,
+        .sprite = (sprite_data_struct *)0x80721250,
+    },
+    {
+        .req_item = REQITEM_SHOPKEEPER,
+        .item_kong = 2,
+        .song = SONG_GUNGET,
+        .sprite = (sprite_data_struct *)0x80721200,
+    },
+    {
+        .req_item = REQITEM_SHOPKEEPER,
+        .item_kong = 3,
+        .song = SONG_GUNGET,
+        .sprite = (sprite_data_struct *)0x80721238,
+    },
+    {
+        .req_item = REQITEM_AP,
+        .item_kong = -1,
+        .song = SONG_BLUEPRINTGET,
+        .sprite = &ap_overlay_sprite,
+    },
+    {
+        .req_item = REQITEM_FUNGITIME,
+        .item_kong = 0,
+        .sprite = &day_overlay_sprite,
+    },
+    {
+        .req_item = REQITEM_FUNGITIME,
+        .item_kong = 1,
+        .sprite = &night_overlay_sprite,
+    },
 };
-
-ROM_DATA static unsigned char shopkeeper_sprites[] = {0x94, 0x96, 0x93, 0x95}; // Cranky, Funky, Candy, Snide
 
 void displayMedalOverlay(int flag, item_packet *item_send) {
     float reward_x = 160.f;
@@ -52,64 +217,41 @@ void displayMedalOverlay(int flag, item_packet *item_send) {
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
         setPermFlag(flag);
         giveItemFromPacket(item_send, 0);
-        const void* sprite = 0;
+        const sprite_data_struct* sprite = (sprite_data_struct *)0x8072052C;
         requirement_item item_type = item_send->item_type;
         int item_kong = item_send->kong;
-        songs song = item_detection_data[item_type].song;
-        int sprite_index = item_detection_data[item_type].sprite;
-        switch(item_type) {
-            case REQITEM_KONG:
-                song = instrument_songs[item_kong];
-                sprite_index = 0xA9 + item_kong;
-                refreshItemVisibility();
-                break;
-            case REQITEM_BLUEPRINT:
-                sprite_index = bp_sprites[item_kong];
-                break;
-            case REQITEM_KEY:
-                auto_turn_keys();
-                break;
-            case REQITEM_COMPANYCOIN:
-                sprite_index = item_kong == 0 ? 0x8D : 0x8C;
-                break;
-            case REQITEM_MOVE:
-                sprite = &potion_sprite;
-                break;
-            case REQITEM_BEAN:
-                sprite = &bean_sprite;
-                break;
-            case REQITEM_PEARL:
-                sprite = &pearl_sprite;
-                break;
-            case REQITEM_ICETRAP:
-                sprite = &fool_overlay_sprite;
-                break;
-            case REQITEM_JUNK:
-                applyDamageMask(0, 1);
-                break;
-            case REQITEM_HINT:
-                playSFX(0x2EA);
-                break;
-            case REQITEM_SHOPKEEPER:
-                sprite_index = shopkeeper_sprites[item_kong];
-            default:
-                break;
+        songs song = SONG_SILENCE;
+        for (unsigned int i = 0; i < sizeof(item_detection_data) / sizeof(item_info); i++) {
+            const item_info *data = &item_detection_data[i];
+            if (data->req_item == item_type) {
+                if (data->item_kong == -1 || data->item_kong == item_kong) {
+                    song = data->song;
+                    if (data->sprite) {
+                        sprite = data->sprite;
+                    }
+                    switch(item_type) {
+                        case REQITEM_KONG:
+                            refreshItemVisibility();
+                            break;
+                        case REQITEM_KEY:
+                            auto_turn_keys();
+                            break;
+                        case REQITEM_HINT:
+                            playSFX(0x2EA);
+                        default:
+                            break;
+                    }
+                }
+            }
         }
         if (song != SONG_SILENCE) {
             playSFX(0xF2);
             playSong(song, 1.0f);
         }
-        if (sprite == 0) {
-            if (sprite_index == -1) {
-                sprite_index = 0x3B;
-            }
-            sprite = sprite_table[sprite_index];
-        }
         if (sprite) {
             unkSpriteRenderFunc(200);
             unkSpriteRenderFunc_0();
             loadSpriteFunction(0x8071EFDC);
-            
             displaySpriteAtXYZ(sprite, 1.0f, reward_x, reward_y, -10.0f);
         }
     } else {
@@ -117,7 +259,7 @@ void displayMedalOverlay(int flag, item_packet *item_send) {
         unkSpriteRenderFunc(200);
         unkSpriteRenderFunc_0();
         loadSpriteFunction(0x8071EFDC);
-        displaySpriteAtXYZ(sprite_table[0x8E], 1.0f, reward_x, reward_y, -10.0f);
+        displaySpriteAtXYZ((const void*)0x80721158, 1.0f, reward_x, reward_y, -10.0f);
     }
 }
 
@@ -179,9 +321,6 @@ void giveItemFromSend(item_packet *send) {
             break;
         case REQITEM_KEY:
             auto_turn_keys();
-            break;
-        case REQITEM_JUNK:
-            applyDamageMask(0, 1);
             break;
     }
 }
@@ -276,11 +415,6 @@ void forceDance(void) {
     }    
 }
 
-void BalloonShoot(int item, int player, int change) {
-    addHelmTime(HHITEM_CB, change);
-    changeCollectableCount(item, player, change);
-}
-
 void getItem(int object_type) {
     /**
      * @brief Item Grab hook, at the point of touching the item, before the flag is set.
@@ -338,9 +472,6 @@ void getItem(int object_type) {
             // Orange
             playSound(0x147, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
-        case 0x25E:
-            // Full Melon
-            applyDamage(0, 1);
         case 0x57:
             // Melon Slice
             playSong(SONG_MELONSLICEGET, pickup_volume);
@@ -438,6 +569,10 @@ void getItem(int object_type) {
         case 0x1D1:
             // Coin Powerup
             playSound(0xAE, 0x7FFF, 63.0f, 1.0f, 5, 0);
+            break;
+        case 0x29A:
+        case 0x29B:
+            playSound(754, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
         case 0x257:
         case 0x258:
@@ -663,7 +798,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0x57:
         case 0x25E:
             // Watermelon
-            applyDamage(player, 1);
+            giveItem(REQITEM_JUNK, 0, 0, (giveItemConfig){.apply_helm_hurry = 1});
             break;
         case 0x8E:
             // Crystal
@@ -755,6 +890,10 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0x1F6:
             // Potion
             giveItem(REQITEM_MOVE, item_level, item_kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
+            break;
+        case 0x29A:
+        case 0x29B:
+            giveItem(REQITEM_FUNGITIME, 0, obj_type - 0x29A, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
             break;
         case 0x257:
         case 0x258:

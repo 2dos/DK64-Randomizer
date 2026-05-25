@@ -21,7 +21,7 @@ BITFIELDS = {
         "helm_punch_gates",
     ],
     "FasterChecks": [
-        "piano",
+        "unk_0",
         "diddy_rnd",
         "mech_fish",
         "arcade_first_round",

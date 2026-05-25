@@ -146,24 +146,12 @@
         "link": "CustomLocationsColoredBananas"
     },
     {
-        "name": "Custom Locations: Kasplats",
-        "link": "CustomLocationsKasplats"
-    },
-    {
-        "name": "Custom Locations: Doors",
-        "link": "CustomLocationsDoors"
-    },
-    {
         "name": "Custom Locations: Fairies",
         "link": "CustomLocationsFairies"
     },
     {
         "name": "Random Settings: Standard",
         "link": "RandomSettingsStandard"
-    },
-    {
-        "name": "Random Settings: Difficult",
-        "link": "RandomSettingsDifficult"
     },
     {
         "name": "Plando Colors",
@@ -176,5 +164,21 @@
     {
         "name": "Random Settings: Difficult With Qol Shuffle",
         "link": "RandomSettingsDifficultWithQolShuffle"
+    },
+    {
+        "name": "Random Settings: Easy",
+        "link": "RandomSettingsEasy"
+    },
+    {
+        "name": "Random Settings: Standard",
+        "link": "RandomSettingsStandard"
+    },
+    {
+        "name": "Custom Locations: Doors",
+        "link": "CustomLocationsDoors"
+    },
+    {
+        "name": "Custom Locations: Miscellaneous",
+        "link": "CustomLocationsMiscellaneous"
     }
 ]

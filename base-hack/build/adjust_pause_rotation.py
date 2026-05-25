@@ -26,6 +26,9 @@ DEFINITION_TEXT_BOULDERBOUNCE = "#define BOULDERBOUNCE_SPRITE_START "
 DEFINITION_TEXT_HALFMEDAL = "#define HALFMEDAL_SPRITE_START "
 DEFINITION_TEXT_POTIONSPIN = "#define POTIONSPIN_SPRITE_START "
 DEFINITION_TEXT_FOOL = "#define FOOL_SPRITE_START "
+DEFINITION_TEXT_DAY = "#define DAY_SPRITE_START "
+DEFINITION_TEXT_NIGHT = "#define NIGHT_SPRITE_START "
+DEFINITION_TEXT_AP = "#define AP_SPRITE_START "
 ROTATION_TOTAL = 0x1000
 REDUCED_COUNT = 0
 
@@ -60,6 +63,12 @@ for line in lines:
         raw_line = f"{DEFINITION_TEXT_POTIONSPIN}{getBonusSkinOffset(ExtraTextures.PotionSpin0)}"
     if DEFINITION_TEXT_FOOL in raw_line:
         raw_line = f"{DEFINITION_TEXT_FOOL}{getBonusSkinOffset(ExtraTextures.FoolOverlay)}"
+    if DEFINITION_TEXT_DAY in raw_line:
+        raw_line = f"{DEFINITION_TEXT_DAY}{getBonusSkinOffset(ExtraTextures.DayIcon)}"
+    if DEFINITION_TEXT_NIGHT in raw_line:
+        raw_line = f"{DEFINITION_TEXT_NIGHT}{getBonusSkinOffset(ExtraTextures.NightIcon)}"
+    if DEFINITION_TEXT_AP in raw_line:
+        raw_line = f"{DEFINITION_TEXT_AP}{getBonusSkinOffset(ExtraTextures.APIcon)}"
     new_lines.append(raw_line)
 with open(H_FILE, "w") as fh:
     fh.write("\n".join(new_lines))

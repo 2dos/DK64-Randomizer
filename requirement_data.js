@@ -196,8 +196,8 @@ const requirement_data = {
             new Requirement(5, [[Moves.ClimbingCheck, Moves.FactoryTesting]]), // 1 bunch in Testing
             new Requirement(20, [[Moves.ClimbingCheck, Moves.FactoryProduction]]), // 4 bunches in SpinningCore
             new Requirement(10, [[Moves.ClimbingCheck, Moves.Pineapple, Moves.FactoryTesting]]), // 1 balloon in Testing
-            new Requirement(10, [[Moves.ClimbingCheck, Moves.Triangle, Moves.Punch, Moves.FactoryTesting]]), // 10 bananas in RandDUpper
-            new Requirement(10, [[Moves.ClimbingCheck, Moves.Pineapple, Moves.Triangle, Moves.Punch, Moves.FactoryTesting]]), // 1 balloon in RandDUpper
+            new Requirement(10, [[Moves.ClimbingCheck, Moves.Triangle, Moves.FactoryTesting]]), // 10 bananas in RandDUpper
+            new Requirement(10, [[Moves.ClimbingCheck, Moves.Pineapple, Moves.Triangle, Moves.FactoryTesting]]), // 1 balloon in RandDUpper
         ],
     },
     "Galleon": {
@@ -237,7 +237,7 @@ const requirement_data = {
         ],
         "Tiny": [
             new Requirement(9, [[Moves.Moveless]]), // 4 bananas, 5 bananas in GloomyGalleonStart
-            new Requirement(8, [[Moves.Vines]]), // 1 bunch, 3 bananas in GalleonPastVines
+            new Requirement(8, [[Moves.Vines, Moves.CannonCheck]]), // 1 bunch, 3 bananas in GalleonPastVines
             new Requirement(15, [[Moves.Pineapple, Moves.RaisedWater]]), // 3 bunches in GalleonBeyondPineappleGate
             new Requirement(5, [[Moves.RaisedWater, Moves.GalleonLighthouse]]), // 1 bunch in LighthouseSnideAlcove
             new Requirement(10, [[Moves.Diving, Moves.LevelSlam, Moves.GalleonPeanut]]), // 2 bunches in TinyShip
@@ -249,7 +249,7 @@ const requirement_data = {
         ],
         "Chunky": [
             new Requirement(12, [[Moves.Moveless]]), // 1 bunch, 2 bananas, 5 bananas in GloomyGalleonStart
-            new Requirement(3, [[Moves.Vines]]), // 3 bananas in GalleonPastVines
+            new Requirement(3, [[Moves.Vines, Moves.CannonCheck]]), // 3 bananas in GalleonPastVines
             new Requirement(10, [[Moves.Diving, Moves.GalleonLighthouse]]), // 10 bananas in LighthouseUnderwater
             new Requirement(15, [[Moves.Diving, Moves.GalleonPeanut]]), // 3 bunches in ShipyardUnderwater
             new Requirement(10, [[Moves.Pineapple, Moves.RaisedWater]]), // 1 balloon in GalleonBeyondPineappleGate

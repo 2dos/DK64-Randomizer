@@ -364,7 +364,7 @@ int isModelTwoTiedFlag_new(maps map, setup_item * item) {
             int snide_index = getFirstEmptySnideReward(i);
             snide_packet *reward = &snide_rewards[snide_index];
             item->item_type = reward->object_id;
-            item->scale = getModelTwoScale(reward->object_id);
+            item->scale = (float)reward->scale / 100.0f;
         }
     }
     return output;

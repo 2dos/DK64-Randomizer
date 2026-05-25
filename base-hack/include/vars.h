@@ -34,11 +34,13 @@
 // Other
 #define static_expansion_size 0x100
 
-#define COLLISION_LIMIT 76
-#define DEFS_LIMIT 164
+#define COLLISION_LIMIT 78
+#define DEFS_LIMIT 166
 #define ACTOR_LIMIT (345 + NEWACTOR_TERMINATOR)
 
-#define KONG_LOCKED_START 0x2E8
+#define FLAG_ABILITY_CANNON 0x2E8
+#define FLAG_RABBIT_KILLED 0x2E9
+// 0x2EA - 0x2ec (inc) unused
 #define SNOOPDOOR_OPEN 0x2ED
 #define DKJAPESCAGEGB_OPEN 0x2EF
 #define JAPESMOUNTAINSPAWNED 0x2F0
@@ -62,8 +64,8 @@
 
 // Unused 0x297, 0x298
 #define FLAG_LANKY_MUSH_OPEN 0x299
-#define FLAG_ITEM_BELT_0 0x29A
-#define FLAG_ITEM_BELT_1 0x29B
+#define FLAG_ITEM_DAY 0x29A
+#define FLAG_ITEM_NIGHT 0x29B
 #define FLAG_ITEM_INS_0 0x29C
 #define FLAG_ITEM_INS_1 0x29D
 #define FLAG_ITEM_INS_2 0x29E
@@ -95,7 +97,9 @@
 #define FLAG_HELM_MINIGAMES 0x3CC // 0x3CC -> 0x3D5 (inc.)
 #define FLAG_HALF_MEDAL_JAPES_DK 0x3D6 // 0x3D6 -> 0x3FD (inc.) - 40 flags
 #define FLAG_SNIDE_REWARD 0x3FE // 0x3FE -> 0x425 (inc.) - 40 flags
-#define FLAG_ENEMY_KILLED_0 0x426 // 0x426 -> 0x5C6 (inc.) (428 flags)
+#define FLAG_BREAKABLE_DESTROYED 0x426 // 0x426 -> 0x445 (inc.) - 32 flags
+#define FLAG_BALLOON_ITEM 0x446 // 0x446 -> 0x4AD (inc.) - 104 flags
+#define FLAG_ENEMY_KILLED_0 0x4AE // 0x4AE -> 0x6A6 (inc.) (428 flags)
 
 #define MODEL_COUNT 0xED
 

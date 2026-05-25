@@ -47,7 +47,7 @@ typedef enum ENUM_RemovedBarriers {
 } ENUM_RemovedBarriers;
 
 typedef struct FasterChecks {
-	unsigned char piano : 1; // 0x80 (OFFSET 0)
+	unsigned char unk_0 : 1; // 0x80 (OFFSET 0)
 	unsigned char diddy_rnd : 1; // 0x40 
 	unsigned char mech_fish : 1; // 0x20 
 	unsigned char arcade_first_round : 1; // 0x10 
@@ -57,7 +57,7 @@ typedef struct FasterChecks {
 } FasterChecks;
 
 typedef enum ENUM_FasterChecks {
-	/* 0 */ FASTERCHECKS_ENUM_PIANO,
+	/* 0 */ FASTERCHECKS_ENUM_UNK0,
 	/* 1 */ FASTERCHECKS_ENUM_DIDDYRND,
 	/* 2 */ FASTERCHECKS_ENUM_MECHFISH,
 	/* 3 */ FASTERCHECKS_ENUM_ARCADEFIRSTROUND,

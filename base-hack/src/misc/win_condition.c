@@ -163,6 +163,9 @@ int canAccessWinCondition(void) {
         case GOAL_CUSTOMITEM:
             // Custom item requirement - check the specified item count
             return isItemRequirementSatisfied(&Rando.win_condition_extra);
+
+        case GOAL_KILL_THE_RABBIT:
+            return checkFlag(FLAG_RABBIT_KILLED, FLAGTYPE_PERMANENT);
         
         default:
             // For beat K. Rool and other win conditions, return 0 so they use normal key-based spawning
@@ -185,7 +188,7 @@ void checkSeedVictory(void) {
 
 void winRabbitSeed(int song, float volume) {
     playSong(song, volume);
-    beatGame();
+    setPermFlag(FLAG_RABBIT_KILLED);
 }
 
 void safeguardRabbitReward(void) {

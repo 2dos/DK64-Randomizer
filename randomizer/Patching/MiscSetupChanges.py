@@ -17,11 +17,13 @@ from randomizer.Enums.Settings import (
     HardBossesSelected,
     WinConditionComplex,
 )
+from randomizer.Enums.Types import Types
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable
 from randomizer.Patching.Library.Generic import IsDDMSSelected
 from randomizer.Patching.Library.DataTypes import float_to_hex
+from randomizer.Patching.Library.ItemRando import getItemDBEntry
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
 
@@ -163,6 +165,77 @@ def SpeedUpFungiRabbit(ROM_COPY: LocalROM, factor: float = 1.0):
             ROM_COPY.seek(file_start + init_offset + 0xD)
             ROM_COPY.write(int(136 * speed_buff))
 
+def addCrownPreviews(spoiler, ROM_COPY):
+    """Add battle crown previews."""
+    if not spoiler.settings.item_reward_previews:
+        return
+    crown_previews = []
+    for _ in range(10):
+        crown_previews.append({
+            "item": 0x18D,
+            "scale": 0.25
+        })
+    crown_flags = [0x261, 0x262, 0x263, 0x264, 0x265, 0x268, 0x269, 0x266, 0x26A, 0x267]
+    crown_maps = [
+        Maps.JapesCrown,
+        Maps.AztecCrown,
+        Maps.FactoryCrown,
+        Maps.GalleonCrown,
+        Maps.ForestCrown,
+        Maps.CavesCrown,
+        Maps.CastleCrown,
+        Maps.LobbyCrown,
+        Maps.HelmCrown,
+        Maps.SnidesCrown,
+    ]
+    if spoiler.settings.shuffle_items:
+        for item in spoiler.item_assignment:
+            if item.can_have_item and item.old_item == Types.Crown:
+                crown_index = crown_flags.index(item.old_flag)
+                item_type = item.new_type
+                if item_type is None:
+                    item_type = Types.NoItem
+                entry = getItemDBEntry(item_type)
+                index = entry.index_getter(item.new_item)
+                crown_previews[crown_index] = {
+                    "item": entry.model_two_index[index],
+                    "scale": entry.scale
+                }
+    for crown_index_local, cont_map_id in enumerate(crown_maps):
+        file_data = []
+        cont_map_setup_address = getPointerLocation(TableNames.Setups, cont_map_id)
+        ROM_COPY.seek(cont_map_setup_address)
+        model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        file_data.append(model2_count + 1)
+        for _ in range(model2_count * 12):
+            file_data.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
+        crown_data = crown_previews[crown_index_local]
+        file_data.extend([
+            int(float_to_hex(730), 16),
+            int(float_to_hex(267), 16),
+            int(float_to_hex(728), 16),
+            int(float_to_hex(crown_data["scale"]), 16),
+            0x027B0002,
+            0x05800640,
+            0,
+            0,
+            0,
+            0,
+            (crown_data["item"] << 16) | 4,
+            1 << 16,
+        ])
+        mys_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        file_data.append(mys_count)
+        for _ in range(mys_count * 9):
+            file_data.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
+        act_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        file_data.append(act_count)
+        for _ in range(act_count * 14):
+            file_data.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
+        ROM_COPY.seek(cont_map_setup_address)
+        for data in file_data:
+            ROM_COPY.writeMultipleBytes(data, 4)
+        
 
 def getRandomGalleonStarLocation(random) -> tuple:
     """Get location for the DK Star which opens the treasure room."""
@@ -322,6 +395,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
         spoiler.settings.remove_barriers_selected,
         RemovedBarriersSelected.castle_crypt_doors,
     )
+    addCrownPreviews(spoiler, ROM_COPY)
     for cont_map_id in range(216):
         cont_map_setup_address = getPointerLocation(TableNames.Setups, cont_map_id)
         ROM_COPY.seek(cont_map_setup_address)
@@ -470,7 +544,6 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
                 if size_down:
                     ROM_COPY.seek(item_start + 0xC)
                     ROM_COPY.writeMultipleBytes(0, 4)
-
         if spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
             if len(positions) > 0 and len(offsets) > 0:
                 spoiler.settings.random.shuffle(positions)
@@ -596,11 +669,11 @@ def updateRandomSwitches(spoiler, ROM_COPY: LocalROM):
     """Update setup to account for random switch placement."""
     if spoiler.settings.alter_switch_allocation:
         switches = {
-            Kongs.donkey: [0x94, 0x16C, 0x167],
-            Kongs.diddy: [0x93, 0x16B, 0x166],
-            Kongs.lanky: [0x95, 0x16D, 0x168],
-            Kongs.tiny: [0x96, 0x16E, 0x169],
-            Kongs.chunky: [0xB8, 0x16A, 0x165],
+            Kongs.donkey: [0x2A1, 0x94, 0x16C, 0x167],
+            Kongs.diddy: [0x2A4, 0x93, 0x16B, 0x166],
+            Kongs.lanky: [0x2A5, 0x95, 0x16D, 0x168],
+            Kongs.tiny: [0x2A6, 0x96, 0x16E, 0x169],
+            Kongs.chunky: [0x2A8, 0xB8, 0x16A, 0x165],
         }
         all_switches = []
         for kong in switches:
@@ -608,8 +681,6 @@ def updateRandomSwitches(spoiler, ROM_COPY: LocalROM):
         for level in LevelMapTable:
             if level not in (Levels.DKIsles, Levels.HideoutHelm):
                 switch_level = spoiler.settings.switch_allocation[level]
-                if switch_level > 0:
-                    switch_level -= 1
                 acceptable_maps = LevelMapTable[level].copy()
                 if level == Levels.GloomyGalleon:
                     acceptable_maps.append(Maps.GloomyGalleonLobby)  # Galleon lobby internally in the game is galleon, but isn't in rando files. Quick fix for this
@@ -654,6 +725,9 @@ def updateSwitchsanity(spoiler, ROM_COPY: LocalROM):
             SwitchType.PadMove: [0x97, 0xD4, 0x10C, 0x10B, 0x10A],
             SwitchType.MiscActivator: [0x28, 0xC3],
             SwitchType.PushableButton: [None, 0xE3, None, None, 0x70],
+            SwitchType.PunchGrate: [None, 0x29C, None, None, 0x29D],
+            SwitchType.IceWall: [None, 0x29E, None, None, 0x29F],
+            SwitchType.Gong: [None, 0xC3, None, None, 0x2A0],
         }
         switchsanity_maps = []
         # Get list of maps which contain a switch affected by switchsanity, to reduce references to pointer table

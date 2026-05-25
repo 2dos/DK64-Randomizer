@@ -1,6 +1,5 @@
 """Apply Coin Rando changes."""
 
-import math
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM

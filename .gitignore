@@ -158,6 +158,7 @@ settings*.asm
 *.v64
 *.dkp
 *.bin
+!base-hack/minigame/*.bin
 *.bin.gz
 *.raw
 codeOutput.txt
@@ -238,6 +239,9 @@ base-hack/asm/minigames/*/main.asm
 base-hack/asm/minigames/*/objects.asm
 base-hack/instance_scripts_data.json
 base-hack/modelling/*.obj
+tools/dump_lanky.py
+tools/pack_lanky.py
+*.textproto
 *.apworld
 /dk64/
 *.rgba32
@@ -246,8 +250,11 @@ base-hack/modelling/*.obj
 *.ia4
 *.i8
 *.ia8
+base-hack/modelling/*.obj
+dk64_full_item_table.txt
+randomizer/Patching/Library/ScriptOld.py
 batch_spoilers/
+base-hack/src/minigames/rom_cache.txt
 seed.textproto
 tools/dump_lanky.py
 tools/pack_lanky.py
-base-hack/src/minigames/rom_cache.txt

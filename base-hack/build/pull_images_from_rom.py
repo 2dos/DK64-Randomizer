@@ -131,6 +131,8 @@ images = [
     ImageData("w2_pad_left", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDF6, 32, 64, False, False),
     ImageData("w2_pad_right", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDF7, 32, 64, False, False),
     ImageData("gun_face_base", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xC20, 32, 32, False, False),
+    ImageData("ice_palette_0", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x7EA, 4, 4, False, False),
+    ImageData("ice_palette_1", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x802, 4, 4, False, False),
 ]
 
 shop_owners = {
@@ -160,6 +162,8 @@ for x in range(7):
     images.append(ImageData(f"beetle_img_{0xFC3 + x}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xFC3 + x, size >> 1, 1, False, False))
 for x in range(8):
     images.append(ImageData(f"medal_spin_{x}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x1568 + x, 0x2C, 0x2C, False, False))
+for x in range(36):
+    images.append(ImageData(f"facepuzzle_{hex(0xD71 + x)}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xD71 + x, 32, 32, False, False))
 
 if not os.path.exists("assets/hash"):
     os.mkdir("assets/hash")

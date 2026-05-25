@@ -21,5 +21,9 @@
 .definelabel alCSPSetTempo, 0x80738320
 .definelabel getSongTempo, 0x807383B0
 .definelabel handleController, 0x8060AC7C
+.definelabel _alSndpPlay, 0x80737638
+.definelabel handleMusic, 0x80603450
+.definelabel handleMusic2, 0x806025d4
+.definelabel setBaseSlotVolume, 0x8060a4d0
 .definelabel alCSPPlay, 0x80737E50
 .definelabel alEvtqFlushType, 0x8073B490

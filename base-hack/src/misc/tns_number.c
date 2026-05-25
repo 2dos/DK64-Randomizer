@@ -12,17 +12,6 @@ void displayNumberOnObject(int id, int param2, int imageindex, int param4, int s
 	}
 }
 
-void shiftBrokenJapesPortal(void) {
-	if (CurrentMap == MAP_JAPES) {
-		int slot = convertIDToIndex(0x220);
-		model_struct* _model = ObjectModel2Pointer[slot].model_pointer;
-		if (_model) {
-			_model->x = 722.473f;
-			_model->z = 2386.608f;
-		}
-	}
-}
-
 ROM_RODATA_NUM static const unsigned char tns_maps[] = {
 	MAP_JAPES, // Japes
 	MAP_FACTORY, // Factory
@@ -46,32 +35,3 @@ ROM_RODATA_NUM static const unsigned char tns_count[] = {
 	1,
 	1,
 };
-
-void displayNumberOnTns(void) {
-	int in_tns_map = inU8List(CurrentMap, &tns_maps[0], sizeof(tns_maps)) - 1;
-	if (in_tns_map > -1) {
-		int world_index = getWorld(CurrentMap, 0);
-		if (world_index <= 7) {
-			if (checkFlag(tnsportal_flags[world_index], FLAGTYPE_PERMANENT) == 0) {
-				for (int j = 0; j < tns_count[in_tns_map]; j++) {
-					int display_number = TroffNScoffReqArray[world_index] - TroffNScoffTurnedArray[world_index];
-					if (display_number < 0) {
-						display_number = 0;
-					}
-					for (int i = 1; i < 4; i++) {
-						displayNumberOnObject(0x220 + j,i,(((10-i) + display_number % 10) % 10) - 1, 0, 0);
-						display_number /= 10;
-					}
-				}
-			} else {
-				for (int j = 0; j < tns_count[in_tns_map]; j++) {
-					int slot = convertIDToIndex(0x220 + j);
-					model_struct* _model = ObjectModel2Pointer[slot].model_pointer;
-					if (_model) {
-						_model->scale = 0.0f;
-					}
-				}
-			}
-		}
-	}
-}

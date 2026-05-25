@@ -159,11 +159,14 @@ def adjustExits(fh):
         elif map_index == Maps.Fungi:
             default_exit = 27
         default_start = default_exit * 10
+        exit_buffer = 5
         print(f"Rewriting exit file with {exit_count} exits:", map_index, data)
         with open(file_name, "wb") as fg:
             fg.write(data[default_start : default_start + 10])
             fg.write(exit_count.to_bytes(2, "big"))
             fg.write(data)
+            for x in range(exit_buffer * 10):
+                fg.write((0).to_bytes(1, "big"))
         if os.path.exists(file_name):
             if os.path.getsize(file_name) == 0:
                 os.remove(file_name)

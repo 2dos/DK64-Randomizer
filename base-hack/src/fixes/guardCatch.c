@@ -124,7 +124,7 @@ void WarpHandle(void) {
     } else if (inBossMap(CurrentMap, 1, 1, 1)) {
         exitBoss();
     } else {
-        voidWarp();
+        voidWarp(0);
     }
 }
 

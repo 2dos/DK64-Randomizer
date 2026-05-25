@@ -63,6 +63,11 @@ check_map = {
     "gauntletbanana": 46,
     "blueprintbanana": 47,
     "sniderewards": 48,
+    "fungitime": 49,
+    "breakable": 50,
+    "dummyitem_breakable": 51,
+    "balloon": 52,
+    "dummyitem_balloon": 53,
 }
 for item in ItemRandoSelector:
     item["num_val"] = check_map.get(item["value"], 0)

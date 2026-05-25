@@ -107,9 +107,6 @@ class DoorData:
         self.dos_door = dos_door  # We need extra doors in Japes to make Dos' Doors work - this flag is for specifically that
         self.door_type = door_type.copy()  # denotes what types it can be
         self.dk_portal_logic = dk_portal_logic
-        if DoorType.dk_portal in self.door_type and self.logicregion in UNDERWATER_LOGIC_REGIONS:
-            # Disable portals in underwater regions
-            self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
         if DoorType.dk_portal in self.door_type and self.logicregion == Regions.Testing:
             # Disable portals in Block Tower room
             self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
@@ -132,15 +129,19 @@ class DoorData:
     def updateDoorTypeLogic(self, spoiler):
         """Update door type list depending on enabled settings."""
         # If the door has logic that affects whether or not it can be a DK Portal
+        allow_underwater = spoiler.settings.dk_portal_location_rando_v2 in (DKPortalRando.main_only_underwater, DKPortalRando.on_underwater)
         if self.dk_portal_logic is not None:
             if self.dk_portal_logic(spoiler):
-                if self.logicregion not in UNDERWATER_LOGIC_REGIONS and DoorType.dk_portal not in self.door_type:
+                if (self.logicregion not in UNDERWATER_LOGIC_REGIONS or allow_underwater) and DoorType.dk_portal not in self.door_type:
                     self.door_type.append(DoorType.dk_portal)
             else:
                 if DoorType.dk_portal in self.door_type:
                     self.door_type.remove(DoorType.dk_portal)
         if spoiler.settings.dk_portal_location_rando_v2 == DKPortalRando.main_only:
             if self.map not in LEVEL_MAIN_MAPS and DoorType.dk_portal in self.door_type:
+                self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
+        if not allow_underwater:
+            if self.logicregion in UNDERWATER_LOGIC_REGIONS and DoorType.dk_portal in self.door_type:
                 self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
 
     def assignDKPortal(self, spoiler, level):
@@ -430,7 +431,6 @@ door_locations = {
             logicregion=Regions.JungleJapesStart,
             location=[1891.0, 280.0, 879.0, 180.0],
             group=2,
-            door_type=[DoorType.wrinkly],  # Causes the Painting Room Gate's script to run incorrectly when Japes is first entered through this portal.
         ),
         DoorData(
             name="First Tunnel - front left",
@@ -1498,7 +1498,7 @@ door_locations = {
             kong_lst=[Kongs.chunky],
             group=4,
             moveless=False,
-            logic=lambda l: (l.ischunky and l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
+            logic=lambda l: (l.ischunky and l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
             door_type=[DoorType.wrinkly],
         ),
         DoorData(
@@ -1778,7 +1778,7 @@ door_locations = {
             kong_lst=[Kongs.chunky],
             group=6,
             moveless=False,
-            logic=lambda l: (l.chunky and l.punch) or l.CanPhase() or l.generalclips,
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase() or l.generalclips,
             door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(
@@ -2864,6 +2864,7 @@ door_locations = {
             map=Maps.FungiForest,
             logicregion=Regions.FungiForestStart,
             location=[2431.0, 603.0, 2410.0, 0.0],
+            logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
             rx=10,
             group=8,
             door_type=[DoorType.wrinkly],
@@ -2873,6 +2874,7 @@ door_locations = {
             map=Maps.FungiForest,
             logicregion=Regions.FungiForestStart,
             location=[2431.0, 603.0, 2238.0, 180.0],
+            logic=lambda l: l.cannons or (l.isdiddy and l.jetpack) or l.climbing,
             rx=10,
             group=8,
             door_type=[DoorType.wrinkly],

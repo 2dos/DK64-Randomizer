@@ -57,10 +57,20 @@ SWITCHSANITY_MOVES = {
     Switches.AztecQuicksandSwitch: "levelSlam",
     Switches.AztecGuitar: "guitar",
     Switches.AztecBlueprintDoor: "coconut",
+    Switches.FactoryDarkRoomGrate: "punch",
+    Switches.FactoryToyMonsterGrate: "punch",
+    Switches.FactoryArcadeTunnelGrate: "punch",
+    Switches.CavesGoneCave: "punch",
+    Switches.CavesSnideCave: "punch",
+    Switches.CavesBoulderCave: "punch",
+    Switches.CavesLobbyBP: "punch",
+    Switches.CavesLobbyLava: "punch",
+    Switches.AztecGongTower: "charge",
+    Switches.AztecLobbyGong: "charge",
 }
 BASE_REQUIREMENTS = [
     # Moves for all kongs
-    *["can_use_vines", "swim", "oranges", "barrels", "climbing"],
+    *["can_use_vines", "swim", "oranges", "barrels", "climbing", "cannons"],
     *["camera", "shockwave", "scope", "homing", "Slam", "levelSlam"],
     # Moves for single kongs
     *["coconut", "bongos", "grab", "strongKong", "blast"],
@@ -690,7 +700,7 @@ def to_javascript(cb_requirements, special_requirements):
     # The javascript code uses slightly different names for kongs and moves.
     kong_map = {Kongs.donkey: "DK", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky"}
     move_map = {
-        **{"can_use_vines": "Vines", "swim": "Diving", "oranges": "Oranges", "barrels": "Barrels", "climbing": "ClimbingCheck"},
+        **{"can_use_vines": "Vines", "swim": "Diving", "oranges": "Oranges", "barrels": "Barrels", "climbing": "ClimbingCheck", "cannons": "CannonCheck"},
         **{"Slam": "Slam", "levelSlam": "LevelSlam"},
         # Kong-specific
         **{"coconut": "Coconut", "bongos": "Bongos", "grab": "Grab", "strongKong": "Strong", "blast": "Blast"},

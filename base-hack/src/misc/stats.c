@@ -26,8 +26,8 @@ void updatePercentageKongStat(void) {
         }
         if (current_kong <= 4) {
             if (CurrentMap != MAP_MAINMENU) {
-                int old = ReadFile(DATA_IGT_DK + current_kong, 0, 0, FileIndex);
-                SaveToFile(DATA_IGT_DK + current_kong, 0, 0, FileIndex, old + current_kong_diff);
+                int old = ReadFileSimple(DATA_IGT_DK + current_kong);
+                SaveFileSimple(DATA_IGT_DK + current_kong, old + current_kong_diff);
             }
         }
         setKongIgt();
@@ -106,7 +106,7 @@ char* createEndSeqCreditsFile(void) {
     // Calculate total kong IGT
     int total_kong = 0;
     for (int j = 0; j < 5; j++) {
-        total_kong += ReadFile(DATA_IGT_DK + j, 0, 0, FileIndex);
+        total_kong += ReadFileSimple(DATA_IGT_DK + j);
     }
     // Calculate Strings
     for (int i = 0; i < (int)(sizeof(stat_credits_items)/sizeof(dynamic_credits_item)); i++) {
@@ -118,11 +118,11 @@ char* createEndSeqCreditsFile(void) {
             int global_data = stat_credits_items[i].global_data;
             if (stat_credits_items[i].sub_data == 2) {
                 // Stats
-                value = ReadFile(global_data, 0, 0, FileIndex);
+                value = ReadFileSimple(global_data);
                 dk_strFormat(number_text, "%d", value);
             } else if (stat_credits_items[i].sub_data == 1) {
                 // Kong IGT
-                int current_kong = ReadFile(global_data, 0, 0, FileIndex);
+                int current_kong = ReadFileSimple(global_data);
                 float value_f = 0.0f;
                 if (total_kong != 0) {
                     value_f = 100 * current_kong;
