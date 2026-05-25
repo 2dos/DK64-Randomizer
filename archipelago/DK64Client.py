@@ -1639,11 +1639,11 @@ class DK64Context(CommonContext):
         # yield to allow UI to start
         self.client.n64_client = EmuLoaderClient()
         await asyncio.sleep(0)
+        logger.info("(Re)Starting game loop")
         while True:
             await asyncio.sleep(3)
 
             try:
-                logger.info("(Re)Starting game loop")
                 # On restart of game loop, clear all checks, just in case we swapped ROMs
                 # this isn't totally neccessary, but is extra safety against cross-ROM contamination
                 self.reset_checks()
