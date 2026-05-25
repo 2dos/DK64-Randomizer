@@ -825,6 +825,16 @@
   },
 
   /*
+    PauseHintSetting:
+    - Determines how the pause hint screen will interact
+  */
+  "PauseHintSetting": {
+    "normal": 1,
+    "off": 2,
+    "lockout": 3
+  },
+
+  /*
     ProgressiveHintItem:
     - The item required to obtain hints via the progressive hint system.
   */
@@ -1473,7 +1483,11 @@
     "switchsanity_switch_caves_lobby_lava": 306,
     "switchsanity_switch_aztec_gong_tower": 307,
     "switchsanity_switch_aztec_lobby_gong": 308,
-    "ship_location_rando": 309
+    "ship_location_rando": 309,
+    "pause_hints_setting": 310,
+    "hint_door_item": 311,
+    "hint_door_item_count": 312,
+    "pause_hints_lockout_timer": 313
   },
   /*
     SettingsStringDataType:
@@ -1570,6 +1584,7 @@
     "random_starting_region_new": { "obj": "RandomStartingRegion" },
     "cb_medal_behavior_new": { "obj": "CBRequirement" },
     "wrinkly_hints": { "obj": "WrinklyHints" },
+    "pause_hints_setting": { "obj": "PauseHintSetting" },
     "spoiler_hints": { "obj": "SpoilerHints" },
     "starting_kong": { "obj": "Kongs" },
     "remove_barriers_selected": { "obj": "RemovedBarriersSelected" },
@@ -1583,6 +1598,7 @@
     "chunky_phase_slam_req": { "obj": "SlamRequirement" },
     "puzzle_rando_difficulty": { "obj": "PuzzleRando" },
     "progressive_hint_item": { "obj": "ProgressiveHintItem" },
+    "hint_door_item": { "obj": "ProgressiveHintItem" },
     "progressive_hint_algorithm": { "obj": "ProgressiveHintAlgorithm" },
     "starting_moves_list_1": { "obj": "Items" },
     "starting_moves_list_2": { "obj": "Items" },
@@ -1995,6 +2011,9 @@
     "SettingsStringEnum.wrinkly_available": {
       "obj": "SettingsStringDataType.bool"
     },
+    "SettingsStringEnum.pause_hints_setting": {
+      "obj": "PauseHintSetting"
+    },
     "SettingsStringEnum.wrinkly_hints": { "obj": "WrinklyHints" },
     "SettingsStringEnum.wrinkly_location_rando": {
       "obj": "SettingsStringDataType.bool"
@@ -2050,6 +2069,12 @@
     },
     "SettingsStringEnum.progressive_hint_count": {
       "obj": "SettingsStringDataType.u16"
+    },
+    "SettingsStringEnum.hint_door_item_count": {
+      "obj": "SettingsStringDataType.u16"
+    },
+    "SettingsStringEnum.pause_hints_lockout_timer": {
+      "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.random_starting_move_list_selected": {
       "obj": "SettingsStringDataType.list"
@@ -2127,6 +2152,7 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.progressive_hint_item": { "obj": "ProgressiveHintItem" },
+    "SettingsStringEnum.hint_door_item": { "obj": "ProgressiveHintItem" },
     "SettingsStringEnum.progressive_hint_algorithm": { "obj": "ProgressiveHintAlgorithm" },
     "SettingsStringEnum.starting_moves_list_1": {
       "obj": "SettingsStringDataType.list"
@@ -2359,6 +2385,8 @@
     "SettingsStringEnum.troff_text": { "max": 500, "min": 0 },
     "SettingsStringEnum.progressive_hint_text": { "max": 201, "min": 0 },
     "SettingsStringEnum.progressive_hint_count": { "max": 3500, "min": 0 },
+    "SettingsStringEnum.hint_door_item_count": { "max": 3500, "min": 0 },
+    "SettingsStringEnum.pause_hints_lockout_timer": { "max": 255, "min": 0 },
     "SettingsStringEnum.win_condition_count": { "max": 255, "min": 0 }
   }
 }

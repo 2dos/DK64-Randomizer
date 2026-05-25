@@ -458,6 +458,9 @@ class Spoiler:
         if self.settings.progressive_hint_item != ProgressiveHintItem.off:
             settings["Progressive Hint Item"] = self.settings.progressive_hint_item.name
             settings["Progressive Hint Cap"] = int(self.settings.progressive_hint_count)
+        if self.settings.hint_door_item != ProgressiveHintItem.off:
+            settings["Hint Door Item"] = self.settings.hint_door_item.name
+            settings["Hint Door Item Cap"] = int(self.settings.hint_door_item_count)
         settings["Dim Solved Hints"] = self.settings.dim_solved_hints
         settings["No Joke Hints"] = self.settings.serious_hints
         settings["Item Reward Previews"] = self.settings.item_reward_previews

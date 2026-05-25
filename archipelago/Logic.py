@@ -1326,6 +1326,16 @@ class LogicVarHolder:
             raise Exception("Invalid Item for progressive hints")
         return self.ItemCheck(barrier_item, value)
 
+    def canUnlockHintDoor(self, level: int) -> bool:
+        """Determine whether the player can unlock a hint door."""
+        req_item = self.settings.hint_door_item
+        if req_item == ProgressiveHintItem.off:
+            return True
+        barrier_item = getProgHintBarrierItem(req_item)
+        if barrier_item is None:
+            raise Exception("Invalid Item for locking hint doors")
+        return self.ItemCheck(barrier_item, self.settings.hint_door_item_counts_level[level])
+
     def CanMoontail(self):
         """Determine whether the player can perform a Moontail."""
         return self.moontail and self.isdiddy and self.settings.kong_model_diddy == KongModels.default  # Krusha doesnt have the jump height that Diddy has
@@ -1516,33 +1526,11 @@ class LogicVarHolder:
 
     def CanFreeDiddy(self):
         """Check if the cage locking Diddy's vanilla location can be opened."""
-        return self.spoiler.LocationList[Locations.DiddyKong].item == Items.NoItem or self.hasMoveSwitchsanity(Switches.JapesFreeKong)
+        return self.hasMoveSwitchsanity(Switches.JapesFreeKong)
 
     def CanOpenJapesGates(self):
         """Check if we can pick up the item inside Diddy's cage, thus opening the gates in Japes."""
-        caged_item_id = self.spoiler.LocationList[Locations.JapesDonkeyFreeDiddy].item
-        # If it's NoItem, then the gates are already open
-        if caged_item_id == Items.NoItem:
-            return True
-        # If we can't free Diddy, then we can't access the item so we can't reach the item
-        if not self.CanFreeDiddy():
-            return False
-        # If we are the right kong, then we can always get the item
-        if self.IsKong(self.settings.diddy_freeing_kong):
-            return True
-        # If we aren't the right kong, we need free trade to be on
-        elif self.settings.free_trade_items:
-            # During the fill we can't assume this item is accessible quite yet - this could cause errors with placing items in the back of Japes
-            if caged_item_id is None:
-                return False
-            # If it's not a blueprint, free trade gets us the item
-            if ItemList[caged_item_id].type != Types.Blueprint:
-                return True
-            # But if it is a blueprint, we need to check blueprint access (which checks blueprint free trade)
-            else:
-                return self.BlueprintAccess(ItemList[caged_item_id])
-        # If we failed to hit a successful condition, we failed to reach the caged item
-        return False
+        return self.CanFreeDiddy()
 
     def CanFreeTiny(self):
         """Check if kong at Tiny location can be freed."""

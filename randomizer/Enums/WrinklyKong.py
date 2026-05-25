@@ -33,3 +33,4 @@ class WrinklyLocation(IntEnum):
     fungi = auto()
     caves = auto()
     castle = auto()
+    locked = auto()

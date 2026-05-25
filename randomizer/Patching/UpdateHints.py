@@ -1,9 +1,11 @@
 """Update wrinkly hints compressed file."""
 
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, grabText, writeText, CompTextFiles, writeRawFile
+from randomizer.Patching.Library.Generic import getProgHintBarrierItem
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.ASMPatcher import writeItemReferenceFlags
-from randomizer.Enums.Settings import WinConditionComplex
+from randomizer.Enums.Types import BarrierItems
+from randomizer.Enums.Settings import WinConditionComplex, ProgressiveHintItem
 
 MAX_LINES = 3
 MAX_LINE_LENGTH = 400
@@ -237,13 +239,34 @@ def PushHints(spoiler, ROM_COPY: LocalROM):
     """Update the ROM with all hints."""
     hint_arr = []
     short_hint_arr = []
-    for hint_info in spoiler.hintset.hints:
+    for index, hint_info in enumerate(spoiler.hintset.hints):
         if hint_info.hint == "":
             hint_info.hint = "error: missing hint - report this error to the discord"
-        hint_arr.append([hint_info.hint.upper()])
+        if index < 36:
+            hint_arr.append([hint_info.hint.upper()])
+        else:
+            item_name = "SOMETHINGS"
+            if spoiler.settings.hint_door_item != ProgressiveHintItem.off:
+                item = getProgHintBarrierItem(spoiler.settings.hint_door_item)
+                mapping_table = {
+                    BarrierItems.GoldenBanana: "GOLDEN BANANAS",
+                    BarrierItems.Blueprint: "BLUEPRINTS",
+                    BarrierItems.Key: "BOSS KEYS",
+                    BarrierItems.Medal: "BANANA MEDALS",
+                    BarrierItems.Crown: "CROWNS",
+                    BarrierItems.Fairy: "FAIRIES",
+                    BarrierItems.RainbowCoin: "RAINBOW COINS",
+                    BarrierItems.Bean: "BEAN",
+                    BarrierItems.Pearl: "PEARLS",
+                    BarrierItems.ColoredBanana: "COLORED BANANAS",
+                }
+                if item in mapping_table:
+                    item_name = mapping_table[item]
+            hint_arr.append([f"OOOOOOO.... I WILL NOT REVEAL MY PRECIOUS REWARD UNTIL @ {item_name}. GO FIND SOME MORE."])
         if hint_info.short_hint is None:
             hint_info.short_hint = hint_info.hint
-        short_hint_arr.append([hint_info.short_hint.upper()])
+        if index < 36:
+            short_hint_arr.append([hint_info.short_hint.upper()])
     elmer_fudd = spoiler.settings.win_condition_item == WinConditionComplex.kill_the_rabbit
     writeWrinklyHints(ROM_COPY, TableNames.Unknown6, CompTextFiles.Wrinkly & 0x3F, hint_arr, True, elmer_fudd)
     writeFastHints(ROM_COPY, TableNames.Unknown6, CompTextFiles.WrinklyShort & 0x3F, short_hint_arr[1:], True, True, elmer_fudd)

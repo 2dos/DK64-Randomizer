@@ -83,12 +83,13 @@ typedef struct varspace {
 	/* 0x130 */ char unk_130[4];
 	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Only kong displayed, 2 = Both item and kong
 	/* 0x135 */ char warp_to_isles_enabled; // 0 = Off, 1 = Add Warp to Isles option
-	/* 0x136 */ char unk_136[2];
+	/* 0x136 */ unsigned short hint_screen_lockout;
 	/* 0x138 */ char activate_all_bananaports; // 0 = Vanilla, 1 = Most bananaports are activated from the start
 	/* 0x139 */ char dpad_visual_enabled; // 0 = Vanilla, 1 = Visual shown
 	/* 0x13A */ char fast_warp; // 0 = Vanilla, 1 = Use Multiplayer warp
 	/* 0x13B */ char short_bosses; // 0 = Vanilla fights, 1 = Short fights
-	/* 0x13C */ char unk_13c[0x14C - 0x13C];
+	/* 0x13C */ unsigned short hint_door_item_requirement[7];
+	/* 0x14a */ char unk_14a[0x14C - 0x14A];
 	/* 0x14C */ unsigned char lobbies_open_bitfield; // hccf gfaj
 	/* 0x14D */ char unk_14D[3];
 	/* 0x150 */ char ice_traps_damage;
@@ -115,13 +116,16 @@ typedef struct varspace {
 	/* 0x1C7 */ unsigned char switchsanity_gone; // 0 = gone, 1-5 = instrument
 	/* 0x1C8 */ char unk_1cd[0x1DB - 0x1C8];
 	/* 0x1DB */ unsigned char fungi_time_of_day_setting; // See fungi_time enum
-	/* 0x1DC */ char unk_1dc[4];
+	/* 0x1DC */ char unk_1dc;
+  /* 0x1DD */ unsigned char disable_hint_screen;
+  /* 0x1DE */ char unk_1de[2]; 
 	/* 0x1E0 */ FasterChecks faster_checks; // Size: 1
 	/* 0x1E1 */ char unk_1e1;
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
 	/* 0x1E3 */ unsigned char chunky_phase_krool_slam_req; // Slam level required for Chunky Phase
   	/* 0x1E4 */ unsigned char pause_hints_colored;
-	/* 0x1E5 */ char unk_1e5[0x1E8-0x1E5];
+	/* 0x1E5 */ unsigned char wrinkly_door_unlock_item;
+	/* 0x1E6 */ char unk_1e6[0x1E8-0x1E6];
 	/* 0x1E8 */ unsigned char jetman_rgb[3];
 	/* 0x1EB */ unsigned char mermaid_requirement; // Amount of pearls to get the mermaid reward
 	/* 0x1EC */ unsigned char check_shop_flags; // Bitfield of pre-given shops: rfcs 0000. r = Cranky, f = Funky, c = Candy, s = Snide

@@ -1103,11 +1103,11 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=75,
         map_id=Maps.JapesMountain,
-        name="On box in corner of conveyor room (Diddy)",
+        name="In the minecart (Diddy)",
         konglist=[Kongs.diddy],
         region=Regions.Mine,
         vanilla=True,
-        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase(),
+        logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()) and (l.charge or l.monkey_maneuvers),
         locations=[[5, 1.0, 508.2171936035156, 223.6666717529297, 1352.9554443359375]],
     ),
     ColoredBananaGroup(

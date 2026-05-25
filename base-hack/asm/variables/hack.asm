@@ -21,6 +21,7 @@
 .definelabel PercussionPlayed, 0x807FFF30 // u8
 .definelabel PauseText, 0x807FFFE6
 .definelabel ForceStandardAmmo, 0x807FFFE4
+.definelabel PauseBackdropRedness, 0x807FFFE1
 .definelabel KKOPhaseRandoOn, 0x807FFFE0
 .definelabel MultiBunchCount, 0x807FFFDE
 .definelabel QueueHelmTimer, 0x807FFFDD

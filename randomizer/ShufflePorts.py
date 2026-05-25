@@ -174,7 +174,7 @@ REGION_KLUMPS = {
     Regions.Lighthouse: [Regions.LighthouseAboveLadder],
     Regions.MushroomUpperExterior: [Regions.MushroomNightExterior],
     Regions.MushroomLowerExterior: [Regions.MushroomUpperMidExterior, Regions.MushroomBlastLevelExterior, Regions.GiantMushroomArea],
-    Regions.MillArea: [Regions.ForestTopOfMill, Regions.ForestVeryTopOfMill, Regions.ForestMillTopOfNightCage],
+    Regions.MillArea: [Regions.ForestTopOfMill, Regions.ForestVeryTopOfMill, Regions.ForestMillTopOfNightCage, Regions.SnideArea],
     Regions.CrystalCavesMain: [Regions.CavesBlueprintPillar, Regions.CavesBananaportSpire, Regions.CavesBonusCave],
     Regions.CabinArea: [Regions.CavesGGRoom, Regions.CavesRotatingCabinRoof, Regions.CavesSprintCabinRoof],
     Regions.CastleTree: [Regions.CastleTreePastPunch],

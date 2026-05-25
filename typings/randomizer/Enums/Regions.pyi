@@ -294,3 +294,4 @@ class Regions(IntEnum):
     FactoryArcadePole = 291
     MushroomVeryTopExterior = 292
     CabinDoor = 293
+    SnideArea = 294

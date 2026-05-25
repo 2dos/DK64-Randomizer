@@ -17,6 +17,7 @@ from randomizer.Enums.Settings import (
     HardModeSelected,
     HardBossesSelected,
     MiscChangesSelected,
+    PauseHintSetting,
     ProgressiveHintItem,
     PuzzleRando,
     RemovedBarriersSelected,
@@ -300,6 +301,7 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
         BooleanProperties(IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, Levels.DKIsles), 0x10B),  # 5 extra medal handling
         BooleanProperties(spoiler.settings.helm_hurry, 0xAE),  # Helm Hurry
         BooleanProperties(spoiler.settings.wrinkly_available, 0x52),  # Remove Wrinkly Kong Checks
+        BooleanProperties(spoiler.settings.pause_hints_setting == PauseHintSetting.off, 0x1DD),  # Disable Pause Screen Hints
         BooleanProperties(
             spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled),
             0x47,
@@ -334,6 +336,11 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
     ROM_COPY.seek(sav + 0x4E)
     ROM_COPY.write(int(spoiler.settings.coin_door_item))
     ROM_COPY.write(spoiler.settings.coin_door_item_count)
+
+    if spoiler.settings.pause_hints_setting == PauseHintSetting.lockout:
+        ROM_COPY.seek(sav + 0x136)
+        per_hint = (spoiler.settings.pause_hints_lockout_timer * 30) / 4
+        ROM_COPY.writeMultipleBytes(int(per_hint), 2)
 
     kong_free_switches = [
         Switches.JapesFreeKong,
@@ -515,6 +522,18 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
             ROM_COPY.writeMultipleBytes(getHintRequirementBatch(x, count, spoiler.settings.progressive_hint_algorithm), 2)
     ROM_COPY.seek(sav + 0x115)
     ROM_COPY.writeMultipleBytes(count, 1)
+
+    # Item Locked Hint Doors
+    if spoiler.settings.hint_door_item != ProgressiveHintItem.off:
+        count = spoiler.settings.hint_door_item_count
+        ROM_COPY.seek(sav + 0x1E5)
+        ROM_COPY.write(getProgHintBarrierItem(spoiler.settings.hint_door_item))
+        for x in range(7):
+            ROM_COPY.seek(sav + 0x13C + (x * 2))
+            req = spoiler.settings.hint_door_item_counts_level[x]
+            if req > count:
+                req = count
+            ROM_COPY.writeMultipleBytes(req, 2)
 
     # Microhints
     ROM_COPY.seek(sav + 0x102)

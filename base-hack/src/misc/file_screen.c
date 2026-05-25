@@ -1147,6 +1147,7 @@ void startFile(void) {
 		Character = Rando.starting_kong;
 		giveCollectables();
 	}
+	initLockout();
 	initAPCounter();
 	resetProgressive();
 	updateBarrierCounts();

@@ -498,6 +498,12 @@ export enum MusicFilters {
     location = 2,
 }
 
+export enum PauseHintSetting {
+    normal = 1,
+    off = 2,
+    lockout = 3,
+}
+
 export enum ProgressiveHintItem {
     off = 0,
     req_gb = 1,
@@ -997,6 +1003,10 @@ export enum SettingsStringEnum {
     switchsanity_switch_aztec_gong_tower = 307,
     switchsanity_switch_aztec_lobby_gong = 308,
     ship_location_rando = 309,
+    pause_hints_setting = 310,
+    hint_door_item = 311,
+    hint_door_item_count = 312,
+    pause_hints_lockout_timer = 313,
 }
 
 export enum SettingsStringDataType {
@@ -1085,6 +1095,7 @@ export const SettingsMap = {
     'random_starting_region_new': RandomStartingRegion,
     'cb_medal_behavior_new': CBRequirement,
     'wrinkly_hints': WrinklyHints,
+    'pause_hints_setting': PauseHintSetting,
     'spoiler_hints': SpoilerHints,
     'starting_kong': Kongs,
     'remove_barriers_selected': RemovedBarriersSelected,
@@ -1098,6 +1109,7 @@ export const SettingsMap = {
     'chunky_phase_slam_req': SlamRequirement,
     'puzzle_rando_difficulty': PuzzleRando,
     'progressive_hint_item': ProgressiveHintItem,
+    'hint_door_item': ProgressiveHintItem,
     'progressive_hint_algorithm': ProgressiveHintAlgorithm,
     'starting_moves_list_1': Items,
     'starting_moves_list_2': Items,
@@ -1322,6 +1334,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.random_starting_region_new: RandomStartingRegion,
     SettingsStringEnum.win_condition_count: SettingsStringDataType.u8,
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
+    SettingsStringEnum.pause_hints_setting: PauseHintSetting,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,
     SettingsStringEnum.wrinkly_location_rando: SettingsStringDataType.bool,
     SettingsStringEnum.spoiler_hints: SpoilerHints,
@@ -1342,6 +1355,8 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.enable_progressive_hints: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_text: SettingsStringDataType.u8,
     SettingsStringEnum.progressive_hint_count: SettingsStringDataType.u16,
+    SettingsStringEnum.hint_door_item_count: SettingsStringDataType.u16,
+    SettingsStringEnum.pause_hints_lockout_timer: SettingsStringDataType.u8,
     SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
     SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
@@ -1376,6 +1391,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.has_password: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,
+    SettingsStringEnum.hint_door_item: ProgressiveHintItem,
     SettingsStringEnum.progressive_hint_algorithm: ProgressiveHintAlgorithm,
     SettingsStringEnum.starting_moves_list_1: SettingsStringDataType.list,
     SettingsStringEnum.starting_moves_list_count_1: SettingsStringDataType.int16,
@@ -1563,5 +1579,7 @@ export const SettingsStringIntRangeMap = {
     SettingsStringEnum.troff_text: {'max': 500, 'min': 0},
     SettingsStringEnum.progressive_hint_text: {'max': 201, 'min': 0},
     SettingsStringEnum.progressive_hint_count: {'max': 3500, 'min': 0},
+    SettingsStringEnum.hint_door_item_count: {'max': 3500, 'min': 0},
+    SettingsStringEnum.pause_hints_lockout_timer: {'max': 255, 'min': 0},
     SettingsStringEnum.win_condition_count: {'max': 255, 'min': 0},
 }

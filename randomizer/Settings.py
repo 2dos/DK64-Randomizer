@@ -800,6 +800,8 @@ class Settings:
         self.helm_room_bonus_count = HelmBonuses.two
         # self.quality_of_life = None  # Deprecated
         self.wrinkly_available = False
+        self.pause_hints_setting = PauseHintSetting.normal
+        self.pause_hints_lockout_timer = 0
         self.shorten_boss = False
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
@@ -1073,6 +1075,9 @@ class Settings:
         # self.progressive_hint_text = 0  # Deprecated
         self.progressive_hint_count = 0
         self.progressive_hint_algorithm = ProgressiveHintAlgorithm.medium
+        self.hint_door_item = ProgressiveHintItem.off
+        self.hint_door_item_count = 0
+        self.hint_door_item_counts_level = [0] * 7
         # Misc
         self.archipelago = False
 
@@ -2519,6 +2524,17 @@ class Settings:
         elif self.progressive_hint_count > prog_max:
             # Cap at prog max
             self.progressive_hint_count = prog_max
+        #
+        prog_max = prog_hint_max.get(self.hint_door_item, 0)
+        if self.hint_door_item_count <= 0:
+            # Disable progressive hints if hint text is 0, or less than 0
+            self.hint_door_item = ProgressiveHintItem.off
+        elif self.hint_door_item_count > prog_max:
+            # Cap at prog max
+            self.hint_door_item_count = prog_max
+        if self.hint_door_item != ProgressiveHintItem.off:
+            linear_cost_requirements = [int((x + 1) * (self.hint_door_item_count / 7)) for x in range(7)]
+            self.hint_door_item_counts_level = linear_cost_requirements.copy()
 
         self.excluded_bp_locations = []
         if Types.BlueprintBanana in self.shuffled_location_types and self.most_snide_rewards < 40:

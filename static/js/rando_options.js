@@ -1316,9 +1316,73 @@ function update_prog_hint_num_access() {
   }
 }
 
+function update_hint_door_num_access() {
+  const DISABLED_HD_VALUES = [
+    "off",
+  ];
+
+  const hintDoorSelection = document.getElementById("hint_door_item");
+  const hintDoorContainer = document.getElementById("hint_door_item_container");
+  const hintDoorReq = document.getElementById("hint_door_item_count");
+  const disabled = DISABLED_HD_VALUES.includes(hintDoorSelection.value);
+
+  if (disabled) {
+    hintDoorContainer.classList.add("hide-input");
+  } else {
+    hintDoorContainer.classList.remove("hide-input");
+  }
+
+  if (!hintDoorReq.value) {
+    hintDoorReq.value = 1;
+  } else {
+    const item_type = hintDoorSelection.value;
+    const cap = getItemCap(item_type);
+    if (cap !== null) {
+      if (parseInt(hintDoorReq.value) > cap) {
+        hintDoorReq.value = cap;
+      }
+    }
+  }
+}
+
+function update_pause_hint_num_access() {
+  const DISABLED_PAUSE_HINT_VALUES = [
+    "normal",
+    "off",
+  ];
+
+  const pauseHintSelection = document.getElementById("pause_hints_setting");
+  const pauseHintContainer = document.getElementById("pause_hints_container");
+  const pauseHintReq = document.getElementById("pause_hints_lockout_timer");
+  const disabled = DISABLED_PAUSE_HINT_VALUES.includes(pauseHintSelection.value);
+
+  if (disabled) {
+    pauseHintContainer.classList.add("hide-input");
+  } else {
+    pauseHintContainer.classList.remove("hide-input");
+  }
+
+  if (!pauseHintReq.value) {
+    pauseHintReq.value = 1;
+  } else {
+    if (parseInt(pauseHintReq.value) > 255) {
+      pauseHintReq.value = 255;
+    }
+  }
+}
+
 document
   .getElementById("progressive_hint_item")
   .addEventListener("change", update_prog_hint_num_access);
+
+
+document
+  .getElementById("hint_door_item")
+  .addEventListener("change", update_hint_door_num_access);
+
+document
+  .getElementById("pause_hints_setting")
+  .addEventListener("change", update_pause_hint_num_access);
 
 // Validate blocker input on loss of focus
 function max_randomized_blocker() {
@@ -2187,6 +2251,8 @@ function update_ui_states() {
   update_win_con_num_access();
   refreshItemRandoSortable();
   update_prog_hint_num_access();
+  update_hint_door_num_access();
+  update_pause_hint_num_access();
   update_blocker_num_access();
   update_ice_trap_count();
   getTotalItemCounts();

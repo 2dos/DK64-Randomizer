@@ -203,7 +203,7 @@
 | Dynamite box in chimpy charge switch room | 5 | `l.charge or l.CanPhase()` | 
 | Bunches on staircase-shaped boxes | 10 | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()` | 
 | Conveyors | 10 | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()` | 
-| On box in corner of conveyor room (Diddy) | 5 | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()` | 
+| In the minecart (Diddy) | 5 | `(l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()) and (l.charge or l.monkey_maneuvers)` | 
 | In river (Diddy) | 5 | `self.logic = lambda _: True` | 
 | On box by conveyors (Diddy) | 5 | `l.CanSlamSwitch(Levels.JungleJapes, 1)` | 
 | In front of peanut switch (Diddy) | 5 | `self.logic = lambda _: True` | 

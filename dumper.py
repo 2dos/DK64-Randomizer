@@ -682,4 +682,4 @@ for arg in args:
     arg_f = globals()[f"dump_{arg}"]
     arg_f(sys.argv[1])
     print("Dumping complete")
-subprocess.call(["python", "./update_wiki.py"])
+subprocess.call(["python3" if sys.platform.startswith("linux") else "python", "./update_wiki.py"])

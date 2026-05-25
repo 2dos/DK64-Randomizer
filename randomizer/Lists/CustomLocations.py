@@ -2966,9 +2966,8 @@ CustomLocations = {
             y=268,
             z=3682,
             max_size=56,
-            logic_region=Regions.MillArea,
+            logic_region=Regions.SnideArea,
             group=2,
-            logic=lambda l: (l.TimeAccess(Regions.MillArea, Time.Day)),
         ),
         CustomLocation(
             map=Maps.FungiForest,

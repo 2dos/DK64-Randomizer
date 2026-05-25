@@ -159,3 +159,4 @@
 .definelabel isBoulderMakingCollision, 0x8069B85C
 .definelabel cannonCode, 0x8067B4C8
 .definelabel isMakingContactWithWall, 0x806725A0
+.definelabel pauseMenuCode, 0x806A8158

@@ -5404,14 +5404,13 @@ BananaCoinGroupList = {
             map_id=Maps.FungiForest,
             name="In the Snide's area",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.MillArea,
+            region=Regions.SnideArea,
             locations=[
                 [1.0, 3337, 270, 3714],
                 [1.0, 3312, 243, 3603],
                 [1.0, 3287, 235, 3462],
                 [1.0, 3251, 268, 3363],
             ],
-            logic=lambda l: (l.TimeAccess(Regions.MillArea, Time.Day)),
         ),
         BananaCoinGroup(
             group=32,
