@@ -2487,8 +2487,8 @@ class Settings:
             # Cap at prog max
             self.hint_door_item_count = prog_max
         if self.hint_door_item != ProgressiveHintItem.off:
-            hint_requirements = [int((x + 1) * (self.hint_door_item_count / 7)) for x in range(7)]
-            self.hint_door_item_counts_level = hint_requirements.copy()
+            linear_cost_requirements = [int((x + 1) * (self.hint_door_item_count / 7)) for x in range(7)]
+            self.hint_door_item_counts_level = linear_cost_requirements.copy()
 
         self.excluded_bp_locations = []
         if Types.BlueprintBanana in self.shuffled_location_types and self.most_snide_rewards < 40:
