@@ -265,6 +265,137 @@ ROM_RODATA_NUM const char music_types[SONG_COUNT] = {
 	SONGTYPE_BGM,
 	-1,
 };
+typedef struct title_data_struct {
+    unsigned char x;
+    unsigned char y;
+    unsigned char width;
+    unsigned char height;
+} title_data_struct;
+ROM_RODATA_NUM static const title_data_struct title_data[] = {
+    { .x=0, .y=4, .width=39, .height=6 },
+    { .x=0, .y=10, .width=10, .height=5 },
+    { .x=0, .y=15, .width=39, .height=9 },
+    { .x=0, .y=30, .width=39, .height=7 },
+    { .x=0, .y=37, .width=38, .height=1 },
+    { .x=0, .y=38, .width=37, .height=1 },
+    { .x=0, .y=44, .width=23, .height=2 },
+    { .x=0, .y=46, .width=24, .height=4 },
+    { .x=0, .y=50, .width=6, .height=13 },
+    { .x=0, .y=63, .width=24, .height=4 },
+    { .x=0, .y=67, .width=23, .height=1 },
+    { .x=1, .y=2, .width=38, .height=2 },
+    { .x=2, .y=1, .width=37, .height=1 },
+    { .x=2, .y=68, .width=20, .height=1 },
+    { .x=4, .y=0, .width=35, .height=1 },
+    { .x=18, .y=50, .width=6, .height=13 },
+    { .x=29, .y=29, .width=10, .height=1 },
+    { .x=27, .y=45, .width=23, .height=1 },
+    { .x=27, .y=46, .width=24, .height=4 },
+    { .x=27, .y=50, .width=6, .height=13 },
+    { .x=27, .y=63, .width=24, .height=4 },
+    { .x=27, .y=67, .width=23, .height=1 },
+    { .x=28, .y=44, .width=22, .height=1 },
+    { .x=28, .y=68, .width=21, .height=1 },
+    { .x=29, .y=24, .width=10, .height=1 },
+    { .x=30, .y=25, .width=9, .height=4 },
+    { .x=44, .y=0, .width=9, .height=29 },
+    { .x=44, .y=29, .width=10, .height=1 },
+    { .x=44, .y=30, .width=38, .height=7 },
+    { .x=44, .y=62, .width=7, .height=1 },
+    { .x=45, .y=37, .width=37, .height=1 },
+    { .x=45, .y=50, .width=6, .height=12 },
+    { .x=46, .y=38, .width=36, .height=1 },
+    { .x=54, .y=44, .width=22, .height=1 },
+    { .x=54, .y=45, .width=23, .height=1 },
+    { .x=54, .y=46, .width=24, .height=4 },
+    { .x=54, .y=50, .width=6, .height=19 },
+    { .x=72, .y=29, .width=10, .height=1 },
+    { .x=72, .y=50, .width=6, .height=19 },
+    { .x=73, .y=0, .width=9, .height=29 },
+    { .x=81, .y=44, .width=6, .height=9 },
+    { .x=81, .y=53, .width=24, .height=1 },
+    { .x=81, .y=54, .width=23, .height=2 },
+    { .x=81, .y=56, .width=21, .height=1 },
+    { .x=81, .y=57, .width=23, .height=2 },
+    { .x=81, .y=59, .width=6, .height=9 },
+    { .x=81, .y=68, .width=5, .height=1 },
+    { .x=87, .y=0, .width=38, .height=10 },
+    { .x=87, .y=10, .width=9, .height=10 },
+    { .x=87, .y=20, .width=38, .height=7 },
+    { .x=87, .y=27, .width=37, .height=1 },
+    { .x=87, .y=28, .width=36, .height=1 },
+    { .x=87, .y=29, .width=9, .height=10 },
+    { .x=98, .y=59, .width=6, .height=1 },
+    { .x=99, .y=44, .width=6, .height=9 },
+    { .x=99, .y=60, .width=6, .height=8 },
+    { .x=99, .y=68, .width=5, .height=1 },
+    { .x=108, .y=45, .width=24, .height=5 },
+    { .x=108, .y=50, .width=5, .height=3 },
+    { .x=108, .y=53, .width=24, .height=6 },
+    { .x=108, .y=59, .width=6, .height=1 },
+    { .x=108, .y=60, .width=5, .height=2 },
+    { .x=108, .y=62, .width=6, .height=1 },
+    { .x=108, .y=63, .width=24, .height=5 },
+    { .x=109, .y=44, .width=23, .height=1 },
+    { .x=109, .y=68, .width=23, .height=1 },
+    { .x=115, .y=19, .width=10, .height=1 },
+    { .x=116, .y=10, .width=9, .height=9 },
+    { .x=130, .y=0, .width=38, .height=10 },
+    { .x=130, .y=10, .width=9, .height=5 },
+    { .x=130, .y=15, .width=38, .height=9 },
+    { .x=130, .y=24, .width=10, .height=1 },
+    { .x=130, .y=25, .width=9, .height=4 },
+    { .x=130, .y=29, .width=10, .height=1 },
+    { .x=130, .y=30, .width=38, .height=7 },
+    { .x=131, .y=37, .width=37, .height=1 },
+    { .x=132, .y=38, .width=36, .height=1 },
+    { .x=135, .y=44, .width=6, .height=9 },
+    { .x=135, .y=53, .width=24, .height=5 },
+    { .x=136, .y=58, .width=22, .height=1 },
+    { .x=143, .y=59, .width=7, .height=1 },
+    { .x=144, .y=60, .width=6, .height=9 },
+    { .x=153, .y=44, .width=6, .height=9 },
+    { .x=162, .y=45, .width=24, .height=5 },
+    { .x=162, .y=50, .width=6, .height=13 },
+    { .x=162, .y=63, .width=24, .height=5 },
+    { .x=163, .y=44, .width=23, .height=1 },
+    { .x=164, .y=68, .width=22, .height=1 },
+    { .x=173, .y=0, .width=36, .height=1 },
+    { .x=173, .y=1, .width=37, .height=1 },
+    { .x=173, .y=2, .width=38, .height=1 },
+    { .x=173, .y=3, .width=39, .height=7 },
+    { .x=173, .y=10, .width=9, .height=10 },
+    { .x=173, .y=20, .width=39, .height=1 },
+    { .x=173, .y=21, .width=38, .height=2 },
+    { .x=173, .y=23, .width=37, .height=1 },
+    { .x=173, .y=24, .width=35, .height=1 },
+    { .x=173, .y=25, .width=36, .height=1 },
+    { .x=173, .y=26, .width=38, .height=2 },
+    { .x=173, .y=28, .width=39, .height=1 },
+    { .x=173, .y=29, .width=9, .height=10 },
+    { .x=179, .y=62, .width=7, .height=1 },
+    { .x=180, .y=53, .width=5, .height=1 },
+    { .x=180, .y=54, .width=6, .height=8 },
+    { .x=189, .y=45, .width=23, .height=1 },
+    { .x=189, .y=46, .width=24, .height=4 },
+    { .x=189, .y=50, .width=6, .height=13 },
+    { .x=189, .y=63, .width=24, .height=4 },
+    { .x=189, .y=67, .width=23, .height=1 },
+    { .x=190, .y=44, .width=22, .height=1 },
+    { .x=190, .y=68, .width=21, .height=1 },
+    { .x=200, .y=19, .width=12, .height=1 },
+    { .x=202, .y=10, .width=10, .height=9 },
+    { .x=202, .y=29, .width=10, .height=10 },
+    { .x=206, .y=62, .width=7, .height=1 },
+    { .x=207, .y=50, .width=6, .height=12 },
+    { .x=216, .y=44, .width=22, .height=1 },
+    { .x=216, .y=45, .width=23, .height=1 },
+    { .x=216, .y=46, .width=24, .height=4 },
+    { .x=216, .y=50, .width=6, .height=19 },
+    { .x=234, .y=50, .width=6, .height=18 },
+};
+ROM_DATA static char duration_notifier[] = "LAST 30 SECONDS TO WIN";
+ROM_DATA static char win_duration = 30;
 
 ROM_DATA static unsigned char current_song = 0;
 ROM_DATA static char music_init_timer = 2;
@@ -439,8 +570,16 @@ void handleState_title(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
     renderBackdrop(&dl);
     renderParallelogram(&dl, &press_start_backdrop[(int)SelectedDLIndex][0], (short*)&press_start_coords[0]);
-    renderText(&dl, 95, 90, 255, 255, 255, 255, "SUPER HEXAGON");
     renderText(&dl, 110, 200, 255, 255, 255, 255, "PRESS START");
+    dk_strFormat(duration_notifier, "LAST %d SECONDS TO WIN", win_duration);
+    for (int i = 0; i < 2; i++) {
+        int color = (0x100 - i) & 0xFF;
+        int shift = 2 - (i << 1);
+        renderText(&dl, 60 + shift, 135 + shift, color, color, color, 255, "LEFT OR RIGHT: MOVE PLAYER");
+        renderText(&dl, 100 + shift, 150 + shift, color, color, color, 255, "AVOID THE WALLS");
+        renderText(&dl, 75 + shift, 165 + shift, color, color, color, 255, duration_notifier);
+    }
+
     angle_offset = angleAdd(angle_offset, 1.0f);
     if (!warping_out) {
         if (p1PressedButtons & START_BUTTON) {
@@ -450,13 +589,49 @@ void handleState_title(Gfx **dl_ptr) {
             warping_out = 1;
         }
     }
+    gDPPipeSync(dl++);
+	gDPSetCycleType(dl++, G_CYC_FILL);
+	gDPSetRenderMode(dl++, G_RM_NOOP, G_RM_NOOP2);
+	gSPClearGeometryMode(dl++, G_ZBUFFER);
+    dl = setFillColor(dl, 0x00, 0x00, 0x00);
+    for (unsigned int i = 0; i < sizeof(title_data)/sizeof(title_data_struct); i++) {
+        int x0 = 42 + title_data[i].x;
+        int y0 = 42 + title_data[i].y;
+        gDPFillRectangle(dl++, x0, y0, x0 + title_data[i].width, y0 + title_data[i].height);
+    }
+    dl = setFillColor(dl, 0xFF, 0xFF, 0xFF);
+    for (unsigned int i = 0; i < sizeof(title_data)/sizeof(title_data_struct); i++) {
+        int x0 = 40 + title_data[i].x;
+        int y0 = 40 + title_data[i].y;
+        gDPFillRectangle(dl++, x0, y0, x0 + title_data[i].width, y0 + title_data[i].height);
+    }
     *dl_ptr = dl;
 }
+
+typedef struct map_duration_struct {
+    unsigned char map;
+    unsigned char duration;
+} map_duration_struct;
+
+ROM_RODATA_NUM static const map_duration_struct map_durations[] = {
+    { .map = MAP_DKARCADE, .duration = 45 },
+    { .map = MAP_JETPAC, .duration = 45 },
+    { .map = MAP_ARCADE25M_ONLY, .duration = 25 },
+    { .map = MAP_ARCADE50M_ONLY, .duration = 30 },
+    { .map = MAP_ARCADE75M_ONLY, .duration = 35 },
+    { .map = MAP_ARCADE100M_ONLY, .duration = 40 },
+    { .map = MAP_JETPAC_ROCKET, .duration = 30 },
+};
 
 void handleState_init(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
     resetGame();
     gameInit();
+    for (int i = 0; i < 7; i++) {
+        if (CurrentMap == map_durations[i].map) {
+            win_duration = map_durations[i].duration;
+        }
+    }
     game_state = GAMESTATE_MUSICCORRECT_INIT;
     // Play song & get music playing
     setBaseSlotVolume(0, 1.0f);
@@ -719,7 +894,7 @@ void renderTime(Gfx **dl_ptr) {
         hex_colors[COLORSTATE_BACK_0].blue, 4);
     dk_strFormat(&timer_text[0], "%.2f", time_val);
     if (!warping_out) {
-        if (time_val > 30.0f) {
+        if (time_val > win_duration) {
             if (game_state == GAMESTATE_NORMAL) {
                 playSFXWrapper(71);
                 gameVictory();
