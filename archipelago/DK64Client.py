@@ -1638,7 +1638,7 @@ class DK64Context(CommonContext):
             self.new_checks(built_checks_list)
 
         # yield to allow UI to start
-        self.client.n64_client = EmuLoaderClient()
+        self.client.n64_client = EmuLoaderClient(validation_offset=0x759290, validation_value=0x52414D42)
         await asyncio.sleep(0)
         logger.info("(Re)Starting game loop")
         while True:
