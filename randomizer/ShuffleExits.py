@@ -338,13 +338,14 @@ def ReshuffleHintDoorRequirements(settings: Settings) -> None:
     if settings.hard_level_progression:
         # Therefore we need to max out all the doors and correct them later
         settings.hint_door_item_counts_level = [linear_cost_requirements[6]] * 7
-    hint_costs_reordered = [0] * 7
-    for i in range(8):
-        # Aint no hints in Helm
-        if i >= 7 or settings.level_order[i + 1] == Levels.HideoutHelm:
-            continue
-        hint_costs_reordered[settings.level_order[i + 1]] = linear_cost_requirements[i]
-    settings.hint_door_item_counts_level = hint_costs_reordered
+    else:
+        hint_costs_reordered = [0] * 7
+        for i in range(8):
+            # Aint no hints in Helm
+            if i >= 7 or settings.level_order[i + 1] == Levels.HideoutHelm:
+                continue
+            hint_costs_reordered[settings.level_order[i + 1]] = linear_cost_requirements[i]
+        settings.hint_door_item_counts_level = hint_costs_reordered
 
 
 def ShuffleLevelExits(settings: Settings, newLevelOrder: dict = None):
