@@ -18,7 +18,7 @@ import traceback
 import typing
 
 from archipelago.client.common import DK64MemoryMap, create_task_log_exception, check_version, get_ap_version
-from archipelago.client.emu_loader import EmuLoaderClient
+from emu_loader import EmuLoaderClient
 from archipelago.client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
 from archipelago.client.check_flag_locations import location_flag_to_name, location_name_to_flag
 from archipelago.client.ap_check_ids import check_id_to_name, check_names_to_id
@@ -168,7 +168,6 @@ class DK64Client:
     game = None
     auth = None
     memory_pointer = None
-    stop_bizhawk_spam = False
     seed_started = False
     locations_scouted = {}
     recvd_checks = {}
@@ -194,50 +193,6 @@ class DK64Client:
     last_hint_bitfield = [0] * HINT_BITFIELD_SIZE
     sent_hints = set()
     helm_hurry_enabled = False
-
-    # ==================== CONNECTION METHODS ====================
-
-    async def wait_for_pj64(self):
-        """Wait for emulator to connect to the game."""
-        clear_waiting_message = True
-        if not self.stop_bizhawk_spam:
-            logger.info("Waiting on connection to emulator...")
-            self.n64_client = EmuLoaderClient()
-            self.stop_bizhawk_spam = True
-        while True:
-            try:
-                emulator_connected = False
-
-                # Try to connect to any available emulator
-                if not self.n64_client.is_connected():
-                    emulator_connected = self.n64_client.connect()
-                else:
-                    emulator_connected = True
-                valid_rom = False
-                if emulator_connected:
-                    valid_rom = self.n64_client.validate_rom()
-                    logger.info("Emulator connected, validating ROM...")
-
-                while not valid_rom:
-                    if not self.n64_client.is_connected():
-                        emulator_connected = self.n64_client.connect()
-                    if clear_waiting_message:
-                        logger.info("Waiting on valid ROM...")
-                        clear_waiting_message = False
-                    await asyncio.sleep(1.0)
-                    if self.n64_client.is_connected():
-                        valid_rom = self.n64_client.validate_rom()
-
-                self.stop_bizhawk_spam = False
-                logger.info("Emulator Connected to ROM!")
-                return
-            except Exception as e:
-                await asyncio.sleep(1.0)
-                logger.error(f"Error connecting to emulator, retrying... {str(e)}")
-                # Reset connection on error
-                if self.n64_client:
-                    self.n64_client.disconnect()
-                pass
 
     # ==================== GAME STATE METHODS ====================
 
@@ -293,10 +248,10 @@ class DK64Client:
                     "Ares": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Ares",
                 }
 
-                emulator_id = self.n64_client.emulator_info.id.name
+                emulator_id = self.n64_client.emulator_info.id
                 setup_guide = emulator_setup_guides.get(emulator_id, "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators")
 
-                logger.error(f"{self.n64_client.emulator_info.id.name} is not set up correctly! Please follow the appropriate setup guide to ensure the game works!")
+                logger.error(f"{self.n64_client.emulator_info.id} is not set up correctly! Please follow the appropriate setup guide to ensure the game works!")
                 logger.error(f"{setup_guide}")
                 raise Exception("Bad emulator setup")
 
@@ -1673,18 +1628,22 @@ class DK64Context(CommonContext):
                     built_checks_list.append(check)
             self.new_checks(built_checks_list)
 
+        def rom_ap_ready(n64_client):
+            """Return True once the ROM signals Archipelago is ready."""
+            return n64_client.read_u8(DK64MemoryMap.rom_flags) & DK64MemoryMap.rom_flag_ap_status == DK64MemoryMap.rom_flag_ap_status
+
         # yield to allow UI to start
+        self.client.n64_client = EmuLoaderClient(signature_offset=0x759290, signature_value=0x52414D42)
         await asyncio.sleep(0)
+        logger.info("(Re)Starting game loop")
         while True:
             await asyncio.sleep(3)
 
             try:
-                if not self.client.stop_bizhawk_spam:
-                    logger.info("(Re)Starting game loop")
                 # On restart of game loop, clear all checks, just in case we swapped ROMs
                 # this isn't totally neccessary, but is extra safety against cross-ROM contamination
                 self.reset_checks()
-                await self.client.wait_for_pj64()
+                await self.client.n64_client.wait_for_emulator(validate=rom_ap_ready)
 
                 async def disconnect_check():
                     if self.auth and self.client.auth != self.auth:
@@ -1702,7 +1661,6 @@ class DK64Context(CommonContext):
                 if not self.client.recvd_checks:
                     logger.info("No checks received yet, requesting...")
                     await self.sync()
-
                 await asyncio.sleep(1.0)
                 while True:
                     logger.debug("Game loop tick")
