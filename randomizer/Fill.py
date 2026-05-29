@@ -3662,7 +3662,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
             numberOfLevelsProgressed = len(levelsProgressed) - 1
             if Levels.HideoutHelm in levelsProgressed:
                 numberOfLevelsProgressed -= 1
-            settings.hint_door_item_counts_level[nextLevelToBeat] = linear_cost_requirements[len(levelsProgressed) - 1]
+            settings.hint_door_item_counts_level[nextLevelToBeat] = linear_cost_requirements[numberOfLevelsProgressed]
 
         # Determine the Kong, GB, and Move accessibility from this level
         # If we get keys (and thus level progression) from the boss...
