@@ -33,10 +33,6 @@ def validate_dk64_rom(pm, candidate_offset: int) -> bool:
         test_value = pm.read_int(candidate_offset + 0x759290)
         if test_value != 0x52414D42:
             return False
-        rom_flags = pm.read_u8(candidate_offset + (DK64MemoryMap.rom_flags & 0x7FFFFFFF))
-        if not (rom_flags & DK64MemoryMap.rom_flag_ap_status):
-            return False
-        pm.writeBytes(0x807ED6A0, 4, 1)  # Connection validation
         return True
     except Exception:
         return False
