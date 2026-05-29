@@ -27,10 +27,17 @@ from NetUtils import ClientStatus
 from randomizer.Patching.ItemRando import normalize_location_name
 
 
-def validate_dk64_rom(client: EmuLoaderClient) -> bool:
+def validate_dk64_rom(pm, candidate_offset: int) -> bool:
     """Validate that the correct DK64 Archipelago ROM is loaded."""
     try:
-        return (client.read_u8(DK64MemoryMap.rom_flags) & DK64MemoryMap.rom_flag_ap_status) != 0
+        test_value = pm.read_int(candidate_offset + 0x759290)
+        if test_value != 0x52414D42:
+            return False
+        rom_flags = pm.read_u8(candidate_offset + (DK64MemoryMap.rom_flags & 0x7FFFFFFF))
+        if not (rom_flags & DK64MemoryMap.rom_flag_ap_status):
+            return False
+        pm.writeBytes(0x807ED6A0, 4, 1)  # Connection validation
+        return True
     except Exception:
         return False
 
@@ -1638,7 +1645,7 @@ class DK64Context(CommonContext):
             self.new_checks(built_checks_list)
 
         # yield to allow UI to start
-        self.client.n64_client = EmuLoaderClient(validation_offset=0x759290, validation_value=0x52414D42)
+        self.client.n64_client = EmuLoaderClient(validation_func=validate_dk64_rom)
         await asyncio.sleep(0)
         logger.info("(Re)Starting game loop")
         while True:
@@ -1648,7 +1655,7 @@ class DK64Context(CommonContext):
                 # On restart of game loop, clear all checks, just in case we swapped ROMs
                 # this isn't totally neccessary, but is extra safety against cross-ROM contamination
                 self.reset_checks()
-                await self.client.n64_client.wait_for_emulator(validate=validate_dk64_rom)
+                await self.client.n64_client.wait_for_emulator()
 
                 async def disconnect_check():
                     if self.auth and self.client.auth != self.auth:
