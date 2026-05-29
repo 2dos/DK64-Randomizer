@@ -1630,6 +1630,10 @@ class DK64Context(CommonContext):
                     built_checks_list.append(check)
             self.new_checks(built_checks_list)
 
+        def rom_ap_ready(n64_client):
+            """Return True once the ROM signals Archipelago is ready."""
+            return n64_client.read_u8(DK64MemoryMap.rom_flags) & DK64MemoryMap.rom_flag_ap_status == DK64MemoryMap.rom_flag_ap_status
+
         # yield to allow UI to start
         self.client.n64_client = EmuLoaderClient(signature_offset=0x759290, signature_value=0x52414D42)
         await asyncio.sleep(0)
@@ -1641,7 +1645,7 @@ class DK64Context(CommonContext):
                 # On restart of game loop, clear all checks, just in case we swapped ROMs
                 # this isn't totally neccessary, but is extra safety against cross-ROM contamination
                 self.reset_checks()
-                await self.client.n64_client.wait_for_emulator()
+                await self.client.n64_client.wait_for_emulator(validate=rom_ap_ready)
 
                 async def disconnect_check():
                     if self.auth and self.client.auth != self.auth:
@@ -1659,8 +1663,6 @@ class DK64Context(CommonContext):
                 if not self.client.recvd_checks:
                     logger.info("No checks received yet, requesting...")
                     await self.sync()
-                while self.client.n64_client.read_u8(DK64MemoryMap.rom_flags) & DK64MemoryMap.rom_flag_ap_status != DK64MemoryMap.rom_flag_ap_status:
-                    await asyncio.sleep(1.0)
                 await asyncio.sleep(1.0)
                 while True:
                     logger.debug("Game loop tick")
