@@ -27,16 +27,6 @@ from NetUtils import ClientStatus
 from randomizer.Patching.ItemRando import normalize_location_name
 
 
-def validate_dk64_rom(pm, candidate_offset: int) -> bool:
-    """Validate that the correct DK64 Archipelago ROM is loaded."""
-    try:
-        test_value = pm.read_int(candidate_offset + 0x759290)
-        if test_value != 0x52414D42:
-            return False
-        return True
-    except Exception:
-        return False
-
 
 # Constants
 MAX_DELIVER_COUNT = 10000
@@ -1641,7 +1631,7 @@ class DK64Context(CommonContext):
             self.new_checks(built_checks_list)
 
         # yield to allow UI to start
-        self.client.n64_client = EmuLoaderClient(validation_func=validate_dk64_rom)
+        self.client.n64_client = EmuLoaderClient(signature_offset=0x759290, signature_value=0x52414D42)
         await asyncio.sleep(0)
         logger.info("(Re)Starting game loop")
         while True:
@@ -1669,7 +1659,8 @@ class DK64Context(CommonContext):
                 if not self.client.recvd_checks:
                     logger.info("No checks received yet, requesting...")
                     await self.sync()
-
+                while self.client.n64_client.read_u8(DK64MemoryMap.rom_flags) & DK64MemoryMap.rom_flag_ap_status != DK64MemoryMap.rom_flag_ap_status:
+                    await asyncio.sleep(1.0)
                 await asyncio.sleep(1.0)
                 while True:
                     logger.debug("Game loop tick")
