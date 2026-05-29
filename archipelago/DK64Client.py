@@ -26,8 +26,6 @@ from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, se
 from NetUtils import ClientStatus
 from randomizer.Patching.ItemRando import normalize_location_name
 
-
-
 # Constants
 MAX_DELIVER_COUNT = 10000
 MAX_STRING_LENGTH = 0x20
