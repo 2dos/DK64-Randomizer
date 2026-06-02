@@ -220,6 +220,8 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
             settings.BLockerEntryItems = [_BarrierItems(int(i)) for i in fill_result.misc_data.blocker_entry_items]
         if len(fill_result.misc_data.boss_bananas) > 0:
             settings.BossBananas = [int(c) for c in fill_result.misc_data.boss_bananas]
+        if len(fill_result.misc_data.hint_door_item_counts_level) > 0:
+            settings.hint_door_item_counts_level = [int(c) for c in fill_result.misc_data.hint_door_item_counts_level]
 
         # Initialize valid_locations on settings - required for patching functions
         settings.update_valid_locations(spoiler)

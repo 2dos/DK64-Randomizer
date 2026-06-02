@@ -75,7 +75,7 @@ def _to_int(val: Any, default: int = 0) -> int:
 #     - Without this, the setting string conversion will be incomplete
 #
 #  4. Additionally, any changes to fill will need to be accounted for in
-#     the proto -> ProtoSerializer -> ApplyRandomizer roundtrip so that
+#     the proto -> ProtoSerializer -> ProtoAdapter roundtrip so that
 #     patching will match the spoiler log
 #
 #
@@ -913,6 +913,10 @@ def _populate_qol_settings(settings: "Settings", proto: qol_settings_pb2.Quality
     proto.hints.progressive_hints.item = settings.progressive_hint_item
     proto.hints.progressive_hints.count_for_35th_hint = int(settings.progressive_hint_count)
     proto.hints.progressive_hints.hint_curve = settings.progressive_hint_algorithm
+    proto.hints.hint_door_item = settings.hint_door_item
+    proto.hints.hint_door_item_count = int(settings.hint_door_item_count)
+    proto.hints.pause_hints_setting = settings.pause_hints_setting
+    proto.hints.pause_hints_lockout_timer = int(settings.pause_hints_lockout_timer)
 
     proto.hints.spoiler_hints.type = settings.spoiler_hints
     proto.hints.spoiler_hints.include_woth_count = bool(settings.spoiler_include_woth_count)
@@ -943,6 +947,11 @@ def _apply_qol_settings(proto: qol_settings_pb2.QualityOfLifeSettings, settings:
     settings.progressive_hint_item = proto.hints.progressive_hints.item
     settings.progressive_hint_count = int(proto.hints.progressive_hints.count_for_35th_hint)
     settings.progressive_hint_algorithm = proto.hints.progressive_hints.hint_curve
+
+    settings.hint_door_item = proto.hints.hint_door_item
+    settings.hint_door_item_count = int(proto.hints.hint_door_item_count)
+    settings.pause_hints_setting = proto.hints.pause_hints_setting
+    settings.pause_hints_lockout_timer = int(proto.hints.pause_hints_lockout_timer)
 
     settings.spoiler_hints = proto.hints.spoiler_hints.type
     settings.spoiler_include_woth_count = bool(proto.hints.spoiler_hints.include_woth_count)
@@ -1580,6 +1589,12 @@ def _populate_fill_time_settings(spoiler_settings: Any, proto: fill_result_pb2.M
             proto.boss_bananas.append(int(count))
         except (TypeError, ValueError):
             proto.boss_bananas.append(0)
+    # Hint door costs
+    for count in getattr(spoiler_settings, "hint_door_item_counts_level", []) or []:
+        try:
+            proto.hint_door_item_counts_level.append(int(count))
+        except (TypeError, ValueError):
+            proto.hint_door_item_counts_level.append(0)
 
     # Boss shuffle results
     for kong in getattr(spoiler_settings, "boss_kongs", []) or []:

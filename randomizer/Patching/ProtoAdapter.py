@@ -40,37 +40,28 @@ class PatchingLocationDict:
                 def __init__(self, item_id: int, location_id: int) -> None:
                     self.item = item_id if item_id != 0 else None
                     self.location = location_id  # Store location ID for key lookups
-                    # Get location properties from LocationListOriginal if available
+                    self.name = f"Location_{location_id}"
+                    self.type = None
+                    self.kong = None
+                    self.level = None
+                    self.default = None
+                    self.inaccessible = False
+                    self.smallerShopsInaccessible = False
+                    self.tooExpensiveInaccessible = False
                     try:
                         loc_enum = Locations(location_id)
-                        if loc_enum in LocationListOriginal:
-                            orig_loc = LocationListOriginal[loc_enum]
-                            self.name = orig_loc.name
-                            self.type = orig_loc.type
-                            self.kong = orig_loc.kong
-                            self.level = orig_loc.level
-                            self.default = orig_loc.default
-                            self.inaccessible = orig_loc.inaccessible
-                            self.smallerShopsInaccessible = orig_loc.smallerShopsInaccessible
-                            self.tooExpensiveInaccessible = orig_loc.tooExpensiveInaccessible
-                        else:
-                            self.name = f"Location_{location_id}"
-                            self.type = None
-                            self.kong = None
-                            self.level = None
-                            self.default = None
-                            self.inaccessible = False
-                            self.smallerShopsInaccessible = False
-                            self.tooExpensiveInaccessible = False
-                    except:
-                        self.name = f"Location_{location_id}"
-                        self.type = None
-                        self.kong = None
-                        self.level = None
-                        self.default = None
-                        self.inaccessible = False
-                        self.smallerShopsInaccessible = False
-                        self.tooExpensiveInaccessible = False
+                    except ValueError:
+                        return
+                    orig_loc = LocationListOriginal.get(loc_enum)
+                    if orig_loc is not None:
+                        self.name = orig_loc.name
+                        self.type = orig_loc.type
+                        self.kong = orig_loc.kong
+                        self.level = orig_loc.level
+                        self.default = orig_loc.default
+                        self.inaccessible = orig_loc.inaccessible
+                        self.smallerShopsInaccessible = orig_loc.smallerShopsInaccessible
+                        self.tooExpensiveInaccessible = orig_loc.tooExpensiveInaccessible
 
             item_id = self._assignments.assignments.get(int(location_id), 0)
             self._cache[location_id] = LocationObj(item_id, location_id)
@@ -91,17 +82,14 @@ class PatchingLocationDict:
         return len(self._assignments.assignments)
 
     def __getitem__(self, key: Any) -> Any:
-        # Handle multiple key types: int, Locations enum, LocationObj, etc.
+        # Accept int, Locations enum, or our own LocationObj as a key.
         if isinstance(key, int):
             key_int = key
-        elif hasattr(key, "location"):
-            # LocationObj from our own adapter - has .location attribute with the ID
+        elif hasattr(key, "location"):  # LocationObj from our own adapter
             key_int = int(key.location)
-        elif hasattr(key, "value"):
-            # Enum type (Locations has .value attribute)
+        elif hasattr(key, "value"):  # Locations enum
             key_int = int(key.value)
         else:
-            # Try direct conversion
             key_int = int(key)
         return self.get_or_create_location(key_int)
 
@@ -215,7 +203,7 @@ def create_patching_adapter(fill_result: Any, settings: Any) -> Any:
                 for entry in map_entries.entries:
                     try:
                         enemy_enum = Enemies(int(entry.enemy))
-                    except Exception:
+                    except ValueError:
                         enemy_enum = int(entry.enemy)
                     entries_list.append(
                         {
@@ -235,54 +223,48 @@ def create_patching_adapter(fill_result: Any, settings: Any) -> Any:
             for pid in fill_result.misc_data.valid_photo_items:
                 try:
                     valid_photo_items.append(Items(int(pid)))
-                except Exception:
+                except ValueError:
                     valid_photo_items.append(int(pid))
             self.valid_photo_items = valid_photo_items
             self.pkmn_snap_data = list(fill_result.placement_data.pkmn_snap_data)
-            try:
-                self.enemy_location_list = deepcopy(enemy_location_list)
-            except Exception as _e:
-                self.enemy_location_list = {}
+            self.enemy_location_list = deepcopy(enemy_location_list)
 
             # Populate pregiven_items. Prefer the explicit `pregiven_items`
             # field on the proto (populated in both local-rando and AP flows);
             # fall back to reconstructing from PreGivenLocations in
             # location_assignments for old proto files that predate the field.
-            try:
-                fast_start = getattr(settings, "fast_start_beginning_of_game", True)
-                self.first_move_item = None
+            fast_start = getattr(settings, "fast_start_beginning_of_game", True)
+            self.first_move_item = None
 
-                misc = fill_result.misc_data
-                explicit_pregiven = list(misc.pregiven_items) if len(misc.pregiven_items) > 0 else None
-                if explicit_pregiven is not None:
-                    for item_id in explicit_pregiven:
-                        try:
-                            self.pregiven_items.append(Items(int(item_id)))
-                        except Exception:
-                            continue
-                    if misc.HasField("first_move_item"):
-                        try:
-                            self.first_move_item = Items(int(misc.first_move_item))
-                        except Exception:
-                            self.first_move_item = None
-                else:
-                    for loc_id, item_id in fill_result.location_assignments.assignments.items():
-                        try:
-                            loc_enum = Locations(int(loc_id))
-                        except Exception:
-                            continue
-                        if loc_enum not in PreGivenLocations:
-                            continue
-                        try:
-                            item_enum = Items(int(item_id))
-                        except Exception:
-                            continue
-                        if fast_start or loc_enum != Locations.IslesFirstMove:
-                            self.pregiven_items.append(item_enum)
-                        else:
-                            self.first_move_item = item_enum
-            except Exception as _e:
-                self.first_move_item = None
+            misc = fill_result.misc_data
+            explicit_pregiven = list(misc.pregiven_items) if len(misc.pregiven_items) > 0 else None
+            if explicit_pregiven is not None:
+                for item_id in explicit_pregiven:
+                    try:
+                        self.pregiven_items.append(Items(int(item_id)))
+                    except ValueError:
+                        continue
+                if misc.HasField("first_move_item"):
+                    try:
+                        self.first_move_item = Items(int(misc.first_move_item))
+                    except ValueError:
+                        self.first_move_item = None
+            else:
+                for loc_id, item_id in fill_result.location_assignments.assignments.items():
+                    try:
+                        loc_enum = Locations(int(loc_id))
+                    except ValueError:
+                        continue
+                    if loc_enum not in PreGivenLocations:
+                        continue
+                    try:
+                        item_enum = Items(int(item_id))
+                    except ValueError:
+                        continue
+                    if fast_start or loc_enum != Locations.IslesFirstMove:
+                        self.pregiven_items.append(item_enum)
+                    else:
+                        self.first_move_item = item_enum
 
             # Initialize location_references - static mapping of items to reference names
             from randomizer.Fill import ItemReference

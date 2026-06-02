@@ -73,6 +73,13 @@ enum SpoilerHintsType {
     SPOILER_HINTS_TYPE_POINTS = 3;
 }
 
+enum PauseHintSetting {
+    PAUSE_HINT_SETTING_UNSPECIFIED = 0;
+    PAUSE_HINT_SETTING_NORMAL = 1;
+    PAUSE_HINT_SETTING_OFF = 2;
+    PAUSE_HINT_SETTING_LOCKOUT = 3;
+}
+
 enum ExtraHints {
     EXTRA_HINTS_UNSPECIFIED = 0;
     EXTRA_HINTS_OFF = 1;
@@ -117,6 +124,10 @@ message HintSettings {
     bool shop_hints = 6;
     SpoilerHintsConfig spoiler_hints = 7;
     ExtraHints extra_hints = 8;
+    ProgressiveHintItem hint_door_item = 9;
+    int32 hint_door_item_count = 10;
+    PauseHintSetting pause_hints_setting = 11;
+    int32 pause_hints_lockout_timer = 12;
 }
 
 enum ProgressiveHintCurve {
