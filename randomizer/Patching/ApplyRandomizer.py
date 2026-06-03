@@ -316,6 +316,7 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
         BooleanProperties(spoiler.settings.disable_racing_patches, 0x91),  # Disable Racing Patches
         BooleanProperties(spoiler.settings.shops_dont_cost, 0x95),  # Shops don't cost
         BooleanProperties(spoiler.settings.snide_reward_rando, 0x69),  # Snides has rewards
+        BooleanProperties(spoiler.settings.free_trade_cbs, 0x10E),  # FTA CBs
     ]
 
     for prop in boolean_props:

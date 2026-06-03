@@ -58,6 +58,7 @@ from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.CustomLocations import resetCustomLocations
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import SharedMoveLocations, SharedShopLocations
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
@@ -378,7 +379,7 @@ def GetAccessibleLocations(
                 # Check accessibility for collectibles
                 if region.id in spoiler.CollectibleRegions.keys():
                     for collectible in spoiler.CollectibleRegions[region.id]:
-                        if not collectible.added and collectible.kong in (kong, Kongs.any) and collectible.enabled and collectible.logic(spoiler.LogicVariables):
+                        if not collectible.added and (collectible.kong in (kong, Kongs.any) or (spoiler.settings.free_trade_cbs and collectible.type in (Collectibles.banana, Collectibles.bunch))) and collectible.enabled and collectible.logic(spoiler.LogicVariables):
                             spoiler.LogicVariables.AddCollectible(collectible, region.level)
                 # Check accessibility for each location in this region
 

@@ -226,8 +226,6 @@ void checkModelTwoItemCollision(item_collision* obj_collision, int player_index,
                             int obj_type = obj_collision->obj_type;
                             if ((obj_type == 0x11) || (obj_type == 0x8F)) {
                                 standardCrateHandle(player_index, obj_collision->id, player, obj_type);
-                            } else if ((obj_type == 0x2B) || ((obj_type >= 0x205) && (obj_type <= 0x208))) {
-                                bunchHandle(player_index, obj_collision->id, player);
                             } else if (player_count > 1) {
                                 updateItemTotalsHandler(player_index, obj_type, obj_collision->unk13, obj_collision->id);
                             }

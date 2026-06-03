@@ -444,13 +444,15 @@ Gfx *balloonVisHandler2(sprite_struct *sprite, Gfx *dl, short unk2) {
     return dl;
 }
 
+ROM_RODATA_NUM static const unsigned char balloon_actors[] = {114, 91, 113, 112, 111};
+
 void balloonItemHandler(int flag, int state, flagtypes flag_type) {
     if (!checkFlag(flag, flag_type)) {
         // Doesn't have CBs, give them
         setFlag(flag, state, flag_type);
         displayItemOnHUD(0, 0, 0);
         addHelmTime(HHITEM_CB, 10);
-        changeCollectableCount(0, 0, 10);
+        giveCB(inU8List(CurrentActorPointer_0->actorType, &balloon_actors[0], 5) - 1, 10);
     }
     int balloon_offset = *(short*)(0x80688BCE);
     int index = flag - balloon_offset;

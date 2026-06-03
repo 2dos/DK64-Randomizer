@@ -276,7 +276,7 @@ void banana_medal_check(int count, int change, int requirement, int flag, int in
     displayMedalOverlay(flag, &medal_item_table[index]);
 }
 
-void banana_medal_acquisition(int cb_count, int world, int change) {
+void banana_medal_acquisition(int kong, int cb_count, int world, int change) {
     /**
      * @brief Acquire a banana medal, and handle the item acquired from it
      * 
@@ -284,7 +284,6 @@ void banana_medal_acquisition(int cb_count, int world, int change) {
      */
     int requirement = Rando.cb_medal_requirement[world];
     int flag = 0;
-    int kong = getKong(0);
     int offset = (5 * world) + kong;
     if (Rando.include_half_medals) {
         flag = FLAG_HALF_MEDAL_JAPES_DK + offset;
@@ -415,6 +414,8 @@ void forceDance(void) {
     }    
 }
 
+ROM_DATA unsigned char kong_cb_display = KONG_DK;
+
 void getItem(int object_type) {
     /**
      * @brief Item Grab hook, at the point of touching the item, before the flag is set.
@@ -442,10 +443,9 @@ void getItem(int object_type) {
         case 0x206:
         case 0x207:
         case 0x208:
-            if (Rando.tag_anywhere) {
-                hh_item = HHITEM_CB;
-                multiplier = 5;
-            }
+            hh_item = HHITEM_CB;
+            multiplier = 5;
+            populateSFXCache(Banana, 64, 5, 3, 0, 0, 1);
             break;
         case 0x11:
         case 0x8F:
@@ -707,7 +707,17 @@ ROM_DATA static collectable_render CollectableRenderData[] = {
 int isCollectable(int type) {
     int player_index = FocusedPlayerIndex;
     for (int i = 0; i < 5; i++) {
-        if (inShortList(type, &CollectableRenderData[i].cb_single, 3)) {
+        int valid = 0;
+        if (Rando.fta_cbs) {
+            if (type == CollectableRenderData[i].coin) {
+                valid = 1;
+            }
+        } else {
+            if (inShortList(type, &CollectableRenderData[i].cb_single, 3)) {
+                valid = 1;
+            }
+        }
+        if (valid) {
             int kong = CollectableRenderData[i].kong;
             if (Rando.quality_of_life.rambi_enguarde_pickup) {
                 return SwapObject[player_index].player->new_kong == kong + 2;
@@ -748,6 +758,22 @@ void getFlagMappingData(int index, char *level, char *kong) {
     *level = ObjectModel2Pointer[om2_index].unk_8D[1];
     *kong = ObjectModel2Pointer[om2_index].unk_8D[2];
 }
+
+void giveCB(int kong, int count) {
+    kong_cb_display = kong;
+    int world = getWorld(CurrentMap, 1);
+    HUD->item[0].item_count_pointer = &MovesBase[kong].cb_count[world];
+    HUD->item[0].visual_item_count = MovesBase[kong].cb_count[world];
+    MovesBase[kong].cb_count[world] += count;
+    int value = MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
+    banana_medal_acquisition(kong, value, world, count);
+    if (value >= 100) {
+        playSong(SONG_FINALCBGET, 1.0f);
+    }
+}
+
+ROM_RODATA_NUM static const unsigned char kong_singles[] = {0x0D, 0x0A, 0x1E, 0x16, 0x1F};
+ROM_RODATA_NUM static const short kong_bunches[] = {0x002B, 0x0208, 0x0205, 0x0207, 0x0206};
 
 void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index) {
     // rewrite of coincbcollecthandle
@@ -848,17 +874,26 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
             // Single Ammo
             collectable_type = is_homing ? 3 : 2;
             playSound(0x331, 0x7FFF, 63.0f, 1.0f, 5, 0);
+            setPermFlag(0x18B);
+            changeCollectableCount(collectable_type, player, 1);
+            break;
         case 0x0A:
         case 0x0D:
         case 0x16:
         case 0x1E:
         case 0x1F:
             // CB Single
-            if (collectable_type == -1) {
-                collectable_type = 0;
-            }
             setPermFlag(0x18B);
-            changeCollectableCount(collectable_type, player, 1);
+            giveCB(inU8List(obj_type, &kong_singles[0], 5) - 1, 1);
+            break;
+        case 0x2B:
+        case 0x205:
+        case 0x206:
+        case 0x207:
+        case 0x208:
+            // CB Bunch
+            setPermFlag(0x18B);
+            giveCB(inShortList(obj_type, &kong_bunches[0], 5) - 1, 5);
             break;
         case 0x18D:
             // Crown

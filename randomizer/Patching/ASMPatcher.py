@@ -1325,7 +1325,6 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
 
     # Reduce TA Cooldown
     writeFunction(ROM_COPY, 0x806F5BE8, Overlay.Static, "tagAnywhereAmmo", offset_dict)
-    writeFunction(ROM_COPY, 0x806F5A08, Overlay.Static, "tagAnywhereBunch", offset_dict)
     writeFunction(ROM_COPY, 0x806F6CB4, Overlay.Static, "tagAnywhereInit", offset_dict)
     # Fix Origin Warp with TA
     writeFunction(ROM_COPY, 0x8072F1E8, Overlay.Static, "handleGrabbingLock", offset_dict)

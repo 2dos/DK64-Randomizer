@@ -42,15 +42,22 @@ def collisionUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     COLLISION_START = getSym("object_collisions")
     COLLISION_COUNT = getVar("collision_limit")
     COLLISION_SIZE = 0x18
+    cb_objects = [0xD, 0xA, 0x1E, 0x16, 0x1F, 0x2B, 0x208, 0x205, 0x207, 0x206]
 
-    if settings.free_trade_blueprints:
-        for i in range(COLLISION_COUNT):
-            obj_i = COLLISION_START + (i * COLLISION_SIZE)
-            addr = getROMAddress(obj_i + 2, Overlay.Custom, offset_dict)
-            ROM_COPY.seek(addr)
-            collectable_type = int.from_bytes(ROM_COPY.readBytes(1), "big")
-            if collectable_type == 12:  # Blueprint
-                writeValue(ROM_COPY, obj_i + 0xC, Overlay.Custom, 0, offset_dict)
+    for i in range(COLLISION_COUNT):
+        obj_i = COLLISION_START + (i * COLLISION_SIZE)
+        # Get Collectable Type
+        addr = getROMAddress(obj_i + 2, Overlay.Custom, offset_dict)
+        ROM_COPY.seek(addr)
+        collectable_type = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        # Get Object
+        addr = getROMAddress(obj_i, Overlay.Custom, offset_dict)
+        ROM_COPY.seek(addr)
+        object_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        if settings.free_trade_blueprints and collectable_type == 12:  # Blueprint
+            writeValue(ROM_COPY, obj_i + 0xC, Overlay.Custom, 0, offset_dict)
+        elif settings.free_trade_cbs and object_type in cb_objects:
+            writeValue(ROM_COPY, obj_i + 0xC, Overlay.Custom, 0, offset_dict)
     collision_hi = getHi(COLLISION_START)
     collision_lo = getLo(COLLISION_START)
     writeValue(ROM_COPY, 0x806F48D2, Overlay.Static, collision_hi, offset_dict)
@@ -338,8 +345,6 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeFunction(ROM_COPY, 0x806A206C, Overlay.Static, "getDirtPatchSkin", offset_dict)  # Get Dirt Flag Check
     writeFunction(ROM_COPY, 0x80681854, Overlay.Static, "getBonusFlag", offset_dict)  # Get Bonus Flag Check
     writeFunction(ROM_COPY, 0x806C63A8, Overlay.Static, "getBonusFlag", offset_dict)  # Get Bonus Flag Check
-    # Medals
-    writeHook(ROM_COPY, 0x806F9348, Overlay.Static, "banana_medal_handler", offset_dict)
     # Move Decoupling
     # Strong Kong
     writeValue(ROM_COPY, 0x8067ECFC, Overlay.Static, 0x30810002, offset_dict, 4)  # ANDI $at $a0 2

@@ -375,9 +375,11 @@ extern int canPlayerClimb(void);
 extern purchase_struct* getShopData(vendors vendor, int kong, int level);
 extern void initQoL_Cutscenes(void);
 
+extern void populateSFXCache(int sfx, int noise_buffer, int sfx_count, int sfx_delay, int id, int init_delay, int global_sound);
+extern void giveCB(int kong, int count);
+
 extern void giveItem(requirement_item item, int level, int kong, giveItemConfig config);
 extern void giveItemFromPacket(item_packet *packet, int force_text);
-extern void banana_medal_acquisition(int cb_count, int world, int change);
 extern int getItemCount_new(requirement_item item, int level, int kong);
 extern int hasFlagMove(int flag);
 extern void setFlagMove(int flag);
@@ -471,6 +473,7 @@ extern collision_data_struct actor_collisions[ACTOR_LIMIT];
 extern collision_info object_collisions[COLLISION_LIMIT];
 extern unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE];
 extern short mayhem_minecart_size[3];
+extern unsigned char kong_cb_display;
 
 extern mtx_item static_mtx[22];
 extern FastTextStruct hint_pointers[35];

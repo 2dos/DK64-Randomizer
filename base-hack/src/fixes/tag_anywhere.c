@@ -463,24 +463,6 @@ int canTagAnywhere(void) {
             }
         }
     }
-    for (int i = 0; i < LoadedActorCount; i++) {
-        if (LoadedActorArray[i].actor) {
-            int tested_type = LoadedActorArray[i].actor->actorType;
-            if (tested_type == 48) { // Coconut
-                return 0;
-            } else if (tested_type == 36) { // Peanut
-                return 0;
-            } else if (tested_type == 42) { // Grape
-                return 0;
-            } else if (tested_type == 43) { // Feather
-                if (LoadedActorArray[i].actor->control_state == 0) {
-                    return 0;
-                }
-            } else if (tested_type == 38) { // Pineapple
-                return 0;
-            }
-        }
-    }
     if (TBVoidByte & 3) {
         return 0;
     }
@@ -561,6 +543,7 @@ void changeKong(int next_character) {
         updateActorHandStates_gun((actorData*)Player, next_character + 2);
     }
     // Fix HUD memes
+    kong_cb_display = next_character;
     if (CurrentMap == MAP_TROFFNSCOFF) {
         if (!hasTurnedInEnoughCBs()) {
             tag_countdown = 3;
@@ -707,12 +690,13 @@ typedef struct sfx_cache_item {
     /* 0x009 */ unsigned char used;
     /* 0x00A */ unsigned short id;
     /* 0x00C */ unsigned char map_initiated;
+    /* 0x00D */ unsigned char global;
 } sfx_cache_item;
 
 #define SFX_CACHE_SIZE 16
 ROM_DATA static sfx_cache_item sfx_cache_array[SFX_CACHE_SIZE];
 
-void populateSFXCache(int sfx, int noise_buffer, int sfx_count, int sfx_delay, int id, int init_delay) {
+void populateSFXCache(int sfx, int noise_buffer, int sfx_count, int sfx_delay, int id, int init_delay, int global_sound) {
     /**
      * @brief Populate SFX Cache with a sound effect
      * 
@@ -735,6 +719,7 @@ void populateSFXCache(int sfx, int noise_buffer, int sfx_count, int sfx_delay, i
                 sfx_cache_array[i].last_played_f = ObjectModel2Timer;
                 sfx_cache_array[i].map_initiated = CurrentMap;
                 sfx_cache_array[i].used = sfx_count > (init_delay == 0);
+                sfx_cache_array[i].global = global_sound;
                 has_pushed = 1;
             }
         }
@@ -756,7 +741,11 @@ void handleSFXCache(void) {
             sfx_cache_array[i].used = 0;
         }
         if ((sfx_cache_array[i].used) && ((unsigned int)ObjectModel2Timer >= (sfx_cache_array[i].last_played_f + sfx_cache_array[i].sfx_delay))) {
-            playSFXFromObject(sfx_cache_array[i].id,sfx_cache_array[i].sfx,-1,127,0,sfx_cache_array[i].noise_buffer,0.3f);
+            if (sfx_cache_array[i].global) {
+                playSound(sfx_cache_array[i].sfx, 0x7FFF, 63.0f, 1.0f, 5, 0);
+            } else {
+                playSFXFromObject(sfx_cache_array[i].id,sfx_cache_array[i].sfx,-1,127,0,sfx_cache_array[i].noise_buffer,0.3f);
+            }
             sfx_cache_array[i].sfx_count -= 1;
             sfx_cache_array[i].last_played_f = ObjectModel2Timer;
         }
@@ -778,24 +767,8 @@ void tagAnywhereAmmo(int player, int obj, int is_homing) {
     }
     if (player_count == 1) {
         displayItemOnHUD(2 + is_homing,0,0);
-        populateSFXCache(0x331,64,5,4,id,6);
+        populateSFXCache(0x331, 64, 5, 4, id, 6, 0);
     }
-}
-
-void tagAnywhereBunch(int player, int obj, int player_index) {
-    /**
-     * @brief Change collection behaviour of bunches in Tag Anywhere
-     * In order to enable a 1f TA cooldown, we need to change the behaviour of the collection of bunches
-     * Since Bunches spawn 5 singles, the game normally spreads out this delay
-     * This function handles these changes
-     * 
-     */
-    updateItemTotalsHandler(player, obj, player_index, -1);
-    int id = 0;
-    if (LatestCollectedObject) {
-        id = LatestCollectedObject->id;
-    }
-    populateSFXCache(Banana,64,5,3,id,0);
 }
 
 void handleGrabbingLock(void* player, int player_index, int allow_vines) {

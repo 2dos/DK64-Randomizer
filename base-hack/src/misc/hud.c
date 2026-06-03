@@ -364,7 +364,7 @@ void allocateHUD(int reallocate) {
         int item_x = element_def->x;
         int item_y = element_def->y;
         if (i == ITEMID_CB) {
-            element->item_count_pointer = &kong_info->cb_count[world];
+            element->item_count_pointer = &MovesBase[kong_cb_display].cb_count[world];
         } else if (i == ITEMID_COINS) {
             element->item_count_pointer = (short*)&kong_info->unk_05[1];
             if (!inShop(CurrentMap, 0)) {
@@ -401,6 +401,8 @@ const void* getHUDSprite_Complex(item_ids item) {
     int kong = getKong(0);
     if (item == ITEMID_CBS_0) {
         kong = *(int*)(0x80745288); // T&S Hover
+    } else if (item == ITEMID_CB) {
+        kong = kong_cb_display;
     }
     if (kong > 4) {
         return (void*)0;

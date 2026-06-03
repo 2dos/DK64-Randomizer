@@ -63,7 +63,7 @@ typedef struct varspace {
 	/* 0x10B */ char isles_cb_rando; // Gives 5 extra medals and handles appropriately
 	/* 0x10C */ unsigned char starting_map; // 0 = Isles - from escape
 	/* 0x10D */ unsigned char starting_exit;
-	/* 0x10E */ char unk_10e;
+	/* 0x10E */ char fta_cbs;
 	/* 0x10F */ unsigned char remove_oscillation_effects; // Removes water oscillation + Seasick Ship interior rocking
 	/* 0x110 */ char unk_110[2];
 	/* 0x112 */ char rainbow_ammo;
