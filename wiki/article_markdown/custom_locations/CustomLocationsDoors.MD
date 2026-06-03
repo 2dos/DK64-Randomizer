@@ -266,7 +266,7 @@
 | Fungi Forest Lobby | Forest Lobby - Near Entrance | Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Behind Thornvine Barn | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Beanstalk Area Alcove | Boss, Wrinkly | `Events.Night in l.Events` | 
-| Fungi Forest | Near Mills Shop | Boss, Wrinkly | `Events.Day in l.Events` | 
+| Fungi Forest | Near Mills Shop | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Top of Giant Mushroom | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Owl Area Clearing | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | On top of Mill Crusher Output | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 

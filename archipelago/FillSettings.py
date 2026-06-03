@@ -4,6 +4,8 @@ This module contains all the settings configuration logic
 that was previously in the generate_early method.
 """
 
+from random import Random
+
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
@@ -363,18 +365,22 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     settings_dict["no_consumable_upgrades"] = options.remove_bait_potions.value
 
 
-def apply_blocker_settings(settings_dict: dict, options) -> None:
+def generate_blocker(option_value: str, blocker_max: int, random: Random):
+    """Randomize a B. Locker value, either within a range or up to the maximum."""
+    upper_bound = blocker_max if option_value == "random" else int(option_value.split("-")[1]) + 1
+    lower_bound = 0 if option_value == "random" else int(option_value.split("-")[0])
+    return random.randrange(lower_bound, upper_bound)
+
+
+def apply_blocker_settings(settings_dict: dict, options, random_obj) -> None:
     """Apply level blocker settings."""
-    blocker_options = [
-        options.level_blockers.value.get("level_1", 0),
-        options.level_blockers.value.get("level_2", 0),
-        options.level_blockers.value.get("level_3", 0),
-        options.level_blockers.value.get("level_4", 0),
-        options.level_blockers.value.get("level_5", 0),
-        options.level_blockers.value.get("level_6", 0),
-        options.level_blockers.value.get("level_7", 0),
-        options.level_blockers.value.get("level_8", 64),
-    ]
+    blocker_options = [0, 0, 0, 0, 0, 0, 0, 0]
+    for blocker, amount in options.level_blockers.value.items():
+        blocker_number = int(blocker.removeprefix("level_")) - 1
+        try:
+            blocker_options[blocker_number] = int(amount)
+        except (TypeError, ValueError):
+            blocker_options[blocker_number] = generate_blocker(amount, options.blocker_max.value, random_obj)
 
     # Blocker settings - prioritize chaos blockers, then randomization setting
     settings_dict["maximize_helm_blocker"] = options.maximize_level8_blocker.value
@@ -866,7 +872,7 @@ def fillsettings(options, multiworld, random_obj):
 
     # Apply all setting categories
     apply_archipelago_settings(settings_dict, options, multiworld)
-    apply_blocker_settings(settings_dict, options)
+    apply_blocker_settings(settings_dict, options, random_obj)
     apply_item_randomization_settings(settings_dict, options)
     apply_hard_mode_settings(settings_dict, options)
     apply_kong_settings(settings_dict, options)
