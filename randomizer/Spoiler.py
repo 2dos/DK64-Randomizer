@@ -469,18 +469,18 @@ class Spoiler:
         settings["Crown Enemy Rando"] = self.settings.crown_enemy_difficulty.name
         if self.settings.helm_hurry:
             settings["Game Mode"] = "Helm Hurry"
-        humanspoiler["Settings"] = settings
-        humanspoiler["Randomizer Version"] = self.settings.version
-        humanspoiler["Generation Branch"] = self.settings.branch
-        humanspoiler["Cosmetics"] = {}
         if self.settings.spoiler_hints != SpoilerHints.off:
+            humanspoiler["Spoiler Hints"] = self.level_spoiler_human_readable
             humanspoiler["Spoiler Hints Data"] = {}
             for key in self.level_spoiler.keys():
                 if key == "point_spread":
                     humanspoiler["Spoiler Hints Data"][key] = json.dumps(self.level_spoiler[key])
                 else:
                     humanspoiler["Spoiler Hints Data"][key] = self.level_spoiler[key].toCleanJSON()
-            humanspoiler["Spoiler Hints"] = self.level_spoiler_human_readable
+        humanspoiler["Settings"] = settings
+        humanspoiler["Randomizer Version"] = self.settings.version
+        humanspoiler["Generation Branch"] = self.settings.branch
+        humanspoiler["Cosmetics"] = {}
         humanspoiler["Requirements"] = {}
         if self.settings.random_starting_region_new != RandomStartingRegion.off:
             humanspoiler["Game Start"] = {}

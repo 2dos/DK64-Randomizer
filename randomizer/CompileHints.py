@@ -99,6 +99,10 @@ class StartingSpoiler:
                 settings.level_order[7],
                 settings.level_order[8],
             ]
+        if settings.spoiler_include_blocker_info:
+            self.blocker_info = []
+            for level_index, cost in enumerate(settings.BLockerEntryCount):
+                self.blocker_info.append({"item": settings.BLockerEntryItems[level_index], "cost": cost})
 
     def toCleanJSON(self):
         """Convert this object to JSON for the purposes of the spoiler log."""
@@ -2395,6 +2399,41 @@ def compileSpoilerHints(spoiler):
     spoiler.level_spoiler_human_readable["Starting Info"] += " | K. Rool Order: " + ", ".join([boss_names[map_id] for map_id in starting_info.krool_order])
     if spoiler.settings.spoiler_include_level_order:
         spoiler.level_spoiler_human_readable["Starting Info"] += " | Level Order: " + ", ".join([level_list[level] for level in starting_info.level_order])
+    if spoiler.settings.spoiler_include_blocker_info:
+        spoiler.level_spoiler_human_readable["B. Locker Values"] = (
+            "Japes: "
+            + str(starting_info.blocker_info[0]["cost"])
+            + " "
+            + str(starting_info.blocker_info[0]["item"].name)
+            + " | Aztec: "
+            + str(starting_info.blocker_info[1]["cost"])
+            + " "
+            + str(starting_info.blocker_info[1]["item"].name)
+            + " | Factory: "
+            + str(starting_info.blocker_info[2]["cost"])
+            + " "
+            + str(starting_info.blocker_info[2]["item"].name)
+            + " | Galleon: "
+            + str(starting_info.blocker_info[3]["cost"])
+            + " "
+            + str(starting_info.blocker_info[3]["item"].name)
+            + " | Forest: "
+            + str(starting_info.blocker_info[4]["cost"])
+            + " "
+            + str(starting_info.blocker_info[4]["item"].name)
+            + " | Caves: "
+            + str(starting_info.blocker_info[5]["cost"])
+            + " "
+            + str(starting_info.blocker_info[5]["item"].name)
+            + " | Castle: "
+            + str(starting_info.blocker_info[6]["cost"])
+            + " "
+            + str(starting_info.blocker_info[6]["item"].name)
+            + " | Helm: "
+            + str(starting_info.blocker_info[7]["cost"])
+            + " "
+            + str(starting_info.blocker_info[7]["item"].name)
+        )
     if spoiler.settings.spoiler_hints == SpoilerHints.points:
         spoiler.level_spoiler["point_spread"] = {
             "kongs": spoiler.settings.points_list_kongs,
