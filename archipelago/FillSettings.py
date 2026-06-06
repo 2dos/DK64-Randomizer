@@ -288,6 +288,7 @@ def get_default_settings() -> dict:
         "shuffle_shops": False,
         "smaller_shops": False,
         "spoiler_hints": SpoilerHints.off,
+        "spoiler_include_blocker_info": False,
         "spoiler_include_level_order": False,
         "spoiler_include_woth_count": False,
         "starting_keys_list_selected": [],

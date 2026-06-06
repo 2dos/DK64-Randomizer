@@ -813,6 +813,7 @@ class Settings:
         self.dim_solved_hints = False
         self.spoiler_include_woth_count = False
         self.spoiler_include_level_order = False
+        self.spoiler_include_blocker_info = False
         self.serious_hints = False
         self.fast_warps = False
         self.dpad_display = DPadDisplays.off

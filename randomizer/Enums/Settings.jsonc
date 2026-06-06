@@ -1456,7 +1456,8 @@
     "pause_hints_setting": 299,
     "hint_door_item": 300,
     "hint_door_item_count": 301,
-    "pause_hints_lockout_timer": 302
+    "pause_hints_lockout_timer": 302,
+    "spoiler_include_blocker_info": 303
   },
   /*
     SettingsStringDataType:
@@ -2018,6 +2019,9 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.spoiler_include_level_order": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.spoiler_include_blocker_info": {
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.enable_progressive_hints": {

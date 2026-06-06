@@ -1767,6 +1767,9 @@
         "spoiler_include_level_order": {
             "ignore": true
         },
+        "spoiler_include_blocker_info": {
+            "ignore": true
+        },
         "dim_solved_hints": {
             "setting_type": "bool",
             "options": {
