@@ -258,7 +258,7 @@ class Settings:
             self.settings_string = encrypt_settings_string_enum(form_data)
             # logger.warning("Using settings string: " + self.settings_string)
         except Exception as ex:
-            raise Ex.SettingsIncompatibleException("Settings string is in an invalid state. Try applying a preset and recreating your changes.")
+            raise Ex.SettingsIncompatibleException("Settings string is in an invalid state. Try clearing your browser cache and cookies, applying a preset and recreating your changes.")
 
     def apply_form_data(self, form_data):
         """Convert and apply the provided form data to this class."""
@@ -813,6 +813,7 @@ class Settings:
         self.dim_solved_hints = False
         self.spoiler_include_woth_count = False
         self.spoiler_include_level_order = False
+        self.spoiler_include_blocker_info = False
         self.serious_hints = False
         self.fast_warps = False
         self.dpad_display = DPadDisplays.off

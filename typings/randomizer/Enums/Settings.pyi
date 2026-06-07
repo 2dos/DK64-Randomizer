@@ -912,6 +912,7 @@ class SettingsStringEnum(IntEnum):
     hint_door_item = 300
     hint_door_item_count = 301
     pause_hints_lockout_timer = 302
+    spoiler_include_blocker_info = 303
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1245,6 +1246,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.start_with_slam: SettingsStringDataType.bool,
     SettingsStringEnum.spoiler_include_level_order: SettingsStringDataType.bool,
+    SettingsStringEnum.spoiler_include_blocker_info: SettingsStringDataType.bool,
     SettingsStringEnum.enable_progressive_hints: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_text: SettingsStringDataType.u8,
     SettingsStringEnum.progressive_hint_count: SettingsStringDataType.u16,
