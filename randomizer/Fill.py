@@ -2020,6 +2020,8 @@ def PlaceItems(
     """Places items using given algorithm."""
     if ownedItems is None:
         ownedItems = []
+    if itemsToPlace is None or len(itemsToPlace) == 0:
+        return 0
     # Always use random fill with no logic
     if spoiler.settings.logic_type in (LogicType.nologic, LogicType.minimal):
         algorithm = FillAlgorithm.random
@@ -2635,6 +2637,28 @@ def Fill(spoiler: Spoiler) -> None:
         for item in preplaced_items:
             if item in hintItemsToBePlaced:
                 hintItemsToBePlaced.remove(item)
+        # We can do special things if there's exactly 1-to-1 location for each hint (no plandos allowed!)
+        if len(spoiler.settings.valid_locations[Types.Hint]) == 35 and len(hintItemsToBePlaced) == 35:
+            # And if hints can only go on one location type...
+            locationTypes = set()
+            # And if all of those locations are empty...
+            allLocationsAreEmpty = True
+            for loc in spoiler.settings.valid_locations[Types.Hint]:
+                locationTypes.add(spoiler.LocationList[loc].type)
+                allLocationsAreEmpty = allLocationsAreEmpty and spoiler.LocationList[loc].item is None and not spoiler.LocationList[loc].inaccessible
+            if len(locationTypes) == 1 and allLocationsAreEmpty:
+                # And that location type neatly conforms to Kong + Level pairings...
+                # Currently only hints, but Blueprints could be negotiated later if we don't mind Isles Kasplats being empty
+                hintLocationType = locationTypes.pop()
+                if hintLocationType in [Types.Medal, Types.HalfMedal]:  # Skip Types.Hint here cause hints on doors will play nice naturally
+                    # Then we can fill hints more aesthetically by matching the item's Kong and level to the location's Kong and level
+                    for location in spoiler.settings.valid_locations[Types.Hint]:
+                        # Because hints are grouped conveniently like this, we can do some quick math to find what hint item should be placed in this location.
+                        hintToPlace = Items.JapesDonkeyHint
+                        hintToPlace += spoiler.LocationList[location].kong
+                        hintToPlace += 5 * spoiler.LocationList[location].level
+                        spoiler.LocationList[location].PlaceItem(spoiler, hintToPlace)
+                    hintItemsToBePlaced = []  # Clear this so we skip the normal fill
         hintsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, hintItemsToBePlaced, [])
         if hintsUnplaced > 0:
             raise Ex.ItemPlacementException(f"Unable to find all locations during the fill. Couldn't place {hintsUnplaced} hints")
@@ -3449,16 +3473,6 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
     settings.owned_kongs_by_level = ownedKongs
     settings.owned_moves_by_level = ownedMoves
 
-    # Alter the hint costs to match the expected level order progression based on the order we entered levels
-    if settings.hint_door_item != ProgressiveHintItem.off:
-        hint_costs_reordered = [0] * 7
-        for i in range(8):
-            # Aint no hints in Helm
-            if i >= 7 or settings.level_order[i + 1] == Levels.HideoutHelm:
-                continue
-            hint_costs_reordered[settings.level_order[i + 1]] = settings.hint_door_item_counts_level[i]
-        settings.hint_door_item_counts_level = hint_costs_reordered
-
 
 def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     """Set level progression requirements based on a random path of accessible levels."""
@@ -3491,6 +3505,9 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     if settings.hard_blockers:
         BLOCKER_MIN = 0.6
         BLOCKER_MAX = 0.95
+
+    # Prep the costs of what will be the hint door costs (if they are locked by items)
+    linear_cost_requirements = [int((x + 1) * (settings.hint_door_item_count / 7)) for x in range(7)]
 
     # Before doing anything else, determine how many GBs we can access without entering any levels
     # This is likely to be 1, but depending on the settings there are pretty good odds more are available
@@ -3639,6 +3656,13 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
                 assorted_random_values.sort()
                 settings.BLockerEntryCount[nextLevelToBeat] = min(progression_roll, assorted_random_values[len(levelsProgressed)])
         levelsProgressed.append(nextLevelToBeat)
+
+        # If our hint doors are locked by items, we can reduce the cost of this level's doors now (assuming it has doors)
+        if settings.hint_door_item != ProgressiveHintItem.off and nextLevelToBeat != Levels.HideoutHelm:
+            numberOfLevelsProgressed = len(levelsProgressed) - 1
+            if Levels.HideoutHelm in levelsProgressed:
+                numberOfLevelsProgressed -= 1
+            settings.hint_door_item_counts_level[nextLevelToBeat] = linear_cost_requirements[numberOfLevelsProgressed]
 
         # Determine the Kong, GB, and Move accessibility from this level
         # If we get keys (and thus level progression) from the boss...
@@ -3872,17 +3896,6 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
             ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs, ownedMoves)
         settings.owned_kongs_by_level = ownedKongs
         settings.owned_moves_by_level = ownedMoves
-
-    # Alter the hint costs to match the expected level order progression based on the order we entered levels
-    # In CLO it's less clear cut, but this should generally match B. Locker progression.
-    if settings.hint_door_item != ProgressiveHintItem.off:
-        hint_costs_reordered = [0] * 7
-        for i in range(8):
-            # Aint no hints in Helm
-            if i >= 7 or levelsProgressed[i] == Levels.HideoutHelm:
-                continue
-            hint_costs_reordered[levelsProgressed[i]] = settings.hint_door_item_counts_level[i]
-        settings.hint_door_item_counts_level = hint_costs_reordered
 
     # After setting all the progression, make sure we did it right
     # Technically the coin logic check after this will cover it, but this will help identify issues better

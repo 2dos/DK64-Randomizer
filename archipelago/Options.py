@@ -115,7 +115,6 @@ class GoalQuantity(OptionDict):
         accumulated_errors = []
 
         for key, value in self.value.items():
-            print(f"Checking {key}: {value}")
             max = self.max_values_dict[key]
             if isinstance(value, numbers.Integral):
                 value = int(value)
@@ -140,7 +139,6 @@ class GoalQuantity(OptionDict):
                             accumulated_errors.append(f"{key}: Upper edge of range {bound} is higher than maximum allowed value {max}")
                         elif bound < self.min:
                             accumulated_errors.append(f"{key}: Lower edge of range {bound} is lower than minimum allowed value {self.min}")
-        print("\n".join(accumulated_errors))
         if accumulated_errors:
             raise OptionError("Found errors with option goal_quantity:\n" + "\n".join(accumulated_errors))
 
@@ -629,6 +627,7 @@ class LevelBlockers(OptionDict):
 
     min = 0
     max = 201
+    allowed_keys = ["level_1", "level_2", "level_3", "level_4", "level_5", "level_6", "level_7", "level_8"]
     default = {
         "level_1": 0,
         "level_2": 0,
@@ -639,6 +638,43 @@ class LevelBlockers(OptionDict):
         "level_7": 0,
         "level_8": 64,
     }
+
+    def verify(self, world: type[World], player_name: str, plando_options: PlandoOptions) -> None:
+        """Verify B. Lockers."""
+        super(LevelBlockers, self).verify(world, player_name, plando_options)
+
+        for key in self.value.keys():
+            if key not in self.allowed_keys:
+                raise OptionError(f"{key} is not a valid key for level_blockers.")
+
+        accumulated_errors = []
+
+        for key, value in self.value.items():
+            if isinstance(value, numbers.Integral):
+                value = int(value)
+                if value > self.max:
+                    accumulated_errors.append(f"{key}: {value} is higher than maximum allowed value {self.max}")
+                elif value < self.min:
+                    accumulated_errors.append(f"{key}: {value} is lower than minimum allowed value {self.min}")
+            else:
+                if value == "random":
+                    continue
+                split = value.split("-")
+                if len(split) != 2:
+                    accumulated_errors.append(f'{key}: {value} is not an integer or range, nor is it "random".')
+                else:
+                    for bound in split:
+                        try:
+                            bound = int(bound)
+                        except (ValueError, TypeError):
+                            accumulated_errors.append(f'{key}: {value} is not an integer or range, nor is it "random".')
+                            continue
+                        if bound > self.max:
+                            accumulated_errors.append(f"{key}: Upper edge of range {bound} is higher than maximum allowed value {self.max}")
+                        elif bound < self.min:
+                            accumulated_errors.append(f"{key}: Lower edge of range {bound} is lower than minimum allowed value {self.min}")
+        if accumulated_errors:
+            raise OptionError("Found errors with option level_blockers:\n" + "\n".join(accumulated_errors))
 
 
 class BouldersInPool(Toggle):
