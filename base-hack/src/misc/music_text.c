@@ -63,20 +63,20 @@ void SpeedUpMusic(void) {
     }
     win_conditions win_con = Rando.win_condition;
     if (Rando.win_condition_spawns_ship) {
-        if (!canAccessWinCondition()) {
+        if (!canAccessWinCondition(Rando.win_condition, &Rando.win_condition_extra)) {
             return;
         }
     } else if (win_con == GOAL_CUSTOMITEM)  {
-        int win_con_count = Rando.win_condition_extra.count;
+        int win_con_count = Rando.win_condition_extra.item_req.count;
         if (win_con_count < 2) {
             // Doesn't work for 1-item win conditions
             return;
         }
-        int item_count = getItemCountReq(Rando.win_condition_extra.item);
+        int item_count = getItemCountReq(Rando.win_condition_extra.item_req.item);
         if (item_count != (win_con_count - 1)) {
             return;
         }
-    } else{
+    } else {
         return;
     }
     for (int i = 0; i < 4; i++) {

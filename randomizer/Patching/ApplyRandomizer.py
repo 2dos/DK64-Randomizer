@@ -2,6 +2,7 @@
 
 import json
 import os
+from enum import IntEnum
 from datetime import datetime as Datetime
 from datetime import timezone
 from functools import cached_property
@@ -78,7 +79,7 @@ from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRe
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.Library.Scripts import addNewScript, replaceScriptLines, setProgSlamStrength
-from randomizer.Patching.Library.Generic import setItemReferenceName, IsItemSelected, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected
+from randomizer.Patching.Library.Generic import setItemReferenceName, IsItemSelected, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected, ReqItems
 from randomizer.Patching.Library.Assets import CompTextFiles, ItemPreview
 from randomizer.Patching.MiscSetupChanges import (
     randomize_setup,
@@ -121,6 +122,17 @@ class BooleanProperties:
         self.offset = offset
         self.target = target
 
+class WinConROM(IntEnum):
+    """Enum of all win con types."""
+    # If it's not listed here, then it's been reworked into some other win con type under the hood
+    krool = 0
+    krem_kapture = 2
+    custom_item = 3
+    rap = 4
+    tasks = 8
+    tasks_nopause = 9
+    flag = 10
+    reqitem_solo = 11
 
 def writeMultiselector(
     enabled_selections: list,
@@ -588,84 +600,144 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
     # Win Condition
     win_con_table = {
         WinConditionComplex.beat_krool: {
-            "index": 0,
+            "index": WinConROM.krool,
         },
         WinConditionComplex.get_key8: {
-            "index": 1,
+            "index": WinConROM.flag,
+            "item": ReqItems.Key,
+            "level": 7
         },
         WinConditionComplex.get_keys_3_and_8: {
-            "index": 7,
+            "index": WinConROM.tasks_nopause,
+            "tasks": [
+                {
+                    "index": WinConROM.reqitem_solo,
+                    "item": ReqItems.Key,
+                    "level": 2
+                },
+                {
+                    "index": WinConROM.reqitem_solo,
+                    "item": ReqItems.Key,
+                    "level": 7
+                },
+            ]
         },
         WinConditionComplex.krem_kapture: {
-            "index": 2,
+            "index": WinConROM.krem_kapture,
         },
         WinConditionComplex.dk_rap_items: {
-            "index": 4,
+            "index": WinConROM.rap,
         },
         WinConditionComplex.krools_challenge: {
-            "index": 5,
+            "index": WinConROM.tasks_nopause,
+            "tasks": [
+                {
+                    "index": WinConROM.custom_item,
+                    "item": ReqItems.Key,
+                    "count": 8
+                },
+                {
+                    "index": WinConROM.custom_item,
+                    "item": ReqItems.Bosses,
+                    "count": 7
+                },
+                {
+                    "index": WinConROM.custom_item,
+                    "item": ReqItems.Blueprint,
+                    "count": 40
+                },
+                {
+                    "index": WinConROM.custom_item,
+                    "item": ReqItems.BonusesNoHelm,
+                    "count": 43
+                },
+            ]
         },
         WinConditionComplex.kill_the_rabbit: {
-            "index": 6,
+            "index": WinConROM.flag,
+            "flag": 0x2E9  # Rabbit Killed Flag
         },
         WinConditionComplex.req_bean: {
-            "index": 3,
-            "item": 0xA,
+            "index": WinConROM.custom_item,
+            "item": ReqItems.Bean,
         },
         WinConditionComplex.req_bp: {
-            "index": 3,
-            "item": 4,
+            "index": WinConROM.custom_item,
+            "item": ReqItems.Blueprint,
         },
         WinConditionComplex.req_companycoins: {
-            "index": 3,
-            "item": 8,
+            "index": WinConROM.custom_item,
+            "item": ReqItems.CompanyCoin,
         },
         WinConditionComplex.req_crown: {
-            "index": 3,
-            "item": 7,
+            "index": WinConROM.custom_item,
+            "item": ReqItems.Crown,
         },
         WinConditionComplex.req_fairy: {
-            "index": 3,
-            "item": 5,
+            "index": WinConROM.custom_item,
+            "item": ReqItems.Fairy,
         },
         WinConditionComplex.req_gb: {
-            "index": 3,
-            "item": 3,
+            "index": WinConROM.custom_item,
+            "item": ReqItems.GoldenBanana,
         },
         WinConditionComplex.req_pearl: {
-            "index": 3,
-            "item": 0xB,
+            "index": WinConROM.custom_item,
+            "item": ReqItems.Pearl,
         },
         WinConditionComplex.req_key: {
-            "index": 3,
-            "item": 6,
+            "index": WinConROM.custom_item,
+            "item": ReqItems.Key,
         },
         WinConditionComplex.req_medal: {
-            "index": 3,
-            "item": 9,
+            "index": WinConROM.custom_item,
+            "item": ReqItems.Medal,
         },
         WinConditionComplex.req_rainbowcoin: {
-            "index": 3,
-            "item": 0xC,
+            "index": WinConROM.custom_item,
+            "item": ReqItems.RainbowCoin,
         },
         WinConditionComplex.req_bonuses: {
-            "index": 3,
-            "item": 0x11,
+            "index": WinConROM.custom_item,
+            "item": ReqItems.Bonuses,
         },
         WinConditionComplex.req_bosses: {
-            "index": 3,
-            "item": 0x10,
+            "index": WinConROM.custom_item,
+            "item": ReqItems.Bosses,
         },
     }
     win_con = spoiler.settings.win_condition_item
     win_con_data = win_con_table.get(win_con, None)
     if win_con_data is not None:
+        win_con_index = win_con_data["index"]
         ROM_COPY.seek(sav + 0x11D)
-        ROM_COPY.write(win_con_data["index"])
-        if "item" in win_con_data:
+        ROM_COPY.write(win_con_index)
+        if win_con_index == WinConROM.flag:
+            ROM_COPY.seek(sav + 0xC0)
+            ROM_COPY.writeMultipleBytes(win_con_data["flag"], 2)
+        elif win_con_index == WinConROM.reqitem_solo:  # Req Item Solo
             ROM_COPY.seek(sav + 0xC0)
             ROM_COPY.write(win_con_data["item"])
-            ROM_COPY.write(spoiler.settings.win_condition_count)
+            ROM_COPY.write(win_con_data["level"])
+        elif win_con_index in (WinConROM.tasks, WinConROM.tasks_nopause):
+            for task_index, task in enumerate(win_con_data["tasks"]):
+                ROM_COPY.seek(sav + (4 * task_index))
+                ROM_COPY.write(1)  # Task active
+                task_type = task["index"]
+                ROM_COPY.write(task_type)
+                if task_type == WinConROM.flag:
+                    ROM_COPY.writeMultipleBytes(task["flag"], 2)
+                elif task_type == WinConROM.reqitem_solo:
+                    ROM_COPY.write(task["item"])
+                    ROM_COPY.write(task["level"])
+                elif "item" in task:
+                    ROM_COPY.write(task["item"])
+                    ROM_COPY.write(task["count"])
+        else:
+            if "item" in win_con_data:  # Custom Item
+                ROM_COPY.seek(sav + 0xC0)
+                ROM_COPY.write(win_con_data["item"])
+                ROM_COPY.write(spoiler.settings.win_condition_count)
 
     # Fungi Time of Day
     fungi_times = (FungiTimeSetting.day, FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)

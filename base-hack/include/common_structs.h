@@ -1795,6 +1795,23 @@ typedef struct ItemRequirement {
 	/* 0x001 */ unsigned char count;
 } ItemRequirement;
 
+typedef struct ItemRequirementSolo {
+	/* 0x000 */ unsigned char item;
+	/* 0x001 */ unsigned char level;
+} ItemRequirementSolo;
+
+typedef union RequirementArg {
+	ItemRequirement item_req;
+	short flag;
+	ItemRequirementSolo item_req_solo;
+} RequirementArg;
+
+typedef struct TaskRequirement {
+	/* 0x000 */ unsigned char active;
+	/* 0x001 */ unsigned char goal_type;
+	/* 0x002 */ RequirementArg req;
+} TaskRequirement;
+
 typedef struct LocationVisuals {
 	unsigned char crowns : 1; // 0x80
 	unsigned char boss_doors : 1; // 0x40

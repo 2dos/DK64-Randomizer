@@ -318,6 +318,10 @@ typedef enum win_conditions {
 	/* 0x005 */ GOAL_KROOLS_CHALLENGE,
 	/* 0x006 */ GOAL_KILL_THE_RABBIT,
 	/* 0x007 */ GOAL_KEYS_3_AND_8,
+	/* 0x008 */ GOAL_TASKS,
+	/* 0x009 */ GOAL_TASKSNOPAUSE,
+	/* 0x00A */ GOAL_FLAG,
+	/* 0x00B */ GOAL_REQITEM,
 } win_conditions;
 
 typedef enum master_types_list {

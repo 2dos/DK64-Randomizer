@@ -1,5 +1,6 @@
 typedef struct varspace {
-	/* 0x000 */ char unk_00[0x2D];
+	/* 0x000 */ TaskRequirement tasks[8];
+	/* 0x020 */ char unk_20[0x2D - 0x20];
 	/* 0x02D */ char required_helm_minigames; // 0 = Disable on instrument play, 1 = One minigame required, 2 = Vanilla
 	/* 0x02E */ char fast_start_beginning; // 0 = "Fast Start" setting not applied. 1 = On
 	/* 0x02F */ char unk_2f;
@@ -41,7 +42,7 @@ typedef struct varspace {
 	/* 0x0AF */ char disable_flavor_text;
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 4
 	/* 0x0B4 */ char unk_B0[0xC0 - 0xB4];
-	/* 0x0C0 */ ItemRequirement win_condition_extra; // If requirement is "get x amount of y item"
+	/* 0x0C0 */ RequirementArg win_condition_extra; // If requirement is "get x amount of y item"
 	/* 0x0C2 */ char hints_are_items; // Hints are collectable as items, wrinkly doors should behave differently
 	/* 0x0C3 */ unsigned char prog_hint_item;
 	/* 0x0C4 */ ROMFlags rom_flags;

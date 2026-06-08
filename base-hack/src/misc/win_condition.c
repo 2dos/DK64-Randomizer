@@ -117,13 +117,9 @@ int hasBeatenDKRapWinCon(void) {
     return 1;
 }
 
-int canAccessWinCondition(void) {
+int canAccessWinCondition(int master_win_con, RequirementArg *custom_win_con_data) {
     // Check if the win condition requirements are met
-    switch(Rando.win_condition) {
-        case GOAL_KEY8:
-            // Key 8 win condition - check for key 8
-            return getItemCount_new(REQITEM_KEY, 7, 0);
-        
+    switch(master_win_con) {        
         case GOAL_KEYS_3_AND_8:
             // Keys 3 and 8 win condition - check for both keys (vanilla K. Rool requirement)
             return getItemCount_new(REQITEM_KEY, 2, 0) && getItemCount_new(REQITEM_KEY, 7, 0);
@@ -144,28 +140,26 @@ int canAccessWinCondition(void) {
         case GOAL_DKRAP:
             // DK Rap - check for DK Rap completion
             return hasBeatenDKRapWinCon();
-        
-        case GOAL_KROOLS_CHALLENGE:
-            // Krool's Challenge - check if all required items are collected
-            if (getItemCountReq(REQITEM_KEY) < 8) {
-                return 0;
-            }
-            if (getItemCountReq(REQITEM_BLUEPRINT) < 40) {
-                return 0;
-            }
-            if (getItemCountReq(REQITEM_BOSSES) < 7) {
-                return 0;
-            }
-            if (getItemCountReq(REQITEM_BONUSES_NOHELM) < 43) {
-                return 0;
-            }
-            return 1;
         case GOAL_CUSTOMITEM:
             // Custom item requirement - check the specified item count
-            return isItemRequirementSatisfied(&Rando.win_condition_extra);
+            return isItemRequirementSatisfied(&custom_win_con_data->item_req);
 
-        case GOAL_KILL_THE_RABBIT:
-            return checkFlag(FLAG_RABBIT_KILLED, FLAGTYPE_PERMANENT);
+        case GOAL_TASKS:
+        case GOAL_TASKSNOPAUSE:
+            for (int i = 0; i < 8; i++) {
+                TaskRequirement *task = &Rando.tasks[i];
+                if (task->active) {
+                    if (!canAccessWinCondition(task->goal_type, &task->req)) {
+                        return 0;
+                    }
+                }
+            }
+            return 1;
+        case GOAL_FLAG:
+            return checkFlag(custom_win_con_data->flag, FLAGTYPE_PERMANENT);
+        
+        case GOAL_REQITEM:
+            return getItemCount_new(custom_win_con_data->item_req_solo.item, custom_win_con_data->item_req_solo.level, 0);
         
         default:
             // For beat K. Rool and other win conditions, return 0 so they use normal key-based spawning
@@ -180,7 +174,7 @@ void checkSeedVictory(void) {
         if (Rando.win_condition_spawns_ship) {
             return;
         }
-        if (canAccessWinCondition()) {
+        if (canAccessWinCondition(Rando.win_condition, &Rando.win_condition_extra)) {
             beatGame();
         }
     }
