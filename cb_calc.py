@@ -554,6 +554,14 @@ def traverse_graph(regions, entry_region):
                                 # print(f"Found new transition from {region.name} to {next_region.name} using combined requirement {combined_requirement}")
                                 found_new_requirement = True
 
+                    # If warps are pre-activated, the source pad is already tagged, so we don't need to tag it ourselves.
+                    # That means we only need to physically reach the source pad's region (but not satisfy its event requirements).
+                    for region_requirement in region_requirements[region]:
+                        requirement = region_requirement | {"AllWarps"}
+                        relax_kong_requirement(requirement)
+                        if region_requirements[next_region].add(requirement):
+                            found_new_requirement = True
+
                 # Update any events based on new region requirements
                 for event in regions[region].events:
                     for region_requirement in region_requirements[region]:
@@ -701,6 +709,8 @@ def to_javascript(cb_requirements, special_requirements):
         # Kongs
         **{"donkey": "Donkey", "diddy": "Diddy", "lanky": "Lanky", "tiny": "Tiny", "chunky": "Chunky"},
         **{"isdonkey": "IsDonkey", "isdiddy": "IsDiddy", "islanky": "IsLanky", "istiny": "IsTiny", "ischunky": "IsChunky"},
+        # Global settings
+        **{"AllWarps": "AllWarps"},
     }
     move_map.update(special_requirements)
     move_map_keys = list(move_map.keys())
