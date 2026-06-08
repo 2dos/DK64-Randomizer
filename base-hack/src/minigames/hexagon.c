@@ -508,25 +508,32 @@ void startGame(void) {
 #define PRESS_START_X_OFFSET 80
 #define PRESS_START_Y_OFFSET 190
 #define PRESS_START_HEIGHT 30
+
+// Parallelogram helper functions
+#define _PARA_HYPOT(h, slant) \
+    __builtin_sqrtf(((float)(slant) * (slant)) + ((float)(h) * (h)))
+#define _PARA_EXACT_INSET(h, slant, border) \
+    (((float)(border) * _PARA_HYPOT(h, slant)) / (h))
+    
 #define GENERATE_PARALLELOGRAM_COORDS(x, y, w, h, slant, border) { \
-    /* --- Outer Parallelogram (Clockwise Fan) --- */ \
-    (short)(x),             (short)(y),       /* 0: Top-Left     */ \
-    (short)((x) + (w)),     (short)(y),       /* 1: Top-Right    */ \
-    (short)((x) + (w) - (slant)), (short)((y) + (h)), /* 2: Bottom-Right */ \
-    (short)((x) - (slant)),       (short)((y) + (h)), /* 3: Bottom-Left  */ \
-                                                                            \
-    /* --- Inner Parallelogram (Clockwise Fan) --- */ \
-    (short)((x) + (border) + ((float)(border) / (h) * (slant))),            \
-    (short)((y) + (border)),                          /* 4: Inner Top-Left     */ \
-                                                                            \
-    (short)((x) + (w) - (border) - ((float)(border) / (h) * (slant))),      \
-    (short)((y) + (border)),                          /* 5: Inner Top-Right    */ \
-                                                                            \
-    (short)((x) + (w) - (slant) - (border) - ((float)(border) / (h) * (slant))),\
-    (short)((y) + (h) - (border)),                    /* 6: Inner Bottom-Right */ \
-                                                                            \
-    (short)((x) - (slant) + (border) + ((float)(border) / (h) * (slant))),  \
-    (short)((y) + (h) - (border))                     /* 7: Inner Bottom-Left  */ \
+    /* --- Outer Parallelogram (Clockwise) --- */ \
+    (short)(x),                               (short)(y),               /* 0: Top-Left     */ \
+    (short)((x) + (w)),                       (short)(y),               /* 1: Top-Right    */ \
+    (short)((x) + (w) - (slant)),             (short)((y) + (h)),       /* 2: Bottom-Right */ \
+    (short)((x) - (slant)),                   (short)((y) + (h)),       /* 3: Bottom-Left  */ \
+                                                                                                  \
+    /* --- Inner Parallelogram (Clockwise) --- */ \
+    (short)((x) + _PARA_EXACT_INSET(h, slant, border)), \
+    (short)((y) + (border)),                                            /* 4: Inner Top-Left     */ \
+                                                                                                  \
+    (short)((x) + (w) - _PARA_EXACT_INSET(h, slant, border)), \
+    (short)((y) + (border)),                                            /* 5: Inner Top-Right    */ \
+                                                                                                  \
+    (short)((x) + (w) - (slant) - _PARA_EXACT_INSET(h, slant, border)), \
+    (short)((y) + (h) - (border)),                                      /* 6: Inner Bottom-Right */ \
+                                                                                                  \
+    (short)((x) - (slant) + _PARA_EXACT_INSET(h, slant, border)), \
+    (short)((y) + (h) - (border))                                       /* 7: Inner Bottom-Left  */ \
 }
 
 ROM_RODATA_NUM static const short timer_backdrop_coords[] = {

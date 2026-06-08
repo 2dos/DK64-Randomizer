@@ -428,6 +428,7 @@ void updateFileVariables(void) {
     /**
      * @brief Update file variables on pause menu initialization
      */
+    setAllHUDKongs(getKong(0));
     updateFilePercentage();
     getHintRegionText();
     initCarousel_onPause();

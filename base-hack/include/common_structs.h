@@ -713,7 +713,8 @@ typedef struct hud_element {
 	/* 0x028 */ placementData* placement_pointer;
 	/* 0x02C */ char infinite_setting;
 	/* 0x02D */ char unk_2D;
-	/* 0x02E */ char unk_2E[0x30-0x2E];
+	/* 0x02E */ char unk_2E;
+	/* 0x02F */ unsigned char kong;
 } hud_element;
 
 typedef struct hudData {

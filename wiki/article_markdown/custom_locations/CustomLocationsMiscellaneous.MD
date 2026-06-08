@@ -148,7 +148,7 @@
 | Frantic Factory | Storage Room Corner |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Near left storage shop | MelonCrate | `self.logic = lambda _: True` | 
 | Frantic Factory | Near Right Storage Shop |  | `self.logic = lambda _: True` | 
-| Frantic Factory | Dark Room Corner |  | `(l.punch and l.chunky) or l.phasewalk` | 
+| Frantic Factory | Dark Room Corner |  | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.phasewalk` | 
 | Frantic Factory | Arcade Room Bench |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Next to DK Arcade |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Glass Window Shop |  | `self.logic = lambda _: True` | 
@@ -333,7 +333,7 @@
 | Crystal Caves | On igloo Pillar | MelonCrate | `(l.jetpack and l.isdiddy) or (l.twirl and l.istiny and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
 | Crystal Caves | On top of the Igloo | CrownPad, MelonCrate | `self.logic = lambda _: True` | 
 | Crystal Caves | Under tag barrel near igloo | MelonCrate | `self.logic = lambda _: True` | 
-| Crystal Caves | In front of Igloo | CrownPad, DirtPatch, Bananaport | `(l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))) or l.Slam` | 
+| Crystal Caves | In front of Igloo | CrownPad, DirtPatch, Bananaport | `(l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or l.isdonkey or l.isdiddy or l.islanky or l.ischunky)) or l.Slam` | 
 | Crystal Caves | In the Mini Bonus Cave |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Near ice wall to boulder |  | `self.logic = lambda _: True` | 
 | Crystal Caves | In Giant Boulder Room |  | `self.logic = lambda _: True` | 

@@ -555,6 +555,7 @@ def randomizeRaceRequirements(spoiler):
             selected_requirement = coinreq.selected_bound.generateRequirement(spoiler)
         spoiler.coin_requirements[coinreq.tied_map] = selected_requirement
 
+
 def chooseRandomSounds(rand, count: int):
     """Choose a random series of sounds."""
     chosen_sounds = []
@@ -571,6 +572,7 @@ def chooseRandomSounds(rand, count: int):
         elif sfx == 1018:
             chosen_sounds.append(1017)
     return output_sounds
+
 
 def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
     """Shuffle elements of puzzles."""

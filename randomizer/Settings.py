@@ -2470,6 +2470,7 @@ class Settings:
 
         self.free_trade_items = self.free_trade_setting
         self.free_trade_blueprints = self.free_trade_setting
+        self.free_trade_cbs = False  # TODO: Make this a setting
 
         if IsDDMSSelected(self.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles):
             self.remove_wrinkly_puzzles = True
