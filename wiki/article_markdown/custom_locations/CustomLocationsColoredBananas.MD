@@ -132,53 +132,53 @@
 | Starting area lower (gate side) | Balloon | `self.logic = lambda _: True` | 
 | Starting area upper (DK portal side) | Balloon | `self.logic = lambda _: True` | 
 | Starting area upper (gate side) | Balloon | `self.logic = lambda _: True` | 
-| First tunnel 1 (gate side) | Balloon | `self.logic = lambda _: True` | 
-| First tunnel 2 (main area side) | Balloon | `self.logic = lambda _: True` | 
+| Gate side Peanut Tunnel | Balloon | `self.logic = lambda _: True` | 
+| Main Area Side Peanut Tunnel | Balloon | `self.logic = lambda _: True` | 
 | Minecart exit | Balloon | `self.logic = lambda _: True` | 
 | Painting room peanut switch | Balloon | `self.logic = lambda _: True` | 
 | Over river by middle switch | Balloon | `self.logic = lambda _: True` | 
-| T&S portal above Diddy BP | Balloon | `self.logic = lambda _: True` | 
-| Around mountain | Balloon | `self.logic = lambda _: True` | 
+| TnS Alcove | Balloon | `self.logic = lambda _: True` | 
+| Around Diddy mountain | Balloon | `self.logic = lambda _: True` | 
 | In front of Diddy's cage | Balloon | `self.logic = lambda _: True` | 
-| Funky's Armory | Balloon | `self.logic = lambda _: True` | 
+| Lower Hillside Shop | Balloon | `self.logic = lambda _: True` | 
 | Cannon to Diddy's cage | Balloon | `self.logic = lambda _: True` | 
-| Tunnel near DK BP | Balloon | `self.logic = lambda _: True` | 
-| Tunnel near Tiny BP | Balloon | `self.logic = lambda _: True` | 
-| Near high W2 above river | Balloon | `self.logic = lambda _: True` | 
+| Lower Hive Tunnel | Balloon | `self.logic = lambda _: True` | 
+| Upper Hive Tunnel | Balloon | `self.logic = lambda _: True` | 
+| Near Diddy Mountain above river | Balloon | `self.logic = lambda _: True` | 
 | Above river by tag barrel | Balloon | `self.logic = lambda _: True` | 
 | Over river by big vine | Balloon | `self.logic = lambda _: True` | 
 | Beehive area between trees | Balloon | `self.logic = lambda _: True` | 
 | Above beehive | Balloon | `self.logic = lambda _: True` | 
 | Above stump | Balloon | `self.logic = lambda _: True` | 
-| Above vines next to BBlast | Balloon | `self.logic = lambda _: True` | 
+| Above vines next to Baboon Blast | Balloon | `self.logic = lambda _: True` | 
 | Between trees in front of painting room | Balloon | `self.logic = lambda _: True` | 
 | Near main Tag Barrel | Balloon | `self.logic = lambda _: True` | 
-| Above hole by Diddy BP (BP side) | Balloon | `self.logic = lambda _: True` | 
-| Above hole by Diddy BP (wall side) | Balloon | `self.logic = lambda _: True` | 
-| Between beaver and rambi door | Balloon | `self.logic = lambda _: True` | 
-| Above slope to Cranky | Balloon | `self.logic = lambda _: True` | 
-| In first cave (Diddy) | Balloon | `self.logic = lambda _: True` | 
-| In front of Snide's (Donkey) | Balloon | `self.logic = lambda _: True` | 
-| In boulder cave 1 (Chunky) | Balloon | `self.logic = lambda _: True` | 
-| Behind Rambi hut (Lanky) | Balloon | `self.logic = lambda _: True` | 
-| Above mountain (Diddy) | Balloon | `self.logic = lambda _: True` | 
-| Under baboon blast pad (Donkey) | Balloon | `self.logic = lambda _: True` | 
-| In front of Cranky (Donkey) | Balloon | `self.logic = lambda _: True` | 
-| Behind Rambi hut (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| In fairy room (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| In boulder cave 2 (Chunky) | Balloon | `self.logic = lambda _: True` | 
-| In boulder cave 3 (Chunky) | Balloon | `self.logic = lambda _: True` | 
-| In Lanky blueprint room (Lanky) | Balloon | `self.logic = lambda _: True` | 
+| Above Stormy Tunnel Pit (Painting Side) | Balloon | `self.logic = lambda _: True` | 
+| Above Stormy Tunnel Pit (wall side) | Balloon | `self.logic = lambda _: True` | 
+| Near Stormy Tunnel Rambi Gate | Balloon | `self.logic = lambda _: True` | 
+| Above slope to Stormy Area Shop | Balloon | `self.logic = lambda _: True` | 
+| Around Peanut Cave | Balloon | `self.logic = lambda _: True` | 
+| In front of Upper Hillside Shop | Balloon | `self.logic = lambda _: True` | 
+| In boulder cave (1) | Balloon | `self.logic = lambda _: True` | 
+| Behind Lanky Rambi hut | Balloon | `self.logic = lambda _: True` | 
+| Above mountain | Balloon | `self.logic = lambda _: True` | 
+| Under baboon blast pad | Balloon | `self.logic = lambda _: True` | 
+| In front of Stormy Shop | Balloon | `self.logic = lambda _: True` | 
+| Behind Tiny Rambi hut | Balloon | `self.logic = lambda _: True` | 
+| In Rambi Pool | Balloon | `self.logic = lambda _: True` | 
+| In boulder cave (2) | Balloon | `self.logic = lambda _: True` | 
+| In boulder cave (3) | Balloon | `self.logic = lambda _: True` | 
+| In Stormy Bonus room | Balloon | `self.logic = lambda _: True` | 
 | Peanut cage | Balloon | `self.logic = lambda _: True` | 
 | DK's caged GB | Balloon | `self.logic = lambda _: True` | 
-| Hive tunnel coconut switch | Balloon | `self.logic = lambda _: True` | 
-| Above the river near Funky | Balloon | `self.logic = lambda _: True` | 
-| Hillside coconut switch | Balloon | `self.logic = lambda _: True` | 
+| Hive tunnel Free Kong Switch | Balloon | `self.logic = lambda _: True` | 
+| Above the river near Lower Hillside Shop | Balloon | `self.logic = lambda _: True` | 
+| Hillside Free Kong Switch | Balloon | `self.logic = lambda _: True` | 
 | Between cannon and alcove | Balloon | `self.logic = lambda _: True` | 
 | Above Diddy's cage | Balloon | `self.logic = lambda _: True` | 
-| Up high near Snide | Balloon | `self.logic = lambda _: True` | 
+| Up high near Upper Hillside Shop | Balloon | `self.logic = lambda _: True` | 
 | Hive area entrance | Balloon | `self.logic = lambda _: True` | 
-| Stormy tunnel towards Cranky | Balloon | `self.logic = lambda _: True` | 
+| Stormy tunnel towards Shop | Balloon | `self.logic = lambda _: True` | 
 | Tree between DK and Diddy's huts | Balloon | `self.logic = lambda _: True` | 
 | Above the Rambi cage | Balloon | `self.logic = lambda _: True` | 
 | In the Rambi lake | Balloon | `self.logic = lambda _: True` | 
@@ -189,8 +189,8 @@
 | On pillars (Lanky) | 10 | `self.logic = lambda _: True` | 
 | On steps (Lanky) | 10 | `self.logic = lambda _: True` | 
 | Entrance | 10 | `self.logic = lambda _: True` | 
-| In painting room (Lanky) | Balloon | `self.logic = lambda _: True` | 
-| Around the painting | Balloon | `self.logic = lambda _: True` | 
+| Painting Room: Above Entrance | Balloon | `self.logic = lambda _: True` | 
+| Painting Room: Around the painting | Balloon | `self.logic = lambda _: True` | 
 ## Japes Mountain
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -213,10 +213,10 @@
 | Jumping on the rails | 10 | `self.logic = lambda _: True` | 
 | Next to post near minecart entrance | 5 | `self.logic = lambda _: True` | 
 | Around the conveyor gate switch | 5 | `self.logic = lambda _: True` | 
-| First room above river | Balloon | `self.logic = lambda _: True` | 
-| In conveyor room (Diddy) | Balloon | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()` | 
-| Little tunnel | Balloon | `self.logic = lambda _: True` | 
-| Around post under the minecart track | Balloon | `self.logic = lambda _: True` | 
+| Diddy Mountain: First room above river | Balloon | `self.logic = lambda _: True` | 
+| Diddy Mountain: In conveyor room | Balloon | `l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()` | 
+| Mountain: Little tunnel | Balloon | `self.logic = lambda _: True` | 
+| Mountain: Around post under the minecart track | Balloon | `self.logic = lambda _: True` | 
 ## Japes Under Ground
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -238,9 +238,9 @@
 | Around 2nd switch room | 10 | `(l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) and l.istiny` | 
 | Above the entrance | 5 | `self.logic = lambda _: True` | 
 | White flower between doors 2 and 3 | 5 | `self.logic = lambda _: True` | 
-| Around final room | Balloon | `(l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) and l.istiny` | 
-| In first room (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| Second room | Balloon | `self.logic = lambda _: True` | 
+| Hive: Around final room | Balloon | `(l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) and l.istiny` | 
+| Hive: In first room | Balloon | `self.logic = lambda _: True` | 
+| Hive: Second room | Balloon | `self.logic = lambda _: True` | 
 ## Japes Baboon Blast
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -370,37 +370,37 @@
 | Around sealed quicksand tunnel warp 5 | 5 | `self.logic = lambda _: True` | 
 | Chunky vase room back wall | Balloon | `l.pineapple` | 
 | Chunky vase room right wall | Balloon | `l.pineapple` | 
-| DK BP room over/under bridge | Balloon | `l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False)` | 
-| Oasis | Balloon | `self.logic = lambda _: True` | 
-| In front of Candy | Balloon | `self.logic = lambda _: True` | 
+| Behind DK Stone Door | Balloon | `l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False)` | 
+| Center Oasis | Balloon | `self.logic = lambda _: True` | 
+| In Front of Candy | Balloon | `self.logic = lambda _: True` | 
 | Behind Tiny Temple | Balloon | `self.logic = lambda _: True` | 
-| Behind Llama cage high up | Balloon | `self.logic = lambda _: True` | 
+| Behind Llama Cage | Balloon | `self.logic = lambda _: True` | 
 | Rising from quicksand near oasis | Balloon | `self.logic = lambda _: True` | 
-| Near Hunky Chunky barrel | Balloon | `self.logic = lambda _: True` | 
+| Near Hunky Chunky Barrel | Balloon | `self.logic = lambda _: True` | 
 | Cranky snake path left side | Balloon | `self.logic = lambda _: True` | 
 | Around giant boulder | Balloon | `self.logic = lambda _: True` | 
-| Behind Beetle Race Tower high up | Balloon | `self.logic = lambda _: True` | 
-| In front of Snide's | Balloon | `self.logic = lambda _: True` | 
-| Around feed me totem | Balloon | `self.logic = lambda _: True` | 
-| Right side of 5DT | Balloon | `self.logic = lambda _: True` | 
+| Behind Beetle Race Tower | Balloon | `self.logic = lambda _: True` | 
+| In Front of Vulture Cage Shop | Balloon | `self.logic = lambda _: True` | 
+| Around Feed Me Totem | Balloon | `self.logic = lambda _: True` | 
+| Right Side of 5-Door Temple | Balloon | `self.logic = lambda _: True` | 
 | Spiral around tree left side of 5DT | Balloon | `self.logic = lambda _: True` | 
 | Near Cranky's lab (right side) (Donkey) | Balloon | `self.logic = lambda _: True` | 
-| In front of Tiny Temple (Diddy) | Balloon | `self.logic = lambda _: True` | 
-| Behind Llama Temple (Donkey) | Balloon | `self.logic = lambda _: True` | 
+| In front of Tiny Temple | Balloon | `self.logic = lambda _: True` | 
+| Behind Llama Temple | Balloon | `self.logic = lambda _: True` | 
 | Near Cranky's Lab (left side) (Donkey) | Balloon | `self.logic = lambda _: True` | 
-| Sealed Quicksand Tunnel (Diddy) | Balloon | `self.logic = lambda _: True` | 
+| Sealed Quicksand Tunnel | Balloon | `self.logic = lambda _: True` | 
 | Between the quicksand pits | Balloon | `self.logic = lambda _: True` | 
-| Oasis entrance | Balloon | `self.logic = lambda _: True` | 
-| Quicksand near Candy | Balloon | `self.logic = lambda _: True` | 
-| Around the llama's cage | Balloon | `self.logic = lambda _: True` | 
-| Snake road | Balloon | `self.logic = lambda _: True` | 
-| Around the Hunky cage | Balloon | `self.logic = lambda _: True` | 
-| Near the vulture cage | Balloon | `self.logic = lambda _: True` | 
-| Around warp 5 | Balloon | `self.logic = lambda _: True` | 
-| Poking in and out of the sealed quicksand tunnel | Balloon | `self.logic = lambda _: True` | 
-| Trees in front of 5DT | Balloon | `self.logic = lambda _: True` | 
-| In front of Llama temple | Balloon | `self.logic = lambda _: True` | 
-| Quicksand near Rocketbarrel | Balloon | `self.logic = lambda _: True` | 
+| Oasis Entrance | Balloon | `self.logic = lambda _: True` | 
+| Quicksand Near Candy | Balloon | `self.logic = lambda _: True` | 
+| Around the Llama's Cage | Balloon | `self.logic = lambda _: True` | 
+| Snake Road | Balloon | `self.logic = lambda _: True` | 
+| Around the Hunky Cage | Balloon | `self.logic = lambda _: True` | 
+| Near the Vulture Cage | Balloon | `self.logic = lambda _: True` | 
+| Around Warp 5 | Balloon | `self.logic = lambda _: True` | 
+| Front of Quicksand Tunnel | Balloon | `self.logic = lambda _: True` | 
+| Trees In Front of 5DT | Balloon | `self.logic = lambda _: True` | 
+| In Front of Llama Temple | Balloon | `self.logic = lambda _: True` | 
+| Quicksand Near Rocketbarrel | Balloon | `self.logic = lambda _: True` | 
 ## Aztec Donkey5DTemple
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -412,8 +412,8 @@
 | Dead end corners | 5 | `l.coconut` | 
 | Stairs | 5 | `l.coconut` | 
 | Near the GB | 5 | `l.coconut` | 
-| First dead end | Balloon | `self.logic = lambda _: True` | 
-| Path to the second coconut switch | Balloon | `self.logic = lambda _: True` | 
+| DK 5DT: First Dead End | Balloon | `self.logic = lambda _: True` | 
+| DK 5DT: Path to the Second Coconut Switch | Balloon | `self.logic = lambda _: True` | 
 ## Aztec Diddy5DTemple
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -425,8 +425,8 @@
 | Dead end corners | 5 | `self.logic = lambda _: True` | 
 | Stairs | 5 | `l.peanut` | 
 | Near the GB | 10 | `l.peanut` | 
-| Right side (Diddy) | Balloon | `self.logic = lambda _: True` | 
-| Second peanut switch | Balloon | `self.logic = lambda _: True` | 
+| Diddy 5DT: Right Side | Balloon | `self.logic = lambda _: True` | 
+| Diddy 5DT: Second Peanut Switch | Balloon | `self.logic = lambda _: True` | 
 ## Aztec Lanky5DTemple
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -437,9 +437,9 @@
 | Inner walls of the loop | 10 | `self.logic = lambda _: True` | 
 | Center stairs | 5 | `self.logic = lambda _: True` | 
 | Near the GB | 10 | `l.grape` | 
-| Dead end | Balloon | `self.logic = lambda _: True` | 
-| Middle (Lanky) | Balloon | `self.logic = lambda _: True` | 
-| Next to the GB | Balloon | `self.logic = lambda _: True` | 
+| Lanky 5DT: Dead end | Balloon | `self.logic = lambda _: True` | 
+| Lanky 5DT: Middle | Balloon | `self.logic = lambda _: True` | 
+| Lanky 5DT: End Reward | Balloon | `self.logic = lambda _: True` | 
 ## Aztec Tiny5DTemple
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -453,8 +453,8 @@
 | Above the left Mini barrel | 5 | `self.logic = lambda _: True` | 
 | Center stairs | 5 | `self.logic = lambda _: True` | 
 | Near the GB | 10 | `l.feather` | 
-| Dead end | Balloon | `self.logic = lambda _: True` | 
-| Left side | Balloon | `self.logic = lambda _: True` | 
+| Tiny 5DT: Dead end | Balloon | `self.logic = lambda _: True` | 
+| Tiny 5DT: Left Side | Balloon | `self.logic = lambda _: True` | 
 ## Aztec Chunky5DTemple
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -466,9 +466,9 @@
 | Final pineapple switch stairs | 10 | `l.pineapple` | 
 | Near the GB | 10 | `l.pineapple` | 
 | Straight after the first stairs | 5 | `self.logic = lambda _: True` | 
-| Left side (Chunky) | Balloon | `self.logic = lambda _: True` | 
-| Right side (Chunky) | Balloon | `self.logic = lambda _: True` | 
-| Kasplat room | Balloon | `self.logic = lambda _: True` | 
+| Chunky 5DT: Left Side | Balloon | `self.logic = lambda _: True` | 
+| Chunky 5DT: Right Side | Balloon | `self.logic = lambda _: True` | 
+| Chunky 5DT: End Pineapple Switch Hall | Balloon | `self.logic = lambda _: True` | 
 ## Aztec Llama Temple
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -507,17 +507,17 @@
 | Lower ledge of the pedestal switch platforms | 10 | `(l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.monkey_maneuvers))` | 
 | Passage towards Lanky's cage | 5 | `(((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase())` | 
 | In front of Lanky's cage | 5 | `(Events.AztecLlamaSpit in l.Events and l.swim) or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) or l.CanPhase()` | 
-| Matching game room right side | Balloon | `self.logic = lambda _: True` | 
-| Above Llama | Balloon | `self.logic = lambda _: True` | 
-| Lava room | Balloon | `self.logic = lambda _: True` | 
-| Above lava/water (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| In Lanky's room (Lanky) | Balloon | `(Events.AztecLlamaSpit in l.Events and l.swim) or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) or l.CanPhase()` | 
-| In Lanky's room (Lanky) | Balloon | `(Events.AztecLlamaSpit in l.Events and l.swim) or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) or l.CanPhase()` | 
-| Entrance stairs | Balloon | `self.logic = lambda _: True` | 
-| Left side behind the llama | Balloon | `self.logic = lambda _: True` | 
-| Right side behind the llama | Balloon | `self.logic = lambda _: True` | 
-| Matching game | Balloon | `self.logic = lambda _: True` | 
-| Mini tunnel room arch | Balloon | `self.logic = lambda _: True` | 
+| Llama Temple: Matching Game Room (0) | Balloon | `self.logic = lambda _: True` | 
+| Llama Temple: Above Lava Water | Balloon | `self.logic = lambda _: True` | 
+| Lava Room | Balloon | `self.logic = lambda _: True` | 
+| Tiny Temple: Above Water | Balloon | `self.logic = lambda _: True` | 
+| Llama Temple: In Lanky's room (0) | Balloon | `(Events.AztecLlamaSpit in l.Events and l.swim) or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) or l.CanPhase()` | 
+| Llama Temple: In Lanky's room (1) | Balloon | `(Events.AztecLlamaSpit in l.Events and l.swim) or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) or l.CanPhase()` | 
+| Llama Temple: Entrance Stairs | Balloon | `self.logic = lambda _: True` | 
+| Llama Temple: Right of Llama | Balloon | `self.logic = lambda _: True` | 
+| Llama Temple: Left of Llama | Balloon | `self.logic = lambda _: True` | 
+| Llama Temple: Matching Game | Balloon | `self.logic = lambda _: True` | 
+| Llama Temple: Arch to Lava Room | Balloon | `self.logic = lambda _: True` | 
 | Splashing in the lava room | Balloon | `self.logic = lambda _: True` | 
 ## Aztec Tiny Temple
 | Name | Amount | Logic |
@@ -539,14 +539,14 @@
 | Middle of the underwater square room | 10 | `self.logic = lambda _: True` | 
 | In the Tiny cage room | 15 | `self.logic = lambda _: True` | 
 | In the O of KONG | 5 | `self.logic = lambda _: True` | 
-| Mini Monkey alcove | Balloon | `self.logic = lambda _: True` | 
-| Tiny's room (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| Tiny's room (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| Vulture room (Chunky) | Balloon | `self.logic = lambda _: True` | 
-| Near the Chunky klaptrap room | Balloon | `self.logic = lambda _: True` | 
-| Above the pool | Balloon | `self.logic = lambda _: True` | 
-| Vulture path | Balloon | `self.logic = lambda _: True` | 
-| KONG above the cage | Balloon | `self.logic = lambda _: True` | 
+| Tiny Temple: Mini Monkey Alcove | Balloon | `self.logic = lambda _: True` | 
+| Tiny Temple: KONG Room (0) | Balloon | `self.logic = lambda _: True` | 
+| Tiny Temple: KONG Room (1) | Balloon | `self.logic = lambda _: True` | 
+| Tiny Temple: Vulture Room | Balloon | `self.logic = lambda _: True` | 
+| Tiny Temple: Near the Chunky Klaptrap Room | Balloon | `self.logic = lambda _: True` | 
+| Tiny Temple: Above Pool | Balloon | `self.logic = lambda _: True` | 
+| Tiny Temple: Vulture Path | Balloon | `self.logic = lambda _: True` | 
+| Tiny Temple: KONG above the cage | Balloon | `self.logic = lambda _: True` | 
 
 # Frantic Factory
 ## Frantic Factory
@@ -710,64 +710,64 @@
 | On the R&D guitar pad | 5 | `self.logic = lambda _: True` | 
 | On the R&D triangle pad | 5 | `l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.climbing` | 
 | Power hut coconut switch | 5 | `self.logic = lambda _: True` | 
-| First room left corner | Balloon | `self.logic = lambda _: True` | 
-| First room right side | Balloon | `self.logic = lambda _: True` | 
-| First room by robots left side | Balloon | `self.logic = lambda _: True` | 
-| Tunnel by Snide's window | Balloon | `self.logic = lambda _: True` | 
+| Foyer left corner | Balloon | `self.logic = lambda _: True` | 
+| Foyer right side | Balloon | `self.logic = lambda _: True` | 
+| Foyer robots left side | Balloon | `self.logic = lambda _: True` | 
+| Tunnel by window shopping | Balloon | `self.logic = lambda _: True` | 
 | Pole to block tower lower room | Balloon | `self.logic = lambda _: True` | 
 | Pole to block tower upper room | Balloon | `self.logic = lambda _: True` | 
 | Tunnel between Snide's and block tower | Balloon | `self.logic = lambda _: True` | 
 | Block tower room above arcade window | Balloon | `self.logic = lambda _: True` | 
 | Block tower room above block tower | Balloon | `l.spring or l.CanMoontail()` | 
 | Around bottom of block tower | Balloon | `self.logic = lambda _: True` | 
-| Block tower room in front of numbers game window | Balloon | `self.logic = lambda _: True` | 
+| Front of Number Game Window | Balloon | `self.logic = lambda _: True` | 
 | Tunnel to numbers game | Balloon | `self.logic = lambda _: True` | 
-| Block tower room by Mini Monkey barrel | Balloon | `self.logic = lambda _: True` | 
-| Block tower room by tag barrel | Balloon | `self.logic = lambda _: True` | 
-| Funky's room high and around room | Balloon | `self.logic = lambda _: True` | 
+| Mini Monkey Testing Barrel | Balloon | `self.logic = lambda _: True` | 
+| Block Tower Tag Barrel | Balloon | `self.logic = lambda _: True` | 
+| Testing Shop room high and around room | Balloon | `self.logic = lambda _: True` | 
 | In spinning wheel room | Balloon | `l.mini or l.CanPhase()` | 
 | Pole to R&D lower room | Balloon | `self.logic = lambda _: True` | 
 | Pole to R&D upper room | Balloon | `self.logic = lambda _: True` | 
 | R&D left side | Balloon | `self.logic = lambda _: True` | 
 | Piano game right side | Balloon | `l.trombone or l.CanAccessRNDRoom()` | 
-| In window by car race Mini Monkey | Balloon | `self.logic = lambda _: True` | 
+| Window by car race Mini Monkey | Balloon | `self.logic = lambda _: True` | 
 | Tunnel to car race | Balloon | `self.logic = lambda _: True` | 
 | Chunky R&D room | Balloon | `(l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
-| Cranky/Candy room | Balloon | `self.logic = lambda _: True` | 
-| Chunky room above blue switch | Balloon | `self.logic = lambda _: True` | 
-| Chunky room above dark room entrance | Balloon | `self.logic = lambda _: True` | 
+| Storage Shops Room | Balloon | `self.logic = lambda _: True` | 
+| Storage Room above blue switch | Balloon | `self.logic = lambda _: True` | 
+| Storage Room Above Dark Entrance | Balloon | `self.logic = lambda _: True` | 
 | Dark room | Balloon | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()` | 
 | Arcade room | Balloon | `self.logic = lambda _: True` | 
 | Production room very top | Balloon | `self.logic = lambda _: True` | 
 | Production room near wall under Lanky pipe | Balloon | `self.logic = lambda _: True` | 
 | Production room in front of middle window | Balloon | `self.logic = lambda _: True` | 
 | Production room in front of high window | Balloon | `self.logic = lambda _: True` | 
-| Around hatch (Chunky) | Balloon | `self.logic = lambda _: True` | 
-| Top of pole by Snide (Chunky) | Balloon | `self.logic = lambda _: True` | 
-| In piano game room (Lanky) | Balloon | `(l.trombone or l.CanAccessRNDRoom())` | 
-| In front of Snide (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| In Diddy's R&D room (back) (Diddy) | Balloon | `l.guitar or l.CanAccessRNDRoom()` | 
-| In Diddy's R&D room (front) (Diddy) | Balloon | `l.guitar or l.CanAccessRNDRoom()` | 
-| In R&D above hatch to Chunky's room (Donkey) | Balloon | `self.logic = lambda _: True` | 
-| In front of Candy & Cranky (Donkey) | Balloon | `self.logic = lambda _: True` | 
-| Around numbers game (Donkey) | Balloon | `self.logic = lambda _: True` | 
-| In Diddy's R&D room (left) (Diddy) | Balloon | `l.guitar or l.CanAccessRNDRoom()` | 
-| Prod room, by center (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| In front of Funky (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| Prod room, by highest tag barrel (Lanky) | Balloon | `self.logic = lambda _: True` | 
-| Chunky R&D room (Chunky) | Balloon | `((l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom())` | 
+| Around hatch | Balloon | `self.logic = lambda _: True` | 
+| Top of pole by Snide | Balloon | `self.logic = lambda _: True` | 
+| In piano game room | Balloon | `(l.trombone or l.CanAccessRNDRoom())` | 
+| In front of Snide | Balloon | `self.logic = lambda _: True` | 
+| In Diddy's R&D room (back) | Balloon | `l.guitar or l.CanAccessRNDRoom()` | 
+| In Diddy's R&D room (front) | Balloon | `l.guitar or l.CanAccessRNDRoom()` | 
+| In R&D above hatch to Storage room | Balloon | `self.logic = lambda _: True` | 
+| In front of Storage Shops | Balloon | `self.logic = lambda _: True` | 
+| Around numbers game | Balloon | `self.logic = lambda _: True` | 
+| In Diddy's R&D room (left) | Balloon | `l.guitar or l.CanAccessRNDRoom()` | 
+| Production Low Center Core | Balloon | `self.logic = lambda _: True` | 
+| In front of Testing Shop | Balloon | `self.logic = lambda _: True` | 
+| Highest Prod Room Tag Barrel | Balloon | `self.logic = lambda _: True` | 
+| Chunky R&D room | Balloon | `((l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom())` | 
 | Top of the hatch | Balloon | `self.logic = lambda _: True` | 
 | Tunnel from hatch to production | Balloon | `self.logic = lambda _: True` | 
 | Around the lower production pipe | Balloon | `self.logic = lambda _: True` | 
 | Around the rotating pipe | Balloon | `self.logic = lambda _: True` | 
 | Around the big piston | Balloon | `self.logic = lambda _: True` | 
-| Around the Lanky pipe | Balloon | `self.logic = lambda _: True` | 
+| Around the Production Lanky pipe | Balloon | `self.logic = lambda _: True` | 
 | Along the storage pipe | Balloon | `self.logic = lambda _: True` | 
-| Above the headphones | Balloon | `self.logic = lambda _: True` | 
+| Above the Storage headphones | Balloon | `self.logic = lambda _: True` | 
 | Arcade machine | Balloon | `self.logic = lambda _: True` | 
-| Window of the number game | Balloon | `self.logic = lambda _: True` | 
+| Window of the numbers game | Balloon | `self.logic = lambda _: True` | 
 | Shoot at the moon | Balloon | `l.spring or l.CanMoontail()` | 
-| Ceiling pipe towards Funky | Balloon | `self.logic = lambda _: True` | 
+| Ceiling pipe towards Testing Shop | Balloon | `self.logic = lambda _: True` | 
 | Top of pole to R&D | Balloon | `self.logic = lambda _: True` | 
 | R&D right side | Balloon | `self.logic = lambda _: True` | 
 ## Factory Power Hut
@@ -779,7 +779,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On conveyors (Donkey) | 15 | `l.strongKong` | 
-| In crusher room (Lanky) | Balloon | `self.logic = lambda _: True` | 
+| In crusher room | Balloon | `self.logic = lambda _: True` | 
 | Under the last crusher | Balloon | `l.strongKong` | 
 ## Factory Baboon Blast
 | Name | Amount | Logic |
@@ -933,27 +933,27 @@
 | Underwater against the Diddy gold tower | 5 | `self.logic = lambda _: True` | 
 | Underwater against the Lanky gold tower | 5 | `self.logic = lambda _: True` | 
 | Cannon game room | Balloon | `(Events.WaterRaised in l.Events or (l.monkey_maneuvers and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky)))` | 
-| Between W2 and Tiny BP | Balloon | `self.logic = lambda _: True` | 
-| Between left side of ship and T&S portal | Balloon | `self.logic = lambda _: True` | 
-| Around Cranky | Balloon | `self.logic = lambda _: True` | 
+| Left of Cavern Vines | Balloon | `self.logic = lambda _: True` | 
+| Right of Cavern Vines | Balloon | `self.logic = lambda _: True` | 
+| Around Cavern Shop | Balloon | `self.logic = lambda _: True` | 
 | Around top of lighthouse | Balloon | `l.jetpack` | 
-| In front of Funky's | Balloon | `self.logic = lambda _: True` | 
-| In front of Candy's | Balloon | `self.logic = lambda _: True` | 
+| In front of Cactus Shop | Balloon | `self.logic = lambda _: True` | 
+| In front of Seal side Shop | Balloon | `self.logic = lambda _: True` | 
 | High in gold tower room | Balloon | `self.logic = lambda _: True` | 
-| Around cactus (Diddy) | Balloon | `self.logic = lambda _: True` | 
-| By Diddy BP (Tiny) | Balloon | `Events.WaterLowered in l.Events` | 
-| Above battle crown pad 1 (Lanky) | Balloon | `(l.punch and l.chunky) or l.CanPhase()` | 
-| Above battle crown pad 2 (Lanky) | Balloon | `((l.punch and l.chunky) or l.CanPhase())` | 
-| Around cactus (Chunky) | Balloon | `self.logic = lambda _: True` | 
-| Above seal cage (Diddy) | Balloon | `self.logic = lambda _: True` | 
-| Around lighthouse (Donkey) | Balloon | `self.logic = lambda _: True` | 
-| In chests room (Donkey) | Balloon | `self.logic = lambda _: True` | 
-| In gold tower room (Diddy) | Balloon | `self.logic = lambda _: True` | 
-| By cannon in cannon game room (Chunky) | Balloon | `(Events.WaterRaised in l.Events or (l.monkey_maneuvers and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky)))` | 
-| Above 2DS (Chunky) | Balloon | `self.logic = lambda _: True` | 
-| Above 5DS (Lanky) | Balloon | `self.logic = lambda _: True` | 
-| In front of Snide (Tiny) | Balloon | `Events.WaterRaised in l.Events` | 
-| In gold tower room (Tiny) | Balloon | `self.logic = lambda _: True` | 
+| Around cactus | Balloon | `self.logic = lambda _: True` | 
+| Lighthouse Alcove | Balloon | `Events.WaterLowered in l.Events` | 
+| Below Cavern Shop | Balloon | `(l.punch and l.chunky) or l.CanPhase()` | 
+| Also Below Cavern Shop | Balloon | `((l.punch and l.chunky) or l.CanPhase())` | 
+| Also Around cactus | Balloon | `self.logic = lambda _: True` | 
+| Above seal cage | Balloon | `self.logic = lambda _: True` | 
+| Around lighthouse | Balloon | `self.logic = lambda _: True` | 
+| In Punch Chest Room | Balloon | `self.logic = lambda _: True` | 
+| Lanky Side Gold Tower | Balloon | `self.logic = lambda _: True` | 
+| By Cannon in Cannon Game Room | Balloon | `(Events.WaterRaised in l.Events or (l.monkey_maneuvers and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky)))` | 
+| Above 2-Door Ship | Balloon | `self.logic = lambda _: True` | 
+| Above 5-Door Ship | Balloon | `self.logic = lambda _: True` | 
+| In front of Lighthouse Shop | Balloon | `Events.WaterRaised in l.Events` | 
+| Diddy Side Gold Tower | Balloon | `self.logic = lambda _: True` | 
 | Around the cannonball | Balloon | `(Events.WaterRaised in l.Events or (l.monkey_maneuvers and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky)))` | 
 | Entrance tunnel | Balloon | `self.logic = lambda _: True` | 
 | Tunnel to shipyard | Balloon | `self.logic = lambda _: True` | 
@@ -970,8 +970,8 @@
 | In main hallway (Chunky) | 20 | `self.logic = lambda _: True` | 
 | In barrels room (Chunky) | 5 | `l.punch or l.CanPhase()` | 
 | Spilled all over the seasick ship | 15 | `self.logic = lambda _: True` | 
-| Corner | Balloon | `self.logic = lambda _: True` | 
-| Above the cannons | Balloon | `self.logic = lambda _: True` | 
+| Seasick: Corner | Balloon | `self.logic = lambda _: True` | 
+| Seasick: Above the cannons | Balloon | `self.logic = lambda _: True` | 
 ## Galleon Lighthouse
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -985,8 +985,8 @@
 | Cobwebs at the bottom | 10 | `self.logic = lambda _: True` | 
 | First elevator platform | 5 | `self.logic = lambda _: True` | 
 | Final elevator platforms | 10 | `self.logic = lambda _: True` | 
-| Around top | Balloon | `self.logic = lambda _: True` | 
-| Left side (Donkey) | Balloon | `self.logic = lambda _: True` | 
+| Lighthouse: Around top | Balloon | `self.logic = lambda _: True` | 
+| Lighthouse: Left side | Balloon | `self.logic = lambda _: True` | 
 ## Galleon Mechafish
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1227,46 +1227,46 @@
 | RABBIT | 10 | `self.logic = lambda _: True` | 
 | Grass near the rabbit's house | 10 | `self.logic = lambda _: True` | 
 | Grass near the owl tree rocketbarrel | 10 | `self.logic = lambda _: True` | 
-| Above apple GB | Balloon | `self.logic = lambda _: True` | 
-| By blue wall near Minecart | Balloon | `self.logic = lambda _: True` | 
+| Above apple Destination | Balloon | `self.logic = lambda _: True` | 
+| Between blue tunnel and minecart | Balloon | `self.logic = lambda _: True` | 
 | Around roof of minecart | Balloon | `self.logic = lambda _: True` | 
 | High against wall between pink tunnel and minecart | Balloon | `self.logic = lambda _: True` | 
 | Behind clock | Balloon | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
 | Near blue tunnel mill side | Balloon | `self.logic = lambda _: True` | 
-| Next to conveyor GB box | Balloon | `self.logic = lambda _: True` | 
-| Side of Mill where back entrance is | Balloon | `self.logic = lambda _: True` | 
-| Above back tag barrel (Mill area) | Balloon | `self.logic = lambda _: True` | 
+| Next to conveyor Check box | Balloon | `self.logic = lambda _: True` | 
+| Near Back Mill Door | Balloon | `self.logic = lambda _: True` | 
+| Above Hidden Dirt Patch | Balloon | `self.logic = lambda _: True` | 
 | Barn area right side | Balloon | `self.logic = lambda _: True` | 
 | Barn area left side | Balloon | `self.logic = lambda _: True` | 
 | Around beanstalk | Balloon | `self.logic = lambda _: True` | 
-| At first giant mushroom level by rocketbarrel barrel | Balloon | `self.logic = lambda _: True` | 
-| By second level entrance | Balloon | `self.logic = lambda _: True` | 
-| By high W5 | Balloon | `self.logic = lambda _: True` | 
-| By T&S on top of giant mushroom | Balloon | `self.logic = lambda _: True` | 
-| By battle crown | Balloon | `self.logic = lambda _: True` | 
-| By yellow tunnel tree side | Balloon | `self.logic = lambda _: True` | 
+| Mushroom Exterior Rocketbarrel | Balloon | `self.logic = lambda _: True` | 
+| By third level entrance | Balloon | `self.logic = lambda _: True` | 
+| Upper Level Exterior Mushroom  | Balloon | `self.logic = lambda _: True` | 
+| Very Top Mushroom Exterior Rear | Balloon | `self.logic = lambda _: True` | 
+| Mushroom Exterior Night Ladder | Balloon | `self.logic = lambda _: True` | 
+| By yellow tunnel owl side | Balloon | `self.logic = lambda _: True` | 
 | Rabbit race | Balloon | `self.logic = lambda _: True` | 
-| By T&S portal (tree area) | Balloon | `self.logic = lambda _: True` | 
-| Above tree | Balloon | `l.jetpack` | 
-| In front of Snide (Diddy) | Balloon | `self.logic = lambda _: True` | 
-| Above Tiny's blueprint (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| Behind Diddy's barn (Donkey) | Balloon | `self.logic = lambda _: True` | 
-| Above Chunky's blueprint (Chunky) | Balloon | `self.logic = lambda _: True` | 
-| By DK's blueprint (Tiny) | Balloon | `self.logic = lambda _: True` | 
+| By Owl Tree Rocketbarrel | Balloon | `self.logic = lambda _: True` | 
+| Above Owl Tree | Balloon | `l.jetpack` | 
+| In front of Day Gated Shop | Balloon | `self.logic = lambda _: True` | 
+| Lower Mushroom Exterior | Balloon | `self.logic = lambda _: True` | 
+| Behind Diddy's barn | Balloon | `self.logic = lambda _: True` | 
+| Upper Mushroom Exterior | Balloon | `self.logic = lambda _: True` | 
+| Behind Thornvine Barn | Balloon | `self.logic = lambda _: True` | 
 | Blue tunnel | Balloon | `self.logic = lambda _: True` | 
 | Pink tunnel | Balloon | `self.logic = lambda _: True` | 
 | Around the clock tree trunk | Balloon | `self.logic = lambda _: True` | 
 | Cuckoo! Tweet tweet !! | Balloon | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
 | Green tunnel | Balloon | `l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.CanPhase() or l.CanPhaseswim()` | 
 | Above the apple | Balloon | `self.logic = lambda _: True` | 
-| Minecart well | Balloon | `self.logic = lambda _: True` | 
+| Minecart Entrance | Balloon | `self.logic = lambda _: True` | 
 | Waterwheel | Balloon | `self.logic = lambda _: True` | 
 | Minecart exit | Balloon | `self.logic = lambda _: True` | 
-| Front mill front door to attic | Balloon | `self.logic = lambda _: True` | 
+| Above Mill Attic Entrance | Balloon | `self.logic = lambda _: True` | 
 | In front of thornvine barn | Balloon | `self.logic = lambda _: True` | 
 | Hopping the thorns behind thornvine barn | Balloon | `self.logic = lambda _: True` | 
 | In front of the giant mushroom | Balloon | `self.logic = lambda _: True` | 
-| Around mushroom near rocketbarrel (mushroom side) | Balloon | `self.logic = lambda _: True` | 
+| Around mushroom near rocketbarrel | Balloon | `self.logic = lambda _: True` | 
 | Under the lower kasplat mushroom platform | Balloon | `self.logic = lambda _: True` | 
 | Yellow tunnel | Balloon | `self.logic = lambda _: True` | 
 | Around the anthill | Balloon | `self.logic = lambda _: True` | 
@@ -1275,14 +1275,14 @@
 | ---- | ------ | ----- |
 | On outside islands | 10 | `self.logic = lambda _: True` | 
 | Central platform | 20 | `self.logic = lambda _: True` | 
-| Around the cannon | Balloon | `self.logic = lambda _: True` | 
+| Anthill: Around the cannon | Balloon | `self.logic = lambda _: True` | 
 ## Forest Winch Room
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On boxes in winch room | 15 | `self.logic = lambda _: True` | 
 | Winch rope | 5 | `self.logic = lambda _: True` | 
 | On the broken switch | 5 | `self.logic = lambda _: True` | 
-| In winch room (Diddy) | Balloon | `self.logic = lambda _: True` | 
+| Inside winch room | Balloon | `self.logic = lambda _: True` | 
 ## Forest Rafters
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1304,7 +1304,7 @@
 | Near the trough | 10 | `self.logic = lambda _: True` | 
 | In the fairy box | 5 | `l.Slam` | 
 | Between vines to bonus barrel | 5 | `l.CanSlamSwitch(Levels.FungiForest, 1) and l.climbing and l.can_use_vines` | 
-| Ladder side | Balloon | `self.logic = lambda _: True` | 
+| Thornvine: Ladder side | Balloon | `self.logic = lambda _: True` | 
 ## Forest Mill Front
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1317,9 +1317,9 @@
 | On the wooden wall | 5 | `l.chunky and l.barrels` | 
 | Between the levers | 10 | `l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.CanPhase()` | 
 | Near the boxes | 5 | `self.logic = lambda _: True` | 
-| Middle of the room | Balloon | `self.logic = lambda _: True` | 
-| In DK's lever room (Donkey) | Balloon | `(l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.CanPhase())` | 
-| Wooden wall | Balloon | `self.logic = lambda _: True` | 
+| Front Mill: Middle of the room | Balloon | `self.logic = lambda _: True` | 
+| Front Mill: Inside Grab Room | Balloon | `(l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.CanPhase())` | 
+| Front Mill: Wooden wall | Balloon | `self.logic = lambda _: True` | 
 ## Forest Giant Mushroom
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1353,12 +1353,12 @@
 | Near the one vine jump | 10 | `self.logic = lambda _: True` | 
 | Top of mushroom dead end | 5 | `self.logic = lambda _: True` | 
 | Twirl from the tippy top | 5 | `l.twirl` | 
-| Diddy BP floor | Balloon | `self.logic = lambda _: True` | 
-| Oranges level | Balloon | `self.logic = lambda _: True` | 
-| Top of giant mushroom interior (Lanky) | Balloon | `self.logic = lambda _: True` | 
-| Bottom of giant mushroom (Lanky) | Balloon | `self.logic = lambda _: True` | 
-| Around the vines to night door | Balloon | `self.logic = lambda _: True` | 
-| Behind the highest ladder | Balloon | `self.logic = lambda _: True` | 
+| Giant Mushroom: Lowest Mesh Ground | Balloon | `self.logic = lambda _: True` | 
+| Giant Mushroom: Middle Mesh Ground | Balloon | `self.logic = lambda _: True` | 
+| Upper Mushroom Interior | Balloon | `self.logic = lambda _: True` | 
+| Lower Mushroom Interior | Balloon | `self.logic = lambda _: True` | 
+| Giant Mushroom: Around the vines to night door | Balloon | `self.logic = lambda _: True` | 
+| Giant Mushroom: Behind the highest ladder | Balloon | `self.logic = lambda _: True` | 
 ## Forest Mill Attic
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1366,7 +1366,7 @@
 | Line behind boxes | 5 | `self.logic = lambda _: True` | 
 | On box (Lanky) | 5 | `self.logic = lambda _: True` | 
 | Flour bags | 10 | `self.logic = lambda _: True` | 
-| Enemy hole | Balloon | `self.logic = lambda _: True` | 
+| Mill Attic: Enemy hole | Balloon | `self.logic = lambda _: True` | 
 ## Forest Lanky Mushrooms Room
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1384,8 +1384,8 @@
 | Flour bags | 10 | `self.logic = lambda _: True` | 
 | Keg Bouldertech up the high wooden wall | 5 | `l.barrels` | 
 | Box area near spider | 5 | `self.logic = lambda _: True` | 
-| Middle of room | Balloon | `self.logic = lambda _: True` | 
-| Back corner | Balloon | `self.logic = lambda _: True` | 
+| Rear Mill: Middle of room | Balloon | `self.logic = lambda _: True` | 
+| Rear Mill: Back corner | Balloon | `self.logic = lambda _: True` | 
 ## Forest Spider
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1396,13 +1396,13 @@
 | ---- | ------ | ----- |
 | Over bouncy shrooms (Lanky) | 10 | `self.logic = lambda _: True` | 
 | Middle | 10 | `self.logic = lambda _: True` | 
-| High up | Balloon | `self.logic = lambda _: True` | 
+| Lanky Zinger Room: High up | Balloon | `self.logic = lambda _: True` | 
 ## Forest Chunky Face Room
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On Chunky switch (Chunky) | 5 | `self.logic = lambda _: True` | 
 | Towards the switch | 5 | `self.logic = lambda _: True` | 
-| Chunky's face puzzle room (Chunky) | Balloon | `self.logic = lambda _: True` | 
+| Face Puzzle | Balloon | `self.logic = lambda _: True` | 
 ## Forest Baboon Blast
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1556,49 +1556,49 @@
 | Spire near the ice castle | 5 | `l.twirl` | 
 | Twirl from the cabins pillar | 5 | `l.twirl` | 
 | Balloon to the cabins waterfall | 5 | `l.balloon` | 
-| Near pillar by DK portal | Balloon | `self.logic = lambda _: True` | 
-| First room between DK portal and main level | Balloon | `self.logic = lambda _: True` | 
-| Under bridge to W4 Mini Monkey | Balloon | `self.logic = lambda _: True` | 
-| Around pillar of Lanky BP | Balloon | `self.logic = lambda _: True` | 
-| Around Lanky BP (high) | Balloon | `self.logic = lambda _: True` | 
-| Above W1 and W2 (Ice castle height) | Balloon | `self.logic = lambda _: True` | 
-| Above small boulder | Balloon | `self.logic = lambda _: True` | 
-| Around pillar near Cranky | Balloon | `self.logic = lambda _: True` | 
-| Above river under bridge to small boulder | Balloon | `self.logic = lambda _: True` | 
-| Beneath BBlast | Balloon | `self.logic = lambda _: True` | 
-| Above area to Mini Monkey W3 room | Balloon | `self.logic = lambda _: True` | 
-| Behind right pillar near 5DI | Balloon | `self.logic = lambda _: True` | 
-| Above Monkeyport igloo | Balloon | `self.logic = lambda _: True` | 
-| Between Tag barrel and W1 | Balloon | `self.logic = lambda _: True` | 
-| Above Chunky igloo | Balloon | `self.logic = lambda _: True` | 
-| In waterfall (Under bonus barrel) | Balloon | `self.logic = lambda _: True` | 
-| In front of 5DC lower floor | Balloon | `self.logic = lambda _: True` | 
-| Above 5DC middle floor | Balloon | `self.logic = lambda _: True` | 
-| Above river close to waterfall 5DC side | Balloon | `self.logic = lambda _: True` | 
-| Around Tiny BP pillar (low) | Balloon | `self.logic = lambda _: True` | 
-| Above useless platform below Lanky 1DC | Balloon | `self.logic = lambda _: True` | 
-| Above river at Lanky 1DC roof height | Balloon | `self.logic = lambda _: True` | 
-| Above rocketbarrel area (between Rotating room and waterfall tag) | Balloon | `self.logic = lambda _: True` | 
-| Above rotating room | Balloon | `self.logic = lambda _: True` | 
-| In front of Candy | Balloon | `self.logic = lambda _: True` | 
-| Around W4 pillar (Diddy) | Balloon | `self.logic = lambda _: True` | 
-| In front of Snide (Chunky) | Balloon | `self.logic = lambda _: True` | 
-| Around Tiny blueprint (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| Waterfall (Lanky) | Balloon | `self.logic = lambda _: True` | 
-| In gorilla gone room (Donkey) | Balloon | `self.logic = lambda _: True` | 
-| Above 5DC (Diddy) | Balloon | `self.logic = lambda _: True` | 
-| In bonus barrel cave (Chunky) | Balloon | `self.logic = lambda _: True` | 
-| In Diddy BP room (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| In giant boulder room (Donkey) | Balloon | `self.logic = lambda _: True` | 
+| Near pillar by Caves Entrance | Balloon | `self.logic = lambda _: True` | 
+| First room between Caves Entrance and main level | Balloon | `self.logic = lambda _: True` | 
+| Under bridge to Twirl Cave | Balloon | `self.logic = lambda _: True` | 
+| Around Warp 5 Pillar | Balloon | `self.logic = lambda _: True` | 
+| High Above Warp 5 Pillar | Balloon | `self.logic = lambda _: True` | 
+| Behind Ice Castle | Balloon | `self.logic = lambda _: True` | 
+| Above Boulder by Ice Castle | Balloon | `self.logic = lambda _: True` | 
+| Around Warp 4 Pillar | Balloon | `self.logic = lambda _: True` | 
+| Under Bridge Between Castle and Small Boulder | Balloon | `self.logic = lambda _: True` | 
+| Beneath Baboon Blast Pad | Balloon | `self.logic = lambda _: True` | 
+| Next to Mini Bonus Cave | Balloon | `self.logic = lambda _: True` | 
+| Behind right pillar near Igloo | Balloon | `self.logic = lambda _: True` | 
+| Above Tiny Transparent igloo | Balloon | `self.logic = lambda _: True` | 
+| Around Igloo Tag Barrel | Balloon | `self.logic = lambda _: True` | 
+| Above Kosha Igloo | Balloon | `self.logic = lambda _: True` | 
+| In Diddy Bonus waterfall | Balloon | `self.logic = lambda _: True` | 
+| Front of Lower Floor 5-Door Cabin | Balloon | `self.logic = lambda _: True` | 
+| Above 5-Door Cabin middle floor | Balloon | `self.logic = lambda _: True` | 
+| Above River by 5-Door Cabin | Balloon | `self.logic = lambda _: True` | 
+| Below Cabin Central Rise | Balloon | `self.logic = lambda _: True` | 
+| Above Cabins Headphone Platform | Balloon | `self.logic = lambda _: True` | 
+| Above river by Lanky 1-Door Cabin | Balloon | `self.logic = lambda _: True` | 
+| Above Rocketbarrel Past 5-Door Cabin | Balloon | `self.logic = lambda _: True` | 
+| Above Rotating Cabin | Balloon | `self.logic = lambda _: True` | 
+| In front of Cabin's Shop | Balloon | `self.logic = lambda _: True` | 
+| Around Warp 4 pillar | Balloon | `self.logic = lambda _: True` | 
+| In front of Ice Cave Shop | Balloon | `self.logic = lambda _: True` | 
+| Above Cabin Central Rise | Balloon | `self.logic = lambda _: True` | 
+| Far Cabin's Waterfall | Balloon | `self.logic = lambda _: True` | 
+| In gorilla gone room | Balloon | `self.logic = lambda _: True` | 
+| High Above 5-Door Cabin | Balloon | `self.logic = lambda _: True` | 
+| In bonus barrel cave | Balloon | `self.logic = lambda _: True` | 
+| Inside Twirl Cave | Balloon | `self.logic = lambda _: True` | 
+| In giant boulder room | Balloon | `self.logic = lambda _: True` | 
 | Around the big ice castle pillar | Balloon | `self.logic = lambda _: True` | 
-| Slope to Cranky | Balloon | `self.logic = lambda _: True` | 
-| Bridge near Cranky | Balloon | `self.logic = lambda _: True` | 
+| Slope near Igloo Shop | Balloon | `self.logic = lambda _: True` | 
+| Bridge near Igloo Shop | Balloon | `self.logic = lambda _: True` | 
 | Igloo area entrance | Balloon | `self.logic = lambda _: True` | 
 | Little spire near Chunky transparent igloo | Balloon | `self.logic = lambda _: True` | 
 | Tall pillar near ice castle | Balloon | `self.logic = lambda _: True` | 
-| Crystal platforms near Funky | Balloon | `self.logic = lambda _: True` | 
-| Near Lanky cabin | Balloon | `self.logic = lambda _: True` | 
-| Tall pillar near 5-door cabin | Balloon | `self.logic = lambda _: True` | 
+| Crystal platforms near Waterfall Shop | Balloon | `self.logic = lambda _: True` | 
+| Near Lanky 1-Door Cabin | Balloon | `self.logic = lambda _: True` | 
+| Tall pillar near 5-Door cabin | Balloon | `self.logic = lambda _: True` | 
 ## Caves Baboon Blast
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1613,40 +1613,40 @@
 | Each side walls | 10 | `self.logic = lambda _: True` | 
 | Each side of the tomato's chair | 10 | `self.logic = lambda _: True` | 
 | L on the board | 5 | `self.logic = lambda _: True` | 
-| In frozen castle (Lanky) | Balloon | `self.logic = lambda _: True` | 
+| Tomato Castle: Above Door | Balloon | `self.logic = lambda _: True` | 
 ## Caves Chunky Igloo
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Around the igloo | 10 | `self.logic = lambda _: True` | 
 | Hey look, a rabbit !! | 10 | `self.logic = lambda _: True` | 
-| In Chunky 5DI (Chunky) | Balloon | `self.logic = lambda _: True` | 
+| Chunky 5DI: In Chunky 5DI | Balloon | `self.logic = lambda _: True` | 
 ## Caves Diddy Igloo
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Numbers 1 5 6 | 15 | `self.logic = lambda _: True` | 
 | Numbers 2 3 4 | 15 | `self.logic = lambda _: True` | 
-| In Diddy 5DI (Diddy) | Balloon | `self.logic = lambda _: True` | 
+| Diddy 5DI: In Diddy 5DI | Balloon | `self.logic = lambda _: True` | 
 ## Caves Donkey Igloo
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Center of igloo group with 7 singles | 10 | `l.strongKong and l.isdonkey` | 
 | Around maze | 10 | `self.logic = lambda _: True` | 
 | On doorframe (Donkey) | 5 | `self.logic = lambda _: True` | 
-| In DK 5DI (Donkey) | Balloon | `self.logic = lambda _: True` | 
+| DK 5DI: In DK 5DI | Balloon | `self.logic = lambda _: True` | 
 ## Caves Lanky Igloo
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On crystal tower | 10 | `self.logic = lambda _: True` | 
 | Up the crystal tower (Lanky) | 5 | `l.balloon or l.monkey_maneuvers` | 
 | Upper balloon pad | 5 | `l.balloon or l.monkey_maneuvers` | 
-| Around crystal tower (lower) | Balloon | `self.logic = lambda _: True` | 
-| In Lanky 5DI (Lanky) | Balloon | `self.logic = lambda _: True` | 
+| Lanky Igloo: Around Central Tower | Balloon | `self.logic = lambda _: True` | 
+| Lanky 5DI: In Lanky 5DI | Balloon | `self.logic = lambda _: True` | 
 ## Caves Tiny Igloo
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Inside Tiny's igloo room | 10 | `self.logic = lambda _: True` | 
 | In middle (Tiny) | 5 | `self.logic = lambda _: True` | 
-| In Tiny 5DI (Tiny) | Balloon | `self.logic = lambda _: True` | 
+| Tiny 5DI: Inside Tiny 5DI | Balloon | `self.logic = lambda _: True` | 
 ## Caves Lanky Cabin
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1654,8 +1654,8 @@
 | Stacks of books on shelves in Lanky's cabin | 10 | `self.logic = lambda _: True` | 
 | Bunch on switch | 5 | `self.logic = lambda _: True` | 
 | Around the balloon pad | 10 | `self.logic = lambda _: True` | 
-| Across room in L pattern | Balloon | `self.logic = lambda _: True` | 
-| GB hole | Balloon | `self.logic = lambda _: True` | 
+| Lanky 1DC: Across L Pattern | Balloon | `self.logic = lambda _: True` | 
+| Lanky 1DC: GB hole | Balloon | `self.logic = lambda _: True` | 
 ## Caves Chunky Cabin
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1673,8 +1673,8 @@
 | On the GB cage | 5 | `self.logic = lambda _: True` | 
 | Behind the back candle | 5 | `self.logic = lambda _: True` | 
 | Cobwebs | 5 | `self.logic = lambda _: True` | 
-| Above entrance high up in the room | Balloon | `(l.guitar or l.oranges) and (l.spring or (l.CanMoontail() and not l.cabinBarrelMoved())) and l.jetpack` | 
-| Middle of the room | Balloon | `self.logic = lambda _: True` | 
+| Upper Diddy 5DC: Above entrance high up in the room | Balloon | `(l.guitar or l.oranges) and (l.spring or (l.CanMoontail() and not l.cabinBarrelMoved())) and l.jetpack` | 
+| Upper Diddy 5DC: Middle of the room | Balloon | `self.logic = lambda _: True` | 
 ## Caves Donkey Cabin
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1682,14 +1682,14 @@
 | On a trapdoor (Donkey) | 5 | `self.logic = lambda _: True` | 
 | Around the center trapdoor | 10 | `self.logic = lambda _: True` | 
 | Backflip above the center trapdoor | 5 | `self.logic = lambda _: True` | 
-| Around room | Balloon | `self.logic = lambda _: True` | 
+| Donkey 5DC: Around Room | Balloon | `self.logic = lambda _: True` | 
 | Front holes | Balloon | `self.logic = lambda _: True` | 
 ## Caves Rotating Cabin
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On puzzle (Donkey) | 5 | `self.logic = lambda _: True` | 
 | Front of puzzle | 5 | `self.logic = lambda _: True` | 
-| Puzzles | Balloon | `self.logic = lambda _: True` | 
+| Rotating Cabin: RGB | Balloon | `self.logic = lambda _: True` | 
 ## Caves Diddy Lower Cabin
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1697,7 +1697,7 @@
 | On center pillar (Diddy) | 5 | `l.jetpack or l.monkey_maneuvers` | 
 | Wall torches | 10 | `self.logic = lambda _: True` | 
 | Rocket up around the room | 10 | `l.jetpack` | 
-| Around room above platforms | Balloon | `self.logic = lambda _: True` | 
+| Lower Diddy 5DC: Around room above platforms | Balloon | `self.logic = lambda _: True` | 
 ## Caves Tiny Cabin
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1831,29 +1831,29 @@
 | Gravestone on the way to lower T&S | 5 | `self.logic = lambda _: True` | 
 | Edge next to lower T&S | 5 | `self.logic = lambda _: True` | 
 | Below first bridge | Balloon | `self.logic = lambda _: True` | 
-| Around big tree | Balloon | `self.logic = lambda _: True` | 
-| Above area near low T&S portal | Balloon | `self.logic = lambda _: True` | 
-| Above empty area past W1 | Balloon | `self.logic = lambda _: True` | 
-| Over and under moat bridge | Balloon | `self.logic = lambda _: True` | 
+| Around Big Tree | Balloon | `self.logic = lambda _: True` | 
+| Above Area Near Very Bottom | Balloon | `self.logic = lambda _: True` | 
+| Cemetary | Balloon | `self.logic = lambda _: True` | 
+| Over and Under Moar Bridge | Balloon | `self.logic = lambda _: True` | 
 | Above moat tunnel entrance | Balloon | `self.logic = lambda _: True` | 
-| Above headphones by warps tag | Balloon | `self.logic = lambda _: True` | 
+| Above headphones | Balloon | `self.logic = lambda _: True` | 
 | On right side of path to W2 (Diddy balloon on the left) | Balloon | `self.logic = lambda _: True` | 
-| By Lanky blueprint | Balloon | `self.logic = lambda _: True` | 
+| Past First Big Bridge | Balloon | `self.logic = lambda _: True` | 
 | Above path from W2 to W3 (castle side) | Balloon | `self.logic = lambda _: True` | 
-| Around Cranky's shop | Balloon | `self.logic = lambda _: True` | 
+| Around Mid-Exterior Shop | Balloon | `self.logic = lambda _: True` | 
 | Behind greenhouse | Balloon | `self.logic = lambda _: True` | 
 | Near ballroom entrance | Balloon | `self.logic = lambda _: True` | 
-| On path near W5 (castle side) | Balloon | `self.logic = lambda _: True` | 
+| Above Museum | Balloon | `self.logic = lambda _: True` | 
 | Around tower | Balloon | `self.logic = lambda _: True` | 
 | Above tower | Balloon | `l.jetpack` | 
-| Behind Snide's | Balloon | `self.logic = lambda _: True` | 
-| Above W1 (Diddy) | Balloon | `self.logic = lambda _: True` | 
+| Behind Upper-Exterior Shop | Balloon | `self.logic = lambda _: True` | 
+| Beside W1 | Balloon | `self.logic = lambda _: True` | 
 | From portal to lone kasplat | Balloon | `self.logic = lambda _: True` | 
 | Near ladder to headphones | Balloon | `self.logic = lambda _: True` | 
-| Around the lower T&S area | Balloon | `self.logic = lambda _: True` | 
+| Around Very Bottom Castle | Balloon | `self.logic = lambda _: True` | 
 | Rising from the graveyard | Balloon | `self.logic = lambda _: True` | 
 | Near the lower door | Balloon | `self.logic = lambda _: True` | 
-| Around tree in uneventful area just above the grayevard | Balloon | `self.logic = lambda _: True` | 
+| Around Cemetary | Balloon | `self.logic = lambda _: True` | 
 | Near museum platforms | Balloon | `self.logic = lambda _: True` | 
 ## Castle Ballroom
 | Name | Amount | Logic |
@@ -1869,9 +1869,9 @@
 | White spaces | 10 | `self.logic = lambda _: True` | 
 | Near the monkeyport pad | 5 | `self.logic = lambda _: True` | 
 | Chandelier | 15 | `l.jetpack` | 
-| In back of the room | Balloon | `self.logic = lambda _: True` | 
-| By bonus barrel (Diddy) | Balloon | `self.logic = lambda _: True` | 
-| Above the back candle | Balloon | `l.jetpack` | 
+| Museum: Rear | Balloon | `self.logic = lambda _: True` | 
+| Ballroom: Inside Ballroom | Balloon | `self.logic = lambda _: True` | 
+| Ballroom: Above back candle | Balloon | `l.jetpack` | 
 ## Castle Baboon Blast
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1896,22 +1896,22 @@
 | Rotating throne | 5 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()` | 
 | Under the chain vines in Diddy's room | 5 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()` | 
 | Balloon backwards to the main dungeon | 5 | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()) and l.trombone and l.balloon` | 
-| In Lanky's section | Balloon | `self.logic = lambda _: True` | 
-| In Diddy's section | Balloon | `self.logic = lambda _: True` | 
-| In DK's room | Balloon | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()` | 
-| In Diddy's dungeon room (Diddy) | Balloon | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase())` | 
+| Dungeon: Before Lanky's Acid Room | Balloon | `self.logic = lambda _: True` | 
+| Dungeon: Before Diddy's Room | Balloon | `self.logic = lambda _: True` | 
+| Dungeon: In DK's room | Balloon | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()` | 
+| Dungeon: Inside Diddy Dungeon | Balloon | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase())` | 
 | Far in Lanky's dungeon room (Lanky) | Balloon | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()) and l.trombone and l.balloon` | 
-| In cage left side (Chunky) | Balloon | `(l.punch or l.CanPhase() or l.generalclips)` | 
+| Dungeon: Chunky Jail (0) | Balloon | `(l.punch or l.CanPhase() or l.generalclips)` | 
 | Close in Lanky's dungeon room (Lanky) | Balloon | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase())` | 
-| In cage right side (Chunky) | Balloon | `(l.punch or l.CanPhase() or l.generalclips)` | 
-| Intersection | Balloon | `self.logic = lambda _: True` | 
+| Dungeon: Chunky Jail (1) | Balloon | `(l.punch or l.CanPhase() or l.generalclips)` | 
+| Dungeon: Intersection | Balloon | `self.logic = lambda _: True` | 
 ## Castle Shed
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Shed - Around room | 15 | `self.logic = lambda _: True` | 
 | On Gorilla Gone pad | 5 | `l.punch` | 
 | On the box | 5 | `self.logic = lambda _: True` | 
-| Back of the shed (Chunky) | Balloon | `self.logic = lambda _: True` | 
+| Shed: Rear | Balloon | `self.logic = lambda _: True` | 
 ## Castle Lower Cave
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1928,11 +1928,11 @@
 | Jump behind the fence near crypt | 5 | `self.logic = lambda _: True` | 
 | On top of the skull | 5 | `self.logic = lambda _: True` | 
 | Crypt entrance | 5 | `self.logic = lambda _: True` | 
-| Above pathway to crypt | Balloon | `self.logic = lambda _: True` | 
-| Around mausoleum | Balloon | `self.logic = lambda _: True` | 
-| In front of crypt (Diddy) | Balloon | `self.logic = lambda _: True` | 
-| In front of Funky (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| Tunnel to Funky | Balloon | `self.logic = lambda _: True` | 
+| Lower Cave: Above pathway to crypt | Balloon | `self.logic = lambda _: True` | 
+| Lower Cave: Around mausoleum | Balloon | `self.logic = lambda _: True` | 
+| Lower Cave: Above Crypt Entrance | Balloon | `self.logic = lambda _: True` | 
+| Lower Cave: Front of Lower Cave Shop | Balloon | `self.logic = lambda _: True` | 
+| Lower Cave: Tunnel to Lower Cave Shop | Balloon | `self.logic = lambda _: True` | 
 ## Castle Crypt
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1954,13 +1954,13 @@
 | Correct levers | 10 | `self.logic = lambda _: True` | 
 | Back chimpy charge switches | 10 | `self.logic = lambda _: True` | 
 | In the slam coffin | 10 | `l.Slam or l.CanPhase()` | 
-| Above warps | Balloon | `self.logic = lambda _: True` | 
-| Around coffin in Chunky's room | Balloon | `self.logic = lambda _: True` | 
-| Around coffin in Diddy's room | Balloon | `self.logic = lambda _: True` | 
-| In coffin in Diddy's room (Diddy) | Balloon | `l.charge or l.generalclips or l.CanPhase()` | 
-| In DK's room (Donkey) | Balloon | `self.logic = lambda _: True` | 
-| DK's path | Balloon | `self.logic = lambda _: True` | 
-| Tilted pineapple switch | Balloon | `self.logic = lambda _: True` | 
+| Crypt: Above warps | Balloon | `self.logic = lambda _: True` | 
+| Crypt: Around Chunky's Coffin | Balloon | `self.logic = lambda _: True` | 
+| Crypt: Around Diddy's Coffin | Balloon | `self.logic = lambda _: True` | 
+| Crypt: Inside Diddy's Coffin | Balloon | `l.charge or l.generalclips or l.CanPhase()` | 
+| Crypt: Beside Minecart Entrance | Balloon | `self.logic = lambda _: True` | 
+| Crypt: DK's path | Balloon | `self.logic = lambda _: True` | 
+| Crypt: Tilted pineapple switch | Balloon | `self.logic = lambda _: True` | 
 ## Castle Mausoleum
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1975,7 +1975,7 @@
 | In and out of green goo pit | Balloon | `self.logic = lambda _: True` | 
 | Above green goo room | Balloon | `l.twirl or (l.monkey_maneuvers and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
 | In Lanky's green goo room (Lanky) | Balloon | `l.sprint or l.generalclips or l.CanPhase()` | 
-| Beginning of Lanky's path | Balloon | `self.logic = lambda _: True` | 
+| Mausoleum: Beginning of Lanky's path | Balloon | `self.logic = lambda _: True` | 
 ## Castle Upper Cave
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1984,10 +1984,10 @@
 | Path from tag barrel to Candy (Chunky) | 15 | `self.logic = lambda _: True` | 
 | Path from W1 entrance to tag barrel (Chunky) | 5 | `self.logic = lambda _: True` | 
 | Near Candy | 10 | `self.logic = lambda _: True` | 
-| Near moat entrance | Balloon | `self.logic = lambda _: True` | 
-| Near Candy | Balloon | `self.logic = lambda _: True` | 
+| Upper Cave: Near moat entrance | Balloon | `self.logic = lambda _: True` | 
+| Upper Cave: Near Upper Cave Shop | Balloon | `self.logic = lambda _: True` | 
 | Coming in and out of pit by Tiny's bonus barrel | Balloon | `self.logic = lambda _: True` | 
-| Near the dungeon door | Balloon | `self.logic = lambda _: True` | 
+| Upper Cave: Near dungeon door | Balloon | `self.logic = lambda _: True` | 
 ## Castle Greenhouse
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -1996,7 +1996,7 @@
 | Corner dead end | 5 | `self.logic = lambda _: True` | 
 | Group 1 along path (Lanky) | 15 | `self.logic = lambda _: True` | 
 | Group 2 along path (Lanky) | 15 | `self.logic = lambda _: True` | 
-| Dead end near the arena | Balloon | `self.logic = lambda _: True` | 
+| Greenhouse: Deadend Near Center | Balloon | `self.logic = lambda _: True` | 
 ## Castle Library
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -2006,9 +2006,9 @@
 | In ghost book hallway (Donkey) | 10 | `l.strongKong` | 
 | On the big books | 10 | `self.logic = lambda _: True` | 
 | Flying books hallway | 10 | `l.strongKong` | 
-| In switch room | Balloon | `self.logic = lambda _: True` | 
-| In GB room | Balloon | `self.logic = lambda _: True` | 
-| Among the flying books | Balloon | `self.logic = lambda _: True` | 
+| Library: In switch room | Balloon | `self.logic = lambda _: True` | 
+| Library: Past Books | Balloon | `self.logic = lambda _: True` | 
+| Library Among the flying books | Balloon | `self.logic = lambda _: True` | 
 ## Castle Museum
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -2022,25 +2022,25 @@
 | Inside boulder (Chunky) | 5 | `l.punch and l.barrels` | 
 | Around the boulder switch | 10 | `self.logic = lambda _: True` | 
 | Around the chimney of the little factory | 5 | `self.logic = lambda _: True` | 
-| In hallway to main room | Balloon | `self.logic = lambda _: True` | 
-| Around car race | Balloon | `self.logic = lambda _: True` | 
-| In monument room (Tiny) | Balloon | `l.feather and (l.monkeyport or l.CanPhase())` | 
-| Around middle (Chunky) | Balloon | `self.logic = lambda _: True` | 
-| Through the glass | Balloon | `self.logic = lambda _: True` | 
+| Museum: In hallway to main room | Balloon | `self.logic = lambda _: True` | 
+| Museum: Around car race | Balloon | `self.logic = lambda _: True` | 
+| Museum: Behind Museum Glass | Balloon | `l.monkeyport or l.CanPhase()` | 
+| Museum | Balloon | `self.logic = lambda _: True` | 
+| Museum: Through the glass | Balloon | `self.logic = lambda _: True` | 
 ## Castle Tower
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | By the entrance | 10 | `self.logic = lambda _: True` | 
 | On baboon balloon pad | 5 | `self.logic = lambda _: True` | 
 | Around the hole | 10 | `self.logic = lambda _: True` | 
-| In tower (Lanky) | Balloon | `self.logic = lambda _: True` | 
+| Tower: Wind Tower | Balloon | `self.logic = lambda _: True` | 
 ## Castle Trash Can
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Around trash can | 10 | `self.logic = lambda _: True` | 
 | On cheese (Tiny) | 5 | `self.logic = lambda _: True` | 
 | On the soda can | 5 | `self.logic = lambda _: True` | 
-| Above the cheese | Balloon | `self.logic = lambda _: True` | 
+| Trash: Above cheese | Balloon | `self.logic = lambda _: True` | 
 ## Castle Tree
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -2053,9 +2053,9 @@
 | Against the pineapple gate | 5 | `self.logic = lambda _: True` | 
 | Coconut switch | 5 | `self.logic = lambda _: True` | 
 | Underwater tunnel | 5 | `(l.coconut or l.generalclips or l.CanPhase()) and l.swim` | 
-| First room | Balloon | `self.logic = lambda _: True` | 
-| Above hole (Donkey) | Balloon | `self.logic = lambda _: True` | 
-| In Chunky's room (Chunky) | Balloon | `self.logic = lambda _: True` | 
+| Tree: Entrance | Balloon | `self.logic = lambda _: True` | 
+| Tree: Above Hole | Balloon | `self.logic = lambda _: True` | 
+| Tree: In Chunky's Room | Balloon | `self.logic = lambda _: True` | 
 
 # DK Isles
 ## Treehouse
@@ -2065,7 +2065,7 @@
 | On the crate | 5 | `self.logic = lambda _: True` | 
 | On the hammock | 5 | `self.logic = lambda _: True` | 
 | Above the exit | 5 | `self.logic = lambda _: True` | 
-| In DK's Treehouse | Balloon | `self.logic = lambda _: True` | 
+| Treehouse: In DK's Treehouse | Balloon | `self.logic = lambda _: True` | 
 ## Training Grounds
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -2091,15 +2091,15 @@
 | Around treehouse tree | 10 | `self.logic = lambda _: True` | 
 | Training area | 5 | `self.logic = lambda _: True` | 
 | On the signposts | 10 | `self.logic = lambda _: True` | 
-| Above the lake | Balloon | `self.logic = lambda _: True` | 
-| Banana hoard room | Balloon | `self.logic = lambda _: True` | 
-| Around the treehouse | Balloon | `self.logic = lambda _: True` | 
-| Above rear ledge | Balloon | `self.logic = lambda _: True` | 
+| Training Ground: Above the lake | Balloon | `self.logic = lambda _: True` | 
+| Training Grounds: Banana hoard room | Balloon | `l.can_use_vines and l.climbing` | 
+| Training Grounds: Around the treehouse | Balloon | `self.logic = lambda _: True` | 
+| Training Grounds: Above rear ledge | Balloon | `self.logic = lambda _: True` | 
 | Above exit ledge | Balloon | `self.logic = lambda _: True` | 
-| Next to Cranky | Balloon | `self.logic = lambda _: True` | 
-| Training Area | Balloon | `self.logic = lambda _: True` | 
-| Rear tunnel | Balloon | `self.logic = lambda _: True` | 
-| Exit tunnel | Balloon | `self.logic = lambda _: True` | 
+| Training Grounds: Next to Shop | Balloon | `self.logic = lambda _: True` | 
+| Training Grounds: Bonus Training Area | Balloon | `self.logic = lambda _: True` | 
+| Training Grounds: Rear tunnel | Balloon | `self.logic = lambda _: True` | 
+| Training Grounds: Exit tunnel | Balloon | `self.logic = lambda _: True` | 
 ## Isles
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -2114,7 +2114,7 @@
 | Factory W4 | 5 | `self.logic = lambda _: True` | 
 | Fairy Isle W5 | 5 | `self.logic = lambda _: True` | 
 | Japes entrance | 5 | `self.logic = lambda _: True` | 
-| Tree between tag barrel and Japes | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
+| Top of tree between tag barrel and Japes | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
 | Tree between tag barrel and Japes | 5 | `self.logic = lambda _: True` | 
 | Tree next to Japes | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
 | Tree next to Japes | 5 | `self.logic = lambda _: True` | 
@@ -2182,23 +2182,23 @@
 | Dry plant thing near Aztec | 5 | `self.logic = lambda _: True` | 
 | Steps to Factory lobby | 5 | `self.logic = lambda _: True` | 
 | Directly under Galleon lobby | 5 | `l.swim` | 
-| Waterfall lower | Balloon | `self.logic = lambda _: True` | 
-| Waterfall upper | Balloon | `self.logic = lambda _: True` | 
-| Above bananaports | Balloon | `self.logic = lambda _: True` | 
-| Japes shore | Balloon | `self.logic = lambda _: True` | 
-| Beaver beach | Balloon | `self.logic = lambda _: True` | 
+| DK Isles: Waterfall lower | Balloon | `self.logic = lambda _: True` | 
+| DK Isles: Waterfall upper | Balloon | `self.logic = lambda _: True` | 
+| DK Isles: Above bananaports | Balloon | `self.logic = lambda _: True` | 
+| DK Isles: Japes shore | Balloon | `self.logic = lambda _: True` | 
+| DK Isles: Beaver beach | Balloon | `self.logic = lambda _: True` | 
 | Between pineapple cage and the X platform | Balloon | `self.logic = lambda _: True` | 
-| Around the tree below caves | Balloon | `self.logic = lambda _: True` | 
-| Near Aztec | Balloon | `self.logic = lambda _: True` | 
-| In front of DK Isle's eyes | Balloon | `self.logic = lambda _: True` | 
+| Tree below Lobby 6 | Balloon | `self.logic = lambda _: True` | 
+| Near Lobby 2 | Balloon | `self.logic = lambda _: True` | 
+| In front of DK's eyes | Balloon | `self.logic = lambda _: True` | 
 | Around the fairy tree | Balloon | `self.logic = lambda _: True` | 
 | Front of Fairy Isle | Balloon | `self.logic = lambda _: True` | 
 | Top of Fairy Isle | Balloon | `self.logic = lambda _: True` | 
-| Behind Aztec | Balloon | `self.logic = lambda _: True` | 
-| Near Forest | Balloon | `self.logic = lambda _: True` | 
+| Behind Lobby 2 | Balloon | `self.logic = lambda _: True` | 
+| Near Lobby 5 | Balloon | `self.logic = lambda _: True` | 
 | Near the Krem Krown | Balloon | `self.logic = lambda _: True` | 
-| Upper Factory Path | Balloon | `self.logic = lambda _: True` | 
-| Big pipe in Krem Isle middle back | Balloon | `self.logic = lambda _: True` | 
+| Upper Lobby 3 Path | Balloon | `self.logic = lambda _: True` | 
+| Big pipe behind Lobby 3 | Balloon | `self.logic = lambda _: True` | 
 ## KLumsy
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -2209,7 +2209,7 @@
 | ---- | ------ | ----- |
 | On the Snide boulder | 5 | `self.logic = lambda _: True` | 
 | Above Snide's doorway | 5 | `(l.spring and l.diddy)` | 
-| Around Snide | Balloon | `self.logic = lambda _: True` | 
+| Snide Lobby: Around Snide | Balloon | `self.logic = lambda _: True` | 
 ## Jungle Japes Lobby
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -2226,8 +2226,8 @@
 | Middle path | 5 | `self.logic = lambda _: True` | 
 | Around B.Locker | 5 | `self.logic = lambda _: True` | 
 | Entrance | 10 | `self.logic = lambda _: True` | 
-| Left side | Balloon | `self.logic = lambda _: True` | 
-| Right side | Balloon | `self.logic = lambda _: True` | 
+| Japes Lobby: Left side | Balloon | `self.logic = lambda _: True` | 
+| Japes Lobby: Right side | Balloon | `self.logic = lambda _: True` | 
 ## Angry Aztec Lobby
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -2250,9 +2250,9 @@
 | Entrance | 10 | `self.logic = lambda _: True` | 
 | Torch above Donkey door | 5 | `self.logic = lambda _: True` | 
 | Back room torches | 10 | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
-| Between columns | Balloon | `self.logic = lambda _: True` | 
-| Above B.Locker | Balloon | `self.logic = lambda _: True` | 
-| Back room | Balloon | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
+| Aztec Lobby: Between columns | Balloon | `self.logic = lambda _: True` | 
+| Aztec Lobby: Above B.Locker | Balloon | `self.logic = lambda _: True` | 
+| Aztec Lobby: Back room | Balloon | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
 ## Frantic Factory Lobby
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -2271,8 +2271,8 @@
 | Stairs | 5 | `((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny)))` | 
 | Towards doors | 10 | `self.logic = lambda _: True` | 
 | Tag barrel | 5 | `self.logic = lambda _: True` | 
-| Vents | Balloon | `self.logic = lambda _: True` | 
-| Between pipes | Balloon | `self.logic = lambda _: True` | 
+| Factory Lobby: Vents | Balloon | `self.logic = lambda _: True` | 
+| Factory Lobby: Between pipes | Balloon | `self.logic = lambda _: True` | 
 | Upper path | Balloon | `self.logic = lambda _: True` | 
 ## Gloomy Galleon Lobby
 | Name | Amount | Logic |
@@ -2293,9 +2293,9 @@
 | Left land torch | 5 | `self.logic = lambda _: True` | 
 | On the Tiny platform | 15 | `l.swim and ((l.mini and l.twirl and l.tiny and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.chunky) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3)` | 
 | Mini tunnel | 5 | `l.swim and ((l.mini and l.twirl and l.tiny and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.chunky) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3)` | 
-| Above water | Balloon | `self.logic = lambda _: True` | 
-| Above land | Balloon | `self.logic = lambda _: True` | 
-| In the Tiny room | Balloon | `l.swim and ((l.mini and l.twirl and l.tiny and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.chunky) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3)` | 
+| Galleon Lobby: Above water | Balloon | `self.logic = lambda _: True` | 
+| Galleon Lobby: Above land | Balloon | `self.logic = lambda _: True` | 
+| Galleon Lobby: In the Tiny room | Balloon | `l.swim and ((l.mini and l.twirl and l.tiny and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.chunky) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3)` | 
 ## Fungi Forest Lobby
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -2306,8 +2306,8 @@
 | Entrance | 10 | `self.logic = lambda _: True` | 
 | Center line | 5 | `self.logic = lambda _: True` | 
 | Gorilla Gone pad | 5 | `((l.coconut and l.donkey) and (l.peanut and l.diddy) and (l.grape and l.lanky) and (l.feather and l.tiny) and (l.pineapple and l.chunky) or l.CanPhase())` | 
-| Crazy fairy balloon | Balloon | `self.logic = lambda _: True` | 
-| Wrinkly wheel (back wall) | Balloon | `self.logic = lambda _: True` | 
+| Fungi Lobby: Crazy Fairy balloon | Balloon | `self.logic = lambda _: True` | 
+| Fungi Lobby: Wrinkly wheel | Balloon | `self.logic = lambda _: True` | 
 ## Crystal Caves Lobby
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -2329,9 +2329,9 @@
 | Behind the lava ice wall | 5 | `(l.punch and l.chunky) or l.CanPhase() or l.ledgeclip` | 
 | Lava room | 20 | `((l.punch and l.chunky) or l.CanPhase() or l.ledgeclip) and l.strongKong` | 
 | In the air | 10 | `l.jetpack` | 
-| In the lava | Balloon | `(l.punch and l.chunky) or l.CanPhase() or l.ledgeclip` | 
-| Around the bridge | Balloon | `self.logic = lambda _: True` | 
-| Boulder room | Balloon | `(l.punch and l.chunky) or l.CanPhase() or l.ledgeclip` | 
+| Caves Lobby: In the lava | Balloon | `(l.punch and l.chunky) or l.CanPhase() or l.ledgeclip` | 
+| Caves Lobby: Around the bridge | Balloon | `self.logic = lambda _: True` | 
+| Caves Lobby: Boulder room | Balloon | `(l.punch and l.chunky) or l.CanPhase() or l.ledgeclip` | 
 ## Creepy Castle Lobby
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -2351,8 +2351,8 @@
 | Torch way up | 10 | `l.chunky and l.barrels and l.balloon` | 
 | Wall windows | 20 | `l.chunky and l.barrels and l.balloon` | 
 | Acid moat | Balloon | `self.logic = lambda _: True` | 
-| Above center piece | Balloon | `self.logic = lambda _: True` | 
-| Near B.Locker | Balloon | `self.logic = lambda _: True` | 
+| Castle Lobby: Above center piece | Balloon | `self.logic = lambda _: True` | 
+| Castle Lobby: Near B.Locker | Balloon | `self.logic = lambda _: True` | 
 ## Hideout Helm Lobby
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -2377,5 +2377,5 @@
 | Back ramp | 5 | `self.logic = lambda _: True` | 
 | Throne | 5 | `self.logic = lambda _: True` | 
 | Rareware GB room | 20 | `self.logic = lambda _: True` | 
-| Rareware GB room | Balloon | `self.logic = lambda _: True` | 
-| Around the fairy | Balloon | `self.logic = lambda _: True` | 
+| BFI: Rareware GB room | Balloon | `self.logic = lambda _: True` | 
+| BFI: Around the fairy | Balloon | `self.logic = lambda _: True` | 

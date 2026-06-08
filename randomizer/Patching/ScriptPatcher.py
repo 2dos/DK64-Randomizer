@@ -201,16 +201,28 @@ def patchScripts(spoiler, ROM_COPY):
             gone_pad = SwitchsanityGone.lever
         elif gone_kong == Kongs.diddy:
             gone_pad = SwitchsanityGone.gong
-    addNewScript(ROM_COPY, Maps.HideoutHelmLobby, [0x3], ScriptTypes.HelmLobbyPadGrab, {
-        "activator": gone_pad,
-        "bonus_map": helm_lobby_minigame_map,
-        "microhint": spoiler.settings.microhints_enabled != MicrohintsEnabled.off,
-    })
+    addNewScript(
+        ROM_COPY,
+        Maps.HideoutHelmLobby,
+        [0x3],
+        ScriptTypes.HelmLobbyPadGrab,
+        {
+            "activator": gone_pad,
+            "bonus_map": helm_lobby_minigame_map,
+            "microhint": spoiler.settings.microhints_enabled != MicrohintsEnabled.off,
+        },
+    )
     port_kong = spoiler.settings.switchsanity_data[Switches.IslesMonkeyport].kong
-    addNewScript(ROM_COPY, Maps.Isles, [0x38], ScriptTypes.KrocIslePort, {
-        "kong": port_kong,
-        "microhint": spoiler.settings.microhints_enabled != MicrohintsEnabled.off,
-    })
+    addNewScript(
+        ROM_COPY,
+        Maps.Isles,
+        [0x38],
+        ScriptTypes.KrocIslePort,
+        {
+            "kong": port_kong,
+            "microhint": spoiler.settings.microhints_enabled != MicrohintsEnabled.off,
+        },
+    )
     if port_kong != Kongs.tiny:
         addNewScript(ROM_COPY, Maps.Isles, [0x37], ScriptTypes.DeleteItem)
     if isBarrierRemoved(spoiler, RemovedBarriersSelected.aztec_llama_switches):
@@ -221,40 +233,57 @@ def patchScripts(spoiler, ROM_COPY):
         replaceScriptLines(ROM_COPY, Maps.HelmBarrelLankyMaze, [0x0], {"COND 38 | 0 32 0": "COND 0 | 0 0 0"})
     if isBarrierRemoved(spoiler, RemovedBarriersSelected.japes_coconut_gates):
         addNewScript(ROM_COPY, Maps.JungleJapes, [0x2D, 0x2E, 0x2F], ScriptTypes.DeleteItem)
-    addNewScript(ROM_COPY, Maps.FranticFactory, [0x14], ScriptTypes.Piano, {
-        "piano_order": spoiler.settings.piano_game_order,
-        "fast_piano": IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_piano_game),
-    })
-    addNewScript(ROM_COPY, Maps.FranticFactory, [0x3F, 0x40, 0x41], ScriptTypes.DiddyRNDDoors, {
-        0x3F: {
-            "fast_rnd": IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_diddy_rnd),
-            "cutscene_id": 27,
-            "pen_id": 23,
-            "enemy_ids": [55, 56],
+    addNewScript(
+        ROM_COPY,
+        Maps.FranticFactory,
+        [0x14],
+        ScriptTypes.Piano,
+        {
+            "piano_order": spoiler.settings.piano_game_order,
+            "fast_piano": IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_piano_game),
         },
-        0x40: {
-            "fast_rnd": IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_diddy_rnd),
-            "cutscene_id": 26,
-            "pen_id": 22,
-            "enemy_ids": [52, 53, 54],
+    )
+    addNewScript(
+        ROM_COPY,
+        Maps.FranticFactory,
+        [0x3F, 0x40, 0x41],
+        ScriptTypes.DiddyRNDDoors,
+        {
+            0x3F: {
+                "fast_rnd": IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_diddy_rnd),
+                "cutscene_id": 27,
+                "pen_id": 23,
+                "enemy_ids": [55, 56],
+            },
+            0x40: {
+                "fast_rnd": IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_diddy_rnd),
+                "cutscene_id": 26,
+                "pen_id": 22,
+                "enemy_ids": [52, 53, 54],
+            },
+            0x41: {
+                "fast_rnd": IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_diddy_rnd),
+                "cutscene_id": 25,
+                "pen_id": 21,
+                "enemy_ids": [49, 50, 51],
+            },
         },
-        0x41: {
-            "fast_rnd": IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_diddy_rnd),
-            "cutscene_id": 25,
-            "pen_id": 21,
-            "enemy_ids": [49, 50, 51],
-        },
-    })
+    )
     if spoiler.settings.open_lobbies:
-        addNewScript(ROM_COPY, Maps.Isles, [
-            0x03,  # Japes Boulder
-            0x02,  # Aztec Door
-            0x06,  # Factory Door
-            0x1A,  # Galleon Gate
-            0x21,  # Fungi Boulder
-            0x1B,  # Caves Boulder
-            0x34,  # Castle Rock
-        ], ScriptTypes.DeleteItem)
+        addNewScript(
+            ROM_COPY,
+            Maps.Isles,
+            [
+                0x03,  # Japes Boulder
+                0x02,  # Aztec Door
+                0x06,  # Factory Door
+                0x1A,  # Galleon Gate
+                0x21,  # Fungi Boulder
+                0x1B,  # Caves Boulder
+                0x34,  # Castle Rock
+            ],
+            ScriptTypes.DeleteItem,
+        )
     if spoiler.settings.item_reward_previews:
         preview_maps = {
             Maps.JapesCrown: 4,

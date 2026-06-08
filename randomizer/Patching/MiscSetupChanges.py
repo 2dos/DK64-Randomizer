@@ -165,16 +165,14 @@ def SpeedUpFungiRabbit(ROM_COPY: LocalROM, factor: float = 1.0):
             ROM_COPY.seek(file_start + init_offset + 0xD)
             ROM_COPY.write(int(136 * speed_buff))
 
+
 def addCrownPreviews(spoiler, ROM_COPY):
     """Add battle crown previews."""
     if not spoiler.settings.item_reward_previews:
         return
     crown_previews = []
     for _ in range(10):
-        crown_previews.append({
-            "item": 0x18D,
-            "scale": 0.25
-        })
+        crown_previews.append({"item": 0x18D, "scale": 0.25})
     crown_flags = [0x261, 0x262, 0x263, 0x264, 0x265, 0x268, 0x269, 0x266, 0x26A, 0x267]
     crown_maps = [
         Maps.JapesCrown,
@@ -197,10 +195,7 @@ def addCrownPreviews(spoiler, ROM_COPY):
                     item_type = Types.NoItem
                 entry = getItemDBEntry(item_type)
                 index = entry.index_getter(item.new_item)
-                crown_previews[crown_index] = {
-                    "item": entry.model_two_index[index],
-                    "scale": entry.scale
-                }
+                crown_previews[crown_index] = {"item": entry.model_two_index[index], "scale": entry.scale}
     for crown_index_local, cont_map_id in enumerate(crown_maps):
         file_data = []
         cont_map_setup_address = getPointerLocation(TableNames.Setups, cont_map_id)
@@ -210,20 +205,22 @@ def addCrownPreviews(spoiler, ROM_COPY):
         for _ in range(model2_count * 12):
             file_data.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
         crown_data = crown_previews[crown_index_local]
-        file_data.extend([
-            int(float_to_hex(730), 16),
-            int(float_to_hex(267), 16),
-            int(float_to_hex(728), 16),
-            int(float_to_hex(crown_data["scale"]), 16),
-            0x027B0002,
-            0x05800640,
-            0,
-            0,
-            0,
-            0,
-            (crown_data["item"] << 16) | 4,
-            1 << 16,
-        ])
+        file_data.extend(
+            [
+                int(float_to_hex(730), 16),
+                int(float_to_hex(267), 16),
+                int(float_to_hex(728), 16),
+                int(float_to_hex(crown_data["scale"]), 16),
+                0x027B0002,
+                0x05800640,
+                0,
+                0,
+                0,
+                0,
+                (crown_data["item"] << 16) | 4,
+                1 << 16,
+            ]
+        )
         mys_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
         file_data.append(mys_count)
         for _ in range(mys_count * 9):
@@ -235,7 +232,7 @@ def addCrownPreviews(spoiler, ROM_COPY):
         ROM_COPY.seek(cont_map_setup_address)
         for data in file_data:
             ROM_COPY.writeMultipleBytes(data, 4)
-        
+
 
 def getRandomGalleonStarLocation(random) -> tuple:
     """Get location for the DK Star which opens the treasure room."""

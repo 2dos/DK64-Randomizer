@@ -30,7 +30,6 @@ from typing import Any, Callable, Dict, Iterable, List, Optional
 
 import yaml
 
-
 # ---------------------------------------------------------------------------
 # Static config
 # ---------------------------------------------------------------------------
@@ -363,7 +362,7 @@ _FALLTHROUGH_NAME_OVERRIDES: Dict[str, str] = {
     "starting_move_pool_4_count": "starting_moves_list_count_4",
     "starting_move_pool_5_count": "starting_moves_list_count_5",
     "trap_fill_percentage": "ice_trap_count",
-    "auto_complete_bonus_barrels": "bonus_barrel_auto_complete"
+    "auto_complete_bonus_barrels": "bonus_barrel_auto_complete",
     # Trap weights are handled by a dedicated converter (see TRAP_WEIGHT_FIELDS
     # below) — the standalone stores 0/1/2/3 but AP's BaseTrapWeight uses
     # option_high=4, so direct int passthrough would mis-map "high".
@@ -389,6 +388,7 @@ TRAP_WEIGHT_FIELDS: Dict[str, str] = {
     "rockfall_trap_weight": "trap_weight_rockfall",
     "disabletag_trap_weight": "trap_weight_disabletag",
 }
+
 
 #: Standalone trap-weight integer → AP choice name. Standalone values are
 #: arbitrary ints, bucketed: 0→none, 1→low, 2→medium, >=3→high. Done as a

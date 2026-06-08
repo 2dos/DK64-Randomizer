@@ -385,6 +385,9 @@ extern int hasFlagMove(int flag);
 extern void setFlagMove(int flag);
 extern int getShopFlag(vendors vendor, int level, int kong);
 
+extern void setAllHUDKongs(int kong);
+extern void setHUDKong(int item_id, int kong);
+
 extern void giveKongFromFlag(int flag);
 
 extern void resetIceTrapButtons(void);
@@ -473,7 +476,6 @@ extern collision_data_struct actor_collisions[ACTOR_LIMIT];
 extern collision_info object_collisions[COLLISION_LIMIT];
 extern unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE];
 extern short mayhem_minecart_size[3];
-extern unsigned char kong_cb_display;
 
 extern mtx_item static_mtx[22];
 extern FastTextStruct hint_pointers[35];

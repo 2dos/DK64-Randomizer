@@ -543,7 +543,7 @@ void changeKong(int next_character) {
         updateActorHandStates_gun((actorData*)Player, next_character + 2);
     }
     // Fix HUD memes
-    kong_cb_display = next_character;
+    setAllHUDKongs(next_character);
     if (CurrentMap == MAP_TROFFNSCOFF) {
         if (!hasTurnedInEnoughCBs()) {
             tag_countdown = 3;

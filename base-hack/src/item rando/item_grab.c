@@ -414,8 +414,6 @@ void forceDance(void) {
     }    
 }
 
-ROM_DATA unsigned char kong_cb_display = KONG_DK;
-
 void getItem(int object_type) {
     /**
      * @brief Item Grab hook, at the point of touching the item, before the flag is set.
@@ -760,7 +758,7 @@ void getFlagMappingData(int index, char *level, char *kong) {
 }
 
 void giveCB(int kong, int count) {
-    kong_cb_display = kong;
+    setHUDKong(ITEMID_CB, kong);
     int world = getWorld(CurrentMap, 1);
     HUD->item[0].item_count_pointer = &MovesBase[kong].cb_count[world];
     HUD->item[0].visual_item_count = MovesBase[kong].cb_count[world];
@@ -849,6 +847,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0xE1:
             // Blueprint
             giveItem(REQITEM_BLUEPRINT, 0, item_kong, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            setHUDKong(ITEMID_BPFAIRY, item_kong);
             save_game = 1;
             break;
         case 0xEC:

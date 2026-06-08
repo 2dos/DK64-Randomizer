@@ -10,6 +10,7 @@ ROM_BASE_CACHE = "rom_cache.txt"
 # Hide the root tkinter window
 Tk().withdraw()
 
+
 def replaceMinigame(fh: BinaryIO, ovl_index: int, data: bytes, kb_limit: int, loop_addr: int):
     if len(data) > kb_limit * 1024:
         print(f"Could not write minigame - Too large ({len(data)})")
@@ -27,6 +28,7 @@ def replaceMinigame(fh: BinaryIO, ovl_index: int, data: bytes, kb_limit: int, lo
     fh.seek(ovl_offset + (write_loc - 0x80024000))
     fh.write((0x0C000000 | ((loop_addr & 0xFFFFFF) >> 2)).to_bytes(4, "big"))
 
+
 bin_path = f"../../minigame/{sys.argv[1]}.bin" if len(sys.argv) > 1 else None
 load_style = sys.argv[2] == "fast" if len(sys.argv) > 2 else False
 
@@ -34,23 +36,13 @@ if os.path.exists(ROM_BASE_CACHE):
     with open(ROM_BASE_CACHE, "r") as fh:
         rom_path = fh.read()
 else:
-    rom_path = askopenfilename(
-        title="Select your Rando ROM File",
-        filetypes=[
-            ("All Files", "*.z64")
-        ]
-    )
+    rom_path = askopenfilename(title="Select your Rando ROM File", filetypes=[("All Files", "*.z64")])
     with open(ROM_BASE_CACHE, "w") as fh:
         fh.write(rom_path)
 
 # Only show dialog if no argument was provided
 if not bin_path:
-    bin_path = askopenfilename(
-        title="Select your Minigame .bin File",
-        filetypes=[
-            ("All Files", "*.bin")
-        ]
-    )
+    bin_path = askopenfilename(title="Select your Minigame .bin File", filetypes=[("All Files", "*.bin")])
 
 with open(bin_path, "rb") as fh:
     bin_data = fh.read()

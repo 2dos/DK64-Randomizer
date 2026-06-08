@@ -529,10 +529,11 @@ Gfx* displayListModifiers(Gfx* dl) {
 				ammo_hud_timer -= 1;
 			}
 			if (HUD) {
-				int hud_st = HUD->item[0xC].hud_state;
+				hud_element *hud_el = &HUD->item[ITEMID_BPFAIRY];
+				int hud_st = hud_el->hud_state;
 				if (hud_st) {
 					if ((hud_st == 1) || (hud_st == 2)) {
-						getBPCountStats(getKong(0), &bp_numerator, &bp_denominator);
+						getBPCountStats(hud_el->kong, &bp_numerator, &bp_denominator);
 						bp_numerator -= bp_denominator;
 						bp_denominator = 8 - bp_denominator;
 						if (hud_st == 1) {

@@ -485,6 +485,7 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
                 slam_name = options.alter_switch_allocation.value[level_key]
                 settings_dict[f"prog_slam_level_{i + 1}"] = slam_map.get(slam_name, SlamRequirement.green)
 
+
 def generate_blocker(option_value: str, blocker_max: int, random: Random):
     """Randomize a B. Locker value, either within a range or up to the maximum."""
     upper_bound = blocker_max if option_value == "random" else int(option_value.split("-")[1]) + 1

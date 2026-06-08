@@ -1,6 +1,8 @@
 """Library classes for compiling instance scripts."""
+
 from enum import IntEnum, auto
 from randomizer.Enums.Kongs import Kongs
+
 
 class FunctionData:
     """Function Data Class."""
@@ -77,6 +79,7 @@ def compileInstanceScript(item_id, script: list[ScriptBlock], val: int = None) -
     output_bin[1] = block_count
     return output_bin
 
+
 class IScript_IsState(FunctionData):
     """Is the instance script within a certain state."""
 
@@ -84,12 +87,14 @@ class IScript_IsState(FunctionData):
         """Initialize with given variables."""
         super().__init__(1, [state, index, 0], inverted, inclusion_lambda)
 
+
 class IScript_IsExternalState(FunctionData):
     """Is an external object instance within a certain state."""
 
     def __init__(self, obj_instance_id: int, state: int, index=0, inverted=False, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(49, [obj_instance_id, state, index], inverted, inclusion_lambda)
+
 
 class IScript_SetState(FunctionData):
     """Set the instance script to a certain state."""
@@ -106,12 +111,14 @@ class IScript_SetExternalState(FunctionData):
         """Initialize with given variables."""
         super().__init__(5, [obj_instance_id, state, index], False, inclusion_lambda)
 
+
 class IScript_True(FunctionData):
     """Always returns true, unless inverted, in which case always returns false."""
 
     def __init__(self, inverted=False, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(0, [0, 0, 0], inverted, inclusion_lambda)
+
 
 class IScript_IsTimer(FunctionData):
     """Is the instance script countdown timer at a certain value."""
@@ -120,12 +127,14 @@ class IScript_IsTimer(FunctionData):
         """Initialize with given variables."""
         super().__init__(4, [timer, index, 0], inverted, inclusion_lambda)
 
+
 class IScript_SetTimer(FunctionData):
     """Set the instance script countdown timer to a certain value."""
 
     def __init__(self, timer, index=0, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(3, [0, timer, index], False, inclusion_lambda)
+
 
 class IScript_IsKong(FunctionData):
     """Is the player a certain kong."""
@@ -134,12 +143,14 @@ class IScript_IsKong(FunctionData):
         """Initialize with given variables."""
         super().__init__(25, [kong + 2, 0, 0], inverted, inclusion_lambda)
 
+
 class IScript_SetOpacity(FunctionData):
     """Set various opacity vars."""
 
     def __init__(self, opacity_enabled: bool, opacity: int, opacity_change_rate: int, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(69, [1 if opacity_enabled else 0, opacity, opacity_change_rate], False, inclusion_lambda)
+
 
 class IScript_SetTangibility(FunctionData):
     """Set whether the object is tangible or not."""
@@ -148,11 +159,14 @@ class IScript_SetTangibility(FunctionData):
         """Initialize with given variables."""
         super().__init__(70, [1 if tangible else 0, 0, 0], False, inclusion_lambda)
 
+
 class FlagType(IntEnum):
     """Flag Type enum."""
+
     permanent = auto()
     temporary = auto()
     gbl = auto()
+
 
 class IScript_IsFlagSet(FunctionData):
     """Is a flag set."""
@@ -166,6 +180,7 @@ class IScript_IsFlagSet(FunctionData):
             macro_index = 59
         super().__init__(macro_index, [flag_index, 0, 0], inverted, inclusion_lambda)
 
+
 class IScript_SetFlag(FunctionData):
     """Set a certain flag to a certain state."""
 
@@ -178,12 +193,14 @@ class IScript_SetFlag(FunctionData):
             macro_index = 132
         super().__init__(macro_index, [flag_index, 1 if output_state else 0, 0], False, inclusion_lambda)
 
+
 class IScript_InRange(FunctionData):
     """Is the player within a certain range of the target object."""
 
     def __init__(self, range, inverted=False, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(19, [range, 0, 0], inverted, inclusion_lambda)
+
 
 class IScript_IsCutsceneActive(FunctionData):
     """Is a cutscene active."""
@@ -192,25 +209,29 @@ class IScript_IsCutsceneActive(FunctionData):
         """Initialize with given variables."""
         super().__init__(35, [0, 0, 0], inverted, inclusion_lambda)
 
+
 class RunState(IntEnum):
     init = 0
     run = 1
     pause = 2
     distance = 3
 
+
 class IScript_SetScriptRunState(FunctionData):
     """Set the script run state of the object tied to the script."""
 
-    def __init__(self, state: RunState, distance: int=0, inclusion_lambda=None):
+    def __init__(self, state: RunState, distance: int = 0, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(38, [state, distance, 0], False, inclusion_lambda)
+
 
 class IScript_SetExternalScriptRunState(FunctionData):
     """Set the script run state of the an external object instance id."""
 
-    def __init__(self, obj_instance_id: int, state: RunState, distance: int=0, inclusion_lambda=None):
+    def __init__(self, obj_instance_id: int, state: RunState, distance: int = 0, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(84, [obj_instance_id, state, distance], False, inclusion_lambda)
+
 
 class IScript_PlayCutscene(FunctionData):
     """Play a cutscene tied to this instance."""
@@ -219,12 +240,14 @@ class IScript_PlayCutscene(FunctionData):
         """Initialize with given variables."""
         super().__init__(37, [cutscene_index, extra_args, tied_spawner_index], False, inclusion_lambda)
 
+
 class IScript_SetAction(FunctionData):
     """Set the player to a current action state."""
 
     def __init__(self, action_index: int, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(25, [action_index, 0, 0], False, inclusion_lambda)
+
 
 class IScript_HasSpecialMove(FunctionData):
     """Does the player have a certain move."""
@@ -233,12 +256,14 @@ class IScript_HasSpecialMove(FunctionData):
         """Initialize with given variables."""
         super().__init__(52, [2 + int(kong), move_index, 0], inverted, inclusion_lambda)
 
+
 class IScript_IsStandingOnObject(FunctionData):
     """Is standing on the object tied to the script."""
 
     def __init__(self, inverted=False, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(2, [0, 0, 0], inverted, inclusion_lambda)
+
 
 class IScript_IsKongStandingOnObject(FunctionData):
     """Is standing on the object tied to the script."""
@@ -247,12 +272,14 @@ class IScript_IsKongStandingOnObject(FunctionData):
         """Initialize with given variables."""
         super().__init__(17, [kong + 2, 1, 0], inverted, inclusion_lambda)
 
+
 class IScript_InControlState(FunctionData):
     """Is the player is in a certain control state."""
 
     def __init__(self, control_state: int, inverted=False, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(23, [control_state, 0, 0], inverted, inclusion_lambda)
+
 
 class IScript_InControlStateAndProgress(FunctionData):
     """Is the player is in a certain control state and progress."""
@@ -261,6 +288,7 @@ class IScript_InControlStateAndProgress(FunctionData):
         """Initialize with given variables."""
         super().__init__(23, [control_state, progress, 0], inverted, inclusion_lambda)
 
+
 class IScript_PlaySong(FunctionData):
     """Play a song."""
 
@@ -268,12 +296,14 @@ class IScript_PlaySong(FunctionData):
         """Initialize with given variables."""
         super().__init__(97, [song_index, 0, 0 if volume == 1 else int(volume * 255)], False, inclusion_lambda)
 
+
 class IScript_SpawnEnemy(FunctionData):
     """Spawn an enemy within the current map."""
 
     def __init__(self, spawner_id: int, inclusion_lambda=None):
         """Initialize with given variables."""
         super().__init__(86, [spawner_id, 0, 0], False, inclusion_lambda)
+
 
 class IScript_PlaySFX(FunctionData):
     """Plays a SFX at the object's XYZ Position."""

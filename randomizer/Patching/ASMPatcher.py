@@ -793,12 +793,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
                 val = val[:7]
             ROM_COPY.seek(addr)
             ROM_COPY.writeBytes(bytes(f"{val}\0", "ascii"))
-            data = {
-                "textbox_index": kong_index,
-                "mode": "replace",
-                "search": vanilla_names[kong_index],
-                "target": name_mapping[value]
-            }
+            data = {"textbox_index": kong_index, "mode": "replace", "search": vanilla_names[kong_index], "target": name_mapping[value]}
             file = 2
             if file in spoiler.text_changes:
                 spoiler.text_changes[file].append(data)
@@ -810,8 +805,6 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     writeValue(ROM_COPY, 0x8064AB78, Overlay.Static, 0x9459005C, offset_dict, 4)  # Change prop read to be int bitfield
     writeValue(ROM_COPY, 0x8064AB7E, Overlay.Static, 1, offset_dict)  # Change to check for player
     writeValue(ROM_COPY, 0x8064AB80, Overlay.Static, 0x1140, offset_dict)  # Change BNE to BEQ
-
-    
 
     if settings.arcade_custom_minigame is not None:
         loadBin(ROM_COPY, 0x80024390, Overlay.Arcade, f"base-hack/minigame/{settings.arcade_custom_minigame}.bin", offset_dict)

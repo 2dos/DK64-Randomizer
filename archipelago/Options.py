@@ -150,6 +150,7 @@ class OpenLobbies(Toggle):
 
     display_name = "Open Lobbies"
 
+
 class StartingKongCount(Range):
     """Determines how many Kongs you start with."""
 

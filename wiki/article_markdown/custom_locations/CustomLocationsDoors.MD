@@ -29,7 +29,7 @@
 | Jungle Japes | Painting Hill - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Jungle Japes | First Tunnel Switch - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Jungle Japes | First Tunnel Switch - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Jungle Japes | First Tunnel - back left | Wrinkly | `self.logic = lambda _: True` | 
+| Jungle Japes | First Tunnel - back left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Jungle Japes | First Tunnel - front left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Jungle Japes | First Tunnel - Near River Exit | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Jungle Japes | Stormy Tunnel - Near Pit River Side | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -106,10 +106,10 @@
 | Angry Aztec | Llama Temple's switchless side | Boss, Dk_Portal | `self.logic = lambda _: True` | 
 | Aztec Tiny Temple | Tiny Temple - Main Room - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Aztec Tiny Temple | Tiny Temple - Main Room - back | Wrinkly | `self.logic = lambda _: True` | 
-| Aztec Tiny Temple | Tiny Temple - Across from KONG Room - left | Boss, Wrinkly | `self.logic = lambda _: True` | 
-| Aztec Tiny Temple | Tiny Temple - Across from KONG Room - right | Boss, Wrinkly | `self.logic = lambda _: True` | 
-| Aztec Tiny Temple | Tiny Temple - Next to Opening to Underwater Room | Boss, Wrinkly | `self.logic = lambda _: True` | 
-| Aztec Tiny Temple | Tiny Temple - Across from Opening to Underwater Room | Boss, Wrinkly | `self.logic = lambda _: True` | 
+| Aztec Tiny Temple | Tiny Temple - Across from KONG Room - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Aztec Tiny Temple | Tiny Temple - Across from KONG Room - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Aztec Tiny Temple | Tiny Temple - Next to Opening to Underwater Room | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Aztec Tiny Temple | Tiny Temple - Across from Opening to Underwater Room | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | Llama Temple Stairs - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | Llama Temple Stairs - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Aztec Llama Temple | Llama Temple - Entrance Staircase - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -154,7 +154,7 @@
 | Frantic Factory | R&D | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Block Tower | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Storage Room | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Frantic Factory | Behind Toy Monster Box | Wrinkly | `(l.ischunky and l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
+| Frantic Factory | Behind Toy Monster Box | Wrinkly | `(l.ischunky and l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Next to Hatch - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Next to Hatch - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Bottom of the Hatch Pole | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -187,7 +187,7 @@
 | Frantic Factory | Diddy R&D Room - front-right | Wrinkly | `(l.isdiddy and l.guitar) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Lanky Piano Room - right | Wrinkly | `(l.islanky and l.trombone) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Lanky Piano Room - left | Wrinkly | `(l.islanky and l.trombone) or l.CanAccessRNDRoom()` | 
-| Frantic Factory | Dark Room | Wrinkly, Boss | `(l.chunky and l.punch) or l.CanPhase() or l.generalclips` | 
+| Frantic Factory | Dark Room | Wrinkly, Boss | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase() or l.generalclips` | 
 | Factory Crusher | Crusher Room - start | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Factory Vanilla Level Entry | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Factory Power Hut | In the power hut | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -241,7 +241,7 @@
 | Galleon Mermaid Room | In Mermaid's Palace | Wrinkly | `self.logic = lambda _: True` | 
 | Galleon5DShip DKTiny | Tiny 5DS | Wrinkly | `self.logic = lambda _: True` | 
 | Galleon5DShip Diddy Lanky Chunky | Lanky 5DS | Wrinkly | `self.logic = lambda _: True` | 
-| Galleon2DShip | Lanky 2DS | Boss, Wrinkly | `self.logic = lambda _: True` | 
+| Galleon2DShip | Lanky 2DS | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Galleon Vanilla Level Entry | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Cannonball gate tunnel - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Cannonball gate tunnel - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -250,10 +250,10 @@
 | Galleon Sick Bay | Seasick ship - after cannons front left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Galleon Sick Bay | Seasick ship - after cannons front right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Galleon Sick Bay | Seasick ship - after cannons center | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Galleon Mechafish | Mechfish - Left wall | Boss, Wrinkly | `self.logic = lambda _: True` | 
-| Galleon Mechafish | Mechfish - Right wall | Boss, Wrinkly | `self.logic = lambda _: True` | 
-| Galleon5DShip Diddy Lanky Chunky | Chunky 5DS - Against a chest | Boss, Wrinkly | `self.logic = lambda _: True` | 
-| Galleon5DShip DKTiny | Donkey 5DS - Next to the left cell bed | Boss, Wrinkly | `self.logic = lambda _: True` | 
+| Galleon Mechafish | Mechfish - Left wall | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Galleon Mechafish | Mechfish - Right wall | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Galleon5DShip Diddy Lanky Chunky | Chunky 5DS - Against a chest | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Galleon5DShip DKTiny | Donkey 5DS - Next to the left cell bed | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | On top of the lighthouse | Wrinkly | `l.jetpack and l.isdiddy` | 
 
 # Fungi Forest
@@ -287,8 +287,8 @@
 | Fungi Forest | Mushroom Area - Next to Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Center - Next to Pink Tunnel - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Center - Next to Pink Tunnel - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Fungi Forest | Next to Clock - left | Wrinkly | `self.logic = lambda _: True` | 
-| Fungi Forest | Next to Clock - right | Wrinkly | `self.logic = lambda _: True` | 
+| Fungi Forest | Next to Clock - left | Wrinkly | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
+| Fungi Forest | Next to Clock - right | Wrinkly | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
 | Fungi Forest | Beanstalk Area - Behind Beanstalk left | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Beanstalk Area - Behind Beanstalk | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Forest Giant Mushroom | Giant Mushroom - All Kong Gun Switch - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 

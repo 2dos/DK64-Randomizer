@@ -89,7 +89,6 @@ if __name__ == "__main__" and os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     logger.addHandler(handler)
 
 
-
 @api.route("/convert_settings", methods=["POST"])
 def convert_settings():
     """Convert settings between JSON and protobuf string formats."""

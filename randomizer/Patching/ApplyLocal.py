@@ -106,8 +106,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     else:
         js.document.getElementById("patch_version_warning").hidden = False
         js.document.getElementById("patch_warning_message").innerHTML = (
-            "This patch file was generated before settings were embedded in patches. "
-            "Please regenerate the seed from the original settings."
+            "This patch file was generated before settings were embedded in patches. " "Please regenerate the seed from the original settings."
         )
         await ProgressBar().reset()
         return
