@@ -1131,7 +1131,15 @@
     "req_bonuses": 18,
     "krools_challenge": 19,
     "kill_the_rabbit": 20,
-    "get_keys_3_and_8": 21
+    "get_keys_3_and_8": 21,
+    "mech_fish": 22,
+    "arcade": 23,
+    "jetpac": 24,
+    "bad_hit_detection_man": 25,
+    "rareware_gb_check": 26,
+    "blast_courses": 27,
+    "tasks": 28,
+    "inactive": 29
   },
 
   /*
@@ -1487,7 +1495,23 @@
     "pause_hints_setting": 310,
     "hint_door_item": 311,
     "hint_door_item_count": 312,
-    "pause_hints_lockout_timer": 313
+    "pause_hints_lockout_timer": 313,
+    "task_1_condition": 314,
+    "task_1_count": 315,
+    "task_2_condition": 316,
+    "task_2_count": 317,
+    "task_3_condition": 318,
+    "task_3_count": 319,
+    "task_4_condition": 320,
+    "task_4_count": 321,
+    "task_5_condition": 322,
+    "task_5_count": 323,
+    "task_6_condition": 324,
+    "task_6_count": 325,
+    "task_7_condition": 326,
+    "task_7_count": 327,
+    "task_8_condition": 328,
+    "task_8_count": 329
   },
   /*
     SettingsStringDataType:
@@ -1575,6 +1599,14 @@
     "warp_level_list_selected": { "obj": "Maps" },
     "win_condition": { "obj": "WinCondition" },
     "win_condition_item": { "obj": "WinConditionComplex" },
+    "task_1_condition": { "obj": "WinConditionComplex" },
+    "task_2_condition": { "obj": "WinConditionComplex" },
+    "task_3_condition": { "obj": "WinConditionComplex" },
+    "task_4_condition": { "obj": "WinConditionComplex" },
+    "task_5_condition": { "obj": "WinConditionComplex" },
+    "task_6_condition": { "obj": "WinConditionComplex" },
+    "task_7_condition": { "obj": "WinConditionComplex" },
+    "task_8_condition": { "obj": "WinConditionComplex" },
     "blocker_selection_behavior": { "obj": "BLockerSetting" },
     "tns_selection_behavior": { "obj": "TroffSetting" },
     "medal_jetpac_behavior": { "obj": "RandomRequirement" },
@@ -1997,6 +2029,14 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.win_condition_item": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_1_condition": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_2_condition": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_3_condition": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_4_condition": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_5_condition": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_6_condition": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_7_condition": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_8_condition": { "obj": "WinConditionComplex" },
     "SettingsStringEnum.blocker_selection_behavior": { "obj": "BLockerSetting" },
     "SettingsStringEnum.tns_selection_behavior": { "obj": "TroffSetting" },
     "SettingsStringEnum.medal_jetpac_behavior": { "obj": "RandomRequirement" },
@@ -2006,6 +2046,30 @@
     "SettingsStringEnum.cb_medal_behavior_new": { "obj": "CBRequirement" },
     "SettingsStringEnum.random_starting_region_new": { "obj": "RandomStartingRegion" },
     "SettingsStringEnum.win_condition_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_1_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_2_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_3_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_4_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_5_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_6_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_7_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_8_count": {
       "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.wrinkly_available": {
@@ -2387,6 +2451,14 @@
     "SettingsStringEnum.progressive_hint_count": { "max": 3500, "min": 0 },
     "SettingsStringEnum.hint_door_item_count": { "max": 3500, "min": 0 },
     "SettingsStringEnum.pause_hints_lockout_timer": { "max": 255, "min": 0 },
-    "SettingsStringEnum.win_condition_count": { "max": 255, "min": 0 }
+    "SettingsStringEnum.win_condition_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_1_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_2_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_3_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_4_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_5_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_6_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_7_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_8_count": { "max": 255, "min": 0 }
   }
 }

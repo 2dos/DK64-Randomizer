@@ -852,10 +852,6 @@ void* findActorWithType(int search_actor_type) {
 	return 0;
 }
 
-void createCollisionObjInstance(collision_types subtype, int map, int exit) {
-	createCollision(0,Player,subtype,map,exit,collisionPos[0],collisionPos[1],collisionPos[2]);
-}
-
 void resetMapContainer(void) {
 	resetMap();
 	for (int i = 0; i < 0x12; i++) {
@@ -1548,6 +1544,15 @@ ROM_RODATA_NUM static const unsigned char use_req_counters[] = {
 	REQITEM_KEY,
 	REQITEM_RACECOIN,
 };
+ROM_RODATA_NUM static const unsigned short blast_flags[] = {
+	0x0003,  // Japes
+	0x0032,  // Aztec
+	0x0081,  // Factory
+	0x009E,  // Galleon
+	0x00FE,  // Fungi
+	0x012A,  // Caves
+	0x0144,  // Castle
+};
 
 int getItemCountReq(requirement_item item) {
 	int count = 0;
@@ -1567,14 +1572,14 @@ int getItemCountReq(requirement_item item) {
 					count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
 				}
 			}
-			return count;
+			break;
 		case REQITEM_BOSSES:
 			for (int i = 0; i < 7; i++) {
 				if (checkFlag(normal_key_flags[i], FLAGTYPE_PERMANENT)) {
 					count += 1;
 				}
 			}
-			return count;
+			break;
 		case REQITEM_BONUSES:
 			for (int i = 0; i < 10; i++) {
 				if (checkFlag(FLAG_HELM_MINIGAMES + i, FLAGTYPE_PERMANENT)) {
@@ -1589,11 +1594,18 @@ int getItemCountReq(requirement_item item) {
 					}
 				}
 			}
-			return count;
+			break;
+		case REQITEM_BLASTCOURSES:
+			for (int i = 0; i < 7; i++) {
+				if (checkFlag(blast_flags[i], FLAGTYPE_PERMANENT)) {
+					count += 1;
+				}
+			}
+			break;
 		default:
 			return 0;
-	}
-	return 0;
+		}
+	return count;
 }
 
 int isItemRequirementSatisfied(ItemRequirement* req) {
@@ -1627,8 +1639,7 @@ void exitBoss(void) {
 
 ROM_RODATA_NUM static const unsigned char krusha_adj_models[] = {KONGMODEL_KRUSHA, KONGMODEL_KROOL_CUTSCENE, KONGMODEL_KROOL_FIGHT};
 int isKrushaAdjacentModel(int kong) {
-	custom_kong_models slot_value = Rando.kong_models[kong];
-	return inU8List(slot_value, &krusha_adj_models[0], 3);
+	return inU8List(Rando.kong_models[kong], &krusha_adj_models[0], 3);
 }
 
 int isGlobalCutscenePlaying(int cutscene_index) {

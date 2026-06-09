@@ -27,10 +27,6 @@ void overlay_changes(void) {
 		case OVERLAY_BONUS:
 			overlay_mod_bonus();
 			break;
-		case OVERLAY_ARCADE:
-			break;
-		case OVERLAY_JETPAC:
-			break;
 		case OVERLAY_RACE:
 			overlay_mod_race();
 			break;

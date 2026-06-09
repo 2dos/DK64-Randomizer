@@ -38,7 +38,7 @@ void cFuncLoop(void) {
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, FLAGTYPE_TEMPORARY); // Clear K. Lumsy temp flag
 		setFlag(0x79, 0, FLAGTYPE_TEMPORARY); // Clear BFI Reward Cutscene temp flag
-		if (isKrushaAdjacentModel(3)) {
+		if (isKrushaAdjacentModel(KONG_TINY)) {
 			if (CurrentMap == MAP_KROOLSHOE) {
 				setActorDamage(43, 1);
 			} else {

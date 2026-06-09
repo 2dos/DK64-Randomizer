@@ -657,6 +657,30 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
             "index": WinConROM.flag,
             "flag": 0x2E9  # Rabbit Killed Flag
         },
+        WinConditionComplex.mech_fish: {
+            "index": WinConROM.flag,
+            "flag": 167
+        },
+        WinConditionComplex.arcade: {
+            "index": WinConROM.flag,
+            "flag": 132  # Arcade R2
+        },
+        WinConditionComplex.jetpac: {
+            "index": WinConROM.flag,
+            "flag": 379
+        },
+        WinConditionComplex.bad_hit_detection_man: {
+            "index": WinConROM.flag,
+            "flag": 660
+        },
+        WinConditionComplex.rareware_gb_check: {
+            "index": WinConROM.flag,
+            "flag": 301
+        },
+        WinConditionComplex.blast_courses: {
+            "index": WinConROM.custom_item,
+            "item": ReqItems.BlastCourses,
+        },
         WinConditionComplex.req_bean: {
             "index": WinConROM.custom_item,
             "item": ReqItems.Bean,
@@ -738,6 +762,36 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
                 ROM_COPY.seek(sav + 0xC0)
                 ROM_COPY.write(win_con_data["item"])
                 ROM_COPY.write(spoiler.settings.win_condition_count)
+    elif win_con == WinConditionComplex.tasks:
+        task_segments = [
+            { "type": spoiler.settings.task_1_condition, "count": spoiler.settings.task_1_count },
+            { "type": spoiler.settings.task_2_condition, "count": spoiler.settings.task_2_count },
+            { "type": spoiler.settings.task_3_condition, "count": spoiler.settings.task_3_count },
+            { "type": spoiler.settings.task_4_condition, "count": spoiler.settings.task_4_count },
+            { "type": spoiler.settings.task_5_condition, "count": spoiler.settings.task_5_count },
+            { "type": spoiler.settings.task_6_condition, "count": spoiler.settings.task_6_count },
+            { "type": spoiler.settings.task_7_condition, "count": spoiler.settings.task_7_count },
+            { "type": spoiler.settings.task_8_condition, "count": spoiler.settings.task_8_count },
+        ]
+        ROM_COPY.seek(sav + 0x11D)
+        ROM_COPY.write(WinConROM.tasks)
+        task_index = 0
+        for task in task_segments:
+            win_con_data = win_con_table.get(task["type"], None)
+            if win_con_data is not None:
+                task_type = win_con_data["index"]
+                ROM_COPY.seek(sav + (4 * task_index))
+                ROM_COPY.write(1)  # Task active
+                ROM_COPY.write(task_type)
+                if task_type == WinConROM.flag:
+                    ROM_COPY.writeMultipleBytes(task["flag"], 2)
+                elif task_type == WinConROM.reqitem_solo:
+                    ROM_COPY.write(task["item"])
+                    ROM_COPY.write(task["level"])
+                elif "item" in task:
+                    ROM_COPY.write(task["item"])
+                    ROM_COPY.write(task["count"])
+                task_index += 1
 
     # Fungi Time of Day
     fungi_times = (FungiTimeSetting.day, FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)
