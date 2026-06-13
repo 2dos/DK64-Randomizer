@@ -388,6 +388,7 @@ def create_patching_adapter(fill_result: Any, settings: Any) -> Any:
             # One LocationDict per adapter so its _cache survives across reads and
             # in-place mutations land on the same LocationObj on every access.
             self._location_dict = PatchingLocationDict(self._location_assignments)
+            self._tied_hint_regions = list(self._hint_data.tied_hint_regions)
 
         # Properties to access proto data with backward-compatible interface
         @property
@@ -668,7 +669,7 @@ def create_patching_adapter(fill_result: Any, settings: Any) -> Any:
         @property
         def tied_hint_regions(self) -> list:
             """Return tied hint regions."""
-            return list(self._hint_data.tied_hint_regions)
+            return self._tied_hint_regions
 
         @property
         def RegionList(self) -> dict:
@@ -715,13 +716,17 @@ def create_patching_adapter(fill_result: Any, settings: Any) -> Any:
             return result
 
         @property
-        def region_hintable_count(self) -> dict[str, dict[int, dict]]:
+        def region_hintable_count(self) -> dict[str, dict[str, dict]]:
             """Return region hintable count."""
             result = {}
             for region_name, counts_proto in self._path_data.region_hintable_count.items():
                 region_dict = {}
-                for item_type, item_data in counts_proto.items.items():
-                    region_dict[int(item_type)] = {"count": item_data.count, "locations": [Locations(loc_id) for loc_id in item_data.location_ids]}
+                for item_name, item_data in counts_proto.items.items():
+                    region_dict[item_name] = {
+                        "plural": item_data.plural,
+                        "count": item_data.count,
+                        "shuffled_locations": [Locations(loc_id) for loc_id in item_data.shuffled_locations],
+                    }
                 result[region_name] = region_dict
             return result
 

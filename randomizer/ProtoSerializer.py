@@ -1051,22 +1051,16 @@ def _populate_move_entry(move_dict: Any, proto: fill_result_pb2.MoveEntry) -> No
 
 
 def _populate_move_shop_data(spoiler: "Spoiler", proto: fill_result_pb2.MoveShopData) -> None:
-    """Populate MoveShopData from spoiler.move_data.
-
-    ``move_data`` layout: [shop_moves (4-deep nested), training_barrels, bfi_moves].
-    """
+    """Populate MoveShopData from spoiler.move_data."""
     move_data = spoiler.move_data
-
-    # Index 0: Shop moves, structure shop_type -> shop_index -> kong -> move.
     if len(move_data) > 0 and isinstance(move_data[0], list):
-        for shop_type_data in move_data[0]:
-            shop_type_proto = proto.shop_types.add()
-            for shop_index_data in shop_type_data:
-                shop_index_proto = shop_type_proto.shop_indices.add()
-                for kong_moves_data in shop_index_data:
-                    kong_moves_proto = shop_index_proto.kong_moves.add()
-                    for move_entry in kong_moves_data:
-                        _populate_move_entry(move_entry, kong_moves_proto.moves.add())
+        shop_type_proto = proto.shop_types.add()
+        for shop_index_data in move_data[0]:
+            shop_index_proto = shop_type_proto.shop_indices.add()
+            for kong_moves_data in shop_index_data:
+                kong_moves_proto = shop_index_proto.kong_moves.add()
+                for move_entry in kong_moves_data:
+                    _populate_move_entry(move_entry, kong_moves_proto.moves.add())
 
     # Index 1: Training barrels.
     if len(move_data) > 1 and isinstance(move_data[1], list):
