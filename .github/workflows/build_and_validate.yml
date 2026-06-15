@@ -55,7 +55,7 @@ jobs:
           fi
 
       - name: Get Cover 
-        uses: orgoro/coverage@v3.2
+        uses: orgoro/coverage@v3.3
         continue-on-error: true
         with:
             coverageFile: ./coverage.xml
