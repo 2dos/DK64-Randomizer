@@ -677,7 +677,7 @@ class Spoiler:
                 price = ""
                 if location.item in ProgressiveMoves.keys():
                     if location.item == Items.ProgressiveSlam:
-                        price = f"{self.settings.prices[Items.ProgressiveSlam][0]}->{self.settings.prices[Items.ProgressiveSlam][1]}"
+                        price = f"{self.settings.prices[Items.ProgressiveSlam][0]}->{self.settings.prices[Items.ProgressiveSlam][1]}->{self.settings.prices[Items.ProgressiveSlam][2]}"
                     elif location.item == Items.ProgressiveAmmoBelt:
                         price = f"{self.settings.prices[Items.ProgressiveAmmoBelt][0]}->{self.settings.prices[Items.ProgressiveAmmoBelt][1]}"
                     elif location.item == Items.ProgressiveInstrumentUpgrade:
