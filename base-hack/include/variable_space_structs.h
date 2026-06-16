@@ -12,7 +12,7 @@ typedef struct varspace {
 	/* 0x037 */ char unk_37[12];
 	/* 0x043 */ char colorblind_mode; // 0 = Off, 1 = Prot, 2 = Deut, 3 = Trit
 	/* 0x044 */ char dark_mode_textboxes; // 0 = Light Mode, 1 = Dark Mode
-	/* 0x045 */ unsigned char slam_prices[2]; // Array of simian slam upgrade prices: [1,2]. First item is super simian slam (blue), 2nd is super duper simian slam (red)
+	/* 0x045 */ char unk45[0x47-0x45];
 	/* 0x047 */ char call_parent_filter; // Calls filter to remove "unnecessary" links from the parent chain
 	/* 0x048 */ char unk_48[4];
 	/* 0x04C */ ItemRequirement crown_door_requirement;
@@ -51,7 +51,7 @@ typedef struct varspace {
 	/* 0x0C5 */ char enemy_item_rando; // Determines whether to use standard enemy item drop table or a custom table
 	/* 0x0C6 */ HardModeSettings hard_mode; // Colloquially known as "Seed of Death"
 	/* 0x0C7 */ unsigned char default_sound_type; // 0 = Stereo, 1 = Surround, 2 = Mono
-	/* 0x0C8 */ char unk_C8[3];
+	/* 0x0C8 */ unsigned char slam_prices[3]; // Array of simian slam prices: [1,2,3]. First item is simian slam (green), 2nd is super simian slam (blue), 3rd is super duper simian slam (red)
 	/* 0x0CB */ unsigned char default_camera_type; // 0 = Free, 1 = Follow
 	/* 0x0CC */ unsigned char default_camera_mode; // 0 = Inverted, 1 = Non-Inverted
 	/* 0x0CD */ char unk_cd[8];
