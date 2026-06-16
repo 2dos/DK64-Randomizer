@@ -134,20 +134,12 @@
         "link": "WikiEditing"
     },
     {
-        "name": "Random Settings: Easy",
-        "link": "RandomSettingsEasy"
-    },
-    {
         "name": "Custom Locations: Coins",
         "link": "CustomLocationsCoins"
     },
     {
         "name": "Custom Locations: Colored Bananas",
         "link": "CustomLocationsColoredBananas"
-    },
-    {
-        "name": "Custom Locations: Kasplats",
-        "link": "CustomLocationsKasplats"
     },
     {
         "name": "Custom Locations: Doors",
@@ -158,23 +150,31 @@
         "link": "CustomLocationsFairies"
     },
     {
-        "name": "Random Settings: Standard",
-        "link": "RandomSettingsStandard"
-    },
-    {
-        "name": "Random Settings: Difficult",
-        "link": "RandomSettingsDifficult"
-    },
-    {
-        "name": "Plando Colors",
-        "link": "PlandoColors"
+        "name": "Custom Locations: Kasplats",
+        "link": "CustomLocationsKasplats"
     },
     {
         "name": "Custom Locations: Miscellaneous",
         "link": "CustomLocationsMiscellaneous"
     },
     {
+        "name": "Plando Colors",
+        "link": "PlandoColors"
+    },
+    {
+        "name": "Random Settings: Difficult",
+        "link": "RandomSettingsDifficult"
+    },
+    {
         "name": "Random Settings: Difficult With Qol Shuffle",
         "link": "RandomSettingsDifficultWithQolShuffle"
+    },
+    {
+        "name": "Random Settings: Easy",
+        "link": "RandomSettingsEasy"
+    },
+    {
+        "name": "Random Settings: Standard",
+        "link": "RandomSettingsStandard"
     }
 ]
