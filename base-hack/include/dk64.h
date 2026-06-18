@@ -623,7 +623,6 @@ extern unsigned int CurrentTimestampMinor;
 extern ISGFadeoutData ISGFadeoutArray[];
 extern InventoryBase CollectableBase;
 extern char ModelTwoTouchCount;
-extern short ModelTwoTouchArray[4];
 extern char TransitionProgress;
 extern Controller BackgroundHeldInput;
 extern unsigned int PauseTimestampMajor;

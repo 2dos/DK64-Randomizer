@@ -1123,6 +1123,7 @@ class LogicVarHolder:
         if self.settings.win_condition_spawns_ship:
             condition = self.settings.win_condition_item
             if condition == WinConditionComplex.krem_kapture:
+                count = 5
                 for subject in self.spoiler.valid_photo_items:
                     if subject in (
                         Items.PhotoKasplatDK,
@@ -1132,9 +1133,9 @@ class LogicVarHolder:
                         Items.PhotoKasplatChunky,
                     ):
                         continue
-                    if self.Photos.get(subject, 0) == 0:
-                        return False
-                return self.camera
+                    if self.Photos.get(subject, 0) != 0:
+                        count += 1
+                return self.camera and count >= self.settings.win_condition_count
             elif condition == WinConditionComplex.get_key8:
                 return self.HelmKey
             elif condition == WinConditionComplex.dk_rap_items:
@@ -1209,7 +1210,7 @@ class LogicVarHolder:
             Events.CastleKeyTurnedIn,
             Events.HelmKeyTurnedIn,
         ]
-        if self.settings.win_condition_item == WinConditionComplex.get_keys_3_and_8:
+        if self.settings.HasWinRequirement(WinConditionComplex.get_keys_3_and_8):
             required_base_keys = [
                 Events.FactoryKeyTurnedIn,
                 Events.HelmKeyTurnedIn,
@@ -1412,6 +1413,7 @@ class LogicVarHolder:
         if condition == WinConditionComplex.beat_krool:
             return Events.KRoolDefeated in self.Events
         elif condition == WinConditionComplex.krem_kapture:
+            count = 0
             for subject in self.spoiler.valid_photo_items:
                 if subject in (
                     Items.PhotoKasplatDK,
@@ -1421,10 +1423,9 @@ class LogicVarHolder:
                     Items.PhotoKasplatChunky,
                 ):
                     continue
-                if self.Photos.get(subject, 0) == 0:
-                    # print(f"Could not reach {subject.name}")
-                    return False
-            result = self.camera
+                if self.Photos.get(subject, 0) != 0:
+                    count += 1
+            result = self.camera and count >= self.settings.win_condition_count
             return result
         elif condition == WinConditionComplex.get_key8:
             result = self.HelmKey

@@ -757,6 +757,9 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
                 elif "item" in task:
                     ROM_COPY.write(task["item"])
                     ROM_COPY.write(task["count"])
+        elif win_con_index == WinConROM.krem_kapture:
+            ROM_COPY.seek(sav + 0xC0)
+            ROM_COPY.writeMultipleBytes(spoiler.settings.win_condition_count, 2)
         else:
             if "item" in win_con_data:  # Custom Item
                 ROM_COPY.seek(sav + 0xC0)
@@ -788,6 +791,8 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
                 elif task_type == WinConROM.reqitem_solo:
                     ROM_COPY.write(task["item"])
                     ROM_COPY.write(task["level"])
+                elif task_type == WinConROM.krem_kapture:
+                    ROM_COPY.writeMultipleBytes(task["count"], 2)
                 elif "item" in task:
                     ROM_COPY.write(task["item"])
                     ROM_COPY.write(task["count"])

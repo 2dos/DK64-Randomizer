@@ -301,7 +301,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     }
     # If the Bean isn't shuffled, hinting the Bean location is pointless
     if (
-        spoiler.settings.win_condition_item == WinConditionComplex.req_bean
+        spoiler.settings.HasWinRequirement(WinConditionComplex.req_bean)
         and ItemRandoListSelected.bean not in spoiler.settings.item_rando_list_selected
         and Locations.ForestBean in spoiler.woth_paths.keys()
     ):
@@ -564,11 +564,11 @@ def compileHints(spoiler: Spoiler) -> bool:
                     hint_distribution[HintType.RequiredWinConditionHint] = len(
                         [kong for kong in spoiler.settings.krool_order if kong in spoiler.krool_paths and len(spoiler.krool_paths[kong]) - len(useless_locations[kong]) > 0]
                     )
-                if spoiler.settings.win_condition_item == WinConditionComplex.req_bean:
+                if spoiler.settings.HasWinRequirement(WinConditionComplex.req_bean):
                     valid_types.append(HintType.RequiredWinConditionHint)
                     hint_distribution[HintType.RequiredWinConditionHint] = 1
                 # Some win conditions need help finding the camera (if you don't start with it) - variable amount of unique hints for it
-                if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+                if (spoiler.settings.HasWinRequirement(WinConditionComplex.req_fairy) or spoiler.settings.HasWinRequirement(WinConditionComplex.krem_kapture)) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
                     camera_location_id = None
                     for id, loc in spoiler.LocationList.items():
                         if loc.item in (Items.Camera, Items.CameraAndShockwave):
@@ -1005,7 +1005,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                         location_to_hint = spoiler.settings.random.choice(location_options)
                         hinted_path_locations.append(location_to_hint)
         # If the camera is critical to the win condition, guarantee one path hint for it
-        if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+        if (spoiler.settings.HasWinRequirement(WinConditionComplex.req_fairy) or spoiler.settings.HasWinRequirement(WinConditionComplex.krem_kapture)) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             # Find the camera's location
             camera_location_id = None
             for location_id in multipath_dict_hints.keys():
@@ -1236,7 +1236,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_location.hint_type = HintType.RequiredWinConditionHint
                 UpdateHint(hint_location, message)
         # All fairies seeds get 2 path hints for the camera
-        if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture):
+        if spoiler.settings.HasWinRequirement(WinConditionComplex.req_fairy) or spoiler.settings.HasWinRequirement(WinConditionComplex.krem_kapture):
             camera_location_id = None
             for location_id in spoiler.woth_paths.keys():
                 if spoiler.LocationList[location_id].item in (Items.Camera, Items.CameraAndShockwave):
@@ -2619,10 +2619,10 @@ def GenerateMultipathDict(
                     path_to_family = True
                     relevant_goal_locations.append(Locations(woth_loc))
                 # Determine path to the Bean if the Bean is the win condition.
-                if endpoint_item.type == Types.Bean and spoiler.settings.win_condition_item == WinConditionComplex.req_bean and location not in useless_locations[Items.Bean]:
+                if endpoint_item.type == Types.Bean and spoiler.settings.HasWinRequirement(WinConditionComplex.req_bean) and location not in useless_locations[Items.Bean]:
                     path_to_bean = True
                     relevant_goal_locations.append(Locations(woth_loc))
-                if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+                if spoiler.settings.HasWinRequirement(WinConditionComplex.dk_rap_items):
                     item = spoiler.LocationList[woth_loc].item
                     for verse_index, verse in enumerate(verse_items):
                         if item in verse:
@@ -2642,11 +2642,11 @@ def GenerateMultipathDict(
                     path_to_krool_phases.append(boss_colors[map_id] + boss_names[map_id] + boss_colors[map_id])
                     relevant_goal_locations.append(Maps(map_id))
         # If that wascally wabbit needs to be killed, determine if we're on the path to that.
-        if spoiler.settings.win_condition_item == WinConditionComplex.kill_the_rabbit and location in spoiler.rabbit_path:
+        if spoiler.settings.HasWinRequirement(WinConditionComplex.kill_the_rabbit) and location in spoiler.rabbit_path:
             path_to_rabbit = True
             relevant_goal_locations.append(Locations(woth_loc))
         # Determine if this location is on the path to taking photos for certain win conditions
-        if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+        if (spoiler.settings.HasWinRequirement(WinConditionComplex.req_fairy) or spoiler.settings.HasWinRequirement(WinConditionComplex.krem_kapture)) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             camera_location_id = None
             for id, loc in spoiler.LocationList.items():
                 if loc.item in (Items.Camera, Items.CameraAndShockwave):
@@ -2688,7 +2688,7 @@ def GenerateMultipathDict(
             hint_text_components.append("\x07The Bean\x07")
         if path_to_rabbit:
             hint_text_components.append("\x05The Rabbit\x05")
-        if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+        if spoiler.settings.HasWinRequirement(WinConditionComplex.dk_rap_items):
             all_verses = [xi for xi, x in enumerate(path_to_verses) if x]
             if len(all_verses) == 6:
                 hint_text_components.append("All Verses")

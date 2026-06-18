@@ -3,7 +3,6 @@
 .definelabel ObjectModel2Count, 0x807F6004
 .definelabel ObjectModel2Count_Dupe, 0x80747D70
 .definelabel ModelTwoTouchCount, 0x807FD798 // u8
-.definelabel ModelTwoTouchArray, 0x807FD790 // u16 array
 .definelabel ModelTwoCollisionArray, 0x80753EF0
 .definelabel CollectedObjects, 0x807FD730
 .definelabel LatestCollectedObject, 0x807FD734

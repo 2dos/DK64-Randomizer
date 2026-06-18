@@ -713,91 +713,115 @@ def writeWinConImage(settings: Settings, image: Image, ROM_COPY: LocalROM):
 def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
     """Alter the image that's shown on the main menu to display the win condition."""
     win_con = settings.win_condition_item
-    helmhurry = settings.helm_hurry and settings.archipelago
+    output_image = None
 
-    if win_con == WinConditionComplex.krools_challenge:
-        images = [
-            (0x903, 0, 1),
-            (0x904, 0, 2),
-            (0x905, 0, 3),
-            (0x906, 1, 3),
-            (0x907, 1, 2),
-            (0x908, 1, 1),
-            (0x909, 1, 0),
-            (0x90A, 0, 0),
-        ]
-        output_image = Image.new(mode="RGBA", size=(128, 128))
-        for img in images:
-            local_img = getImageFile(ROM_COPY, 25, img[0], True, 64, 32, TextureFormat.RGBA5551)
-            local_img = local_img.convert("RGBA")
-            pos_x = 64 * img[1]
-            pos_y = 32 * img[2]
-            output_image.paste(local_img, (pos_x, pos_y), local_img)
-        output_image = output_image.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
-        writeWinConImage(settings, output_image, ROM_COPY)
-    if helmhurry:
-        output_image = Image.open(BytesIO(bytes(js.getFile("base-hack/assets/displays/treasurechest.png"))))
-        output_image = output_image.resize((32, 32))
+    # 1. High-priority override conditions
+    if settings.helm_hurry and settings.archipelago:
+        img_bytes = js.getFile("base-hack/assets/displays/treasurechest.png")
+        output_image = Image.open(BytesIO(bytes(img_bytes))).resize((32, 32))
         writeWinConImage(settings, output_image, ROM_COPY)
         return
-    if win_con == WinConditionComplex.get_key8:
-        output_image = Image.open(BytesIO(bytes(js.getFile("base-hack/assets/displays/key8.png"))))
-        output_image = output_image.resize((32, 32))
-        writeWinConImage(settings, output_image, ROM_COPY)
-        return
-    if win_con == WinConditionComplex.req_bean:
-        output_image = Image.open(BytesIO(bytes(js.getFile("base-hack/assets/arcade_jetpac/arcade/bean.png"))))
-        output_image = output_image.resize((32, 32))
-        writeWinConImage(settings, output_image, ROM_COPY)
-        return
-    if win_con == WinConditionComplex.krem_kapture:
-        item_im = getImageFile(ROM_COPY, 14, 0x90, True, 32, 32, TextureFormat.RGBA5551)
-        writeWinConImage(settings, item_im, ROM_COPY)
-        return
-    if win_con == WinConditionComplex.dk_rap_items:
-        item_im = getImageFile(ROM_COPY, 7, 0x3D3, False, 40, 40, TextureFormat.RGBA5551)
-        item_im = item_im.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
-        writeWinConImage(settings, item_im, ROM_COPY)
-        return
-    if win_con == WinConditionComplex.kill_the_rabbit:
-        output_image = Image.open(BytesIO(bytes(js.getFile("base-hack/assets/displays/kill_the_rabbit.png"))))
-        output_image = output_image.resize((32, 32))
-        writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
-        return
-    win_con_data = {
-        WinConditionComplex.req_bp: WinConData(25, 0x1593, TextureFormat.RGBA5551, 48, 42, True, 40),
-        WinConditionComplex.req_medal: WinConData(25, 0x156C, TextureFormat.RGBA5551, 44, 44, True, 40),
-        WinConditionComplex.req_fairy: WinConData(25, 0x16ED, TextureFormat.RGBA32, 32, 32, True, 20),
-        WinConditionComplex.req_key: WinConData(25, 0x16F6, TextureFormat.RGBA5551, 44, 44, True, 8),
-        WinConditionComplex.req_companycoins: WinConData(25, 0x1718, TextureFormat.RGBA5551, 44, 44, True, 2),
-        WinConditionComplex.req_crown: WinConData(25, 0x1707, TextureFormat.RGBA5551, 44, 44, True, 10),
-        WinConditionComplex.req_gb: WinConData(25, 0x155C, TextureFormat.RGBA5551, 44, 44, True, 201),
-        WinConditionComplex.req_pearl: WinConData(25, 0, TextureFormat.RGBA5551, 44, 44, True, 5),
-        WinConditionComplex.req_rainbowcoin: WinConData(25, 0x174B, TextureFormat.RGBA5551, 48, 42, True, 16),
-        WinConditionComplex.req_bosses: WinConData(25, 0xC9D, TextureFormat.RGBA5551, 48, 42, True, 7),
-        WinConditionComplex.req_bonuses: WinConData(14, 0x2B, TextureFormat.RGBA32, 32, 32, False, 43),
+
+    static_file_assets = {
+        WinConditionComplex.get_key8: "base-hack/assets/displays/key8.png",
+        WinConditionComplex.req_bean: "base-hack/assets/arcade_jetpac/arcade/bean.png",
+        WinConditionComplex.kill_the_rabbit: "base-hack/assets/displays/kill_the_rabbit.png",
+        WinConditionComplex.mech_fish: "base-hack/assets/displays/mechfish.png",
+        WinConditionComplex.bad_hit_detection_man: "base-hack/assets/displays/toy_monster.png",
+        WinConditionComplex.jetpac: "",
+        WinConditionComplex.tasks: "",  # Thinking tbl 7, 0x227
     }
-    if win_con not in win_con_data:
-        return
-    item_data = win_con_data[win_con]
-    if win_con == WinConditionComplex.req_pearl:
-        base_im = Image.open(BytesIO(bytes(js.getFile("base-hack/assets/arcade_jetpac/arcade/pearl.png"))))
+
+    if win_con in static_file_assets:
+        img_bytes = js.getFile(static_file_assets[win_con])
+        output_image = Image.open(BytesIO(bytes(img_bytes))).resize((32, 32))
+
+    elif win_con == WinConditionComplex.krools_challenge:
+        images = [
+            (0x903, 0, 1), (0x904, 0, 2), (0x905, 0, 3), (0x906, 1, 3),
+            (0x907, 1, 2), (0x908, 1, 1), (0x909, 1, 0), (0x90A, 0, 0),
+        ]
+        grid_image = Image.new(mode="RGBA", size=(128, 128))
+        for img_id, grid_x, grid_y in images:
+            local_img = getImageFile(ROM_COPY, 25, img_id, True, 64, 32, TextureFormat.RGBA5551).convert("RGBA")
+            grid_image.paste(local_img, (64 * grid_x, 32 * grid_y), local_img)
+        output_image = grid_image.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
+
+    elif win_con == WinConditionComplex.krem_kapture:
+        output_image = getImageFile(ROM_COPY, 14, 0x90, True, 32, 32, TextureFormat.RGBA5551)
+        num_im = numberToImage(settings.win_condition_count, (20, 20), ROM_COPY)
+        output_image.paste(num_im, (6, 6), num_im)
+
+    elif win_con == WinConditionComplex.dk_rap_items:
+        output_image = getImageFile(ROM_COPY, 7, 0x3D3, False, 40, 40, TextureFormat.RGBA5551)
+        output_image = output_image.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
+
+    elif win_con == WinConditionComplex.arcade:
+        item_im_left = getImageFile(ROM_COPY, 25, 0xD9D, True, 32, 64, TextureFormat.RGBA5551)
+        item_im_right = getImageFile(ROM_COPY, 25, 0xD96, True, 32, 64, TextureFormat.RGBA5551)
+        output_image = Image.new(mode="RGBA", size=(64, 64))
+        output_image.paste(item_im_left, (0, 0), item_im_left)
+        output_image.paste(item_im_right, (32, 0), item_im_right)
+        output_image = output_image.transpose(Image.FLIP_TOP_BOTTOM).resize((32, 32))
+
+    elif win_con == WinConditionComplex.rareware_gb_check:
+        item_im_load = getImageFile(ROM_COPY, 25, 0xAD5, True, 32, 64, TextureFormat.RGBA5551)
+        output_image = Image.new(mode="RGBA", size=(48, 48))
+        output_image.paste(item_im_load, (6, 0), item_im_load)
+        output_image = output_image.transpose(Image.FLIP_TOP_BOTTOM).resize((32, 32))
+
+    elif win_con == WinConditionComplex.blast_courses:
+        img_bytes = js.getFile("base-hack/assets/file_screen/tracker_images/dkpad.png")
+        output_image = Image.open(BytesIO(bytes(img_bytes))).resize((32, 32))
+        num_im = numberToImage(settings.win_condition_count, (20, 20), ROM_COPY)
+        output_image.paste(num_im, (6, 6), num_im)
+
     else:
-        item_im = getImageFile(
-            ROM_COPY,
-            item_data.table,
-            item_data.image,
-            item_data.table != 7,
-            item_data.width,
-            item_data.height,
-            item_data.tex_format,
-        )
-        if item_data.flip:
-            item_im = item_im.transpose(Image.FLIP_TOP_BOTTOM)
-        dim = max(item_data.width, item_data.height)
-        base_im = Image.new(mode="RGBA", size=(dim, dim))
-        base_im.paste(item_im, (int((dim - item_data.width) >> 1), int((dim - item_data.height) >> 1)), item_im)
-    base_im = base_im.resize((32, 32))
-    num_im = numberToImage(settings.win_condition_count, (20, 20), ROM_COPY)
-    base_im.paste(num_im, (6, 6), num_im)
-    writeWinConImage(settings, base_im, ROM_COPY)
+        # 4. Standard WinConData mapped values
+        win_con_data = {
+            WinConditionComplex.req_bp: WinConData(25, 0x1593, TextureFormat.RGBA5551, 48, 42, True, 40),
+            WinConditionComplex.req_medal: WinConData(25, 0x156C, TextureFormat.RGBA5551, 44, 44, True, 40),
+            WinConditionComplex.req_fairy: WinConData(25, 0x16ED, TextureFormat.RGBA32, 32, 32, True, 20),
+            WinConditionComplex.req_key: WinConData(25, 0x16F6, TextureFormat.RGBA5551, 44, 44, True, 8),
+            WinConditionComplex.req_companycoins: WinConData(25, 0x1718, TextureFormat.RGBA5551, 44, 44, True, 2),
+            WinConditionComplex.req_crown: WinConData(25, 0x1707, TextureFormat.RGBA5551, 44, 44, True, 10),
+            WinConditionComplex.req_gb: WinConData(25, 0x155C, TextureFormat.RGBA5551, 44, 44, True, 201),
+            WinConditionComplex.req_pearl: WinConData(25, 0, TextureFormat.RGBA5551, 44, 44, True, 5),
+            WinConditionComplex.req_rainbowcoin: WinConData(25, 0x174B, TextureFormat.RGBA5551, 48, 42, True, 16),
+            WinConditionComplex.req_bosses: WinConData(25, 0xC9D, TextureFormat.RGBA5551, 48, 42, True, 7),
+            WinConditionComplex.req_bonuses: WinConData(14, 0x2B, TextureFormat.RGBA32, 32, 32, False, 43),
+        }
+
+        if win_con not in win_con_data:
+            return
+
+        item_data = win_con_data[win_con]
+        if win_con == WinConditionComplex.req_pearl:
+            img_bytes = js.getFile("base-hack/assets/arcade_jetpac/arcade/pearl.png")
+            base_im = Image.open(BytesIO(bytes(img_bytes)))
+        else:
+            item_im = getImageFile(
+                ROM_COPY,
+                item_data.table,
+                item_data.image,
+                item_data.table != 7,
+                item_data.width,
+                item_data.height,
+                item_data.tex_format,
+            )
+            if item_data.flip:
+                item_im = item_im.transpose(Image.FLIP_TOP_BOTTOM)
+            
+            dim = max(item_data.width, item_data.height)
+            base_im = Image.new(mode="RGBA", size=(dim, dim))
+            paste_x = (dim - item_data.width) // 2
+            paste_y = (dim - item_data.height) // 2
+            base_im.paste(item_im, (paste_x, paste_y), item_im)
+
+        output_image = base_im.resize((32, 32))
+        num_im = numberToImage(settings.win_condition_count, (20, 20), ROM_COPY)
+        output_image.paste(num_im, (6, 6), num_im)
+
+    # 5. Final render execution
+    if output_image:
+        writeWinConImage(settings, output_image, ROM_COPY)

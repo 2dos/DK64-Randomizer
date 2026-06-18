@@ -1804,6 +1804,7 @@ typedef union RequirementArg {
 	ItemRequirement item_req;
 	short flag;
 	ItemRequirementSolo item_req_solo;
+	short count;
 } RequirementArg;
 
 typedef struct TaskRequirement {

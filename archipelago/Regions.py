@@ -246,7 +246,7 @@ def create_region(
                         if (not hasattr(multiworld, "generation_is_fake")) and vendor_level_key in logic_holder.shared_shop_vendors:
                             should_skip = True
                 case Types.EnemyPhoto:
-                    if logic_holder.settings.win_condition_item != WinConditionComplex.krem_kapture:
+                    if not logic_holder.settings.HasWinRequirement(WinConditionComplex.krem_kapture):
                         should_skip = True
                 case Types.Hint:
                     if Types.Hint not in logic_holder.settings.shuffled_location_types:
@@ -315,7 +315,7 @@ def create_region(
                             add_rule(location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic))
 
             # Create bonus token location if needed
-            if logic_holder.settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
+            if logic_holder.settings.HasWinRequirement(WinConditionComplex.req_bonuses) or logic_holder.settings.HasWinRequirement(WinConditionComplex.krools_challenge):
                 should_create_token = False
                 match location_logic.bonusBarrel:
                     case MinigameType.BonusBarrel:
@@ -349,7 +349,7 @@ def create_region(
                     add_item_rule(location, lambda item: not (item.player == player and "Blueprint" in item.name))
 
             # Add boss defeated token if needed
-            if location_obj.type == Types.Key and logic_holder.settings.win_condition_item in (WinConditionComplex.req_bosses, WinConditionComplex.krools_challenge):
+            if location_obj.type == Types.Key and (logic_holder.settings.HasWinRequirement(WinConditionComplex.req_bosses) or logic_holder.settings.HasWinRequirement(WinConditionComplex.krools_challenge)):
                 token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
                 set_rule(token_location, lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic))
                 token_location.place_locked_item(DK64Item("Boss Defeated", ItemClassification.progression_skip_balancing, None, player))

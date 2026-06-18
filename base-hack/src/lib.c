@@ -1200,6 +1200,7 @@ ROM_RODATA_NUM const sprite_data_struct ap_overlay_sprite = {
 		AP_SPRITE_START,
 	},
 };
+ROM_DATA short model_two_touch_array[MODEL_TWO_TOUCH_ARRAY_COUNT] = {};
 
 short *getMinGB(void) {
 	short *loc = &MovesBase[0].gb_count[0];

@@ -1740,7 +1740,7 @@ class LogicVarHolder:
             Events.CastleKeyTurnedIn,
             Events.HelmKeyTurnedIn,
         ]
-        if self.settings.win_condition_item == WinConditionComplex.get_keys_3_and_8:
+        if self.settings.HasWinRequirement(WinConditionComplex.get_keys_3_and_8):
             required_base_keys = [
                 Events.FactoryKeyTurnedIn,
                 Events.HelmKeyTurnedIn,

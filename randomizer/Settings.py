@@ -2022,7 +2022,7 @@ class Settings:
                 HelmDoorRandomInfo(1, 1, 0.02),
             ),
             WinConditionComplex.krem_kapture: HelmDoorInfo(
-                1,
+                44,
                 HelmDoorRandomInfo(1, 1, 0.06),
                 HelmDoorRandomInfo(1, 1, 0.03),
             ),
@@ -2263,7 +2263,7 @@ class Settings:
         else:
             # I mean, I guess this works
             required_key_count = 8 - self.krool_key_count
-        key_8_required = self.krool_access or self.win_condition_item == WinConditionComplex.get_key8
+        key_8_required = self.krool_access or self.HasWinRequirement(WinConditionComplex.get_key8)
         # Remove the need for keys we intend to start with
         if self.select_keys:
             for key in self.starting_keys_list_selected:
@@ -2448,35 +2448,35 @@ class Settings:
 
         # Force win_condition_spawns_ship based on win condition
         # Krool's Challenge always requires beating K. Rool
-        if self.win_condition_item == WinConditionComplex.krools_challenge:
+        if self.HasWinRequirement(WinConditionComplex.krools_challenge):
             self.win_condition_spawns_ship = True
 
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
-        if self.win_condition_item == WinConditionComplex.req_fairy or self.crown_door_item == BarrierItems.Fairy or self.coin_door_item == BarrierItems.Fairy:
+        if self.HasWinRequirement(WinConditionComplex.req_fairy) or self.crown_door_item == BarrierItems.Fairy or self.coin_door_item == BarrierItems.Fairy:
             ItemList[Items.BananaFairy].playthrough = True
             ItemList[Items.FillerFairy].playthrough = True
-        if self.win_condition_item == WinConditionComplex.req_rainbowcoin or self.crown_door_item == BarrierItems.RainbowCoin or self.coin_door_item == BarrierItems.RainbowCoin:
+        if self.HasWinRequirement(WinConditionComplex.req_rainbowcoin) or self.crown_door_item == BarrierItems.RainbowCoin or self.coin_door_item == BarrierItems.RainbowCoin:
             ItemList[Items.RainbowCoin].playthrough = True
             ItemList[Items.FillerRainbowCoin].playthrough = True
-        if self.win_condition_item == WinConditionComplex.req_bp or self.crown_door_item == BarrierItems.Blueprint or self.coin_door_item == BarrierItems.Blueprint:
+        if self.HasWinRequirement(WinConditionComplex.req_bp) or self.crown_door_item == BarrierItems.Blueprint or self.coin_door_item == BarrierItems.Blueprint:
             for item_index in ItemList:
                 if ItemList[item_index].type == Types.Blueprint:
                     ItemList[item_index].playthrough = True
-        if self.win_condition_item == WinConditionComplex.req_medal or self.crown_door_item == BarrierItems.Medal or self.coin_door_item == BarrierItems.Medal:
+        if self.HasWinRequirement(WinConditionComplex.req_medal) or self.crown_door_item == BarrierItems.Medal or self.coin_door_item == BarrierItems.Medal:
             ItemList[Items.BananaMedal].playthrough = True
             ItemList[Items.FillerMedal].playthrough = True
-        if self.win_condition_item == WinConditionComplex.req_crown or self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown:
+        if self.HasWinRequirement(WinConditionComplex.req_crown) or self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown:
             ItemList[Items.BattleCrown].playthrough = True
             ItemList[Items.FillerCrown].playthrough = True
         if (
-            self.win_condition_item == WinConditionComplex.req_bean
+            self.HasWinRequirement(WinConditionComplex.req_bean)
             or self.crown_door_item == BarrierItems.Bean
             or self.coin_door_item == BarrierItems.Bean
             or Types.Bean in self.shuffled_location_types
         ):
             ItemList[Items.Bean].playthrough = True
         if (
-            self.win_condition_item == WinConditionComplex.req_pearl
+            self.HasWinRequirement(WinConditionComplex.req_pearl)
             or self.crown_door_item == BarrierItems.Pearl
             or self.coin_door_item == BarrierItems.Pearl
             or Types.Pearl in self.shuffled_location_types
@@ -3113,6 +3113,24 @@ class Settings:
             kongCageLocations.remove(Locations.LankyKong)
             kongCageLocations.append(self.random.choice([Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong]))
         return kongCageLocations
+
+    def HasWinRequirement(self, win_con: WinConditionComplex) -> bool:
+        if self.win_condition_item == win_con:
+            return True
+        tasks = [
+            self.task_1_condition,
+            self.task_2_condition,
+            self.task_3_condition,
+            self.task_4_condition,
+            self.task_5_condition,
+            self.task_6_condition,
+            self.task_7_condition,
+            self.task_8_condition,
+        ]
+        for task in tasks:
+            if task == win_con:
+                return True
+        return False
 
     def RandomizeStartingLocation(self, spoiler):
         """Randomize the starting point of this seed."""

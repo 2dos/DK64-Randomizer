@@ -625,7 +625,7 @@ def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
             return False
 
         # Camera cannot be on a fairy if krem kap is the win con
-        if spoiler.settings.win_condition_item == WinConditionComplex.krem_kapture:
+        if spoiler.settings.HasWinRequirement(WinConditionComplex.krem_kapture):
             if data.type == Types.Fairy and data.item in (Items.Camera, Items.CameraAndShockwave):
                 print(f"Placement invalid: Camera is on a fairy location at {data.name} with a krem kap win condition")
                 return False
@@ -981,7 +981,7 @@ def ParePlaythrough(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> Non
 # Don't prune the Bean if it's the win condition. We can make sure it isn't directly hinted later if it isn't shuffled.
 def IsBeanLocWithBeanWincon(spoiler: Spoiler, loc: Locations) -> bool:
     """Check for bean win con with a check for if it is shuffled."""
-    return spoiler.settings.win_condition_item == WinConditionComplex.req_bean and ItemList[spoiler.LocationList[loc].item].type == Types.Bean
+    return spoiler.settings.HasWinRequirement(WinConditionComplex.req_bean) and ItemList[spoiler.LocationList[loc].item].type == Types.Bean
 
 
 def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union[Locations, int]]:
@@ -1055,7 +1055,7 @@ def checkCommonBarriers(settings: Settings, target_item: BarrierItems, target_wi
         return True
     if target_item in settings.BLockerEntryItems:
         return True
-    return settings.win_condition_item == target_win_con
+    return settings.HasWinRequirement(target_win_con)
 
 
 def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
@@ -1219,7 +1219,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
         for phase in spoiler.settings.krool_order:
             spoiler.krool_paths[phase] = []
     # If the Rabbit is the win condition, prepare a path for him.
-    if spoiler.settings.win_condition_item == WinConditionComplex.kill_the_rabbit:
+    if spoiler.settings.HasWinRequirement(WinConditionComplex.kill_the_rabbit):
         spoiler.rabbit_path = []
     for locationId in ordered_interesting_locations:
         # Remove the item from the location
@@ -1260,10 +1260,10 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             for map_id in final_boss_associated_event:
                 if map_id in spoiler.settings.krool_order and final_boss_associated_event[map_id] not in spoiler.LogicVariables.Events:
                     spoiler.krool_paths[map_id].append(locationId)
-        if spoiler.settings.win_condition_item == WinConditionComplex.kill_the_rabbit:
+        if spoiler.settings.HasWinRequirement(WinConditionComplex.kill_the_rabbit):
             if Events.KilledRabbit not in spoiler.LogicVariables.Events:
                 spoiler.rabbit_path.append(locationId)
-        elif spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+        elif spoiler.settings.HasWinRequirement(WinConditionComplex.dk_rap_items):
             rap_assoc_name = {
                 "Donkey Verse": Events.DonkeyVerse,
                 "Diddy Verse": Events.DiddyVerse,

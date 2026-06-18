@@ -44,6 +44,7 @@ function getItemCap(item) {
     "req_companycoins": 2,
     "tasks": 8,
     "blast_courses": 7,
+    "krem_kapture": 44,
   }
   if (Object.keys(ITEM_CAPS).includes(item)) {
     return ITEM_CAPS[item];
@@ -1607,7 +1608,6 @@ function update_win_con_num_access() {
     "hard_random",
     "get_key8",
     "get_keys_3_and_8",
-    "krem_kapture",
     "dk_rap_items",
     "krools_challenge",
     "kill_the_rabbit",
