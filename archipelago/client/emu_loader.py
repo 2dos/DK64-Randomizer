@@ -738,6 +738,25 @@ class EmulatorInfo:
         data = value.to_bytes(size, byteorder="little")  # or "big"
         self.connected_process.write_bytes(mem_address, data, size)
 
+    def read_block(self, address: int, length: int) -> bytes:
+        """Read a contiguous block of bytes in logical (big-endian RDRAM) order."""
+        
+        if self.connected_process is None or self.connected_offset is None:
+            self.runtime_error = "Not connected to a process, exiting"
+            raise Exception(self.runtime_error)
+        if length <= 0:
+            return b""
+        if address & 0x80000000:
+            address &= 0x7FFFFFFF
+
+        start_word = address & ~3
+        end_word = (address + length + 3) & ~3
+        raw = self.connected_process.read_bytes(self.connected_offset + start_word, end_word - start_word)
+        out = bytearray(length)
+        for i in range(length):
+            out[i] = raw[((address + i) ^ 3) - start_word]
+        return bytes(out)
+
     def read_u8(self, address: int) -> int:
         """Read an 8-bit unsigned integer from memory."""
         return self.readBytes(address, 1)
@@ -904,6 +923,12 @@ class EmuLoaderClient:
         if not self.is_connected():
             raise Exception("Not connected to emulator")
         self.emulator_info.write_u32(address, value)  # pyright: ignore[reportOptionalMemberAccess]
+
+    def read_block(self, address: int, length: int) -> bytes:
+        """Read a contiguous block of bytes in logical (big-endian RDRAM) order."""
+        if not self.is_connected():
+            raise Exception("Not connected to emulator")
+        return self.emulator_info.read_block(address, length)  # pyright: ignore[reportOptionalMemberAccess]
 
     def read_bytestring(self, address: int, length: int) -> str:
         """Read a bytestring from memory."""

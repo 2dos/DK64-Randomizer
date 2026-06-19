@@ -24,6 +24,7 @@ void initAP(void) {
         APData = &ap_info;
         ap_info.text_timer = 0x82;
         ap_info.tag_kong = -1;
+        everdrive_init();
     }
 }
 

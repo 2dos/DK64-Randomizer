@@ -19,6 +19,7 @@ import typing
 
 from archipelago.client.common import DK64MemoryMap, create_task_log_exception, check_version, get_ap_version
 from archipelago.client.emu_loader import EmuLoaderClient
+from archipelago.client.everdrive_loader import EverdriveClient, SC64Client
 from archipelago.client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
 from archipelago.client.ap_item_packets import APItemPacket, build_packet, ICE_TRAP_TYPES, REQITEM_ICETRAP, REQITEM_GOLDENBANANA, REQITEM_MOVE, CONFIG_APPLY_ICE_TRAP
 from archipelago.client.check_flag_locations import location_flag_to_name, location_name_to_flag
@@ -36,7 +37,8 @@ MIN_ITEMS_FOR_SPEED_SCALING = 5
 KONG_COUNT = 5
 LEVEL_COUNT = 7
 HINT_BITFIELD_SIZE = 5
-
+FLAG_CACHE_SIZE = 0x200
+USB_BACKENDS = (EverdriveClient, SC64Client)
 
 class CreateHintsParams:
     """Parameters for creating hints."""
@@ -153,6 +155,7 @@ class DK64Client:
     auth = None
     memory_pointer = None
     stop_bizhawk_spam = False
+    use_everdrive = False
     seed_started = False
     locations_scouted = {}
     recvd_checks = {}
@@ -173,6 +176,7 @@ class DK64Client:
     send_mode = 1
     current_speed = NORMAL_TEXT_SPEED
     current_map = 0
+    flag_cache = None
 
     # Hint system
     last_hint_bitfield = [0] * HINT_BITFIELD_SIZE
@@ -181,47 +185,103 @@ class DK64Client:
 
     # ==================== CONNECTION METHODS ====================
 
+    def _backend_name(self) -> str:
+        """Human-readable name of the currently selected backend."""
+        if isinstance(self.n64_client, USB_BACKENDS):
+            return self.n64_client.DISPLAY_NAME
+        return "Emulator"
+
+    def _open_emulator(self):
+        """Attach to a running emulator that already has a valid DK64 AP ROM."""
+        client = EmuLoaderClient()
+        try:
+            if client.connect() and client.validate_rom():
+                return client
+        except Exception:
+            pass
+        try:
+            client.disconnect()
+        except Exception:
+            pass
+        return None
+
+    def _open_backend(self):
+        """Open a memory-access backend."""
+        if self.use_everdrive:
+            usb_classes = list(USB_BACKENDS)
+        else:
+            usb_classes = [cls for cls in USB_BACKENDS if cls.cart_present()]
+
+        for cls in usb_classes:
+            client = cls()
+            try:
+                if client.connect():
+                    return client
+            except Exception:
+                pass
+            try:
+                client.disconnect()
+            except Exception:
+                pass
+
+        if self.use_everdrive:
+            return None
+        return self._open_emulator()
+
     async def wait_for_pj64(self):
-        """Wait for emulator to connect to the game."""
+        """Wait until an emulator or USB flashcart with a valid DK64 ROM is ready."""
         clear_waiting_message = True
         if not self.stop_bizhawk_spam:
-            logger.info("Waiting on connection to emulator...")
-            self.n64_client = EmuLoaderClient()
+            logger.info("Waiting on a connection to an emulator or EverDrive...")
             self.stop_bizhawk_spam = True
         while True:
             try:
-                emulator_connected = False
+                # Open a backend if we don't have one. A USB cart's device is kept
+                # open across retries — re-opening it interrupts the cart while it
+                # boots — so only the ROM-readiness check below is retried.
+                if self.n64_client is None or not self.n64_client.is_connected():
+                    if self.n64_client is not None:
+                        self.n64_client.disconnect()
+                        self.n64_client = None
+                    self.n64_client = self._open_backend()
 
-                # Try to connect to any available emulator
-                if not self.n64_client.is_connected():
-                    emulator_connected = self.n64_client.connect()
-                else:
-                    emulator_connected = True
-                valid_rom = False
-                if emulator_connected:
-                    valid_rom = self.n64_client.validate_rom()
-                    logger.info("Emulator connected, validating ROM...")
+                if self.n64_client is not None and self.n64_client.is_connected():
+                    if self.n64_client.validate_rom():
+                        if isinstance(self.n64_client, USB_BACKENDS):
+                            # Clear any probe backlog so gameplay reads stay synced.
+                            self.n64_client.resync()
+                        self.stop_bizhawk_spam = False
+                        logger.info(f"{self._backend_name()} connected to ROM!")
+                        return
 
-                while not valid_rom:
-                    if not self.n64_client.is_connected():
-                        emulator_connected = self.n64_client.connect()
-                    if clear_waiting_message:
-                        logger.info("Waiting on valid ROM...")
-                        clear_waiting_message = False
-                    await asyncio.sleep(1.0)
-                    if self.n64_client.is_connected():
-                        valid_rom = self.n64_client.validate_rom()
+                    if isinstance(self.n64_client, USB_BACKENDS):
+                        # Cart is connected but the AP ROM hasn't booted yet. Hold
+                        # the USB device open and wait; only drop it if the cart is
+                        # physically unplugged (so we re-detect on reconnect).
+                        if type(self.n64_client).cart_present():
+                            if clear_waiting_message:
+                                logger.info(f"{self._backend_name()} connected over USB; waiting for the ROM to boot...")
+                                clear_waiting_message = False
+                            await asyncio.sleep(1.0)
+                            continue
+                        self.n64_client.disconnect()
+                        self.n64_client = None
+                    else:
+                        # Emulator attached without a valid ROM; drop and re-detect.
+                        self.n64_client.disconnect()
+                        self.n64_client = None
 
-                self.stop_bizhawk_spam = False
-                logger.info("Emulator Connected to ROM!")
-                return
+                if clear_waiting_message:
+                    logger.info("Waiting on an emulator or EverDrive with a valid ROM...")
+                    clear_waiting_message = False
+                await asyncio.sleep(1.0)
             except Exception as e:
                 await asyncio.sleep(1.0)
-                logger.error(f"Error connecting to emulator, retrying... {str(e)}")
+                logger.error(f"Error connecting, retrying... {str(e)}")
                 # Reset connection on error
                 if self.n64_client:
                     self.n64_client.disconnect()
-                pass
+                self.n64_client = None
 
     # ==================== GAME STATE METHODS ====================
 
@@ -262,7 +322,7 @@ class DK64Client:
         """Validate the client connection."""
         self.memory_pointer = self.n64_client.read_u32(DK64MemoryMap.memory_pointer)
         self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.connection, 0xFF)
-        if self.n64_client.read_u8(DK64MemoryMap.eeprom_determined) == 1:
+        if isinstance(self.n64_client, EmuLoaderClient) and self.n64_client.read_u8(DK64MemoryMap.eeprom_determined) == 1:
             if self.n64_client.read_u32(DK64MemoryMap.save_type) != 2:
                 # Map emulator IDs to their setup guides
                 emulator_setup_guides = {
@@ -772,6 +832,15 @@ class DK64Client:
         new_checks = []
         checks_to_read = self.remaining_checks.copy()
 
+        # Snapshot the whole EEPROM flag block once
+        self.flag_cache = self.n64_client.read_block(DK64MemoryMap.EEPROM, FLAG_CACHE_SIZE)
+        try:
+            return self._scan_checks(checks_to_read, new_checks, cb)
+        finally:
+            self.flag_cache = None
+
+    def _scan_checks(self, checks_to_read, new_checks, cb):
+        """Scan the requested location ids against the cached flag block."""
         for id in checks_to_read:
             name = check_id_to_name.get(id)
             check = location_name_to_flag.get(name)
@@ -873,8 +942,12 @@ class DK64Client:
         """Read a flag in the game."""
         byte_index = index >> 3
         shift = index & 7
-        offset = DK64MemoryMap.EEPROM + byte_index
-        val = self.n64_client.read_u8(offset)
+        cache = self.flag_cache
+        if cache is not None and byte_index < len(cache):
+            val = cache[byte_index]
+        else:
+            offset = DK64MemoryMap.EEPROM + byte_index
+            val = self.n64_client.read_u8(offset)
         return (val >> shift) & 1
 
     def hasKong(self, kong_index: int) -> bool:
@@ -1802,6 +1875,8 @@ class DK64Context(CommonContext):
                     logger.info("No checks received yet, requesting...")
                     await self.sync()
 
+                tick_delay = 0.066 if isinstance(self.client.n64_client, USB_BACKENDS) else 0.033
+
                 await asyncio.sleep(1.0)
                 while True:
                     logger.debug("Game loop tick")
@@ -1812,10 +1887,10 @@ class DK64Context(CommonContext):
                         await victory()
                     status = self.client.check_safe_gameplay()
                     if status is False:
-                        await asyncio.sleep(0.033)
+                        await asyncio.sleep(tick_delay)
                         continue
                     await self.client.main_tick(on_item_get, deathlink, map_change, ring_link, tag_link, trap_link, hint_accessed)
-                    await asyncio.sleep(0.033)
+                    await asyncio.sleep(tick_delay)
                     now = time.time()
                     if self.last_resend + 0.5 < now:
                         self.last_resend = now
@@ -1838,11 +1913,13 @@ def launch():
         """Entrypoint of codebase."""
         parser = get_base_parser(description="Donkey Kong 64 Client.")
         parser.add_argument("--url", help="Archipelago connection url")
+        parser.add_argument("--everdrive", action="store_true", help="Force USB flashcart mode (EverDrive/SC64) and skip emulator detection. A connected cart is auto-detected without this flag.")
 
         args = parser.parse_args()
         check_version()
 
         ctx = DK64Context(args.connect, args.password)
+        ctx.client.use_everdrive = args.everdrive
         ctx.items_handling = 0b001
         ctx.server_task = asyncio.create_task(server_loop(ctx), name="server loop")
         ctx.la_task = create_task_log_exception(ctx.run_game_loop())

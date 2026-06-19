@@ -317,6 +317,7 @@ void earlyFrame(void) {
 	}
 	if (isAPEnabled()) {
 		handleArchipelagoFeed();
+		everdrive_service();
 	}
 	if (CurrentMap == MAP_FUNGI) {
 		if (Rando.fungi_time_of_day_setting == TIME_PROGRESSIVE) {
