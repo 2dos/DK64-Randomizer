@@ -31,6 +31,7 @@
 #include "global.h"
 #include "vars.h"
 #include "archipelago.h"
+#include "everdrive.h"
 #include "music.h"
 #include "macros.h"
 #include "hint_regions.h"
