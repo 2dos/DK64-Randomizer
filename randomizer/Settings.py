@@ -776,6 +776,7 @@ class Settings:
         self.wrinkly_available = False
         self.pause_hints_setting = PauseHintSetting.normal
         self.pause_hints_lockout_timer = 0
+        self.half_medal_percentage = 50
         self.shorten_boss = False
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None

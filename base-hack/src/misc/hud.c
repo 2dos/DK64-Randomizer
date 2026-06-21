@@ -528,10 +528,7 @@ Gfx* drawDPad(Gfx* dl) {
         if (applied_requirement < 1) {
             applied_requirement = 1;
         }
-        int half_medal_count = applied_requirement >> 1;
-        if (half_medal_count < 1) {
-            half_medal_count = 1;
-        }
+        int half_medal_count = getHalfMedalRequirement(applied_requirement);
         // Vars
         int mdl_num = 1;
         int display_mdl_num = 1;

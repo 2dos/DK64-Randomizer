@@ -144,7 +144,8 @@ typedef struct varspace {
 	/* 0x1E3 */ unsigned char chunky_phase_krool_slam_req; // Slam level required for Chunky Phase
   	/* 0x1E4 */ unsigned char pause_hints_colored;
 	/* 0x1E5 */ unsigned char wrinkly_door_unlock_item;
-	/* 0x1E6 */ char unk_1e6[0x1E8-0x1E6];
+	/* 0x1E6 */ char unk_1e6;
+	/* 0x1E7 */ unsigned char half_medal_percentage;
 	/* 0x1E8 */ unsigned char jetman_rgb[3];
 	/* 0x1EB */ unsigned char mermaid_requirement; // Amount of pearls to get the mermaid reward
 	/* 0x1EC */ unsigned char check_shop_flags; // Bitfield of pre-given shops: rfcs 0000. r = Cranky, f = Funky, c = Candy, s = Snide

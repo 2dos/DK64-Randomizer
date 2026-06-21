@@ -1457,7 +1457,8 @@
     "hint_door_item": 300,
     "hint_door_item_count": 301,
     "pause_hints_lockout_timer": 302,
-    "spoiler_include_blocker_info": 303
+    "spoiler_include_blocker_info": 303,
+    "half_medal_percentage": 304
   },
   /*
     SettingsStringDataType:
@@ -2039,6 +2040,9 @@
     "SettingsStringEnum.pause_hints_lockout_timer": {
       "obj": "SettingsStringDataType.u8"
     },
+    "SettingsStringEnum.half_medal_percentage": {
+      "obj": "SettingsStringDataType.u8"
+    },
     "SettingsStringEnum.random_starting_move_list_selected": {
       "obj": "SettingsStringDataType.list"
     },
@@ -2339,6 +2343,7 @@
     "SettingsStringEnum.progressive_hint_count": { "max": 3500, "min": 0 },
     "SettingsStringEnum.hint_door_item_count": { "max": 3500, "min": 0 },
     "SettingsStringEnum.pause_hints_lockout_timer": { "max": 255, "min": 0 },
+    "SettingsStringEnum.half_medal_percentage": { "max": 100, "min": 0 },
     "SettingsStringEnum.win_condition_count": { "max": 255, "min": 0 }
   }
 }

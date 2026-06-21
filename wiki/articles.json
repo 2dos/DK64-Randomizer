@@ -134,6 +134,10 @@
         "link": "WikiEditing"
     },
     {
+        "name": "Plando Colors",
+        "link": "PlandoColors"
+    },
+    {
         "name": "Custom Locations: Coins",
         "link": "CustomLocationsCoins"
     },
@@ -156,10 +160,6 @@
     {
         "name": "Custom Locations: Miscellaneous",
         "link": "CustomLocationsMiscellaneous"
-    },
-    {
-        "name": "Plando Colors",
-        "link": "PlandoColors"
     },
     {
         "name": "Random Settings: Difficult",
