@@ -1405,6 +1405,21 @@ document
   .getElementById("most_snide_rewards")
   .addEventListener("focusout", max_snide_reward);
 
+function max_half_medal_perc() {
+  const halfMedalText = document.getElementById("half_medal_percentage");
+  if (!halfMedalText.value) {
+    halfMedalText.value = 50;
+  } else if (parseInt(halfMedalText.value) < 1) {
+    halfMedalText.value = 1;
+  } else if (parseInt(halfMedalText.value) > 99) {
+    halfMedalText.value = 99;
+  }
+}
+
+document
+  .getElementById("half_medal_percentage")
+  .addEventListener("focusout", max_half_medal_perc);
+
 // Validate troff input on loss of focus
 function max_randomized_troff() {
   const troffText = document.getElementById("troff_text");
@@ -2208,6 +2223,7 @@ function update_ui_states() {
   disable_music();
   max_randomized_blocker();
   max_snide_reward();
+  max_half_medal_perc();
   max_randomized_troff();
   max_music();
   max_music_proportion();

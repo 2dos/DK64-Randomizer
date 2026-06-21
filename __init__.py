@@ -1571,6 +1571,7 @@ if baseclasses_loaded:
                 ),
                 "Shopkeepers": self.options.shopowners_in_pool.value,
                 "HalfMedals": self.options.half_medals_in_pool.value,
+                "HalfMedalPercentage": self.spoiler.settings.half_medal_percentage,
                 "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
                 "Autocomplete": self.options.auto_complete_bonus_barrels.value,
                 "HelmBarrelCount": self.options.helm_room_bonus_count.value,
@@ -1947,6 +1948,7 @@ if baseclasses_loaded:
             relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
             relevant_data["MedalCBRequirement"] = medal_cb_req
             relevant_data["MedalCBRequirementLevel"] = medal_cb_requirement_level
+            relevant_data["HalfMedalPercentage"] = slot_data.get("HalfMedalPercentage", 50)
             relevant_data["FairyRequirement"] = fairy_req
             relevant_data["MermaidPearls"] = pearl_req
             relevant_data["JetpacReq"] = jetpac_req

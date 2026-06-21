@@ -982,6 +982,7 @@ export enum SettingsStringEnum {
     hint_door_item_count = 301,
     pause_hints_lockout_timer = 302,
     spoiler_include_blocker_info = 303,
+    half_medal_percentage = 304,
 }
 
 export enum SettingsStringDataType {
@@ -1323,6 +1324,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.progressive_hint_count: SettingsStringDataType.u16,
     SettingsStringEnum.hint_door_item_count: SettingsStringDataType.u16,
     SettingsStringEnum.pause_hints_lockout_timer: SettingsStringDataType.u8,
+    SettingsStringEnum.half_medal_percentage: SettingsStringDataType.u8,
     SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
     SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
@@ -1536,5 +1538,6 @@ export const SettingsStringIntRangeMap = {
     SettingsStringEnum.progressive_hint_count: {'max': 3500, 'min': 0},
     SettingsStringEnum.hint_door_item_count: {'max': 3500, 'min': 0},
     SettingsStringEnum.pause_hints_lockout_timer: {'max': 255, 'min': 0},
+    SettingsStringEnum.half_medal_percentage: {'max': 100, 'min': 0},
     SettingsStringEnum.win_condition_count: {'max': 255, 'min': 0},
 }

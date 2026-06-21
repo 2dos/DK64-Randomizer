@@ -476,6 +476,8 @@ extern void playBonusSong(songs song, float volume);
 extern void playSongWCheck(songs song, float volume);
 extern void playBossSong(songs song, float volume);
 
+extern int getHalfMedalRequirement(int full_medal_requirement);
+
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];
