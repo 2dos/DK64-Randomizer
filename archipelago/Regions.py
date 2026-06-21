@@ -235,6 +235,9 @@ def create_region(
             # Skip hint locations if hints are not in the pool
             if location_obj.type == Types.Hint and Types.Hint not in logic_holder.settings.shuffled_location_types:
                 continue
+            # Skip half medals if half medals are not in the pool
+            if location_obj.type == Types.HalfMedal and Types.HalfMedal not in logic_holder.settings.shuffled_location_types:
+                continue
             # Skip locations marked as inaccessible by smaller shops
             if hasattr(location_obj, "smallerShopsInaccessible") and location_obj.smallerShopsInaccessible and logic_holder.settings.smaller_shops:
                 continue
@@ -332,7 +335,7 @@ def create_region(
             # Shops cannot have shopkeepers or Rainbow Coins due to technical issues
             if location_obj.type == Types.Shop:
                 add_item_rule(location, lambda item: not (item.player == player and item.name in ["Cranky", "Funky", "Candy", "Snide", "Rainbow Coin"]))
-            if location_obj.type == Types.Key and logic_holder.settings.win_condition_item in (WinConditionComplex.req_bosses, WinConditionComplex.krools_challenge):
+            if location_obj.type == Types.Key and location_logic.id != Locations.HelmKey and logic_holder.settings.win_condition_item in (WinConditionComplex.req_bosses, WinConditionComplex.krools_challenge):
                 token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
                 set_rule(token_location, lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic))
                 token_location.place_locked_item(DK64Item("Boss Defeated", ItemClassification.progression_skip_balancing, None, player))

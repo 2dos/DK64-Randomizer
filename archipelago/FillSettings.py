@@ -352,6 +352,7 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     settings_dict["shuffle_helm_location"] = options.shuffle_helm_level_order.value
     settings_dict["mermaid_gb_pearls"] = options.pearls_required_for_mermaid.value
     settings_dict["cb_medal_behavior_new"] = options.medal_distribution.value
+    settings_dict["half_medal_percentage"] = options.half_medal_percentage.value
     settings_dict["smaller_shops"] = options.smaller_shops.value and not hasattr(multiworld, "generation_is_fake")
     settings_dict["puzzle_rando_difficulty"] = options.puzzle_rando.value
     if options.enable_cutscenes.value:
@@ -832,6 +833,7 @@ def handle_fake_generation_settings(settings: Settings, multiworld) -> None:
                 for level, value in enumerate(passthrough["MedalCBRequirementLevel"]):
                     settings.medal_cb_req_level[Levels(level)] = int(value)
 
+                settings.half_medal_percentage = passthrough["HalfMedalPercentage"]
                 settings.mermaid_gb_pearls = passthrough["MermaidPearls"]
                 settings.BossBananas = passthrough["BossBananas"]
                 settings.boss_maps = passthrough["BossMaps"]
