@@ -568,7 +568,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     valid_types.append(HintType.RequiredWinConditionHint)
                     hint_distribution[HintType.RequiredWinConditionHint] = 1
                 # Some win conditions need help finding the camera (if you don't start with it) - variable amount of unique hints for it
-                if (spoiler.settings.HasWinRequirement(WinConditionComplex.req_fairy) or spoiler.settings.HasWinRequirement(WinConditionComplex.krem_kapture)) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+                if spoiler.settings.WinReqRequiresCamera() and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
                     camera_location_id = None
                     for id, loc in spoiler.LocationList.items():
                         if loc.item in (Items.Camera, Items.CameraAndShockwave):
@@ -1005,7 +1005,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                         location_to_hint = spoiler.settings.random.choice(location_options)
                         hinted_path_locations.append(location_to_hint)
         # If the camera is critical to the win condition, guarantee one path hint for it
-        if (spoiler.settings.HasWinRequirement(WinConditionComplex.req_fairy) or spoiler.settings.HasWinRequirement(WinConditionComplex.krem_kapture)) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+        if spoiler.settings.WinReqRequiresCamera() and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             # Find the camera's location
             camera_location_id = None
             for location_id in multipath_dict_hints.keys():
@@ -1236,7 +1236,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_location.hint_type = HintType.RequiredWinConditionHint
                 UpdateHint(hint_location, message)
         # All fairies seeds get 2 path hints for the camera
-        if spoiler.settings.HasWinRequirement(WinConditionComplex.req_fairy) or spoiler.settings.HasWinRequirement(WinConditionComplex.krem_kapture):
+        if spoiler.settings.WinReqRequiresCamera():
             camera_location_id = None
             for location_id in spoiler.woth_paths.keys():
                 if spoiler.LocationList[location_id].item in (Items.Camera, Items.CameraAndShockwave):
@@ -2646,7 +2646,7 @@ def GenerateMultipathDict(
             path_to_rabbit = True
             relevant_goal_locations.append(Locations(woth_loc))
         # Determine if this location is on the path to taking photos for certain win conditions
-        if (spoiler.settings.HasWinRequirement(WinConditionComplex.req_fairy) or spoiler.settings.HasWinRequirement(WinConditionComplex.krem_kapture)) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+        if spoiler.settings.WinReqRequiresCamera() and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             camera_location_id = None
             for id, loc in spoiler.LocationList.items():
                 if loc.item in (Items.Camera, Items.CameraAndShockwave):

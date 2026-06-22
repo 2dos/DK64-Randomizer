@@ -957,11 +957,20 @@ file_dict.append(
         target_uncompressed_size=32 * 32 * 2,
     )
 )
+for x in range(8):
+    file_dict.append(File(
+        name=f"Win Con Task ({x})",
+        pointer_table_index=TableNames.TexturesHUD,
+        file_index=196 + x,
+        source_file=f"assets/displays/taskimage{x}.png",
+        texture_format=TextureFormat.RGBA5551,
+        target_compressed_size=32*32*2
+    ))
 for x, shop in enumerate(barrel_skins):
     data = File(
         name=f"Shop Indicator ({shop})",
         pointer_table_index=TableNames.TexturesHUD,
-        file_index=196 + x,
+        file_index=204 + x,
         source_file=f"assets/displays/shop_{shop}.png",
         texture_format=TextureFormat.RGBA32,
     )
@@ -2727,6 +2736,14 @@ with open(newROMName, "r+b") as fh:
         "diddy_ice_palette_1",
         "chunky_ice_palette_0",
         "chunky_ice_palette_1",
+        "taskimage0",
+        "taskimage1",
+        "taskimage2",
+        "taskimage3",
+        "taskimage4",
+        "taskimage5",
+        "taskimage6",
+        "taskimage7",
     ]
     hash_items = [
         "dk_tie_palette",

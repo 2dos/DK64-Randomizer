@@ -3115,6 +3115,7 @@ class Settings:
         return kongCageLocations
 
     def HasWinRequirement(self, win_con: WinConditionComplex) -> bool:
+        """Check whether the win condition, at any point, requires a certain win condition."""
         if self.win_condition_item == win_con:
             return True
         tasks = [
@@ -3131,6 +3132,10 @@ class Settings:
             if task == win_con:
                 return True
         return False
+
+    def WinReqRequiresCamera(self) -> bool:
+        """Check whether the win condition requires any win condition hard reliant on owning the fairy camera."""
+        return self.HasWinRequirement(WinConditionComplex.krem_kapture) or self.HasWinRequirement(WinConditionComplex.req_fairy)
 
     def RandomizeStartingLocation(self, spoiler):
         """Randomize the starting point of this seed."""

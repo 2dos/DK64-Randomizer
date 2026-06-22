@@ -603,7 +603,7 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
             "index": WinConROM.krool,
         },
         WinConditionComplex.get_key8: {
-            "index": WinConROM.flag,
+            "index": WinConROM.reqitem_solo,
             "item": ReqItems.Key,
             "level": 7
         },
@@ -787,14 +787,14 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
                 ROM_COPY.write(1)  # Task active
                 ROM_COPY.write(task_type)
                 if task_type == WinConROM.flag:
-                    ROM_COPY.writeMultipleBytes(task["flag"], 2)
+                    ROM_COPY.writeMultipleBytes(win_con_data["flag"], 2)
                 elif task_type == WinConROM.reqitem_solo:
-                    ROM_COPY.write(task["item"])
-                    ROM_COPY.write(task["level"])
+                    ROM_COPY.write(win_con_data["item"])
+                    ROM_COPY.write(win_con_data["level"])
                 elif task_type == WinConROM.krem_kapture:
                     ROM_COPY.writeMultipleBytes(task["count"], 2)
                 elif "item" in task:
-                    ROM_COPY.write(task["item"])
+                    ROM_COPY.write(win_con_data["item"])
                     ROM_COPY.write(task["count"])
                 task_index += 1
 

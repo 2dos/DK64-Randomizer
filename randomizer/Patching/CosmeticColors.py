@@ -693,50 +693,26 @@ class WinConData:
         self.default_count = default_count
 
 
-def writeWinConImage(settings: Settings, image: Image, ROM_COPY: LocalROM):
+def writeWinConImage(image: Image, ROM_COPY: LocalROM, file_index: int = 195):
     """Wrap function for writing a win con image, detecting K Rool win con."""
-    # if settings.win_condition_spawns_ship:
-    #     base_im = Image.new(mode="RGBA", size=(64, 64))
-    #     left_im = getImageFile(ROM_COPY, TableNames.TexturesGeometry, 0x383, True, 32, 64, TextureFormat.RGBA5551)
-    #     right_im = getImageFile(ROM_COPY, TableNames.TexturesGeometry, 0x384, True, 32, 64, TextureFormat.RGBA5551)
-    #     base_im.paste(left_im, (0, 0), left_im)
-    #     base_im.paste(right_im, (32, 0), right_im)
-    #     base_im = base_im.transpose(Image.FLIP_TOP_BOTTOM)
-    #     base_im = base_im.resize((32, 32))
-    #     base_im.paste(image, (0, 0), image)
-    # else:
-    #     base_im = image
-    base_im = image
-    writeColorImageToROM(base_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+    writeColorImageToROM(image, TableNames.TexturesHUD, file_index, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
 
-
-def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
-    """Alter the image that's shown on the main menu to display the win condition."""
-    win_con = settings.win_condition_item
-    output_image = None
-
-    # 1. High-priority override conditions
-    if settings.helm_hurry and settings.archipelago:
-        img_bytes = js.getFile("base-hack/assets/displays/treasurechest.png")
-        output_image = Image.open(BytesIO(bytes(img_bytes))).resize((32, 32))
-        writeWinConImage(settings, output_image, ROM_COPY)
-        return
-
+def showWinConditionInternal(ROM_COPY: LocalROM, win_condition: WinConditionComplex, count: int, file_index: int):
+    """Write an image file with the win condition."""
     static_file_assets = {
         WinConditionComplex.get_key8: "base-hack/assets/displays/key8.png",
         WinConditionComplex.req_bean: "base-hack/assets/arcade_jetpac/arcade/bean.png",
         WinConditionComplex.kill_the_rabbit: "base-hack/assets/displays/kill_the_rabbit.png",
         WinConditionComplex.mech_fish: "base-hack/assets/displays/mechfish.png",
         WinConditionComplex.bad_hit_detection_man: "base-hack/assets/displays/toy_monster.png",
-        WinConditionComplex.jetpac: "",
-        WinConditionComplex.tasks: "",  # Thinking tbl 7, 0x227
+        WinConditionComplex.jetpac: "base-hack/assets/displays/diamond.png",
     }
 
-    if win_con in static_file_assets:
-        img_bytes = js.getFile(static_file_assets[win_con])
+    if win_condition in static_file_assets:
+        img_bytes = js.getFile(static_file_assets[win_condition])
         output_image = Image.open(BytesIO(bytes(img_bytes))).resize((32, 32))
 
-    elif win_con == WinConditionComplex.krools_challenge:
+    elif win_condition == WinConditionComplex.krools_challenge:
         images = [
             (0x903, 0, 1), (0x904, 0, 2), (0x905, 0, 3), (0x906, 1, 3),
             (0x907, 1, 2), (0x908, 1, 1), (0x909, 1, 0), (0x90A, 0, 0),
@@ -747,16 +723,16 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
             grid_image.paste(local_img, (64 * grid_x, 32 * grid_y), local_img)
         output_image = grid_image.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
 
-    elif win_con == WinConditionComplex.krem_kapture:
+    elif win_condition == WinConditionComplex.krem_kapture:
         output_image = getImageFile(ROM_COPY, 14, 0x90, True, 32, 32, TextureFormat.RGBA5551)
-        num_im = numberToImage(settings.win_condition_count, (20, 20), ROM_COPY)
+        num_im = numberToImage(count, (20, 20), ROM_COPY)
         output_image.paste(num_im, (6, 6), num_im)
 
-    elif win_con == WinConditionComplex.dk_rap_items:
+    elif win_condition == WinConditionComplex.dk_rap_items:
         output_image = getImageFile(ROM_COPY, 7, 0x3D3, False, 40, 40, TextureFormat.RGBA5551)
         output_image = output_image.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
 
-    elif win_con == WinConditionComplex.arcade:
+    elif win_condition == WinConditionComplex.arcade:
         item_im_left = getImageFile(ROM_COPY, 25, 0xD9D, True, 32, 64, TextureFormat.RGBA5551)
         item_im_right = getImageFile(ROM_COPY, 25, 0xD96, True, 32, 64, TextureFormat.RGBA5551)
         output_image = Image.new(mode="RGBA", size=(64, 64))
@@ -764,16 +740,16 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
         output_image.paste(item_im_right, (32, 0), item_im_right)
         output_image = output_image.transpose(Image.FLIP_TOP_BOTTOM).resize((32, 32))
 
-    elif win_con == WinConditionComplex.rareware_gb_check:
+    elif win_condition == WinConditionComplex.rareware_gb_check:
         item_im_load = getImageFile(ROM_COPY, 25, 0xAD5, True, 32, 64, TextureFormat.RGBA5551)
         output_image = Image.new(mode="RGBA", size=(48, 48))
         output_image.paste(item_im_load, (6, 0), item_im_load)
         output_image = output_image.transpose(Image.FLIP_TOP_BOTTOM).resize((32, 32))
 
-    elif win_con == WinConditionComplex.blast_courses:
+    elif win_condition == WinConditionComplex.blast_courses:
         img_bytes = js.getFile("base-hack/assets/file_screen/tracker_images/dkpad.png")
         output_image = Image.open(BytesIO(bytes(img_bytes))).resize((32, 32))
-        num_im = numberToImage(settings.win_condition_count, (20, 20), ROM_COPY)
+        num_im = numberToImage(count, (20, 20), ROM_COPY)
         output_image.paste(num_im, (6, 6), num_im)
 
     else:
@@ -790,13 +766,14 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
             WinConditionComplex.req_rainbowcoin: WinConData(25, 0x174B, TextureFormat.RGBA5551, 48, 42, True, 16),
             WinConditionComplex.req_bosses: WinConData(25, 0xC9D, TextureFormat.RGBA5551, 48, 42, True, 7),
             WinConditionComplex.req_bonuses: WinConData(14, 0x2B, TextureFormat.RGBA32, 32, 32, False, 43),
+            WinConditionComplex.tasks: WinConData(7, 0x227, TextureFormat.RGBA5551, 48, 42, True, 8),
         }
 
-        if win_con not in win_con_data:
+        if win_condition not in win_con_data:
             return
 
-        item_data = win_con_data[win_con]
-        if win_con == WinConditionComplex.req_pearl:
+        item_data = win_con_data[win_condition]
+        if win_condition == WinConditionComplex.req_pearl:
             img_bytes = js.getFile("base-hack/assets/arcade_jetpac/arcade/pearl.png")
             base_im = Image.open(BytesIO(bytes(img_bytes)))
         else:
@@ -819,9 +796,42 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
             base_im.paste(item_im, (paste_x, paste_y), item_im)
 
         output_image = base_im.resize((32, 32))
-        num_im = numberToImage(settings.win_condition_count, (20, 20), ROM_COPY)
+        num_im = numberToImage(count, (20, 20), ROM_COPY)
         output_image.paste(num_im, (6, 6), num_im)
 
     # 5. Final render execution
     if output_image:
-        writeWinConImage(settings, output_image, ROM_COPY)
+        writeWinConImage(output_image, ROM_COPY, file_index)
+
+def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
+    """Alter the image that's shown on the main menu to display the win condition."""
+    win_con = settings.win_condition_item
+    output_image = None
+
+    # 1. High-priority override conditions
+    if settings.helm_hurry and settings.archipelago:
+        img_bytes = js.getFile("base-hack/assets/displays/treasurechest.png")
+        output_image = Image.open(BytesIO(bytes(img_bytes))).resize((32, 32))
+        writeWinConImage(output_image, ROM_COPY)
+        return
+
+    global_count = settings.win_condition_count
+    if win_con == WinConditionComplex.tasks:
+        global_count = 0
+        task_segments = [
+            { "type": settings.task_1_condition, "count": settings.task_1_count },
+            { "type": settings.task_2_condition, "count": settings.task_2_count },
+            { "type": settings.task_3_condition, "count": settings.task_3_count },
+            { "type": settings.task_4_condition, "count": settings.task_4_count },
+            { "type": settings.task_5_condition, "count": settings.task_5_count },
+            { "type": settings.task_6_condition, "count": settings.task_6_count },
+            { "type": settings.task_7_condition, "count": settings.task_7_count },
+            { "type": settings.task_8_condition, "count": settings.task_8_count },
+        ]
+        for task in task_segments:
+            if task["type"] == WinConditionComplex.inactive:
+                continue
+            showWinConditionInternal(ROM_COPY, task["type"], task["count"], 196 + global_count)
+            global_count += 1
+    
+    showWinConditionInternal(ROM_COPY, win_con, global_count, 195)
