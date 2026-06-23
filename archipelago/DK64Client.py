@@ -1614,7 +1614,10 @@ class DK64Context(CommonContext):
         if not hasattr(self, "prev_health"):
             self.prev_health = cur_health  # bootstrap: no broadcast on first read
         elif self.damagelink_absorb > 0:
-            self.damagelink_absorb -= 1
+            if cur_health < self.prev_health:
+                self.damagelink_absorb = DAMAGELINK_ABSORB_TICKS
+            else:
+                self.damagelink_absorb -= 1
             self.prev_health = cur_health  # self-inflicted drain: resync, do not broadcast
         elif cur_health <= 0 or cur_health >= self.prev_health:
             self.prev_health = cur_health  # death / heal / respawn / map-refill: resync, do not broadcast
