@@ -812,6 +812,16 @@ class TrapLink(Toggle):
     display_name = "Trap Link"
 
 
+class DamageLink(Toggle):
+    """Determines if Damage Link is enabled.
+
+    If enabled, when you take damage it is shared with other players who have Damage Link enabled, and their damage is shared with you.
+    Accumulated shared damage hurts your kong, but will never kill you on its own (it always leaves you with at least a sliver of health).
+    """
+
+    display_name = "Damage Link"
+
+
 class MirrorMode(Toggle):
     """Determines whether the game will be horizontally Mirrored."""
 
@@ -1957,6 +1967,7 @@ class DK64Options(PerGameCommonOptions):
     ring_link: RingLink
     tag_link: TagLink
     trap_link: TrapLink
+    damage_link: DamageLink
     goal: Goal
     pregiven_keys: NumberOfStartingKeys
     require_beating_krool: RequireBeatingKrool
@@ -2222,6 +2233,7 @@ dk64_option_groups: List[OptionGroup] = [
             TagLink,
             RingLink,
             TrapLink,
+            DamageLink,
             DeathLink,
         ],
     ),

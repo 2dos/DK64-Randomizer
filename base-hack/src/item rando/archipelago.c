@@ -112,6 +112,22 @@ int canDie(void) {
     return 1;
 }
 
+void handleDamageLink(void) {
+    // Taking damage is dangerous in some places so we call canLoadIceTrap since
+    // both safety checks are overlapping
+    if ((ap_info.receive_damage > 0) && canLoadIceTrap(ICETRAP_BUBBLE)) {
+        if (Player) {
+            // Set i-frames to 0 when damagelink is set so points dont get eaten
+            Player->invulnerability_timer = 0;
+        }
+        applyDamageMask(0, -1); // Deals one melon slice of damage and also respects damage modifiers (when implemented)
+        ap_info.receive_damage--;
+        if (CollectableBase.Health <= 0) {
+            ap_info.receive_damage = 0; // a death consumes the remaining debt so it can't chain on respawn
+        }
+    }
+}
+
 void handleArchipelagoFeed(void) {
     if (ap_info.connection > 0) {
         ap_info.connection -= 1;
@@ -182,6 +198,8 @@ void handleArchipelagoFeed(void) {
         queueIceTrap(ap_info.sent_trap, 0);
         ap_info.sent_trap = 0;
     }
+    // Damage link
+    handleDamageLink();
     // Helm Hurry item handling
     if (ap_info.helm_hurry_item) {
         addHelmTime(ap_info.helm_hurry_item, 1);

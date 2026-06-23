@@ -1461,6 +1461,7 @@ if baseclasses_loaded:
                 "ring_link": self.options.ring_link.value,
                 "tag_link": self.options.tag_link.value,
                 "trap_link": self.options.trap_link.value,
+                "damage_link": self.options.damage_link.value,
                 "receive_notifications": self.options.receive_notifications.value,
                 "LevelOrder": ", ".join([level.name for order, level in self.spoiler.settings.level_order.items()]),
                 "StartingKongs": ", ".join([kong.name for kong in self.spoiler.settings.starting_kong_list]),
