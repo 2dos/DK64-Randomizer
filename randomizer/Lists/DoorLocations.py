@@ -1,5 +1,7 @@
 """Stores the data for each potential TnS and Wrinkly door location."""
 
+from enum import IntEnum, auto
+
 from randomizer.Enums.DoorType import DoorType
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
@@ -62,6 +64,16 @@ UNDERWATER_LOGIC_REGIONS = (
 )
 
 
+class DoorTags(IntEnum):
+    """Tags for doors that have special properties that aren't covered by the other attributes."""
+    Vanilla = auto()
+    VanillaHint = auto()
+    VanillaDK = auto()
+    VanillaBoss = auto()
+    DosDoor = auto()
+    Season5Door = auto()
+
+
 class DoorData:
     """Stores information about a door location."""
 
@@ -83,8 +95,8 @@ class DoorData:
         default_kong=None,
         door_type: list[DoorType] = [DoorType.boss, DoorType.dk_portal, DoorType.wrinkly],
         dk_portal_logic=None,
-        dos_door=False,
         far_enough_from_wall=False,
+        door_tags=[],
     ):
         """Initialize with provided data."""
         self.name = name
@@ -104,7 +116,8 @@ class DoorData:
         self.placed = placed
         self.default_kong = default_kong
         self.default_placed = placed  # info about what door_type a door location is in vanilla
-        self.dos_door = dos_door  # We need extra doors in Japes to make Dos' Doors work - this flag is for specifically that
+        self.door_tags = door_tags
+        self.dos_door = DoorTags.DosDoor in door_tags  # We need extra doors in Japes to make Dos' Doors work - this flag is for specifically that
         self.door_type = door_type.copy()  # denotes what types it can be
         self.dk_portal_logic = dk_portal_logic
         if DoorType.dk_portal in self.door_type and self.logicregion in UNDERWATER_LOGIC_REGIONS:
@@ -194,6 +207,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.donkey,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # DK Door
         DoorData(
             name="Japes Lobby - Far Left",
@@ -204,6 +218,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.diddy,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Diddy Door
         DoorData(
             name="Japes Lobby - Close Right",
@@ -214,6 +229,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.lanky,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Lanky Door
         DoorData(
             name="Japes Lobby - Far Right",
@@ -224,7 +240,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.tiny,
-            dos_door=True,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint, DoorTags.DosDoor],
         ),  # Tiny Door
         DoorData(
             name="Japes Lobby - Close Left",
@@ -235,6 +251,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.chunky,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Chunky Door
         DoorData(
             name="First Tunnel Cave",
@@ -244,6 +261,7 @@ door_locations = {
             group=2,
             moveless=False,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Door in Diddy Cave
         DoorData(
             name="Near Painting Room",
@@ -253,6 +271,7 @@ door_locations = {
             group=3,
             placed=DoorType.boss,
             door_type=[DoorType.wrinkly, DoorType.dk_portal],
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Door in Near Painting Room. Ironically cannot be a TnS because the indicator is weird
         DoorData(
             name="Rambi Boulder Cave",
@@ -262,6 +281,7 @@ door_locations = {
             group=4,
             moveless=False,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Door in Fairy Cave
         DoorData(
             name="Next to Diddy Cage - right",
@@ -301,6 +321,7 @@ door_locations = {
             logicregion=Regions.JungleJapesMain,
             location=[958.5, 288.0, 1616.0, 45.0],
             group=3,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Next to Hive Tunnel",
@@ -310,6 +331,7 @@ door_locations = {
             rx=-8,
             rz=9,
             group=5,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Hive Area - Next to Hive - far left",
@@ -318,6 +340,7 @@ door_locations = {
             location=[1904.5, 539.0, 3369.0, 134.25],
             group=6,
             moveless=False,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Hive Area - Next to Hive - left",
@@ -326,7 +349,7 @@ door_locations = {
             location=[1857.0, 539.0, 3196.0, 79.5],
             group=6,
             moveless=False,
-            dos_door=True,
+            door_tags=[DoorTags.DosDoor],
         ),
         DoorData(
             name="Rambi Pool - left",
@@ -335,6 +358,7 @@ door_locations = {
             location=[611.0, 240.0, 3164.0, 201.75],
             group=4,
             moveless=False,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Rambi Pool - right",
@@ -353,6 +377,7 @@ door_locations = {
             group=7,
             moveless=False,
             door_type=[DoorType.wrinkly, DoorType.dk_portal],
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Top of Lanky Useless Slope - right",
@@ -604,6 +629,7 @@ door_locations = {
             location=[903.167, 280, 1044.455, 180],
             group=11,
             placed=DoorType.dk_portal,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaDK],
         ),
         DoorData(
             name="Diddy Mountain - Next to the slam switch",
@@ -706,7 +732,7 @@ door_locations = {
             logicregion=Regions.JungleJapesStart,
             location=[714, 288, 830, 90],
             group=11,
-            dos_door=True,
+            door_tags=[DoorTags.DosDoor],
         ),
         DoorData(
             name="Against the mountain",
@@ -728,6 +754,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.donkey,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # DK Door
         DoorData(
             name="Aztec Lobby - Lower Right",
@@ -738,6 +765,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.diddy,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Diddy Door
         DoorData(
             name="Aztec Lobby - Left of Portal",
@@ -748,6 +776,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.lanky,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Lanky Door
         DoorData(
             name="Aztec Lobby - Right of Portal",
@@ -758,7 +787,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.tiny,
-            dos_door=True,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint, DoorTags.DosDoor],
         ),  # Tiny Door
         DoorData(
             name="Aztec Lobby - Back Room",
@@ -771,6 +800,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.chunky,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Custom Chunky Door
         DoorData(
             name="Near Quicksand Tunnel Shop",
@@ -780,6 +810,7 @@ door_locations = {
             group=2,
             moveless=False,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal by Funky
         DoorData(
             name="Near Tunnel Shop",
@@ -789,6 +820,7 @@ door_locations = {
             group=3,
             moveless=False,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal by Cranky
         DoorData(
             name="Near Oasis Shop",
@@ -797,6 +829,7 @@ door_locations = {
             location=[2268.343, 120.0, 448.669, 59.0],
             group=4,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal by Candy
         DoorData(
             name="Near Vulture Cage Shop",
@@ -806,6 +839,7 @@ door_locations = {
             group=2,
             moveless=False,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal by Snide
         DoorData(
             name="Behind 5DT",
@@ -815,6 +849,7 @@ door_locations = {
             group=5,
             moveless=False,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal behind 5DT
         DoorData(
             name="Oasis Shop - right",
@@ -822,6 +857,7 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[2468.0, 120.0, 473.5, 298.75],
             group=4,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Under Tiny Temple Peanut Switch",
@@ -862,6 +898,7 @@ door_locations = {
             location=[4206.0, 80.0, 3367.0, 240.0],
             group=6,
             moveless=False,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Next to Tag Barrel near Vulture Cage",
@@ -870,6 +907,7 @@ door_locations = {
             location=[4067.0, 190.0, 4050.0, 263.0],
             group=2,
             moveless=False,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Under the Vulture Cage",
@@ -887,6 +925,7 @@ door_locations = {
             scale=1.47,
             group=5,
             moveless=False,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Near Hunky Barrel - left",
@@ -895,6 +934,7 @@ door_locations = {
             location=[3182.5, 120.0, 1440.0, 41.0],
             group=7,
             moveless=False,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Near Hunky Barrel - right",
@@ -1152,6 +1192,7 @@ door_locations = {
             location=[781.846, 120, 150.3, 0],
             group=12,
             placed=DoorType.dk_portal,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaDK],
         ),
         DoorData(
             name="Donkey 5DT - First right branch",
@@ -1398,7 +1439,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.donkey,
-            dos_door=True,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint, DoorTags.DosDoor],
         ),  # DK Door
         DoorData(
             name="Factory Lobby - Top Left",
@@ -1411,6 +1452,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.diddy,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Diddy Door
         DoorData(
             name="Factory Lobby - Top Center",
@@ -1423,6 +1465,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.lanky,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Lanky Door
         DoorData(
             name="Factory Lobby - Top Right",
@@ -1435,6 +1478,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.tiny,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Tiny Door
         DoorData(
             name="Factory Lobby - Low Right",
@@ -1445,6 +1489,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.chunky,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Chunky Door
         DoorData(
             name="Arcade Room",
@@ -1454,6 +1499,7 @@ door_locations = {
             group=2,
             moveless=False,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal in Arcade Room
         DoorData(
             name="Production Room",
@@ -1462,6 +1508,7 @@ door_locations = {
             location=[381.573, 605.0, 1032.929, 45.0],
             group=3,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal in Production Room
         DoorData(
             name="R&D",
@@ -1471,6 +1518,7 @@ door_locations = {
             group=4,
             moveless=False,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal in R&D
         DoorData(
             name="Block Tower",
@@ -1480,6 +1528,7 @@ door_locations = {
             group=5,
             moveless=False,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal in Block Tower Room
         DoorData(
             name="Storage Room",
@@ -1488,6 +1537,7 @@ door_locations = {
             location=[1176.912, 6.5, 472.114, 1.0],
             group=6,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal in Storage Room
         DoorData(
             name="Behind Toy Monster Box",
@@ -1507,6 +1557,7 @@ door_locations = {
             logicregion=Regions.FranticFactoryStart,
             location=[489.5, 804.0, 1867.0, 49.0],
             group=7,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Next to Hatch - right",
@@ -1528,6 +1579,7 @@ door_locations = {
             logicregion=Regions.UpperCore,
             location=[860.0, 605.0, 1011.0, 314.5],
             group=3,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Storage Room - Behind Tag Barrel",
@@ -1535,6 +1587,7 @@ door_locations = {
             logicregion=Regions.BeyondHatch,
             location=[1633.0, 6.0, 845.0, 270.0],
             group=6,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Under Left Storage Shop",
@@ -1557,6 +1610,7 @@ door_locations = {
             location=[2526.0, 1002.0, 1990.6, 180.0],
             group=5,
             moveless=False,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="R&D - Next to Tunnel to Car Race",
@@ -1565,6 +1619,7 @@ door_locations = {
             location=[4006.7, 1264.0, 1454.0, 253.7],
             group=4,
             moveless=False,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Testing Area - Under Tunnel to Shop",
@@ -1795,6 +1850,7 @@ door_locations = {
             location=[1263.536, 827.31, 2787.292, 180],
             group=7,
             placed=DoorType.dk_portal,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaDK],
         ),
         DoorData(
             name="In the power hut",
@@ -1815,6 +1871,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.donkey,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # DK Door
         DoorData(
             name="Galleon Lobby - Far Right",
@@ -1825,6 +1882,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.diddy,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Diddy Door
         DoorData(
             name="Galleon Lobby - Close Right",
@@ -1835,6 +1893,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.lanky,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Lanky Door
         DoorData(
             name="Galleon Lobby - Near DK Portal",
@@ -1845,7 +1904,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.tiny,
-            dos_door=True,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint, DoorTags.DosDoor],
         ),  # Tiny Door
         DoorData(
             name="Galleon Lobby - Close Left",
@@ -1856,6 +1915,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.chunky,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Chunky Door
         DoorData(
             name="Cavern Alcove Past Planks",
@@ -1865,6 +1925,7 @@ door_locations = {
             group=2,
             moveless=False,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Door Near Cranky's
         DoorData(
             name="Deep Hole",
@@ -1881,6 +1942,7 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Door in meme hole
         DoorData(
             name="Behind 2DS",
@@ -1897,6 +1959,7 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Door behind 2DS
         DoorData(
             name="Behind Enguarde Door",
@@ -1913,6 +1976,7 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Door behind Enguarde Door
         DoorData(
             name="Cactus",
@@ -1929,6 +1993,7 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Door near Cactus
         DoorData(
             name="Tunnel to Shipyard - Tiny switch",
@@ -1951,6 +2016,7 @@ door_locations = {
             location=[3007.0, 1670.0, 3866.0, 135.42],
             group=2,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Under Baboon Blast pad",
@@ -1966,6 +2032,7 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Under RocketBarrel barrel",
@@ -1991,6 +2058,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.CanGetOnCannonGamePlatform(),
             door_type=[DoorType.boss, DoorType.wrinkly],
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Next to Lighthouse Gate switch",
@@ -2027,6 +2095,7 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Cactus - bottom front left",
@@ -2098,6 +2167,7 @@ door_locations = {
             group=9,
             moveless=False,
             door_type=[DoorType.wrinkly],
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Cavern Mast Top",
@@ -2413,6 +2483,7 @@ door_locations = {
             location=[2111.065, 1620, 2678.088, 0],
             group=2,
             placed=DoorType.dk_portal,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaDK],
         ),
         DoorData(
             name="Cannonball gate tunnel - right",
@@ -2579,6 +2650,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.donkey,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Custom Location (Removing Wheel)
         DoorData(
             name="Forest Lobby - Near Gorilla Gone Door",
@@ -2589,6 +2661,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.diddy,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Custom Location (Removing Wheel)
         DoorData(
             name="Forest Lobby - Opposite Gorilla Gone Door",
@@ -2599,6 +2672,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.lanky,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Custom Location (Removing Wheel)
         DoorData(
             name="Forest Lobby - Near B. Locker",
@@ -2610,7 +2684,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.tiny,
-            dos_door=True,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint, DoorTags.DosDoor],
         ),  # Custom Location (Removing Wheel)
         DoorData(
             name="Forest Lobby - Near Entrance",
@@ -2621,6 +2695,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.chunky,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Custom Location (Removing Wheel)
         DoorData(
             name="Behind Thornvine Barn",
@@ -2632,6 +2707,7 @@ door_locations = {
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
             dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal behind DK Barn
         DoorData(
             name="Beanstalk Area Alcove",
@@ -2652,6 +2728,7 @@ door_locations = {
                     and s.settings.bananaport_rando == BananaportRando.off
                 )
             ),
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal in Beanstalk Area
         DoorData(
             name="Near Mills Shop",
@@ -2662,6 +2739,7 @@ door_locations = {
             placed=DoorType.boss,
             door_type=[DoorType.boss, DoorType.wrinkly],
             dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal near Snide's
         DoorData(
             name="Top of Giant Mushroom",
@@ -2670,6 +2748,7 @@ door_locations = {
             location=[1171.791, 1250.0, 1236.572, 52.0],
             group=5,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal at Top of GMush
         DoorData(
             name="Owl Area Clearing",
@@ -2686,6 +2765,7 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal near Owl Race
         DoorData(
             name="On top of Mill Crusher Output",
@@ -2694,6 +2774,7 @@ door_locations = {
             location=[4312.0, 224.0, 3493.0, 134.82],
             group=4,
             moveless=False,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Mill front side - right",
@@ -2748,6 +2829,7 @@ door_locations = {
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
             dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Behind Night Thorns - left",
@@ -2784,6 +2866,7 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Owl Area - Near Rocketbarrel Barrel - far left",
@@ -2814,6 +2897,7 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Mushroom Area - Next to Tag Barrel near Shop",
@@ -2822,6 +2906,7 @@ door_locations = {
             location=[1754.2, 234.0, 972.0, 270.0],
             rx=-10,
             group=7,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Mushroom Area - Next to Rocketbarrel Barrel - left",
@@ -3024,6 +3109,7 @@ door_locations = {
             location=[2288.228, 181.333, 1569.101, 14],
             group=8,
             placed=DoorType.dk_portal,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaDK],
         ),
         DoorData(
             name="Mill - front side - Next to entrance",
@@ -3117,6 +3203,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.donkey,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # DK Door
         DoorData(
             name="Caves Lobby - Top Ledge",
@@ -3130,6 +3217,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.diddy,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Diddy Door
         DoorData(
             name="Caves Lobby - Near Left",
@@ -3141,7 +3229,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.lanky,
-            dos_door=True,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint, DoorTags.DosDoor],
         ),  # Lanky Door
         DoorData(
             name="Caves Lobby - Far Right",
@@ -3153,6 +3241,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.tiny,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Tiny Door
         DoorData(
             name="Caves Lobby - Near Right",
@@ -3164,6 +3253,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.chunky,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Chunky Door
         DoorData(
             name="On Rotating Cabin",
@@ -3174,6 +3264,7 @@ door_locations = {
             group=2,
             moveless=False,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal on Rotating Room
         DoorData(
             name="Ice Cave Near Shop",
@@ -3183,6 +3274,7 @@ door_locations = {
             group=3,
             moveless=False,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal near Snide's
         DoorData(
             name="Giant Boulder Room",
@@ -3192,6 +3284,7 @@ door_locations = {
             group=4,
             moveless=False,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal in Giant Boulder Room
         DoorData(
             name="On Lanky Cabin",
@@ -3202,6 +3295,7 @@ door_locations = {
             group=2,
             moveless=False,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal on Sprint Cabin
         DoorData(
             name="Near Igloo",
@@ -3210,6 +3304,7 @@ door_locations = {
             location=[120.997, 50.167, 1182.974, 75.146],
             group=5,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal near 5DI (Custom but treated as vanilla)
         DoorData(
             name="Outside Lanky Cabin",
@@ -3217,6 +3312,7 @@ door_locations = {
             logicregion=Regions.CabinArea,
             location=[2400.0, 276.0, 1892.5, 21.75],
             group=2,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Outside Chunky Cabin",
@@ -3362,6 +3458,7 @@ door_locations = {
             rx=4,
             group=6,
             door_type=[DoorType.wrinkly],
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Beneath Ice Castle - on land",
@@ -3389,6 +3486,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.swim,
             door_type=[DoorType.wrinkly, DoorType.boss],
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Water under Blast pillar - left",
@@ -3416,6 +3514,7 @@ door_locations = {
             logicregion=Regions.CrystalCavesMain,
             location=[1263.3, 93.0, 1291.0, 73.5],
             group=8,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Mini Monkey Ledge",
@@ -3503,6 +3602,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.swim,
             door_type=[DoorType.wrinkly, DoorType.boss],
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Igloo Area - Behind Lone Platform",
@@ -3650,6 +3750,7 @@ door_locations = {
             location=[1571.664, -29.167, 217.347, 90],
             group=8,
             placed=DoorType.dk_portal,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaDK],
         ),
         DoorData(
             name="Wall between Donkey cabin and waterfall",
@@ -3799,6 +3900,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.donkey,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # DK Door
         DoorData(
             name="Castle Lobby - Central Pillar (2)",
@@ -3809,6 +3911,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.diddy,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Diddy Door
         DoorData(
             name="Castle Lobby - Central Pillar (3)",
@@ -3819,6 +3922,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.lanky,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Lanky Door
         DoorData(
             name="Castle Lobby - Central Pillar (4)",
@@ -3829,6 +3933,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.tiny,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Tiny Door
         DoorData(
             name="Castle Lobby - Central Pillar (5)",
@@ -3839,7 +3944,7 @@ door_locations = {
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.chunky,
-            dos_door=True,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint, DoorTags.DosDoor],
         ),  # Chunky Door
         DoorData(
             name="Near Greenhouse",
@@ -3848,6 +3953,7 @@ door_locations = {
             location=[1543.986, 1381.167, 1629.089, 3.0],
             group=2,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal by Greenhouse
         DoorData(
             name="Rocketbarrel Overhang",
@@ -3856,6 +3962,7 @@ door_locations = {
             location=[1759.241, 903.75, 1060.8, 138.0],
             group=3,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal by W2
         DoorData(
             name="Lowest ledge near tree",
@@ -3864,6 +3971,7 @@ door_locations = {
             location=[1704.55, 368.026, 1896.767, 4.0],
             group=4,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal around back
         DoorData(
             name="Near Lower Cave Shop",
@@ -3872,6 +3980,7 @@ door_locations = {
             location=[1619.429, 200.0, 313.484, 299.0],
             group=5,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal in Crypt Hub
         DoorData(
             name="Near Upper Cave Shop",
@@ -3880,6 +3989,7 @@ door_locations = {
             location=[1025.262, 300.0, 1960.308, 359.0],
             group=6,
             placed=DoorType.boss,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal in Dungeon Tunnel
         DoorData(
             name="Near Sewer Grate",
@@ -3896,6 +4006,7 @@ door_locations = {
             location=[1200.0, 471.0, 254.0, 261.5],
             rx=-6,
             group=7,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Next to Moat Tag Barrel",
@@ -3903,6 +4014,7 @@ door_locations = {
             logicregion=Regions.CreepyCastleMain,
             location=[1545.0, 673.0, 944.0, 168.0],
             group=8,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Next to Middle Shop",
@@ -3910,6 +4022,7 @@ door_locations = {
             logicregion=Regions.CreepyCastleMain,
             location=[557.0, 1136.0, 1379.5, 273.0],
             group=9,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Outside Lanky's Greenhouse",
@@ -3919,6 +4032,7 @@ door_locations = {
             scale=0.95,
             group=2,
             door_type=[DoorType.wrinkly],
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="On Stairs to Moat Tag Barrel",
@@ -3943,6 +4057,7 @@ door_locations = {
             location=[792.0, 1794.0, 1535.5, 224.7],
             scale=0.75,
             group=10,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Top Shop Battlement - center",
@@ -4202,6 +4317,7 @@ door_locations = {
             location=[314.006, 391.472, 414.279, 209],
             group=7,
             placed=DoorType.dk_portal,
+            door_tags=[DoorTags.Vanilla, DoorTags.VanillaDK],
         ),
         DoorData(
             name="Lanky wind tower - Right of Entrance",

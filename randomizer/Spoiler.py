@@ -368,6 +368,7 @@ class Spoiler:
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
         settings["Randomize Crates"] = self.settings.random_crates
+        settings["Seasonal Crate Shuffle"] = self.settings.season5_crate_rando
         settings["Randomize CB Locations"] = self.settings.cb_rando_enabled
         settings["Randomize Coin Locations"] = self.settings.coin_rando
         settings["Randomize Shop Locations"] = self.settings.shuffle_shops
@@ -376,6 +377,7 @@ class Spoiler:
         settings["Randomize Battle Arenas"] = self.settings.crown_placement_rando
         settings["Vanilla Door Shuffle"] = self.settings.vanilla_door_rando
         settings["Dos' Doors"] = self.settings.dos_door_rando
+        settings["Seasonal Door Shuffle"] = self.settings.season5_door_rando
         settings["Randomize Wrinkly Doors"] = self.settings.wrinkly_location_rando
         settings["Randomize T&S Portals"] = self.settings.tns_location_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando_difficulty.name

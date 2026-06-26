@@ -8,7 +8,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Settings import DKPortalRando
 from randomizer.Lists import Exceptions
-from randomizer.Lists.DoorLocations import door_locations
+from randomizer.Lists.DoorLocations import DoorTags, door_locations
 from randomizer.LogicClasses import LocationLogic
 from randomizer.Patching.Library.Generic import getHintRequirement
 
@@ -48,13 +48,13 @@ def UpdateDoorLevels(spoiler):
                 spoiler.LocationList[location_logic.id].level = spoiler.RegionList[region].level
 
 
-def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
+def ShuffleDoors(spoiler, wrinkly_placed: bool=False, tns_placed: bool=False):
     """Shuffle Wrinkly and T&S Doors based on settings."""
     # Handle initial settings
-    shuffle_wrinkly = False if vanilla_doors_placed else spoiler.settings.wrinkly_location_rando
-    shuffle_tns = False if vanilla_doors_placed else spoiler.settings.tns_location_rando
+    shuffle_wrinkly = False if wrinkly_placed else spoiler.settings.wrinkly_location_rando
+    shuffle_tns = False if tns_placed else spoiler.settings.tns_location_rando
     shuffle_dkportal = spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off
-    disable_wrinkly_puzzles = False if vanilla_doors_placed else spoiler.settings.remove_wrinkly_puzzles
+    disable_wrinkly_puzzles = False if wrinkly_placed else spoiler.settings.remove_wrinkly_puzzles
     # Prepare data structures that will hold the door info
     human_hint_doors = {
         "Jungle Japes": {},
@@ -95,13 +95,10 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
     # Reset (unreserved) Doors
     for level in door_locations:
         for door in door_locations[level]:
-            if not spoiler.settings.dos_door_rando or not door.dos_door:
-                # In Dos' Doors, there are exactly two doors that need to not be undone by this process: the two extra Japes doors
-                door.placed = door.default_placed
-            if shuffle_wrinkly and not vanilla_doors_placed:
+            if shuffle_wrinkly and not wrinkly_placed:
                 if door.placed == DoorType.wrinkly:
                     door.placed = DoorType.null
-            if shuffle_tns and not vanilla_doors_placed:
+            if shuffle_tns and not tns_placed:
                 if door.placed == DoorType.boss:
                     door.placed = DoorType.null
             if shuffle_dkportal:
@@ -110,11 +107,13 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
             # Reset door lists
             door.door_type = door.default_door_list.copy()
             door.updateDoorTypeLogic(spoiler)
-    # If we already placed vanilla doors, we've already saved some data we need to preserve post-reset
-    if vanilla_doors_placed:
+    # If we already specially placed some doors, we've already saved some data we need to preserve post-reset
+    if wrinkly_placed or tns_placed:
         shuffled_door_data = spoiler.shuffled_door_data
-        human_hint_doors = spoiler.human_hint_doors
-        human_portal_doors = spoiler.human_portal_doors
+        if wrinkly_placed:
+            human_hint_doors = spoiler.human_hint_doors
+        if tns_placed:
+            human_portal_doors = spoiler.human_portal_doors
     # Hint doors have Locations tied to them. If we're about to add new ones, then we must remove the old ones.
     if shuffle_wrinkly:
         ClearHintDoorLogic(spoiler)
@@ -243,6 +242,22 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
         spoiler.human_entry_doors = human_entry_doors
 
 
+def ShuffleSpecificDoors(spoiler):
+    """Shuffle specific subsets of doors based on settings."""
+    shuffled_wrinkly = False
+    shuffled_tns = False
+    if spoiler.settings.vanilla_door_rando:  # Includes Dos' Doors
+        ShuffleVanillaDoors(spoiler)
+        shuffled_wrinkly = True
+        shuffled_tns = True
+    elif spoiler.settings.season5_door_rando:
+        ShuffleHintDoorSet(spoiler, DoorTags.Season5Door)
+        shuffled_wrinkly = True
+    # DK Portals may be shuffled independently of the specific door shuffles, and that's done here in the main shuffle method
+    if spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off:
+        ShuffleDoors(spoiler, shuffled_wrinkly, shuffled_tns)
+
+
 def ShuffleVanillaDoors(spoiler):
     """Shuffle T&S and Wrinkly doors amongst the vanilla locations."""
     ClearHintDoorLogic(spoiler)
@@ -285,10 +300,10 @@ def ShuffleVanillaDoors(spoiler):
         for door_index, door in enumerate(door_locations[level]):
             # This catches all default Wrinkly and T&S locations in addition to the additional doors needed for Dos' Doors as needed
             if (door.default_placed != DoorType.null and door.default_placed != DoorType.dk_portal) or (door.dos_door and spoiler.settings.dos_door_rando):
-                # In Dos' Doors, we only need one lobby door, so ignore the rest
+                door.placed = DoorType.null
+                # In Dos' Doors, we only need one lobby door, so ignore the rest                
                 if spoiler.settings.dos_door_rando and door.default_placed == DoorType.wrinkly and not door.dos_door:
                     continue
-                door.placed = DoorType.null
                 vanilla_door_indexes.append(door_index)
         spoiler.settings.random.shuffle(vanilla_door_indexes)
         # One random vanilla T&S per level is locked to being a T&S - Two non-vanilla Japes locations are eligible in Dos' Doors (hence that DoorType.null eligibility)
@@ -339,6 +354,60 @@ def ShuffleVanillaDoors(spoiler):
         spoiler.human_hint_doors = human_hint_doors
     if spoiler.settings.tns_location_rando:
         spoiler.human_portal_doors = human_portal_doors
+
+
+# If necessary, you can specify the order in which the Kongs are assigned to doors. This can help if certain sets demand certain Kongs to be last.
+kong_order_by_set = {
+    DoorTags.Season5Door: [0, 3, 4, 2, 1]
+}
+
+
+def ShuffleHintDoorSet(spoiler, door_tag: DoorTags):
+    """Shuffle a specific set of doors based on the provided DoorTags."""
+    ClearHintDoorLogic(spoiler)
+    human_hint_doors = {
+        "Jungle Japes": {},
+        "Angry Aztec": {},
+        "Frantic Factory": {},
+        "Gloomy Galleon": {},
+        "Fungi Forest": {},
+        "Crystal Caves": {},
+        "Creepy Castle": {},
+    }
+    shuffled_door_data = {
+        Levels.JungleJapes: [],
+        Levels.AngryAztec: [],
+        Levels.FranticFactory: [],
+        Levels.GloomyGalleon: [],
+        Levels.FungiForest: [],
+        Levels.CrystalCaves: [],
+        Levels.CreepyCastle: [],
+    }
+    for level in door_locations:
+        # Wipe the vanilla hint doors
+        for door_index, door in enumerate(door_locations[level]):
+            if door.default_placed == DoorType.wrinkly:
+                door.placed = DoorType.null
+        # Assumption: This filter should always get exactly 5 with a valid kong combination
+        door_set_indexes = [idx for idx, door in enumerate(door_locations[level]) if door_tag in door.door_tags]
+        spoiler.settings.random.shuffle(door_set_indexes)
+        for kong in kong_order_by_set[door_tag]:
+            assignee = Kongs(kong % 5)
+            selected_door_index = door_set_indexes.pop(0)
+            selected_door = door_locations[level][selected_door_index]
+            selected_door.assignDoor(assignee)
+            human_hint_doors[level_list[level]][str(assignee.name).capitalize()] = selected_door.name
+            shuffled_door_data[level].append((selected_door_index, DoorType.wrinkly, int(assignee)))
+            # Add this hint door's location back to the logic
+            doorLocation = GetDoorLocationForKongAndLevel(kong, level)
+            region = spoiler.RegionList[selected_door.logicregion]
+            region.locations.append(LocationLogic(doorLocation, lambda l, door=selected_door, lv=level: door.logic(l) and l.canUnlockHintDoor(lv)))
+            spoiler.LocationList[doorLocation].name = f"{level_to_name[level]} Hint Door ({selected_door.name})"
+    # Track all touched doors in a variable and put it in the spoiler because changes to the static list do not save
+    spoiler.shuffled_door_data = shuffled_door_data
+    # Give human text to spoiler log
+    if spoiler.settings.wrinkly_location_rando:
+        spoiler.human_hint_doors = human_hint_doors
 
 
 def ClearHintDoorLogic(spoiler):
