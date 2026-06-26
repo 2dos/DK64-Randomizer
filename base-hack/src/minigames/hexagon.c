@@ -1,22 +1,6 @@
 // minigame: hexagon
 #include "minigame_defs.h"
 
-/*
-    Note: This game currently only works when placed in Jetpac.
-    This is due to a missing guOrtho call in the wrapper code for Arcade.
-    This will be solved by the time 6.0 comes out (hopefully).
-
-    For those reading this making their own games with Tri rendering, you may
-    experience issues with your game unless you place it in the Jetpac slot
-    for this same reason.
-
-    For those reading this, this also only works on slightly inaccurate emulators
-    due to assumptions with the RSP with tri rendering. This will be eventually 
-    fixed.
-
-    Also incomplete
-*/
-
 typedef enum gameStates {
     GAMESTATE_INIT,
     GAMESTATE_MUSICCORRECT_INIT,  // Used to allow music playing
@@ -1041,11 +1025,9 @@ void loop(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
     if (game_state != GAMESTATE_INIT) {
         dl = minigame_dl_init(dl, 0, 0, 0, 0);
-        // Build ortho matrix once: maps (0,0)-(320,240) to screen
         guOrtho(&ortho_mtx, 0.0f, 320.0f, 240.0f, 0.0f, -1.0f, 1.0f, 1.0f);
         guMtxIdent(&identity_mtx_model);
         gSPViewport(dl++, &viewport);
-        // Force ortho projection regardless of what D_1000090/D_1000040 set up
         gSPMatrix(dl++, &ortho_mtx,
             G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
         gSPMatrix(dl++, &identity_mtx_model,

@@ -3,6 +3,7 @@
 import js
 import math
 import io
+from enum import IntEnum
 import randomizer.ItemPool as ItemPool
 from typing import Union
 from randomizer.Patching.Library.Assets import getPointerLocation, getPointerFile
@@ -716,6 +717,19 @@ def precalcBoot(ROM_COPY: LocalROM, spoiler):
     writeValue(ROM_COPY, 0x80631C3A, Overlay.Static, getLo(m2_cb_coin_counts), offset_dict)
 
 
+class PauseScreens(IntEnum):
+    """Enum to store indexes of each pause screen."""
+    Main = 0
+    LevelKongs = 1
+    LevelALl = 2
+    Totals = 3
+    Checks = 4
+    Moves = 5
+    Tasks = 6
+    ItemLocations = 7
+    Hints = 8
+
+
 def patchAssembly(ROM_COPY: LocalROM, spoiler):
     """Patch all assembly instructions."""
     patchVersionStack(ROM_COPY, spoiler.settings)
@@ -741,11 +755,28 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     writeValue(ROM_COPY, 0x8060005A, Overlay.Static, getHiSym("replacement_lobbies_array"), offset_dict)
     writeValue(ROM_COPY, 0x8060006E, Overlay.Static, getLoSym("replacement_lobbies_array"), offset_dict)
 
+    enabled_screens = [
+        PauseScreens.Main,
+        PauseScreens.LevelKongs,
+        PauseScreens.LevelALl,
+        PauseScreens.Totals,
+        PauseScreens.Checks,
+        PauseScreens.Moves,
+    ]
+    if spoiler.settings.win_condition_item == WinConditionComplex.tasks:
+        enabled_screens.append(PauseScreens.Tasks)
+    enabled_screens.append(PauseScreens.ItemLocations)
+    if spoiler.settings.pause_hints_setting != PauseHintSetting.off:
+        enabled_screens.append(PauseScreens.Hints)
+    writeValue(ROM_COPY, 0x806A8672, Overlay.Static, len(enabled_screens) - 1, offset_dict)  # Screen decrease cap
+    writeValue(ROM_COPY, 0x806A8646, Overlay.Static, len(enabled_screens), offset_dict)  # Screen increase cap
     pause_screen_count = getEnum("PAUSESCREEN_TERMINATOR")
-    if spoiler.settings.pause_hints_setting == PauseHintSetting.off:
-        pause_screen_count -= 1
-    writeValue(ROM_COPY, 0x806A8672, Overlay.Static, pause_screen_count - 1, offset_dict)  # Screen decrease cap
-    writeValue(ROM_COPY, 0x806A8646, Overlay.Static, pause_screen_count, offset_dict)  # Screen increase cap
+    enabled_pause_rom = getSym("screen_order")
+    for x in range(pause_screen_count):
+        val = -1
+        if x < len(enabled_screens):
+            val = enabled_screens[x]
+        writeValue(ROM_COPY, enabled_pause_rom + x, Overlay.Custom, val, offset_dict, True)
 
     kong_model_setting_values = [
         settings.kong_model_dk,

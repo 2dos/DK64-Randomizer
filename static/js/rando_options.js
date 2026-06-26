@@ -1593,15 +1593,16 @@ document
   .addEventListener("change", update_door_two_num_access);
 
 // Update Win Condition Number Access
+let wincon_containers = ["win_condition_container"];
+let wincon_conditions = ["win_condition_item"];
+let wincon_counts = ["win_condition_count"]
+for (let i = 0; i < 8; i++) {
+  wincon_containers.push(`task_${i + 1}_container`);
+  wincon_conditions.push(`task_${i + 1}_condition`);
+  wincon_counts.push(`task_${i + 1}_count`);
+}
 function update_win_con_num_access() {
-  let containers = ["win_condition_container"];
-  let conditions = ["win_condition_item"];
-  let counts = ["win_condition_count"]
-  for (let i = 0; i < 8; i++) {
-    containers.push(`task_${i + 1}_container`);
-    conditions.push(`task_${i + 1}_condition`);
-    counts.push(`task_${i + 1}_count`);
-  }
+  
   const DISABLED_WIN_VALUES = [
     "easy_random",
     "medium_random",
@@ -1617,6 +1618,7 @@ function update_win_con_num_access() {
     "bad_hit_detection_man",
     "rareware_gb_check",
     "tasks",
+    "inactive",
   ];
   const KROOL_WIN_CONS = [
     "easy_random",
@@ -1627,9 +1629,9 @@ function update_win_con_num_access() {
   const KROOL_DISABLED_WIN_CONS = [];
 
   for (let i = 0; i < 9; i++) {
-    const winConSelection = document.getElementById(conditions[i]);
-    const winConContainer = document.getElementById(containers[i]);
-    const winConReq = document.getElementById(counts[i]);
+    const winConSelection = document.getElementById(wincon_conditions[i]);
+    const winConContainer = document.getElementById(wincon_containers[i]);
+    const winConReq = document.getElementById(wincon_counts[i]);
     const disabled = DISABLED_WIN_VALUES.includes(winConSelection.value);
     const kroolSection = document.getElementById("krool_section");
     const kroolShipSpawnMethod = document.getElementById("win_condition_spawns_ship");
@@ -1720,13 +1722,18 @@ function update_win_con_num_access() {
   }
 }
 
-document
-  .getElementById("win_condition_item")
-  .addEventListener("change", update_win_con_num_access);
+wincon_conditions.concat(["win_condition_spawns_ship"]).forEach(wincon_id => {
+  document
+    .getElementById(wincon_id)
+    .addEventListener("change", update_win_con_num_access);
+});
 
-document
-  .getElementById("win_condition_spawns_ship")
-  .addEventListener("change", update_win_con_num_access);
+document.getElementById("task_reset").addEventListener("click", () => {
+  for (let i = 0; i < 8; i++) {
+    document.getElementById(`task_${i + 1}_condition`).value = 'inactive';
+  }
+  update_win_con_num_access();
+});
 
 // Validate Door 1 input on loss of focus
 document

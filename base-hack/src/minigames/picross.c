@@ -34,7 +34,6 @@ typedef enum gameStates {
 
 ROM_DATA static gameStates game_state = GAMESTATE_INIT;
 ROM_DATA static unsigned char cells[GRID_SIZE][GRID_SIZE] = {};
-ROM_DATA static unsigned char puzzle_index = 0;
 ROM_DATA static unsigned char cursor_x = 0;
 ROM_DATA static unsigned char cursor_y = 0;
 ROM_DATA static unsigned char mistakes = 0;
@@ -47,73 +46,7 @@ ROM_DATA static unsigned char col_clues[GRID_SIZE][MAX_CLUES] = {};
 // so the left-most column maps to the highest bit and the literal reads
 // left-to-right like the image.
 // Try to avoid any row or column being all-filled for now
-ROM_RODATA_NUM static const unsigned short puzzles[NUM_PUZZLES][GRID_SIZE] = {
-    // Coin / circle
-    // ..........  // 0000000000 -> 0x000
-    // ...####...  // 0001111000 -> 0x078
-    // ..######..  // 0011111100 -> 0x0FC
-    // .########.  // 0111111110 -> 0x1FE
-    // .########.  // 0111111110 -> 0x1FE
-    // .########.  // 0111111110 -> 0x1FE
-    // .########.  // 0111111110 -> 0x1FE
-    // ..######..  // 0011111100 -> 0x0FC
-    // ...####...  // 0001111000 -> 0x078
-    // ..........  // 0000000000 -> 0x000
-    {0x000, 0x078, 0x0FC, 0x1FE, 0x1FE, 0x1FE, 0x1FE, 0x0FC, 0x078, 0x000},
-
-    // Arrow up
-    // ....##....
-    // ...####...
-    // ..######..
-    // .########.
-    // ##......##
-    // ...####...
-    // ....##....
-    // ....##....
-    // ....##....
-    // ....##....
-    {0x030, 0x078, 0x0FC, 0x1FE, 0x303, 0x078, 0x030, 0x030, 0x030, 0x030},
-
-    // Smiley?
-    // ..######..
-    // .########.
-    // .##....##.
-    // .########.
-    // .########.
-    // .#......#.
-    // ..######..
-    // .########.
-    // .########.
-    // ..######..
-    {0x0FC, 0x1FE, 0x186, 0x1FE, 0x1FE, 0x102, 0x0FC, 0x1FE, 0x1FE, 0x0FC},
-
-    // House
-    // ....##....
-    // ...####...
-    // ..######..
-    // .########.
-    // .########.
-    // .#......#.
-    // .#.####.#.
-    // .#......#.
-    // .#......#.
-    // .########.
-    {0x030, 0x078, 0x0FC, 0x1FE, 0x1FE, 0x102, 0x17A, 0x102, 0x102, 0x1FE},
-
-    // Pokeball (kindof)
-    // ..........
-    // ..##..##..
-    // .#......#.
-    // .#.####.#.
-    // .###..###.
-    // .#.#.##.#.
-    // .#.####.#.
-    // .#......#.
-    // ..##..##..
-    // ..........
-    {0x000, 0x0CC, 0x102, 0x17A, 0x1CE, 0x15A, 0x17A, 0x102, 0x0CC, 0x000},
-};
-
+ROM_DATA static unsigned char selected_puzzle[GRID_SIZE][GRID_SIZE] = {};
 void fillRect(Gfx **dl_ptr, int x0, int y0, int x1, int y1, int r, int g, int b) {
     Gfx *dl = *dl_ptr;
     dl = setFillColor(dl, r, g, b);
@@ -122,8 +55,24 @@ void fillRect(Gfx **dl_ptr, int x0, int y0, int x1, int y1, int r, int g, int b)
     *dl_ptr = dl;
 }
 
+void generateRandomPuzzle(void) {
+    int polarity = getRNGLower31() & 1;
+    int ticker = (getRNGLower31() & 7) + 1;
+    for (int y = 0; y < GRID_SIZE; y++) {
+        for (int x = 0; x < GRID_SIZE; x++) {
+            if (ticker == 0) {
+                polarity = 1 ^ polarity;
+                ticker = (getRNGLower31() & 7) + 1;
+            } else {
+                ticker--;
+            }
+            selected_puzzle[x][y] = polarity;
+        }
+    }
+}
+
 int solutionAt(int x, int y) {
-    return (puzzles[puzzle_index][y] >> (GRID_SIZE - 1 - x)) & 1;
+    return selected_puzzle[x][y];
 }
 
 void computeClues(void) {
@@ -170,7 +119,7 @@ void computeClues(void) {
 }
 
 void resetGame(void) {
-    puzzle_index = ((getRNGLower31() >> 8) & 0xFF) % NUM_PUZZLES;
+    generateRandomPuzzle();
     cursor_x = GRID_SIZE / 2;
     cursor_y = GRID_SIZE / 2;
     mistakes = 0;

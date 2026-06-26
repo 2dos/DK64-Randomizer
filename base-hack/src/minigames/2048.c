@@ -1,5 +1,4 @@
 // minigame: 2048
-// 2048 — slide tiles, merge equal pairs, reach the 2048 tile to win.
 #include "minigame_defs.h"
 
 typedef enum gameStates {
@@ -29,8 +28,6 @@ typedef enum gameStates {
 #define DIR_DOWN 2
 #define DIR_LEFT 3
 
-// One source tile sliding to a destination cell. After a merge, two
-// source tiles record the same dst.
 typedef struct {
     signed char src_r;
     signed char src_c;
@@ -42,7 +39,6 @@ typedef struct {
 #define MAX_MOVEMENTS (GRID_N * GRID_N)
 
 ROM_DATA static gameStates game_state = GAMESTATE_INIT;
-// grid[r][c] = log2 of tile value (0 = empty, 1 = 2, 2 = 4, ..., 11 = 2048)
 ROM_DATA static unsigned char grid[GRID_N][GRID_N] = {};
 ROM_DATA static unsigned int score = 0;
 ROM_DATA static unsigned char highest = 0;

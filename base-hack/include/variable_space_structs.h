@@ -37,7 +37,7 @@ typedef struct varspace {
 	/* 0x096 */ char fps_on; // 0 = FPS display off, 1 = On.
 	/* 0x097 */ char damage_multiplier; // 1 = Normal. 2 = Double. Any value greater than 11 will be 1 hit KO
 	/* 0x098 */ short progressive_bounds[10];
-	/* 0x0AC */ char unk_98[0xAE - 0xAC];
+	/* 0x0AC */ char unk_ac[0xAE - 0xAC];
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char disable_flavor_text;
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 4

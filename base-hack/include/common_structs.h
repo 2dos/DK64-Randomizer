@@ -1325,9 +1325,10 @@ typedef struct tag_model_struct {
 	/* 0x005 */ char unk1;
 } tag_model_struct;
 
-typedef struct mtx_item {
+typedef struct __attribute__((aligned(16))) mtx_item {
 	/* 0x000 */ float mf[4][4];
 } mtx_item;
+_Static_assert(__alignof__(mtx_item) == 16, "mtx_item not 16-byte aligned");
 
 typedef struct actor_behaviour_def {
     /* 0x000 */ short actor_type;

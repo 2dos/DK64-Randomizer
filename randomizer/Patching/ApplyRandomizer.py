@@ -778,6 +778,9 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
         ]
         ROM_COPY.seek(sav + 0x11D)
         ROM_COPY.write(WinConROM.tasks)
+        for task_index in range(8):
+            ROM_COPY.seek(sav + (4 * task_index))
+            ROM_COPY.write(0)
         task_index = 0
         for task in task_segments:
             win_con_data = win_con_table.get(task["type"], None)
@@ -793,7 +796,7 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
                     ROM_COPY.write(win_con_data["level"])
                 elif task_type == WinConROM.krem_kapture:
                     ROM_COPY.writeMultipleBytes(task["count"], 2)
-                elif "item" in task:
+                elif "item" in win_con_data:
                     ROM_COPY.write(win_con_data["item"])
                     ROM_COPY.write(task["count"])
                 task_index += 1

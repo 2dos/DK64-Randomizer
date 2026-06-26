@@ -2438,8 +2438,6 @@ with open(newROMName, "r+b") as fh:
     adjustExits(fh)
     generateDefaultPadPairing(fh)
     writeVanillaSongData(fh)
-    fh.seek(ROM_DATA_OFFSET + 0x11C)
-    fh.write((0xFF).to_bytes(1, "big"))
     for x in portal_images:
         for y in x:
             if os.path.exists(y):
@@ -2448,32 +2446,6 @@ with open(newROMName, "r+b") as fh:
     # Kong Order
     fh.seek(ROM_DATA_OFFSET + 0x151)
     fh.write((0).to_bytes(1, "big"))
-    fh.seek(ROM_DATA_OFFSET + 0x152)
-    fh.write((1).to_bytes(1, "big"))
-    fh.seek(ROM_DATA_OFFSET + 0x153)
-    fh.write((0).to_bytes(1, "big"))
-    fh.seek(ROM_DATA_OFFSET + 0x154)
-    fh.write((2).to_bytes(1, "big"))
-    fh.seek(ROM_DATA_OFFSET + 0x155)
-    fh.write((0).to_bytes(1, "big"))
-    fh.seek(ROM_DATA_OFFSET + 0x156)
-    fh.write((3).to_bytes(1, "big"))
-    fh.seek(ROM_DATA_OFFSET + 0x157)
-    fh.write((1).to_bytes(1, "big"))
-    fh.seek(ROM_DATA_OFFSET + 0x158)
-    fh.write((4).to_bytes(1, "big"))
-    fh.seek(ROM_DATA_OFFSET + 0x159)
-    fh.write((2).to_bytes(1, "big"))
-
-    # Ice Trap Flag Alloc
-    fh.seek(ROM_DATA_OFFSET + 0x14E)
-    fh.write((16).to_bytes(1, "big"))
-
-    # Default Menu Settings
-    fh.seek(ROM_DATA_OFFSET + 0xC8)
-    fh.write((40).to_bytes(1, "big"))
-    fh.seek(ROM_DATA_OFFSET + 0xC9)
-    fh.write((40).to_bytes(1, "big"))
 
     # Pkmn Snap Default Enemies
     pkmn_snap_enemies = [
@@ -2582,27 +2554,6 @@ with open(newROMName, "r+b") as fh:
     with open("assets/credits/squish.bin", "rb") as squish:
         fh.seek(0x1FFF800)
         fh.write(squish.read())
-
-    vanilla_coin_reqs = [
-        {"offset": 0x13C, "coins": 50},
-        {"offset": 0x13D, "coins": 50},
-        {"offset": 0x13E, "coins": 10},
-        {"offset": 0x13F, "coins": 10},
-        {"offset": 0x140, "coins": 10},
-        {"offset": 0x141, "coins": 50},
-        {"offset": 0x142, "coins": 50},
-        {"offset": 0x143, "coins": 25},
-    ]
-    for coinreq in vanilla_coin_reqs:
-        fh.seek(ROM_DATA_OFFSET + coinreq["offset"])
-        fh.write(coinreq["coins"].to_bytes(1, "big"))
-    fh.seek(ROM_DATA_OFFSET + 0x48)
-    for lvl in (1, 4, 3, 2):  # Arcade Order
-        fh.write(lvl.to_bytes(1, "big"))
-    for x in range(5):
-        # Write default Helm Order
-        fh.seek(ROM_DATA_OFFSET + x)
-        fh.write(x.to_bytes(1, "big"))
     for x in hash_icons:
         pth = f"assets/hash/{x.icon_file}"
         if os.path.exists(pth):

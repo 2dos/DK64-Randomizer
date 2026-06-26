@@ -29,18 +29,12 @@ ROM_DATA static int selected_col = 0;
 ROM_DATA static unsigned char current_turn = 2; // AI goes first (2)
 ROM_DATA static char input_cooldown = 0;
 ROM_DATA static int winning_player = 0;
-
-// AI Thinking Delay
 ROM_DATA static int ai_thinking_timer = 0;
-
-// Animation variables
 ROM_DATA static int animating_col = 0;
 ROM_DATA static int animating_target_row = 0;
 ROM_DATA static int animating_current_row = 0;
 ROM_DATA static int animating_piece_type = 0;
 ROM_DATA static int animation_frame_timer = 0;
-
-// End game delay timer
 ROM_DATA static int victory_delay_timer = 0;
 
 ROM_RODATA_NUM static const rgb game_colors[] = {
@@ -236,17 +230,15 @@ void executeAITurn(void) {
 
             // 2. Lookahead validation: Check if this move enables an instant player win directly above it
             if (row > 0) {
-                board[col][row - 1] = 1; // Temporarily simulate player piece landing here next turn
+                board[col][row - 1] = 1;
                 if (checkWinCondition(1)) {
-                    // Massive penalty if this exact move hands the game to the human player
                     current_position_score -= 500000;
                 }
-                board[col][row - 1] = 0; // Clean up lookahead simulation
+                board[col][row - 1] = 0;
             }
 
-            board[col][row] = 0; // Clean up AI simulation
+            board[col][row] = 0;
 
-            // Minor noise added to differentiate equal structural lanes
             current_position_score += (getRNGLower31() % 16);
 
             if (current_position_score > best_score) {
@@ -275,11 +267,9 @@ ROM_DATA static char prev_stick_left = 0;
 ROM_DATA static char prev_stick_right = 0;
 
 void handleControls(void) {
-    // 1. Determine current binary state of the directions this frame
     char curr_left = (MinigameInput->stickX < -0x20) || MinigameInput->Buttons.d_left;
     char curr_right = (MinigameInput->stickX > 0x20) || MinigameInput->Buttons.d_right;
 
-    // 2. Move ONLY if it is newly in position from the previous frame (Rising Edge)
     if (curr_left && !prev_stick_left) {
         selected_col--;
         if (selected_col < 0) selected_col = GRID_M - 1;
@@ -291,11 +281,9 @@ void handleControls(void) {
         playSFXWrapper(64);
     }
 
-    // 3. Save current states to evaluate against the next frame
     prev_stick_left = curr_left;
     prev_stick_right = curr_right;
 
-    // 4. Action button uses the engine's native edge-triggered variable
     if (p1PressedButtons & A_BUTTON) {
         tryDropPlayerPiece();
     }
@@ -332,7 +320,6 @@ void renderConnectBoard(Gfx **dl_ptr) {
     Gfx *dl = *dl_ptr;
     const rgb *b_color = &game_colors[COLORSTATE_BOARD];
     
-    // Solid Indicator Selector Arrow
     if (current_turn == 1 && game_state == GAMESTATE_NORMAL) {
         int sel_x = X_START + (selected_col * BOX_DIM) + (BOX_DIM / 2) - 4;
         const rgb *turn_color = &game_colors[COLORSTATE_PLAYER1];
@@ -341,13 +328,11 @@ void renderConnectBoard(Gfx **dl_ptr) {
         gDPFillRectangle(dl++, sel_x + 2, Y_START - 10, sel_x + 6, Y_START - 6);
     }
 
-    // Main Solid Board Layer
     dl = setFillColor(dl, b_color->red, b_color->green, b_color->blue);
     gDPFillRectangle(dl++, X_START - BOARD_PADDING, Y_START - BOARD_PADDING, 
                      X_START + (GRID_M * BOX_DIM) + BOARD_PADDING, 
                      Y_START + (GRID_N * BOX_DIM) + BOARD_PADDING);
 
-    // Render Slots & Dynamic Fixed Tiles
     for (int x = 0; x < GRID_M; x++) {
         for (int y = 0; y < GRID_N; y++) {
             int x0 = X_START + (x * BOX_DIM);
@@ -365,7 +350,6 @@ void renderConnectBoard(Gfx **dl_ptr) {
         }
     }
 
-    // Render Falling Animation Piece Overlap Layer
     if (game_state == GAMESTATE_PIECE_DROP) {
         int drop_x = X_START + (animating_col * BOX_DIM);
         int drop_y = Y_START + (animating_current_row * BOX_DIM);

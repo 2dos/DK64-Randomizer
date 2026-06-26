@@ -527,3 +527,4 @@ extern short m2_cb_coin_counts[8];
 extern const unsigned char blast_maps[7];
 extern button_swap_struct button_swaps[8];
 extern short model_two_touch_array[MODEL_TWO_TOUCH_ARRAY_COUNT];
+extern const char screen_order[PAUSESCREEN_TERMINATOR];

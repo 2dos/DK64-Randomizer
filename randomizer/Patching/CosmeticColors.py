@@ -741,7 +741,7 @@ def showWinConditionInternal(ROM_COPY: LocalROM, win_condition: WinConditionComp
         output_image = output_image.transpose(Image.FLIP_TOP_BOTTOM).resize((32, 32))
 
     elif win_condition == WinConditionComplex.rareware_gb_check:
-        item_im_load = getImageFile(ROM_COPY, 25, 0xAD5, True, 32, 64, TextureFormat.RGBA5551)
+        item_im_load = getImageFile(ROM_COPY, 25, 0xAD5, True, 36, 48, TextureFormat.RGBA5551)
         output_image = Image.new(mode="RGBA", size=(48, 48))
         output_image.paste(item_im_load, (6, 0), item_im_load)
         output_image = output_image.transpose(Image.FLIP_TOP_BOTTOM).resize((32, 32))
