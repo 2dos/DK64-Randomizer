@@ -112,6 +112,25 @@ int canDie(void) {
     return 1;
 }
 
+void handleDamageLink(void) {
+    if ((ap_info.receive_damage == 0) || !canLoadIceTrap(ICETRAP_BUBBLE)) {
+        return;
+    }
+    int damage = ap_info.receive_damage; // quarter-melons of damage to take
+    ap_info.receive_damage = 0;
+    if (CollectableBase.Health <= damage) {
+        // Reaching 0 melons doesn't kill on its own, so we spawn the kop and send a deathlink because funny
+        sendDeath();
+        ap_info.receive_death = 1;
+    } else {
+        if (Player) {
+            // Zero i-frames so the hit isn't ignored
+            Player->invulnerability_timer = 0;
+        }
+        applyDamage(0, -damage); // take it all at once
+    }
+}
+
 void handleArchipelagoFeed(void) {
     if (ap_info.connection > 0) {
         ap_info.connection -= 1;
@@ -182,6 +201,8 @@ void handleArchipelagoFeed(void) {
         queueIceTrap(ap_info.sent_trap, 0);
         ap_info.sent_trap = 0;
     }
+    // Damage link
+    handleDamageLink();
     // Helm Hurry item handling
     if (ap_info.helm_hurry_item) {
         addHelmTime(ap_info.helm_hurry_item, 1);
