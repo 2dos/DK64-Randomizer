@@ -92,8 +92,8 @@ class DK64MemoryMap:
     sent_trap = 0x063
     helm_hurry_item = 0x064
     can_receive_shopkeeper = 0x065
-    receive_damage = 0x066  # DamageLink: client writes quarter-melon units of incoming damage; game applies one per frame when safe
-    health = 0x807FCC4B  # DamageLink: CollectableBase.Health (quarter-melons); polled by the client to detect outgoing damage
+    receive_damage = 0x066
+    health = 0x807FCC4B  # CollectableBase.Health
     current_kong = 0x8074E77C
     count_struct_pointer = 0x807FFFB8  # Pointer to CountStruct containing item counts
 

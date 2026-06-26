@@ -113,26 +113,21 @@ int canDie(void) {
 }
 
 void handleDamageLink(void) {
-    // Taking damage is dangerous in some places so we call canLoadIceTrap since
-    // both safety checks are overlapping
     if ((ap_info.receive_damage == 0) || !canLoadIceTrap(ICETRAP_BUBBLE)) {
         return;
     }
-    if (CollectableBase.Health > 0) {
+    int damage = ap_info.receive_damage; // quarter-melons of damage to take
+    ap_info.receive_damage = 0;
+    if (CollectableBase.Health <= damage) {
+        // Reaching 0 melons doesn't kill on its own, so we spawn the kop and send a deathlink because funny
+        sendDeath();
+        ap_info.receive_death = 1;
+    } else {
         if (Player) {
-            // Set i-frames to 0 when damagelink is set so points dont get eaten
+            // Zero i-frames so the hit isn't ignored
             Player->invulnerability_timer = 0;
         }
-        applyDamageMask(0, -1); // Deals one melon slice of damage and also respects damage modifiers (when implemented)
-                                // applyDamageMask calls death()->sendDeath() the moment Health hits 0, so the deathlink still fires
-    }
-    if (CollectableBase.Health <= 0) {
-        // The kong doesn't die on its own at 0 melons, so spawn the kop to finish the job
-        if (cc_enabler_spawnkop()) {
-            ap_info.receive_damage = 0; // death triggered; consume the remaining debt so it can't chain on respawn
-        }
-    } else {
-        ap_info.receive_damage--;
+        applyDamage(0, -damage); // take it all at once
     }
 }
 

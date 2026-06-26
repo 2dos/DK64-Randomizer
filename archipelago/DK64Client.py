@@ -33,7 +33,6 @@ MAX_STRING_LENGTH = 0x20
 FAST_TEXT_SPEED = 50
 DAMAGE_POINTS_PER_UNIT = 20  # DamageLink: 80 points = 1 full melon (20 per quarter-melon)
 INCOMING_PACKET_CAP = 160  # DamageLink: cap a single inbound bounce at 2 melon
-DAMAGELINK_ABSORB_TICKS = 10  # DamageLink: ticks to suppress outgoing detection while self-applied damage drains in-game
 NORMAL_TEXT_SPEED = 130
 MIN_ITEMS_FOR_SPEED_SCALING = 5
 KONG_COUNT = 5
@@ -1162,6 +1161,10 @@ class DK64Context(CommonContext):
     ENABLE_TAGLINK = False
     ENABLE_TRAPLINK = False
     ENABLE_DAMAGELINK = False
+    pending_damage = 0
+    self_inflicted = 0
+    prev_health = None
+    damage_label = None
     command_processor = DK64CommandProcessor
     won = False
     hint_locations = {}
@@ -1291,6 +1294,8 @@ class DK64Context(CommonContext):
         if cmd == "Connected":
             self.game = self.slot_info[self.slot].game
             self.slot_data = args.get("slot_data", {})
+            if not hasattr(self, "instance_id"):
+                self.instance_id = time.time()
             self.setup_hint_locations()
             if self.slot_data.get("Version"):
                 ap_version = get_ap_version()
@@ -1399,13 +1404,10 @@ class DK64Context(CommonContext):
                     self.pending_trap_original = args["data"]["trap_name"]
                     self.pending_trap_source = source_name
             if "SharedDamage" in self.tags and "SharedDamage" in args.get("tags", []):
-                # Self-filter on the DamageLink uuid (supports same-slot co-op across machines).
-                if args.get("data", {}).get("uuid", None) != self.instance_id:
-                    if not hasattr(self, "pending_damage"):
-                        self.pending_damage = 0
-                    incoming = int(args.get("data", {}).get("damage_points", 0))
-                    if incoming > 0:
-                        self.pending_damage += min(incoming, INCOMING_PACKET_CAP)
+                if args["data"].get("uuid") != self.instance_id:  # ignore our own echo
+                    points = int(args["data"].get("damage_points", 0))
+                    if points > 0:
+                        self.pending_damage += min(points, INCOMING_PACKET_CAP)
 
     async def send_ring_link(self, amount: int):
         """Send a ring link message."""
@@ -1580,51 +1582,51 @@ class DK64Context(CommonContext):
         }}])
 
     async def handle_damage_link(self):
-        """Detect outgoing damage and queue incoming DamageLink damage.
-
-        The game (C side) only applies incoming damage (gated by the safe-to-take-damage check)
-        and suppresses the deathlink if it kills. Everything else lives here:
-        - Outgoing: poll CollectableBase.Health and broadcast genuine quarter-melons lost.
-        - Incoming: convert accumulated damage_points to quarter-melon units and write them to
-          receive_damage for the game to bleed in one per frame.
-        - Feedback loop: while our own queued damage is draining in-game (the "absorb window"),
-          suppress outgoing detection and just resync the baseline so we never re-broadcast it.
-        """
+        """Apply received DamageLink damage."""
         if not self.client.ENABLE_DAMAGELINK:
             return
+        n64 = self.client.n64_client
         base = self.client.memory_pointer
-        cur_health = self.client.n64_client.read_u8(DK64MemoryMap.health)
 
-        # Incoming: convert accumulated points to quarter-melon units, add without clobbering an unconsumed value.
-        if not hasattr(self, "pending_damage"):
-            self.pending_damage = 0
-        if not hasattr(self, "damagelink_absorb"):
-            self.damagelink_absorb = 0
-        if self.pending_damage >= DAMAGE_POINTS_PER_UNIT:
-            new_units = self.pending_damage // DAMAGE_POINTS_PER_UNIT
-            already = self.client.n64_client.read_u8(base + DK64MemoryMap.receive_damage)
-            self.client.n64_client.write_u8(base + DK64MemoryMap.receive_damage, min(already + new_units, 255))
-            self.pending_damage -= new_units * DAMAGE_POINTS_PER_UNIT
-            self.damagelink_absorb = DAMAGELINK_ABSORB_TICKS  # our damage is now draining; suppress outgoing
-        # Keep the absorb window open while the game is still applying queued damage.
-        if self.client.n64_client.read_u8(base + DK64MemoryMap.receive_damage) > 0:
-            self.damagelink_absorb = DAMAGELINK_ABSORB_TICKS
+        # Show total amount of damagelink points in client (taken from mycena waffle's client).
+        try:
+            if self.damage_label is None and getattr(self, "ui", None) is not None:
+                try:
+                    from kvui import MDLabel as Label
+                except ImportError:
+                    from kvui import Label
+                self.damage_label = Label(text="", size_hint_x=None, width=120, halign="center")
+                self.ui.connect_layout.add_widget(self.damage_label)
+            if self.damage_label is not None:
+                self.damage_label.text = f"DMG: {self.pending_damage}"
+        except Exception:
+            pass
 
-        # Outgoing: broadcast genuine health loss, unless we are absorbing our own damage, dying, or healing.
-        if not hasattr(self, "prev_health"):
-            self.prev_health = cur_health  # bootstrap: no broadcast on first read
-        elif self.damagelink_absorb > 0:
-            if cur_health < self.prev_health:
-                self.damagelink_absorb = DAMAGELINK_ABSORB_TICKS
-            else:
-                self.damagelink_absorb -= 1
-            self.prev_health = cur_health  # self-inflicted drain: resync, do not broadcast
-        elif cur_health <= 0 or cur_health >= self.prev_health:
-            self.prev_health = cur_health  # death / heal / respawn / map-refill: resync, do not broadcast
-        else:
-            drop = self.prev_health - cur_health
-            await self.send_damage_link(drop * DAMAGE_POINTS_PER_UNIT)
-            self.prev_health = cur_health
+        health = n64.read_u8(DK64MemoryMap.health)
+        if health > 127:
+            health -= 256
+        if self.prev_health is None:
+            self.prev_health = health
+
+        # Hand any received damage to the game, remembering the health it will cost us.
+        units = self.pending_damage // DAMAGE_POINTS_PER_UNIT
+        if units > 0:
+            self.pending_damage -= units * DAMAGE_POINTS_PER_UNIT
+            queued = n64.read_u8(base + DK64MemoryMap.receive_damage)
+            n64.write_u8(base + DK64MemoryMap.receive_damage, min(queued + units, 255))
+            self.self_inflicted += units
+
+        # Broadcast damag
+        lost = self.prev_health - health
+        if lost > 0:
+            mine = min(lost, self.self_inflicted)
+            self.self_inflicted -= mine
+            genuine = lost - mine
+            if genuine > 0:
+                await self.send_damage_link(genuine * DAMAGE_POINTS_PER_UNIT)
+        elif health <= 0:
+            self.self_inflicted = 0  # once you die, reset points
+        self.prev_health = health
 
     async def send_tag_link(self, kong: int):
         """Send a tag link message."""
