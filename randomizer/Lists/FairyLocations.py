@@ -321,7 +321,7 @@ fairy_locations = {
         FairyData(
             name="Hatch Pole",
             map=Maps.FranticFactory,
-            region=Regions.BeyondHatch,
+            region=Regions.AlcoveBeyondHatch,
             fence=Fence(630, 1863, 680, 1920),
             spawn_y=519,
         ),
