@@ -2082,6 +2082,15 @@ door_locations = {
             group=2,
         ),
         DoorData(
+            name="Warp 5 above water",
+            map=Maps.GloomyGalleon,
+            logicregion=Regions.GloomyGalleonStart,
+            location=[3270.1909604872276,1620.0991099238863,1720.422305186934, -27.73927875291541],
+            rx=-16.515286372903933,
+            rz=7.886527551496551,
+            group=6,
+        ),
+        DoorData(
             name="Cactus - bottom back left",
             map=Maps.GloomyGalleon,
             logicregion=Regions.ShipyardUnderwater,
