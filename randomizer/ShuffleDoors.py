@@ -48,7 +48,7 @@ def UpdateDoorLevels(spoiler):
                 spoiler.LocationList[location_logic.id].level = spoiler.RegionList[region].level
 
 
-def ShuffleDoors(spoiler, wrinkly_placed: bool=False, tns_placed: bool=False):
+def ShuffleDoors(spoiler, wrinkly_placed: bool = False, tns_placed: bool = False):
     """Shuffle Wrinkly and T&S Doors based on settings."""
     # Handle initial settings
     shuffle_wrinkly = False if wrinkly_placed else spoiler.settings.wrinkly_location_rando
@@ -301,7 +301,7 @@ def ShuffleVanillaDoors(spoiler):
             # This catches all default Wrinkly and T&S locations in addition to the additional doors needed for Dos' Doors as needed
             if (door.default_placed != DoorType.null and door.default_placed != DoorType.dk_portal) or (door.dos_door and spoiler.settings.dos_door_rando):
                 door.placed = DoorType.null
-                # In Dos' Doors, we only need one lobby door, so ignore the rest                
+                # In Dos' Doors, we only need one lobby door, so ignore the rest
                 if spoiler.settings.dos_door_rando and door.default_placed == DoorType.wrinkly and not door.dos_door:
                     continue
                 vanilla_door_indexes.append(door_index)
@@ -357,9 +357,7 @@ def ShuffleVanillaDoors(spoiler):
 
 
 # If necessary, you can specify the order in which the Kongs are assigned to doors. This can help if certain sets demand certain Kongs to be last.
-kong_order_by_set = {
-    DoorTags.Season5Door: [0, 3, 4, 2, 1]
-}
+kong_order_by_set = {DoorTags.Season5Door: [0, 3, 4, 2, 1]}
 
 
 def ShuffleHintDoorSet(spoiler, door_tag: DoorTags):

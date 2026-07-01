@@ -66,6 +66,7 @@ UNDERWATER_LOGIC_REGIONS = (
 
 class DoorTags(IntEnum):
     """Tags for doors that have special properties that aren't covered by the other attributes."""
+
     Vanilla = auto()
     VanillaHint = auto()
     VanillaDK = auto()
@@ -741,6 +742,16 @@ door_locations = {
             group=5,
             door_type=[DoorType.dk_portal, DoorType.wrinkly],
         ),
+        DoorData(
+            name="Slope to Kong Cage",
+            map=Maps.JungleJapes,
+            logicregion=Regions.JapesHillTop,
+            location=[1438.200754880301, 807.6805390615809, 2569.017230657908, -39.0549811465794],
+            rx=14.48184722920708,
+            rz=-2.7772124840445116,
+            group=5,
+            door_tags=[DoorTags.Season5Door],
+        ),
     ],
     Levels.AngryAztec: [
         DoorData(
@@ -801,7 +812,7 @@ door_locations = {
             door_tags=[DoorTags.Vanilla, DoorTags.VanillaHint],
         ),  # Custom Chunky Door
         DoorData(
-            name="Near Quicksand Tunnel Shop",
+            name="Right of Quicksand Tunnel Shop",
             map=Maps.AngryAztec,
             logicregion=Regions.AngryAztecMain,
             location=[2801.765, 121.333, 4439.293, 66.0],
@@ -811,7 +822,7 @@ door_locations = {
             door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal by Funky
         DoorData(
-            name="Near Tunnel Shop",
+            name="Left of Tunnel Shop",
             map=Maps.AngryAztec,
             logicregion=Regions.AngryAztecConnectorTunnel,
             location=[2787.908, 120.0, 2674.299, 198.0],
@@ -922,6 +933,15 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
+            name="Right of Tunnel Shop",
+            map=Maps.AngryAztec,
+            logicregion=Regions.AngryAztecConnectorTunnel,
+            location=[2703.9089841618475, 120.33152470831818, 2449.817419964085, 60.21820795182471],
+            group=3,
+            moveless=False,
+            door_tags=[DoorTags.Season5Door],
+        ),
+        DoorData(
             name="Near Hunky Barrel - left",
             map=Maps.AngryAztec,
             logicregion=Regions.AngryAztecConnectorTunnel,
@@ -970,6 +990,18 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
+            name="Across from Vases Room",
+            map=Maps.AngryAztec,
+            logicregion=Regions.AztecTunnelBeforeOasis,
+            location=[889.8593830717492, 120.29284813180963, 860.5877099763103, -89.6042166031361],
+            # This was me just starting out with donkviewer, probably needs no rx nor rz. This also counts for a bunch of other doorlocations
+            rx=113.77651663864388,
+            rz=-113.79641420154904,
+            group=8,
+            door_type=[DoorType.wrinkly],
+            door_tags=[DoorTags.Season5Door],
+        ),
+        DoorData(
             name="First Tunnel - next to DK Door",
             map=Maps.AngryAztec,
             logicregion=Regions.AztecTunnelBeforeOasis,
@@ -994,6 +1026,28 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.isdonkey and l.strongKong,
             door_type=[DoorType.wrinkly],
+        ),
+        DoorData(
+            name="Inside Quicksand Bonus Cave",
+            map=Maps.AngryAztec,
+            logicregion=Regions.AztecDonkeyQuicksandCave,
+            location=[2606.561324430167, 118.69558544189688, 4682.454326656707, 47.35565735285596],
+            rx=7.271310898832559,
+            rz=-4.125232572936125,
+            group=2,
+            moveless=False,
+            door_tags=[DoorTags.Season5Door],
+        ),
+        DoorData(
+            name="Left of Quicksand Tunnel Shop",
+            map=Maps.AngryAztec,
+            logicregion=Regions.AngryAztecMain,
+            location=[3058.6912841416683, 120.19704666531591, 4400.286681605684, 8.750458880844237],
+            rx=180,
+            rz=180,
+            group=2,
+            moveless=False,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Far Back Triple Stairs Quicksand",
@@ -1025,6 +1079,17 @@ door_locations = {
             group=9,
             moveless=False,
             door_type=[DoorType.wrinkly, DoorType.dk_portal],
+        ),
+        DoorData(
+            name="Atop Tiny Temple",
+            map=Maps.AngryAztec,
+            logicregion=Regions.AngryAztecOasis,
+            location=[3115.6823190500654, 350.24799633533416, 755.4518704640526, -32.19411234153564],
+            rx=-20.882859687503256,
+            rz=-1.0726938125492198,
+            logic=lambda l: l.jetpack and l.isdiddy and l.climbing,
+            door_tags=[DoorTags.Season5Door],
+            group=4,
         ),
         DoorData(
             name="Next to Tiny Temple - front left",
@@ -1504,7 +1569,7 @@ door_locations = {
             door_tags=[DoorTags.Vanilla, DoorTags.VanillaBoss],
         ),  # TnS Portal in Production Room
         DoorData(
-            name="R&D",
+            name="R&D across from Piano Game",
             map=Maps.FranticFactory,
             logicregion=Regions.RandD,
             location=[3827.127, 1264.0, 847.458, 222.0],
@@ -1573,6 +1638,15 @@ door_locations = {
             group=3,
         ),
         DoorData(
+            name="Above Storage Spring Pad",
+            map=Maps.FranticFactory,
+            logicregion=Regions.BeyondHatch,
+            location=[1082.1559336504497, 176.67527362798077, 470.60899704869865, 0.4397054668040229],
+            logic=lambda l: ((l.spring or l.CanMoontail()) and l.isdiddy) or l.CanPhase(),
+            door_tags=[DoorTags.Season5Door],
+            group=6,
+        ),
+        DoorData(
             name="Storage Room - Behind Tag Barrel",
             map=Maps.FranticFactory,
             logicregion=Regions.BeyondHatch,
@@ -1600,6 +1674,15 @@ door_locations = {
             location=[2526.0, 1002.0, 1990.6, 180.0],
             group=5,
             moveless=False,
+        ),
+        DoorData(
+            name="R&D across from Car Race",
+            map=Maps.FranticFactory,
+            logicregion=Regions.RandD,
+            location=[3874.6459618877943, 1264, 1135.9769173302775, -19.115051747205605],
+            group=4,
+            moveless=False,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="R&D - Next to Tunnel to Car Race",
@@ -1712,12 +1795,34 @@ door_locations = {
             group=3,
         ),
         DoorData(
+            name="Above Crusher Entrance",
+            map=Maps.FranticFactory,
+            logicregion=Regions.LowerCore,
+            location=[808.0410419731226, 62.85456730346848, 1334.5856608304732, 89.34181829261809],
+            rx=179.99999999999878,
+            rz=179.99999999999878,
+            door_tags=[DoorTags.Season5Door],
+            group=3,
+        ),
+        DoorData(
             name="Arcade Room - Corner",
             map=Maps.FranticFactory,
             logicregion=Regions.FactoryArcadeTunnel,
             location=[1652.5, 1106.0, 1253.75, 43.0],
             scale=0.8669,
             group=2,
+            moveless=False,
+        ),
+        DoorData(
+            name="Under Arcade Shelves",
+            map=Maps.FranticFactory,
+            logicregion=Regions.FactoryArcadeTunnel,
+            location=[1805.1813487950396, 1106.6666666666667, 1536.476609694786, -0.23276861567390833],
+            rx=180,
+            rz=180,
+            scale=0.6343414159085842,
+            group=2,
+            door_tags=[DoorTags.Season5Door],
             moveless=False,
         ),
         DoorData(
@@ -1734,6 +1839,16 @@ door_locations = {
             logicregion=Regions.Testing,
             location=[2517.0, 1026.0, 1315.0, 90.0],
             group=5,
+            moveless=False,
+        ),
+        DoorData(
+            name="By Foyer Shop",
+            map=Maps.FranticFactory,
+            logicregion=Regions.Testing,
+            location=[1593.8304847526517, 810.6666666666666, 2075.6473067054426, 0],
+            scale=0.7179990853726972,
+            group=5,
+            door_tags=[DoorTags.Season5Door],
             moveless=False,
         ),
         DoorData(
@@ -2006,6 +2121,18 @@ door_locations = {
             door_type=[DoorType.boss, DoorType.wrinkly],
         ),
         DoorData(
+            name="Edge of Blast pad",
+            map=Maps.GloomyGalleon,
+            logicregion=Regions.LighthousePlatform,
+            location=[1318.4476358256597, 1609.949884120005, 4028.0705849474816, -83.8101226446999],
+            rx=-180,
+            rz=-180,
+            group=7,
+            moveless=False,
+            door_type=[DoorType.wrinkly],
+            door_tags=[DoorTags.Season5Door],
+        ),
+        DoorData(
             name="Under Baboon Blast pad",
             map=Maps.GloomyGalleon,
             logicregion=Regions.LighthousePlatform,
@@ -2070,10 +2197,12 @@ door_locations = {
             name="Above the water next to the floating warp 5",
             map=Maps.GloomyGalleon,
             logicregion=Regions.Shipyard,
-            location=[3270.1909604872276,1620.0991099238863,1720.422305186934, -27.73927875291541],
+            location=[3270.1909604872276, 1620.0991099238863, 1720.422305186934, -27.73927875291541],
             rx=-16.515286372903933,
             rz=7.886527551496551,
+            door_type=[DoorType.wrinkly],
             door_tags=[DoorTags.Season5Door],
+            logic=lambda l: Events.WaterRaised in l.Events,
             group=6,
         ),
         DoorData(
@@ -2152,6 +2281,19 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
+        ),
+        DoorData(
+            name="Diddy Gold Tower",
+            map=Maps.GloomyGalleon,
+            logicregion=Regions.TreasureRoomDiddyGoldTower,
+            location=[2138.4631034396652, 1900, 820.9039257466601, 27.52269110396558],
+            rx=180,
+            rz=180,
+            scale=0.46788678381999255,
+            group=9,
+            moveless=False,
+            door_type=[DoorType.wrinkly],
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Treasure Chest Exterior",
@@ -2792,6 +2934,16 @@ door_locations = {
             group=4,
         ),
         DoorData(
+            name="Mill Roof - Sloped",
+            map=Maps.FungiForest,
+            logicregion=Regions.ForestTopOfMill,
+            location=[4220.254663365023, 334.28377736539034, 3732.8198661824845, -47.23800687209633],
+            rx=-54.458709399833616,
+            rz=-2.2464418296590756,
+            door_tags=[DoorTags.Season5Door],
+            group=4,
+        ),
+        DoorData(
             name="Mill Roof - tower",
             map=Maps.FungiForest,
             logicregion=Regions.ForestTopOfMill,
@@ -2876,6 +3028,22 @@ door_locations = {
             ),
         ),
         DoorData(
+            name="Beanstalk Area - Left of Shop",
+            map=Maps.FungiForest,
+            logicregion=Regions.WormArea,
+            location=[3094.729358829673, 173.63856406325598, 67.23876157351013, 5.664273504624305],
+            group=3,
+            moveless=False,
+            door_type=[DoorType.wrinkly],
+            door_tags=[DoorTags.Season5Door],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
+        ),
+        DoorData(
             name="Beanstalk Area - Behind Beanstalk right",
             map=Maps.FungiForest,
             logicregion=Regions.WormArea,
@@ -2919,6 +3087,18 @@ door_locations = {
             logicregion=Regions.GiantMushroomArea,
             location=[1451.0, 179.0, 504.6, 321.5],
             group=7,
+        ),
+        DoorData(
+            name="Behind Clocktower Tree",
+            map=Maps.FungiForest,
+            logicregion=Regions.FungiForestStart,
+            location=[2368.46543467312, 376.05382624525583, 2305.0361860298603, -63.389292497270944],
+            rx=-170.59261342548078,
+            rz=169.1390938756278,
+            logic=lambda l: (l.handstand and l.islanky) or (l.jetpack and l.isdiddy),
+            kong_lst=[Kongs.diddy, Kongs.lanky],
+            door_tags=[DoorTags.Season5Door],
+            group=8,
         ),
         DoorData(
             name="Center - Next to Pink Tunnel - left",
@@ -3151,6 +3331,15 @@ door_locations = {
             map=Maps.ForestGiantMushroom,
             logicregion=Regions.MushroomUpper,
             location=[790, 1839, 764, 236.78],
+            group=5,
+        ),
+        DoorData(
+            name="Top of Giant Mushroom Exterior Exit",
+            map=Maps.FungiForest,
+            logicregion=Regions.MushroomVeryTopExterior,
+            location=[481.998441919847, 1247.9489978887038, 1112.7816908753691, -68.0916195979442],
+            rx=-32.23957607313838,
+            door_tags=[DoorTags.Season5Door],
             group=5,
         ),
         DoorData(
@@ -3430,7 +3619,6 @@ door_locations = {
             group=5,
             moveless=False,
             logic=lambda l: l.swim,
-            door_type=[DoorType.boss],
             door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
@@ -3534,6 +3722,15 @@ door_locations = {
             rz=5.5,
             group=8,
             door_type=[DoorType.wrinkly],
+        ),
+        DoorData(
+            name="Mini Bonus Cave",
+            map=Maps.CrystalCaves,
+            logicregion=Regions.CavesBonusCave,
+            location=[320.7640926057581, 180.33333333333334, 2417.3976805921616, 70.79407777112506],
+            group=8,
+            door_type=[DoorType.wrinkly],
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Level Entrance - right",
@@ -4023,6 +4220,16 @@ door_locations = {
             door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
+            name="warp Hub Battlement",
+            map=Maps.CreepyCastle,
+            logicregion=Regions.CreepyCastleMain,
+            location=[1303.470027014404, 673.5091943184494, 484.67559498474037, -9.799571287366065],
+            scale=0.7976984921412362,
+            group=8,
+            door_type=[DoorType.wrinkly],
+            door_tags=[DoorTags.Season5Door],
+        ),
+        DoorData(
             name="On Stairs to Moat Tag Barrel",
             map=Maps.CreepyCastle,
             logicregion=Regions.CreepyCastleMain,
@@ -4060,6 +4267,16 @@ door_locations = {
             logicregion=Regions.CreepyCastleMain,
             location=[684.0, 1794.0, 1192.0, 28.5],
             scale=0.75,
+            group=10,
+        ),
+        DoorData(
+            name="Outside Lanky Tower",
+            map=Maps.CreepyCastle,
+            logicregion=Regions.CreepyCastleMain,
+            location=[1503.1544441305532, 1731, 1275.1375500118895, -48.99412659353686],
+            rx=180,
+            rz=180,
+            door_tags=[DoorTags.Season5Door],
             group=10,
         ),
         DoorData(
@@ -4562,6 +4779,17 @@ door_locations = {
             rx=-26,
             group=6,
             door_type=[DoorType.wrinkly],  # Too big of an X-rotation to guarantee an exit without re-entry. Feel free to test for 5.0
+        ),
+        DoorData(
+            name="Lowest Level Tombstone",
+            map=Maps.CreepyCastle,
+            logicregion=Regions.CastleVeryBottom,
+            location=[847.1510625112284, 366.44340158079257, 1901.5145299383785, 57.27628000792536],
+            rx=-3.5264459566691806,
+            scale=0.7652629335325897,
+            group=4,
+            door_type=[DoorType.wrinkly],
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Tombstone near lower door",
