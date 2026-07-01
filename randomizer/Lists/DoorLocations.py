@@ -321,7 +321,6 @@ door_locations = {
             logicregion=Regions.JungleJapesMain,
             location=[958.5, 288.0, 1616.0, 45.0],
             group=3,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Next to Hive Tunnel",
@@ -339,8 +338,8 @@ door_locations = {
             logicregion=Regions.JapesBeyondFeatherGate,
             location=[1904.5, 539.0, 3369.0, 134.25],
             group=6,
-            moveless=False,
             door_tags=[DoorTags.Season5Door],
+            moveless=False,
         ),
         DoorData(
             name="Hive Area - Next to Hive - left",
@@ -358,7 +357,6 @@ door_locations = {
             location=[611.0, 240.0, 3164.0, 201.75],
             group=4,
             moveless=False,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Rambi Pool - right",
@@ -377,7 +375,6 @@ door_locations = {
             group=7,
             moveless=False,
             door_type=[DoorType.wrinkly, DoorType.dk_portal],
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Top of Lanky Useless Slope - right",
@@ -521,6 +518,7 @@ door_locations = {
             location=[1955.5, 280.0, 3646.0, 314.5],
             group=7,
             moveless=False,
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Stormy Area - center left",
@@ -732,7 +730,7 @@ door_locations = {
             logicregion=Regions.JungleJapesStart,
             location=[714, 288, 830, 90],
             group=11,
-            door_tags=[DoorTags.DosDoor],
+            door_tags=[DoorTags.DosDoor, DoorTags.Season5Door],
         ),
         DoorData(
             name="Against the mountain",
@@ -857,7 +855,6 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[2468.0, 120.0, 473.5, 298.75],
             group=4,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Under Tiny Temple Peanut Switch",
@@ -898,7 +895,6 @@ door_locations = {
             location=[4206.0, 80.0, 3367.0, 240.0],
             group=6,
             moveless=False,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Next to Tag Barrel near Vulture Cage",
@@ -907,7 +903,6 @@ door_locations = {
             location=[4067.0, 190.0, 4050.0, 263.0],
             group=2,
             moveless=False,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Under the Vulture Cage",
@@ -925,7 +920,6 @@ door_locations = {
             scale=1.47,
             group=5,
             moveless=False,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Near Hunky Barrel - left",
@@ -934,7 +928,6 @@ door_locations = {
             location=[3182.5, 120.0, 1440.0, 41.0],
             group=7,
             moveless=False,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Near Hunky Barrel - right",
@@ -1557,7 +1550,6 @@ door_locations = {
             logicregion=Regions.FranticFactoryStart,
             location=[489.5, 804.0, 1867.0, 49.0],
             group=7,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Next to Hatch - right",
@@ -1579,7 +1571,6 @@ door_locations = {
             logicregion=Regions.UpperCore,
             location=[860.0, 605.0, 1011.0, 314.5],
             group=3,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Storage Room - Behind Tag Barrel",
@@ -1587,7 +1578,6 @@ door_locations = {
             logicregion=Regions.BeyondHatch,
             location=[1633.0, 6.0, 845.0, 270.0],
             group=6,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Under Left Storage Shop",
@@ -1610,7 +1600,6 @@ door_locations = {
             location=[2526.0, 1002.0, 1990.6, 180.0],
             group=5,
             moveless=False,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="R&D - Next to Tunnel to Car Race",
@@ -1619,7 +1608,6 @@ door_locations = {
             location=[4006.7, 1264.0, 1454.0, 253.7],
             group=4,
             moveless=False,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Testing Area - Under Tunnel to Shop",
@@ -2016,7 +2004,6 @@ door_locations = {
             location=[3007.0, 1670.0, 3866.0, 135.42],
             group=2,
             door_type=[DoorType.boss, DoorType.wrinkly],
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Under Baboon Blast pad",
@@ -2032,7 +2019,6 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Under RocketBarrel barrel",
@@ -2058,7 +2044,6 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.CanGetOnCannonGamePlatform(),
             door_type=[DoorType.boss, DoorType.wrinkly],
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Next to Lighthouse Gate switch",
@@ -2082,12 +2067,13 @@ door_locations = {
             group=2,
         ),
         DoorData(
-            name="Warp 5 above water",
+            name="Above the water next to the floating warp 5",
             map=Maps.GloomyGalleon,
-            logicregion=Regions.GloomyGalleonStart,
+            logicregion=Regions.Shipyard,
             location=[3270.1909604872276,1620.0991099238863,1720.422305186934, -27.73927875291541],
             rx=-16.515286372903933,
             rz=7.886527551496551,
+            door_tags=[DoorTags.Season5Door],
             group=6,
         ),
         DoorData(
@@ -2104,7 +2090,6 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Cactus - bottom front left",
@@ -2176,7 +2161,6 @@ door_locations = {
             group=9,
             moveless=False,
             door_type=[DoorType.wrinkly],
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Cavern Mast Top",
@@ -2184,6 +2168,7 @@ door_locations = {
             logicregion=Regions.GalleonPastVines,
             location=[3071.0, 1890.0, 2838.0, 0.0],
             group=2,
+            door_tags=[DoorTags.Season5Door],
             moveless=False,
         ),
         DoorData(
@@ -2325,6 +2310,7 @@ door_locations = {
             group=4,
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
+            door_tags=[DoorTags.Season5Door],
             dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_shipyard_area_gate)
             or (
                 s.settings.activate_all_bananaports == ActivateAllBananaports.all
@@ -2783,7 +2769,6 @@ door_locations = {
             location=[4312.0, 224.0, 3493.0, 134.82],
             group=4,
             moveless=False,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Mill front side - right",
@@ -2838,7 +2823,6 @@ door_locations = {
             moveless=False,
             door_type=[DoorType.boss, DoorType.wrinkly],
             dk_portal_logic=lambda s: s.settings.fungi_time_internal in (FungiTimeSetting.dusk, FungiTimeSetting.progressive),
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Behind Night Thorns - left",
@@ -2875,7 +2859,6 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Owl Area - Near Rocketbarrel Barrel - far left",
@@ -2906,7 +2889,6 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Mushroom Area - Next to Tag Barrel near Shop",
@@ -2915,7 +2897,6 @@ door_locations = {
             location=[1754.2, 234.0, 972.0, 270.0],
             rx=-10,
             group=7,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Mushroom Area - Next to Rocketbarrel Barrel - left",
@@ -3180,6 +3161,7 @@ door_locations = {
             group=6,
             door_type=[DoorType.boss, DoorType.wrinkly],
             logic=lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Night) and l.jetpack and l.isdiddy,
+            door_tags=[DoorTags.Season5Door],
             moveless=False,
         ),
         DoorData(
@@ -3342,6 +3324,7 @@ door_locations = {
             map=Maps.CrystalCaves,
             logicregion=Regions.CabinArea,
             location=[3666.7, 343.0, 1762.0, 273.8],
+            door_tags=[DoorTags.Season5Door],
             group=2,
         ),
         DoorData(
@@ -3448,6 +3431,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.swim,
             door_type=[DoorType.boss],
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Beneath Igloo trombone pad",
@@ -3467,7 +3451,6 @@ door_locations = {
             rx=4,
             group=6,
             door_type=[DoorType.wrinkly],
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Beneath Ice Castle - on land",
@@ -3495,7 +3478,6 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.swim,
             door_type=[DoorType.wrinkly, DoorType.boss],
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Water under Blast pillar - left",
@@ -3516,6 +3498,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.swim,
             door_type=[DoorType.wrinkly, DoorType.boss],
+            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Bottom of the Slope - right",
@@ -3523,7 +3506,6 @@ door_locations = {
             logicregion=Regions.CrystalCavesMain,
             location=[1263.3, 93.0, 1291.0, 73.5],
             group=8,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Mini Monkey Ledge",
@@ -3611,7 +3593,6 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.swim,
             door_type=[DoorType.wrinkly, DoorType.boss],
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Igloo Area - Behind Lone Platform",
@@ -4015,7 +3996,6 @@ door_locations = {
             location=[1200.0, 471.0, 254.0, 261.5],
             rx=-6,
             group=7,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Next to Moat Tag Barrel",
@@ -4023,7 +4003,6 @@ door_locations = {
             logicregion=Regions.CreepyCastleMain,
             location=[1545.0, 673.0, 944.0, 168.0],
             group=8,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Next to Middle Shop",
@@ -4066,7 +4045,6 @@ door_locations = {
             location=[792.0, 1794.0, 1535.5, 224.7],
             scale=0.75,
             group=10,
-            door_tags=[DoorTags.Season5Door],
         ),
         DoorData(
             name="Top Shop Battlement - center",

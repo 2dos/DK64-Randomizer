@@ -344,7 +344,6 @@ CustomLocations = {
             max_size=72,
             logic_region=Regions.JapesBeyondFeatherGate,
             group=6,
-            tags=[LocationTags.Season5CrateRando]
         ),
         CustomLocation(
             name="Near the Vine Pit",
@@ -356,7 +355,6 @@ CustomLocations = {
             max_size=64,
             logic_region=Regions.JapesBeyondCoconutGate2,
             group=2,
-            tags=[LocationTags.Season5CrateRando]
         ),
         CustomLocation(
             map=Maps.JungleJapes,
@@ -754,6 +752,7 @@ CustomLocations = {
             z=814,
             max_size=56,
             logic_region=Regions.JapesCatacomb,
+            tags=[LocationTags.Season5CrateRando],
             group=1,
         ),
         CustomLocation(
@@ -775,6 +774,7 @@ CustomLocations = {
             z=471,
             max_size=48,
             logic_region=Regions.Mine,
+            tags=[LocationTags.Season5CrateRando],
             group=5,
         ),
         CustomLocation(
@@ -1095,7 +1095,6 @@ CustomLocations = {
             max_size=64,
             logic_region=Regions.AngryAztecConnectorTunnel,
             group=5,
-            tags=[LocationTags.Season5CrateRando]
         ),
         CustomLocation(
             map=Maps.AngryAztec,
@@ -1106,7 +1105,6 @@ CustomLocations = {
             max_size=56,
             logic_region=Regions.AngryAztecMain,
             group=3,
-            tags=[LocationTags.Season5CrateRando]
         ),
         CustomLocation(
             map=Maps.AngryAztec,
@@ -1957,7 +1955,6 @@ CustomLocations = {
             logic_region=Regions.Testing,
             vanilla_crate=True,
             group=2,
-            tags=[LocationTags.Season5CrateRando]
         ),
         CustomLocation(
             map=Maps.FranticFactory,
@@ -1970,7 +1967,6 @@ CustomLocations = {
             logic=lambda l: (l.trombone and l.lanky) or l.CanAccessRNDRoom(),
             group=3,
             banned_types=[LocationTypes.CrownPad, LocationTypes.Bananaport],
-            tags=[LocationTags.Season5CrateRando]
         ),
         CustomLocation(
             name="Piano Room right",
@@ -2451,7 +2447,6 @@ CustomLocations = {
             max_size=40,
             logic_region=Regions.GalleonPastVines,
             group=3,
-            tags=[LocationTags.Season5CrateRando]
         ),
         CustomLocation(
             map=Maps.GloomyGalleon,
@@ -2462,7 +2457,6 @@ CustomLocations = {
             max_size=56,
             logic_region=Regions.LighthousePlatform,
             group=1,
-            tags=[LocationTags.Season5CrateRando]
         ),
         CustomLocation(
             map=Maps.GloomyGalleon,
@@ -2953,7 +2947,6 @@ CustomLocations = {
             max_size=64,
             logic_region=Regions.FungiForestStart,
             group=1,
-            tags=[LocationTags.Season5CrateRando]
         ),
         CustomLocation(
             map=Maps.FungiForest,
@@ -3975,7 +3968,6 @@ CustomLocations = {
             max_size=56,
             logic_region=Regions.CrystalCavesMain,
             group=2,
-            tags=[LocationTags.Season5CrateRando]
         ),
         CustomLocation(
             name="Near ice wall to shop",
@@ -3987,7 +3979,6 @@ CustomLocations = {
             max_size=64,
             logic_region=Regions.CrystalCavesMain,
             group=4,
-            tags=[LocationTags.Season5CrateRando]
         ),
         CustomLocation(
             map=Maps.CrystalCaves,
@@ -4698,7 +4689,6 @@ CustomLocations = {
             max_size=64,
             logic_region=Regions.CreepyCastleMain,
             group=4,
-            tags=[LocationTags.Season5CrateRando]
         ),
         CustomLocation(
             map=Maps.CreepyCastle,
@@ -4709,7 +4699,6 @@ CustomLocations = {
             max_size=64,
             logic_region=Regions.CreepyCastleMain,
             group=5,
-            tags=[LocationTags.Season5CrateRando]
         ),
         CustomLocation(
             map=Maps.CreepyCastle,
