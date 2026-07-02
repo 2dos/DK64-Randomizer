@@ -275,15 +275,9 @@ const requirement_data = {
                 [Moves.Coconut, Moves.AllWarps],
                 [Moves.ClimbingCheck, Moves.Coconut, Moves.FactoryTesting],
             ]),
-            new Requirement(10, [ // 1 balloon in RandDUpper
+            new Requirement(25, [ // 3 bunches in PowerHut; 1 balloon in RandDUpper
                 [Moves.ClimbingCheck, Moves.Coconut, Moves.AllWarps],
                 [Moves.ClimbingCheck, Moves.Coconut, Moves.FactoryTesting],
-            ]),
-            new Requirement(15, [ // 3 bunches in PowerHut
-                [Moves.ClimbingCheck, Moves.Coconut, Moves.AllWarps],
-                [Moves.ClimbingCheck, Moves.Coconut, Moves.FactoryTesting],
-                [Moves.Coconut, Moves.IsDiddy, Moves.AllWarps],
-                [Moves.Coconut, Moves.IsTiny, Moves.AllWarps],
             ]),
         ],
         "Diddy": [
