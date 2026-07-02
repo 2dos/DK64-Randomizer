@@ -464,7 +464,7 @@
 | Castle Museum | Museum: Pillar Back Right |  | `((l.monkeyport and l.istiny) or l.CanPhase())` | 
 | Castle Museum | Museum: Behind Pillar |  | `(l.monkeyport and l.istiny) or l.CanPhase()` | 
 | Castle Museum | Museum: Pillar Back Left |  | `((l.monkeyport and l.istiny) or l.CanPhase())` | 
-| Castle Museum | Museum: Atop the Pillar |  | `((l.monkeyport and l.istiny) or l.CanPhase())` | 
+| Castle Museum | Museum: Atop the Pillar | CrownPad | `((l.monkeyport and l.istiny) or l.CanPhase())` | 
 | Castle Museum | Museum: Main Room |  | `self.logic = lambda _: True` | 
 | Castle Trash Can | Trash Can: Near Cheese |  | `self.logic = lambda _: True` | 
 | Castle Tree | Tree: Starting Room |  | `self.logic = lambda _: True` | 
