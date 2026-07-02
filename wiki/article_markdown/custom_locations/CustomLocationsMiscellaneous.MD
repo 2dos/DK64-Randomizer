@@ -170,7 +170,7 @@
 | Frantic Factory | Chunky R&D | CrownPad, Bananaport | `(l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | In front of toy monster room | CrownPad, Bananaport | `((l.punch and l.climbing and l.ischunky) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Car Race room |  | `(l.mini and l.istiny) or l.phasewalk` | 
-| Frantic Factory | Also car race room |  | `((l.mini and l.istiny) or l.CanPhase())` | 
+| Frantic Factory | Car Race Lobby |  | `((l.mini and l.istiny) or l.CanPhase())` | 
 | Frantic Factory | R&D lever room |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Under second R&D Grate | MelonCrate, Bananaport | `(l.grab and l.donkey) or l.CanPhase() or l.generalclips` | 
 | Frantic Factory | Vanilla Foyer Warp 2 |  | `self.logic = lambda _: True` | 

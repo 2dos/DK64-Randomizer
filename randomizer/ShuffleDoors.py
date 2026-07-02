@@ -356,8 +356,18 @@ def ShuffleVanillaDoors(spoiler):
         spoiler.human_portal_doors = human_portal_doors
 
 
-# If necessary, you can specify the order in which the Kongs are assigned to doors. This can help if certain sets demand certain Kongs to be last.
-kong_order_by_set = {DoorTags.Season5Door: [0, 3, 4, 2, 1]}
+# Here you specify the order in which the Kongs are assigned to doors for each level. This can help if certain sets demand certain Kongs to be last.
+kong_order_by_set = {
+    DoorTags.Season5Door: {
+        Levels.JungleJapes: [0, 1, 2, 3, 4],
+        Levels.AngryAztec: [0, 2, 3, 4, 1],
+        Levels.FranticFactory: [0, 2, 3, 4, 1],
+        Levels.GloomyGalleon: [0, 2, 3, 4, 1],
+        Levels.FungiForest: [0, 3, 4, 2, 1],
+        Levels.CrystalCaves: [0, 1, 2, 3, 4],
+        Levels.CreepyCastle: [0, 1, 2, 3, 4],
+    }
+}
 
 
 def ShuffleHintDoorSet(spoiler, door_tag: DoorTags):
@@ -389,9 +399,11 @@ def ShuffleHintDoorSet(spoiler, door_tag: DoorTags):
         # Assumption: This filter should always get exactly 5 with a valid kong combination
         door_set_indexes = [idx for idx, door in enumerate(door_locations[level]) if door_tag in door.door_tags]
         spoiler.settings.random.shuffle(door_set_indexes)
-        for kong in kong_order_by_set[door_tag]:
+        for kong in kong_order_by_set[door_tag][level]:
             assignee = Kongs(kong % 5)
-            selected_door_index = door_set_indexes.pop(0)
+            filtered_doors = [idx for idx in door_set_indexes if assignee in door_locations[level][idx].kongs]
+            selected_door_index = spoiler.settings.random.choice(filtered_doors)
+            door_set_indexes.remove(selected_door_index)
             selected_door = door_locations[level][selected_door_index]
             selected_door.assignDoor(assignee)
             human_hint_doors[level_list[level]][str(assignee.name).capitalize()] = selected_door.name

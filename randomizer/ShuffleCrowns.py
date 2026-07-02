@@ -2,7 +2,7 @@
 
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Lists.CustomLocations import CustomLocations, LocationTypes
+from randomizer.Lists.CustomLocations import CustomLocations, LocationTags, LocationTypes
 from randomizer.LogicClasses import LocationLogic
 
 
@@ -31,6 +31,9 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
         Levels.CreepyCastle: "Castle",
         Levels.HideoutHelm: "Helm",
     }
+    excluded_tags = []
+    if spoiler.settings.season5_crate_rando:
+        excluded_tags.append(LocationTags.Season5CrateRando)
     # Remove crowns from their original logic region
     for id, region in spoiler.RegionList.items():
         region.locations = [loclogic for loclogic in region.locations if loclogic.id not in crown_locations]
@@ -39,6 +42,8 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
         level_lst = CustomLocations[level]
         index_lst = list(range(len(level_lst)))
         index_lst = [x for x in index_lst if level_lst[x].isValidLocation(LocationTypes.CrownPad) or level_lst[x].is_rotating_room]
+        if any(excluded_tags):
+            index_lst = [x for x in index_lst if not any(tag in level_lst[x].tags for tag in excluded_tags)]
         if spoiler.settings.enable_plandomizer:
             index_lst = [x for x in index_lst if level_lst[x].name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][level]]
         pick_count = 1
