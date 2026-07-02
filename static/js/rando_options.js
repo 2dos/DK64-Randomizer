@@ -517,6 +517,52 @@ document
   .getElementById("vanilla_door_rando")
   .addEventListener("click", toggle_vanilla_door_rando);
 
+// Adjust Door Rando settings to accommodate Seasonal Doors
+function toggle_seasonal_door_rando() {
+  const season5DoorRando = document.getElementById("season5_door_rando");
+  const vanillaDoorShuffle = document.getElementById("vanilla_door_rando");
+  const dosDoorShuffle = document.getElementById("dos_door_rando");
+  const tnsDoorShuffle = document.getElementById("tns_location_rando");
+  const wrinklyDoorShuffle = document.getElementById("wrinkly_location_rando");
+
+  if (season5DoorRando.checked) {
+    vanillaDoorShuffle.checked = false;
+    vanillaDoorShuffle.setAttribute("disabled", "disabled");
+    dosDoorShuffle.checked = false;
+    dosDoorShuffle.setAttribute("disabled", "disabled");
+    tnsDoorShuffle.checked = false;  // We should be able to shuffle T&S with seasonal doors in the future, this disabling is temporary for safety
+    tnsDoorShuffle.setAttribute("disabled", "disabled");
+    wrinklyDoorShuffle.checked = true;
+    wrinklyDoorShuffle.setAttribute("disabled", "disabled");
+  } else {
+    vanillaDoorShuffle.removeAttribute("disabled");
+    dosDoorShuffle.removeAttribute("disabled");
+    tnsDoorShuffle.removeAttribute("disabled");
+    wrinklyDoorShuffle.removeAttribute("disabled");
+  }
+}
+
+document
+  .getElementById("season5_door_rando")
+  .addEventListener("click", toggle_seasonal_door_rando);
+
+// Turn Crate Rando on if Seasonal Crates is on
+function toggle_seasonal_crate_rando() {
+  const seasonalCrateRando = document.getElementById("season5_crate_rando");
+  const randomCrates = document.getElementById("random_crates");
+
+  if (seasonalCrateRando.checked) {
+    randomCrates.checked = true;
+    randomCrates.setAttribute("disabled", "disabled");
+  } else {
+    randomCrates.removeAttribute("disabled");
+  }
+}
+
+document
+  .getElementById("season5_crate_rando")
+  .addEventListener("click", toggle_seasonal_crate_rando);
+
 // Toggle bananaport settings if shuffling is enabled
 function toggle_bananaport_selector() {
   const bananaportCustomization = document.getElementById(
@@ -1405,6 +1451,21 @@ document
   .getElementById("most_snide_rewards")
   .addEventListener("focusout", max_snide_reward);
 
+function max_half_medal_perc() {
+  const halfMedalText = document.getElementById("half_medal_percentage");
+  if (!halfMedalText.value) {
+    halfMedalText.value = 50;
+  } else if (parseInt(halfMedalText.value) < 1) {
+    halfMedalText.value = 1;
+  } else if (parseInt(halfMedalText.value) > 99) {
+    halfMedalText.value = 99;
+  }
+}
+
+document
+  .getElementById("half_medal_percentage")
+  .addEventListener("focusout", max_half_medal_perc);
+
 // Validate troff input on loss of focus
 function max_randomized_troff() {
   const troffText = document.getElementById("troff_text");
@@ -2208,6 +2269,7 @@ function update_ui_states() {
   disable_music();
   max_randomized_blocker();
   max_snide_reward();
+  max_half_medal_perc();
   max_randomized_troff();
   max_music();
   max_music_proportion();
@@ -2244,6 +2306,8 @@ function update_ui_states() {
   enable_plandomizer();
   toggle_vanilla_door_rando();
   toggle_dos_door_rando();
+  toggle_seasonal_door_rando();
+  toggle_seasonal_crate_rando();
   validate_fast_start_status(null);
   hide_irrelevant_details_coupled_item_rando();
   toggle_modelmode_selector();

@@ -70,7 +70,7 @@
 | Aztec Tiny Temple | Tiny Temple: Kong Free Room |  | `self.logic = lambda _: True` | 
 | Aztec Tiny Temple | Tiny Temple: Next to Kong cage |  | `self.logic = lambda _: True` | 
 | Angry Aztec | Entrance tunnel - near DK door |  | `self.logic = lambda _: True` | 
-| Angry Aztec | Blueprint Room | Bananaport | `l.CanPhase() or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)))` | 
+| Angry Aztec | Quicksand Bridge Room | Bananaport | `l.CanPhase() or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)))` | 
 | Angry Aztec | Near Oasis Sand |  | `self.logic = lambda _: True` | 
 | Angry Aztec | Behind Tiny Temple |  | `self.logic = lambda _: True` | 
 | Angry Aztec | Next to Tiny Temple - left |  | `self.logic = lambda _: True` | 
@@ -112,6 +112,7 @@
 | Aztec Lanky5DTemple | Lanky 5DT: Dead End |  | `(l.grape and l.islanky) or l.CanPhase()` | 
 | Aztec Lanky5DTemple | Lanky 5DT: Right side |  | `self.logic = lambda _: True` | 
 | Aztec Tiny5DTemple | Tiny 5DT: Dead End |  | `(l.feather and l.istiny) or l.CanPhase(), group=7` | 
+| Aztec Tiny5DTemple | Tiny 5DT: Right side |  | `self.logic = lambda _: True` | 
 | Aztec Chunky5DTemple | Chunky 5DT: Right side |  | `self.logic = lambda _: True` | 
 | Aztec Chunky5DTemple | Chunky 5DT: Left side |  | `self.logic = lambda _: True` | 
 | Aztec Llama Temple | Llama Temple: Llama Right |  | `self.logic = lambda _: True` | 
@@ -169,7 +170,7 @@
 | Frantic Factory | Chunky R&D | CrownPad, Bananaport | `(l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | In front of toy monster room | CrownPad, Bananaport | `((l.punch and l.climbing and l.ischunky) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Car Race room |  | `(l.mini and l.istiny) or l.phasewalk` | 
-| Frantic Factory | Also car race room |  | `((l.mini and l.istiny) or l.CanPhase())` | 
+| Frantic Factory | Car Race Lobby |  | `((l.mini and l.istiny) or l.CanPhase())` | 
 | Frantic Factory | R&D lever room |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Under second R&D Grate | MelonCrate, Bananaport | `(l.grab and l.donkey) or l.CanPhase() or l.generalclips` | 
 | Frantic Factory | Vanilla Foyer Warp 2 |  | `self.logic = lambda _: True` | 
@@ -248,6 +249,7 @@
 | Fungi Forest | Front of Beanstalk |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Mill Grass | Bananaport | `self.logic = lambda _: True` | 
 | Fungi Forest | Near Well | DirtPatch, Bananaport | `self.logic = lambda _: True` | 
+| Fungi Forest | Clocktower Stumps |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Behind Clock |  | `self.logic = lambda _: True` | 
 | Fungi Forest | In front of Clock |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Near Blue Tunnel |  | `self.logic = lambda _: True` | 
@@ -316,6 +318,7 @@
 | Forest Giant Mushroom | Giant Mushroom: Next to a cannon |  | `((l.istiny and l.twirl) or (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
 | Forest Giant Mushroom | Giant Mushroom: Cannon below night door |  | `self.logic = lambda _: True` | 
 | Forest Giant Mushroom | Giant Mushroom: On Top Viney Platform |  | `self.logic = lambda _: True` | 
+| Forest Giant Mushroom | Giant Mushroom: Top Floor |  | `self.logic = lambda _: True` | 
 | Forest Mill Attic | Mill Attic: Near Box |  | `self.logic = lambda _: True` | 
 | Forest Lanky Zingers Room | Mushroom Zingers: Opposite Entrance |  | `self.logic = lambda _: True` | 
 | Forest Lanky Mushrooms Room | Mushroom Slam: Opposite Entrance |  | `self.logic = lambda _: True` | 
@@ -336,6 +339,7 @@
 | Crystal Caves | In front of Igloo | CrownPad, DirtPatch, Bananaport | `(l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny))) or l.Slam` | 
 | Crystal Caves | In the Mini Bonus Cave |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Near ice wall to boulder |  | `self.logic = lambda _: True` | 
+| Crystal Caves | Path to Giant boulder |  | `self.logic = lambda _: True` | 
 | Crystal Caves | In Giant Boulder Room |  | `self.logic = lambda _: True` | 
 | Crystal Caves | In front of Cranky | MelonCrate | `self.logic = lambda _: True` | 
 | Crystal Caves | Below Ice Castle (yellow) |  | `self.logic = lambda _: True` | 
@@ -452,6 +456,7 @@
 | Castle Mausoleum | Mausoleum: Lanky Tunnel |  | `self.logic = lambda _: True` | 
 | Castle Upper Cave | Upper cave: Near Pit |  | `self.logic = lambda _: True` | 
 | Castle Upper Cave | Upper cave: Near shop |  | `self.logic = lambda _: True` | 
+| Castle Library | Library: Crossroads |  | `self.logic = lambda _: True` | 
 | Castle Library | Library: Enemy Gauntlet Room | CrownPad | `self.logic = lambda _: True` | 
 | Castle Library | Library: Flying Book Room |  | `self.logic = lambda _: True` | 
 | Castle Museum | Museum: Near Race |  | `self.logic = lambda _: True` | 
@@ -459,6 +464,7 @@
 | Castle Museum | Museum: Pillar Back Right |  | `((l.monkeyport and l.istiny) or l.CanPhase())` | 
 | Castle Museum | Museum: Behind Pillar |  | `(l.monkeyport and l.istiny) or l.CanPhase()` | 
 | Castle Museum | Museum: Pillar Back Left |  | `((l.monkeyport and l.istiny) or l.CanPhase())` | 
+| Castle Museum | Museum: Atop the Pillar | CrownPad | `((l.monkeyport and l.istiny) or l.CanPhase())` | 
 | Castle Museum | Museum: Main Room |  | `self.logic = lambda _: True` | 
 | Castle Trash Can | Trash Can: Near Cheese |  | `self.logic = lambda _: True` | 
 | Castle Tree | Tree: Starting Room |  | `self.logic = lambda _: True` | 
@@ -562,6 +568,7 @@
 | Hideout Helm | Blast-o-Matic platform left side |  | `self.logic = lambda _: True` | 
 | Hideout Helm | Blast-o-Matic platform right side |  | `self.logic = lambda _: True` | 
 | Hideout Helm | Under K. Rool door |  | `self.logic = lambda _: True` | 
+| Hideout Helm | Just past K. Rool door |  | `self.logic = lambda _: True` | 
 | Hideout Helm | Navigation room near terminals |  | `self.logic = lambda _: True` | 
 | Hideout Helm | Navigation room near left window |  | `self.logic = lambda _: True` | 
 | Hideout Helm | Navigation room near right window |  | `self.logic = lambda _: True` | 

@@ -22,9 +22,10 @@ def randomize_prices(spoiler, ROM_COPY: LocalROM):
                 diff = length - len(spoiler.settings.prices[item])
                 for d in range(diff):
                     spoiler.settings.prices[item].append(0)
-        ROM_COPY.seek(varspaceOffset + 0x45)
+        ROM_COPY.seek(varspaceOffset + 0xC8)
         ROM_COPY.write(spoiler.settings.prices[Items.ProgressiveSlam][0])
         ROM_COPY.write(spoiler.settings.prices[Items.ProgressiveSlam][1])
+        ROM_COPY.write(spoiler.settings.prices[Items.ProgressiveSlam][2])
 
         ROM_COPY.seek(varspaceOffset + 0x53)
         ROM_COPY.write(spoiler.settings.prices[Items.ProgressiveAmmoBelt][0])

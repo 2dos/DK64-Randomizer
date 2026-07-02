@@ -74,7 +74,7 @@ from randomizer.ShuffleCBs import ShuffleCBs
 from randomizer.ShuffleCoins import ShuffleCoins, shuffleRaceCoins
 from randomizer.ShuffleCrates import ShuffleMelonCrates
 from randomizer.ShuffleCrowns import ShuffleCrowns
-from randomizer.ShuffleDoors import SetProgressiveHintDoorLogic, ShuffleDoors, ShuffleVanillaDoors, UpdateDoorLevels
+from randomizer.ShuffleDoors import SetProgressiveHintDoorLogic, ShuffleDoors, ShuffleSpecificDoors, UpdateDoorLevels
 from randomizer.ShuffleFairies import ShuffleFairyLocations
 from randomizer.ShuffleItems import ShuffleItems
 from randomizer.ShuffleKasplats import (
@@ -4050,11 +4050,9 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         spoiler.human_warps = port_human_replacements
     if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
         SetProgressiveHintDoorLogic(spoiler)
-    # T&S and Wrinkly Door Shuffle
-    if spoiler.settings.vanilla_door_rando:  # Includes Dos' Doors
-        ShuffleVanillaDoors(spoiler)
-        if spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off:
-            ShuffleDoors(spoiler, True)
+    # T&S/Wrinkly/DK Door Shuffle
+    if spoiler.settings.vanilla_door_rando or spoiler.settings.season5_door_rando:  # Any door shuffle that isn't completely random should go in here
+        ShuffleSpecificDoors(spoiler)
     elif (
         spoiler.settings.wrinkly_location_rando
         or spoiler.settings.tns_location_rando
@@ -4062,7 +4060,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         or spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off
         or (spoiler.settings.progressive_hint_item != ProgressiveHintItem.off and Types.Hint in spoiler.settings.shuffled_location_types)
     ):
-        ShuffleDoors(spoiler, False)
+        ShuffleDoors(spoiler)
     if Types.Hint in spoiler.settings.shuffled_location_types:
         UpdateDoorLevels(spoiler)
     # Handle Crown Placement

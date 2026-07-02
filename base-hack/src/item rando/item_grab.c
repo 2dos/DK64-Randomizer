@@ -134,6 +134,17 @@ void banana_medal_check(int count, int change, int requirement, int flag, int in
     displayMedalOverlay(flag, &medal_item_table[index]);
 }
 
+int getHalfMedalRequirement(int full_medal_requirement) {
+    float mult = (float)Rando.half_medal_percentage / 100;
+    int base_value = (float)full_medal_requirement * mult;
+    if (base_value < 1) {
+        base_value = 1;
+    } else if (base_value > 100) {
+        base_value = 100;
+    }
+    return base_value;
+}
+
 void banana_medal_acquisition(int cb_count, int world, int change) {
     /**
      * @brief Acquire a banana medal, and handle the item acquired from it
@@ -146,7 +157,7 @@ void banana_medal_acquisition(int cb_count, int world, int change) {
     int offset = (5 * world) + kong;
     if (Rando.include_half_medals) {
         flag = FLAG_HALF_MEDAL_JAPES_DK + offset;
-        banana_medal_check(cb_count, change, requirement >> 1, flag, 45 + offset);
+        banana_medal_check(cb_count, change, getHalfMedalRequirement(requirement), flag, 45 + offset);
     }
     flag = FLAG_MEDAL_JAPES_DK + offset;
     if (world == 7) {

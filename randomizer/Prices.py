@@ -220,8 +220,8 @@ def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, in
     item = location.item
     # Progressive items have their prices managed separately
     if item == Items.ProgressiveSlam:
-        if slamLevel in [1, 2]:
-            return settings.prices[item][slamLevel - 1]
+        if slamLevel in [0, 1, 2]:
+            return settings.prices[item][slamLevel]
         else:
             # If already have max slam, there's no move to buy (this is fine only if it's in VerifyWorld)
             return 0

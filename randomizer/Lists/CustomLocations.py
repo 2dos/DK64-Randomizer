@@ -43,6 +43,7 @@ class CustomLocation:
         banned_types: list = [],
         default_index=0,
         tied_warp_event: Events = None,
+        tags: list[LocationTags] = [],
     ) -> None:
         """Initialize with given data."""
         self.map = map
@@ -67,6 +68,7 @@ class CustomLocation:
         self.default_index = default_index
         self.placement_subindex = default_index
         self.tied_warp_event = tied_warp_event
+        self.tags = tags
         if logic is None:
             self.has_access_logic = False
             self.logic = lambda _: True
@@ -194,6 +196,12 @@ class LocationTypes(IntEnum):
     DirtPatch = auto()
     MelonCrate = auto()
     Bananaport = auto()
+
+
+class LocationTags(IntEnum):
+    """Location tags for custom locations."""
+
+    Season5CrateRando = auto()
 
 
 CustomLocations = {
@@ -746,6 +754,7 @@ CustomLocations = {
             z=814,
             max_size=56,
             logic_region=Regions.JapesCatacomb,
+            tags=[LocationTags.Season5CrateRando],
             group=1,
         ),
         CustomLocation(
@@ -767,6 +776,7 @@ CustomLocations = {
             z=471,
             max_size=48,
             logic_region=Regions.Mine,
+            tags=[LocationTags.Season5CrateRando],
             group=5,
         ),
         CustomLocation(
@@ -951,7 +961,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.AngryAztec,
-            name="Blueprint Room",
+            name="Quicksand Bridge Room",
             x=1224,
             y=120,
             z=740,
@@ -960,6 +970,7 @@ CustomLocations = {
             logic=lambda l: l.CanPhase() or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
             group=1,
             banned_types=[LocationTypes.Bananaport],  # Hard to detect that it's bad to link to Quicksand Cave, in which case it tricks the seed into assuming any kong can use this port
+            tags=[LocationTags.Season5CrateRando],
         ),
         CustomLocation(
             map=Maps.AngryAztec,
@@ -1425,6 +1436,17 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.AztecTiny5DTemple, name="Tiny 5DT: Dead End", x=329, y=123, z=1420, max_size=48, logic_region=Regions.TinyTemple, logic=lambda l: (l.feather and l.istiny) or l.CanPhase(), group=7
+        ),
+        CustomLocation(
+            map=Maps.AztecTiny5DTemple,
+            name="Tiny 5DT: Right side",
+            x=640,
+            y=47,
+            z=632,
+            max_size=72,
+            logic_region=Regions.TinyTemple,
+            tags=[LocationTags.Season5CrateRando],
+            group=7,
         ),
         CustomLocation(
             map=Maps.AztecChunky5DTemple,
@@ -2040,7 +2062,7 @@ CustomLocations = {
             logic=lambda l: (l.mini and l.istiny) or l.phasewalk,
         ),
         CustomLocation(
-            name="Also car race room",
+            name="Car Race Lobby",
             map=Maps.FranticFactory,
             x=3544.0,
             y=1264.0,
@@ -2049,6 +2071,7 @@ CustomLocations = {
             max_size=64,
             logic_region=Regions.FactoryTinyRaceLobby,
             logic=lambda l: ((l.mini and l.istiny) or l.CanPhase()),
+            tags=[LocationTags.Season5CrateRando],
             group=3,
         ),
         CustomLocation(
@@ -2310,6 +2333,7 @@ CustomLocations = {
             rot_y=3094,
             max_size=64,
             logic_region=Regions.GloomyGalleonStart,
+            tags=[LocationTags.Season5CrateRando],
             group=3,
         ),
         CustomLocation(
@@ -2481,6 +2505,7 @@ CustomLocations = {
             logic_region=Regions.LighthouseUnderwater,
             group=7,
             logic=lambda l: Events.LighthouseEnguarde in l.Events,
+            tags=[LocationTags.Season5CrateRando],
             banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch, LocationTypes.Bananaport],
         ),
         CustomLocation(
@@ -2919,6 +2944,17 @@ CustomLocations = {
             logic_region=Regions.FungiForestStart,
             group=1,
             banned_types=[LocationTypes.DirtPatch, LocationTypes.Bananaport],
+        ),
+        CustomLocation(
+            map=Maps.FungiForest,
+            name="Clocktower Stumps",
+            x=2556,
+            y=392,
+            z=2327,
+            max_size=56,
+            logic_region=Regions.FungiForestStart,
+            tags=[LocationTags.Season5CrateRando],
+            group=1,
         ),
         CustomLocation(
             map=Maps.FungiForest,
@@ -3701,6 +3737,17 @@ CustomLocations = {
             group=4,
         ),
         CustomLocation(
+            map=Maps.ForestGiantMushroom,
+            name="Giant Mushroom: Top Floor",
+            x=795,
+            y=1839,
+            z=538,
+            max_size=80,
+            logic_region=Regions.MushroomUpper,
+            tags=[LocationTags.Season5CrateRando],
+            group=4,
+        ),
+        CustomLocation(
             map=Maps.ForestMillAttic,
             name="Mill Attic: Near Box",
             x=138,
@@ -3869,6 +3916,18 @@ CustomLocations = {
         ),
         CustomLocation(
             name="Near ice wall to boulder",
+            map=Maps.CrystalCaves,
+            x=1488.0,
+            y=293.0,
+            z=2663.0,
+            rot_y=2275,
+            max_size=64,
+            logic_region=Regions.BoulderCave,
+            tags=[LocationTags.Season5CrateRando],
+            group=4,
+        ),
+        CustomLocation(
+            name="Path to Giant boulder",
             map=Maps.CrystalCaves,
             x=1416.0,
             y=298.0,
@@ -5175,6 +5234,17 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.CastleLibrary,
+            name="Library: Crossroads",
+            x=1296,
+            y=100,
+            z=735,
+            max_size=64,
+            logic_region=Regions.Library,
+            tags=[LocationTags.Season5CrateRando],
+            group=6,
+        ),
+        CustomLocation(
+            map=Maps.CastleLibrary,
             name="Library: Enemy Gauntlet Room",
             x=289,
             y=190,
@@ -5249,6 +5319,20 @@ CustomLocations = {
             max_size=64,
             logic_region=Regions.MuseumBehindGlass,
             logic=lambda l: ((l.monkeyport and l.istiny) or l.CanPhase()),
+            group=2,
+        ),
+        CustomLocation(
+            name="Museum: Atop the Pillar",
+            map=Maps.CastleMuseum,
+            x=1138.0,
+            y=258.0,
+            z=1518.0,
+            rot_y=3697,
+            max_size=64,
+            logic_region=Regions.MuseumBehindGlass,
+            logic=lambda l: ((l.monkeyport and l.istiny) or l.CanPhase()),
+            tags=[LocationTags.Season5CrateRando],
+            banned_types=[LocationTypes.CrownPad],
             group=2,
         ),
         CustomLocation(
@@ -6446,6 +6530,17 @@ CustomLocations = {
             max_size=64,
             logic_region=Regions.HideoutHelmMain,
             group=2,
+        ),
+        CustomLocation(
+            map=Maps.HideoutHelm,
+            name="Just past K. Rool door",
+            x=1059,
+            y=-31,
+            z=3852,
+            max_size=64,
+            logic_region=Regions.HideoutHelmAfterBoM,
+            tags=[LocationTags.Season5CrateRando],
+            group=3,
         ),
         CustomLocation(
             map=Maps.HideoutHelm,

@@ -190,8 +190,28 @@
                 {{ item_req_selector("pearl_mermaid_behavior", "mermaid_gb_pearls", "Pearls for Mermaid", 0, 255, "Determines how Mermaid check requirements are determined.") }}
                 <!-- Fairies for Queen -->
                 {{ item_req_selector("fairy_queen_behavior", "rareware_gb_fairies", "Fairies for Fairy Queen", 0, 255, "Determines how Rareware GB check requirements are determined.") }}
+                <div class="spacer"></div>
                 <!-- Medal CB Requirement -->
                 {{ item_req_selector("cb_medal_behavior_new", "medal_cb_req", "Colored Bananas for a Medal", 1, 100, "Determines how Medal requirements are determined.") }}
+                <div class="item-select">
+                    <div class="mx-auto">
+                        <div>
+                            <p class="select-title">Half Medal Percentage</p>
+                            <input name="half_medal_percentage"
+                                    id="half_medal_percentage"
+                                    type="number"
+                                    display_name="Half Medal Percentage"
+                                    class="form-control me-2"
+                                    aria-label="Half Medal Percentage"
+                                    data-toggle="tooltip"
+                                    title="The percentage of the full medal colored banana requirement that the half medal will require."
+                                    min="1"
+                                    max="99"
+                                    value="50"
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col border panel">
