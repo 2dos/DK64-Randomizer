@@ -346,6 +346,17 @@ def relax_kong_requirement(requirement):
             requirement.add(kong)
 
 
+def conflicting_kong_requirements(requirement):
+    """Determine if there are multiple 'is' kong requirements in a single requirement."""
+    count = 0
+    for kong in ["donkey", "diddy", "lanky", "tiny", "chunky"]:
+        if "is" + kong in requirement:
+            count += 1
+            if count >= 2:
+                return True
+    return False
+
+
 def all_kongs_can_use(requirement):
     """Determine if a given requirement requires a specific kong, or can be used by all kongs."""
     return requirement.isdisjoint(["isdonkey", "isdiddy", "islanky", "istiny", "ischunky"])
@@ -526,6 +537,10 @@ def traverse_graph(regions, entry_region):
                                 # print(f"Attempted to use transition from {region.name} to {next_region.name} using requirement {exit_requirement}, but access to the region requires {region_requirement}")
                                 continue
 
+                            if conflicting_kong_requirements(exit_requirement | region_requirement):
+                                # print(f"Attempted to use transition from {region.name} to {next_region.name} using requirement {exit_requirement}, but this would be a Tag Anywhere transition, since region access requires {region_requirement}")
+                                continue
+
                             # If any of those products are new ways to reach next_region, then we do another loop afterwards
                             if region_requirements[next_region].add(exit_requirement | region_requirement):
                                 # print(f"Found new transition from {region.name} to {next_region.name} using exit requirement {exit_requirement} and region requirement {region_requirement}")
@@ -560,6 +575,7 @@ def traverse_graph(regions, entry_region):
                         requirement = region_requirement | {"AllWarps"}
                         relax_kong_requirement(requirement)
                         if region_requirements[next_region].add(requirement):
+                            # print(f"Found new transition from {region.name} to {next_region.name} using 'all warps' from {warp1.name} to {warp2.name}")
                             found_new_requirement = True
 
                 # Update any events based on new region requirements
