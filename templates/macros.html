@@ -202,7 +202,7 @@
     });
 </script>
 {% endmacro %}
-{% macro toggle_input(id, name, tooltip="", default_checked=False, altered_name="", hidden="") %}
+{% macro toggle_input(id, name, tooltip="", default_checked=False, altered_name="", hidden="", external_link="") %}
 <div class="form-check form-switch item-switch" data-toggle="tooltip"
             title="{{ tooltip }}" {{ hidden }}>
     {% if default_checked %}
@@ -231,6 +231,11 @@
             {{ altered_name }}
         {% endif %}
     </label>
+    {% if external_link != "" %}
+        <a href="{{ external_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
+            <i class="fas fa-external-link-alt"></i>
+        </a>
+    {% endif %}
 </div>
 {% endmacro %}
 

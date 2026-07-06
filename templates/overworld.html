@@ -110,7 +110,7 @@
                     </label>
                     {{ list_selector(cb_rando_levels, "cb_rando_list", "LEVELS", "This will open a popup that will let you customize what levels have CB rando in the game.&#10;This defaults to All options.", 8, 1) }}
                 {# Remove end </div> as it's included in the macro for formatting #}
-                <div class="spacer"></div>
+                {{ toggle_input("season5_crate_rando", "Seasonal Crates", "Shuffle the locations of to specific locations based on the Seasonal Settings.", external_link="https://docs.google.com/spreadsheets/d/1Nnfgn7PdlCjY-n1cs1fuxp3bRsx3S-sYk5gmVdVnLtw/edit?usp=sharing") }}
             </div>
             <div class="flex-container">
                 <div class="item-select">
@@ -167,6 +167,8 @@
                 {{ toggle_input("tns_location_rando", "Random Troff 'n' Scoff Portal Locations", "T&S Portal Locations are randomized.", False, "Troff 'n' Scoff Portals") }}
                 {{ toggle_input("vanilla_door_rando", "Vanilla Door Shuffle", "Wrinkly Doors and T&S Portals are only shuffled among the vanilla locations for one another. T&S Portals cannot appear in level lobbies.") }}
                 {{ toggle_input("dos_door_rando", "Dos' Doors", "Vanilla Door Shuffle with some restrictions:&#10;- One T&S per level&#10;- One hint door in each lobby&#10;- DK Portal Rando enabled") }}
+                {{ toggle_input("season5_door_rando", "Seasonal Doors", "Hint Doors are moved to 5 specific locations designed for the Seasonal settings", external_link="https://docs.google.com/spreadsheets/d/1Nnfgn7PdlCjY-n1cs1fuxp3bRsx3S-sYk5gmVdVnLtw/edit?usp=sharing") }}
+                <div class="spacer"></div>
                 <div class="item-select">
                     <p class="select-title">DK Portals</p>
                     <select name="dk_portal_location_rando_v2"

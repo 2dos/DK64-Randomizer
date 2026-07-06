@@ -322,6 +322,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
         spoiler.settings.remove_barriers_selected,
         RemovedBarriersSelected.castle_crypt_doors,
     )
+    has_placed_high_helm_star = False
     for cont_map_id in range(216):
         cont_map_setup_address = getPointerLocation(TableNames.Setups, cont_map_id)
         ROM_COPY.seek(cont_map_setup_address)
@@ -367,12 +368,16 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
             if item_type == 0x235:
                 if (cont_map_id == Maps.GalleonBoss and random_pufftoss_stars) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off):
                     if cont_map_id == Maps.HideoutHelm:
-                        y_position = spoiler.settings.random.uniform(-131, 500)
+                        if has_placed_high_helm_star:
+                            y_position = spoiler.settings.random.uniform(-131, 500)
+                        else:
+                            y_position = spoiler.settings.random.uniform(400, 500)
+                            has_placed_high_helm_star = True
                         star_donut_center = [1055.704, 3446.966]
                         if y_position < 0:
-                            star_donut_boundaries = [230, 300.971]
+                            star_donut_boundaries = [260, 300.971]
                         else:
-                            star_donut_boundaries = [170.128, 235.971]
+                            star_donut_boundaries = [200.128, 235.971]
                         star_height_boundaries = [y_position, y_position]
                     elif cont_map_id == Maps.GalleonBoss:
                         star_donut_center = [1216, 1478]

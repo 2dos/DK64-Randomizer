@@ -62,6 +62,7 @@
 | Jungle Japes | Entrance door switch | Boss, Dk_Portal, Wrinkly | `l.can_use_vines and l.climbing` | 
 | Jungle Japes | Next to level entrance | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Jungle Japes | Against the mountain | Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Jungle Japes | Slope to Kong Cage | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 
 # Angry Aztec
 | Map | Name | Door types acceptable in location | Logic |
@@ -71,8 +72,8 @@
 | Angry Aztec Lobby | Aztec Lobby - Left of Portal | Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec Lobby | Aztec Lobby - Right of Portal | Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec Lobby | Aztec Lobby - Back Room | Wrinkly | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
-| Angry Aztec | Near Quicksand Tunnel Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Angry Aztec | Near Tunnel Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Angry Aztec | Right of Quicksand Tunnel Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Angry Aztec | Left of Tunnel Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | Near Oasis Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | Near Vulture Cage Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | Behind 5DT | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -85,18 +86,23 @@
 | Angry Aztec | Next to Tag Barrel near Vulture Cage | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | Under the Vulture Cage | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | 5 Door Temple's 6th Door | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Angry Aztec | Right of Tunnel Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | Near Hunky Barrel - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | Near Hunky Barrel - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | Near Snake Road - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | Near Snake Road - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | 5 Door Temple Staircase - front | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | 5 Door Temple Staircase - back | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Angry Aztec | Across from Vases Room | Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | First Tunnel - next to DK Door | Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | First Tunnel - Near Oasis | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | In the sealed quicksand tunnel | Wrinkly | `l.isdonkey and l.strongKong` | 
+| Angry Aztec | Inside Quicksand Bonus Cave | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Angry Aztec | Left of Quicksand Tunnel Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | Far Back Triple Stairs Quicksand | Wrinkly | `l.isdonkey and l.strongKong` | 
 | Aztec Llama Temple | Llama Temple Matching Room - right | Wrinkly, Dk_Portal | `self.logic = lambda _: True` | 
 | Aztec Llama Temple | Llama Temple Matching Room - left | Wrinkly, Dk_Portal | `self.logic = lambda _: True` | 
+| Angry Aztec | Atop Tiny Temple | Boss, Dk_Portal, Wrinkly | `l.jetpack and l.isdiddy and l.climbing` | 
 | Angry Aztec | Next to Tiny Temple - front left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | Next to Tiny Temple - back left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Angry Aztec | Oasis - Next to Tunnel - far left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -151,7 +157,7 @@
 | Frantic Factory Lobby | Factory Lobby - Low Right | Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Arcade Room | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Production Room | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Frantic Factory | R&D | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Frantic Factory | R&D across from Piano Game | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Block Tower | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Storage Room | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Behind Toy Monster Box | Wrinkly | `(l.ischunky and l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
@@ -159,10 +165,12 @@
 | Frantic Factory | Next to Hatch - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Bottom of the Hatch Pole | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Production Room - Under Conveyors | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Frantic Factory | Above Storage Spring Pad | Boss, Dk_Portal, Wrinkly | `((l.spring or l.CanMoontail()) and l.isdiddy) or l.CanPhase()` | 
 | Frantic Factory | Storage Room - Behind Tag Barrel | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Under Left Storage Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Under Right Storage Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Next to Number Game | Boss, Wrinkly | `self.logic = lambda _: True` | 
+| Frantic Factory | R&D across from Car Race | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | R&D - Next to Tunnel to Car Race | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Testing Area - Under Tunnel to Shop | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | R&D - Dead End | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -176,9 +184,12 @@
 | Frantic Factory | Storage Room - Next to Tag Barrel | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Production Room - in Alcove Next to Tiny's Barrel | Wrinkly | `l.istiny and l.twirl` | 
 | Frantic Factory | Production Room - Next to Diddy's Switch | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Frantic Factory | Above Crusher Entrance | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Arcade Room - Corner | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Frantic Factory | Under Arcade Shelves | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Testing Area - Next to Mini Barrel | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Testing Area - Base of the Block Tower | Boss, Wrinkly | `self.logic = lambda _: True` | 
+| Frantic Factory | By Foyer Shop | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Foyer - Under Clock | Wrinkly, Dk_Portal | `self.logic = lambda _: True` | 
 | Frantic Factory | Foyer - front left | Wrinkly, Boss | `self.logic = lambda _: True` | 
 | Frantic Factory | Foyer - back left | Wrinkly, Boss | `self.logic = lambda _: True` | 
@@ -208,17 +219,20 @@
 | Gloomy Galleon | Tunnel to Shipyard - Tiny switch | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Tunnel to Shipyard - Lanky switch | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Tunnel to Punch Chests | Boss, Wrinkly | `self.logic = lambda _: True` | 
+| Gloomy Galleon | Edge of Blast pad | Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Under Baboon Blast pad | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Under RocketBarrel barrel | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Next to Cannonball game | Boss, Wrinkly | `l.CanGetOnCannonGamePlatform()` | 
 | Gloomy Galleon | Next to Lighthouse Gate switch | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Entrance Tunnel - near entrance | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Next to Shipyard Gate switch | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Gloomy Galleon | Above the water next to the floating warp 5 | Wrinkly | `Events.WaterRaised in l.Events` | 
 | Gloomy Galleon | Cactus - bottom back left | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Cactus - bottom front left | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Cactus - bottom back right | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Cactus - bottom front right | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | On top of Seal cage | Wrinkly | `l.isdiddy and l.jetpack` | 
+| Gloomy Galleon | Diddy Gold Tower | Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Treasure Chest Exterior | Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Cavern Mast Top | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Punch Chests Room - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -273,6 +287,7 @@
 | Fungi Forest | Mill front side - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Mill right side - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Mill right side - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Fungi Forest | Mill Roof - Sloped | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Mill Roof - tower | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Boxes outside of Rafters Barn | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Behind Night Thorns - right | Boss, Wrinkly | `self.logic = lambda _: True` | 
@@ -280,11 +295,13 @@
 | Fungi Forest | Outside Thornvine Barn | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Next to Rabbit's House | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Owl Area - Near Rocketbarrel Barrel - far left | Boss, Wrinkly | `self.logic = lambda _: True` | 
+| Fungi Forest | Beanstalk Area - Left of Shop | Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Beanstalk Area - Behind Beanstalk right | Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Mushroom Area - Next to Tag Barrel near Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Mushroom Area - Next to Rocketbarrel Barrel - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Mushroom Area - Next to Rocketbarrel Barrel - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Mushroom Area - Next to Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Fungi Forest | Behind Clocktower Tree | Boss, Dk_Portal, Wrinkly | `(l.handstand and l.islanky) or (l.jetpack and l.isdiddy)` | 
 | Fungi Forest | Center - Next to Pink Tunnel - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Center - Next to Pink Tunnel - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Next to Clock - left | Wrinkly | `self.logic = lambda _: True` | 
@@ -309,6 +326,7 @@
 | Forest Mill Back | Mill - back side - In the hay | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Forest Mill Back | Mill - back side - Crates near spider entrance | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Forest Giant Mushroom | Giant mushroom - Top towards tag barrel | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Fungi Forest | Top of Giant Mushroom Exterior Exit | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Night door in the owl tree | Boss, Wrinkly | `l.TimeAccess(Regions.HollowTreeArea, Time.Night) and l.jetpack and l.isdiddy` | 
 | Forest Lanky Mushrooms Room | Lanky's colored mushrooms room | Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Forest Thornvine Barn | DK's Barn - Second floor | Boss, Wrinkly | `self.logic = lambda _: True` | 
@@ -340,7 +358,7 @@
 | Crystal Caves | Beneath Igloo bongo pad | Boss | `l.swim` | 
 | Crystal Caves | Beneath Igloo guitar pad | Boss | `l.swim` | 
 | Crystal Caves | Beneath Igloo saxophone pad | Boss | `l.swim` | 
-| Crystal Caves | Beneath Igloo triangle pad | Boss | `l.swim` | 
+| Crystal Caves | Beneath Igloo triangle pad | Boss, Dk_Portal, Wrinkly | `l.swim` | 
 | Crystal Caves | Beneath Igloo trombone pad | Boss | `l.swim` | 
 | Crystal Caves | Near the small Boulder Switch | Wrinkly | `self.logic = lambda _: True` | 
 | Crystal Caves | Beneath Ice Castle - on land | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -352,6 +370,7 @@
 | Crystal Caves | Mini Monkey Ledge | Wrinkly | `self.logic = lambda _: True` | 
 | Crystal Caves | Across from Ice Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Crystal Caves | Left of Mini Bonus Cave | Wrinkly | `self.logic = lambda _: True` | 
+| Crystal Caves | Mini Bonus Cave | Wrinkly | `self.logic = lambda _: True` | 
 | Crystal Caves | Level Entrance - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Crystal Caves | Level Entrance - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Crystal Caves | Igloo Area - left of entrance | Wrinkly, Boss | `l.swim` | 
@@ -407,11 +426,13 @@
 | Creepy Castle | Next to Moat Tag Barrel | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Creepy Castle | Next to Middle Shop | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Creepy Castle | Outside Lanky's Greenhouse | Wrinkly | `self.logic = lambda _: True` | 
+| Creepy Castle | warp Hub Battlement | Wrinkly | `self.logic = lambda _: True` | 
 | Creepy Castle | On Stairs to Moat Tag Barrel | Wrinkly | `self.logic = lambda _: True` | 
 | Creepy Castle | Between Moat and Cliff | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Creepy Castle | Top Shop Battlement - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Creepy Castle | Top Shop Battlement - center | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Creepy Castle | Top Shop Battlement - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Creepy Castle | Outside Lanky Tower | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Creepy Castle | Next to Stairs to Drawbridge | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Creepy Castle | Rocketbarrel Battlement - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Creepy Castle | Rocketbarrel Battlement - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -466,5 +487,6 @@
 | Castle Upper Cave | Upper Cave Shop Intersection | Wrinkly | `self.logic = lambda _: True` | 
 | Castle Upper Cave | Next to dungeon door | Wrinkly | `self.logic = lambda _: True` | 
 | Castle Upper Cave | Next to the chasm | Wrinkly | `self.logic = lambda _: True` | 
+| Creepy Castle | Lowest Level Tombstone | Wrinkly | `self.logic = lambda _: True` | 
 | Creepy Castle | Tombstone near lower door | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Creepy Castle | Behind the shed | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 

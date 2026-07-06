@@ -983,6 +983,8 @@ export enum SettingsStringEnum {
     pause_hints_lockout_timer = 302,
     spoiler_include_blocker_info = 303,
     half_medal_percentage = 304,
+    season5_door_rando = 305,
+    season5_crate_rando = 306,
 }
 
 export enum SettingsStringDataType {
@@ -1162,6 +1164,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.coin_door_item: HelmDoorItem,
     SettingsStringEnum.coin_door_item_count: SettingsStringDataType.u8,
     SettingsStringEnum.random_crates: SettingsStringDataType.bool,
+    SettingsStringEnum.season5_crate_rando: SettingsStringDataType.bool,
     SettingsStringEnum.crown_placement_rando: SettingsStringDataType.bool,
     SettingsStringEnum.crown_door_item: HelmDoorItem,
     SettingsStringEnum.crown_door_item_count: SettingsStringDataType.u8,
@@ -1395,6 +1398,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.prog_slam_level_7: SlamRequirement,
     SettingsStringEnum.prog_slam_level_8: SlamRequirement,
     SettingsStringEnum.dos_door_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.season5_door_rando: SettingsStringDataType.bool,
     SettingsStringEnum.switchsanity_enabled: SettingsStringDataType.bool,
     SettingsStringEnum.switchsanity_switch_isles_to_kroc_top: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_isles_helm_lobby: SwitchsanityGone,

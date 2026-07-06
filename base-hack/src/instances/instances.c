@@ -1439,13 +1439,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			}
 		} else if (behaviour_pointer->current_state == 1) {
 			if (isPlayerInRangeOfObject(40)) {
-				if (getPlayerObjectDistance()) {
+				// if (getPlayerObjectDistance()) {  // Causes issues with S5 doors
 					unkObjFunction2(id, 1, 1);
 					PauseText = 1;
 					spawnWrinklyWrapper(behaviour_pointer, id, kong, 0);
 					playSFXFromObject(id, 19, 255, 127, 20, 0, 0.3f);
 					behaviour_pointer->next_state = 2;
-				}
+				// }
 			}
 		} else if (behaviour_pointer->current_state == 2) {
 			if (isWrinklySpawned()) {

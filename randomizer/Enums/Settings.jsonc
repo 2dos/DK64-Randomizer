@@ -1458,7 +1458,9 @@
     "hint_door_item_count": 301,
     "pause_hints_lockout_timer": 302,
     "spoiler_include_blocker_info": 303,
-    "half_medal_percentage": 304
+    "half_medal_percentage": 304,
+    "season5_door_rando": 305,
+    "season5_crate_rando": 306
   },
   /*
     SettingsStringDataType:
@@ -1674,6 +1676,9 @@
       "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.random_crates": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.season5_crate_rando": {
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.crown_placement_rando": {
@@ -2185,6 +2190,7 @@
     "SettingsStringEnum.prog_slam_level_7": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_8": { "obj": "SlamRequirement" },
     "SettingsStringEnum.dos_door_rando": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.season5_door_rando": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.switchsanity_enabled": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.switchsanity_switch_isles_to_kroc_top": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.switchsanity_switch_isles_helm_lobby": { "obj": "SwitchsanityGone" },
