@@ -208,8 +208,6 @@ void earlyFrame(void) {
 			PauseText = 1;
 		} else if (inShop(CurrentMap, 1)) {
 			PauseText = 1;
-		} else if (CurrentMap == MAP_JAPES) {
-			PauseText = 1;
 		}
 		if (CurrentMap == MAP_HELM) {
 			HelmInit(1);
@@ -243,6 +241,8 @@ void earlyFrame(void) {
 	}
 	if ((CurrentMap == MAP_KROOLCHUNKY) && (CutsceneIndex == 14) && (CutsceneActive == 1)) {
 		PauseText = 1;
+	} else if (CurrentMap == MAP_JAPES) {
+			PauseText = 1;
 	}
 	if (CurrentMap == MAP_GALLEONPUFFTOSS) { // Pufftoss
 		if ((CutsceneActive) && (CutsceneIndex == 20) && (CutsceneTimer == 2)) { // Short Intro Cutscene

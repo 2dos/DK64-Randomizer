@@ -1439,7 +1439,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			}
 		} else if (behaviour_pointer->current_state == 1) {
 			if (isPlayerInRangeOfObject(40)) {
-				// if (getPlayerObjectDistance()) {  // Causes issues with S5 doors
+				// if (getPlayerObjectDistance()) {  // Patch out the code that makes sure the player is on the front side of the wrinkly door
 					unkObjFunction2(id, 1, 1);
 					PauseText = 1;
 					spawnWrinklyWrapper(behaviour_pointer, id, kong, 0);

@@ -59,7 +59,7 @@
 | Japes Under Ground | Chunky underground - right wall | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Japes Under Ground | Chunky underground - Kasplat platform | Wrinkly | `l.can_use_vines and l.pineapple and l.ischunky` | 
 | Jungle Japes | Next to the baboon blast pad | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Jungle Japes | Entrance door switch | Boss, Dk_Portal, Wrinkly | `l.can_use_vines and l.climbing` | 
+| Jungle Japes | Entrance door switch | Wrinkly | `l.can_use_vines and l.climbing` | 
 | Jungle Japes | Next to level entrance | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Jungle Japes | Against the mountain | Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Jungle Japes | Slope to Kong Cage | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
@@ -287,7 +287,7 @@
 | Fungi Forest | Mill front side - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Mill right side - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Mill right side - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Fungi Forest | Mill Roof - Sloped | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Fungi Forest | Mill Roof - Sloped | Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Mill Roof - tower | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Boxes outside of Rafters Barn | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Behind Night Thorns - right | Boss, Wrinkly | `self.logic = lambda _: True` | 
@@ -326,7 +326,7 @@
 | Forest Mill Back | Mill - back side - In the hay | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Forest Mill Back | Mill - back side - Crates near spider entrance | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Forest Giant Mushroom | Giant mushroom - Top towards tag barrel | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Fungi Forest | Top of Giant Mushroom Exterior Exit | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Fungi Forest | Top of Giant Mushroom Exterior Exit | Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Night door in the owl tree | Boss, Wrinkly | `l.TimeAccess(Regions.HollowTreeArea, Time.Night) and l.jetpack and l.isdiddy` | 
 | Forest Lanky Mushrooms Room | Lanky's colored mushrooms room | Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Forest Thornvine Barn | DK's Barn - Second floor | Boss, Wrinkly | `self.logic = lambda _: True` | 

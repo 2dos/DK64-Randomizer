@@ -253,6 +253,7 @@ def ShuffleSpecificDoors(spoiler):
     elif spoiler.settings.season5_door_rando:
         ShuffleHintDoorSet(spoiler, DoorTags.Season5Door)
         shuffled_wrinkly = True
+        shuffled_tns = True  # Temporary until we undo the Factory T&S culling
     # DK Portals may be shuffled independently of the specific door shuffles, and that's done here in the main shuffle method
     if spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off:
         ShuffleDoors(spoiler, shuffled_wrinkly, shuffled_tns)
@@ -382,6 +383,15 @@ def ShuffleHintDoorSet(spoiler, door_tag: DoorTags):
         "Crystal Caves": {},
         "Creepy Castle": {},
     }
+    human_portal_doors = {
+        "Jungle Japes": {},
+        "Angry Aztec": {},
+        "Frantic Factory": {},
+        "Gloomy Galleon": {},
+        "Fungi Forest": {},
+        "Crystal Caves": {},
+        "Creepy Castle": {},
+    }
     shuffled_door_data = {
         Levels.JungleJapes: [],
         Levels.AngryAztec: [],
@@ -413,11 +423,26 @@ def ShuffleHintDoorSet(spoiler, door_tag: DoorTags):
             region = spoiler.RegionList[selected_door.logicregion]
             region.locations.append(LocationLogic(doorLocation, lambda l, door=selected_door, lv=level: door.logic(l) and l.canUnlockHintDoor(lv)))
             spoiler.LocationList[doorLocation].name = f"{level_to_name[level]} Hint Door ({selected_door.name})"
+        # TEMPORARY: S5 will retain vanilla T&S doors with the exception of Factory, where all but 1 T&S is culled for technical reasons.
+        if door_tag == DoorTags.Season5Door:
+            vanilla_tns_indexes = [idx for idx, door in enumerate(door_locations[level]) if DoorTags.VanillaBoss in door.door_tags]
+            placed_tns_count = 0
+            for door_index in vanilla_tns_indexes:
+                vanilla_tns = door_locations[level][door_index]
+                if level == Levels.FranticFactory and vanilla_tns.name != "Storage Room":
+                    vanilla_tns.placed = DoorType.null
+                else:
+                    placed_tns_count += 1
+                    vanilla_tns.assignPortal(spoiler)
+                    human_portal_doors[level_list[level]]["T&S #" + str(placed_tns_count)] = vanilla_tns.name
+                    shuffled_door_data[level].append((door_index, DoorType.boss))
     # Track all touched doors in a variable and put it in the spoiler because changes to the static list do not save
     spoiler.shuffled_door_data = shuffled_door_data
     # Give human text to spoiler log
     if spoiler.settings.wrinkly_location_rando:
         spoiler.human_hint_doors = human_hint_doors
+    if spoiler.settings.tns_location_rando:
+        spoiler.human_portal_doors = human_portal_doors
 
 
 def ClearHintDoorLogic(spoiler):

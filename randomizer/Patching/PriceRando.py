@@ -12,7 +12,7 @@ def randomize_prices(spoiler, ROM_COPY: LocalROM):
         progressive_items = {
             Items.ProgressiveAmmoBelt: 2,
             Items.ProgressiveInstrumentUpgrade: 3,
-            Items.ProgressiveSlam: 2,
+            Items.ProgressiveSlam: 3,
         }
         for item in progressive_items:
             if item not in spoiler.settings.prices:

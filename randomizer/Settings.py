@@ -1291,7 +1291,7 @@ class Settings:
             self.wrinkly_location_rando = True
             self.dos_door_rando = False
             self.vanilla_door_rando = False
-            self.tns_location_rando = False  # T&S shuffle not supported on this initial implementation. It could definitely be done later.
+            self.tns_location_rando = True  # 5.0 Seasonal shuffle also needs to cull T&S doors in Factory for technical reasons
         # Dos' Doors requires this to be on - it's a variant on vanilla door shuffle
         if self.dos_door_rando:
             self.vanilla_door_rando = True
