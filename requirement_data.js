@@ -764,9 +764,12 @@ const requirement_data = {
             new Requirement(15, [[Moves.Moveless]]), // 10 bananas in CrystalCavesMain; 1 bunch in IglooArea
             new Requirement(10, [[Moves.Feather]]), // 1 balloon in CabinArea
             new Requirement(10, [[Moves.Sax]]), // 2 bunches in TinyCabin
-            new Requirement(5, [[Moves.Mini]]), // 1 bunch in CrystalCavesMain
             new Requirement(10, [[Moves.Feather, Moves.Sax]]), // 1 balloon in TinyCabin
             new Requirement(5, [[Moves.Sax, Moves.CavesIglooPads]]), // 1 bunch in TinyIgloo
+            new Requirement(5, [ // 1 bunch in CavesBonusCave
+                [Moves.Mini],
+                [Moves.AllWarps],
+            ]),
             new Requirement(10, [[Moves.Feather, Moves.Sax, Moves.CavesIglooPads]]), // 1 balloon in TinyIgloo
             new Requirement(20, [[Moves.Barrels, Moves.Monkeyport, Moves.Hunky, Moves.CavesIceWalls]]), // 4 bunches in GiantKosha
             new Requirement(10, [ // 1 balloon in CavesBlueprintCave
