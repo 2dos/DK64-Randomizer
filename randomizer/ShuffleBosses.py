@@ -7,7 +7,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import SlamRequirement, HardBossesSelected, KroolInBossPool
+from randomizer.Enums.Settings import SlamRequirement, HardBossesSelected, KroolInBossPool, TrainingBarrels
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, PlandoIncompatibleException
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Library.Generic import IsDDMSSelected
@@ -166,6 +166,10 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
         Levels.CrystalCaves: [],
         Levels.CreepyCastle: [],
     }
+    if spoiler.settings.training_barrels == TrainingBarrels.normal:
+        # If training barrels are not shuffled then the player has them in every level (notably including Barrels), but it may not come through on this dict
+        for level in ownedMoves:
+            ownedMoves[level].extend([Items.Barrels, Items.Vines, Items.Oranges, Items.Swim])
     for level in bossOptions.keys():
         # Pufftoss is always accessible
         bossOptions[level].append(Maps.GalleonBoss)
