@@ -671,6 +671,20 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
+        group=46,
+        map_id=Maps.Isles,
+        name="Tree below caves",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.IslesMain,
+        locations=[
+            [1, 1.0, 2381, 600, 1808],
+            [1, 1.0, 2367, 600, 1764],
+            [1, 1.0, 2319, 600, 1764],
+            [1, 1.0, 2305, 600, 1808],
+            [1, 1.0, 2343, 600, 1836],
+        ],
+    ), # Linked for logic
+    ColoredBananaGroup(
         group=47,
         map_id=Maps.Isles,
         name="Path below Caves",
@@ -970,17 +984,18 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=70,
         map_id=Maps.Isles,
-        name="On the fairy tree",
+        name="Up and around the fairy tree",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.OuterIsles,
+        logic=lambda l: l.climbing,
         locations=[
             [5, 1.0, 1067, 733, 1413],
         ],
     ),
     ColoredBananaGroup(
-        group=71,
+        group=70,
         map_id=Maps.Isles,
-        name="Around the fairy tree",
+        name="Up and around the fairy tree",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.OuterIsles,
         locations=[
@@ -990,7 +1005,7 @@ ColoredBananaGroupList = [
             [1, 1.0, 1029, 500, 1425],
             [1, 1.0, 1067, 500, 1453],
         ],
-    ),
+    ), # Grouped together to make cb trees consistent
     ColoredBananaGroup(
         group=72,
         map_id=Maps.Isles,
@@ -2840,20 +2855,6 @@ ColoredBananaGroupList = [
         ],
     ),
     # Wave 2 by Snap
-    ColoredBananaGroup(
-        group=219,
-        map_id=Maps.Isles,
-        name="Around the tree below caves",
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.IslesMain,
-        locations=[
-            [1, 1.0, 2381, 600, 1808],
-            [1, 1.0, 2367, 600, 1764],
-            [1, 1.0, 2319, 600, 1764],
-            [1, 1.0, 2305, 600, 1808],
-            [1, 1.0, 2343, 600, 1836],
-        ],
-    ),
     ColoredBananaGroup(
         group=220,
         map_id=Maps.Isles,
