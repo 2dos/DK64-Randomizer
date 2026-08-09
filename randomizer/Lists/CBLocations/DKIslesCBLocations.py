@@ -683,7 +683,7 @@ ColoredBananaGroupList = [
             [1, 1.0, 2305, 600, 1808],
             [1, 1.0, 2343, 600, 1836],
         ],
-    ), # Linked for logic
+    ),  # Linked for logic
     ColoredBananaGroup(
         group=47,
         map_id=Maps.Isles,
@@ -987,7 +987,7 @@ ColoredBananaGroupList = [
         name="Up and around the fairy tree",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.OuterIsles,
-        logic=lambda l: l.climbing,
+        logic=lambda l: (l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy),
         locations=[
             [5, 1.0, 1067, 733, 1413],
         ],
@@ -1005,7 +1005,7 @@ ColoredBananaGroupList = [
             [1, 1.0, 1029, 500, 1425],
             [1, 1.0, 1067, 500, 1453],
         ],
-    ), # Grouped together to make cb trees consistent
+    ),  # Grouped together to make cb trees consistent
     ColoredBananaGroup(
         group=72,
         map_id=Maps.Isles,
