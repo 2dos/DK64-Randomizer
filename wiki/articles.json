@@ -138,10 +138,6 @@
         "link": "PlandoColors"
     },
     {
-        "name": "Custom Locations: Doors",
-        "link": "CustomLocationsDoors"
-    },
-    {
         "name": "Custom Locations: Coins",
         "link": "CustomLocationsCoins"
     },
@@ -158,12 +154,8 @@
         "link": "CustomLocationsKasplats"
     },
     {
-        "name": "Custom Locations: Miscellaneous",
-        "link": "CustomLocationsMiscellaneous"
-    },
-    {
-        "name": "Custom Locations: Miscellaneous",
-        "link": "CustomLocationsMiscellaneous"
+        "name": "Random Settings: Difficult",
+        "link": "RandomSettingsDifficult"
     },
     {
         "name": "Random Settings: Difficult With Qol Shuffle",
@@ -176,5 +168,13 @@
     {
         "name": "Random Settings: Standard",
         "link": "RandomSettingsStandard"
+    },
+    {
+        "name": "Custom Locations: Doors",
+        "link": "CustomLocationsDoors"
+    },
+    {
+        "name": "Custom Locations: Miscellaneous",
+        "link": "CustomLocationsMiscellaneous"
     }
 ]

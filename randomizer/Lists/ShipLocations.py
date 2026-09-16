@@ -6,6 +6,7 @@ from randomizer.Enums.Maps import Maps
 
 
 def offset_position(x0, y0, z0, rot_x, rot_y, rot_z, rot_x_offset=0, rot_y_offset=130.9, dist=275.282):
+    """Calculate the lz position from the ship position."""
     # Convert degrees to radians
     yaw = math.radians(rot_y + rot_y_offset)
     pitch = math.radians(rot_x + rot_x_offset)
@@ -22,6 +23,8 @@ def offset_position(x0, y0, z0, rot_x, rot_y, rot_z, rot_x_offset=0, rot_y_offse
 
 
 class ShipObject:
+    """Ship Object data."""
+
     def __init__(
         self,
         name: str,
@@ -35,6 +38,7 @@ class ShipObject:
         scale: float = 0.25,
         is_vanilla: bool = False,
     ):
+        """Initialize with given parameters."""
         self.name = name
         self.map_index = map_index
         self.coords = coords

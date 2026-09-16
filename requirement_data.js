@@ -377,11 +377,26 @@ const requirement_data = {
             new Requirement(20, [[Moves.Moveless]]), // 1 bunch in BeyondHatch; 1 bunch, 10 bananas in FranticFactoryStart
             new Requirement(10, [[Moves.Pineapple]]), // 1 balloon in FranticFactoryStart
             new Requirement(15, [[Moves.Punch]]), // 3 bunches in BeyondHatch
-            new Requirement(5, [[Moves.ClimbingCheck, Moves.FactoryTesting]]), // 1 bunch in Testing
-            new Requirement(20, [[Moves.ClimbingCheck, Moves.FactoryProduction]]), // 4 bunches in SpinningCore
-            new Requirement(10, [[Moves.ClimbingCheck, Moves.Pineapple, Moves.FactoryTesting]]), // 1 balloon in Testing
-            new Requirement(10, [[Moves.ClimbingCheck, Moves.Triangle, Moves.FactoryTesting]]), // 10 bananas in RandDUpper
-            new Requirement(10, [[Moves.ClimbingCheck, Moves.Pineapple, Moves.Triangle, Moves.FactoryTesting]]), // 1 balloon in RandDUpper
+            new Requirement(5, [ // 1 bunch in Testing
+                [Moves.AllWarps],
+                [Moves.ClimbingCheck, Moves.FactoryTesting],
+            ]),
+            new Requirement(20, [ // 4 bunches in SpinningCore
+                [Moves.AllWarps],
+                [Moves.ClimbingCheck, Moves.FactoryProduction],
+            ]),
+            new Requirement(10, [ // 1 balloon in Testing
+                [Moves.Pineapple, Moves.AllWarps],
+                [Moves.ClimbingCheck, Moves.Pineapple, Moves.FactoryTesting],
+            ]),
+            new Requirement(10, [ // 10 bananas in RandDUpper
+                [Moves.ClimbingCheck, Moves.Triangle, Moves.AllWarps],
+                [Moves.ClimbingCheck, Moves.Triangle, Moves.FactoryTesting],
+            ]),
+            new Requirement(10, [ // 1 balloon in RandDUpper
+                [Moves.ClimbingCheck, Moves.Pineapple, Moves.Triangle, Moves.AllWarps],
+                [Moves.ClimbingCheck, Moves.Pineapple, Moves.Triangle, Moves.FactoryTesting],
+            ]),
         ],
     },
     "Galleon": {
@@ -483,20 +498,14 @@ const requirement_data = {
         ],
         "Tiny": [
             new Requirement(9, [[Moves.Moveless]]), // 4 bananas, 5 bananas in GloomyGalleonStart
-            new Requirement(8, [[Moves.Vines, Moves.CannonCheck]]), // 1 bunch, 3 bananas in GalleonPastVines
             new Requirement(15, [[Moves.Pineapple, Moves.RaisedWater]]), // 3 bunches in GalleonBeyondPineappleGate
             new Requirement(8, [ // 1 bunch, 3 bananas in GalleonPastVines
-                [Moves.Vines],
+                [Moves.Vines, Moves.CannonCheck],
                 [Moves.AllWarps, Moves.RaisedWater],
             ]),
             new Requirement(5, [ // 1 bunch in TreasureRoom
                 [Moves.Diving, Moves.AllWarps],
                 [Moves.Diving, Moves.GalleonPeanut, Moves.GalleonTreasure],
-            ]),
-            new Requirement(5, [ // 1 bunch in LighthouseSnideAlcove
-                [Moves.Vines, Moves.AllWarps],
-                [Moves.AllWarps, Moves.RaisedWater],
-                [Moves.RaisedWater, Moves.GalleonLighthouse],
             ]),
             new Requirement(10, [ // 2 bunches in TinyShip
                 [Moves.Diving, Moves.LevelSlam, Moves.AllWarps],
@@ -514,20 +523,22 @@ const requirement_data = {
                 [Moves.Feather, Moves.AllWarps, Moves.LoweredWater],
                 [Moves.Feather, Moves.LoweredWater, Moves.GalleonLighthouse],
             ]),
+            new Requirement(5, [ // 1 bunch in LighthouseSnideAlcove
+                [Moves.AllWarps, Moves.RaisedWater],
+                [Moves.RaisedWater, Moves.GalleonLighthouse],
+                [Moves.Vines, Moves.CannonCheck, Moves.AllWarps],
+            ]),
             new Requirement(10, [ // 1 balloon in LighthouseSnideAlcove
-                [Moves.Vines, Moves.Feather, Moves.AllWarps],
                 [Moves.Feather, Moves.AllWarps, Moves.RaisedWater],
                 [Moves.Feather, Moves.RaisedWater, Moves.GalleonLighthouse],
+                [Moves.Vines, Moves.CannonCheck, Moves.Feather, Moves.AllWarps],
             ]),
         ],
         "Chunky": [
             new Requirement(12, [[Moves.Moveless]]), // 1 bunch, 2 bananas, 5 bananas in GloomyGalleonStart
-            new Requirement(3, [[Moves.Vines, Moves.CannonCheck]]), // 3 bananas in GalleonPastVines
-            new Requirement(10, [[Moves.Diving, Moves.GalleonLighthouse]]), // 10 bananas in LighthouseUnderwater
-            new Requirement(15, [[Moves.Diving, Moves.GalleonPeanut]]), // 3 bunches in ShipyardUnderwater
             new Requirement(10, [[Moves.Pineapple, Moves.RaisedWater]]), // 1 balloon in GalleonBeyondPineappleGate
             new Requirement(3, [ // 3 bananas in GalleonPastVines
-                [Moves.Vines],
+                [Moves.Vines, Moves.CannonCheck],
                 [Moves.AllWarps, Moves.RaisedWater],
             ]),
             new Requirement(10, [ // 10 bananas in LighthouseUnderwater

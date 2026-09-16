@@ -249,6 +249,7 @@
 | Fungi Forest | Front of Beanstalk |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Mill Grass | Bananaport | `self.logic = lambda _: True` | 
 | Fungi Forest | Near Well | DirtPatch, Bananaport | `self.logic = lambda _: True` | 
+| Fungi Forest | Clocktower Stumps |  | `self.logic = lambda _: True` | 
 | Fungi Forest | Behind Clock |  | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
 | Fungi Forest | In front of Clock |  | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
 | Fungi Forest | Near Blue Tunnel |  | `self.logic = lambda _: True` | 

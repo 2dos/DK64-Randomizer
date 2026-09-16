@@ -287,7 +287,7 @@ int getHalfMedalRequirement(int full_medal_requirement) {
     return base_value;
 }
 
-void banana_medal_acquisition(int cb_count, int world, int change) {
+void banana_medal_acquisition(int kong, int cb_count, int world, int change) {
     /**
      * @brief Acquire a banana medal, and handle the item acquired from it
      * 

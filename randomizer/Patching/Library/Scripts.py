@@ -642,6 +642,7 @@ def getCrateScript(item_id: int) -> list[int]:
 
 
 def getFiveTwoDoorShipGateScript(item_id: int, flag_id: int, timer: int, timer_2: int, tied_pad: int) -> list[int]:
+    """Generate the 2/5 door ship door scripts."""
     is_slam_switch = flag_id in (0x2FE, 0x2FF)
     return compileInstanceScript(
         item_id,
@@ -1605,6 +1606,7 @@ def getHelmMonkeyport(item_id: int, kong: Kongs, microhint: bool):
 
 
 def getPianoScript(item_id: int, piano_order: list[int], fast_piano: bool):
+    """Generate the instance script for piano game."""
     # A = 0, B = 1, C = 2, D = 3, E = 4, F = 5
     cutscenes = {
         # Key: Seq Length

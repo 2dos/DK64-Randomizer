@@ -1529,12 +1529,20 @@ class DK64Context(CommonContext):
             return
         if not hasattr(self, "instance_id"):
             self.instance_id = time.time()
-        await self.send_msgs([{"cmd": "Bounce", "tags": ["SharedDamage"], "data": {
-            "time": time.time(),
-            "uuid": self.instance_id,
-            "source": self.player_names.get(self.slot),
-            "damage_points": int(points),
-        }}])
+        await self.send_msgs(
+            [
+                {
+                    "cmd": "Bounce",
+                    "tags": ["SharedDamage"],
+                    "data": {
+                        "time": time.time(),
+                        "uuid": self.instance_id,
+                        "source": self.player_names.get(self.slot),
+                        "damage_points": int(points),
+                    },
+                }
+            ]
+        )
 
     async def handle_damage_link(self):
         """Apply received DamageLink damage."""

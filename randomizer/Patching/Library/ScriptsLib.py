@@ -211,6 +211,8 @@ class IScript_IsCutsceneActive(FunctionData):
 
 
 class RunState(IntEnum):
+    """Run state enum."""
+
     init = 0
     run = 1
     pause = 2

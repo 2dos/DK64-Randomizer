@@ -1951,7 +1951,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     writeValue(ROM_COPY, 0x80600DA2, Overlay.Static, 0x38, offset_dict)
     writeValue(ROM_COPY, 0x80600DA6, Overlay.Static, 0x70, offset_dict)
 
-     # Repair the audio engine if damage did occur
+    # Repair the audio engine if damage did occur
     # Write debug bytes to identify permanently damaged voices and what kind of damage they suffer from
     writeHook(ROM_COPY, 0x8073B6E4, Overlay.Static, "stopVoiceFail", offset_dict)
     writeHook(ROM_COPY, 0x8073B798, Overlay.Static, "freeVoiceFail", offset_dict)
@@ -1999,7 +1999,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
 
     writeValue(ROM_COPY, 0x8073CD68, Overlay.Static, 0x85, offset_dict, 1)  # LW -> LH
     writeValue(ROM_COPY, 0x8073CD6B, Overlay.Static, 0x8A, offset_dict, 1)  # 0x88 -> 0x8A
-    
+
     # Make music uncompressed
     writeValue(ROM_COPY, 0x8060A2A8, Overlay.Static, 0x00001025, offset_dict, 4)  # or v0, zero, zero
     writeValue(ROM_COPY, 0x8060A32C, Overlay.Static, 0, offset_dict, 4)  # nop
