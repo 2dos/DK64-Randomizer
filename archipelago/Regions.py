@@ -258,7 +258,32 @@ def create_region(
                     should_skip = True
                 elif not logic_holder.checkFastCheck(FasterChecksSelected.factory_arcade_round_1) and region_name == "FactoryBaboonBlast":
                     should_skip = True
+                    continue
+            # Starting move locations may be shuffled but their locations are not relevant ever due to item placement restrictions
+            if location_obj.type in (Types.TrainingBarrel, Types.PreGivenMove):
+                continue
+            # Dropsanity would otherwise flood the world with irrelevant locked locations, greatly slowing seed gen
+            if location_obj.type == Types.Enemies and Types.Enemies not in logic_holder.settings.shuffled_location_types:
+                continue
+            # Skip shared shops that are not in the available pool
+            if location_obj.type == Types.Shop and location_obj.kong == Kongs.any:
+                if (not hasattr(multiworld, "generation_is_fake")) and location_logic.id not in logic_holder.available_shared_shops:
+                    continue
 
+            # Skip individual Kong shops if their vendor/level has a shared shop
+            if location_obj.type == Types.Shop and location_obj.kong != Kongs.any:
+                vendor_level_key = (location_obj.level, location_obj.vendor)
+                if (not hasattr(multiworld, "generation_is_fake")) and vendor_level_key in logic_holder.shared_shop_vendors:
+                    continue
+            # Skip enemy photos if the win condition is not Krem Kapture.
+            if location_obj.type == Types.EnemyPhoto and logic_holder.settings.win_condition_item != WinConditionComplex.krem_kapture:
+                continue
+            # Skip hint locations if hints are not in the pool
+            if location_obj.type == Types.Hint and Types.Hint not in logic_holder.settings.shuffled_location_types:
+                continue
+            # Skip half medals if half medals are not in the pool
+            if location_obj.type == Types.HalfMedal and Types.HalfMedal not in logic_holder.settings.shuffled_location_types:
+                continue
             # Skip locations marked as inaccessible by smaller shops
             if hasattr(location_obj, "smallerShopsInaccessible") and location_obj.smallerShopsInaccessible and logic_holder.settings.smaller_shops:
                 should_skip = True

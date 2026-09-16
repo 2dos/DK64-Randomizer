@@ -372,6 +372,7 @@ class Spoiler:
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
         settings["Randomize Crates"] = self.settings.random_crates
+        settings["Seasonal Crate Shuffle"] = self.settings.season5_crate_rando
         settings["Randomize CB Locations"] = self.settings.cb_rando_enabled
         settings["Randomize Coin Locations"] = self.settings.coin_rando
         settings["Randomize Shop Locations"] = self.settings.shuffle_shops
@@ -380,6 +381,7 @@ class Spoiler:
         settings["Randomize Battle Arenas"] = self.settings.crown_placement_rando
         settings["Vanilla Door Shuffle"] = self.settings.vanilla_door_rando
         settings["Dos' Doors"] = self.settings.dos_door_rando
+        settings["Seasonal Door Shuffle"] = self.settings.season5_door_rando
         settings["Randomize Wrinkly Doors"] = self.settings.wrinkly_location_rando
         settings["Randomize T&S Portals"] = self.settings.tns_location_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando_difficulty.name
@@ -473,18 +475,18 @@ class Spoiler:
         settings["Crown Enemy Rando"] = self.settings.crown_enemy_difficulty.name
         if self.settings.helm_hurry:
             settings["Game Mode"] = "Helm Hurry"
-        humanspoiler["Settings"] = settings
-        humanspoiler["Randomizer Version"] = self.settings.version
-        humanspoiler["Generation Branch"] = self.settings.branch
-        humanspoiler["Cosmetics"] = {}
         if self.settings.spoiler_hints != SpoilerHints.off:
+            humanspoiler["Spoiler Hints"] = self.level_spoiler_human_readable
             humanspoiler["Spoiler Hints Data"] = {}
             for key in self.level_spoiler.keys():
                 if key == "point_spread":
                     humanspoiler["Spoiler Hints Data"][key] = json.dumps(self.level_spoiler[key])
                 else:
                     humanspoiler["Spoiler Hints Data"][key] = self.level_spoiler[key].toCleanJSON()
-            humanspoiler["Spoiler Hints"] = self.level_spoiler_human_readable
+        humanspoiler["Settings"] = settings
+        humanspoiler["Randomizer Version"] = self.settings.version
+        humanspoiler["Generation Branch"] = self.settings.branch
+        humanspoiler["Cosmetics"] = {}
         humanspoiler["Requirements"] = {}
         if self.settings.random_starting_region_new != RandomStartingRegion.off:
             humanspoiler["Game Start"] = {}
@@ -687,7 +689,7 @@ class Spoiler:
                 price = ""
                 if location.item in ProgressiveMoves.keys():
                     if location.item == Items.ProgressiveSlam:
-                        price = f"{self.settings.prices[Items.ProgressiveSlam][0]}->{self.settings.prices[Items.ProgressiveSlam][1]}"
+                        price = f"{self.settings.prices[Items.ProgressiveSlam][0]}->{self.settings.prices[Items.ProgressiveSlam][1]}->{self.settings.prices[Items.ProgressiveSlam][2]}"
                     elif location.item == Items.ProgressiveAmmoBelt:
                         price = f"{self.settings.prices[Items.ProgressiveAmmoBelt][0]}->{self.settings.prices[Items.ProgressiveAmmoBelt][1]}"
                     elif location.item == Items.ProgressiveInstrumentUpgrade:
@@ -1152,7 +1154,7 @@ class Spoiler:
                 continue
             text = x
             if Types.HalfMedal in self.settings.shuffled_location_types:  # Half Medals
-                text = f"{x} ({max(1, int(x >> 1))})"
+                text = f"{x} ({max(1, int(x * (self.settings.half_medal_percentage / 100)))})"
             humanspoiler["Medal CB Requirements"][levels[xi]] = text
 
         if len(self.microhints) > 0:

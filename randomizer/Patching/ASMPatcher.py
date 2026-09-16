@@ -1924,6 +1924,11 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
                     "map_id": Maps.CastleDungeon,
                     "cutscene": 0,
                 },
+                {
+                    # Helm spawn stars
+                    "map_id": Maps.HideoutHelm,
+                    "cutscene": 1,
+                },
             ]
             for data in CUTSCENE_UNSKIPS:
                 map_id = data["map_id"]

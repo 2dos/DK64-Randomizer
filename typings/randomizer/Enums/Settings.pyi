@@ -937,6 +937,10 @@ class SettingsStringEnum(IntEnum):
     hint_door_item = 311
     hint_door_item_count = 312
     pause_hints_lockout_timer = 313
+    spoiler_include_blocker_info = 314
+    half_medal_percentage = 315
+    season5_door_rando = 316
+    season5_crate_rando = 317
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1124,6 +1128,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.coin_door_item: HelmDoorItem,
     SettingsStringEnum.coin_door_item_count: SettingsStringDataType.u8,
     SettingsStringEnum.random_crates: SettingsStringDataType.bool,
+    SettingsStringEnum.season5_crate_rando: SettingsStringDataType.bool,
     SettingsStringEnum.crown_placement_rando: SettingsStringDataType.bool,
     SettingsStringEnum.crown_door_item: HelmDoorItem,
     SettingsStringEnum.crown_door_item_count: SettingsStringDataType.u8,
@@ -1280,11 +1285,13 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.start_with_slam: SettingsStringDataType.bool,
     SettingsStringEnum.spoiler_include_level_order: SettingsStringDataType.bool,
+    SettingsStringEnum.spoiler_include_blocker_info: SettingsStringDataType.bool,
     SettingsStringEnum.enable_progressive_hints: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_text: SettingsStringDataType.u8,
     SettingsStringEnum.progressive_hint_count: SettingsStringDataType.u16,
     SettingsStringEnum.hint_door_item_count: SettingsStringDataType.u16,
     SettingsStringEnum.pause_hints_lockout_timer: SettingsStringDataType.u8,
+    SettingsStringEnum.half_medal_percentage: SettingsStringDataType.u8,
     SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
     SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
@@ -1356,6 +1363,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.prog_slam_level_7: SlamRequirement,
     SettingsStringEnum.prog_slam_level_8: SlamRequirement,
     SettingsStringEnum.dos_door_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.season5_door_rando: SettingsStringDataType.bool,
     SettingsStringEnum.switchsanity_enabled: SettingsStringDataType.bool,
     SettingsStringEnum.switchsanity_switch_isles_to_kroc_top: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_isles_helm_lobby: SwitchsanityGone,
@@ -1509,5 +1517,6 @@ SettingsStringIntRangeMap: dict = {
     SettingsStringEnum.progressive_hint_count: {"max": 3500, "min": 0},
     SettingsStringEnum.hint_door_item_count: {"max": 3500, "min": 0},
     SettingsStringEnum.pause_hints_lockout_timer: {"max": 255, "min": 0},
+    SettingsStringEnum.half_medal_percentage: {"max": 100, "min": 0},
     SettingsStringEnum.win_condition_count: {"max": 255, "min": 0},
 }

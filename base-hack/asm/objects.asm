@@ -24,6 +24,7 @@
 .importobj "obj/src_fixes_parent.o"
 .importobj "obj/src_fixes_dk_free_softlock.o"
 .importobj "obj/src_fixes_guardCatch.o"
+.importobj "obj/src_fixes_helm.o"
 .importobj "obj/src_fixes_level_modifiers.o"
 .importobj "obj/src_initialization_init.o"
 .importobj "obj/src_initialization_qol.o"

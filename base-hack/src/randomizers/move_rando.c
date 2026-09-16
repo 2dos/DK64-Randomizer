@@ -62,9 +62,7 @@ int getPrice(purchase_struct *shop_data) {
 	if (shop_data->item.item_type == REQITEM_MOVE) {
 		switch (shop_data->item.level) {
 			case 3:
-				if (MovesBase[0].simian_slam > 0) {
-					return Rando.slam_prices[MovesBase[0].simian_slam - 1]; // Indexing error
-				}
+				return Rando.slam_prices[(int)MovesBase[0].simian_slam];
 			case 7:
 				return Rando.ammo_belt_prices[(int)MovesBase[0].ammo_belt];
 			case 9:

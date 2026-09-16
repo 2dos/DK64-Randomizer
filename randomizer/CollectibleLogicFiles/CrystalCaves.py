@@ -23,7 +23,6 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.balloon, None, 3),  # Near Cranky
 
         Collectible(Collectibles.banana, Kongs.tiny, lambda _: True, None, 10),  # River To Igloo
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini or l.CanPhase(), None, 1),  # Warp 3 cave
 
         Collectible(Collectibles.bunch, Kongs.chunky, lambda _: True, None, 1),  # Warp 2
         Collectible(Collectibles.bunch, Kongs.chunky, lambda _: True, None, 1),  # On small boulder switch
@@ -56,6 +55,7 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # Warp 4 cave
     ],
     Regions.CavesBonusCave: [
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # Warp 3 cave
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Warp 3 cave
 
         Collectible(Collectibles.coin, Kongs.chunky, lambda _: True, None, 5),  # Warp 3 cave

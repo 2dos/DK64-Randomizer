@@ -1230,6 +1230,31 @@ class MicroHints(Choice):
     default = 2
 
 
+class HalfMedals(Toggle):
+    """Determines if Half Medals are added to the pool.
+
+    Half Medals send at a fraction of the colored bananas a full Medal needs, controlled by the
+    Half Medal Percentage option.
+    """
+
+    display_name = "Half Medals in Pool"
+
+    default = False
+
+
+class HalfMedalPercentage(Range):
+    """The percentage of the full medal colored banana requirement that a Half Medal requires.
+
+    Only applies when Half Medals are in the pool. With the default 50, a Half Medal sends at half
+    the colored bananas a full Medal needs (e.g. medal req 40 -> Half Medal at 20).
+    """
+
+    display_name = "Half Medal Percentage"
+    range_start = 1
+    range_end = 99
+    default = 50
+
+
 class ShuffledBonusBarrels(OptionList):
     """Determines which minigames are shuffled into the barrel pool.
 
@@ -2009,6 +2034,8 @@ class DK64Options(PerGameCommonOptions):
     item_pool: ItemPool
     logic_type: LogicType
     tricks_selected: TricksSelected
+    half_medals_in_pool: HalfMedals
+    half_medal_percentage: HalfMedalPercentage
     glitches_selected: GlitchesSelected
     hard_mode_selected: HardModeSelected
     mirror_mode: MirrorMode
@@ -2119,6 +2146,14 @@ dk64_option_groups: List[OptionGroup] = [
             StartingMovePool5Count,
             HelmKeyLock,
             ItemPool,
+            ClimbingShuffle,
+            ShopKeepers,
+            BouldersInPool,
+            Dropsanity,
+            HintItemRandomization,
+            HalfMedals,
+            HalfMedalPercentage,
+            SnideTurninsToThePool,
             SnideMaximum,
         ],
     ),

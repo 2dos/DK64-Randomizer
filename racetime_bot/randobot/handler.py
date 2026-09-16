@@ -43,7 +43,7 @@ class RandoHandler(RaceHandler):
                                 label="Preset",
                                 options={key: value["name"] for key, value in self.dk64.stable_presets.items()},
                             ),
-                            msg_actions.BoolInput(name="--password", label="Password Protect", default=True),
+                            msg_actions.BoolInput(name="--password", label="Password Protect", default=False),
                             msg_actions.BoolInput(name="--spoiler", label="Generate Spoiler Log", default=False),
                         ),
                     ),

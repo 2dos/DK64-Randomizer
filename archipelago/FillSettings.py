@@ -296,6 +296,7 @@ def get_default_settings() -> dict[str, Any]:
         "shuffle_shops": False,
         "smaller_shops": False,
         "spoiler_hints": SpoilerHints.off,
+        "spoiler_include_blocker_info": False,
         "spoiler_include_level_order": False,
         "spoiler_include_woth_count": False,
         "starting_keys_list_selected": [],
@@ -455,6 +456,7 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     settings_dict["shuffle_helm_location"] = options.shuffle_helm_level_order.value
     settings_dict["mermaid_gb_pearls"] = options.pearls_required_for_mermaid.value
     settings_dict["cb_medal_behavior_new"] = options.medal_distribution.value
+    settings_dict["half_medal_percentage"] = options.half_medal_percentage.value
     settings_dict["smaller_shops"] = options.smaller_shops.value and not hasattr(multiworld, "generation_is_fake")
     settings_dict["puzzle_rando_difficulty"] = options.puzzle_rando.value
     if options.enable_cutscenes.value:
@@ -957,10 +959,96 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     settings_dict["coin_door_item"] = HelmDoorItem(options.coin_door_item.value)
     coin_item_key = door_item_to_key.get(settings_dict["coin_door_item"])
     settings_dict["coin_door_item_count"] = options.helm_door_item_count.value.get(coin_item_key, 1) if coin_item_key else 1
-    if hasattr(multiworld, "generation_is_fake") and hasattr(multiworld, "re_gen_passthrough") and "Donkey Kong 64" in multiworld.re_gen_passthrough:
-        passthrough = multiworld.re_gen_passthrough["Donkey Kong 64"]
-        settings_dict["bonus_barrel_auto_complete"] = passthrough["Autocomplete"]
-        settings_dict["helm_room_bonus_count"] = HelmBonuses(passthrough["HelmBarrelCount"])
+
+    if hasattr(multiworld, "generation_is_fake"):
+        if hasattr(multiworld, "re_gen_passthrough"):
+            if "Donkey Kong 64" in multiworld.re_gen_passthrough:
+                passthrough = multiworld.re_gen_passthrough["Donkey Kong 64"]
+                settings_dict["bonus_barrel_auto_complete"] = passthrough["Autocomplete"]
+                settings_dict["helm_room_bonus_count"] = HelmBonuses(passthrough["HelmBarrelCount"])
+
+
+def handle_fake_generation_settings(settings: Settings, multiworld) -> None:
+    """Handle settings for fake generation (UT mode)."""
+    if hasattr(multiworld, "generation_is_fake"):
+        settings.is_ut_generation = True
+        if hasattr(multiworld, "re_gen_passthrough"):
+            if "Donkey Kong 64" in multiworld.re_gen_passthrough:
+                passthrough = multiworld.re_gen_passthrough["Donkey Kong 64"]
+                settings.level_order = passthrough["LevelOrder"]
+
+                # Switch logic lifted out of level shuffle due to static levels for UT
+                if settings.alter_switch_allocation:
+                    for x in range(8):
+                        settings.switch_allocation[x] = passthrough["SlamLevels"][x]
+
+                settings.starting_kong_list = passthrough["StartingKongs"]
+                settings.starting_kong = settings.starting_kong_list[0]  # fake a starting kong so that we don't force a different kong
+                settings.medal_requirement = passthrough["JetpacReq"]
+                settings.rareware_gb_fairies = passthrough["FairyRequirement"]
+                settings.BLockerEntryItems = passthrough["BLockerEntryItems"]
+                settings.BLockerEntryCount = passthrough["BLockerEntryCount"]
+                settings.medal_cb_req = passthrough["MedalCBRequirement"]
+                settings.medal_cb_req_level = [settings.medal_cb_req] * 8
+
+                for level, value in enumerate(passthrough["MedalCBRequirementLevel"]):
+                    settings.medal_cb_req_level[Levels(level)] = int(value)
+
+                settings.half_medal_percentage = passthrough["HalfMedalPercentage"]
+                settings.mermaid_gb_pearls = passthrough["MermaidPearls"]
+                settings.BossBananas = passthrough["BossBananas"]
+                settings.boss_maps = passthrough["BossMaps"]
+                settings.boss_kongs = passthrough["BossKongs"]
+                settings.lanky_freeing_kong = passthrough["LankyFreeingKong"]
+                settings.helm_order = passthrough["HelmOrder"]
+                settings.logic_type = LogicType[passthrough["LogicType"]]
+                settings.tricks_selected = passthrough["TricksSelected"]
+                settings.glitches_selected = passthrough["GlitchesSelected"]
+                settings.open_lobbies = passthrough["OpenLobbies"]
+                settings.starting_key_list = passthrough["StartingKeyList"]
+                settings.galleon_water = GalleonWaterSetting[passthrough["GalleonWater"]]
+                settings.galleon_water_internal = GalleonWaterSetting[passthrough["GalleonWater"]]
+
+                # There's multiple sources of truth for helm order.
+                settings.helm_donkey = 0 in settings.helm_order
+                settings.helm_diddy = 4 in settings.helm_order
+                settings.helm_lanky = 3 in settings.helm_order
+                settings.helm_tiny = 2 in settings.helm_order
+                settings.helm_chunky = 1 in settings.helm_order
+
+                # Switchsanity
+                for switch, data in passthrough["SwitchSanity"].items():
+                    needed_kong = Kongs[data["kong"]]
+                    switch_type = SwitchType[data["type"]]
+                    settings.switchsanity_data[Switches[switch]] = SwitchInfo(switch, needed_kong, switch_type, 0, 0, [])
+
+                if passthrough["Shopkeepers"]:
+                    settings.shuffled_location_types.append(Types.Cranky)
+                    settings.shuffled_location_types.append(Types.Funky)
+                    settings.shuffled_location_types.append(Types.Candy)
+                    settings.shuffled_location_types.append(Types.Snide)
+
+
+def fillsettings(options, multiworld, random_obj):
+    """Fill and configure all DK64 settings."""
+    # Start with default settings
+    settings_dict = get_default_settings()
+
+    # Apply all setting categories
+    apply_archipelago_settings(settings_dict, options, multiworld)
+    apply_blocker_settings(settings_dict, options, random_obj)
+    apply_item_randomization_settings(settings_dict, options)
+    apply_hard_mode_settings(settings_dict, options)
+    apply_kong_settings(settings_dict, options)
+    apply_switchsanity_settings(settings_dict, options)
+    apply_logic_and_barriers_settings(settings_dict, options)
+    apply_glitches_and_tricks_settings(settings_dict, options)
+    apply_boss_and_key_settings(settings_dict, options)
+    apply_goal_settings(settings_dict, options, random_obj)
+    apply_starting_moves_settings(settings_dict, options)
+    apply_hint_settings(settings_dict, options)
+    apply_minigame_settings(settings_dict, options, multiworld)
+    apply_enemies(settings_dict, options)
 
     # Handle fake generation keys if needed
     if hasattr(multiworld, "generation_is_fake"):
