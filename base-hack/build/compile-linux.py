@@ -3,6 +3,7 @@
 import os
 import stat
 import subprocess
+from BuildLib import convertToRGBA32, convertToRGBA5551, convertToIA8, convertToIA4, convertToI8, convertToI4
 
 # ----------------------------
 # Setup
@@ -100,22 +101,90 @@ if not os.path.exists(toolchain_gcc):
 
 os.makedirs("obj", exist_ok=True)
 os.makedirs("asm", exist_ok=True)
+source_asm = []
+created_asm = {}
+for root, dirs, files in os.walk("src/minigames"):
+    for file in files:
+        if not file.endswith(".c"):
+            continue
+        src_path = os.path.join(root, file)
+        minigame = None
+        modified = False
+        lines = None
+        original_lines = None
+        with open(src_path, "r") as fh:
+            lines = fh.readlines()
+            first_line = lines[0]
+            if "//avoid" in first_line:
+                continue
+            original_lines = lines.copy()
+            for index, line in enumerate(lines):
+                if "__LOAD_SPRITE(" in line:
+                    modified = True
+                    img_path = line.split("__LOAD_SPRITE(")[1].split(",")[0].replace("\"", "").strip()
+                    img_format = line.split("__LOAD_SPRITE(")[1].split(",")[1].split(")")[0].replace("\"", "").strip()
+                    img_bytes = []
+                    if img_format == "RGBA5551":
+                        convertToRGBA5551(img_path)
+                    elif img_format == "RGBA32":
+                        convertToRGBA32(img_path)
+                    elif img_format == "I4":
+                        convertToI4(img_path)
+                    elif img_format == "I8":
+                        convertToI8(img_path)
+                    elif img_format == "IA4":
+                        convertToIA4(img_path)
+                    elif img_format == "IA8":
+                        convertToIA8(img_path)
+                    with open(img_path.replace(".png", f".{img_format.lower()}"), "rb") as fh:
+                        data = fh.read()
+                        img_bytes = [x for x in data]
+                    pre_amble = line.split("__LOAD_SPRITE(")[0]
+                    lines[index] = pre_amble + "{" + ", ".join([hex(x) for x in img_bytes]) + "};\n"
+        if modified:
+            created_asm[src_path.replace(".c", "-translated.c")] = "".join(lines)
+            source_asm.append(src_path)
+for name, text in created_asm.items():
+    with open(name, "w") as fh:
+        fh.write(text)
 
+genned_minigames = []
+minigame_libs = []
+minigame_asms = []
 with open("asm/objects.asm", "w") as obj_asm:
     for root, dirs, files in os.walk("src"):
         for file in files:
             if not file.endswith(".c"):
                 continue
             src_path = os.path.join(root, file)
+            minigame = None
             with open(src_path, "r") as fh:
                 first_line = fh.readlines()[0]
                 if "//avoid" in first_line:
                     continue
+                if src_path in source_asm:
+                    continue
+                if "// minigame:" in first_line:
+                    minigame = first_line.split("// minigame:")[1].strip()
+                    print("Found minigame:", minigame)
 
             obj_name = src_path.replace("/", "_").replace("\\", "_").replace(".c", ".o")
 
             out_obj = os.path.join("obj", obj_name)
-            obj_asm.write(f'.importobj "{out_obj}"\n')
+            if minigame is None:
+                obj_asm.write(f'.importobj "{out_obj}"\n')
+            elif minigame == "all":
+                minigame_libs.append(out_obj)
+            else:
+                os.makedirs(f"asm/minigames/{minigame}", exist_ok=True)
+                mode = "a" if minigame in genned_minigames else "w"
+                asm_f = f"asm/minigames/{minigame}/objects.asm"
+                with open(asm_f, mode) as obj_asm2:
+                    obj_asm2.write(f'.importobj "{out_obj}"\n')
+                if minigame not in genned_minigames:
+                    genned_minigames.append(minigame)
+                if asm_f not in minigame_asms:
+                    minigame_asms.append(asm_f)
 
             flags = [
                 "-c",
@@ -162,4 +231,35 @@ with open("asm/objects.asm", "w") as obj_asm:
                 check=True,
             )
 
+for asm in minigame_asms:
+    with open(asm, "a") as fh:
+        for lib in minigame_libs:
+            fh.write(f'.importobj "{lib}"\n')
 print("✅ Compilation complete!")
+WRITE_ADDR = 0x80024390  # Arcade *can* be written earlier, but jetpac has some extra loader code that mandates a later write
+os.makedirs("minigame", exist_ok=True)
+open("minigame/dummy.bin", "wb").close()
+for minigame in genned_minigames:
+    with open(f"asm/minigames/{minigame}/main.asm", "w") as asm:
+        asm.write(".n64 // Let armips know we're coding for the N64 architecture\n")
+        asm.write(f".open \"minigame/dummy.bin\", \"minigame/{minigame}.bin\", 0 // Open the ROM file\n")
+        asm.write(f".include \"asm/symbols.asm\" // Include dk64.asm to tell armips' linker where to find the game's function(s)\n")
+        asm.write(f".headersize {hex(WRITE_ADDR)}\n")
+        asm.write(f".org {hex(WRITE_ADDR)}\n")
+        asm.write(f".include \"asm/hookcode/displayImageCustom.asm\"\n")
+        asm.write(f".include \"asm/minigames/{minigame}/objects.asm\"\n")
+        asm.write(".close // Close the ROM file\n")
+    BASE_DIR = os.getcwd()
+    armips = os.path.join(BASE_DIR, "build", "armips", "build", "armips")
+    asm = os.path.join(BASE_DIR, "asm", "minigames", minigame, "main.asm")
+    sym = os.path.join(BASE_DIR, "minigame", f"{minigame}-symbols.sym")
+
+    subprocess.run(
+        [armips, asm, "-sym", sym],
+        check=True
+    )
+os.remove("minigame/dummy.bin")
+
+for asm in created_asm:
+    if os.path.exists(asm):
+        os.remove(asm)

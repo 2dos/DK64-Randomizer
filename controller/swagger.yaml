@@ -278,18 +278,6 @@ paths:
                 properties:
                   error:
                     type: string
-  /get_selector_info:
-    get:
-      summary: Get the selector data for the randomizer
-      parameters:
-        - $ref: '#/components/parameters/branch'
-      responses:
-        '200':
-          description: Selector data retrieved successfully.
-          content:
-            application/json:
-              schema:
-                type: object
   /convert_settings:
     post:
       summary: Convert settings

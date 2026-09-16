@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package randomizer.proto.common;
+
+enum Time {
+    TIME_UNSPECIFIED = 0;
+    TIME_BOTH = 1;
+    TIME_DAY = 2;
+    TIME_NIGHT = 3;
+}

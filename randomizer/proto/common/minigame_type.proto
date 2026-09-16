@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package randomizer.proto.common;
+
+enum MinigameType {
+    MINIGAME_TYPE_UNSPECIFIED = 0;
+    MINIGAME_TYPE_NO_GAME = 1;
+    MINIGAME_TYPE_BONUS_BARREL = 2;
+    MINIGAME_TYPE_HELM_BARREL_FIRST = 3;
+    MINIGAME_TYPE_HELM_BARREL_SECOND = 4;
+    MINIGAME_TYPE_TRAINING_BARREL = 5;
+}

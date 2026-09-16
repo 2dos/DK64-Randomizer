@@ -93,6 +93,8 @@ def mirrorMode(ROM_COPY: LocalROM, settings, offset_dict: dict):
 
 def shuffleJetpacEnemies(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to shuffling Jetpac enemies."""
+    if settings.jetpac_custom_minigame is not None:
+        return
     if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies):
         order = settings.jetpac_enemy_order
         functions = [
@@ -234,6 +236,8 @@ def hardBosses(ROM_COPY: LocalROM, settings, offset_dict: dict):
 def hitless(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """Items related to hitless."""
     if settings.wipe_file_on_death:
-        writeFunction(ROM_COPY, 0x8071292C, Overlay.Static, "hitlessDeath", offset_dict)
-        writeFunction(ROM_COPY, 0x807128FC, Overlay.Static, "hitlessDeath", offset_dict)
-        writeFunction(ROM_COPY, 0x807128C8, Overlay.Static, "hitlessDeath", offset_dict)
+        writeFunction(ROM_COPY, 0x8071292C, Overlay.Static, "hitlessDeathWrapper0", offset_dict)
+        writeFunction(ROM_COPY, 0x807128FC, Overlay.Static, "hitlessDeathWrapper1", offset_dict)
+        writeFunction(ROM_COPY, 0x807128C8, Overlay.Static, "hitlessDeathWrapper1", offset_dict)
+        writeFunction(ROM_COPY, 0x806A96FC, Overlay.Static, "livesDisplay", offset_dict)
+        writeFunction(ROM_COPY, 0x807089EC, Overlay.Static, "livesDisplay", offset_dict)

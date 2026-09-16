@@ -16,8 +16,7 @@
             "conditions": [
                 {"function":1,"inverted":false,"parameters":[0,0,0]},
                 {"function":45,"inverted":false,"parameters":[293,0,0]},
-                {"function":45,"inverted":true,"parameters":[608,0,0]},
-                {"function":6,"inverted":false,"parameters":[7,65528,6]}
+                {"function":45,"inverted":true,"parameters":[608,0,0]}
             ],
             "executions": [
                 {"function":86,"parameters":[3,0,0]}
@@ -103,15 +102,7 @@
                 {"function":34,"inverted":false,"parameters":[4,0,0]}
             ],
             "executions": [
-                {"function":37,"parameters":[2,1,0]}
-            ]
-        },
-        {
-            "conditions": [
-                {"function":34,"inverted":false,"parameters":[4,0,0]},
-                {"function":6,"inverted":false,"parameters":[7,65528,6]}
-            ],
-            "executions": [
+                {"function":37,"parameters":[2,1,0]},
                 {"function":86,"parameters":[3,0,0]}
             ]
         }

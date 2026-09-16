@@ -23,6 +23,9 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
             <div class="container px-5">
+                <button class="btn btn-dark me-2" style="background-color: rgba(0,0,0,0); border: none" type="button" data-bs-toggle="collapse" data-bs-target="#nav-tab-list-mobile" aria-expanded="false" aria-controls="nav-tab-list-mobile" id="toggleSidebar">
+                    <i class="fa-solid fa-bars fa-sm"></i>
+                </button>
                 <a class="navbar-brand" href="#page-top">DK64 Randomizer</a>
                 <button class="navbar-toggler"
                         type="button"
@@ -132,23 +135,21 @@
                         <form id="form" action="/" method="POST">
                             <!--Create navbar-->
                             <div class="container" id="visual_indicator">
-                            <img style="
-                                width: 10%;
-                                height: 10%;
-                                margin: 10%;
-                                top: 50%;
-                                left: 40%;
-                                " src="./static/img/loading-icon-black.svg" />
-
-                    
+                              <img style="
+                                  width: 10%;
+                                  height: 10%;
+                                  margin: 10%;
+                                  top: 50%;
+                                  left: 40%;
+                                  " src="./static/img/loading-icon-black.svg" />
                             </div>
                             <div class="container" id="tab-data" hidden></div>
-
-
+        
+        
                             <hr />
                             <!-- Toasts -->
                             <div id="toasts">
-                                <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container"></div>
+                                <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
                             </div>
                             <div class="container" id="nav-gen-type-container">
                                 <nav style="display: inline-block; float: none; vertical-align: top;">
@@ -221,14 +222,28 @@
                                                             </span>
                                                         </div>
                                                         <div>
-                                                            <input id="import_settings"
-                                                                class="btn btn-secondary settings_button"
-                                                                type="button"
-                                                                value="Import"/>
-                                                            <input id="export_settings"
-                                                                class="btn btn-secondary settings_button"
-                                                                type="button"
-                                                                value="Export"/>
+                                                            <div>
+                                                                <input id="import_settings"
+                                                                    class="btn btn-secondary settings_button"
+                                                                    type="button"
+                                                                    value="Import"/>
+                                                                <div class="btn-group settings_button">
+                                                                    <button id="export_settings"
+                                                                        class="btn btn-secondary"
+                                                                        type="button"
+                                                                        onclick="export_settings_string(event)">Export</button>
+                                                                    <button type="button"
+                                                                        class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                                                                        data-bs-toggle="dropdown"
+                                                                        aria-expanded="false">
+                                                                        <span class="visually-hidden">Toggle Dropdown</span>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li><a class="dropdown-item" id="export_string_option" href="#">Export String</a></li>
+                                                                        <li><a class="dropdown-item" id="export_yaml_option" href="#">Export as Archipelago YAML</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -559,6 +574,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Base64/1.3.0/base64.min.js" defer integrity="sha512-IFxgh3q1bUsg/sL6qotMkJZTOvPyYSS6mRSSIVnJndN5j9vWcQ+oJyHkelIkRAOaKgdU1ibHJOs4HX15sPtZKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js" defer integrity="sha512-g2TeAWw5GPnX7z0Kn8nFbYfeHcvAu/tx6d6mrLe/90mkCxO+RcptyYpksUz35EO337F83bZwcmUyHiHamspkfg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="./static/js/compile_templates.js"></script>
+        <script src="./static/js/selector_info.js"></script>
         <script src="./static/js/pyodide/pyodide.js" defer></script>    
         <script>
             // Update the statistics every 60 seconds by querying the API for the latest data 
@@ -879,48 +895,29 @@
                     env.addFilter("plando_item_restrict", function(itemList, location) {
                         return itemList;
                     });
-                    // TODO REWRITE: Need to Repoint the default URLs
-                    let base_url;
-                    let branch;
-                    if (location.hostname === "dev.dk64randomizer.com") {
-                      base_url =
-                        "https://api.dk64rando.com";
-                      branch = "dev";
-                    } else if (location.hostname === "dk64randomizer.com") {
-                      base_url = "https://api.dk64rando.com";
-                      branch = "stable";
-                    } else {
-                      base_url = `${location.origin}`;
-                        branch = "dev";
+                    // Load selector info from the pre-built static asset (generated by
+                    // tools/generate_selector_info.py).
+                    try {
+                        if (typeof window.SELECTOR_INFO === "undefined") {
+                            throw new Error("window.SELECTOR_INFO not found — run \"Generate Selector Info\" task");
+                        }
+                        var selector_info = window.SELECTOR_INFO;
+                        // Append the KongZones to the selector_info
+                        selector_info["kong_zones"] = KongZones;
+                        // Render templates
+                        var renderedHTML = env.render("base.html", selector_info);
+                        var navRenderedHTML = env.render("nav-tabs.html", {});
+
+                        // Inject into the DOM
+                        $("#tab-data").html(renderedHTML);
+                        $("#nav-tab-list").html(navRenderedHTML);
+                        $("#nav-tab-list-mobile").html(navRenderedHTML);
+
+                        // After rendering the HTML, dynamically load the other scripts
+                        loadAdditionalScripts();
+                    } catch (error) {
+                        console.error("Failed to load selector info:", error);
                     }
-                    $.ajax({
-                        type: "GET",
-                        url: base_url + "/api/get_selector_info",
-                        data: { "branch": branch },
-                        success: function (data) {
-                            try {
-                                var selector_info = data;
-                                //console.log("Parsed selector_info:", selector_info);
-                                // Append the KongZones to the selector_info
-                                selector_info["kong_zones"] = KongZones;
-                                // Render templates
-                                var renderedHTML = env.render("base.html", selector_info);
-                                var navRenderedHTML = env.render("nav-tabs.html", {});
-                    
-                                // Inject into the DOM
-                                $("#tab-data").html(renderedHTML);
-                                $("#nav-tab-list").html(navRenderedHTML);
-                    
-                                // After rendering the HTML, dynamically load the other scripts
-                                loadAdditionalScripts();
-                            } catch (error) {
-                                console.error("Error processing response data:", error);
-                            }
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            // Insert error to root of dom
-                            console.error("AJAX request failed:", errorThrown);
-                        }});
                 } catch (error) {
                     console.error("Failed to load required modules:", error);
                 }

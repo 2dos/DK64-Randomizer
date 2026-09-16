@@ -74,7 +74,7 @@ int initHelmHurry(void) {
      */
     if (getNewSaveTime() > 5) {
         // Old file loaded
-        HelmStartTime = ReadFile(DATA_HURRY_IGT, 0, 0, FileIndex) & 0x7FFFFFFF;
+        HelmStartTime = ReadFileSimple(DATA_HURRY_IGT) & 0x7FFFFFFF;
         return 0;
     }
     if (Rando.helm_hurry_start == 0) {
@@ -93,6 +93,6 @@ void saveHelmHurryTime(void) {
         } else if (save_value < 0) {
             save_value = 0;
         }
-        SaveToFile(DATA_HURRY_IGT, 0, 0, FileIndex, save_value);
+        SaveFileSimple(DATA_HURRY_IGT, save_value);
     }
 }

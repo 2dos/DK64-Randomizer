@@ -189,6 +189,7 @@ var MoveSet = new Set([
     "oranges",
     "barrels",
     "climbing",
+    "cannons",
     "progressive_slam",
     "baboon_blast",
     "strong_kong",

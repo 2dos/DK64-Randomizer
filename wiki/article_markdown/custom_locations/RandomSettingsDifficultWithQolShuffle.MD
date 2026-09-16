@@ -19,7 +19,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 # Always Off
 - Dim Solved Hints
 - Enable Plandomizer
-- Irondonk
+- Perma Death
 - Guaranteed Starting Keys
 - No Joke Hints
 

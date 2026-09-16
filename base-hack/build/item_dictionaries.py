@@ -205,6 +205,9 @@ item_database = [
     Item(name="Fake Item (Bean)", actor=CustomActors.IceTrapBean, model_two=0x264, bounce=True, scale=0.25, has_collision=True),
     Item(name="Fake Item (Key)", actor=CustomActors.IceTrapKey, model_two=0x265, bounce=True, scale=0.25, has_collision=True),
     Item(name="Fake Item (Fairy)", actor=CustomActors.IceTrapFairy, model_two=0x299, bounce=True, scale=0.25, has_collision=True),
+    # Fungi Items
+    Item(name="Fungi Time (Day)", actor=CustomActors.DayItem, model_two=0x29A, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fungi Time (Night)", actor=CustomActors.NightItem, model_two=0x29B, bounce=True, scale=0.25, has_collision=True),
     # Singles
     Item(name="DK Single", actor=0, model_two=0xD, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.DK),
     Item(name="Diddy Single", actor=0, model_two=0xA, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.Diddy),
@@ -300,7 +303,6 @@ warning_text = "/*\n\t" + "\n\t".join(warning_text_data) + "\n*/\n"
 with open("include/item_data.h", "w") as fh:
     fh.write(warning_text)
     fh.write(f"extern const short acceptable_items[{len(dance_acceptable_items)}];\n")
-    fh.write(f"extern const item_conversion_info item_conversions[{len(boss_enabled_items)}];\n")
     fh.write(f"extern const unsigned short bounce_objects[{len(bounce_items)}];\n")
     fh.write(f"extern const unsigned short actor_drops[{len(actor_drops)}];\n")
     # fh.write(f"extern const unsigned short danceless_items[{len(danceless_items)}];\n")
@@ -316,7 +318,6 @@ with open("src/lib_items.c", "w") as fh:
     fh.write('#include "../include/common.h"\n\n')
     fh.write(warning_text)
     fh.write("\nconst short acceptable_items[] = {" + ",".join([hex(x.model_two) for x in dance_acceptable_items]) + "};")
-    fh.write("\nconst item_conversion_info item_conversions[] = {\n\t" + ",\n\t".join([f"{{.actor={x.actor}, .model_two={x.model_two}, .scale={x.scale:.2f}f}}" for x in boss_enabled_items]) + "\n};")
     fh.write("\nconst unsigned short bounce_objects[] = {" + ",".join([str(x.actor) for x in bounce_items]) + "};")
     fh.write("\nconst unsigned short actor_drops[] = {" + ",".join([str(x.actor) for x in actor_drops]) + "};")
     # fh.write("\nconst unsigned short danceless_items[] = {" + ",".join([str(x.actor) for x in danceless_items]) + "};")
@@ -607,7 +608,21 @@ with open("src/lib_items.c", "w") as fh:
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # AP Item
+            },  # Spread counter
+            {
+                "actor_type": CustomActors.DayItem,
+                "model": 0x13F,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Day Item
+            {
+                "actor_type": CustomActors.NightItem,
+                "model": 0x140,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Night Item
         ]
     )
     default_values = {
@@ -669,6 +684,8 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, CustomActors.SlipPeel, "&slipPeelCode", 2, 1, 0, 8, 0xDE)
+    actor_data = initActor(actor_data, CustomActors.DayItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.NightItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     for actor in GUARDS:
         actor_data = initActor(actor_data, actor, "(void*)0x806AF688", 2, 3, 0, 2, 259)
 

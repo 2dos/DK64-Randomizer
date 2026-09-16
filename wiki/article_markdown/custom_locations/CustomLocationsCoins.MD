@@ -375,7 +375,7 @@
 | On a ledge in R&D | 4 | `self.logic = lambda _: True` | 
 | In Piano Room | 3 | `(l.trombone and l.islanky) or l.CanAccessRNDRoom()` | 
 | In Diddy R&D Room | 3 | `(l.guitar and l.isdiddy) or l.CanAccessRNDRoom()` | 
-| In Chunky R&D Room | 4 | `(l.punch and l.triangle and l.ischunky) or l.CanAccessRNDRoom()` | 
+| In Chunky R&D Room | 4 | `(l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.ischunky) or l.CanAccessRNDRoom()` | 
 | In Car Race Lobby | 6 | `self.logic = lambda _: True` | 
 | On Power Shed Platform | 5 | `self.logic = lambda _: True` | 
 | On spring small ledge | 3 | `((l.spring or l.CanMoontail()) and l.isdiddy) or l.CanPhase()` | 
@@ -399,7 +399,7 @@
 | Around the spinning section in Production Room | 4 | `self.logic = lambda _: True` | 
 | Under a grate in R&D | 4 | `(l.grab and l.donkey) or l.CanAccessRNDRoom()` | 
 | Near Number Game | 3 | `self.logic = lambda _: True` | 
-| Around Arcade Tunnel Bonus | 3 | `(l.punch and l.ischunky) or l.CanPhase()` | 
+| Around Arcade Tunnel Bonus | 3 | `l.hasMoveSwitchsanity(Switches.FactoryArcadeTunnelGrate, False) or l.CanPhase()` | 
 | On boxes to Candy and Cranky | 3 | `self.logic = lambda _: True` | 
 | Near Tiny Twirl Bonus | 3 | `l.istiny and l.twirl` | 
 ## Factory Tiny Race
@@ -428,8 +428,8 @@
 | On top of headphones chest | 3 | `self.logic = lambda _: True` | 
 | On top of fairy chest | 3 | `self.logic = lambda _: True` | 
 | Around crossroads tag barrel | 4 | `self.logic = lambda _: True` | 
-| On broken ship near Cranky's | 5 | `self.logic = lambda _: True` | 
-| On Broken Ship railings | 6 | `self.logic = lambda _: True` | 
+| On broken ship near Cranky's | 5 | `l.cannons` | 
+| On Broken Ship railings | 6 | `l.cannons` | 
 | Around Tiny's Kasplat | 6 | `self.logic = lambda _: True` | 
 | Around the T&S Portal near Cranky | 2 | `self.logic = lambda _: True` | 
 | Underneath Cranky's | 5 | `(l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False, False)` | 
@@ -452,7 +452,7 @@
 | On Mermaid Palace Shells | 5 | `self.logic = lambda _: True` | 
 | Behind Enguarde Door | 3 | `self.logic = lambda _: True` | 
 | On Rafter near Funky's | 4 | `Events.WaterRaised in l.Events or l.CanMoonkick()` | 
-| Around Cranky's Lab | 5 | `self.logic = lambda _: True` | 
+| Around Cranky's Lab | 5 | `l.cannons` | 
 | Tunnel to Chests Area | 3 | `self.logic = lambda _: True` | 
 | Around Cactus | 4 | `self.logic = lambda _: True` | 
 | On Seal Cage | 3 | `l.jetpack and l.isdiddy` | 
@@ -543,7 +543,7 @@
 | On well roof edges | 3 | `(l.climbing and (l.can_use_vines or l.CanMoonkick())) or (l.jetpack and l.isdiddy)` | 
 | Mushroom Stem | 4 | `l.climbing or (l.jetpack and l.isdiddy)` | 
 | On Clock Pendulum | 3 | `l.climbing` | 
-| On Clock Torches | 2 | `self.logic = lambda _: True` | 
+| On Clock Torches | 2 | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
 | Level Entry | 3 | `self.logic = lambda _: True` | 
 | On bouncy mushroom in clock area | 3 | `self.logic = lambda _: True` | 
 | Left of pink tunnel | 1 | `self.logic = lambda _: True` | 
@@ -573,7 +573,7 @@
 | Near the thornvine barn | 3 | `self.logic = lambda _: True` | 
 | On Thorny Hedge | 3 | `l.isdonkey and l.strongKong` | 
 | Around BBlast Pad | 3 | `self.logic = lambda _: True` | 
-| Behind Clock | 3 | `self.logic = lambda _: True` | 
+| Behind Clock | 3 | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
 | On Mushroom near Mill far tag | 3 | `l.climbing` | 
 | Around Crown Pad | 3 | `self.logic = lambda _: True` | 
 | Around Tiny Kasplat | 5 | `self.logic = lambda _: True` | 

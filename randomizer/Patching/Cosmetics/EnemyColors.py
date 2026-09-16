@@ -22,7 +22,7 @@ from randomizer.Patching.Library.Image import (
 from randomizer.Patching.Library.Generic import getValueFromByteArray, IsColorOptionSelected
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, getRawFile
 from randomizer.Patching.Patcher import ROM
-from PIL import Image
+from randomizer.Patching.LazyPIL import Image
 
 
 def getEnemySwapColor(channel_min: int = 0, channel_max: int = 255, min_channel_variance: int = 0) -> int:

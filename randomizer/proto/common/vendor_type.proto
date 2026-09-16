@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package randomizer.proto.common;
+
+enum VendorType {
+    VENDOR_TYPE_UNSPECIFIED = 0;
+    VENDOR_TYPE_CRANKY = 1;
+    VENDOR_TYPE_FUNKY = 2;
+    VENDOR_TYPE_CANDY = 3;
+    VENDOR_TYPE_SNIDE = 4;
+}

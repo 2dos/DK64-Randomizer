@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package randomizer.proto;
+
+import "google/protobuf/struct.proto";
+
+
+message SelectorEntry {
+  string name = 1;
+  string value = 2;
+  string tooltip = 3;
+  sint32 shift = 4;
+  int32 default = 5;
+  int32 check_count = 6;
+  int32 item_count = 7;
+  bool is_check = 8;
+  string tied = 9;
+  int32 num_val = 10;
+  bool is_dummy = 11;
+}
+
+
+ // Top-level container for all selector data consumed by the randomizer UI.
+message SelectorInfo {
+  repeated SelectorEntry minigames = 1;
+  repeated SelectorEntry misc_changes = 2;
+  repeated SelectorEntry bosses = 3;
+  repeated SelectorEntry hard_mode = 4;
+  repeated SelectorEntry hard_bosses = 5;
+  repeated SelectorEntry enemies = 6;
+  repeated SelectorEntry excluded_songs = 7;
+  repeated SelectorEntry random_colors = 8;
+  repeated SelectorEntry song_filters = 9;
+  repeated SelectorEntry item_rando = 10;
+  repeated SelectorEntry item_filler = 11;
+  repeated SelectorEntry keys = 12;
+  repeated SelectorEntry glitches = 13;
+  repeated SelectorEntry tricks = 14;
+  repeated SelectorEntry helm_hurry_items = 15;
+  repeated SelectorEntry vanilla_warps = 16;
+
+  google.protobuf.Struct plando_custom_locations = 17;
+
+  repeated SelectorEntry plando_items = 18;
+  repeated SelectorEntry plando_minigames = 19;
+
+  google.protobuf.Struct plando_panels = 20;
+
+  repeated SelectorEntry plando_phases = 21;
+  repeated SelectorEntry plando_spawns = 22;
+  repeated SelectorEntry points_spread = 23;
+  repeated SelectorEntry custom_starting_moves = 24;
+
+  google.protobuf.Struct select_song_panel = 25;
+
+  google.protobuf.Struct select_songs = 26;
+
+  repeated SelectorEntry remove_barriers = 27;
+  repeated SelectorEntry faster_checks = 28;
+  repeated SelectorEntry cb_rando_levels = 29;
+}

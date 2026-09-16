@@ -118,3 +118,17 @@ void handleTimeOfDay(time_of_day_calls call) {
 		}
 	}
 }
+
+int isTimeOfDay(int is_night) {
+	int night_check = Player->strong_kong_ostand_bitfield & FUNGI_NIGHT_CHECK;
+	if (is_night) {
+		if ((night_check) || (Rando.fungi_time_of_day_setting == TIME_DUSK)) {
+			return checkFlag(FLAG_ITEM_NIGHT, FLAGTYPE_PERMANENT);
+		}
+	} else {
+		if ((!night_check) || (Rando.fungi_time_of_day_setting == TIME_DUSK)) {
+			return checkFlag(FLAG_ITEM_DAY, FLAGTYPE_PERMANENT);
+		}
+	}
+	return 0;
+}

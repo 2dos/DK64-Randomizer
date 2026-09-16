@@ -40,5 +40,14 @@ void unlockMoves(void) {
 	if (starting_item_data.climbing) {
 		setPermFlag(FLAG_ABILITY_CLIMBING);
 	}
+	if (starting_item_data.cannons) {
+		setPermFlag(FLAG_ABILITY_CANNON);
+	}
+	if (starting_item_data.day) {
+		setPermFlag(FLAG_ITEM_DAY);
+	}
+	if (starting_item_data.night) {
+		setPermFlag(FLAG_ITEM_NIGHT);
+	}
 	auto_turn_keys();
 }

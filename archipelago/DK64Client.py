@@ -20,6 +20,7 @@ import typing
 from archipelago.client.common import DK64MemoryMap, create_task_log_exception, check_version, get_ap_version
 from emu_loader import EmuLoaderClient
 from archipelago.client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
+from archipelago.client.ap_item_packets import APItemPacket, build_packet, ICE_TRAP_TYPES, REQITEM_ICETRAP, REQITEM_GOLDENBANANA, REQITEM_MOVE, CONFIG_APPLY_ICE_TRAP
 from archipelago.client.check_flag_locations import location_flag_to_name, location_name_to_flag
 from archipelago.client.ap_check_ids import check_id_to_name, check_names_to_id
 from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop, ClientCommandProcessor
@@ -30,6 +31,8 @@ from randomizer.Patching.ItemRando import normalize_location_name
 MAX_DELIVER_COUNT = 10000
 MAX_STRING_LENGTH = 0x20
 FAST_TEXT_SPEED = 50
+DAMAGE_POINTS_PER_UNIT = 20  # DamageLink: 80 points = 1 full melon (20 per quarter-melon)
+INCOMING_PACKET_CAP = 160  # DamageLink: cap a single inbound bounce at 2 melon
 NORMAL_TEXT_SPEED = 130
 MIN_ITEMS_FOR_SPEED_SCALING = 5
 KONG_COUNT = 5
@@ -76,26 +79,6 @@ class MessageDisplayHandler:
 class IceTrapHandler:
     """Handles ice trap logic and mappings."""
 
-    # Ice trap type to fed ID mapping
-    ICE_TRAP_MAPPINGS = {
-        "bubble": 0x018,  # TRANSFER_ITEM_FAKEITEM
-        "reverse": 0x041,  # TRANSFER_ITEM_FAKEITEM_REVERSE
-        "slow": 0x040,  # TRANSFER_ITEM_FAKEITEM_SLOW
-        "disable_a": 0x042,  # TRANSFER_ITEM_FAKEITEM_DISABLEA
-        "disable_b": 0x043,  # TRANSFER_ITEM_FAKEITEM_DISABLEB
-        "disable_z": 0x044,  # TRANSFER_ITEM_FAKEITEM_DISABLEZ
-        "disable_c_up": 0x045,  # TRANSFER_ITEM_FAKEITEM_DISABLECU
-        "get_out": 0x046,  # TRANSFER_ITEM_FAKEITEM_GETOUT
-        "dry": 0x047,  # TRANSFER_ITEM_FAKEITEM_DRY
-        "flip": 0x048,  # TRANSFER_ITEM_FAKEITEM_FLIP
-        "icefloor": 0x049,  # TRANSFER_ITEM_FAKEITEM_ICEFLOOR
-        "paper": 0x04A,  # TRANSFER_ITEM_FAKEITEM_PAPER
-        "slip": 0x04B,  # TRANSFER_ITEM_FAKEITEM_SLIP
-        "animal": 0x04C,  # TRANSFER_ITEM_FAKEITEM_ANIMAL
-        "rockfall": 0x04D,  # TRANSFER_ITEM_FAKEITEM_ROCKFALL
-        "disabletag": 0x04E,  # TRANSFER_ITEM_FAKEITEM_DISABLETAG
-    }
-
     @classmethod
     async def handle_ice_trap(cls, client, count_data: dict):
         """Handle ice trap processing."""
@@ -109,10 +92,13 @@ class IceTrapHandler:
         current_value = client.n64_client.read_u16(address)
         client.n64_client.write_u16(address, current_value + 1)
 
-        # Trigger the actual ice trap effect
+        # Trigger the actual ice trap effect using new packet system
         ice_trap_type = count_data.get("ice_trap_type", "bubble")
-        fed_id = cls.ICE_TRAP_MAPPINGS.get(ice_trap_type, 0x018)  # Default to bubble
-        await client.writeFedData(fed_id)
+        trap_kong = ICE_TRAP_TYPES.get(ice_trap_type, 1)  # Default to bubble
+
+        # Create packet for ice trap
+        packet = APItemPacket(item_type=REQITEM_ICETRAP, level=0, kong=trap_kong, config_flags=CONFIG_APPLY_ICE_TRAP)
+        await client.writeAPPacket(packet)
 
         return 0x056  # TRANSFER_ITEM_HELM_HURRY_FAKEITEM
 
@@ -181,6 +167,7 @@ class DK64Client:
     ENABLE_RINGLINK = False
     ENABLE_TAGLINK = False
     ENABLE_TRAPLINK = False
+    ENABLE_DAMAGELINK = False
     deathlink_debounce = True
     pending_deathlink = False
 
@@ -274,6 +261,83 @@ class DK64Client:
         """Set the speed of the display text in game."""
         self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.text_timer, speed)
 
+    async def process_text_notifications(self):
+        """Process batched text notifications independently from item delivery.
+
+        This runs as a separate async task and displays batched text notifications
+        when safe to do so, without blocking item delivery.
+        """
+        batch_window = 1.5  # seconds to collect notifications
+
+        while True:
+            await asyncio.sleep(0.1)  # Check every 100ms
+
+            if not hasattr(self, "text_notification_queue"):
+                continue
+
+            if len(self.text_notification_queue) == 0:
+                continue
+
+            # Wait until safe to display text
+            if not self.safe_to_send():
+                continue
+
+            # Collect notifications for batch_window duration
+            await asyncio.sleep(batch_window)
+
+            if len(self.text_notification_queue) == 0:
+                continue
+
+            # Aggregate notifications by item name
+            item_counts = {}
+            progression_items = []
+
+            for notification in self.text_notification_queue[:]:
+                item_name = notification["item_name"]
+                is_progression = notification.get("is_progression", False)
+
+                if is_progression:
+                    # Keep progression items separate for individual display
+                    progression_items.append(notification)
+                else:
+                    # Batch non-progression items
+                    if item_name not in item_counts:
+                        item_counts[item_name] = {"count": 0, "from_player": notification["from_player"]}
+                    item_counts[item_name]["count"] += 1
+
+            # Clear the queue
+            self.text_notification_queue.clear()
+
+            # Display progression items individually
+            for notification in progression_items:
+                if not self.safe_to_send():
+                    await asyncio.sleep(0.1)
+                    while not self.safe_to_send():
+                        await asyncio.sleep(0.1)
+
+                self.set_speed(FAST_TEXT_SPEED)
+                self.send_message(notification["item_name"], notification["from_player"], "from")
+                await asyncio.sleep(0.5)  # Brief pause between progression items
+
+            # Display batched non-progression items
+            for item_name, data in item_counts.items():
+                if not self.safe_to_send():
+                    await asyncio.sleep(0.1)
+                    while not self.safe_to_send():
+                        await asyncio.sleep(0.1)
+
+                count = data["count"]
+                from_player = data["from_player"]
+
+                if count > 1:
+                    batched_message = f"{count}x {item_name}"
+                else:
+                    batched_message = item_name
+
+                self.set_speed(FAST_TEXT_SPEED)
+                self.send_message(batched_message, from_player, "from")
+                await asyncio.sleep(0.3)  # Brief pause between batched messages
+
     # ==================== ITEM PROCESSING METHODS ====================
 
     async def recved_item_from_ap(self, item_id, item_name, from_player, index):
@@ -289,11 +353,28 @@ class DK64Client:
         # Check if this is a shopkeeper item
         is_shopkeeper = self.is_shopkeeper_item(item_data)
 
-        await self._wait_for_safe_send(is_shopkeeper)
+        # Only wait for safe send if shopkeeper item
+        if is_shopkeeper:
+            await self._wait_for_safe_send(is_shopkeeper=True)
 
-        self._handle_message_display(item_data, item_name, from_player, index)
+        # Queue text notification separately (non-blocking)
+        if not hasattr(self, "text_notification_queue"):
+            self.text_notification_queue = []
+        if not hasattr(self, "_message_handler"):
+            self._message_handler = MessageDisplayHandler(self)
+
+        should_display = self._message_handler.should_display_item(item_data, self.send_mode)
+        if should_display:
+            # Golden Banana shows a counter in the HUD, so its text notification is suppressed.
+            count_id = item_data.get("count_id")
+            skip_text = isinstance(count_id, dict) and count_id.get("item") == 1
+            if not skip_text:
+                self.text_notification_queue.append({"item_name": item_name, "from_player": from_player, "item_id": item_id, "is_progression": item_data.get("progression", False)})
+
+        # Process item data immediately (send to game)
         await self._process_item_data(item_data, item_name)
 
+        # Increment counter immediately after sending item
         next_index = index + 1
         self.n64_client.write_u16(self.memory_pointer + DK64MemoryMap.counter_offset, next_index)
 
@@ -307,37 +388,42 @@ class DK64Client:
                 await asyncio.sleep(0.1)
 
     def _handle_message_display(self, item_data: dict, item_name: str, from_player: str, index: int):
-        """Handle message display based on send mode and item type."""
-        if not hasattr(self, "_message_handler"):
-            self._message_handler = MessageDisplayHandler(self)
-
-        should_display = self._message_handler.should_display_item(item_data, self.send_mode)
-        if should_display:
-            self.set_speed(FAST_TEXT_SPEED)
-            self.send_message(item_name, from_player, "from")
+        """Handle message display based on send mode and item type (DEPRECATED)."""
+        # I dont think this is needed anymore but I'll keep for now just in case
+        pass
 
     async def _process_item_data(self, item_data: dict, item_name: str):
         """Process the item data and apply it to the game."""
         if item_data.get("flag_id") is not None:
             flag_id = item_data.get("flag_id")
-            self.setFlag(flag_id)
-        elif item_data.get("fed_id") is not None:
-            await self.writeFedData(item_data.get("fed_id"))
+            if flag_id in {962, 963, 964, 965}:
+                before = self.readFlag(flag_id)
+                self.setFlag(flag_id)
+                after = self.readFlag(flag_id)
+                logger.info(f"Shopkeeper flag {flag_id} ({item_name}): before={before} after={after}")
+            else:
+                self.setFlag(flag_id)
         elif item_data.get("count_id") is not None:
             await self.writeCountData(item_data.get("count_id"))
         else:
-            logger.warning(f"Item {item_name} has no flag, fed, or count id")
+            logger.warning(f"Item {item_name} has no flag or count id")
 
-    async def writeFedData(self, fed_item):
-        """Write the fed item data to the game."""
+    async def writeAPPacket(self, packet: APItemPacket):
+        """Write an AP item packet to the game.
+
+        Args:
+            packet: APItemPacket containing item_type, level, kong, and config_flags
+        """
+        # Wait for previous item to be consumed by game (polled at 33ms)
         current_fed_item = self.n64_client.read_u32(self.memory_pointer + DK64MemoryMap.arch_items)
-        # If item is being processed, don't update
         while current_fed_item != 0:
+            await asyncio.sleep(0.033)  # Wait one frame (30fps)
             current_fed_item = self.n64_client.read_u32(self.memory_pointer + DK64MemoryMap.arch_items)
-            await asyncio.sleep(0.1)
-            if current_fed_item == 0:
-                break
-        self.n64_client.write_u8(self.memory_pointer + 0x7, fed_item)
+
+        # Write the packet as 4 bytes starting at offset 0x4 (fed_item field)
+        # The C code will cast this to ap_item_packet* and read all 4 bytes
+        packet_u32 = packet.to_u32()
+        self.n64_client.write_u32(self.memory_pointer + 0x4, packet_u32)
 
     async def writeCountData(self, count_data):
         """Write count data directly to the CountStruct system."""
@@ -471,7 +557,8 @@ class DK64Client:
             helm_hurry_item_type = 0x054  # TRANSFER_ITEM_HELM_HURRY_FAIRY
 
         elif field == "rainbow_coins":
-            await self.writeFedData(0x015)  # TRANSFER_ITEM_RAINBOWCOIN
+            packet = build_packet(count_data)
+            await self.writeAPPacket(packet)
             # Rainbow coins should trigger Helm Hurry with HHITEM_RAINBOWCOIN (6)
             if self.helm_hurry_enabled:
                 self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.helm_hurry_item, 6)
@@ -525,29 +612,18 @@ class DK64Client:
 
             self.n64_client.write_u8(address, new_value)
 
-        elif count_data.get("item") is not None and count_data.get("level") is not None:
-            # These are fed items with level/tier information (like progression slams, etc.)
-            item_id = count_data.get("item")
-
-            # Map requirement item IDs to transfer item IDs based on the type
-            # REQITEM_MOVE (2) with level 3 should be TRANSFER_ITEM_SLAMUPGRADE (0x033 = 51)
-            if item_id == 2:  # REQITEM_MOVE
-                # For slam upgrades, use TRANSFER_ITEM_SLAMUPGRADE
-                fed_id = 0x033  # TRANSFER_ITEM_SLAMUPGRADE
+        elif count_data.get("item") is not None:
+            packet = build_packet(count_data)
+            if packet is None:
+                logger.warning(f"Unmapped count_data: {count_data}")
+                return
+            await self.writeAPPacket(packet)
+            if packet.item_type == REQITEM_GOLDENBANANA:
+                helm_hurry_item_type = 0x049
+            elif packet.item_type == REQITEM_MOVE:
+                helm_hurry_item_type = 0x04C
             else:
-                fed_id = item_id
-
-            await self.writeFedData(fed_id)
-            # Most fed items with levels are moves, so they should trigger Helm Hurry
-            helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
-
-        elif count_data.get("item") is not None and count_data.get("level") is None:
-            # These are requirement_item enum values that map to archipelago_items
-            fed_id = count_data.get("item")
-            await self.writeFedData(fed_id)
-            # These could be various types, but most are moves or other progression items
-            # For now, assume they're moves unless we have better classification
-            helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
+                helm_hurry_item_type = 0x04C
 
         else:
             logger.warning(f"Unknown count_data field: {count_data}")
@@ -652,16 +728,17 @@ class DK64Client:
     async def readChecks(self, cb):
         """Run checks in parallel using asyncio."""
         new_checks = []
-        checks_to_read = self.remaining_checks
+        checks_to_read = self.remaining_checks.copy()
 
         for id in checks_to_read:
             name = check_id_to_name.get(id)
-            # Try to get the check via location_name_to_flag
             check = location_name_to_flag.get(name)
+
             if check:
-                # Assuming we did find it in location_name_to_flag
+                # Check if this flag is set in memory
                 check_status = self.getCheckStatus("location", check)
                 if check_status:
+                    logger.debug(f"Location found: ID={id}, Name={name}, Flag={check}")
                     self.remaining_checks.remove(id)
                     new_checks.append(id)
                     if self.locations_scouted.get(id):
@@ -719,6 +796,13 @@ class DK64Client:
         # Strip all trailing \x00
         username = username.replace("\x00", "")
         self.auth = username
+
+    def read_seed_hash(self):
+        """Read the 5-byte seed hash baked into the loaded ROM's varspace."""
+        try:
+            return [self.n64_client.read_u8(DK64MemoryMap.seed_hash + i) for i in range(5)]
+        except Exception:
+            return None
 
     def started_file(self):
         """Check if the file has been started."""
@@ -807,7 +891,7 @@ class DK64Client:
 
         return data
 
-    async def main_tick(self, item_get_cb, deathlink_cb, map_change_cb, ring_link, tag_link, trap_link, hint_cb=None):
+    async def main_tick(self, item_get_cb, deathlink_cb, map_change_cb, ring_link, tag_link, trap_link, damage_link, hint_cb=None):
         """Game loop tick."""
         await self.readChecks(item_get_cb)
         # await self.item_tracker.readItems()
@@ -844,6 +928,8 @@ class DK64Client:
             await tag_link()
         if self.ENABLE_TRAPLINK:
             await trap_link()
+        if self.ENABLE_DAMAGELINK:
+            await damage_link()
 
         # Check for hint access
         if hint_cb:
@@ -1001,6 +1087,21 @@ class DK64CommandProcessor(ClientCommandProcessor):
                 self.ctx.tags.add("TrapLink")
             create_task_log_exception(self.ctx.send_msgs([{"cmd": "ConnectUpdate", "tags": self.ctx.tags}]))
 
+    def _cmd_damagelink(self):
+        """Toggle damagelink from client. Overrides default setting."""
+        if isinstance(self.ctx, DK64Context):
+            if self.ctx.ENABLE_DAMAGELINK:
+                self.ctx.ENABLE_DAMAGELINK = False
+                self.ctx.client.ENABLE_DAMAGELINK = False
+                self.ctx.tags.discard("SharedDamage")
+                logger.info("Damagelink disabled")
+            else:
+                self.ctx.ENABLE_DAMAGELINK = True
+                self.ctx.client.ENABLE_DAMAGELINK = True
+                logger.info("Damagelink enabled")
+                self.ctx.tags.add("SharedDamage")
+            create_task_log_exception(self.ctx.send_msgs([{"cmd": "ConnectUpdate", "tags": self.ctx.tags}]))
+
 
 class DK64Context(CommonContext):
     """Context for Donkey Kong 64."""
@@ -1014,6 +1115,11 @@ class DK64Context(CommonContext):
     ENABLE_RINGLINK = False
     ENABLE_TAGLINK = False
     ENABLE_TRAPLINK = False
+    ENABLE_DAMAGELINK = False
+    pending_damage = 0
+    self_inflicted = 0
+    prev_health = None
+    damage_label = None
     command_processor = DK64CommandProcessor
     won = False
     hint_locations = {}
@@ -1143,6 +1249,8 @@ class DK64Context(CommonContext):
         if cmd == "Connected":
             self.game = self.slot_info[self.slot].game
             self.slot_data = args.get("slot_data", {})
+            if not hasattr(self, "instance_id"):
+                self.instance_id = time.time()
             self.setup_hint_locations()
             if self.slot_data.get("Version"):
                 ap_version = get_ap_version()
@@ -1161,6 +1269,16 @@ class DK64Context(CommonContext):
                 if server_patch != ap_patch:
                     logger.warning("Your DK64 APworld does not match with the generated world, but this should not be a breaking change.")
                     logger.warning("While we try to maintain backwards compatibility on patch versions, be warned that something might break.")
+            expected_hash = self.slot_data.get("seed_hash")
+            if expected_hash is not None:
+                rom_hash = self.client.read_seed_hash()
+                if rom_hash is None or list(expected_hash) != list(rom_hash):
+                    logger.error("Seed hash mismatch — the loaded ROM does not belong to this multiworld slot.")
+                    self.had_invalid_slot_data = True
+                    self.auth = None
+                    self.disconnected_intentionally = True
+                    create_task_log_exception(self.disconnect())
+                    raise Exception("Seed hash mismatch — the loaded ROM does not match the generated multiworld slot.")
             if self.slot_data.get("death_link"):
                 if "DeathLink" not in self.tags:
                     create_task_log_exception(self.update_death_link(True))
@@ -1184,6 +1302,12 @@ class DK64Context(CommonContext):
                     self.ENABLE_TRAPLINK = True
                     self.client.ENABLE_TRAPLINK = True
                     asyncio.create_task(self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}]))
+            if self.slot_data.get("damage_link"):
+                if "SharedDamage" not in self.tags:
+                    self.tags.add("SharedDamage")
+                    self.ENABLE_DAMAGELINK = True
+                    self.client.ENABLE_DAMAGELINK = True
+                    asyncio.create_task(self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}]))
             if self.slot_data.get("receive_notifications"):
                 self.client.send_mode = self.slot_data.get("receive_notifications")
             # Set Helm Hurry flag in client
@@ -1197,6 +1321,8 @@ class DK64Context(CommonContext):
             for index, item in enumerate(args["items"], start=args["index"]):
                 self.client.recvd_checks[index] = item
                 self.client.pending_checks.append(item)
+            # Sort pending_checks to prioritize progression items
+            self.client.pending_checks.sort(key=lambda x: (not item_ids.get(x.item, {}).get("progression", False), x.item))  # False first (progression items)
         if cmd == "LocationInfo":
             self.client.locations_scouted = {}
             for location in args.get("locations"):
@@ -1204,7 +1330,8 @@ class DK64Context(CommonContext):
                     # If the location is in the list, remove it
                     player_name = self.player_names.get(location.player)
                     location_id = location.location
-                    item_name = self.item_names.lookup_in_game(location.item, self.slot_info[location.player].game)
+                    # Look up item name from the item's actual game, not forced to DK64
+                    item_name = self.item_names.lookup_in_slot(location.item, location.player)
                     self.client.locations_scouted[location_id] = {"player": player_name, "item_name": item_name}
         if isinstance(args, dict) and isinstance(args.get("data", {}), dict):
             source_name = args.get("data", {}).get("source", None)
@@ -1231,6 +1358,11 @@ class DK64Context(CommonContext):
                 if self.pending_trap_link != 0:
                     self.pending_trap_original = args["data"]["trap_name"]
                     self.pending_trap_source = source_name
+            if "SharedDamage" in self.tags and "SharedDamage" in args.get("tags", []):
+                if args["data"].get("uuid") != self.instance_id:  # ignore our own echo
+                    points = int(args["data"].get("damage_points", 0))
+                    if points > 0:
+                        self.pending_damage += min(points, INCOMING_PACKET_CAP)
 
     async def send_ring_link(self, amount: int):
         """Send a ring link message."""
@@ -1390,6 +1522,66 @@ class DK64Context(CommonContext):
             self.prev_film = new_film
 
             self.pending_ring_link = 0
+
+    async def send_damage_link(self, points: int):
+        """Send a SharedDamage (DamageLink) bounce."""
+        if "SharedDamage" not in self.tags or self.slot is None:
+            return
+        if not hasattr(self, "instance_id"):
+            self.instance_id = time.time()
+        await self.send_msgs([{"cmd": "Bounce", "tags": ["SharedDamage"], "data": {
+            "time": time.time(),
+            "uuid": self.instance_id,
+            "source": self.player_names.get(self.slot),
+            "damage_points": int(points),
+        }}])
+
+    async def handle_damage_link(self):
+        """Apply received DamageLink damage."""
+        if not self.client.ENABLE_DAMAGELINK:
+            return
+        n64 = self.client.n64_client
+        base = self.client.memory_pointer
+
+        # Show total amount of damagelink points in client (taken from mycena waffle's client).
+        try:
+            if self.damage_label is None and getattr(self, "ui", None) is not None:
+                try:
+                    from kvui import MDLabel as Label
+                except ImportError:
+                    from kvui import Label
+                self.damage_label = Label(text="", size_hint_x=None, width=120, halign="center")
+                self.ui.connect_layout.add_widget(self.damage_label)
+            if self.damage_label is not None:
+                self.damage_label.text = f"DMG: {self.pending_damage}"
+        except Exception:
+            pass
+
+        health = n64.read_u8(DK64MemoryMap.health)
+        if health > 127:
+            health -= 256
+        if self.prev_health is None:
+            self.prev_health = health
+
+        # Hand any received damage to the game, remembering the health it will cost us.
+        units = self.pending_damage // DAMAGE_POINTS_PER_UNIT
+        if units > 0:
+            self.pending_damage -= units * DAMAGE_POINTS_PER_UNIT
+            queued = n64.read_u8(base + DK64MemoryMap.receive_damage)
+            n64.write_u8(base + DK64MemoryMap.receive_damage, min(queued + units, 255))
+            self.self_inflicted += units
+
+        # Broadcast damag
+        lost = self.prev_health - health
+        if lost > 0:
+            mine = min(lost, self.self_inflicted)
+            self.self_inflicted -= mine
+            genuine = lost - mine
+            if genuine > 0:
+                await self.send_damage_link(genuine * DAMAGE_POINTS_PER_UNIT)
+        elif health <= 0:
+            self.self_inflicted = 0  # once you die, reset points
+        self.prev_health = health
 
     async def send_tag_link(self, kong: int):
         """Send a tag link message."""
@@ -1603,6 +1795,10 @@ class DK64Context(CommonContext):
             """Handle a trap link."""
             await self.handle_trap_link()
 
+        async def damage_link():
+            """Handle a damage link."""
+            await self.handle_damage_link()
+
         async def deathlink():
             """Handle a deathlink."""
             await self.send_deathlink()
@@ -1658,6 +1854,11 @@ class DK64Context(CommonContext):
                     await disconnect_check()
                     await asyncio.sleep(3)
 
+                # Start the text notification processing task
+                if not hasattr(self, "text_notification_task"):
+                    self.text_notification_task = asyncio.create_task(self.client.process_text_notifications())
+                    logger.info("Started text notification batching task")
+
                 if not self.client.recvd_checks:
                     logger.info("No checks received yet, requesting...")
                     await self.sync()
@@ -1671,10 +1872,10 @@ class DK64Context(CommonContext):
                         await victory()
                     status = self.client.check_safe_gameplay()
                     if status is False:
-                        await asyncio.sleep(0.5)
+                        await asyncio.sleep(0.033)
                         continue
-                    await self.client.main_tick(on_item_get, deathlink, map_change, ring_link, tag_link, trap_link, hint_accessed)
-                    await asyncio.sleep(0.5)
+                    await self.client.main_tick(on_item_get, deathlink, map_change, ring_link, tag_link, trap_link, damage_link, hint_accessed)
+                    await asyncio.sleep(0.033)
                     now = time.time()
                     if self.last_resend + 0.5 < now:
                         self.last_resend = now

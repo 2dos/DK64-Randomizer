@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package randomizer.proto.common;
+
+enum SlamLevel {
+    SLAM_LEVEL_UNSPECIFIED = 0;
+    SLAM_LEVEL_GREEN = 1;
+    SLAM_LEVEL_BLUE = 2;
+    SLAM_LEVEL_RED = 3;
+    SLAM_LEVEL_RANDOM = 4;
+}

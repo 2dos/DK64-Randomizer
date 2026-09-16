@@ -3,6 +3,7 @@
 .definelabel unkSpriteRenderFunc_1, 0x807149B8
 .definelabel unkSpriteRenderFunc_2, 0x80714A28
 .definelabel unkSpriteRenderFunc_3, 0x80714950
+.definelabel unkSpriteRenderFunc_4, 0x80714998
 .definelabel attachSpriteToBone, 0x80714C08
 .definelabel loadSpriteFunction, 0x8071498C
 .definelabel displaySpriteAtXYZ, 0x80714CC0
@@ -14,3 +15,4 @@
 .definelabel drawRetroSprite, 0x8070F2FC
 .definelabel displayPauseSpriteNumber, 0x806AB808
 .definelabel loadJetpacSprites, 0x80026DC8
+.definelabel writeSpriteToDL, 0x80715E94

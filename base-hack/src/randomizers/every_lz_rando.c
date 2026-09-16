@@ -11,16 +11,6 @@ ROM_RODATA_NUM const unsigned short replacement_lobby_exits_array[9] = {
 	1, 1, 1,
 };
 
-ROM_RODATA_NUM static const unsigned char vanilla_blast_maps[] = {
-	MAP_JAPESBBLAST,
-	MAP_AZTECBBLAST,
-	MAP_FACTORYBBLAST,
-	MAP_GALLEONBBLAST,
-	MAP_FUNGIBBLAST,
-	MAP_CAVESBBLAST,
-	MAP_CASTLEBBLAST,
-};
-
 LZREntrance blast_entrances[] = {
 	{.map = MAP_JAPESBBLAST, .exit = 0},
 	{.map = MAP_AZTECBBLAST, .exit = 0},
@@ -37,7 +27,7 @@ LZREntrance *blastWarpGetter(maps map) {
 		return &blast_entrances[7];
 	}
 	for (int i = 0; i < 7; i++) {
-		if (map == vanilla_blast_maps[i]) {
+		if (map == blast_maps[i]) {
 			return &blast_entrances[i];
 		}
 	}
