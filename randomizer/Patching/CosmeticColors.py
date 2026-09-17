@@ -697,6 +697,7 @@ def writeWinConImage(image: Image, ROM_COPY: LocalROM, file_index: int = 195):
     """Wrap function for writing a win con image, detecting K Rool win con."""
     writeColorImageToROM(image, TableNames.TexturesHUD, file_index, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
 
+
 def showWinConditionInternal(ROM_COPY: LocalROM, win_condition: WinConditionComplex, count: int, file_index: int):
     """Write an image file with the win condition."""
     static_file_assets = {
@@ -714,8 +715,14 @@ def showWinConditionInternal(ROM_COPY: LocalROM, win_condition: WinConditionComp
 
     elif win_condition == WinConditionComplex.krools_challenge:
         images = [
-            (0x903, 0, 1), (0x904, 0, 2), (0x905, 0, 3), (0x906, 1, 3),
-            (0x907, 1, 2), (0x908, 1, 1), (0x909, 1, 0), (0x90A, 0, 0),
+            (0x903, 0, 1),
+            (0x904, 0, 2),
+            (0x905, 0, 3),
+            (0x906, 1, 3),
+            (0x907, 1, 2),
+            (0x908, 1, 1),
+            (0x909, 1, 0),
+            (0x90A, 0, 0),
         ]
         grid_image = Image.new(mode="RGBA", size=(128, 128))
         for img_id, grid_x, grid_y in images:
@@ -788,7 +795,7 @@ def showWinConditionInternal(ROM_COPY: LocalROM, win_condition: WinConditionComp
             )
             if item_data.flip:
                 item_im = item_im.transpose(Image.FLIP_TOP_BOTTOM)
-            
+
             dim = max(item_data.width, item_data.height)
             base_im = Image.new(mode="RGBA", size=(dim, dim))
             paste_x = (dim - item_data.width) // 2
@@ -802,6 +809,7 @@ def showWinConditionInternal(ROM_COPY: LocalROM, win_condition: WinConditionComp
     # 5. Final render execution
     if output_image:
         writeWinConImage(output_image, ROM_COPY, file_index)
+
 
 def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
     """Alter the image that's shown on the main menu to display the win condition."""
@@ -819,19 +827,19 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
     if win_con == WinConditionComplex.tasks:
         global_count = 0
         task_segments = [
-            { "type": settings.task_1_condition, "count": settings.task_1_count },
-            { "type": settings.task_2_condition, "count": settings.task_2_count },
-            { "type": settings.task_3_condition, "count": settings.task_3_count },
-            { "type": settings.task_4_condition, "count": settings.task_4_count },
-            { "type": settings.task_5_condition, "count": settings.task_5_count },
-            { "type": settings.task_6_condition, "count": settings.task_6_count },
-            { "type": settings.task_7_condition, "count": settings.task_7_count },
-            { "type": settings.task_8_condition, "count": settings.task_8_count },
+            {"type": settings.task_1_condition, "count": settings.task_1_count},
+            {"type": settings.task_2_condition, "count": settings.task_2_count},
+            {"type": settings.task_3_condition, "count": settings.task_3_count},
+            {"type": settings.task_4_condition, "count": settings.task_4_count},
+            {"type": settings.task_5_condition, "count": settings.task_5_count},
+            {"type": settings.task_6_condition, "count": settings.task_6_count},
+            {"type": settings.task_7_condition, "count": settings.task_7_count},
+            {"type": settings.task_8_condition, "count": settings.task_8_count},
         ]
         for task in task_segments:
             if task["type"] == WinConditionComplex.inactive:
                 continue
             showWinConditionInternal(ROM_COPY, task["type"], task["count"], 196 + global_count)
             global_count += 1
-    
+
     showWinConditionInternal(ROM_COPY, win_con, global_count, 195)

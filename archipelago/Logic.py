@@ -2057,14 +2057,14 @@ class LogicVarHolder:
         main_condition = True
         if condition == WinConditionComplex.tasks:
             task_segments = [
-                { "type": self.settings.task_1_condition, "count": self.settings.task_1_count },
-                { "type": self.settings.task_2_condition, "count": self.settings.task_2_count },
-                { "type": self.settings.task_3_condition, "count": self.settings.task_3_count },
-                { "type": self.settings.task_4_condition, "count": self.settings.task_4_count },
-                { "type": self.settings.task_5_condition, "count": self.settings.task_5_count },
-                { "type": self.settings.task_6_condition, "count": self.settings.task_6_count },
-                { "type": self.settings.task_7_condition, "count": self.settings.task_7_count },
-                { "type": self.settings.task_8_condition, "count": self.settings.task_8_count },
+                {"type": self.settings.task_1_condition, "count": self.settings.task_1_count},
+                {"type": self.settings.task_2_condition, "count": self.settings.task_2_count},
+                {"type": self.settings.task_3_condition, "count": self.settings.task_3_count},
+                {"type": self.settings.task_4_condition, "count": self.settings.task_4_count},
+                {"type": self.settings.task_5_condition, "count": self.settings.task_5_count},
+                {"type": self.settings.task_6_condition, "count": self.settings.task_6_count},
+                {"type": self.settings.task_7_condition, "count": self.settings.task_7_count},
+                {"type": self.settings.task_8_condition, "count": self.settings.task_8_count},
             ]
             for task in task_segments:
                 if task["type"] == WinConditionComplex.inactive:

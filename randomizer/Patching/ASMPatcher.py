@@ -719,6 +719,7 @@ def precalcBoot(ROM_COPY: LocalROM, spoiler):
 
 class PauseScreens(IntEnum):
     """Enum to store indexes of each pause screen."""
+
     Main = 0
     LevelKongs = 1
     LevelALl = 2

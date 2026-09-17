@@ -2478,12 +2478,7 @@ class Settings:
         if self.HasWinRequirement(WinConditionComplex.req_crown) or self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown:
             ItemList[Items.BattleCrown].playthrough = True
             ItemList[Items.FillerCrown].playthrough = True
-        if (
-            self.HasWinRequirement(WinConditionComplex.req_bean)
-            or self.crown_door_item == BarrierItems.Bean
-            or self.coin_door_item == BarrierItems.Bean
-            or Types.Bean in self.shuffled_location_types
-        ):
+        if self.HasWinRequirement(WinConditionComplex.req_bean) or self.crown_door_item == BarrierItems.Bean or self.coin_door_item == BarrierItems.Bean or Types.Bean in self.shuffled_location_types:
             ItemList[Items.Bean].playthrough = True
         if (
             self.HasWinRequirement(WinConditionComplex.req_pearl)

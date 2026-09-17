@@ -374,7 +374,9 @@ def create_region(
                     add_item_rule(location, lambda item: not (item.player == player and "Blueprint" in item.name))
 
             # Add boss defeated token if needed
-            if location_obj.type == Types.Key and (logic_holder.settings.HasWinRequirement(WinConditionComplex.req_bosses) or logic_holder.settings.HasWinRequirement(WinConditionComplex.krools_challenge)):
+            if location_obj.type == Types.Key and (
+                logic_holder.settings.HasWinRequirement(WinConditionComplex.req_bosses) or logic_holder.settings.HasWinRequirement(WinConditionComplex.krools_challenge)
+            ):
                 token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
                 set_rule(token_location, lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic))
                 token_location.place_locked_item(DK64Item("Boss Defeated", ItemClassification.progression_skip_balancing, None, player))

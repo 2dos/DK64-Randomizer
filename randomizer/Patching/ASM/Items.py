@@ -225,7 +225,7 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeValue(ROM_COPY, 0x806F6C74, Overlay.Static, getVar("model_two_touch_array_count"), offset_dict)
     writeValue(ROM_COPY, 0x806F70C6, Overlay.Static, getHiSym("model_two_touch_array"), offset_dict)
     writeValue(ROM_COPY, 0x806F70CA, Overlay.Static, getLoSym("model_two_touch_array"), offset_dict)
-    
+
     # Flag Stuff
     # Get blueprint count
     writeValue(ROM_COPY, 0x80024D06, Overlay.Menu, ReqItems.Blueprint, offset_dict)

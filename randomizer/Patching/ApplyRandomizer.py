@@ -122,8 +122,10 @@ class BooleanProperties:
         self.offset = offset
         self.target = target
 
+
 class WinConROM(IntEnum):
     """Enum of all win con types."""
+
     # If it's not listed here, then it's been reworked into some other win con type under the hood
     krool = 0
     krem_kapture = 2
@@ -133,6 +135,7 @@ class WinConROM(IntEnum):
     tasks_nopause = 9
     flag = 10
     reqitem_solo = 11
+
 
 def writeMultiselector(
     enabled_selections: list,
@@ -602,25 +605,13 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
         WinConditionComplex.beat_krool: {
             "index": WinConROM.krool,
         },
-        WinConditionComplex.get_key8: {
-            "index": WinConROM.reqitem_solo,
-            "item": ReqItems.Key,
-            "level": 7
-        },
+        WinConditionComplex.get_key8: {"index": WinConROM.reqitem_solo, "item": ReqItems.Key, "level": 7},
         WinConditionComplex.get_keys_3_and_8: {
             "index": WinConROM.tasks_nopause,
             "tasks": [
-                {
-                    "index": WinConROM.reqitem_solo,
-                    "item": ReqItems.Key,
-                    "level": 2
-                },
-                {
-                    "index": WinConROM.reqitem_solo,
-                    "item": ReqItems.Key,
-                    "level": 7
-                },
-            ]
+                {"index": WinConROM.reqitem_solo, "item": ReqItems.Key, "level": 2},
+                {"index": WinConROM.reqitem_solo, "item": ReqItems.Key, "level": 7},
+            ],
         },
         WinConditionComplex.krem_kapture: {
             "index": WinConROM.krem_kapture,
@@ -631,52 +622,18 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
         WinConditionComplex.krools_challenge: {
             "index": WinConROM.tasks_nopause,
             "tasks": [
-                {
-                    "index": WinConROM.custom_item,
-                    "item": ReqItems.Key,
-                    "count": 8
-                },
-                {
-                    "index": WinConROM.custom_item,
-                    "item": ReqItems.Bosses,
-                    "count": 7
-                },
-                {
-                    "index": WinConROM.custom_item,
-                    "item": ReqItems.Blueprint,
-                    "count": 40
-                },
-                {
-                    "index": WinConROM.custom_item,
-                    "item": ReqItems.BonusesNoHelm,
-                    "count": 43
-                },
-            ]
+                {"index": WinConROM.custom_item, "item": ReqItems.Key, "count": 8},
+                {"index": WinConROM.custom_item, "item": ReqItems.Bosses, "count": 7},
+                {"index": WinConROM.custom_item, "item": ReqItems.Blueprint, "count": 40},
+                {"index": WinConROM.custom_item, "item": ReqItems.BonusesNoHelm, "count": 43},
+            ],
         },
-        WinConditionComplex.kill_the_rabbit: {
-            "index": WinConROM.flag,
-            "flag": 0x2E9  # Rabbit Killed Flag
-        },
-        WinConditionComplex.mech_fish: {
-            "index": WinConROM.flag,
-            "flag": 167
-        },
-        WinConditionComplex.arcade: {
-            "index": WinConROM.flag,
-            "flag": 132  # Arcade R2
-        },
-        WinConditionComplex.jetpac: {
-            "index": WinConROM.flag,
-            "flag": 379
-        },
-        WinConditionComplex.bad_hit_detection_man: {
-            "index": WinConROM.flag,
-            "flag": 660
-        },
-        WinConditionComplex.rareware_gb_check: {
-            "index": WinConROM.flag,
-            "flag": 301
-        },
+        WinConditionComplex.kill_the_rabbit: {"index": WinConROM.flag, "flag": 0x2E9},  # Rabbit Killed Flag
+        WinConditionComplex.mech_fish: {"index": WinConROM.flag, "flag": 167},
+        WinConditionComplex.arcade: {"index": WinConROM.flag, "flag": 132},  # Arcade R2
+        WinConditionComplex.jetpac: {"index": WinConROM.flag, "flag": 379},
+        WinConditionComplex.bad_hit_detection_man: {"index": WinConROM.flag, "flag": 660},
+        WinConditionComplex.rareware_gb_check: {"index": WinConROM.flag, "flag": 301},
         WinConditionComplex.blast_courses: {
             "index": WinConROM.custom_item,
             "item": ReqItems.BlastCourses,
@@ -767,14 +724,14 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
                 ROM_COPY.write(spoiler.settings.win_condition_count)
     elif win_con == WinConditionComplex.tasks:
         task_segments = [
-            { "type": spoiler.settings.task_1_condition, "count": spoiler.settings.task_1_count },
-            { "type": spoiler.settings.task_2_condition, "count": spoiler.settings.task_2_count },
-            { "type": spoiler.settings.task_3_condition, "count": spoiler.settings.task_3_count },
-            { "type": spoiler.settings.task_4_condition, "count": spoiler.settings.task_4_count },
-            { "type": spoiler.settings.task_5_condition, "count": spoiler.settings.task_5_count },
-            { "type": spoiler.settings.task_6_condition, "count": spoiler.settings.task_6_count },
-            { "type": spoiler.settings.task_7_condition, "count": spoiler.settings.task_7_count },
-            { "type": spoiler.settings.task_8_condition, "count": spoiler.settings.task_8_count },
+            {"type": spoiler.settings.task_1_condition, "count": spoiler.settings.task_1_count},
+            {"type": spoiler.settings.task_2_condition, "count": spoiler.settings.task_2_count},
+            {"type": spoiler.settings.task_3_condition, "count": spoiler.settings.task_3_count},
+            {"type": spoiler.settings.task_4_condition, "count": spoiler.settings.task_4_count},
+            {"type": spoiler.settings.task_5_condition, "count": spoiler.settings.task_5_count},
+            {"type": spoiler.settings.task_6_condition, "count": spoiler.settings.task_6_count},
+            {"type": spoiler.settings.task_7_condition, "count": spoiler.settings.task_7_count},
+            {"type": spoiler.settings.task_8_condition, "count": spoiler.settings.task_8_count},
         ]
         ROM_COPY.seek(sav + 0x11D)
         ROM_COPY.write(WinConROM.tasks)
