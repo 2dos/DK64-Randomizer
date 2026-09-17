@@ -42,6 +42,9 @@ function getItemCap(item) {
     "req_bonuses": 53,
     "req_cb": 3500,
     "req_companycoins": 2,
+    "tasks": 8,
+    "blast_courses": 7,
+    "krem_kapture": 44,
   }
   if (Object.keys(ITEM_CAPS).includes(item)) {
     return ITEM_CAPS[item];
@@ -1651,17 +1654,32 @@ document
   .addEventListener("change", update_door_two_num_access);
 
 // Update Win Condition Number Access
+let wincon_containers = ["win_condition_container"];
+let wincon_conditions = ["win_condition_item"];
+let wincon_counts = ["win_condition_count"]
+for (let i = 0; i < 8; i++) {
+  wincon_containers.push(`task_${i + 1}_container`);
+  wincon_conditions.push(`task_${i + 1}_condition`);
+  wincon_counts.push(`task_${i + 1}_count`);
+}
 function update_win_con_num_access() {
+  
   const DISABLED_WIN_VALUES = [
     "easy_random",
     "medium_random",
     "hard_random",
     "get_key8",
     "get_keys_3_and_8",
-    "krem_kapture",
     "dk_rap_items",
     "krools_challenge",
     "kill_the_rabbit",
+    "mech_fish",
+    "arcade",
+    "jetpac",
+    "bad_hit_detection_man",
+    "rareware_gb_check",
+    "tasks",
+    "inactive",
   ];
   const KROOL_WIN_CONS = [
     "easy_random",
@@ -1671,94 +1689,112 @@ function update_win_con_num_access() {
   const KROOL_REQUIRED_WIN_CONS = ["krools_challenge"];
   const KROOL_DISABLED_WIN_CONS = [];
 
-  const winConSelection = document.getElementById("win_condition_item");
-  const winConContainer = document.getElementById("win_condition_container");
-  const winConReq = document.getElementById("win_condition_count");
-  const disabled = DISABLED_WIN_VALUES.includes(winConSelection.value);
-  const kroolSection = document.getElementById("krool_section");
-  const kroolShipSpawnMethod = document.getElementById("win_condition_spawns_ship");
-  
-  // Force enable checkbox for win conditions that require K. Rool
-  if (KROOL_REQUIRED_WIN_CONS.includes(winConSelection.value)) {
-    kroolShipSpawnMethod.checked = true;
-    kroolShipSpawnMethod.disabled = true;
-  }
-  // Force disable checkbox for win conditions incompatible with K. Rool requirement
-  else if (KROOL_DISABLED_WIN_CONS.includes(winConSelection.value)) {
-    kroolShipSpawnMethod.checked = false;
-    kroolShipSpawnMethod.disabled = true;
-  }
-  // Allow user control for other win conditions
-  else {
-    kroolShipSpawnMethod.disabled = false;
-  }
-  
-  // Show K. Rool section only when the "Require Beating K. Rool" checkbox is checked
-  const isKRool = kroolShipSpawnMethod && kroolShipSpawnMethod.checked;
-
-  if (disabled) {
-    winConContainer.classList.add("hide-input");
-  } else {
-    winConContainer.classList.remove("hide-input");
-  }
-  if (isKRool) {
-    kroolSection.removeAttribute("hidden");
-  } else {
-    kroolSection.setAttribute("hidden", "hidden");
-  }
-
-  // Set K. Rool's Challenge to always be locked to 5 (all K. Rool phases)
-  if (winConSelection.value === "krools_challenge") {
-    winConReq.value = 5;
-  } else if (!winConReq.value) {
-    winConReq.value = 1;
-  } else {
-    const item_type = winConSelection.value;
-    const cap = getItemCap(item_type);
-    if (cap !== null) {
-      if (parseInt(winConReq.value) > cap) {
-        winConReq.value = cap;
+  for (let i = 0; i < 9; i++) {
+    const winConSelection = document.getElementById(wincon_conditions[i]);
+    const winConContainer = document.getElementById(wincon_containers[i]);
+    const winConReq = document.getElementById(wincon_counts[i]);
+    const disabled = DISABLED_WIN_VALUES.includes(winConSelection.value);
+    const kroolSection = document.getElementById("krool_section");
+    const kroolShipSpawnMethod = document.getElementById("win_condition_spawns_ship");
+    
+    // Force enable checkbox for win conditions that require K. Rool
+    if (i == 0) {
+      if (KROOL_REQUIRED_WIN_CONS.includes(winConSelection.value)) {
+        kroolShipSpawnMethod.checked = true;
+        kroolShipSpawnMethod.disabled = true;
+      }
+      // Force disable checkbox for win conditions incompatible with K. Rool requirement
+      else if (KROOL_DISABLED_WIN_CONS.includes(winConSelection.value)) {
+        kroolShipSpawnMethod.checked = false;
+        kroolShipSpawnMethod.disabled = true;
+      }
+      // Allow user control for other win conditions
+      else {
+        kroolShipSpawnMethod.disabled = false;
+      }
+      
+      // Show K. Rool section only when the "Require Beating K. Rool" checkbox is checked
+      const isKRool = kroolShipSpawnMethod && kroolShipSpawnMethod.checked;
+      if (isKRool) {
+        kroolSection.removeAttribute("hidden");
+      } else {
+        kroolSection.setAttribute("hidden", "hidden");
       }
     }
-  }
+  
+    if (disabled) {
+      winConContainer.classList.add("hide-input");
+    } else {
+      winConContainer.classList.remove("hide-input");
+    }
+  
+    // Set K. Rool's Challenge to always be locked to 5 (all K. Rool phases)
+    if (winConSelection.value === "krools_challenge") {
+      winConReq.value = 5;
+    } else if (!winConReq.value) {
+      winConReq.value = 1;
+    } else {
+      const item_type = winConSelection.value;
+      const cap = getItemCap(item_type);
+      if (cap !== null) {
+        if (parseInt(winConReq.value) > cap) {
+          winConReq.value = cap;
+        }
+      }
+    }
 
-  // Update tooltip for special win conditions
-  const TOOLTIP_WIN_CONS = {
-    "krools_challenge": "Beat K. Rool and collect all Keys, Blueprints, Bosses, and Bonus Barrels",
-    "dk_rap_items": "Acquire all items referenced in each verse of the DK Rap:<br><br><strong>Donkey verse</strong> : Coconuts, Strong Kong<br><strong>Diddy verse</strong> : Rocketbarrel, Peanuts, Guitar<br><strong>Lanky verse</strong> : Orangstand, Baboon Balloon, Trombone<br><strong>Tiny verse</strong> : Mini Monkey, Ponytail Twirl, Climbing<br><strong>Chunky verse</strong> : Barrel Throwing<br><strong>The Fridge</strong> : Cranky, Peanuts, Pineapple, Grape, Orange Throwing, Coconuts",
-    "kill_the_rabbit": "Kill the rabbit in Chunky's igloo in Caves. Turn it to Ash. Simple as that."
-  };
-
-  const infoIcon = document.getElementById("win_condition_info_icon");
-
-  // Always dispose existing tooltip first
-  $(infoIcon).tooltip('dispose');
-
-  if (TOOLTIP_WIN_CONS[winConSelection.value]) {
-    infoIcon.setAttribute("title", TOOLTIP_WIN_CONS[winConSelection.value]);
-    infoIcon.setAttribute("data-bs-original-title", TOOLTIP_WIN_CONS[winConSelection.value]);
-    infoIcon.classList.remove("hidden");
-    // Initialize Bootstrap tooltip
-    $(infoIcon).tooltip({
-      trigger: 'hover',
-      html: true,
-      placement: 'right',
-      customClass: 'win-condition-tooltip'
-    });
-  } else {
-    infoIcon.setAttribute("title", "");
-    infoIcon.setAttribute("data-bs-original-title", "");
-    infoIcon.classList.add("hidden");
+    if (i == 0) {
+      if (winConSelection.value == "tasks") {
+        document.getElementById("tasks_configuration").removeAttribute("hidden");
+      } else {
+        document.getElementById("tasks_configuration").setAttribute("hidden", "hidden");
+      }
+    
+      // Update tooltip for special win conditions
+      const TOOLTIP_WIN_CONS = {
+        "krools_challenge": "Beat K. Rool and collect all Keys, Blueprints, Bosses, and Bonus Barrels",
+        "dk_rap_items": "Acquire all items referenced in each verse of the DK Rap:<br><br><strong>Donkey verse</strong> : Coconuts, Strong Kong<br><strong>Diddy verse</strong> : Rocketbarrel, Peanuts, Guitar<br><strong>Lanky verse</strong> : Orangstand, Baboon Balloon, Trombone<br><strong>Tiny verse</strong> : Mini Monkey, Ponytail Twirl, Climbing<br><strong>Chunky verse</strong> : Barrel Throwing<br><strong>The Fridge</strong> : Cranky, Peanuts, Pineapple, Grape, Orange Throwing, Coconuts",
+        "kill_the_rabbit": "Kill the rabbit in Chunky's igloo in Caves. Turn it to Ash. Simple as that."
+      };
+    
+      const infoIcon = document.getElementById("win_condition_info_icon");
+    
+      // Always dispose existing tooltip first
+      $(infoIcon).tooltip('dispose');
+    
+      if (TOOLTIP_WIN_CONS[winConSelection.value]) {
+        infoIcon.setAttribute("title", TOOLTIP_WIN_CONS[winConSelection.value]);
+        infoIcon.setAttribute("data-bs-original-title", TOOLTIP_WIN_CONS[winConSelection.value]);
+        infoIcon.classList.remove("hidden");
+        // Initialize Bootstrap tooltip
+        $(infoIcon).tooltip({
+          trigger: 'hover',
+          html: true,
+          placement: 'right',
+          customClass: 'win-condition-tooltip'
+        });
+      } else {
+        infoIcon.setAttribute("title", "");
+        infoIcon.setAttribute("data-bs-original-title", "");
+        infoIcon.classList.add("hidden");
+      }
+    }
+  
   }
 }
 
-document
-  .getElementById("win_condition_item")
-  .addEventListener("change", update_win_con_num_access);
+wincon_conditions.concat(["win_condition_spawns_ship"]).forEach(wincon_id => {
+  document
+    .getElementById(wincon_id)
+    .addEventListener("change", update_win_con_num_access);
+});
 
-document
-  .getElementById("win_condition_spawns_ship")
-  .addEventListener("change", update_win_con_num_access);
+document.getElementById("task_reset").addEventListener("click", () => {
+  for (let i = 0; i < 8; i++) {
+    document.getElementById(`task_${i + 1}_condition`).value = 'inactive';
+  }
+  update_win_con_num_access();
+});
 
 // Validate Door 1 input on loss of focus
 document

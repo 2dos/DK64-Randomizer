@@ -14,6 +14,18 @@ ROM_DATA static char igt_text[20] = "IGT: 0000:00:00";
 ROM_DATA static char points_text[21] = "420l801 POINTS LEFT";
 ROM_DATA static int stored_igt = 0;
 
+ROM_RODATA_NUM const char screen_order[] = {
+    PAUSESCREEN_MAIN,
+    PAUSESCREEN_LEVEL_KONGS,
+    PAUSESCREEN_LEVEL_ALL,
+    PAUSESCREEN_TOTALS,
+    PAUSESCREEN_CHECKS,
+    PAUSESCREEN_MOVES,
+    PAUSESCREEN_TASKS,
+    PAUSESCREEN_ITEMLOCATIONS,
+    PAUSESCREEN_HINTS,
+};
+
 void getLevelPoints(int level, unsigned short *points, unsigned short *total_points) {
     int points_left = 0;
     int points_total = 0;
@@ -321,13 +333,14 @@ Gfx* pauseScreen3And4Header(Gfx* dl) {
     pause_paad* paad = CurrentActorPointer_0->paad;
     display_billboard_fix = 0;
     int level_x = 0x280;
-    if (paad->screen == PAUSESCREEN_TOTALS) {
+    pausescreenlist focused_screen = screen_order[(int)paad->screen];
+    if (focused_screen == PAUSESCREEN_TOTALS) {
         return printText(dl, level_x, 0x3C, 0.65f, "TOTALS");
-    } else if (paad->screen == PAUSESCREEN_CHECKS) {
+    } else if (focused_screen == PAUSESCREEN_CHECKS) {
         dl = printText(dl, level_x, 0x3C, 0.65f, "CHECKS");
         dk_strFormat((char*)level_check_text, "w %s e", levels[(int)check_level]);
         return printText(dl, level_x, 160, 0.5f, level_check_text);
-    } else if (paad->screen == PAUSESCREEN_MOVES) {
+    } else if (focused_screen == PAUSESCREEN_MOVES) {
         dl = display_file_images(dl, -50);
         int igt_h = stored_igt / 3600;
         int igt_s = stored_igt % 60;
@@ -335,10 +348,36 @@ Gfx* pauseScreen3And4Header(Gfx* dl) {
         dk_strFormat((char*)igt_text, "%03d:%02d:%02d", igt_h, igt_m, igt_s);
         dl = printText(dl, level_x, 675, 0.5f, igt_text);
         return printText(dl, level_x, 0x3C, 0.65f, "MOVES");
-    } else if (paad->screen == PAUSESCREEN_HINTS) {
+    } else if (focused_screen == PAUSESCREEN_HINTS) {
         return drawHintScreen(dl, level_x);
-    } else if (paad->screen == PAUSESCREEN_ITEMLOCATIONS) {
+    } else if (focused_screen == PAUSESCREEN_ITEMLOCATIONS) {
         return drawItemLocationScreen(dl, level_x);
+    } else if (focused_screen == PAUSESCREEN_TASKS) {
+        dl = printText(dl, level_x, 0x3C, 0.65f, "TASKS");
+        int offset = 0;
+        for (int y = 0; y < 2; y++) {
+            for (int x = 0; x < 4; x++) {
+                TaskRequirement *task = &Rando.tasks[offset];
+                if (task->active) {
+                    int opacity = 0xFF;
+                    if (!canAccessWinCondition(task->goal_type, &task->req)) {
+                        opacity = 0x80;
+                    }
+                    dl = initDisplayList(dl);
+                    gDPSetRenderMode(dl++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+                    gDPSetPrimColor(dl++, 0, 0, opacity, opacity, opacity, 0xFF);
+                    gDPSetCombineLERP(dl++,
+                        TEXEL0, 0, PRIMITIVE, 0,  // RGB: (TEXEL0 - 0) * PRIMITIVE + 0
+                        TEXEL0, 0, PRIMITIVE, 0,  // ALPHA: (TEXEL0 - 0) * PRIMITIVE + 0
+                        TEXEL0, 0, PRIMITIVE, 0,  // RGB2
+                        TEXEL0, 0, PRIMITIVE, 0   // ALPHA2
+                    );
+                    gDPSetTextureFilter(dl++, G_TF_POINT);
+                    dl = displayImage(dl++, 196 + offset, 0, RGBA16, 32, 32, 0x100 + (x * 0x100), 0x100 + (y * 0x100), 4.0f, 4.0f, 0, 0.0f);
+                }
+                offset++;
+            }
+        }
     }
     return dl;
 }
@@ -358,9 +397,10 @@ Gfx* pauseScreen3And4ItemName(Gfx* dl, int x, int y, float scale, char* text) {
      * @brief Changes the item name depending on the screen you're on
      */
     pause_paad* paad = CurrentActorPointer_0->paad;
-    if (paad->screen == PAUSESCREEN_TOTALS) {
+    pausescreenlist focused_screen = screen_order[(int)paad->screen];
+    if (focused_screen == PAUSESCREEN_TOTALS) {
         return printText(dl, x, y, scale, raw_items[(int)ViewedPauseItem]);
-    } else if (paad->screen == PAUSESCREEN_CHECKS) {
+    } else if (focused_screen == PAUSESCREEN_CHECKS) {
         return printText(dl, x, y, scale, items[(int)ViewedPauseItem]);
     }
     return dl;
@@ -371,9 +411,10 @@ Gfx* pauseScreen3And4Counter(int x, int y, int top, int bottom, Gfx* dl, int unk
      * @brief Changes the counter on-screen depending on what screen you're on
      */
     pause_paad* paad = CurrentActorPointer_0->paad;
-    if (paad->screen == PAUSESCREEN_TOTALS) {
+    pausescreenlist focused_screen = screen_order[(int)paad->screen];
+    if (focused_screen == PAUSESCREEN_TOTALS) {
         return printOutOfCounter(x, y, top, bottom, dl, unk0, scale);
-    } else if (paad->screen == PAUSESCREEN_CHECKS) {
+    } else if (focused_screen == PAUSESCREEN_CHECKS) {
         int item_index = ViewedPauseItem;
         int top_num = 0;
         int bottom_num = 0;
@@ -402,7 +443,7 @@ void changePauseScreen(void) {
      * @brief Hook into the change pause screen function
      */
     pause_paad* paad = CurrentActorPointer_0->paad;
-    if ((paad->screen != PAUSESCREEN_MOVES) && (paad->next_screen == PAUSESCREEN_MOVES)) {
+    if ((screen_order[(int)paad->screen] != PAUSESCREEN_MOVES) && (screen_order[(int)paad->next_screen] == PAUSESCREEN_MOVES)) {
         resetTracker();
     }
     if (Rando.quality_of_life.fast_pause_transitions) {
@@ -417,7 +458,7 @@ int changeSelectedLevel(int unk0, int unk1) {
      * @brief Change selected level in the checks screen
      */
     pause_paad* paad = CurrentActorPointer_0->paad;
-    if (paad->screen == PAUSESCREEN_CHECKS) {
+    if (screen_order[(int)paad->screen] == PAUSESCREEN_CHECKS) {
         // Checks Screen
         handleCShifting(&check_level, sizeof(levels) / 4);
     }

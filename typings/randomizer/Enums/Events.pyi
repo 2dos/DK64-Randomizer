@@ -211,3 +211,8 @@ class Events(IntEnum):
     KilledRabbit = 208
     LankyMushroomSlamSwitch = 209
     ChunkyFreed = 210
+    MechFishCheck = 211
+    ArcadeR2Check = 212
+    JetpacCheck = 213
+    BHDMCheck = 214
+    RarewareGBCheck = 215

@@ -81,7 +81,6 @@ extern void handleTimeOfDay(time_of_day_calls call);
 
 extern int convertSubIDToIndex(short obj_index);
 extern int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2);
-extern void createCollisionObjInstance(collision_types subtype, int map, int exit);
 extern void disableDiddyRDDoors(void);
 
 extern void cannonCodeWrapper(void);
@@ -206,7 +205,7 @@ extern void checkSeedVictory(void);
 extern void checkVictory_flaghook(int flag);
 extern void winRabbitSeed(int song, float volume);
 extern void safeguardRabbitReward(void);
-extern int canAccessWinCondition(void);
+extern int canAccessWinCondition(int master_win_con, RequirementArg *custom_win_con_data);
 extern void updateSkippableCutscenes(void);
 extern void adjustAnimationTables(void);
 extern void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_index);
@@ -530,3 +529,5 @@ extern unsigned short actor_cb_counts[221];
 extern short m2_cb_coin_counts[8];
 extern const unsigned char blast_maps[7];
 extern button_swap_struct button_swaps[8];
+extern short model_two_touch_array[MODEL_TWO_TOUCH_ARRAY_COUNT];
+extern const char screen_order[PAUSESCREEN_TERMINATOR];

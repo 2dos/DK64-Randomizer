@@ -1325,9 +1325,10 @@ typedef struct tag_model_struct {
 	/* 0x005 */ char unk1;
 } tag_model_struct;
 
-typedef struct mtx_item {
+typedef struct __attribute__((aligned(16))) mtx_item {
 	/* 0x000 */ float mf[4][4];
 } mtx_item;
+_Static_assert(__alignof__(mtx_item) == 16, "mtx_item not 16-byte aligned");
 
 typedef struct actor_behaviour_def {
     /* 0x000 */ short actor_type;
@@ -1794,6 +1795,24 @@ typedef struct ItemRequirement {
 	/* 0x000 */ unsigned char item;
 	/* 0x001 */ unsigned char count;
 } ItemRequirement;
+
+typedef struct ItemRequirementSolo {
+	/* 0x000 */ unsigned char item;
+	/* 0x001 */ unsigned char level;
+} ItemRequirementSolo;
+
+typedef union RequirementArg {
+	ItemRequirement item_req;
+	short flag;
+	ItemRequirementSolo item_req_solo;
+	short count;
+} RequirementArg;
+
+typedef struct TaskRequirement {
+	/* 0x000 */ unsigned char active;
+	/* 0x001 */ unsigned char goal_type;
+	/* 0x002 */ RequirementArg req;
+} TaskRequirement;
 
 typedef struct LocationVisuals {
 	unsigned char crowns : 1; // 0x80

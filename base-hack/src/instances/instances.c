@@ -163,7 +163,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					// Check access requirements based on ship spawn method
 					if (Rando.win_condition_spawns_ship) {
 						// Win condition-based access
-						if (!canAccessWinCondition()) {
+						if (!canAccessWinCondition(Rando.win_condition, &Rando.win_condition_extra)) {
 							return 0;
 						}
 					} else {
@@ -572,7 +572,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	} else if (index == -9) {
 		if (Rando.win_condition_spawns_ship) {
 			// Win condition-based access
-			if (!canAccessWinCondition()) {
+			if (!canAccessWinCondition(Rando.win_condition, &Rando.win_condition_extra)) {
 				return 0;
 			}
 		} else {

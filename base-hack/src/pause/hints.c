@@ -357,7 +357,7 @@ int getHintRequirement(int slot) {
 
 void displayCBCount(pause_paad *handler, void* sprite, int x, int y, float scale, int unk0, int unk1) {
     displaySprite(handler, sprite, x, y, scale, unk0, unk1);
-    if (handler->screen == PAUSESCREEN_HINTS) {
+    if (screen_order[(int)handler->screen] == PAUSESCREEN_HINTS) {
         int cb_count = getItemCountReq(REQITEM_COLOREDBANANA);
         displayPauseSpriteNumber(handler, 0x24, 0x1C, 0xC, -10, cb_count, 1, 0);
         displaySprite(handler, (void*)0x80721474, 0x24, 0x1C, 0.75f, 2, 1);
@@ -602,7 +602,7 @@ void handleHintScreenLockout(void) {
         } else if (lockout_mult) {
             pause_paad *paad = CurrentActorPointer_0->paad;
 
-            if (paad->screen == PAUSESCREEN_HINTS) {
+            if (screen_order[(int)paad->screen] == PAUSESCREEN_HINTS) {
                 hint_lockout = Rando.hint_screen_lockout * lockout_mult;
                 lockout_mult = 0;
                 for (int i = 0; i < 5; i++) {

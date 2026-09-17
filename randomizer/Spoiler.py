@@ -437,6 +437,13 @@ class Spoiler:
                 WinConditionComplex.req_bean: "Acquire the Bean",
                 WinConditionComplex.krools_challenge: "Beat K. Rool's Challenge",
                 WinConditionComplex.kill_the_rabbit: "Kill the Rabbit",
+                WinConditionComplex.mech_fish: "Mech Fish Check",
+                WinConditionComplex.arcade: "Arcade Round 2 Check",
+                WinConditionComplex.jetpac: "Jetpac Check",
+                WinConditionComplex.bad_hit_detection_man: "Toy Monster Check",
+                WinConditionComplex.rareware_gb_check: "Rareware GB Check",
+                WinConditionComplex.blast_courses: f"{wc_count} Blast Course{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.tasks: f"{wc_count} Task{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_bp: f"{wc_count} Blueprint{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_companycoins: f"{wc_count} Company Coin{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_crown: f"{wc_count} Crown{'s' if wc_count != 1 else ''}",
@@ -1028,7 +1035,7 @@ class Spoiler:
                 path_dict[path_location.name] = path_item.name
             phase_name = boss_map_names.get(map_id, Maps(map_id).name)
             humanspoiler["WotH Paths"][phase_name] = path_dict
-        if self.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+        if self.settings.HasWinRequirement(WinConditionComplex.dk_rap_items):
             for verse_name, path in self.rap_win_con_paths.items():
                 path_dict = {}
                 for path_loc_id in path:
@@ -1414,12 +1421,13 @@ class Spoiler:
             WinConditionComplex.req_rainbowcoin: [Types.RainbowCoin, Types.FillerRainbowCoin],
         }
         # Win condition items are more important than GBs but less than moves
-        if self.settings.win_condition_item in win_con_type_table:
-            if ItemList[location.item].type in win_con_type_table[self.settings.win_condition_item]:
-                return 10
-            if self.settings.win_condition_item == WinConditionComplex.req_companycoins:
-                if ItemList[location.item].type == Types.RarewareCoin:
+        for win_con in win_con_type_table:
+            if self.settings.HasWinRequirement(win_con):
+                if ItemList[location.item].type in win_con_type_table[win_con]:
                     return 10
+                if self.settings.HasWinRequirement(WinConditionComplex.req_companycoins):
+                    if ItemList[location.item].type == Types.RarewareCoin:
+                        return 10
         # Kongs are most the single most important thing and should be at the top of spheres
         if ItemList[location.item].type == Types.Kong:
             return 0

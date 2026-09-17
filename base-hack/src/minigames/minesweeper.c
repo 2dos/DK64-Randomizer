@@ -157,8 +157,7 @@ void digCellZeroCheck(int x, int y) {
     // 3. Uncover the current tile
     tile->uncovered = 1;
 
-    // 4. If this tile has adjacent mines, STOP recursing. 
-    // We want to show the number but not open its neighbors.
+    // 4. If this tile has adjacent mines, STOP recursing.
     if (tile->adjacent_mines != 0) {
         return;
     }
@@ -217,8 +216,6 @@ void digCell(void) {
         ending_timer = 120;
         playSFXWrapper(246);
     } else {
-        // This will now correctly ripple out for 0-tiles
-        // and stop at the numbered borders.
         digCellZeroCheck(selected_x, selected_y);
         checkWin();
     }

@@ -289,7 +289,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
     ]
     pickup_list = []
     for pickup in pickup_weights:
-        if pickup["item"] == "film" and spoiler.settings.win_condition_item == WinConditionComplex.krem_kapture:
+        if pickup["item"] == "film" and spoiler.settings.HasWinRequirement(WinConditionComplex.krem_kapture):
             # Kremling Kapture requires a lot more film
             pickup["weight"] = 5
         for _ in range(pickup["weight"]):

@@ -168,4 +168,4 @@ def placeKrushaHead(ROM_COPY: LocalROM, settings: Settings, slot):
     # Used in the DPad Selection Menu
     writeColorImageToROM(krushaFace32, 14, 190 + slot, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
     # Used in Shops Previews
-    writeColorImageToROM(krushaFace32RBGA32, 14, 197 + slot, 32, 32, False, TextureFormat.RGBA32, ROM_COPY)
+    writeColorImageToROM(krushaFace32RBGA32, 14, 205 + slot, 32, 32, False, TextureFormat.RGBA32, ROM_COPY)

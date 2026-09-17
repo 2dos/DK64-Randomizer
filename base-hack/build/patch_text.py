@@ -1047,6 +1047,7 @@ wrinkly_item_text = [
     YOU_SHOULD_NOT_SEE_THIS,  # REQITEM_RACECOIN,
     YOU_SHOULD_NOT_SEE_THIS,  # REQITEM_BONUSES_NOHELM,
     "Ooooo... I feel some barriers are opening up in that mushroom place. Perhaps you should check it out",  # REQITEM_FUNGITIME
+    "Ooooo... I feel some barriers are opening up in that mushroom place. Perhaps you should check it out",  # REQITEM_BLASTCOURSES
 ]
 
 vanilla_track_names = [

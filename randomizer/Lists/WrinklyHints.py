@@ -278,7 +278,7 @@ class HintSet:
                 if node_location.type == Types.Shop:
                     node.score_multiplier *= 0.4
                 # Keys are always an endpoint of a path (unless it's DK Rap win con). These items should be the culmination of other hints and therefore highly unlikely to end up unhinted.
-                if spoiler.settings.win_condition_item != WinConditionComplex.dk_rap_items and location_item.type == Types.Key:
+                if not spoiler.settings.HasWinRequirement(WinConditionComplex.dk_rap_items) and location_item.type == Types.Key:
                     node.score_multiplier *= 0.7
                 # Training barrel locations don't matter if they're hinted or not because you start with them
                 if node.node_location_id in TrainingBarrelLocations or node.node_location_id in PreGivenLocations:

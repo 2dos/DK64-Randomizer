@@ -1,5 +1,6 @@
 typedef struct varspace {
-	/* 0x000 */ char unk_00[0x2D];
+	/* 0x000 */ TaskRequirement tasks[8];
+	/* 0x020 */ char unk_20[0x2D - 0x20];
 	/* 0x02D */ char required_helm_minigames; // 0 = Disable on instrument play, 1 = One minigame required, 2 = Vanilla
 	/* 0x02E */ char fast_start_beginning; // 0 = "Fast Start" setting not applied. 1 = On
 	/* 0x02F */ char unk_2f;
@@ -36,12 +37,12 @@ typedef struct varspace {
 	/* 0x096 */ char fps_on; // 0 = FPS display off, 1 = On.
 	/* 0x097 */ char damage_multiplier; // 1 = Normal. 2 = Double. Any value greater than 11 will be 1 hit KO
 	/* 0x098 */ short progressive_bounds[10];
-	/* 0x0AC */ char unk_98[0xAE - 0xAC];
+	/* 0x0AC */ char unk_ac[0xAE - 0xAC];
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char disable_flavor_text;
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 4
 	/* 0x0B4 */ char unk_B0[0xC0 - 0xB4];
-	/* 0x0C0 */ ItemRequirement win_condition_extra; // If requirement is "get x amount of y item"
+	/* 0x0C0 */ RequirementArg win_condition_extra; // If requirement is "get x amount of y item"
 	/* 0x0C2 */ char hints_are_items; // Hints are collectable as items, wrinkly doors should behave differently
 	/* 0x0C3 */ unsigned char prog_hint_item;
 	/* 0x0C4 */ ROMFlags rom_flags;

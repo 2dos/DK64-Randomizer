@@ -1025,6 +1025,9 @@ shirt_im.save(f"{disp_dir}disco_shirt_gap.png")
 Image.new(mode="RGBA", size=(32, 32), color="#000000").save(f"{disp_dir}bananza_black.png")
 Image.new(mode="RGBA", size=(32, 32), color="#949494").save(f"{disp_dir}bananza_grey.png")
 
+for x in range(8):
+    Image.new(mode="RGBA", size=(32, 32)).save(f"{disp_dir}taskimage{x}.png")
+
 rmve = [
     "01234.png",
     "56789.png",

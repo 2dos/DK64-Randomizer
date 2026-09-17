@@ -282,9 +282,10 @@ typedef enum pausescreenlist {
 	/* 0x002 */ PAUSESCREEN_LEVEL_ALL,
 	/* 0x003 */ PAUSESCREEN_TOTALS,
 	/* 0x004 */ PAUSESCREEN_CHECKS,
-	/* 0x007 */ PAUSESCREEN_MOVES,
-	/* 0x005 */ PAUSESCREEN_ITEMLOCATIONS,
-	/* 0x006 */ PAUSESCREEN_HINTS,
+	/* 0x005 */ PAUSESCREEN_MOVES,
+	/* 0x006 */ PAUSESCREEN_TASKS,
+	/* 0x007 */ PAUSESCREEN_ITEMLOCATIONS,
+	/* 0x008 */ PAUSESCREEN_HINTS,
 	/* ----- */ PAUSESCREEN_TERMINATOR,
 } pausescreenlist;
 
@@ -318,6 +319,10 @@ typedef enum win_conditions {
 	/* 0x005 */ GOAL_KROOLS_CHALLENGE,
 	/* 0x006 */ GOAL_KILL_THE_RABBIT,
 	/* 0x007 */ GOAL_KEYS_3_AND_8,
+	/* 0x008 */ GOAL_TASKS,
+	/* 0x009 */ GOAL_TASKSNOPAUSE,
+	/* 0x00A */ GOAL_FLAG,
+	/* 0x00B */ GOAL_REQITEM,
 } win_conditions;
 
 typedef enum master_types_list {
@@ -1003,6 +1008,7 @@ typedef enum requirement_item {
 	/* 0x016 */ REQITEM_RACECOIN,
 	/* 0x017 */ REQITEM_BONUSES_NOHELM,
 	/* 0x018 */ REQITEM_FUNGITIME,
+	/* 0x019 */ REQITEM_BLASTCOURSES,
 } requirement_item;
 
 typedef enum item_ids { 

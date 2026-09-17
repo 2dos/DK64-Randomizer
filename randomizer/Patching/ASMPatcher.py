@@ -3,6 +3,7 @@
 import js
 import math
 import io
+from enum import IntEnum
 import randomizer.ItemPool as ItemPool
 from typing import Union
 from randomizer.Patching.Library.Assets import getPointerLocation, getPointerFile
@@ -716,6 +717,19 @@ def precalcBoot(ROM_COPY: LocalROM, spoiler):
     writeValue(ROM_COPY, 0x80631C3A, Overlay.Static, getLo(m2_cb_coin_counts), offset_dict)
 
 
+class PauseScreens(IntEnum):
+    """Enum to store indexes of each pause screen."""
+    Main = 0
+    LevelKongs = 1
+    LevelALl = 2
+    Totals = 3
+    Checks = 4
+    Moves = 5
+    Tasks = 6
+    ItemLocations = 7
+    Hints = 8
+
+
 def patchAssembly(ROM_COPY: LocalROM, spoiler):
     """Patch all assembly instructions."""
     patchVersionStack(ROM_COPY, spoiler.settings)
@@ -741,11 +755,28 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     writeValue(ROM_COPY, 0x8060005A, Overlay.Static, getHiSym("replacement_lobbies_array"), offset_dict)
     writeValue(ROM_COPY, 0x8060006E, Overlay.Static, getLoSym("replacement_lobbies_array"), offset_dict)
 
+    enabled_screens = [
+        PauseScreens.Main,
+        PauseScreens.LevelKongs,
+        PauseScreens.LevelALl,
+        PauseScreens.Totals,
+        PauseScreens.Checks,
+        PauseScreens.Moves,
+    ]
+    if spoiler.settings.win_condition_item == WinConditionComplex.tasks:
+        enabled_screens.append(PauseScreens.Tasks)
+    enabled_screens.append(PauseScreens.ItemLocations)
+    if spoiler.settings.pause_hints_setting != PauseHintSetting.off:
+        enabled_screens.append(PauseScreens.Hints)
+    writeValue(ROM_COPY, 0x806A8672, Overlay.Static, len(enabled_screens) - 1, offset_dict)  # Screen decrease cap
+    writeValue(ROM_COPY, 0x806A8646, Overlay.Static, len(enabled_screens), offset_dict)  # Screen increase cap
     pause_screen_count = getEnum("PAUSESCREEN_TERMINATOR")
-    if spoiler.settings.pause_hints_setting == PauseHintSetting.off:
-        pause_screen_count -= 1
-    writeValue(ROM_COPY, 0x806A8672, Overlay.Static, pause_screen_count - 1, offset_dict)  # Screen decrease cap
-    writeValue(ROM_COPY, 0x806A8646, Overlay.Static, pause_screen_count, offset_dict)  # Screen increase cap
+    enabled_pause_rom = getSym("screen_order")
+    for x in range(pause_screen_count):
+        val = -1
+        if x < len(enabled_screens):
+            val = enabled_screens[x]
+        writeValue(ROM_COPY, enabled_pause_rom + x, Overlay.Custom, val, offset_dict, True)
 
     kong_model_setting_values = [
         settings.kong_model_dk,
@@ -2102,7 +2133,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     writeFunction(ROM_COPY, 0x80028080, Overlay.Critter, "displayBFIMoveText", offset_dict)  # BFI Text Display
     writeValue(ROM_COPY, 0x80027E70, Overlay.Critter, 0x2C410000 | settings.rareware_gb_fairies, offset_dict, 4)  # SLTIU $at, $v0, count
     writeValue(ROM_COPY, 0x80027E74, Overlay.Critter, 0x1420, offset_dict)  # BNEZ $at, 0x6
-    if settings.win_condition_item == WinConditionComplex.dk_rap_items:
+    if settings.HasWinRequirement(WinConditionComplex.dk_rap_items):
         writeValue(ROM_COPY, 0x8071280E, Overlay.Static, Maps.DKRap, offset_dict)  # End Sequence destination map
         writeValue(ROM_COPY, 0x80712816, Overlay.Static, 0, offset_dict)  # End Sequence cutscene
         writeValue(ROM_COPY, 0x8075E650, Overlay.Static, 0x807141D4, offset_dict, 4)  # Alter jump table entry
@@ -2120,7 +2151,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
                 ROM_COPY.seek(0x1FFF800 + (index * 6))
                 ROM_COPY.writeMultipleBytes(int(duration * scale_down), 2)
                 ROM_COPY.writeMultipleBytes(int(cooldown * scale_down), 2)
-    elif settings.win_condition_item == WinConditionComplex.kill_the_rabbit:
+    if settings.HasWinRequirement(WinConditionComplex.kill_the_rabbit):
         writeFunction(ROM_COPY, 0x806B2320, Overlay.Static, "winRabbitSeed", offset_dict)
         writeValue(ROM_COPY, 0x806B231A, Overlay.Static, 40, offset_dict)  # Change song that plays to success (for the laughs)
         # Make sure the rabbit always is there, even if the check is done

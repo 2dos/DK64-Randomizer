@@ -67,6 +67,7 @@ class ReqItems(IntEnum):
     RaceCoin = auto()
     BonusesNoHelm = auto()
     FungiTime = auto()
+    BlastCourses = auto()
 
 
 class MenuTexture:

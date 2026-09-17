@@ -820,7 +820,7 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
                     elif spawner.enemy_id == Enemies.BattleCrownController:
                         ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xB)
                         ROM_COPY.writeMultipleBytes(crown_timer, 1)  # Determine Crown length. DK64 caps at 255 seconds
-        if spoiler.settings.win_condition_item == WinConditionComplex.krem_kapture:
+        if spoiler.settings.HasWinRequirement(WinConditionComplex.krem_kapture):
             # Pkmn snap handler
             values = [0, 0, 0, 0, 0, 0]
             # In some cases, the Pkmn Snap data hasn't yet been initialized (enemy rando disabled)

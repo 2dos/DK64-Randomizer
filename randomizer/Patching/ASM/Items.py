@@ -219,6 +219,13 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeFunction(ROM_COPY, 0x80027E68, Overlay.Critter, "fairyQueenCutsceneInit", offset_dict)  # BFI, Init Cutscene Setup
     writeFunction(ROM_COPY, 0x80028104, Overlay.Critter, "fairyQueenCutsceneCheck", offset_dict)  # BFI, Cutscene Play
     writeFunction(ROM_COPY, 0x80028014, Overlay.Critter, "fairyQueenCheckSpeedup", offset_dict)  # BFI, Cutscene Prep
+    # Touch count
+    writeValue(ROM_COPY, 0x806F6C8E, Overlay.Static, getHiSym("model_two_touch_array"), offset_dict)
+    writeValue(ROM_COPY, 0x806F6C9E, Overlay.Static, getLoSym("model_two_touch_array"), offset_dict)
+    writeValue(ROM_COPY, 0x806F6C74, Overlay.Static, getVar("model_two_touch_array_count"), offset_dict)
+    writeValue(ROM_COPY, 0x806F70C6, Overlay.Static, getHiSym("model_two_touch_array"), offset_dict)
+    writeValue(ROM_COPY, 0x806F70CA, Overlay.Static, getLoSym("model_two_touch_array"), offset_dict)
+    
     # Flag Stuff
     # Get blueprint count
     writeValue(ROM_COPY, 0x80024D06, Overlay.Menu, ReqItems.Blueprint, offset_dict)
