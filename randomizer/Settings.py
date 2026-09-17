@@ -435,6 +435,7 @@ class Settings:
         self.start_with_slam = False
         self.random_patches = None
         self.random_crates = None
+        self.season5_crate_rando = None
         self.random_fairies = None
         self.random_prices = None
         self.boss_location_rando = None
@@ -802,6 +803,7 @@ class Settings:
         self.wrinkly_available = False
         self.pause_hints_setting = PauseHintSetting.normal
         self.pause_hints_lockout_timer = 0
+        self.half_medal_percentage = 50
         self.shorten_boss = False
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
@@ -839,6 +841,7 @@ class Settings:
         self.dim_solved_hints = False
         self.spoiler_include_woth_count = False
         self.spoiler_include_level_order = False
+        self.spoiler_include_blocker_info = False
         self.serious_hints = False
         self.fast_warps = False
         self.dpad_display = DPadDisplays.off
@@ -930,6 +933,7 @@ class Settings:
         }
         self.vanilla_door_rando = False
         self.dos_door_rando = False
+        self.season5_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
@@ -1349,6 +1353,12 @@ class Settings:
             ]
             ItemPool.JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt]
 
+        # Seasonal door shuffle is exclusive with other hint door shuffles
+        if self.season5_door_rando:
+            self.wrinkly_location_rando = True
+            self.dos_door_rando = False
+            self.vanilla_door_rando = False
+            self.tns_location_rando = True  # 5.0 Seasonal shuffle also needs to cull T&S doors in Factory for technical reasons
         # Dos' Doors requires this to be on - it's a variant on vanilla door shuffle
         if self.dos_door_rando:
             self.vanilla_door_rando = True

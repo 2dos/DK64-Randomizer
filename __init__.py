@@ -1461,6 +1461,7 @@ if baseclasses_loaded:
                 "ring_link": self.options.ring_link.value,
                 "tag_link": self.options.tag_link.value,
                 "trap_link": self.options.trap_link.value,
+                "damage_link": self.options.damage_link.value,
                 "receive_notifications": self.options.receive_notifications.value,
                 "LevelOrder": ", ".join([level.name for order, level in self.spoiler.settings.level_order.items()]),
                 "StartingKongs": ", ".join([kong.name for kong in self.spoiler.settings.starting_kong_list]),
@@ -1539,6 +1540,9 @@ if baseclasses_loaded:
                     if "dropsanity" in self.options.item_pool
                     else {}
                 ),
+                "Shopkeepers": self.options.shopowners_in_pool.value,
+                "HalfMedals": self.options.half_medals_in_pool.value,
+                "HalfMedalPercentage": self.spoiler.settings.half_medal_percentage,
                 "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
                 "Autocomplete": self.options.auto_complete_bonus_barrels.value,
                 "HelmBarrelCount": self.options.helm_room_bonus_count.value,
@@ -1966,6 +1970,7 @@ if baseclasses_loaded:
             relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
             relevant_data["MedalCBRequirement"] = medal_cb_req
             relevant_data["MedalCBRequirementLevel"] = medal_cb_requirement_level
+            relevant_data["HalfMedalPercentage"] = slot_data.get("HalfMedalPercentage", 50)
             relevant_data["FairyRequirement"] = fairy_req
             relevant_data["MermaidPearls"] = pearl_req
             relevant_data["JetpacReq"] = jetpac_req

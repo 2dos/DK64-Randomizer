@@ -292,6 +292,7 @@ extern Gfx* displayNoGeoChunk(Gfx* dl, int chunk_index, int shift);
 extern void initIceTrap(void);
 extern int isBannedTrapMap(maps map, ICE_TRAP_TYPES type);
 extern void queueIceTrap(ICE_TRAP_TYPES trap_type, int send_trap);
+extern int canLoadIceTrap(ICE_TRAP_TYPES trap_type);
 extern void callIceTrap(void);
 extern int getPatchWorld(int index);
 extern int getCrateWorld(int index);
@@ -361,6 +362,7 @@ extern void handleCrownTimerInternal(void);
 extern void initSongDisplay(int song);
 extern Gfx* displaySongNameHandler(Gfx* dl);
 extern void resetDisplayedMusic(void);
+extern char postSynUpdate(PVoice* pVoice, int delta, short type);
 
 extern enum_bonus_skin getBarrelSkinIndex(int actor);
 extern enum_bonus_skin getShopSkinIndex(item_packet *data);
@@ -435,6 +437,7 @@ extern int shouldDeleteBalloon(int cb_flag, flagtypes flag_type);
 extern void balloonItemHandler(int flag, int state, flagtypes flag_type);
 extern void balloonVisHandler(sprite_struct * sprite, int cb_flag);
 extern Gfx *balloonVisHandler2(sprite_struct *sprite, Gfx *dl, short unk2);
+extern int getHalfMedalRequirement(int full_medal_requirement);
 
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];

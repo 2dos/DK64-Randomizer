@@ -73,6 +73,8 @@ def modifyOtherWrinklyDoors():
             wrinkly_f = ROMPointerFile(fh, TableNames.ModelTwoGeometry, image_offsets[kong])
             fh.seek(wrinkly_f.start)
             dec = zlib.decompress(fh.read(wrinkly_f.size), 15 + 32)
+            if not os.path.exists("assets/Gong"):
+                os.mkdir("assets/Gong")
             with open(file_name, "wb") as fg:
                 fg.write(dec)
         with open(file_name, "r+b") as wrinkly_door:

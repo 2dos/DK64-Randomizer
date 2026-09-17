@@ -978,6 +978,8 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
     if Types.HalfMedal in spoiler.settings.shuffled_location_types:
         ROM_COPY.seek(sav + 0x068)
         ROM_COPY.write(1)
+        ROM_COPY.seek(sav + 0x1E7)
+        ROM_COPY.write(spoiler.settings.half_medal_percentage)
 
     # Helm Required Minigames - Always set to 2 for now
     ROM_COPY.seek(sav + 0x2D)

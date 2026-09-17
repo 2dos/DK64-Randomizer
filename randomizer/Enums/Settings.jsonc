@@ -1512,6 +1512,10 @@
     "task_7_count": 327,
     "task_8_condition": 328,
     "task_8_count": 329
+    "spoiler_include_blocker_info": 330,
+    "half_medal_percentage": 331,
+    "season5_door_rando": 332,
+    "season5_crate_rando": 333
   },
   /*
     SettingsStringDataType:
@@ -1745,6 +1749,9 @@
       "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.random_crates": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.season5_crate_rando": {
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.crown_placement_rando": {
@@ -2125,6 +2132,9 @@
     "SettingsStringEnum.spoiler_include_level_order": {
       "obj": "SettingsStringDataType.bool"
     },
+    "SettingsStringEnum.spoiler_include_blocker_info": {
+      "obj": "SettingsStringDataType.bool"
+    },
     "SettingsStringEnum.enable_progressive_hints": {
       "obj": "SettingsStringDataType.bool"
     },
@@ -2138,6 +2148,9 @@
       "obj": "SettingsStringDataType.u16"
     },
     "SettingsStringEnum.pause_hints_lockout_timer": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.half_medal_percentage": {
       "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.random_starting_move_list_selected": {
@@ -2283,6 +2296,7 @@
     "SettingsStringEnum.prog_slam_level_7": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_8": { "obj": "SlamRequirement" },
     "SettingsStringEnum.dos_door_rando": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.season5_door_rando": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.switchsanity_enabled": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.switchsanity_switch_isles_to_kroc_top": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.switchsanity_switch_isles_helm_lobby": { "obj": "SwitchsanityGone" },
@@ -2459,6 +2473,8 @@
     "SettingsStringEnum.task_5_count": { "max": 255, "min": 0 },
     "SettingsStringEnum.task_6_count": { "max": 255, "min": 0 },
     "SettingsStringEnum.task_7_count": { "max": 255, "min": 0 },
-    "SettingsStringEnum.task_8_count": { "max": 255, "min": 0 }
+    "SettingsStringEnum.task_8_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.half_medal_percentage": { "max": 100, "min": 0 },
+    "SettingsStringEnum.win_condition_count": { "max": 255, "min": 0 }
   }
 }

@@ -18,7 +18,7 @@ import traceback
 import typing
 
 from archipelago.client.common import DK64MemoryMap, create_task_log_exception, check_version, get_ap_version
-from archipelago.client.emu_loader import EmuLoaderClient
+from emu_loader import EmuLoaderClient
 from archipelago.client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
 from archipelago.client.ap_item_packets import APItemPacket, build_packet, ICE_TRAP_TYPES, REQITEM_ICETRAP, REQITEM_GOLDENBANANA, REQITEM_MOVE, CONFIG_APPLY_ICE_TRAP
 from archipelago.client.check_flag_locations import location_flag_to_name, location_name_to_flag
@@ -31,6 +31,8 @@ from randomizer.Patching.ItemRando import normalize_location_name
 MAX_DELIVER_COUNT = 10000
 MAX_STRING_LENGTH = 0x20
 FAST_TEXT_SPEED = 50
+DAMAGE_POINTS_PER_UNIT = 20  # DamageLink: 80 points = 1 full melon (20 per quarter-melon)
+INCOMING_PACKET_CAP = 160  # DamageLink: cap a single inbound bounce at 2 melon
 NORMAL_TEXT_SPEED = 130
 MIN_ITEMS_FOR_SPEED_SCALING = 5
 KONG_COUNT = 5
@@ -152,7 +154,6 @@ class DK64Client:
     game = None
     auth = None
     memory_pointer = None
-    stop_bizhawk_spam = False
     seed_started = False
     locations_scouted = {}
     recvd_checks = {}
@@ -166,6 +167,7 @@ class DK64Client:
     ENABLE_RINGLINK = False
     ENABLE_TAGLINK = False
     ENABLE_TRAPLINK = False
+    ENABLE_DAMAGELINK = False
     deathlink_debounce = True
     pending_deathlink = False
 
@@ -178,50 +180,6 @@ class DK64Client:
     last_hint_bitfield = [0] * HINT_BITFIELD_SIZE
     sent_hints = set()
     helm_hurry_enabled = False
-
-    # ==================== CONNECTION METHODS ====================
-
-    async def wait_for_pj64(self):
-        """Wait for emulator to connect to the game."""
-        clear_waiting_message = True
-        if not self.stop_bizhawk_spam:
-            logger.info("Waiting on connection to emulator...")
-            self.n64_client = EmuLoaderClient()
-            self.stop_bizhawk_spam = True
-        while True:
-            try:
-                emulator_connected = False
-
-                # Try to connect to any available emulator
-                if not self.n64_client.is_connected():
-                    emulator_connected = self.n64_client.connect()
-                else:
-                    emulator_connected = True
-                valid_rom = False
-                if emulator_connected:
-                    valid_rom = self.n64_client.validate_rom()
-                    logger.info("Emulator connected, validating ROM...")
-
-                while not valid_rom:
-                    if not self.n64_client.is_connected():
-                        emulator_connected = self.n64_client.connect()
-                    if clear_waiting_message:
-                        logger.info("Waiting on valid ROM...")
-                        clear_waiting_message = False
-                    await asyncio.sleep(1.0)
-                    if self.n64_client.is_connected():
-                        valid_rom = self.n64_client.validate_rom()
-
-                self.stop_bizhawk_spam = False
-                logger.info("Emulator Connected to ROM!")
-                return
-            except Exception as e:
-                await asyncio.sleep(1.0)
-                logger.error(f"Error connecting to emulator, retrying... {str(e)}")
-                # Reset connection on error
-                if self.n64_client:
-                    self.n64_client.disconnect()
-                pass
 
     # ==================== GAME STATE METHODS ====================
 
@@ -277,10 +235,10 @@ class DK64Client:
                     "Ares": "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators:-Ares",
                 }
 
-                emulator_id = self.n64_client.emulator_info.id.name
+                emulator_id = self.n64_client.emulator_info.id
                 setup_guide = emulator_setup_guides.get(emulator_id, "https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators")
 
-                logger.error(f"{self.n64_client.emulator_info.id.name} is not set up correctly! Please follow the appropriate setup guide to ensure the game works!")
+                logger.error(f"{self.n64_client.emulator_info.id} is not set up correctly! Please follow the appropriate setup guide to ensure the game works!")
                 logger.error(f"{setup_guide}")
                 raise Exception("Bad emulator setup")
 
@@ -933,7 +891,7 @@ class DK64Client:
 
         return data
 
-    async def main_tick(self, item_get_cb, deathlink_cb, map_change_cb, ring_link, tag_link, trap_link, hint_cb=None):
+    async def main_tick(self, item_get_cb, deathlink_cb, map_change_cb, ring_link, tag_link, trap_link, damage_link, hint_cb=None):
         """Game loop tick."""
         await self.readChecks(item_get_cb)
         # await self.item_tracker.readItems()
@@ -970,6 +928,8 @@ class DK64Client:
             await tag_link()
         if self.ENABLE_TRAPLINK:
             await trap_link()
+        if self.ENABLE_DAMAGELINK:
+            await damage_link()
 
         # Check for hint access
         if hint_cb:
@@ -1127,6 +1087,21 @@ class DK64CommandProcessor(ClientCommandProcessor):
                 self.ctx.tags.add("TrapLink")
             create_task_log_exception(self.ctx.send_msgs([{"cmd": "ConnectUpdate", "tags": self.ctx.tags}]))
 
+    def _cmd_damagelink(self):
+        """Toggle damagelink from client. Overrides default setting."""
+        if isinstance(self.ctx, DK64Context):
+            if self.ctx.ENABLE_DAMAGELINK:
+                self.ctx.ENABLE_DAMAGELINK = False
+                self.ctx.client.ENABLE_DAMAGELINK = False
+                self.ctx.tags.discard("SharedDamage")
+                logger.info("Damagelink disabled")
+            else:
+                self.ctx.ENABLE_DAMAGELINK = True
+                self.ctx.client.ENABLE_DAMAGELINK = True
+                logger.info("Damagelink enabled")
+                self.ctx.tags.add("SharedDamage")
+            create_task_log_exception(self.ctx.send_msgs([{"cmd": "ConnectUpdate", "tags": self.ctx.tags}]))
+
 
 class DK64Context(CommonContext):
     """Context for Donkey Kong 64."""
@@ -1140,6 +1115,11 @@ class DK64Context(CommonContext):
     ENABLE_RINGLINK = False
     ENABLE_TAGLINK = False
     ENABLE_TRAPLINK = False
+    ENABLE_DAMAGELINK = False
+    pending_damage = 0
+    self_inflicted = 0
+    prev_health = None
+    damage_label = None
     command_processor = DK64CommandProcessor
     won = False
     hint_locations = {}
@@ -1269,6 +1249,8 @@ class DK64Context(CommonContext):
         if cmd == "Connected":
             self.game = self.slot_info[self.slot].game
             self.slot_data = args.get("slot_data", {})
+            if not hasattr(self, "instance_id"):
+                self.instance_id = time.time()
             self.setup_hint_locations()
             if self.slot_data.get("Version"):
                 ap_version = get_ap_version()
@@ -1320,6 +1302,12 @@ class DK64Context(CommonContext):
                     self.ENABLE_TRAPLINK = True
                     self.client.ENABLE_TRAPLINK = True
                     asyncio.create_task(self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}]))
+            if self.slot_data.get("damage_link"):
+                if "SharedDamage" not in self.tags:
+                    self.tags.add("SharedDamage")
+                    self.ENABLE_DAMAGELINK = True
+                    self.client.ENABLE_DAMAGELINK = True
+                    asyncio.create_task(self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}]))
             if self.slot_data.get("receive_notifications"):
                 self.client.send_mode = self.slot_data.get("receive_notifications")
             # Set Helm Hurry flag in client
@@ -1370,6 +1358,11 @@ class DK64Context(CommonContext):
                 if self.pending_trap_link != 0:
                     self.pending_trap_original = args["data"]["trap_name"]
                     self.pending_trap_source = source_name
+            if "SharedDamage" in self.tags and "SharedDamage" in args.get("tags", []):
+                if args["data"].get("uuid") != self.instance_id:  # ignore our own echo
+                    points = int(args["data"].get("damage_points", 0))
+                    if points > 0:
+                        self.pending_damage += min(points, INCOMING_PACKET_CAP)
 
     async def send_ring_link(self, amount: int):
         """Send a ring link message."""
@@ -1529,6 +1522,74 @@ class DK64Context(CommonContext):
             self.prev_film = new_film
 
             self.pending_ring_link = 0
+
+    async def send_damage_link(self, points: int):
+        """Send a SharedDamage (DamageLink) bounce."""
+        if "SharedDamage" not in self.tags or self.slot is None:
+            return
+        if not hasattr(self, "instance_id"):
+            self.instance_id = time.time()
+        await self.send_msgs(
+            [
+                {
+                    "cmd": "Bounce",
+                    "tags": ["SharedDamage"],
+                    "data": {
+                        "time": time.time(),
+                        "uuid": self.instance_id,
+                        "source": self.player_names.get(self.slot),
+                        "damage_points": int(points),
+                    },
+                }
+            ]
+        )
+
+    async def handle_damage_link(self):
+        """Apply received DamageLink damage."""
+        if not self.client.ENABLE_DAMAGELINK:
+            return
+        n64 = self.client.n64_client
+        base = self.client.memory_pointer
+
+        # Show total amount of damagelink points in client (taken from mycena waffle's client).
+        try:
+            if self.damage_label is None and getattr(self, "ui", None) is not None:
+                try:
+                    from kvui import MDLabel as Label
+                except ImportError:
+                    from kvui import Label
+                self.damage_label = Label(text="", size_hint_x=None, width=120, halign="center")
+                self.ui.connect_layout.add_widget(self.damage_label)
+            if self.damage_label is not None:
+                self.damage_label.text = f"DMG: {self.pending_damage}"
+        except Exception:
+            pass
+
+        health = n64.read_u8(DK64MemoryMap.health)
+        if health > 127:
+            health -= 256
+        if self.prev_health is None:
+            self.prev_health = health
+
+        # Hand any received damage to the game, remembering the health it will cost us.
+        units = self.pending_damage // DAMAGE_POINTS_PER_UNIT
+        if units > 0:
+            self.pending_damage -= units * DAMAGE_POINTS_PER_UNIT
+            queued = n64.read_u8(base + DK64MemoryMap.receive_damage)
+            n64.write_u8(base + DK64MemoryMap.receive_damage, min(queued + units, 255))
+            self.self_inflicted += units
+
+        # Broadcast damag
+        lost = self.prev_health - health
+        if lost > 0:
+            mine = min(lost, self.self_inflicted)
+            self.self_inflicted -= mine
+            genuine = lost - mine
+            if genuine > 0:
+                await self.send_damage_link(genuine * DAMAGE_POINTS_PER_UNIT)
+        elif health <= 0:
+            self.self_inflicted = 0  # once you die, reset points
+        self.prev_health = health
 
     async def send_tag_link(self, kong: int):
         """Send a tag link message."""
@@ -1742,6 +1803,10 @@ class DK64Context(CommonContext):
             """Handle a trap link."""
             await self.handle_trap_link()
 
+        async def damage_link():
+            """Handle a damage link."""
+            await self.handle_damage_link()
+
         async def deathlink():
             """Handle a deathlink."""
             await self.send_deathlink()
@@ -1767,18 +1832,22 @@ class DK64Context(CommonContext):
                     built_checks_list.append(check)
             self.new_checks(built_checks_list)
 
+        def rom_ap_ready(n64_client):
+            """Return True once the ROM signals Archipelago is ready."""
+            return n64_client.read_u8(DK64MemoryMap.rom_flags) & DK64MemoryMap.rom_flag_ap_status == DK64MemoryMap.rom_flag_ap_status
+
         # yield to allow UI to start
+        self.client.n64_client = EmuLoaderClient(signature_offset=0x759290, signature_value=0x52414D42)
         await asyncio.sleep(0)
+        logger.info("(Re)Starting game loop")
         while True:
             await asyncio.sleep(3)
 
             try:
-                if not self.client.stop_bizhawk_spam:
-                    logger.info("(Re)Starting game loop")
                 # On restart of game loop, clear all checks, just in case we swapped ROMs
                 # this isn't totally neccessary, but is extra safety against cross-ROM contamination
                 self.reset_checks()
-                await self.client.wait_for_pj64()
+                await self.client.n64_client.wait_for_emulator(validate=rom_ap_ready)
 
                 async def disconnect_check():
                     if self.auth and self.client.auth != self.auth:
@@ -1801,7 +1870,6 @@ class DK64Context(CommonContext):
                 if not self.client.recvd_checks:
                     logger.info("No checks received yet, requesting...")
                     await self.sync()
-
                 await asyncio.sleep(1.0)
                 while True:
                     logger.debug("Game loop tick")
@@ -1814,7 +1882,7 @@ class DK64Context(CommonContext):
                     if status is False:
                         await asyncio.sleep(0.033)
                         continue
-                    await self.client.main_tick(on_item_get, deathlink, map_change, ring_link, tag_link, trap_link, hint_accessed)
+                    await self.client.main_tick(on_item_get, deathlink, map_change, ring_link, tag_link, trap_link, damage_link, hint_accessed)
                     await asyncio.sleep(0.033)
                     now = time.time()
                     if self.last_resend + 0.5 < now:

@@ -102,6 +102,7 @@ typedef struct archipelago_data {
     /* 0x063 */ unsigned char sent_trap;
     /* 0x064 */ unsigned char helm_hurry_item;
     /* 0x065 */ unsigned char can_receive_shopkeeper;
+    /* 0x066 */ unsigned char receive_damage; // DamageLink: client writes quarter-melon units of incoming damage. Game applies one per frame when safe, decrements.
 } archipelago_data;
 
 extern archipelago_data *APData;
@@ -111,6 +112,7 @@ extern void initAPCounter(void);
 extern void saveAPCounter(void);
 extern int isAPEnabled(void);
 extern void sendDeath(void);
+extern void handleDamageLink(void);
 extern void sendTrapLink(ICE_TRAP_TYPES trap_type);
 extern Gfx *displayAPConnection(Gfx *dl);
 extern int canReceiveShopkeeperItem(void);

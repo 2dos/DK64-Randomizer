@@ -16,6 +16,8 @@ files_to_copy = [
     "static/patches/symbols.json",
 ]
 folders_to_copy = ["archipelago", "randomizer"]
+vendor_folder = "dk64/vendor"
+requirements_file = "requirements.txt"
 
 # Ensure dk64 directory exists
 os.makedirs(dk64_folder, exist_ok=True)

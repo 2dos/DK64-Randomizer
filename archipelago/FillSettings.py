@@ -296,6 +296,7 @@ def get_default_settings() -> dict[str, Any]:
         "shuffle_shops": False,
         "smaller_shops": False,
         "spoiler_hints": SpoilerHints.off,
+        "spoiler_include_blocker_info": False,
         "spoiler_include_level_order": False,
         "spoiler_include_woth_count": False,
         "starting_keys_list_selected": [],
@@ -455,6 +456,7 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     settings_dict["shuffle_helm_location"] = options.shuffle_helm_level_order.value
     settings_dict["mermaid_gb_pearls"] = options.pearls_required_for_mermaid.value
     settings_dict["cb_medal_behavior_new"] = options.medal_distribution.value
+    settings_dict["half_medal_percentage"] = options.half_medal_percentage.value
     settings_dict["smaller_shops"] = options.smaller_shops.value and not hasattr(multiworld, "generation_is_fake")
     settings_dict["puzzle_rando_difficulty"] = options.puzzle_rando.value
     if options.enable_cutscenes.value:
@@ -485,25 +487,17 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
                 slam_name = options.alter_switch_allocation.value[level_key]
                 settings_dict[f"prog_slam_level_{i + 1}"] = slam_map.get(slam_name, SlamRequirement.green)
 
-
-def generate_blocker(option_value: str, blocker_max: int, random: Random):
-    """Randomize a B. Locker value, either within a range or up to the maximum."""
-    upper_bound = blocker_max if option_value == "random" else int(option_value.split("-")[1]) + 1
-    lower_bound = 0 if option_value == "random" else int(option_value.split("-")[0])
-    return random.randrange(lower_bound, upper_bound)
-
-
-def apply_blocker_settings(settings_dict: dict, options, random_obj) -> None:
-    """Apply level blocker settings."""
-    blocker_options = [0, 0, 0, 0, 0, 0, 0, 0]
-    for blocker, amount in options.level_blockers.value.items():
-        blocker_number = int(blocker.removeprefix("level_")) - 1
-        try:
-            blocker_options[blocker_number] = int(amount)
-        except (TypeError, ValueError):
-            blocker_options[blocker_number] = generate_blocker(amount, options.blocker_max.value, random_obj)
-
-    # Blocker settings - prioritize chaos blockers, then randomization setting
+    # Apply blocker settings
+    blocker_options: list[int] = [
+        options.level_blockers.value.get("level_1", 0),
+        options.level_blockers.value.get("level_2", 0),
+        options.level_blockers.value.get("level_3", 0),
+        options.level_blockers.value.get("level_4", 0),
+        options.level_blockers.value.get("level_5", 0),
+        options.level_blockers.value.get("level_6", 0),
+        options.level_blockers.value.get("level_7", 0),
+        options.level_blockers.value.get("level_8", 64),
+    ]
     settings_dict["maximize_helm_blocker"] = options.maximize_level8_blocker.value
     if options.enable_chaos_blockers.value:
         settings_dict["blocker_text"] = options.chaos_ratio.value
@@ -1000,6 +994,7 @@ def handle_fake_generation_settings(settings: Settings, multiworld) -> None:
                 for level, value in enumerate(passthrough["MedalCBRequirementLevel"]):
                     settings.medal_cb_req_level[Levels(level)] = int(value)
 
+                settings.half_medal_percentage = passthrough["HalfMedalPercentage"]
                 settings.mermaid_gb_pearls = passthrough["MermaidPearls"]
                 settings.BossBananas = passthrough["BossBananas"]
                 settings.boss_maps = passthrough["BossMaps"]
