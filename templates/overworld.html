@@ -215,13 +215,13 @@
                         </option>
                     </select>
                 </div>
-                {{ dropdown_multiselector(bosses, "bosses", "Allowed Bosses", "This will open a popup that will let you customize what bosses are allowed to appear in your seed.&#10;This defaults to All options.", 12, 1) }}
+                {{ dropdown_multiselector(bosses, "bosses", "Allowed Bosses", "This will open a popup that will let you customize what bosses are allowed to appear in your seed.&#10;This defaults to All options.") }}
             </div>
         </div>
         <div class="col border panel">
             <h2 class="title">ENEMIES</h2>
             <div class="flex-container">
-                {{ dropdown_multiselector(enemies, "enemies", "Shuffled Enemies", "This will open a popup that will let you customize what enemies appear in the game.&#10;This defaults to All options.", 16, 1) }}
+                {{ dropdown_multiselector(enemies, "enemies", "Shuffled Enemies", "This will open a popup that will let you customize what enemies appear in the game.&#10;This defaults to All options.") }}
                 <div class="item-select">
                     <p class="select-title">Crown Enemies</p>
                     <select name="crown_enemy_difficulty"
@@ -254,7 +254,7 @@
             <hr />
             <h2 class="title">BONUS BARRELS</h2>
             <div class="flex-container">
-                {{ dropdown_multiselector(minigames, "minigames_list", "Shuffled Bonus Barrels", "This will open a dropdown that will let you customize what Bonus Games are in the pool.", 18, 1) }}
+                {{ dropdown_multiselector(minigames, "minigames_list", "Shuffled Bonus Barrels", "This will open a dropdown that will let you customize what Bonus Games are in the pool.") }}
                 <div class="spacer"></div>
                 {{ toggle_input("disable_hard_minigames", "Disable Hard Minigames", "Disables harder minigames.") }}
                 <div class="form-check form-switch item-switch">
@@ -370,8 +370,8 @@
                 </div>
             </div>
             <div class="flex-container">
-                {{ dropdown_multiselector(hard_mode, "hard_mode", "Hard Mode", "This will open a dropdown that will let you customize what hard mode Options are active.", 10) }}
-                {{ dropdown_multiselector(hard_bosses, "hard_bosses", "Hard Bosses", "This will open a dropdown that will let you customize what bosses are made harder.", 10) }}
+                {{ dropdown_multiselector(hard_mode, "hard_mode", "Hard Mode", "This will open a dropdown that will let you customize what hard mode Options are active.") }}
+                {{ dropdown_multiselector(hard_bosses, "hard_bosses", "Hard Bosses", "This will open a dropdown that will let you customize what bosses are made harder.") }}
                 <div class="item-select">
                     <p class="select-title">Damage</p>
                     <select name="damage_amount"
