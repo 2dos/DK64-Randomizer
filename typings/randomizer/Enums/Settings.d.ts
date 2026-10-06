@@ -1035,6 +1035,7 @@ export enum SettingsStringEnum {
     half_medal_percentage = 331,
     season5_door_rando = 332,
     season5_crate_rando = 333,
+    lives = 334,
 }
 
 export enum SettingsStringDataType {
@@ -1378,6 +1379,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.cb_medal_behavior_new: CBRequirement,
     SettingsStringEnum.random_starting_region_new: RandomStartingRegion,
     SettingsStringEnum.win_condition_count: SettingsStringDataType.u8,
+    SettingsStringEnum.lives: SettingsStringDataType.u16,
     SettingsStringEnum.task_1_count: SettingsStringDataType.u8,
     SettingsStringEnum.task_2_count: SettingsStringDataType.u8,
     SettingsStringEnum.task_3_count: SettingsStringDataType.u8,
@@ -1637,8 +1639,8 @@ export const SettingsStringIntRangeMap = {
     SettingsStringEnum.progressive_hint_count: {'max': 3500, 'min': 0},
     SettingsStringEnum.hint_door_item_count: {'max': 3500, 'min': 0},
     SettingsStringEnum.pause_hints_lockout_timer: {'max': 255, 'min': 0},
-    SettingsStringEnum.half_medal_percentage: {'max': 100, 'min': 0},
     SettingsStringEnum.win_condition_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.lives: {'max': 65535, 'min': 0},
     SettingsStringEnum.task_1_count: {'max': 255, 'min': 0},
     SettingsStringEnum.task_2_count: {'max': 255, 'min': 0},
     SettingsStringEnum.task_3_count: {'max': 255, 'min': 0},
@@ -1647,4 +1649,5 @@ export const SettingsStringIntRangeMap = {
     SettingsStringEnum.task_6_count: {'max': 255, 'min': 0},
     SettingsStringEnum.task_7_count: {'max': 255, 'min': 0},
     SettingsStringEnum.task_8_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.half_medal_percentage: {'max': 100, 'min': 0},
 }

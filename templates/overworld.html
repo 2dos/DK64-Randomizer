@@ -97,7 +97,7 @@
                 {{ toggle_input("random_crates", "Random Melon Crate Locations", "Melon Crate Locations are randomized.", False, "Melon Crates") }}
                 {{ toggle_input("randomize_pickups", "Randomize Pickups", "All Replenishables in the game are randomized.&#10;*Homing Ammo, Regular Ammo, Oranges, Film, Crystals") }}
                 {{ toggle_input("shuffle_shops", "Shuffle Shop Locations", "Shuffle the locations of shops (including Snides) within each Level/Isles.") }}
-                {{ toggle_input("ship_location_rando", "Shuffle Final Boss Location", "Shuffles the locations of the final boss ship.") }}
+                <!-- {{ toggle_input("ship_location_rando", "Shuffle Final Boss Location", "Shuffles the locations of the final boss ship.") }} -->
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
                             title="Colored Banana Locations are randomized.">
@@ -364,6 +364,33 @@
                         No Consumable Upgrades
                     </label>
                 </div>
+                <div class="spacer"></div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                    title="Disables tag barrels from spawning.">
+                        <input class="form-check-input"
+                        type="checkbox"
+                        name="perma_death"
+                        id="perma_death"
+                        display_name="Wipe File on Death"
+                        value="True"/>
+                        Wipe File on Death
+                    </label>
+                </div>
+                <div class="item-select" id="lives_container" hidden>
+                    <p class="select-title">Lives</p>
+                    <input class="form-control mx-auto text-center"
+                        min="0"
+                        max="65535"
+                        name="lives"
+                        style="max-width: 50px"
+                        id="lives"
+                        value="0"
+                        type="number"
+                        data-toggle="tooltip"
+                       />
+                </div>
+                <div class="item-select" id="lives_spacer" hidden></div>
             </div>
             <div class="flex-container">
                 {{ dropdown_multiselector(hard_mode, "hard_mode", "Hard Mode", "This will open a dropdown that will let you customize what hard mode Options are active.", 10) }}

@@ -1511,11 +1511,12 @@
     "task_7_condition": 326,
     "task_7_count": 327,
     "task_8_condition": 328,
-    "task_8_count": 329
+    "task_8_count": 329,
     "spoiler_include_blocker_info": 330,
     "half_medal_percentage": 331,
     "season5_door_rando": 332,
-    "season5_crate_rando": 333
+    "season5_crate_rando": 333,
+    "lives": 334
   },
   /*
     SettingsStringDataType:
@@ -2055,6 +2056,9 @@
     "SettingsStringEnum.win_condition_count": {
       "obj": "SettingsStringDataType.u8"
     },
+    "SettingsStringEnum.lives": {
+      "obj": "SettingsStringDataType.u16"
+    },
     "SettingsStringEnum.task_1_count": {
       "obj": "SettingsStringDataType.u8"
     },
@@ -2466,6 +2470,7 @@
     "SettingsStringEnum.hint_door_item_count": { "max": 3500, "min": 0 },
     "SettingsStringEnum.pause_hints_lockout_timer": { "max": 255, "min": 0 },
     "SettingsStringEnum.win_condition_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.lives": { "max": 65535, "min": 1 },
     "SettingsStringEnum.task_1_count": { "max": 255, "min": 0 },
     "SettingsStringEnum.task_2_count": { "max": 255, "min": 0 },
     "SettingsStringEnum.task_3_count": { "max": 255, "min": 0 },
@@ -2474,7 +2479,6 @@
     "SettingsStringEnum.task_6_count": { "max": 255, "min": 0 },
     "SettingsStringEnum.task_7_count": { "max": 255, "min": 0 },
     "SettingsStringEnum.task_8_count": { "max": 255, "min": 0 },
-    "SettingsStringEnum.half_medal_percentage": { "max": 100, "min": 0 },
-    "SettingsStringEnum.win_condition_count": { "max": 255, "min": 0 }
+    "SettingsStringEnum.half_medal_percentage": { "max": 100, "min": 0 }
   }
 }

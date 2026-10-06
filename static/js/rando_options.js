@@ -1925,6 +1925,34 @@ document
   .getElementById("tns_selection_behavior")
   .addEventListener("change", update_troff_number_access);
 
+function update_lives_access() {
+  const has_lives_mechanic = document.getElementById("perma_death").checked;
+  const lives_container = document.getElementById("lives_container");
+  const lives_spacer = document.getElementById("lives_spacer");
+  if (has_lives_mechanic) {
+    lives_container.removeAttribute("hidden");
+    lives_spacer.setAttribute("hidden", "hidden");
+  } else {
+    lives_container.setAttribute("hidden", "hidden");
+    lives_spacer.removeAttribute("hidden");
+  }
+}
+
+function update_lives_count() {
+  const lives_el = document.getElementById("lives");
+  if (!lives_el.value) {
+    lives_el.value = 1;
+  } else {
+    if (lives_el.value < 1) {
+      lives_el.value = 1;
+    } else if (lives_el.value > 500) {
+      lives_el.value = 500;
+    }
+  }
+}
+document.getElementById("perma_death").addEventListener("click", update_lives_access);
+document.getElementById("lives").addEventListener("change", update_lives_count);
+
 function item_req_update(behavior, container, count, min, max) {
   const selection = document.getElementById(behavior);
   const containerEl = document.getElementById(container);
@@ -2356,6 +2384,8 @@ function update_ui_states() {
   getTotalItemCounts();
   update_all_trap_weights();
   update_troff_number_access();
+  update_lives_access();
+  update_lives_count();
   item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 0, 40);
   item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 0, 5);
   item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 0, 20);

@@ -311,7 +311,6 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
     ]
     if (
         not spoiler.settings.perma_death
-        and not spoiler.settings.wipe_file_on_death
         and spoiler.settings.damage_amount
         not in (
             DamageAmount.quad,

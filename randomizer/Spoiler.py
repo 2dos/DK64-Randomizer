@@ -396,7 +396,7 @@ class Spoiler:
         settings["Banana port Location Shuffle"] = self.settings.bananaport_placement_rando.name
         settings["Activated Warps"] = self.settings.activate_all_bananaports.name
         settings["Smaller Shops"] = self.settings.smaller_shops
-        settings["Irondonk"] = self.settings.perma_death
+        settings["Wipe file on death"] = self.settings.perma_death
         settings["Disable Tag Barrels"] = self.settings.disable_tag_barrels
         settings["Ice Trap Frequency"] = self.settings.ice_trap_frequency.name
         settings["Ice Traps Damage Player"] = self.settings.ice_traps_damage

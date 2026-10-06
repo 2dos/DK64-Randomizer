@@ -614,7 +614,6 @@ class Settings:
 
         # damage multiplier: DamageAmount
         self.damage_amount = DamageAmount.default
-        self.wipe_file_on_death = False
         self.lives = 5
 
         # logic_type: LogicType
@@ -2608,7 +2607,7 @@ class Settings:
         bad_fake_types = [Types.TrainingBarrel, Types.PreGivenMove, Types.Hint]
         is_bad = location.type in bad_fake_types
         if self.ice_traps_damage:
-            if self.damage_amount in (DamageAmount.quad, DamageAmount.ohko) or self.perma_death or self.wipe_file_on_death:
+            if self.damage_amount in (DamageAmount.quad, DamageAmount.ohko) or self.perma_death:
                 is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm) or location.type == Types.Shockwave
         return is_bad
 
