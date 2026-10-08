@@ -23,6 +23,8 @@ class TextureFormat(IntEnum):
     I4 = auto()
     IA8 = auto()
     IA4 = auto()
+    CI4 = auto()
+    CI8 = auto()
 
 
 class ExtraTextures(IntEnum):
@@ -409,47 +411,60 @@ def writeColorImageToAddress(
 ) -> None:
     """Write texture to ROM at a static address."""
     ROM_COPY.seek(address)
-    pix = im_f.load()
-    width, height = im_f.size
+    if format not in (TextureFormat.CI4, TextureFormat.CI8):
+        pix = im_f.load()
+        width, height = im_f.size
     bytes_array = []
-    border = 1
-    right_border = 3
-    for y in range(height):
-        for x in range(width):
-            if transparent_border:
-                if ((x < border) or (y < border) or (x >= (width - border)) or (y >= (height - border))) or (x == (width - right_border)):
-                    pix_data = [0, 0, 0, 0]
+    if format == TextureFormat.CI8:
+        bytes_array = im_f.copy()
+        bytes_per_px = 1
+    elif format == TextureFormat.CI4:
+        bytes_per_px = 0.5
+        for i, px in enumerate(im_f):
+            v = px & 0xF
+            if (i & 1) == 0:
+                bytes_array.append(v << 4)
+            else:
+                bytes_array[-1] |= v
+    else:
+        border = 1
+        right_border = 3
+        for y in range(height):
+            for x in range(width):
+                if transparent_border:
+                    if ((x < border) or (y < border) or (x >= (width - border)) or (y >= (height - border))) or (x == (width - right_border)):
+                        pix_data = [0, 0, 0, 0]
+                    else:
+                        pix_data = list(pix[x, y])
                 else:
                     pix_data = list(pix[x, y])
-            else:
-                pix_data = list(pix[x, y])
-            if format == TextureFormat.RGBA32:
-                bytes_array.extend(pix_data)
-            elif format == TextureFormat.RGBA5551:
-                red = int((pix_data[0] >> 3) << 11)
-                green = int((pix_data[1] >> 3) << 6)
-                blue = int((pix_data[2] >> 3) << 1)
-                alpha = int(pix_data[3] != 0)
-                value = red | green | blue | alpha
-                bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
-            elif format == TextureFormat.IA4:
-                intensity = pix_data[0] >> 5
-                alpha = 0 if pix_data[3] == 0 else 1
-                data = ((intensity << 1) | alpha) & 0xF
-                bytes_array.append(data)
-    bytes_per_px = 2
-    if format == TextureFormat.IA4:
-        temp_ba = bytes_array.copy()
-        bytes_array = []
-        value_storage = 0
-        bytes_per_px = 0.5
-        for idx, val in enumerate(temp_ba):
-            polarity = idx % 2
-            if polarity == 0:
-                value_storage = val << 4
-            else:
-                value_storage |= val
-                bytes_array.append(value_storage)
+                if format == TextureFormat.RGBA32:
+                    bytes_array.extend(pix_data)
+                elif format == TextureFormat.RGBA5551:
+                    red = int((pix_data[0] >> 3) << 11)
+                    green = int((pix_data[1] >> 3) << 6)
+                    blue = int((pix_data[2] >> 3) << 1)
+                    alpha = int(pix_data[3] != 0)
+                    value = red | green | blue | alpha
+                    bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
+                elif format == TextureFormat.IA4:
+                    intensity = pix_data[0] >> 5
+                    alpha = 0 if pix_data[3] == 0 else 1
+                    data = ((intensity << 1) | alpha) & 0xF
+                    bytes_array.append(data)
+        bytes_per_px = 2
+        if format == TextureFormat.IA4:
+            temp_ba = bytes_array.copy()
+            bytes_array = []
+            value_storage = 0
+            bytes_per_px = 0.5
+            for idx, val in enumerate(temp_ba):
+                polarity = idx % 2
+                if polarity == 0:
+                    value_storage = val << 4
+                else:
+                    value_storage |= val
+                    bytes_array.append(value_storage)
     data = bytearray(bytes_array)
     if format == TextureFormat.RGBA32:
         bytes_per_px = 4
@@ -460,7 +475,9 @@ def writeColorImageToAddress(
     if max_file_size is not None:
         if len(data) > max_file_size:
             print(f"File too big error: {hex(address)}")
+            return 0
     ROM_COPY.writeBytes(data)
+    return 1
 
 
 def writeColorImageToROM(im_f, table_index: TableNames, file_index: int, width: int, height: int, transparent_border: bool, format: TextureFormat, ROM_COPY: Union[LocalROM, ROM]) -> None:
@@ -468,7 +485,9 @@ def writeColorImageToROM(im_f, table_index: TableNames, file_index: int, width: 
     file_start = getPointerLocation(table_index, file_index)
     file_end = getPointerLocation(table_index, file_index + 1)
     file_size = file_end - file_start
-    writeColorImageToAddress(im_f, file_start, width, height, transparent_border, format, ROM_COPY, table_index in (14, 25), file_size)
+    valid = writeColorImageToAddress(im_f, file_start, width, height, transparent_border, format, ROM_COPY, table_index in (14, 25), file_size)
+    if not valid:
+        print(table_index, file_index)
 
 
 def getNumberImage(number: int, ROM_COPY: Union[LocalROM, ROM]):

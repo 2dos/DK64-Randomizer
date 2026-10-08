@@ -510,6 +510,14 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed, head_sizes
         "Museum Swords Painting": settings.painting_museum_swords,
         "Treehouse Dolphin Painting": settings.painting_treehouse_dolphin,
         "Treehouse Candy Painting": settings.painting_treehouse_candy,
+        "K. Rool Running": settings.painting_krool_run,
+        "K. Rool Blunderbuss": settings.painting_krool_blunderbuss,
+        "K. Rool Head": settings.painting_krool_head,
+        "Factory Map (Lobby)": settings.painting_factory_map_lobby,
+        "Factory Map (Production)": settings.painting_factory_map_production,
+        "Factory Map (Testing)": settings.painting_factory_map_testing,
+        "Factory Map (R&D)": settings.painting_factory_map_rnd,
+        "Factory Graph": settings.painting_factory_graph,
     }
     for painting_name in paintings:
         painting_setting = paintings[painting_name]

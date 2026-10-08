@@ -16,6 +16,7 @@ from randomizer.Enums.Types import BarrierItems, Types
 from randomizer.Patching.Cosmetics.CustomTextures import (
     writeTransition,
     writeCustomPaintings,
+    writeCustomDecals,
     writeCustomPortal,
     writeCustomArcadeSprites,
     writeCustomReels,
@@ -149,6 +150,7 @@ def apply_cosmetic_colors(settings: Settings, ROM_COPY: ROM):
         writeTransition(settings, ROM_COPY)
         writeCustomPortal(settings, ROM_COPY)
         writeCustomPaintings(settings, ROM_COPY)
+        writeCustomDecals(settings, ROM_COPY)
         writeCustomReels(settings, ROM_COPY)
         writeCustomArcadeSprites(settings, ROM_COPY)
         writeCustomItemSprites(settings, ROM_COPY)

@@ -21,6 +21,8 @@ class TextureFormat(IntEnum):
     I4 = auto()
     IA8 = auto()
     IA4 = auto()
+    CI4 = auto()
+    CI8 = auto()
 
 
 class CompressionMethods(IntEnum):

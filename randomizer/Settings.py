@@ -791,6 +791,16 @@ class Settings:
         self.painting_museum_swords = None
         self.painting_treehouse_dolphin = None
         self.painting_treehouse_candy = None
+        self.painting_krool_run = None
+        self.painting_krool_blunderbuss = None
+        self.painting_krool_head = None
+        self.painting_factory_map_lobby = None
+        self.painting_factory_map_production = None
+        self.painting_factory_map_testing = None
+        self.painting_factory_map_rnd = None
+        self.painting_factory_graph = None
+        self.decal_krool = None
+        self.decal_dk = None
 
         #  Misc
         self.generate_spoilerlog = None

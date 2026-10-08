@@ -265,6 +265,10 @@ function validFilename(filename, dir, valid_extension = null) {
       const f_spl = filename.split(".");
       const f_ext = f_spl[f_spl.length - 1];
       return ["png", "jpg", "jpeg", "webp"].includes(f_ext);
+    } else if (valid_extension == "image_meta")  {
+      const f_spl = filename.split(".");
+      const f_ext = f_spl[f_spl.length - 1];
+      return ["png", "jpg", "jpeg", "webp", "json"].includes(f_ext);
     } else if (valid_extension == "image_gif")  {
       const f_spl = filename.split(".");
       const f_ext = f_spl[f_spl.length - 1];
@@ -398,6 +402,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let transition_promises = [];
       let portal_promises = [];
       let painting_promises = [];
+      let decal_promises = [];
       let arcade_promises = [];
       let reel_promises = [];
       let item_promises = [];
@@ -416,11 +421,13 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
           transition_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/tns_portal/", "image")) {
           portal_promises.push(createMusicLoadPromise(new_zip, filename));
-        } else if (validFilename(filename, "textures/paintings/", "image")) {
+        } else if (validFilename(filename, "textures/paintings/", "image_meta")) {
           painting_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "textures/decals/", "image_meta")) {
+          decal_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/arcade_sprites/", ".png")) {
           arcade_promises.push(createMusicLoadPromise(new_zip, filename));
-        } else if (validFilename(filename, "textures/reels/", ".png")) {
+        } else if (validFilename(filename, "textures/reels/", "image_meta")) {
           reel_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/items/", ".png")) {
           item_promises.push(createMusicLoadPromise(new_zip, filename));
@@ -440,6 +447,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let transition_files = await Promise.all(transition_promises);
       let portal_files = await Promise.all(portal_promises);
       let painting_files = await Promise.all(painting_promises);
+      let decal_files = await Promise.all(decal_promises);
       let arcade_files = await Promise.all(arcade_promises);
       let reel_files = await Promise.all(reel_promises);
       let item_files = await Promise.all(item_promises);
@@ -455,6 +463,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         transitions: transition_files.map((x) => x.file),
         tns_portals: portal_files.map((x) => x.file),
         paintings: painting_files.map((x) => x.file),
+        decals: decal_files.map((x) => x.file),
         arcade_sprites: arcade_files.map((x) => x.file),
         reel_sprites: reel_files.map((x) => x.file),
         item_sprites: item_files.map((x) => x.file),
@@ -468,6 +477,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         transitions: transition_files.map((x) => x.name),
         tns_portals: portal_files.map((x) => x.name),
         paintings: painting_files.map((x) => x.name),
+        decals: decal_files.map((x) => x.name),
         arcade_sprites: arcade_files.map((x) => x.name),
         reel_sprites: reel_files.map((x) => x.name),
         item_sprites: item_files.map((x) => x.name),

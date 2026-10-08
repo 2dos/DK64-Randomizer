@@ -1510,6 +1510,9 @@ colorblind_changes = [
     [0x9A5, 0x9B4],  # Knight/Swords Paintings
     [0xA53, 0xA53],  # Dolphin Painting
     [0xA46, 0xA46],  # Candy Poster
+    [0x614, 0x614],  # K Rool Run Painting
+    [0x625, 0x625],  # Other K Rool Paintings
+    [0x627, 0x627],  # Other K Rool Paintings
     [0x1237, 0x1241],  # Ice Tomato
     [0x1266, 0x1266],  # GB Sticker (Actor - Size 0xAB8)
     [0xB7D, 0xB7D],  # GB Sticker (OM2 - Size 0xAA0)
@@ -1544,6 +1547,13 @@ colorblind_changes = [
     [0x12E5, 0x12E5],  # Pineapple
     [0x14A7, 0x14B5],  # Pineapple
     [0xB85, 0xB85],  # Snide HQ Sign
+    [0x383, 0x384],  # K Rool Head
+    [0x348, 0x348],  # K Rool Head
+    [0x37C, 0x37C],  # Factory level indic - Lobby
+    [0x352, 0x352],  # Factory level indic - Production
+    [0x38F, 0x38F],  # Factory level indic - Testing
+    [0x3AE, 0x3AE],  # Factory level indic - R&D
+    [0x3B3, 0x3B3],  # Factory graph
     # [0xC39, 0xC39],  # Dartboard Coin
 ]
 
@@ -1559,6 +1569,15 @@ palette_files = [
     0x2EA,  # Minecart Mayhem Walls
     0x86B,  # Minecart Mayhem Rails (1)
     0x86D,  # Minecart Mayhem Rails (2)
+    0x615,
+    0x626,
+    0x628,
+    0x349,
+    0x37D,
+    0x353,
+    0x390,
+    0x3AF,
+    0x3B4,
 ]
 for file in palette_files:
     file_dict.append(
