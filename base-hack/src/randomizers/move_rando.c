@@ -240,7 +240,6 @@ Gfx* displayMoveText(Gfx* dl, actorData* actor) {
 	return dl;
 }
 
-ROM_DATA static char hint_displayed_text[20] = "";
 ROM_RODATA_PTR static const char* level_names[] = {
 	"JAPES",
 	"AZTEC",
@@ -315,8 +314,9 @@ void getTextForMove(char **top, char **bottom, int purchase_type, int purchase_v
 			if ((tm_data->level == -1) || (tm_data->level == purchase_value)) {
 				if ((tm_data->kong == -1) || (tm_data->kong == purchase_kong)) {
 					if (tm_data->text_item == ITEMTEXT_HINTITEM) {
-						dk_strFormat((char*)&hint_displayed_text, "%s %s HINT", level_names[purchase_value], kong_names[purchase_kong]); // TODO: Make this not reference a static addr
-						*top = &hint_displayed_text[0];
+						char *hint_text = dk_malloc(0x21);
+						dk_strFormat(hint_text, "%s %s HINT", level_names[purchase_value], kong_names[purchase_kong]);
+						*top = hint_text;
 						return;
 					}
 					*top = getTextFromTextEntry(tm_data->text_item);
