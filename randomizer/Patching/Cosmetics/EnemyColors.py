@@ -19,7 +19,7 @@ from randomizer.Patching.Library.Image import (
     getLuma,
     hueShiftColor,
 )
-from randomizer.Patching.Library.Generic import getValueFromByteArray, IsColorOptionSelected
+from randomizer.Patching.Library.Generic import getValueFromByteArray, IsColorOptionSelected, getHoliday, Holidays
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, getRawFile
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.LazyPIL import Image
@@ -298,6 +298,64 @@ def adjustFungiMushVertexColor(shift: int, ROM_COPY):
     file_data = gzip.compress(fungi_geo, compresslevel=9)
     ROM_COPY.seek(getPointerLocation(TableNames.MapGeometry, Maps.FungiForest))
     ROM_COPY.writeBytes(file_data)
+
+def paintCavesAColor(ROM_COPY: ROM, hue_shift: int):
+    """Paint the walls of caves a certain color."""
+    caves_textures = [
+        0x7E6,
+        0x7EA,
+        0x7EE,
+        0x7F0,
+        0x7F2,
+        0x7F4,
+        0x7F6,
+        0x7F8,
+        0x7FA,
+        0x7FE,
+        0x800,
+        0x802,
+        0x804,
+        0x806,
+        0x81C,
+        0x81E,
+        0x824,
+        0x826,
+        0x828,
+        0x82A,
+        0x82C,
+        0x832,
+        0x838,
+        0x841,
+        0x843,
+        0x845,
+        0x847,
+        0x849,
+        0x84B,
+        0x84D,
+        0x855,
+        0x857,
+        0x859,
+        0x85B,
+        0x863,
+        0x865,
+    ]
+    for tex in caves_textures:
+        im = getImageFile(ROM_COPY, 25, tex, True, 4, 4, TextureFormat.RGBA5551)
+        px = im.load()
+        for y in range(4):
+            for x in range(4):
+                r, g, b, a = px[x, y]
+                if a < 128:
+                    continue
+                if b <= r + 30:
+                    continue
+                if b <= g + 30:
+                    continue
+                if b < 100:
+                    continue
+                r, g, b = hueShiftColor((r, g, b), hue_shift)
+                px[x, y] = r, g, b, a
+        writeColorImageToROM(im, 25, tex, 4, 4, False, TextureFormat.RGBA5551, ROM_COPY)
 
 
 def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
@@ -592,12 +650,20 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
         #     hueShiftImageContainer(25, img, 1, TROFF_TEXTURE_DATA[img], TextureFormat.RGBA5551, troff_shift, ROM_COPY)
 
         # enemy_changes[Model.BananaFairy] = EnemyColorSwap([0xFFD400, 0xFFAA00, 0xFCD200, 0xD68F00, 0xD77D0A, 0xe49800, 0xdf7f1f, 0xa26c00, 0xd6b200, 0xdf9f1f])
+    sand_shift = None
+    if getHoliday(settings) == Holidays.Halloween:
+        sand_shift = 310
+    elif IsColorOptionSelected(settings, ColorOptions.environment):
+        sand_shift = getRandomHueShift()
+    if sand_shift is not None:
+        hueShiftImageContainer(25, 0x565, 32, 32, TextureFormat.RGBA5551, sand_shift, ROM_COPY)  # Aztec Sand
     if IsColorOptionSelected(settings, ColorOptions.environment):
         # Mushrooms
         for img_index in (0x67F, 0x680):
             hueShiftImageContainer(25, img_index, 32, 64, TextureFormat.RGBA5551, mush_man_shift, ROM_COPY)
         hueShiftImageContainer(25, 0x6F3, 4, 4, TextureFormat.RGBA5551, mush_man_shift, ROM_COPY)
         adjustFungiMushVertexColor(mush_man_shift, ROM_COPY)
+        paintCavesAColor(ROM_COPY, getRandomHueShift())
         # Pendulum Bob
         pendulum_shift = getRandomHueShift()
         for index in range(0x2B6, 0x2E1 + 1):
