@@ -151,21 +151,28 @@ void handleArchipelagoFeed(void) {
             ap_info.fed_item = TRANSFER_ITEM_NULL;
         }
         if (ap_info.fed_string[0] != 0) {
-            int vacant_spot = spawnItemOverlay(REQITEM_AP, 0, 1, 1);
-            if (vacant_spot == -1) {
-                return;
-            }
-            ap_info.safety_text_timer = ap_info.text_timer + 50;
-            // Main Title
-            text_overlay_data[vacant_spot].string = (char*)&main_title;
-            dk_memcpy(text_overlay_data[vacant_spot].string, &ap_info.fed_string, 0x21);
+            char *maint = dk_malloc(0x21);
+            dk_memcpy(maint, &ap_info.fed_string, 0x21);
             ap_info.fed_string[0] = 0;
+            char *subt = NULL;
             if (ap_info.fed_subtitle[0]) {
-                // Subtitle
-                text_overlay_data[vacant_spot].subtitle = (char*)&sub_title;
-                dk_memcpy(text_overlay_data[vacant_spot].subtitle, &ap_info.fed_subtitle, 0x21);
+                subt = dk_malloc(0x21);
+                dk_memcpy(subt, &ap_info.fed_subtitle, 0x21);
                 ap_info.fed_subtitle[0] = 0;
             }
+            spawnItemOverlay(REQITEM_AP, 0, 1, NEWACTOR_JETPACITEMOVERLAY, 0, maint, subt);
+            move_overlay_paad * ovl_paad = LastSpawnedActor->paad;
+            ovl_paad->timer = ap_info.text_timer;
+            ovl_paad->fade_in = ovl_paad->timer - 2;
+            if (ovl_paad->timer < 70) {
+                ovl_paad->fade_out = (ovl_paad->timer - 30) / 2;
+                if (ovl_paad->fade_out < 5) {
+                    ovl_paad->fade_rate = 0xFF;
+                } else {
+                    ovl_paad->fade_rate = 0x100 / (ovl_paad->fade_out - 4);
+                }
+            }
+            ap_info.safety_text_timer = ap_info.text_timer + 50;
         }
     }
     // Deathlink

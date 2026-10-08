@@ -302,220 +302,138 @@ ROM_RODATA_NUM static const text_match_struct TextMatchInfo[] = {
 	{.req_item = REQITEM_FUNGITIME, .level = -1, .kong = 1, .text_item = ITEMTEXT_NIGHT},
 };
 
+char *getTextFromTextEntry(int entry) {
+	return getTextPointer(0x27, entry, 0);
+}
+
+void getTextForMove(char **top, char **bottom, int purchase_type, int purchase_value, int purchase_kong) {
+	*top = NULL;
+	*bottom = NULL;
+	for (unsigned int di = 0; di < sizeof(TextMatchInfo) / sizeof(text_match_struct); di++) {
+		const text_match_struct *tm_data = &TextMatchInfo[di];
+		if (tm_data->req_item == purchase_type) {
+			if ((tm_data->level == -1) || (tm_data->level == purchase_value)) {
+				if ((tm_data->kong == -1) || (tm_data->kong == purchase_kong)) {
+					if (tm_data->text_item == ITEMTEXT_HINTITEM) {
+						dk_strFormat((char*)&hint_displayed_text, "%s %s HINT", level_names[purchase_value], kong_names[purchase_kong]); // TODO: Make this not reference a static addr
+						*top = &hint_displayed_text[0];
+						return;
+					}
+					*top = getTextFromTextEntry(tm_data->text_item);
+					return;
+				}
+			}
+		}
+	}
+	if (purchase_type == REQITEM_MOVE) {
+		switch (purchase_value) {
+			case 0:
+			case 1:
+			case 2:
+				{
+					int move_index = (purchase_kong * 4) + purchase_value + 1;
+					*top = getTextFromTextEntry(SpecialMovesNames[move_index].name);
+					*bottom = getTextFromTextEntry(SpecialMovesNames[move_index].latin);
+				}
+				break;
+			case 3:
+				{
+					int slam_level = MovesBase[0].simian_slam;
+					*top = getTextFromTextEntry(SimianSlamNames[slam_level].name);
+					*bottom = getTextFromTextEntry(SimianSlamNames[slam_level].latin);
+				}
+				break;
+			case 4:
+				*top = getTextFromTextEntry(GunNames[purchase_kong]);
+				break;
+			case 5:
+			case 6:
+				*top = getTextFromTextEntry(GunUpgNames[purchase_value - 3]);
+				break;
+			case 7:
+				{
+					int belt_level = MovesBase[0].ammo_belt;
+					*top = getTextFromTextEntry(AmmoBeltNames[belt_level]);
+				}
+				break;
+			case 8:
+				*top = getTextFromTextEntry(InstrumentNames[purchase_kong]);
+				break;
+			case 9:
+				{
+					int lvl = getInstrumentLevel();
+					*top = getTextFromTextEntry(InstrumentUpgNames[lvl + 1]);
+				}
+				break;
+		}
+		return;
+	}
+	if (purchase_type == REQITEM_KEY) {
+		*top = getTextFromTextEntry(ITEMTEXT_KEY1 + purchase_value);
+		*bottom = (char*)key_subtitles[key_subtitle_indexes[purchase_value]];
+	}
+}
+
 void getNextMoveText(void) {
 	move_overlay_paad* paad = CurrentActorPointer_0->paad;
-	int start_hiding = 0;
-	actorData* shop_owner = paad->shop_owner;
-	shop_paad* shop_data = 0;
-	int is_jetpac = CurrentActorPointer_0->actorType == NEWACTOR_JETPACITEMOVERLAY;
-	if (!is_jetpac) {
-		if ((shop_owner == 0) && (inShop(CurrentMap, 0))) {
-			shop_owner = getSpawnerTiedActor(1,0);
-			paad->shop_owner = shop_owner;
+	int overlay_count = 0;
+	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+		for (int i = 0; i < LoadedActorCount; i++) {
+			actorData* actor = (actorData*)LoadedActorArray[i].actor;
+			if (actor) {
+				if ((actor->actorType == 0x140) || (actor->actorType == 0x144)) {
+					if (actor != CurrentActorPointer_0) {
+						overlay_count += 1;
+					}
+				}
+			}
 		}
-		if ((paad->shop_owner) && (inShop(CurrentMap, 0))) {
-			shop_data = shop_owner->paad2;
-		}
+		mtx_item mtx0;
+		mtx_item mtx1;
+		_guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
+		int position = 800 - (overlay_count * 100); // Gap of 100
+		_guTranslateF(&mtx1, 640.0f, position, 0.0f);
+		_guMtxCatF(&mtx0, &mtx1, &mtx0);
+		_guMtxF2L(&mtx0, &paad->matrix_0);
+		_guTranslateF(&mtx1, 0.0f, 48.0f, 0.0f);
+		_guMtxCatF(&mtx0, &mtx1, &mtx0);
+		_guMtxF2L(&mtx0, &paad->matrix_1);
 	}
-	int p_value = 0;
-	int p_type = 0;
-	int p_kong = 0;
-	char* p_string = 0;
-	char* p_subtitle = 0;
-	int has_data = 0;
-	move_text_overlay_struct *used_overlay = &text_overlay_data[paad->index];
-	if (shop_data) {
-		has_data = 1;
-		p_value = shop_data->item_level;
-		p_type = shop_data->item_type;
-		p_kong = shop_data->kong;
-	} else {
-		has_data = 1;
-		p_type = used_overlay->type;
-		p_value = used_overlay->level;
-		p_kong = used_overlay->kong;
-		p_string = used_overlay->string;
-		p_subtitle = used_overlay->subtitle;
+	paad->timer--;
+	if (paad->timer == 0) {
+		if (paad->upper_text) {
+			complex_free(paad->upper_text);
+		}
+		if (paad->lower_text) {
+			complex_free(paad->lower_text);
+		}
+		deleteActorContainer(CurrentActorPointer_0);
+		return;
 	}
-	int override_string = isAPEnabled() && p_type == REQITEM_AP;
-	if ((has_data) || (paad->upper_text) || (paad->lower_text)) {
-		if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-			used_overlay->kong = 0;
-			used_overlay->level = 0;
-			used_overlay->type = 0;
-			used_overlay->string = 0;
-			used_overlay->subtitle = 0;
-			used_overlay->used = 0;
-			int overlay_count = 0;
-			for (int i = 0; i < LoadedActorCount; i++) {
-				actorData* actor = (actorData*)LoadedActorArray[i].actor;
-				if (actor) {
-					if ((actor->actorType == 0x140) || (actor->actorType == 0x144)) {
-						if (actor != CurrentActorPointer_0) {
-							overlay_count += 1;
-						}
-					}
-				}
-			}
-			int top_item = -1;
-			int bottom_item = -1;
-			mtx_item mtx0;
-			mtx_item mtx1;
-			_guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
-			int position = 800 - (overlay_count * 100); // Gap of 100
-			_guTranslateF(&mtx1, 640.0f, position, 0.0f);
-			_guMtxCatF(&mtx0, &mtx1, &mtx0);
-			_guMtxF2L(&mtx0, &paad->matrix_0);
-			_guTranslateF(&mtx1, 0.0f, 48.0f, 0.0f);
-			_guMtxCatF(&mtx0, &mtx1, &mtx0);
-			_guMtxF2L(&mtx0, &paad->matrix_1);
-			paad->fade_in = 120;
-			paad->fade_out = 30;
-			paad->fade_rate = 0x10;
-			paad->timer = 130;
-			if ((CurrentMap == MAP_CRANKY) && (!is_jetpac)) {
-				paad->timer = 300;
-			}
-			if (p_type == REQITEM_AP) {
-				if (APData) {
-					paad->timer = APData->text_timer;
-					paad->fade_in = paad->timer - 2;
-					if (paad->timer < 70) {
-						paad->fade_out = (paad->timer - 30) / 2;
-						if (paad->fade_out < 5) {
-							paad->fade_rate = 0xFF;
-						} else {
-							paad->fade_rate = 0x100 / (paad->fade_out - 4);
-						}
-					}
-				}
-			} else {
-				int tm_found = 0;
-				for (unsigned int di = 0; di < sizeof(TextMatchInfo) / sizeof(text_match_struct); di++) {
-					const text_match_struct *tm_data = &TextMatchInfo[di];
-					if (tm_data->req_item == p_type) {
-						if ((tm_data->level == -1) || (tm_data->level == p_value)) {
-							if ((tm_data->kong == -1) || (tm_data->kong == p_kong)) {
-								tm_found = 1;
-								top_item = tm_data->text_item;
-							}
-						}
-					}
-				}
-				if (!tm_found) {
-					if (p_type == REQITEM_MOVE) {
-						switch (p_value) {
-							case 0:
-							case 1:
-							case 2:
-								{
-									int move_index = (p_kong * 4) + p_value + 1;
-									top_item = SpecialMovesNames[move_index].name;
-									bottom_item = SpecialMovesNames[move_index].latin;
-								}
-								break;
-							case 3:
-								{
-									int slam_level = MovesBase[0].simian_slam;
-									top_item = SimianSlamNames[slam_level].name;
-									bottom_item = SimianSlamNames[slam_level].latin;
-								}
-								break;
-							case 4:
-								top_item = GunNames[p_kong];
-								break;
-							case 5:
-							case 6:
-								top_item = GunUpgNames[p_value - 3];
-								break;
-							case 7:
-								{
-									int belt_level = MovesBase[0].ammo_belt;
-									top_item = AmmoBeltNames[belt_level];
-								}
-								break;
-							case 8:
-								top_item = InstrumentNames[p_kong];
-								break;
-							case 9:
-								{
-									int lvl = getInstrumentLevel();
-									top_item = InstrumentUpgNames[lvl + 1];
-								}
-								break;
-						}
-					} else if (p_type == REQITEM_KEY) {
-						top_item = ITEMTEXT_KEY1 + p_value;
-					}
-				}
-			}
-			
-			if (override_string) {
-				paad->upper_text = p_string;
-				if (p_subtitle) {
-					paad->lower_text = p_subtitle;
-				} else {
-					paad->lower_text = 0;
-				}
-			} else {
-				if (top_item < 0) {
-					paad->upper_text = (void*)0;
-				} else {
-					if (top_item == ITEMTEXT_HINTITEM) {
-						if ((p_kong >= 0) && (p_kong < 5) && (p_value >= 0) && (p_value < 7)) {
-							dk_strFormat((char*)&hint_displayed_text, "%s %s HINT", level_names[p_value], kong_names[p_kong]);
-							paad->upper_text = &hint_displayed_text;
-						} else {
-							paad->upper_text = getTextPointer(0x27,top_item,0);
-						}
-					} else {
-						paad->upper_text = getTextPointer(0x27,top_item,0);
-					}
-				}
-				if (bottom_item < 0) {
-					paad->lower_text = (void*)0;
-					if ((top_item >= ITEMTEXT_KEY1) && (top_item <= ITEMTEXT_KEY8)) {
-						paad->lower_text = key_subtitles[key_subtitle_indexes[top_item - ITEMTEXT_KEY1]];
-					}
-				} else {
-					paad->lower_text = getTextPointer(0x27,bottom_item,0);
-				}
-			}
+	if (paad->timer == paad->fade_out) {
+		CurrentActorPointer_0->control_state = 2;
+	} else if (paad->timer == paad->fade_in) {
+		CurrentActorPointer_0->control_state = 1;
+	}
+	int opacity = paad->opacity;
+	if (CurrentActorPointer_0->control_state == 1) {
+		opacity += paad->fade_rate;
+		if (opacity > 0xFF) {
+			opacity = 0xFF;
 		}
-		paad->timer--;
-		if (paad->timer == 0) {
-			start_hiding = 1;
+		paad->opacity = opacity;
+	} else if (CurrentActorPointer_0->control_state == 2) {
+		opacity -= paad->fade_rate;
+		if (opacity < 0) {
+			opacity = 0;
 		}
-		if (paad->timer == paad->fade_out) {
-			CurrentActorPointer_0->control_state = 2;
-		} else if (paad->timer == paad->fade_in) {
-			CurrentActorPointer_0->control_state = 1;
-		}
-		if (CurrentActorPointer_0->control_state == 1) {
-			int opacity = paad->opacity;
-			opacity += paad->fade_rate;
-			if (opacity > 0xFF) {
-				opacity = 0xFF;
-			}
-			paad->opacity = opacity;
-		} else if (CurrentActorPointer_0->control_state == 2) {
-			int opacity = paad->opacity;
-			opacity -= paad->fade_rate;
-			if (opacity < 0) {
-				opacity = 0;
-			}
-			paad->opacity = opacity;
-		}
-		if (start_hiding == 0) {
-			if (CurrentActorPointer_0->control_state != 0) {
-				addDLToOverlay(&displayMoveText, CurrentActorPointer_0, 3);
-			}
-			if (CurrentActorPointer_0->actorType == 0x140) {
-				renderActor(CurrentActorPointer_0,0);
-			}
-		} else {
-			deleteActorContainer(CurrentActorPointer_0);
-		}
+		paad->opacity = opacity;
+	}
+	if (CurrentActorPointer_0->control_state != 0) {
+		addDLToOverlay(&displayMoveText, CurrentActorPointer_0, 3);
+	}
+	if (CurrentActorPointer_0->actorType == 0x140) {
+		renderActor(CurrentActorPointer_0,0);
 	}
 }
 

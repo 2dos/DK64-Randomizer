@@ -9,7 +9,8 @@ extern void initHack(int source);
 extern void callParentMapFilter(void);
 extern void quickInit(void);
 extern int getCenter(int style, const char* str);
-extern int spawnItemOverlay(requirement_item type, int level, int kong, int force);
+extern void spawnItemOverlay(requirement_item type, int level, int kong, int actor_type, int model, char *string, char *subtitle);
+extern void spawnItemOverlayFromShop(int actor_type, int model);
 extern int giveSlamLevel(void);
 extern int inBattleCrown(maps map);
 extern int inTraining(maps map);
@@ -438,6 +439,7 @@ extern void balloonItemHandler(int flag, int state, flagtypes flag_type);
 extern void balloonVisHandler(sprite_struct * sprite, int cb_flag);
 extern Gfx *balloonVisHandler2(sprite_struct *sprite, Gfx *dl, short unk2);
 extern int getHalfMedalRequirement(int full_medal_requirement);
+extern void getTextForMove(char **top, char **bottom, int purchase_type, int purchase_value, int purchase_kong);
 
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];

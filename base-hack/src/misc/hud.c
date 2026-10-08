@@ -411,8 +411,11 @@ void setAllHUDKongs(int kong) {
 
 
 const void* getHUDSprite_Complex(item_ids item) {
-    hud_element *hud_el = &HUD->item[item];
-    int kong = hud_el->kong;
+    int kong = getKong(0);
+    if (item < ITEMID_TERMINATOR) {
+        hud_element *hud_el = &HUD->item[item];
+        kong = hud_el->kong;
+    }
     if (item == ITEMID_CBS_0) {
         kong = *(int*)(0x80745288); // T&S Hover
     }

@@ -196,7 +196,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
         addHelmTime(hh_item, 1);
     }
     if ((config.display_item_text && display_text) || (config.force_display_item_text)) {
-        spawnItemOverlay(item, level, kong, 0);
+        spawnItemOverlay(item, level, kong, 324, 0, NULL, NULL);
     }
 }
 

@@ -2353,8 +2353,8 @@ typedef struct collision_tree_struct {
 } collision_tree_struct;
 
 typedef struct move_overlay_paad {
-	/* 0x000 */ const void* upper_text;
-	/* 0x004 */ const void* lower_text;
+	/* 0x000 */ char* upper_text;
+	/* 0x004 */ char* lower_text;
 	/* 0x008 */ unsigned char opacity;
 	/* 0x009 */ unsigned char index;
 	/* 0x00A */ char unk_0A;

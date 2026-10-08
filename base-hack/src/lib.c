@@ -1258,27 +1258,28 @@ int inU8List(const int target, const unsigned char* list, const int count) {
 	return 0;
 }
 
-int spawnItemOverlay(requirement_item type, int level, int kong, int force) {
-	for (int i = 0; i < TEXT_OVERLAY_BUFFER; i++) {
-		if (text_overlay_data[i].used) {
-			continue;
-		}
-		if (force) {
-			spawnActor(NEWACTOR_JETPACITEMOVERLAY, 0);
-		} else {
-			spawnActor(324,0);
-		}
-		move_overlay_paad * ovl_paad = LastSpawnedActor->paad;
-		ovl_paad->index = i;
-		text_overlay_data[i].type = type;
-		text_overlay_data[i].level = level;
-		text_overlay_data[i].kong = kong;
-		text_overlay_data[i].string = (char*)0;
-		text_overlay_data[i].subtitle = (char*)0;
-		text_overlay_data[i].used = 1;
-		return i;
+void spawnItemOverlay(requirement_item type, int level, int kong, int actor_type, int model, char *string, char *subtitle) {
+	spawnActor(actor_type, model);
+	move_overlay_paad * ovl_paad = LastSpawnedActor->paad;
+	if ((string) || (subtitle)) {
+		ovl_paad->upper_text = string;
+		ovl_paad->lower_text = subtitle;
+	} else {
+		getTextForMove(&ovl_paad->upper_text, &ovl_paad->lower_text, type, level, kong);
 	}
-	return -1;
+	ovl_paad->fade_in = 120;
+	ovl_paad->fade_out = 30;
+	ovl_paad->fade_rate = 0x10;
+	ovl_paad->timer = 130;
+}
+
+void spawnItemOverlayFromShop(int actor_type, int model) {
+	shop_paad *paad = CurrentActorPointer_0->paad2;
+	spawnItemOverlay(paad->item_type, paad->item_level, paad->kong, actor_type, model, NULL, NULL);
+	if (CurrentMap == MAP_CRANKY) {
+		move_overlay_paad * ovl_paad = LastSpawnedActor->paad;
+		ovl_paad->timer = 300;
+	}
 }
 
 int giveSlamLevel(void) {

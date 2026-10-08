@@ -466,6 +466,10 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeFunction(ROM_COPY, 0x80630D5C, Overlay.Static, "balloonVisHandler2", offset_dict)
     writeValue(ROM_COPY, 0x806A7ADC, Overlay.Static, 0, offset_dict, 4)  # Remove displaying HUD
     writeValue(ROM_COPY, 0x806A7AEC, Overlay.Static, 0, offset_dict, 4)  # Remove giving CBs
+    # Spawner functions for overlays
+    writeFunction(ROM_COPY, 0x80026998, Overlay.Menu, "spawnItemOverlayFromShop", offset_dict)
+    writeFunction(ROM_COPY, 0x800269BC, Overlay.Menu, "spawnItemOverlayFromShop", offset_dict)
+    writeFunction(ROM_COPY, 0x806EFA80, Overlay.Static, "spawnItemOverlayFromShop", offset_dict)
 
 
 def fairyFix(ROM_COPY: LocalROM, settings, offset_dict: dict):
