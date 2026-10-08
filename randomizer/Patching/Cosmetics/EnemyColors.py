@@ -651,19 +651,23 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
 
         # enemy_changes[Model.BananaFairy] = EnemyColorSwap([0xFFD400, 0xFFAA00, 0xFCD200, 0xD68F00, 0xD77D0A, 0xe49800, 0xdf7f1f, 0xa26c00, 0xd6b200, 0xdf9f1f])
     sand_shift = None
+    ice_shift = None
     if getHoliday(settings) == Holidays.Halloween:
         sand_shift = 310
+        ice_shift = 140
     elif IsColorOptionSelected(settings, ColorOptions.environment):
         sand_shift = getRandomHueShift()
+        ice_shift = getRandomHueShift()
     if sand_shift is not None:
         hueShiftImageContainer(25, 0x565, 32, 32, TextureFormat.RGBA5551, sand_shift, ROM_COPY)  # Aztec Sand
+    if ice_shift is not None:
+        paintCavesAColor(ROM_COPY, ice_shift)
     if IsColorOptionSelected(settings, ColorOptions.environment):
         # Mushrooms
         for img_index in (0x67F, 0x680):
             hueShiftImageContainer(25, img_index, 32, 64, TextureFormat.RGBA5551, mush_man_shift, ROM_COPY)
         hueShiftImageContainer(25, 0x6F3, 4, 4, TextureFormat.RGBA5551, mush_man_shift, ROM_COPY)
         adjustFungiMushVertexColor(mush_man_shift, ROM_COPY)
-        paintCavesAColor(ROM_COPY, getRandomHueShift())
         # Pendulum Bob
         pendulum_shift = getRandomHueShift()
         for index in range(0x2B6, 0x2E1 + 1):
