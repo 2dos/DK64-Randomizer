@@ -1,0 +1,41 @@
+// source: overworld_settings.proto
+/**
+ * @fileoverview
+ * @enhanceable
+ * @suppress {missingRequire} reports error on implicit type usages.
+ * @suppress {messageConventions} JS Compiler reports an error if a variable or
+ *     field starts with 'MSG_' and isn't a translatable message.
+ * @public
+ */
+// GENERATED CODE -- DO NOT EDIT!
+/* eslint-disable */
+// @ts-nocheck
+
+goog.provide('proto.randomizer.proto.ShuffledBonusBarrel');
+
+/**
+ * @enum {number}
+ */
+proto.randomizer.proto.ShuffledBonusBarrel = {
+  SHUFFLED_BONUS_BARREL_UNSPECIFIED: 0,
+  SHUFFLED_BONUS_BARREL_BATTY_BARREL_BANDIT: 1,
+  SHUFFLED_BONUS_BARREL_BIG_BUG_BASH: 2,
+  SHUFFLED_BONUS_BARREL_BUSY_BARREL_BARRAGE: 3,
+  SHUFFLED_BONUS_BARREL_MAD_MAZE_MAUL: 4,
+  SHUFFLED_BONUS_BARREL_MINECART_MAYHEM: 5,
+  SHUFFLED_BONUS_BARREL_BEAVER_BOTHER: 6,
+  SHUFFLED_BONUS_BARREL_TEETERING_TURTLE_TROUBLE: 7,
+  SHUFFLED_BONUS_BARREL_STEALTHY_SNOOP: 8,
+  SHUFFLED_BONUS_BARREL_STASH_SNATCH: 9,
+  SHUFFLED_BONUS_BARREL_SPLISH_SPLASH_SALVAGE: 10,
+  SHUFFLED_BONUS_BARREL_SPEEDY_SWING_SORTIE: 11,
+  SHUFFLED_BONUS_BARREL_KRAZY_KONG_KLAMOUR: 12,
+  SHUFFLED_BONUS_BARREL_SEARCHLIGHT_SEEK: 13,
+  SHUFFLED_BONUS_BARREL_KREMLING_KOSH: 14,
+  SHUFFLED_BONUS_BARREL_PERIL_PATH_PANIC: 15,
+  SHUFFLED_BONUS_BARREL_HELM_MINIGAMES: 16,
+  SHUFFLED_BONUS_BARREL_ARENAS: 17,
+  SHUFFLED_BONUS_BARREL_TRAINING_MINIGAMES: 18,
+  SHUFFLED_BONUS_BARREL_ARCADE: 19
+};
+

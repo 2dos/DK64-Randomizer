@@ -691,6 +691,10 @@ def loadNewModels():
     portModelTwoToActor(0xE1, "", "blueprint_lanky", 0x90, True, 2 / 0.15)
     portModelTwoToActor(0xDD, "", "blueprint_tiny", 0x90, True, 2 / 0.15)
     portModelTwoToActor(0xDF, "", "blueprint_chunky", 0x90, True, 2 / 0.15)
+    portModelTwoToActor(0, "day_item_om2.bin", "day_item", 0x90, True, 4)
+    portModelTwoToActor(0, "night_item_om2.bin", "night_item", 0x90, True, 4)
+    portActorToModelTwo(0, "day_item_om1.bin", "day_item", 0x90, True, 1)
+    portActorToModelTwo(0, "night_item_om1.bin", "night_item", 0x90, True, 1)
     # Fake Items
     with open("bean_om1.bin", "rb") as fh:
         with open("fake_bean_om1.bin", "wb") as fg:

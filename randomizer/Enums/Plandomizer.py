@@ -25,6 +25,7 @@ class PlandoItems(IntEnum):
     Oranges = auto()
     Barrels = auto()
     Climbing = auto()
+    Cannons = auto()
 
     ProgressiveSlam = auto()
 
@@ -162,6 +163,7 @@ ItemToPlandoItemMap = {
     Items.Oranges: PlandoItems.Oranges,
     Items.Barrels: PlandoItems.Barrels,
     Items.Climbing: PlandoItems.Climbing,
+    Items.Cannons: PlandoItems.Cannons,
     Items.ProgressiveSlam: PlandoItems.ProgressiveSlam,
     Items.ProgressiveSlam2: PlandoItems.ProgressiveSlam,
     Items.ProgressiveSlam3: PlandoItems.ProgressiveSlam,
@@ -317,6 +319,7 @@ PlandoItemToItemMap = {
     PlandoItems.Oranges: Items.Oranges,
     PlandoItems.Barrels: Items.Barrels,
     PlandoItems.Climbing: Items.Climbing,
+    PlandoItems.Cannons: Items.Cannons,
     PlandoItems.BaboonBlast: Items.BaboonBlast,
     PlandoItems.StrongKong: Items.StrongKong,
     PlandoItems.GorillaGrab: Items.GorillaGrab,

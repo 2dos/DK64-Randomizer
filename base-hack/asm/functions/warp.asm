@@ -9,6 +9,7 @@
 .definelabel voidWarp, 0x805FF1B0
 .definelabel resetMap, 0x805FFFC8
 .definelabel initiateTransitionFade, 0x807124B8
+.definelabel initiateTransitionGamemode, 0x80712490
 .definelabel WarpToDKTV, 0x807131BC
 .definelabel initHelmTimer, 0x80712574
 .definelabel LoadGameOver, 0x807127B4

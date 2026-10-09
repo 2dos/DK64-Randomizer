@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package randomizer.proto.common;
+
+enum SongType {
+    SONG_TYPE_UNSPECIFIED = 0;
+    SONG_TYPE_SYSTEM = 1;
+    SONG_TYPE_BGM = 2;
+    SONG_TYPE_AMBIENT = 3;
+    SONG_TYPE_EVENT = 4;
+    SONG_TYPE_PROTECTED = 5;
+    SONG_TYPE_MAJOR_ITEM = 6;
+    SONG_TYPE_MINOR_ITEM = 7;
+}

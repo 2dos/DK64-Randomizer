@@ -444,29 +444,27 @@ typedef struct ice_trap_timer_struct {
     /* 0x000 */ unsigned short timer;
     /* 0x002 */ char active;
     /* 0x003 */ char unk3;
-    /* 0x004 */ void *disable_func;
-    /* 0x008 */ void *enable_func;
+    /* 0x004 */ int (*disable_func)(void);
+    /* 0x008 */ int (*enable_func)(void);
 } ice_trap_timer_struct;
 
-void resetScreenFlip(void) {
+int resetScreenFlip(void) {
     *(unsigned char*)(0x80010520) = 0x3F;
+    return 1;
 }
 
-void resetTagAnywhere(void) {
+int resetTagAnywhere(void) {
     if (CCEffectData) {
         CCEffectData->disable_tag_anywhere = CC_READY;
     }
-}
-
-void resetAnimalButtons(void) {
-    cc_disabler_animals();
+    return 1;
 }
 
 ROM_DATA static ice_trap_timer_struct ice_trap_timers[] = {
     {.timer = 0, .active=0, .disable_func=&resetScreenFlip}, // Flip
     {.timer = 0, .active=1, .disable_func=&cc_disabler_paper, .enable_func=&cc_enabler_paper}, // Paper
     {.timer = 0, .active=0, .disable_func=&cc_disabler_ice}, // Ice
-    {.timer = 0, .active=0, .disable_func=&resetAnimalButtons}, // Animals (resets buttons, then cc_disabler_animals is called separately)
+    {.timer = 0, .active=0, .disable_func=&cc_disabler_animals}, // Animals
     {.timer = 0, .active=0, .disable_func=&resetTagAnywhere}, // Tag
     {.timer = 0, .active=1, .enable_func=&cc_enabler_rockfall}, // Rockfall
 };
@@ -498,6 +496,42 @@ void wipeReplenishibles(void) {
         MovesBase[i].instrument_energy = 0;
     }
     displaySpriteAtXYZ((void*)(0x8071FE08), 1.0f, Player->xPos, Player->yPos + 6.0f, Player->zPos);
+}
+
+ROM_RODATA_NUM static const unsigned short button_perms[] = {
+    A_BUTTON,
+    B_BUTTON,
+    R_TRIG,
+    Z_TRIG,
+    START_BUTTON,
+    L_JPAD,
+    R_JPAD,
+    U_CBUTTONS,
+};
+
+void swapButtons(int timer) {
+    int start_index = getRNGLower31() & 0x7;
+    int shift = getRNGLower31() & 0x7;
+    if (shift == 0) {
+        shift = 1;
+    }
+    int end_index = (start_index + shift) & 0x7;
+    int counter = 2;
+    renderSpritesOnPlayer((sprite_data_struct *)0x807208F0, 2, timer);
+    for (int i = 0; i < 8; i++) {
+        if (button_swaps[i].target_bit == 0) {
+            button_swaps[i].timer = timer;
+            if (counter == 2) {
+                button_swaps[i].target_bit = button_perms[start_index];
+                button_swaps[i].output_bit = button_perms[end_index];
+            } else {
+                button_swaps[i].target_bit = button_perms[end_index];
+                button_swaps[i].output_bit = button_perms[start_index];
+                return;
+            }
+            counter--;
+        }
+    }
 }
 
 void initIceTrap(void) {
@@ -584,6 +618,9 @@ void initIceTrap(void) {
                 CCEffectData->disable_tag_anywhere = CC_ENABLED;
             }
             ice_trap_timers[4].timer = SECONDS_TO_F(15);
+            break;
+        case ICETRAP_BUTTONSWAP:
+            swapButtons(SECONDS_TO_F(30));
         default:
             break;
     }
@@ -704,10 +741,10 @@ void handleIceTrapButtons(void) {
             data->timer--;
             if (data->timer == 0) {
                 if (data->disable_func) {
-                    callFunc(data->disable_func, 0);
+                    data->disable_func();
                 }
             } else if (data->active) {
-                callFunc(data->enable_func, 0);
+                data->enable_func();
             }
         }
     }

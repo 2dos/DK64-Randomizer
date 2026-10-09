@@ -1,0 +1,48 @@
+// source: common/exit_category.proto
+/**
+ * @fileoverview
+ * @enhanceable
+ * @suppress {missingRequire} reports error on implicit type usages.
+ * @suppress {messageConventions} JS Compiler reports an error if a variable or
+ *     field starts with 'MSG_' and isn't a translatable message.
+ * @public
+ */
+// GENERATED CODE -- DO NOT EDIT!
+/* eslint-disable */
+// @ts-nocheck
+
+goog.provide('proto.randomizer.proto.common.ExitCategory');
+
+/**
+ * @enum {number}
+ */
+proto.randomizer.proto.common.ExitCategory = {
+  EXIT_CATEGORY_UNSPECIFIED: 0,
+  EXIT_CATEGORY_ISLES_EXTERIOR: 1,
+  EXIT_CATEGORY_ISLES_TRAINING_GROUNDS: 2,
+  EXIT_CATEGORY_JAPES_LOBBY: 3,
+  EXIT_CATEGORY_AZTEC_LOBBY: 4,
+  EXIT_CATEGORY_FACTORY_LOBBY: 5,
+  EXIT_CATEGORY_GALLEON_LOBBY: 6,
+  EXIT_CATEGORY_FOREST_LOBBY: 7,
+  EXIT_CATEGORY_CAVES_LOBBY: 8,
+  EXIT_CATEGORY_CASTLE_LOBBY: 9,
+  EXIT_CATEGORY_HELM_LOBBY: 10,
+  EXIT_CATEGORY_JAPES_EXTERIOR: 11,
+  EXIT_CATEGORY_AZTEC_EXTERIOR: 12,
+  EXIT_CATEGORY_FACTORY_EXTERIOR: 13,
+  EXIT_CATEGORY_GALLEON_EXTERIOR: 14,
+  EXIT_CATEGORY_FOREST_EXTERIOR: 15,
+  EXIT_CATEGORY_FOREST_MUSHROOM: 16,
+  EXIT_CATEGORY_FOREST_MILL: 17,
+  EXIT_CATEGORY_FOREST_GRINDER: 18,
+  EXIT_CATEGORY_CAVES_EXTERIOR: 19,
+  EXIT_CATEGORY_CASTLE_EXTERIOR: 20,
+  EXIT_CATEGORY_CASTLE_LOWER: 21,
+  EXIT_CATEGORY_CASTLE_UPPER: 22,
+  EXIT_CATEGORY_CASTLE_BALLROOM: 23,
+  EXIT_CATEGORY_CASTLE_CAR_RACE_EXTERIOR: 24,
+  EXIT_CATEGORY_CASTLE_CRYPT: 25,
+  EXIT_CATEGORY_HIDEOUT_HELM: 26
+};
+

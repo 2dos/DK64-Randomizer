@@ -3,7 +3,8 @@
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
-from randomizer.Patching.Library.Generic import addNewScript, getNextFreeID
+from randomizer.Patching.Library.Generic import getNextFreeID
+from randomizer.Patching.Library.Scripts import addNewScript
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Patcher import LocalROM

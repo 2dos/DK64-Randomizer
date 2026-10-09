@@ -91,6 +91,7 @@ short itemloc_flags[] = {
     FLAG_TBARREL_BARREL,
     FLAG_TBARREL_VINE,
     FLAG_ABILITY_CLIMBING,
+    FLAG_ABILITY_CANNON,
     // Instrument Upgrades and Slams
     FLAG_SHOPFLAG + (8 * 5) + (7 * 5) + ((LEVEL_GALLEON - LEVEL_AZTEC) * 5) + KONG_DK, // Instrument Upgrade
     FLAG_SHOPFLAG + (8 * 5) + (7 * 5) + (3 * 5) + ((LEVEL_CAVES - LEVEL_CAVES) * 5) + KONG_DK, // Instrument Upgrade
@@ -151,7 +152,7 @@ ROM_RODATA_NUM static const itemloc_data itemloc_textnames[] = {
     }, // 6
     {
         .header="BASIC MOVES",
-        .lengths={1, 1, 1, 1, 1, -1}
+        .lengths={1, 1, 1, 1, 1, 1}
     }, // 5
     {
         .header="INSTRUMENT UPGRADES AND SLAMS",
@@ -356,7 +357,7 @@ int getHintRequirement(int slot) {
 
 void displayCBCount(pause_paad *handler, void* sprite, int x, int y, float scale, int unk0, int unk1) {
     displaySprite(handler, sprite, x, y, scale, unk0, unk1);
-    if (handler->screen == PAUSESCREEN_HINTS) {
+    if (screen_order[(int)handler->screen] == PAUSESCREEN_HINTS) {
         int cb_count = getItemCountReq(REQITEM_COLOREDBANANA);
         displayPauseSpriteNumber(handler, 0x24, 0x1C, 0xC, -10, cb_count, 1, 0);
         displaySprite(handler, (void*)0x80721474, 0x24, 0x1C, 0.75f, 2, 1);
@@ -601,7 +602,7 @@ void handleHintScreenLockout(void) {
         } else if (lockout_mult) {
             pause_paad *paad = CurrentActorPointer_0->paad;
 
-            if (paad->screen == PAUSESCREEN_HINTS) {
+            if (screen_order[(int)paad->screen] == PAUSESCREEN_HINTS) {
                 hint_lockout = Rando.hint_screen_lockout * lockout_mult;
                 lockout_mult = 0;
                 for (int i = 0; i < 5; i++) {

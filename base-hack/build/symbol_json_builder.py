@@ -1,6 +1,7 @@
 """Build symbols.json."""
 
 import json
+from pathlib import Path
 
 LOWER_LIMIT_DISABLE = False
 UPPER_LIMIT_DISABLE = True
@@ -57,6 +58,7 @@ data = {
     "symbols": {},
     "vars": {},
     "enums": {},
+    "minigames": {},
 }
 with open(f"{PATH_PRE}rom/dev-symbols.sym", "r") as fh:
     # SYMBOLS CANNOT BE USED FOR COSMETIC CHANGES
@@ -86,6 +88,22 @@ with open(f"{PATH_PRE}rom/dev-symbols.sym", "r") as fh:
             # Disable out-of-range stuff (upper bound)
             continue
         data["symbols"][line_split[1]] = addr_int
+
+for json_f in list(Path("minigame").rglob("*.json")):
+    minigame = str(json_f).split("/")[-1].split(".json")[0]
+    important_symbols = []
+    with open(str(json_f), "r", encoding="utf-8") as fh:
+        important_symbols = [x.lower() for x in json.load(fh)["important_syms"]]
+    with open(str(json_f).replace(".json", "-symbols.sym"), "r") as fh:
+        lines = fh.readlines()
+        for line in lines:
+            if " " in line:
+                sym_name = line.split(" ")[1].lower().strip()
+                addr_raw = line.split(" ")[0].strip()
+                addr = int(f"0x{addr_raw}", 16)
+                if sym_name in important_symbols:
+                    data["minigames"][f"{minigame}.{sym_name}"] = addr
+
 for fname in ("vars", "item_rando", "item_data", "pause"):
     with open(f"{PATH_PRE}include/{fname}.h", "r") as fh:
         text = fh.read()

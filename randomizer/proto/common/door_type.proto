@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package randomizer.proto.common;
+
+enum DoorType {
+    DOOR_TYPE_UNSPECIFIED = 0;
+    DOOR_TYPE_NULL = 1;
+    DOOR_TYPE_WRINKLY = 2;
+    DOOR_TYPE_BOSS = 3;
+    DOOR_TYPE_DK_PORTAL = 4;
+}

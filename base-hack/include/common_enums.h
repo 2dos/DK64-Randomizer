@@ -271,6 +271,9 @@ typedef enum item_purchase_text {
 	/* 0x05C */ ITEMTEXT_SNIDEITEM,
 	/* 0x05D */ ITEMTEXT_HINTITEM,
 	/* 0x05E */ ITEMTEXT_CLIMBING,
+	/* 0x05F */ ITEMTEXT_DAY,
+	/* 0x060 */ ITEMTEXT_NIGHT,
+	/* 0x061 */ ITEMTEXT_CANNONS,
 } item_purchase_text;
 
 typedef enum pausescreenlist {
@@ -279,9 +282,10 @@ typedef enum pausescreenlist {
 	/* 0x002 */ PAUSESCREEN_LEVEL_ALL,
 	/* 0x003 */ PAUSESCREEN_TOTALS,
 	/* 0x004 */ PAUSESCREEN_CHECKS,
-	/* 0x007 */ PAUSESCREEN_MOVES,
-	/* 0x005 */ PAUSESCREEN_ITEMLOCATIONS,
-	/* 0x006 */ PAUSESCREEN_HINTS,
+	/* 0x005 */ PAUSESCREEN_MOVES,
+	/* 0x006 */ PAUSESCREEN_TASKS,
+	/* 0x007 */ PAUSESCREEN_ITEMLOCATIONS,
+	/* 0x008 */ PAUSESCREEN_HINTS,
 	/* ----- */ PAUSESCREEN_TERMINATOR,
 } pausescreenlist;
 
@@ -315,6 +319,10 @@ typedef enum win_conditions {
 	/* 0x005 */ GOAL_KROOLS_CHALLENGE,
 	/* 0x006 */ GOAL_KILL_THE_RABBIT,
 	/* 0x007 */ GOAL_KEYS_3_AND_8,
+	/* 0x008 */ GOAL_TASKS,
+	/* 0x009 */ GOAL_TASKSNOPAUSE,
+	/* 0x00A */ GOAL_FLAG,
+	/* 0x00B */ GOAL_REQITEM,
 } win_conditions;
 
 typedef enum master_types_list {
@@ -607,6 +615,7 @@ typedef enum file_data_indexes {
 	DATA_IGT_TINY,
 	DATA_IGT_CHUNKY,
 	DATA_HURRY_IGT,
+	DATA_LIVES,
 	DATA_STAT_TAG,
 	DATA_STAT_PHOTOS,
 	DATA_STAT_ENEMY_KILLS,
@@ -732,6 +741,9 @@ typedef enum tracker_types {
 	/* 53 */ TRACKER_TYPE_CANDY,
 	/* 54 */ TRACKER_TYPE_SNIDE,
 	/* 55 */ TRACKER_TYPE_CLIMB,
+	/* 56 */ TRACKER_TYPE_CANNON,
+	/* 57 */ TRACKER_TYPE_DAY,
+	/* 58 */ TRACKER_TYPE_NIGHT,
 } tracker_types;
 
 typedef enum overlays {
@@ -995,6 +1007,8 @@ typedef enum requirement_item {
 	/* 0x015 */ REQITEM_AP,
 	/* 0x016 */ REQITEM_RACECOIN,
 	/* 0x017 */ REQITEM_BONUSES_NOHELM,
+	/* 0x018 */ REQITEM_FUNGITIME,
+	/* 0x019 */ REQITEM_BLASTCOURSES,
 } requirement_item;
 
 typedef enum item_ids { 
@@ -1076,6 +1090,8 @@ typedef enum enum_bonus_skin {
 	/* 0x01F */ SKIN_AP_USEFUL,
 	/* 0x020 */ SKIN_AP_JUNK,
 	/* 0x021 */ SKIN_AP_TRAP,
+	/* 0x022 */ SKIN_DAY,
+	/* 0x023 */ SKIN_NIGHT,
     /* ----- */ SKIN_TERMINATOR,
 } enum_bonus_skin;
 
@@ -1101,6 +1117,8 @@ typedef enum custom_kong_models {
 	/* 0x00B */ KONGMODEL_CANDY,
 	/* 0x00C */ KONGMODEL_FUNKY,
 	/* 0x00D */ KONGMODEL_DISCODONKEY,
+	/* 0x00E */ KONGMODEL_ROBOKREM,
+	/* 0x00F */ KONGMODEL_RABBIT,
 } custom_kong_models;
 
 typedef enum dynamic_flag_icetrap_junk {
@@ -1129,6 +1147,7 @@ typedef enum ICE_TRAP_TYPES {
 	/* 0x010 */ ICETRAP_ANIMALS,
 	/* 0x011 */ ICETRAP_ROCKFALL,
 	/* 0x012 */ ICETRAP_TAG,
+	/* 0x013 */ ICETRAP_BUTTONSWAP,
 } ICE_TRAP_TYPES;
 
 typedef enum COLLISION_BTF {

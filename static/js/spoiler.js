@@ -53,6 +53,8 @@ const TIED_POOL_ITEMS = {
     "Melon Crates": ["CrateItem"],
     "Half-Medal": ["HalfMedal"],
     "Holdable Objects": ["BoulderItem"],
+    "Breakable Containers": ["Breakable"],
+    "Balloons": ["Balloon"],
     "Enemy Drops": ["Enemies"],
     "Shop Owners": ["Cranky", "Funky", "Candy", "Snide"],
     "Ice Traps": ["FakeItem"],

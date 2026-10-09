@@ -26,4 +26,7 @@ typedef struct cc_effects {
     /* 0x010 */ unsigned char fungi_time_of_day_toggle;
     /* 0x011 */ unsigned char galleon_water_rando;
     /* 0x012 */ unsigned char spawn_crate;
+    /* 0x013 */ unsigned char start_helm_timer;
+    /* 0x014 */ unsigned char no_climb;
+    /* 0x015 */ unsigned char no_ledges;
 } cc_effects;

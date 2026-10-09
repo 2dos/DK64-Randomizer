@@ -20,7 +20,6 @@
                             <option id="req_key" value="req_key">
                                 Keys
                             </option>
-                            </option>
                             <option id="get_key8" value="get_key8">
                                 Acquire Key 8
                             </option>
@@ -81,6 +80,27 @@
                             <option id="req_bonuses" value="req_bonuses">
                                 Bonuses
                             </option>
+                            <option id="mech_fish" value="mech_fish">
+                                Shoot the Mechanical Fish's heart
+                            </option>
+                            <option id="arcade" value="arcade">
+                                Complete the second round of DK Arcade
+                            </option>
+                            <option id="jetpac" value="jetpac">
+                                Complete the Jetpac Check
+                            </option>
+                            <option id="bad_hit_detection_man" value="bad_hit_detection_man">
+                                Defeat the Toy Monster
+                            </option>
+                            <option id="rareware_gb_check" value="rareware_gb_check">
+                                Obtain the secret fairy reward
+                            </option>
+                            <option id="blast_courses" value="blast_courses">
+                                Blast Courses
+                            </option>
+                            <option id="tasks" value="tasks" title="Complete a certain amount of configurable tasks to beat the seed">
+                                Tasks
+                            </option>
                         </select>
                         <input min="0"
                                 max="255"
@@ -96,6 +116,16 @@
                         <span id="win_condition_info_icon" class="hidden" style="cursor: help; color: var(--donk-green);" data-toggle="tooltip" data-placement="right" data-html="true" title="">
                             <i class="fa fa-info-circle"></i>
                         </span>
+                        <div style="padding: 5px; margin-top: 5px" id="tasks_configuration" hidden>
+                            <input class="customize"
+                                type="button"
+                                href="#"
+                                id="tasks_modalbutton"
+                                data-bs-toggle="modal"
+                                data-bs-target="#tasks_modal"
+                                data-toggle="tooltip"
+                                title="This will open a popup that will let you customize what tasks you need to complete."/>
+                        </div>
                     </div>
                     <div class="form-check form-switch item-switch" style="padding-left: 0;">
                         <label data-toggle="tooltip"
@@ -111,6 +141,7 @@
                     </div>
                 </div>
             </div>
+            {% include "complex-options/tasks-modal.html" %}
             <hr />
             <h5 class="select-title">Number of Starting Keys
                 <label data-toggle="tooltip"

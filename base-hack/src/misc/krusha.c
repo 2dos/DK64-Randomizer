@@ -62,6 +62,8 @@ ROM_RODATA_NUM static const unsigned char model_swap_base_index[] = {
 	0x12, // /* 0x00B */ KONGMODEL_CANDY,
 	0x11, // /* 0x00C */ KONGMODEL_FUNKY,
     0x03, // /* 0x00D */ KONGMODEL_DISCODONKEY,
+    0x2B, // /* 0x00E */ KONGMODEL_ROBOKREM,
+    0x46, // /* 0x00F */ KONGMODEL_RABBIT,
 };
 
 int getCutsceneModelTableIndex(int vanilla_index) {

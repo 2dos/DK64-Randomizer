@@ -22,6 +22,7 @@ from randomizer.Enums.Settings import (
     BananaportRando,
     BLockerSetting,
     ClimbingStatus,
+    CannonStatus,
     FasterChecksSelected,
     ProgressiveHintItem,
     ActivateAllBananaports,
@@ -46,7 +47,6 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import PreGivenLocations, SharedShopLocations, TrainingBarrelLocations
 from randomizer.Lists.MapsAndExits import GetMapId
-from randomizer.Lists.PathHintTree import BuildPathHintTree
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import (
     GetRegionIdOfLocation,
@@ -296,7 +296,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         Maps.GalleonBoss: [],
         Maps.FungiBoss: [Items.Barrels, Items.HunkyChunky],
         Maps.CavesBoss: [Items.Barrels],
-        Maps.CastleBoss: [],
+        Maps.CastleBoss: [Items.Cannons],
         Maps.KroolDonkeyPhase: dk_phase_requirement,
         Maps.KroolDiddyPhase: [Items.Peanut, Items.RocketbarrelBoost],
         Maps.KroolLankyPhase: [Items.Barrels, Items.Trombone],
@@ -305,7 +305,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     }
     # If the Bean isn't shuffled, hinting the Bean location is pointless
     if (
-        spoiler.settings.win_condition_item == WinConditionComplex.req_bean
+        spoiler.settings.HasWinRequirement(WinConditionComplex.req_bean)
         and ItemRandoListSelected.bean not in spoiler.settings.item_rando_list_selected
         and Locations.ForestBean in spoiler.woth_paths.keys()
     ):
@@ -379,7 +379,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         # If K. Rool is live it is guaranteed a hint in this distribution if it is not hinted otherwise via spoiler hints
         if (
             (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random or getattr(spoiler.settings, "krool_in_boss_pool", False))
-            and spoiler.settings.win_condition_spawns_ship == 1
+            and spoiler.settings.win_condition_spawns_ship
             and spoiler.settings.spoiler_hints == SpoilerHints.off
         ):
             valid_types.append(HintType.KRoolOrder)
@@ -409,6 +409,8 @@ def compileHints(spoiler: Spoiler) -> bool:
             all_hintable_moves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
         if spoiler.settings.climbing_status != ClimbingStatus.normal:
             all_hintable_moves.extend(ItemPool.ClimbingAbilities())
+        if spoiler.settings.cannon_status != CannonStatus.normal:
+            all_hintable_moves.extend(ItemPool.CannonAbilities())
         if spoiler.settings.shuffle_items:
             if Types.Bean in spoiler.settings.shuffled_location_types:
                 all_hintable_moves.append(Items.Bean)
@@ -420,6 +422,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 all_hintable_moves.append(Items.Candy)
             if Types.Snide in spoiler.settings.shuffled_location_types:
                 all_hintable_moves.append(Items.Snide)
+            if Types.FungiTime in spoiler.settings.shuffled_location_types:
+                all_hintable_moves.extend([Items.Day, Items.Night])
         optional_hintable_locations = []
         slam_locations = []
         # Loop through all locations, finding the location of all of these hintable moves
@@ -428,7 +432,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             if location.item == Items.ProgressiveSlam:
                 slam_locations.append(id)
             # Never hint training moves for obvious reasons
-            if location.type in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
+            if location.type in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing, Types.Cannons, Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.FungiTime):
                 continue
             # If it's a woth item, it must be hinted so put it in the list
             if id in spoiler.woth_locations:
@@ -442,7 +446,9 @@ def compileHints(spoiler: Spoiler) -> bool:
         # Sort the locations we plan on hinting by the number of doors they have available - this should roughly place hints in order of importance
         item_region_locations_to_hint.sort(key=lambda loc_id: (len(spoiler.accessible_hints_for_location[loc_id]) if loc_id in spoiler.accessible_hints_for_location.keys() else 10000))
         # If there's room, always hint a slam if we haven't hinted one already
-        hinted_slam_locations = [loc for loc in slam_locations if loc in item_region_locations_to_hint or spoiler.LocationList[loc].type in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing)]
+        hinted_slam_locations = [
+            loc for loc in slam_locations if loc in item_region_locations_to_hint or spoiler.LocationList[loc].type in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing, Types.Cannons)
+        ]
         if len(item_region_locations_to_hint) < hint_distribution[HintType.ItemHinting] and len(hinted_slam_locations) < 2:
             loc_to_hint = spoiler.settings.random.choice([loc for loc in slam_locations if loc not in hinted_slam_locations])
             item_region_locations_to_hint.append(loc_to_hint)
@@ -523,7 +529,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             else:
                 valid_types.append(HintType.Entrance)
         # If K. Rool is live it can get one hint if it is not hinted otherwise via spoiler hints
-        if (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random) and spoiler.settings.win_condition_spawns_ship == 1 and spoiler.settings.spoiler_hints == SpoilerHints.off:
+        if (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random) and spoiler.settings.win_condition_spawns_ship and spoiler.settings.spoiler_hints == SpoilerHints.off:
             valid_types.append(HintType.KRoolOrder)
             maxed_hint_types.append(HintType.KRoolOrder)
             # If the seed doesn't funnel you into helm, guarantee one K. Rool order hint
@@ -556,17 +562,17 @@ def compileHints(spoiler: Spoiler) -> bool:
 
                 valid_types.append(HintType.WothLocation)
                 # K. Rool seeds could use some help finding the last pesky moves
-                if spoiler.settings.win_condition_spawns_ship == 1:
+                if spoiler.settings.win_condition_spawns_ship:
                     valid_types.append(HintType.RequiredWinConditionHint)
                     # Count the number of non-trivial phases
                     hint_distribution[HintType.RequiredWinConditionHint] = len(
                         [kong for kong in spoiler.settings.krool_order if kong in spoiler.krool_paths and len(spoiler.krool_paths[kong]) - len(useless_locations[kong]) > 0]
                     )
-                if spoiler.settings.win_condition_item == WinConditionComplex.req_bean:
+                if spoiler.settings.HasWinRequirement(WinConditionComplex.req_bean):
                     valid_types.append(HintType.RequiredWinConditionHint)
                     hint_distribution[HintType.RequiredWinConditionHint] = 1
                 # Some win conditions need help finding the camera (if you don't start with it) - variable amount of unique hints for it
-                if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+                if spoiler.settings.WinReqRequiresCamera() and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
                     camera_location_id = None
                     for id, loc in spoiler.LocationList.items():
                         if loc.item in (Items.Camera, Items.CameraAndShockwave):
@@ -890,10 +896,12 @@ def compileHints(spoiler: Spoiler) -> bool:
                 elif item.type == Types.Shockwave:
                     item_name = "fairy moves"
                     item_color = "\x06"
-                elif item.type in (Types.TrainingBarrel, Types.Climbing):
+                elif item.type in (Types.TrainingBarrel, Types.Climbing, Types.Cannons):
                     item_name = "training moves"
                 elif item.type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
                     item_name = "shopkeepers"
+                elif item.type == Types.FungiTime:
+                    item_name = "time items"
                 elif item.type == Types.Shop:
                     if item.kong == Kongs.any:
                         item_name = "shared kong moves"
@@ -988,7 +996,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     location_to_hint = spoiler.settings.random.choice(location_options)
                     hinted_path_locations.append(location_to_hint)
         # If K. Rool is our goal, do the same with K. Rool phases
-        if spoiler.settings.win_condition_spawns_ship == 1:
+        if spoiler.settings.win_condition_spawns_ship:
             for kong in spoiler.krool_paths.keys():
                 # Determine if any location we're already hinting is on the path to this phase of K. Rool
                 hinted_locations_on_this_path = set(spoiler.krool_paths[kong]) & set(hinted_path_locations)
@@ -1001,7 +1009,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                         location_to_hint = spoiler.settings.random.choice(location_options)
                         hinted_path_locations.append(location_to_hint)
         # If the camera is critical to the win condition, guarantee one path hint for it
-        if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+        if spoiler.settings.WinReqRequiresCamera() and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             # Find the camera's location
             camera_location_id = None
             for location_id in multipath_dict_hints.keys():
@@ -1162,7 +1170,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     # - Prevent 35 plando hints from causing problems here (I don't think it will, but double check it)
     if hintset.expectedDistribution[HintType.RequiredWinConditionHint] > 0:
         # To aid K. Rool goals create a number of path hints to help find items required specifically for K. Rool
-        if spoiler.settings.win_condition_spawns_ship == 1:
+        if spoiler.settings.win_condition_spawns_ship:
             path = spoiler.woth_paths[Locations.BananaHoard]
             already_chosen_krool_path_locations = []
             chosen_krool_path_location_cap = hintset.expectedDistribution[HintType.RequiredWinConditionHint]
@@ -1232,7 +1240,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_location.hint_type = HintType.RequiredWinConditionHint
                 UpdateHint(hint_location, message)
         # All fairies seeds get 2 path hints for the camera
-        if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture):
+        if spoiler.settings.WinReqRequiresCamera():
             camera_location_id = None
             for location_id in spoiler.woth_paths.keys():
                 if spoiler.LocationList[location_id].item in (Items.Camera, Items.CameraAndShockwave):
@@ -1512,9 +1520,11 @@ def compileHints(spoiler: Spoiler) -> bool:
                     Types.Funky,
                     Types.Candy,
                     Types.Snide,
+                    Types.FungiTime,
                     Types.Constant,
                     Types.IslesMedal,
                     Types.Climbing,
+                    Types.Cannons,
                 ):
                     continue
                 region_id = GetRegionIdOfLocation(spoiler, woth_location_id)
@@ -1645,7 +1655,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             # Only hint things that are in shuffled locations - don't hint starting moves because you can't know which move it refers to and don't hint the Helm Key if you know key 8 is there
             if (
                 location.type in spoiler.settings.shuffled_location_types
-                and location.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing)
+                and location.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing, Types.Cannons)
                 and not (spoiler.settings.key_8_helm and location_id == Locations.HelmKey)
             ):
                 # WotH Keys that are in Shops and have nothing else on the path to them will already be entirely covered and solved with the guaranteed multipath hint
@@ -1778,6 +1788,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 Items.Barrels,  # All the good training moves
                 Items.Vines,
                 Items.Climbing,
+                Items.Cannons,
                 Items.Swim,
                 Items.Camera,  # Camera and Shockwave
                 Items.Shockwave,
@@ -1832,7 +1843,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                             break
                         candidate_loc = sorted_unhinted_locs.pop(0)[0]
                         # The unhinted item in question must be a vial for this hint to make any sense
-                        if ItemList[spoiler.LocationList[candidate_loc].item].type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing):
+                        if ItemList[spoiler.LocationList[candidate_loc].item].type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing, Types.Cannons):
                             candidate_region_name = spoiler.RegionList[GetRegionIdOfLocation(spoiler, candidate_loc)].hint_name
                             # Ensure this region is in a hintable one (i.e. not a shop region) and that we haven't hinted this region already
                             if candidate_region_name in hintable_region_names:
@@ -2311,10 +2322,13 @@ def compileSpoilerHints(spoiler):
         + ItemPool.CandyItems()
         + ItemPool.SnideItems()
         + ItemPool.ClimbingAbilities()
+        + ItemPool.CannonAbilities()
     )
     # Idenfity what moves among our starting items cannot be hinted. This is to aid trackers in communicating what starting moves count towards the WotH count.
     if spoiler.settings.climbing_status == ClimbingStatus.normal:
         starting_info.starting_moves_not_hintable.append(Items.Climbing)
+    if spoiler.settings.cannon_status == CannonStatus.normal:
+        starting_info.starting_moves_not_hintable.append(Items.Cannons)
     if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
         starting_info.starting_moves_not_hintable.extend([Items.Camera, Items.Shockwave, Items.CameraAndShockwave])
     if spoiler.settings.training_barrels == TrainingBarrels.normal and spoiler.settings.fast_start_beginning_of_game:
@@ -2335,13 +2349,13 @@ def compileSpoilerHints(spoiler):
             # 2. Training barrel locations are only pre-given if fast start is on
             # 3. The exception: IslesFirstMove (the Simian Slam location) is only pre-given if fast start is on
             if (
-                (location.type in (Types.Climbing, Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide) and location_id != Locations.IslesFirstMove)
+                (location.type in (Types.Climbing, Types.Cannons, Types.PreGivenMove, Types.Cranky, Types.Candy, Types.Funky, Types.Snide, Types.FungiTime) and location_id != Locations.IslesFirstMove)
                 or (spoiler.settings.fast_start_beginning_of_game and location.type == (Types.TrainingBarrel))
                 or (location_id == Locations.IslesFirstMove and spoiler.settings.fast_start_beginning_of_game)
             ):
                 starting_info.starting_moves.append(item_obj.name)
                 # Starting shopkeepers are never hintable
-                if location.type in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
+                if location.type in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide, Types.FungiTime):
                     starting_info.starting_moves_not_hintable.append(item_obj.name)
                 if location_id in spoiler.woth_locations:
                     starting_info.starting_moves_woth_count += 1
@@ -2525,6 +2539,8 @@ def PointValueOfItem(settings, item_id):
         return settings.points_list_training_moves
     elif item_id in ItemPool.ClimbingAbilities():
         return settings.points_list_training_moves
+    elif item_id in ItemPool.CannonAbilities():
+        return settings.points_list_training_moves
     elif item_id in ItemPool.ImportantSharedMoves:
         return settings.points_list_important_shared
     elif item_id == Items.Bean:
@@ -2642,10 +2658,10 @@ def GenerateMultipathDict(
                     path_to_family = True
                     relevant_goal_locations.append(Locations(woth_loc))
                 # Determine path to the Bean if the Bean is the win condition.
-                if endpoint_item.type == Types.Bean and spoiler.settings.win_condition_item == WinConditionComplex.req_bean and location not in useless_locations[Items.Bean]:
+                if endpoint_item.type == Types.Bean and spoiler.settings.HasWinRequirement(WinConditionComplex.req_bean) and location not in useless_locations[Items.Bean]:
                     path_to_bean = True
                     relevant_goal_locations.append(Locations(woth_loc))
-                if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+                if spoiler.settings.HasWinRequirement(WinConditionComplex.dk_rap_items):
                     item = spoiler.LocationList[woth_loc].item
                     for verse_index, verse in enumerate(verse_items):
                         if item in verse:
@@ -2659,17 +2675,17 @@ def GenerateMultipathDict(
                 if endpoint_item.type == Types.Kong:
                     path_to_family = True
         # Determine which K. Rool phases this is on the path to (if relevant)
-        if spoiler.settings.win_condition_spawns_ship == 1:
+        if spoiler.settings.win_condition_spawns_ship:
             for map_id in spoiler.krool_paths.keys():
                 if location in spoiler.krool_paths[map_id]:
                     path_to_krool_phases.append(boss_colors[map_id] + boss_names[map_id] + boss_colors[map_id])
                     relevant_goal_locations.append(Maps(map_id))
         # If that wascally wabbit needs to be killed, determine if we're on the path to that.
-        if spoiler.settings.win_condition_item == WinConditionComplex.kill_the_rabbit and location in spoiler.rabbit_path:
+        if spoiler.settings.HasWinRequirement(WinConditionComplex.kill_the_rabbit) and location in spoiler.rabbit_path:
             path_to_rabbit = True
             relevant_goal_locations.append(Locations(woth_loc))
         # Determine if this location is on the path to taking photos for certain win conditions
-        if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+        if spoiler.settings.WinReqRequiresCamera() and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             camera_location_id = None
             for id, loc in spoiler.LocationList.items():
                 if loc.item in (Items.Camera, Items.CameraAndShockwave):
@@ -2711,7 +2727,7 @@ def GenerateMultipathDict(
             hint_text_components.append("\x07The Bean\x07")
         if path_to_rabbit:
             hint_text_components.append("\x05The Rabbit\x05")
-        if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+        if spoiler.settings.HasWinRequirement(WinConditionComplex.dk_rap_items):
             all_verses = [xi for xi, x in enumerate(path_to_verses) if x]
             if len(all_verses) == 6:
                 hint_text_components.append("All Verses")

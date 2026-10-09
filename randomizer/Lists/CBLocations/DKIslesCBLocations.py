@@ -478,7 +478,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=37,
         map_id=Maps.Isles,
-        name="Tree between tag barrel and Japes",
+        name="Top of tree between tag barrel and Japes",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
         logic=lambda l: (l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy),
@@ -2911,7 +2911,7 @@ BalloonList = [
     Balloon(
         id=1,
         map_id=Maps.Treehouse,
-        name="In DK's Treehouse",
+        name="Treehouse: In DK's Treehouse",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Treehouse,
@@ -2920,25 +2920,27 @@ BalloonList = [
     Balloon(
         id=2,
         map_id=Maps.TrainingGrounds,
-        name="Above the lake",
+        name="Training Ground: Above the lake",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        item_logic=lambda l: l.swim,
         points=[[1775, 123, 990], [1807, 150, 1128], [1775, 120, 1247]],
     ),
     Balloon(
         id=3,
         map_id=Maps.TrainingGrounds,
-        name="Banana hoard room",
+        name="Training Grounds: Banana hoard room",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        logic=lambda l: l.can_use_vines and l.climbing,
         points=[[2497, 280, 1038], [2497, 380, 1038]],
     ),
     Balloon(
         id=4,
         map_id=Maps.TrainingGrounds,
-        name="Around the treehouse",
+        name="Training Grounds: Around the treehouse",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
@@ -2947,7 +2949,7 @@ BalloonList = [
     Balloon(
         id=5,
         map_id=Maps.TrainingGrounds,
-        name="Above rear ledge",
+        name="Training Grounds: Above rear ledge",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
@@ -2960,12 +2962,14 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
+        item_rando_konglist=[Kongs.donkey, Kongs.chunky],
+        item_logic=lambda l: l.climbing,
         points=[[1092, 300, 756], [1330, 250, 760], [1574, 286, 743], [1330, 250, 760]],
     ),
     Balloon(
         id=7,
         map_id=Maps.TrainingGrounds,
-        name="Next to Cranky",
+        name="Training Grounds: Next to Shop",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
@@ -2974,7 +2978,7 @@ BalloonList = [
     Balloon(
         id=8,
         map_id=Maps.TrainingGrounds,
-        name="Training Area",
+        name="Training Grounds: Bonus Training Area",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
@@ -2983,7 +2987,7 @@ BalloonList = [
     Balloon(
         id=9,
         map_id=Maps.TrainingGrounds,
-        name="Rear tunnel",
+        name="Training Grounds: Rear tunnel",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
@@ -2992,7 +2996,7 @@ BalloonList = [
     Balloon(
         id=10,
         map_id=Maps.TrainingGrounds,
-        name="Exit tunnel",
+        name="Training Grounds: Exit tunnel",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
@@ -3001,25 +3005,27 @@ BalloonList = [
     Balloon(
         id=11,
         map_id=Maps.Isles,
-        name="Waterfall lower",
+        name="DK Isles: Waterfall lower",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
+        item_logic=lambda l: l.swim,
         points=[[2980, 564, 1084], [2980, 713, 1084]],
     ),
     Balloon(
         id=12,
         map_id=Maps.Isles,
-        name="Waterfall upper",
+        name="DK Isles: Waterfall upper",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
+        item_logic=lambda l: l.swim,
         points=[[2980, 941, 1084], [2980, 1084, 1084]],
     ),
     Balloon(
         id=13,
         map_id=Maps.Isles,
-        name="Above bananaports",
+        name="DK Isles: Above bananaports",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
@@ -3028,7 +3034,7 @@ BalloonList = [
     Balloon(
         id=14,
         map_id=Maps.Isles,
-        name="Japes shore",
+        name="DK Isles: Japes shore",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
@@ -3037,7 +3043,7 @@ BalloonList = [
     Balloon(
         id=15,
         map_id=Maps.Isles,
-        name="Beaver beach",
+        name="DK Isles: Beaver beach",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
@@ -3050,12 +3056,13 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
+        item_logic=lambda l: l.swim,
         points=[[2208, 580, 628], [2149, 600, 725]],
     ),
     Balloon(
         id=17,
         map_id=Maps.Isles,
-        name="Around the tree below caves",
+        name="Tree below Lobby 6",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesHill,
@@ -3064,7 +3071,7 @@ BalloonList = [
     Balloon(
         id=18,
         map_id=Maps.Isles,
-        name="Near Aztec",
+        name="Near Lobby 2",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMainUpper,
@@ -3073,7 +3080,7 @@ BalloonList = [
     Balloon(
         id=19,
         map_id=Maps.Isles,
-        name="In front of DK Isle's eyes",
+        name="In front of DK's eyes",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMainUpper,
@@ -3109,7 +3116,7 @@ BalloonList = [
     Balloon(
         id=23,
         map_id=Maps.Isles,
-        name="Behind Aztec",
+        name="Behind Lobby 2",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMainUpper,
@@ -3118,7 +3125,7 @@ BalloonList = [
     Balloon(
         id=24,
         map_id=Maps.Isles,
-        name="Near Forest",
+        name="Near Lobby 5",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinIsle,
@@ -3141,7 +3148,7 @@ BalloonList = [
     Balloon(
         id=26,
         map_id=Maps.IslesSnideRoom,
-        name="Around Snide",
+        name="Snide Lobby: Around Snide",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesSnideRoom,
@@ -3150,7 +3157,7 @@ BalloonList = [
     Balloon(
         id=27,
         map_id=Maps.Isles,
-        name="Upper Factory Path",
+        name="Upper Lobby 3 Path",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.KremIsleBeyondLift,
@@ -3159,7 +3166,7 @@ BalloonList = [
     Balloon(
         id=28,
         map_id=Maps.Isles,
-        name="Big pipe in Krem Isle middle back",
+        name="Big pipe behind Lobby 3",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.KremIsleBeyondLift,
@@ -3179,7 +3186,7 @@ BalloonList = [
     Balloon(
         id=30,
         map_id=Maps.JungleJapesLobby,
-        name="Left side",
+        name="Japes Lobby: Left side",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesLobby,
@@ -3188,7 +3195,7 @@ BalloonList = [
     Balloon(
         id=31,
         map_id=Maps.JungleJapesLobby,
-        name="Right side",
+        name="Japes Lobby: Right side",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesLobby,
@@ -3197,7 +3204,7 @@ BalloonList = [
     Balloon(
         id=32,
         map_id=Maps.AngryAztecLobby,
-        name="Between columns",
+        name="Aztec Lobby: Between columns",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecLobby,
@@ -3206,7 +3213,7 @@ BalloonList = [
     Balloon(
         id=33,
         map_id=Maps.AngryAztecLobby,
-        name="Above B.Locker",
+        name="Aztec Lobby: Above B.Locker",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecLobby,
@@ -3215,7 +3222,7 @@ BalloonList = [
     Balloon(
         id=34,
         map_id=Maps.AngryAztecLobby,
-        name="Back room",
+        name="Aztec Lobby: Back room",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecLobby,
@@ -3225,7 +3232,7 @@ BalloonList = [
     Balloon(
         id=35,
         map_id=Maps.FranticFactoryLobby,
-        name="Vents",
+        name="Factory Lobby: Vents",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryLobby,
@@ -3234,7 +3241,7 @@ BalloonList = [
     Balloon(
         id=36,
         map_id=Maps.FranticFactoryLobby,
-        name="Between pipes",
+        name="Factory Lobby: Between pipes",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryLobby,
@@ -3247,6 +3254,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryLobby,
+        item_logic=lambda l: l.grab,
         points=[
             [675, 208, 368],
             [651, 200, 600],
@@ -3259,10 +3267,11 @@ BalloonList = [
     Balloon(
         id=38,
         map_id=Maps.GloomyGalleonLobby,
-        name="Above water",
+        name="Galleon Lobby: Above water",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonLobby,
+        item_logic=lambda l: l.swim,
         points=[
             [400, 200, 700],
             [491, 300, 645],
@@ -3277,7 +3286,7 @@ BalloonList = [
     Balloon(
         id=39,
         map_id=Maps.GloomyGalleonLobby,
-        name="Above land",
+        name="Galleon Lobby: Above land",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GloomyGalleonLobby,
@@ -3286,7 +3295,7 @@ BalloonList = [
     Balloon(
         id=40,
         map_id=Maps.GloomyGalleonLobby,
-        name="In the Tiny room",
+        name="Galleon Lobby: In the Tiny room",
         speed=4,
         konglist=[Kongs.tiny],
         region=Regions.GloomyGalleonLobby,
@@ -3296,7 +3305,7 @@ BalloonList = [
     Balloon(
         id=41,
         map_id=Maps.FungiForestLobby,
-        name="Crazy fairy balloon",
+        name="Fungi Lobby: Crazy Fairy balloon",
         speed=23,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestLobby,
@@ -3317,7 +3326,7 @@ BalloonList = [
     Balloon(
         id=42,
         map_id=Maps.FungiForestLobby,
-        name="Wrinkly wheel (back wall)",
+        name="Fungi Lobby: Wrinkly wheel",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestLobby,
@@ -3326,17 +3335,18 @@ BalloonList = [
     Balloon(
         id=43,
         map_id=Maps.CrystalCavesLobby,
-        name="In the lava",
+        name="Caves Lobby: In the lava",
         speed=10,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesLobby,
         logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.ledgeclip,
+        item_logic=lambda l: l.strongKong and l.donkey,
         points=[[305, 100, 305], [305, -80, 305]],
     ),
     Balloon(
         id=44,
         map_id=Maps.CrystalCavesLobby,
-        name="Around the bridge",
+        name="Caves Lobby: Around the bridge",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesLobby,
@@ -3345,7 +3355,7 @@ BalloonList = [
     Balloon(
         id=45,
         map_id=Maps.CrystalCavesLobby,
-        name="Boulder room",
+        name="Caves Lobby: Boulder room",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesLobby,
@@ -3360,20 +3370,22 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleLobby,
         points=[[679, 55, 477], [819, 55, 681], [687, 55, 880], [465, 55, 885], [352, 55, 672], [470, 55, 474]],
+        banned_when_item_rando=True,  # Over Acid
     ),
     Balloon(
         id=47,
         map_id=Maps.CreepyCastleLobby,
-        name="Above center piece",
+        name="Castle Lobby: Above center piece",
         speed=9,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleLobby,
+        item_logic=lambda l: (l.chunky and l.balloon and l.lanky and l.barrels) or ((l.CanMoonkick() or (l.monkey_maneuvers and l.tiny and l.twirl and (not l.isKrushaAdjacent(Kongs.tiny))))),
         points=[[635, 280, 584], [526, 280, 585], [471, 280, 678], [525, 280, 775], [634, 280, 774], [690, 280, 680]],
     ),
     Balloon(
         id=48,
         map_id=Maps.CreepyCastleLobby,
-        name="Near B.Locker",
+        name="Castle Lobby: Near B.Locker",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CreepyCastleLobby,
@@ -3387,6 +3399,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.HideoutHelmLobby,
         points=[[340, 270, 545], [257, 280, 615], [326, 260, 741], [412, 275, 644]],
+        banned_when_item_rando=True,  # Over Lava
     ),
     Balloon(
         id=50,
@@ -3396,11 +3409,12 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.HideoutHelmLobby,
         points=[[654, 311, 493], [605, 250, 424], [598, 275, 689]],
+        banned_when_item_rando=True,  # Over Lava
     ),
     Balloon(
         id=51,
         map_id=Maps.BananaFairyRoom,
-        name="Rareware GB room",
+        name="BFI: Rareware GB room",
         speed=4,
         konglist=[Kongs.tiny],
         region=Regions.RarewareGBRoom,
@@ -3409,7 +3423,7 @@ BalloonList = [
     Balloon(
         id=52,
         map_id=Maps.BananaFairyRoom,
-        name="Around the fairy",
+        name="BFI: Around the fairy",
         speed=6,
         konglist=[Kongs.tiny],
         region=Regions.BananaFairyRoom,

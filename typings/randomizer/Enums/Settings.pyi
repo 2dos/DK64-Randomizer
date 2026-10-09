@@ -98,6 +98,8 @@ class DKPortalRando(IntEnum):
     off = 0
     main_only = 1
     on = 2
+    main_only_underwater = 3
+    on_underwater = 4
 
 class KroolInBossPool(IntEnum):
     off = 0
@@ -156,6 +158,10 @@ class GalleonWaterSetting(IntEnum):
     random = 3
 
 class ClimbingStatus(IntEnum):
+    normal = 0
+    shuffled = 1
+
+class CannonStatus(IntEnum):
     normal = 0
     shuffled = 1
 
@@ -298,6 +304,11 @@ class ItemRandoListSelected(IntEnum):
     gauntletbanana = 46
     blueprintbanana = 47
     sniderewards = 48
+    fungitime = 49
+    breakable = 50
+    dummyitem_breakable = 51
+    balloon = 52
+    dummyitem_balloon = 53
 
 class ItemRandoFiller(IntEnum):
     junkitem = 1
@@ -338,6 +349,8 @@ class KongModels(IntEnum):
     candy = 6
     funky = 7
     disco_donkey = 8
+    robokrem = 9
+    rabbit = 10
 
 class KongModelMode(IntEnum):
     none = 0
@@ -524,6 +537,7 @@ class ShufflePortLocations(IntEnum):
     on = 4
 
 class SlamRequirement(IntEnum):
+    no_slam = 0
     green = 1
     blue = 2
     red = 3
@@ -595,6 +609,14 @@ class WinConditionComplex(IntEnum):
     krools_challenge = 19
     kill_the_rabbit = 20
     get_keys_3_and_8 = 21
+    mech_fish = 22
+    arcade = 23
+    jetpac = 24
+    bad_hit_detection_man = 25
+    rareware_gb_check = 26
+    blast_courses = 27
+    tasks = 28
+    inactive = 29
 
 class WrinklyHints(IntEnum):
     off = 0
@@ -908,14 +930,42 @@ class SettingsStringEnum(IntEnum):
     bosses_selected = 296
     ice_trap_model_v2 = 297
     progressive_hint_algorithm = 298
-    pause_hints_setting = 299
-    hint_door_item = 300
-    hint_door_item_count = 301
-    pause_hints_lockout_timer = 302
-    spoiler_include_blocker_info = 303
-    half_medal_percentage = 304
-    season5_door_rando = 305
-    season5_crate_rando = 306
+    switchsanity_switch_factory_dark_grate = 299
+    switchsanity_switch_factory_bonus_grate = 300
+    switchsanity_switch_factory_monster_grate = 301
+    switchsanity_switch_caves_gone_cave = 302
+    switchsanity_switch_caves_snide_cave = 303
+    switchsanity_switch_caves_boulder_cave = 304
+    switchsanity_switch_caves_lobby_blueprint = 305
+    switchsanity_switch_caves_lobby_lava = 306
+    switchsanity_switch_aztec_gong_tower = 307
+    switchsanity_switch_aztec_lobby_gong = 308
+    ship_location_rando = 309
+    pause_hints_setting = 310
+    hint_door_item = 311
+    hint_door_item_count = 312
+    pause_hints_lockout_timer = 313
+    task_1_condition = 314
+    task_1_count = 315
+    task_2_condition = 316
+    task_2_count = 317
+    task_3_condition = 318
+    task_3_count = 319
+    task_4_condition = 320
+    task_4_count = 321
+    task_5_condition = 322
+    task_5_count = 323
+    task_6_condition = 324
+    task_6_count = 325
+    task_7_condition = 326
+    task_7_count = 327
+    task_8_condition = 328
+    task_8_count = 329
+    spoiler_include_blocker_info = 330
+    half_medal_percentage = 331
+    season5_door_rando = 332
+    season5_crate_rando = 333
+    lives = 334
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -929,145 +979,163 @@ class SettingsStringDataType(IntEnum):
     u8 = 9
 
 SettingsMap: dict = {
-    "activate_all_bananaports": ActivateAllBananaports,
-    "bananaport_placement_rando": ShufflePortLocations,
-    "bananaport_rando": BananaportRando,
-    "big_head_mode": BigHeadMode,
-    "blocker_difficulty": BLockerDifficulty,
-    "bonus_barrels": MinigameBarrels,
-    "cb_rando": CBRando,
-    "chunky_colors": CharacterColors,
-    "coin_door_item": HelmDoorItem,
-    "colorblind_mode": ColorblindMode,
-    "crown_door_item": HelmDoorItem,
-    "crown_enemy_rando": CrownEnemyRando,
-    "crown_enemy_difficulty": CrownEnemyDifficulty,
-    "damage_amount": DamageAmount,
-    "dk_portal_location_rando_v2": DKPortalRando,
-    "diddy_colors": CharacterColors,
-    "dk_colors": CharacterColors,
-    "dpad_display": DPadDisplays,
-    "enemies_selected": Enemies,
-    "enguarde_colors": CharacterColors,
-    "excluded_songs_selected": ExcludedSongs,
-    "fungi_time": FungiTimeSetting,
-    "galleon_water": GalleonWaterSetting,
-    "gb_colors": CharacterColors,
-    "glitches_selected": GlitchesSelected,
-    "tricks_selected": TricksSelected,
-    "hard_bosses_selected": HardBossesSelected,
-    "hard_mode_selected": HardModeSelected,
-    "helm_barrels": MinigameBarrels,
-    "helm_room_bonus_count": HelmBonuses,
-    "helm_setting": HelmSetting,
-    "ice_trap_frequency": IceTrapFrequency,
-    "ice_trap_model": IceTrapModel,
-    "ice_trap_model_v2": IceTrapModel2,
-    "item_rando_list_selected": ItemRandoListSelected,
-    "kasplat_rando_setting": KasplatRandoSetting,
-    "krusha_ui": KrushaUi,
-    "lanky_colors": CharacterColors,
-    "level_randomization": LevelRandomization,
-    "logic_type": LogicType,
-    "microhints_enabled": MicrohintsEnabled,
-    "minigames_list_selected": MinigamesListSelected,
-    "cb_rando_list_selected": Levels,
-    "misc_changes_selected": MiscChangesSelected,
-    "bosses_selected": Maps,
-    "more_cutscene_skips": ExtraCutsceneSkips,
-    "move_rando": MoveRando,
-    "music_filtering_selected": MusicFilters,
-    "rambi_colors": CharacterColors,
-    "random_colors": ColorOptions,
-    "random_models": RandomModels,
-    "random_prices": RandomPrices,
-    "shockwave_status": ShockwaveStatus,
-    "shuffle_loading_zones": ShuffleLoadingZones,
-    "sound_type": SoundType,
-    "starting_keys_list_selected": Items,
-    "starting_move_list_selected": Items,
-    "switchsanity": SwitchsanityLevel,
-    "random_starting_move_list_selected": Items,
-    "tiny_colors": CharacterColors,
-    "training_barrels": TrainingBarrels,
-    "warp_level_list_selected": Maps,
-    "win_condition": WinCondition,
-    "win_condition_item": WinConditionComplex,
-    "blocker_selection_behavior": BLockerSetting,
-    "tns_selection_behavior": TroffSetting,
-    "medal_jetpac_behavior": RandomRequirement,
-    "pearl_mermaid_behavior": RandomRequirement,
-    "fairy_queen_behavior": RandomRequirement,
-    "cb_medal_behavior": RandomRequirement,
-    "random_starting_region_new": RandomStartingRegion,
-    "cb_medal_behavior_new": CBRequirement,
-    "wrinkly_hints": WrinklyHints,
-    "pause_hints_setting": PauseHintSetting,
-    "spoiler_hints": SpoilerHints,
-    "starting_kong": Kongs,
-    "remove_barriers_selected": RemovedBarriersSelected,
-    "faster_checks_selected": FasterChecksSelected,
-    "kong_model_dk": KongModels,
-    "kong_model_diddy": KongModels,
-    "kong_model_lanky": KongModels,
-    "kong_model_tiny": KongModels,
-    "kong_model_chunky": KongModels,
-    "kong_model_mode": KongModelMode,
-    "chunky_phase_slam_req": SlamRequirement,
-    "puzzle_rando_difficulty": PuzzleRando,
-    "progressive_hint_item": ProgressiveHintItem,
-    "hint_door_item": ProgressiveHintItem,
-    "progressive_hint_algorithm": ProgressiveHintAlgorithm,
-    "starting_moves_list_1": Items,
-    "starting_moves_list_2": Items,
-    "starting_moves_list_3": Items,
-    "starting_moves_list_4": Items,
-    "starting_moves_list_5": Items,
-    "item_rando_list_0": ItemRandoListSelected,
-    "item_rando_list_1": ItemRandoListSelected,
-    "item_rando_list_2": ItemRandoListSelected,
-    "item_rando_list_3": ItemRandoListSelected,
-    "item_rando_list_4": ItemRandoListSelected,
-    "item_rando_list_5": ItemRandoListSelected,
-    "item_rando_list_6": ItemRandoListSelected,
-    "item_rando_list_7": ItemRandoListSelected,
-    "item_rando_list_8": ItemRandoListSelected,
-    "item_rando_list_9": ItemRandoListSelected,
-    "filler_items_selected": ItemRandoFiller,
-    "prog_slam_level_1": SlamRequirement,
-    "prog_slam_level_2": SlamRequirement,
-    "prog_slam_level_3": SlamRequirement,
-    "prog_slam_level_4": SlamRequirement,
-    "prog_slam_level_5": SlamRequirement,
-    "prog_slam_level_6": SlamRequirement,
-    "prog_slam_level_7": SlamRequirement,
-    "prog_slam_level_8": SlamRequirement,
-    "switchsanity_switch_isles_to_kroc_top": SwitchsanityKong,
-    "switchsanity_switch_isles_helm_lobby": SwitchsanityGone,
-    "switchsanity_switch_isles_aztec_lobby_back_room": SwitchsanityKong,
-    "switchsanity_switch_isles_fungi_lobby_fairy": SwitchsanityKong,
-    "switchsanity_switch_isles_spawn_rocketbarrel": SwitchsanityKong,
-    "switchsanity_switch_japes_to_hive": SwitchsanityKong,
-    "switchsanity_switch_japes_to_rambi": SwitchsanityKong,
-    "switchsanity_switch_japes_to_painting_room": SwitchsanityKong,
-    "switchsanity_switch_japes_to_cavern": SwitchsanityKong,
-    "switchsanity_switch_aztec_to_kasplat_room": SwitchsanityKong,
-    "switchsanity_switch_aztec_llama_front": SwitchsanityKong,
-    "switchsanity_switch_aztec_llama_side": SwitchsanityKong,
-    "switchsanity_switch_aztec_llama_back": SwitchsanityKong,
-    "switchsanity_switch_aztec_sand_tunnel": SwitchsanityKong,
-    "switchsanity_switch_aztec_to_connector_tunnel": SwitchsanityKong,
-    "switchsanity_switch_galleon_to_lighthouse_side": SwitchsanityKong,
-    "switchsanity_switch_galleon_to_shipwreck_side": SwitchsanityKong,
-    "switchsanity_switch_galleon_to_cannon_game": SwitchsanityKong,
-    "switchsanity_switch_fungi_yellow_tunnel": SwitchsanityKong,
-    "switchsanity_switch_fungi_green_tunnel_near": SwitchsanityKong,
-    "switchsanity_switch_fungi_green_tunnel_far": SwitchsanityKong,
-    "switchsanity_switch_japes_free_kong": SwitchsanityKong,
-    "switchsanity_switch_aztec_free_tiny": SwitchsanityKong,
-    "switchsanity_switch_aztec_free_lanky": SwitchsanityKong,
-    "switchsanity_switch_factory_free_kong": SwitchsanityKong,
-    "krool_in_boss_pool_v2": KroolInBossPool,
+    'activate_all_bananaports': ActivateAllBananaports,
+    'bananaport_placement_rando': ShufflePortLocations,
+    'bananaport_rando': BananaportRando,
+    'big_head_mode': BigHeadMode,
+    'blocker_difficulty': BLockerDifficulty,
+    'bonus_barrels': MinigameBarrels,
+    'cb_rando': CBRando,
+    'chunky_colors': CharacterColors,
+    'coin_door_item': HelmDoorItem,
+    'colorblind_mode': ColorblindMode,
+    'crown_door_item': HelmDoorItem,
+    'crown_enemy_rando': CrownEnemyRando,
+    'crown_enemy_difficulty': CrownEnemyDifficulty,
+    'damage_amount': DamageAmount,
+    'dk_portal_location_rando_v2': DKPortalRando,
+    'diddy_colors': CharacterColors,
+    'dk_colors': CharacterColors,
+    'dpad_display': DPadDisplays,
+    'enemies_selected': Enemies,
+    'enguarde_colors': CharacterColors,
+    'excluded_songs_selected': ExcludedSongs,
+    'fungi_time': FungiTimeSetting,
+    'galleon_water': GalleonWaterSetting,
+    'gb_colors': CharacterColors,
+    'glitches_selected': GlitchesSelected,
+    'tricks_selected': TricksSelected,
+    'hard_bosses_selected': HardBossesSelected,
+    'hard_mode_selected': HardModeSelected,
+    'helm_barrels': MinigameBarrels,
+    'helm_room_bonus_count': HelmBonuses,
+    'helm_setting': HelmSetting,
+    'ice_trap_frequency': IceTrapFrequency,
+    'ice_trap_model': IceTrapModel,
+    'ice_trap_model_v2': IceTrapModel2,
+    'item_rando_list_selected': ItemRandoListSelected,
+    'kasplat_rando_setting': KasplatRandoSetting,
+    'krusha_ui': KrushaUi,
+    'lanky_colors': CharacterColors,
+    'level_randomization': LevelRandomization,
+    'logic_type': LogicType,
+    'microhints_enabled': MicrohintsEnabled,
+    'minigames_list_selected': MinigamesListSelected,
+    'cb_rando_list_selected': Levels,
+    'misc_changes_selected': MiscChangesSelected,
+    'bosses_selected': Maps,
+    'more_cutscene_skips': ExtraCutsceneSkips,
+    'move_rando': MoveRando,
+    'music_filtering_selected': MusicFilters,
+    'rambi_colors': CharacterColors,
+    'random_colors': ColorOptions,
+    'random_models': RandomModels,
+    'random_prices': RandomPrices,
+    'shockwave_status': ShockwaveStatus,
+    'shuffle_loading_zones': ShuffleLoadingZones,
+    'sound_type': SoundType,
+    'starting_keys_list_selected': Items,
+    'starting_move_list_selected': Items,
+    'switchsanity': SwitchsanityLevel,
+    'random_starting_move_list_selected': Items,
+    'tiny_colors': CharacterColors,
+    'training_barrels': TrainingBarrels,
+    'warp_level_list_selected': Maps,
+    'win_condition': WinCondition,
+    'win_condition_item': WinConditionComplex,
+    'task_1_condition': WinConditionComplex,
+    'task_2_condition': WinConditionComplex,
+    'task_3_condition': WinConditionComplex,
+    'task_4_condition': WinConditionComplex,
+    'task_5_condition': WinConditionComplex,
+    'task_6_condition': WinConditionComplex,
+    'task_7_condition': WinConditionComplex,
+    'task_8_condition': WinConditionComplex,
+    'blocker_selection_behavior': BLockerSetting,
+    'tns_selection_behavior': TroffSetting,
+    'medal_jetpac_behavior': RandomRequirement,
+    'pearl_mermaid_behavior': RandomRequirement,
+    'fairy_queen_behavior': RandomRequirement,
+    'cb_medal_behavior': RandomRequirement,
+    'random_starting_region_new': RandomStartingRegion,
+    'cb_medal_behavior_new': CBRequirement,
+    'wrinkly_hints': WrinklyHints,
+    'pause_hints_setting': PauseHintSetting,
+    'spoiler_hints': SpoilerHints,
+    'starting_kong': Kongs,
+    'remove_barriers_selected': RemovedBarriersSelected,
+    'faster_checks_selected': FasterChecksSelected,
+    'kong_model_dk': KongModels,
+    'kong_model_diddy': KongModels,
+    'kong_model_lanky': KongModels,
+    'kong_model_tiny': KongModels,
+    'kong_model_chunky': KongModels,
+    'kong_model_mode': KongModelMode,
+    'chunky_phase_slam_req': SlamRequirement,
+    'puzzle_rando_difficulty': PuzzleRando,
+    'progressive_hint_item': ProgressiveHintItem,
+    'hint_door_item': ProgressiveHintItem,
+    'progressive_hint_algorithm': ProgressiveHintAlgorithm,
+    'starting_moves_list_1': Items,
+    'starting_moves_list_2': Items,
+    'starting_moves_list_3': Items,
+    'starting_moves_list_4': Items,
+    'starting_moves_list_5': Items,
+    'item_rando_list_0': ItemRandoListSelected,
+    'item_rando_list_1': ItemRandoListSelected,
+    'item_rando_list_2': ItemRandoListSelected,
+    'item_rando_list_3': ItemRandoListSelected,
+    'item_rando_list_4': ItemRandoListSelected,
+    'item_rando_list_5': ItemRandoListSelected,
+    'item_rando_list_6': ItemRandoListSelected,
+    'item_rando_list_7': ItemRandoListSelected,
+    'item_rando_list_8': ItemRandoListSelected,
+    'item_rando_list_9': ItemRandoListSelected,
+    'filler_items_selected': ItemRandoFiller,
+    'prog_slam_level_1': SlamRequirement,
+    'prog_slam_level_2': SlamRequirement,
+    'prog_slam_level_3': SlamRequirement,
+    'prog_slam_level_4': SlamRequirement,
+    'prog_slam_level_5': SlamRequirement,
+    'prog_slam_level_6': SlamRequirement,
+    'prog_slam_level_7': SlamRequirement,
+    'prog_slam_level_8': SlamRequirement,
+    'switchsanity_switch_isles_to_kroc_top': SwitchsanityKong,
+    'switchsanity_switch_isles_helm_lobby': SwitchsanityGone,
+    'switchsanity_switch_isles_aztec_lobby_back_room': SwitchsanityKong,
+    'switchsanity_switch_isles_fungi_lobby_fairy': SwitchsanityKong,
+    'switchsanity_switch_isles_spawn_rocketbarrel': SwitchsanityKong,
+    'switchsanity_switch_japes_to_hive': SwitchsanityKong,
+    'switchsanity_switch_japes_to_rambi': SwitchsanityKong,
+    'switchsanity_switch_japes_to_painting_room': SwitchsanityKong,
+    'switchsanity_switch_japes_to_cavern': SwitchsanityKong,
+    'switchsanity_switch_aztec_to_kasplat_room': SwitchsanityKong,
+    'switchsanity_switch_aztec_llama_front': SwitchsanityKong,
+    'switchsanity_switch_aztec_llama_side': SwitchsanityKong,
+    'switchsanity_switch_aztec_llama_back': SwitchsanityKong,
+    'switchsanity_switch_aztec_sand_tunnel': SwitchsanityKong,
+    'switchsanity_switch_aztec_to_connector_tunnel': SwitchsanityKong,
+    'switchsanity_switch_galleon_to_lighthouse_side': SwitchsanityKong,
+    'switchsanity_switch_galleon_to_shipwreck_side': SwitchsanityKong,
+    'switchsanity_switch_galleon_to_cannon_game': SwitchsanityKong,
+    'switchsanity_switch_fungi_yellow_tunnel': SwitchsanityKong,
+    'switchsanity_switch_fungi_green_tunnel_near': SwitchsanityKong,
+    'switchsanity_switch_fungi_green_tunnel_far': SwitchsanityKong,
+    'switchsanity_switch_japes_free_kong': SwitchsanityKong,
+    'switchsanity_switch_aztec_free_tiny': SwitchsanityKong,
+    'switchsanity_switch_aztec_free_lanky': SwitchsanityKong,
+    'switchsanity_switch_factory_free_kong': SwitchsanityKong,
+    'switchsanity_switch_factory_dark_grate': SwitchsanityKong,
+    'switchsanity_switch_factory_bonus_grate': SwitchsanityKong,
+    'switchsanity_switch_factory_monster_grate': SwitchsanityKong,
+    'switchsanity_switch_caves_gone_cave': SwitchsanityKong,
+    'switchsanity_switch_caves_snide_cave': SwitchsanityKong,
+    'switchsanity_switch_caves_boulder_cave': SwitchsanityKong,
+    'switchsanity_switch_caves_lobby_blueprint': SwitchsanityKong,
+    'switchsanity_switch_aztec_gong_tower': SwitchsanityKong,
+    'switchsanity_switch_aztec_lobby_gong': SwitchsanityKong,
+    'switchsanity_switch_caves_lobby_lava': SwitchsanityKong,
+    'krool_in_boss_pool_v2': KroolInBossPool,
 }
 
 SettingsStringTypeMap: dict = {
@@ -1222,6 +1290,14 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.warp_level_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.warp_to_isles: SettingsStringDataType.bool,
     SettingsStringEnum.win_condition_item: WinConditionComplex,
+    SettingsStringEnum.task_1_condition: WinConditionComplex,
+    SettingsStringEnum.task_2_condition: WinConditionComplex,
+    SettingsStringEnum.task_3_condition: WinConditionComplex,
+    SettingsStringEnum.task_4_condition: WinConditionComplex,
+    SettingsStringEnum.task_5_condition: WinConditionComplex,
+    SettingsStringEnum.task_6_condition: WinConditionComplex,
+    SettingsStringEnum.task_7_condition: WinConditionComplex,
+    SettingsStringEnum.task_8_condition: WinConditionComplex,
     SettingsStringEnum.blocker_selection_behavior: BLockerSetting,
     SettingsStringEnum.tns_selection_behavior: TroffSetting,
     SettingsStringEnum.medal_jetpac_behavior: RandomRequirement,
@@ -1231,6 +1307,15 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.cb_medal_behavior_new: CBRequirement,
     SettingsStringEnum.random_starting_region_new: RandomStartingRegion,
     SettingsStringEnum.win_condition_count: SettingsStringDataType.u8,
+    SettingsStringEnum.lives: SettingsStringDataType.u16,
+    SettingsStringEnum.task_1_count: SettingsStringDataType.u8,
+    SettingsStringEnum.task_2_count: SettingsStringDataType.u8,
+    SettingsStringEnum.task_3_count: SettingsStringDataType.u8,
+    SettingsStringEnum.task_4_count: SettingsStringDataType.u8,
+    SettingsStringEnum.task_5_count: SettingsStringDataType.u8,
+    SettingsStringEnum.task_6_count: SettingsStringDataType.u8,
+    SettingsStringEnum.task_7_count: SettingsStringDataType.u8,
+    SettingsStringEnum.task_8_count: SettingsStringDataType.u8,
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.pause_hints_setting: PauseHintSetting,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,
@@ -1318,6 +1403,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.alt_minecart_mayhem: SettingsStringDataType.bool,
     SettingsStringEnum.less_fragile_boulders: SettingsStringDataType.bool,
     SettingsStringEnum.no_consumable_upgrades: SettingsStringDataType.bool,
+    SettingsStringEnum.ship_location_rando: SettingsStringDataType.bool,
     SettingsStringEnum.prog_slam_level_1: SlamRequirement,
     SettingsStringEnum.prog_slam_level_2: SlamRequirement,
     SettingsStringEnum.prog_slam_level_3: SlamRequirement,
@@ -1354,6 +1440,16 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.switchsanity_switch_aztec_free_tiny: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_aztec_free_lanky: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_factory_free_kong: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_dark_grate: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_bonus_grate: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_monster_grate: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_gone_cave: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_snide_cave: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_boulder_cave: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_lobby_blueprint: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_caves_lobby_lava: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_gong_tower: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_lobby_gong: SwitchsanityKong,
     SettingsStringEnum.trap_weight_bubble: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_reverse: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_slow: SettingsStringDataType.int8,
@@ -1437,40 +1533,49 @@ SettingsStringListTypeMap: dict = {
 }
 
 SettingsStringIntRangeMap: dict = {
-    SettingsStringEnum.blocker_0: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_1: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_2: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_3: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_4: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_5: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_6: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_7: {"max": 255, "min": 0},
-    SettingsStringEnum.blocker_text: {"max": 255, "min": 0},
-    SettingsStringEnum.coin_door_item_count: {"max": 255, "min": 0},
-    SettingsStringEnum.crown_door_item_count: {"max": 255, "min": 0},
-    SettingsStringEnum.helm_phase_count: {"max": 5, "min": 0},
-    SettingsStringEnum.krool_key_count: {"max": 8, "min": 0},
-    SettingsStringEnum.krool_phase_count: {"max": 5, "min": 0},
-    SettingsStringEnum.medal_cb_req: {"max": 100, "min": 0},
-    SettingsStringEnum.most_snide_rewards: {"max": 40, "min": 0},
-    SettingsStringEnum.medal_requirement: {"max": 255, "min": 0},
-    SettingsStringEnum.mermaid_gb_pearls: {"max": 255, "min": 0},
-    SettingsStringEnum.rareware_gb_fairies: {"max": 255, "min": 0},
-    SettingsStringEnum.starting_kongs_count: {"max": 5, "min": 0},
-    SettingsStringEnum.starting_moves_count: {"max": 40, "min": 0},
-    SettingsStringEnum.troff_0: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_1: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_2: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_3: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_4: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_5: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_6: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_7: {"max": 500, "min": 0},
-    SettingsStringEnum.troff_text: {"max": 500, "min": 0},
-    SettingsStringEnum.progressive_hint_text: {"max": 201, "min": 0},
-    SettingsStringEnum.progressive_hint_count: {"max": 3500, "min": 0},
-    SettingsStringEnum.hint_door_item_count: {"max": 3500, "min": 0},
-    SettingsStringEnum.pause_hints_lockout_timer: {"max": 255, "min": 0},
-    SettingsStringEnum.half_medal_percentage: {"max": 100, "min": 0},
-    SettingsStringEnum.win_condition_count: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_0: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_1: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_2: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_3: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_4: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_5: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_6: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_7: {'max': 255, 'min': 0},
+    SettingsStringEnum.blocker_text: {'max': 255, 'min': 0},
+    SettingsStringEnum.coin_door_item_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.crown_door_item_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.helm_phase_count: {'max': 5, 'min': 0},
+    SettingsStringEnum.krool_key_count: {'max': 8, 'min': 0},
+    SettingsStringEnum.krool_phase_count: {'max': 5, 'min': 0},
+    SettingsStringEnum.medal_cb_req: {'max': 100, 'min': 0},
+    SettingsStringEnum.most_snide_rewards: {'max': 40, 'min': 0},
+    SettingsStringEnum.medal_requirement: {'max': 255, 'min': 0},
+    SettingsStringEnum.mermaid_gb_pearls: {'max': 255, 'min': 0},
+    SettingsStringEnum.rareware_gb_fairies: {'max': 255, 'min': 0},
+    SettingsStringEnum.starting_kongs_count: {'max': 5, 'min': 0},
+    SettingsStringEnum.starting_moves_count: {'max': 40, 'min': 0},
+    SettingsStringEnum.troff_0: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_1: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_2: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_3: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_4: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_5: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_6: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_7: {'max': 500, 'min': 0},
+    SettingsStringEnum.troff_text: {'max': 500, 'min': 0},
+    SettingsStringEnum.progressive_hint_text: {'max': 201, 'min': 0},
+    SettingsStringEnum.progressive_hint_count: {'max': 3500, 'min': 0},
+    SettingsStringEnum.hint_door_item_count: {'max': 3500, 'min': 0},
+    SettingsStringEnum.pause_hints_lockout_timer: {'max': 255, 'min': 0},
+    SettingsStringEnum.win_condition_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.lives: {'max': 65535, 'min': 0},
+    SettingsStringEnum.task_1_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.task_2_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.task_3_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.task_4_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.task_5_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.task_6_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.task_7_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.task_8_count: {'max': 255, 'min': 0},
+    SettingsStringEnum.half_medal_percentage: {'max': 100, 'min': 0},
 }

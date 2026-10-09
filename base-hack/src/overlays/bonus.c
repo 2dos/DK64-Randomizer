@@ -121,7 +121,4 @@ void overlay_mod_bonus(void) {
 		*(int*)(0x8002D628) = 0x016FC022; // sub $t8, $t3, $t7 - Rambi Arena
 		*(int*)(0x8002D658) = 0x03224822; // sub $t1, $t9, $v0 - Enguarde Arena
 	}
-
-	// Krazy Kong Klamour - Adjsut flicker speeds
-	PatchBonusCode();
 }

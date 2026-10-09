@@ -1,9 +1,5 @@
 """All code associated with Krusha."""
 
-import js
-import zlib
-import gzip
-from typing import TYPE_CHECKING
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import ColorblindMode
 from randomizer.Patching.Library.Generic import getObjectAddress
@@ -18,7 +14,7 @@ from randomizer.Patching.Library.Image import (
 )
 from randomizer.Patching.Library.Assets import TableNames, getRawFile, writeRawFile
 from randomizer.Enums.Kongs import Kongs
-from PIL import Image
+from randomizer.Patching.LazyPIL import Image
 
 DK_SCALE = 0.75
 GENERIC_SCALE = 0.49
@@ -172,4 +168,4 @@ def placeKrushaHead(ROM_COPY: LocalROM, settings: Settings, slot):
     # Used in the DPad Selection Menu
     writeColorImageToROM(krushaFace32, 14, 190 + slot, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
     # Used in Shops Previews
-    writeColorImageToROM(krushaFace32RBGA32, 14, 197 + slot, 32, 32, False, TextureFormat.RGBA32, ROM_COPY)
+    writeColorImageToROM(krushaFace32RBGA32, 14, 205 + slot, 32, 32, False, TextureFormat.RGBA32, ROM_COPY)

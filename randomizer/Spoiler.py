@@ -19,7 +19,6 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
     BLockerSetting,
-    CBRequirement,
     DKPortalRando,
     GlitchesSelected,
     LogicType,
@@ -109,6 +108,7 @@ class Spoiler:
         self.location_data = {}
         self.enemy_replacements = []
         self.cb_placements = []
+        self.balloon_placement = []
         self.LogicVariables = LogicVarHolder(self)
         self.RegionList = deepcopy(RegionsOriginal)
         self.CollectibleRegions = deepcopy(CollectibleRegionsOriginal)
@@ -269,6 +269,7 @@ class Spoiler:
             Types.Shockwave: "Moves",
             Types.TrainingBarrel: "Moves",
             Types.Climbing: "Moves",
+            Types.Cannons: "Moves",
             Types.Banana: "Golden Bananas",
             Types.FillerBanana: "Golden Bananas",
             Types.Blueprint: "Blueprints",
@@ -291,12 +292,15 @@ class Spoiler:
             Types.CrateItem: "Melon Crates",
             Types.HalfMedal: "Half-Medals",
             Types.BoulderItem: "Holdable Objects",
+            Types.Breakable: "Breakable Containers",
+            Types.Balloon: "Balloons",
             Types.Enemies: "Enemy Drops",
             Types.Cranky: "Shop Owners",
             Types.Funky: "Shop Owners",
             Types.Candy: "Shop Owners",
             Types.Snide: "Shop Owners",
             Types.Hint: "Hints",
+            Types.FungiTime: "Fungi Time",
         }
         if item_type in type_dict:
             return type_dict[item_type]
@@ -392,7 +396,7 @@ class Spoiler:
         settings["Banana port Location Shuffle"] = self.settings.bananaport_placement_rando.name
         settings["Activated Warps"] = self.settings.activate_all_bananaports.name
         settings["Smaller Shops"] = self.settings.smaller_shops
-        settings["Irondonk"] = self.settings.perma_death
+        settings["Wipe file on death"] = self.settings.perma_death
         settings["Disable Tag Barrels"] = self.settings.disable_tag_barrels
         settings["Ice Trap Frequency"] = self.settings.ice_trap_frequency.name
         settings["Ice Traps Damage Player"] = self.settings.ice_traps_damage
@@ -433,6 +437,13 @@ class Spoiler:
                 WinConditionComplex.req_bean: "Acquire the Bean",
                 WinConditionComplex.krools_challenge: "Beat K. Rool's Challenge",
                 WinConditionComplex.kill_the_rabbit: "Kill the Rabbit",
+                WinConditionComplex.mech_fish: "Mech Fish Check",
+                WinConditionComplex.arcade: "Arcade Round 2 Check",
+                WinConditionComplex.jetpac: "Jetpac Check",
+                WinConditionComplex.bad_hit_detection_man: "Toy Monster Check",
+                WinConditionComplex.rareware_gb_check: "Rareware GB Check",
+                WinConditionComplex.blast_courses: f"{wc_count} Blast Course{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.tasks: f"{wc_count} Task{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_bp: f"{wc_count} Blueprint{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_companycoins: f"{wc_count} Company Coin{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_crown: f"{wc_count} Crown{'s' if wc_count != 1 else ''}",
@@ -549,6 +560,8 @@ class Spoiler:
         humanspoiler["End Game"]["K. Rool"]["K Rool Phases"] = krool_order
         humanspoiler["End Game"]["K. Rool"]["Chunky Phase Slam Requirement"] = self.settings.chunky_phase_slam_req_internal.name
         humanspoiler["End Game"]["K. Rool"]["DK Phase requires Baboon Blast"] = self.settings.cannons_require_blast
+        if self.settings.ship_location_rando:
+            humanspoiler["End Game"]["K. Rool"]["K Rool Location"] = self.ship_name
 
         helm_default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
         helm_new_order = []
@@ -615,9 +628,12 @@ class Spoiler:
             "Junk Items": {},
             "Melon Crates": {},
             "Holdable Objects": {},
+            "Breakable Containers": {},
+            "Balloons": {},
             "Hints": {},
             "Enemy Drops": {},
             "Shop Owners": {},
+            "Fungi Time": {},
             "Photos": {},
             "Empty": {},
             "Unknown": {},
@@ -662,6 +678,7 @@ class Spoiler:
                 Types.Candy,
                 Types.Funky,
                 Types.Snide,
+                Types.FungiTime,
             ) and location.item in (None, Items.NoItem):
                 continue
             if location.type == Types.HalfMedal and Types.HalfMedal not in self.settings.shuffled_location_types:
@@ -697,10 +714,12 @@ class Spoiler:
                 if "Isles" in location.name or location.type in (
                     Types.PreGivenMove,
                     Types.Climbing,
+                    Types.Cannons,
                     Types.Cranky,
                     Types.Funky,
                     Types.Candy,
                     Types.Snide,
+                    Types.FungiTime,
                 ):
                     level = "DK Isles"
                 elif "Japes" in location.name:
@@ -837,6 +856,9 @@ class Spoiler:
                     SwitchType.PadMove: "Simian Spring Pad",
                     SwitchType.MiscActivator: "Gong",
                     SwitchType.PushableButton: "Charge Button",
+                    SwitchType.PunchGrate: "Charge Grate",
+                    SwitchType.IceWall: "Charge Wall",
+                    SwitchType.Gong: "Charge Gong",
                     SwitchType.GunInstrumentCombo: "Peanut Switch and Guitar Pad",
                 },
                 Kongs.lanky: {
@@ -859,6 +881,9 @@ class Spoiler:
                     SwitchType.InstrumentPad: "Triangle Pad",
                     SwitchType.PadMove: "Gorilla Gone Pad",
                     SwitchType.PushableButton: "Punch Button",
+                    SwitchType.PunchGrate: "Punch Grate",
+                    SwitchType.IceWall: "Punch Wall",
+                    SwitchType.Gong: "Punch Gong",
                     SwitchType.GunInstrumentCombo: "Pineapple Switch and Triangle Pad",
                 },
                 Kongs.any: {
@@ -1010,7 +1035,7 @@ class Spoiler:
                 path_dict[path_location.name] = path_item.name
             phase_name = boss_map_names.get(map_id, Maps(map_id).name)
             humanspoiler["WotH Paths"][phase_name] = path_dict
-        if self.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+        if self.settings.HasWinRequirement(WinConditionComplex.dk_rap_items):
             for verse_name, path in self.rap_win_con_paths.items():
                 path_dict = {}
                 for path_loc_id in path:
@@ -1396,12 +1421,13 @@ class Spoiler:
             WinConditionComplex.req_rainbowcoin: [Types.RainbowCoin, Types.FillerRainbowCoin],
         }
         # Win condition items are more important than GBs but less than moves
-        if self.settings.win_condition_item in win_con_type_table:
-            if ItemList[location.item].type in win_con_type_table[self.settings.win_condition_item]:
-                return 10
-            if self.settings.win_condition_item == WinConditionComplex.req_companycoins:
-                if ItemList[location.item].type == Types.RarewareCoin:
+        for win_con in win_con_type_table:
+            if self.settings.HasWinRequirement(win_con):
+                if ItemList[location.item].type in win_con_type_table[win_con]:
                     return 10
+                if self.settings.HasWinRequirement(WinConditionComplex.req_companycoins):
+                    if ItemList[location.item].type == Types.RarewareCoin:
+                        return 10
         # Kongs are most the single most important thing and should be at the top of spheres
         if ItemList[location.item].type == Types.Kong:
             return 0
