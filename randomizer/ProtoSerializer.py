@@ -84,7 +84,7 @@ def _to_int(val: Any, default: int = 0) -> int:
 
 
 SETTINGS_SECTIONS = ("item_settings", "requirement_settings", "overworld_settings", "endgame_settings", "qol_settings")
-MAX_SETTINGS_BYTES = 1 << 20
+MAX_SETTINGS_BYTES = 1 << 14
 
 
 def settings_to_proto(settings: "Settings") -> settings_pb2.SettingsInfo:
