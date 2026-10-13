@@ -75,7 +75,8 @@ proto.randomizer.proto.SpoilerHintsConfig.toObject = function(includeInstance, m
 type: jspb.Message.getFieldWithDefault(msg, 1, 0),
 points: (f = msg.getPoints()) && proto.randomizer.proto.SpoilerHintsPoints.toObject(includeInstance, f),
 includeWothCount: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
-includeLevelOrder: jspb.Message.getBooleanFieldWithDefault(msg, 4, false)
+includeLevelOrder: jspb.Message.getBooleanFieldWithDefault(msg, 4, false),
+includeBlockerInfo: jspb.Message.getBooleanFieldWithDefault(msg, 5, false)
   };
 
   if (includeInstance) {
@@ -128,6 +129,10 @@ proto.randomizer.proto.SpoilerHintsConfig.deserializeBinaryFromReader = function
     case 4:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setIncludeLevelOrder(value);
+      break;
+    case 5:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIncludeBlockerInfo(value);
       break;
     default:
       reader.skipField();
@@ -184,6 +189,13 @@ proto.randomizer.proto.SpoilerHintsConfig.serializeBinaryToWriter = function(mes
   if (f) {
     writer.writeBool(
       4,
+      f
+    );
+  }
+  f = message.getIncludeBlockerInfo();
+  if (f) {
+    writer.writeBool(
+      5,
       f
     );
   }
@@ -278,6 +290,24 @@ proto.randomizer.proto.SpoilerHintsConfig.prototype.getIncludeLevelOrder = funct
  */
 proto.randomizer.proto.SpoilerHintsConfig.prototype.setIncludeLevelOrder = function(value) {
   return jspb.Message.setProto3BooleanField(this, 4, value);
+};
+
+
+/**
+ * optional bool include_blocker_info = 5;
+ * @return {boolean}
+ */
+proto.randomizer.proto.SpoilerHintsConfig.prototype.getIncludeBlockerInfo = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 5, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.SpoilerHintsConfig} returns this
+ */
+proto.randomizer.proto.SpoilerHintsConfig.prototype.setIncludeBlockerInfo = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 5, value);
 };
 
 

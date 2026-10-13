@@ -13,7 +13,6 @@
 
 goog.provide('proto.randomizer.proto.Switchsanity');
 goog.provide('proto.randomizer.proto.Switchsanity.Switch');
-goog.provide('proto.randomizer.proto.Switchsanity.SwitchItem');
 goog.provide('proto.randomizer.proto.Switchsanity.SwitchLocation');
 
 goog.require('jspb.BinaryReader');
@@ -201,30 +200,30 @@ proto.randomizer.proto.Switchsanity.serializeBinaryToWriter = function(message, 
  */
 proto.randomizer.proto.Switchsanity.SwitchLocation = {
   SWITCH_LOCATION_UNSPECIFIED: 0,
-  SWITCH_LOCATION_ISLES_TO_TOP_OF_KREM_ISLE: 1,
-  SWITCH_LOCATION_ISLES_IN_HELM_LOBBY: 2,
-  SWITCH_LOCATION_ISLES_BACK_OF_AZTEC_LOBBY: 3,
-  SWITCH_LOCATION_ISLES_FOREST_LOBBY_FAIRY: 4,
-  SWITCH_LOCATION_ISLES_CABIN_ISLE_ROCKET: 5,
+  SWITCH_LOCATION_ISLES_TO_KROC_TOP: 1,
+  SWITCH_LOCATION_ISLES_HELM_LOBBY: 2,
+  SWITCH_LOCATION_ISLES_AZTEC_LOBBY_BACK_ROOM: 3,
+  SWITCH_LOCATION_ISLES_FUNGI_LOBBY_FAIRY: 4,
+  SWITCH_LOCATION_ISLES_SPAWN_ROCKETBARREL: 5,
   SWITCH_LOCATION_JAPES_FREE_KONG: 6,
-  SWITCH_LOCATION_JAPES_HIVE_AREA: 7,
-  SWITCH_LOCATION_JAPES_STARTING_TUNNEL: 8,
-  SWITCH_LOCATION_JAPES_PAINTING_ROOM: 9,
-  SWITCH_LOCATION_JAPES_RAMBI: 10,
-  SWITCH_LOCATION_AZTEC_TINY_TEMPLE_FREE_KONG: 11,
-  SWITCH_LOCATION_AZTEC_LLAMA_TEMPLE_FREE_KONG: 12,
-  SWITCH_LOCATION_AZTEC_STARTING_TUNNEL_KASPLAT: 13,
-  SWITCH_LOCATION_AZTEC_OASIS_DOOR: 14,
-  SWITCH_LOCATION_AZTEC_LLAMA_TEMPLE_FRONT: 15,
-  SWITCH_LOCATION_AZTEC_LLAMA_TEMPLE_SIDE: 16,
-  SWITCH_LOCATION_AZTEC_LLAMA_TEMPLE_BACK: 17,
+  SWITCH_LOCATION_JAPES_TO_HIVE: 7,
+  SWITCH_LOCATION_JAPES_TO_CAVERN: 8,
+  SWITCH_LOCATION_JAPES_TO_PAINTING_ROOM: 9,
+  SWITCH_LOCATION_JAPES_TO_RAMBI: 10,
+  SWITCH_LOCATION_AZTEC_FREE_TINY: 11,
+  SWITCH_LOCATION_AZTEC_FREE_LANKY: 12,
+  SWITCH_LOCATION_AZTEC_TO_KASPLAT_ROOM: 13,
+  SWITCH_LOCATION_AZTEC_TO_CONNECTOR_TUNNEL: 14,
+  SWITCH_LOCATION_AZTEC_LLAMA_FRONT: 15,
+  SWITCH_LOCATION_AZTEC_LLAMA_SIDE: 16,
+  SWITCH_LOCATION_AZTEC_LLAMA_BACK: 17,
   SWITCH_LOCATION_AZTEC_SAND_TUNNEL: 18,
-  SWITCH_LOCATION_GALLEON_LIGHTHOUSE_AREA: 19,
-  SWITCH_LOCATION_GALLEON_SHIPYARD_AREA: 20,
-  SWITCH_LOCATION_GALLEON_CANNON_GAME: 21,
-  SWITCH_LOCATION_FOREST_YELLOW_TUNNEL: 22,
-  SWITCH_LOCATION_FOREST_GREEN_TUNNEL_CLOCK_SIDE: 23,
-  SWITCH_LOCATION_FOREST_GREEN_TUNNEL_BEAN_SIDE: 24,
+  SWITCH_LOCATION_GALLEON_TO_LIGHTHOUSE_SIDE: 19,
+  SWITCH_LOCATION_GALLEON_TO_SHIPWRECK_SIDE: 20,
+  SWITCH_LOCATION_GALLEON_TO_CANNON_GAME: 21,
+  SWITCH_LOCATION_FUNGI_YELLOW_TUNNEL: 22,
+  SWITCH_LOCATION_FUNGI_GREEN_TUNNEL_NEAR: 23,
+  SWITCH_LOCATION_FUNGI_GREEN_TUNNEL_FAR: 24,
   SWITCH_LOCATION_FACTORY_DARK_GRATE: 25,
   SWITCH_LOCATION_FACTORY_BONUS_GRATE: 26,
   SWITCH_LOCATION_FACTORY_MONSTER_GRATE: 27,
@@ -235,41 +234,6 @@ proto.randomizer.proto.Switchsanity.SwitchLocation = {
   SWITCH_LOCATION_CAVES_LOBBY_LAVA: 32,
   SWITCH_LOCATION_AZTEC_GONG_TOWER: 33,
   SWITCH_LOCATION_AZTEC_LOBBY_GONG: 34
-};
-
-/**
- * @enum {number}
- */
-proto.randomizer.proto.Switchsanity.SwitchItem = {
-  SWITCH_ITEM_UNSPECIFIED: 0,
-  SWITCH_ITEM_RANDOM: 1,
-  SWITCH_ITEM_MONKEYPORT: 2,
-  SWITCH_ITEM_BABOON_BLAST: 3,
-  SWITCH_ITEM_BABOON_BALLOON: 4,
-  SWITCH_ITEM_GORILLA_GONE: 5,
-  SWITCH_ITEM_BONGOS: 6,
-  SWITCH_ITEM_GUITAR: 7,
-  SWITCH_ITEM_TROMBONE: 8,
-  SWITCH_ITEM_SAXOPHONE: 9,
-  SWITCH_ITEM_TRIANGLE: 10,
-  SWITCH_ITEM_GORILLA_GRAB: 11,
-  SWITCH_ITEM_CHIMPY_CHARGE: 12,
-  SWITCH_ITEM_PRIMATE_PUNCH: 13,
-  SWITCH_ITEM_COCONUT: 14,
-  SWITCH_ITEM_PEANUT: 15,
-  SWITCH_ITEM_GRAPE: 16,
-  SWITCH_ITEM_FEATHER: 17,
-  SWITCH_ITEM_PINEAPPLE: 18,
-  SWITCH_ITEM_DK: 19,
-  SWITCH_ITEM_DIDDY: 20,
-  SWITCH_ITEM_LANKY: 21,
-  SWITCH_ITEM_TINY: 22,
-  SWITCH_ITEM_CHUNKY: 23,
-  SWITCH_ITEM_BONGOS_COCONUT: 24,
-  SWITCH_ITEM_GUITAR_PEANUT: 25,
-  SWITCH_ITEM_TROMBONE_GRAPE: 26,
-  SWITCH_ITEM_SAXOPHONE_FEATHER: 27,
-  SWITCH_ITEM_TRIANGLE_PINEAPPLE: 28
 };
 
 
@@ -347,7 +311,7 @@ proto.randomizer.proto.Switchsanity.Switch.deserializeBinaryFromReader = functio
       msg.setLocation(value);
       break;
     case 2:
-      var value = /** @type {!proto.randomizer.proto.Switchsanity.SwitchItem} */ (reader.readEnum());
+      var value = /** @type {number} */ (reader.readInt32());
       msg.setItem(value);
       break;
     default:
@@ -387,8 +351,8 @@ proto.randomizer.proto.Switchsanity.Switch.serializeBinaryToWriter = function(me
     );
   }
   f = message.getItem();
-  if (f !== 0.0) {
-    writer.writeEnum(
+  if (f !== 0) {
+    writer.writeInt32(
       2,
       f
     );
@@ -415,20 +379,20 @@ proto.randomizer.proto.Switchsanity.Switch.prototype.setLocation = function(valu
 
 
 /**
- * optional SwitchItem item = 2;
- * @return {!proto.randomizer.proto.Switchsanity.SwitchItem}
+ * optional int32 item = 2;
+ * @return {number}
  */
 proto.randomizer.proto.Switchsanity.Switch.prototype.getItem = function() {
-  return /** @type {!proto.randomizer.proto.Switchsanity.SwitchItem} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
 /**
- * @param {!proto.randomizer.proto.Switchsanity.SwitchItem} value
+ * @param {number} value
  * @return {!proto.randomizer.proto.Switchsanity.Switch} returns this
  */
 proto.randomizer.proto.Switchsanity.Switch.prototype.setItem = function(value) {
-  return jspb.Message.setProto3EnumField(this, 2, value);
+  return jspb.Message.setProto3IntField(this, 2, value);
 };
 
 

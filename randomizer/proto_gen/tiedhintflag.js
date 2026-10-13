@@ -11,7 +11,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-goog.provide('proto.randomizer.proto.AccessibleHints');
+goog.provide('proto.randomizer.proto.TiedHintFlag');
 
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
@@ -27,24 +27,17 @@ goog.require('jspb.Message');
  * @extends {jspb.Message}
  * @constructor
  */
-proto.randomizer.proto.AccessibleHints = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, proto.randomizer.proto.AccessibleHints.repeatedFields_, null);
+proto.randomizer.proto.TiedHintFlag = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
-goog.inherits(proto.randomizer.proto.AccessibleHints, jspb.Message);
+goog.inherits(proto.randomizer.proto.TiedHintFlag, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   /**
    * @public
    * @override
    */
-  proto.randomizer.proto.AccessibleHints.displayName = 'proto.randomizer.proto.AccessibleHints';
+  proto.randomizer.proto.TiedHintFlag.displayName = 'proto.randomizer.proto.TiedHintFlag';
 }
-
-/**
- * List of repeated fields within this message type.
- * @private {!Array<number>}
- * @const
- */
-proto.randomizer.proto.AccessibleHints.repeatedFields_ = [1];
 
 
 
@@ -61,8 +54,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
  *     http://goto/soy-param-migration
  * @return {!Object}
  */
-proto.randomizer.proto.AccessibleHints.prototype.toObject = function(opt_includeInstance) {
-  return proto.randomizer.proto.AccessibleHints.toObject(opt_includeInstance, this);
+proto.randomizer.proto.TiedHintFlag.prototype.toObject = function(opt_includeInstance) {
+  return proto.randomizer.proto.TiedHintFlag.toObject(opt_includeInstance, this);
 };
 
 
@@ -71,13 +64,14 @@ proto.randomizer.proto.AccessibleHints.prototype.toObject = function(opt_include
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.randomizer.proto.AccessibleHints} msg The msg instance to transform.
+ * @param {!proto.randomizer.proto.TiedHintFlag} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.randomizer.proto.AccessibleHints.toObject = function(includeInstance, msg) {
+proto.randomizer.proto.TiedHintFlag.toObject = function(includeInstance, msg) {
   var f, obj = {
-hintNamesList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f
+hintName: jspb.Message.getFieldWithDefault(msg, 1, ""),
+flag: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -91,23 +85,23 @@ hintNamesList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined :
 /**
  * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.randomizer.proto.AccessibleHints}
+ * @return {!proto.randomizer.proto.TiedHintFlag}
  */
-proto.randomizer.proto.AccessibleHints.deserializeBinary = function(bytes) {
+proto.randomizer.proto.TiedHintFlag.deserializeBinary = function(bytes) {
   var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.randomizer.proto.AccessibleHints;
-  return proto.randomizer.proto.AccessibleHints.deserializeBinaryFromReader(msg, reader);
+  var msg = new proto.randomizer.proto.TiedHintFlag;
+  return proto.randomizer.proto.TiedHintFlag.deserializeBinaryFromReader(msg, reader);
 };
 
 
 /**
  * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
- * @param {!proto.randomizer.proto.AccessibleHints} msg The message object to deserialize into.
+ * @param {!proto.randomizer.proto.TiedHintFlag} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.randomizer.proto.AccessibleHints}
+ * @return {!proto.randomizer.proto.TiedHintFlag}
  */
-proto.randomizer.proto.AccessibleHints.deserializeBinaryFromReader = function(msg, reader) {
+proto.randomizer.proto.TiedHintFlag.deserializeBinaryFromReader = function(msg, reader) {
   while (reader.nextField()) {
     if (reader.isEndGroup()) {
       break;
@@ -116,7 +110,11 @@ proto.randomizer.proto.AccessibleHints.deserializeBinaryFromReader = function(ms
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.addHintNames(value);
+      msg.setHintName(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setFlag(value);
       break;
     default:
       reader.skipField();
@@ -131,9 +129,9 @@ proto.randomizer.proto.AccessibleHints.deserializeBinaryFromReader = function(ms
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
-proto.randomizer.proto.AccessibleHints.prototype.serializeBinary = function() {
+proto.randomizer.proto.TiedHintFlag.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.randomizer.proto.AccessibleHints.serializeBinaryToWriter(this, writer);
+  proto.randomizer.proto.TiedHintFlag.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
@@ -141,16 +139,23 @@ proto.randomizer.proto.AccessibleHints.prototype.serializeBinary = function() {
 /**
  * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
- * @param {!proto.randomizer.proto.AccessibleHints} message
+ * @param {!proto.randomizer.proto.TiedHintFlag} message
  * @param {!jspb.BinaryWriter} writer
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.randomizer.proto.AccessibleHints.serializeBinaryToWriter = function(message, writer) {
+proto.randomizer.proto.TiedHintFlag.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getHintNamesList();
+  f = message.getHintName();
   if (f.length > 0) {
-    writer.writeRepeatedString(
+    writer.writeString(
       1,
+      f
+    );
+  }
+  f = message.getFlag();
+  if (f !== 0) {
+    writer.writeUint32(
+      2,
       f
     );
   }
@@ -158,39 +163,38 @@ proto.randomizer.proto.AccessibleHints.serializeBinaryToWriter = function(messag
 
 
 /**
- * repeated string hint_names = 1;
- * @return {!Array<string>}
+ * optional string hint_name = 1;
+ * @return {string}
  */
-proto.randomizer.proto.AccessibleHints.prototype.getHintNamesList = function() {
-  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 1));
-};
-
-
-/**
- * @param {!Array<string>} value
- * @return {!proto.randomizer.proto.AccessibleHints} returns this
- */
-proto.randomizer.proto.AccessibleHints.prototype.setHintNamesList = function(value) {
-  return jspb.Message.setField(this, 1, value || []);
+proto.randomizer.proto.TiedHintFlag.prototype.getHintName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
  * @param {string} value
- * @param {number=} opt_index
- * @return {!proto.randomizer.proto.AccessibleHints} returns this
+ * @return {!proto.randomizer.proto.TiedHintFlag} returns this
  */
-proto.randomizer.proto.AccessibleHints.prototype.addHintNames = function(value, opt_index) {
-  return jspb.Message.addToRepeatedField(this, 1, value, opt_index);
+proto.randomizer.proto.TiedHintFlag.prototype.setHintName = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
 /**
- * Clears the list making it empty but non-null.
- * @return {!proto.randomizer.proto.AccessibleHints} returns this
+ * optional uint32 flag = 2;
+ * @return {number}
  */
-proto.randomizer.proto.AccessibleHints.prototype.clearHintNamesList = function() {
-  return this.setHintNamesList([]);
+proto.randomizer.proto.TiedHintFlag.prototype.getFlag = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.randomizer.proto.TiedHintFlag} returns this
+ */
+proto.randomizer.proto.TiedHintFlag.prototype.setFlag = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
 };
 
 

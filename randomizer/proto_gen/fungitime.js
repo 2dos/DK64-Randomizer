@@ -18,9 +18,9 @@ goog.provide('proto.randomizer.proto.FungiTime');
  */
 proto.randomizer.proto.FungiTime = {
   FUNGI_TIME_UNSPECIFIED: 0,
-  FUNGI_TIME_DAY_START: 1,
-  FUNGI_TIME_NIGHT_START: 2,
-  FUNGI_TIME_RANDOM_START: 3,
+  FUNGI_TIME_DAY: 1,
+  FUNGI_TIME_NIGHT: 2,
+  FUNGI_TIME_RANDOM: 3,
   FUNGI_TIME_DUSK: 4,
   FUNGI_TIME_PROGRESSIVE: 5
 };

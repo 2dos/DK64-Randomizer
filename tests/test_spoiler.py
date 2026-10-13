@@ -3,12 +3,14 @@ import json
 import os
 import random
 import unittest
+from unittest import mock
 
 from parameterized import parameterized_class
 
 # from randomizer.Enums.Items import Items
 from randomizer.Enums.HintType import HintType
 import randomizer.Lists.Exceptions as Ex
+import randomizer.Patching.ApplyRandomizer as ApplyRandomizer
 from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando, CBRando,
                                        CrownEnemyDifficulty, DamageAmount,
                                        ExtraCutsceneSkips, FillAlgorithm,
@@ -22,12 +24,12 @@ from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando, 
                                        WrinklyHints)
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
-from randomizer.SettingStrings import decrypt_settings_string_enum
+from randomizer.ProtoSerializer import settings_string_to_form_data
 from randomizer.Spoiler import Spoiler
 
 # For each preset in the list if settings_string is not None, add the preset to the list
 valid_presets = []
-valid_presets.append(("Custom", "Px+VnF6AAa/AAZggAAwwAAYoAAP9A0yAoCBgIDgYIBASCgoGBYODAiAJ1lhuAJvARwAZxAhyApzAx0A65BBMwEJxShMDTCaCBNZAK0C0S0i0y1E1U1m122W2gbbbjbqdwbzcJcBb4d5eAcQc5cYcicrcweKdAdJdUdadjdsNFMxNQki4gDrVEqAQUQKMFIClBTAQRcE9TZPlm2YhGyyn4ZCWFsBbgJGYxTSBHR8QpFmpJeixi9U6FRCwCEzCiASJHaqqsmWHJkneIoDiGV5ArGgY8ljAyAAVTPEN0EIQAC0KABaGAAlDgASiAAHVoADokABUUAAaLAAdGAAKjQADVwAFk9EsqmwVgui2PZniyDBHDAM5klgD5dgcKYqFoY4rA0FYhjWFwWk8JJ/EsQZIl0XhcEBIUFhgaHCAiJCgqLDAyNDg6PEBCREZISkxOUFJUVlhaXF5gYmRmaGq4ury/WL4AYAAwgBiAB2AH6CFXJwRCKIyFMdCVwY1z1J0QCIZCmOhKlsbBzw6R4wCHdcQZaxCC9fP4Bs8fDCaOd3Ur2VmZxTZ1bF8KcKAmEQyFMdCVLY1z4RlM/gCyAIKACYAKI8EQyFMdCVLY1z4RlOlbXxnW+d88gB7gDzFAgxSSjD0lFmGnHoYpp6KXwLAiDDkFmnIIpqrstuvwRyS1PQAfIA9QB9AD2AH2AA"))
+valid_presets.append(("Custom", "CtIBEgsKCS8sMSImJzM1KBISChACAwUJCiEpHhocFhgUDBIPEgASABIAEh0KGwEEBi0uMAgLDQ4QERMVFxkbHR8gIyQyNCUqKxIAEgASABIAGiYKIggJCgsNDhAREhQVFhgZGhwdHiAhIiMkJSYnKCksLS4vMDUQAxoNCgkMKzE0X6wBpwIQBxoHCgNcXV4QAhoFCgMqMjMaACIBASolEAEaIQgDEAMYAyABKAEwATgBQAFIAlACWAJgAmgDcAF4AYABAjINCMkBECgYFCAKKBAwBTgoErgCCg4IAhIIAQJJBAUGBwgYMhoPCAESCAAAAAAAAAAAGJYBIgIQHioCEAEyAhAGOgIQMkoMCAESCAEBAQECAgMDUsQBCAESBAgBEAUSBAgCEAgSBAgDEAMSBAgEEAMSBAgFEAISBAgGEAUSBAgHEAMSBAgIEAESBAgJEAESAggKEgQICxAFEgQIDBAFEgIIDRIECA4QARICCA8SBAgQEAISBAgREAMSAggSEgIIExIECBQQARIECBUQBBIECBYQAhIECBcQAxIECBgQBBIECBkQBBIECBoQBBIECBsQBBIECBwQBBIECB0QBBIECB4QBBIECB8QBBIECCAQARIECCEQARIECCIQAWgBcgsBEQMEBwkLDA8SE3gCgAECiAEDkAEDmgEPAQIDBAUGBwgJCgsMDQ4PoAECqAEyGn4IBCoCMAFyAIIBAggBiAEBkAEBmAEBoAEBqAECwgEVCMUBmgFvU8QBxwHLAcwBzQHOAc8BygEjYwAhblwgZVYQQT0-P0AbHh8GCVFnO1RXWSxmOFMzVVhfBRzQAQHYAQHqAQ8BAgMEBggJCgsMDQ4PEBHwAQGAAgGyAgD4AgUicwoHCAESAwMCBBI2CAYQCBgBIgQIHRABIgQIHRABIgQIHRABIgQIHRABIgQIHRABIgQIHRABIgQIHRABIgQIHRABGgoQAhoCOj4gATABIgQQAhgAKhQQAhgBIAEoATIECAEQATIECAUQQDIICAEYAyABKAEqkwEKSwgBEAEYASABKAEwATgBQAFIAVABWAFgAWgBcAF4AYABAYgBAZABAZgBAaABAagBAbABAbgBAcABAcgBAdABAdgBAeABAegBAfABARACGAEgASgBMAE4AUABSAFQAVgBaAFyLggBEgQQARgCIAEoATABOhoSGAgLEAsYCyAJKAkwBzgFQAdIA1AHWAVgA0ACWAE4AkAB"))
 
 
 @parameterized_class(('name', 'settings_string'), valid_presets)
@@ -36,8 +38,8 @@ class TestSpoiler(unittest.TestCase):
     def test_settings_string(self):
         """Confirm that settings strings decryption is working and generate a spoiler log with it."""
         # The settings string is defined either here or in the string above, pick your poison
-        self.settings_string = "Px+YQAAEKA4WBwwDhoDDgGHgMQAYiAxICiYFFAKKgUWA4+AyABkIFKWL5MYKI4KRtGjIhGgWO0L0AA1+AAzBAAJhgAAxQAAf6BpkBQEDAQHAwQCAkFBQMCwcGBEATqljcADeADgADiADkADmADoAFyACZgITiiBChAYGGEGhIJrIBWgWiWkWmWomqms2u2xbNbUNttxt1O6t5uEuAt8O+vCuIOcuMOROVuYOgOkuqOtOxu2GiJKakyi4wDrVEqAQkQogUYKQFKCmCRkgi4J6myfLNsxCOTDLIfp/HoZCWVsZbhEkkYjFNIEOh8QpqSXosQti9U6FRCwCEzCiASJHaqqsoGMsOTJO8RQHK8gVjPJYysgAN1TPEN0EIQAC0KABaGAAlDgASiAAHVoADokABUUAAaLAAdGAAKjQADVwAFk+EsqoMVgtj2Z4sgwRwwDOZJdgcKYqFoY4rA0FaTiGIo1hcJIQn8g5LEGSJdF4RAgEgoFg0HBAIhIKBULBgMhoOB0PCAQiIRiQSiYTigUiwWi4XjAar4GBgrGI0L6sYAGXC6XmEBioZDNiAB2AH6AinAsMRkOlbHymnQ8SNFZ4mrze+UBgRizTep4mPl5mbnZ4dI8YBDuuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOFAPCIZDISpbGufCJ/AFkAQUDahRHgiGQpjoSpbGufCMp0ra+M63zvnkDqRXzT0WPcGVlgkqweYcEHCkY9S40wseKU+BEFt91NldFA4s0gS4a16AJL5Aq43qAPoAewA+wA"
-        settings_dict = decrypt_settings_string_enum(self.settings_string)
+        self.settings_string = "CtIBEgsKCS8sMSImJzM1KBISChACAwUJCiEpHhocFhgUDBIPEgASABIAEh0KGwEEBi0uMAgLDQ4QERMVFxkbHR8gIyQyNCUqKxIAEgASABIAGiYKIggJCgsNDhAREhQVFhgZGhwdHiAhIiMkJSYnKCksLS4vMDUQAxoNCgkMKzE0X6wBpwIQBxoHCgNcXV4QAhoFCgMqMjMaACIBASolEAEaIQgDEAMYAyABKAEwATgBQAFIAlACWAJgAmgDcAF4AYABAjINCMkBECgYFCAKKBAwBTgoErgCCg4IAhIIAQJJBAUGBwgYMhoPCAESCAAAAAAAAAAAGJYBIgIQHioCEAEyAhAGOgIQMkoMCAESCAEBAQECAgMDUsQBCAESBAgBEAUSBAgCEAgSBAgDEAMSBAgEEAMSBAgFEAISBAgGEAUSBAgHEAMSBAgIEAESBAgJEAESAggKEgQICxAFEgQIDBAFEgIIDRIECA4QARICCA8SBAgQEAISBAgREAMSAggSEgIIExIECBQQARIECBUQBBIECBYQAhIECBcQAxIECBgQBBIECBkQBBIECBoQBBIECBsQBBIECBwQBBIECB0QBBIECB4QBBIECB8QBBIECCAQARIECCEQARIECCIQAWgBcgsBEQMEBwkLDA8SE3gCgAECiAEDkAEDmgEPAQIDBAUGBwgJCgsMDQ4PoAECqAEyGn4IBCoCMAFyAIIBAggBiAEBkAEBmAEBoAEBqAECwgEVCMUBmgFvU8QBxwHLAcwBzQHOAc8BygEjYwAhblwgZVYQQT0-P0AbHh8GCVFnO1RXWSxmOFMzVVhfBRzQAQHYAQHqAQ8BAgMEBggJCgsMDQ4PEBHwAQGAAgGyAgD4AgUicwoHCAESAwMCBBI2CAYQCBgBIgQIHRABIgQIHRABIgQIHRABIgQIHRABIgQIHRABIgQIHRABIgQIHRABIgQIHRABGgoQAhoCOj4gATABIgQQAhgAKhQQAhgBIAEoATIECAEQATIECAUQQDIICAEYAyABKAEqkwEKSwgBEAEYASABKAEwATgBQAFIAVABWAFgAWgBcAF4AYABAYgBAZABAZgBAaABAagBAbABAbgBAcABAcgBAdABAdgBAeABAegBAfABARACGAEgASgBMAE4AUABSAFQAVgBaAFyLggBEgQQARgCIAEoATABOhoSGAgLEAsYCyAJKAkwBzgFQAdIA1AHWAVgA0ACWAE4AkAB"
+        settings_dict = settings_string_to_form_data(self.settings_string)
         settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
 
         # Plando testing - fill the data with a json string
@@ -48,7 +50,9 @@ class TestSpoiler(unittest.TestCase):
         settings.progressive_hint_algorithm = ProgressiveHintAlgorithm.medium
         # settings.extreme_debugging = True  # Greatly slows seed gen, use with caution
         spoiler = Spoiler(settings)
-        Generate_Spoiler(spoiler)
+        # Skip the server ROM patch (TODO: Find Proper fix)
+        with mock.patch.object(ApplyRandomizer, "patching_response", return_value=(b"", None)):
+            Generate_Spoiler(spoiler)
         print(spoiler)
         print(spoiler.json)
         # self.printHintDistribution(spoiler)

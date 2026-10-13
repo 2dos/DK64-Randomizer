@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package randomizer.proto;
 
-import "common/key.proto";
+import "common/item.proto";
 import "common/kong.proto";
 import "common/slam_level.proto";
 
@@ -18,27 +18,29 @@ message Logic {
 
     enum Trick {
         TRICK_UNSPECIFIED = 0;
-        TRICK_ADVANCED_GRENADING = 1;
-        TRICK_MONKEY_MANUEVERS = 2;
-        TRICK_HARD_SHOOTING = 3;
+        TRICK_MONKEY_MANEUVERS = 1;
+        TRICK_HARD_SHOOTING = 2;
+        TRICK_ADVANCED_GRENADING = 3;
         TRICK_SLOPE_RESETS = 4;
     }
 
     enum Glitch {
         GLITCH_UNSPECIFIED = 0;
-        GLITCH_B_LOCKER_SKIPS = 1;
-        GLITCH_GENERAL_CLIPS = 2;
-        GLITCH_LEDGE_CLIPS = 3;
-        GLITCH_MOONKICKS = 4;
-        GLITCH_MOONTAIL = 5;
-        GLITCH_PHASE_SWIMMING = 6;
-        GLITCH_PHASE_WALKING = 7;
-        GLITCH_SKEW = 8;
-        GLITCH_SPAWN_SNAGS = 9;
-        GLITCH_SWIM_THROUGH_SHORES = 10;
-        GLITCH_TAG_BARREL_STORAGE = 11;
-        GLITCH_TROFF_N_SCOFF_SKIPS = 12;
-        GLITCH_PHASE_FALL = 13;
+        GLITCH_MONKEY_MANEUVERS = 1;
+        GLITCH_B_LOCKER_SKIPS = 2;
+        GLITCH_BOULDER_CLIPS = 3;
+        GLITCH_GENERAL_CLIPS = 4;
+        GLITCH_LEDGE_CLIPS = 5;
+        GLITCH_MOONKICKS = 6;
+        GLITCH_PHASE_SWIMMING = 7;
+        GLITCH_PHASE_WALKING = 8;
+        GLITCH_SKEW = 9;
+        GLITCH_SPAWN_SNAGS = 10;
+        GLITCH_SWIM_THROUGH_SHORES = 11;
+        GLITCH_TAG_BARREL_STORAGE = 12;
+        GLITCH_TROFF_N_SCOFF_SKIPS = 13;
+        GLITCH_MOONTAIL = 14;
+        GLITCH_PHASEFALL = 15;
     }
 
     LogicType type = 1;
@@ -79,6 +81,14 @@ message WinCondition {
     optional int32 quantity = 2;
 
     bool spawns_ship = 3;
+
+    // Taskmaster win conditions
+    repeated WinConditionTask tasks = 4;
+}
+
+message WinConditionTask {
+    int32 condition = 1;  // WinConditionComplex value
+    int32 count = 2;
 }
 
 message RequiredKeys {
@@ -86,11 +96,13 @@ message RequiredKeys {
 
     optional int32 specified_quantity = 2;
 
-    repeated common.KeyId specified_starting_keys = 3;
+    repeated common.ItemId specified_starting_keys = 3;
 
     bool helm_key_lock = 4;
 
     bool key_8_required = 5;
+
+    bool select_starting_keys = 6;
 }
 
 message StartingKongs {
@@ -136,6 +148,7 @@ message HelmSettings {
 
     bool random_length = 1;
 
+    // Number of Helm rooms
     optional int32 specified_length = 2;
 
     bool shuffle_helm_rooms = 3;

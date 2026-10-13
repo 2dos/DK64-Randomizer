@@ -111,7 +111,8 @@ fungiTime: jspb.Message.getFieldWithDefault(msg, 16, 0),
 shopPrices: jspb.Message.getFieldWithDefault(msg, 17, 0),
 activateBananaports: jspb.Message.getFieldWithDefault(msg, 18, 0),
 fasterChecksList: (f = jspb.Message.getRepeatedField(msg, 19)) == null ? undefined : f,
-puzzleRando: jspb.Message.getFieldWithDefault(msg, 20, 0)
+puzzleRando: jspb.Message.getFieldWithDefault(msg, 20, 0),
+halfMedalPercentage: (f = jspb.Message.getField(msg, 21)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -239,6 +240,10 @@ proto.randomizer.proto.RequirementSettings.deserializeBinaryFromReader = functio
     case 20:
       var value = /** @type {!proto.randomizer.proto.PuzzleRando} */ (reader.readEnum());
       msg.setPuzzleRando(value);
+      break;
+    case 21:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setHalfMedalPercentage(value);
       break;
     default:
       reader.skipField();
@@ -414,6 +419,13 @@ proto.randomizer.proto.RequirementSettings.serializeBinaryToWriter = function(me
   if (f !== 0.0) {
     writer.writeEnum(
       20,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 21));
+  if (f != null) {
+    writer.writeInt32(
+      21,
       f
     );
   }
@@ -967,6 +979,42 @@ proto.randomizer.proto.RequirementSettings.prototype.getPuzzleRando = function()
  */
 proto.randomizer.proto.RequirementSettings.prototype.setPuzzleRando = function(value) {
   return jspb.Message.setProto3EnumField(this, 20, value);
+};
+
+
+/**
+ * optional int32 half_medal_percentage = 21;
+ * @return {number}
+ */
+proto.randomizer.proto.RequirementSettings.prototype.getHalfMedalPercentage = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 21, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.randomizer.proto.RequirementSettings} returns this
+ */
+proto.randomizer.proto.RequirementSettings.prototype.setHalfMedalPercentage = function(value) {
+  return jspb.Message.setField(this, 21, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.randomizer.proto.RequirementSettings} returns this
+ */
+proto.randomizer.proto.RequirementSettings.prototype.clearHalfMedalPercentage = function() {
+  return jspb.Message.setField(this, 21, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.randomizer.proto.RequirementSettings.prototype.hasHalfMedalPercentage = function() {
+  return jspb.Message.getField(this, 21) != null;
 };
 
 

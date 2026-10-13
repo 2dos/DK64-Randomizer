@@ -1222,7 +1222,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                                 ROM_COPY.write(item_properties.level)
                                 ROM_COPY.write(item_properties.kong)
                                 ROM_COPY.write(item_properties.audiovisual_medal)
-            if item.new_type == Types.Hint:
+            if item.new_type == Types.Hint and not getattr(spoiler, "hint_item_regions_resolved", False):
                 offset = item.new_item - Items.JapesDonkeyHint
                 tied_region = GetRegionIdOfLocation(spoiler, item.location)
                 spoiler.tied_hint_regions[offset] = spoiler.RegionList[tied_region].hint_name
@@ -1233,7 +1233,8 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                 ref_index = item.new_flag - 0x294
             elif item.new_item == Items.ProgressiveSlam:
                 ref_index = item.new_flag - 0x3BC
-            setItemReferenceName(spoiler, item.new_item, ref_index, spoiler.LocationList[item.location].name, item.old_flag)
+            # location name at generation time
+            setItemReferenceName(spoiler, item.new_item, ref_index, item.name or spoiler.LocationList[item.location].name, item.old_flag)
             # Handle pre-given shops, only ran into if shop owners are in the pool
             if item.old_item in shop_owner_types:
                 if pregiven_shop_owners is None:

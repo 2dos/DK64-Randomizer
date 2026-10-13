@@ -20,6 +20,7 @@ goog.require('jspb.Message');
 goog.require('proto.randomizer.proto.ItemAssignment');
 goog.require('proto.randomizer.proto.ItemReference');
 goog.require('proto.randomizer.proto.LevelPortalDestination');
+goog.require('proto.randomizer.proto.ResolvedSetting');
 goog.require('proto.randomizer.proto.SwitchsanityAssignment');
 goog.require('proto.randomizer.proto.TextFileChanges');
 
@@ -51,7 +52,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.randomizer.proto.MiscPatchingData.repeatedFields_ = [1,2,3,11,12,13,15,16,17,18,22,25,26,28,29,30,31,32,33,34,35,36,37];
+proto.randomizer.proto.MiscPatchingData.repeatedFields_ = [1,2,3,11,12,13,15,16,17,18,22,25,26,28,29,30,31,32,33,34,35,36,37,38];
 
 
 
@@ -124,7 +125,11 @@ helmOrderList: (f = jspb.Message.getRepeatedField(msg, 33)) == null ? undefined 
 kongHelmOrderList: (f = jspb.Message.getRepeatedField(msg, 34)) == null ? undefined : f,
 helmKongFlagsList: (f = jspb.Message.getRepeatedBooleanField(msg, 35)) == null ? undefined : f,
 seedHashList: (f = jspb.Message.getRepeatedField(msg, 36)) == null ? undefined : f,
-hintDoorItemCountsLevelList: (f = jspb.Message.getRepeatedField(msg, 37)) == null ? undefined : f
+hintDoorItemCountsLevelList: (f = jspb.Message.getRepeatedField(msg, 37)) == null ? undefined : f,
+resolvedSettingsList: jspb.Message.toObjectList(msg.getResolvedSettingsList(),
+    proto.randomizer.proto.ResolvedSetting.toObject, includeInstance),
+generatorVersion: jspb.Message.getFieldWithDefault(msg, 39, ""),
+patchRngSeed: jspb.Message.getFieldWithDefault(msg, 40, 0)
   };
 
   if (includeInstance) {
@@ -360,6 +365,19 @@ proto.randomizer.proto.MiscPatchingData.deserializeBinaryFromReader = function(m
       for (var i = 0; i < values.length; i++) {
         msg.addHintDoorItemCountsLevel(values[i]);
       }
+      break;
+    case 38:
+      var value = new proto.randomizer.proto.ResolvedSetting;
+      reader.readMessage(value,proto.randomizer.proto.ResolvedSetting.deserializeBinaryFromReader);
+      msg.addResolvedSettings(value);
+      break;
+    case 39:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGeneratorVersion(value);
+      break;
+    case 40:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setPatchRngSeed(value);
       break;
     default:
       reader.skipField();
@@ -635,6 +653,28 @@ proto.randomizer.proto.MiscPatchingData.serializeBinaryToWriter = function(messa
   if (f.length > 0) {
     writer.writePackedUint32(
       37,
+      f
+    );
+  }
+  f = message.getResolvedSettingsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      38,
+      f,
+      proto.randomizer.proto.ResolvedSetting.serializeBinaryToWriter
+    );
+  }
+  f = message.getGeneratorVersion();
+  if (f.length > 0) {
+    writer.writeString(
+      39,
+      f
+    );
+  }
+  f = message.getPatchRngSeed();
+  if (f !== 0) {
+    writer.writeUint64(
+      40,
       f
     );
   }
@@ -1932,6 +1972,80 @@ proto.randomizer.proto.MiscPatchingData.prototype.addHintDoorItemCountsLevel = f
  */
 proto.randomizer.proto.MiscPatchingData.prototype.clearHintDoorItemCountsLevelList = function() {
   return this.setHintDoorItemCountsLevelList([]);
+};
+
+
+/**
+ * repeated ResolvedSetting resolved_settings = 38;
+ * @return {!Array<!proto.randomizer.proto.ResolvedSetting>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getResolvedSettingsList = function() {
+  return /** @type{!Array<!proto.randomizer.proto.ResolvedSetting>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.randomizer.proto.ResolvedSetting, 38));
+};
+
+
+/**
+ * @param {!Array<!proto.randomizer.proto.ResolvedSetting>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+*/
+proto.randomizer.proto.MiscPatchingData.prototype.setResolvedSettingsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 38, value);
+};
+
+
+/**
+ * @param {!proto.randomizer.proto.ResolvedSetting=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.ResolvedSetting}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addResolvedSettings = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 38, opt_value, proto.randomizer.proto.ResolvedSetting, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearResolvedSettingsList = function() {
+  return this.setResolvedSettingsList([]);
+};
+
+
+/**
+ * optional string generator_version = 39;
+ * @return {string}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getGeneratorVersion = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 39, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setGeneratorVersion = function(value) {
+  return jspb.Message.setProto3StringField(this, 39, value);
+};
+
+
+/**
+ * optional uint64 patch_rng_seed = 40;
+ * @return {number}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getPatchRngSeed = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 40, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setPatchRngSeed = function(value) {
+  return jspb.Message.setProto3IntField(this, 40, value);
 };
 
 

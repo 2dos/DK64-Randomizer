@@ -30,7 +30,7 @@ from randomizer.Enums.Settings import (
     WrinklyHints,
 )
 from randomizer.Enums.Transitions import Transitions
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Types import BarrierItems, Types
 import randomizer.ItemPool as ItemPool
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Switches import Switches
@@ -41,6 +41,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Enums.DoorType import DoorType
 from randomizer.Enums.Enemies import Enemies
+from randomizer.Enums.Events import Events
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Regions import Regions
@@ -107,6 +108,8 @@ from randomizer.Patching.ASMPatcher import patchAssembly, precalcBoot
 from randomizer.Patching.ScriptPatcher import patchScripts
 from randomizer.Patching.MirrorMode import ApplyMirrorMode
 from randomizer.CompileHints import getHelmOrderHint
+from randomizer.ProtoSerializer import apply_resolved_settings, fill_result_to_proto
+from randomizer.proto_gen import fill_result_pb2
 from collections import defaultdict
 from copy import deepcopy
 
@@ -178,9 +181,8 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
         settings: Settings object (required when fill_result_or_spoiler is a FillResult proto)
         rom: Optional ROM object to patch (browser case). If None, loads from file (server case).
     """
+    patch_rng_seed = None
     # Handle both old (Spoiler) and new (FillResult proto + Settings) APIs
-    from randomizer.proto_gen import fill_result_pb2
-
     if isinstance(fill_result_or_spoiler, fill_result_pb2.FillResult):
         # New proto-based path - convert proto to adapter object
         fill_result = fill_result_or_spoiler
@@ -188,11 +190,7 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
             raise ValueError("settings parameter required when using FillResult proto")
         spoiler = create_patching_adapter(fill_result, settings)
 
-        # Apply Fill-phase mutations of settings that travel through the proto.
-        # The settings object was deserialized from user-input settings and does
-        # not reflect per-level changes made during the Fill (e.g. assignDKPortal
-        # writes exit=-1 into level_portal_destinations). ASMPatcher reads these
-        # fields off `settings` directly, so restore them here.
+        # Apply Fill
         if len(fill_result.misc_data.level_portal_destinations) > 0:
             settings.level_portal_destinations = [{"map": int(dest.map), "exit": int(dest.exit)} for dest in fill_result.misc_data.level_portal_destinations]
         if len(fill_result.misc_data.level_void_maps) > 0:
@@ -205,38 +203,31 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
         elif not hasattr(settings, "player_name"):
             settings.player_name = ""
         if len(fill_result.misc_data.krool_keys_required) > 0:
-            from randomizer.Enums.Events import Events as _EventsEnum
-
-            settings.krool_keys_required = [_EventsEnum(int(e)) for e in fill_result.misc_data.krool_keys_required]
+            settings.krool_keys_required = [Events(int(e)) for e in fill_result.misc_data.krool_keys_required]
         if len(fill_result.misc_data.starting_kong_list) > 0:
-            from randomizer.Enums.Kongs import Kongs as _KongEnum
-
-            settings.starting_kong_list = [_KongEnum(int(k)) for k in fill_result.misc_data.starting_kong_list]
+            settings.starting_kong_list = [Kongs(int(k)) for k in fill_result.misc_data.starting_kong_list]
             # Keep the derived count honest.
             settings.starting_kongs_count = len(settings.starting_kong_list)
         if fill_result.misc_data.HasField("resolved_starting_kong"):
-            from randomizer.Enums.Kongs import Kongs as _KongEnum
-
-            settings.starting_kong = _KongEnum(int(fill_result.misc_data.resolved_starting_kong))
+            settings.starting_kong = Kongs(int(fill_result.misc_data.resolved_starting_kong))
 
         # Display hash
         if len(fill_result.misc_data.seed_hash) > 0:
             settings.seed_hash = [int(d) for d in fill_result.misc_data.seed_hash]
 
-        # Restore Fill-mutated B.Locker / T&S arrays. ASMPatcher reads these
-        # directly off `settings` (see ASMPatcher.py writes to BossBananas and
-        # BLockerEntryCount). In chaos mode and when ShuffleExits reorders
-        # levels, the post-Fill values differ from the user-input settings.
+        # Restore Fill-mutated B.Locker / T&S arrays
         if len(fill_result.misc_data.blocker_entry_counts) > 0:
             settings.BLockerEntryCount = [int(c) for c in fill_result.misc_data.blocker_entry_counts]
         if len(fill_result.misc_data.blocker_entry_items) > 0:
-            from randomizer.Enums.Types import BarrierItems as _BarrierItems
-
-            settings.BLockerEntryItems = [_BarrierItems(int(i)) for i in fill_result.misc_data.blocker_entry_items]
+            settings.BLockerEntryItems = [BarrierItems(int(i)) for i in fill_result.misc_data.blocker_entry_items]
         if len(fill_result.misc_data.boss_bananas) > 0:
             settings.BossBananas = [int(c) for c in fill_result.misc_data.boss_bananas]
         if len(fill_result.misc_data.hint_door_item_counts_level) > 0:
             settings.hint_door_item_counts_level = [int(c) for c in fill_result.misc_data.hint_door_item_counts_level]
+
+        # Everything else generation rolled
+        apply_resolved_settings(fill_result.misc_data, settings)
+        patch_rng_seed = fill_result.misc_data.patch_rng_seed
 
         # Initialize valid_locations on settings - required for patching functions
         settings.update_valid_locations(spoiler)
@@ -245,8 +236,11 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
         # Legacy path - treat as Spoiler object
         spoiler = fill_result_or_spoiler
 
-    # Make sure we re-load the seed id
-    spoiler.settings.set_seed()
+    # Seed patch randomness
+    if patch_rng_seed is not None:
+        spoiler.settings.random.seed(patch_rng_seed)
+    else:
+        spoiler.settings.set_seed()
 
     # Write date to ROM for debugging purposes
     try:
@@ -1057,8 +1051,6 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
             patch = proto_bytes
         else:
             # Legacy path - convert spoiler to proto then serialize
-            from randomizer.ProtoSerializer import fill_result_to_proto
-
             fill_result_proto = fill_result_to_proto(spoiler)
             proto_bytes = fill_result_proto.SerializeToString()
             patch = proto_bytes

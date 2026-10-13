@@ -3,6 +3,7 @@
 import codecs
 import json
 import random
+import secrets
 import time
 import traceback
 import zipfile
@@ -47,8 +48,9 @@ def generate_seed(settings_dict):
         except Exception as e:
             logger.info(e)
         # load_base_rom(default_file=patched)
-        original_settings_json = json.dumps(settings_dict)
-        settings_obj = Settings(cleanup_settings(settings_dict))
+        original_settings_json = json.dumps({key: value for key, value in settings_dict.items() if key != "seed"})
+        seed_salt = "" if settings_dict.get("generate_spoilerlog") else secrets.token_hex(16)
+        settings_obj = Settings(cleanup_settings(settings_dict), seed_salt=seed_salt)
         spoiler = Spoiler(settings_obj)
         patch, spoiler, password = Generate_Spoiler(spoiler)
         spoiler.FlushAllExcessSpoilerData()

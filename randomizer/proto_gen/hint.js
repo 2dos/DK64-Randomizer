@@ -73,7 +73,8 @@ proto.randomizer.proto.Hint.toObject = function(includeInstance, msg) {
 locationId: jspb.Message.getFieldWithDefault(msg, 1, 0),
 hintText: jspb.Message.getFieldWithDefault(msg, 2, ""),
 important: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
-priority: jspb.Message.getFieldWithDefault(msg, 4, 0)
+priority: jspb.Message.getFieldWithDefault(msg, 4, 0),
+shortHint: (f = jspb.Message.getField(msg, 5)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -125,6 +126,10 @@ proto.randomizer.proto.Hint.deserializeBinaryFromReader = function(msg, reader) 
     case 4:
       var value = /** @type {number} */ (reader.readUint32());
       msg.setPriority(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setShortHint(value);
       break;
     default:
       reader.skipField();
@@ -180,6 +185,13 @@ proto.randomizer.proto.Hint.serializeBinaryToWriter = function(message, writer) 
   if (f !== 0) {
     writer.writeUint32(
       4,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 5));
+  if (f != null) {
+    writer.writeString(
+      5,
       f
     );
   }
@@ -255,6 +267,42 @@ proto.randomizer.proto.Hint.prototype.getPriority = function() {
  */
 proto.randomizer.proto.Hint.prototype.setPriority = function(value) {
   return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional string short_hint = 5;
+ * @return {string}
+ */
+proto.randomizer.proto.Hint.prototype.getShortHint = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.randomizer.proto.Hint} returns this
+ */
+proto.randomizer.proto.Hint.prototype.setShortHint = function(value) {
+  return jspb.Message.setField(this, 5, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.randomizer.proto.Hint} returns this
+ */
+proto.randomizer.proto.Hint.prototype.clearShortHint = function() {
+  return jspb.Message.setField(this, 5, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.randomizer.proto.Hint.prototype.hasShortHint = function() {
+  return jspb.Message.getField(this, 5) != null;
 };
 
 

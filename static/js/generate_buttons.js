@@ -398,9 +398,13 @@ function export_settings_string(event) {
     let setting_data = serialize_settings();
     // Convert settings_data back into json from the string
     setting_data = JSON.parse(setting_data);
-    let settings_string = encrypt_settings_string_enum(setting_data);
-    document.getElementById("settings_string").value = settings_string;
-    generateToast("Exported settings string to the setting string input field.");
+    try {
+        let settings_string = encrypt_settings_string_enum(setting_data);
+        document.getElementById("settings_string").value = settings_string;
+        generateToast("Exported settings string to the setting string input field.");
+    } catch (error) {
+        generateToast("Could not export the settings string: " + error.message, true);
+    }
 }
 
 // Event binding for generating a seed
@@ -799,8 +803,16 @@ async function import_settings_string(event) {
     
     document.getElementById("settings_string").value = document.getElementById("settings_string").value.trim();
     const settingsString = document.getElementById("settings_string").value;
-    import_settings_string_internal(settingsString);
-    generateToast("Imported settings string. All non-cosmetic settings have been overwritten.");
+    if (settingsString === "") {
+        generateToast("Paste a settings string to import.", true);
+        return;
+    }
+    try {
+        await import_settings_string_internal(settingsString);
+        generateToast("Imported settings string. All non-cosmetic settings have been overwritten.");
+    } catch (error) {
+        generateToast("Could not import the settings string: " + error.message, true);
+    }
 }
 
 document.getElementById("import_settings").addEventListener("click", import_settings_string);
@@ -840,7 +852,7 @@ async function export_archipelago_yaml(event) {
         generateToast("Generating Archipelago YAML...");
         
         // Call API endpoint
-        let response = await fetch("/api/export_archipelago_yaml", {
+        let response = await fetch(base_url + "/export_archipelago_yaml?branch=" + branch, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

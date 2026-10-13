@@ -29,7 +29,7 @@ goog.require('jspb.Message');
  * @constructor
  */
 proto.randomizer.proto.LocationAssignments = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.randomizer.proto.LocationAssignments.repeatedFields_, null);
 };
 goog.inherits(proto.randomizer.proto.LocationAssignments, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -39,6 +39,13 @@ if (goog.DEBUG && !COMPILED) {
    */
   proto.randomizer.proto.LocationAssignments.displayName = 'proto.randomizer.proto.LocationAssignments';
 }
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.randomizer.proto.LocationAssignments.repeatedFields_ = [2];
 
 
 
@@ -71,7 +78,8 @@ proto.randomizer.proto.LocationAssignments.prototype.toObject = function(opt_inc
  */
 proto.randomizer.proto.LocationAssignments.toObject = function(includeInstance, msg) {
   var f, obj = {
-assignmentsMap: (f = msg.getAssignmentsMap()) ? f.toObject(includeInstance, undefined) : []
+assignmentsMap: (f = msg.getAssignmentsMap()) ? f.toObject(includeInstance, undefined) : [],
+inaccessibleLocationsList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -114,6 +122,12 @@ proto.randomizer.proto.LocationAssignments.deserializeBinaryFromReader = functio
         jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readUint32, jspb.BinaryReader.prototype.readUint32, null, 0, 0);
          });
       break;
+    case 2:
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addInaccessibleLocations(values[i]);
+      }
+      break;
     default:
       reader.skipField();
       break;
@@ -147,6 +161,13 @@ proto.randomizer.proto.LocationAssignments.serializeBinaryToWriter = function(me
   if (f && f.getLength() > 0) {
     f.serializeBinary(1, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeUint32);
   }
+  f = message.getInaccessibleLocationsList();
+  if (f.length > 0) {
+    writer.writePackedUint32(
+      2,
+      f
+    );
+  }
 };
 
 
@@ -170,6 +191,43 @@ proto.randomizer.proto.LocationAssignments.prototype.getAssignmentsMap = functio
 proto.randomizer.proto.LocationAssignments.prototype.clearAssignmentsMap = function() {
   this.getAssignmentsMap().clear();
   return this;
+};
+
+
+/**
+ * repeated uint32 inaccessible_locations = 2;
+ * @return {!Array<number>}
+ */
+proto.randomizer.proto.LocationAssignments.prototype.getInaccessibleLocationsList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 2));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.randomizer.proto.LocationAssignments} returns this
+ */
+proto.randomizer.proto.LocationAssignments.prototype.setInaccessibleLocationsList = function(value) {
+  return jspb.Message.setField(this, 2, value || []);
+};
+
+
+/**
+ * @param {number} value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.LocationAssignments} returns this
+ */
+proto.randomizer.proto.LocationAssignments.prototype.addInaccessibleLocations = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 2, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.LocationAssignments} returns this
+ */
+proto.randomizer.proto.LocationAssignments.prototype.clearInaccessibleLocationsList = function() {
+  return this.setInaccessibleLocationsList([]);
 };
 
 

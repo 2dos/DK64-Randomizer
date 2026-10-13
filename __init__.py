@@ -78,6 +78,7 @@ if baseclasses_loaded:
         ShuffleLoadingZones,
         TricksSelected,
         SlamRequirement,
+        SettingsMap,
     )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
@@ -1372,7 +1373,16 @@ if baseclasses_loaded:
                     return list(obj)
                 raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
 
-            current_settings = {key: getattr(spoiler.settings, key, value) for key, value in spoiler.settings.form_data.items()}
+            def embedded_value(key, original):
+                current = getattr(spoiler.settings, key, original)
+                expected = SettingsMap.get(key)
+                if expected is not None:
+                    values = current if isinstance(current, (list, tuple, set, frozenset)) else [current]
+                    if any(isinstance(v, enum.Enum) and not isinstance(v, expected) for v in values):
+                        return original
+                return current
+
+            current_settings = {key: embedded_value(key, value) for key, value in spoiler.settings.form_data.items()}
             settings_json = json.dumps(current_settings, default=_settings_default)
 
             # Zip all the data into a single file.
@@ -1540,7 +1550,7 @@ if baseclasses_loaded:
                     if "dropsanity" in self.options.item_pool
                     else {}
                 ),
-                "Shopkeepers": self.options.shopowners_in_pool.value,
+                "Shopkeepers": "shopkeepers" in self.options.item_pool,
                 "HalfMedals": self.options.half_medals_in_pool.value,
                 "HalfMedalPercentage": self.spoiler.settings.half_medal_percentage,
                 "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
