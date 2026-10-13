@@ -299,6 +299,7 @@ def adjustFungiMushVertexColor(shift: int, ROM_COPY):
     ROM_COPY.seek(getPointerLocation(TableNames.MapGeometry, Maps.FungiForest))
     ROM_COPY.writeBytes(file_data)
 
+
 def paintCavesAColor(ROM_COPY: ROM, hue_shift: int):
     """Paint the walls of caves a certain color."""
     caves_textures = [

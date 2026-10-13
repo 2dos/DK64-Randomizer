@@ -1640,7 +1640,7 @@ export const SettingsStringIntRangeMap = {
     SettingsStringEnum.hint_door_item_count: {'max': 3500, 'min': 0},
     SettingsStringEnum.pause_hints_lockout_timer: {'max': 255, 'min': 0},
     SettingsStringEnum.win_condition_count: {'max': 255, 'min': 0},
-    SettingsStringEnum.lives: {'max': 65535, 'min': 0},
+    SettingsStringEnum.lives: {'max': 65535, 'min': 1},
     SettingsStringEnum.task_1_count: {'max': 255, 'min': 0},
     SettingsStringEnum.task_2_count: {'max': 255, 'min': 0},
     SettingsStringEnum.task_3_count: {'max': 255, 'min': 0},

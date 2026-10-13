@@ -65,7 +65,6 @@ Rule = Union[str, Callable[["WebsiteSettings"], Any]]
 AP_ONLY = None
 
 
-
 def opposite(key: str) -> Rule:
     """Flip a website checkbox, for example "disable hard minigames" -> hard_minigames."""
 
@@ -600,6 +599,7 @@ SETTINGS: Dict[str, Optional[Rule]] = {
     "remove_bait_potions": "no_consumable_upgrades",
     "receive_notifications": AP_ONLY,
 }
+
 
 class WebsiteSettings:
     """The settings dict the website sent, with helpers that accept any form a value arrives in."""

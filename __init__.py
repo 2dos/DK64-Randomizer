@@ -1551,7 +1551,6 @@ if baseclasses_loaded:
                     else {}
                 ),
                 "Shopkeepers": "shopkeepers" in self.options.item_pool,
-                "HalfMedals": self.options.half_medals_in_pool.value,
                 "HalfMedalPercentage": self.spoiler.settings.half_medal_percentage,
                 "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
                 "Autocomplete": self.options.auto_complete_bonus_barrels.value,

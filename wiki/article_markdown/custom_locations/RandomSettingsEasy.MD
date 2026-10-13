@@ -41,7 +41,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Mirror Mode
 - No Heals
 - No Melon Slice Drops
-- Perma Death
+- Wipe File on Death
 - Random Crates
 - Random Fairies
 - Random Patches

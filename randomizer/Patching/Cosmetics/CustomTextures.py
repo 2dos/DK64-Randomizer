@@ -11,6 +11,7 @@ from randomizer.Patching.Library.Image import writeColorImageToROM, TextureForma
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.LazyPIL import Image
 
+
 def findFileByName(file_data: list, target_name: str):
     """Find a file within a dataset based on a name."""
     for f, n in file_data:
@@ -18,11 +19,10 @@ def findFileByName(file_data: list, target_name: str):
             return f
     return None
 
+
 def generateCosmeticSet(settings: Settings, file_data: list, slot_keys: list) -> dict:
     """Generate the placement of cosmetic images."""
-    assignment_data = {
-        "assignments": {}
-    }
+    assignment_data = {"assignments": {}}
     free_choice_names = []
     available_values = []
     for file, name in file_data:
@@ -140,6 +140,7 @@ def getImageChunk(im_f, width: int, height: int):
         )
     # Ratio matches, just scale up
     return im_f.resize((width, height))
+
 
 def getColorPalette(im_f, color_count: int, allow_alpha: bool):
     """Reduce the color count within an image."""
@@ -365,6 +366,7 @@ def writeCustomPaintings(settings: Settings, ROM_COPY: ROM) -> None:
     settings.painting_factory_map_testing = PAINTING_INFO[11].name
     settings.painting_factory_map_rnd = PAINTING_INFO[12].name
     settings.painting_factory_graph = PAINTING_INFO[13].name
+
 
 def writeCustomDecals(settings: Settings, ROM_COPY: ROM) -> None:
     """Write custom painting files to ROM."""
