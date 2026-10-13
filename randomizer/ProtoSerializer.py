@@ -6,6 +6,7 @@ import hashlib
 import importlib
 import json
 import logging
+import zlib
 from types import SimpleNamespace
 from typing import Any, Dict, Iterable, List, Tuple, TYPE_CHECKING
 from randomizer.Enums.Items import Items
@@ -82,7 +83,8 @@ def _to_int(val: Any, default: int = 0) -> int:
 # =============================================================================
 
 
-_SETTINGS_SECTIONS = ("item_settings", "requirement_settings", "overworld_settings", "endgame_settings", "qol_settings")
+SETTINGS_SECTIONS = ("item_settings", "requirement_settings", "overworld_settings", "endgame_settings", "qol_settings")
+MAX_SETTINGS_BYTES = 1 << 20
 
 
 def settings_to_proto(settings: "Settings") -> settings_pb2.SettingsInfo:
@@ -125,13 +127,24 @@ def settings_string_to_form_data(settings_string: str) -> dict:
 
 
 def serialize_settings_to_base64(settings: "Settings") -> str:
-    """Serialize a Settings object to a URL-safe base64-encoded protobuf string."""
-    proto = settings_to_proto(settings)
-    return base64.urlsafe_b64encode(proto.SerializeToString()).decode("utf-8")
+    """Serialize a Settings object to a zlib-compressed, URL-safe base64 settings string."""
+    compressed = zlib.compress(settings_to_proto(settings).SerializeToString(), 9)
+    return base64.urlsafe_b64encode(compressed).decode("utf-8").rstrip("=")
+
+
+def decompress_settings(data: bytes) -> bytes:
+    """Inflate a compressed settings string, refusing it if it's truncated, oversized or followed by extra data."""
+    decompressor = zlib.decompressobj()
+    raw = decompressor.decompress(data, MAX_SETTINGS_BYTES)
+    if not decompressor.eof or decompressor.unused_data:
+        raise ValueError("The settings string is truncated, too large or has extra data.")
+    return raw
 
 
 def deserialize_settings_from_base64(proto_string: str) -> settings_pb2.SettingsInfo:
-    """Deserialize a base64-encoded protobuf string to a SettingsInfo message.
+    """Deserialize a settings string to a SettingsInfo message.
+
+    Accepts compressed strings and the uncompressed strings made before compression was added.
 
     Raises:
         ValueError: With a user-facing message if the string is empty or malformed
@@ -143,11 +156,13 @@ def deserialize_settings_from_base64(proto_string: str) -> settings_pb2.Settings
     try:
         # altchars accepts both the URL-safe and the standard alphabet; pad stripped '='.
         binary_data = base64.b64decode(text + "=" * (-len(text) % 4), altchars=b"-_", validate=True)
+        if binary_data[:1] == b"\x78":  # zlib header
+            binary_data = decompress_settings(binary_data)
         proto = settings_pb2.SettingsInfo()
         proto.ParseFromString(binary_data)
     except Exception:
         raise ValueError("This is not a valid settings string. Settings strings from before version 6 can't be imported; re-create the settings and export a new string.")
-    if not all(proto.HasField(section) for section in _SETTINGS_SECTIONS):
+    if not all(proto.HasField(section) for section in SETTINGS_SECTIONS):
         raise ValueError("This is not a valid settings string.")
     return proto
 
