@@ -5,7 +5,7 @@ import io
 import zlib
 import js
 
-from PIL import Image
+from randomizer.Patching.LazyPIL import Image
 
 from randomizer.Patching.Patcher import ROM, LocalROM
 

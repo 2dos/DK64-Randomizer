@@ -9,6 +9,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion
+from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
@@ -50,35 +51,39 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_CavesMainEnemy_NearBonusRoom, lambda l: l.camera),
         LocationLogic(Locations.KremKap_CavesMainEnemy_NearSnide, lambda l: l.camera),
         LocationLogic(Locations.HoldableBoulderCavesSmall, lambda l: l.barrels and l.chunky),
+        LocationLogic(Locations.Balloon070, lambda l: l.diddy and l.peanut),
     ], [
         Event(Events.CavesSmallBoulderButton, lambda l: l.ischunky and l.barrels),
         Event(Events.CavesW1aTagged, lambda _: True),
         Event(Events.CavesW2aTagged, lambda _: True),
     ], [
-        TransitionFront(Regions.CavesGGRoom, lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
+        TransitionFront(Regions.CavesGGRoom, lambda l: l.hasMoveSwitchsanity(Switches.CavesGoneCave, False) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
         TransitionFront(Regions.CavesBlueprintCave, lambda l: (l.mini and l.twirl and l.istiny) or l.CanPhase() or l.CanSkew(True)),
         TransitionFront(Regions.CavesBonusCave, lambda l: (l.mini and l.istiny) or l.CanPhase() or l.CanSkew(True)),
         TransitionFront(Regions.CavesBlueprintPillar, lambda l: (l.jetpack and l.isdiddy) or (l.monkey_maneuvers and ((l.balloon and l.islanky) or ((not l.settings.shuffle_shops) and l.twirl and l.istiny)))),
         TransitionFront(Regions.CavesBananaportSpire, lambda l: (l.jetpack and l.isdiddy) or l.monkey_maneuvers),
-        TransitionFront(Regions.BoulderCave, lambda l: (l.punch and l.chunky) or l.CanSkew(True) or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
+        TransitionFront(Regions.BoulderCave, lambda l: l.hasMoveSwitchsanity(Switches.CavesBoulderCave, False) or l.CanSkew(True) or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
         TransitionFront(Regions.CavesLankyRace, lambda l: (l.CanSlamSwitch(Levels.CrystalCaves, 2) and (l.balloon or l.monkey_maneuvers) and l.islanky) or l.CanPhase() or l.CanSkew(True), Transitions.CavesMainToRace),
         TransitionFront(Regions.FrozenCastle, lambda l: (l.CanSlamSwitch(Levels.CrystalCaves, 2) and l.islanky) or l.CanSkew(True), Transitions.CavesMainToCastle),
         TransitionFront(Regions.IglooArea, lambda _: True),
         TransitionFront(Regions.CabinArea, lambda _: True),
         TransitionFront(Regions.FunkyCaves, lambda l: l.funkyAccess),
         TransitionFront(Regions.CrankyCaves, lambda l: l.crankyAccess),
-        TransitionFront(Regions.CavesSnideArea, lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
-        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and ((l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls))),
+        TransitionFront(Regions.CavesSnideArea, lambda l: l.hasMoveSwitchsanity(Switches.CavesSnideCave, False) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
+        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls))),
         TransitionFront(Regions.CavesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.CavesMainToBBlast)
     ]),
 
     Regions.CavesGGRoom: Region("Caves GG Room", HintRegion.MainCaves, Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesChunkyGorillaGone, lambda l: l.gorillaGone and l.ischunky),
+        LocationLogic(Locations.Balloon074, lambda l: l.isdonkey and l.coconut),
     ], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda _: True),
     ]),
 
-    Regions.CavesSnideArea: Region("Caves Snide Area", HintRegion.MainCaves, Levels.CrystalCaves, False, None, [], [], [
+    Regions.CavesSnideArea: Region("Caves Snide Area", HintRegion.MainCaves, Levels.CrystalCaves, False, None, [
+        LocationLogic(Locations.Balloon071, lambda l: l.chunky and l.pineapple),
+    ], [], [
         TransitionFront(Regions.Snide, lambda l: l.snideAccess),
         TransitionFront(Regions.CrystalCavesMain, lambda _: True),
         TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando),
@@ -86,6 +91,7 @@ LogicRegions = {
 
     Regions.CavesBlueprintCave: Region("Caves Blueprint Cave", HintRegion.MainCaves, Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesKasplatNearFunky, lambda l: not l.settings.kasplat_rando),
+        LocationLogic(Locations.Balloon077, lambda l: l.istiny and l.feather),
     ], [
         Event(Events.CavesMonkeyportAccess, lambda l: l.istiny and l.monkeyport),
         Event(Events.CavesW4bTagged, lambda _: True),
@@ -95,6 +101,7 @@ LogicRegions = {
 
     Regions.CavesBonusCave: Region("Caves Bonus Cave", HintRegion.MainCaves, Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesTinyCaveBarrel, lambda l: l.istiny or l.settings.free_trade_items, MinigameType.BonusBarrel),
+        LocationLogic(Locations.Balloon076, lambda l: l.ischunky and l.pineapple),
     ], [
         Event(Events.CavesW3bTagged, lambda l: Locations.CavesTinyCaveBarrel in l.SpecialLocationsReached),
     ], [
@@ -123,6 +130,7 @@ LogicRegions = {
 
     Regions.BoulderCave: Region("Boulder Cave", HintRegion.MainCaves, Levels.CrystalCaves, True, None, [
         LocationLogic(Locations.HoldableBoulderCavesLarge, lambda l: l.barrels and l.chunky and l.hunkyChunky and Events.CavesSmallBoulderButton in l.Events),
+        LocationLogic(Locations.Balloon078, lambda l: l.donkey and l.coconut),
     ], [
         Event(Events.CavesLargeBoulderButton, lambda l: Events.CavesSmallBoulderButton in l.Events and l.hunkyChunky and l.chunky and l.barrels),
     ], [
@@ -138,8 +146,9 @@ LogicRegions = {
     ),
 
     Regions.FrozenCastle: Region("Frozen Castle", HintRegion.MainCaves, Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesLankyCastle, lambda l: l.Slam and (l.islanky or (l.settings.free_trade_items and ((l.isdiddy or l.islanky or l.istiny or l.ischunky) or l.superSlam)))),
+        LocationLogic(Locations.CavesLankyCastle, lambda l: l.Slam and (l.islanky or (l.settings.free_trade_items and (l.isdiddy or l.istiny or l.ischunky or l.superSlam)))),
         LocationLogic(Locations.KremKap_CavesNPC_IceTomato, lambda l: l.camera),
+        LocationLogic(Locations.Balloon086, lambda l: l.islanky and l.grape),
     ], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda _: True, Transitions.CavesCastleToMain),
     ]),
@@ -176,18 +185,21 @@ LogicRegions = {
         LocationLogic(Locations.Caves5DIDKEnemy_Left, lambda _: True),
         LocationLogic(Locations.KremKap_Caves5DIDKEnemy_Right, lambda l: l.camera),
         LocationLogic(Locations.KremKap_Caves5DIDKEnemy_Left, lambda l: l.camera),
+        LocationLogic(Locations.Balloon081, lambda l: l.isdonkey and l.coconut),
     ], [], [
         TransitionFront(Regions.IglooArea, lambda _: True, Transitions.CavesDonkeyToIgloo),
     ]),
 
     Regions.DiddyIgloo: Region("Diddy Igloo", HintRegion.Igloo, Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesDiddy5DoorIgloo, lambda l: (l.isdiddy or l.settings.free_trade_items) and l.barrels),
+        LocationLogic(Locations.Balloon087, lambda l: l.isdiddy and l.peanut),
     ], [], [
         TransitionFront(Regions.IglooArea, lambda _: True, Transitions.CavesDiddyToIgloo),
     ]),
 
     Regions.LankyIgloo: Region("Lanky Igloo", HintRegion.Igloo, Levels.CrystalCaves, False, TransitionFront(Regions.CrystalCavesEntryHandler, lambda l: ((l.balloon or l.monkey_maneuvers) and l.islanky) or (l.settings.free_trade_items and l.monkey_maneuvers and (l.isdiddy or l.istiny))), [
         LocationLogic(Locations.CavesLanky5DoorIgloo, lambda l: ((l.balloon or l.monkey_maneuvers) and l.islanky) or (l.settings.free_trade_items and l.monkey_maneuvers and (l.isdiddy or l.istiny))),
+        LocationLogic(Locations.Balloon080, lambda l: l.islanky and l.grape and (l.balloon or l.monkey_maneuvers)),
     ], [], [
         TransitionFront(Regions.IglooArea, lambda _: True, Transitions.CavesLankyToIgloo),
     ]),
@@ -197,12 +209,14 @@ LogicRegions = {
         LocationLogic(Locations.CavesBananaFairyIgloo, lambda l: l.Slam and l.istiny and l.camera),
         LocationLogic(Locations.Caves5DITinyEnemy_BigEnemy, lambda _: True),
         LocationLogic(Locations.KremKap_Caves5DITinyEnemy_BigEnemy, lambda l: l.camera),
+        LocationLogic(Locations.Balloon079, lambda l: l.istiny and l.feather),
     ], [], [
         TransitionFront(Regions.IglooArea, lambda _: True, Transitions.CavesTinyToIgloo),
     ]),
 
     Regions.ChunkyIgloo: Region("Chunky Igloo", HintRegion.Igloo, Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesChunky5DoorIgloo, lambda l: l.ischunky or l.settings.free_trade_items),
+        LocationLogic(Locations.Balloon085, lambda l: l.ischunky and l.pineapple),
     ], [
         Event(Events.KilledRabbit, lambda _: True),
     ], [
@@ -217,6 +231,9 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_CavesMainEnemy_Outside5DC, lambda l: l.camera),
         LocationLogic(Locations.KremKap_CavesMainEnemy_1DCWaterfall, lambda l: l.camera),
         LocationLogic(Locations.KremKap_CavesMainEnemy_1DCHeadphones, lambda l: l.camera),
+        LocationLogic(Locations.Balloon072, lambda l: l.tiny and l.feather),
+        LocationLogic(Locations.Balloon073, lambda l: l.lanky and l.grape),
+        LocationLogic(Locations.Balloon075, lambda l: l.diddy and l.peanut),
     ], [
         Event(Events.CavesW2bTagged, lambda _: True),
         Event(Events.CavesW5bTagged, lambda _: True),
@@ -282,6 +299,7 @@ LogicRegions = {
 
     Regions.TinyCabin: Region("Tiny Cabin", HintRegion.Cabins, Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesTiny5DoorCabin, lambda l: (l.istiny or l.settings.free_trade_items) and l.oranges),
+        LocationLogic(Locations.Balloon084, lambda l: l.istiny and l.feather),
     ], [], [
         TransitionFront(Regions.CabinArea, lambda _: True, Transitions.CavesTinyToCabin),
     ]),

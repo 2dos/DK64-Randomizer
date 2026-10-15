@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package randomizer.proto.common;
+
+enum KeyId {
+    KEY_ID_UNSPECIFIED = 0;
+    KEY_ID_KEY_1 = 1;
+    KEY_ID_KEY_2 = 2;
+    KEY_ID_KEY_3 = 3;
+    KEY_ID_KEY_4 = 4;
+    KEY_ID_KEY_5 = 5;
+    KEY_ID_KEY_6 = 6;
+    KEY_ID_KEY_7 = 7;
+    KEY_ID_KEY_8 = 8;
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package randomizer.proto.common;
+
+enum LevelId {
+    LEVEL_UNSPECIFIED = 0;
+    LEVEL_JUNGLE_JAPES = 1;
+    LEVEL_ANGRY_AZTEC = 2;
+    LEVEL_FRANTIC_FACTORY = 3;
+    LEVEL_GLOOMY_GALLEON = 4;
+    LEVEL_FUNGI_FOREST = 5;
+    LEVEL_CRYSTAL_CAVES = 6;
+    LEVEL_CREEPY_CASTLE = 7;
+    LEVEL_HIDEOUT_HELM = 8;
+    LEVEL_DK_ISLES = 9;
+}

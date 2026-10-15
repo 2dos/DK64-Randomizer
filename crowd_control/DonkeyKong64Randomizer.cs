@@ -1,9 +1,9 @@
-﻿using System;
-using ConnectorLib;
+﻿using ConnectorLib;
 using ConnectorLib.Memory;
 using CrowdControl.Common;
 using JetBrains.Annotations;
 using ConnectorType = CrowdControl.Common.ConnectorType;
+using AddressChain = ConnectorLib.Memory.AddressChain<ConnectorLib.IN64Connector>;
 
 namespace CrowdControl.Games.Packs.DonkeyKong64Randomizer;
 
@@ -102,49 +102,49 @@ public class DonkeyKong64Randomizer : N64EffectPack
     public override EffectList Effects { get; } = new List<Effect>
     {
         // Player
-        new("Drunk Kong","drunky_kong") { Price = 0, Duration = 10, Description = "Makes the kong feel a little woozy. Reverses controls and slows down the player.", Category="Player" },
-        new("Disable Tag Anywhere","disable_ta") { Price = 0, Duration = 25, Description = "Disables the ability for the player to use Tag Anywhere.", Category="Player" },
-        new("Ice Trap the Player","ice_trap") { Price = 0, Description = "Locks the player in an ice trap bubble in which they have to escape.", Category="Player" },
-        new("Spawn Stalactites","rockfall") { Price = 0, Duration = 30, Description = "Spawn a bunch of stalactites above the player throughout the duration of the effect.", Category="Player" },
-        new("Instant Balloon","balloon") { Price = 0, Description = "Inflate the balloon (kong) just like a balloon.", Category="Player" },
-        new("High Gravity","gravity_high") { Price = 0, Duration = 15, Description = "Crank(y) that gravity up to 11.", Category="Player" },
-        new("Low Gravity","gravity_low") { Price = 0, Duration = 15, Description = "Make the moonkick not so special anymore.", Category="Player" },
-        new("Slip","player_slip") { Price = 0, Description = "Who placed a banana under the DK's foot?", Category="Player" },
-        new("Change Kong","tag_kong") { Price = 0, Duration = 20, Description = "Change the player to a different kong and lock tagging", Category="Player" },
-        new("Do a Backflip","backflip") { Price = 0, Description = "Peppy says: 'Do a backflip'.", Category="Player" },
-        new("Ice Floor","ice_floor") { Price = 0, Duration = 20, Description = "Donkey goes weeeeeeee.", Category="Player" },
-        new("Mini Monkey","force_mini") { Price = 0, Duration = 20, Description = "Shrink the player's size to suit their mood.", Category="Player" },
-        new("Transform into an Animal","animal_transform") { Price = 0, Duration = 15, Description = "Transforms the player into an animal. If they're in water, they'll be transformed to Enguarde, otherwise they'll be transformed to Rambi.", Category="Player" },
+        new("Drunk Kong","drunky_kong") { Price = 250, Duration = 10, Description = "Makes the kong feel a little woozy. Reverses controls and slows down the player.", Category="Player" },
+        new("Disable Tag Anywhere","disable_ta") { Price = 100, Duration = 25, Description = "Disables the ability for the player to use Tag Anywhere.", Category="Player" },
+        new("Ice Trap the Player","ice_trap") { Price = 50, Description = "Locks the player in an ice trap bubble in which they have to escape.", Category="Player" },
+        new("Spawn Stalactites","rockfall") { Price = 100, Duration = 30, Description = "Spawn a bunch of stalactites above the player throughout the duration of the effect.", Category="Player" },
+        new("Instant Balloon","balloon") { Price = 50, Description = "Inflate the balloon (kong) just like a balloon.", Category="Player" },
+        new("High Gravity","gravity_high") { Price = 25, Duration = 15, Description = "Crank(y) that gravity up to 11.", Category="Player" },
+        new("Low Gravity","gravity_low") { Price = 25, Duration = 15, Description = "Make the moonkick not so special anymore.", Category="Player" },
+        new("Slip","player_slip") { Price = 25, Description = "Who placed a banana under the DK's foot?", Category="Player" },
+        new("Change Kong","tag_kong") { Price = 250, Duration = 20, Description = "Change the player to a different kong and lock tagging", Category="Player" },
+        new("Do a Backflip","backflip") { Price = 25, Description = "Peppy says: 'Do a backflip'.", Category="Player" },
+        new("Ice Floor","ice_floor") { Price = 100, Duration = 20, Description = "Donkey goes weeeeeeee.", Category="Player" },
+        new("Mini Monkey","force_mini") { Price = 100, Duration = 20, Description = "Shrink the player's size to suit their mood.", Category="Player" },
+        new("Transform into an Animal","animal_transform") { Price = 150, Duration = 15, Description = "Transforms the player into an animal. If they're in water, they'll be transformed to Enguarde, otherwise they'll be transformed to Rambi.", Category="Player" },
         // Environment
-        new("Change the Time","fungi_time_toggle") { Price = 0, Description = "Changes the time in Fungi Forest (Only compatible in the main map).", Category="Environment" },
-        new("Change the Water","water_shift") { Price = 0, Description = "Changes the water level in various maps (Only compatible in certain maps).", Category="Environment" },
+        new("Change the Time","fungi_time_toggle") { Price = 50, Description = "Changes the time in Fungi Forest (Only compatible in the main map).", Category="Environment" },
+        new("Change the Water","water_shift") { Price = 50, Description = "Changes the water level in various maps (Only compatible in certain maps).", Category="Environment" },
         // Inventory
-        new("Give Coins","give_coins") { Price = 0, Description = "Gives each kong 2 coins.", Category="Inventory" },
-        new("Remove Coins","remove_coins") { Price = 0, Description = "Takes 2 coins from each kong.", Category="Inventory" },
-        new("Give Consumables","give_replenishibles") { Price = 0, Description = "Help the player out by giving them some ammo, crystals amongst other things.", Category="Inventory" },
-        new("Remove all Consumables","remove_replenishibles") { Price = 0, Description = "Remove everything the player has in terms of ammo, crystals and other things.", Category="Inventory" },
-        new("Give a Golden Banana","give_gb") { Price = 0, Description = "Gives the player a Golden Banana. OHHHHHHHH BANANA.", Category="Inventory" },
-        new("Remove a Golden Banana","remove_gb") { Price = 0, Description = "Removes a Golden Banana from the player.", Category="Inventory" },
+        new("Give Coins","give_coins") { Price = 5, Description = "Gives each kong 2 coins.", Category="Inventory" },
+        new("Remove Coins","remove_coins") { Price = 5, Description = "Takes 2 coins from each kong.", Category="Inventory" },
+        new("Give Consumables","give_replenishibles") { Price = 5, Description = "Help the player out by giving them some ammo, crystals amongst other things.", Category="Inventory" },
+        new("Remove all Consumables","remove_replenishibles") { Price = 150, Description = "Remove everything the player has in terms of ammo, crystals and other things.", Category="Inventory" },
+        new("Give a Golden Banana","give_gb") { Price = 200, Description = "Gives the player a Golden Banana. OHHHHHHHH BANANA.", Category="Inventory" },
+        new("Remove a Golden Banana","remove_gb") { Price = 200, Description = "Removes a Golden Banana from the player.", Category="Inventory" },
         // Health
-        new("Refill Health","refill_health") { Price = 0, Description = "Refills the player's health to max.", Category="Health" },
-        new("One Hit KO","damage_ohko") { Price = 0, Duration = 20, Description = "The player will be killed for any damage taken.", Category="Health" },
-        new("Double Damage","damage_double") { Price = 0, Duration = 30, Description = "The player will take double damage.", Category="Health" },
+        new("Refill Health","refill_health") { Price = 50, Description = "Refills the player's health to max.", Category="Health" },
+        new("One Hit KO","damage_ohko") { Price = 400, Duration = 20, Description = "The player will be killed for any damage taken.", Category="Health" },
+        new("Double Damage","damage_double") { Price = 150, Duration = 30, Description = "The player will take double damage.", Category="Health" },
         // Buttons
-        new("Disable A","disable_button_a") { Price = 0, Duration = 5, Description = "Disables the A Button until map load.", Category="Button" },
-        new("Disable B","disable_button_b") { Price = 0, Duration = 5, Description = "Disables the B Button until map load.", Category="Button" },
-        new("Disable C-Up","disable_button_cu") { Price = 0, Duration = 5, Description = "Disables the C-Up Button until map load.", Category="Button" },
-        new("Disable C-Down","disable_button_cd") { Price = 0, Duration = 5, Description = "Disables the C-Down Button until map load.", Category="Button" },
-        new("Disable C-Left","disable_button_cl") { Price = 0, Duration = 5, Description = "Disables the C-Left Button until map load.", Category="Button" },
-        new("Disable C-Right","disable_button_cr") { Price = 0, Duration = 5, Description = "Disables the C-Right Button until map load.", Category="Button" },
-        new("Disable Z","disable_button_z") { Price = 0, Duration = 5, Description = "Disables the Z Button until map load.", Category="Button" },
+        new("Disable A","disable_button_a") { Price = 100, Duration = 5, Description = "Disables the A Button until map load.", Category="Button" },
+        new("Disable B","disable_button_b") { Price = 100, Duration = 5, Description = "Disables the B Button until map load.", Category="Button" },
+        new("Disable C-Up","disable_button_cu") { Price = 100, Duration = 5, Description = "Disables the C-Up Button until map load.", Category="Button" },
+        new("Disable C-Down","disable_button_cd") { Price = 100, Duration = 5, Description = "Disables the C-Down Button until map load.", Category="Button" },
+        new("Disable C-Left","disable_button_cl") { Price = 100, Duration = 5, Description = "Disables the C-Left Button until map load.", Category="Button" },
+        new("Disable C-Right","disable_button_cr") { Price = 100, Duration = 5, Description = "Disables the C-Right Button until map load.", Category="Button" },
+        new("Disable Z","disable_button_z") { Price = 100, Duration = 5, Description = "Disables the Z Button until map load.", Category="Button" },
 
         // Misc
-        new("Get Kaught","spawn_kop") { Price = 0, Description = "Spawn the greatest kop on the service to catch the player in their tracks.", Category="Misc" },
-        new("Get Out","get_out") { Price = 0, Description = "Gives the player 10 seconds to get into another map, otherwise they die.", Category="Misc" },
-        new("Spawn a Boulder","spawn_boulder") { Price = 0, Description = "Spawns a boulder: Useful for breaking the logic of your favorite monkey game.", Category="Misc" },
-        new("Spawn a Crate","spawn_crate") { Price = 0, Description = "Spawns a pushable crate: Useful for breaking the logic of your favorite monkey game without a mandated move.", Category="Misc" },
-        new("Flip Screen","flip_screen") { Price = 0, Duration = 10, Description = "Flips the screen vertically.", Category="Misc" },
-        new("Warp to the DK Rap","play_the_rap") { Price = 0, Duration = 188, Description = "Warps the player to the DK Rap, and warps them back after the rap is finished or the effect is cancelled (whichever comes first). Effect is capped at 188 seconds.", Category="Misc" },
+        new("Get Kaught","spawn_kop") { Price = 400, Description = "Spawn the greatest kop on the service to catch the player in their tracks.", Category="Misc" },
+        new("Get Out","get_out") { Price = 500, Description = "Gives the player 10 seconds to get into another map, otherwise they die.", Category="Misc" },
+        new("Spawn a Boulder","spawn_boulder") { Price = 50, Description = "Spawns a boulder: Useful for breaking the logic of your favorite monkey game.", Category="Misc" },
+        new("Flip Screen","flip_screen") { Price = 100, Duration = 10, Description = "Flips the screen vertically.", Category="Misc" },
+        new("Warp to the DK Rap","play_the_rap") { Price = 1500, Duration = 188, Description = "Warps the player to the DK Rap, and warps them back after the rap is finished or the effect is cancelled (whichever comes first). Effect is capped at 188 seconds.", Category="Misc" },
+        new("Spawn a Crate","spawn_crate") { Price = 200, Description = "Spawns a pushable crate: Useful for breaking the logic of your favorite monkey game without a mandated move.", Category="Misc" },
     };
 
     public override ROMTable ROMTable => new[]

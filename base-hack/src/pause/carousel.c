@@ -38,7 +38,7 @@ void updatePauseScreenWheel(pause_paad* write_location, void* sprite, int x, int
      */
     int control = 16;
     ItemsInWheel = CHECK_TERMINATOR - ROTATION_TOTALS_REDUCTION;
-    if (write_location->screen == PAUSESCREEN_CHECKS) {
+    if (screen_order[(int)write_location->screen] == PAUSESCREEN_CHECKS) {
         control = 17;
         ItemsInWheel = CHECK_TERMINATOR;
     }

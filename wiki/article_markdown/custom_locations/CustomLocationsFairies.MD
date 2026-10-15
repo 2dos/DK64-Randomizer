@@ -53,10 +53,10 @@
 | Frantic Factory | Near Dartboard Boxes | `l.camera` | 
 | Frantic Factory | R&D Pole | `l.camera` | 
 | Frantic Factory | Car Race Entryway | `l.camera` | 
-| Frantic Factory | Toy Monster Room | `l.camera and ((l.triangle and l.punch and l.ischunky and l.climbing) or l.CanAccessRNDRoom())` | 
+| Frantic Factory | Toy Monster Room | `l.camera and ((l.triangle and l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.ischunky and l.climbing) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Diddy R&D Room | `l.camera and ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Chute to Storage Room | `l.camera` | 
-| Frantic Factory | Dark Room | `l.camera and ((l.punch and l.chunky) or l.CanPhase())` | 
+| Frantic Factory | Dark Room | `l.camera and (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase())` | 
 | Factory Crusher | Crusher Room | `l.camera` | 
 
 # Gloomy Galleon
@@ -86,7 +86,7 @@
 | Forest Thornvine Barn | Thornvine Barn | `l.isdonkey and l.Slam and l.camera` | 
 | Forest Rafters | Dark Rafters | `l.guitar and l.isdiddy and l.camera` | 
 | Fungi Forest | Above Blue Tunnel | `l.camera` | 
-| Fungi Forest | Above the Clock | `l.camera` | 
+| Fungi Forest | Above the Clock | `(l.cannons or (l.isdiddy and l.jetpack) or l.climbing) and l.camera` | 
 | Fungi Forest | Above the Well | `l.camera and (((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy))` | 
 | Fungi Forest | Near Baboon Blast Pad | `l.camera` | 
 | Fungi Forest | Near Battle Arena Platform | `l.camera` | 

@@ -1,6 +1,7 @@
 """Code associated with custom textures that can be applied through the cosmetic pack."""
 
 import js
+import json
 import math
 from io import BytesIO
 
@@ -8,7 +9,47 @@ from randomizer.Settings import Settings
 from randomizer.Patching.Library.ASM import getROMAddress, populateOverlayOffsets, Overlay
 from randomizer.Patching.Library.Image import writeColorImageToROM, TextureFormat, getImageFile, writeColorImageToAddress, ExtraTextures, getBonusSkinOffset
 from randomizer.Patching.Patcher import ROM
-from PIL import Image
+from randomizer.Patching.LazyPIL import Image
+
+def findFileByName(file_data: list, target_name: str):
+    """Find a file within a dataset based on a name."""
+    for f, n in file_data:
+        if n.split("/")[-1] == target_name:
+            return f
+    return None
+
+def generateCosmeticSet(settings: Settings, file_data: list, slot_keys: list) -> dict:
+    """Generate the placement of cosmetic images."""
+    assignment_data = {
+        "assignments": {}
+    }
+    free_choice_names = []
+    available_values = []
+    for file, name in file_data:
+        if name[-5:] == ".json":
+            selected_file = bytes(file)
+            assignment_data = json.loads(selected_file)
+        else:
+            free_choice_names.append(name.split("/")[-1])
+            available_values.append(name.split("/")[-1])
+    mapping = {}
+    for key in slot_keys:
+        selected_forced = False
+        selected_name = None
+        if key in assignment_data["assignments"]:
+            available_slots = [x for x in assignment_data["assignments"][key] if x in available_values]
+            if len(available_slots) > 0:
+                selected_name = settings.random.choice(available_slots)
+                selected_forced = True
+        if not selected_forced:
+            selected_name = settings.random.choice(free_choice_names)
+        free_choice_names = [x for x in free_choice_names if x != selected_name]
+        if len(free_choice_names) == 0:
+            free_choice_names = available_values.copy()
+        file = findFileByName(file_data, selected_name)
+        if file is not None:
+            mapping[key] = (file, selected_name)
+    return mapping
 
 
 def writeTransition(settings: Settings, ROM_COPY: ROM) -> None:
@@ -100,6 +141,54 @@ def getImageChunk(im_f, width: int, height: int):
     # Ratio matches, just scale up
     return im_f.resize((width, height))
 
+def getColorPalette(im_f, color_count: int, allow_alpha: bool):
+    """Reduce the color count within an image."""
+
+    has_alpha = False
+    if allow_alpha:
+        if im_f.mode != "RGBA":
+            im_f = im_f.convert("RGBA")
+        orig_px = im_f.load()
+        orig_w, orig_h = im_f.size
+        for y in range(orig_h):
+            for x in range(orig_w):
+                r, g, b, a = orig_px[x, y]
+                if a < 128:
+                    has_alpha = True
+    if has_alpha:
+        im_f = im_f.quantize(color_count - 1, method=Image.Quantize.FASTOCTREE)
+    else:
+        im_f = im_f.quantize(color_count, method=Image.Quantize.FASTOCTREE)
+    if im_f.mode != "RGBA":
+        im_f = im_f.convert("RGBA")
+    w, h = im_f.size
+    px = im_f.load()
+    colors = []
+    if has_alpha:
+        colors.append((0, 0, 0, 0))
+    px_data = []
+    palette = Image.new(mode="RGBA", size=(color_count, 1))
+    pal_px = palette.load()
+    for y in range(h):
+        for x in range(w):
+            if has_alpha:
+                r, g, b, a = orig_px[x, y]
+                if a < 128:
+                    px_data.append(0)
+                    continue
+            r, g, b, a = px[x, y]
+            new = True
+            for ci, c in enumerate(colors):
+                if c[0] == r and c[1] == g and c[2] == b and c[3] == a:
+                    new = False
+                    px_data.append(ci)
+            if new:
+                px_data.append(len(colors))
+                colors.append((r, g, b, a))
+    for ci, c in enumerate(colors):
+        pal_px[ci, 0] = c
+    return (px_data, palette)
+
 
 def writeCustomPortal(settings: Settings, ROM_COPY: ROM) -> None:
     """Write custom portal file to ROM."""
@@ -151,15 +240,18 @@ def writeCustomPortal(settings: Settings, ROM_COPY: ROM) -> None:
 class PaintingData:
     """Class to store information regarding a painting."""
 
-    def __init__(self, width: int, height: int, x_split: int, y_split: int, is_bordered: bool, texture_order: list, is_ci: bool = False):
+    def __init__(self, key: str, width: int, height: int, x_split: int, y_split: int, is_bordered: bool, texture_order: list, color_count: int = None):
         """Initialize with given parameters."""
+        self.key = key
         self.width = width
         self.height = height
         self.x_split = x_split
         self.y_split = y_split
         self.is_bordered = is_bordered
         self.texture_order = texture_order.copy()
+        self.color_count = color_count
         self.name = None
+        self.file = None
 
 
 def writeCustomPaintings(settings: Settings, ROM_COPY: ROM) -> None:
@@ -171,15 +263,20 @@ def writeCustomPaintings(settings: Settings, ROM_COPY: ROM) -> None:
     if js.cosmetic_names.paintings is None:
         return
     PAINTING_INFO = [
-        PaintingData(64, 64, 2, 1, False, [0x1EA, 0x1E9]),  # DK Isles
-        PaintingData(128, 128, 2, 4, True, [0x90A, 0x909, 0x903, 0x908, 0x904, 0x907, 0x905, 0x906]),  # K Rool
-        PaintingData(128, 128, 2, 4, True, [0x9B4, 0x9AD, 0x9B3, 0x9AE, 0x9B2, 0x9AF, 0x9B1, 0x9B0]),  # Knight
-        PaintingData(128, 128, 2, 4, True, [0x9A5, 0x9AC, 0x9A6, 0x9AB, 0x9A7, 0x9AA, 0x9A8, 0x9A9]),  # Sword
-        PaintingData(64, 32, 1, 1, False, [0xA53]),  # Dolphin
-        PaintingData(32, 64, 1, 1, False, [0xA46]),  # Candy
-        # PaintingData(64, 64, 1, 1, False, [0x614, 0x615], True),  # K Rool Run
-        # PaintingData(64, 64, 1, 1, False, [0x625, 0x626], True),  # K Rool Blunderbuss
-        # PaintingData(64, 64, 1, 1, False, [0x627, 0x628], True),  # K Rool Head
+        PaintingData("painting_isles", 64, 64, 2, 1, False, [0x1EA, 0x1E9]),  # DK Isles
+        PaintingData("painting_museum_krool", 128, 128, 2, 4, True, [0x90A, 0x909, 0x903, 0x908, 0x904, 0x907, 0x905, 0x906]),  # K Rool
+        PaintingData("painting_museum_knight", 128, 128, 2, 4, True, [0x9B4, 0x9AD, 0x9B3, 0x9AE, 0x9B2, 0x9AF, 0x9B1, 0x9B0]),  # Knight
+        PaintingData("painting_museum_swords", 128, 128, 2, 4, True, [0x9A5, 0x9AC, 0x9A6, 0x9AB, 0x9A7, 0x9AA, 0x9A8, 0x9A9]),  # Sword
+        PaintingData("painting_treehouse_dolphin", 64, 32, 1, 1, False, [0xA53]),  # Dolphin
+        PaintingData("painting_treehouse_candy", 32, 64, 1, 1, False, [0xA46]),  # Candy
+        PaintingData("painting_krool_run", 64, 64, 1, 1, False, [0x614, 0x615], 16),  # K Rool Run
+        PaintingData("painting_krool_blunderbuss", 64, 64, 1, 1, False, [0x625, 0x626], 16),  # K Rool Blunderbuss
+        PaintingData("painting_krool_head", 64, 64, 1, 1, False, [0x627, 0x628], 16),  # K Rool Head
+        PaintingData("painting_factory_map_lobby", 64, 64, 1, 1, False, [0x37C, 0x37D], 16),  # Factory level indic - Lobby
+        PaintingData("painting_factory_map_production", 64, 64, 1, 1, False, [0x352, 0x353], 16),  # Factory level indic - Production
+        PaintingData("painting_factory_map_testing", 64, 64, 1, 1, False, [0x38F, 0x390], 16),  # Factory level indic - Testing
+        PaintingData("painting_factory_map_rnd", 64, 64, 1, 1, False, [0x3AE, 0x3AF], 16),  # Factory level indic - R&D
+        PaintingData("painting_factory_graph", 64, 64, 1, 1, False, [0x3B3, 0x3B4], 16),  # Factory graph
     ]
     file_data = list(zip(js.cosmetics.paintings, js.cosmetic_names.paintings))
     settings.painting_isles = None
@@ -188,20 +285,24 @@ def writeCustomPaintings(settings: Settings, ROM_COPY: ROM) -> None:
     settings.painting_museum_swords = None
     settings.painting_treehouse_dolphin = None
     settings.painting_treehouse_candy = None
+    settings.painting_krool_run = None
+    settings.painting_krool_blunderbuss = None
+    settings.painting_krool_head = None
+    settings.painting_factory_map_lobby = None
+    settings.painting_factory_map_production = None
+    settings.painting_factory_map_testing = None
+    settings.painting_factory_map_rnd = None
+    settings.painting_factory_graph = None
     if len(file_data) == 0:
         return
-    list_pool = file_data.copy()
-    PAINTING_COUNT = len(PAINTING_INFO)
-    if len(list_pool) < PAINTING_COUNT:
-        mult = math.ceil(PAINTING_COUNT / len(list_pool)) - 1
-        for _ in range(mult):
-            list_pool.extend(file_data.copy())
-    settings.random.shuffle(list_pool)
+    generated_set = generateCosmeticSet(settings, file_data, [x.key for x in PAINTING_INFO])
+    for key in generated_set:
+        for painting in PAINTING_INFO:
+            if painting.key == key:
+                painting.name = generated_set[key][1]
+                painting.file = generated_set[key][0]
     for painting in PAINTING_INFO:
-        painting.name = None
-        selected_painting = list_pool.pop(0)
-        painting.name = selected_painting[1].split("/")[-1]  # File Name
-        im_f = Image.open(BytesIO(bytes(selected_painting[0])))
+        im_f = Image.open(BytesIO(bytes(painting.file)))
         im_f = getImageChunk(im_f, painting.width, painting.height)
         im_f = im_f.transpose(Image.FLIP_TOP_BOTTOM).convert("RGBA")
         chunks = []
@@ -237,14 +338,94 @@ def writeCustomPaintings(settings: Settings, ROM_COPY: ROM) -> None:
                     # Bottom
                     border_seg_img = border_img.crop((0, 20, 64, 32))
                     chunk.paste(border_seg_img, (0, 20), border_seg_img)
-            img_index = painting.texture_order[chunk_index]
-            writeColorImageToROM(chunk, 25, img_index, chunk_w, chunk_h, False, TextureFormat.RGBA5551, ROM_COPY)
+            if painting.color_count is None:
+                img_index = painting.texture_order[chunk_index]
+                writeColorImageToROM(chunk, 25, img_index, chunk_w, chunk_h, False, TextureFormat.RGBA5551, ROM_COPY)
+            else:
+                color_count = painting.color_count
+                ci_px_data, ci_palette = getColorPalette(chunk, color_count, False)
+                main_index = painting.texture_order[(2 * chunk_index)]
+                palette_index = painting.texture_order[(2 * chunk_index) + 1]
+                tformat = TextureFormat.CI8
+                if color_count == 16:
+                    tformat = TextureFormat.CI4
+                writeColorImageToROM(ci_px_data, 25, main_index, chunk_w, chunk_h, False, tformat, ROM_COPY)
+                writeColorImageToROM(ci_palette, 25, palette_index, color_count, 1, False, TextureFormat.RGBA5551, ROM_COPY)
     settings.painting_isles = PAINTING_INFO[0].name
     settings.painting_museum_krool = PAINTING_INFO[1].name
     settings.painting_museum_knight = PAINTING_INFO[2].name
     settings.painting_museum_swords = PAINTING_INFO[3].name
     settings.painting_treehouse_dolphin = PAINTING_INFO[4].name
     settings.painting_treehouse_candy = PAINTING_INFO[5].name
+    settings.painting_krool_run = PAINTING_INFO[6].name
+    settings.painting_krool_blunderbuss = PAINTING_INFO[7].name
+    settings.painting_krool_head = PAINTING_INFO[8].name
+    settings.painting_factory_map_lobby = PAINTING_INFO[9].name
+    settings.painting_factory_map_production = PAINTING_INFO[10].name
+    settings.painting_factory_map_testing = PAINTING_INFO[11].name
+    settings.painting_factory_map_rnd = PAINTING_INFO[12].name
+    settings.painting_factory_graph = PAINTING_INFO[13].name
+
+def writeCustomDecals(settings: Settings, ROM_COPY: ROM) -> None:
+    """Write custom painting files to ROM."""
+    if js.cosmetics is None:
+        return
+    if js.cosmetics.decals is None:
+        return
+    if js.cosmetic_names.decals is None:
+        return
+    DECAL_INFO = [
+        PaintingData("decal_krool", 64, 64, 2, 1, False, [0x383, 0x384]),  # K Rool
+        PaintingData("decal_dk", 64, 64, 1, 1, False, [0x348, 0x349], 16),  # DK Head
+    ]
+    file_data = list(zip(js.cosmetics.decals, js.cosmetic_names.decals))
+    settings.decal_krool = None
+    settings.decal_dk = None
+    if len(file_data) == 0:
+        return
+    generated_set = generateCosmeticSet(settings, file_data, [x.key for x in DECAL_INFO])
+    for key in generated_set:
+        for decal in DECAL_INFO:
+            if decal.key == key:
+                decal.name = generated_set[key][1]
+                decal.file = generated_set[key][0]
+    for di, decal in enumerate(DECAL_INFO):
+        im_f = Image.open(BytesIO(bytes(decal.file)))
+        if di in (0, 1):
+            w, h = im_f.size
+            rescale = 0.5 if di == 0 else 0.75
+            offset_x = (w - int(w * rescale)) >> 1
+            offset_y = (h - int(h * rescale)) >> 1
+            pasted_im = im_f.resize((int(w * rescale), int(h * rescale)))
+            im_f = Image.new(mode="RGBA", size=(w, h))
+            im_f.paste(pasted_im, (offset_x, offset_y), pasted_im)
+        im_f = getImageChunk(im_f, decal.width, decal.height)
+        im_f = im_f.transpose(Image.FLIP_TOP_BOTTOM).convert("RGBA")
+        chunks = []
+        chunk_w = int(decal.width / decal.x_split)
+        chunk_h = int(decal.height / decal.y_split)
+        for y in range(decal.y_split):
+            for x in range(decal.x_split):
+                left = x * chunk_w
+                top = y * chunk_h
+                chunk_im = im_f.crop((int(left), int(top), int(left + chunk_w), int(top + chunk_h)))
+                chunks.append(chunk_im)
+        for chunk_index, chunk in enumerate(chunks):
+            if decal.color_count is None:
+                img_index = decal.texture_order[chunk_index]
+                writeColorImageToROM(chunk, 25, img_index, chunk_w, chunk_h, False, TextureFormat.RGBA5551, ROM_COPY)
+            else:
+                color_count = decal.color_count
+                ci_px_data, ci_palette = getColorPalette(chunk, color_count, True)
+                main_index = decal.texture_order[(2 * chunk_index)]
+                palette_index = decal.texture_order[(2 * chunk_index) + 1]
+                tformat = TextureFormat.CI8
+                if color_count == 16:
+                    tformat = TextureFormat.CI4
+                writeColorImageToROM(ci_px_data, 25, main_index, chunk_w, chunk_h, False, tformat, ROM_COPY)
+                writeColorImageToROM(ci_palette, 25, palette_index, color_count, 1, False, TextureFormat.RGBA5551, ROM_COPY)
+    settings.decal_krool = DECAL_INFO[0].name
+    settings.decal_dk = DECAL_INFO[1].name
 
 
 class ArcadeSprite:
@@ -490,6 +671,8 @@ def hasCustomArcadeSprite(address: int) -> bool:
 
 def writeCustomArcadeSprites(settings: Settings, ROM_COPY: ROM) -> None:
     """Write a custom series of arcade sprites to ROM."""
+    if settings.arcade_custom_minigame is not None:
+        return
     if js.cosmetics is None:
         return
     if js.cosmetics.arcade_sprites is None:
@@ -612,23 +795,22 @@ def writeCustomReels(settings: Settings, ROM_COPY: ROM) -> None:
     if js.cosmetic_names.reel_sprites is None:
         return
     REEL_INFO = [
-        PaintingData(32, 32, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage0)]),  # Grape
-        PaintingData(40, 51, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage1)]),  # Coconut
-        PaintingData(48, 42, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage2)]),  # Melon
-        PaintingData(32, 48, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage3)]),  # Pineapple
+        PaintingData("reel_grape", 32, 32, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage0)]),  # Grape
+        PaintingData("reel_coconut", 40, 51, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage1)]),  # Coconut
+        PaintingData("reel_melon", 48, 42, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage2)]),  # Melon
+        PaintingData("reel_pineapple", 32, 48, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage3)]),  # Pineapple
     ]
     file_data = list(zip(js.cosmetics.reel_sprites, js.cosmetic_names.reel_sprites))
     if len(file_data) == 0:
         return
-    list_pool = file_data.copy()
-    settings.random.shuffle(list_pool)
+    generated_set = generateCosmeticSet(settings, file_data, [x.key for x in REEL_INFO])
+    for key in generated_set:
+        for reel in REEL_INFO:
+            if reel.key == key:
+                reel.name = generated_set[key][1]
+                reel.file = generated_set[key][0]
     for reel in REEL_INFO:
-        reel.name = None
-        if len(list_pool) < 1:
-            continue
-        selected_reel = list_pool.pop(0)
-        reel.name = selected_reel[1].split("/")[-1]  # File Name
-        im_f = Image.open(BytesIO(bytes(selected_reel[0]))).convert("RGBA")
+        im_f = Image.open(BytesIO(bytes(reel.file))).convert("RGBA")
         im_f = getImageShrink(im_f, reel.width, reel.height)
         im_f = im_f.transpose(Image.FLIP_TOP_BOTTOM).convert("RGBA")
         chunks = []
@@ -771,3 +953,36 @@ def writeCustomItemSprites(settings: Settings, ROM_COPY: ROM) -> None:
             tinted_b = Image.eval(gray, lambda v: v * target_color[2] // 255)
             tinted = Image.merge("RGBA", (tinted_r, tinted_g, tinted_b, a))
             writeColorImageToROM(tinted, img_data["table"], img_data["image"], 48, 42, False, TextureFormat.RGBA5551, ROM_COPY)
+
+
+def writeCustomFacePuzzle(settings: Settings, ROM_COPY: ROM) -> None:
+    """Write custom face puzzle files to ROM."""
+    if js.cosmetics is None:
+        return
+    if js.cosmetics.face_puzzles is None:
+        return
+    if js.cosmetic_names.face_puzzles is None:
+        return
+    file_data = list(zip(js.cosmetics.face_puzzles, js.cosmetic_names.face_puzzles))
+    if len(file_data) == 0:
+        return
+    list_pool = file_data.copy()
+    PAINTING_COUNT = 2
+    if len(list_pool) < PAINTING_COUNT:
+        mult = math.ceil(PAINTING_COUNT / len(list_pool)) - 1
+        for _ in range(mult):
+            list_pool.extend(file_data.copy())
+    settings.random.shuffle(list_pool)
+    starting_files = [ExtraTextures.FacePuzzleDK0, ExtraTextures.FacePuzzleChunky0]
+    for pz in range(2):
+        selected_puzzle = list_pool.pop(0)
+        name = selected_puzzle[1].split("/")[-1]  # File Name
+        im_f = Image.open(BytesIO(bytes(selected_puzzle[0])))
+        im_f = getImageChunk(im_f, 96, 96)
+        im_f = im_f.transpose(Image.FLIP_TOP_BOTTOM).convert("RGBA")
+        puzzle_offset = 0
+        for y in range(3):
+            for x in range(3):
+                chunk = im_f.crop((32 * x, 32 * y, 32 * (x + 1), 32 * (y + 1)))
+                writeColorImageToROM(chunk, 25, getBonusSkinOffset(starting_files[pz] + puzzle_offset), 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+                puzzle_offset += 1

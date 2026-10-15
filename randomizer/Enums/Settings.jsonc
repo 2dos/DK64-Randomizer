@@ -225,7 +225,9 @@
   "DKPortalRando": {
     "off": 0,
     "main_only": 1,
-    "on": 2
+    "on": 2,
+    "main_only_underwater": 3,
+    "on_underwater": 4
   },
 
   /*
@@ -355,6 +357,16 @@
     - shuffled: Climbing is an item that can be found in the world.
   */
   "ClimbingStatus": {
+    "normal": 0,
+    "shuffled": 1
+  },
+  /* 
+    CannonStatus:
+    - Determines if and how cannon is randomized.
+    - normal: Cannon is a starting move.
+    - shuffled: Cannon is an item that can be found in the world.
+  */
+  "CannonStatus": {
     "normal": 0,
     "shuffled": 1
   },
@@ -575,7 +587,12 @@
     "racebanana": 45,
     "gauntletbanana": 46,
     "blueprintbanana": 47,
-    "sniderewards": 48
+    "sniderewards": 48,
+    "fungitime": 49,
+    "breakable": 50,
+    "dummyitem_breakable": 51,
+    "balloon": 52,
+    "dummyitem_balloon": 53
   },
 
   "ItemRandoFiller": {
@@ -639,7 +656,9 @@
     "cranky": 5,
     "candy": 6,
     "funky": 7,
-    "disco_donkey": 8
+    "disco_donkey": 8,
+    "robokrem": 9,
+    "rabbit": 10
   },
 
   /*
@@ -981,6 +1000,7 @@
     - random: Random slam color from the above.
   */
   "SlamRequirement": {
+    "no_slam": 0,
     "green": 1,
     "blue": 2,
     "red": 3,
@@ -1111,7 +1131,15 @@
     "req_bonuses": 18,
     "krools_challenge": 19,
     "kill_the_rabbit": 20,
-    "get_keys_3_and_8": 21
+    "get_keys_3_and_8": 21,
+    "mech_fish": 22,
+    "arcade": 23,
+    "jetpac": 24,
+    "bad_hit_detection_man": 25,
+    "rareware_gb_check": 26,
+    "blast_courses": 27,
+    "tasks": 28,
+    "inactive": 29
   },
 
   /*
@@ -1453,14 +1481,42 @@
     "bosses_selected": 296,
     "ice_trap_model_v2": 297,
     "progressive_hint_algorithm": 298,
-    "pause_hints_setting": 299,
-    "hint_door_item": 300,
-    "hint_door_item_count": 301,
-    "pause_hints_lockout_timer": 302,
-    "spoiler_include_blocker_info": 303,
-    "half_medal_percentage": 304,
-    "season5_door_rando": 305,
-    "season5_crate_rando": 306
+    "switchsanity_switch_factory_dark_grate": 299,
+    "switchsanity_switch_factory_bonus_grate": 300,
+    "switchsanity_switch_factory_monster_grate": 301,
+    "switchsanity_switch_caves_gone_cave": 302,
+    "switchsanity_switch_caves_snide_cave": 303,
+    "switchsanity_switch_caves_boulder_cave": 304,
+    "switchsanity_switch_caves_lobby_blueprint": 305,
+    "switchsanity_switch_caves_lobby_lava": 306,
+    "switchsanity_switch_aztec_gong_tower": 307,
+    "switchsanity_switch_aztec_lobby_gong": 308,
+    "ship_location_rando": 309,
+    "pause_hints_setting": 310,
+    "hint_door_item": 311,
+    "hint_door_item_count": 312,
+    "pause_hints_lockout_timer": 313,
+    "task_1_condition": 314,
+    "task_1_count": 315,
+    "task_2_condition": 316,
+    "task_2_count": 317,
+    "task_3_condition": 318,
+    "task_3_count": 319,
+    "task_4_condition": 320,
+    "task_4_count": 321,
+    "task_5_condition": 322,
+    "task_5_count": 323,
+    "task_6_condition": 324,
+    "task_6_count": 325,
+    "task_7_condition": 326,
+    "task_7_count": 327,
+    "task_8_condition": 328,
+    "task_8_count": 329,
+    "spoiler_include_blocker_info": 330,
+    "half_medal_percentage": 331,
+    "season5_door_rando": 332,
+    "season5_crate_rando": 333,
+    "lives": 334
   },
   /*
     SettingsStringDataType:
@@ -1548,6 +1604,14 @@
     "warp_level_list_selected": { "obj": "Maps" },
     "win_condition": { "obj": "WinCondition" },
     "win_condition_item": { "obj": "WinConditionComplex" },
+    "task_1_condition": { "obj": "WinConditionComplex" },
+    "task_2_condition": { "obj": "WinConditionComplex" },
+    "task_3_condition": { "obj": "WinConditionComplex" },
+    "task_4_condition": { "obj": "WinConditionComplex" },
+    "task_5_condition": { "obj": "WinConditionComplex" },
+    "task_6_condition": { "obj": "WinConditionComplex" },
+    "task_7_condition": { "obj": "WinConditionComplex" },
+    "task_8_condition": { "obj": "WinConditionComplex" },
     "blocker_selection_behavior": { "obj": "BLockerSetting" },
     "tns_selection_behavior": { "obj": "TroffSetting" },
     "medal_jetpac_behavior": { "obj": "RandomRequirement" },
@@ -1622,6 +1686,16 @@
     "switchsanity_switch_aztec_free_tiny": { "obj": "SwitchsanityKong" },
     "switchsanity_switch_aztec_free_lanky": { "obj": "SwitchsanityKong" },
     "switchsanity_switch_factory_free_kong": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_factory_dark_grate": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_factory_bonus_grate": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_factory_monster_grate": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_caves_gone_cave": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_caves_snide_cave": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_caves_boulder_cave": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_caves_lobby_blueprint": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_aztec_gong_tower": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_aztec_lobby_gong": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_caves_lobby_lava": { "obj": "SwitchsanityKong" },
     "krool_in_boss_pool_v2": { "obj": "KroolInBossPool" }
   },
   // ALL SETTINGS NEED AN ENTRY HERE!
@@ -1963,6 +2037,14 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.win_condition_item": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_1_condition": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_2_condition": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_3_condition": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_4_condition": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_5_condition": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_6_condition": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_7_condition": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.task_8_condition": { "obj": "WinConditionComplex" },
     "SettingsStringEnum.blocker_selection_behavior": { "obj": "BLockerSetting" },
     "SettingsStringEnum.tns_selection_behavior": { "obj": "TroffSetting" },
     "SettingsStringEnum.medal_jetpac_behavior": { "obj": "RandomRequirement" },
@@ -1972,6 +2054,33 @@
     "SettingsStringEnum.cb_medal_behavior_new": { "obj": "CBRequirement" },
     "SettingsStringEnum.random_starting_region_new": { "obj": "RandomStartingRegion" },
     "SettingsStringEnum.win_condition_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.lives": {
+      "obj": "SettingsStringDataType.u16"
+    },
+    "SettingsStringEnum.task_1_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_2_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_3_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_4_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_5_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_6_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_7_count": {
+      "obj": "SettingsStringDataType.u8"
+    },
+    "SettingsStringEnum.task_8_count": {
       "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.wrinkly_available": {
@@ -2181,6 +2290,7 @@
     "SettingsStringEnum.alt_minecart_mayhem": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.less_fragile_boulders": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.no_consumable_upgrades": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.ship_location_rando": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.prog_slam_level_1": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_2": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_3": { "obj": "SlamRequirement" },
@@ -2217,6 +2327,16 @@
     "SettingsStringEnum.switchsanity_switch_aztec_free_tiny": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.switchsanity_switch_aztec_free_lanky": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.switchsanity_switch_factory_free_kong": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_factory_dark_grate": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_factory_bonus_grate": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_factory_monster_grate": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_caves_gone_cave": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_caves_snide_cave": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_caves_boulder_cave": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_caves_lobby_blueprint": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_caves_lobby_lava": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_aztec_gong_tower": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_aztec_lobby_gong": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.trap_weight_bubble": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_reverse": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_slow": { "obj": "SettingsStringDataType.int8" },
@@ -2349,7 +2469,16 @@
     "SettingsStringEnum.progressive_hint_count": { "max": 3500, "min": 0 },
     "SettingsStringEnum.hint_door_item_count": { "max": 3500, "min": 0 },
     "SettingsStringEnum.pause_hints_lockout_timer": { "max": 255, "min": 0 },
-    "SettingsStringEnum.half_medal_percentage": { "max": 100, "min": 0 },
-    "SettingsStringEnum.win_condition_count": { "max": 255, "min": 0 }
+    "SettingsStringEnum.win_condition_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.lives": { "max": 65535, "min": 1 },
+    "SettingsStringEnum.task_1_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_2_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_3_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_4_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_5_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_6_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_7_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.task_8_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.half_medal_percentage": { "max": 100, "min": 0 }
   }
 }

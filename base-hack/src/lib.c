@@ -852,10 +852,6 @@ void* findActorWithType(int search_actor_type) {
 	return 0;
 }
 
-void createCollisionObjInstance(collision_types subtype, int map, int exit) {
-	createCollision(0,Player,subtype,map,exit,collisionPos[0],collisionPos[1],collisionPos[2]);
-}
-
 void resetMapContainer(void) {
 	resetMap();
 	for (int i = 0; i < 0x12; i++) {
@@ -908,27 +904,12 @@ int getCenter(int style, const char* str) {
 	return (screenWidth + 100 - (getCenterOffset(style,str))) * 0.5f;
 }
 
-int getLo(void* addr) {
-    return ((int)addr) & 0xFFFF;
-}
-
-int getHi(void* addr) {
-    int addr_0 = (int)addr;
-    int hi = (addr_0 >> 16) & 0xFFFF;
-    int lo = getLo(addr);
-    if (lo & 0x8000) {
-        hi += 1;
-    }
-    return hi;
-}
-
 void cancelCutscene(int enable_movement) {
 	if ((TBVoidByte & 2) == 0) {
 		if (CutsceneActive) {
 			if (CutsceneTypePointer) {
 				if (CutsceneTypePointer->cutscene_databank) {
-					int* databank = (int *)(CutsceneTypePointer->cutscene_databank);
-					short cam_state = *(short *)(getObjectArrayAddr(databank,0xC,CutsceneIndex));
+					short cam_state = CutsceneTypePointer->cutscene_databank[CutsceneIndex].num_points;
 					// short cam_state = *( short*)(cs_databank + (0xC * CutsceneIndex));
 					CurrentCameraState = cam_state;
 					PreviousCameraState = cam_state;
@@ -944,17 +925,13 @@ void cancelCutscene(int enable_movement) {
 
 void modifyCutscenePoint(int bank, int cutscene, int point, int new_item) {
 	if (CutsceneBanks[bank].cutscene_databank) {
-		void* databank = CutsceneBanks[bank].cutscene_databank;
-		cutscene_item_data* data = (cutscene_item_data*)getObjectArrayAddr(databank,0xC,cutscene);
-		short* write_spot = (short*)getObjectArrayAddr(data->point_array,2,point);
-		*(short*)write_spot = new_item;
+		CutsceneBanks[bank].cutscene_databank[cutscene].point_array[point] = new_item;
 	}
 }
 
 void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int new_param3) {
 	if (CutsceneBanks[bank].cutscene_funcbank) {
-		void* funcbank = CutsceneBanks[bank].cutscene_funcbank;
-		cutscene_item* data = (cutscene_item*)getObjectArrayAddr(funcbank,0x14,item);
+		cutscene_item* data = &CutsceneBanks[bank].cutscene_funcbank[item];
 		data->command = 0xD;
 		data->params[0] = new_param1;
 		data->params[1] = new_param2;
@@ -1179,6 +1156,52 @@ ROM_RODATA_NUM const sprite_data_struct halfmedal_sprite = {
 	},
 };
 
+ROM_RODATA_NUM const sprite_data_struct day_overlay_sprite = {
+	.unk0 = 0xCD,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = RGBA16,
+	.unk8 = -1,
+	.table = TABLE_25,
+	.width = 32,
+	.height = 32,
+	.image_count = 1,
+	.images = {
+		DAY_SPRITE_START,
+	},
+};
+
+ROM_RODATA_NUM const sprite_data_struct night_overlay_sprite = {
+	.unk0 = 0xCE,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = RGBA16,
+	.unk8 = -1,
+	.table = TABLE_25,
+	.width = 32,
+	.height = 32,
+	.image_count = 1,
+	.images = {
+		NIGHT_SPRITE_START,
+	},
+};
+
+ROM_RODATA_NUM const sprite_data_struct ap_overlay_sprite = {
+	.unk0 = 0xCF,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = RGBA16,
+	.unk8 = -1,
+	.table = TABLE_25,
+	.width = 32,
+	.height = 32,
+	.image_count = 1,
+	.images = {
+		AP_SPRITE_START,
+	},
+};
+ROM_DATA short model_two_touch_array[MODEL_TWO_TOUCH_ARRAY_COUNT] = {};
+
 short *getMinGB(void) {
 	short *loc = &MovesBase[0].gb_count[0];
 	int min_gb = 99999;
@@ -1217,19 +1240,6 @@ int getTotalCBCount(void) {
 	return count;
 }
 
-void giveAmmo(void) {
-	changeCollectableCount(2, 0, 5);
-}
-
-void giveOrange(void) {
-	playSound(0x147, 0x7FFF, 63.0f, 1.0f, 5, 0);
-	changeCollectableCount(4, 0, 1);
-}
-
-void giveMelon(void) {
-	applyDamageMask(0, 1);
-}
-
 int inShortList(const int target, const short* list, const int count) {
 	for (int i = 0; i < count; i++) {
 		if (list[i] == target) {
@@ -1248,31 +1258,28 @@ int inU8List(const int target, const unsigned char* list, const int count) {
 	return 0;
 }
 
-void giveCrystal(void) {
-	changeCollectableCount(5, 0, 150);
+void spawnItemOverlay(requirement_item type, int level, int kong, int actor_type, int model, char *string, char *subtitle) {
+	spawnActor(actor_type, model);
+	move_overlay_paad * ovl_paad = LastSpawnedActor->paad;
+	if ((string) || (subtitle)) {
+		ovl_paad->upper_text = string;
+		ovl_paad->lower_text = subtitle;
+	} else {
+		getTextForMove(&ovl_paad->upper_text, &ovl_paad->lower_text, type, level, kong);
+	}
+	ovl_paad->fade_in = 120;
+	ovl_paad->fade_out = 30;
+	ovl_paad->fade_rate = 0x10;
+	ovl_paad->timer = 130;
 }
 
-int spawnItemOverlay(requirement_item type, int level, int kong, int force) {
-	for (int i = 0; i < TEXT_OVERLAY_BUFFER; i++) {
-		if (text_overlay_data[i].used) {
-			continue;
-		}
-		if (force) {
-			spawnActor(NEWACTOR_JETPACITEMOVERLAY, 0);
-		} else {
-			spawnActor(324,0);
-		}
+void spawnItemOverlayFromShop(int actor_type, int model) {
+	shop_paad *paad = CurrentActorPointer_0->paad2;
+	spawnItemOverlay(paad->item_type, paad->item_level, paad->kong, actor_type, model, NULL, NULL);
+	if (CurrentMap == MAP_CRANKY) {
 		move_overlay_paad * ovl_paad = LastSpawnedActor->paad;
-		ovl_paad->index = i;
-		text_overlay_data[i].type = type;
-		text_overlay_data[i].level = level;
-		text_overlay_data[i].kong = kong;
-		text_overlay_data[i].string = (char*)0;
-		text_overlay_data[i].subtitle = (char*)0;
-		text_overlay_data[i].used = 1;
-		return i;
+		ovl_paad->timer = 300;
 	}
-	return -1;
 }
 
 int giveSlamLevel(void) {
@@ -1373,6 +1380,14 @@ ROM_RODATA_NUM static const unsigned char galleon_underwater_maps[] = {
 void death(void) {
 	sendDeath();
 	GameStats[STAT_DEATHS]++;
+}
+
+int ReadFileSimple(int data) {
+    return ReadFile(data, 0, 0, FileIndex);
+}
+
+void SaveFileSimple(int data, int value) {
+    SaveToFile(data, 0, 0, FileIndex, value);
 }
 
 int applyDamageMask(int player_index, int damage) {
@@ -1510,6 +1525,9 @@ int getTotalMoveCount(void) {
 	if (hasFlagMove(FLAG_ABILITY_CLIMBING)) {
 		count++;
 	}
+	if (checkFlag(FLAG_ABILITY_CANNON, FLAGTYPE_PERMANENT)) {
+		count++;
+	}
 	return count;
 }
 
@@ -1527,6 +1545,15 @@ ROM_RODATA_NUM static const unsigned char use_req_counters[] = {
 	REQITEM_ICETRAP,
 	REQITEM_KEY,
 	REQITEM_RACECOIN,
+};
+ROM_RODATA_NUM static const unsigned short blast_flags[] = {
+	0x0003,  // Japes
+	0x0032,  // Aztec
+	0x0081,  // Factory
+	0x009E,  // Galleon
+	0x00FE,  // Fungi
+	0x012A,  // Caves
+	0x0144,  // Castle
 };
 
 int getItemCountReq(requirement_item item) {
@@ -1547,14 +1574,14 @@ int getItemCountReq(requirement_item item) {
 					count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
 				}
 			}
-			return count;
+			break;
 		case REQITEM_BOSSES:
 			for (int i = 0; i < 7; i++) {
 				if (checkFlag(normal_key_flags[i], FLAGTYPE_PERMANENT)) {
 					count += 1;
 				}
 			}
-			return count;
+			break;
 		case REQITEM_BONUSES:
 			for (int i = 0; i < 10; i++) {
 				if (checkFlag(FLAG_HELM_MINIGAMES + i, FLAGTYPE_PERMANENT)) {
@@ -1569,11 +1596,18 @@ int getItemCountReq(requirement_item item) {
 					}
 				}
 			}
-			return count;
+			break;
+		case REQITEM_BLASTCOURSES:
+			for (int i = 0; i < 7; i++) {
+				if (checkFlag(blast_flags[i], FLAGTYPE_PERMANENT)) {
+					count += 1;
+				}
+			}
+			break;
 		default:
 			return 0;
-	}
-	return 0;
+		}
+	return count;
 }
 
 int isItemRequirementSatisfied(ItemRequirement* req) {
@@ -1607,8 +1641,7 @@ void exitBoss(void) {
 
 ROM_RODATA_NUM static const unsigned char krusha_adj_models[] = {KONGMODEL_KRUSHA, KONGMODEL_KROOL_CUTSCENE, KONGMODEL_KROOL_FIGHT};
 int isKrushaAdjacentModel(int kong) {
-	custom_kong_models slot_value = Rando.kong_models[kong];
-	return inU8List(slot_value, &krusha_adj_models[0], 3);
+	return inU8List(Rando.kong_models[kong], &krusha_adj_models[0], 3);
 }
 
 int isGlobalCutscenePlaying(int cutscene_index) {
@@ -1699,7 +1732,7 @@ int isDynFlag(int obj, maps map) {
 	return 0;
 }
 
-int getProjectileCount_modified(void *player, unsigned short int_bitfield, void* code) {
+int getProjectileCount_modified(void *player, unsigned short int_bitfield, int (*code)(actorData *)) {
 	int count = 0;
 	int longest_life = ActorTimer - 50; // Has to be at least 50f old
 	actorData *actor_oldest = 0;
@@ -1707,7 +1740,7 @@ int getProjectileCount_modified(void *player, unsigned short int_bitfield, void*
 		actorData *actor = LoadedActorArray[i].actor;
 		if (player == actor->parent) {
 			if (actor->interaction_bitfield == int_bitfield) {
-				if ((!code) || callFunc(code, (int)actor)) {
+				if ((!code) || code(actor)) {
 					count += 1;
 					int *paad = actor->paad;
 					if (paad) {
@@ -1732,12 +1765,33 @@ int getProjectileCount_modified(void *player, unsigned short int_bitfield, void*
 	return count;
 }
 
-unsigned short enabled_buttons = 0xFFFF;
-unsigned short cc_enabled_buttons = 0xFFFF;
-unsigned short trap_enabled_buttons = 0xFFFF;
-unsigned short guard_enabled_buttons = 0xFFFF;
+ROM_DATA button_swap_struct button_swaps[8] = {};
 
-void applyButtonBansInternals(void *cont) {
+ROM_DATA unsigned short enabled_buttons = 0xFFFF;
+ROM_DATA unsigned short cc_enabled_buttons = 0xFFFF;
+ROM_DATA unsigned short trap_enabled_buttons = 0xFFFF;
+ROM_DATA unsigned short guard_enabled_buttons = 0xFFFF;
+
+void applyButtonBansInternals(InputHandlerContainer *cont) {
 	getControllerContainer(cont);
+	unsigned short original = cont->cont.Buttons_as_short;
+	unsigned short result = original;
+
+	for (int j = 0; j < 8; j++) {
+		button_swap_struct *swap = &button_swaps[j];
+		if (swap->timer > 0) {
+			if (original & swap->target_bit) {
+				result &= ~swap->target_bit;
+				result |= swap->output_bit;
+			}
+			swap->timer--;
+			if (swap->timer == 0) {
+				swap->target_bit = 0;
+			}
+		}
+
+	}
+
+	cont->cont.Buttons_as_short = result;
 	enabled_buttons = ButtonsEnabledBitfield & cc_enabled_buttons & trap_enabled_buttons & guard_enabled_buttons;
 }

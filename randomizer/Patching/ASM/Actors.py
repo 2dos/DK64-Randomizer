@@ -163,12 +163,6 @@ def krushaChanges(ROM_COPY: LocalROM, settings, offset_dict: dict):
             updateActorFunction(ROM_COPY, KONG_PELLETS[kong_index], "OrangeGunCode")
             start = getSym("actor_health_damage") + (4 * KONG_PELLETS[kong_index]) + 2
             writeValue(ROM_COPY, start, Overlay.Custom, 3, offset_dict)
-            # Update names
-            if value == KongModels.krusha:
-                writeValue(ROM_COPY, 0x8074E780 + (4 * kong_index), Overlay.Static, 0x80759288, offset_dict, 4)
-                writeValue(ROM_COPY, 0x8074E85C + (4 * kong_index), Overlay.Static, 6, offset_dict, 4)
-            else:
-                writeValue(ROM_COPY, 0x8074E85C + (4 * kong_index), Overlay.Static, 7, offset_dict, 4)
             writeHook(ROM_COPY, 0x806F97B8, Overlay.Static, "FixKrushaAmmoHUDColor", offset_dict)
             writeHook(ROM_COPY, 0x806F97E8, Overlay.Static, "FixKrushaAmmoHUDSize", offset_dict)
             if kong_index == Kongs.donkey:

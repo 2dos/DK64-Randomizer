@@ -5,6 +5,7 @@ from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Switches import Switches
 from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
@@ -45,10 +46,10 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut and (l.guitar or l.CanAccessRNDRoom()), None, 3),
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 5),  # Around R&D
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: (l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom(), None, 10),  # Toy Monster room
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: (l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom(), None, 10),  # Toy Monster room
         Collectible(Collectibles.coin, Kongs.diddy, lambda _: True, None, 5),  # Around vent to Chunky room
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: (l.grab and l.donkey) or l.CanAccessRNDRoom(), None, 4),  # In hole near Diddy's room
-        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: ((l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()) and l.pineapple, None, 1),  # Toy Monster room
+        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: ((l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.triangle and l.climbing) or l.CanAccessRNDRoom()) and l.pineapple, None, 1),  # Toy Monster room
     ],
     Regions.RandD: [
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 5),  # Around R&D
@@ -74,7 +75,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda _: True, None, 1),  # W5
         Collectible(Collectibles.bunch, Kongs.tiny, lambda _: True, None, 1),  # In arcade room
 
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch or l.CanPhase(), None, 3),  # Behind Stash Snatch barrel
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.hasMoveSwitchsanity(Switches.FactoryArcadeTunnelGrate, False) or l.CanPhase(), None, 3),  # Behind Stash Snatch barrel
     ],
     Regions.AlcoveBeyondHatch: [
         Collectible(Collectibles.bunch, Kongs.tiny, lambda _: True, None, 2),  # Halfway down the hatch
@@ -87,7 +88,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 5),  # Path to shops
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 1),  # Base of pipe to free Chunky switch
         Collectible(Collectibles.bunch, Kongs.chunky, lambda _: True, None, 1),  # W1
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 3),  # Dark Room
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch and l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False), None, 3),  # Dark Room
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda _: True, None, 3),  # Bottom of pole
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.spring or l.CanPhase() or l.CanMoontail(), None, 3),  # High ledge in Chunky's room

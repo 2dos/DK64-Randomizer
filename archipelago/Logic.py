@@ -37,6 +37,7 @@ from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     BananaportRando,
     ClimbingStatus,
+    CannonStatus,
     DamageAmount,
     FasterChecksSelected,
     GalleonWaterSetting,
@@ -99,6 +100,8 @@ class LogicVarHolder:
         self.assumePaidBLockers = False
         self.assumeAztecEntry = False
         self.assumeLevel4Entry = False
+        self.assumeLevel5Entry = False
+        self.assumeLevel7Entry = False
         self.assumeLevel8Entry = False
         self.assumeUpperIslesAccess = False
         self.assumeKRoolAccess = False
@@ -112,6 +115,7 @@ class LogicVarHolder:
 
         self.bosses_beaten = 0
         self.bonuses_beaten = 0
+        self.blasts_beaten = 0
 
         self.startkong = self.settings.starting_kong
         # AGL
@@ -168,6 +172,7 @@ class LogicVarHolder:
         self.adv_orange_usage = self.oranges and self.advanced_grenading
         self.barrels = self.settings.training_barrels == TrainingBarrels.normal
         self.climbing = self.settings.climbing_status == ClimbingStatus.normal
+        self.cannons = self.settings.cannon_status == CannonStatus.normal
         self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
         progDonkey = 0
@@ -230,6 +235,9 @@ class LogicVarHolder:
         self.funkyAccess = Types.Funky not in self.settings.shuffled_location_types
         self.candyAccess = Types.Candy not in self.settings.shuffled_location_types
         self.snideAccess = Types.Snide not in self.settings.shuffled_location_types
+
+        self.dayAccess = Types.FungiTime not in self.settings.shuffled_location_types
+        self.nightAccess = Types.FungiTime not in self.settings.shuffled_location_types
 
         self.HelmDonkey1 = False
         self.HelmDonkey2 = False
@@ -372,7 +380,6 @@ class LogicVarHolder:
         self.Events = event_list
 
         self.bosses_beaten = bossesDefeated
-        self.bonuses_beaten = bonusesCompleted
 
         self.Update(ownedItems)
 
@@ -490,6 +497,8 @@ class LogicVarHolder:
                     self._recalculateBlueprints()
                 case Items.Climbing:
                     self.climbing = True
+                case Items.Cannons:
+                    self.cannons = True
                 case Items.Vines:
                     self.vines = True
                     self.can_use_vines = True
@@ -568,6 +577,10 @@ class LogicVarHolder:
                     self.candyAccess = True
                 case Items.Snide:
                     self.snideAccess = True
+                case Items.Day:
+                    self.dayAccess = True
+                case Items.Night:
+                    self.nightAccess = True
                 case Items.NintendoCoin:
                     self.nintendoCoin = True
                 case Items.RarewareCoin:
@@ -747,6 +760,8 @@ class LogicVarHolder:
                     self._recalculateBlueprints()
                 case Items.Climbing:
                     self.climbing = False
+                case Items.Cannons:
+                    self.cannons = False
                 case Items.Vines:
                     self.vines = False
                     self.can_use_vines = False
@@ -825,6 +840,10 @@ class LogicVarHolder:
                     self.candyAccess = False
                 case Items.Snide:
                     self.snideAccess = False
+                case Items.Day:
+                    self.dayAccess = False
+                case Items.Night:
+                    self.nightAccess = False
                 case Items.NintendoCoin:
                     self.nintendoCoin = False
                 case Items.RarewareCoin:
@@ -940,6 +959,7 @@ class LogicVarHolder:
         self.ischunky = self.chunky
 
         self.climbing = self.climbing or Items.Climbing in ownedItems
+        self.cannons = self.cannons or Items.Cannons in ownedItems
         self.vines = self.vines or Items.Vines in ownedItems
         self.swim = self.swim or Items.Swim in ownedItems
         self.oranges = self.oranges or Items.Oranges in ownedItems
@@ -988,6 +1008,8 @@ class LogicVarHolder:
         self.funkyAccess = self.funkyAccess or Items.Funky in ownedItems
         self.candyAccess = self.candyAccess or Items.Candy in ownedItems
         self.snideAccess = self.snideAccess or Items.Snide in ownedItems
+        self.dayAccess = self.dayAccess or Items.Day in ownedItems
+        self.nightAccess = self.nightAccess or Items.Night in ownedItems
 
         self.nintendoCoin = self.nintendoCoin or Items.NintendoCoin in ownedItems
         self.rarewareCoin = self.rarewareCoin or Items.RarewareCoin in ownedItems
@@ -1146,11 +1168,13 @@ class LogicVarHolder:
         slam_req = default_requirement_level
         if self.settings.alter_switch_allocation:
             slam_req = self.settings.switch_allocation[level]
-        if slam_req == 2:
+        if slam_req == 1:
+            return self.Slam
+        elif slam_req == 2:
             return self.superSlam
         elif slam_req == 3:
             return self.superDuperSlam
-        return self.Slam
+        return True
 
     @lru_cache(maxsize=None)
     def IsLavaWater(self) -> bool:
@@ -1252,7 +1276,7 @@ class LogicVarHolder:
             if data.kong == Kongs.any:
                 return self.HasGun(Kongs.any) and self.HasInstrument(Kongs.any)
             return kong_data and gun_abilities[data.kong] and instrument_abilities[data.kong]
-        elif data.switch_type == SwitchType.PushableButton:
+        elif data.switch_type in (SwitchType.PushableButton, SwitchType.PunchGrate, SwitchType.IceWall, SwitchType.Gong):
             if data.kong == Kongs.diddy:
                 return kong_data and self.charge
             if data.kong == Kongs.chunky:
@@ -1417,6 +1441,7 @@ class LogicVarHolder:
             self.oranges,
             self.barrels,
             self.climbing,
+            self.cannons,
             self.blast,
             self.strongKong,
             self.grab,
@@ -1572,16 +1597,17 @@ class LogicVarHolder:
 
     def TimeAccess(self, region, time):
         """Check if a certain region has the given time of day access for current kong."""
-        # In Archipelago, we're always using the Dusk setting so it is both day and night simultaneously
-        # In addition, this method is only ever called when checking the current region, which implies you already have access to the region.
-        return True
-        # if time == Time.Day:
-        #     return self.spoiler.RegionList[region].dayAccess[self.kong]
-        # elif time == Time.Night:
-        #     return self.spoiler.RegionList[region].nightAccess[self.kong]
-        # # Not sure when this'd be used
-        # else:  # if time == Time.Both
-        #     return self.spoiler.RegionList[region].dayAccess[self.kong] or self.spoiler.RegionList[region].nightAccess[self.kong]
+        # If time-of-day items are NOT shuffled, always allow access
+        if Types.FungiTime not in self.settings.shuffled_location_types:
+            return True
+
+        # If time-of-day items ARE shuffled, check if we have the appropriate item
+        if time == Time.Day:
+            return self.dayAccess
+        elif time == Time.Night:
+            return self.nightAccess
+        else:  # Time.Both
+            return self.dayAccess or self.nightAccess
 
     def BlueprintAccess(self, item):
         """Check if we are the correct kong for this blueprint item."""
@@ -1671,6 +1697,16 @@ class LogicVarHolder:
                 return all(dk_rap_items)
             elif condition == WinConditionComplex.kill_the_rabbit:
                 return Events.KilledRabbit in self.Events
+            elif condition == WinConditionComplex.mech_fish:
+                return Events.MechFishCheck in self.Events
+            elif condition == WinConditionComplex.arcade:
+                return Events.ArcadeR2Check in self.Events
+            elif condition == WinConditionComplex.jetpac:
+                return Events.JetpacCheck in self.Events
+            elif condition == WinConditionComplex.bad_hit_detection_man:
+                return Events.BHDMCheck in self.Events
+            elif condition == WinConditionComplex.rareware_gb_check:
+                return Events.RarewareGBCheck in self.Events
             elif condition == WinConditionComplex.req_bonuses:
                 return self.bonuses_beaten >= self.settings.win_condition_count
             elif condition == WinConditionComplex.req_bosses:
@@ -1704,7 +1740,7 @@ class LogicVarHolder:
             Events.CastleKeyTurnedIn,
             Events.HelmKeyTurnedIn,
         ]
-        if self.settings.win_condition_item == WinConditionComplex.get_keys_3_and_8:
+        if self.settings.HasWinRequirement(WinConditionComplex.get_keys_3_and_8):
             required_base_keys = [
                 Events.FactoryKeyTurnedIn,
                 Events.HelmKeyTurnedIn,
@@ -1778,8 +1814,10 @@ class LogicVarHolder:
             hasRequiredMoves = self.hunkyChunky and self.barrels
         elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
             hasRequiredMoves = self.barrels
-        elif bossFight == Maps.CastleBoss and self.IsLavaWater():
-            hasRequiredMoves = self.Melons >= 3
+        elif bossFight == Maps.CastleBoss:
+            if self.IsLavaWater():
+                hasRequiredMoves = self.Melons >= 3
+            hasRequiredMoves = hasRequiredMoves and self.cannons
         elif bossFight == Maps.KroolDonkeyPhase:
             hasRequiredMoves = (self.blast or (not self.settings.cannons_require_blast)) and self.climbing
         elif bossFight == Maps.KroolDiddyPhase:
@@ -1905,13 +1943,8 @@ class LogicVarHolder:
         # To enter a level, we either need (or assume) enough stuff to get rid of B. Locker or a glitch way to bypass it
         return can_pay_blocker or can_dk_skip or can_diddy_skip or can_lanky_skip or can_tiny_skip or can_chunky_skip
 
-    def WinConditionMet(self):
-        """Check if the current game state has met the win condition."""
-        condition = self.settings.win_condition_item
-        # When using win condition-based ship spawning, always require K. Rool defeat in addition to win condition items
-        krool_complete = not self.settings.win_condition_spawns_ship or Events.KRoolDefeated in self.Events
-
-        # Special Win Cons
+    def WinConditionSegmentMet(self, condition, count):
+        """Check if a certain element of a win condition has been met."""
         if condition == WinConditionComplex.beat_krool:
             return Events.KRoolDefeated in self.Events
         elif condition == WinConditionComplex.krem_kapture:
@@ -1928,13 +1961,13 @@ class LogicVarHolder:
                     # print(f"Could not reach {subject.name}")
                     return False
             result = self.camera
-            return result and krool_complete
+            return result
         elif condition == WinConditionComplex.get_key8:
             result = self.HelmKey
-            return result and krool_complete
+            return result
         elif condition == WinConditionComplex.get_keys_3_and_8:
             result = self.FactoryKey and self.HelmKey
-            return result and krool_complete
+            return result
         elif condition == WinConditionComplex.dk_rap_items:
             dk_rap_items = [
                 self.donkey,
@@ -1967,19 +2000,37 @@ class LogicVarHolder:
                 if not k:
                     return False
             result = True
-            return result and krool_complete
+            return result
         elif condition == WinConditionComplex.krools_challenge:
             # Krool's Challenge: Beat K. Rool + collect all Keys, Blueprints, Bosses, and Bonus Barrels
             return Events.KRoolDefeated in self.Events and self.ItemCheck(BarrierItems.Key, 8) and self.ItemCheck(BarrierItems.Blueprint, 40) and self.bosses_beaten >= 7 and self.bonuses_beaten >= 43
         elif condition == WinConditionComplex.kill_the_rabbit:
             result = Events.KilledRabbit in self.Events
-            return result and krool_complete
+            return result
+        elif condition == WinConditionComplex.mech_fish:
+            result = Events.MechFishCheck in self.Events
+            return result
+        elif condition == WinConditionComplex.arcade:
+            result = Events.ArcadeR2Check in self.Events
+            return result
+        elif condition == WinConditionComplex.jetpac:
+            result = Events.JetpacCheck in self.Events
+            return result
+        elif condition == WinConditionComplex.bad_hit_detection_man:
+            result = Events.BHDMCheck in self.Events
+            return result
+        elif condition == WinConditionComplex.rareware_gb_check:
+            result = Events.RarewareGBCheck in self.Events
+            return result
+        elif condition == WinConditionComplex.blast_courses:
+            result = self.blasts_beaten >= self.settings.win_condition_count
+            return result
         elif condition == WinConditionComplex.req_bonuses:
             result = self.bonuses_beaten >= self.settings.win_condition_count
-            return result and krool_complete
+            return result
         elif condition == WinConditionComplex.req_bosses:
             result = self.bosses_beaten >= self.settings.win_condition_count
-            return result and krool_complete
+            return result
         # Get X amount of Y item win cons
         win_con_table = {
             WinConditionComplex.req_bean: BarrierItems.Bean,
@@ -1994,9 +2045,34 @@ class LogicVarHolder:
             WinConditionComplex.req_rainbowcoin: BarrierItems.RainbowCoin,
         }
         if condition not in win_con_table:
-            raise Exception(f"Invalid Win Condition {self.settings.win_condition_item.name}")
-        result = self.ItemCheck(win_con_table[condition], self.settings.win_condition_count)
-        return result and krool_complete
+            raise Exception(f"Invalid Win Condition {condition.name}")
+        result = self.ItemCheck(win_con_table[condition], count)
+        return result
+
+    def WinConditionMet(self):
+        """Check if the current game state has met the win condition."""
+        condition = self.settings.win_condition_item
+        # When using win condition-based ship spawning, always require K. Rool defeat in addition to win condition items
+        krool_complete = not self.settings.win_condition_spawns_ship or Events.KRoolDefeated in self.Events
+        main_condition = True
+        if condition == WinConditionComplex.tasks:
+            task_segments = [
+                {"type": self.settings.task_1_condition, "count": self.settings.task_1_count},
+                {"type": self.settings.task_2_condition, "count": self.settings.task_2_count},
+                {"type": self.settings.task_3_condition, "count": self.settings.task_3_count},
+                {"type": self.settings.task_4_condition, "count": self.settings.task_4_count},
+                {"type": self.settings.task_5_condition, "count": self.settings.task_5_count},
+                {"type": self.settings.task_6_condition, "count": self.settings.task_6_count},
+                {"type": self.settings.task_7_condition, "count": self.settings.task_7_count},
+                {"type": self.settings.task_8_condition, "count": self.settings.task_8_count},
+            ]
+            for task in task_segments:
+                if task["type"] == WinConditionComplex.inactive:
+                    continue
+                main_condition = main_condition and self.WinConditionSegmentMet(task["type"], task["count"])
+        else:
+            main_condition = self.WinConditionSegmentMet(condition, self.settings.win_condition_count)
+        return main_condition and krool_complete
 
     def CanGetRarewareCoin(self):
         """Check if you meet the logical requirements to obtain the Rareware Coin."""
