@@ -117,7 +117,7 @@
         "command": "protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/*.proto && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/common/*.proto && cd randomizer/proto_gen && cd ${workspaceFolder} && ${command:python.interpreterPath} tools/fix_relative_imports.py && ${command:python.interpreterPath} -m black -l 200 randomizer/proto_gen",
       },
       "linux": {
-        "command": "source /etc/profile.d/protoc-gen-js.sh && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/*.proto && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/common/*.proto && cd randomizer/proto_gen && cd ${workspaceFolder} ${command:python.interpreterPath} tools/fix_relative_imports.py && ${command:python.interpreterPath} -m black -l 200 randomizer/proto_gen",
+        "command": "source /etc/profile.d/protoc-gen-js.sh && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/*.proto && protoc --proto_path=randomizer/proto --python_out=randomizer/proto_gen --js_out=randomizer/proto_gen randomizer/proto/common/*.proto && cd randomizer/proto_gen && cd ${workspaceFolder} && ${command:python.interpreterPath} tools/fix_relative_imports.py && ${command:python.interpreterPath} -m black -l 200 randomizer/proto_gen",
       },
       "group": {
         "kind": "build",
