@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Hide proto gencode from PRs/LOCs (it's still readable you just have to open it manually)
+randomizer/proto_gen/* linguist-generated=true
