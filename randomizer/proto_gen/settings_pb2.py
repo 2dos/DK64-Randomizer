@@ -17,12 +17,12 @@ _runtime_version.ValidateProtobufRuntimeVersion(_runtime_version.Domain.PUBLIC, 
 _sym_db = _symbol_database.Default()
 
 
-import endgame_settings_pb2 as endgame__settings__pb2
-import item_settings_pb2 as item__settings__pb2
-import overworld_settings_pb2 as overworld__settings__pb2
-import plandomizer_settings_pb2 as plandomizer__settings__pb2
-import qol_settings_pb2 as qol__settings__pb2
-import requirement_settings_pb2 as requirement__settings__pb2
+from . import endgame_settings_pb2 as endgame__settings__pb2
+from . import item_settings_pb2 as item__settings__pb2
+from . import overworld_settings_pb2 as overworld__settings__pb2
+from . import plandomizer_settings_pb2 as plandomizer__settings__pb2
+from . import qol_settings_pb2 as qol__settings__pb2
+from . import requirement_settings_pb2 as requirement__settings__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
     b"\n\x0esettings.proto\x12\x10randomizer.proto\x1a\x16\x65ndgame_settings.proto\x1a\x13item_settings.proto\x1a\x18overworld_settings.proto\x1a\x1aplandomizer_settings.proto\x1a\x12qol_settings.proto\x1a\x1arequirement_settings.proto\"\xd5\x03\n\x0cSettingsInfo\x12\x35\n\ritem_settings\x18\x01 \x01(\x0b\x32\x1e.randomizer.proto.ItemSettings\x12\x43\n\x14requirement_settings\x18\x02 \x01(\x0b\x32%.randomizer.proto.RequirementSettings\x12?\n\x12overworld_settings\x18\x03 \x01(\x0b\x32#.randomizer.proto.OverworldSettings\x12;\n\x10\x65ndgame_settings\x18\x04 \x01(\x0b\x32!.randomizer.proto.EndgameSettings\x12=\n\x0cqol_settings\x18\x05 \x01(\x0b\x32'.randomizer.proto.QualityOfLifeSettings\x12\x43\n\x14plandomizer_settings\x18\x06 \x01(\x0b\x32%.randomizer.proto.PlandomizerSettings\x12\x1b\n\x13generate_spoilerlog\x18\x08 \x01(\x08\x12\x14\n\x0chas_password\x18\t \x01(\x08J\x04\x08\x07\x10\x08R\x0e\x66ormat_versionb\x06proto3"
