@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.SpoilerHintsConfig');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.SpoilerHintsPoints');
 
 goog.forwardDeclare('proto.randomizer.proto.SpoilerHintsType');
@@ -88,7 +90,7 @@ includeLevelOrder: jspb.Message.getBooleanFieldWithDefault(msg, 4, false)
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.SpoilerHintsConfig}
  */
 proto.randomizer.proto.SpoilerHintsConfig.deserializeBinary = function(bytes) {

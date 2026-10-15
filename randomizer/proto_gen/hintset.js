@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.HintSet');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.Hint');
 
 /**
@@ -93,7 +95,7 @@ maxHints: jspb.Message.getFieldWithDefault(msg, 2, 0)
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.HintSet}
  */
 proto.randomizer.proto.HintSet.deserializeBinary = function(bytes) {

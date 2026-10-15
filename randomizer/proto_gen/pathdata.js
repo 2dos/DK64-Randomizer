@@ -17,6 +17,8 @@ goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Map');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.AccessibleHints');
 goog.require('proto.randomizer.proto.LocationPath');
 goog.require('proto.randomizer.proto.RegionItemCounts');
@@ -107,7 +109,7 @@ accessibleHintsForLocationMap: (f = msg.getAccessibleHintsForLocationMap()) ? f.
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.PathData}
  */
 proto.randomizer.proto.PathData.deserializeBinary = function(bytes) {
@@ -132,10 +134,7 @@ proto.randomizer.proto.PathData.deserializeBinaryFromReader = function(msg, read
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addWothLocations(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getWothLocationsList());
       break;
     case 2:
       var value = msg.getWothPathsMap();
@@ -146,19 +145,16 @@ proto.randomizer.proto.PathData.deserializeBinaryFromReader = function(msg, read
     case 3:
       var value = msg.getKroolPathsMap();
       reader.readMessage(value, function(message, reader) {
-        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.randomizer.proto.LocationPath.deserializeBinaryFromReader, "", new proto.randomizer.proto.LocationPath());
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readStringRequireUtf8, jspb.BinaryReader.prototype.readMessage, proto.randomizer.proto.LocationPath.deserializeBinaryFromReader, "", new proto.randomizer.proto.LocationPath());
          });
       break;
     case 4:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addRabbitPath(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getRabbitPathList());
       break;
     case 5:
       var value = msg.getRapWinConPathsMap();
       reader.readMessage(value, function(message, reader) {
-        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.randomizer.proto.LocationPath.deserializeBinaryFromReader, "", new proto.randomizer.proto.LocationPath());
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readStringRequireUtf8, jspb.BinaryReader.prototype.readMessage, proto.randomizer.proto.LocationPath.deserializeBinaryFromReader, "", new proto.randomizer.proto.LocationPath());
          });
       break;
     case 6:
@@ -173,25 +169,19 @@ proto.randomizer.proto.PathData.deserializeBinaryFromReader = function(msg, read
       msg.addPlaythrough(value);
       break;
     case 8:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addMajorItems(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getMajorItemsList());
       break;
     case 9:
-      var value = /** @type {string} */ (reader.readString());
+      var value = /** @type {string} */ (reader.readStringRequireUtf8());
       msg.addFoolishRegionNames(value);
       break;
     case 10:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addPathlessMoves(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getPathlessMovesList());
       break;
     case 11:
       var value = msg.getRegionHintableCountMap();
       reader.readMessage(value, function(message, reader) {
-        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.randomizer.proto.RegionItemCounts.deserializeBinaryFromReader, "", new proto.randomizer.proto.RegionItemCounts());
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readStringRequireUtf8, jspb.BinaryReader.prototype.readMessage, proto.randomizer.proto.RegionItemCounts.deserializeBinaryFromReader, "", new proto.randomizer.proto.RegionItemCounts());
          });
       break;
     case 12:
@@ -238,11 +228,23 @@ proto.randomizer.proto.PathData.serializeBinaryToWriter = function(message, writ
   }
   f = message.getWothPathsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(2, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeMessage, proto.randomizer.proto.LocationPath.serializeBinaryToWriter);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getWothPathsMap(true),
+    2,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeMessage,
+    proto.randomizer.proto.LocationPath.serializeBinaryToWriter);
   }
   f = message.getKroolPathsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(3, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.randomizer.proto.LocationPath.serializeBinaryToWriter);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getKroolPathsMap(true),
+    3,
+    writer,
+    jspb.BinaryWriter.prototype.writeString,
+    jspb.BinaryWriter.prototype.writeMessage,
+    proto.randomizer.proto.LocationPath.serializeBinaryToWriter);
   }
   f = message.getRabbitPathList();
   if (f.length > 0) {
@@ -253,11 +255,23 @@ proto.randomizer.proto.PathData.serializeBinaryToWriter = function(message, writ
   }
   f = message.getRapWinConPathsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(5, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.randomizer.proto.LocationPath.serializeBinaryToWriter);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getRapWinConPathsMap(true),
+    5,
+    writer,
+    jspb.BinaryWriter.prototype.writeString,
+    jspb.BinaryWriter.prototype.writeMessage,
+    proto.randomizer.proto.LocationPath.serializeBinaryToWriter);
   }
   f = message.getOtherPathsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(6, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeMessage, proto.randomizer.proto.LocationPath.serializeBinaryToWriter);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getOtherPathsMap(true),
+    6,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeMessage,
+    proto.randomizer.proto.LocationPath.serializeBinaryToWriter);
   }
   f = message.getPlaythroughList();
   if (f.length > 0) {
@@ -290,11 +304,23 @@ proto.randomizer.proto.PathData.serializeBinaryToWriter = function(message, writ
   }
   f = message.getRegionHintableCountMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(11, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.randomizer.proto.RegionItemCounts.serializeBinaryToWriter);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getRegionHintableCountMap(true),
+    11,
+    writer,
+    jspb.BinaryWriter.prototype.writeString,
+    jspb.BinaryWriter.prototype.writeMessage,
+    proto.randomizer.proto.RegionItemCounts.serializeBinaryToWriter);
   }
   f = message.getAccessibleHintsForLocationMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(12, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeMessage, proto.randomizer.proto.AccessibleHints.serializeBinaryToWriter);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getAccessibleHintsForLocationMap(true),
+    12,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeMessage,
+    proto.randomizer.proto.AccessibleHints.serializeBinaryToWriter);
   }
 };
 

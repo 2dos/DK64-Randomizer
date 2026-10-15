@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.CBPlacement');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.CBLocation');
 
 /**
@@ -98,7 +100,7 @@ locationsList: jspb.Message.toObjectList(msg.getLocationsList(),
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.CBPlacement}
  */
 proto.randomizer.proto.CBPlacement.deserializeBinary = function(bytes) {
@@ -127,7 +129,7 @@ proto.randomizer.proto.CBPlacement.deserializeBinaryFromReader = function(msg, r
       msg.setId(value);
       break;
     case 2:
-      var value = /** @type {string} */ (reader.readString());
+      var value = /** @type {string} */ (reader.readStringRequireUtf8());
       msg.setName(value);
       break;
     case 3:
@@ -139,7 +141,7 @@ proto.randomizer.proto.CBPlacement.deserializeBinaryFromReader = function(msg, r
       msg.setLevel(value);
       break;
     case 5:
-      var value = /** @type {string} */ (reader.readString());
+      var value = /** @type {string} */ (reader.readStringRequireUtf8());
       msg.setType(value);
       break;
     case 6:

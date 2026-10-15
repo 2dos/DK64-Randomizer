@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.ItemReference');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.ItemReferenceLocation');
 
 /**
@@ -95,7 +97,7 @@ flagsList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.ItemReference}
  */
 proto.randomizer.proto.ItemReference.deserializeBinary = function(bytes) {
@@ -124,7 +126,7 @@ proto.randomizer.proto.ItemReference.deserializeBinaryFromReader = function(msg,
       msg.setItem(value);
       break;
     case 2:
-      var value = /** @type {string} */ (reader.readString());
+      var value = /** @type {string} */ (reader.readStringRequireUtf8());
       msg.setItemName(value);
       break;
     case 3:
@@ -133,10 +135,7 @@ proto.randomizer.proto.ItemReference.deserializeBinaryFromReader = function(msg,
       msg.addLocations(value);
       break;
     case 4:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addFlags(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getFlagsList());
       break;
     default:
       reader.skipField();

@@ -17,6 +17,8 @@ goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Map');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.HintSet');
 goog.require('proto.randomizer.proto.LevelSpoilerHints');
 
@@ -98,7 +100,7 @@ levelSpoilerHumanReadableMap: (f = msg.getLevelSpoilerHumanReadableMap()) ? f.to
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.HintData}
  */
 proto.randomizer.proto.HintData.deserializeBinary = function(bytes) {
@@ -130,19 +132,16 @@ proto.randomizer.proto.HintData.deserializeBinaryFromReader = function(msg, read
     case 2:
       var value = msg.getTiedHintFlagsMap();
       reader.readMessage(value, function(message, reader) {
-        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readUint32, null, "", 0);
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readStringRequireUtf8, jspb.BinaryReader.prototype.readUint32, null, "", 0);
          });
       break;
     case 3:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addTiedHintRegions(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getTiedHintRegionsList());
       break;
     case 4:
       var value = msg.getMicrohintsMap();
       reader.readMessage(value, function(message, reader) {
-        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readString, null, "", "");
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readStringRequireUtf8, jspb.BinaryReader.prototype.readStringRequireUtf8, null, "", "");
          });
       break;
     case 5:
@@ -154,7 +153,7 @@ proto.randomizer.proto.HintData.deserializeBinaryFromReader = function(msg, read
     case 6:
       var value = msg.getLevelSpoilerHumanReadableMap();
       reader.readMessage(value, function(message, reader) {
-        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readString, null, "", "");
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readStringRequireUtf8, jspb.BinaryReader.prototype.readStringRequireUtf8, null, "", "");
          });
       break;
     default:
@@ -196,7 +195,12 @@ proto.randomizer.proto.HintData.serializeBinaryToWriter = function(message, writ
   }
   f = message.getTiedHintFlagsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(2, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeUint32);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getTiedHintFlagsMap(true),
+    2,
+    writer,
+    jspb.BinaryWriter.prototype.writeString,
+    jspb.BinaryWriter.prototype.writeUint32);
   }
   f = message.getTiedHintRegionsList();
   if (f.length > 0) {
@@ -207,15 +211,31 @@ proto.randomizer.proto.HintData.serializeBinaryToWriter = function(message, writ
   }
   f = message.getMicrohintsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(4, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeString);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getMicrohintsMap(true),
+    4,
+    writer,
+    jspb.BinaryWriter.prototype.writeString,
+    jspb.BinaryWriter.prototype.writeString);
   }
   f = message.getLevelSpoilerHintsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(5, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeMessage, proto.randomizer.proto.LevelSpoilerHints.serializeBinaryToWriter);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getLevelSpoilerHintsMap(true),
+    5,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeMessage,
+    proto.randomizer.proto.LevelSpoilerHints.serializeBinaryToWriter);
   }
   f = message.getLevelSpoilerHumanReadableMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(6, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeString);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getLevelSpoilerHumanReadableMap(true),
+    6,
+    writer,
+    jspb.BinaryWriter.prototype.writeString,
+    jspb.BinaryWriter.prototype.writeString);
   }
 };
 

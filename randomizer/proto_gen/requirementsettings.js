@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.RequirementSettings');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.BLockerOption');
 goog.require('proto.randomizer.proto.ColoredBananasForMedal');
 goog.require('proto.randomizer.proto.FairiesForFairyQueen');
@@ -124,7 +126,7 @@ puzzleRando: jspb.Message.getFieldWithDefault(msg, 20, 0)
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.RequirementSettings}
  */
 proto.randomizer.proto.RequirementSettings.deserializeBinary = function(bytes) {
@@ -209,10 +211,7 @@ proto.randomizer.proto.RequirementSettings.deserializeBinaryFromReader = functio
       msg.setFreeTradeAgreement(value);
       break;
     case 14:
-      var values = /** @type {!Array<!proto.randomizer.proto.Barrier>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addRemovedBarriers(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getRemovedBarriersList());
       break;
     case 15:
       var value = /** @type {!proto.randomizer.proto.GalleonWater} */ (reader.readEnum());
@@ -231,10 +230,7 @@ proto.randomizer.proto.RequirementSettings.deserializeBinaryFromReader = functio
       msg.setActivateBananaports(value);
       break;
     case 19:
-      var values = /** @type {!Array<!proto.randomizer.proto.FasterCheck>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addFasterChecks(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getFasterChecksList());
       break;
     case 20:
       var value = /** @type {!proto.randomizer.proto.PuzzleRando} */ (reader.readEnum());

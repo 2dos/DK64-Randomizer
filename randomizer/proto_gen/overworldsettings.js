@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.OverworldSettings');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.BananaportRandomizer');
 goog.require('proto.randomizer.proto.ColoredBananaRandomizer');
 goog.require('proto.randomizer.proto.HardBoss');
@@ -149,7 +151,7 @@ shipLocationRando: jspb.Message.getBooleanFieldWithDefault(msg, 43, false)
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.OverworldSettings}
  */
 proto.randomizer.proto.OverworldSettings.deserializeBinary = function(bytes) {
@@ -269,16 +271,10 @@ proto.randomizer.proto.OverworldSettings.deserializeBinaryFromReader = function(
       msg.setKroolInBossPool(value);
       break;
     case 24:
-      var values = /** @type {!Array<!proto.randomizer.proto.common.MapId>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addBossesSelected(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getBossesSelectedList());
       break;
     case 25:
-      var values = /** @type {!Array<!proto.randomizer.proto.ShuffledEnemy>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addShuffledEnemies(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getShuffledEnemiesList());
       break;
     case 26:
       var value = /** @type {!proto.randomizer.proto.CrownEnemies} */ (reader.readEnum());
@@ -293,10 +289,7 @@ proto.randomizer.proto.OverworldSettings.deserializeBinaryFromReader = function(
       msg.setRandomEnemySize(value);
       break;
     case 29:
-      var values = /** @type {!Array<!proto.randomizer.proto.ShuffledBonusBarrel>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addShuffledBonusBarrels(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getShuffledBonusBarrelsList());
       break;
     case 30:
       var value = /** @type {boolean} */ (reader.readBool());

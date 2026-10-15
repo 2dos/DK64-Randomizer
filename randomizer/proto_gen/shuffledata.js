@@ -17,6 +17,8 @@ goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Map');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.BananaportReplacement');
 goog.require('proto.randomizer.proto.CratePlacement');
 goog.require('proto.randomizer.proto.CrownHumanReadable');
@@ -131,7 +133,7 @@ warpLocationsMap: (f = msg.getWarpLocationsMap()) ? f.toObject(includeInstance, 
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.ShuffleData}
  */
 proto.randomizer.proto.ShuffleData.deserializeBinary = function(bytes) {
@@ -178,7 +180,7 @@ proto.randomizer.proto.ShuffleData.deserializeBinaryFromReader = function(msg, r
       msg.addKasplatShuffles(value);
       break;
     case 5:
-      var value = /** @type {string} */ (reader.readString());
+      var value = /** @type {string} */ (reader.readStringRequireUtf8());
       msg.addExitInstructions(value);
       break;
     case 6:
@@ -220,7 +222,7 @@ proto.randomizer.proto.ShuffleData.deserializeBinaryFromReader = function(msg, r
     case 13:
       var value = msg.getShuffledKasplatMapMap();
       reader.readMessage(value, function(message, reader) {
-        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readUint32, null, "", 0);
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readStringRequireUtf8, jspb.BinaryReader.prototype.readUint32, null, "", 0);
          });
       break;
     case 14:
@@ -275,11 +277,22 @@ proto.randomizer.proto.ShuffleData.serializeBinaryToWriter = function(message, w
   var f = undefined;
   f = message.getShuffledExitsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(1, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeMessage, proto.randomizer.proto.ExitDestination.serializeBinaryToWriter);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getShuffledExitsMap(true),
+    1,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeMessage,
+    proto.randomizer.proto.ExitDestination.serializeBinaryToWriter);
   }
   f = message.getShuffledBarrelsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(2, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeUint32);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getShuffledBarrelsMap(true),
+    2,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeUint32);
   }
   f = message.getShuffledDoorsList();
   if (f.length > 0) {
@@ -306,7 +319,13 @@ proto.randomizer.proto.ShuffleData.serializeBinaryToWriter = function(message, w
   }
   f = message.getPortConnectionsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(6, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeMessage, proto.randomizer.proto.PortConnection.serializeBinaryToWriter);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getPortConnectionsMap(true),
+    6,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeMessage,
+    proto.randomizer.proto.PortConnection.serializeBinaryToWriter);
   }
   f = message.getWarpDataList();
   if (f.length > 0) {
@@ -358,7 +377,12 @@ proto.randomizer.proto.ShuffleData.serializeBinaryToWriter = function(message, w
   }
   f = message.getShuffledKasplatMapMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(13, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeUint32);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getShuffledKasplatMapMap(true),
+    13,
+    writer,
+    jspb.BinaryWriter.prototype.writeString,
+    jspb.BinaryWriter.prototype.writeUint32);
   }
   f = message.getFairyLocationsList();
   if (f.length > 0) {
@@ -386,7 +410,12 @@ proto.randomizer.proto.ShuffleData.serializeBinaryToWriter = function(message, w
   }
   f = message.getWarpLocationsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(17, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeUint32);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getWarpLocationsMap(true),
+    17,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeUint32);
   }
 };
 

@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.SettingsInfo');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.EndgameSettings');
 goog.require('proto.randomizer.proto.ItemSettings');
 goog.require('proto.randomizer.proto.OverworldSettings');
@@ -94,7 +96,7 @@ plandomizerSettings: (f = msg.getPlandomizerSettings()) && proto.randomizer.prot
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.SettingsInfo}
  */
 proto.randomizer.proto.SettingsInfo.deserializeBinary = function(bytes) {

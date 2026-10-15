@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.FillResult');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.HintData');
 goog.require('proto.randomizer.proto.LocationAssignments');
 goog.require('proto.randomizer.proto.MiscPatchingData');
@@ -96,7 +98,7 @@ miscData: (f = msg.getMiscData()) && proto.randomizer.proto.MiscPatchingData.toO
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.FillResult}
  */
 proto.randomizer.proto.FillResult.deserializeBinary = function(bytes) {

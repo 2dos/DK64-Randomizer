@@ -17,6 +17,8 @@ goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Map');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.RegionItemData');
 
 /**
@@ -85,7 +87,7 @@ itemsMap: (f = msg.getItemsMap()) ? f.toObject(includeInstance, proto.randomizer
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.RegionItemCounts}
  */
 proto.randomizer.proto.RegionItemCounts.deserializeBinary = function(bytes) {
@@ -112,7 +114,7 @@ proto.randomizer.proto.RegionItemCounts.deserializeBinaryFromReader = function(m
     case 1:
       var value = msg.getItemsMap();
       reader.readMessage(value, function(message, reader) {
-        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.randomizer.proto.RegionItemData.deserializeBinaryFromReader, "", new proto.randomizer.proto.RegionItemData());
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readStringRequireUtf8, jspb.BinaryReader.prototype.readMessage, proto.randomizer.proto.RegionItemData.deserializeBinaryFromReader, "", new proto.randomizer.proto.RegionItemData());
          });
       break;
     default:
@@ -146,7 +148,13 @@ proto.randomizer.proto.RegionItemCounts.serializeBinaryToWriter = function(messa
   var f = undefined;
   f = message.getItemsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(1, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.randomizer.proto.RegionItemData.serializeBinaryToWriter);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getItemsMap(true),
+    1,
+    writer,
+    jspb.BinaryWriter.prototype.writeString,
+    jspb.BinaryWriter.prototype.writeMessage,
+    proto.randomizer.proto.RegionItemData.serializeBinaryToWriter);
   }
 };
 
