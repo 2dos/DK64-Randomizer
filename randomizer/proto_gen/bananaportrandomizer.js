@@ -17,6 +17,8 @@ goog.provide('proto.randomizer.proto.BananaportRandomizer.BananaportRandomizerOp
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 
 goog.forwardDeclare('proto.randomizer.proto.common.MapId');
 /**
@@ -93,7 +95,7 @@ bananaportRandomizedLevelsList: (f = jspb.Message.getRepeatedField(msg, 2)) == n
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.BananaportRandomizer}
  */
 proto.randomizer.proto.BananaportRandomizer.deserializeBinary = function(bytes) {
@@ -122,10 +124,7 @@ proto.randomizer.proto.BananaportRandomizer.deserializeBinaryFromReader = functi
       msg.setOpt(value);
       break;
     case 2:
-      var values = /** @type {!Array<!proto.randomizer.proto.common.MapId>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addBananaportRandomizedLevels(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getBananaportRandomizedLevelsList());
       break;
     default:
       reader.skipField();

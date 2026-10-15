@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.RaceCoinPlacement');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.CoinLocation');
 
 /**
@@ -96,7 +98,7 @@ locationsList: jspb.Message.toObjectList(msg.getLocationsList(),
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.RaceCoinPlacement}
  */
 proto.randomizer.proto.RaceCoinPlacement.deserializeBinary = function(bytes) {
@@ -133,7 +135,7 @@ proto.randomizer.proto.RaceCoinPlacement.deserializeBinaryFromReader = function(
       msg.setLevel(value);
       break;
     case 4:
-      var value = /** @type {string} */ (reader.readString());
+      var value = /** @type {string} */ (reader.readStringRequireUtf8());
       msg.setName(value);
       break;
     case 5:

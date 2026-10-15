@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.RequiredKeys');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 
 goog.forwardDeclare('proto.randomizer.proto.common.ItemId');
 /**
@@ -96,7 +98,7 @@ selectStartingKeys: jspb.Message.getBooleanFieldWithDefault(msg, 6, false)
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.RequiredKeys}
  */
 proto.randomizer.proto.RequiredKeys.deserializeBinary = function(bytes) {
@@ -129,10 +131,7 @@ proto.randomizer.proto.RequiredKeys.deserializeBinaryFromReader = function(msg, 
       msg.setSpecifiedQuantity(value);
       break;
     case 3:
-      var values = /** @type {!Array<!proto.randomizer.proto.common.ItemId>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addSpecifiedStartingKeys(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getSpecifiedStartingKeysList());
       break;
     case 4:
       var value = /** @type {boolean} */ (reader.readBool());

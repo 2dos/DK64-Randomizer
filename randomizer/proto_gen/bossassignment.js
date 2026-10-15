@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.BossAssignment');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 
 goog.forwardDeclare('proto.randomizer.proto.common.KongId');
 goog.forwardDeclare('proto.randomizer.proto.common.MapId');
@@ -86,7 +88,7 @@ kongId: (f = jspb.Message.getField(msg, 2)) == null ? undefined : f
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.BossAssignment}
  */
 proto.randomizer.proto.BossAssignment.deserializeBinary = function(bytes) {

@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.EnemyReplacement');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.KasplatSwap');
 
 /**
@@ -93,7 +95,7 @@ kasplatSwapsList: jspb.Message.toObjectList(msg.getKasplatSwapsList(),
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.EnemyReplacement}
  */
 proto.randomizer.proto.EnemyReplacement.deserializeBinary = function(bytes) {

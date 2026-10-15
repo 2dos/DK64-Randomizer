@@ -42,6 +42,7 @@
     },
     "devDependencies": {
         "electron": "^40.1.0",
-        "electron-builder": "^26.0.12"
+        "electron-builder": "^26.0.12",
+        "protoc-gen-js": "^4.0.3"
     }
 }
