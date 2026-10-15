@@ -2,6 +2,8 @@
 
 import os
 import shutil
+import subprocess
+import sys
 import zipfile
 
 # Define paths
@@ -35,6 +37,13 @@ for folder in folders_to_copy:
         # Make the directory if it doesn't exist
         os.makedirs(os.path.join(dk64_folder, folder), exist_ok=True)
         shutil.copytree(folder, os.path.join(dk64_folder, folder), dirs_exist_ok=True, ignore=shutil.ignore_patterns("__pycache__"))
+
+# EmuLoader stuff
+with open(requirements_file) as requirements:
+    emu_loader_requirement = next((line.strip() for line in requirements if "EmuLoader" in line), None)
+if emu_loader_requirement is None:
+    sys.exit(f"No EmuLoader line in {requirements_file}.")
+subprocess.run([sys.executable, "-m", "pip", "install", "--no-deps", "--upgrade", "--target", dk64_folder, emu_loader_requirement], check=True)
 
 
 # Function to zip a folder

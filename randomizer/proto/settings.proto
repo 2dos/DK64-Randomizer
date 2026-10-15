@@ -26,4 +26,10 @@ message SettingsInfo {
   QualityOfLifeSettings qol_settings = 5;
 
   PlandomizerSettings plandomizer_settings = 6;
+
+  reserved 7;
+  reserved "format_version";
+
+  bool generate_spoilerlog = 8;
+  bool has_password = 9;
 }

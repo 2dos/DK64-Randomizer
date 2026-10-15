@@ -107,6 +107,7 @@ message SpoilerHintsConfig {
     SpoilerHintsPoints points = 2;
     bool include_woth_count = 3;
     bool include_level_order = 4;
+    bool include_blocker_info = 5;
 }
 
 message ProgressiveHints {

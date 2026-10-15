@@ -66,15 +66,29 @@ from randomizer.ShuffleBosses import (
 )
 from version import version as randomizer_version
 
+DEFAULT_ITEM_PLAYTHROUGH = {item_id: item.playthrough for item_id, item in ItemList.items()}
+DEFAULT_IMPORTANT_SHARED_MOVES = list(ItemPool.ImportantSharedMoves)
+DEFAULT_JUNK_SHARED_MOVES = list(ItemPool.JunkSharedMoves)
+
+
+def reset_global_item_tables():
+    """Undo resolve_settings' changes to ItemList and ItemPool from earlier Settings objects."""
+    for item_id, playthrough in DEFAULT_ITEM_PLAYTHROUGH.items():
+        ItemList[item_id].playthrough = playthrough
+    ItemPool.ImportantSharedMoves = list(DEFAULT_IMPORTANT_SHARED_MOVES)
+    ItemPool.JunkSharedMoves = list(DEFAULT_JUNK_SHARED_MOVES)
+
 
 class Settings:
     """Class used to store settings for seed generation."""
 
-    def __init__(self, form_data: dict, random=random):
+    def __init__(self, form_data: dict, random=random, seed_salt: str = ""):
         """Init all the settings using the form data to set the flags.
 
         Args:
             form_data (dict): Post data from the html form.
+            seed_salt (str): Server-side secret mixed into the RNG seed only. Seeds whose spoiler
+                is hidden use it so the shipped settings and seed id cannot regenerate the spoiler.
         """
         self.__hash = randomizer_version
         self.public_hash = randomizer_version
@@ -95,7 +109,7 @@ class Settings:
         if self.generate_spoilerlog is None:
             self.generate_spoilerlog = False
         self.random = random
-        self.seed = str(self.seed) + self.__hash + str(json.dumps(form_data))
+        self.seed = str(self.seed) + self.__hash + seed_salt + str(json.dumps(form_data))
         if not self.archipelago:
             self.set_seed()
         self.seed_hash = [self.random.randint(0, 9) for i in range(5)]
@@ -255,11 +269,28 @@ class Settings:
             self.ApplyMusicSelections()
 
         self.resolve_settings()
+        try:
+            self.settings_string = self.to_proto_string()
+        except Exception:
+            logging.getLogger(__name__).exception("Could not build the settings string")
+            self.settings_string = ""
 
-        # Proto serialization moved to only happen when needed (generate_output or Generate_Spoiler)
-        # This avoids loading patching modules during Settings initialization
-        # self.settings_string = self.to_proto_string()
-        self.settings_string = ""  # Will be populated when proto is actually needed
+    @classmethod
+    def unresolved_from_form(cls, form_data: dict) -> "Settings":
+        """Return the user's choices as entered, for settings strings.
+
+        Unlike Settings(form_data), "random" options are not rolled, the RNG is not
+        seeded and no global state changes, so the same form always exports the
+        same string.
+        """
+        settings = cls.__new__(cls)
+        settings.generate_main()
+        settings.generate_progression()
+        settings.generate_misc()
+        settings.form_data = form_data
+        settings.version = version
+        settings.apply_form_data(form_data)
+        return settings
 
     def apply_form_data(self, form_data):
         """Convert and apply the provided form data to this class."""
@@ -273,7 +304,7 @@ class Settings:
                 # Failsafe in case enum conversion didn't happen elsewhere.
                 try:
                     return SettingsMap[keyString][valueString]
-                except ValueError:
+                except (KeyError, ValueError):
                     raise ValueError(f"Value '{valueString}' is invalid for setting '{keyString}'.")
 
         for k, v in form_data.items():
@@ -283,9 +314,11 @@ class Settings:
                 if type(v) is list:
                     settingValue = []
                     for val in v:
-                        settingValue.append(get_enum_value(k, val))
+                        # The UI turns unknown options into null; drop them.
+                        if val is not None:
+                            settingValue.append(get_enum_value(k, val))
                     setattr(self, k, settingValue)
-                else:
+                elif v is not None:
                     settingValue = get_enum_value(k, v)
                     setattr(self, k, settingValue)
             else:
@@ -1119,6 +1152,7 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
+        reset_global_item_tables()
         self.fast_start_beginning_of_game = True  # Double make sure this is set
         # Correct the invalid items in the starting move lists and identify the total number of starting moves
         guaranteed_starting_moves = []
@@ -2127,7 +2161,7 @@ class Settings:
                 data = wincon_items[x].getDifficultyInfo(wc_diff)
                 weight = 0 if data is None else data.selection_weight
                 potential_item_weights.append(weight)
-            selected_item = random.choices(potential_items, weights=potential_item_weights, k=1)[0]
+            selected_item = self.random.choices(potential_items, weights=potential_item_weights, k=1)[0]
             self.win_condition_item = selected_item
             self.win_condition_count = win_con_pool[selected_item]
         if self.win_condition_item in wincon_items.keys():
@@ -2208,9 +2242,9 @@ class Settings:
                 y = None
                 width = None
                 while True:
-                    x = random.randint(32, 192)
-                    y = random.randint(exclusion_y, 170 - exclusion_y)
-                    width = random.choice([1, 2, 2, 3, 3, 4, 4, 5])
+                    x = self.random.randint(32, 192)
+                    y = self.random.randint(exclusion_y, 170 - exclusion_y)
+                    width = self.random.choice([1, 2, 2, 3, 3, 4, 4, 5])
                     x_right = x + 0x10 + (width * 8)
                     is_excluded = False
                     for zone in exclusion_zones:
@@ -3492,12 +3526,12 @@ class Settings:
         return json.dumps(self.__dict__)
 
     def to_proto_string(self):
-        """Export settings as a protobuf-encoded base64 string.
+        """Export the settings the user chose as a settings string.
 
         Returns:
             str: Base64-encoded protobuf string representing the settings.
         """
-        return serialize_settings_to_base64(self)
+        return serialize_settings_to_base64(Settings.unresolved_from_form(self.form_data))
 
     def __setattr__(self, name, value):
         """Set an attributes value but only after verifying our hash."""

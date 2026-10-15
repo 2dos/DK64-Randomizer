@@ -184,7 +184,11 @@ def ShuffleDoors(spoiler, wrinkly_placed: bool = False, tns_placed: bool = False
                         and location_var in spoiler.settings.plandomizer_dict["plando_wrinkly_doors"].keys()
                     ):
                         if spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][location_var] not in ("", -1):
-                            selected_door_index = [x for x in plando_indexes if door_locations[level][x].name == spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][location_var]][0]
+                            plando_door_name = spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][location_var]
+                            matching_doors = [x for x in plando_indexes if door_locations[level][x].name == plando_door_name]
+                            if not matching_doors:
+                                raise Exceptions.PlandoIncompatibleException(f"Unknown Wrinkly door location: {plando_door_name}.")
+                            selected_door_index = matching_doors[0]
                             retry = False
                         else:
                             selected_door_index = available_doors.pop()

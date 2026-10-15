@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.OverworldSettings');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.BananaportRandomizer');
 goog.require('proto.randomizer.proto.ColoredBananaRandomizer');
 goog.require('proto.randomizer.proto.HardBoss');
@@ -136,7 +138,11 @@ noConsumableUpgrades: jspb.Message.getBooleanFieldWithDefault(msg, 39, false),
 hardMode: (f = msg.getHardMode()) && proto.randomizer.proto.HardMode.toObject(includeInstance, f),
 hardBosses: (f = msg.getHardBosses()) && proto.randomizer.proto.HardBoss.toObject(includeInstance, f),
 damage: jspb.Message.getFieldWithDefault(msg, 42, 0),
-shipLocationRando: jspb.Message.getBooleanFieldWithDefault(msg, 43, false)
+shipLocationRando: jspb.Message.getBooleanFieldWithDefault(msg, 43, false),
+seasonalDoorShuffle: jspb.Message.getBooleanFieldWithDefault(msg, 44, false),
+seasonalCrateShuffle: jspb.Message.getBooleanFieldWithDefault(msg, 45, false),
+permaDeath: jspb.Message.getBooleanFieldWithDefault(msg, 46, false),
+lives: (f = jspb.Message.getField(msg, 47)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -149,7 +155,7 @@ shipLocationRando: jspb.Message.getBooleanFieldWithDefault(msg, 43, false)
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.OverworldSettings}
  */
 proto.randomizer.proto.OverworldSettings.deserializeBinary = function(bytes) {
@@ -269,16 +275,10 @@ proto.randomizer.proto.OverworldSettings.deserializeBinaryFromReader = function(
       msg.setKroolInBossPool(value);
       break;
     case 24:
-      var values = /** @type {!Array<!proto.randomizer.proto.common.MapId>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addBossesSelected(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getBossesSelectedList());
       break;
     case 25:
-      var values = /** @type {!Array<!proto.randomizer.proto.ShuffledEnemy>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addShuffledEnemies(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getShuffledEnemiesList());
       break;
     case 26:
       var value = /** @type {!proto.randomizer.proto.CrownEnemies} */ (reader.readEnum());
@@ -293,10 +293,7 @@ proto.randomizer.proto.OverworldSettings.deserializeBinaryFromReader = function(
       msg.setRandomEnemySize(value);
       break;
     case 29:
-      var values = /** @type {!Array<!proto.randomizer.proto.ShuffledBonusBarrel>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addShuffledBonusBarrels(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getShuffledBonusBarrelsList());
       break;
     case 30:
       var value = /** @type {boolean} */ (reader.readBool());
@@ -356,6 +353,22 @@ proto.randomizer.proto.OverworldSettings.deserializeBinaryFromReader = function(
     case 43:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setShipLocationRando(value);
+      break;
+    case 44:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSeasonalDoorShuffle(value);
+      break;
+    case 45:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSeasonalCrateShuffle(value);
+      break;
+    case 46:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setPermaDeath(value);
+      break;
+    case 47:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setLives(value);
       break;
     default:
       reader.skipField();
@@ -690,6 +703,34 @@ proto.randomizer.proto.OverworldSettings.serializeBinaryToWriter = function(mess
   if (f) {
     writer.writeBool(
       43,
+      f
+    );
+  }
+  f = message.getSeasonalDoorShuffle();
+  if (f) {
+    writer.writeBool(
+      44,
+      f
+    );
+  }
+  f = message.getSeasonalCrateShuffle();
+  if (f) {
+    writer.writeBool(
+      45,
+      f
+    );
+  }
+  f = message.getPermaDeath();
+  if (f) {
+    writer.writeBool(
+      46,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 47));
+  if (f != null) {
+    writer.writeInt32(
+      47,
       f
     );
   }
@@ -1638,6 +1679,96 @@ proto.randomizer.proto.OverworldSettings.prototype.getShipLocationRando = functi
  */
 proto.randomizer.proto.OverworldSettings.prototype.setShipLocationRando = function(value) {
   return jspb.Message.setProto3BooleanField(this, 43, value);
+};
+
+
+/**
+ * optional bool seasonal_door_shuffle = 44;
+ * @return {boolean}
+ */
+proto.randomizer.proto.OverworldSettings.prototype.getSeasonalDoorShuffle = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 44, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.OverworldSettings} returns this
+ */
+proto.randomizer.proto.OverworldSettings.prototype.setSeasonalDoorShuffle = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 44, value);
+};
+
+
+/**
+ * optional bool seasonal_crate_shuffle = 45;
+ * @return {boolean}
+ */
+proto.randomizer.proto.OverworldSettings.prototype.getSeasonalCrateShuffle = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 45, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.OverworldSettings} returns this
+ */
+proto.randomizer.proto.OverworldSettings.prototype.setSeasonalCrateShuffle = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 45, value);
+};
+
+
+/**
+ * optional bool perma_death = 46;
+ * @return {boolean}
+ */
+proto.randomizer.proto.OverworldSettings.prototype.getPermaDeath = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 46, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.OverworldSettings} returns this
+ */
+proto.randomizer.proto.OverworldSettings.prototype.setPermaDeath = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 46, value);
+};
+
+
+/**
+ * optional int32 lives = 47;
+ * @return {number}
+ */
+proto.randomizer.proto.OverworldSettings.prototype.getLives = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 47, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.randomizer.proto.OverworldSettings} returns this
+ */
+proto.randomizer.proto.OverworldSettings.prototype.setLives = function(value) {
+  return jspb.Message.setField(this, 47, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.randomizer.proto.OverworldSettings} returns this
+ */
+proto.randomizer.proto.OverworldSettings.prototype.clearLives = function() {
+  return jspb.Message.setField(this, 47, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.randomizer.proto.OverworldSettings.prototype.hasLives = function() {
+  return jspb.Message.getField(this, 47) != null;
 };
 
 

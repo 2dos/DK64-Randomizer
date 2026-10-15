@@ -1,19 +1,18 @@
 """Settings serialization to/from Protocol Buffers."""
 
 import base64
+import enum
+import hashlib
+import importlib
 import json
 import logging
-import os
-import sys
+import zlib
+from types import SimpleNamespace
 from typing import Any, Dict, Iterable, List, Tuple, TYPE_CHECKING
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import CrownEnemyRando, HardBossesSelected, HardModeSelected, HelmDoorItem, MiscChangesSelected, SlamRequirement
+from randomizer.Enums.Settings import HardBossesSelected, HardModeSelected, HelmDoorItem, MiscChangesSelected, SlamRequirement
 from randomizer.Enums.Types import BarrierItems
-
-proto_gen_path = os.path.join(os.path.dirname(__file__), "proto_gen")
-if proto_gen_path not in sys.path:
-    sys.path.insert(0, proto_gen_path)
 
 from randomizer.proto_gen import (
     endgame_settings_pb2,
@@ -84,8 +83,13 @@ def _to_int(val: Any, default: int = 0) -> int:
 # =============================================================================
 
 
+SETTINGS_SECTIONS = ("item_settings", "requirement_settings", "overworld_settings", "endgame_settings", "qol_settings")
+MAX_SETTINGS_BYTES = 1 << 14
+
+
 def settings_to_proto(settings: "Settings") -> settings_pb2.SettingsInfo:
     """Convert a Settings object to a SettingsInfo protobuf message."""
+
     proto = settings_pb2.SettingsInfo()
     _populate_item_settings(settings, proto.item_settings)
     _populate_requirement_settings(settings, proto.requirement_settings)
@@ -93,43 +97,74 @@ def settings_to_proto(settings: "Settings") -> settings_pb2.SettingsInfo:
     _populate_endgame_settings(settings, proto.endgame_settings)
     _populate_qol_settings(settings, proto.qol_settings)
     _populate_plandomizer_settings(settings, proto.plandomizer_settings)
+    proto.generate_spoilerlog = bool(getattr(settings, "generate_spoilerlog", False))
+    proto.has_password = bool(getattr(settings, "has_password", False))
     return proto
 
 
 def proto_to_settings(proto: settings_pb2.SettingsInfo, settings: "Settings") -> None:
     """Apply settings from a SettingsInfo protobuf message to a Settings object."""
+
     _apply_item_settings(proto.item_settings, settings)
     _apply_requirement_settings(proto.requirement_settings, settings)
     _apply_overworld_settings(proto.overworld_settings, settings)
     _apply_endgame_settings(proto.endgame_settings, settings)
     _apply_qol_settings(proto.qol_settings, settings)
     _apply_plandomizer_settings(proto.plandomizer_settings, settings)
+    settings.generate_spoilerlog = bool(proto.generate_spoilerlog)
+    settings.has_password = bool(proto.has_password)
+
+
+def settings_string_to_form_data(settings_string: str) -> dict:
+    """Decode a settings string into form data keyed by the web form's field names.
+
+    The result is what the website posts for generation, so it can be passed to Settings().
+    """
+    container = SimpleNamespace()
+    proto_to_settings(deserialize_settings_from_base64(settings_string), container)
+    # Enum members are IntEnums, so they serialize as their values.
+    return json.loads(json.dumps(vars(container)))
 
 
 def serialize_settings_to_base64(settings: "Settings") -> str:
-    """Serialize a Settings object to a URL-safe base64-encoded protobuf string."""
-    proto = settings_to_proto(settings)
-    return base64.urlsafe_b64encode(proto.SerializeToString()).decode("utf-8")
+    """Serialize a Settings object to a zlib-compressed, URL-safe base64 settings string."""
+    compressed = zlib.compress(settings_to_proto(settings).SerializeToString(), 9)
+    return base64.urlsafe_b64encode(compressed).decode("utf-8").rstrip("=")
+
+
+def decompress_settings(data: bytes) -> bytes:
+    """Inflate a compressed settings string, refusing it if it's truncated, oversized or followed by extra data."""
+    decompressor = zlib.decompressobj()
+    raw = decompressor.decompress(data, MAX_SETTINGS_BYTES)
+    if not decompressor.eof or decompressor.unused_data:
+        raise ValueError("The settings string is truncated, too large or has extra data.")
+    return raw
 
 
 def deserialize_settings_from_base64(proto_string: str) -> settings_pb2.SettingsInfo:
-    """Deserialize a base64-encoded protobuf string to a SettingsInfo message.
+    """Deserialize a settings string to a SettingsInfo message.
+
+    Accepts compressed strings and the uncompressed strings made before compression was added.
 
     Raises:
-        ValueError: If the string cannot be decoded or parsed.
+        ValueError: With a user-facing message if the string is empty or malformed
+            (including pre-v6 strings).
     """
+    if not isinstance(proto_string, str) or not proto_string.strip():
+        raise ValueError("The settings string is empty.")
+    text = "".join(proto_string.split())
     try:
-        try:
-            binary_data = base64.urlsafe_b64decode(proto_string)
-        except Exception:
-            # Fall back to standard base64 for older / non-URL-safe payloads.
-            binary_data = base64.b64decode(proto_string)
-
+        # altchars accepts both the URL-safe and the standard alphabet; pad stripped '='.
+        binary_data = base64.b64decode(text + "=" * (-len(text) % 4), altchars=b"-_", validate=True)
+        if binary_data[:1] == b"\x78":  # zlib header
+            binary_data = decompress_settings(binary_data)
         proto = settings_pb2.SettingsInfo()
         proto.ParseFromString(binary_data)
-        return proto
-    except Exception as e:
-        raise ValueError(f"Failed to deserialize proto string: {e}")
+    except Exception:
+        raise ValueError("This is not a valid settings string. Settings strings from before version 6 can't be imported; re-create the settings and export a new string.")
+    if not all(proto.HasField(section) for section in SETTINGS_SECTIONS):
+        raise ValueError("This is not a valid settings string.")
+    return proto
 
 
 def is_proto_settings_string(settings_string: str) -> bool:
@@ -224,7 +259,6 @@ def _populate_item_settings(settings: "Settings", proto: item_settings_pb2.ItemS
 
 def _apply_item_settings(proto: item_settings_pb2.ItemSettings, settings: "Settings") -> None:
     """Apply ItemSettings proto to Settings object."""
-
     is_decoupled = bool(proto.decouple_item_rando)
     settings.decouple_item_rando = is_decoupled
 
@@ -316,16 +350,14 @@ _SWITCHSANITY_LOCATIONS: Tuple[Tuple[int, str], ...] = (
 def _populate_requirement_settings(settings: "Settings", proto: requirement_settings_pb2.RequirementSettings) -> None:
     """Populate RequirementSettings proto from Settings object."""
     # B Locker / T&S / quantity-based requirements
-    proto.b_locker_option.opt = settings.blocker_selection_behavior
-    if settings.BLockerEntryCount:
-        proto.b_locker_option.amounts.extend(settings.BLockerEntryCount)
-    proto.b_locker_option.maximum = settings.blocker_max
+    proto.b_locker_option.opt = _to_int(settings.blocker_selection_behavior)
+    proto.b_locker_option.amounts.extend(_to_int(getattr(settings, f"blocker_{i}", None)) for i in range(8))
+    proto.b_locker_option.maximum = _to_int(getattr(settings, "blocker_text", None), 50)
     proto.maximize_helm_b_locker = bool(settings.maximize_helm_blocker)
 
-    proto.tns_option.opt = settings.tns_selection_behavior
-    if settings.BossBananas:
-        proto.tns_option.amounts.extend(settings.BossBananas)
-    proto.tns_option.maximum = settings.troff_max
+    proto.tns_option.opt = _to_int(settings.tns_selection_behavior)
+    proto.tns_option.amounts.extend(_to_int(getattr(settings, f"troff_{i}", None)) for i in range(8))
+    proto.tns_option.maximum = _to_int(getattr(settings, "troff_text", None), 270)
 
     proto.medals_for_jetpac.opt = settings.medal_jetpac_behavior
     proto.medals_for_jetpac.selected_quantity = settings.medal_requirement
@@ -338,6 +370,7 @@ def _populate_requirement_settings(settings: "Settings", proto: requirement_sett
 
     proto.cbs_for_medal.opt = settings.cb_medal_behavior_new
     proto.cbs_for_medal.selected_quantity = settings.medal_cb_req
+    proto.half_medal_percentage = _to_int(getattr(settings, "half_medal_percentage", None), 50)
 
     proto.open_lobbies = bool(settings.open_lobbies)
 
@@ -360,10 +393,10 @@ def _populate_requirement_settings(settings: "Settings", proto: requirement_sett
     if settings.remove_barriers_selected:
         proto.removed_barriers.extend(_enum_values(settings.remove_barriers_selected))
 
-    proto.galleon_water = settings.galleon_water
-    proto.fungi_time = settings.fungi_time
-    proto.shop_prices = settings.random_prices
-    proto.activate_bananaports = settings.activate_all_bananaports
+    proto.galleon_water = _to_int(settings.galleon_water)
+    proto.fungi_time = _to_int(settings.fungi_time)
+    proto.shop_prices = _to_int(settings.random_prices)
+    proto.activate_bananaports = _to_int(settings.activate_all_bananaports)
 
     if settings.faster_checks_selected:
         proto.faster_checks.extend(_enum_values(settings.faster_checks_selected))
@@ -378,13 +411,15 @@ def _populate_requirement_settings(settings: "Settings", proto: requirement_sett
 def _apply_requirement_settings(proto: requirement_settings_pb2.RequirementSettings, settings: "Settings") -> None:
     """Apply RequirementSettings proto to Settings object."""
     settings.blocker_selection_behavior = proto.b_locker_option.opt
-    settings.BLockerEntryCount = list(proto.b_locker_option.amounts)
-    settings.blocker_max = proto.b_locker_option.maximum
+    for i, amount in enumerate(list(proto.b_locker_option.amounts)[:8]):
+        setattr(settings, f"blocker_{i}", amount)
+    settings.blocker_text = proto.b_locker_option.maximum
     settings.maximize_helm_blocker = bool(proto.maximize_helm_b_locker)
 
     settings.tns_selection_behavior = proto.tns_option.opt
-    settings.BossBananas = list(proto.tns_option.amounts)
-    settings.troff_max = proto.tns_option.maximum
+    for i, amount in enumerate(list(proto.tns_option.amounts)[:8]):
+        setattr(settings, f"troff_{i}", amount)
+    settings.troff_text = proto.tns_option.maximum
 
     settings.medal_jetpac_behavior = proto.medals_for_jetpac.opt
     settings.medal_requirement = proto.medals_for_jetpac.selected_quantity
@@ -397,6 +432,8 @@ def _apply_requirement_settings(proto: requirement_settings_pb2.RequirementSetti
 
     settings.cb_medal_behavior_new = proto.cbs_for_medal.opt
     settings.medal_cb_req = proto.cbs_for_medal.selected_quantity
+    if proto.HasField("half_medal_percentage"):
+        settings.half_medal_percentage = proto.half_medal_percentage
 
     settings.open_lobbies = bool(proto.open_lobbies)
 
@@ -431,11 +468,7 @@ def _apply_requirement_settings(proto: requirement_settings_pb2.RequirementSetti
 # =============================================================================
 # Overworld settings
 # =============================================================================
-# Add a new kong model / helm-hurry timer / hard-mode toggle / hard-boss
-# toggle: append one row to the matching table below. Other new simple
-# settings need an explicit line in both _populate_* and _apply_*.
 
-# (kong_models proto field, Settings attribute).
 _KONG_MODEL_FIELDS: Tuple[Tuple[str, str], ...] = (
     ("dk_model", "kong_model_dk"),
     ("diddy_model", "kong_model_diddy"),
@@ -459,13 +492,11 @@ _HELM_HURRY_FIELDS: Tuple[Tuple[str, str], ...] = (
     ("bean_time", "helmhurry_list_bean"),
     ("pearl_time", "helmhurry_list_pearl"),
     ("kong_time", "helmhurry_list_kongs"),
-    ("fairy_time", "helmhurry_list_fairy"),
+    ("fairy_time", "helmhurry_list_fairies"),
     ("cb_time", "helmhurry_list_colored_bananas"),
     ("trap_time", "helmhurry_list_ice_traps"),
 )
 
-# Proto bool fields on hard_mode. Each name must match a HardModeSelected
-# enum member (proto field name == enum member name).
 _HARD_MODE_FIELDS: Tuple[str, ...] = (
     "hard_enemies",
     "water_is_lava",
@@ -479,8 +510,7 @@ _HARD_MODE_FIELDS: Tuple[str, ...] = (
     "fast_balloons",
 )
 
-# Proto bool fields on hard_bosses. Each name must match a HardBossesSelected
-# enum member.
+# Proto bool fields on hard_bosses
 _HARD_BOSSES_FIELDS: Tuple[str, ...] = (
     "fast_mad_jack",
     "alternative_mad_jack_kongs",
@@ -494,7 +524,6 @@ _HARD_BOSSES_FIELDS: Tuple[str, ...] = (
 
 def _populate_overworld_settings(settings: "Settings", proto: overworld_settings_pb2.OverworldSettings) -> None:
     """Populate OverworldSettings proto from Settings object."""
-
     # World navigation
     proto.entrance_randomizer = settings.level_randomization
     proto.shuffle_helm_location = bool(settings.shuffle_helm_location)
@@ -505,13 +534,11 @@ def _populate_overworld_settings(settings: "Settings", proto: overworld_settings
     for proto_field, settings_attr in _KONG_MODEL_FIELDS:
         setattr(proto.kong_models, proto_field, getattr(settings, settings_attr))
 
-    # Location randomizers. Dirt patches / fairies / crates are derived from
-    # whether their matching enum value appears in item_rando_list_selected.
-    item_rando_values = {_enum_value(x) for x in (settings.item_rando_list_selected or [])}
-    proto.dirt_patch_randomizer = 0 in item_rando_values
+    # Location randomizers
+    proto.dirt_patch_randomizer = bool(getattr(settings, "random_patches", False))
     proto.banana_coin_randomizer = bool(settings.coin_rando)
-    proto.banana_fairy_randomizer = 2 in item_rando_values
-    proto.melon_crate_randomizer = 3 in item_rando_values
+    proto.banana_fairy_randomizer = bool(getattr(settings, "random_fairies", False))
+    proto.melon_crate_randomizer = bool(getattr(settings, "random_crates", False))
     proto.battle_crown_randomizer = bool(settings.crown_placement_rando)
     proto.race_coin_randomizer = bool(settings.race_coin_rando)
     proto.randomize_pickups = bool(settings.randomize_pickups)
@@ -522,16 +549,18 @@ def _populate_overworld_settings(settings: "Settings", proto: overworld_settings
     if settings.cb_rando_list_selected:
         proto.cb_randomizer.cb_randomized_levels.extend(_enum_values(settings.cb_rando_list_selected))
 
-    proto.kasplat_randomizer = settings.kasplat_rando_setting
+    proto.kasplat_randomizer = _to_int(settings.kasplat_rando_setting)
 
-    # Bananaport randomizer (Settings does not keep a placement list, only the opt).
-    proto.bananaport_randomizer.opt = settings.bananaport_placement_rando
+    proto.bananaport_randomizer.opt = _to_int(settings.bananaport_placement_rando)
+    proto.bananaport_randomizer.bananaport_randomized_levels.extend(_enum_values(getattr(settings, "warp_level_list_selected", None) or []))
 
     proto.wrinky_door_randomizer = bool(settings.wrinkly_location_rando)
     proto.tns_portal_randomizer = bool(settings.tns_location_rando)
     proto.vanilla_door_shuffle = bool(settings.vanilla_door_rando)
     proto.dos_doors = bool(settings.dos_door_rando)
     proto.dk_portal_randomizer = settings.dk_portal_location_rando_v2
+    proto.seasonal_door_shuffle = bool(getattr(settings, "season5_door_rando", False))
+    proto.seasonal_crate_shuffle = bool(getattr(settings, "season5_crate_rando", False))
 
     # Bosses
     proto.shuffle_boss_location = bool(settings.boss_location_rando)
@@ -555,8 +584,10 @@ def _populate_overworld_settings(settings: "Settings", proto: overworld_settings
     proto.alternate_minecart_mayhem = bool(settings.alt_minecart_mayhem)
 
     # Difficulty
-    proto.no_heals = bool(settings.no_healing)
-    proto.no_melon_slice_drops = bool(settings.no_melons)
+    proto.no_heals = bool(getattr(settings, "no_healing", False))
+    proto.no_melon_slice_drops = bool(getattr(settings, "no_melons", False))
+    proto.perma_death = bool(getattr(settings, "perma_death", False))
+    proto.lives = _to_int(getattr(settings, "lives", None), 5)
     proto.ice_traps_damage_player = bool(settings.ice_traps_damage)
     proto.mirror_mode = bool(settings.mirror_mode)
     proto.tag_barrels_disabled = bool(settings.disable_tag_barrels)
@@ -583,7 +614,6 @@ def _populate_overworld_settings(settings: "Settings", proto: overworld_settings
 
 def _apply_overworld_settings(proto: overworld_settings_pb2.OverworldSettings, settings: "Settings") -> None:
     """Apply OverworldSettings proto to Settings object."""
-
     settings.level_randomization = proto.entrance_randomizer
     settings.shuffle_helm_location = bool(proto.shuffle_helm_location)
     settings.bananaport_rando = proto.cross_map_bananaports
@@ -592,7 +622,10 @@ def _apply_overworld_settings(proto: overworld_settings_pb2.OverworldSettings, s
     for proto_field, settings_attr in _KONG_MODEL_FIELDS:
         setattr(settings, settings_attr, getattr(proto.kong_models, proto_field))
 
+    settings.random_patches = bool(proto.dirt_patch_randomizer)
     settings.coin_rando = bool(proto.banana_coin_randomizer)
+    settings.random_fairies = bool(proto.banana_fairy_randomizer)
+    settings.random_crates = bool(proto.melon_crate_randomizer)
     settings.crown_placement_rando = bool(proto.battle_crown_randomizer)
     settings.race_coin_rando = bool(proto.race_coin_randomizer)
     settings.randomize_pickups = bool(proto.randomize_pickups)
@@ -603,12 +636,15 @@ def _apply_overworld_settings(proto: overworld_settings_pb2.OverworldSettings, s
 
     settings.kasplat_rando_setting = proto.kasplat_randomizer
     settings.bananaport_placement_rando = proto.bananaport_randomizer.opt
+    settings.warp_level_list_selected = list(proto.bananaport_randomizer.bananaport_randomized_levels)
 
     settings.wrinkly_location_rando = bool(proto.wrinky_door_randomizer)
     settings.tns_location_rando = bool(proto.tns_portal_randomizer)
     settings.vanilla_door_rando = bool(proto.vanilla_door_shuffle)
     settings.dos_door_rando = bool(proto.dos_doors)
     settings.dk_portal_location_rando_v2 = proto.dk_portal_randomizer
+    settings.season5_door_rando = bool(proto.seasonal_door_shuffle)
+    settings.season5_crate_rando = bool(proto.seasonal_crate_shuffle)
 
     settings.boss_location_rando = bool(proto.shuffle_boss_location)
     settings.krool_in_boss_pool_v2 = proto.krool_in_boss_pool
@@ -627,6 +663,9 @@ def _apply_overworld_settings(proto: overworld_settings_pb2.OverworldSettings, s
 
     settings.no_healing = bool(proto.no_heals)
     settings.no_melons = bool(proto.no_melon_slice_drops)
+    settings.perma_death = bool(proto.perma_death)
+    if proto.HasField("lives"):
+        settings.lives = proto.lives
     settings.ice_traps_damage = bool(proto.ice_traps_damage_player)
     settings.mirror_mode = bool(proto.mirror_mode)
     settings.disable_tag_barrels = bool(proto.tag_barrels_disabled)
@@ -721,37 +760,38 @@ def _populate_endgame_settings(settings: "Settings", proto: endgame_settings_pb2
     proto.logic.type = settings.logic_type
     if settings.glitches_selected:
         proto.logic.glitches.extend(_enum_values(settings.glitches_selected))
-    if settings.tricks_selected:
+    if getattr(settings, "tricks_selected", None):
         proto.logic.tricks.extend(_enum_values(settings.tricks_selected))
 
     # Win condition
     proto.win_condition.type = settings.win_condition_item
     proto.win_condition.quantity = settings.win_condition_count
     proto.win_condition.spawns_ship = bool(settings.win_condition_spawns_ship)
+    for i in range(1, 9):
+        task = proto.win_condition.tasks.add()
+        task.condition = _to_int(getattr(settings, f"task_{i}_condition", None))
+        task.count = _to_int(getattr(settings, f"task_{i}_count", None), 1)
 
     # Required keys
-    proto.required_keys.random_quantity = bool(settings.select_keys)
+    proto.required_keys.random_quantity = bool(settings.keys_random)
     proto.required_keys.specified_quantity = settings.krool_key_count
     if settings.starting_keys_list_selected:
         proto.required_keys.specified_starting_keys.extend(_enum_values(settings.starting_keys_list_selected))
     proto.required_keys.helm_key_lock = bool(settings.key_8_helm)
-    proto.required_keys.key_8_required = bool(settings.k_rool_vanilla_requirement)
-    proto.required_keys.random_quantity = bool(settings.keys_random)
+    proto.required_keys.key_8_required = bool(settings.krool_access)
+    proto.required_keys.select_starting_keys = bool(settings.select_keys)
 
-    # Starting Kongs
-    proto.starting_kongs.random_quantity = bool(settings.kong_rando)
-    proto.starting_kongs.specified_quantity = settings.starting_kongs_count
-    proto.starting_kongs.specified_starting_kong = _KONG_TO_PROTO.get(int(settings.starting_kong), 0)
+    # Starting Kongs (kong_rando is derived during generation, not a form setting)
     proto.starting_kongs.random_quantity = bool(settings.starting_random)
+    proto.starting_kongs.specified_quantity = settings.starting_kongs_count
+    proto.starting_kongs.specified_starting_kong = _KONG_TO_PROTO.get(_to_int(settings.starting_kong, int(Kongs.any)), 0)
 
-    # Helm settings. helm_setting serves double duty as both specified length
-    # and helm start location.
-    proto.helm_settings.random_length = bool(settings.helm_barrels == 1)  # MinigameBarrels.random
-    proto.helm_settings.specified_length = settings.helm_setting if settings.helm_setting else 0
-    proto.helm_settings.shuffle_helm_rooms = bool(settings.helm_phase_order_rando)
-    proto.helm_settings.helm_start_location = settings.helm_setting
-    proto.helm_settings.helm_room_bonus_count = settings.helm_room_bonus_count
+    # Helm settings
     proto.helm_settings.random_length = bool(settings.helm_random)
+    proto.helm_settings.specified_length = _to_int(settings.helm_phase_count, 3)
+    proto.helm_settings.shuffle_helm_rooms = bool(settings.helm_phase_order_rando)
+    proto.helm_settings.helm_start_location = _to_int(settings.helm_setting)
+    proto.helm_settings.helm_room_bonus_count = settings.helm_room_bonus_count
 
     # Always emit exactly two entries so index [0] = crown door, [1] = coin door.
     crown_req = proto.helm_settings.helm_door_requirements.add()
@@ -778,22 +818,24 @@ def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, setting
     settings.win_condition_item = proto.win_condition.type
     settings.win_condition_count = proto.win_condition.quantity
     settings.win_condition_spawns_ship = bool(proto.win_condition.spawns_ship)
+    for i, task in enumerate(list(proto.win_condition.tasks)[:8], start=1):
+        setattr(settings, f"task_{i}_condition", task.condition)
+        setattr(settings, f"task_{i}_count", task.count)
 
-    settings.select_keys = bool(proto.required_keys.random_quantity)
+    settings.select_keys = bool(proto.required_keys.select_starting_keys)
     settings.krool_key_count = proto.required_keys.specified_quantity
     settings.starting_keys_list_selected = list(proto.required_keys.specified_starting_keys)
     settings.key_8_helm = bool(proto.required_keys.helm_key_lock)
-    settings.k_rool_vanilla_requirement = bool(proto.required_keys.key_8_required)
+    settings.krool_access = bool(proto.required_keys.key_8_required)
     settings.keys_random = bool(proto.required_keys.random_quantity)
 
-    settings.kong_rando = bool(proto.starting_kongs.random_quantity)
     settings.starting_kongs_count = proto.starting_kongs.specified_quantity
     settings.starting_kong = Kongs(_PROTO_TO_KONG.get(int(proto.starting_kongs.specified_starting_kong), 5))
     settings.starting_random = bool(proto.starting_kongs.random_quantity)
 
-    if proto.helm_settings.random_length:
-        settings.helm_barrels = 1  # MinigameBarrels.random
-    settings.helm_setting = proto.helm_settings.helm_start_location if proto.helm_settings.helm_start_location else proto.helm_settings.specified_length
+    settings.helm_setting = proto.helm_settings.helm_start_location
+    if proto.helm_settings.HasField("specified_length"):
+        settings.helm_phase_count = proto.helm_settings.specified_length
     settings.helm_phase_order_rando = bool(proto.helm_settings.shuffle_helm_rooms)
     settings.helm_room_bonus_count = proto.helm_settings.helm_room_bonus_count
     settings.helm_random = bool(proto.helm_settings.random_length)
@@ -816,12 +858,6 @@ def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, setting
 # =============================================================================
 # Quality of life settings
 # =============================================================================
-# Add a new simple bool toggle: append a row to _QOL_BOOL_FIELDS.
-# Add a new MiscChanges bool (proto field name matches enum member):
-# append the name to _MISC_CHANGES_FIELDS.
-# Add a new spoiler-hint points category: append a row to
-# _SPOILER_POINTS_FIELDS. Anything else needs explicit lines in
-# _populate_qol_settings and _apply_qol_settings.
 
 # (QoL proto bool, Settings attribute) pairs for simple passthroughs.
 _QOL_BOOL_FIELDS: Tuple[Tuple[str, str], ...] = (
@@ -891,10 +927,9 @@ _SPOILER_POINTS_FIELDS: Tuple[Tuple[str, str], ...] = (
 
 def _populate_qol_settings(settings: "Settings", proto: qol_settings_pb2.QualityOfLifeSettings) -> None:
     """Populate QualityOfLifeSettings proto from Settings object."""
-
     for proto_field, settings_attr in _QOL_BOOL_FIELDS:
-        setattr(proto, proto_field, bool(getattr(settings, settings_attr)))
-    proto.enemy_kill_crown_timer = bool(settings.enemy_kill_crown_timer != CrownEnemyRando.off)
+        setattr(proto, proto_field, bool(getattr(settings, settings_attr, False)))
+    proto.enemy_kill_crown_timer = bool(getattr(settings, "enemy_kill_crown_timer", False))
 
     proto.cutscene_skips = settings.more_cutscene_skips
 
@@ -904,7 +939,7 @@ def _populate_qol_settings(settings: "Settings", proto: qol_settings_pb2.Quality
 
     # Hints
     proto.hints.wrinkly_hints = settings.wrinkly_hints
-    proto.hints.shop_hints = bool(settings.enable_shop_hints)
+    proto.hints.shop_hints = bool(getattr(settings, "enable_shop_hints", False))
     proto.hints.dim_solved_hints = bool(settings.dim_solved_hints)
     proto.hints.no_joke_hints = bool(settings.serious_hints)
     proto.hints.kongless_hint_doors = bool(settings.wrinkly_available)
@@ -921,6 +956,7 @@ def _populate_qol_settings(settings: "Settings", proto: qol_settings_pb2.Quality
     proto.hints.spoiler_hints.type = settings.spoiler_hints
     proto.hints.spoiler_hints.include_woth_count = bool(settings.spoiler_include_woth_count)
     proto.hints.spoiler_hints.include_level_order = bool(settings.spoiler_include_level_order)
+    proto.hints.spoiler_hints.include_blocker_info = bool(getattr(settings, "spoiler_include_blocker_info", False))
 
     for proto_field, settings_attr in _SPOILER_POINTS_FIELDS:
         setattr(proto.hints.spoiler_hints.points, proto_field, int(getattr(settings, settings_attr)))
@@ -928,7 +964,6 @@ def _populate_qol_settings(settings: "Settings", proto: qol_settings_pb2.Quality
 
 def _apply_qol_settings(proto: qol_settings_pb2.QualityOfLifeSettings, settings: "Settings") -> None:
     """Apply QualityOfLifeSettings proto to Settings object."""
-
     for proto_field, settings_attr in _QOL_BOOL_FIELDS:
         setattr(settings, settings_attr, bool(getattr(proto, proto_field)))
     settings.enemy_kill_crown_timer = bool(proto.enemy_kill_crown_timer)
@@ -956,6 +991,7 @@ def _apply_qol_settings(proto: qol_settings_pb2.QualityOfLifeSettings, settings:
     settings.spoiler_hints = proto.hints.spoiler_hints.type
     settings.spoiler_include_woth_count = bool(proto.hints.spoiler_hints.include_woth_count)
     settings.spoiler_include_level_order = bool(proto.hints.spoiler_hints.include_level_order)
+    settings.spoiler_include_blocker_info = bool(proto.hints.spoiler_hints.include_blocker_info)
 
     for proto_field, settings_attr in _SPOILER_POINTS_FIELDS:
         setattr(settings, settings_attr, int(getattr(proto.hints.spoiler_hints.points, proto_field)))
@@ -1014,6 +1050,8 @@ def _populate_location_assignments(spoiler: "Spoiler", proto: fill_result_pb2.Lo
     for location_id, location in spoiler.LocationList.items():
         if location.item is not None:
             proto.assignments[int(location_id)] = int(location.item)
+        if location.inaccessible:
+            proto.inaccessible_locations.append(int(location_id))
 
 
 # -----------------------------------------------------------------------------
@@ -1038,16 +1076,19 @@ def _populate_move_entry(move_dict: Any, proto: fill_result_pb2.MoveEntry) -> No
         return
 
     move_type = move_dict.get("move_type")
+    # Progressive moves at vanilla prices carry a list of tier prices
+    price = move_dict.get("price", 0)
+    price = 0 if isinstance(price, (list, tuple)) else _to_int(price)
     if move_type is None:
         proto.empty_move.CopyFrom(fill_result_pb2.EmptyMove())
     elif move_type == "flag":
         proto.flag_move.flag = move_dict.get("flag", "")
-        proto.flag_move.price = move_dict.get("price", 0)
+        proto.flag_move.price = price
     elif move_type in _MOVE_ENTRY_TYPES:
         sub = getattr(proto, f"{move_type}_move")
         sub.move_lvl = move_dict.get("move_lvl", 0)
         sub.move_kong = move_dict.get("move_kong", 0)
-        sub.price = move_dict.get("price", 0)
+        sub.price = price
 
 
 def _populate_move_shop_data(spoiler: "Spoiler", proto: fill_result_pb2.MoveShopData) -> None:
@@ -1102,9 +1143,7 @@ def _populate_shuffle_data(spoiler: "Spoiler", proto: fill_result_pb2.ShuffleDat
         value = minigame_data.minigame if hasattr(minigame_data, "minigame") else minigame_data
         proto.shuffled_barrels[int(location_id)] = int(value)
 
-    # Shuffled doors. Each level maps to a list of tuples whose shape varies by
-    # door type; downstream (DoorPlacer.place_door_locations) reads them by
-    # positional index, so we preserve tuple contents verbatim.
+    # Shuffled doors
     for level, door_list in spoiler.shuffled_door_data.items():
         shuffle_proto = proto.shuffled_doors.add()
         shuffle_proto.level = int(level)
@@ -1137,7 +1176,7 @@ def _populate_shuffle_data(spoiler: "Spoiler", proto: fill_result_pb2.ShuffleDat
     if hasattr(spoiler, "warp_data"):
         for warp in spoiler.warp_data:
             warp_proto = proto.warp_data.add()
-            warp_proto.from_location = warp.get("from", "")
+            setattr(warp_proto, "from", warp.get("from", ""))  # "from" is a Python keyword
             warp_proto.to = warp.get("to", "")
 
     # Crown arenas – crown_locations is {Levels: {crown_index: subindex}}
@@ -1343,10 +1382,21 @@ def _populate_hint_data(spoiler: "Spoiler", proto: fill_result_pb2.HintData) -> 
             hint_proto.hint_text = getattr(hint, "hint", "")
             hint_proto.important = getattr(hint, "important", False)
             hint_proto.priority = getattr(hint, "priority", 0)
+            short_hint = getattr(hint, "short_hint", None)
+            if short_hint is not None:
+                hint_proto.short_hint = str(short_hint)
 
+    from randomizer.Lists.WrinklyHints import GetHintItemTiedRegions
+
+    # Order matters: the patcher pairs flags with hint slots by position.
     for hint_name, flag_value in spoiler.tied_hint_flags.items():
-        proto.tied_hint_flags[hint_name] = int(flag_value)
-    for region in spoiler.tied_hint_regions:
+        flag_proto = proto.ordered_tied_hint_flags.add()
+        flag_proto.hint_name = hint_name
+        flag_proto.flag = int(flag_value)
+    tied_hint_regions = list(spoiler.tied_hint_regions)
+    for offset, region in GetHintItemTiedRegions(spoiler).items():
+        tied_hint_regions[offset] = region
+    for region in tied_hint_regions:
         proto.tied_hint_regions.append(int(region))
 
     microhints = getattr(spoiler, "microhints", None)
@@ -1358,7 +1408,7 @@ def _populate_hint_data(spoiler: "Spoiler", proto: fill_result_pb2.HintData) -> 
         for level_id, level_hints in spoiler.level_spoiler.items():
             try:
                 level_id_new = int(level_id)
-            except:
+            except (TypeError, ValueError):
                 level_id_new = level_id
             if not isinstance(level_id_new, str):
                 level_proto = proto.level_spoiler_hints[level_id_new]
@@ -1385,78 +1435,15 @@ def _populate_hint_data(spoiler: "Spoiler", proto: fill_result_pb2.HintData) -> 
 # -----------------------------------------------------------------------------
 
 
-def _fill_int_path_map(src_dict: Any, dst_map: Any, key_cast: Any = int) -> None:
-    """Copy {key: [loc_ids]} into a proto ``map<key, Path>`` field."""
-    for key, path_locations in src_dict.items():
-        path_proto = dst_map[key_cast(key)]
-        for loc_id in path_locations:
-            path_proto.locations.append(int(loc_id))
-
-
 def _populate_path_data(spoiler: "Spoiler", proto: fill_result_pb2.PathData) -> None:
-    """Populate PathData from spoiler path structures."""
-    if hasattr(spoiler, "woth_locations"):
-        for location_id in spoiler.woth_locations:
-            proto.woth_locations.append(int(location_id))
+    """Populate PathData with the data the patcher reads.
 
-    _fill_int_path_map(spoiler.woth_paths, proto.woth_paths, key_cast=int)
-    _fill_int_path_map(spoiler.krool_paths, proto.krool_paths, key_cast=str)
-    _fill_int_path_map(spoiler.rap_win_con_paths, proto.rap_win_con_paths, key_cast=str)
-    _fill_int_path_map(spoiler.other_paths, proto.other_paths, key_cast=int)
-
-    for location_id in spoiler.rabbit_path:
-        proto.rabbit_path.append(int(location_id))
-
-    # Playthrough (list of spheres, each sphere is {location_id: item_id}).
-    if hasattr(spoiler, "playthrough") and isinstance(spoiler.playthrough, list):
-        for sphere_dict in spoiler.playthrough:
-            sphere_proto = proto.playthrough.add()
-            for location_id, item_id in sphere_dict.items():
-                loc_proto = sphere_proto.locations.add()
-                loc_proto.location_id = int(location_id)
-                loc_proto.item_id = int(item_id)
-
+    Way of the Hoard, paths, foolish regions and the playthrough are deliberately left out:
+    the patch file is public even for no-spoiler seeds, and the patcher never reads them.
+    """
     if hasattr(spoiler, "majorItems"):
         for item_id in spoiler.majorItems:
             proto.major_items.append(int(item_id))
-    if hasattr(spoiler, "foolish_region_names"):
-        proto.foolish_region_names.extend([str(name) for name in spoiler.foolish_region_names])
-    if hasattr(spoiler, "pathless_moves"):
-        for item_id in spoiler.pathless_moves:
-            proto.pathless_moves.append(int(item_id))
-
-    # region_hintable_count: region -> item_name -> {plural, count, shuffled_locations[]}
-    # shuffled_locations may hold ints or Location objects; reverse-lookup
-    # Location objects via spoiler.LocationList to emit a plain id.
-    if hasattr(spoiler, "region_hintable_count"):
-        # Build an identity-keyed reverse lookup (Location object -> location id)
-        # once up front. The previous implementation scanned spoiler.LocationList
-        # linearly for every Location object, producing O(regions * items * locs
-        # * len(LocationList)) behavior and a 20-30s hang before patching.
-        loc_obj_to_id: Dict[int, int] = {}
-        if hasattr(spoiler, "LocationList"):
-            for loc_id, loc_obj in spoiler.LocationList.items():
-                loc_obj_to_id[id(loc_obj)] = int(loc_id)
-
-        for region_name, items_dict in spoiler.region_hintable_count.items():
-            region_counts_proto = proto.region_hintable_count[str(region_name)]
-            for item_name, item_data in items_dict.items():
-                item_data_proto = region_counts_proto.items[item_name]
-                item_data_proto.plural = item_data.get("plural", "")
-                item_data_proto.count = item_data.get("count", 0)
-                for loc in item_data.get("shuffled_locations", []):
-                    if isinstance(loc, int):
-                        item_data_proto.shuffled_locations.append(loc)
-                    else:
-                        mapped_id = loc_obj_to_id.get(id(loc))
-                        if mapped_id is not None:
-                            item_data_proto.shuffled_locations.append(mapped_id)
-
-    if hasattr(spoiler, "accessible_hints_for_location"):
-        for location_id, hints in spoiler.accessible_hints_for_location.items():
-            hints_proto = proto.accessible_hints_for_location[int(location_id)]
-            if isinstance(hints, list):
-                hints_proto.hint_names.extend([str(h) for h in hints])
 
 
 # -----------------------------------------------------------------------------
@@ -1538,15 +1525,7 @@ def _populate_item_assignment(item_assign: Any, assign_proto: Any) -> None:
 
 
 def _populate_fill_time_settings(spoiler_settings: Any, proto: fill_result_pb2.MiscPatchingData) -> None:
-    """Emit Fill-time-resolved Settings fields that the patcher reads directly.
-
-    Many of these are rerolled during Fill (B.Locker/T&S chaos mode, starting
-    Kongs resolution, K.Rool key randomization), so a fresh browser-side
-    Settings rebuild would diverge from the spoiler log without this
-    roundtrip.
-    """
-    # Per-level DK portal destinations. assignDKPortal sets exit=-1 to mean
-    # "use map default entry"; sint32 preserves that.
+    """Emit Fill-time-resolved Settings fields that the patcher reads directly."""
     for entry in getattr(spoiler_settings, "level_portal_destinations", []) or []:
         dest_proto = proto.level_portal_destinations.add()
         dest_proto.map = int(entry["map"])
@@ -1640,6 +1619,128 @@ def _populate_fill_time_settings(spoiler_settings: Any, proto: fill_result_pb2.M
     # Hash
     for digit in getattr(spoiler_settings, "seed_hash", []) or []:
         proto.seed_hash.append(int(digit))
+
+    for name in PATCH_RESOLVED_SETTINGS:
+        if hasattr(spoiler_settings, name):
+            entry = proto.resolved_settings.add()
+            entry.name = name
+            entry.json_value = json.dumps(encode_resolved_value(getattr(spoiler_settings, name)))
+    proto.generator_version = str(getattr(spoiler_settings, "version", "") or "")
+    # One-way: the generation seed string would let anyone regenerate the spoiler.
+    seed_digest = hashlib.sha256(str(spoiler_settings.seed).encode("utf-8")).digest()
+    proto.patch_rng_seed = int.from_bytes(seed_digest[:8], "big")
+
+
+# =============================================================================
+# Resolved settings snapshot
+# =============================================================================
+
+PATCH_RESOLVED_SETTINGS: Tuple[str, ...] = (
+    # Shop prices (progressive move tiers and per-location prices)
+    "prices",
+    # Random starting location
+    "starting_region",
+    # K. Rool phases (also reordered by boss shuffling during the Fill)
+    "krool_order",
+    # Puzzle solutions
+    "mill_levers",
+    "crypt_levers",
+    "dartboard_order",
+    "diddy_rnd_doors",
+    "jetpac_platform_data",
+    "mayhem_coins",
+    # Per-level requirements reordered by level shuffling
+    "medal_cb_req_level",
+    "crown_difficulties",
+    # Random Helm doors
+    "crown_door_item",
+    "crown_door_item_count",
+    "coin_door_item",
+    "coin_door_item_count",
+    # Random win condition and random requirement behaviours
+    "win_condition_item",
+    "win_condition_count",
+    "medal_requirement",
+    "rareware_gb_fairies",
+    "mermaid_gb_pearls",
+    # Random world state
+    "fungi_time_internal",
+    "galleon_water_internal",
+    "chunky_phase_slam_req_internal",
+    # Random Kong models
+    "kong_model_dk",
+    "kong_model_diddy",
+    "kong_model_lanky",
+    "kong_model_tiny",
+    "kong_model_chunky",
+)
+
+# randomizer.Enums modules whose enum classes may appear in resolved settings.
+_RESOLVED_ENUM_MODULES: Tuple[str, ...] = (
+    "Items",
+    "Kongs",
+    "Levels",
+    "Locations",
+    "Maps",
+    "Regions",
+    "Settings",
+    "Types",
+    "HintRegion",
+    "Events",
+    "Switches",
+    "Transitions",
+    "Minigames",
+)
+_enum_registry_cache: Dict[str, Any] = {}
+
+
+def enum_registry() -> Dict[str, Any]:
+    """Map enum class names to classes for decoding resolved settings."""
+    if not _enum_registry_cache:
+        for module_name in _RESOLVED_ENUM_MODULES:
+            module = importlib.import_module(f"randomizer.Enums.{module_name}")
+            for value in vars(module).values():
+                if isinstance(value, type) and issubclass(value, enum.Enum) and value is not enum.Enum:
+                    _enum_registry_cache.setdefault(value.__name__, value)
+    return _enum_registry_cache
+
+
+def encode_resolved_value(value: Any) -> Any:
+    """Encode a settings value as JSON-compatible data, tagging enums, tuples and dicts."""
+    if isinstance(value, enum.Enum):
+        enum_name = type(value).__name__
+        if enum_registry().get(enum_name) is not type(value):
+            raise TypeError(f"Enum {enum_name} is not decodable; add its module to _RESOLVED_ENUM_MODULES")
+        return {"__enum__": enum_name, "value": value.value}
+    if isinstance(value, tuple):
+        return {"__tuple__": [encode_resolved_value(v) for v in value]}
+    if isinstance(value, list):
+        return [encode_resolved_value(v) for v in value]
+    if isinstance(value, dict):
+        return {"__dict__": [[encode_resolved_value(k), encode_resolved_value(v)] for k, v in value.items()]}
+    if value is None or isinstance(value, (bool, int, float, str)):
+        return value
+    raise TypeError(f"Cannot serialize settings value of type {type(value).__name__}")
+
+
+def decode_resolved_value(value: Any) -> Any:
+    """Invert encode_resolved_value."""
+    if isinstance(value, list):
+        return [decode_resolved_value(v) for v in value]
+    if isinstance(value, dict):
+        if "__enum__" in value:
+            return enum_registry()[value["__enum__"]](value["value"])
+        if "__tuple__" in value:
+            return tuple(decode_resolved_value(v) for v in value["__tuple__"])
+        if "__dict__" in value:
+            return {decode_resolved_value(k): decode_resolved_value(v) for k, v in value["__dict__"]}
+    return value
+
+
+def apply_resolved_settings(misc_data: fill_result_pb2.MiscPatchingData, settings: Any) -> None:
+    """Restore the generation-time values in PATCH_RESOLVED_SETTINGS onto settings."""
+    for entry in misc_data.resolved_settings:
+        setattr(settings, entry.name, decode_resolved_value(json.loads(entry.json_value)))
 
 
 def _populate_misc_patching_data(spoiler: "Spoiler", proto: fill_result_pb2.MiscPatchingData) -> None:

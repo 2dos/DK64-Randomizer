@@ -194,28 +194,16 @@ message ColoredBananaRandomizer {
 message BananaportRandomizer {
     enum BananaportRandomizerOption {
         BANANAPORT_RANDOMIZER_OPTION_UNSPECIFIED = 0;
-        BANANAPORT_RANDOMIZER_OPTION_VANILLA = 1;
-        BANANAPORT_RANDOMIZER_OPTION_HALF_VANILLA = 2;
-        BANANAPORT_RANDOMIZER_OPTION_ON = 3;
-    }
-
-    enum BananaportArea {
-        BANANAPORT_AREA_UNSPECIFIED = 0;
-        BANANAPORT_AREA_JAPES = 1;
-        BANANAPORT_AREA_AZTEC_MAIN = 2;
-        BANANAPORT_AREA_AZTEC_LLAMA = 3;
-        BANANAPORT_AREA_FACTORY = 4;
-        BANANAPORT_AREA_GALLEON = 5;
-        BANANAPORT_AREA_FOREST = 6;
-        BANANAPORT_AREA_CAVES = 7;
-        BANANAPORT_AREA_CASTLE_MAIN = 8;
-        BANANAPORT_AREA_CASTLE_CRYPT = 9;
-        BANANAPORT_AREA_ISLES = 10;
+        BANANAPORT_RANDOMIZER_OPTION_OFF = 1;
+        BANANAPORT_RANDOMIZER_OPTION_VANILLA_ONLY = 2;
+        BANANAPORT_RANDOMIZER_OPTION_HALF_VANILLA = 3;
+        BANANAPORT_RANDOMIZER_OPTION_ON = 4;
     }
 
     BananaportRandomizerOption opt = 1;
 
-    repeated BananaportArea bananaport_randomized_levels = 2;
+    // warp_level_list_selected
+    repeated common.MapId bananaport_randomized_levels = 2;
 }
 
 message HelmHurry {
@@ -292,4 +280,9 @@ message OverworldSettings {
     HardBoss hard_bosses = 41;
     DamageEnum damage = 42;
     bool ship_location_rando = 43;
+
+    bool seasonal_door_shuffle = 44;
+    bool seasonal_crate_shuffle = 45;
+    bool perma_death = 46;
+    optional int32 lives = 47;
 }

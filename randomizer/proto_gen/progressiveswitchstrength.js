@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.ProgressiveSwitchStrength');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 
 goog.forwardDeclare('proto.randomizer.proto.common.SlamLevel');
 /**
@@ -92,7 +94,7 @@ slamLevelsList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined 
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.ProgressiveSwitchStrength}
  */
 proto.randomizer.proto.ProgressiveSwitchStrength.deserializeBinary = function(bytes) {
@@ -121,10 +123,7 @@ proto.randomizer.proto.ProgressiveSwitchStrength.deserializeBinaryFromReader = f
       msg.setEnabled(value);
       break;
     case 2:
-      var values = /** @type {!Array<!proto.randomizer.proto.common.SlamLevel>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addSlamLevels(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getSlamLevelsList());
       break;
     default:
       reader.skipField();

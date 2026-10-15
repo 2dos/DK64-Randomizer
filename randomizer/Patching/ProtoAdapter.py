@@ -29,8 +29,10 @@ class PatchingLocationDict:
     """Spoiler-like LocationList view backed by a FillResult.location_assignments proto."""
 
     def __init__(self, assignments: Any) -> None:
+        """Wrap a LocationAssignments proto."""
         self._assignments = assignments
         self._cache: dict[int, Any] = {}  # Cache LocationObj instances to persist attribute changes
+        self.inaccessible = set(assignments.inaccessible_locations)
 
     def get_or_create_location(self, location_id: int) -> Any:
         """Get or create a LocationObj for the given location_id."""
@@ -64,7 +66,9 @@ class PatchingLocationDict:
                         self.tooExpensiveInaccessible = orig_loc.tooExpensiveInaccessible
 
             item_id = self._assignments.assignments.get(int(location_id), 0)
-            self._cache[location_id] = LocationObj(item_id, location_id)
+            location_obj = LocationObj(item_id, location_id)
+            location_obj.inaccessible = int(location_id) in self.inaccessible
+            self._cache[location_id] = location_obj
 
         return self._cache[location_id]
 
@@ -82,7 +86,7 @@ class PatchingLocationDict:
         return len(self._assignments.assignments)
 
     def __getitem__(self, key: Any) -> Any:
-        # Accept int, Locations enum, or our own LocationObj as a key.
+        """Return the LocationObj for an int, Locations enum or LocationObj key."""
         if isinstance(key, int):
             key_int = key
         elif hasattr(key, "location"):  # LocationObj from our own adapter
@@ -385,10 +389,11 @@ def create_patching_adapter(fill_result: Any, settings: Any) -> Any:
             self._path_data = fill_result.path_data
             self._misc_data = fill_result.misc_data
 
-            # One LocationDict per adapter so its _cache survives across reads and
-            # in-place mutations land on the same LocationObj on every access.
+            # One LocationDict per adapter
             self._location_dict = PatchingLocationDict(self._location_assignments)
             self._tied_hint_regions = list(self._hint_data.tied_hint_regions)
+            self.fairy_data_table = self.build_fairy_data_table()
+            self.hint_item_regions_resolved = True
 
         # Properties to access proto data with backward-compatible interface
         @property
@@ -648,7 +653,7 @@ def create_patching_adapter(fill_result: Any, settings: Any) -> Any:
                         h = Hint()
                         h.location = hint_proto.location_id
                         h.hint = hint_proto.hint_text
-                        h.short_hint = None  # Short hints are not in proto
+                        h.short_hint = hint_proto.short_hint if hint_proto.HasField("short_hint") else None
                         h.important = hint_proto.important
                         h.priority = hint_proto.priority
                         self.hints.append(h)
@@ -664,7 +669,7 @@ def create_patching_adapter(fill_result: Any, settings: Any) -> Any:
         @property
         def tied_hint_flags(self) -> dict:
             """Return tied hint flags."""
-            return dict(self._hint_data.tied_hint_flags)
+            return {entry.hint_name: entry.flag for entry in self._hint_data.ordered_tied_hint_flags}
 
         @property
         def tied_hint_regions(self) -> list:
@@ -680,55 +685,6 @@ def create_patching_adapter(fill_result: Any, settings: Any) -> Any:
         def majorItems(self) -> list[Items]:
             """Return major items list."""
             return [Items(item_id) for item_id in self._path_data.major_items]
-
-        @property
-        def woth_locations(self) -> list[Locations]:
-            """Return Way of the Hoard locations."""
-            return [Locations(loc_id) for loc_id in self._path_data.woth_locations]
-
-        @property
-        def woth_paths(self) -> dict[Locations, list[Locations]]:
-            """Return Way of the Hoard paths."""
-            result = {}
-            for loc_id, path_proto in self._path_data.woth_paths.items():
-                result[Locations(loc_id)] = [Locations(l) for l in path_proto.locations]
-            return result
-
-        @property
-        def foolish_region_names(self) -> list[str]:
-            """Return foolish region names."""
-            return list(self._path_data.foolish_region_names)
-
-        @property
-        def pathless_moves(self) -> list[Items]:
-            """Return pathless moves."""
-            return [Items(item_id) for item_id in self._path_data.pathless_moves]
-
-        @property
-        def playthrough(self) -> dict[int, dict[Locations, Items]]:
-            """Return playthrough spheres."""
-            result = {}
-            for i, sphere_proto in enumerate(self._path_data.playthrough):
-                sphere_dict = {}
-                for loc_proto in sphere_proto.locations:
-                    sphere_dict[Locations(loc_proto.location_id)] = Items(loc_proto.item_id)
-                result[i] = sphere_dict
-            return result
-
-        @property
-        def region_hintable_count(self) -> dict[str, dict[str, dict]]:
-            """Return region hintable count."""
-            result = {}
-            for region_name, counts_proto in self._path_data.region_hintable_count.items():
-                region_dict = {}
-                for item_name, item_data in counts_proto.items.items():
-                    region_dict[item_name] = {
-                        "plural": item_data.plural,
-                        "count": item_data.count,
-                        "shuffled_locations": [Locations(loc_id) for loc_id in item_data.shuffled_locations],
-                    }
-                result[region_name] = region_dict
-            return result
 
         @property
         def crown_locations(self) -> dict[Levels, dict[int, int]]:
@@ -828,9 +784,8 @@ def create_patching_adapter(fill_result: Any, settings: Any) -> Any:
                 result[Levels(fairy_proto.level)] = list(fairy_proto.fairy_indexes)
             return result
 
-        @property
-        def fairy_data_table(self) -> list[dict | None]:
-            """Return fairy data table as list of 20 dicts (or None)."""
+        def build_fairy_data_table(self) -> list[dict | None]:
+            """Build the fairy data table as list of 20 dicts (or None)."""
             result = []
             for entry_proto in self._shuffle_data.fairy_data_table:
                 if entry_proto.present:

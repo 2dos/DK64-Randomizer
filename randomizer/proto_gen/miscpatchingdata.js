@@ -17,9 +17,12 @@ goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Map');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.ItemAssignment');
 goog.require('proto.randomizer.proto.ItemReference');
 goog.require('proto.randomizer.proto.LevelPortalDestination');
+goog.require('proto.randomizer.proto.ResolvedSetting');
 goog.require('proto.randomizer.proto.SwitchsanityAssignment');
 goog.require('proto.randomizer.proto.TextFileChanges');
 
@@ -51,7 +54,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.randomizer.proto.MiscPatchingData.repeatedFields_ = [1,2,3,11,12,13,15,16,17,18,22,25,26,28,29,30,31,32,33,34,35,36,37];
+proto.randomizer.proto.MiscPatchingData.repeatedFields_ = [1,2,3,11,12,13,15,16,17,18,22,25,26,28,29,30,31,32,33,34,35,36,37,38];
 
 
 
@@ -124,7 +127,11 @@ helmOrderList: (f = jspb.Message.getRepeatedField(msg, 33)) == null ? undefined 
 kongHelmOrderList: (f = jspb.Message.getRepeatedField(msg, 34)) == null ? undefined : f,
 helmKongFlagsList: (f = jspb.Message.getRepeatedBooleanField(msg, 35)) == null ? undefined : f,
 seedHashList: (f = jspb.Message.getRepeatedField(msg, 36)) == null ? undefined : f,
-hintDoorItemCountsLevelList: (f = jspb.Message.getRepeatedField(msg, 37)) == null ? undefined : f
+hintDoorItemCountsLevelList: (f = jspb.Message.getRepeatedField(msg, 37)) == null ? undefined : f,
+resolvedSettingsList: jspb.Message.toObjectList(msg.getResolvedSettingsList(),
+    proto.randomizer.proto.ResolvedSetting.toObject, includeInstance),
+generatorVersion: jspb.Message.getFieldWithDefault(msg, 39, ""),
+patchRngSeed: jspb.Message.getFieldWithDefault(msg, 40, 0)
   };
 
   if (includeInstance) {
@@ -137,7 +144,7 @@ hintDoorItemCountsLevelList: (f = jspb.Message.getRepeatedField(msg, 37)) == nul
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.MiscPatchingData}
  */
 proto.randomizer.proto.MiscPatchingData.deserializeBinary = function(bytes) {
@@ -172,10 +179,7 @@ proto.randomizer.proto.MiscPatchingData.deserializeBinaryFromReader = function(m
       msg.addItemReferences(value);
       break;
     case 3:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addValidPhotoItems(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getValidPhotoItemsList());
       break;
     case 4:
       var value = /** @type {number} */ (reader.readUint32());
@@ -221,44 +225,26 @@ proto.randomizer.proto.MiscPatchingData.deserializeBinaryFromReader = function(m
       msg.addLevelPortalDestinations(value);
       break;
     case 12:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addLevelVoidMaps(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getLevelVoidMapsList());
       break;
     case 13:
-      var values = /** @type {!Array<!proto.randomizer.proto.common.KongId>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addStartingKongList(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getStartingKongListList());
       break;
     case 14:
       var value = /** @type {!proto.randomizer.proto.common.KongId} */ (reader.readEnum());
       msg.setResolvedStartingKong(value);
       break;
     case 15:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addBlockerEntryCounts(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getBlockerEntryCountsList());
       break;
     case 16:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addBlockerEntryItems(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getBlockerEntryItemsList());
       break;
     case 17:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addBossBananas(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getBossBananasList());
       break;
     case 18:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addPregivenItems(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getPregivenItemsList());
       break;
     case 19:
       var value = /** @type {number} */ (reader.readUint32());
@@ -269,28 +255,22 @@ proto.randomizer.proto.MiscPatchingData.deserializeBinaryFromReader = function(m
       msg.setArchipelago(value);
       break;
     case 21:
-      var value = /** @type {string} */ (reader.readString());
+      var value = /** @type {string} */ (reader.readStringRequireUtf8());
       msg.setPlayerName(value);
       break;
     case 22:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addKroolKeysRequired(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getKroolKeysRequiredList());
       break;
     case 23:
       var value = /** @type {number} */ (reader.readUint32());
       msg.setShipLocationIndex(value);
       break;
     case 24:
-      var value = /** @type {string} */ (reader.readString());
+      var value = /** @type {string} */ (reader.readStringRequireUtf8());
       msg.setShipName(value);
       break;
     case 25:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addSwitchAllocation(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getSwitchAllocationList());
       break;
     case 26:
       var value = new proto.randomizer.proto.SwitchsanityAssignment;
@@ -302,64 +282,47 @@ proto.randomizer.proto.MiscPatchingData.deserializeBinaryFromReader = function(m
       msg.setSwitchsanityEnabled(value);
       break;
     case 28:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addBossKongs(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getBossKongsList());
       break;
     case 29:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addBossMaps(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getBossMapsList());
       break;
     case 30:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addKutoutKongs(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getKutoutKongsList());
       break;
     case 31:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addKkoPhaseOrder(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getKkoPhaseOrderList());
       break;
     case 32:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addToeOrder(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getToeOrderList());
       break;
     case 33:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addHelmOrder(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getHelmOrderList());
       break;
     case 34:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addKongHelmOrder(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getKongHelmOrderList());
       break;
     case 35:
-      var values = /** @type {!Array<boolean>} */ (reader.isDelimited() ? reader.readPackedBool() : [reader.readBool()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addHelmKongFlags(values[i]);
-      }
+      reader.readPackableBoolInto(msg.getHelmKongFlagsList());
       break;
     case 36:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addSeedHash(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getSeedHashList());
       break;
     case 37:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedUint32() : [reader.readUint32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addHintDoorItemCountsLevel(values[i]);
-      }
+      reader.readPackableUint32Into(msg.getHintDoorItemCountsLevelList());
+      break;
+    case 38:
+      var value = new proto.randomizer.proto.ResolvedSetting;
+      reader.readMessage(value,proto.randomizer.proto.ResolvedSetting.deserializeBinaryFromReader);
+      msg.addResolvedSettings(value);
+      break;
+    case 39:
+      var value = /** @type {string} */ (reader.readStringRequireUtf8());
+      msg.setGeneratorVersion(value);
+      break;
+    case 40:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setPatchRngSeed(value);
       break;
     default:
       reader.skipField();
@@ -429,23 +392,49 @@ proto.randomizer.proto.MiscPatchingData.serializeBinaryToWriter = function(messa
   }
   f = message.getMusicBgmDataMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(6, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeUint32);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getMusicBgmDataMap(true),
+    6,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeUint32);
   }
   f = message.getMusicMajoritemDataMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(7, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeUint32);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getMusicMajoritemDataMap(true),
+    7,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeUint32);
   }
   f = message.getMusicMinoritemDataMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(8, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeUint32);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getMusicMinoritemDataMap(true),
+    8,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeUint32);
   }
   f = message.getMusicEventDataMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(9, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeUint32);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getMusicEventDataMap(true),
+    9,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeUint32);
   }
   f = message.getTextFileChangesMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(10, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeMessage, proto.randomizer.proto.TextFileChanges.serializeBinaryToWriter);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getTextFileChangesMap(true),
+    10,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeMessage,
+    proto.randomizer.proto.TextFileChanges.serializeBinaryToWriter);
   }
   f = message.getLevelPortalDestinationsList();
   if (f.length > 0) {
@@ -635,6 +624,28 @@ proto.randomizer.proto.MiscPatchingData.serializeBinaryToWriter = function(messa
   if (f.length > 0) {
     writer.writePackedUint32(
       37,
+      f
+    );
+  }
+  f = message.getResolvedSettingsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      38,
+      f,
+      proto.randomizer.proto.ResolvedSetting.serializeBinaryToWriter
+    );
+  }
+  f = message.getGeneratorVersion();
+  if (f.length > 0) {
+    writer.writeString(
+      39,
+      f
+    );
+  }
+  f = message.getPatchRngSeed();
+  if (f !== 0) {
+    writer.writeUint64(
+      40,
       f
     );
   }
@@ -1932,6 +1943,80 @@ proto.randomizer.proto.MiscPatchingData.prototype.addHintDoorItemCountsLevel = f
  */
 proto.randomizer.proto.MiscPatchingData.prototype.clearHintDoorItemCountsLevelList = function() {
   return this.setHintDoorItemCountsLevelList([]);
+};
+
+
+/**
+ * repeated ResolvedSetting resolved_settings = 38;
+ * @return {!Array<!proto.randomizer.proto.ResolvedSetting>}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getResolvedSettingsList = function() {
+  return /** @type{!Array<!proto.randomizer.proto.ResolvedSetting>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.randomizer.proto.ResolvedSetting, 38));
+};
+
+
+/**
+ * @param {!Array<!proto.randomizer.proto.ResolvedSetting>} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+*/
+proto.randomizer.proto.MiscPatchingData.prototype.setResolvedSettingsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 38, value);
+};
+
+
+/**
+ * @param {!proto.randomizer.proto.ResolvedSetting=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.ResolvedSetting}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.addResolvedSettings = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 38, opt_value, proto.randomizer.proto.ResolvedSetting, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.clearResolvedSettingsList = function() {
+  return this.setResolvedSettingsList([]);
+};
+
+
+/**
+ * optional string generator_version = 39;
+ * @return {string}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getGeneratorVersion = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 39, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setGeneratorVersion = function(value) {
+  return jspb.Message.setProto3StringField(this, 39, value);
+};
+
+
+/**
+ * optional uint64 patch_rng_seed = 40;
+ * @return {number}
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.getPatchRngSeed = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 40, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.randomizer.proto.MiscPatchingData} returns this
+ */
+proto.randomizer.proto.MiscPatchingData.prototype.setPatchRngSeed = function(value) {
+  return jspb.Message.setProto3IntField(this, 40, value);
 };
 
 

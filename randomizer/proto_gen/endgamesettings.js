@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.EndgameSettings');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.HelmSettings');
 goog.require('proto.randomizer.proto.KRoolSettings');
 goog.require('proto.randomizer.proto.Logic');
@@ -94,7 +96,7 @@ kRoolSettings: (f = msg.getKRoolSettings()) && proto.randomizer.proto.KRoolSetti
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.EndgameSettings}
  */
 proto.randomizer.proto.EndgameSettings.deserializeBinary = function(bytes) {

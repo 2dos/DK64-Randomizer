@@ -17,6 +17,8 @@ goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Map');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.BossAssignment');
 goog.require('proto.randomizer.proto.CustomLocationAssignment');
 
@@ -115,7 +117,7 @@ customLocationAssignmentsList: jspb.Message.toObjectList(msg.getCustomLocationAs
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.PlandomizerSettings}
  */
 proto.randomizer.proto.PlandomizerSettings.deserializeBinary = function(bytes) {
@@ -144,10 +146,7 @@ proto.randomizer.proto.PlandomizerSettings.deserializeBinaryFromReader = functio
       msg.setStartingExit(value);
       break;
     case 2:
-      var values = /** @type {!Array<!proto.randomizer.proto.common.KongId>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addStartingKongs(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getStartingKongsList());
       break;
     case 3:
       var value = /** @type {boolean} */ (reader.readBool());
@@ -216,7 +215,7 @@ proto.randomizer.proto.PlandomizerSettings.deserializeBinaryFromReader = functio
     case 16:
       var value = msg.getHintAssignmentsMap();
       reader.readMessage(value, function(message, reader) {
-        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readInt32, jspb.BinaryReader.prototype.readString, null, 0, "");
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readInt32, jspb.BinaryReader.prototype.readStringRequireUtf8, null, 0, "");
          });
       break;
     case 17:
@@ -324,35 +323,76 @@ proto.randomizer.proto.PlandomizerSettings.serializeBinaryToWriter = function(me
   }
   f = message.getLevelOrderMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(10, writer, jspb.BinaryWriter.prototype.writeInt32, jspb.BinaryWriter.prototype.writeEnum);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getLevelOrderMap(true),
+    10,
+    writer,
+    jspb.BinaryWriter.prototype.writeInt32,
+    jspb.BinaryWriter.prototype.writeEnum);
   }
   f = message.getKroolOrderMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(11, writer, jspb.BinaryWriter.prototype.writeInt32, jspb.BinaryWriter.prototype.writeEnum);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getKroolOrderMap(true),
+    11,
+    writer,
+    jspb.BinaryWriter.prototype.writeInt32,
+    jspb.BinaryWriter.prototype.writeEnum);
   }
   f = message.getBossOrderMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(12, writer, jspb.BinaryWriter.prototype.writeInt32, jspb.BinaryWriter.prototype.writeMessage, proto.randomizer.proto.BossAssignment.serializeBinaryToWriter);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getBossOrderMap(true),
+    12,
+    writer,
+    jspb.BinaryWriter.prototype.writeInt32,
+    jspb.BinaryWriter.prototype.writeMessage,
+    proto.randomizer.proto.BossAssignment.serializeBinaryToWriter);
   }
   f = message.getHelmOrderMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(13, writer, jspb.BinaryWriter.prototype.writeInt32, jspb.BinaryWriter.prototype.writeEnum);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getHelmOrderMap(true),
+    13,
+    writer,
+    jspb.BinaryWriter.prototype.writeInt32,
+    jspb.BinaryWriter.prototype.writeEnum);
   }
   f = message.getItemAssignmentsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(14, writer, jspb.BinaryWriter.prototype.writeInt32, jspb.BinaryWriter.prototype.writeEnum);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getItemAssignmentsMap(true),
+    14,
+    writer,
+    jspb.BinaryWriter.prototype.writeInt32,
+    jspb.BinaryWriter.prototype.writeEnum);
   }
   f = message.getMinigameAssignmentsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(15, writer, jspb.BinaryWriter.prototype.writeInt32, jspb.BinaryWriter.prototype.writeInt32);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getMinigameAssignmentsMap(true),
+    15,
+    writer,
+    jspb.BinaryWriter.prototype.writeInt32,
+    jspb.BinaryWriter.prototype.writeInt32);
   }
   f = message.getHintAssignmentsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(16, writer, jspb.BinaryWriter.prototype.writeInt32, jspb.BinaryWriter.prototype.writeString);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getHintAssignmentsMap(true),
+    16,
+    writer,
+    jspb.BinaryWriter.prototype.writeInt32,
+    jspb.BinaryWriter.prototype.writeString);
   }
   f = message.getShopAssignmentsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(17, writer, jspb.BinaryWriter.prototype.writeInt32, jspb.BinaryWriter.prototype.writeEnum);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getShopAssignmentsMap(true),
+    17,
+    writer,
+    jspb.BinaryWriter.prototype.writeInt32,
+    jspb.BinaryWriter.prototype.writeEnum);
   }
   f = message.getCustomLocationAssignmentsList();
   if (f.length > 0) {

@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.ColoredBananaRandomizer');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 
 goog.forwardDeclare('proto.randomizer.proto.common.LevelId');
 /**
@@ -92,7 +94,7 @@ cbRandomizedLevelsList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? un
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.ColoredBananaRandomizer}
  */
 proto.randomizer.proto.ColoredBananaRandomizer.deserializeBinary = function(bytes) {
@@ -121,10 +123,7 @@ proto.randomizer.proto.ColoredBananaRandomizer.deserializeBinaryFromReader = fun
       msg.setEnabled(value);
       break;
     case 2:
-      var values = /** @type {!Array<!proto.randomizer.proto.common.LevelId>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addCbRandomizedLevels(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getCbRandomizedLevelsList());
       break;
     default:
       reader.skipField();
