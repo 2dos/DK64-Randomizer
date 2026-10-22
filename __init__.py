@@ -186,7 +186,8 @@ if baseclasses_loaded:
 
             Download the DK64 tracker pack from https://github.com/UmedMuzl/dk64pt/releases
             and point this setting to the downloaded .zip file to enable map tracking in Universal Tracker.
-            Leave empty to disable map tracking.
+            Needs dk64pt 0.9.0 or newer.
+            The file name must end in a lowercase ".zip".
             """
 
             description = "Universal Tracker Pack Path (Optional)"
@@ -265,7 +266,7 @@ if baseclasses_loaded:
         def shared_item_group() -> str:
             """Item group for Training Moves."""
             res = set()
-            training_items = ["Vines", "Diving", "Oranges", "Barrels", "Climbing", "Cannons", "progression Slam", "Fairy Camera", "Shockwave"]
+            training_items = ["Vines", "Diving", "Oranges", "Barrels", "Climbing", "Cannons", "Progressive Slam", "Fairy Camera", "Shockwave"]
             for item in training_items:
                 if item in full_item_table:
                     res.add(item)
@@ -319,7 +320,7 @@ if baseclasses_loaded:
         def lanky_item_group() -> str:
             """Item group for Lanky Moves."""
             res = set()
-            lanky_items = ["Grape", "Trombone", "Orangstand", "Orangstand Spring", "Baboon Balloon"]
+            lanky_items = ["Grape", "Trombone", "Orangstand", "Orangstand Sprint", "Baboon Balloon"]
             for item in lanky_items:
                 if item in full_item_table:
                     res.add(item)
@@ -337,7 +338,7 @@ if baseclasses_loaded:
         def chunky_item_group() -> str:
             """Item group for Chunky Moves."""
             res = set()
-            chunky_items = ["Pineapple", "Triangle", "Primate Punch", "Hunky Chunky", "Triangle"]
+            chunky_items = ["Pineapple", "Triangle", "Primate Punch", "Hunky Chunky", "Gorilla Gone"]
             for item in chunky_items:
                 if item in full_item_table:
                     res.add(item)
@@ -890,6 +891,15 @@ if baseclasses_loaded:
         def create_items(self) -> None:
             """Create the items."""
             itempool: typing.List[DK64Item] = setup_items(self)
+            if hasattr(self.multiworld, "generation_is_fake"):
+                # Universal Tracker only draws item panel icons for items in the pool. Starting and pre-placed items aren't in it
+                in_pool = {item.name for item in itempool}
+                elsewhere = [item.name for item in self.multiworld.precollected_items[self.player]]
+                elsewhere += [location.item.name for location in self.multiworld.get_locations(self.player) if location.item is not None and location.item.code is not None]
+                for name in dict.fromkeys(elsewhere):
+                    if name in Tracker.ITEM_PANEL_ITEMS and name not in in_pool:
+                        itempool.append(self.create_item(name))
+                        in_pool.add(name)
             self.multiworld.itempool += itempool
 
         def get_filler_item_name(self) -> str:
@@ -1877,6 +1887,7 @@ if baseclasses_loaded:
 
         def interpret_slot_data(self, slot_data: dict[str, any]) -> dict[str, any]:
             """Parse slot data for any logical bits that need to match the real generation. Used by Universal Tracker."""
+            Tracker.store_item_panel_groups()
             # Parse the string data
             version = slot_data["Version"]
 
