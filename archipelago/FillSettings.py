@@ -15,10 +15,12 @@ from randomizer.Enums.Settings import (
     BLockerSetting,
     CBRequirement,
     CrownEnemyDifficulty,
+    CustomMinigamesSelected,
     DamageAmount,
     DKPortalRando,
     ExtraCutsceneSkips,
     FasterChecksSelected,
+    FreeTradeSetting,
     FungiTimeSetting,
     GalleonWaterSetting,
     GlitchesSelected,
@@ -152,7 +154,7 @@ def get_default_settings() -> dict[str, Any]:
             FasterChecksSelected.arcade,
         ],
         "filler_items_selected": [ItemRandoFiller.junkitem],
-        "free_trade_setting": True,
+        "free_trade_setting": FreeTradeSetting.all,
         "fungi_time": FungiTimeSetting.dusk,
         "generate_spoilerlog": True,
         "hard_bosses_selected": [],
@@ -380,6 +382,7 @@ def handle_fake_generation_settings(settings: Settings, multiworld: MultiWorld) 
                 settings.tricks_selected = passthrough["TricksSelected"]
                 settings.glitches_selected = passthrough["GlitchesSelected"]
                 settings.open_lobbies = passthrough["OpenLobbies"]
+                settings.free_trade_cbs = passthrough.get("FreeTradeCBs", False)
                 settings.starting_key_list = passthrough["StartingKeyList"]
                 settings.galleon_water = GalleonWaterSetting[passthrough["GalleonWater"]]
                 settings.galleon_water_internal = GalleonWaterSetting[passthrough["GalleonWater"]]
@@ -459,6 +462,7 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     settings_dict["cb_medal_behavior_new"] = options.medal_distribution.value
     settings_dict["half_medal_percentage"] = options.half_medal_percentage.value
     settings_dict["smaller_shops"] = options.smaller_shops.value and not hasattr(multiworld, "generation_is_fake")
+    settings_dict["free_trade_setting"] = FreeTradeSetting.all_cbs if options.free_trade_cbs.value else FreeTradeSetting.all
     settings_dict["puzzle_rando_difficulty"] = options.puzzle_rando.value
     if options.enable_cutscenes.value:
         settings_dict["more_cutscene_skips"] = ExtraCutsceneSkips.press
@@ -944,6 +948,9 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     # Apply minigame and bonus barrel settings
     settings_dict["minigames_list_selected"] = [MinigamesListSelected[minigame] for minigame in options.shuffled_bonus_barrels]
     settings_dict["disable_hard_minigames"] = not options.hard_minigames.value
+    settings_dict["custom_minigames_enabled"] = bool(options.custom_arcade_minigames.value)
+    settings_dict["arcade_minigame_pool_selected"] = [CustomMinigamesSelected[minigame] for minigame in options.dk_arcade_minigame_pool]
+    settings_dict["jetpac_minigame_pool_selected"] = [CustomMinigamesSelected[minigame] for minigame in options.jetpac_minigame_pool]
     settings_dict["bonus_barrel_auto_complete"] = options.auto_complete_bonus_barrels.value and options.goal.value != Goal.option_bonuses
     settings_dict["helm_room_bonus_count"] = HelmBonuses(options.helm_room_bonus_count.value)
     door_item_to_key: dict[HelmDoorItem, str] = {

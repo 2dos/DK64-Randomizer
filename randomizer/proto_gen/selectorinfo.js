@@ -48,7 +48,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.randomizer.proto.SelectorInfo.repeatedFields_ = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,21,22,23,24,27,28,29];
+proto.randomizer.proto.SelectorInfo.repeatedFields_ = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,21,22,23,24,27,28,29,30];
 
 
 
@@ -134,6 +134,8 @@ removeBarriersList: jspb.Message.toObjectList(msg.getRemoveBarriersList(),
 fasterChecksList: jspb.Message.toObjectList(msg.getFasterChecksList(),
     proto.randomizer.proto.SelectorEntry.toObject, includeInstance),
 cbRandoLevelsList: jspb.Message.toObjectList(msg.getCbRandoLevelsList(),
+    proto.randomizer.proto.SelectorEntry.toObject, includeInstance),
+customMinigamesList: jspb.Message.toObjectList(msg.getCustomMinigamesList(),
     proto.randomizer.proto.SelectorEntry.toObject, includeInstance)
   };
 
@@ -315,6 +317,11 @@ proto.randomizer.proto.SelectorInfo.deserializeBinaryFromReader = function(msg, 
       var value = new proto.randomizer.proto.SelectorEntry;
       reader.readMessage(value,proto.randomizer.proto.SelectorEntry.deserializeBinaryFromReader);
       msg.addCbRandoLevels(value);
+      break;
+    case 30:
+      var value = new proto.randomizer.proto.SelectorEntry;
+      reader.readMessage(value,proto.randomizer.proto.SelectorEntry.deserializeBinaryFromReader);
+      msg.addCustomMinigames(value);
       break;
     default:
       reader.skipField();
@@ -573,6 +580,14 @@ proto.randomizer.proto.SelectorInfo.serializeBinaryToWriter = function(message, 
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       29,
+      f,
+      proto.randomizer.proto.SelectorEntry.serializeBinaryToWriter
+    );
+  }
+  f = message.getCustomMinigamesList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      30,
       f,
       proto.randomizer.proto.SelectorEntry.serializeBinaryToWriter
     );
@@ -1675,6 +1690,44 @@ proto.randomizer.proto.SelectorInfo.prototype.addCbRandoLevels = function(opt_va
  */
 proto.randomizer.proto.SelectorInfo.prototype.clearCbRandoLevelsList = function() {
   return this.setCbRandoLevelsList([]);
+};
+
+
+/**
+ * repeated SelectorEntry custom_minigames = 30;
+ * @return {!Array<!proto.randomizer.proto.SelectorEntry>}
+ */
+proto.randomizer.proto.SelectorInfo.prototype.getCustomMinigamesList = function() {
+  return /** @type{!Array<!proto.randomizer.proto.SelectorEntry>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.randomizer.proto.SelectorEntry, 30));
+};
+
+
+/**
+ * @param {!Array<!proto.randomizer.proto.SelectorEntry>} value
+ * @return {!proto.randomizer.proto.SelectorInfo} returns this
+*/
+proto.randomizer.proto.SelectorInfo.prototype.setCustomMinigamesList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 30, value);
+};
+
+
+/**
+ * @param {!proto.randomizer.proto.SelectorEntry=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.randomizer.proto.SelectorEntry}
+ */
+proto.randomizer.proto.SelectorInfo.prototype.addCustomMinigames = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 30, opt_value, proto.randomizer.proto.SelectorEntry, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.randomizer.proto.SelectorInfo} returns this
+ */
+proto.randomizer.proto.SelectorInfo.prototype.clearCustomMinigamesList = function() {
+  return this.setCustomMinigamesList([]);
 };
 
 

@@ -1767,6 +1767,80 @@ class AlternateMinecartMayhem(Toggle):
     display_name = "Alternate Minecart Mayhem"
 
 
+class CustomArcadeMinigames(Toggle):
+    """If enabled, DK Arcade and Jetpac are replaced by custom minigames.
+
+    Each machine picks one minigame at random from its pool (see dk_arcade_minigame_pool and jetpac_minigame_pool).
+    Jetpac won't get the same custom minigame as DK Arcade unless the Jetpac pool has nothing else.
+    A custom DK Arcade game gives the Round 1 reward on its first win unless Round 1 was already collected, then the Nintendo Coin.
+    In Archipelago, the Round 1 reward is always in the Baboon Blast course, so one win gives the Nintendo Coin.
+    """
+
+    display_name = "Custom Arcade Minigames"
+
+
+class DKArcadeMinigamePool(OptionList):
+    """Determines which minigames DK Arcade can become when custom_arcade_minigames is enabled.
+
+    One is picked at random. Leave empty to allow every custom minigame. Add "vanilla" to allow the original DK Arcade.
+
+    Valid Keys:
+    "vanilla"
+    "game_2048"
+    "hexagon"
+    "minesweeper"
+    "picross"
+    "wordle"
+    """
+
+    display_name = "DK Arcade Minigame Pool"
+    valid_keys = {
+        "vanilla",
+        "game_2048",
+        "hexagon",
+        "minesweeper",
+        "picross",
+        "wordle",
+    }
+    default = []
+
+
+class JetpacMinigamePool(OptionList):
+    """Determines which minigames Jetpac can become when custom_arcade_minigames is enabled.
+
+    One is picked at random. Leave empty to allow every custom minigame. Add "vanilla" to allow the original Jetpac.
+
+    Valid Keys:
+    "vanilla"
+    "game_2048"
+    "hexagon"
+    "minesweeper"
+    "picross"
+    "wordle"
+    """
+
+    display_name = "Jetpac Minigame Pool"
+    valid_keys = {
+        "vanilla",
+        "game_2048",
+        "hexagon",
+        "minesweeper",
+        "picross",
+        "wordle",
+    }
+    default = []
+
+
+class FreeTradeCBs(Toggle):
+    """If enabled, Colored Bananas and Banana Bunches can be collected by any Kong.
+
+    Items and Blueprints can always be collected by any Kong in Archipelago. This extends that to Colored Bananas.
+    Banana Coins and Balloons still need their own Kong.
+    """
+
+    display_name = "Free Trade CBs"
+
+
 class EnemiesSelected(OptionList):
     """Determines what Enemies are in the pool.
 
@@ -2068,6 +2142,9 @@ class DK64Options(PerGameCommonOptions):
     pearl_filler_weight: PearlFillerWeight
     rainbowcoin_filler_weight: RainbowCoinFillerWeight
     alternate_minecart_mayhem: AlternateMinecartMayhem
+    custom_arcade_minigames: CustomArcadeMinigames
+    dk_arcade_minigame_pool: DKArcadeMinigamePool
+    jetpac_minigame_pool: JetpacMinigamePool
     enemies_selected: EnemiesSelected
     shop_prices: ShopPrices
     loading_zone_rando: LoadingZoneRando
@@ -2077,6 +2154,7 @@ class DK64Options(PerGameCommonOptions):
     krusha_model_mode: KrushaRandom
     kong_models: KongModels
     allowed_bosses: AllowedBosses
+    free_trade_cbs: FreeTradeCBs
     random_starting_region: RandomStartingLocation
     dk_portal_location_rando: DKPortalLocationRando
 
@@ -2174,6 +2252,7 @@ dk64_option_groups: List[OptionGroup] = [
             KongModels,
             AllowedBosses,
             AlterSwitchAllocation,
+            FreeTradeCBs,
         ],
     ),
     OptionGroup(
@@ -2184,6 +2263,9 @@ dk64_option_groups: List[OptionGroup] = [
             AutoCompleteBonusBarrels,
             HelmRoomBonusCount,
             AlternateMinecartMayhem,
+            CustomArcadeMinigames,
+            DKArcadeMinigamePool,
+            JetpacMinigamePool,
         ],
     ),
     OptionGroup(

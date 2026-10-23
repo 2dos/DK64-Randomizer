@@ -20,6 +20,7 @@ goog.require('jspb.binary.bytesource');
 goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.BananaportRandomizer');
 goog.require('proto.randomizer.proto.ColoredBananaRandomizer');
+goog.require('proto.randomizer.proto.CustomMinigames');
 goog.require('proto.randomizer.proto.HardBoss');
 goog.require('proto.randomizer.proto.HardMode');
 goog.require('proto.randomizer.proto.HelmHurry');
@@ -142,7 +143,8 @@ shipLocationRando: jspb.Message.getBooleanFieldWithDefault(msg, 43, false),
 seasonalDoorShuffle: jspb.Message.getBooleanFieldWithDefault(msg, 44, false),
 seasonalCrateShuffle: jspb.Message.getBooleanFieldWithDefault(msg, 45, false),
 permaDeath: jspb.Message.getBooleanFieldWithDefault(msg, 46, false),
-lives: (f = jspb.Message.getField(msg, 47)) == null ? undefined : f
+lives: (f = jspb.Message.getField(msg, 47)) == null ? undefined : f,
+customMinigames: (f = msg.getCustomMinigames()) && proto.randomizer.proto.CustomMinigames.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -369,6 +371,11 @@ proto.randomizer.proto.OverworldSettings.deserializeBinaryFromReader = function(
     case 47:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setLives(value);
+      break;
+    case 48:
+      var value = new proto.randomizer.proto.CustomMinigames;
+      reader.readMessage(value,proto.randomizer.proto.CustomMinigames.deserializeBinaryFromReader);
+      msg.setCustomMinigames(value);
       break;
     default:
       reader.skipField();
@@ -732,6 +739,14 @@ proto.randomizer.proto.OverworldSettings.serializeBinaryToWriter = function(mess
     writer.writeInt32(
       47,
       f
+    );
+  }
+  f = message.getCustomMinigames();
+  if (f != null) {
+    writer.writeMessage(
+      48,
+      f,
+      proto.randomizer.proto.CustomMinigames.serializeBinaryToWriter
     );
   }
 };
@@ -1769,6 +1784,43 @@ proto.randomizer.proto.OverworldSettings.prototype.clearLives = function() {
  */
 proto.randomizer.proto.OverworldSettings.prototype.hasLives = function() {
   return jspb.Message.getField(this, 47) != null;
+};
+
+
+/**
+ * optional CustomMinigames custom_minigames = 48;
+ * @return {?proto.randomizer.proto.CustomMinigames}
+ */
+proto.randomizer.proto.OverworldSettings.prototype.getCustomMinigames = function() {
+  return /** @type{?proto.randomizer.proto.CustomMinigames} */ (
+    jspb.Message.getWrapperField(this, proto.randomizer.proto.CustomMinigames, 48));
+};
+
+
+/**
+ * @param {?proto.randomizer.proto.CustomMinigames|undefined} value
+ * @return {!proto.randomizer.proto.OverworldSettings} returns this
+*/
+proto.randomizer.proto.OverworldSettings.prototype.setCustomMinigames = function(value) {
+  return jspb.Message.setWrapperField(this, 48, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.randomizer.proto.OverworldSettings} returns this
+ */
+proto.randomizer.proto.OverworldSettings.prototype.clearCustomMinigames = function() {
+  return this.setCustomMinigames(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.randomizer.proto.OverworldSettings.prototype.hasCustomMinigames = function() {
+  return jspb.Message.getField(this, 48) != null;
 };
 
 

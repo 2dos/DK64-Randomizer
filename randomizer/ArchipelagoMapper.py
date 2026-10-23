@@ -33,9 +33,11 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Settings import (
     BLockerSetting,
+    CustomMinigamesSelected,
     DKPortalRando,
     Enemies,
     ExtraCutsceneSkips,
+    FreeTradeSetting,
     GalleonWaterSetting,
     GlitchesSelected,
     HardBossesSelected,
@@ -440,6 +442,13 @@ def alter_switch_allocation(website: WebsiteSettings) -> Dict[str, str]:
     return result
 
 
+def free_trade_cbs(website: WebsiteSettings) -> Optional[bool]:
+    """Check whether the website's Free Trade Agreement includes CBs. AP always lets any Kong collect items."""
+    if website.get("free_trade_setting") is None:
+        return None
+    return website.name("free_trade_setting", FreeTradeSetting) == FreeTradeSetting.all_cbs.name
+
+
 # Enemies
 
 #: Website enemy name -> AP enemies_selected name
@@ -546,12 +555,16 @@ SETTINGS: Dict[str, Optional[Rule]] = {
     "kong_models": kong_models,
     "allowed_bosses": allowed_bosses,
     "alter_switch_allocation": alter_switch_allocation,
+    "free_trade_cbs": free_trade_cbs,
     # Bonus Barrels
     "shuffled_bonus_barrels": names("minigames_list_selected", MinigamesListSelected),
     "hard_minigames": opposite("disable_hard_minigames"),
     "auto_complete_bonus_barrels": "bonus_barrel_auto_complete",
     "helm_room_bonus_count": "helm_room_bonus_count",
     "alternate_minecart_mayhem": "alt_minecart_mayhem",
+    "custom_arcade_minigames": "custom_minigames_enabled",
+    "dk_arcade_minigame_pool": names("arcade_minigame_pool_selected", CustomMinigamesSelected),
+    "jetpac_minigame_pool": names("jetpac_minigame_pool_selected", CustomMinigamesSelected),
     # Hard Mode
     "hard_mode_selected": names("hard_mode_selected", HardModeSelected),
     "harder_bosses": names("hard_bosses_selected", HardBossesSelected),

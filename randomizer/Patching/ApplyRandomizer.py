@@ -586,7 +586,7 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
     ROM_COPY.write(int(spoiler.settings.activate_all_bananaports))
 
     # Fast GBs - Change jetpac text
-    if IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.jetpac):
+    if IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.jetpac) and spoiler.settings.jetpac_custom_minigame is None:
         data = {"textbox_index": ItemPreview.JetpacIntro, "mode": "replace", "search": "5000", "target": "2500"}
         for file in [CompTextFiles.PreviewsFlavor, CompTextFiles.PreviewsNormal]:
             if file in spoiler.text_changes:

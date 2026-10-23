@@ -114,7 +114,8 @@ shopPrices: jspb.Message.getFieldWithDefault(msg, 17, 0),
 activateBananaports: jspb.Message.getFieldWithDefault(msg, 18, 0),
 fasterChecksList: (f = jspb.Message.getRepeatedField(msg, 19)) == null ? undefined : f,
 puzzleRando: jspb.Message.getFieldWithDefault(msg, 20, 0),
-halfMedalPercentage: (f = jspb.Message.getField(msg, 21)) == null ? undefined : f
+halfMedalPercentage: (f = jspb.Message.getField(msg, 21)) == null ? undefined : f,
+freeTradeCbs: jspb.Message.getBooleanFieldWithDefault(msg, 22, false)
   };
 
   if (includeInstance) {
@@ -240,6 +241,10 @@ proto.randomizer.proto.RequirementSettings.deserializeBinaryFromReader = functio
     case 21:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setHalfMedalPercentage(value);
+      break;
+    case 22:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setFreeTradeCbs(value);
       break;
     default:
       reader.skipField();
@@ -422,6 +427,13 @@ proto.randomizer.proto.RequirementSettings.serializeBinaryToWriter = function(me
   if (f != null) {
     writer.writeInt32(
       21,
+      f
+    );
+  }
+  f = message.getFreeTradeCbs();
+  if (f) {
+    writer.writeBool(
+      22,
       f
     );
   }
@@ -1011,6 +1023,24 @@ proto.randomizer.proto.RequirementSettings.prototype.clearHalfMedalPercentage = 
  */
 proto.randomizer.proto.RequirementSettings.prototype.hasHalfMedalPercentage = function() {
   return jspb.Message.getField(this, 21) != null;
+};
+
+
+/**
+ * optional bool free_trade_cbs = 22;
+ * @return {boolean}
+ */
+proto.randomizer.proto.RequirementSettings.prototype.getFreeTradeCbs = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 22, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.RequirementSettings} returns this
+ */
+proto.randomizer.proto.RequirementSettings.prototype.setFreeTradeCbs = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 22, value);
 };
 
 

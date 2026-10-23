@@ -760,6 +760,20 @@ document
   .getElementById("switchsanity_enabled")
   .addEventListener("click", disable_switchsanity_modal);
 
+// Disable Custom Minigames Selector when Custom Arcade Minigames is off
+function disable_custom_minigames_modal() {
+  const selector = document.getElementById("customMinigamesModalActivator");
+  if (document.getElementById("custom_minigames_enabled").checked) {
+    selector.removeAttribute("disabled");
+  } else {
+    selector.setAttribute("disabled", "disabled");
+  }
+}
+
+document
+  .getElementById("custom_minigames_enabled")
+  .addEventListener("click", disable_custom_minigames_modal);
+
 // Switchsanity Resets
 const switchsanity_defaults = {
   "switchsanity_switch_isles_to_kroc_top": "tiny",
@@ -2363,6 +2377,9 @@ function update_ui_states() {
   max_music_proportion();
   max_sfx();
   disable_switchsanity_modal();
+  disable_custom_minigames_modal();
+  updateSelected("arcade_minigame_pool");
+  updateSelected("jetpac_minigame_pool");
   unshuffled_pool_list_changed(null);
   disable_custom_cb_locations_modal();
   toggle_bananaport_selector();

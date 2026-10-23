@@ -1630,6 +1630,14 @@ function load_settings(json) {
 
       // Boolean values for checkboxes
       if (value === "True" || value === "False") {
+        if (element.tagName === "SELECT") {
+          const legacyValue = element.getAttribute(value === "True" ? "data-legacy-on" : "data-legacy-off");
+          if (legacyValue !== null && element.value !== legacyValue) {
+            element.value = legacyValue;
+            valueChanged = true;
+          }
+          return;
+        }
         if (element.checked !== (value === "True")) {
           element.checked = value === "True";
           valueChanged = true;

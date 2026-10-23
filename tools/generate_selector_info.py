@@ -15,7 +15,7 @@ from randomizer.Lists.HardMode import HardBossSelector, HardSelector
 from randomizer.Lists.Item import CustomStartingMoveSelector, HHItemSelector
 from randomizer.Lists.Logic import GlitchSelector, TrickSelector
 from randomizer.Lists.Minigame import MinigameSelector
-from randomizer.Lists.Multiselectors import BossesSelector, CBRandoSelector, FasterCheckSelector, QoLSelector, RandomColorSelector, RemovedBarrierSelector
+from randomizer.Lists.Multiselectors import BossesSelector, CBRandoSelector, CustomMinigameSelector, FasterCheckSelector, QoLSelector, RandomColorSelector, RemovedBarrierSelector
 from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableCustomLocations, PlannableItems, PlannableKroolPhases, PlannableMinigames, PlannableSpawns
 from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectionPanel, PlannableSongs, SongFilteringSelector
 from randomizer.Lists.Warps import VanillaBananaportSelector
@@ -53,6 +53,7 @@ ENTRY_FIELDS = [
     ("remove_barriers", RemovedBarrierSelector),
     ("faster_checks", FasterCheckSelector),
     ("cb_rando_levels", CBRandoSelector),
+    ("custom_minigames", CustomMinigameSelector),
 ]
 
 # Proto field name → Python dict (google.protobuf.Struct fields)

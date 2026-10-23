@@ -11,7 +11,7 @@ from types import SimpleNamespace
 from typing import Any, Dict, Iterable, List, Tuple, TYPE_CHECKING
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import HardBossesSelected, HardModeSelected, HelmDoorItem, MiscChangesSelected, SlamRequirement
+from randomizer.Enums.Settings import FreeTradeSetting, HardBossesSelected, HardModeSelected, HelmDoorItem, MiscChangesSelected, SlamRequirement
 from randomizer.Enums.Types import BarrierItems
 
 from randomizer.proto_gen import (
@@ -388,7 +388,11 @@ def _populate_requirement_settings(settings: "Settings", proto: requirement_sett
 
     proto.smaller_shops = bool(settings.smaller_shops)
     proto.tooie_style_shops = bool(settings.shops_dont_cost)
-    proto.free_trade_agreement = bool(settings.free_trade_setting)
+    # Free trade is stored as two bools so settings strings from before All + CBs still decode
+    free_trade = FreeTradeSetting(settings.free_trade_setting)
+    proto.free_trade_agreement = free_trade != FreeTradeSetting.none
+    if free_trade == FreeTradeSetting.all_cbs:
+        proto.free_trade_cbs = True
 
     if settings.remove_barriers_selected:
         proto.removed_barriers.extend(_enum_values(settings.remove_barriers_selected))
@@ -447,7 +451,12 @@ def _apply_requirement_settings(proto: requirement_settings_pb2.RequirementSetti
 
     settings.smaller_shops = bool(proto.smaller_shops)
     settings.shops_dont_cost = bool(proto.tooie_style_shops)
-    settings.free_trade_setting = bool(proto.free_trade_agreement)
+    if proto.free_trade_cbs:
+        settings.free_trade_setting = FreeTradeSetting.all_cbs
+    elif proto.free_trade_agreement:
+        settings.free_trade_setting = FreeTradeSetting.all
+    else:
+        settings.free_trade_setting = FreeTradeSetting.none
     settings.remove_barriers_selected = list(proto.removed_barriers)
     settings.galleon_water = proto.galleon_water
     settings.fungi_time = proto.fungi_time
@@ -583,6 +592,15 @@ def _populate_overworld_settings(settings: "Settings", proto: overworld_settings
     proto.auto_complete_bonus_barrels = bool(settings.bonus_barrel_auto_complete)
     proto.alternate_minecart_mayhem = bool(settings.alt_minecart_mayhem)
 
+    # Custom arcade minigames. Left unset when untouched so existing settings strings don't change
+    custom_minigames_enabled = bool(getattr(settings, "custom_minigames_enabled", False))
+    arcade_minigame_pool = getattr(settings, "arcade_minigame_pool_selected", None) or []
+    jetpac_minigame_pool = getattr(settings, "jetpac_minigame_pool_selected", None) or []
+    if custom_minigames_enabled or arcade_minigame_pool or jetpac_minigame_pool:
+        proto.custom_minigames.enabled = custom_minigames_enabled
+        proto.custom_minigames.arcade_pool.extend(_enum_values(arcade_minigame_pool))
+        proto.custom_minigames.jetpac_pool.extend(_enum_values(jetpac_minigame_pool))
+
     # Difficulty
     proto.no_heals = bool(getattr(settings, "no_healing", False))
     proto.no_melon_slice_drops = bool(getattr(settings, "no_melons", False))
@@ -660,6 +678,10 @@ def _apply_overworld_settings(proto: overworld_settings_pb2.OverworldSettings, s
     settings.disable_hard_minigames = bool(proto.disable_hard_minigames)
     settings.bonus_barrel_auto_complete = bool(proto.auto_complete_bonus_barrels)
     settings.alt_minecart_mayhem = bool(proto.alternate_minecart_mayhem)
+
+    settings.custom_minigames_enabled = bool(proto.custom_minigames.enabled)
+    settings.arcade_minigame_pool_selected = list(proto.custom_minigames.arcade_pool)
+    settings.jetpac_minigame_pool_selected = list(proto.custom_minigames.jetpac_pool)
 
     settings.no_healing = bool(proto.no_heals)
     settings.no_melons = bool(proto.no_melon_slice_drops)
@@ -1673,6 +1695,10 @@ PATCH_RESOLVED_SETTINGS: Tuple[str, ...] = (
     "kong_model_lanky",
     "kong_model_tiny",
     "kong_model_chunky",
+    # Custom arcade minigames
+    "arcade_custom_minigame",
+    "jetpac_custom_minigame",
+    "wordle_word",
 )
 
 # randomizer.Enums modules whose enum classes may appear in resolved settings.

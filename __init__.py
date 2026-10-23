@@ -85,6 +85,7 @@ if baseclasses_loaded:
     from randomizer.Enums.EnemySubtypes import EnemySubtype
     from randomizer.Lists import Item as DK64RItem
     from randomizer.Lists.Location import ShopLocationReference, SharedShopLocations
+    from randomizer.Lists.Multiselectors import getCustomMinigameName
     from randomizer.Lists.ShufflableExit import ShufflableExits
     from randomizer.Lists.Switches import SwitchInfo
     from randomizer.Lists.EnemyTypes import EnemyLoc, EnemyMetaData
@@ -1510,6 +1511,7 @@ if baseclasses_loaded:
                 "LankyFreeingKong": self.spoiler.settings.lanky_freeing_kong,
                 "HelmOrder": ", ".join([str(room) for room in self.spoiler.settings.helm_order]),
                 "OpenLobbies": self.spoiler.settings.open_lobbies,
+                "FreeTradeCBs": self.spoiler.settings.free_trade_cbs,
                 "KroolInBossPool": self.spoiler.settings.krool_in_boss_pool,
                 "SwitchSanity": (
                     {
@@ -1675,6 +1677,9 @@ if baseclasses_loaded:
                 spoiler_handle.write("Shuffled Bonus Barrels: \n")
                 for loc, minigame in self.spoiler.shuffled_barrel_data.items():
                     spoiler_handle.write(f" - {loc.name}: {minigame.minigame.name}\n")
+            if self.spoiler.settings.custom_minigames_enabled:
+                spoiler_handle.write(f"DK Arcade Minigame: {getCustomMinigameName(self.spoiler.settings.arcade_custom_minigame)}\n")
+                spoiler_handle.write(f"Jetpac Minigame: {getCustomMinigameName(self.spoiler.settings.jetpac_custom_minigame)}\n")
             spoiler_handle.write("Generated Time: " + time.strftime("%d-%m-%Y %H:%M:%S", time.gmtime()) + " GMT")
             spoiler_handle.write("\n")
             spoiler_handle.write("Randomizer Version: " + self.spoiler.settings.version)
@@ -2001,6 +2006,7 @@ if baseclasses_loaded:
             relevant_data["HelmOrder"] = [int(room) for room in helm_order]
             relevant_data["SwitchSanity"] = switchsanity
             relevant_data["OpenLobbies"] = open_lobbies
+            relevant_data["FreeTradeCBs"] = slot_data.get("FreeTradeCBs", False)
             relevant_data["LogicType"] = logic_type
             relevant_data["TricksSelected"] = [TricksSelected[trick] for trick in tricks_selected if trick != ""]
             relevant_data["GlitchesSelected"] = [GlitchesSelected[glitch] for glitch in glitches_selected if glitch != ""]

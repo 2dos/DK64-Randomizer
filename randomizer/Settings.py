@@ -47,6 +47,7 @@ from randomizer.Lists.Location import (
     WrinklyHintLocations,
 )
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
+from randomizer.Lists.Multiselectors import CustomMinigameData
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.Songs import song_data
 from randomizer.Lists.Switches import SwitchData
@@ -545,11 +546,14 @@ class Settings:
         self.most_snide_rewards = 25
 
         # In item rando, can any Kong collect any item?
-        self.free_trade_setting = False
+        self.free_trade_setting = FreeTradeSetting.none
 
         # Minigames
         self.arcade_custom_minigame = None
         self.jetpac_custom_minigame = None
+        self.custom_minigames_enabled = False
+        self.arcade_minigame_pool_selected = []
+        self.jetpac_minigame_pool_selected = []
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
@@ -1327,6 +1331,8 @@ class Settings:
         self.tiny_freeing_kong = self.switchsanity_data[Switches.AztecOKONGPuzzle].kong
         self.chunky_freeing_kong = self.switchsanity_data[Switches.FactoryFreeKong].kong
 
+        if self.custom_minigames_enabled:
+            self.resolve_custom_minigames()
         self.wordle_word = None
         if self.arcade_custom_minigame == "wordle" or self.jetpac_custom_minigame == "wordle":
             self.wordle_word = self.random.choice(wordle_words)
@@ -2532,9 +2538,9 @@ class Settings:
             ItemList[Items.Pearl].playthrough = True
             ItemList[Items.FillerPearl].playthrough = True
 
-        self.free_trade_items = self.free_trade_setting
-        self.free_trade_blueprints = self.free_trade_setting
-        self.free_trade_cbs = False  # TODO: Make this a setting
+        self.free_trade_items = self.free_trade_setting != FreeTradeSetting.none
+        self.free_trade_blueprints = self.free_trade_setting != FreeTradeSetting.none
+        self.free_trade_cbs = self.free_trade_setting == FreeTradeSetting.all_cbs
 
         if IsDDMSSelected(self.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles):
             self.remove_wrinkly_puzzles = True
@@ -2645,6 +2651,23 @@ class Settings:
             self.kong_model_lanky = self.random.choice(kong_model_list)
             self.kong_model_tiny = self.random.choice(kong_model_list)
             self.kong_model_chunky = self.random.choice(kong_model_list)
+
+    def resolve_custom_minigames(self):
+        """Pick the minigame DK Arcade and Jetpac will run from their pools."""
+        all_custom = [minigame for minigame in CustomMinigameData if minigame != CustomMinigamesSelected.vanilla]
+
+        def get_pool(selected: list) -> list:
+            # Accepts enum members or raw ints. An empty pool allows every custom minigame
+            pool = [CustomMinigamesSelected(minigame) for minigame in selected]
+            return pool if pool else all_custom.copy()
+
+        arcade_pick = self.random.choice(get_pool(self.arcade_minigame_pool_selected))
+        jetpac_pool = get_pool(self.jetpac_minigame_pool_selected)
+        # Don't give both machines the same custom minigame unless the Jetpac pool leaves no other choice
+        jetpac_choices = [minigame for minigame in jetpac_pool if minigame == CustomMinigamesSelected.vanilla or minigame != arcade_pick]
+        jetpac_pick = self.random.choice(jetpac_choices if jetpac_choices else jetpac_pool)
+        self.arcade_custom_minigame = CustomMinigameData[arcade_pick].bin_name
+        self.jetpac_custom_minigame = CustomMinigameData[jetpac_pick].bin_name
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""

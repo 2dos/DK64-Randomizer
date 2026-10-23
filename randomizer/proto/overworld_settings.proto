@@ -120,6 +120,21 @@ enum ShuffledBonusBarrel {
     SHUFFLED_BONUS_BARREL_ARCADE = 19;
 }
 
+enum CustomMinigame {
+    // Arkanoid (3), Connect 4 (4), Flappy Bird (5) and Snake (9) were removed. To bring one back,
+    // take its number and name out of these lists and re-add it with the same number.
+    reserved 3, 4, 5, 9;
+    reserved "CUSTOM_MINIGAME_ARKANOID", "CUSTOM_MINIGAME_CONNECT4", "CUSTOM_MINIGAME_FLAPPY_BIRD", "CUSTOM_MINIGAME_SNAKE";
+
+    CUSTOM_MINIGAME_UNSPECIFIED = 0;
+    CUSTOM_MINIGAME_VANILLA = 1;
+    CUSTOM_MINIGAME_2048 = 2;
+    CUSTOM_MINIGAME_HEXAGON = 6;
+    CUSTOM_MINIGAME_MINESWEEPER = 7;
+    CUSTOM_MINIGAME_PICROSS = 8;
+    CUSTOM_MINIGAME_WORDLE = 10;
+}
+
 message HardMode {
     bool hard_enemies = 1;
     bool water_is_lava = 2;
@@ -189,6 +204,13 @@ message ColoredBananaRandomizer {
     bool enabled = 1;
 
     repeated common.LevelId cb_randomized_levels = 2;
+}
+
+message CustomMinigames {
+    bool enabled = 1;
+
+    repeated CustomMinigame arcade_pool = 2;
+    repeated CustomMinigame jetpac_pool = 3;
 }
 
 message BananaportRandomizer {
@@ -285,4 +307,7 @@ message OverworldSettings {
     bool seasonal_crate_shuffle = 45;
     bool perma_death = 46;
     optional int32 lives = 47;
+
+    // Custom arcade minigames
+    CustomMinigames custom_minigames = 48;
 }

@@ -274,4 +274,7 @@ message RequirementSettings {
     PuzzleRando puzzle_rando = 20;
 
     optional int32 half_medal_percentage = 21;
+
+    // Colored bananas can be collected by any Kong (Free Trade Agreement: All + CBs)
+    bool free_trade_cbs = 22;
 }

@@ -264,6 +264,86 @@ window.SELECTOR_INFO = {
       "value": "DKIsles"
     }
   ],
+  "custom_minigames": [
+    {
+      "check_count": 0,
+      "default": 0,
+      "is_check": false,
+      "is_dummy": false,
+      "item_count": 0,
+      "name": "Vanilla",
+      "num_val": 0,
+      "shift": -1,
+      "tied": "",
+      "tooltip": "The original game for this machine (DK Arcade or Jetpac).",
+      "value": "vanilla"
+    },
+    {
+      "check_count": 0,
+      "default": 0,
+      "is_check": false,
+      "is_dummy": false,
+      "item_count": 0,
+      "name": "2048",
+      "num_val": 0,
+      "shift": -1,
+      "tied": "",
+      "tooltip": "Slide tiles to merge equal numbers. Reach the 512 tile to win (128 in bonus barrels).",
+      "value": "game_2048"
+    },
+    {
+      "check_count": 0,
+      "default": 0,
+      "is_check": false,
+      "is_dummy": false,
+      "item_count": 0,
+      "name": "Hexagon",
+      "num_val": 0,
+      "shift": -1,
+      "tied": "",
+      "tooltip": "Rotate around the center and dodge the closing walls. Survive 45 seconds to win (less in bonus barrels).",
+      "value": "hexagon"
+    },
+    {
+      "check_count": 0,
+      "default": 0,
+      "is_check": false,
+      "is_dummy": false,
+      "item_count": 0,
+      "name": "Minesweeper",
+      "num_val": 0,
+      "shift": -1,
+      "tied": "",
+      "tooltip": "Clear a 9x9 board hiding 10 mines. The first dig is always safe.",
+      "value": "minesweeper"
+    },
+    {
+      "check_count": 0,
+      "default": 0,
+      "is_check": false,
+      "is_dummy": false,
+      "item_count": 0,
+      "name": "Picross",
+      "num_val": 0,
+      "shift": -1,
+      "tied": "",
+      "tooltip": "Solve a random 10x10 nonogram from its clues. Five mistakes and you lose.",
+      "value": "picross"
+    },
+    {
+      "check_count": 0,
+      "default": 0,
+      "is_check": false,
+      "is_dummy": false,
+      "item_count": 0,
+      "name": "Wordle",
+      "num_val": 0,
+      "shift": -1,
+      "tied": "",
+      "tooltip": "Guess the five-letter word for this seed in six tries.",
+      "value": "wordle"
+    }
+  ],
   "custom_starting_moves": [
     {
       "check_count": 0,
