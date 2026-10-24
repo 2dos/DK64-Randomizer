@@ -9,7 +9,9 @@ jobs:
     if: ${{ !contains(github.actor, '[bot]') }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Setup python
         uses: actions/setup-python@v6.2.0
@@ -27,7 +29,6 @@ jobs:
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
           git config --global user.email "bump2version@dk64randomizer.com"
           git config --global user.name "Bump2Version"
-          git config --unset-all http.https://github.com/.extraheader || true
           echo "Branch: $BRANCH_NAME, Commit Message: $COMMIT_MESSAGE"
           if [[ "$BRANCH_NAME" == "dev" ]]; then
               if [[ "$COMMIT_MESSAGE" == *"Major Release"* ]]; then
