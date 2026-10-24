@@ -2128,6 +2128,7 @@
 | In the pineapple cage | 10 | `l.pineapple or l.CanSTS() or l.CanPhase()` | 
 | Beach below Caves | 5 | `self.logic = lambda _: True` | 
 | Tree below Caves | 5 | `self.logic = lambda _: True` | 
+| Tree below caves | 5 | `self.logic = lambda _: True` | 
 | Path below Caves | 5 | `self.logic = lambda _: True` | 
 | Stairs near Aztec | 10 | `self.logic = lambda _: True` | 
 | Behind Aztec lobby | 5 | `self.logic = lambda _: True` | 
@@ -2151,8 +2152,8 @@
 | On Fairy Isle's banana peel hat left | 5 | `self.logic = lambda _: True` | 
 | On top of Fairy Isle | 5 | `self.logic = lambda _: True` | 
 | On Fairy Isle's wings | 10 | `self.logic = lambda _: True` | 
-| On the fairy tree | 5 | `self.logic = lambda _: True` | 
-| Around the fairy tree | 5 | `self.logic = lambda _: True` | 
+| Up and around the fairy tree | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
+| Up and around the fairy tree | 5 | `self.logic = lambda _: True` | 
 | In the feather cage | 10 | `l.feather or l.CanSTS() or l.CanPhase()` | 
 | Fairy Isle entrance | 5 | `self.logic = lambda _: True` | 
 | In the Pound the X rock | 10 | `Events.IslesChunkyBarrelSpawn in l.Events and l.hunkyChunky and l.Slam and l.chunky` | 
@@ -2177,7 +2178,6 @@
 | Snide ledge | 5 | `self.logic = lambda _: True` | 
 | In the coconut cage | 10 | `l.coconut` | 
 | In the grape cage | 10 | `l.grape or l.CanPhaseswim() or l.CanPhase()` | 
-| Around the tree below caves | 5 | `self.logic = lambda _: True` | 
 | Butterflies near Japes | 5 | `self.logic = lambda _: True` | 
 | Dry plant thing near Aztec | 5 | `self.logic = lambda _: True` | 
 | Steps to Factory lobby | 5 | `self.logic = lambda _: True` | 

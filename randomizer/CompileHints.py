@@ -2541,6 +2541,8 @@ def PointValueOfItem(settings, item_id):
         return settings.points_list_training_moves
     elif item_id in ItemPool.CannonAbilities():
         return settings.points_list_training_moves
+    elif item_id in ItemPool.TimeItems():
+        return settings.points_list_training_moves
     elif item_id in ItemPool.ImportantSharedMoves:
         return settings.points_list_important_shared
     elif item_id == Items.Bean:

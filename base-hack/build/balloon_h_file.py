@@ -1,3 +1,4 @@
+"""Construct the h file for balloon items."""
 from BuildLib import barrel_skins
 
 disclaimer = [
