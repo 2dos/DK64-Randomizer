@@ -964,7 +964,7 @@ for x in range(8):
         file_index=196 + x,
         source_file=f"assets/displays/taskimage{x}.png",
         texture_format=TextureFormat.RGBA5551,
-        target_compressed_size=32*32*2
+        target_compressed_size=32 * 32 * 2
     ))
 for x, shop in enumerate(barrel_skins):
     data = File(

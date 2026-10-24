@@ -290,6 +290,9052 @@ AngryAztecÇ&
 Creepy CastleCreepyCastleÇ
 Castle CryptCastleCryptÇ
 IslesIslesä·“
+‚º
+
+WrinklyDoor—º
+*Õº
+
+ÈÕ
+CreepyCastle◊Õ*”Õ
+Ç+
+donkey˜*2Ù*
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (1)
++
+name#!Castle Lobby - Central Pillar (1)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (2)
++
+name#!Castle Lobby - Central Pillar (2)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (3)
++
+name#!Castle Lobby - Central Pillar (3)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (4)
++
+name#!Castle Lobby - Central Pillar (4)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (5)
++
+name#!Castle Lobby - Central Pillar (5)
+F*D
+'
+valueCreepyCastle;Near Greenhouse
+
+nameNear Greenhouse
+R*P
+-
+value$"CreepyCastle;Rocketbarrel Overhang
+
+nameRocketbarrel Overhang
+T*R
+.
+value%#CreepyCastle;Lowest ledge near tree
+ 
+nameLowest ledge near tree
+P*N
+,
+value#!CreepyCastle;Near Lower Cave Shop
+
+nameNear Lower Cave Shop
+P*N
+,
+value#!CreepyCastle;Near Upper Cave Shop
+
+nameNear Upper Cave Shop
+P*N
+,
+value#!CreepyCastle;Against the Big Tree
+
+nameAgainst the Big Tree
+V*T
+/
+value&$CreepyCastle;Next to Moat Tag Barrel
+!
+nameNext to Moat Tag Barrel
+N*L
++
+value" CreepyCastle;Next to Middle Shop
+
+nameNext to Middle Shop
+\*Z
+2
+value)'CreepyCastle;Outside Lanky's Greenhouse
+$
+nameOutside Lanky's Greenhouse
+N*L
++
+value" CreepyCastle;warp Hub Battlement
+
+namewarp Hub Battlement
+`*^
+4
+value+)CreepyCastle;On Stairs to Moat Tag Barrel
+&
+nameOn Stairs to Moat Tag Barrel
+T*R
+.
+value%#CreepyCastle;Between Moat and Cliff
+ 
+nameBetween Moat and Cliff
+\*Z
+2
+value)'CreepyCastle;Top Shop Battlement - left
+$
+nameTop Shop Battlement - left
+`*^
+4
+value+)CreepyCastle;Top Shop Battlement - center
+&
+nameTop Shop Battlement - center
+^*\
+3
+value*(CreepyCastle;Top Shop Battlement - right
+%
+nameTop Shop Battlement - right
+N*L
++
+value" CreepyCastle;Outside Lanky Tower
+
+nameOutside Lanky Tower
+`*^
+4
+value+)CreepyCastle;Next to Stairs to Drawbridge
+&
+nameNext to Stairs to Drawbridge
+d*b
+6
+value-+CreepyCastle;Rocketbarrel Battlement - left
+(
+name Rocketbarrel Battlement - left
+f*d
+7
+value.,CreepyCastle;Rocketbarrel Battlement - right
+)
+name!Rocketbarrel Battlement - right
+f*d
+7
+value.,CreepyCastle;Moat Underwater by RocketBarrel
+)
+name!Moat Underwater by RocketBarrel
+R*P
+-
+value$"CreepyCastle;Moat Under Drawbridge
+
+nameMoat Under Drawbridge
+X*V
+0
+value'%CreepyCastle;Next to Moat Door - left
+"
+nameNext to Moat Door - left
+Z*X
+1
+value(&CreepyCastle;Next to Moat Door - right
+#
+nameNext to Moat Door - right
+\*Z
+2
+value)'CreepyCastle;Moat Next to Ladder - left
+$
+nameMoat Next to Ladder - left
+^*\
+3
+value*(CreepyCastle;Moat Next to Ladder - right
+%
+nameMoat Next to Ladder - right
+J*H
+)
+value CreepyCastle;Tree - First Room
+
+nameTree - First Room
+p*n
+<
+value31CreepyCastle;Library - Room with Big Books - left
+.
+name&$Library - Room with Big Books - left
+p*n
+<
+value31CreepyCastle;Library - Room with big Books - back
+.
+name&$Library - Room with big Books - back
+b*`
+5
+value,*CreepyCastle;Library - Next to Exit - left
+'
+nameLibrary - Next to Exit - left
+d*b
+6
+value-+CreepyCastle;Library - Next to Exit - right
+(
+name Library - Next to Exit - right
+b*`
+5
+value,*CreepyCastle;Ballroom - Left Candle - left
+'
+nameBallroom - Left Candle - left
+d*b
+6
+value-+CreepyCastle;Ballroom - Left Candle - right
+(
+name Ballroom - Left Candle - right
+b*`
+5
+value,*CreepyCastle;Ballroom - Back Candle - left
+'
+nameBallroom - Back Candle - left
+d*b
+6
+value-+CreepyCastle;Ballroom - Back Candle - right
+(
+name Ballroom - Back Candle - right
+d*b
+6
+value-+CreepyCastle;Ballroom - Right Candle - left
+(
+name Ballroom - Right Candle - left
+f*d
+7
+value.,CreepyCastle;Ballroom - Right Candle - right
+)
+name!Ballroom - Right Candle - right
+b*`
+5
+value,*CreepyCastle;Lower Cave - Crypt skull left
+'
+nameLower Cave - Crypt skull left
+d*b
+6
+value-+CreepyCastle;Lower Cave - Crypt skull right
+(
+name Lower Cave - Crypt skull right
+X*V
+0
+value'%CreepyCastle;Tree - Near Coconut Gate
+"
+nameTree - Near Coconut Gate
+`*^
+4
+value+)CreepyCastle;Library - Strong Kong Alcove
+&
+nameLibrary - Strong Kong Alcove
+N*L
++
+value" CreepyCastle;Library - Left wing
+
+nameLibrary - Left wing
+h*f
+8
+value/-CreepyCastle;Donkey crypt - behind the levers
+*
+name" Donkey crypt - behind the levers
+^*\
+3
+value*(CreepyCastle;Crypt - Second intersection
+%
+nameCrypt - Second intersection
+X*V
+0
+value'%CreepyCastle;Near the crypt staircase
+"
+nameNear the crypt staircase
+P*N
+,
+value#!CreepyCastle;Behind the mausoleum
+
+nameBehind the mausoleum
+P*N
+,
+value#!CreepyCastle;Dungeon - Lanky side
+
+nameDungeon - Lanky side
+P*N
+,
+value#!CreepyCastle;Dungeon - Diddy side
+
+nameDungeon - Diddy side
+J*H
+)
+value CreepyCastle;Dungeon - DK side
+
+nameDungeon - DK side
+`*^
+4
+value+)CreepyCastle;Upper Cave Shop Intersection
+&
+nameUpper Cave Shop Intersection
+P*N
+,
+value#!CreepyCastle;Next to dungeon door
+
+nameNext to dungeon door
+J*H
+)
+value CreepyCastle;Next to the chasm
+
+nameNext to the chasm
+T*R
+.
+value%#CreepyCastle;Lowest Level Tombstone
+ 
+nameLowest Level Tombstone
+Z*X
+1
+value(&CreepyCastle;Tombstone near lower door
+#
+nameTombstone near lower door
+F*D
+'
+valueCreepyCastle;Behind the shed
+
+nameBehind the shed
+Ê(
+tiny›(2⁄(
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (1)
++
+name#!Castle Lobby - Central Pillar (1)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (2)
++
+name#!Castle Lobby - Central Pillar (2)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (3)
++
+name#!Castle Lobby - Central Pillar (3)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (4)
++
+name#!Castle Lobby - Central Pillar (4)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (5)
++
+name#!Castle Lobby - Central Pillar (5)
+F*D
+'
+valueCreepyCastle;Near Greenhouse
+
+nameNear Greenhouse
+R*P
+-
+value$"CreepyCastle;Rocketbarrel Overhang
+
+nameRocketbarrel Overhang
+T*R
+.
+value%#CreepyCastle;Lowest ledge near tree
+ 
+nameLowest ledge near tree
+P*N
+,
+value#!CreepyCastle;Near Lower Cave Shop
+
+nameNear Lower Cave Shop
+P*N
+,
+value#!CreepyCastle;Near Upper Cave Shop
+
+nameNear Upper Cave Shop
+P*N
+,
+value#!CreepyCastle;Against the Big Tree
+
+nameAgainst the Big Tree
+V*T
+/
+value&$CreepyCastle;Next to Moat Tag Barrel
+!
+nameNext to Moat Tag Barrel
+N*L
++
+value" CreepyCastle;Next to Middle Shop
+
+nameNext to Middle Shop
+\*Z
+2
+value)'CreepyCastle;Outside Lanky's Greenhouse
+$
+nameOutside Lanky's Greenhouse
+N*L
++
+value" CreepyCastle;warp Hub Battlement
+
+namewarp Hub Battlement
+`*^
+4
+value+)CreepyCastle;On Stairs to Moat Tag Barrel
+&
+nameOn Stairs to Moat Tag Barrel
+T*R
+.
+value%#CreepyCastle;Between Moat and Cliff
+ 
+nameBetween Moat and Cliff
+\*Z
+2
+value)'CreepyCastle;Top Shop Battlement - left
+$
+nameTop Shop Battlement - left
+`*^
+4
+value+)CreepyCastle;Top Shop Battlement - center
+&
+nameTop Shop Battlement - center
+^*\
+3
+value*(CreepyCastle;Top Shop Battlement - right
+%
+nameTop Shop Battlement - right
+N*L
++
+value" CreepyCastle;Outside Lanky Tower
+
+nameOutside Lanky Tower
+`*^
+4
+value+)CreepyCastle;Next to Stairs to Drawbridge
+&
+nameNext to Stairs to Drawbridge
+d*b
+6
+value-+CreepyCastle;Rocketbarrel Battlement - left
+(
+name Rocketbarrel Battlement - left
+f*d
+7
+value.,CreepyCastle;Rocketbarrel Battlement - right
+)
+name!Rocketbarrel Battlement - right
+f*d
+7
+value.,CreepyCastle;Moat Underwater by RocketBarrel
+)
+name!Moat Underwater by RocketBarrel
+R*P
+-
+value$"CreepyCastle;Moat Under Drawbridge
+
+nameMoat Under Drawbridge
+X*V
+0
+value'%CreepyCastle;Next to Moat Door - left
+"
+nameNext to Moat Door - left
+Z*X
+1
+value(&CreepyCastle;Next to Moat Door - right
+#
+nameNext to Moat Door - right
+\*Z
+2
+value)'CreepyCastle;Moat Next to Ladder - left
+$
+nameMoat Next to Ladder - left
+^*\
+3
+value*(CreepyCastle;Moat Next to Ladder - right
+%
+nameMoat Next to Ladder - right
+J*H
+)
+value CreepyCastle;Tree - First Room
+
+nameTree - First Room
+b*`
+5
+value,*CreepyCastle;Ballroom - Left Candle - left
+'
+nameBallroom - Left Candle - left
+d*b
+6
+value-+CreepyCastle;Ballroom - Left Candle - right
+(
+name Ballroom - Left Candle - right
+b*`
+5
+value,*CreepyCastle;Ballroom - Back Candle - left
+'
+nameBallroom - Back Candle - left
+d*b
+6
+value-+CreepyCastle;Ballroom - Back Candle - right
+(
+name Ballroom - Back Candle - right
+d*b
+6
+value-+CreepyCastle;Ballroom - Right Candle - left
+(
+name Ballroom - Right Candle - left
+f*d
+7
+value.,CreepyCastle;Ballroom - Right Candle - right
+)
+name!Ballroom - Right Candle - right
+L*J
+*
+value!CreepyCastle;Trash Can - Cheese
+
+nameTrash Can - Cheese
+b*`
+5
+value,*CreepyCastle;Lower Cave - Crypt skull left
+'
+nameLower Cave - Crypt skull left
+d*b
+6
+value-+CreepyCastle;Lower Cave - Crypt skull right
+(
+name Lower Cave - Crypt skull right
+d*b
+6
+value-+CreepyCastle;Mausoleum - Under Grape Switch
+(
+name Mausoleum - Under Grape Switch
+r*p
+=
+value42CreepyCastle;Ballroom - In Front of Monkeyport Pad
+/
+name'%Ballroom - In Front of Monkeyport Pad
+p*n
+<
+value31CreepyCastle;Museum - Tiny side - near the statue
+.
+name&$Museum - Tiny side - near the statue
+n*l
+;
+value20CreepyCastle;Museum - Tiny side - on the factory
+-
+name%#Museum - Tiny side - on the factory
+X*V
+0
+value'%CreepyCastle;Near the crypt staircase
+"
+nameNear the crypt staircase
+P*N
+,
+value#!CreepyCastle;Behind the mausoleum
+
+nameBehind the mausoleum
+^*\
+3
+value*(CreepyCastle;Mausoleum - sprint corridor
+%
+nameMausoleum - sprint corridor
+P*N
+,
+value#!CreepyCastle;Dungeon - Lanky side
+
+nameDungeon - Lanky side
+P*N
+,
+value#!CreepyCastle;Dungeon - Diddy side
+
+nameDungeon - Diddy side
+J*H
+)
+value CreepyCastle;Dungeon - DK side
+
+nameDungeon - DK side
+`*^
+4
+value+)CreepyCastle;Upper Cave Shop Intersection
+&
+nameUpper Cave Shop Intersection
+P*N
+,
+value#!CreepyCastle;Next to dungeon door
+
+nameNext to dungeon door
+J*H
+)
+value CreepyCastle;Next to the chasm
+
+nameNext to the chasm
+T*R
+.
+value%#CreepyCastle;Lowest Level Tombstone
+ 
+nameLowest Level Tombstone
+Z*X
+1
+value(&CreepyCastle;Tombstone near lower door
+#
+nameTombstone near lower door
+F*D
+'
+valueCreepyCastle;Behind the shed
+
+nameBehind the shed
+Ê)
+chunky€)2ÿ)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (1)
++
+name#!Castle Lobby - Central Pillar (1)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (2)
++
+name#!Castle Lobby - Central Pillar (2)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (3)
++
+name#!Castle Lobby - Central Pillar (3)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (4)
++
+name#!Castle Lobby - Central Pillar (4)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (5)
++
+name#!Castle Lobby - Central Pillar (5)
+F*D
+'
+valueCreepyCastle;Near Greenhouse
+
+nameNear Greenhouse
+R*P
+-
+value$"CreepyCastle;Rocketbarrel Overhang
+
+nameRocketbarrel Overhang
+T*R
+.
+value%#CreepyCastle;Lowest ledge near tree
+ 
+nameLowest ledge near tree
+P*N
+,
+value#!CreepyCastle;Near Lower Cave Shop
+
+nameNear Lower Cave Shop
+P*N
+,
+value#!CreepyCastle;Near Upper Cave Shop
+
+nameNear Upper Cave Shop
+P*N
+,
+value#!CreepyCastle;Against the Big Tree
+
+nameAgainst the Big Tree
+V*T
+/
+value&$CreepyCastle;Next to Moat Tag Barrel
+!
+nameNext to Moat Tag Barrel
+N*L
++
+value" CreepyCastle;Next to Middle Shop
+
+nameNext to Middle Shop
+\*Z
+2
+value)'CreepyCastle;Outside Lanky's Greenhouse
+$
+nameOutside Lanky's Greenhouse
+N*L
++
+value" CreepyCastle;warp Hub Battlement
+
+namewarp Hub Battlement
+`*^
+4
+value+)CreepyCastle;On Stairs to Moat Tag Barrel
+&
+nameOn Stairs to Moat Tag Barrel
+T*R
+.
+value%#CreepyCastle;Between Moat and Cliff
+ 
+nameBetween Moat and Cliff
+\*Z
+2
+value)'CreepyCastle;Top Shop Battlement - left
+$
+nameTop Shop Battlement - left
+`*^
+4
+value+)CreepyCastle;Top Shop Battlement - center
+&
+nameTop Shop Battlement - center
+^*\
+3
+value*(CreepyCastle;Top Shop Battlement - right
+%
+nameTop Shop Battlement - right
+N*L
++
+value" CreepyCastle;Outside Lanky Tower
+
+nameOutside Lanky Tower
+`*^
+4
+value+)CreepyCastle;Next to Stairs to Drawbridge
+&
+nameNext to Stairs to Drawbridge
+d*b
+6
+value-+CreepyCastle;Rocketbarrel Battlement - left
+(
+name Rocketbarrel Battlement - left
+f*d
+7
+value.,CreepyCastle;Rocketbarrel Battlement - right
+)
+name!Rocketbarrel Battlement - right
+f*d
+7
+value.,CreepyCastle;Moat Underwater by RocketBarrel
+)
+name!Moat Underwater by RocketBarrel
+R*P
+-
+value$"CreepyCastle;Moat Under Drawbridge
+
+nameMoat Under Drawbridge
+X*V
+0
+value'%CreepyCastle;Next to Moat Door - left
+"
+nameNext to Moat Door - left
+Z*X
+1
+value(&CreepyCastle;Next to Moat Door - right
+#
+nameNext to Moat Door - right
+\*Z
+2
+value)'CreepyCastle;Moat Next to Ladder - left
+$
+nameMoat Next to Ladder - left
+^*\
+3
+value*(CreepyCastle;Moat Next to Ladder - right
+%
+nameMoat Next to Ladder - right
+J*H
+)
+value CreepyCastle;Tree - First Room
+
+nameTree - First Room
+b*`
+5
+value,*CreepyCastle;Ballroom - Left Candle - left
+'
+nameBallroom - Left Candle - left
+d*b
+6
+value-+CreepyCastle;Ballroom - Left Candle - right
+(
+name Ballroom - Left Candle - right
+b*`
+5
+value,*CreepyCastle;Ballroom - Back Candle - left
+'
+nameBallroom - Back Candle - left
+d*b
+6
+value-+CreepyCastle;Ballroom - Back Candle - right
+(
+name Ballroom - Back Candle - right
+d*b
+6
+value-+CreepyCastle;Ballroom - Right Candle - left
+(
+name Ballroom - Right Candle - left
+f*d
+7
+value.,CreepyCastle;Ballroom - Right Candle - right
+)
+name!Ballroom - Right Candle - right
+F*D
+'
+valueCreepyCastle;Inside the Shed
+
+nameInside the Shed
+b*`
+5
+value,*CreepyCastle;Lower Cave - Crypt skull left
+'
+nameLower Cave - Crypt skull left
+d*b
+6
+value-+CreepyCastle;Lower Cave - Crypt skull right
+(
+name Lower Cave - Crypt skull right
+T*R
+.
+value%#CreepyCastle;Museum - Far Left Side
+ 
+nameMuseum - Far Left Side
+V*T
+/
+value&$CreepyCastle;Museum - Far Right Side
+!
+nameMuseum - Far Right Side
+X*V
+0
+value'%CreepyCastle;Tree - Near Coconut Gate
+"
+nameTree - Near Coconut Gate
+T*R
+.
+value%#CreepyCastle;Tree - Past Punch Gate
+ 
+nameTree - Past Punch Gate
+p*n
+<
+value31CreepyCastle;Chunky crypt - between right coffins
+.
+name&$Chunky crypt - between right coffins
+n*l
+;
+value20CreepyCastle;Chunky crypt - between left coffins
+-
+name%#Chunky crypt - between left coffins
+^*\
+3
+value*(CreepyCastle;Crypt - Second intersection
+%
+nameCrypt - Second intersection
+X*V
+0
+value'%CreepyCastle;Near the crypt staircase
+"
+nameNear the crypt staircase
+P*N
+,
+value#!CreepyCastle;Behind the mausoleum
+
+nameBehind the mausoleum
+P*N
+,
+value#!CreepyCastle;Dungeon - Lanky side
+
+nameDungeon - Lanky side
+P*N
+,
+value#!CreepyCastle;Dungeon - Diddy side
+
+nameDungeon - Diddy side
+J*H
+)
+value CreepyCastle;Dungeon - DK side
+
+nameDungeon - DK side
+`*^
+4
+value+)CreepyCastle;Upper Cave Shop Intersection
+&
+nameUpper Cave Shop Intersection
+P*N
+,
+value#!CreepyCastle;Next to dungeon door
+
+nameNext to dungeon door
+J*H
+)
+value CreepyCastle;Next to the chasm
+
+nameNext to the chasm
+T*R
+.
+value%#CreepyCastle;Lowest Level Tombstone
+ 
+nameLowest Level Tombstone
+Z*X
+1
+value(&CreepyCastle;Tombstone near lower door
+#
+nameTombstone near lower door
+F*D
+'
+valueCreepyCastle;Behind the shed
+
+nameBehind the shed
+◊(
+lankyÕ(2 (
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (1)
++
+name#!Castle Lobby - Central Pillar (1)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (2)
++
+name#!Castle Lobby - Central Pillar (2)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (3)
++
+name#!Castle Lobby - Central Pillar (3)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (4)
++
+name#!Castle Lobby - Central Pillar (4)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (5)
++
+name#!Castle Lobby - Central Pillar (5)
+F*D
+'
+valueCreepyCastle;Near Greenhouse
+
+nameNear Greenhouse
+R*P
+-
+value$"CreepyCastle;Rocketbarrel Overhang
+
+nameRocketbarrel Overhang
+T*R
+.
+value%#CreepyCastle;Lowest ledge near tree
+ 
+nameLowest ledge near tree
+P*N
+,
+value#!CreepyCastle;Near Lower Cave Shop
+
+nameNear Lower Cave Shop
+P*N
+,
+value#!CreepyCastle;Near Upper Cave Shop
+
+nameNear Upper Cave Shop
+P*N
+,
+value#!CreepyCastle;Against the Big Tree
+
+nameAgainst the Big Tree
+V*T
+/
+value&$CreepyCastle;Next to Moat Tag Barrel
+!
+nameNext to Moat Tag Barrel
+N*L
++
+value" CreepyCastle;Next to Middle Shop
+
+nameNext to Middle Shop
+\*Z
+2
+value)'CreepyCastle;Outside Lanky's Greenhouse
+$
+nameOutside Lanky's Greenhouse
+N*L
++
+value" CreepyCastle;warp Hub Battlement
+
+namewarp Hub Battlement
+`*^
+4
+value+)CreepyCastle;On Stairs to Moat Tag Barrel
+&
+nameOn Stairs to Moat Tag Barrel
+T*R
+.
+value%#CreepyCastle;Between Moat and Cliff
+ 
+nameBetween Moat and Cliff
+\*Z
+2
+value)'CreepyCastle;Top Shop Battlement - left
+$
+nameTop Shop Battlement - left
+`*^
+4
+value+)CreepyCastle;Top Shop Battlement - center
+&
+nameTop Shop Battlement - center
+^*\
+3
+value*(CreepyCastle;Top Shop Battlement - right
+%
+nameTop Shop Battlement - right
+N*L
++
+value" CreepyCastle;Outside Lanky Tower
+
+nameOutside Lanky Tower
+`*^
+4
+value+)CreepyCastle;Next to Stairs to Drawbridge
+&
+nameNext to Stairs to Drawbridge
+d*b
+6
+value-+CreepyCastle;Rocketbarrel Battlement - left
+(
+name Rocketbarrel Battlement - left
+f*d
+7
+value.,CreepyCastle;Rocketbarrel Battlement - right
+)
+name!Rocketbarrel Battlement - right
+f*d
+7
+value.,CreepyCastle;Moat Underwater by RocketBarrel
+)
+name!Moat Underwater by RocketBarrel
+R*P
+-
+value$"CreepyCastle;Moat Under Drawbridge
+
+nameMoat Under Drawbridge
+X*V
+0
+value'%CreepyCastle;Next to Moat Door - left
+"
+nameNext to Moat Door - left
+Z*X
+1
+value(&CreepyCastle;Next to Moat Door - right
+#
+nameNext to Moat Door - right
+\*Z
+2
+value)'CreepyCastle;Moat Next to Ladder - left
+$
+nameMoat Next to Ladder - left
+^*\
+3
+value*(CreepyCastle;Moat Next to Ladder - right
+%
+nameMoat Next to Ladder - right
+J*H
+)
+value CreepyCastle;Tree - First Room
+
+nameTree - First Room
+b*`
+5
+value,*CreepyCastle;Ballroom - Left Candle - left
+'
+nameBallroom - Left Candle - left
+d*b
+6
+value-+CreepyCastle;Ballroom - Left Candle - right
+(
+name Ballroom - Left Candle - right
+b*`
+5
+value,*CreepyCastle;Ballroom - Back Candle - left
+'
+nameBallroom - Back Candle - left
+d*b
+6
+value-+CreepyCastle;Ballroom - Back Candle - right
+(
+name Ballroom - Back Candle - right
+d*b
+6
+value-+CreepyCastle;Ballroom - Right Candle - left
+(
+name Ballroom - Right Candle - left
+f*d
+7
+value.,CreepyCastle;Ballroom - Right Candle - right
+)
+name!Ballroom - Right Candle - right
+b*`
+5
+value,*CreepyCastle;Lower Cave - Crypt skull left
+'
+nameLower Cave - Crypt skull left
+d*b
+6
+value-+CreepyCastle;Lower Cave - Crypt skull right
+(
+name Lower Cave - Crypt skull right
+d*b
+6
+value-+CreepyCastle;Mausoleum - Under Grape Switch
+(
+name Mausoleum - Under Grape Switch
+p*n
+<
+value31CreepyCastle;Lanky wind tower - Right of Entrance
+.
+name&$Lanky wind tower - Right of Entrance
+n*l
+;
+value20CreepyCastle;Lanky wind tower - Left of Entrance
+-
+name%#Lanky wind tower - Left of Entrance
+R*P
+-
+value$"CreepyCastle;Greenhouse - Dead end
+
+nameGreenhouse - Dead end
+\*Z
+2
+value)'CreepyCastle;Greenhouse - Also dead end
+$
+nameGreenhouse - Also dead end
+X*V
+0
+value'%CreepyCastle;Near the crypt staircase
+"
+nameNear the crypt staircase
+P*N
+,
+value#!CreepyCastle;Behind the mausoleum
+
+nameBehind the mausoleum
+^*\
+3
+value*(CreepyCastle;Mausoleum - sprint corridor
+%
+nameMausoleum - sprint corridor
+P*N
+,
+value#!CreepyCastle;Dungeon - Lanky side
+
+nameDungeon - Lanky side
+P*N
+,
+value#!CreepyCastle;Dungeon - Diddy side
+
+nameDungeon - Diddy side
+J*H
+)
+value CreepyCastle;Dungeon - DK side
+
+nameDungeon - DK side
+`*^
+4
+value+)CreepyCastle;Upper Cave Shop Intersection
+&
+nameUpper Cave Shop Intersection
+P*N
+,
+value#!CreepyCastle;Next to dungeon door
+
+nameNext to dungeon door
+J*H
+)
+value CreepyCastle;Next to the chasm
+
+nameNext to the chasm
+T*R
+.
+value%#CreepyCastle;Lowest Level Tombstone
+ 
+nameLowest Level Tombstone
+Z*X
+1
+value(&CreepyCastle;Tombstone near lower door
+#
+nameTombstone near lower door
+F*D
+'
+valueCreepyCastle;Behind the shed
+
+nameBehind the shed
+ü'
+diddyï'2í'
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (1)
++
+name#!Castle Lobby - Central Pillar (1)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (2)
++
+name#!Castle Lobby - Central Pillar (2)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (3)
++
+name#!Castle Lobby - Central Pillar (3)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (4)
++
+name#!Castle Lobby - Central Pillar (4)
+j*h
+9
+value0.CreepyCastle;Castle Lobby - Central Pillar (5)
++
+name#!Castle Lobby - Central Pillar (5)
+F*D
+'
+valueCreepyCastle;Near Greenhouse
+
+nameNear Greenhouse
+R*P
+-
+value$"CreepyCastle;Rocketbarrel Overhang
+
+nameRocketbarrel Overhang
+T*R
+.
+value%#CreepyCastle;Lowest ledge near tree
+ 
+nameLowest ledge near tree
+P*N
+,
+value#!CreepyCastle;Near Lower Cave Shop
+
+nameNear Lower Cave Shop
+P*N
+,
+value#!CreepyCastle;Near Upper Cave Shop
+
+nameNear Upper Cave Shop
+P*N
+,
+value#!CreepyCastle;Against the Big Tree
+
+nameAgainst the Big Tree
+V*T
+/
+value&$CreepyCastle;Next to Moat Tag Barrel
+!
+nameNext to Moat Tag Barrel
+N*L
++
+value" CreepyCastle;Next to Middle Shop
+
+nameNext to Middle Shop
+\*Z
+2
+value)'CreepyCastle;Outside Lanky's Greenhouse
+$
+nameOutside Lanky's Greenhouse
+N*L
++
+value" CreepyCastle;warp Hub Battlement
+
+namewarp Hub Battlement
+`*^
+4
+value+)CreepyCastle;On Stairs to Moat Tag Barrel
+&
+nameOn Stairs to Moat Tag Barrel
+T*R
+.
+value%#CreepyCastle;Between Moat and Cliff
+ 
+nameBetween Moat and Cliff
+\*Z
+2
+value)'CreepyCastle;Top Shop Battlement - left
+$
+nameTop Shop Battlement - left
+`*^
+4
+value+)CreepyCastle;Top Shop Battlement - center
+&
+nameTop Shop Battlement - center
+^*\
+3
+value*(CreepyCastle;Top Shop Battlement - right
+%
+nameTop Shop Battlement - right
+N*L
++
+value" CreepyCastle;Outside Lanky Tower
+
+nameOutside Lanky Tower
+`*^
+4
+value+)CreepyCastle;Next to Stairs to Drawbridge
+&
+nameNext to Stairs to Drawbridge
+d*b
+6
+value-+CreepyCastle;Rocketbarrel Battlement - left
+(
+name Rocketbarrel Battlement - left
+f*d
+7
+value.,CreepyCastle;Rocketbarrel Battlement - right
+)
+name!Rocketbarrel Battlement - right
+f*d
+7
+value.,CreepyCastle;Moat Underwater by RocketBarrel
+)
+name!Moat Underwater by RocketBarrel
+R*P
+-
+value$"CreepyCastle;Moat Under Drawbridge
+
+nameMoat Under Drawbridge
+X*V
+0
+value'%CreepyCastle;Next to Moat Door - left
+"
+nameNext to Moat Door - left
+Z*X
+1
+value(&CreepyCastle;Next to Moat Door - right
+#
+nameNext to Moat Door - right
+\*Z
+2
+value)'CreepyCastle;Moat Next to Ladder - left
+$
+nameMoat Next to Ladder - left
+^*\
+3
+value*(CreepyCastle;Moat Next to Ladder - right
+%
+nameMoat Next to Ladder - right
+J*H
+)
+value CreepyCastle;Tree - First Room
+
+nameTree - First Room
+b*`
+5
+value,*CreepyCastle;Ballroom - Left Candle - left
+'
+nameBallroom - Left Candle - left
+d*b
+6
+value-+CreepyCastle;Ballroom - Left Candle - right
+(
+name Ballroom - Left Candle - right
+b*`
+5
+value,*CreepyCastle;Ballroom - Back Candle - left
+'
+nameBallroom - Back Candle - left
+d*b
+6
+value-+CreepyCastle;Ballroom - Back Candle - right
+(
+name Ballroom - Back Candle - right
+d*b
+6
+value-+CreepyCastle;Ballroom - Right Candle - left
+(
+name Ballroom - Right Candle - left
+f*d
+7
+value.,CreepyCastle;Ballroom - Right Candle - right
+)
+name!Ballroom - Right Candle - right
+b*`
+5
+value,*CreepyCastle;Lower Cave - Crypt skull left
+'
+nameLower Cave - Crypt skull left
+d*b
+6
+value-+CreepyCastle;Lower Cave - Crypt skull right
+(
+name Lower Cave - Crypt skull right
+r*p
+=
+value42CreepyCastle;Ballroom - In Front of Monkeyport Pad
+/
+name'%Ballroom - In Front of Monkeyport Pad
+f*d
+7
+value.,CreepyCastle;Diddy crypt - right of the tomb
+)
+name!Diddy crypt - right of the tomb
+d*b
+6
+value-+CreepyCastle;Diddy crypt - left of the tomb
+(
+name Diddy crypt - left of the tomb
+^*\
+3
+value*(CreepyCastle;Crypt - Second intersection
+%
+nameCrypt - Second intersection
+X*V
+0
+value'%CreepyCastle;Near the crypt staircase
+"
+nameNear the crypt staircase
+P*N
+,
+value#!CreepyCastle;Behind the mausoleum
+
+nameBehind the mausoleum
+P*N
+,
+value#!CreepyCastle;Dungeon - Lanky side
+
+nameDungeon - Lanky side
+P*N
+,
+value#!CreepyCastle;Dungeon - Diddy side
+
+nameDungeon - Diddy side
+J*H
+)
+value CreepyCastle;Dungeon - DK side
+
+nameDungeon - DK side
+`*^
+4
+value+)CreepyCastle;Upper Cave Shop Intersection
+&
+nameUpper Cave Shop Intersection
+P*N
+,
+value#!CreepyCastle;Next to dungeon door
+
+nameNext to dungeon door
+J*H
+)
+value CreepyCastle;Next to the chasm
+
+nameNext to the chasm
+T*R
+.
+value%#CreepyCastle;Lowest Level Tombstone
+ 
+nameLowest Level Tombstone
+Z*X
+1
+value(&CreepyCastle;Tombstone near lower door
+#
+nameTombstone near lower door
+F*D
+'
+valueCreepyCastle;Behind the shed
+
+nameBehind the shed
+≥⁄
+CrystalCaves°⁄*ù⁄
+ﬁ*
+donkey”*2–*
+T*R
+.
+value%#CrystalCaves;Caves Lobby - Far Left
+ 
+nameCaves Lobby - Far Left
+V*T
+/
+value&$CrystalCaves;Caves Lobby - Near Left
+!
+nameCaves Lobby - Near Left
+V*T
+/
+value&$CrystalCaves;Caves Lobby - Far Right
+!
+nameCaves Lobby - Far Right
+X*V
+0
+value'%CrystalCaves;Caves Lobby - Near Right
+"
+nameCaves Lobby - Near Right
+L*J
+*
+value!CrystalCaves;Ice Cave Near Shop
+
+nameIce Cave Near Shop
+L*J
+*
+value!CrystalCaves;Giant Boulder Room
+
+nameGiant Boulder Room
+<*:
+"
+valueCrystalCaves;Near Igloo
+
+name
+Near Igloo
+N*L
++
+value" CrystalCaves;Outside Lanky Cabin
+
+nameOutside Lanky Cabin
+P*N
+,
+value#!CrystalCaves;Outside Chunky Cabin
+
+nameOutside Chunky Cabin
+Z*X
+1
+value(&CrystalCaves;Outside Diddy Lower Cabin
+#
+nameOutside Diddy Lower Cabin
+Z*X
+1
+value(&CrystalCaves;Outside Diddy Upper Cabin
+#
+nameOutside Diddy Upper Cabin
+j*h
+9
+value0.CrystalCaves;Under the Waterfall (Cabins Area)
++
+name#!Under the Waterfall (Cabins Area)
+P*N
+,
+value#!CrystalCaves;Cabins Useless Ledge
+
+nameCabins Useless Ledge
+\*Z
+2
+value)'CrystalCaves;Beneath Igloo triangle pad
+$
+nameBeneath Igloo triangle pad
+b*`
+5
+value,*CrystalCaves;Near the small Boulder Switch
+'
+nameNear the small Boulder Switch
+`*^
+4
+value+)CrystalCaves;Beneath Ice Castle - on land
+&
+nameBeneath Ice Castle - on land
+f*d
+7
+value.,CrystalCaves;Beneath Ice Castle - underwater
+)
+name!Beneath Ice Castle - underwater
+h*f
+8
+value/-CrystalCaves;Water under Blast pillar - right
+*
+name" Water under Blast pillar - right
+f*d
+7
+value.,CrystalCaves;Water under Blast pillar - left
+)
+name!Water under Blast pillar - left
+f*d
+7
+value.,CrystalCaves;Under Bridge to Shop near Igloo
+)
+name!Under Bridge to Shop near Igloo
+^*\
+3
+value*(CrystalCaves;Bottom of the Slope - right
+%
+nameBottom of the Slope - right
+J*H
+)
+value CrystalCaves;Mini Monkey Ledge
+
+nameMini Monkey Ledge
+P*N
+,
+value#!CrystalCaves;Across from Ice Shop
+
+nameAcross from Ice Shop
+V*T
+/
+value&$CrystalCaves;Left of Mini Bonus Cave
+!
+nameLeft of Mini Bonus Cave
+F*D
+'
+valueCrystalCaves;Mini Bonus Cave
+
+nameMini Bonus Cave
+T*R
+.
+value%#CrystalCaves;Level Entrance - right
+ 
+nameLevel Entrance - right
+R*P
+-
+value$"CrystalCaves;Level Entrance - left
+
+nameLevel Entrance - left
+b*`
+5
+value,*CrystalCaves;Igloo Area - left of entrance
+'
+nameIgloo Area - left of entrance
+r*p
+=
+value42CrystalCaves;Igloo Area - Behind Tag Barrel Island
+/
+name'%Igloo Area - Behind Tag Barrel Island
+j*h
+9
+value0.CrystalCaves;Igloo Area - Behind Lone Platform
++
+name#!Igloo Area - Behind Lone Platform
+d*b
+6
+value-+CrystalCaves;Igloo Area - right of entrance
+(
+name Igloo Area - right of entrance
+j*h
+9
+value0.CrystalCaves;Water Under Shop Near Cabins Area
++
+name#!Water Under Shop Near Cabins Area
+b*`
+5
+value,*CrystalCaves;Water Under Mini Monkey Ledge
+'
+nameWater Under Mini Monkey Ledge
+r*p
+=
+value42CrystalCaves;Water Under Mini-Rocket Bridge - left
+/
+name'%Water Under Mini-Rocket Bridge - left
+v*t
+?
+value64CrystalCaves;Water Under Mini-Rocket Bridge - center
+1
+name)'Water Under Mini-Rocket Bridge - center
+t*r
+>
+value53CrystalCaves;Water Under Mini-Rocket Bridge - right
+0
+name(&Water Under Mini-Rocket Bridge - right
+d*b
+6
+value-+CrystalCaves;Cabin Area - Near Shop - right
+(
+name Cabin Area - Near Shop - right
+l*j
+:
+value1/CrystalCaves;Cabin Area - Near Shop - far right
+,
+name$"Cabin Area - Near Shop - far right
+L*J
+*
+value!CrystalCaves;Outside Tiny Cabin
+
+nameOutside Tiny Cabin
+R*P
+-
+value$"CrystalCaves;Near Cabin Tag Barrel
+
+nameNear Cabin Tag Barrel
+\*Z
+2
+value)'CrystalCaves;Bottom of the Slope - left
+$
+nameBottom of the Slope - left
+v*t
+?
+value64CrystalCaves;Wall between Donkey cabin and waterfall
+1
+name)'Wall between Donkey cabin and waterfall
+h*f
+8
+value/-CrystalCaves;Donkey cabin - Right of entrance
+*
+name" Donkey cabin - Right of entrance
+X*V
+0
+value'%CrystalCaves;Donkey cabin - Back wall
+"
+nameDonkey cabin - Back wall
+r*p
+=
+value42CrystalCaves;Diddy upper cabin - Near right corner
+/
+name'%Diddy upper cabin - Near right corner
+p*n
+<
+value31CrystalCaves;Diddy upper cabin - Far right corner
+.
+name&$Diddy upper cabin - Far right corner
+l*j
+:
+value1/CrystalCaves;Diddy upper cabin - Back bookshelf
+,
+name$"Diddy upper cabin - Back bookshelf
+X*V
+0
+value'%CrystalCaves;Tiny cabin - Near corner
+"
+nameTiny cabin - Near corner
+V*T
+/
+value&$CrystalCaves;Tiny cabin - Far corner
+!
+nameTiny cabin - Far corner
+\*Z
+2
+value)'CrystalCaves;Chunky cabin - Near corner
+$
+nameChunky cabin - Near corner
+Z*X
+1
+value(&CrystalCaves;Chunky cabin - Back shelf
+#
+nameChunky cabin - Back shelf
+f*d
+7
+value.,CrystalCaves;Donkey igloo - Under the swords
+)
+name!Donkey igloo - Under the swords
+T*R
+.
+value%#CrystalCaves;Tiny igloo - Back wall
+ 
+nameTiny igloo - Back wall
+\*Z
+2
+value)'CrystalCaves;Near ice castle tag barrel
+$
+nameNear ice castle tag barrel
+b*`
+5
+value,*CrystalCaves;Behind giant boulder ice wall
+'
+nameBehind giant boulder ice wall
+`*^
+4
+value+)CrystalCaves;Behind gorilla gone ice wall
+&
+nameBehind gorilla gone ice wall
+`*^
+4
+value+)CrystalCaves;Starting room of beetle race
+&
+nameStarting room of beetle race
+‹*
+tiny”*2–*
+T*R
+.
+value%#CrystalCaves;Caves Lobby - Far Left
+ 
+nameCaves Lobby - Far Left
+V*T
+/
+value&$CrystalCaves;Caves Lobby - Near Left
+!
+nameCaves Lobby - Near Left
+V*T
+/
+value&$CrystalCaves;Caves Lobby - Far Right
+!
+nameCaves Lobby - Far Right
+X*V
+0
+value'%CrystalCaves;Caves Lobby - Near Right
+"
+nameCaves Lobby - Near Right
+L*J
+*
+value!CrystalCaves;Ice Cave Near Shop
+
+nameIce Cave Near Shop
+L*J
+*
+value!CrystalCaves;Giant Boulder Room
+
+nameGiant Boulder Room
+<*:
+"
+valueCrystalCaves;Near Igloo
+
+name
+Near Igloo
+N*L
++
+value" CrystalCaves;Outside Lanky Cabin
+
+nameOutside Lanky Cabin
+P*N
+,
+value#!CrystalCaves;Outside Chunky Cabin
+
+nameOutside Chunky Cabin
+Z*X
+1
+value(&CrystalCaves;Outside Diddy Lower Cabin
+#
+nameOutside Diddy Lower Cabin
+Z*X
+1
+value(&CrystalCaves;Outside Diddy Upper Cabin
+#
+nameOutside Diddy Upper Cabin
+j*h
+9
+value0.CrystalCaves;Under the Waterfall (Cabins Area)
++
+name#!Under the Waterfall (Cabins Area)
+P*N
+,
+value#!CrystalCaves;Cabins Useless Ledge
+
+nameCabins Useless Ledge
+\*Z
+2
+value)'CrystalCaves;Beneath Igloo triangle pad
+$
+nameBeneath Igloo triangle pad
+b*`
+5
+value,*CrystalCaves;Near the small Boulder Switch
+'
+nameNear the small Boulder Switch
+`*^
+4
+value+)CrystalCaves;Beneath Ice Castle - on land
+&
+nameBeneath Ice Castle - on land
+f*d
+7
+value.,CrystalCaves;Beneath Ice Castle - underwater
+)
+name!Beneath Ice Castle - underwater
+h*f
+8
+value/-CrystalCaves;Water under Blast pillar - right
+*
+name" Water under Blast pillar - right
+f*d
+7
+value.,CrystalCaves;Water under Blast pillar - left
+)
+name!Water under Blast pillar - left
+f*d
+7
+value.,CrystalCaves;Under Bridge to Shop near Igloo
+)
+name!Under Bridge to Shop near Igloo
+^*\
+3
+value*(CrystalCaves;Bottom of the Slope - right
+%
+nameBottom of the Slope - right
+J*H
+)
+value CrystalCaves;Mini Monkey Ledge
+
+nameMini Monkey Ledge
+P*N
+,
+value#!CrystalCaves;Across from Ice Shop
+
+nameAcross from Ice Shop
+V*T
+/
+value&$CrystalCaves;Left of Mini Bonus Cave
+!
+nameLeft of Mini Bonus Cave
+F*D
+'
+valueCrystalCaves;Mini Bonus Cave
+
+nameMini Bonus Cave
+T*R
+.
+value%#CrystalCaves;Level Entrance - right
+ 
+nameLevel Entrance - right
+R*P
+-
+value$"CrystalCaves;Level Entrance - left
+
+nameLevel Entrance - left
+b*`
+5
+value,*CrystalCaves;Igloo Area - left of entrance
+'
+nameIgloo Area - left of entrance
+r*p
+=
+value42CrystalCaves;Igloo Area - Behind Tag Barrel Island
+/
+name'%Igloo Area - Behind Tag Barrel Island
+j*h
+9
+value0.CrystalCaves;Igloo Area - Behind Lone Platform
++
+name#!Igloo Area - Behind Lone Platform
+d*b
+6
+value-+CrystalCaves;Igloo Area - right of entrance
+(
+name Igloo Area - right of entrance
+j*h
+9
+value0.CrystalCaves;Water Under Shop Near Cabins Area
++
+name#!Water Under Shop Near Cabins Area
+b*`
+5
+value,*CrystalCaves;Water Under Mini Monkey Ledge
+'
+nameWater Under Mini Monkey Ledge
+r*p
+=
+value42CrystalCaves;Water Under Mini-Rocket Bridge - left
+/
+name'%Water Under Mini-Rocket Bridge - left
+v*t
+?
+value64CrystalCaves;Water Under Mini-Rocket Bridge - center
+1
+name)'Water Under Mini-Rocket Bridge - center
+t*r
+>
+value53CrystalCaves;Water Under Mini-Rocket Bridge - right
+0
+name(&Water Under Mini-Rocket Bridge - right
+d*b
+6
+value-+CrystalCaves;Cabin Area - Near Shop - right
+(
+name Cabin Area - Near Shop - right
+l*j
+:
+value1/CrystalCaves;Cabin Area - Near Shop - far right
+,
+name$"Cabin Area - Near Shop - far right
+L*J
+*
+value!CrystalCaves;Outside Tiny Cabin
+
+nameOutside Tiny Cabin
+R*P
+-
+value$"CrystalCaves;Near Cabin Tag Barrel
+
+nameNear Cabin Tag Barrel
+\*Z
+2
+value)'CrystalCaves;Bottom of the Slope - left
+$
+nameBottom of the Slope - left
+v*t
+?
+value64CrystalCaves;Wall between Donkey cabin and waterfall
+1
+name)'Wall between Donkey cabin and waterfall
+h*f
+8
+value/-CrystalCaves;Donkey cabin - Right of entrance
+*
+name" Donkey cabin - Right of entrance
+X*V
+0
+value'%CrystalCaves;Donkey cabin - Back wall
+"
+nameDonkey cabin - Back wall
+r*p
+=
+value42CrystalCaves;Diddy upper cabin - Near right corner
+/
+name'%Diddy upper cabin - Near right corner
+p*n
+<
+value31CrystalCaves;Diddy upper cabin - Far right corner
+.
+name&$Diddy upper cabin - Far right corner
+l*j
+:
+value1/CrystalCaves;Diddy upper cabin - Back bookshelf
+,
+name$"Diddy upper cabin - Back bookshelf
+X*V
+0
+value'%CrystalCaves;Tiny cabin - Near corner
+"
+nameTiny cabin - Near corner
+V*T
+/
+value&$CrystalCaves;Tiny cabin - Far corner
+!
+nameTiny cabin - Far corner
+\*Z
+2
+value)'CrystalCaves;Chunky cabin - Near corner
+$
+nameChunky cabin - Near corner
+Z*X
+1
+value(&CrystalCaves;Chunky cabin - Back shelf
+#
+nameChunky cabin - Back shelf
+f*d
+7
+value.,CrystalCaves;Donkey igloo - Under the swords
+)
+name!Donkey igloo - Under the swords
+T*R
+.
+value%#CrystalCaves;Tiny igloo - Back wall
+ 
+nameTiny igloo - Back wall
+\*Z
+2
+value)'CrystalCaves;Near ice castle tag barrel
+$
+nameNear ice castle tag barrel
+b*`
+5
+value,*CrystalCaves;Behind giant boulder ice wall
+'
+nameBehind giant boulder ice wall
+`*^
+4
+value+)CrystalCaves;Behind gorilla gone ice wall
+&
+nameBehind gorilla gone ice wall
+`*^
+4
+value+)CrystalCaves;Starting room of beetle race
+&
+nameStarting room of beetle race
+∏+
+chunky≠+2™+
+T*R
+.
+value%#CrystalCaves;Caves Lobby - Far Left
+ 
+nameCaves Lobby - Far Left
+V*T
+/
+value&$CrystalCaves;Caves Lobby - Near Left
+!
+nameCaves Lobby - Near Left
+V*T
+/
+value&$CrystalCaves;Caves Lobby - Far Right
+!
+nameCaves Lobby - Far Right
+X*V
+0
+value'%CrystalCaves;Caves Lobby - Near Right
+"
+nameCaves Lobby - Near Right
+L*J
+*
+value!CrystalCaves;Ice Cave Near Shop
+
+nameIce Cave Near Shop
+L*J
+*
+value!CrystalCaves;Giant Boulder Room
+
+nameGiant Boulder Room
+<*:
+"
+valueCrystalCaves;Near Igloo
+
+name
+Near Igloo
+N*L
++
+value" CrystalCaves;Outside Lanky Cabin
+
+nameOutside Lanky Cabin
+P*N
+,
+value#!CrystalCaves;Outside Chunky Cabin
+
+nameOutside Chunky Cabin
+Z*X
+1
+value(&CrystalCaves;Outside Diddy Lower Cabin
+#
+nameOutside Diddy Lower Cabin
+Z*X
+1
+value(&CrystalCaves;Outside Diddy Upper Cabin
+#
+nameOutside Diddy Upper Cabin
+j*h
+9
+value0.CrystalCaves;Under the Waterfall (Cabins Area)
++
+name#!Under the Waterfall (Cabins Area)
+P*N
+,
+value#!CrystalCaves;Cabins Useless Ledge
+
+nameCabins Useless Ledge
+\*Z
+2
+value)'CrystalCaves;Beneath Igloo triangle pad
+$
+nameBeneath Igloo triangle pad
+b*`
+5
+value,*CrystalCaves;Near the small Boulder Switch
+'
+nameNear the small Boulder Switch
+`*^
+4
+value+)CrystalCaves;Beneath Ice Castle - on land
+&
+nameBeneath Ice Castle - on land
+f*d
+7
+value.,CrystalCaves;Beneath Ice Castle - underwater
+)
+name!Beneath Ice Castle - underwater
+h*f
+8
+value/-CrystalCaves;Water under Blast pillar - right
+*
+name" Water under Blast pillar - right
+f*d
+7
+value.,CrystalCaves;Water under Blast pillar - left
+)
+name!Water under Blast pillar - left
+f*d
+7
+value.,CrystalCaves;Under Bridge to Shop near Igloo
+)
+name!Under Bridge to Shop near Igloo
+^*\
+3
+value*(CrystalCaves;Bottom of the Slope - right
+%
+nameBottom of the Slope - right
+J*H
+)
+value CrystalCaves;Mini Monkey Ledge
+
+nameMini Monkey Ledge
+P*N
+,
+value#!CrystalCaves;Across from Ice Shop
+
+nameAcross from Ice Shop
+V*T
+/
+value&$CrystalCaves;Left of Mini Bonus Cave
+!
+nameLeft of Mini Bonus Cave
+F*D
+'
+valueCrystalCaves;Mini Bonus Cave
+
+nameMini Bonus Cave
+T*R
+.
+value%#CrystalCaves;Level Entrance - right
+ 
+nameLevel Entrance - right
+R*P
+-
+value$"CrystalCaves;Level Entrance - left
+
+nameLevel Entrance - left
+b*`
+5
+value,*CrystalCaves;Igloo Area - left of entrance
+'
+nameIgloo Area - left of entrance
+r*p
+=
+value42CrystalCaves;Igloo Area - Behind Tag Barrel Island
+/
+name'%Igloo Area - Behind Tag Barrel Island
+j*h
+9
+value0.CrystalCaves;Igloo Area - Behind Lone Platform
++
+name#!Igloo Area - Behind Lone Platform
+d*b
+6
+value-+CrystalCaves;Igloo Area - right of entrance
+(
+name Igloo Area - right of entrance
+j*h
+9
+value0.CrystalCaves;Water Under Shop Near Cabins Area
++
+name#!Water Under Shop Near Cabins Area
+b*`
+5
+value,*CrystalCaves;Water Under Mini Monkey Ledge
+'
+nameWater Under Mini Monkey Ledge
+r*p
+=
+value42CrystalCaves;Water Under Mini-Rocket Bridge - left
+/
+name'%Water Under Mini-Rocket Bridge - left
+v*t
+?
+value64CrystalCaves;Water Under Mini-Rocket Bridge - center
+1
+name)'Water Under Mini-Rocket Bridge - center
+t*r
+>
+value53CrystalCaves;Water Under Mini-Rocket Bridge - right
+0
+name(&Water Under Mini-Rocket Bridge - right
+X*V
+0
+value'%CrystalCaves;Chunky Cabin - Bookshelf
+"
+nameChunky Cabin - Bookshelf
+d*b
+6
+value-+CrystalCaves;Cabin Area - Near Shop - right
+(
+name Cabin Area - Near Shop - right
+l*j
+:
+value1/CrystalCaves;Cabin Area - Near Shop - far right
+,
+name$"Cabin Area - Near Shop - far right
+L*J
+*
+value!CrystalCaves;Outside Tiny Cabin
+
+nameOutside Tiny Cabin
+R*P
+-
+value$"CrystalCaves;Near Cabin Tag Barrel
+
+nameNear Cabin Tag Barrel
+\*Z
+2
+value)'CrystalCaves;Bottom of the Slope - left
+$
+nameBottom of the Slope - left
+v*t
+?
+value64CrystalCaves;Wall between Donkey cabin and waterfall
+1
+name)'Wall between Donkey cabin and waterfall
+h*f
+8
+value/-CrystalCaves;Donkey cabin - Right of entrance
+*
+name" Donkey cabin - Right of entrance
+X*V
+0
+value'%CrystalCaves;Donkey cabin - Back wall
+"
+nameDonkey cabin - Back wall
+r*p
+=
+value42CrystalCaves;Diddy upper cabin - Near right corner
+/
+name'%Diddy upper cabin - Near right corner
+p*n
+<
+value31CrystalCaves;Diddy upper cabin - Far right corner
+.
+name&$Diddy upper cabin - Far right corner
+l*j
+:
+value1/CrystalCaves;Diddy upper cabin - Back bookshelf
+,
+name$"Diddy upper cabin - Back bookshelf
+X*V
+0
+value'%CrystalCaves;Tiny cabin - Near corner
+"
+nameTiny cabin - Near corner
+V*T
+/
+value&$CrystalCaves;Tiny cabin - Far corner
+!
+nameTiny cabin - Far corner
+\*Z
+2
+value)'CrystalCaves;Chunky cabin - Near corner
+$
+nameChunky cabin - Near corner
+Z*X
+1
+value(&CrystalCaves;Chunky cabin - Back shelf
+#
+nameChunky cabin - Back shelf
+f*d
+7
+value.,CrystalCaves;Donkey igloo - Under the swords
+)
+name!Donkey igloo - Under the swords
+T*R
+.
+value%#CrystalCaves;Tiny igloo - Back wall
+ 
+nameTiny igloo - Back wall
+\*Z
+2
+value)'CrystalCaves;Near ice castle tag barrel
+$
+nameNear ice castle tag barrel
+b*`
+5
+value,*CrystalCaves;Behind giant boulder ice wall
+'
+nameBehind giant boulder ice wall
+`*^
+4
+value+)CrystalCaves;Behind gorilla gone ice wall
+&
+nameBehind gorilla gone ice wall
+`*^
+4
+value+)CrystalCaves;Starting room of beetle race
+&
+nameStarting room of beetle race
+’,
+lankyÀ,2»,
+T*R
+.
+value%#CrystalCaves;Caves Lobby - Far Left
+ 
+nameCaves Lobby - Far Left
+V*T
+/
+value&$CrystalCaves;Caves Lobby - Near Left
+!
+nameCaves Lobby - Near Left
+V*T
+/
+value&$CrystalCaves;Caves Lobby - Far Right
+!
+nameCaves Lobby - Far Right
+X*V
+0
+value'%CrystalCaves;Caves Lobby - Near Right
+"
+nameCaves Lobby - Near Right
+L*J
+*
+value!CrystalCaves;Ice Cave Near Shop
+
+nameIce Cave Near Shop
+L*J
+*
+value!CrystalCaves;Giant Boulder Room
+
+nameGiant Boulder Room
+D*B
+&
+valueCrystalCaves;On Lanky Cabin
+
+nameOn Lanky Cabin
+<*:
+"
+valueCrystalCaves;Near Igloo
+
+name
+Near Igloo
+N*L
++
+value" CrystalCaves;Outside Lanky Cabin
+
+nameOutside Lanky Cabin
+P*N
+,
+value#!CrystalCaves;Outside Chunky Cabin
+
+nameOutside Chunky Cabin
+Z*X
+1
+value(&CrystalCaves;Outside Diddy Lower Cabin
+#
+nameOutside Diddy Lower Cabin
+Z*X
+1
+value(&CrystalCaves;Outside Diddy Upper Cabin
+#
+nameOutside Diddy Upper Cabin
+j*h
+9
+value0.CrystalCaves;Under the Waterfall (Cabins Area)
++
+name#!Under the Waterfall (Cabins Area)
+P*N
+,
+value#!CrystalCaves;Cabins Useless Ledge
+
+nameCabins Useless Ledge
+\*Z
+2
+value)'CrystalCaves;Beneath Igloo triangle pad
+$
+nameBeneath Igloo triangle pad
+b*`
+5
+value,*CrystalCaves;Near the small Boulder Switch
+'
+nameNear the small Boulder Switch
+`*^
+4
+value+)CrystalCaves;Beneath Ice Castle - on land
+&
+nameBeneath Ice Castle - on land
+f*d
+7
+value.,CrystalCaves;Beneath Ice Castle - underwater
+)
+name!Beneath Ice Castle - underwater
+h*f
+8
+value/-CrystalCaves;Water under Blast pillar - right
+*
+name" Water under Blast pillar - right
+f*d
+7
+value.,CrystalCaves;Water under Blast pillar - left
+)
+name!Water under Blast pillar - left
+f*d
+7
+value.,CrystalCaves;Under Bridge to Shop near Igloo
+)
+name!Under Bridge to Shop near Igloo
+^*\
+3
+value*(CrystalCaves;Bottom of the Slope - right
+%
+nameBottom of the Slope - right
+J*H
+)
+value CrystalCaves;Mini Monkey Ledge
+
+nameMini Monkey Ledge
+P*N
+,
+value#!CrystalCaves;Across from Ice Shop
+
+nameAcross from Ice Shop
+V*T
+/
+value&$CrystalCaves;Left of Mini Bonus Cave
+!
+nameLeft of Mini Bonus Cave
+F*D
+'
+valueCrystalCaves;Mini Bonus Cave
+
+nameMini Bonus Cave
+T*R
+.
+value%#CrystalCaves;Level Entrance - right
+ 
+nameLevel Entrance - right
+R*P
+-
+value$"CrystalCaves;Level Entrance - left
+
+nameLevel Entrance - left
+b*`
+5
+value,*CrystalCaves;Igloo Area - left of entrance
+'
+nameIgloo Area - left of entrance
+r*p
+=
+value42CrystalCaves;Igloo Area - Behind Tag Barrel Island
+/
+name'%Igloo Area - Behind Tag Barrel Island
+j*h
+9
+value0.CrystalCaves;Igloo Area - Behind Lone Platform
++
+name#!Igloo Area - Behind Lone Platform
+d*b
+6
+value-+CrystalCaves;Igloo Area - right of entrance
+(
+name Igloo Area - right of entrance
+j*h
+9
+value0.CrystalCaves;Water Under Shop Near Cabins Area
++
+name#!Water Under Shop Near Cabins Area
+b*`
+5
+value,*CrystalCaves;Water Under Mini Monkey Ledge
+'
+nameWater Under Mini Monkey Ledge
+r*p
+=
+value42CrystalCaves;Water Under Mini-Rocket Bridge - left
+/
+name'%Water Under Mini-Rocket Bridge - left
+v*t
+?
+value64CrystalCaves;Water Under Mini-Rocket Bridge - center
+1
+name)'Water Under Mini-Rocket Bridge - center
+t*r
+>
+value53CrystalCaves;Water Under Mini-Rocket Bridge - right
+0
+name(&Water Under Mini-Rocket Bridge - right
+V*T
+/
+value&$CrystalCaves;Tomato Game Room - left
+!
+nameTomato Game Room - left
+X*V
+0
+value'%CrystalCaves;Tomato Game Room - right
+"
+nameTomato Game Room - right
+d*b
+6
+value-+CrystalCaves;Cabin Area - Near Shop - right
+(
+name Cabin Area - Near Shop - right
+l*j
+:
+value1/CrystalCaves;Cabin Area - Near Shop - far right
+,
+name$"Cabin Area - Near Shop - far right
+L*J
+*
+value!CrystalCaves;Outside Tiny Cabin
+
+nameOutside Tiny Cabin
+R*P
+-
+value$"CrystalCaves;Near Cabin Tag Barrel
+
+nameNear Cabin Tag Barrel
+\*Z
+2
+value)'CrystalCaves;Bottom of the Slope - left
+$
+nameBottom of the Slope - left
+v*t
+?
+value64CrystalCaves;Wall between Donkey cabin and waterfall
+1
+name)'Wall between Donkey cabin and waterfall
+h*f
+8
+value/-CrystalCaves;Donkey cabin - Right of entrance
+*
+name" Donkey cabin - Right of entrance
+X*V
+0
+value'%CrystalCaves;Donkey cabin - Back wall
+"
+nameDonkey cabin - Back wall
+r*p
+=
+value42CrystalCaves;Diddy upper cabin - Near right corner
+/
+name'%Diddy upper cabin - Near right corner
+p*n
+<
+value31CrystalCaves;Diddy upper cabin - Far right corner
+.
+name&$Diddy upper cabin - Far right corner
+l*j
+:
+value1/CrystalCaves;Diddy upper cabin - Back bookshelf
+,
+name$"Diddy upper cabin - Back bookshelf
+X*V
+0
+value'%CrystalCaves;Tiny cabin - Near corner
+"
+nameTiny cabin - Near corner
+V*T
+/
+value&$CrystalCaves;Tiny cabin - Far corner
+!
+nameTiny cabin - Far corner
+\*Z
+2
+value)'CrystalCaves;Chunky cabin - Near corner
+$
+nameChunky cabin - Near corner
+Z*X
+1
+value(&CrystalCaves;Chunky cabin - Back shelf
+#
+nameChunky cabin - Back shelf
+f*d
+7
+value.,CrystalCaves;Donkey igloo - Under the swords
+)
+name!Donkey igloo - Under the swords
+T*R
+.
+value%#CrystalCaves;Tiny igloo - Back wall
+ 
+nameTiny igloo - Back wall
+\*Z
+2
+value)'CrystalCaves;Near ice castle tag barrel
+$
+nameNear ice castle tag barrel
+b*`
+5
+value,*CrystalCaves;Behind giant boulder ice wall
+'
+nameBehind giant boulder ice wall
+`*^
+4
+value+)CrystalCaves;Behind gorilla gone ice wall
+&
+nameBehind gorilla gone ice wall
+`*^
+4
+value+)CrystalCaves;Starting room of beetle race
+&
+nameStarting room of beetle race
+«,
+diddyΩ,2∫,
+T*R
+.
+value%#CrystalCaves;Caves Lobby - Far Left
+ 
+nameCaves Lobby - Far Left
+V*T
+/
+value&$CrystalCaves;Caves Lobby - Top Ledge
+!
+nameCaves Lobby - Top Ledge
+V*T
+/
+value&$CrystalCaves;Caves Lobby - Near Left
+!
+nameCaves Lobby - Near Left
+V*T
+/
+value&$CrystalCaves;Caves Lobby - Far Right
+!
+nameCaves Lobby - Far Right
+X*V
+0
+value'%CrystalCaves;Caves Lobby - Near Right
+"
+nameCaves Lobby - Near Right
+J*H
+)
+value CrystalCaves;On Rotating Cabin
+
+nameOn Rotating Cabin
+L*J
+*
+value!CrystalCaves;Ice Cave Near Shop
+
+nameIce Cave Near Shop
+L*J
+*
+value!CrystalCaves;Giant Boulder Room
+
+nameGiant Boulder Room
+D*B
+&
+valueCrystalCaves;On Lanky Cabin
+
+nameOn Lanky Cabin
+<*:
+"
+valueCrystalCaves;Near Igloo
+
+name
+Near Igloo
+N*L
++
+value" CrystalCaves;Outside Lanky Cabin
+
+nameOutside Lanky Cabin
+P*N
+,
+value#!CrystalCaves;Outside Chunky Cabin
+
+nameOutside Chunky Cabin
+Z*X
+1
+value(&CrystalCaves;Outside Diddy Lower Cabin
+#
+nameOutside Diddy Lower Cabin
+Z*X
+1
+value(&CrystalCaves;Outside Diddy Upper Cabin
+#
+nameOutside Diddy Upper Cabin
+j*h
+9
+value0.CrystalCaves;Under the Waterfall (Cabins Area)
++
+name#!Under the Waterfall (Cabins Area)
+P*N
+,
+value#!CrystalCaves;Cabins Useless Ledge
+
+nameCabins Useless Ledge
+\*Z
+2
+value)'CrystalCaves;Beneath Igloo triangle pad
+$
+nameBeneath Igloo triangle pad
+b*`
+5
+value,*CrystalCaves;Near the small Boulder Switch
+'
+nameNear the small Boulder Switch
+`*^
+4
+value+)CrystalCaves;Beneath Ice Castle - on land
+&
+nameBeneath Ice Castle - on land
+f*d
+7
+value.,CrystalCaves;Beneath Ice Castle - underwater
+)
+name!Beneath Ice Castle - underwater
+h*f
+8
+value/-CrystalCaves;Water under Blast pillar - right
+*
+name" Water under Blast pillar - right
+f*d
+7
+value.,CrystalCaves;Water under Blast pillar - left
+)
+name!Water under Blast pillar - left
+f*d
+7
+value.,CrystalCaves;Under Bridge to Shop near Igloo
+)
+name!Under Bridge to Shop near Igloo
+^*\
+3
+value*(CrystalCaves;Bottom of the Slope - right
+%
+nameBottom of the Slope - right
+J*H
+)
+value CrystalCaves;Mini Monkey Ledge
+
+nameMini Monkey Ledge
+P*N
+,
+value#!CrystalCaves;Across from Ice Shop
+
+nameAcross from Ice Shop
+V*T
+/
+value&$CrystalCaves;Left of Mini Bonus Cave
+!
+nameLeft of Mini Bonus Cave
+F*D
+'
+valueCrystalCaves;Mini Bonus Cave
+
+nameMini Bonus Cave
+T*R
+.
+value%#CrystalCaves;Level Entrance - right
+ 
+nameLevel Entrance - right
+R*P
+-
+value$"CrystalCaves;Level Entrance - left
+
+nameLevel Entrance - left
+b*`
+5
+value,*CrystalCaves;Igloo Area - left of entrance
+'
+nameIgloo Area - left of entrance
+r*p
+=
+value42CrystalCaves;Igloo Area - Behind Tag Barrel Island
+/
+name'%Igloo Area - Behind Tag Barrel Island
+j*h
+9
+value0.CrystalCaves;Igloo Area - Behind Lone Platform
++
+name#!Igloo Area - Behind Lone Platform
+d*b
+6
+value-+CrystalCaves;Igloo Area - right of entrance
+(
+name Igloo Area - right of entrance
+j*h
+9
+value0.CrystalCaves;Water Under Shop Near Cabins Area
++
+name#!Water Under Shop Near Cabins Area
+b*`
+5
+value,*CrystalCaves;Water Under Mini Monkey Ledge
+'
+nameWater Under Mini Monkey Ledge
+r*p
+=
+value42CrystalCaves;Water Under Mini-Rocket Bridge - left
+/
+name'%Water Under Mini-Rocket Bridge - left
+v*t
+?
+value64CrystalCaves;Water Under Mini-Rocket Bridge - center
+1
+name)'Water Under Mini-Rocket Bridge - center
+t*r
+>
+value53CrystalCaves;Water Under Mini-Rocket Bridge - right
+0
+name(&Water Under Mini-Rocket Bridge - right
+d*b
+6
+value-+CrystalCaves;Cabin Area - Near Shop - right
+(
+name Cabin Area - Near Shop - right
+l*j
+:
+value1/CrystalCaves;Cabin Area - Near Shop - far right
+,
+name$"Cabin Area - Near Shop - far right
+L*J
+*
+value!CrystalCaves;Outside Tiny Cabin
+
+nameOutside Tiny Cabin
+R*P
+-
+value$"CrystalCaves;Near Cabin Tag Barrel
+
+nameNear Cabin Tag Barrel
+\*Z
+2
+value)'CrystalCaves;Bottom of the Slope - left
+$
+nameBottom of the Slope - left
+v*t
+?
+value64CrystalCaves;Wall between Donkey cabin and waterfall
+1
+name)'Wall between Donkey cabin and waterfall
+h*f
+8
+value/-CrystalCaves;Donkey cabin - Right of entrance
+*
+name" Donkey cabin - Right of entrance
+X*V
+0
+value'%CrystalCaves;Donkey cabin - Back wall
+"
+nameDonkey cabin - Back wall
+r*p
+=
+value42CrystalCaves;Diddy upper cabin - Near right corner
+/
+name'%Diddy upper cabin - Near right corner
+p*n
+<
+value31CrystalCaves;Diddy upper cabin - Far right corner
+.
+name&$Diddy upper cabin - Far right corner
+l*j
+:
+value1/CrystalCaves;Diddy upper cabin - Back bookshelf
+,
+name$"Diddy upper cabin - Back bookshelf
+X*V
+0
+value'%CrystalCaves;Tiny cabin - Near corner
+"
+nameTiny cabin - Near corner
+V*T
+/
+value&$CrystalCaves;Tiny cabin - Far corner
+!
+nameTiny cabin - Far corner
+\*Z
+2
+value)'CrystalCaves;Chunky cabin - Near corner
+$
+nameChunky cabin - Near corner
+Z*X
+1
+value(&CrystalCaves;Chunky cabin - Back shelf
+#
+nameChunky cabin - Back shelf
+f*d
+7
+value.,CrystalCaves;Donkey igloo - Under the swords
+)
+name!Donkey igloo - Under the swords
+T*R
+.
+value%#CrystalCaves;Tiny igloo - Back wall
+ 
+nameTiny igloo - Back wall
+\*Z
+2
+value)'CrystalCaves;Near ice castle tag barrel
+$
+nameNear ice castle tag barrel
+b*`
+5
+value,*CrystalCaves;Behind giant boulder ice wall
+'
+nameBehind giant boulder ice wall
+`*^
+4
+value+)CrystalCaves;Behind gorilla gone ice wall
+&
+nameBehind gorilla gone ice wall
+`*^
+4
+value+)CrystalCaves;Starting room of beetle race
+&
+nameStarting room of beetle race
+î»
+FungiForestÉ»*ˇ«
+¢(
+donkeyó(2î(
+[*Y
+1
+value(&FungiForest;Forest Lobby - On High Box
+$
+nameForest Lobby - On High Box
+q*o
+<
+value31FungiForest;Forest Lobby - Near Gorilla Gone Door
+/
+name'%Forest Lobby - Near Gorilla Gone Door
+y*w
+@
+value75FungiForest;Forest Lobby - Opposite Gorilla Gone Door
+3
+name+)Forest Lobby - Opposite Gorilla Gone Door
+a*_
+4
+value+)FungiForest;Forest Lobby - Near B. Locker
+'
+nameForest Lobby - Near B. Locker
+_*]
+3
+value*(FungiForest;Forest Lobby - Near Entrance
+&
+nameForest Lobby - Near Entrance
+Q*O
+,
+value#!FungiForest;Behind Thornvine Barn
+
+nameBehind Thornvine Barn
+Q*O
+,
+value#!FungiForest;Beanstalk Area Alcove
+
+nameBeanstalk Area Alcove
+E*C
+&
+valueFungiForest;Near Mills Shop
+
+nameNear Mills Shop
+Q*O
+,
+value#!FungiForest;Top of Giant Mushroom
+
+nameTop of Giant Mushroom
+I*G
+(
+valueFungiForest;Owl Area Clearing
+
+nameOwl Area Clearing
+a*_
+4
+value+)FungiForest;On top of Mill Crusher Output
+'
+nameOn top of Mill Crusher Output
+U*S
+.
+value%#FungiForest;Mill front side - right
+!
+nameMill front side - right
+S*Q
+-
+value$"FungiForest;Mill right side - left
+ 
+nameMill right side - left
+U*S
+.
+value%#FungiForest;Mill right side - right
+!
+nameMill right side - right
+K*I
+)
+value FungiForest;Mill Roof - Sloped
+
+nameMill Roof - Sloped
+I*G
+(
+valueFungiForest;Mill Roof - tower
+
+nameMill Roof - tower
+a*_
+4
+value+)FungiForest;Boxes outside of Rafters Barn
+'
+nameBoxes outside of Rafters Barn
+]*[
+2
+value)'FungiForest;Behind Night Thorns - right
+%
+nameBehind Night Thorns - right
+[*Y
+1
+value(&FungiForest;Behind Night Thorns - left
+$
+nameBehind Night Thorns - left
+S*Q
+-
+value$"FungiForest;Outside Thornvine Barn
+ 
+nameOutside Thornvine Barn
+S*Q
+-
+value$"FungiForest;Next to Rabbit's House
+ 
+nameNext to Rabbit's House
+Ñ*Å
+E
+value<:FungiForest;Owl Area - Near Rocketbarrel Barrel - far left
+8
+name0.Owl Area - Near Rocketbarrel Barrel - far left
+a*_
+4
+value+)FungiForest;Beanstalk Area - Left of Shop
+'
+nameBeanstalk Area - Left of Shop
+u*s
+>
+value53FungiForest;Beanstalk Area - Behind Beanstalk right
+1
+name)'Beanstalk Area - Behind Beanstalk right
+*}
+C
+value:8FungiForest;Mushroom Area - Next to Tag Barrel near Shop
+6
+name.,Mushroom Area - Next to Tag Barrel near Shop
+å*â
+I
+value@>FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - left
+<
+name42Mushroom Area - Next to Rocketbarrel Barrel - left
+é*ã
+J
+valueA?FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - right
+=
+name53Mushroom Area - Next to Rocketbarrel Barrel - right
+_*]
+3
+value*(FungiForest;Mushroom Area - Next to Shop
+&
+nameMushroom Area - Next to Shop
+m*k
+:
+value1/FungiForest;Center - Next to Pink Tunnel - left
+-
+name%#Center - Next to Pink Tunnel - left
+o*m
+;
+value20FungiForest;Center - Next to Pink Tunnel - right
+.
+name&$Center - Next to Pink Tunnel - right
+O*M
++
+value" FungiForest;Next to Clock - left
+
+nameNext to Clock - left
+Q*O
+,
+value#!FungiForest;Next to Clock - right
+
+nameNext to Clock - right
+s*q
+=
+value42FungiForest;Beanstalk Area - Behind Beanstalk left
+0
+name(&Beanstalk Area - Behind Beanstalk left
+i*g
+8
+value/-FungiForest;Beanstalk Area - Behind Beanstalk
++
+name#!Beanstalk Area - Behind Beanstalk
+*}
+C
+value:8FungiForest;Giant Mushroom - All Kong Gun Switch - right
+6
+name.,Giant Mushroom - All Kong Gun Switch - right
+}*{
+B
+value97FungiForest;Giant Mushroom - All Kong Gun Switch - left
+5
+name-+Giant Mushroom - All Kong Gun Switch - left
+}*{
+B
+value97FungiForest;Giant Mushroom - halfway along the Dead End
+5
+name-+Giant Mushroom - halfway along the Dead End
+e*c
+6
+value-+FungiForest;Giant Mushroom - Vine Mesh Wall
+)
+name!Giant Mushroom - Vine Mesh Wall
+e*c
+6
+value-+FungiForest;Mill - front side - Levers Area
+)
+name!Mill - front side - Levers Area
+A*?
+$
+valueFungiForest;Lanky's Attic
+
+nameLanky's Attic
+y*w
+@
+value75FungiForest;DK's Barn - Between 2 Barrels near Switch
+3
+name+)DK's Barn - Between 2 Barrels near Switch
+o*m
+;
+value20FungiForest;Mill - front side - Next to entrance
+.
+name&$Mill - front side - Next to entrance
+c*a
+5
+value,*FungiForest;Mill - front side - In the hay
+(
+name Mill - front side - In the hay
+{*y
+A
+value86FungiForest;Mill - front side - Above the switch crate
+4
+name,*Mill - front side - Above the switch crate
+a*_
+4
+value+)FungiForest;Mill - back side - In the hay
+'
+nameMill - back side - In the hay
+Ñ*Å
+E
+value<:FungiForest;Mill - back side - Crates near spider entrance
+8
+name0.Mill - back side - Crates near spider entrance
+u*s
+>
+value53FungiForest;Giant mushroom - Top towards tag barrel
+1
+name)'Giant mushroom - Top towards tag barrel
+m*k
+:
+value1/FungiForest;Top of Giant Mushroom Exterior Exit
+-
+name%#Top of Giant Mushroom Exterior Exit
+c*a
+5
+value,*FungiForest;Lanky's colored mushrooms room
+(
+name Lanky's colored mushrooms room
+W*U
+/
+value&$FungiForest;DK's Barn - Second floor
+"
+nameDK's Barn - Second floor
+ü'
+tinyñ'2ì'
+[*Y
+1
+value(&FungiForest;Forest Lobby - On High Box
+$
+nameForest Lobby - On High Box
+q*o
+<
+value31FungiForest;Forest Lobby - Near Gorilla Gone Door
+/
+name'%Forest Lobby - Near Gorilla Gone Door
+y*w
+@
+value75FungiForest;Forest Lobby - Opposite Gorilla Gone Door
+3
+name+)Forest Lobby - Opposite Gorilla Gone Door
+a*_
+4
+value+)FungiForest;Forest Lobby - Near B. Locker
+'
+nameForest Lobby - Near B. Locker
+_*]
+3
+value*(FungiForest;Forest Lobby - Near Entrance
+&
+nameForest Lobby - Near Entrance
+Q*O
+,
+value#!FungiForest;Behind Thornvine Barn
+
+nameBehind Thornvine Barn
+Q*O
+,
+value#!FungiForest;Beanstalk Area Alcove
+
+nameBeanstalk Area Alcove
+E*C
+&
+valueFungiForest;Near Mills Shop
+
+nameNear Mills Shop
+Q*O
+,
+value#!FungiForest;Top of Giant Mushroom
+
+nameTop of Giant Mushroom
+I*G
+(
+valueFungiForest;Owl Area Clearing
+
+nameOwl Area Clearing
+a*_
+4
+value+)FungiForest;On top of Mill Crusher Output
+'
+nameOn top of Mill Crusher Output
+U*S
+.
+value%#FungiForest;Mill front side - right
+!
+nameMill front side - right
+S*Q
+-
+value$"FungiForest;Mill right side - left
+ 
+nameMill right side - left
+U*S
+.
+value%#FungiForest;Mill right side - right
+!
+nameMill right side - right
+K*I
+)
+value FungiForest;Mill Roof - Sloped
+
+nameMill Roof - Sloped
+I*G
+(
+valueFungiForest;Mill Roof - tower
+
+nameMill Roof - tower
+a*_
+4
+value+)FungiForest;Boxes outside of Rafters Barn
+'
+nameBoxes outside of Rafters Barn
+]*[
+2
+value)'FungiForest;Behind Night Thorns - right
+%
+nameBehind Night Thorns - right
+[*Y
+1
+value(&FungiForest;Behind Night Thorns - left
+$
+nameBehind Night Thorns - left
+S*Q
+-
+value$"FungiForest;Outside Thornvine Barn
+ 
+nameOutside Thornvine Barn
+S*Q
+-
+value$"FungiForest;Next to Rabbit's House
+ 
+nameNext to Rabbit's House
+Ñ*Å
+E
+value<:FungiForest;Owl Area - Near Rocketbarrel Barrel - far left
+8
+name0.Owl Area - Near Rocketbarrel Barrel - far left
+a*_
+4
+value+)FungiForest;Beanstalk Area - Left of Shop
+'
+nameBeanstalk Area - Left of Shop
+u*s
+>
+value53FungiForest;Beanstalk Area - Behind Beanstalk right
+1
+name)'Beanstalk Area - Behind Beanstalk right
+*}
+C
+value:8FungiForest;Mushroom Area - Next to Tag Barrel near Shop
+6
+name.,Mushroom Area - Next to Tag Barrel near Shop
+å*â
+I
+value@>FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - left
+<
+name42Mushroom Area - Next to Rocketbarrel Barrel - left
+é*ã
+J
+valueA?FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - right
+=
+name53Mushroom Area - Next to Rocketbarrel Barrel - right
+_*]
+3
+value*(FungiForest;Mushroom Area - Next to Shop
+&
+nameMushroom Area - Next to Shop
+m*k
+:
+value1/FungiForest;Center - Next to Pink Tunnel - left
+-
+name%#Center - Next to Pink Tunnel - left
+o*m
+;
+value20FungiForest;Center - Next to Pink Tunnel - right
+.
+name&$Center - Next to Pink Tunnel - right
+O*M
++
+value" FungiForest;Next to Clock - left
+
+nameNext to Clock - left
+Q*O
+,
+value#!FungiForest;Next to Clock - right
+
+nameNext to Clock - right
+s*q
+=
+value42FungiForest;Beanstalk Area - Behind Beanstalk left
+0
+name(&Beanstalk Area - Behind Beanstalk left
+i*g
+8
+value/-FungiForest;Beanstalk Area - Behind Beanstalk
++
+name#!Beanstalk Area - Behind Beanstalk
+*}
+C
+value:8FungiForest;Giant Mushroom - All Kong Gun Switch - right
+6
+name.,Giant Mushroom - All Kong Gun Switch - right
+}*{
+B
+value97FungiForest;Giant Mushroom - All Kong Gun Switch - left
+5
+name-+Giant Mushroom - All Kong Gun Switch - left
+}*{
+B
+value97FungiForest;Giant Mushroom - halfway along the Dead End
+5
+name-+Giant Mushroom - halfway along the Dead End
+e*c
+6
+value-+FungiForest;Giant Mushroom - Vine Mesh Wall
+)
+name!Giant Mushroom - Vine Mesh Wall
+_*]
+3
+value*(FungiForest;Mill - back side - Left Wall
+&
+nameMill - back side - Left Wall
+A*?
+$
+valueFungiForest;Lanky's Attic
+
+nameLanky's Attic
+o*m
+;
+value20FungiForest;Mill - front side - Next to entrance
+.
+name&$Mill - front side - Next to entrance
+c*a
+5
+value,*FungiForest;Mill - front side - In the hay
+(
+name Mill - front side - In the hay
+{*y
+A
+value86FungiForest;Mill - front side - Above the switch crate
+4
+name,*Mill - front side - Above the switch crate
+a*_
+4
+value+)FungiForest;Mill - back side - In the hay
+'
+nameMill - back side - In the hay
+Ñ*Å
+E
+value<:FungiForest;Mill - back side - Crates near spider entrance
+8
+name0.Mill - back side - Crates near spider entrance
+u*s
+>
+value53FungiForest;Giant mushroom - Top towards tag barrel
+1
+name)'Giant mushroom - Top towards tag barrel
+m*k
+:
+value1/FungiForest;Top of Giant Mushroom Exterior Exit
+-
+name%#Top of Giant Mushroom Exterior Exit
+c*a
+5
+value,*FungiForest;Lanky's colored mushrooms room
+(
+name Lanky's colored mushrooms room
+W*U
+/
+value&$FungiForest;DK's Barn - Second floor
+"
+nameDK's Barn - Second floor
+Ú'
+chunkyÁ'2‰'
+[*Y
+1
+value(&FungiForest;Forest Lobby - On High Box
+$
+nameForest Lobby - On High Box
+q*o
+<
+value31FungiForest;Forest Lobby - Near Gorilla Gone Door
+/
+name'%Forest Lobby - Near Gorilla Gone Door
+y*w
+@
+value75FungiForest;Forest Lobby - Opposite Gorilla Gone Door
+3
+name+)Forest Lobby - Opposite Gorilla Gone Door
+a*_
+4
+value+)FungiForest;Forest Lobby - Near B. Locker
+'
+nameForest Lobby - Near B. Locker
+_*]
+3
+value*(FungiForest;Forest Lobby - Near Entrance
+&
+nameForest Lobby - Near Entrance
+Q*O
+,
+value#!FungiForest;Behind Thornvine Barn
+
+nameBehind Thornvine Barn
+Q*O
+,
+value#!FungiForest;Beanstalk Area Alcove
+
+nameBeanstalk Area Alcove
+E*C
+&
+valueFungiForest;Near Mills Shop
+
+nameNear Mills Shop
+Q*O
+,
+value#!FungiForest;Top of Giant Mushroom
+
+nameTop of Giant Mushroom
+I*G
+(
+valueFungiForest;Owl Area Clearing
+
+nameOwl Area Clearing
+a*_
+4
+value+)FungiForest;On top of Mill Crusher Output
+'
+nameOn top of Mill Crusher Output
+U*S
+.
+value%#FungiForest;Mill front side - right
+!
+nameMill front side - right
+S*Q
+-
+value$"FungiForest;Mill right side - left
+ 
+nameMill right side - left
+U*S
+.
+value%#FungiForest;Mill right side - right
+!
+nameMill right side - right
+K*I
+)
+value FungiForest;Mill Roof - Sloped
+
+nameMill Roof - Sloped
+I*G
+(
+valueFungiForest;Mill Roof - tower
+
+nameMill Roof - tower
+a*_
+4
+value+)FungiForest;Boxes outside of Rafters Barn
+'
+nameBoxes outside of Rafters Barn
+]*[
+2
+value)'FungiForest;Behind Night Thorns - right
+%
+nameBehind Night Thorns - right
+[*Y
+1
+value(&FungiForest;Behind Night Thorns - left
+$
+nameBehind Night Thorns - left
+S*Q
+-
+value$"FungiForest;Outside Thornvine Barn
+ 
+nameOutside Thornvine Barn
+S*Q
+-
+value$"FungiForest;Next to Rabbit's House
+ 
+nameNext to Rabbit's House
+Ñ*Å
+E
+value<:FungiForest;Owl Area - Near Rocketbarrel Barrel - far left
+8
+name0.Owl Area - Near Rocketbarrel Barrel - far left
+a*_
+4
+value+)FungiForest;Beanstalk Area - Left of Shop
+'
+nameBeanstalk Area - Left of Shop
+u*s
+>
+value53FungiForest;Beanstalk Area - Behind Beanstalk right
+1
+name)'Beanstalk Area - Behind Beanstalk right
+*}
+C
+value:8FungiForest;Mushroom Area - Next to Tag Barrel near Shop
+6
+name.,Mushroom Area - Next to Tag Barrel near Shop
+å*â
+I
+value@>FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - left
+<
+name42Mushroom Area - Next to Rocketbarrel Barrel - left
+é*ã
+J
+valueA?FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - right
+=
+name53Mushroom Area - Next to Rocketbarrel Barrel - right
+_*]
+3
+value*(FungiForest;Mushroom Area - Next to Shop
+&
+nameMushroom Area - Next to Shop
+m*k
+:
+value1/FungiForest;Center - Next to Pink Tunnel - left
+-
+name%#Center - Next to Pink Tunnel - left
+o*m
+;
+value20FungiForest;Center - Next to Pink Tunnel - right
+.
+name&$Center - Next to Pink Tunnel - right
+O*M
++
+value" FungiForest;Next to Clock - left
+
+nameNext to Clock - left
+Q*O
+,
+value#!FungiForest;Next to Clock - right
+
+nameNext to Clock - right
+s*q
+=
+value42FungiForest;Beanstalk Area - Behind Beanstalk left
+0
+name(&Beanstalk Area - Behind Beanstalk left
+i*g
+8
+value/-FungiForest;Beanstalk Area - Behind Beanstalk
++
+name#!Beanstalk Area - Behind Beanstalk
+*}
+C
+value:8FungiForest;Giant Mushroom - All Kong Gun Switch - right
+6
+name.,Giant Mushroom - All Kong Gun Switch - right
+}*{
+B
+value97FungiForest;Giant Mushroom - All Kong Gun Switch - left
+5
+name-+Giant Mushroom - All Kong Gun Switch - left
+}*{
+B
+value97FungiForest;Giant Mushroom - halfway along the Dead End
+5
+name-+Giant Mushroom - halfway along the Dead End
+e*c
+6
+value-+FungiForest;Giant Mushroom - Vine Mesh Wall
+)
+name!Giant Mushroom - Vine Mesh Wall
+O*M
++
+value" FungiForest;Chunky's Face Puzzle
+
+nameChunky's Face Puzzle
+_*]
+3
+value*(FungiForest;Mill - back side - Left Wall
+&
+nameMill - back side - Left Wall
+A*?
+$
+valueFungiForest;Lanky's Attic
+
+nameLanky's Attic
+o*m
+;
+value20FungiForest;Mill - front side - Next to entrance
+.
+name&$Mill - front side - Next to entrance
+c*a
+5
+value,*FungiForest;Mill - front side - In the hay
+(
+name Mill - front side - In the hay
+{*y
+A
+value86FungiForest;Mill - front side - Above the switch crate
+4
+name,*Mill - front side - Above the switch crate
+a*_
+4
+value+)FungiForest;Mill - back side - In the hay
+'
+nameMill - back side - In the hay
+Ñ*Å
+E
+value<:FungiForest;Mill - back side - Crates near spider entrance
+8
+name0.Mill - back side - Crates near spider entrance
+u*s
+>
+value53FungiForest;Giant mushroom - Top towards tag barrel
+1
+name)'Giant mushroom - Top towards tag barrel
+m*k
+:
+value1/FungiForest;Top of Giant Mushroom Exterior Exit
+-
+name%#Top of Giant Mushroom Exterior Exit
+c*a
+5
+value,*FungiForest;Lanky's colored mushrooms room
+(
+name Lanky's colored mushrooms room
+W*U
+/
+value&$FungiForest;DK's Barn - Second floor
+"
+nameDK's Barn - Second floor
+Ò'
+lankyÁ'2‰'
+[*Y
+1
+value(&FungiForest;Forest Lobby - On High Box
+$
+nameForest Lobby - On High Box
+q*o
+<
+value31FungiForest;Forest Lobby - Near Gorilla Gone Door
+/
+name'%Forest Lobby - Near Gorilla Gone Door
+y*w
+@
+value75FungiForest;Forest Lobby - Opposite Gorilla Gone Door
+3
+name+)Forest Lobby - Opposite Gorilla Gone Door
+a*_
+4
+value+)FungiForest;Forest Lobby - Near B. Locker
+'
+nameForest Lobby - Near B. Locker
+_*]
+3
+value*(FungiForest;Forest Lobby - Near Entrance
+&
+nameForest Lobby - Near Entrance
+Q*O
+,
+value#!FungiForest;Behind Thornvine Barn
+
+nameBehind Thornvine Barn
+Q*O
+,
+value#!FungiForest;Beanstalk Area Alcove
+
+nameBeanstalk Area Alcove
+E*C
+&
+valueFungiForest;Near Mills Shop
+
+nameNear Mills Shop
+Q*O
+,
+value#!FungiForest;Top of Giant Mushroom
+
+nameTop of Giant Mushroom
+I*G
+(
+valueFungiForest;Owl Area Clearing
+
+nameOwl Area Clearing
+a*_
+4
+value+)FungiForest;On top of Mill Crusher Output
+'
+nameOn top of Mill Crusher Output
+U*S
+.
+value%#FungiForest;Mill front side - right
+!
+nameMill front side - right
+S*Q
+-
+value$"FungiForest;Mill right side - left
+ 
+nameMill right side - left
+U*S
+.
+value%#FungiForest;Mill right side - right
+!
+nameMill right side - right
+K*I
+)
+value FungiForest;Mill Roof - Sloped
+
+nameMill Roof - Sloped
+I*G
+(
+valueFungiForest;Mill Roof - tower
+
+nameMill Roof - tower
+a*_
+4
+value+)FungiForest;Boxes outside of Rafters Barn
+'
+nameBoxes outside of Rafters Barn
+]*[
+2
+value)'FungiForest;Behind Night Thorns - right
+%
+nameBehind Night Thorns - right
+[*Y
+1
+value(&FungiForest;Behind Night Thorns - left
+$
+nameBehind Night Thorns - left
+S*Q
+-
+value$"FungiForest;Outside Thornvine Barn
+ 
+nameOutside Thornvine Barn
+S*Q
+-
+value$"FungiForest;Next to Rabbit's House
+ 
+nameNext to Rabbit's House
+Ñ*Å
+E
+value<:FungiForest;Owl Area - Near Rocketbarrel Barrel - far left
+8
+name0.Owl Area - Near Rocketbarrel Barrel - far left
+a*_
+4
+value+)FungiForest;Beanstalk Area - Left of Shop
+'
+nameBeanstalk Area - Left of Shop
+u*s
+>
+value53FungiForest;Beanstalk Area - Behind Beanstalk right
+1
+name)'Beanstalk Area - Behind Beanstalk right
+*}
+C
+value:8FungiForest;Mushroom Area - Next to Tag Barrel near Shop
+6
+name.,Mushroom Area - Next to Tag Barrel near Shop
+å*â
+I
+value@>FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - left
+<
+name42Mushroom Area - Next to Rocketbarrel Barrel - left
+é*ã
+J
+valueA?FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - right
+=
+name53Mushroom Area - Next to Rocketbarrel Barrel - right
+_*]
+3
+value*(FungiForest;Mushroom Area - Next to Shop
+&
+nameMushroom Area - Next to Shop
+S*Q
+-
+value$"FungiForest;Behind Clocktower Tree
+ 
+nameBehind Clocktower Tree
+m*k
+:
+value1/FungiForest;Center - Next to Pink Tunnel - left
+-
+name%#Center - Next to Pink Tunnel - left
+o*m
+;
+value20FungiForest;Center - Next to Pink Tunnel - right
+.
+name&$Center - Next to Pink Tunnel - right
+O*M
++
+value" FungiForest;Next to Clock - left
+
+nameNext to Clock - left
+Q*O
+,
+value#!FungiForest;Next to Clock - right
+
+nameNext to Clock - right
+s*q
+=
+value42FungiForest;Beanstalk Area - Behind Beanstalk left
+0
+name(&Beanstalk Area - Behind Beanstalk left
+i*g
+8
+value/-FungiForest;Beanstalk Area - Behind Beanstalk
++
+name#!Beanstalk Area - Behind Beanstalk
+*}
+C
+value:8FungiForest;Giant Mushroom - All Kong Gun Switch - right
+6
+name.,Giant Mushroom - All Kong Gun Switch - right
+}*{
+B
+value97FungiForest;Giant Mushroom - All Kong Gun Switch - left
+5
+name-+Giant Mushroom - All Kong Gun Switch - left
+}*{
+B
+value97FungiForest;Giant Mushroom - halfway along the Dead End
+5
+name-+Giant Mushroom - halfway along the Dead End
+e*c
+6
+value-+FungiForest;Giant Mushroom - Vine Mesh Wall
+)
+name!Giant Mushroom - Vine Mesh Wall
+[*Y
+1
+value(&FungiForest;Lanky's Zinger Bounce Room
+$
+nameLanky's Zinger Bounce Room
+A*?
+$
+valueFungiForest;Lanky's Attic
+
+nameLanky's Attic
+o*m
+;
+value20FungiForest;Mill - front side - Next to entrance
+.
+name&$Mill - front side - Next to entrance
+c*a
+5
+value,*FungiForest;Mill - front side - In the hay
+(
+name Mill - front side - In the hay
+{*y
+A
+value86FungiForest;Mill - front side - Above the switch crate
+4
+name,*Mill - front side - Above the switch crate
+a*_
+4
+value+)FungiForest;Mill - back side - In the hay
+'
+nameMill - back side - In the hay
+Ñ*Å
+E
+value<:FungiForest;Mill - back side - Crates near spider entrance
+8
+name0.Mill - back side - Crates near spider entrance
+u*s
+>
+value53FungiForest;Giant mushroom - Top towards tag barrel
+1
+name)'Giant mushroom - Top towards tag barrel
+m*k
+:
+value1/FungiForest;Top of Giant Mushroom Exterior Exit
+-
+name%#Top of Giant Mushroom Exterior Exit
+c*a
+5
+value,*FungiForest;Lanky's colored mushrooms room
+(
+name Lanky's colored mushrooms room
+W*U
+/
+value&$FungiForest;DK's Barn - Second floor
+"
+nameDK's Barn - Second floor
+Ã(
+diddy¬(2ø(
+[*Y
+1
+value(&FungiForest;Forest Lobby - On High Box
+$
+nameForest Lobby - On High Box
+q*o
+<
+value31FungiForest;Forest Lobby - Near Gorilla Gone Door
+/
+name'%Forest Lobby - Near Gorilla Gone Door
+y*w
+@
+value75FungiForest;Forest Lobby - Opposite Gorilla Gone Door
+3
+name+)Forest Lobby - Opposite Gorilla Gone Door
+a*_
+4
+value+)FungiForest;Forest Lobby - Near B. Locker
+'
+nameForest Lobby - Near B. Locker
+_*]
+3
+value*(FungiForest;Forest Lobby - Near Entrance
+&
+nameForest Lobby - Near Entrance
+Q*O
+,
+value#!FungiForest;Behind Thornvine Barn
+
+nameBehind Thornvine Barn
+Q*O
+,
+value#!FungiForest;Beanstalk Area Alcove
+
+nameBeanstalk Area Alcove
+E*C
+&
+valueFungiForest;Near Mills Shop
+
+nameNear Mills Shop
+Q*O
+,
+value#!FungiForest;Top of Giant Mushroom
+
+nameTop of Giant Mushroom
+I*G
+(
+valueFungiForest;Owl Area Clearing
+
+nameOwl Area Clearing
+a*_
+4
+value+)FungiForest;On top of Mill Crusher Output
+'
+nameOn top of Mill Crusher Output
+U*S
+.
+value%#FungiForest;Mill front side - right
+!
+nameMill front side - right
+S*Q
+-
+value$"FungiForest;Mill right side - left
+ 
+nameMill right side - left
+U*S
+.
+value%#FungiForest;Mill right side - right
+!
+nameMill right side - right
+K*I
+)
+value FungiForest;Mill Roof - Sloped
+
+nameMill Roof - Sloped
+I*G
+(
+valueFungiForest;Mill Roof - tower
+
+nameMill Roof - tower
+a*_
+4
+value+)FungiForest;Boxes outside of Rafters Barn
+'
+nameBoxes outside of Rafters Barn
+]*[
+2
+value)'FungiForest;Behind Night Thorns - right
+%
+nameBehind Night Thorns - right
+[*Y
+1
+value(&FungiForest;Behind Night Thorns - left
+$
+nameBehind Night Thorns - left
+S*Q
+-
+value$"FungiForest;Outside Thornvine Barn
+ 
+nameOutside Thornvine Barn
+S*Q
+-
+value$"FungiForest;Next to Rabbit's House
+ 
+nameNext to Rabbit's House
+Ñ*Å
+E
+value<:FungiForest;Owl Area - Near Rocketbarrel Barrel - far left
+8
+name0.Owl Area - Near Rocketbarrel Barrel - far left
+a*_
+4
+value+)FungiForest;Beanstalk Area - Left of Shop
+'
+nameBeanstalk Area - Left of Shop
+u*s
+>
+value53FungiForest;Beanstalk Area - Behind Beanstalk right
+1
+name)'Beanstalk Area - Behind Beanstalk right
+*}
+C
+value:8FungiForest;Mushroom Area - Next to Tag Barrel near Shop
+6
+name.,Mushroom Area - Next to Tag Barrel near Shop
+å*â
+I
+value@>FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - left
+<
+name42Mushroom Area - Next to Rocketbarrel Barrel - left
+é*ã
+J
+valueA?FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - right
+=
+name53Mushroom Area - Next to Rocketbarrel Barrel - right
+_*]
+3
+value*(FungiForest;Mushroom Area - Next to Shop
+&
+nameMushroom Area - Next to Shop
+S*Q
+-
+value$"FungiForest;Behind Clocktower Tree
+ 
+nameBehind Clocktower Tree
+m*k
+:
+value1/FungiForest;Center - Next to Pink Tunnel - left
+-
+name%#Center - Next to Pink Tunnel - left
+o*m
+;
+value20FungiForest;Center - Next to Pink Tunnel - right
+.
+name&$Center - Next to Pink Tunnel - right
+O*M
++
+value" FungiForest;Next to Clock - left
+
+nameNext to Clock - left
+Q*O
+,
+value#!FungiForest;Next to Clock - right
+
+nameNext to Clock - right
+s*q
+=
+value42FungiForest;Beanstalk Area - Behind Beanstalk left
+0
+name(&Beanstalk Area - Behind Beanstalk left
+i*g
+8
+value/-FungiForest;Beanstalk Area - Behind Beanstalk
++
+name#!Beanstalk Area - Behind Beanstalk
+*}
+C
+value:8FungiForest;Giant Mushroom - All Kong Gun Switch - right
+6
+name.,Giant Mushroom - All Kong Gun Switch - right
+}*{
+B
+value97FungiForest;Giant Mushroom - All Kong Gun Switch - left
+5
+name-+Giant Mushroom - All Kong Gun Switch - left
+}*{
+B
+value97FungiForest;Giant Mushroom - halfway along the Dead End
+5
+name-+Giant Mushroom - halfway along the Dead End
+e*c
+6
+value-+FungiForest;Giant Mushroom - Vine Mesh Wall
+)
+name!Giant Mushroom - Vine Mesh Wall
+Y*W
+0
+value'%FungiForest;Winch Room - on the Winch
+#
+nameWinch Room - on the Winch
+A*?
+$
+valueFungiForest;Lanky's Attic
+
+nameLanky's Attic
+o*m
+;
+value20FungiForest;Mill - front side - Next to entrance
+.
+name&$Mill - front side - Next to entrance
+c*a
+5
+value,*FungiForest;Mill - front side - In the hay
+(
+name Mill - front side - In the hay
+{*y
+A
+value86FungiForest;Mill - front side - Above the switch crate
+4
+name,*Mill - front side - Above the switch crate
+a*_
+4
+value+)FungiForest;Mill - back side - In the hay
+'
+nameMill - back side - In the hay
+Ñ*Å
+E
+value<:FungiForest;Mill - back side - Crates near spider entrance
+8
+name0.Mill - back side - Crates near spider entrance
+u*s
+>
+value53FungiForest;Giant mushroom - Top towards tag barrel
+1
+name)'Giant mushroom - Top towards tag barrel
+m*k
+:
+value1/FungiForest;Top of Giant Mushroom Exterior Exit
+-
+name%#Top of Giant Mushroom Exterior Exit
+[*Y
+1
+value(&FungiForest;Night door in the owl tree
+$
+nameNight door in the owl tree
+c*a
+5
+value,*FungiForest;Lanky's colored mushrooms room
+(
+name Lanky's colored mushrooms room
+W*U
+/
+value&$FungiForest;DK's Barn - Second floor
+"
+nameDK's Barn - Second floor
+Ù•
+JungleJapes„•*ﬂ•
+—
+donkey∆2√
+[*Y
+1
+value(&JungleJapes;Japes Lobby - Middle Right
+$
+nameJapes Lobby - Middle Right
+S*Q
+-
+value$"JungleJapes;Japes Lobby - Far Left
+ 
+nameJapes Lobby - Far Left
+Y*W
+0
+value'%JungleJapes;Japes Lobby - Close Right
+#
+nameJapes Lobby - Close Right
+U*S
+.
+value%#JungleJapes;Japes Lobby - Far Right
+!
+nameJapes Lobby - Far Right
+W*U
+/
+value&$JungleJapes;Japes Lobby - Close Left
+"
+nameJapes Lobby - Close Left
+I*G
+(
+valueJungleJapes;First Tunnel Cave
+
+nameFirst Tunnel Cave
+K*I
+)
+value JungleJapes;Near Painting Room
+
+nameNear Painting Room
+K*I
+)
+value JungleJapes;Rambi Boulder Cave
+
+nameRambi Boulder Cave
+[*Y
+1
+value(&JungleJapes;Next to Diddy Cage - right
+$
+nameNext to Diddy Cage - right
+k*i
+9
+value0.JungleJapes;Alcove Above Stormy Tunnel - right
+,
+name$"Alcove Above Stormy Tunnel - right
+i*g
+8
+value/-JungleJapes;Alcove Above Stormy Tunnel - left
++
+name#!Alcove Above Stormy Tunnel - left
+a*_
+4
+value+)JungleJapes;Next to Minecart Exit - right
+'
+nameNext to Minecart Exit - right
+Y*W
+0
+value'%JungleJapes;Across From Minecart Exit
+#
+nameAcross From Minecart Exit
+M*K
+*
+value!JungleJapes;Next to Hive Tunnel
+
+nameNext to Hive Tunnel
+m*k
+:
+value1/JungleJapes;Hive Area - Next to Hive - far left
+-
+name%#Hive Area - Next to Hive - far left
+e*c
+6
+value-+JungleJapes;Hive Area - Next to Hive - left
+)
+name!Hive Area - Next to Hive - left
+I*G
+(
+valueJungleJapes;Rambi Pool - left
+
+nameRambi Pool - left
+K*I
+)
+value JungleJapes;Rambi Pool - right
+
+nameRambi Pool - right
+M*K
+*
+value!JungleJapes;River by Tag Barrel
+
+nameRiver by Tag Barrel
+]*[
+2
+value)'JungleJapes;River by Chunky Underground
+%
+nameRiver by Chunky Underground
+Q*O
+,
+value#!JungleJapes;Low Hill Shop - right
+
+nameLow Hill Shop - right
+[*Y
+1
+value(&JungleJapes;First Tunnel Switch - left
+$
+nameFirst Tunnel Switch - left
+]*[
+2
+value)'JungleJapes;First Tunnel Switch - right
+%
+nameFirst Tunnel Switch - right
+W*U
+/
+value&$JungleJapes;First Tunnel - back left
+"
+nameFirst Tunnel - back left
+Y*W
+0
+value'%JungleJapes;First Tunnel - front left
+#
+nameFirst Tunnel - front left
+c*a
+5
+value,*JungleJapes;First Tunnel - Near River Exit
+(
+name First Tunnel - Near River Exit
+m*k
+:
+value1/JungleJapes;Stormy Tunnel - Near Pit River Side
+-
+name%#Stormy Tunnel - Near Pit River Side
+[*Y
+1
+value(&JungleJapes;Stormy Tunnel - River Side
+$
+nameStormy Tunnel - River Side
+e*c
+6
+value-+JungleJapes;Stormy Tunnel Threeway crossing
+)
+name!Stormy Tunnel Threeway crossing
+Y*W
+0
+value'%JungleJapes;Stormy Tunnel - Crossroad
+#
+nameStormy Tunnel - Crossroad
+Y*W
+0
+value'%JungleJapes;Stormy Area - front right
+#
+nameStormy Area - front right
+W*U
+/
+value&$JungleJapes;Stormy Area - front left
+"
+nameStormy Area - front left
+Y*W
+0
+value'%JungleJapes;Stormy Area - center left
+#
+nameStormy Area - center left
+[*Y
+1
+value(&JungleJapes;Stormy Area - center right
+$
+nameStormy Area - center right
+U*S
+.
+value%#JungleJapes;Stormy Area - back left
+!
+nameStormy Area - back left
+W*U
+/
+value&$JungleJapes;Stormy Area - back right
+"
+nameStormy Area - back right
+c*a
+5
+value,*JungleJapes;Chunky underground - left wall
+(
+name Chunky underground - left wall
+e*c
+6
+value-+JungleJapes;Chunky underground - right wall
+)
+name!Chunky underground - right wall
+_*]
+3
+value*(JungleJapes;Next to the baboon blast pad
+&
+nameNext to the baboon blast pad
+O*M
++
+value" JungleJapes;Entrance door switch
+
+nameEntrance door switch
+S*Q
+-
+value$"JungleJapes;Next to level entrance
+ 
+nameNext to level entrance
+O*M
++
+value" JungleJapes;Against the mountain
+
+nameAgainst the mountain
+K*I
+)
+value JungleJapes;Slope to Kong Cage
+
+nameSlope to Kong Cage
+ä
+tinyÅ2˛
+[*Y
+1
+value(&JungleJapes;Japes Lobby - Middle Right
+$
+nameJapes Lobby - Middle Right
+S*Q
+-
+value$"JungleJapes;Japes Lobby - Far Left
+ 
+nameJapes Lobby - Far Left
+Y*W
+0
+value'%JungleJapes;Japes Lobby - Close Right
+#
+nameJapes Lobby - Close Right
+U*S
+.
+value%#JungleJapes;Japes Lobby - Far Right
+!
+nameJapes Lobby - Far Right
+W*U
+/
+value&$JungleJapes;Japes Lobby - Close Left
+"
+nameJapes Lobby - Close Left
+I*G
+(
+valueJungleJapes;First Tunnel Cave
+
+nameFirst Tunnel Cave
+K*I
+)
+value JungleJapes;Near Painting Room
+
+nameNear Painting Room
+K*I
+)
+value JungleJapes;Rambi Boulder Cave
+
+nameRambi Boulder Cave
+[*Y
+1
+value(&JungleJapes;Next to Diddy Cage - right
+$
+nameNext to Diddy Cage - right
+k*i
+9
+value0.JungleJapes;Alcove Above Stormy Tunnel - right
+,
+name$"Alcove Above Stormy Tunnel - right
+i*g
+8
+value/-JungleJapes;Alcove Above Stormy Tunnel - left
++
+name#!Alcove Above Stormy Tunnel - left
+a*_
+4
+value+)JungleJapes;Next to Minecart Exit - right
+'
+nameNext to Minecart Exit - right
+Y*W
+0
+value'%JungleJapes;Across From Minecart Exit
+#
+nameAcross From Minecart Exit
+M*K
+*
+value!JungleJapes;Next to Hive Tunnel
+
+nameNext to Hive Tunnel
+m*k
+:
+value1/JungleJapes;Hive Area - Next to Hive - far left
+-
+name%#Hive Area - Next to Hive - far left
+e*c
+6
+value-+JungleJapes;Hive Area - Next to Hive - left
+)
+name!Hive Area - Next to Hive - left
+I*G
+(
+valueJungleJapes;Rambi Pool - left
+
+nameRambi Pool - left
+K*I
+)
+value JungleJapes;Rambi Pool - right
+
+nameRambi Pool - right
+M*K
+*
+value!JungleJapes;River by Tag Barrel
+
+nameRiver by Tag Barrel
+]*[
+2
+value)'JungleJapes;River by Chunky Underground
+%
+nameRiver by Chunky Underground
+Q*O
+,
+value#!JungleJapes;Low Hill Shop - right
+
+nameLow Hill Shop - right
+[*Y
+1
+value(&JungleJapes;First Tunnel Switch - left
+$
+nameFirst Tunnel Switch - left
+]*[
+2
+value)'JungleJapes;First Tunnel Switch - right
+%
+nameFirst Tunnel Switch - right
+W*U
+/
+value&$JungleJapes;First Tunnel - back left
+"
+nameFirst Tunnel - back left
+Y*W
+0
+value'%JungleJapes;First Tunnel - front left
+#
+nameFirst Tunnel - front left
+c*a
+5
+value,*JungleJapes;First Tunnel - Near River Exit
+(
+name First Tunnel - Near River Exit
+m*k
+:
+value1/JungleJapes;Stormy Tunnel - Near Pit River Side
+-
+name%#Stormy Tunnel - Near Pit River Side
+[*Y
+1
+value(&JungleJapes;Stormy Tunnel - River Side
+$
+nameStormy Tunnel - River Side
+e*c
+6
+value-+JungleJapes;Stormy Tunnel Threeway crossing
+)
+name!Stormy Tunnel Threeway crossing
+Y*W
+0
+value'%JungleJapes;Stormy Tunnel - Crossroad
+#
+nameStormy Tunnel - Crossroad
+Y*W
+0
+value'%JungleJapes;Stormy Area - front right
+#
+nameStormy Area - front right
+W*U
+/
+value&$JungleJapes;Stormy Area - front left
+"
+nameStormy Area - front left
+Y*W
+0
+value'%JungleJapes;Stormy Area - center left
+#
+nameStormy Area - center left
+[*Y
+1
+value(&JungleJapes;Stormy Area - center right
+$
+nameStormy Area - center right
+U*S
+.
+value%#JungleJapes;Stormy Area - back left
+!
+nameStormy Area - back left
+W*U
+/
+value&$JungleJapes;Stormy Area - back right
+"
+nameStormy Area - back right
+K*I
+)
+value JungleJapes;Hive Room 2 - left
+
+nameHive Room 2 - left
+M*K
+*
+value!JungleJapes;Hive Room 2 - right
+
+nameHive Room 2 - right
+c*a
+5
+value,*JungleJapes;Chunky underground - left wall
+(
+name Chunky underground - left wall
+e*c
+6
+value-+JungleJapes;Chunky underground - right wall
+)
+name!Chunky underground - right wall
+O*M
++
+value" JungleJapes;Entrance door switch
+
+nameEntrance door switch
+S*Q
+-
+value$"JungleJapes;Next to level entrance
+ 
+nameNext to level entrance
+O*M
++
+value" JungleJapes;Against the mountain
+
+nameAgainst the mountain
+K*I
+)
+value JungleJapes;Slope to Kong Cage
+
+nameSlope to Kong Cage
+ƒ
+chunkyπ2∂
+[*Y
+1
+value(&JungleJapes;Japes Lobby - Middle Right
+$
+nameJapes Lobby - Middle Right
+S*Q
+-
+value$"JungleJapes;Japes Lobby - Far Left
+ 
+nameJapes Lobby - Far Left
+Y*W
+0
+value'%JungleJapes;Japes Lobby - Close Right
+#
+nameJapes Lobby - Close Right
+U*S
+.
+value%#JungleJapes;Japes Lobby - Far Right
+!
+nameJapes Lobby - Far Right
+W*U
+/
+value&$JungleJapes;Japes Lobby - Close Left
+"
+nameJapes Lobby - Close Left
+I*G
+(
+valueJungleJapes;First Tunnel Cave
+
+nameFirst Tunnel Cave
+K*I
+)
+value JungleJapes;Near Painting Room
+
+nameNear Painting Room
+K*I
+)
+value JungleJapes;Rambi Boulder Cave
+
+nameRambi Boulder Cave
+[*Y
+1
+value(&JungleJapes;Next to Diddy Cage - right
+$
+nameNext to Diddy Cage - right
+k*i
+9
+value0.JungleJapes;Alcove Above Stormy Tunnel - right
+,
+name$"Alcove Above Stormy Tunnel - right
+i*g
+8
+value/-JungleJapes;Alcove Above Stormy Tunnel - left
++
+name#!Alcove Above Stormy Tunnel - left
+a*_
+4
+value+)JungleJapes;Next to Minecart Exit - right
+'
+nameNext to Minecart Exit - right
+Y*W
+0
+value'%JungleJapes;Across From Minecart Exit
+#
+nameAcross From Minecart Exit
+M*K
+*
+value!JungleJapes;Next to Hive Tunnel
+
+nameNext to Hive Tunnel
+m*k
+:
+value1/JungleJapes;Hive Area - Next to Hive - far left
+-
+name%#Hive Area - Next to Hive - far left
+e*c
+6
+value-+JungleJapes;Hive Area - Next to Hive - left
+)
+name!Hive Area - Next to Hive - left
+I*G
+(
+valueJungleJapes;Rambi Pool - left
+
+nameRambi Pool - left
+K*I
+)
+value JungleJapes;Rambi Pool - right
+
+nameRambi Pool - right
+M*K
+*
+value!JungleJapes;River by Tag Barrel
+
+nameRiver by Tag Barrel
+]*[
+2
+value)'JungleJapes;River by Chunky Underground
+%
+nameRiver by Chunky Underground
+Q*O
+,
+value#!JungleJapes;Low Hill Shop - right
+
+nameLow Hill Shop - right
+[*Y
+1
+value(&JungleJapes;First Tunnel Switch - left
+$
+nameFirst Tunnel Switch - left
+]*[
+2
+value)'JungleJapes;First Tunnel Switch - right
+%
+nameFirst Tunnel Switch - right
+W*U
+/
+value&$JungleJapes;First Tunnel - back left
+"
+nameFirst Tunnel - back left
+Y*W
+0
+value'%JungleJapes;First Tunnel - front left
+#
+nameFirst Tunnel - front left
+c*a
+5
+value,*JungleJapes;First Tunnel - Near River Exit
+(
+name First Tunnel - Near River Exit
+m*k
+:
+value1/JungleJapes;Stormy Tunnel - Near Pit River Side
+-
+name%#Stormy Tunnel - Near Pit River Side
+[*Y
+1
+value(&JungleJapes;Stormy Tunnel - River Side
+$
+nameStormy Tunnel - River Side
+e*c
+6
+value-+JungleJapes;Stormy Tunnel Threeway crossing
+)
+name!Stormy Tunnel Threeway crossing
+Y*W
+0
+value'%JungleJapes;Stormy Tunnel - Crossroad
+#
+nameStormy Tunnel - Crossroad
+Y*W
+0
+value'%JungleJapes;Stormy Area - front right
+#
+nameStormy Area - front right
+W*U
+/
+value&$JungleJapes;Stormy Area - front left
+"
+nameStormy Area - front left
+Y*W
+0
+value'%JungleJapes;Stormy Area - center left
+#
+nameStormy Area - center left
+[*Y
+1
+value(&JungleJapes;Stormy Area - center right
+$
+nameStormy Area - center right
+U*S
+.
+value%#JungleJapes;Stormy Area - back left
+!
+nameStormy Area - back left
+W*U
+/
+value&$JungleJapes;Stormy Area - back right
+"
+nameStormy Area - back right
+c*a
+5
+value,*JungleJapes;Chunky underground - left wall
+(
+name Chunky underground - left wall
+e*c
+6
+value-+JungleJapes;Chunky underground - right wall
+)
+name!Chunky underground - right wall
+q*o
+<
+value31JungleJapes;Chunky underground - Kasplat platform
+/
+name'%Chunky underground - Kasplat platform
+_*]
+3
+value*(JungleJapes;Next to the baboon blast pad
+&
+nameNext to the baboon blast pad
+O*M
++
+value" JungleJapes;Entrance door switch
+
+nameEntrance door switch
+S*Q
+-
+value$"JungleJapes;Next to level entrance
+ 
+nameNext to level entrance
+O*M
++
+value" JungleJapes;Against the mountain
+
+nameAgainst the mountain
+K*I
+)
+value JungleJapes;Slope to Kong Cage
+
+nameSlope to Kong Cage
+∞#
+lanky¶#2£#
+[*Y
+1
+value(&JungleJapes;Japes Lobby - Middle Right
+$
+nameJapes Lobby - Middle Right
+S*Q
+-
+value$"JungleJapes;Japes Lobby - Far Left
+ 
+nameJapes Lobby - Far Left
+Y*W
+0
+value'%JungleJapes;Japes Lobby - Close Right
+#
+nameJapes Lobby - Close Right
+U*S
+.
+value%#JungleJapes;Japes Lobby - Far Right
+!
+nameJapes Lobby - Far Right
+W*U
+/
+value&$JungleJapes;Japes Lobby - Close Left
+"
+nameJapes Lobby - Close Left
+I*G
+(
+valueJungleJapes;First Tunnel Cave
+
+nameFirst Tunnel Cave
+K*I
+)
+value JungleJapes;Near Painting Room
+
+nameNear Painting Room
+K*I
+)
+value JungleJapes;Rambi Boulder Cave
+
+nameRambi Boulder Cave
+[*Y
+1
+value(&JungleJapes;Next to Diddy Cage - right
+$
+nameNext to Diddy Cage - right
+k*i
+9
+value0.JungleJapes;Alcove Above Stormy Tunnel - right
+,
+name$"Alcove Above Stormy Tunnel - right
+i*g
+8
+value/-JungleJapes;Alcove Above Stormy Tunnel - left
++
+name#!Alcove Above Stormy Tunnel - left
+a*_
+4
+value+)JungleJapes;Next to Minecart Exit - right
+'
+nameNext to Minecart Exit - right
+Y*W
+0
+value'%JungleJapes;Across From Minecart Exit
+#
+nameAcross From Minecart Exit
+M*K
+*
+value!JungleJapes;Next to Hive Tunnel
+
+nameNext to Hive Tunnel
+m*k
+:
+value1/JungleJapes;Hive Area - Next to Hive - far left
+-
+name%#Hive Area - Next to Hive - far left
+e*c
+6
+value-+JungleJapes;Hive Area - Next to Hive - left
+)
+name!Hive Area - Next to Hive - left
+I*G
+(
+valueJungleJapes;Rambi Pool - left
+
+nameRambi Pool - left
+K*I
+)
+value JungleJapes;Rambi Pool - right
+
+nameRambi Pool - right
+i*g
+8
+value/-JungleJapes;Top of Lanky Useless Slope - left
++
+name#!Top of Lanky Useless Slope - left
+k*i
+9
+value0.JungleJapes;Top of Lanky Useless Slope - right
+,
+name$"Top of Lanky Useless Slope - right
+M*K
+*
+value!JungleJapes;River by Tag Barrel
+
+nameRiver by Tag Barrel
+]*[
+2
+value)'JungleJapes;River by Chunky Underground
+%
+nameRiver by Chunky Underground
+Q*O
+,
+value#!JungleJapes;Low Hill Shop - right
+
+nameLow Hill Shop - right
+O*M
++
+value" JungleJapes;Painting Hill - left
+
+namePainting Hill - left
+Q*O
+,
+value#!JungleJapes;Painting Hill - right
+
+namePainting Hill - right
+[*Y
+1
+value(&JungleJapes;First Tunnel Switch - left
+$
+nameFirst Tunnel Switch - left
+]*[
+2
+value)'JungleJapes;First Tunnel Switch - right
+%
+nameFirst Tunnel Switch - right
+W*U
+/
+value&$JungleJapes;First Tunnel - back left
+"
+nameFirst Tunnel - back left
+Y*W
+0
+value'%JungleJapes;First Tunnel - front left
+#
+nameFirst Tunnel - front left
+c*a
+5
+value,*JungleJapes;First Tunnel - Near River Exit
+(
+name First Tunnel - Near River Exit
+m*k
+:
+value1/JungleJapes;Stormy Tunnel - Near Pit River Side
+-
+name%#Stormy Tunnel - Near Pit River Side
+[*Y
+1
+value(&JungleJapes;Stormy Tunnel - River Side
+$
+nameStormy Tunnel - River Side
+e*c
+6
+value-+JungleJapes;Stormy Tunnel Threeway crossing
+)
+name!Stormy Tunnel Threeway crossing
+Y*W
+0
+value'%JungleJapes;Stormy Tunnel - Crossroad
+#
+nameStormy Tunnel - Crossroad
+Y*W
+0
+value'%JungleJapes;Stormy Area - front right
+#
+nameStormy Area - front right
+W*U
+/
+value&$JungleJapes;Stormy Area - front left
+"
+nameStormy Area - front left
+Y*W
+0
+value'%JungleJapes;Stormy Area - center left
+#
+nameStormy Area - center left
+[*Y
+1
+value(&JungleJapes;Stormy Area - center right
+$
+nameStormy Area - center right
+U*S
+.
+value%#JungleJapes;Stormy Area - back left
+!
+nameStormy Area - back left
+W*U
+/
+value&$JungleJapes;Stormy Area - back right
+"
+nameStormy Area - back right
+o*m
+;
+value20JungleJapes;Painting Room - Next to the Entrance
+.
+name&$Painting Room - Next to the Entrance
+g*e
+7
+value.,JungleJapes;Painting room - Left of painting
+*
+name" Painting room - Left of painting
+i*g
+8
+value/-JungleJapes;Painting room - Right of painting
++
+name#!Painting room - Right of painting
+c*a
+5
+value,*JungleJapes;Chunky underground - left wall
+(
+name Chunky underground - left wall
+e*c
+6
+value-+JungleJapes;Chunky underground - right wall
+)
+name!Chunky underground - right wall
+O*M
++
+value" JungleJapes;Entrance door switch
+
+nameEntrance door switch
+S*Q
+-
+value$"JungleJapes;Next to level entrance
+ 
+nameNext to level entrance
+O*M
++
+value" JungleJapes;Against the mountain
+
+nameAgainst the mountain
+K*I
+)
+value JungleJapes;Slope to Kong Cage
+
+nameSlope to Kong Cage
+Å%
+diddy˜$2Ù$
+[*Y
+1
+value(&JungleJapes;Japes Lobby - Middle Right
+$
+nameJapes Lobby - Middle Right
+S*Q
+-
+value$"JungleJapes;Japes Lobby - Far Left
+ 
+nameJapes Lobby - Far Left
+Y*W
+0
+value'%JungleJapes;Japes Lobby - Close Right
+#
+nameJapes Lobby - Close Right
+U*S
+.
+value%#JungleJapes;Japes Lobby - Far Right
+!
+nameJapes Lobby - Far Right
+W*U
+/
+value&$JungleJapes;Japes Lobby - Close Left
+"
+nameJapes Lobby - Close Left
+I*G
+(
+valueJungleJapes;First Tunnel Cave
+
+nameFirst Tunnel Cave
+K*I
+)
+value JungleJapes;Near Painting Room
+
+nameNear Painting Room
+K*I
+)
+value JungleJapes;Rambi Boulder Cave
+
+nameRambi Boulder Cave
+[*Y
+1
+value(&JungleJapes;Next to Diddy Cage - right
+$
+nameNext to Diddy Cage - right
+k*i
+9
+value0.JungleJapes;Alcove Above Stormy Tunnel - right
+,
+name$"Alcove Above Stormy Tunnel - right
+i*g
+8
+value/-JungleJapes;Alcove Above Stormy Tunnel - left
++
+name#!Alcove Above Stormy Tunnel - left
+a*_
+4
+value+)JungleJapes;Next to Minecart Exit - right
+'
+nameNext to Minecart Exit - right
+Y*W
+0
+value'%JungleJapes;Across From Minecart Exit
+#
+nameAcross From Minecart Exit
+M*K
+*
+value!JungleJapes;Next to Hive Tunnel
+
+nameNext to Hive Tunnel
+m*k
+:
+value1/JungleJapes;Hive Area - Next to Hive - far left
+-
+name%#Hive Area - Next to Hive - far left
+e*c
+6
+value-+JungleJapes;Hive Area - Next to Hive - left
+)
+name!Hive Area - Next to Hive - left
+I*G
+(
+valueJungleJapes;Rambi Pool - left
+
+nameRambi Pool - left
+K*I
+)
+value JungleJapes;Rambi Pool - right
+
+nameRambi Pool - right
+M*K
+*
+value!JungleJapes;River by Tag Barrel
+
+nameRiver by Tag Barrel
+]*[
+2
+value)'JungleJapes;River by Chunky Underground
+%
+nameRiver by Chunky Underground
+Q*O
+,
+value#!JungleJapes;Low Hill Shop - right
+
+nameLow Hill Shop - right
+[*Y
+1
+value(&JungleJapes;First Tunnel Switch - left
+$
+nameFirst Tunnel Switch - left
+]*[
+2
+value)'JungleJapes;First Tunnel Switch - right
+%
+nameFirst Tunnel Switch - right
+W*U
+/
+value&$JungleJapes;First Tunnel - back left
+"
+nameFirst Tunnel - back left
+Y*W
+0
+value'%JungleJapes;First Tunnel - front left
+#
+nameFirst Tunnel - front left
+c*a
+5
+value,*JungleJapes;First Tunnel - Near River Exit
+(
+name First Tunnel - Near River Exit
+m*k
+:
+value1/JungleJapes;Stormy Tunnel - Near Pit River Side
+-
+name%#Stormy Tunnel - Near Pit River Side
+[*Y
+1
+value(&JungleJapes;Stormy Tunnel - River Side
+$
+nameStormy Tunnel - River Side
+e*c
+6
+value-+JungleJapes;Stormy Tunnel Threeway crossing
+)
+name!Stormy Tunnel Threeway crossing
+Y*W
+0
+value'%JungleJapes;Stormy Tunnel - Crossroad
+#
+nameStormy Tunnel - Crossroad
+Y*W
+0
+value'%JungleJapes;Stormy Area - front right
+#
+nameStormy Area - front right
+W*U
+/
+value&$JungleJapes;Stormy Area - front left
+"
+nameStormy Area - front left
+Y*W
+0
+value'%JungleJapes;Stormy Area - center left
+#
+nameStormy Area - center left
+[*Y
+1
+value(&JungleJapes;Stormy Area - center right
+$
+nameStormy Area - center right
+U*S
+.
+value%#JungleJapes;Stormy Area - back left
+!
+nameStormy Area - back left
+W*U
+/
+value&$JungleJapes;Stormy Area - back right
+"
+nameStormy Area - back right
+{*y
+A
+value86JungleJapes;Diddy Mountain - Next to Conveyor Controls
+4
+name,*Diddy Mountain - Next to Conveyor Controls
+*}
+C
+value:8JungleJapes;Diddy Mountain - between River and GB switch
+6
+name.,Diddy Mountain - between River and GB switch
+à*Ö
+G
+value><JungleJapes;Diddy Mountain - between River and Peanut Switch
+:
+name20Diddy Mountain - between River and Peanut Switch
+w*u
+?
+value64JungleJapes;Diddy Mountain - Next to the slam switch
+2
+name*(Diddy Mountain - Next to the slam switch
+c*a
+5
+value,*JungleJapes;Diddy Mountain - River grate 1
+(
+name Diddy Mountain - River grate 1
+c*a
+5
+value,*JungleJapes;Diddy Mountain - River grate 2
+(
+name Diddy Mountain - River grate 2
+c*a
+5
+value,*JungleJapes;Diddy Mountain - Minecart room
+(
+name Diddy Mountain - Minecart room
+c*a
+5
+value,*JungleJapes;Chunky underground - left wall
+(
+name Chunky underground - left wall
+e*c
+6
+value-+JungleJapes;Chunky underground - right wall
+)
+name!Chunky underground - right wall
+_*]
+3
+value*(JungleJapes;Next to the baboon blast pad
+&
+nameNext to the baboon blast pad
+O*M
++
+value" JungleJapes;Entrance door switch
+
+nameEntrance door switch
+S*Q
+-
+value$"JungleJapes;Next to level entrance
+ 
+nameNext to level entrance
+O*M
++
+value" JungleJapes;Against the mountain
+
+nameAgainst the mountain
+K*I
+)
+value JungleJapes;Slope to Kong Cage
+
+nameSlope to Kong Cage
+∞©
+GloomyGalleonù©*ô©
+É"
+donkey¯!2ı!
+Y*W
+1
+value(&GloomyGalleon;Galleon Lobby - Far Left
+"
+nameGalleon Lobby - Far Left
+[*Y
+2
+value)'GloomyGalleon;Galleon Lobby - Far Right
+#
+nameGalleon Lobby - Far Right
+_*]
+4
+value+)GloomyGalleon;Galleon Lobby - Close Right
+%
+nameGalleon Lobby - Close Right
+e*c
+7
+value.,GloomyGalleon;Galleon Lobby - Near DK Portal
+(
+name Galleon Lobby - Near DK Portal
+]*[
+3
+value*(GloomyGalleon;Galleon Lobby - Close Left
+$
+nameGalleon Lobby - Close Left
+[*Y
+2
+value)'GloomyGalleon;Cavern Alcove Past Planks
+#
+nameCavern Alcove Past Planks
+;*9
+"
+valueGloomyGalleon;Deep Hole
+
+name	Deep Hole
+=*;
+#
+valueGloomyGalleon;Behind 2DS
+
+name
+Behind 2DS
+Q*O
+-
+value$"GloomyGalleon;Behind Enguarde Door
+
+nameBehind Enguarde Door
+5*3
+
+valueGloomyGalleon;Cactus
+
+nameCactus
+i*g
+9
+value0.GloomyGalleon;Tunnel to Shipyard - Tiny switch
+*
+name" Tunnel to Shipyard - Tiny switch
+k*i
+:
+value1/GloomyGalleon;Tunnel to Shipyard - Lanky switch
++
+name#!Tunnel to Shipyard - Lanky switch
+U*S
+/
+value&$GloomyGalleon;Tunnel to Punch Chests
+ 
+nameTunnel to Punch Chests
+K*I
+*
+value!GloomyGalleon;Edge of Blast pad
+
+nameEdge of Blast pad
+U*S
+/
+value&$GloomyGalleon;Under Baboon Blast pad
+ 
+nameUnder Baboon Blast pad
+[*Y
+2
+value)'GloomyGalleon;Under RocketBarrel barrel
+#
+nameUnder RocketBarrel barrel
+W*U
+0
+value'%GloomyGalleon;Next to Cannonball game
+!
+nameNext to Cannonball game
+e*c
+7
+value.,GloomyGalleon;Next to Lighthouse Gate switch
+(
+name Next to Lighthouse Gate switch
+g*e
+8
+value/-GloomyGalleon;Entrance Tunnel - near entrance
+)
+name!Entrance Tunnel - near entrance
+a*_
+5
+value,*GloomyGalleon;Next to Shipyard Gate switch
+&
+nameNext to Shipyard Gate switch
+*}
+D
+value;9GloomyGalleon;Above the water next to the floating warp 5
+5
+name-+Above the water next to the floating warp 5
+[*Y
+2
+value)'GloomyGalleon;Cactus - bottom back left
+#
+nameCactus - bottom back left
+]*[
+3
+value*(GloomyGalleon;Cactus - bottom front left
+$
+nameCactus - bottom front left
+]*[
+3
+value*(GloomyGalleon;Cactus - bottom back right
+$
+nameCactus - bottom back right
+_*]
+4
+value+)GloomyGalleon;Cactus - bottom front right
+%
+nameCactus - bottom front right
+I*G
+)
+value GloomyGalleon;Diddy Gold Tower
+
+nameDiddy Gold Tower
+W*U
+0
+value'%GloomyGalleon;Treasure Chest Exterior
+!
+nameTreasure Chest Exterior
+G*E
+(
+valueGloomyGalleon;Cavern Mast Top
+
+nameCavern Mast Top
+[*Y
+2
+value)'GloomyGalleon;Punch Chests Room - right
+#
+namePunch Chests Room - right
+o*m
+<
+value31GloomyGalleon;Low water alcove in lighthouse area
+-
+name%#Low water alcove in lighthouse area
+e*c
+7
+value.,GloomyGalleon;Behind boxes near Cavern Wreck
+(
+name Behind boxes near Cavern Wreck
+Y*W
+1
+value(&GloomyGalleon;Mechfish Gate - far left
+"
+nameMechfish Gate - far left
+Q*O
+-
+value$"GloomyGalleon;Mechfish Gate - left
+
+nameMechfish Gate - left
+U*S
+/
+value&$GloomyGalleon;Mechfish Gate - middle
+ 
+nameMechfish Gate - middle
+S*Q
+.
+value%#GloomyGalleon;Mechfish Gate - right
+
+nameMechfish Gate - right
+[*Y
+2
+value)'GloomyGalleon;Mechfish Gate - far right
+#
+nameMechfish Gate - far right
+Q*O
+-
+value$"GloomyGalleon;Cannonball Room Exit
+
+nameCannonball Room Exit
+O*M
+,
+value#!GloomyGalleon;2DS secret 3rd door
+
+name2DS secret 3rd door
+c*a
+6
+value-+GloomyGalleon;Near Mermaid's Palace - right
+'
+nameNear Mermaid's Palace - right
+a*_
+5
+value,*GloomyGalleon;Near Mermaid's Palace - left
+&
+nameNear Mermaid's Palace - left
+y*w
+A
+value86GloomyGalleon;Near Mermaid's Palace - Under Tag Barrel
+2
+name*(Near Mermaid's Palace - Under Tag Barrel
+[*Y
+2
+value)'GloomyGalleon;Lighthouse - Up the ledge
+#
+nameLighthouse - Up the ledge
+K*I
+*
+value!GloomyGalleon;Lighthouse - Left
+
+nameLighthouse - Left
+K*I
+*
+value!GloomyGalleon;Lighthouse - Back
+
+nameLighthouse - Back
+e*c
+7
+value.,GloomyGalleon;Cannonball gate tunnel - right
+(
+name Cannonball gate tunnel - right
+c*a
+6
+value-+GloomyGalleon;Cannonball gate tunnel - left
+'
+nameCannonball gate tunnel - left
+u*s
+?
+value64GloomyGalleon;Donkey 5DS - Next to the left cell bed
+0
+name(&Donkey 5DS - Next to the left cell bed
+ü 
+tinyñ 2ì 
+Y*W
+1
+value(&GloomyGalleon;Galleon Lobby - Far Left
+"
+nameGalleon Lobby - Far Left
+[*Y
+2
+value)'GloomyGalleon;Galleon Lobby - Far Right
+#
+nameGalleon Lobby - Far Right
+_*]
+4
+value+)GloomyGalleon;Galleon Lobby - Close Right
+%
+nameGalleon Lobby - Close Right
+e*c
+7
+value.,GloomyGalleon;Galleon Lobby - Near DK Portal
+(
+name Galleon Lobby - Near DK Portal
+]*[
+3
+value*(GloomyGalleon;Galleon Lobby - Close Left
+$
+nameGalleon Lobby - Close Left
+[*Y
+2
+value)'GloomyGalleon;Cavern Alcove Past Planks
+#
+nameCavern Alcove Past Planks
+;*9
+"
+valueGloomyGalleon;Deep Hole
+
+name	Deep Hole
+=*;
+#
+valueGloomyGalleon;Behind 2DS
+
+name
+Behind 2DS
+Q*O
+-
+value$"GloomyGalleon;Behind Enguarde Door
+
+nameBehind Enguarde Door
+5*3
+
+valueGloomyGalleon;Cactus
+
+nameCactus
+i*g
+9
+value0.GloomyGalleon;Tunnel to Shipyard - Tiny switch
+*
+name" Tunnel to Shipyard - Tiny switch
+k*i
+:
+value1/GloomyGalleon;Tunnel to Shipyard - Lanky switch
++
+name#!Tunnel to Shipyard - Lanky switch
+U*S
+/
+value&$GloomyGalleon;Tunnel to Punch Chests
+ 
+nameTunnel to Punch Chests
+K*I
+*
+value!GloomyGalleon;Edge of Blast pad
+
+nameEdge of Blast pad
+U*S
+/
+value&$GloomyGalleon;Under Baboon Blast pad
+ 
+nameUnder Baboon Blast pad
+[*Y
+2
+value)'GloomyGalleon;Under RocketBarrel barrel
+#
+nameUnder RocketBarrel barrel
+W*U
+0
+value'%GloomyGalleon;Next to Cannonball game
+!
+nameNext to Cannonball game
+e*c
+7
+value.,GloomyGalleon;Next to Lighthouse Gate switch
+(
+name Next to Lighthouse Gate switch
+g*e
+8
+value/-GloomyGalleon;Entrance Tunnel - near entrance
+)
+name!Entrance Tunnel - near entrance
+a*_
+5
+value,*GloomyGalleon;Next to Shipyard Gate switch
+&
+nameNext to Shipyard Gate switch
+*}
+D
+value;9GloomyGalleon;Above the water next to the floating warp 5
+5
+name-+Above the water next to the floating warp 5
+[*Y
+2
+value)'GloomyGalleon;Cactus - bottom back left
+#
+nameCactus - bottom back left
+]*[
+3
+value*(GloomyGalleon;Cactus - bottom front left
+$
+nameCactus - bottom front left
+]*[
+3
+value*(GloomyGalleon;Cactus - bottom back right
+$
+nameCactus - bottom back right
+_*]
+4
+value+)GloomyGalleon;Cactus - bottom front right
+%
+nameCactus - bottom front right
+I*G
+)
+value GloomyGalleon;Diddy Gold Tower
+
+nameDiddy Gold Tower
+W*U
+0
+value'%GloomyGalleon;Treasure Chest Exterior
+!
+nameTreasure Chest Exterior
+G*E
+(
+valueGloomyGalleon;Cavern Mast Top
+
+nameCavern Mast Top
+[*Y
+2
+value)'GloomyGalleon;Punch Chests Room - right
+#
+namePunch Chests Room - right
+o*m
+<
+value31GloomyGalleon;Low water alcove in lighthouse area
+-
+name%#Low water alcove in lighthouse area
+e*c
+7
+value.,GloomyGalleon;Behind boxes near Cavern Wreck
+(
+name Behind boxes near Cavern Wreck
+Y*W
+1
+value(&GloomyGalleon;Mechfish Gate - far left
+"
+nameMechfish Gate - far left
+Q*O
+-
+value$"GloomyGalleon;Mechfish Gate - left
+
+nameMechfish Gate - left
+U*S
+/
+value&$GloomyGalleon;Mechfish Gate - middle
+ 
+nameMechfish Gate - middle
+S*Q
+.
+value%#GloomyGalleon;Mechfish Gate - right
+
+nameMechfish Gate - right
+[*Y
+2
+value)'GloomyGalleon;Mechfish Gate - far right
+#
+nameMechfish Gate - far right
+Q*O
+-
+value$"GloomyGalleon;Cannonball Room Exit
+
+nameCannonball Room Exit
+O*M
+,
+value#!GloomyGalleon;2DS secret 3rd door
+
+name2DS secret 3rd door
+c*a
+6
+value-+GloomyGalleon;Near Mermaid's Palace - right
+'
+nameNear Mermaid's Palace - right
+a*_
+5
+value,*GloomyGalleon;Near Mermaid's Palace - left
+&
+nameNear Mermaid's Palace - left
+y*w
+A
+value86GloomyGalleon;Near Mermaid's Palace - Under Tag Barrel
+2
+name*(Near Mermaid's Palace - Under Tag Barrel
+O*M
+,
+value#!GloomyGalleon;In Mermaid's Palace
+
+nameIn Mermaid's Palace
+9*7
+!
+valueGloomyGalleon;Tiny 5DS
+
+name
+Tiny 5DS
+e*c
+7
+value.,GloomyGalleon;Cannonball gate tunnel - right
+(
+name Cannonball gate tunnel - right
+c*a
+6
+value-+GloomyGalleon;Cannonball gate tunnel - left
+'
+nameCannonball gate tunnel - left
+Ú$
+chunkyÁ$2‰$
+Y*W
+1
+value(&GloomyGalleon;Galleon Lobby - Far Left
+"
+nameGalleon Lobby - Far Left
+[*Y
+2
+value)'GloomyGalleon;Galleon Lobby - Far Right
+#
+nameGalleon Lobby - Far Right
+_*]
+4
+value+)GloomyGalleon;Galleon Lobby - Close Right
+%
+nameGalleon Lobby - Close Right
+e*c
+7
+value.,GloomyGalleon;Galleon Lobby - Near DK Portal
+(
+name Galleon Lobby - Near DK Portal
+]*[
+3
+value*(GloomyGalleon;Galleon Lobby - Close Left
+$
+nameGalleon Lobby - Close Left
+[*Y
+2
+value)'GloomyGalleon;Cavern Alcove Past Planks
+#
+nameCavern Alcove Past Planks
+;*9
+"
+valueGloomyGalleon;Deep Hole
+
+name	Deep Hole
+=*;
+#
+valueGloomyGalleon;Behind 2DS
+
+name
+Behind 2DS
+Q*O
+-
+value$"GloomyGalleon;Behind Enguarde Door
+
+nameBehind Enguarde Door
+5*3
+
+valueGloomyGalleon;Cactus
+
+nameCactus
+i*g
+9
+value0.GloomyGalleon;Tunnel to Shipyard - Tiny switch
+*
+name" Tunnel to Shipyard - Tiny switch
+k*i
+:
+value1/GloomyGalleon;Tunnel to Shipyard - Lanky switch
++
+name#!Tunnel to Shipyard - Lanky switch
+U*S
+/
+value&$GloomyGalleon;Tunnel to Punch Chests
+ 
+nameTunnel to Punch Chests
+K*I
+*
+value!GloomyGalleon;Edge of Blast pad
+
+nameEdge of Blast pad
+U*S
+/
+value&$GloomyGalleon;Under Baboon Blast pad
+ 
+nameUnder Baboon Blast pad
+[*Y
+2
+value)'GloomyGalleon;Under RocketBarrel barrel
+#
+nameUnder RocketBarrel barrel
+W*U
+0
+value'%GloomyGalleon;Next to Cannonball game
+!
+nameNext to Cannonball game
+e*c
+7
+value.,GloomyGalleon;Next to Lighthouse Gate switch
+(
+name Next to Lighthouse Gate switch
+g*e
+8
+value/-GloomyGalleon;Entrance Tunnel - near entrance
+)
+name!Entrance Tunnel - near entrance
+a*_
+5
+value,*GloomyGalleon;Next to Shipyard Gate switch
+&
+nameNext to Shipyard Gate switch
+*}
+D
+value;9GloomyGalleon;Above the water next to the floating warp 5
+5
+name-+Above the water next to the floating warp 5
+[*Y
+2
+value)'GloomyGalleon;Cactus - bottom back left
+#
+nameCactus - bottom back left
+]*[
+3
+value*(GloomyGalleon;Cactus - bottom front left
+$
+nameCactus - bottom front left
+]*[
+3
+value*(GloomyGalleon;Cactus - bottom back right
+$
+nameCactus - bottom back right
+_*]
+4
+value+)GloomyGalleon;Cactus - bottom front right
+%
+nameCactus - bottom front right
+I*G
+)
+value GloomyGalleon;Diddy Gold Tower
+
+nameDiddy Gold Tower
+W*U
+0
+value'%GloomyGalleon;Treasure Chest Exterior
+!
+nameTreasure Chest Exterior
+G*E
+(
+valueGloomyGalleon;Cavern Mast Top
+
+nameCavern Mast Top
+[*Y
+2
+value)'GloomyGalleon;Punch Chests Room - right
+#
+namePunch Chests Room - right
+W*U
+0
+value'%GloomyGalleon;Punch Under Cavern Shop
+!
+namePunch Under Cavern Shop
+o*m
+<
+value31GloomyGalleon;Low water alcove in lighthouse area
+-
+name%#Low water alcove in lighthouse area
+e*c
+7
+value.,GloomyGalleon;Behind boxes near Cavern Wreck
+(
+name Behind boxes near Cavern Wreck
+Y*W
+1
+value(&GloomyGalleon;Mechfish Gate - far left
+"
+nameMechfish Gate - far left
+Q*O
+-
+value$"GloomyGalleon;Mechfish Gate - left
+
+nameMechfish Gate - left
+U*S
+/
+value&$GloomyGalleon;Mechfish Gate - middle
+ 
+nameMechfish Gate - middle
+S*Q
+.
+value%#GloomyGalleon;Mechfish Gate - right
+
+nameMechfish Gate - right
+[*Y
+2
+value)'GloomyGalleon;Mechfish Gate - far right
+#
+nameMechfish Gate - far right
+Q*O
+-
+value$"GloomyGalleon;Cannonball Room Exit
+
+nameCannonball Room Exit
+O*M
+,
+value#!GloomyGalleon;2DS secret 3rd door
+
+name2DS secret 3rd door
+c*a
+6
+value-+GloomyGalleon;Near Mermaid's Palace - right
+'
+nameNear Mermaid's Palace - right
+a*_
+5
+value,*GloomyGalleon;Near Mermaid's Palace - left
+&
+nameNear Mermaid's Palace - left
+y*w
+A
+value86GloomyGalleon;Near Mermaid's Palace - Under Tag Barrel
+2
+name*(Near Mermaid's Palace - Under Tag Barrel
+e*c
+7
+value.,GloomyGalleon;Cannonball gate tunnel - right
+(
+name Cannonball gate tunnel - right
+c*a
+6
+value-+GloomyGalleon;Cannonball gate tunnel - left
+'
+nameCannonball gate tunnel - left
+[*Y
+2
+value)'GloomyGalleon;Seasick ship - start left
+#
+nameSeasick ship - start left
+]*[
+3
+value*(GloomyGalleon;Seasick ship - start right
+$
+nameSeasick ship - start right
+w*u
+@
+value75GloomyGalleon;Seasick ship - after cannons front left
+1
+name)'Seasick ship - after cannons front left
+y*w
+A
+value86GloomyGalleon;Seasick ship - after cannons front right
+2
+name*(Seasick ship - after cannons front right
+o*m
+<
+value31GloomyGalleon;Seasick ship - after cannons center
+-
+name%#Seasick ship - after cannons center
+a*_
+5
+value,*GloomyGalleon;Chunky 5DS - Against a chest
+&
+nameChunky 5DS - Against a chest
+é 
+lankyÑ 2Å 
+Y*W
+1
+value(&GloomyGalleon;Galleon Lobby - Far Left
+"
+nameGalleon Lobby - Far Left
+[*Y
+2
+value)'GloomyGalleon;Galleon Lobby - Far Right
+#
+nameGalleon Lobby - Far Right
+_*]
+4
+value+)GloomyGalleon;Galleon Lobby - Close Right
+%
+nameGalleon Lobby - Close Right
+e*c
+7
+value.,GloomyGalleon;Galleon Lobby - Near DK Portal
+(
+name Galleon Lobby - Near DK Portal
+]*[
+3
+value*(GloomyGalleon;Galleon Lobby - Close Left
+$
+nameGalleon Lobby - Close Left
+[*Y
+2
+value)'GloomyGalleon;Cavern Alcove Past Planks
+#
+nameCavern Alcove Past Planks
+;*9
+"
+valueGloomyGalleon;Deep Hole
+
+name	Deep Hole
+=*;
+#
+valueGloomyGalleon;Behind 2DS
+
+name
+Behind 2DS
+Q*O
+-
+value$"GloomyGalleon;Behind Enguarde Door
+
+nameBehind Enguarde Door
+5*3
+
+valueGloomyGalleon;Cactus
+
+nameCactus
+i*g
+9
+value0.GloomyGalleon;Tunnel to Shipyard - Tiny switch
+*
+name" Tunnel to Shipyard - Tiny switch
+k*i
+:
+value1/GloomyGalleon;Tunnel to Shipyard - Lanky switch
++
+name#!Tunnel to Shipyard - Lanky switch
+U*S
+/
+value&$GloomyGalleon;Tunnel to Punch Chests
+ 
+nameTunnel to Punch Chests
+K*I
+*
+value!GloomyGalleon;Edge of Blast pad
+
+nameEdge of Blast pad
+U*S
+/
+value&$GloomyGalleon;Under Baboon Blast pad
+ 
+nameUnder Baboon Blast pad
+[*Y
+2
+value)'GloomyGalleon;Under RocketBarrel barrel
+#
+nameUnder RocketBarrel barrel
+W*U
+0
+value'%GloomyGalleon;Next to Cannonball game
+!
+nameNext to Cannonball game
+e*c
+7
+value.,GloomyGalleon;Next to Lighthouse Gate switch
+(
+name Next to Lighthouse Gate switch
+g*e
+8
+value/-GloomyGalleon;Entrance Tunnel - near entrance
+)
+name!Entrance Tunnel - near entrance
+a*_
+5
+value,*GloomyGalleon;Next to Shipyard Gate switch
+&
+nameNext to Shipyard Gate switch
+*}
+D
+value;9GloomyGalleon;Above the water next to the floating warp 5
+5
+name-+Above the water next to the floating warp 5
+[*Y
+2
+value)'GloomyGalleon;Cactus - bottom back left
+#
+nameCactus - bottom back left
+]*[
+3
+value*(GloomyGalleon;Cactus - bottom front left
+$
+nameCactus - bottom front left
+]*[
+3
+value*(GloomyGalleon;Cactus - bottom back right
+$
+nameCactus - bottom back right
+_*]
+4
+value+)GloomyGalleon;Cactus - bottom front right
+%
+nameCactus - bottom front right
+I*G
+)
+value GloomyGalleon;Diddy Gold Tower
+
+nameDiddy Gold Tower
+W*U
+0
+value'%GloomyGalleon;Treasure Chest Exterior
+!
+nameTreasure Chest Exterior
+G*E
+(
+valueGloomyGalleon;Cavern Mast Top
+
+nameCavern Mast Top
+[*Y
+2
+value)'GloomyGalleon;Punch Chests Room - right
+#
+namePunch Chests Room - right
+o*m
+<
+value31GloomyGalleon;Low water alcove in lighthouse area
+-
+name%#Low water alcove in lighthouse area
+e*c
+7
+value.,GloomyGalleon;Behind boxes near Cavern Wreck
+(
+name Behind boxes near Cavern Wreck
+Y*W
+1
+value(&GloomyGalleon;Mechfish Gate - far left
+"
+nameMechfish Gate - far left
+Q*O
+-
+value$"GloomyGalleon;Mechfish Gate - left
+
+nameMechfish Gate - left
+U*S
+/
+value&$GloomyGalleon;Mechfish Gate - middle
+ 
+nameMechfish Gate - middle
+S*Q
+.
+value%#GloomyGalleon;Mechfish Gate - right
+
+nameMechfish Gate - right
+[*Y
+2
+value)'GloomyGalleon;Mechfish Gate - far right
+#
+nameMechfish Gate - far right
+Q*O
+-
+value$"GloomyGalleon;Cannonball Room Exit
+
+nameCannonball Room Exit
+O*M
+,
+value#!GloomyGalleon;2DS secret 3rd door
+
+name2DS secret 3rd door
+c*a
+6
+value-+GloomyGalleon;Near Mermaid's Palace - right
+'
+nameNear Mermaid's Palace - right
+a*_
+5
+value,*GloomyGalleon;Near Mermaid's Palace - left
+&
+nameNear Mermaid's Palace - left
+y*w
+A
+value86GloomyGalleon;Near Mermaid's Palace - Under Tag Barrel
+2
+name*(Near Mermaid's Palace - Under Tag Barrel
+;*9
+"
+valueGloomyGalleon;Lanky 5DS
+
+name	Lanky 5DS
+;*9
+"
+valueGloomyGalleon;Lanky 2DS
+
+name	Lanky 2DS
+e*c
+7
+value.,GloomyGalleon;Cannonball gate tunnel - right
+(
+name Cannonball gate tunnel - right
+c*a
+6
+value-+GloomyGalleon;Cannonball gate tunnel - left
+'
+nameCannonball gate tunnel - left
+Ë!
+diddyﬁ!2€!
+Y*W
+1
+value(&GloomyGalleon;Galleon Lobby - Far Left
+"
+nameGalleon Lobby - Far Left
+[*Y
+2
+value)'GloomyGalleon;Galleon Lobby - Far Right
+#
+nameGalleon Lobby - Far Right
+_*]
+4
+value+)GloomyGalleon;Galleon Lobby - Close Right
+%
+nameGalleon Lobby - Close Right
+e*c
+7
+value.,GloomyGalleon;Galleon Lobby - Near DK Portal
+(
+name Galleon Lobby - Near DK Portal
+]*[
+3
+value*(GloomyGalleon;Galleon Lobby - Close Left
+$
+nameGalleon Lobby - Close Left
+[*Y
+2
+value)'GloomyGalleon;Cavern Alcove Past Planks
+#
+nameCavern Alcove Past Planks
+;*9
+"
+valueGloomyGalleon;Deep Hole
+
+name	Deep Hole
+=*;
+#
+valueGloomyGalleon;Behind 2DS
+
+name
+Behind 2DS
+Q*O
+-
+value$"GloomyGalleon;Behind Enguarde Door
+
+nameBehind Enguarde Door
+5*3
+
+valueGloomyGalleon;Cactus
+
+nameCactus
+i*g
+9
+value0.GloomyGalleon;Tunnel to Shipyard - Tiny switch
+*
+name" Tunnel to Shipyard - Tiny switch
+k*i
+:
+value1/GloomyGalleon;Tunnel to Shipyard - Lanky switch
++
+name#!Tunnel to Shipyard - Lanky switch
+U*S
+/
+value&$GloomyGalleon;Tunnel to Punch Chests
+ 
+nameTunnel to Punch Chests
+K*I
+*
+value!GloomyGalleon;Edge of Blast pad
+
+nameEdge of Blast pad
+U*S
+/
+value&$GloomyGalleon;Under Baboon Blast pad
+ 
+nameUnder Baboon Blast pad
+[*Y
+2
+value)'GloomyGalleon;Under RocketBarrel barrel
+#
+nameUnder RocketBarrel barrel
+W*U
+0
+value'%GloomyGalleon;Next to Cannonball game
+!
+nameNext to Cannonball game
+e*c
+7
+value.,GloomyGalleon;Next to Lighthouse Gate switch
+(
+name Next to Lighthouse Gate switch
+g*e
+8
+value/-GloomyGalleon;Entrance Tunnel - near entrance
+)
+name!Entrance Tunnel - near entrance
+a*_
+5
+value,*GloomyGalleon;Next to Shipyard Gate switch
+&
+nameNext to Shipyard Gate switch
+*}
+D
+value;9GloomyGalleon;Above the water next to the floating warp 5
+5
+name-+Above the water next to the floating warp 5
+[*Y
+2
+value)'GloomyGalleon;Cactus - bottom back left
+#
+nameCactus - bottom back left
+]*[
+3
+value*(GloomyGalleon;Cactus - bottom front left
+$
+nameCactus - bottom front left
+]*[
+3
+value*(GloomyGalleon;Cactus - bottom back right
+$
+nameCactus - bottom back right
+_*]
+4
+value+)GloomyGalleon;Cactus - bottom front right
+%
+nameCactus - bottom front right
+O*M
+,
+value#!GloomyGalleon;On top of Seal cage
+
+nameOn top of Seal cage
+I*G
+)
+value GloomyGalleon;Diddy Gold Tower
+
+nameDiddy Gold Tower
+W*U
+0
+value'%GloomyGalleon;Treasure Chest Exterior
+!
+nameTreasure Chest Exterior
+G*E
+(
+valueGloomyGalleon;Cavern Mast Top
+
+nameCavern Mast Top
+[*Y
+2
+value)'GloomyGalleon;Punch Chests Room - right
+#
+namePunch Chests Room - right
+o*m
+<
+value31GloomyGalleon;Low water alcove in lighthouse area
+-
+name%#Low water alcove in lighthouse area
+e*c
+7
+value.,GloomyGalleon;Behind boxes near Cavern Wreck
+(
+name Behind boxes near Cavern Wreck
+Y*W
+1
+value(&GloomyGalleon;Mechfish Gate - far left
+"
+nameMechfish Gate - far left
+Q*O
+-
+value$"GloomyGalleon;Mechfish Gate - left
+
+nameMechfish Gate - left
+U*S
+/
+value&$GloomyGalleon;Mechfish Gate - middle
+ 
+nameMechfish Gate - middle
+S*Q
+.
+value%#GloomyGalleon;Mechfish Gate - right
+
+nameMechfish Gate - right
+[*Y
+2
+value)'GloomyGalleon;Mechfish Gate - far right
+#
+nameMechfish Gate - far right
+Q*O
+-
+value$"GloomyGalleon;Cannonball Room Exit
+
+nameCannonball Room Exit
+O*M
+,
+value#!GloomyGalleon;2DS secret 3rd door
+
+name2DS secret 3rd door
+c*a
+6
+value-+GloomyGalleon;Near Mermaid's Palace - right
+'
+nameNear Mermaid's Palace - right
+a*_
+5
+value,*GloomyGalleon;Near Mermaid's Palace - left
+&
+nameNear Mermaid's Palace - left
+y*w
+A
+value86GloomyGalleon;Near Mermaid's Palace - Under Tag Barrel
+2
+name*(Near Mermaid's Palace - Under Tag Barrel
+e*c
+7
+value.,GloomyGalleon;Cannonball gate tunnel - right
+(
+name Cannonball gate tunnel - right
+c*a
+6
+value-+GloomyGalleon;Cannonball gate tunnel - left
+'
+nameCannonball gate tunnel - left
+Q*O
+-
+value$"GloomyGalleon;Mechfish - Left wall
+
+nameMechfish - Left wall
+S*Q
+.
+value%#GloomyGalleon;Mechfish - Right wall
+
+nameMechfish - Right wall
+Y*W
+1
+value(&GloomyGalleon;On top of the lighthouse
+"
+nameOn top of the lighthouse
+⁄ü
+FranticFactory∆ü*¬ü
+˝
+donkeyÚ2Ô
+Z*X
+2
+value)'FranticFactory;Factory Lobby - Low Left
+"
+nameFactory Lobby - Low Left
+Z*X
+2
+value)'FranticFactory;Factory Lobby - Top Left
+"
+nameFactory Lobby - Top Left
+^*\
+4
+value+)FranticFactory;Factory Lobby - Top Center
+$
+nameFactory Lobby - Top Center
+\*Z
+3
+value*(FranticFactory;Factory Lobby - Top Right
+#
+nameFactory Lobby - Top Right
+\*Z
+3
+value*(FranticFactory;Factory Lobby - Low Right
+#
+nameFactory Lobby - Low Right
+@*>
+%
+valueFranticFactory;Arcade Room
+
+nameArcade Room
+H*F
+)
+value FranticFactory;Production Room
+
+nameProduction Room
+^*\
+4
+value+)FranticFactory;R&D across from Piano Game
+$
+nameR&D across from Piano Game
+@*>
+%
+valueFranticFactory;Block Tower
+
+nameBlock Tower
+B*@
+&
+valueFranticFactory;Storage Room
+
+nameStorage Room
+R*P
+.
+value%#FranticFactory;Next to Hatch - left
+
+nameNext to Hatch - left
+T*R
+/
+value&$FranticFactory;Next to Hatch - right
+
+nameNext to Hatch - right
+Z*X
+2
+value)'FranticFactory;Bottom of the Hatch Pole
+"
+nameBottom of the Hatch Pole
+l*j
+;
+value20FranticFactory;Production Room - Under Conveyors
++
+name#!Production Room - Under Conveyors
+j*h
+:
+value1/FranticFactory;Storage Room - Behind Tag Barrel
+*
+name" Storage Room - Behind Tag Barrel
+X*V
+1
+value(&FranticFactory;Under Left Storage Shop
+!
+nameUnder Left Storage Shop
+Z*X
+2
+value)'FranticFactory;Under Right Storage Shop
+"
+nameUnder Right Storage Shop
+P*N
+-
+value$"FranticFactory;Next to Number Game
+
+nameNext to Number Game
+Z*X
+2
+value)'FranticFactory;R&D across from Car Race
+"
+nameR&D across from Car Race
+j*h
+:
+value1/FranticFactory;R&D - Next to Tunnel to Car Race
+*
+name" R&D - Next to Tunnel to Car Race
+p*n
+=
+value42FranticFactory;Testing Area - Under Tunnel to Shop
+-
+name%#Testing Area - Under Tunnel to Shop
+F*D
+(
+valueFranticFactory;R&D - Dead End
+
+nameR&D - Dead End
+Ö*Ç
+G
+value><FranticFactory;R&D - Blind Corner Next to Tunnel to Car Race
+7
+name/-R&D - Blind Corner Next to Tunnel to Car Race
+n*l
+<
+value31FranticFactory;Testing Area - Shop Room Left Wall
+,
+name$"Testing Area - Shop Room Left Wall
+Ä*~
+E
+value<:FranticFactory;Testing Area - Air Vent Under Arcade Window
+5
+name-+Testing Area - Air Vent Under Arcade Window
+|*z
+C
+value:8FranticFactory;Testing Area - Under Arcade Window - left
+3
+name+)Testing Area - Under Arcade Window - left
+j*h
+:
+value1/FranticFactory;Testing Area - Behind Tag Barrel
+*
+name" Testing Area - Behind Tag Barrel
+^*\
+4
+value+)FranticFactory;R&D - Next to Diddy's Room
+$
+nameR&D - Next to Diddy's Room
+l*j
+;
+value20FranticFactory;Storage Room - Next to Tag Barrel
++
+name#!Storage Room - Next to Tag Barrel
+z*x
+B
+value97FranticFactory;Production Room - Next to Diddy's Switch
+2
+name*(Production Room - Next to Diddy's Switch
+V*T
+0
+value'%FranticFactory;Above Crusher Entrance
+ 
+nameAbove Crusher Entrance
+R*P
+.
+value%#FranticFactory;Arcade Room - Corner
+
+nameArcade Room - Corner
+R*P
+.
+value%#FranticFactory;Under Arcade Shelves
+
+nameUnder Arcade Shelves
+n*l
+<
+value31FranticFactory;Testing Area - Next to Mini Barrel
+,
+name$"Testing Area - Next to Mini Barrel
+v*t
+@
+value75FranticFactory;Testing Area - Base of the Block Tower
+0
+name(&Testing Area - Base of the Block Tower
+D*B
+'
+valueFranticFactory;By Foyer Shop
+
+nameBy Foyer Shop
+P*N
+-
+value$"FranticFactory;Foyer - Under Clock
+
+nameFoyer - Under Clock
+N*L
+,
+value#!FranticFactory;Foyer - front left
+
+nameFoyer - front left
+L*J
++
+value" FranticFactory;Foyer - back left
+
+nameFoyer - back left
+P*N
+-
+value$"FranticFactory;Foyer - front right
+
+nameFoyer - front right
+R*P
+.
+value%#FranticFactory;Crusher Room - start
+
+nameCrusher Room - start
+J*H
+*
+value!FranticFactory;In the power hut
+
+nameIn the power hut
+£ 
+tinyö 2ó 
+Z*X
+2
+value)'FranticFactory;Factory Lobby - Low Left
+"
+nameFactory Lobby - Low Left
+Z*X
+2
+value)'FranticFactory;Factory Lobby - Top Left
+"
+nameFactory Lobby - Top Left
+^*\
+4
+value+)FranticFactory;Factory Lobby - Top Center
+$
+nameFactory Lobby - Top Center
+\*Z
+3
+value*(FranticFactory;Factory Lobby - Top Right
+#
+nameFactory Lobby - Top Right
+\*Z
+3
+value*(FranticFactory;Factory Lobby - Low Right
+#
+nameFactory Lobby - Low Right
+@*>
+%
+valueFranticFactory;Arcade Room
+
+nameArcade Room
+H*F
+)
+value FranticFactory;Production Room
+
+nameProduction Room
+^*\
+4
+value+)FranticFactory;R&D across from Piano Game
+$
+nameR&D across from Piano Game
+@*>
+%
+valueFranticFactory;Block Tower
+
+nameBlock Tower
+B*@
+&
+valueFranticFactory;Storage Room
+
+nameStorage Room
+R*P
+.
+value%#FranticFactory;Next to Hatch - left
+
+nameNext to Hatch - left
+T*R
+/
+value&$FranticFactory;Next to Hatch - right
+
+nameNext to Hatch - right
+Z*X
+2
+value)'FranticFactory;Bottom of the Hatch Pole
+"
+nameBottom of the Hatch Pole
+l*j
+;
+value20FranticFactory;Production Room - Under Conveyors
++
+name#!Production Room - Under Conveyors
+j*h
+:
+value1/FranticFactory;Storage Room - Behind Tag Barrel
+*
+name" Storage Room - Behind Tag Barrel
+X*V
+1
+value(&FranticFactory;Under Left Storage Shop
+!
+nameUnder Left Storage Shop
+Z*X
+2
+value)'FranticFactory;Under Right Storage Shop
+"
+nameUnder Right Storage Shop
+P*N
+-
+value$"FranticFactory;Next to Number Game
+
+nameNext to Number Game
+Z*X
+2
+value)'FranticFactory;R&D across from Car Race
+"
+nameR&D across from Car Race
+j*h
+:
+value1/FranticFactory;R&D - Next to Tunnel to Car Race
+*
+name" R&D - Next to Tunnel to Car Race
+p*n
+=
+value42FranticFactory;Testing Area - Under Tunnel to Shop
+-
+name%#Testing Area - Under Tunnel to Shop
+F*D
+(
+valueFranticFactory;R&D - Dead End
+
+nameR&D - Dead End
+Ö*Ç
+G
+value><FranticFactory;R&D - Blind Corner Next to Tunnel to Car Race
+7
+name/-R&D - Blind Corner Next to Tunnel to Car Race
+n*l
+<
+value31FranticFactory;Testing Area - Shop Room Left Wall
+,
+name$"Testing Area - Shop Room Left Wall
+Ä*~
+E
+value<:FranticFactory;Testing Area - Air Vent Under Arcade Window
+5
+name-+Testing Area - Air Vent Under Arcade Window
+|*z
+C
+value:8FranticFactory;Testing Area - Under Arcade Window - left
+3
+name+)Testing Area - Under Arcade Window - left
+j*h
+:
+value1/FranticFactory;Testing Area - Behind Tag Barrel
+*
+name" Testing Area - Behind Tag Barrel
+^*\
+4
+value+)FranticFactory;R&D - Next to Diddy's Room
+$
+nameR&D - Next to Diddy's Room
+b*`
+6
+value-+FranticFactory;R&D - Tiny's Race Entry Area
+&
+nameR&D - Tiny's Race Entry Area
+l*j
+;
+value20FranticFactory;Storage Room - Next to Tag Barrel
++
+name#!Storage Room - Next to Tag Barrel
+ç*ä
+K
+valueB@FranticFactory;Production Room - in Alcove Next to Tiny's Barrel
+;
+name31Production Room - in Alcove Next to Tiny's Barrel
+z*x
+B
+value97FranticFactory;Production Room - Next to Diddy's Switch
+2
+name*(Production Room - Next to Diddy's Switch
+V*T
+0
+value'%FranticFactory;Above Crusher Entrance
+ 
+nameAbove Crusher Entrance
+R*P
+.
+value%#FranticFactory;Arcade Room - Corner
+
+nameArcade Room - Corner
+R*P
+.
+value%#FranticFactory;Under Arcade Shelves
+
+nameUnder Arcade Shelves
+n*l
+<
+value31FranticFactory;Testing Area - Next to Mini Barrel
+,
+name$"Testing Area - Next to Mini Barrel
+v*t
+@
+value75FranticFactory;Testing Area - Base of the Block Tower
+0
+name(&Testing Area - Base of the Block Tower
+D*B
+'
+valueFranticFactory;By Foyer Shop
+
+nameBy Foyer Shop
+P*N
+-
+value$"FranticFactory;Foyer - Under Clock
+
+nameFoyer - Under Clock
+N*L
+,
+value#!FranticFactory;Foyer - front left
+
+nameFoyer - front left
+L*J
++
+value" FranticFactory;Foyer - back left
+
+nameFoyer - back left
+P*N
+-
+value$"FranticFactory;Foyer - front right
+
+nameFoyer - front right
+R*P
+.
+value%#FranticFactory;Crusher Room - start
+
+nameCrusher Room - start
+«
+chunkyº2π
+Z*X
+2
+value)'FranticFactory;Factory Lobby - Low Left
+"
+nameFactory Lobby - Low Left
+Z*X
+2
+value)'FranticFactory;Factory Lobby - Top Left
+"
+nameFactory Lobby - Top Left
+^*\
+4
+value+)FranticFactory;Factory Lobby - Top Center
+$
+nameFactory Lobby - Top Center
+\*Z
+3
+value*(FranticFactory;Factory Lobby - Top Right
+#
+nameFactory Lobby - Top Right
+\*Z
+3
+value*(FranticFactory;Factory Lobby - Low Right
+#
+nameFactory Lobby - Low Right
+@*>
+%
+valueFranticFactory;Arcade Room
+
+nameArcade Room
+H*F
+)
+value FranticFactory;Production Room
+
+nameProduction Room
+^*\
+4
+value+)FranticFactory;R&D across from Piano Game
+$
+nameR&D across from Piano Game
+@*>
+%
+valueFranticFactory;Block Tower
+
+nameBlock Tower
+B*@
+&
+valueFranticFactory;Storage Room
+
+nameStorage Room
+V*T
+0
+value'%FranticFactory;Behind Toy Monster Box
+ 
+nameBehind Toy Monster Box
+R*P
+.
+value%#FranticFactory;Next to Hatch - left
+
+nameNext to Hatch - left
+T*R
+/
+value&$FranticFactory;Next to Hatch - right
+
+nameNext to Hatch - right
+Z*X
+2
+value)'FranticFactory;Bottom of the Hatch Pole
+"
+nameBottom of the Hatch Pole
+l*j
+;
+value20FranticFactory;Production Room - Under Conveyors
++
+name#!Production Room - Under Conveyors
+j*h
+:
+value1/FranticFactory;Storage Room - Behind Tag Barrel
+*
+name" Storage Room - Behind Tag Barrel
+X*V
+1
+value(&FranticFactory;Under Left Storage Shop
+!
+nameUnder Left Storage Shop
+Z*X
+2
+value)'FranticFactory;Under Right Storage Shop
+"
+nameUnder Right Storage Shop
+P*N
+-
+value$"FranticFactory;Next to Number Game
+
+nameNext to Number Game
+Z*X
+2
+value)'FranticFactory;R&D across from Car Race
+"
+nameR&D across from Car Race
+j*h
+:
+value1/FranticFactory;R&D - Next to Tunnel to Car Race
+*
+name" R&D - Next to Tunnel to Car Race
+p*n
+=
+value42FranticFactory;Testing Area - Under Tunnel to Shop
+-
+name%#Testing Area - Under Tunnel to Shop
+F*D
+(
+valueFranticFactory;R&D - Dead End
+
+nameR&D - Dead End
+Ö*Ç
+G
+value><FranticFactory;R&D - Blind Corner Next to Tunnel to Car Race
+7
+name/-R&D - Blind Corner Next to Tunnel to Car Race
+n*l
+<
+value31FranticFactory;Testing Area - Shop Room Left Wall
+,
+name$"Testing Area - Shop Room Left Wall
+Ä*~
+E
+value<:FranticFactory;Testing Area - Air Vent Under Arcade Window
+5
+name-+Testing Area - Air Vent Under Arcade Window
+|*z
+C
+value:8FranticFactory;Testing Area - Under Arcade Window - left
+3
+name+)Testing Area - Under Arcade Window - left
+j*h
+:
+value1/FranticFactory;Testing Area - Behind Tag Barrel
+*
+name" Testing Area - Behind Tag Barrel
+^*\
+4
+value+)FranticFactory;R&D - Next to Diddy's Room
+$
+nameR&D - Next to Diddy's Room
+l*j
+;
+value20FranticFactory;Storage Room - Next to Tag Barrel
++
+name#!Storage Room - Next to Tag Barrel
+z*x
+B
+value97FranticFactory;Production Room - Next to Diddy's Switch
+2
+name*(Production Room - Next to Diddy's Switch
+V*T
+0
+value'%FranticFactory;Above Crusher Entrance
+ 
+nameAbove Crusher Entrance
+R*P
+.
+value%#FranticFactory;Arcade Room - Corner
+
+nameArcade Room - Corner
+R*P
+.
+value%#FranticFactory;Under Arcade Shelves
+
+nameUnder Arcade Shelves
+n*l
+<
+value31FranticFactory;Testing Area - Next to Mini Barrel
+,
+name$"Testing Area - Next to Mini Barrel
+v*t
+@
+value75FranticFactory;Testing Area - Base of the Block Tower
+0
+name(&Testing Area - Base of the Block Tower
+D*B
+'
+valueFranticFactory;By Foyer Shop
+
+nameBy Foyer Shop
+P*N
+-
+value$"FranticFactory;Foyer - Under Clock
+
+nameFoyer - Under Clock
+N*L
+,
+value#!FranticFactory;Foyer - front left
+
+nameFoyer - front left
+L*J
++
+value" FranticFactory;Foyer - back left
+
+nameFoyer - back left
+P*N
+-
+value$"FranticFactory;Foyer - front right
+
+nameFoyer - front right
+<*:
+#
+valueFranticFactory;Dark Room
+
+name	Dark Room
+R*P
+.
+value%#FranticFactory;Crusher Room - start
+
+nameCrusher Room - start
+‹ 
+lanky“ 2œ 
+Z*X
+2
+value)'FranticFactory;Factory Lobby - Low Left
+"
+nameFactory Lobby - Low Left
+Z*X
+2
+value)'FranticFactory;Factory Lobby - Top Left
+"
+nameFactory Lobby - Top Left
+^*\
+4
+value+)FranticFactory;Factory Lobby - Top Center
+$
+nameFactory Lobby - Top Center
+\*Z
+3
+value*(FranticFactory;Factory Lobby - Top Right
+#
+nameFactory Lobby - Top Right
+\*Z
+3
+value*(FranticFactory;Factory Lobby - Low Right
+#
+nameFactory Lobby - Low Right
+@*>
+%
+valueFranticFactory;Arcade Room
+
+nameArcade Room
+H*F
+)
+value FranticFactory;Production Room
+
+nameProduction Room
+^*\
+4
+value+)FranticFactory;R&D across from Piano Game
+$
+nameR&D across from Piano Game
+@*>
+%
+valueFranticFactory;Block Tower
+
+nameBlock Tower
+B*@
+&
+valueFranticFactory;Storage Room
+
+nameStorage Room
+R*P
+.
+value%#FranticFactory;Next to Hatch - left
+
+nameNext to Hatch - left
+T*R
+/
+value&$FranticFactory;Next to Hatch - right
+
+nameNext to Hatch - right
+Z*X
+2
+value)'FranticFactory;Bottom of the Hatch Pole
+"
+nameBottom of the Hatch Pole
+l*j
+;
+value20FranticFactory;Production Room - Under Conveyors
++
+name#!Production Room - Under Conveyors
+j*h
+:
+value1/FranticFactory;Storage Room - Behind Tag Barrel
+*
+name" Storage Room - Behind Tag Barrel
+X*V
+1
+value(&FranticFactory;Under Left Storage Shop
+!
+nameUnder Left Storage Shop
+Z*X
+2
+value)'FranticFactory;Under Right Storage Shop
+"
+nameUnder Right Storage Shop
+P*N
+-
+value$"FranticFactory;Next to Number Game
+
+nameNext to Number Game
+Z*X
+2
+value)'FranticFactory;R&D across from Car Race
+"
+nameR&D across from Car Race
+j*h
+:
+value1/FranticFactory;R&D - Next to Tunnel to Car Race
+*
+name" R&D - Next to Tunnel to Car Race
+p*n
+=
+value42FranticFactory;Testing Area - Under Tunnel to Shop
+-
+name%#Testing Area - Under Tunnel to Shop
+F*D
+(
+valueFranticFactory;R&D - Dead End
+
+nameR&D - Dead End
+Ö*Ç
+G
+value><FranticFactory;R&D - Blind Corner Next to Tunnel to Car Race
+7
+name/-R&D - Blind Corner Next to Tunnel to Car Race
+n*l
+<
+value31FranticFactory;Testing Area - Shop Room Left Wall
+,
+name$"Testing Area - Shop Room Left Wall
+Ä*~
+E
+value<:FranticFactory;Testing Area - Air Vent Under Arcade Window
+5
+name-+Testing Area - Air Vent Under Arcade Window
+|*z
+C
+value:8FranticFactory;Testing Area - Under Arcade Window - left
+3
+name+)Testing Area - Under Arcade Window - left
+j*h
+:
+value1/FranticFactory;Testing Area - Behind Tag Barrel
+*
+name" Testing Area - Behind Tag Barrel
+^*\
+4
+value+)FranticFactory;R&D - Next to Diddy's Room
+$
+nameR&D - Next to Diddy's Room
+l*j
+;
+value20FranticFactory;Storage Room - Next to Tag Barrel
++
+name#!Storage Room - Next to Tag Barrel
+z*x
+B
+value97FranticFactory;Production Room - Next to Diddy's Switch
+2
+name*(Production Room - Next to Diddy's Switch
+V*T
+0
+value'%FranticFactory;Above Crusher Entrance
+ 
+nameAbove Crusher Entrance
+R*P
+.
+value%#FranticFactory;Arcade Room - Corner
+
+nameArcade Room - Corner
+R*P
+.
+value%#FranticFactory;Under Arcade Shelves
+
+nameUnder Arcade Shelves
+n*l
+<
+value31FranticFactory;Testing Area - Next to Mini Barrel
+,
+name$"Testing Area - Next to Mini Barrel
+v*t
+@
+value75FranticFactory;Testing Area - Base of the Block Tower
+0
+name(&Testing Area - Base of the Block Tower
+D*B
+'
+valueFranticFactory;By Foyer Shop
+
+nameBy Foyer Shop
+P*N
+-
+value$"FranticFactory;Foyer - Under Clock
+
+nameFoyer - Under Clock
+N*L
+,
+value#!FranticFactory;Foyer - front left
+
+nameFoyer - front left
+L*J
++
+value" FranticFactory;Foyer - back left
+
+nameFoyer - back left
+P*N
+-
+value$"FranticFactory;Foyer - front right
+
+nameFoyer - front right
+t*r
+?
+value64FranticFactory;Storage Room - Top of Orangstand Pipe
+/
+name'%Storage Room - Top of Orangstand Pipe
+Z*X
+2
+value)'FranticFactory;Lanky Piano Room - right
+"
+nameLanky Piano Room - right
+X*V
+1
+value(&FranticFactory;Lanky Piano Room - left
+!
+nameLanky Piano Room - left
+R*P
+.
+value%#FranticFactory;Crusher Room - start
+
+nameCrusher Room - start
+
+diddyÊ2„
+Z*X
+2
+value)'FranticFactory;Factory Lobby - Low Left
+"
+nameFactory Lobby - Low Left
+Z*X
+2
+value)'FranticFactory;Factory Lobby - Top Left
+"
+nameFactory Lobby - Top Left
+^*\
+4
+value+)FranticFactory;Factory Lobby - Top Center
+$
+nameFactory Lobby - Top Center
+\*Z
+3
+value*(FranticFactory;Factory Lobby - Top Right
+#
+nameFactory Lobby - Top Right
+\*Z
+3
+value*(FranticFactory;Factory Lobby - Low Right
+#
+nameFactory Lobby - Low Right
+@*>
+%
+valueFranticFactory;Arcade Room
+
+nameArcade Room
+H*F
+)
+value FranticFactory;Production Room
+
+nameProduction Room
+^*\
+4
+value+)FranticFactory;R&D across from Piano Game
+$
+nameR&D across from Piano Game
+@*>
+%
+valueFranticFactory;Block Tower
+
+nameBlock Tower
+B*@
+&
+valueFranticFactory;Storage Room
+
+nameStorage Room
+R*P
+.
+value%#FranticFactory;Next to Hatch - left
+
+nameNext to Hatch - left
+T*R
+/
+value&$FranticFactory;Next to Hatch - right
+
+nameNext to Hatch - right
+Z*X
+2
+value)'FranticFactory;Bottom of the Hatch Pole
+"
+nameBottom of the Hatch Pole
+l*j
+;
+value20FranticFactory;Production Room - Under Conveyors
++
+name#!Production Room - Under Conveyors
+Z*X
+2
+value)'FranticFactory;Above Storage Spring Pad
+"
+nameAbove Storage Spring Pad
+j*h
+:
+value1/FranticFactory;Storage Room - Behind Tag Barrel
+*
+name" Storage Room - Behind Tag Barrel
+X*V
+1
+value(&FranticFactory;Under Left Storage Shop
+!
+nameUnder Left Storage Shop
+Z*X
+2
+value)'FranticFactory;Under Right Storage Shop
+"
+nameUnder Right Storage Shop
+P*N
+-
+value$"FranticFactory;Next to Number Game
+
+nameNext to Number Game
+Z*X
+2
+value)'FranticFactory;R&D across from Car Race
+"
+nameR&D across from Car Race
+j*h
+:
+value1/FranticFactory;R&D - Next to Tunnel to Car Race
+*
+name" R&D - Next to Tunnel to Car Race
+p*n
+=
+value42FranticFactory;Testing Area - Under Tunnel to Shop
+-
+name%#Testing Area - Under Tunnel to Shop
+F*D
+(
+valueFranticFactory;R&D - Dead End
+
+nameR&D - Dead End
+Ö*Ç
+G
+value><FranticFactory;R&D - Blind Corner Next to Tunnel to Car Race
+7
+name/-R&D - Blind Corner Next to Tunnel to Car Race
+n*l
+<
+value31FranticFactory;Testing Area - Shop Room Left Wall
+,
+name$"Testing Area - Shop Room Left Wall
+Ä*~
+E
+value<:FranticFactory;Testing Area - Air Vent Under Arcade Window
+5
+name-+Testing Area - Air Vent Under Arcade Window
+|*z
+C
+value:8FranticFactory;Testing Area - Under Arcade Window - left
+3
+name+)Testing Area - Under Arcade Window - left
+j*h
+:
+value1/FranticFactory;Testing Area - Behind Tag Barrel
+*
+name" Testing Area - Behind Tag Barrel
+^*\
+4
+value+)FranticFactory;R&D - Next to Diddy's Room
+$
+nameR&D - Next to Diddy's Room
+l*j
+;
+value20FranticFactory;Storage Room - Next to Tag Barrel
++
+name#!Storage Room - Next to Tag Barrel
+z*x
+B
+value97FranticFactory;Production Room - Next to Diddy's Switch
+2
+name*(Production Room - Next to Diddy's Switch
+V*T
+0
+value'%FranticFactory;Above Crusher Entrance
+ 
+nameAbove Crusher Entrance
+R*P
+.
+value%#FranticFactory;Arcade Room - Corner
+
+nameArcade Room - Corner
+R*P
+.
+value%#FranticFactory;Under Arcade Shelves
+
+nameUnder Arcade Shelves
+n*l
+<
+value31FranticFactory;Testing Area - Next to Mini Barrel
+,
+name$"Testing Area - Next to Mini Barrel
+v*t
+@
+value75FranticFactory;Testing Area - Base of the Block Tower
+0
+name(&Testing Area - Base of the Block Tower
+D*B
+'
+valueFranticFactory;By Foyer Shop
+
+nameBy Foyer Shop
+P*N
+-
+value$"FranticFactory;Foyer - Under Clock
+
+nameFoyer - Under Clock
+N*L
+,
+value#!FranticFactory;Foyer - front left
+
+nameFoyer - front left
+L*J
++
+value" FranticFactory;Foyer - back left
+
+nameFoyer - back left
+P*N
+-
+value$"FranticFactory;Foyer - front right
+
+nameFoyer - front right
+b*`
+6
+value-+FranticFactory;Diddy R&D Room - front-right
+&
+nameDiddy R&D Room - front-right
+R*P
+.
+value%#FranticFactory;Crusher Room - start
+
+nameCrusher Room - start
+É›
+
+AngryAztecÛ‹*Ô‹
+ä%
+donkeyˇ$2¸$
+X*V
+/
+value&$AngryAztec;Aztec Lobby - Pillar Wall
+#
+nameAztec Lobby - Pillar Wall
+X*V
+/
+value&$AngryAztec;Aztec Lobby - Lower Right
+#
+nameAztec Lobby - Lower Right
+^*\
+2
+value)'AngryAztec;Aztec Lobby - Left of Portal
+&
+nameAztec Lobby - Left of Portal
+`*^
+3
+value*(AngryAztec;Aztec Lobby - Right of Portal
+'
+nameAztec Lobby - Right of Portal
+T*R
+-
+value$"AngryAztec;Aztec Lobby - Back Room
+!
+nameAztec Lobby - Back Room
+b*`
+4
+value+)AngryAztec;Right of Quicksand Tunnel Shop
+(
+name Right of Quicksand Tunnel Shop
+L*J
+)
+value AngryAztec;Left of Tunnel Shop
+
+nameLeft of Tunnel Shop
+D*B
+%
+valueAngryAztec;Near Oasis Shop
+
+nameNear Oasis Shop
+R*P
+,
+value#!AngryAztec;Near Vulture Cage Shop
+ 
+nameNear Vulture Cage Shop
+:*8
+ 
+valueAngryAztec;Behind 5DT
+
+name
+Behind 5DT
+J*H
+(
+valueAngryAztec;Oasis Shop - right
+
+nameOasis Shop - right
+V*T
+.
+value%#AngryAztec;Gong Tower Stairs - left
+"
+nameGong Tower Stairs - left
+n*l
+:
+value1/AngryAztec;Next to Tag Barrel near Vulture Cage
+.
+name&$Next to Tag Barrel near Vulture Cage
+R*P
+,
+value#!AngryAztec;Under the Vulture Cage
+ 
+nameUnder the Vulture Cage
+V*T
+.
+value%#AngryAztec;5 Door Temple's 6th Door
+"
+name5 Door Temple's 6th Door
+N*L
+*
+value!AngryAztec;Right of Tunnel Shop
+
+nameRight of Tunnel Shop
+V*T
+.
+value%#AngryAztec;Near Hunky Barrel - left
+"
+nameNear Hunky Barrel - left
+X*V
+/
+value&$AngryAztec;Near Hunky Barrel - right
+#
+nameNear Hunky Barrel - right
+R*P
+,
+value#!AngryAztec;Near Snake Road - left
+ 
+nameNear Snake Road - left
+T*R
+-
+value$"AngryAztec;Near Snake Road - right
+!
+nameNear Snake Road - right
+d*b
+5
+value,*AngryAztec;5 Door Temple Staircase - front
+)
+name!5 Door Temple Staircase - front
+b*`
+4
+value+)AngryAztec;5 Door Temple Staircase - back
+(
+name 5 Door Temple Staircase - back
+R*P
+,
+value#!AngryAztec;Across from Vases Room
+ 
+nameAcross from Vases Room
+b*`
+4
+value+)AngryAztec;First Tunnel - next to DK Door
+(
+name First Tunnel - next to DK Door
+X*V
+/
+value&$AngryAztec;First Tunnel - Near Oasis
+#
+nameFirst Tunnel - Near Oasis
+b*`
+4
+value+)AngryAztec;In the sealed quicksand tunnel
+(
+name In the sealed quicksand tunnel
+\*Z
+1
+value(&AngryAztec;Inside Quicksand Bonus Cave
+%
+nameInside Quicksand Bonus Cave
+`*^
+3
+value*(AngryAztec;Left of Quicksand Tunnel Shop
+'
+nameLeft of Quicksand Tunnel Shop
+f*d
+6
+value-+AngryAztec;Far Back Triple Stairs Quicksand
+*
+name" Far Back Triple Stairs Quicksand
+f*d
+6
+value-+AngryAztec;Next to Tiny Temple - front left
+*
+name" Next to Tiny Temple - front left
+d*b
+5
+value,*AngryAztec;Next to Tiny Temple - back left
+)
+name!Next to Tiny Temple - back left
+h*f
+7
+value.,AngryAztec;Oasis - Next to Tunnel - far left
++
+name#!Oasis - Next to Tunnel - far left
+`*^
+3
+value*(AngryAztec;Oasis - Next to Tunnel - left
+'
+nameOasis - Next to Tunnel - left
+\*Z
+1
+value(&AngryAztec;Far Back Triple Stairs Wall
+%
+nameFar Back Triple Stairs Wall
+\*Z
+1
+value(&AngryAztec;Next to Llama Temple - left
+%
+nameNext to Llama Temple - left
+Z*X
+0
+value'%AngryAztec;Llama Temple Stairs - left
+$
+nameLlama Temple Stairs - left
+\*Z
+1
+value(&AngryAztec;Llama Temple Stairs - right
+%
+nameLlama Temple Stairs - right
+v*t
+>
+value53AngryAztec;Llama Temple - Entrance Staircase - left
+2
+name*(Llama Temple - Entrance Staircase - left
+x*v
+?
+value64AngryAztec;Llama Temple - Entrance Staircase - right
+3
+name+)Llama Temple - Entrance Staircase - right
+v*t
+>
+value53AngryAztec;Llama Temple - Across from the Spit Gate
+2
+name*(Llama Temple - Across from the Spit Gate
+d*b
+5
+value,*AngryAztec;Donkey 5DT - First right branch
+)
+name!Donkey 5DT - First right branch
+r*p
+<
+value31AngryAztec;Llama Temple - Down the stairs - right
+0
+name(&Llama Temple - Down the stairs - right
+p*n
+;
+value20AngryAztec;Llama Temple - Down the stairs - left
+/
+name'%Llama Temple - Down the stairs - left
+p*n
+;
+value20AngryAztec;Llama Temple - Near top stairs - left
+/
+name'%Llama Temple - Near top stairs - left
+r*p
+<
+value31AngryAztec;Llama Temple - Near top stairs - right
+0
+name(&Llama Temple - Near top stairs - right
+z*x
+@
+value75AngryAztec;Llama Temple - Center torch below entrance
+4
+name,*Llama Temple - Center torch below entrance
+j*h
+8
+value/-AngryAztec;Llama Temple - Next to mini tunnel
+,
+name$"Llama Temple - Next to mini tunnel
+P*N
++
+value" AngryAztec;Behind the llama cage
+
+nameBehind the llama cage
+l*j
+9
+value0.AngryAztec;In the quicksand near 5-door temple
+-
+name%#In the quicksand near 5-door temple
+ô.
+tinyê.2ç.
+X*V
+/
+value&$AngryAztec;Aztec Lobby - Pillar Wall
+#
+nameAztec Lobby - Pillar Wall
+X*V
+/
+value&$AngryAztec;Aztec Lobby - Lower Right
+#
+nameAztec Lobby - Lower Right
+^*\
+2
+value)'AngryAztec;Aztec Lobby - Left of Portal
+&
+nameAztec Lobby - Left of Portal
+`*^
+3
+value*(AngryAztec;Aztec Lobby - Right of Portal
+'
+nameAztec Lobby - Right of Portal
+T*R
+-
+value$"AngryAztec;Aztec Lobby - Back Room
+!
+nameAztec Lobby - Back Room
+b*`
+4
+value+)AngryAztec;Right of Quicksand Tunnel Shop
+(
+name Right of Quicksand Tunnel Shop
+L*J
+)
+value AngryAztec;Left of Tunnel Shop
+
+nameLeft of Tunnel Shop
+D*B
+%
+valueAngryAztec;Near Oasis Shop
+
+nameNear Oasis Shop
+R*P
+,
+value#!AngryAztec;Near Vulture Cage Shop
+ 
+nameNear Vulture Cage Shop
+:*8
+ 
+valueAngryAztec;Behind 5DT
+
+name
+Behind 5DT
+J*H
+(
+valueAngryAztec;Oasis Shop - right
+
+nameOasis Shop - right
+V*T
+.
+value%#AngryAztec;Gong Tower Stairs - left
+"
+nameGong Tower Stairs - left
+n*l
+:
+value1/AngryAztec;Next to Tag Barrel near Vulture Cage
+.
+name&$Next to Tag Barrel near Vulture Cage
+R*P
+,
+value#!AngryAztec;Under the Vulture Cage
+ 
+nameUnder the Vulture Cage
+V*T
+.
+value%#AngryAztec;5 Door Temple's 6th Door
+"
+name5 Door Temple's 6th Door
+N*L
+*
+value!AngryAztec;Right of Tunnel Shop
+
+nameRight of Tunnel Shop
+V*T
+.
+value%#AngryAztec;Near Hunky Barrel - left
+"
+nameNear Hunky Barrel - left
+X*V
+/
+value&$AngryAztec;Near Hunky Barrel - right
+#
+nameNear Hunky Barrel - right
+R*P
+,
+value#!AngryAztec;Near Snake Road - left
+ 
+nameNear Snake Road - left
+T*R
+-
+value$"AngryAztec;Near Snake Road - right
+!
+nameNear Snake Road - right
+d*b
+5
+value,*AngryAztec;5 Door Temple Staircase - front
+)
+name!5 Door Temple Staircase - front
+b*`
+4
+value+)AngryAztec;5 Door Temple Staircase - back
+(
+name 5 Door Temple Staircase - back
+R*P
+,
+value#!AngryAztec;Across from Vases Room
+ 
+nameAcross from Vases Room
+b*`
+4
+value+)AngryAztec;First Tunnel - next to DK Door
+(
+name First Tunnel - next to DK Door
+X*V
+/
+value&$AngryAztec;First Tunnel - Near Oasis
+#
+nameFirst Tunnel - Near Oasis
+\*Z
+1
+value(&AngryAztec;Inside Quicksand Bonus Cave
+%
+nameInside Quicksand Bonus Cave
+`*^
+3
+value*(AngryAztec;Left of Quicksand Tunnel Shop
+'
+nameLeft of Quicksand Tunnel Shop
+f*d
+6
+value-+AngryAztec;Next to Tiny Temple - front left
+*
+name" Next to Tiny Temple - front left
+d*b
+5
+value,*AngryAztec;Next to Tiny Temple - back left
+)
+name!Next to Tiny Temple - back left
+h*f
+7
+value.,AngryAztec;Oasis - Next to Tunnel - far left
++
+name#!Oasis - Next to Tunnel - far left
+`*^
+3
+value*(AngryAztec;Oasis - Next to Tunnel - left
+'
+nameOasis - Next to Tunnel - left
+\*Z
+1
+value(&AngryAztec;Far Back Triple Stairs Wall
+%
+nameFar Back Triple Stairs Wall
+\*Z
+1
+value(&AngryAztec;Next to Llama Temple - left
+%
+nameNext to Llama Temple - left
+b*`
+4
+value+)AngryAztec;Tiny Temple - Main Room - left
+(
+name Tiny Temple - Main Room - left
+b*`
+4
+value+)AngryAztec;Tiny Temple - Main Room - back
+(
+name Tiny Temple - Main Room - back
+z*x
+@
+value75AngryAztec;Tiny Temple - Across from KONG Room - left
+4
+name,*Tiny Temple - Across from KONG Room - left
+|*z
+A
+value86AngryAztec;Tiny Temple - Across from KONG Room - right
+5
+name-+Tiny Temple - Across from KONG Room - right
+á*Ñ
+F
+value=;AngryAztec;Tiny Temple - Next to Opening to Underwater Room
+:
+name20Tiny Temple - Next to Opening to Underwater Room
+è*å
+J
+valueA?AngryAztec;Tiny Temple - Across from Opening to Underwater Room
+>
+name64Tiny Temple - Across from Opening to Underwater Room
+Z*X
+0
+value'%AngryAztec;Llama Temple Stairs - left
+$
+nameLlama Temple Stairs - left
+\*Z
+1
+value(&AngryAztec;Llama Temple Stairs - right
+%
+nameLlama Temple Stairs - right
+v*t
+>
+value53AngryAztec;Llama Temple - Entrance Staircase - left
+2
+name*(Llama Temple - Entrance Staircase - left
+x*v
+?
+value64AngryAztec;Llama Temple - Entrance Staircase - right
+3
+name+)Llama Temple - Entrance Staircase - right
+v*t
+>
+value53AngryAztec;Llama Temple - Across from the Spit Gate
+2
+name*(Llama Temple - Across from the Spit Gate
+N*L
+*
+value!AngryAztec;Tiny 5DT - Left side
+
+nameTiny 5DT - Left side
+d*b
+5
+value,*AngryAztec;Tiny 5DT - Second center tunnel
+)
+name!Tiny 5DT - Second center tunnel
+r*p
+<
+value31AngryAztec;Llama Temple - Down the stairs - right
+0
+name(&Llama Temple - Down the stairs - right
+p*n
+;
+value20AngryAztec;Llama Temple - Down the stairs - left
+/
+name'%Llama Temple - Down the stairs - left
+p*n
+;
+value20AngryAztec;Llama Temple - Near top stairs - left
+/
+name'%Llama Temple - Near top stairs - left
+r*p
+<
+value31AngryAztec;Llama Temple - Near top stairs - right
+0
+name(&Llama Temple - Near top stairs - right
+z*x
+@
+value75AngryAztec;Llama Temple - Center torch below entrance
+4
+name,*Llama Temple - Center torch below entrance
+j*h
+8
+value/-AngryAztec;Llama Temple - Next to mini tunnel
+,
+name$"Llama Temple - Next to mini tunnel
+Ä*~
+C
+value:8AngryAztec;Tiny Temple - Little alcove above mini barrel
+7
+name/-Tiny Temple - Little alcove above mini barrel
+j*h
+8
+value/-AngryAztec;Tiny Temple - Next to triangle pad
+,
+name$"Tiny Temple - Next to triangle pad
+n*l
+:
+value1/AngryAztec;Tiny Temple - Vulture room back wall
+.
+name&$Tiny Temple - Vulture room back wall
+j*h
+8
+value/-AngryAztec;Tiny Temple - Tiny room right wall
+,
+name$"Tiny Temple - Tiny room right wall
+j*h
+8
+value/-AngryAztec;Tiny Temple - Tiny room - on the K
+,
+name$"Tiny Temple - Tiny room - on the K
+P*N
++
+value" AngryAztec;Behind the llama cage
+
+nameBehind the llama cage
+d*b
+5
+value,*AngryAztec;Behind the start of beetle race
+)
+name!Behind the start of beetle race
+¡,
+chunky∂,2≥,
+X*V
+/
+value&$AngryAztec;Aztec Lobby - Pillar Wall
+#
+nameAztec Lobby - Pillar Wall
+X*V
+/
+value&$AngryAztec;Aztec Lobby - Lower Right
+#
+nameAztec Lobby - Lower Right
+^*\
+2
+value)'AngryAztec;Aztec Lobby - Left of Portal
+&
+nameAztec Lobby - Left of Portal
+`*^
+3
+value*(AngryAztec;Aztec Lobby - Right of Portal
+'
+nameAztec Lobby - Right of Portal
+T*R
+-
+value$"AngryAztec;Aztec Lobby - Back Room
+!
+nameAztec Lobby - Back Room
+b*`
+4
+value+)AngryAztec;Right of Quicksand Tunnel Shop
+(
+name Right of Quicksand Tunnel Shop
+L*J
+)
+value AngryAztec;Left of Tunnel Shop
+
+nameLeft of Tunnel Shop
+D*B
+%
+valueAngryAztec;Near Oasis Shop
+
+nameNear Oasis Shop
+R*P
+,
+value#!AngryAztec;Near Vulture Cage Shop
+ 
+nameNear Vulture Cage Shop
+:*8
+ 
+valueAngryAztec;Behind 5DT
+
+name
+Behind 5DT
+J*H
+(
+valueAngryAztec;Oasis Shop - right
+
+nameOasis Shop - right
+V*T
+.
+value%#AngryAztec;Gong Tower Stairs - left
+"
+nameGong Tower Stairs - left
+n*l
+:
+value1/AngryAztec;Next to Tag Barrel near Vulture Cage
+.
+name&$Next to Tag Barrel near Vulture Cage
+R*P
+,
+value#!AngryAztec;Under the Vulture Cage
+ 
+nameUnder the Vulture Cage
+V*T
+.
+value%#AngryAztec;5 Door Temple's 6th Door
+"
+name5 Door Temple's 6th Door
+N*L
+*
+value!AngryAztec;Right of Tunnel Shop
+
+nameRight of Tunnel Shop
+V*T
+.
+value%#AngryAztec;Near Hunky Barrel - left
+"
+nameNear Hunky Barrel - left
+X*V
+/
+value&$AngryAztec;Near Hunky Barrel - right
+#
+nameNear Hunky Barrel - right
+R*P
+,
+value#!AngryAztec;Near Snake Road - left
+ 
+nameNear Snake Road - left
+T*R
+-
+value$"AngryAztec;Near Snake Road - right
+!
+nameNear Snake Road - right
+d*b
+5
+value,*AngryAztec;5 Door Temple Staircase - front
+)
+name!5 Door Temple Staircase - front
+b*`
+4
+value+)AngryAztec;5 Door Temple Staircase - back
+(
+name 5 Door Temple Staircase - back
+R*P
+,
+value#!AngryAztec;Across from Vases Room
+ 
+nameAcross from Vases Room
+b*`
+4
+value+)AngryAztec;First Tunnel - next to DK Door
+(
+name First Tunnel - next to DK Door
+X*V
+/
+value&$AngryAztec;First Tunnel - Near Oasis
+#
+nameFirst Tunnel - Near Oasis
+\*Z
+1
+value(&AngryAztec;Inside Quicksand Bonus Cave
+%
+nameInside Quicksand Bonus Cave
+`*^
+3
+value*(AngryAztec;Left of Quicksand Tunnel Shop
+'
+nameLeft of Quicksand Tunnel Shop
+f*d
+6
+value-+AngryAztec;Next to Tiny Temple - front left
+*
+name" Next to Tiny Temple - front left
+d*b
+5
+value,*AngryAztec;Next to Tiny Temple - back left
+)
+name!Next to Tiny Temple - back left
+h*f
+7
+value.,AngryAztec;Oasis - Next to Tunnel - far left
++
+name#!Oasis - Next to Tunnel - far left
+`*^
+3
+value*(AngryAztec;Oasis - Next to Tunnel - left
+'
+nameOasis - Next to Tunnel - left
+\*Z
+1
+value(&AngryAztec;Far Back Triple Stairs Wall
+%
+nameFar Back Triple Stairs Wall
+\*Z
+1
+value(&AngryAztec;Next to Llama Temple - left
+%
+nameNext to Llama Temple - left
+b*`
+4
+value+)AngryAztec;Tiny Temple - Main Room - left
+(
+name Tiny Temple - Main Room - left
+b*`
+4
+value+)AngryAztec;Tiny Temple - Main Room - back
+(
+name Tiny Temple - Main Room - back
+z*x
+@
+value75AngryAztec;Tiny Temple - Across from KONG Room - left
+4
+name,*Tiny Temple - Across from KONG Room - left
+|*z
+A
+value86AngryAztec;Tiny Temple - Across from KONG Room - right
+5
+name-+Tiny Temple - Across from KONG Room - right
+á*Ñ
+F
+value=;AngryAztec;Tiny Temple - Next to Opening to Underwater Room
+:
+name20Tiny Temple - Next to Opening to Underwater Room
+è*å
+J
+valueA?AngryAztec;Tiny Temple - Across from Opening to Underwater Room
+>
+name64Tiny Temple - Across from Opening to Underwater Room
+Z*X
+0
+value'%AngryAztec;Llama Temple Stairs - left
+$
+nameLlama Temple Stairs - left
+\*Z
+1
+value(&AngryAztec;Llama Temple Stairs - right
+%
+nameLlama Temple Stairs - right
+v*t
+>
+value53AngryAztec;Llama Temple - Entrance Staircase - left
+2
+name*(Llama Temple - Entrance Staircase - left
+x*v
+?
+value64AngryAztec;Llama Temple - Entrance Staircase - right
+3
+name+)Llama Temple - Entrance Staircase - right
+v*t
+>
+value53AngryAztec;Llama Temple - Across from the Spit Gate
+2
+name*(Llama Temple - Across from the Spit Gate
+X*V
+/
+value&$AngryAztec;Chunky 5DT - Intersection
+#
+nameChunky 5DT - Intersection
+R*P
+,
+value#!AngryAztec;Chunky 5DT - Left side
+ 
+nameChunky 5DT - Left side
+r*p
+<
+value31AngryAztec;Llama Temple - Down the stairs - right
+0
+name(&Llama Temple - Down the stairs - right
+p*n
+;
+value20AngryAztec;Llama Temple - Down the stairs - left
+/
+name'%Llama Temple - Down the stairs - left
+p*n
+;
+value20AngryAztec;Llama Temple - Near top stairs - left
+/
+name'%Llama Temple - Near top stairs - left
+r*p
+<
+value31AngryAztec;Llama Temple - Near top stairs - right
+0
+name(&Llama Temple - Near top stairs - right
+z*x
+@
+value75AngryAztec;Llama Temple - Center torch below entrance
+4
+name,*Llama Temple - Center torch below entrance
+j*h
+8
+value/-AngryAztec;Llama Temple - Next to mini tunnel
+,
+name$"Llama Temple - Next to mini tunnel
+Ä*~
+C
+value:8AngryAztec;Tiny Temple - Little alcove above mini barrel
+7
+name/-Tiny Temple - Little alcove above mini barrel
+j*h
+8
+value/-AngryAztec;Tiny Temple - Next to triangle pad
+,
+name$"Tiny Temple - Next to triangle pad
+n*l
+:
+value1/AngryAztec;Tiny Temple - Vulture room back wall
+.
+name&$Tiny Temple - Vulture room back wall
+j*h
+8
+value/-AngryAztec;Tiny Temple - Tiny room right wall
+,
+name$"Tiny Temple - Tiny room right wall
+P*N
++
+value" AngryAztec;Behind the llama cage
+
+nameBehind the llama cage
+é.
+lankyÑ.2Å.
+X*V
+/
+value&$AngryAztec;Aztec Lobby - Pillar Wall
+#
+nameAztec Lobby - Pillar Wall
+X*V
+/
+value&$AngryAztec;Aztec Lobby - Lower Right
+#
+nameAztec Lobby - Lower Right
+^*\
+2
+value)'AngryAztec;Aztec Lobby - Left of Portal
+&
+nameAztec Lobby - Left of Portal
+`*^
+3
+value*(AngryAztec;Aztec Lobby - Right of Portal
+'
+nameAztec Lobby - Right of Portal
+T*R
+-
+value$"AngryAztec;Aztec Lobby - Back Room
+!
+nameAztec Lobby - Back Room
+b*`
+4
+value+)AngryAztec;Right of Quicksand Tunnel Shop
+(
+name Right of Quicksand Tunnel Shop
+L*J
+)
+value AngryAztec;Left of Tunnel Shop
+
+nameLeft of Tunnel Shop
+D*B
+%
+valueAngryAztec;Near Oasis Shop
+
+nameNear Oasis Shop
+R*P
+,
+value#!AngryAztec;Near Vulture Cage Shop
+ 
+nameNear Vulture Cage Shop
+:*8
+ 
+valueAngryAztec;Behind 5DT
+
+name
+Behind 5DT
+J*H
+(
+valueAngryAztec;Oasis Shop - right
+
+nameOasis Shop - right
+V*T
+.
+value%#AngryAztec;Gong Tower Stairs - left
+"
+nameGong Tower Stairs - left
+n*l
+:
+value1/AngryAztec;Next to Tag Barrel near Vulture Cage
+.
+name&$Next to Tag Barrel near Vulture Cage
+R*P
+,
+value#!AngryAztec;Under the Vulture Cage
+ 
+nameUnder the Vulture Cage
+V*T
+.
+value%#AngryAztec;5 Door Temple's 6th Door
+"
+name5 Door Temple's 6th Door
+N*L
+*
+value!AngryAztec;Right of Tunnel Shop
+
+nameRight of Tunnel Shop
+V*T
+.
+value%#AngryAztec;Near Hunky Barrel - left
+"
+nameNear Hunky Barrel - left
+X*V
+/
+value&$AngryAztec;Near Hunky Barrel - right
+#
+nameNear Hunky Barrel - right
+R*P
+,
+value#!AngryAztec;Near Snake Road - left
+ 
+nameNear Snake Road - left
+T*R
+-
+value$"AngryAztec;Near Snake Road - right
+!
+nameNear Snake Road - right
+d*b
+5
+value,*AngryAztec;5 Door Temple Staircase - front
+)
+name!5 Door Temple Staircase - front
+b*`
+4
+value+)AngryAztec;5 Door Temple Staircase - back
+(
+name 5 Door Temple Staircase - back
+R*P
+,
+value#!AngryAztec;Across from Vases Room
+ 
+nameAcross from Vases Room
+b*`
+4
+value+)AngryAztec;First Tunnel - next to DK Door
+(
+name First Tunnel - next to DK Door
+X*V
+/
+value&$AngryAztec;First Tunnel - Near Oasis
+#
+nameFirst Tunnel - Near Oasis
+\*Z
+1
+value(&AngryAztec;Inside Quicksand Bonus Cave
+%
+nameInside Quicksand Bonus Cave
+`*^
+3
+value*(AngryAztec;Left of Quicksand Tunnel Shop
+'
+nameLeft of Quicksand Tunnel Shop
+j*h
+8
+value/-AngryAztec;Llama Temple Matching Room - right
+,
+name$"Llama Temple Matching Room - right
+h*f
+7
+value.,AngryAztec;Llama Temple Matching Room - left
++
+name#!Llama Temple Matching Room - left
+f*d
+6
+value-+AngryAztec;Next to Tiny Temple - front left
+*
+name" Next to Tiny Temple - front left
+d*b
+5
+value,*AngryAztec;Next to Tiny Temple - back left
+)
+name!Next to Tiny Temple - back left
+h*f
+7
+value.,AngryAztec;Oasis - Next to Tunnel - far left
++
+name#!Oasis - Next to Tunnel - far left
+`*^
+3
+value*(AngryAztec;Oasis - Next to Tunnel - left
+'
+nameOasis - Next to Tunnel - left
+\*Z
+1
+value(&AngryAztec;Far Back Triple Stairs Wall
+%
+nameFar Back Triple Stairs Wall
+\*Z
+1
+value(&AngryAztec;Next to Llama Temple - left
+%
+nameNext to Llama Temple - left
+b*`
+4
+value+)AngryAztec;Tiny Temple - Main Room - left
+(
+name Tiny Temple - Main Room - left
+b*`
+4
+value+)AngryAztec;Tiny Temple - Main Room - back
+(
+name Tiny Temple - Main Room - back
+z*x
+@
+value75AngryAztec;Tiny Temple - Across from KONG Room - left
+4
+name,*Tiny Temple - Across from KONG Room - left
+|*z
+A
+value86AngryAztec;Tiny Temple - Across from KONG Room - right
+5
+name-+Tiny Temple - Across from KONG Room - right
+á*Ñ
+F
+value=;AngryAztec;Tiny Temple - Next to Opening to Underwater Room
+:
+name20Tiny Temple - Next to Opening to Underwater Room
+è*å
+J
+valueA?AngryAztec;Tiny Temple - Across from Opening to Underwater Room
+>
+name64Tiny Temple - Across from Opening to Underwater Room
+Z*X
+0
+value'%AngryAztec;Llama Temple Stairs - left
+$
+nameLlama Temple Stairs - left
+\*Z
+1
+value(&AngryAztec;Llama Temple Stairs - right
+%
+nameLlama Temple Stairs - right
+v*t
+>
+value53AngryAztec;Llama Temple - Entrance Staircase - left
+2
+name*(Llama Temple - Entrance Staircase - left
+x*v
+?
+value64AngryAztec;Llama Temple - Entrance Staircase - right
+3
+name+)Llama Temple - Entrance Staircase - right
+v*t
+>
+value53AngryAztec;Llama Temple - Across from the Spit Gate
+2
+name*(Llama Temple - Across from the Spit Gate
+P*N
++
+value" AngryAztec;Lanky 5DT - Left side
+
+nameLanky 5DT - Left side
+R*P
+,
+value#!AngryAztec;Lanky 5DT - Right side
+ 
+nameLanky 5DT - Right side
+r*p
+<
+value31AngryAztec;Llama Temple - Down the stairs - right
+0
+name(&Llama Temple - Down the stairs - right
+p*n
+;
+value20AngryAztec;Llama Temple - Down the stairs - left
+/
+name'%Llama Temple - Down the stairs - left
+p*n
+;
+value20AngryAztec;Llama Temple - Near top stairs - left
+/
+name'%Llama Temple - Near top stairs - left
+r*p
+<
+value31AngryAztec;Llama Temple - Near top stairs - right
+0
+name(&Llama Temple - Near top stairs - right
+z*x
+@
+value75AngryAztec;Llama Temple - Center torch below entrance
+4
+name,*Llama Temple - Center torch below entrance
+j*h
+8
+value/-AngryAztec;Llama Temple - Next to mini tunnel
+,
+name$"Llama Temple - Next to mini tunnel
+Ä*~
+C
+value:8AngryAztec;Tiny Temple - Little alcove above mini barrel
+7
+name/-Tiny Temple - Little alcove above mini barrel
+j*h
+8
+value/-AngryAztec;Tiny Temple - Next to triangle pad
+,
+name$"Tiny Temple - Next to triangle pad
+n*l
+:
+value1/AngryAztec;Tiny Temple - Vulture room back wall
+.
+name&$Tiny Temple - Vulture room back wall
+j*h
+8
+value/-AngryAztec;Tiny Temple - Tiny room right wall
+,
+name$"Tiny Temple - Tiny room right wall
+P*N
++
+value" AngryAztec;Behind the llama cage
+
+nameBehind the llama cage
+Ó.
+diddy‰.2·.
+X*V
+/
+value&$AngryAztec;Aztec Lobby - Pillar Wall
+#
+nameAztec Lobby - Pillar Wall
+X*V
+/
+value&$AngryAztec;Aztec Lobby - Lower Right
+#
+nameAztec Lobby - Lower Right
+^*\
+2
+value)'AngryAztec;Aztec Lobby - Left of Portal
+&
+nameAztec Lobby - Left of Portal
+`*^
+3
+value*(AngryAztec;Aztec Lobby - Right of Portal
+'
+nameAztec Lobby - Right of Portal
+T*R
+-
+value$"AngryAztec;Aztec Lobby - Back Room
+!
+nameAztec Lobby - Back Room
+b*`
+4
+value+)AngryAztec;Right of Quicksand Tunnel Shop
+(
+name Right of Quicksand Tunnel Shop
+L*J
+)
+value AngryAztec;Left of Tunnel Shop
+
+nameLeft of Tunnel Shop
+D*B
+%
+valueAngryAztec;Near Oasis Shop
+
+nameNear Oasis Shop
+R*P
+,
+value#!AngryAztec;Near Vulture Cage Shop
+ 
+nameNear Vulture Cage Shop
+:*8
+ 
+valueAngryAztec;Behind 5DT
+
+name
+Behind 5DT
+J*H
+(
+valueAngryAztec;Oasis Shop - right
+
+nameOasis Shop - right
+V*T
+.
+value%#AngryAztec;Gong Tower Stairs - left
+"
+nameGong Tower Stairs - left
+n*l
+:
+value1/AngryAztec;Next to Tag Barrel near Vulture Cage
+.
+name&$Next to Tag Barrel near Vulture Cage
+R*P
+,
+value#!AngryAztec;Under the Vulture Cage
+ 
+nameUnder the Vulture Cage
+V*T
+.
+value%#AngryAztec;5 Door Temple's 6th Door
+"
+name5 Door Temple's 6th Door
+N*L
+*
+value!AngryAztec;Right of Tunnel Shop
+
+nameRight of Tunnel Shop
+V*T
+.
+value%#AngryAztec;Near Hunky Barrel - left
+"
+nameNear Hunky Barrel - left
+X*V
+/
+value&$AngryAztec;Near Hunky Barrel - right
+#
+nameNear Hunky Barrel - right
+R*P
+,
+value#!AngryAztec;Near Snake Road - left
+ 
+nameNear Snake Road - left
+T*R
+-
+value$"AngryAztec;Near Snake Road - right
+!
+nameNear Snake Road - right
+d*b
+5
+value,*AngryAztec;5 Door Temple Staircase - front
+)
+name!5 Door Temple Staircase - front
+b*`
+4
+value+)AngryAztec;5 Door Temple Staircase - back
+(
+name 5 Door Temple Staircase - back
+R*P
+,
+value#!AngryAztec;Across from Vases Room
+ 
+nameAcross from Vases Room
+b*`
+4
+value+)AngryAztec;First Tunnel - next to DK Door
+(
+name First Tunnel - next to DK Door
+X*V
+/
+value&$AngryAztec;First Tunnel - Near Oasis
+#
+nameFirst Tunnel - Near Oasis
+\*Z
+1
+value(&AngryAztec;Inside Quicksand Bonus Cave
+%
+nameInside Quicksand Bonus Cave
+`*^
+3
+value*(AngryAztec;Left of Quicksand Tunnel Shop
+'
+nameLeft of Quicksand Tunnel Shop
+F*D
+&
+valueAngryAztec;Atop Tiny Temple
+
+nameAtop Tiny Temple
+f*d
+6
+value-+AngryAztec;Next to Tiny Temple - front left
+*
+name" Next to Tiny Temple - front left
+d*b
+5
+value,*AngryAztec;Next to Tiny Temple - back left
+)
+name!Next to Tiny Temple - back left
+h*f
+7
+value.,AngryAztec;Oasis - Next to Tunnel - far left
++
+name#!Oasis - Next to Tunnel - far left
+`*^
+3
+value*(AngryAztec;Oasis - Next to Tunnel - left
+'
+nameOasis - Next to Tunnel - left
+\*Z
+1
+value(&AngryAztec;Far Back Triple Stairs Wall
+%
+nameFar Back Triple Stairs Wall
+\*Z
+1
+value(&AngryAztec;Next to Llama Temple - left
+%
+nameNext to Llama Temple - left
+b*`
+4
+value+)AngryAztec;Tiny Temple - Main Room - left
+(
+name Tiny Temple - Main Room - left
+b*`
+4
+value+)AngryAztec;Tiny Temple - Main Room - back
+(
+name Tiny Temple - Main Room - back
+z*x
+@
+value75AngryAztec;Tiny Temple - Across from KONG Room - left
+4
+name,*Tiny Temple - Across from KONG Room - left
+|*z
+A
+value86AngryAztec;Tiny Temple - Across from KONG Room - right
+5
+name-+Tiny Temple - Across from KONG Room - right
+á*Ñ
+F
+value=;AngryAztec;Tiny Temple - Next to Opening to Underwater Room
+:
+name20Tiny Temple - Next to Opening to Underwater Room
+è*å
+J
+valueA?AngryAztec;Tiny Temple - Across from Opening to Underwater Room
+>
+name64Tiny Temple - Across from Opening to Underwater Room
+Z*X
+0
+value'%AngryAztec;Llama Temple Stairs - left
+$
+nameLlama Temple Stairs - left
+\*Z
+1
+value(&AngryAztec;Llama Temple Stairs - right
+%
+nameLlama Temple Stairs - right
+v*t
+>
+value53AngryAztec;Llama Temple - Entrance Staircase - left
+2
+name*(Llama Temple - Entrance Staircase - left
+x*v
+?
+value64AngryAztec;Llama Temple - Entrance Staircase - right
+3
+name+)Llama Temple - Entrance Staircase - right
+v*t
+>
+value53AngryAztec;Llama Temple - Across from the Spit Gate
+2
+name*(Llama Temple - Across from the Spit Gate
+d*b
+5
+value,*AngryAztec;Diddy 5DT - Second right branch
+)
+name!Diddy 5DT - Second right branch
+r*p
+<
+value31AngryAztec;Llama Temple - Down the stairs - right
+0
+name(&Llama Temple - Down the stairs - right
+p*n
+;
+value20AngryAztec;Llama Temple - Down the stairs - left
+/
+name'%Llama Temple - Down the stairs - left
+p*n
+;
+value20AngryAztec;Llama Temple - Near top stairs - left
+/
+name'%Llama Temple - Near top stairs - left
+r*p
+<
+value31AngryAztec;Llama Temple - Near top stairs - right
+0
+name(&Llama Temple - Near top stairs - right
+z*x
+@
+value75AngryAztec;Llama Temple - Center torch below entrance
+4
+name,*Llama Temple - Center torch below entrance
+j*h
+8
+value/-AngryAztec;Llama Temple - Next to mini tunnel
+,
+name$"Llama Temple - Next to mini tunnel
+l*j
+9
+value0.AngryAztec;Tiny Temple - Behind the guitar pad
+-
+name%#Tiny Temple - Behind the guitar pad
+Ä*~
+C
+value:8AngryAztec;Tiny Temple - Little alcove above mini barrel
+7
+name/-Tiny Temple - Little alcove above mini barrel
+j*h
+8
+value/-AngryAztec;Tiny Temple - Next to triangle pad
+,
+name$"Tiny Temple - Next to triangle pad
+n*l
+:
+value1/AngryAztec;Tiny Temple - Vulture room back wall
+.
+name&$Tiny Temple - Vulture room back wall
+j*h
+8
+value/-AngryAztec;Tiny Temple - Tiny room right wall
+,
+name$"Tiny Temple - Tiny room right wall
+j*h
+8
+value/-AngryAztec;Tiny Temple - Tiny room - on the K
+,
+name$"Tiny Temple - Tiny room - on the K
+P*N
++
+value" AngryAztec;Behind the llama cage
+
+nameBehind the llama cage
+R*P
+,
+value#!AngryAztec;On top of llama temple
+ 
+nameOn top of llama temple
 äá
 	DirtPatch˚Ü2˜Ü
 Y*W
@@ -2827,3866 +11873,10 @@ $
 value DKIsles;Prison: Under K. Lumsy
 ,
 name$"D.K. Isles: Prison: Under K. Lumsy
-‚º
-
-WrinklyDoor—º
-*Õº
-
-⁄ü
-FranticFactory∆ü*¬ü
-‹ 
-lanky“ 2œ 
-Z*X
-2
-value)'FranticFactory;Factory Lobby - Low Left
-"
-nameFactory Lobby - Low Left
-Z*X
-2
-value)'FranticFactory;Factory Lobby - Top Left
-"
-nameFactory Lobby - Top Left
-^*\
-4
-value+)FranticFactory;Factory Lobby - Top Center
-$
-nameFactory Lobby - Top Center
-\*Z
-3
-value*(FranticFactory;Factory Lobby - Top Right
-#
-nameFactory Lobby - Top Right
-\*Z
-3
-value*(FranticFactory;Factory Lobby - Low Right
-#
-nameFactory Lobby - Low Right
-@*>
-%
-valueFranticFactory;Arcade Room
-
-nameArcade Room
-H*F
-)
-value FranticFactory;Production Room
-
-nameProduction Room
-^*\
-4
-value+)FranticFactory;R&D across from Piano Game
-$
-nameR&D across from Piano Game
-@*>
-%
-valueFranticFactory;Block Tower
-
-nameBlock Tower
-B*@
-&
-valueFranticFactory;Storage Room
-
-nameStorage Room
-R*P
-.
-value%#FranticFactory;Next to Hatch - left
-
-nameNext to Hatch - left
-T*R
-/
-value&$FranticFactory;Next to Hatch - right
-
-nameNext to Hatch - right
-Z*X
-2
-value)'FranticFactory;Bottom of the Hatch Pole
-"
-nameBottom of the Hatch Pole
-l*j
-;
-value20FranticFactory;Production Room - Under Conveyors
-+
-name#!Production Room - Under Conveyors
-j*h
-:
-value1/FranticFactory;Storage Room - Behind Tag Barrel
-*
-name" Storage Room - Behind Tag Barrel
-X*V
-1
-value(&FranticFactory;Under Left Storage Shop
-!
-nameUnder Left Storage Shop
-Z*X
-2
-value)'FranticFactory;Under Right Storage Shop
-"
-nameUnder Right Storage Shop
-P*N
--
-value$"FranticFactory;Next to Number Game
-
-nameNext to Number Game
-Z*X
-2
-value)'FranticFactory;R&D across from Car Race
-"
-nameR&D across from Car Race
-j*h
-:
-value1/FranticFactory;R&D - Next to Tunnel to Car Race
-*
-name" R&D - Next to Tunnel to Car Race
-p*n
-=
-value42FranticFactory;Testing Area - Under Tunnel to Shop
--
-name%#Testing Area - Under Tunnel to Shop
-F*D
-(
-valueFranticFactory;R&D - Dead End
-
-nameR&D - Dead End
-Ö*Ç
-G
-value><FranticFactory;R&D - Blind Corner Next to Tunnel to Car Race
-7
-name/-R&D - Blind Corner Next to Tunnel to Car Race
-n*l
-<
-value31FranticFactory;Testing Area - Shop Room Left Wall
-,
-name$"Testing Area - Shop Room Left Wall
-Ä*~
-E
-value<:FranticFactory;Testing Area - Air Vent Under Arcade Window
-5
-name-+Testing Area - Air Vent Under Arcade Window
-|*z
-C
-value:8FranticFactory;Testing Area - Under Arcade Window - left
-3
-name+)Testing Area - Under Arcade Window - left
-j*h
-:
-value1/FranticFactory;Testing Area - Behind Tag Barrel
-*
-name" Testing Area - Behind Tag Barrel
-^*\
-4
-value+)FranticFactory;R&D - Next to Diddy's Room
-$
-nameR&D - Next to Diddy's Room
-l*j
-;
-value20FranticFactory;Storage Room - Next to Tag Barrel
-+
-name#!Storage Room - Next to Tag Barrel
-z*x
-B
-value97FranticFactory;Production Room - Next to Diddy's Switch
-2
-name*(Production Room - Next to Diddy's Switch
-V*T
-0
-value'%FranticFactory;Above Crusher Entrance
- 
-nameAbove Crusher Entrance
-R*P
-.
-value%#FranticFactory;Arcade Room - Corner
-
-nameArcade Room - Corner
-R*P
-.
-value%#FranticFactory;Under Arcade Shelves
-
-nameUnder Arcade Shelves
-n*l
-<
-value31FranticFactory;Testing Area - Next to Mini Barrel
-,
-name$"Testing Area - Next to Mini Barrel
-v*t
-@
-value75FranticFactory;Testing Area - Base of the Block Tower
-0
-name(&Testing Area - Base of the Block Tower
-D*B
-'
-valueFranticFactory;By Foyer Shop
-
-nameBy Foyer Shop
-P*N
--
-value$"FranticFactory;Foyer - Under Clock
-
-nameFoyer - Under Clock
-N*L
-,
-value#!FranticFactory;Foyer - front left
-
-nameFoyer - front left
-L*J
-+
-value" FranticFactory;Foyer - back left
-
-nameFoyer - back left
-P*N
--
-value$"FranticFactory;Foyer - front right
-
-nameFoyer - front right
-t*r
-?
-value64FranticFactory;Storage Room - Top of Orangstand Pipe
-/
-name'%Storage Room - Top of Orangstand Pipe
-Z*X
-2
-value)'FranticFactory;Lanky Piano Room - right
-"
-nameLanky Piano Room - right
-X*V
-1
-value(&FranticFactory;Lanky Piano Room - left
-!
-nameLanky Piano Room - left
-R*P
-.
-value%#FranticFactory;Crusher Room - start
-
-nameCrusher Room - start
-
-diddyÊ2„
-Z*X
-2
-value)'FranticFactory;Factory Lobby - Low Left
-"
-nameFactory Lobby - Low Left
-Z*X
-2
-value)'FranticFactory;Factory Lobby - Top Left
-"
-nameFactory Lobby - Top Left
-^*\
-4
-value+)FranticFactory;Factory Lobby - Top Center
-$
-nameFactory Lobby - Top Center
-\*Z
-3
-value*(FranticFactory;Factory Lobby - Top Right
-#
-nameFactory Lobby - Top Right
-\*Z
-3
-value*(FranticFactory;Factory Lobby - Low Right
-#
-nameFactory Lobby - Low Right
-@*>
-%
-valueFranticFactory;Arcade Room
-
-nameArcade Room
-H*F
-)
-value FranticFactory;Production Room
-
-nameProduction Room
-^*\
-4
-value+)FranticFactory;R&D across from Piano Game
-$
-nameR&D across from Piano Game
-@*>
-%
-valueFranticFactory;Block Tower
-
-nameBlock Tower
-B*@
-&
-valueFranticFactory;Storage Room
-
-nameStorage Room
-R*P
-.
-value%#FranticFactory;Next to Hatch - left
-
-nameNext to Hatch - left
-T*R
-/
-value&$FranticFactory;Next to Hatch - right
-
-nameNext to Hatch - right
-Z*X
-2
-value)'FranticFactory;Bottom of the Hatch Pole
-"
-nameBottom of the Hatch Pole
-l*j
-;
-value20FranticFactory;Production Room - Under Conveyors
-+
-name#!Production Room - Under Conveyors
-Z*X
-2
-value)'FranticFactory;Above Storage Spring Pad
-"
-nameAbove Storage Spring Pad
-j*h
-:
-value1/FranticFactory;Storage Room - Behind Tag Barrel
-*
-name" Storage Room - Behind Tag Barrel
-X*V
-1
-value(&FranticFactory;Under Left Storage Shop
-!
-nameUnder Left Storage Shop
-Z*X
-2
-value)'FranticFactory;Under Right Storage Shop
-"
-nameUnder Right Storage Shop
-P*N
--
-value$"FranticFactory;Next to Number Game
-
-nameNext to Number Game
-Z*X
-2
-value)'FranticFactory;R&D across from Car Race
-"
-nameR&D across from Car Race
-j*h
-:
-value1/FranticFactory;R&D - Next to Tunnel to Car Race
-*
-name" R&D - Next to Tunnel to Car Race
-p*n
-=
-value42FranticFactory;Testing Area - Under Tunnel to Shop
--
-name%#Testing Area - Under Tunnel to Shop
-F*D
-(
-valueFranticFactory;R&D - Dead End
-
-nameR&D - Dead End
-Ö*Ç
-G
-value><FranticFactory;R&D - Blind Corner Next to Tunnel to Car Race
-7
-name/-R&D - Blind Corner Next to Tunnel to Car Race
-n*l
-<
-value31FranticFactory;Testing Area - Shop Room Left Wall
-,
-name$"Testing Area - Shop Room Left Wall
-Ä*~
-E
-value<:FranticFactory;Testing Area - Air Vent Under Arcade Window
-5
-name-+Testing Area - Air Vent Under Arcade Window
-|*z
-C
-value:8FranticFactory;Testing Area - Under Arcade Window - left
-3
-name+)Testing Area - Under Arcade Window - left
-j*h
-:
-value1/FranticFactory;Testing Area - Behind Tag Barrel
-*
-name" Testing Area - Behind Tag Barrel
-^*\
-4
-value+)FranticFactory;R&D - Next to Diddy's Room
-$
-nameR&D - Next to Diddy's Room
-l*j
-;
-value20FranticFactory;Storage Room - Next to Tag Barrel
-+
-name#!Storage Room - Next to Tag Barrel
-z*x
-B
-value97FranticFactory;Production Room - Next to Diddy's Switch
-2
-name*(Production Room - Next to Diddy's Switch
-V*T
-0
-value'%FranticFactory;Above Crusher Entrance
- 
-nameAbove Crusher Entrance
-R*P
-.
-value%#FranticFactory;Arcade Room - Corner
-
-nameArcade Room - Corner
-R*P
-.
-value%#FranticFactory;Under Arcade Shelves
-
-nameUnder Arcade Shelves
-n*l
-<
-value31FranticFactory;Testing Area - Next to Mini Barrel
-,
-name$"Testing Area - Next to Mini Barrel
-v*t
-@
-value75FranticFactory;Testing Area - Base of the Block Tower
-0
-name(&Testing Area - Base of the Block Tower
-D*B
-'
-valueFranticFactory;By Foyer Shop
-
-nameBy Foyer Shop
-P*N
--
-value$"FranticFactory;Foyer - Under Clock
-
-nameFoyer - Under Clock
-N*L
-,
-value#!FranticFactory;Foyer - front left
-
-nameFoyer - front left
-L*J
-+
-value" FranticFactory;Foyer - back left
-
-nameFoyer - back left
-P*N
--
-value$"FranticFactory;Foyer - front right
-
-nameFoyer - front right
-b*`
-6
-value-+FranticFactory;Diddy R&D Room - front-right
-&
-nameDiddy R&D Room - front-right
-R*P
-.
-value%#FranticFactory;Crusher Room - start
-
-nameCrusher Room - start
-£ 
-tinyö 2ó 
-Z*X
-2
-value)'FranticFactory;Factory Lobby - Low Left
-"
-nameFactory Lobby - Low Left
-Z*X
-2
-value)'FranticFactory;Factory Lobby - Top Left
-"
-nameFactory Lobby - Top Left
-^*\
-4
-value+)FranticFactory;Factory Lobby - Top Center
-$
-nameFactory Lobby - Top Center
-\*Z
-3
-value*(FranticFactory;Factory Lobby - Top Right
-#
-nameFactory Lobby - Top Right
-\*Z
-3
-value*(FranticFactory;Factory Lobby - Low Right
-#
-nameFactory Lobby - Low Right
-@*>
-%
-valueFranticFactory;Arcade Room
-
-nameArcade Room
-H*F
-)
-value FranticFactory;Production Room
-
-nameProduction Room
-^*\
-4
-value+)FranticFactory;R&D across from Piano Game
-$
-nameR&D across from Piano Game
-@*>
-%
-valueFranticFactory;Block Tower
-
-nameBlock Tower
-B*@
-&
-valueFranticFactory;Storage Room
-
-nameStorage Room
-R*P
-.
-value%#FranticFactory;Next to Hatch - left
-
-nameNext to Hatch - left
-T*R
-/
-value&$FranticFactory;Next to Hatch - right
-
-nameNext to Hatch - right
-Z*X
-2
-value)'FranticFactory;Bottom of the Hatch Pole
-"
-nameBottom of the Hatch Pole
-l*j
-;
-value20FranticFactory;Production Room - Under Conveyors
-+
-name#!Production Room - Under Conveyors
-j*h
-:
-value1/FranticFactory;Storage Room - Behind Tag Barrel
-*
-name" Storage Room - Behind Tag Barrel
-X*V
-1
-value(&FranticFactory;Under Left Storage Shop
-!
-nameUnder Left Storage Shop
-Z*X
-2
-value)'FranticFactory;Under Right Storage Shop
-"
-nameUnder Right Storage Shop
-P*N
--
-value$"FranticFactory;Next to Number Game
-
-nameNext to Number Game
-Z*X
-2
-value)'FranticFactory;R&D across from Car Race
-"
-nameR&D across from Car Race
-j*h
-:
-value1/FranticFactory;R&D - Next to Tunnel to Car Race
-*
-name" R&D - Next to Tunnel to Car Race
-p*n
-=
-value42FranticFactory;Testing Area - Under Tunnel to Shop
--
-name%#Testing Area - Under Tunnel to Shop
-F*D
-(
-valueFranticFactory;R&D - Dead End
-
-nameR&D - Dead End
-Ö*Ç
-G
-value><FranticFactory;R&D - Blind Corner Next to Tunnel to Car Race
-7
-name/-R&D - Blind Corner Next to Tunnel to Car Race
-n*l
-<
-value31FranticFactory;Testing Area - Shop Room Left Wall
-,
-name$"Testing Area - Shop Room Left Wall
-Ä*~
-E
-value<:FranticFactory;Testing Area - Air Vent Under Arcade Window
-5
-name-+Testing Area - Air Vent Under Arcade Window
-|*z
-C
-value:8FranticFactory;Testing Area - Under Arcade Window - left
-3
-name+)Testing Area - Under Arcade Window - left
-j*h
-:
-value1/FranticFactory;Testing Area - Behind Tag Barrel
-*
-name" Testing Area - Behind Tag Barrel
-^*\
-4
-value+)FranticFactory;R&D - Next to Diddy's Room
-$
-nameR&D - Next to Diddy's Room
-b*`
-6
-value-+FranticFactory;R&D - Tiny's Race Entry Area
-&
-nameR&D - Tiny's Race Entry Area
-l*j
-;
-value20FranticFactory;Storage Room - Next to Tag Barrel
-+
-name#!Storage Room - Next to Tag Barrel
-ç*ä
-K
-valueB@FranticFactory;Production Room - in Alcove Next to Tiny's Barrel
-;
-name31Production Room - in Alcove Next to Tiny's Barrel
-z*x
-B
-value97FranticFactory;Production Room - Next to Diddy's Switch
-2
-name*(Production Room - Next to Diddy's Switch
-V*T
-0
-value'%FranticFactory;Above Crusher Entrance
- 
-nameAbove Crusher Entrance
-R*P
-.
-value%#FranticFactory;Arcade Room - Corner
-
-nameArcade Room - Corner
-R*P
-.
-value%#FranticFactory;Under Arcade Shelves
-
-nameUnder Arcade Shelves
-n*l
-<
-value31FranticFactory;Testing Area - Next to Mini Barrel
-,
-name$"Testing Area - Next to Mini Barrel
-v*t
-@
-value75FranticFactory;Testing Area - Base of the Block Tower
-0
-name(&Testing Area - Base of the Block Tower
-D*B
-'
-valueFranticFactory;By Foyer Shop
-
-nameBy Foyer Shop
-P*N
--
-value$"FranticFactory;Foyer - Under Clock
-
-nameFoyer - Under Clock
-N*L
-,
-value#!FranticFactory;Foyer - front left
-
-nameFoyer - front left
-L*J
-+
-value" FranticFactory;Foyer - back left
-
-nameFoyer - back left
-P*N
--
-value$"FranticFactory;Foyer - front right
-
-nameFoyer - front right
-R*P
-.
-value%#FranticFactory;Crusher Room - start
-
-nameCrusher Room - start
-˝
-donkeyÚ2Ô
-Z*X
-2
-value)'FranticFactory;Factory Lobby - Low Left
-"
-nameFactory Lobby - Low Left
-Z*X
-2
-value)'FranticFactory;Factory Lobby - Top Left
-"
-nameFactory Lobby - Top Left
-^*\
-4
-value+)FranticFactory;Factory Lobby - Top Center
-$
-nameFactory Lobby - Top Center
-\*Z
-3
-value*(FranticFactory;Factory Lobby - Top Right
-#
-nameFactory Lobby - Top Right
-\*Z
-3
-value*(FranticFactory;Factory Lobby - Low Right
-#
-nameFactory Lobby - Low Right
-@*>
-%
-valueFranticFactory;Arcade Room
-
-nameArcade Room
-H*F
-)
-value FranticFactory;Production Room
-
-nameProduction Room
-^*\
-4
-value+)FranticFactory;R&D across from Piano Game
-$
-nameR&D across from Piano Game
-@*>
-%
-valueFranticFactory;Block Tower
-
-nameBlock Tower
-B*@
-&
-valueFranticFactory;Storage Room
-
-nameStorage Room
-R*P
-.
-value%#FranticFactory;Next to Hatch - left
-
-nameNext to Hatch - left
-T*R
-/
-value&$FranticFactory;Next to Hatch - right
-
-nameNext to Hatch - right
-Z*X
-2
-value)'FranticFactory;Bottom of the Hatch Pole
-"
-nameBottom of the Hatch Pole
-l*j
-;
-value20FranticFactory;Production Room - Under Conveyors
-+
-name#!Production Room - Under Conveyors
-j*h
-:
-value1/FranticFactory;Storage Room - Behind Tag Barrel
-*
-name" Storage Room - Behind Tag Barrel
-X*V
-1
-value(&FranticFactory;Under Left Storage Shop
-!
-nameUnder Left Storage Shop
-Z*X
-2
-value)'FranticFactory;Under Right Storage Shop
-"
-nameUnder Right Storage Shop
-P*N
--
-value$"FranticFactory;Next to Number Game
-
-nameNext to Number Game
-Z*X
-2
-value)'FranticFactory;R&D across from Car Race
-"
-nameR&D across from Car Race
-j*h
-:
-value1/FranticFactory;R&D - Next to Tunnel to Car Race
-*
-name" R&D - Next to Tunnel to Car Race
-p*n
-=
-value42FranticFactory;Testing Area - Under Tunnel to Shop
--
-name%#Testing Area - Under Tunnel to Shop
-F*D
-(
-valueFranticFactory;R&D - Dead End
-
-nameR&D - Dead End
-Ö*Ç
-G
-value><FranticFactory;R&D - Blind Corner Next to Tunnel to Car Race
-7
-name/-R&D - Blind Corner Next to Tunnel to Car Race
-n*l
-<
-value31FranticFactory;Testing Area - Shop Room Left Wall
-,
-name$"Testing Area - Shop Room Left Wall
-Ä*~
-E
-value<:FranticFactory;Testing Area - Air Vent Under Arcade Window
-5
-name-+Testing Area - Air Vent Under Arcade Window
-|*z
-C
-value:8FranticFactory;Testing Area - Under Arcade Window - left
-3
-name+)Testing Area - Under Arcade Window - left
-j*h
-:
-value1/FranticFactory;Testing Area - Behind Tag Barrel
-*
-name" Testing Area - Behind Tag Barrel
-^*\
-4
-value+)FranticFactory;R&D - Next to Diddy's Room
-$
-nameR&D - Next to Diddy's Room
-l*j
-;
-value20FranticFactory;Storage Room - Next to Tag Barrel
-+
-name#!Storage Room - Next to Tag Barrel
-z*x
-B
-value97FranticFactory;Production Room - Next to Diddy's Switch
-2
-name*(Production Room - Next to Diddy's Switch
-V*T
-0
-value'%FranticFactory;Above Crusher Entrance
- 
-nameAbove Crusher Entrance
-R*P
-.
-value%#FranticFactory;Arcade Room - Corner
-
-nameArcade Room - Corner
-R*P
-.
-value%#FranticFactory;Under Arcade Shelves
-
-nameUnder Arcade Shelves
-n*l
-<
-value31FranticFactory;Testing Area - Next to Mini Barrel
-,
-name$"Testing Area - Next to Mini Barrel
-v*t
-@
-value75FranticFactory;Testing Area - Base of the Block Tower
-0
-name(&Testing Area - Base of the Block Tower
-D*B
-'
-valueFranticFactory;By Foyer Shop
-
-nameBy Foyer Shop
-P*N
--
-value$"FranticFactory;Foyer - Under Clock
-
-nameFoyer - Under Clock
-N*L
-,
-value#!FranticFactory;Foyer - front left
-
-nameFoyer - front left
-L*J
-+
-value" FranticFactory;Foyer - back left
-
-nameFoyer - back left
-P*N
--
-value$"FranticFactory;Foyer - front right
-
-nameFoyer - front right
-R*P
-.
-value%#FranticFactory;Crusher Room - start
-
-nameCrusher Room - start
-J*H
-*
-value!FranticFactory;In the power hut
-
-nameIn the power hut
-«
-chunkyº2π
-Z*X
-2
-value)'FranticFactory;Factory Lobby - Low Left
-"
-nameFactory Lobby - Low Left
-Z*X
-2
-value)'FranticFactory;Factory Lobby - Top Left
-"
-nameFactory Lobby - Top Left
-^*\
-4
-value+)FranticFactory;Factory Lobby - Top Center
-$
-nameFactory Lobby - Top Center
-\*Z
-3
-value*(FranticFactory;Factory Lobby - Top Right
-#
-nameFactory Lobby - Top Right
-\*Z
-3
-value*(FranticFactory;Factory Lobby - Low Right
-#
-nameFactory Lobby - Low Right
-@*>
-%
-valueFranticFactory;Arcade Room
-
-nameArcade Room
-H*F
-)
-value FranticFactory;Production Room
-
-nameProduction Room
-^*\
-4
-value+)FranticFactory;R&D across from Piano Game
-$
-nameR&D across from Piano Game
-@*>
-%
-valueFranticFactory;Block Tower
-
-nameBlock Tower
-B*@
-&
-valueFranticFactory;Storage Room
-
-nameStorage Room
-V*T
-0
-value'%FranticFactory;Behind Toy Monster Box
- 
-nameBehind Toy Monster Box
-R*P
-.
-value%#FranticFactory;Next to Hatch - left
-
-nameNext to Hatch - left
-T*R
-/
-value&$FranticFactory;Next to Hatch - right
-
-nameNext to Hatch - right
-Z*X
-2
-value)'FranticFactory;Bottom of the Hatch Pole
-"
-nameBottom of the Hatch Pole
-l*j
-;
-value20FranticFactory;Production Room - Under Conveyors
-+
-name#!Production Room - Under Conveyors
-j*h
-:
-value1/FranticFactory;Storage Room - Behind Tag Barrel
-*
-name" Storage Room - Behind Tag Barrel
-X*V
-1
-value(&FranticFactory;Under Left Storage Shop
-!
-nameUnder Left Storage Shop
-Z*X
-2
-value)'FranticFactory;Under Right Storage Shop
-"
-nameUnder Right Storage Shop
-P*N
--
-value$"FranticFactory;Next to Number Game
-
-nameNext to Number Game
-Z*X
-2
-value)'FranticFactory;R&D across from Car Race
-"
-nameR&D across from Car Race
-j*h
-:
-value1/FranticFactory;R&D - Next to Tunnel to Car Race
-*
-name" R&D - Next to Tunnel to Car Race
-p*n
-=
-value42FranticFactory;Testing Area - Under Tunnel to Shop
--
-name%#Testing Area - Under Tunnel to Shop
-F*D
-(
-valueFranticFactory;R&D - Dead End
-
-nameR&D - Dead End
-Ö*Ç
-G
-value><FranticFactory;R&D - Blind Corner Next to Tunnel to Car Race
-7
-name/-R&D - Blind Corner Next to Tunnel to Car Race
-n*l
-<
-value31FranticFactory;Testing Area - Shop Room Left Wall
-,
-name$"Testing Area - Shop Room Left Wall
-Ä*~
-E
-value<:FranticFactory;Testing Area - Air Vent Under Arcade Window
-5
-name-+Testing Area - Air Vent Under Arcade Window
-|*z
-C
-value:8FranticFactory;Testing Area - Under Arcade Window - left
-3
-name+)Testing Area - Under Arcade Window - left
-j*h
-:
-value1/FranticFactory;Testing Area - Behind Tag Barrel
-*
-name" Testing Area - Behind Tag Barrel
-^*\
-4
-value+)FranticFactory;R&D - Next to Diddy's Room
-$
-nameR&D - Next to Diddy's Room
-l*j
-;
-value20FranticFactory;Storage Room - Next to Tag Barrel
-+
-name#!Storage Room - Next to Tag Barrel
-z*x
-B
-value97FranticFactory;Production Room - Next to Diddy's Switch
-2
-name*(Production Room - Next to Diddy's Switch
-V*T
-0
-value'%FranticFactory;Above Crusher Entrance
- 
-nameAbove Crusher Entrance
-R*P
-.
-value%#FranticFactory;Arcade Room - Corner
-
-nameArcade Room - Corner
-R*P
-.
-value%#FranticFactory;Under Arcade Shelves
-
-nameUnder Arcade Shelves
-n*l
-<
-value31FranticFactory;Testing Area - Next to Mini Barrel
-,
-name$"Testing Area - Next to Mini Barrel
-v*t
-@
-value75FranticFactory;Testing Area - Base of the Block Tower
-0
-name(&Testing Area - Base of the Block Tower
-D*B
-'
-valueFranticFactory;By Foyer Shop
-
-nameBy Foyer Shop
-P*N
--
-value$"FranticFactory;Foyer - Under Clock
-
-nameFoyer - Under Clock
-N*L
-,
-value#!FranticFactory;Foyer - front left
-
-nameFoyer - front left
-L*J
-+
-value" FranticFactory;Foyer - back left
-
-nameFoyer - back left
-P*N
--
-value$"FranticFactory;Foyer - front right
-
-nameFoyer - front right
-<*:
-#
-valueFranticFactory;Dark Room
-
-name	Dark Room
-R*P
-.
-value%#FranticFactory;Crusher Room - start
-
-nameCrusher Room - start
-≥⁄
-CrystalCaves°⁄*ù⁄
-’,
-lankyÀ,2»,
-T*R
-.
-value%#CrystalCaves;Caves Lobby - Far Left
- 
-nameCaves Lobby - Far Left
-V*T
-/
-value&$CrystalCaves;Caves Lobby - Near Left
-!
-nameCaves Lobby - Near Left
-V*T
-/
-value&$CrystalCaves;Caves Lobby - Far Right
-!
-nameCaves Lobby - Far Right
-X*V
-0
-value'%CrystalCaves;Caves Lobby - Near Right
-"
-nameCaves Lobby - Near Right
-L*J
-*
-value!CrystalCaves;Ice Cave Near Shop
-
-nameIce Cave Near Shop
-L*J
-*
-value!CrystalCaves;Giant Boulder Room
-
-nameGiant Boulder Room
-D*B
-&
-valueCrystalCaves;On Lanky Cabin
-
-nameOn Lanky Cabin
-<*:
-"
-valueCrystalCaves;Near Igloo
-
-name
-Near Igloo
-N*L
-+
-value" CrystalCaves;Outside Lanky Cabin
-
-nameOutside Lanky Cabin
-P*N
-,
-value#!CrystalCaves;Outside Chunky Cabin
-
-nameOutside Chunky Cabin
-Z*X
-1
-value(&CrystalCaves;Outside Diddy Lower Cabin
-#
-nameOutside Diddy Lower Cabin
-Z*X
-1
-value(&CrystalCaves;Outside Diddy Upper Cabin
-#
-nameOutside Diddy Upper Cabin
-j*h
-9
-value0.CrystalCaves;Under the Waterfall (Cabins Area)
-+
-name#!Under the Waterfall (Cabins Area)
-P*N
-,
-value#!CrystalCaves;Cabins Useless Ledge
-
-nameCabins Useless Ledge
-\*Z
-2
-value)'CrystalCaves;Beneath Igloo triangle pad
-$
-nameBeneath Igloo triangle pad
-b*`
-5
-value,*CrystalCaves;Near the small Boulder Switch
-'
-nameNear the small Boulder Switch
-`*^
-4
-value+)CrystalCaves;Beneath Ice Castle - on land
-&
-nameBeneath Ice Castle - on land
-f*d
-7
-value.,CrystalCaves;Beneath Ice Castle - underwater
-)
-name!Beneath Ice Castle - underwater
-h*f
-8
-value/-CrystalCaves;Water under Blast pillar - right
-*
-name" Water under Blast pillar - right
-f*d
-7
-value.,CrystalCaves;Water under Blast pillar - left
-)
-name!Water under Blast pillar - left
-f*d
-7
-value.,CrystalCaves;Under Bridge to Shop near Igloo
-)
-name!Under Bridge to Shop near Igloo
-^*\
-3
-value*(CrystalCaves;Bottom of the Slope - right
-%
-nameBottom of the Slope - right
-J*H
-)
-value CrystalCaves;Mini Monkey Ledge
-
-nameMini Monkey Ledge
-P*N
-,
-value#!CrystalCaves;Across from Ice Shop
-
-nameAcross from Ice Shop
-V*T
-/
-value&$CrystalCaves;Left of Mini Bonus Cave
-!
-nameLeft of Mini Bonus Cave
-F*D
-'
-valueCrystalCaves;Mini Bonus Cave
-
-nameMini Bonus Cave
-T*R
-.
-value%#CrystalCaves;Level Entrance - right
- 
-nameLevel Entrance - right
-R*P
--
-value$"CrystalCaves;Level Entrance - left
-
-nameLevel Entrance - left
-b*`
-5
-value,*CrystalCaves;Igloo Area - left of entrance
-'
-nameIgloo Area - left of entrance
-r*p
-=
-value42CrystalCaves;Igloo Area - Behind Tag Barrel Island
-/
-name'%Igloo Area - Behind Tag Barrel Island
-j*h
-9
-value0.CrystalCaves;Igloo Area - Behind Lone Platform
-+
-name#!Igloo Area - Behind Lone Platform
-d*b
-6
-value-+CrystalCaves;Igloo Area - right of entrance
-(
-name Igloo Area - right of entrance
-j*h
-9
-value0.CrystalCaves;Water Under Shop Near Cabins Area
-+
-name#!Water Under Shop Near Cabins Area
-b*`
-5
-value,*CrystalCaves;Water Under Mini Monkey Ledge
-'
-nameWater Under Mini Monkey Ledge
-r*p
-=
-value42CrystalCaves;Water Under Mini-Rocket Bridge - left
-/
-name'%Water Under Mini-Rocket Bridge - left
-v*t
-?
-value64CrystalCaves;Water Under Mini-Rocket Bridge - center
-1
-name)'Water Under Mini-Rocket Bridge - center
-t*r
->
-value53CrystalCaves;Water Under Mini-Rocket Bridge - right
-0
-name(&Water Under Mini-Rocket Bridge - right
-V*T
-/
-value&$CrystalCaves;Tomato Game Room - left
-!
-nameTomato Game Room - left
-X*V
-0
-value'%CrystalCaves;Tomato Game Room - right
-"
-nameTomato Game Room - right
-d*b
-6
-value-+CrystalCaves;Cabin Area - Near Shop - right
-(
-name Cabin Area - Near Shop - right
-l*j
-:
-value1/CrystalCaves;Cabin Area - Near Shop - far right
-,
-name$"Cabin Area - Near Shop - far right
-L*J
-*
-value!CrystalCaves;Outside Tiny Cabin
-
-nameOutside Tiny Cabin
-R*P
--
-value$"CrystalCaves;Near Cabin Tag Barrel
-
-nameNear Cabin Tag Barrel
-\*Z
-2
-value)'CrystalCaves;Bottom of the Slope - left
-$
-nameBottom of the Slope - left
-v*t
-?
-value64CrystalCaves;Wall between Donkey cabin and waterfall
-1
-name)'Wall between Donkey cabin and waterfall
-h*f
-8
-value/-CrystalCaves;Donkey cabin - Right of entrance
-*
-name" Donkey cabin - Right of entrance
-X*V
-0
-value'%CrystalCaves;Donkey cabin - Back wall
-"
-nameDonkey cabin - Back wall
-r*p
-=
-value42CrystalCaves;Diddy upper cabin - Near right corner
-/
-name'%Diddy upper cabin - Near right corner
-p*n
-<
-value31CrystalCaves;Diddy upper cabin - Far right corner
-.
-name&$Diddy upper cabin - Far right corner
-l*j
-:
-value1/CrystalCaves;Diddy upper cabin - Back bookshelf
-,
-name$"Diddy upper cabin - Back bookshelf
-X*V
-0
-value'%CrystalCaves;Tiny cabin - Near corner
-"
-nameTiny cabin - Near corner
-V*T
-/
-value&$CrystalCaves;Tiny cabin - Far corner
-!
-nameTiny cabin - Far corner
-\*Z
-2
-value)'CrystalCaves;Chunky cabin - Near corner
-$
-nameChunky cabin - Near corner
-Z*X
-1
-value(&CrystalCaves;Chunky cabin - Back shelf
-#
-nameChunky cabin - Back shelf
-f*d
-7
-value.,CrystalCaves;Donkey igloo - Under the swords
-)
-name!Donkey igloo - Under the swords
-T*R
-.
-value%#CrystalCaves;Tiny igloo - Back wall
- 
-nameTiny igloo - Back wall
-\*Z
-2
-value)'CrystalCaves;Near ice castle tag barrel
-$
-nameNear ice castle tag barrel
-b*`
-5
-value,*CrystalCaves;Behind giant boulder ice wall
-'
-nameBehind giant boulder ice wall
-`*^
-4
-value+)CrystalCaves;Behind gorilla gone ice wall
-&
-nameBehind gorilla gone ice wall
-`*^
-4
-value+)CrystalCaves;Starting room of beetle race
-&
-nameStarting room of beetle race
-«,
-diddyΩ,2∫,
-T*R
-.
-value%#CrystalCaves;Caves Lobby - Far Left
- 
-nameCaves Lobby - Far Left
-V*T
-/
-value&$CrystalCaves;Caves Lobby - Top Ledge
-!
-nameCaves Lobby - Top Ledge
-V*T
-/
-value&$CrystalCaves;Caves Lobby - Near Left
-!
-nameCaves Lobby - Near Left
-V*T
-/
-value&$CrystalCaves;Caves Lobby - Far Right
-!
-nameCaves Lobby - Far Right
-X*V
-0
-value'%CrystalCaves;Caves Lobby - Near Right
-"
-nameCaves Lobby - Near Right
-J*H
-)
-value CrystalCaves;On Rotating Cabin
-
-nameOn Rotating Cabin
-L*J
-*
-value!CrystalCaves;Ice Cave Near Shop
-
-nameIce Cave Near Shop
-L*J
-*
-value!CrystalCaves;Giant Boulder Room
-
-nameGiant Boulder Room
-D*B
-&
-valueCrystalCaves;On Lanky Cabin
-
-nameOn Lanky Cabin
-<*:
-"
-valueCrystalCaves;Near Igloo
-
-name
-Near Igloo
-N*L
-+
-value" CrystalCaves;Outside Lanky Cabin
-
-nameOutside Lanky Cabin
-P*N
-,
-value#!CrystalCaves;Outside Chunky Cabin
-
-nameOutside Chunky Cabin
-Z*X
-1
-value(&CrystalCaves;Outside Diddy Lower Cabin
-#
-nameOutside Diddy Lower Cabin
-Z*X
-1
-value(&CrystalCaves;Outside Diddy Upper Cabin
-#
-nameOutside Diddy Upper Cabin
-j*h
-9
-value0.CrystalCaves;Under the Waterfall (Cabins Area)
-+
-name#!Under the Waterfall (Cabins Area)
-P*N
-,
-value#!CrystalCaves;Cabins Useless Ledge
-
-nameCabins Useless Ledge
-\*Z
-2
-value)'CrystalCaves;Beneath Igloo triangle pad
-$
-nameBeneath Igloo triangle pad
-b*`
-5
-value,*CrystalCaves;Near the small Boulder Switch
-'
-nameNear the small Boulder Switch
-`*^
-4
-value+)CrystalCaves;Beneath Ice Castle - on land
-&
-nameBeneath Ice Castle - on land
-f*d
-7
-value.,CrystalCaves;Beneath Ice Castle - underwater
-)
-name!Beneath Ice Castle - underwater
-h*f
-8
-value/-CrystalCaves;Water under Blast pillar - right
-*
-name" Water under Blast pillar - right
-f*d
-7
-value.,CrystalCaves;Water under Blast pillar - left
-)
-name!Water under Blast pillar - left
-f*d
-7
-value.,CrystalCaves;Under Bridge to Shop near Igloo
-)
-name!Under Bridge to Shop near Igloo
-^*\
-3
-value*(CrystalCaves;Bottom of the Slope - right
-%
-nameBottom of the Slope - right
-J*H
-)
-value CrystalCaves;Mini Monkey Ledge
-
-nameMini Monkey Ledge
-P*N
-,
-value#!CrystalCaves;Across from Ice Shop
-
-nameAcross from Ice Shop
-V*T
-/
-value&$CrystalCaves;Left of Mini Bonus Cave
-!
-nameLeft of Mini Bonus Cave
-F*D
-'
-valueCrystalCaves;Mini Bonus Cave
-
-nameMini Bonus Cave
-T*R
-.
-value%#CrystalCaves;Level Entrance - right
- 
-nameLevel Entrance - right
-R*P
--
-value$"CrystalCaves;Level Entrance - left
-
-nameLevel Entrance - left
-b*`
-5
-value,*CrystalCaves;Igloo Area - left of entrance
-'
-nameIgloo Area - left of entrance
-r*p
-=
-value42CrystalCaves;Igloo Area - Behind Tag Barrel Island
-/
-name'%Igloo Area - Behind Tag Barrel Island
-j*h
-9
-value0.CrystalCaves;Igloo Area - Behind Lone Platform
-+
-name#!Igloo Area - Behind Lone Platform
-d*b
-6
-value-+CrystalCaves;Igloo Area - right of entrance
-(
-name Igloo Area - right of entrance
-j*h
-9
-value0.CrystalCaves;Water Under Shop Near Cabins Area
-+
-name#!Water Under Shop Near Cabins Area
-b*`
-5
-value,*CrystalCaves;Water Under Mini Monkey Ledge
-'
-nameWater Under Mini Monkey Ledge
-r*p
-=
-value42CrystalCaves;Water Under Mini-Rocket Bridge - left
-/
-name'%Water Under Mini-Rocket Bridge - left
-v*t
-?
-value64CrystalCaves;Water Under Mini-Rocket Bridge - center
-1
-name)'Water Under Mini-Rocket Bridge - center
-t*r
->
-value53CrystalCaves;Water Under Mini-Rocket Bridge - right
-0
-name(&Water Under Mini-Rocket Bridge - right
-d*b
-6
-value-+CrystalCaves;Cabin Area - Near Shop - right
-(
-name Cabin Area - Near Shop - right
-l*j
-:
-value1/CrystalCaves;Cabin Area - Near Shop - far right
-,
-name$"Cabin Area - Near Shop - far right
-L*J
-*
-value!CrystalCaves;Outside Tiny Cabin
-
-nameOutside Tiny Cabin
-R*P
--
-value$"CrystalCaves;Near Cabin Tag Barrel
-
-nameNear Cabin Tag Barrel
-\*Z
-2
-value)'CrystalCaves;Bottom of the Slope - left
-$
-nameBottom of the Slope - left
-v*t
-?
-value64CrystalCaves;Wall between Donkey cabin and waterfall
-1
-name)'Wall between Donkey cabin and waterfall
-h*f
-8
-value/-CrystalCaves;Donkey cabin - Right of entrance
-*
-name" Donkey cabin - Right of entrance
-X*V
-0
-value'%CrystalCaves;Donkey cabin - Back wall
-"
-nameDonkey cabin - Back wall
-r*p
-=
-value42CrystalCaves;Diddy upper cabin - Near right corner
-/
-name'%Diddy upper cabin - Near right corner
-p*n
-<
-value31CrystalCaves;Diddy upper cabin - Far right corner
-.
-name&$Diddy upper cabin - Far right corner
-l*j
-:
-value1/CrystalCaves;Diddy upper cabin - Back bookshelf
-,
-name$"Diddy upper cabin - Back bookshelf
-X*V
-0
-value'%CrystalCaves;Tiny cabin - Near corner
-"
-nameTiny cabin - Near corner
-V*T
-/
-value&$CrystalCaves;Tiny cabin - Far corner
-!
-nameTiny cabin - Far corner
-\*Z
-2
-value)'CrystalCaves;Chunky cabin - Near corner
-$
-nameChunky cabin - Near corner
-Z*X
-1
-value(&CrystalCaves;Chunky cabin - Back shelf
-#
-nameChunky cabin - Back shelf
-f*d
-7
-value.,CrystalCaves;Donkey igloo - Under the swords
-)
-name!Donkey igloo - Under the swords
-T*R
-.
-value%#CrystalCaves;Tiny igloo - Back wall
- 
-nameTiny igloo - Back wall
-\*Z
-2
-value)'CrystalCaves;Near ice castle tag barrel
-$
-nameNear ice castle tag barrel
-b*`
-5
-value,*CrystalCaves;Behind giant boulder ice wall
-'
-nameBehind giant boulder ice wall
-`*^
-4
-value+)CrystalCaves;Behind gorilla gone ice wall
-&
-nameBehind gorilla gone ice wall
-`*^
-4
-value+)CrystalCaves;Starting room of beetle race
-&
-nameStarting room of beetle race
-‹*
-tiny”*2–*
-T*R
-.
-value%#CrystalCaves;Caves Lobby - Far Left
- 
-nameCaves Lobby - Far Left
-V*T
-/
-value&$CrystalCaves;Caves Lobby - Near Left
-!
-nameCaves Lobby - Near Left
-V*T
-/
-value&$CrystalCaves;Caves Lobby - Far Right
-!
-nameCaves Lobby - Far Right
-X*V
-0
-value'%CrystalCaves;Caves Lobby - Near Right
-"
-nameCaves Lobby - Near Right
-L*J
-*
-value!CrystalCaves;Ice Cave Near Shop
-
-nameIce Cave Near Shop
-L*J
-*
-value!CrystalCaves;Giant Boulder Room
-
-nameGiant Boulder Room
-<*:
-"
-valueCrystalCaves;Near Igloo
-
-name
-Near Igloo
-N*L
-+
-value" CrystalCaves;Outside Lanky Cabin
-
-nameOutside Lanky Cabin
-P*N
-,
-value#!CrystalCaves;Outside Chunky Cabin
-
-nameOutside Chunky Cabin
-Z*X
-1
-value(&CrystalCaves;Outside Diddy Lower Cabin
-#
-nameOutside Diddy Lower Cabin
-Z*X
-1
-value(&CrystalCaves;Outside Diddy Upper Cabin
-#
-nameOutside Diddy Upper Cabin
-j*h
-9
-value0.CrystalCaves;Under the Waterfall (Cabins Area)
-+
-name#!Under the Waterfall (Cabins Area)
-P*N
-,
-value#!CrystalCaves;Cabins Useless Ledge
-
-nameCabins Useless Ledge
-\*Z
-2
-value)'CrystalCaves;Beneath Igloo triangle pad
-$
-nameBeneath Igloo triangle pad
-b*`
-5
-value,*CrystalCaves;Near the small Boulder Switch
-'
-nameNear the small Boulder Switch
-`*^
-4
-value+)CrystalCaves;Beneath Ice Castle - on land
-&
-nameBeneath Ice Castle - on land
-f*d
-7
-value.,CrystalCaves;Beneath Ice Castle - underwater
-)
-name!Beneath Ice Castle - underwater
-h*f
-8
-value/-CrystalCaves;Water under Blast pillar - right
-*
-name" Water under Blast pillar - right
-f*d
-7
-value.,CrystalCaves;Water under Blast pillar - left
-)
-name!Water under Blast pillar - left
-f*d
-7
-value.,CrystalCaves;Under Bridge to Shop near Igloo
-)
-name!Under Bridge to Shop near Igloo
-^*\
-3
-value*(CrystalCaves;Bottom of the Slope - right
-%
-nameBottom of the Slope - right
-J*H
-)
-value CrystalCaves;Mini Monkey Ledge
-
-nameMini Monkey Ledge
-P*N
-,
-value#!CrystalCaves;Across from Ice Shop
-
-nameAcross from Ice Shop
-V*T
-/
-value&$CrystalCaves;Left of Mini Bonus Cave
-!
-nameLeft of Mini Bonus Cave
-F*D
-'
-valueCrystalCaves;Mini Bonus Cave
-
-nameMini Bonus Cave
-T*R
-.
-value%#CrystalCaves;Level Entrance - right
- 
-nameLevel Entrance - right
-R*P
--
-value$"CrystalCaves;Level Entrance - left
-
-nameLevel Entrance - left
-b*`
-5
-value,*CrystalCaves;Igloo Area - left of entrance
-'
-nameIgloo Area - left of entrance
-r*p
-=
-value42CrystalCaves;Igloo Area - Behind Tag Barrel Island
-/
-name'%Igloo Area - Behind Tag Barrel Island
-j*h
-9
-value0.CrystalCaves;Igloo Area - Behind Lone Platform
-+
-name#!Igloo Area - Behind Lone Platform
-d*b
-6
-value-+CrystalCaves;Igloo Area - right of entrance
-(
-name Igloo Area - right of entrance
-j*h
-9
-value0.CrystalCaves;Water Under Shop Near Cabins Area
-+
-name#!Water Under Shop Near Cabins Area
-b*`
-5
-value,*CrystalCaves;Water Under Mini Monkey Ledge
-'
-nameWater Under Mini Monkey Ledge
-r*p
-=
-value42CrystalCaves;Water Under Mini-Rocket Bridge - left
-/
-name'%Water Under Mini-Rocket Bridge - left
-v*t
-?
-value64CrystalCaves;Water Under Mini-Rocket Bridge - center
-1
-name)'Water Under Mini-Rocket Bridge - center
-t*r
->
-value53CrystalCaves;Water Under Mini-Rocket Bridge - right
-0
-name(&Water Under Mini-Rocket Bridge - right
-d*b
-6
-value-+CrystalCaves;Cabin Area - Near Shop - right
-(
-name Cabin Area - Near Shop - right
-l*j
-:
-value1/CrystalCaves;Cabin Area - Near Shop - far right
-,
-name$"Cabin Area - Near Shop - far right
-L*J
-*
-value!CrystalCaves;Outside Tiny Cabin
-
-nameOutside Tiny Cabin
-R*P
--
-value$"CrystalCaves;Near Cabin Tag Barrel
-
-nameNear Cabin Tag Barrel
-\*Z
-2
-value)'CrystalCaves;Bottom of the Slope - left
-$
-nameBottom of the Slope - left
-v*t
-?
-value64CrystalCaves;Wall between Donkey cabin and waterfall
-1
-name)'Wall between Donkey cabin and waterfall
-h*f
-8
-value/-CrystalCaves;Donkey cabin - Right of entrance
-*
-name" Donkey cabin - Right of entrance
-X*V
-0
-value'%CrystalCaves;Donkey cabin - Back wall
-"
-nameDonkey cabin - Back wall
-r*p
-=
-value42CrystalCaves;Diddy upper cabin - Near right corner
-/
-name'%Diddy upper cabin - Near right corner
-p*n
-<
-value31CrystalCaves;Diddy upper cabin - Far right corner
-.
-name&$Diddy upper cabin - Far right corner
-l*j
-:
-value1/CrystalCaves;Diddy upper cabin - Back bookshelf
-,
-name$"Diddy upper cabin - Back bookshelf
-X*V
-0
-value'%CrystalCaves;Tiny cabin - Near corner
-"
-nameTiny cabin - Near corner
-V*T
-/
-value&$CrystalCaves;Tiny cabin - Far corner
-!
-nameTiny cabin - Far corner
-\*Z
-2
-value)'CrystalCaves;Chunky cabin - Near corner
-$
-nameChunky cabin - Near corner
-Z*X
-1
-value(&CrystalCaves;Chunky cabin - Back shelf
-#
-nameChunky cabin - Back shelf
-f*d
-7
-value.,CrystalCaves;Donkey igloo - Under the swords
-)
-name!Donkey igloo - Under the swords
-T*R
-.
-value%#CrystalCaves;Tiny igloo - Back wall
- 
-nameTiny igloo - Back wall
-\*Z
-2
-value)'CrystalCaves;Near ice castle tag barrel
-$
-nameNear ice castle tag barrel
-b*`
-5
-value,*CrystalCaves;Behind giant boulder ice wall
-'
-nameBehind giant boulder ice wall
-`*^
-4
-value+)CrystalCaves;Behind gorilla gone ice wall
-&
-nameBehind gorilla gone ice wall
-`*^
-4
-value+)CrystalCaves;Starting room of beetle race
-&
-nameStarting room of beetle race
-ﬁ*
-donkey”*2–*
-T*R
-.
-value%#CrystalCaves;Caves Lobby - Far Left
- 
-nameCaves Lobby - Far Left
-V*T
-/
-value&$CrystalCaves;Caves Lobby - Near Left
-!
-nameCaves Lobby - Near Left
-V*T
-/
-value&$CrystalCaves;Caves Lobby - Far Right
-!
-nameCaves Lobby - Far Right
-X*V
-0
-value'%CrystalCaves;Caves Lobby - Near Right
-"
-nameCaves Lobby - Near Right
-L*J
-*
-value!CrystalCaves;Ice Cave Near Shop
-
-nameIce Cave Near Shop
-L*J
-*
-value!CrystalCaves;Giant Boulder Room
-
-nameGiant Boulder Room
-<*:
-"
-valueCrystalCaves;Near Igloo
-
-name
-Near Igloo
-N*L
-+
-value" CrystalCaves;Outside Lanky Cabin
-
-nameOutside Lanky Cabin
-P*N
-,
-value#!CrystalCaves;Outside Chunky Cabin
-
-nameOutside Chunky Cabin
-Z*X
-1
-value(&CrystalCaves;Outside Diddy Lower Cabin
-#
-nameOutside Diddy Lower Cabin
-Z*X
-1
-value(&CrystalCaves;Outside Diddy Upper Cabin
-#
-nameOutside Diddy Upper Cabin
-j*h
-9
-value0.CrystalCaves;Under the Waterfall (Cabins Area)
-+
-name#!Under the Waterfall (Cabins Area)
-P*N
-,
-value#!CrystalCaves;Cabins Useless Ledge
-
-nameCabins Useless Ledge
-\*Z
-2
-value)'CrystalCaves;Beneath Igloo triangle pad
-$
-nameBeneath Igloo triangle pad
-b*`
-5
-value,*CrystalCaves;Near the small Boulder Switch
-'
-nameNear the small Boulder Switch
-`*^
-4
-value+)CrystalCaves;Beneath Ice Castle - on land
-&
-nameBeneath Ice Castle - on land
-f*d
-7
-value.,CrystalCaves;Beneath Ice Castle - underwater
-)
-name!Beneath Ice Castle - underwater
-h*f
-8
-value/-CrystalCaves;Water under Blast pillar - right
-*
-name" Water under Blast pillar - right
-f*d
-7
-value.,CrystalCaves;Water under Blast pillar - left
-)
-name!Water under Blast pillar - left
-f*d
-7
-value.,CrystalCaves;Under Bridge to Shop near Igloo
-)
-name!Under Bridge to Shop near Igloo
-^*\
-3
-value*(CrystalCaves;Bottom of the Slope - right
-%
-nameBottom of the Slope - right
-J*H
-)
-value CrystalCaves;Mini Monkey Ledge
-
-nameMini Monkey Ledge
-P*N
-,
-value#!CrystalCaves;Across from Ice Shop
-
-nameAcross from Ice Shop
-V*T
-/
-value&$CrystalCaves;Left of Mini Bonus Cave
-!
-nameLeft of Mini Bonus Cave
-F*D
-'
-valueCrystalCaves;Mini Bonus Cave
-
-nameMini Bonus Cave
-T*R
-.
-value%#CrystalCaves;Level Entrance - right
- 
-nameLevel Entrance - right
-R*P
--
-value$"CrystalCaves;Level Entrance - left
-
-nameLevel Entrance - left
-b*`
-5
-value,*CrystalCaves;Igloo Area - left of entrance
-'
-nameIgloo Area - left of entrance
-r*p
-=
-value42CrystalCaves;Igloo Area - Behind Tag Barrel Island
-/
-name'%Igloo Area - Behind Tag Barrel Island
-j*h
-9
-value0.CrystalCaves;Igloo Area - Behind Lone Platform
-+
-name#!Igloo Area - Behind Lone Platform
-d*b
-6
-value-+CrystalCaves;Igloo Area - right of entrance
-(
-name Igloo Area - right of entrance
-j*h
-9
-value0.CrystalCaves;Water Under Shop Near Cabins Area
-+
-name#!Water Under Shop Near Cabins Area
-b*`
-5
-value,*CrystalCaves;Water Under Mini Monkey Ledge
-'
-nameWater Under Mini Monkey Ledge
-r*p
-=
-value42CrystalCaves;Water Under Mini-Rocket Bridge - left
-/
-name'%Water Under Mini-Rocket Bridge - left
-v*t
-?
-value64CrystalCaves;Water Under Mini-Rocket Bridge - center
-1
-name)'Water Under Mini-Rocket Bridge - center
-t*r
->
-value53CrystalCaves;Water Under Mini-Rocket Bridge - right
-0
-name(&Water Under Mini-Rocket Bridge - right
-d*b
-6
-value-+CrystalCaves;Cabin Area - Near Shop - right
-(
-name Cabin Area - Near Shop - right
-l*j
-:
-value1/CrystalCaves;Cabin Area - Near Shop - far right
-,
-name$"Cabin Area - Near Shop - far right
-L*J
-*
-value!CrystalCaves;Outside Tiny Cabin
-
-nameOutside Tiny Cabin
-R*P
--
-value$"CrystalCaves;Near Cabin Tag Barrel
-
-nameNear Cabin Tag Barrel
-\*Z
-2
-value)'CrystalCaves;Bottom of the Slope - left
-$
-nameBottom of the Slope - left
-v*t
-?
-value64CrystalCaves;Wall between Donkey cabin and waterfall
-1
-name)'Wall between Donkey cabin and waterfall
-h*f
-8
-value/-CrystalCaves;Donkey cabin - Right of entrance
-*
-name" Donkey cabin - Right of entrance
-X*V
-0
-value'%CrystalCaves;Donkey cabin - Back wall
-"
-nameDonkey cabin - Back wall
-r*p
-=
-value42CrystalCaves;Diddy upper cabin - Near right corner
-/
-name'%Diddy upper cabin - Near right corner
-p*n
-<
-value31CrystalCaves;Diddy upper cabin - Far right corner
-.
-name&$Diddy upper cabin - Far right corner
-l*j
-:
-value1/CrystalCaves;Diddy upper cabin - Back bookshelf
-,
-name$"Diddy upper cabin - Back bookshelf
-X*V
-0
-value'%CrystalCaves;Tiny cabin - Near corner
-"
-nameTiny cabin - Near corner
-V*T
-/
-value&$CrystalCaves;Tiny cabin - Far corner
-!
-nameTiny cabin - Far corner
-\*Z
-2
-value)'CrystalCaves;Chunky cabin - Near corner
-$
-nameChunky cabin - Near corner
-Z*X
-1
-value(&CrystalCaves;Chunky cabin - Back shelf
-#
-nameChunky cabin - Back shelf
-f*d
-7
-value.,CrystalCaves;Donkey igloo - Under the swords
-)
-name!Donkey igloo - Under the swords
-T*R
-.
-value%#CrystalCaves;Tiny igloo - Back wall
- 
-nameTiny igloo - Back wall
-\*Z
-2
-value)'CrystalCaves;Near ice castle tag barrel
-$
-nameNear ice castle tag barrel
-b*`
-5
-value,*CrystalCaves;Behind giant boulder ice wall
-'
-nameBehind giant boulder ice wall
-`*^
-4
-value+)CrystalCaves;Behind gorilla gone ice wall
-&
-nameBehind gorilla gone ice wall
-`*^
-4
-value+)CrystalCaves;Starting room of beetle race
-&
-nameStarting room of beetle race
-∏+
-chunky≠+2™+
-T*R
-.
-value%#CrystalCaves;Caves Lobby - Far Left
- 
-nameCaves Lobby - Far Left
-V*T
-/
-value&$CrystalCaves;Caves Lobby - Near Left
-!
-nameCaves Lobby - Near Left
-V*T
-/
-value&$CrystalCaves;Caves Lobby - Far Right
-!
-nameCaves Lobby - Far Right
-X*V
-0
-value'%CrystalCaves;Caves Lobby - Near Right
-"
-nameCaves Lobby - Near Right
-L*J
-*
-value!CrystalCaves;Ice Cave Near Shop
-
-nameIce Cave Near Shop
-L*J
-*
-value!CrystalCaves;Giant Boulder Room
-
-nameGiant Boulder Room
-<*:
-"
-valueCrystalCaves;Near Igloo
-
-name
-Near Igloo
-N*L
-+
-value" CrystalCaves;Outside Lanky Cabin
-
-nameOutside Lanky Cabin
-P*N
-,
-value#!CrystalCaves;Outside Chunky Cabin
-
-nameOutside Chunky Cabin
-Z*X
-1
-value(&CrystalCaves;Outside Diddy Lower Cabin
-#
-nameOutside Diddy Lower Cabin
-Z*X
-1
-value(&CrystalCaves;Outside Diddy Upper Cabin
-#
-nameOutside Diddy Upper Cabin
-j*h
-9
-value0.CrystalCaves;Under the Waterfall (Cabins Area)
-+
-name#!Under the Waterfall (Cabins Area)
-P*N
-,
-value#!CrystalCaves;Cabins Useless Ledge
-
-nameCabins Useless Ledge
-\*Z
-2
-value)'CrystalCaves;Beneath Igloo triangle pad
-$
-nameBeneath Igloo triangle pad
-b*`
-5
-value,*CrystalCaves;Near the small Boulder Switch
-'
-nameNear the small Boulder Switch
-`*^
-4
-value+)CrystalCaves;Beneath Ice Castle - on land
-&
-nameBeneath Ice Castle - on land
-f*d
-7
-value.,CrystalCaves;Beneath Ice Castle - underwater
-)
-name!Beneath Ice Castle - underwater
-h*f
-8
-value/-CrystalCaves;Water under Blast pillar - right
-*
-name" Water under Blast pillar - right
-f*d
-7
-value.,CrystalCaves;Water under Blast pillar - left
-)
-name!Water under Blast pillar - left
-f*d
-7
-value.,CrystalCaves;Under Bridge to Shop near Igloo
-)
-name!Under Bridge to Shop near Igloo
-^*\
-3
-value*(CrystalCaves;Bottom of the Slope - right
-%
-nameBottom of the Slope - right
-J*H
-)
-value CrystalCaves;Mini Monkey Ledge
-
-nameMini Monkey Ledge
-P*N
-,
-value#!CrystalCaves;Across from Ice Shop
-
-nameAcross from Ice Shop
-V*T
-/
-value&$CrystalCaves;Left of Mini Bonus Cave
-!
-nameLeft of Mini Bonus Cave
-F*D
-'
-valueCrystalCaves;Mini Bonus Cave
-
-nameMini Bonus Cave
-T*R
-.
-value%#CrystalCaves;Level Entrance - right
- 
-nameLevel Entrance - right
-R*P
--
-value$"CrystalCaves;Level Entrance - left
-
-nameLevel Entrance - left
-b*`
-5
-value,*CrystalCaves;Igloo Area - left of entrance
-'
-nameIgloo Area - left of entrance
-r*p
-=
-value42CrystalCaves;Igloo Area - Behind Tag Barrel Island
-/
-name'%Igloo Area - Behind Tag Barrel Island
-j*h
-9
-value0.CrystalCaves;Igloo Area - Behind Lone Platform
-+
-name#!Igloo Area - Behind Lone Platform
-d*b
-6
-value-+CrystalCaves;Igloo Area - right of entrance
-(
-name Igloo Area - right of entrance
-j*h
-9
-value0.CrystalCaves;Water Under Shop Near Cabins Area
-+
-name#!Water Under Shop Near Cabins Area
-b*`
-5
-value,*CrystalCaves;Water Under Mini Monkey Ledge
-'
-nameWater Under Mini Monkey Ledge
-r*p
-=
-value42CrystalCaves;Water Under Mini-Rocket Bridge - left
-/
-name'%Water Under Mini-Rocket Bridge - left
-v*t
-?
-value64CrystalCaves;Water Under Mini-Rocket Bridge - center
-1
-name)'Water Under Mini-Rocket Bridge - center
-t*r
->
-value53CrystalCaves;Water Under Mini-Rocket Bridge - right
-0
-name(&Water Under Mini-Rocket Bridge - right
-X*V
-0
-value'%CrystalCaves;Chunky Cabin - Bookshelf
-"
-nameChunky Cabin - Bookshelf
-d*b
-6
-value-+CrystalCaves;Cabin Area - Near Shop - right
-(
-name Cabin Area - Near Shop - right
-l*j
-:
-value1/CrystalCaves;Cabin Area - Near Shop - far right
-,
-name$"Cabin Area - Near Shop - far right
-L*J
-*
-value!CrystalCaves;Outside Tiny Cabin
-
-nameOutside Tiny Cabin
-R*P
--
-value$"CrystalCaves;Near Cabin Tag Barrel
-
-nameNear Cabin Tag Barrel
-\*Z
-2
-value)'CrystalCaves;Bottom of the Slope - left
-$
-nameBottom of the Slope - left
-v*t
-?
-value64CrystalCaves;Wall between Donkey cabin and waterfall
-1
-name)'Wall between Donkey cabin and waterfall
-h*f
-8
-value/-CrystalCaves;Donkey cabin - Right of entrance
-*
-name" Donkey cabin - Right of entrance
-X*V
-0
-value'%CrystalCaves;Donkey cabin - Back wall
-"
-nameDonkey cabin - Back wall
-r*p
-=
-value42CrystalCaves;Diddy upper cabin - Near right corner
-/
-name'%Diddy upper cabin - Near right corner
-p*n
-<
-value31CrystalCaves;Diddy upper cabin - Far right corner
-.
-name&$Diddy upper cabin - Far right corner
-l*j
-:
-value1/CrystalCaves;Diddy upper cabin - Back bookshelf
-,
-name$"Diddy upper cabin - Back bookshelf
-X*V
-0
-value'%CrystalCaves;Tiny cabin - Near corner
-"
-nameTiny cabin - Near corner
-V*T
-/
-value&$CrystalCaves;Tiny cabin - Far corner
-!
-nameTiny cabin - Far corner
-\*Z
-2
-value)'CrystalCaves;Chunky cabin - Near corner
-$
-nameChunky cabin - Near corner
-Z*X
-1
-value(&CrystalCaves;Chunky cabin - Back shelf
-#
-nameChunky cabin - Back shelf
-f*d
-7
-value.,CrystalCaves;Donkey igloo - Under the swords
-)
-name!Donkey igloo - Under the swords
-T*R
-.
-value%#CrystalCaves;Tiny igloo - Back wall
- 
-nameTiny igloo - Back wall
-\*Z
-2
-value)'CrystalCaves;Near ice castle tag barrel
-$
-nameNear ice castle tag barrel
-b*`
-5
-value,*CrystalCaves;Behind giant boulder ice wall
-'
-nameBehind giant boulder ice wall
-`*^
-4
-value+)CrystalCaves;Behind gorilla gone ice wall
-&
-nameBehind gorilla gone ice wall
-`*^
-4
-value+)CrystalCaves;Starting room of beetle race
-&
-nameStarting room of beetle race
-î»
-FungiForestÉ»*ˇ«
-Ò'
-lankyÁ'2‰'
-[*Y
-1
-value(&FungiForest;Forest Lobby - On High Box
-$
-nameForest Lobby - On High Box
-q*o
-<
-value31FungiForest;Forest Lobby - Near Gorilla Gone Door
-/
-name'%Forest Lobby - Near Gorilla Gone Door
-y*w
-@
-value75FungiForest;Forest Lobby - Opposite Gorilla Gone Door
-3
-name+)Forest Lobby - Opposite Gorilla Gone Door
-a*_
-4
-value+)FungiForest;Forest Lobby - Near B. Locker
-'
-nameForest Lobby - Near B. Locker
-_*]
-3
-value*(FungiForest;Forest Lobby - Near Entrance
-&
-nameForest Lobby - Near Entrance
-Q*O
-,
-value#!FungiForest;Behind Thornvine Barn
-
-nameBehind Thornvine Barn
-Q*O
-,
-value#!FungiForest;Beanstalk Area Alcove
-
-nameBeanstalk Area Alcove
-E*C
-&
-valueFungiForest;Near Mills Shop
-
-nameNear Mills Shop
-Q*O
-,
-value#!FungiForest;Top of Giant Mushroom
-
-nameTop of Giant Mushroom
-I*G
-(
-valueFungiForest;Owl Area Clearing
-
-nameOwl Area Clearing
-a*_
-4
-value+)FungiForest;On top of Mill Crusher Output
-'
-nameOn top of Mill Crusher Output
-U*S
-.
-value%#FungiForest;Mill front side - right
-!
-nameMill front side - right
-S*Q
--
-value$"FungiForest;Mill right side - left
- 
-nameMill right side - left
-U*S
-.
-value%#FungiForest;Mill right side - right
-!
-nameMill right side - right
-K*I
-)
-value FungiForest;Mill Roof - Sloped
-
-nameMill Roof - Sloped
-I*G
-(
-valueFungiForest;Mill Roof - tower
-
-nameMill Roof - tower
-a*_
-4
-value+)FungiForest;Boxes outside of Rafters Barn
-'
-nameBoxes outside of Rafters Barn
-]*[
-2
-value)'FungiForest;Behind Night Thorns - right
-%
-nameBehind Night Thorns - right
-[*Y
-1
-value(&FungiForest;Behind Night Thorns - left
-$
-nameBehind Night Thorns - left
-S*Q
--
-value$"FungiForest;Outside Thornvine Barn
- 
-nameOutside Thornvine Barn
-S*Q
--
-value$"FungiForest;Next to Rabbit's House
- 
-nameNext to Rabbit's House
-Ñ*Å
-E
-value<:FungiForest;Owl Area - Near Rocketbarrel Barrel - far left
-8
-name0.Owl Area - Near Rocketbarrel Barrel - far left
-a*_
-4
-value+)FungiForest;Beanstalk Area - Left of Shop
-'
-nameBeanstalk Area - Left of Shop
-u*s
->
-value53FungiForest;Beanstalk Area - Behind Beanstalk right
-1
-name)'Beanstalk Area - Behind Beanstalk right
-*}
-C
-value:8FungiForest;Mushroom Area - Next to Tag Barrel near Shop
-6
-name.,Mushroom Area - Next to Tag Barrel near Shop
-å*â
-I
-value@>FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - left
-<
-name42Mushroom Area - Next to Rocketbarrel Barrel - left
-é*ã
-J
-valueA?FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - right
-=
-name53Mushroom Area - Next to Rocketbarrel Barrel - right
-_*]
-3
-value*(FungiForest;Mushroom Area - Next to Shop
-&
-nameMushroom Area - Next to Shop
-S*Q
--
-value$"FungiForest;Behind Clocktower Tree
- 
-nameBehind Clocktower Tree
-m*k
-:
-value1/FungiForest;Center - Next to Pink Tunnel - left
--
-name%#Center - Next to Pink Tunnel - left
-o*m
-;
-value20FungiForest;Center - Next to Pink Tunnel - right
-.
-name&$Center - Next to Pink Tunnel - right
-O*M
-+
-value" FungiForest;Next to Clock - left
-
-nameNext to Clock - left
-Q*O
-,
-value#!FungiForest;Next to Clock - right
-
-nameNext to Clock - right
-s*q
-=
-value42FungiForest;Beanstalk Area - Behind Beanstalk left
-0
-name(&Beanstalk Area - Behind Beanstalk left
-i*g
-8
-value/-FungiForest;Beanstalk Area - Behind Beanstalk
-+
-name#!Beanstalk Area - Behind Beanstalk
-*}
-C
-value:8FungiForest;Giant Mushroom - All Kong Gun Switch - right
-6
-name.,Giant Mushroom - All Kong Gun Switch - right
-}*{
-B
-value97FungiForest;Giant Mushroom - All Kong Gun Switch - left
-5
-name-+Giant Mushroom - All Kong Gun Switch - left
-}*{
-B
-value97FungiForest;Giant Mushroom - halfway along the Dead End
-5
-name-+Giant Mushroom - halfway along the Dead End
-e*c
-6
-value-+FungiForest;Giant Mushroom - Vine Mesh Wall
-)
-name!Giant Mushroom - Vine Mesh Wall
-[*Y
-1
-value(&FungiForest;Lanky's Zinger Bounce Room
-$
-nameLanky's Zinger Bounce Room
-A*?
-$
-valueFungiForest;Lanky's Attic
-
-nameLanky's Attic
-o*m
-;
-value20FungiForest;Mill - front side - Next to entrance
-.
-name&$Mill - front side - Next to entrance
-c*a
-5
-value,*FungiForest;Mill - front side - In the hay
-(
-name Mill - front side - In the hay
-{*y
-A
-value86FungiForest;Mill - front side - Above the switch crate
-4
-name,*Mill - front side - Above the switch crate
-a*_
-4
-value+)FungiForest;Mill - back side - In the hay
-'
-nameMill - back side - In the hay
-Ñ*Å
-E
-value<:FungiForest;Mill - back side - Crates near spider entrance
-8
-name0.Mill - back side - Crates near spider entrance
-u*s
->
-value53FungiForest;Giant mushroom - Top towards tag barrel
-1
-name)'Giant mushroom - Top towards tag barrel
-m*k
-:
-value1/FungiForest;Top of Giant Mushroom Exterior Exit
--
-name%#Top of Giant Mushroom Exterior Exit
-c*a
-5
-value,*FungiForest;Lanky's colored mushrooms room
-(
-name Lanky's colored mushrooms room
-W*U
-/
-value&$FungiForest;DK's Barn - Second floor
-"
-nameDK's Barn - Second floor
-Ã(
-diddy¬(2ø(
-[*Y
-1
-value(&FungiForest;Forest Lobby - On High Box
-$
-nameForest Lobby - On High Box
-q*o
-<
-value31FungiForest;Forest Lobby - Near Gorilla Gone Door
-/
-name'%Forest Lobby - Near Gorilla Gone Door
-y*w
-@
-value75FungiForest;Forest Lobby - Opposite Gorilla Gone Door
-3
-name+)Forest Lobby - Opposite Gorilla Gone Door
-a*_
-4
-value+)FungiForest;Forest Lobby - Near B. Locker
-'
-nameForest Lobby - Near B. Locker
-_*]
-3
-value*(FungiForest;Forest Lobby - Near Entrance
-&
-nameForest Lobby - Near Entrance
-Q*O
-,
-value#!FungiForest;Behind Thornvine Barn
-
-nameBehind Thornvine Barn
-Q*O
-,
-value#!FungiForest;Beanstalk Area Alcove
-
-nameBeanstalk Area Alcove
-E*C
-&
-valueFungiForest;Near Mills Shop
-
-nameNear Mills Shop
-Q*O
-,
-value#!FungiForest;Top of Giant Mushroom
-
-nameTop of Giant Mushroom
-I*G
-(
-valueFungiForest;Owl Area Clearing
-
-nameOwl Area Clearing
-a*_
-4
-value+)FungiForest;On top of Mill Crusher Output
-'
-nameOn top of Mill Crusher Output
-U*S
-.
-value%#FungiForest;Mill front side - right
-!
-nameMill front side - right
-S*Q
--
-value$"FungiForest;Mill right side - left
- 
-nameMill right side - left
-U*S
-.
-value%#FungiForest;Mill right side - right
-!
-nameMill right side - right
-K*I
-)
-value FungiForest;Mill Roof - Sloped
-
-nameMill Roof - Sloped
-I*G
-(
-valueFungiForest;Mill Roof - tower
-
-nameMill Roof - tower
-a*_
-4
-value+)FungiForest;Boxes outside of Rafters Barn
-'
-nameBoxes outside of Rafters Barn
-]*[
-2
-value)'FungiForest;Behind Night Thorns - right
-%
-nameBehind Night Thorns - right
-[*Y
-1
-value(&FungiForest;Behind Night Thorns - left
-$
-nameBehind Night Thorns - left
-S*Q
--
-value$"FungiForest;Outside Thornvine Barn
- 
-nameOutside Thornvine Barn
-S*Q
--
-value$"FungiForest;Next to Rabbit's House
- 
-nameNext to Rabbit's House
-Ñ*Å
-E
-value<:FungiForest;Owl Area - Near Rocketbarrel Barrel - far left
-8
-name0.Owl Area - Near Rocketbarrel Barrel - far left
-a*_
-4
-value+)FungiForest;Beanstalk Area - Left of Shop
-'
-nameBeanstalk Area - Left of Shop
-u*s
->
-value53FungiForest;Beanstalk Area - Behind Beanstalk right
-1
-name)'Beanstalk Area - Behind Beanstalk right
-*}
-C
-value:8FungiForest;Mushroom Area - Next to Tag Barrel near Shop
-6
-name.,Mushroom Area - Next to Tag Barrel near Shop
-å*â
-I
-value@>FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - left
-<
-name42Mushroom Area - Next to Rocketbarrel Barrel - left
-é*ã
-J
-valueA?FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - right
-=
-name53Mushroom Area - Next to Rocketbarrel Barrel - right
-_*]
-3
-value*(FungiForest;Mushroom Area - Next to Shop
-&
-nameMushroom Area - Next to Shop
-S*Q
--
-value$"FungiForest;Behind Clocktower Tree
- 
-nameBehind Clocktower Tree
-m*k
-:
-value1/FungiForest;Center - Next to Pink Tunnel - left
--
-name%#Center - Next to Pink Tunnel - left
-o*m
-;
-value20FungiForest;Center - Next to Pink Tunnel - right
-.
-name&$Center - Next to Pink Tunnel - right
-O*M
-+
-value" FungiForest;Next to Clock - left
-
-nameNext to Clock - left
-Q*O
-,
-value#!FungiForest;Next to Clock - right
-
-nameNext to Clock - right
-s*q
-=
-value42FungiForest;Beanstalk Area - Behind Beanstalk left
-0
-name(&Beanstalk Area - Behind Beanstalk left
-i*g
-8
-value/-FungiForest;Beanstalk Area - Behind Beanstalk
-+
-name#!Beanstalk Area - Behind Beanstalk
-*}
-C
-value:8FungiForest;Giant Mushroom - All Kong Gun Switch - right
-6
-name.,Giant Mushroom - All Kong Gun Switch - right
-}*{
-B
-value97FungiForest;Giant Mushroom - All Kong Gun Switch - left
-5
-name-+Giant Mushroom - All Kong Gun Switch - left
-}*{
-B
-value97FungiForest;Giant Mushroom - halfway along the Dead End
-5
-name-+Giant Mushroom - halfway along the Dead End
-e*c
-6
-value-+FungiForest;Giant Mushroom - Vine Mesh Wall
-)
-name!Giant Mushroom - Vine Mesh Wall
-Y*W
-0
-value'%FungiForest;Winch Room - on the Winch
-#
-nameWinch Room - on the Winch
-A*?
-$
-valueFungiForest;Lanky's Attic
-
-nameLanky's Attic
-o*m
-;
-value20FungiForest;Mill - front side - Next to entrance
-.
-name&$Mill - front side - Next to entrance
-c*a
-5
-value,*FungiForest;Mill - front side - In the hay
-(
-name Mill - front side - In the hay
-{*y
-A
-value86FungiForest;Mill - front side - Above the switch crate
-4
-name,*Mill - front side - Above the switch crate
-a*_
-4
-value+)FungiForest;Mill - back side - In the hay
-'
-nameMill - back side - In the hay
-Ñ*Å
-E
-value<:FungiForest;Mill - back side - Crates near spider entrance
-8
-name0.Mill - back side - Crates near spider entrance
-u*s
->
-value53FungiForest;Giant mushroom - Top towards tag barrel
-1
-name)'Giant mushroom - Top towards tag barrel
-m*k
-:
-value1/FungiForest;Top of Giant Mushroom Exterior Exit
--
-name%#Top of Giant Mushroom Exterior Exit
-[*Y
-1
-value(&FungiForest;Night door in the owl tree
-$
-nameNight door in the owl tree
-c*a
-5
-value,*FungiForest;Lanky's colored mushrooms room
-(
-name Lanky's colored mushrooms room
-W*U
-/
-value&$FungiForest;DK's Barn - Second floor
-"
-nameDK's Barn - Second floor
-ü'
-tinyñ'2ì'
-[*Y
-1
-value(&FungiForest;Forest Lobby - On High Box
-$
-nameForest Lobby - On High Box
-q*o
-<
-value31FungiForest;Forest Lobby - Near Gorilla Gone Door
-/
-name'%Forest Lobby - Near Gorilla Gone Door
-y*w
-@
-value75FungiForest;Forest Lobby - Opposite Gorilla Gone Door
-3
-name+)Forest Lobby - Opposite Gorilla Gone Door
-a*_
-4
-value+)FungiForest;Forest Lobby - Near B. Locker
-'
-nameForest Lobby - Near B. Locker
-_*]
-3
-value*(FungiForest;Forest Lobby - Near Entrance
-&
-nameForest Lobby - Near Entrance
-Q*O
-,
-value#!FungiForest;Behind Thornvine Barn
-
-nameBehind Thornvine Barn
-Q*O
-,
-value#!FungiForest;Beanstalk Area Alcove
-
-nameBeanstalk Area Alcove
-E*C
-&
-valueFungiForest;Near Mills Shop
-
-nameNear Mills Shop
-Q*O
-,
-value#!FungiForest;Top of Giant Mushroom
-
-nameTop of Giant Mushroom
-I*G
-(
-valueFungiForest;Owl Area Clearing
-
-nameOwl Area Clearing
-a*_
-4
-value+)FungiForest;On top of Mill Crusher Output
-'
-nameOn top of Mill Crusher Output
-U*S
-.
-value%#FungiForest;Mill front side - right
-!
-nameMill front side - right
-S*Q
--
-value$"FungiForest;Mill right side - left
- 
-nameMill right side - left
-U*S
-.
-value%#FungiForest;Mill right side - right
-!
-nameMill right side - right
-K*I
-)
-value FungiForest;Mill Roof - Sloped
-
-nameMill Roof - Sloped
-I*G
-(
-valueFungiForest;Mill Roof - tower
-
-nameMill Roof - tower
-a*_
-4
-value+)FungiForest;Boxes outside of Rafters Barn
-'
-nameBoxes outside of Rafters Barn
-]*[
-2
-value)'FungiForest;Behind Night Thorns - right
-%
-nameBehind Night Thorns - right
-[*Y
-1
-value(&FungiForest;Behind Night Thorns - left
-$
-nameBehind Night Thorns - left
-S*Q
--
-value$"FungiForest;Outside Thornvine Barn
- 
-nameOutside Thornvine Barn
-S*Q
--
-value$"FungiForest;Next to Rabbit's House
- 
-nameNext to Rabbit's House
-Ñ*Å
-E
-value<:FungiForest;Owl Area - Near Rocketbarrel Barrel - far left
-8
-name0.Owl Area - Near Rocketbarrel Barrel - far left
-a*_
-4
-value+)FungiForest;Beanstalk Area - Left of Shop
-'
-nameBeanstalk Area - Left of Shop
-u*s
->
-value53FungiForest;Beanstalk Area - Behind Beanstalk right
-1
-name)'Beanstalk Area - Behind Beanstalk right
-*}
-C
-value:8FungiForest;Mushroom Area - Next to Tag Barrel near Shop
-6
-name.,Mushroom Area - Next to Tag Barrel near Shop
-å*â
-I
-value@>FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - left
-<
-name42Mushroom Area - Next to Rocketbarrel Barrel - left
-é*ã
-J
-valueA?FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - right
-=
-name53Mushroom Area - Next to Rocketbarrel Barrel - right
-_*]
-3
-value*(FungiForest;Mushroom Area - Next to Shop
-&
-nameMushroom Area - Next to Shop
-m*k
-:
-value1/FungiForest;Center - Next to Pink Tunnel - left
--
-name%#Center - Next to Pink Tunnel - left
-o*m
-;
-value20FungiForest;Center - Next to Pink Tunnel - right
-.
-name&$Center - Next to Pink Tunnel - right
-O*M
-+
-value" FungiForest;Next to Clock - left
-
-nameNext to Clock - left
-Q*O
-,
-value#!FungiForest;Next to Clock - right
-
-nameNext to Clock - right
-s*q
-=
-value42FungiForest;Beanstalk Area - Behind Beanstalk left
-0
-name(&Beanstalk Area - Behind Beanstalk left
-i*g
-8
-value/-FungiForest;Beanstalk Area - Behind Beanstalk
-+
-name#!Beanstalk Area - Behind Beanstalk
-*}
-C
-value:8FungiForest;Giant Mushroom - All Kong Gun Switch - right
-6
-name.,Giant Mushroom - All Kong Gun Switch - right
-}*{
-B
-value97FungiForest;Giant Mushroom - All Kong Gun Switch - left
-5
-name-+Giant Mushroom - All Kong Gun Switch - left
-}*{
-B
-value97FungiForest;Giant Mushroom - halfway along the Dead End
-5
-name-+Giant Mushroom - halfway along the Dead End
-e*c
-6
-value-+FungiForest;Giant Mushroom - Vine Mesh Wall
-)
-name!Giant Mushroom - Vine Mesh Wall
-_*]
-3
-value*(FungiForest;Mill - back side - Left Wall
-&
-nameMill - back side - Left Wall
-A*?
-$
-valueFungiForest;Lanky's Attic
-
-nameLanky's Attic
-o*m
-;
-value20FungiForest;Mill - front side - Next to entrance
-.
-name&$Mill - front side - Next to entrance
-c*a
-5
-value,*FungiForest;Mill - front side - In the hay
-(
-name Mill - front side - In the hay
-{*y
-A
-value86FungiForest;Mill - front side - Above the switch crate
-4
-name,*Mill - front side - Above the switch crate
-a*_
-4
-value+)FungiForest;Mill - back side - In the hay
-'
-nameMill - back side - In the hay
-Ñ*Å
-E
-value<:FungiForest;Mill - back side - Crates near spider entrance
-8
-name0.Mill - back side - Crates near spider entrance
-u*s
->
-value53FungiForest;Giant mushroom - Top towards tag barrel
-1
-name)'Giant mushroom - Top towards tag barrel
-m*k
-:
-value1/FungiForest;Top of Giant Mushroom Exterior Exit
--
-name%#Top of Giant Mushroom Exterior Exit
-c*a
-5
-value,*FungiForest;Lanky's colored mushrooms room
-(
-name Lanky's colored mushrooms room
-W*U
-/
-value&$FungiForest;DK's Barn - Second floor
-"
-nameDK's Barn - Second floor
-¢(
-donkeyó(2î(
-[*Y
-1
-value(&FungiForest;Forest Lobby - On High Box
-$
-nameForest Lobby - On High Box
-q*o
-<
-value31FungiForest;Forest Lobby - Near Gorilla Gone Door
-/
-name'%Forest Lobby - Near Gorilla Gone Door
-y*w
-@
-value75FungiForest;Forest Lobby - Opposite Gorilla Gone Door
-3
-name+)Forest Lobby - Opposite Gorilla Gone Door
-a*_
-4
-value+)FungiForest;Forest Lobby - Near B. Locker
-'
-nameForest Lobby - Near B. Locker
-_*]
-3
-value*(FungiForest;Forest Lobby - Near Entrance
-&
-nameForest Lobby - Near Entrance
-Q*O
-,
-value#!FungiForest;Behind Thornvine Barn
-
-nameBehind Thornvine Barn
-Q*O
-,
-value#!FungiForest;Beanstalk Area Alcove
-
-nameBeanstalk Area Alcove
-E*C
-&
-valueFungiForest;Near Mills Shop
-
-nameNear Mills Shop
-Q*O
-,
-value#!FungiForest;Top of Giant Mushroom
-
-nameTop of Giant Mushroom
-I*G
-(
-valueFungiForest;Owl Area Clearing
-
-nameOwl Area Clearing
-a*_
-4
-value+)FungiForest;On top of Mill Crusher Output
-'
-nameOn top of Mill Crusher Output
-U*S
-.
-value%#FungiForest;Mill front side - right
-!
-nameMill front side - right
-S*Q
--
-value$"FungiForest;Mill right side - left
- 
-nameMill right side - left
-U*S
-.
-value%#FungiForest;Mill right side - right
-!
-nameMill right side - right
-K*I
-)
-value FungiForest;Mill Roof - Sloped
-
-nameMill Roof - Sloped
-I*G
-(
-valueFungiForest;Mill Roof - tower
-
-nameMill Roof - tower
-a*_
-4
-value+)FungiForest;Boxes outside of Rafters Barn
-'
-nameBoxes outside of Rafters Barn
-]*[
-2
-value)'FungiForest;Behind Night Thorns - right
-%
-nameBehind Night Thorns - right
-[*Y
-1
-value(&FungiForest;Behind Night Thorns - left
-$
-nameBehind Night Thorns - left
-S*Q
--
-value$"FungiForest;Outside Thornvine Barn
- 
-nameOutside Thornvine Barn
-S*Q
--
-value$"FungiForest;Next to Rabbit's House
- 
-nameNext to Rabbit's House
-Ñ*Å
-E
-value<:FungiForest;Owl Area - Near Rocketbarrel Barrel - far left
-8
-name0.Owl Area - Near Rocketbarrel Barrel - far left
-a*_
-4
-value+)FungiForest;Beanstalk Area - Left of Shop
-'
-nameBeanstalk Area - Left of Shop
-u*s
->
-value53FungiForest;Beanstalk Area - Behind Beanstalk right
-1
-name)'Beanstalk Area - Behind Beanstalk right
-*}
-C
-value:8FungiForest;Mushroom Area - Next to Tag Barrel near Shop
-6
-name.,Mushroom Area - Next to Tag Barrel near Shop
-å*â
-I
-value@>FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - left
-<
-name42Mushroom Area - Next to Rocketbarrel Barrel - left
-é*ã
-J
-valueA?FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - right
-=
-name53Mushroom Area - Next to Rocketbarrel Barrel - right
-_*]
-3
-value*(FungiForest;Mushroom Area - Next to Shop
-&
-nameMushroom Area - Next to Shop
-m*k
-:
-value1/FungiForest;Center - Next to Pink Tunnel - left
--
-name%#Center - Next to Pink Tunnel - left
-o*m
-;
-value20FungiForest;Center - Next to Pink Tunnel - right
-.
-name&$Center - Next to Pink Tunnel - right
-O*M
-+
-value" FungiForest;Next to Clock - left
-
-nameNext to Clock - left
-Q*O
-,
-value#!FungiForest;Next to Clock - right
-
-nameNext to Clock - right
-s*q
-=
-value42FungiForest;Beanstalk Area - Behind Beanstalk left
-0
-name(&Beanstalk Area - Behind Beanstalk left
-i*g
-8
-value/-FungiForest;Beanstalk Area - Behind Beanstalk
-+
-name#!Beanstalk Area - Behind Beanstalk
-*}
-C
-value:8FungiForest;Giant Mushroom - All Kong Gun Switch - right
-6
-name.,Giant Mushroom - All Kong Gun Switch - right
-}*{
-B
-value97FungiForest;Giant Mushroom - All Kong Gun Switch - left
-5
-name-+Giant Mushroom - All Kong Gun Switch - left
-}*{
-B
-value97FungiForest;Giant Mushroom - halfway along the Dead End
-5
-name-+Giant Mushroom - halfway along the Dead End
-e*c
-6
-value-+FungiForest;Giant Mushroom - Vine Mesh Wall
-)
-name!Giant Mushroom - Vine Mesh Wall
-e*c
-6
-value-+FungiForest;Mill - front side - Levers Area
-)
-name!Mill - front side - Levers Area
-A*?
-$
-valueFungiForest;Lanky's Attic
-
-nameLanky's Attic
-y*w
-@
-value75FungiForest;DK's Barn - Between 2 Barrels near Switch
-3
-name+)DK's Barn - Between 2 Barrels near Switch
-o*m
-;
-value20FungiForest;Mill - front side - Next to entrance
-.
-name&$Mill - front side - Next to entrance
-c*a
-5
-value,*FungiForest;Mill - front side - In the hay
-(
-name Mill - front side - In the hay
-{*y
-A
-value86FungiForest;Mill - front side - Above the switch crate
-4
-name,*Mill - front side - Above the switch crate
-a*_
-4
-value+)FungiForest;Mill - back side - In the hay
-'
-nameMill - back side - In the hay
-Ñ*Å
-E
-value<:FungiForest;Mill - back side - Crates near spider entrance
-8
-name0.Mill - back side - Crates near spider entrance
-u*s
->
-value53FungiForest;Giant mushroom - Top towards tag barrel
-1
-name)'Giant mushroom - Top towards tag barrel
-m*k
-:
-value1/FungiForest;Top of Giant Mushroom Exterior Exit
--
-name%#Top of Giant Mushroom Exterior Exit
-c*a
-5
-value,*FungiForest;Lanky's colored mushrooms room
-(
-name Lanky's colored mushrooms room
-W*U
-/
-value&$FungiForest;DK's Barn - Second floor
-"
-nameDK's Barn - Second floor
-Ú'
-chunkyÁ'2‰'
-[*Y
-1
-value(&FungiForest;Forest Lobby - On High Box
-$
-nameForest Lobby - On High Box
-q*o
-<
-value31FungiForest;Forest Lobby - Near Gorilla Gone Door
-/
-name'%Forest Lobby - Near Gorilla Gone Door
-y*w
-@
-value75FungiForest;Forest Lobby - Opposite Gorilla Gone Door
-3
-name+)Forest Lobby - Opposite Gorilla Gone Door
-a*_
-4
-value+)FungiForest;Forest Lobby - Near B. Locker
-'
-nameForest Lobby - Near B. Locker
-_*]
-3
-value*(FungiForest;Forest Lobby - Near Entrance
-&
-nameForest Lobby - Near Entrance
-Q*O
-,
-value#!FungiForest;Behind Thornvine Barn
-
-nameBehind Thornvine Barn
-Q*O
-,
-value#!FungiForest;Beanstalk Area Alcove
-
-nameBeanstalk Area Alcove
-E*C
-&
-valueFungiForest;Near Mills Shop
-
-nameNear Mills Shop
-Q*O
-,
-value#!FungiForest;Top of Giant Mushroom
-
-nameTop of Giant Mushroom
-I*G
-(
-valueFungiForest;Owl Area Clearing
-
-nameOwl Area Clearing
-a*_
-4
-value+)FungiForest;On top of Mill Crusher Output
-'
-nameOn top of Mill Crusher Output
-U*S
-.
-value%#FungiForest;Mill front side - right
-!
-nameMill front side - right
-S*Q
--
-value$"FungiForest;Mill right side - left
- 
-nameMill right side - left
-U*S
-.
-value%#FungiForest;Mill right side - right
-!
-nameMill right side - right
-K*I
-)
-value FungiForest;Mill Roof - Sloped
-
-nameMill Roof - Sloped
-I*G
-(
-valueFungiForest;Mill Roof - tower
-
-nameMill Roof - tower
-a*_
-4
-value+)FungiForest;Boxes outside of Rafters Barn
-'
-nameBoxes outside of Rafters Barn
-]*[
-2
-value)'FungiForest;Behind Night Thorns - right
-%
-nameBehind Night Thorns - right
-[*Y
-1
-value(&FungiForest;Behind Night Thorns - left
-$
-nameBehind Night Thorns - left
-S*Q
--
-value$"FungiForest;Outside Thornvine Barn
- 
-nameOutside Thornvine Barn
-S*Q
--
-value$"FungiForest;Next to Rabbit's House
- 
-nameNext to Rabbit's House
-Ñ*Å
-E
-value<:FungiForest;Owl Area - Near Rocketbarrel Barrel - far left
-8
-name0.Owl Area - Near Rocketbarrel Barrel - far left
-a*_
-4
-value+)FungiForest;Beanstalk Area - Left of Shop
-'
-nameBeanstalk Area - Left of Shop
-u*s
->
-value53FungiForest;Beanstalk Area - Behind Beanstalk right
-1
-name)'Beanstalk Area - Behind Beanstalk right
-*}
-C
-value:8FungiForest;Mushroom Area - Next to Tag Barrel near Shop
-6
-name.,Mushroom Area - Next to Tag Barrel near Shop
-å*â
-I
-value@>FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - left
-<
-name42Mushroom Area - Next to Rocketbarrel Barrel - left
-é*ã
-J
-valueA?FungiForest;Mushroom Area - Next to Rocketbarrel Barrel - right
-=
-name53Mushroom Area - Next to Rocketbarrel Barrel - right
-_*]
-3
-value*(FungiForest;Mushroom Area - Next to Shop
-&
-nameMushroom Area - Next to Shop
-m*k
-:
-value1/FungiForest;Center - Next to Pink Tunnel - left
--
-name%#Center - Next to Pink Tunnel - left
-o*m
-;
-value20FungiForest;Center - Next to Pink Tunnel - right
-.
-name&$Center - Next to Pink Tunnel - right
-O*M
-+
-value" FungiForest;Next to Clock - left
-
-nameNext to Clock - left
-Q*O
-,
-value#!FungiForest;Next to Clock - right
-
-nameNext to Clock - right
-s*q
-=
-value42FungiForest;Beanstalk Area - Behind Beanstalk left
-0
-name(&Beanstalk Area - Behind Beanstalk left
-i*g
-8
-value/-FungiForest;Beanstalk Area - Behind Beanstalk
-+
-name#!Beanstalk Area - Behind Beanstalk
-*}
-C
-value:8FungiForest;Giant Mushroom - All Kong Gun Switch - right
-6
-name.,Giant Mushroom - All Kong Gun Switch - right
-}*{
-B
-value97FungiForest;Giant Mushroom - All Kong Gun Switch - left
-5
-name-+Giant Mushroom - All Kong Gun Switch - left
-}*{
-B
-value97FungiForest;Giant Mushroom - halfway along the Dead End
-5
-name-+Giant Mushroom - halfway along the Dead End
-e*c
-6
-value-+FungiForest;Giant Mushroom - Vine Mesh Wall
-)
-name!Giant Mushroom - Vine Mesh Wall
-O*M
-+
-value" FungiForest;Chunky's Face Puzzle
-
-nameChunky's Face Puzzle
-_*]
-3
-value*(FungiForest;Mill - back side - Left Wall
-&
-nameMill - back side - Left Wall
-A*?
-$
-valueFungiForest;Lanky's Attic
-
-nameLanky's Attic
-o*m
-;
-value20FungiForest;Mill - front side - Next to entrance
-.
-name&$Mill - front side - Next to entrance
-c*a
-5
-value,*FungiForest;Mill - front side - In the hay
-(
-name Mill - front side - In the hay
-{*y
-A
-value86FungiForest;Mill - front side - Above the switch crate
-4
-name,*Mill - front side - Above the switch crate
-a*_
-4
-value+)FungiForest;Mill - back side - In the hay
-'
-nameMill - back side - In the hay
-Ñ*Å
-E
-value<:FungiForest;Mill - back side - Crates near spider entrance
-8
-name0.Mill - back side - Crates near spider entrance
-u*s
->
-value53FungiForest;Giant mushroom - Top towards tag barrel
-1
-name)'Giant mushroom - Top towards tag barrel
-m*k
-:
-value1/FungiForest;Top of Giant Mushroom Exterior Exit
--
-name%#Top of Giant Mushroom Exterior Exit
-c*a
-5
-value,*FungiForest;Lanky's colored mushrooms room
-(
-name Lanky's colored mushrooms room
-W*U
-/
-value&$FungiForest;DK's Barn - Second floor
-"
-nameDK's Barn - Second floor
-ÈÕ
-CreepyCastle◊Õ*”Õ
-◊(
-lankyÕ(2 (
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (1)
-+
-name#!Castle Lobby - Central Pillar (1)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (2)
-+
-name#!Castle Lobby - Central Pillar (2)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (3)
-+
-name#!Castle Lobby - Central Pillar (3)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (4)
-+
-name#!Castle Lobby - Central Pillar (4)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (5)
-+
-name#!Castle Lobby - Central Pillar (5)
+ø¯
+	TnsPortal∞¯*¨¯
+Æ(
+CreepyCastleù(2ö(
 F*D
 '
 valueCreepyCastle;Near Greenhouse
@@ -6712,6 +11902,11 @@ P*N
 value#!CreepyCastle;Near Upper Cave Shop
 
 nameNear Upper Cave Shop
+H*F
+(
+valueCreepyCastle;Near Sewer Grate
+
+nameNear Sewer Grate
 P*N
 ,
 value#!CreepyCastle;Against the Big Tree
@@ -6727,21 +11922,6 @@ N*L
 value" CreepyCastle;Next to Middle Shop
 
 nameNext to Middle Shop
-\*Z
-2
-value)'CreepyCastle;Outside Lanky's Greenhouse
-$
-nameOutside Lanky's Greenhouse
-N*L
-+
-value" CreepyCastle;warp Hub Battlement
-
-namewarp Hub Battlement
-`*^
-4
-value+)CreepyCastle;On Stairs to Moat Tag Barrel
-&
-nameOn Stairs to Moat Tag Barrel
 T*R
 .
 value%#CreepyCastle;Between Moat and Cliff
@@ -6857,21 +12037,11 @@ d*b
 value-+CreepyCastle;Lower Cave - Crypt skull right
 (
 name Lower Cave - Crypt skull right
-d*b
-6
-value-+CreepyCastle;Mausoleum - Under Grape Switch
-(
-name Mausoleum - Under Grape Switch
 p*n
 <
 value31CreepyCastle;Lanky wind tower - Right of Entrance
 .
 name&$Lanky wind tower - Right of Entrance
-n*l
-;
-value20CreepyCastle;Lanky wind tower - Left of Entrance
--
-name%#Lanky wind tower - Left of Entrance
 R*P
 -
 value$"CreepyCastle;Greenhouse - Dead end
@@ -6882,550 +12052,21 @@ R*P
 value)'CreepyCastle;Greenhouse - Also dead end
 $
 nameGreenhouse - Also dead end
-X*V
-0
-value'%CreepyCastle;Near the crypt staircase
-"
-nameNear the crypt staircase
-P*N
-,
-value#!CreepyCastle;Behind the mausoleum
-
-nameBehind the mausoleum
-^*\
-3
-value*(CreepyCastle;Mausoleum - sprint corridor
-%
-nameMausoleum - sprint corridor
-P*N
-,
-value#!CreepyCastle;Dungeon - Lanky side
-
-nameDungeon - Lanky side
-P*N
-,
-value#!CreepyCastle;Dungeon - Diddy side
-
-nameDungeon - Diddy side
-J*H
-)
-value CreepyCastle;Dungeon - DK side
-
-nameDungeon - DK side
-`*^
-4
-value+)CreepyCastle;Upper Cave Shop Intersection
-&
-nameUpper Cave Shop Intersection
-P*N
-,
-value#!CreepyCastle;Next to dungeon door
-
-nameNext to dungeon door
-J*H
-)
-value CreepyCastle;Next to the chasm
-
-nameNext to the chasm
-T*R
-.
-value%#CreepyCastle;Lowest Level Tombstone
- 
-nameLowest Level Tombstone
-Z*X
-1
-value(&CreepyCastle;Tombstone near lower door
-#
-nameTombstone near lower door
-F*D
-'
-valueCreepyCastle;Behind the shed
-
-nameBehind the shed
-ü'
-diddyï'2í'
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (1)
-+
-name#!Castle Lobby - Central Pillar (1)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (2)
-+
-name#!Castle Lobby - Central Pillar (2)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (3)
-+
-name#!Castle Lobby - Central Pillar (3)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (4)
-+
-name#!Castle Lobby - Central Pillar (4)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (5)
-+
-name#!Castle Lobby - Central Pillar (5)
-F*D
-'
-valueCreepyCastle;Near Greenhouse
-
-nameNear Greenhouse
-R*P
--
-value$"CreepyCastle;Rocketbarrel Overhang
-
-nameRocketbarrel Overhang
-T*R
-.
-value%#CreepyCastle;Lowest ledge near tree
- 
-nameLowest ledge near tree
-P*N
-,
-value#!CreepyCastle;Near Lower Cave Shop
-
-nameNear Lower Cave Shop
-P*N
-,
-value#!CreepyCastle;Near Upper Cave Shop
-
-nameNear Upper Cave Shop
-P*N
-,
-value#!CreepyCastle;Against the Big Tree
-
-nameAgainst the Big Tree
-V*T
-/
-value&$CreepyCastle;Next to Moat Tag Barrel
-!
-nameNext to Moat Tag Barrel
-N*L
-+
-value" CreepyCastle;Next to Middle Shop
-
-nameNext to Middle Shop
-\*Z
-2
-value)'CreepyCastle;Outside Lanky's Greenhouse
-$
-nameOutside Lanky's Greenhouse
-N*L
-+
-value" CreepyCastle;warp Hub Battlement
-
-namewarp Hub Battlement
-`*^
-4
-value+)CreepyCastle;On Stairs to Moat Tag Barrel
-&
-nameOn Stairs to Moat Tag Barrel
-T*R
-.
-value%#CreepyCastle;Between Moat and Cliff
- 
-nameBetween Moat and Cliff
-\*Z
-2
-value)'CreepyCastle;Top Shop Battlement - left
-$
-nameTop Shop Battlement - left
-`*^
-4
-value+)CreepyCastle;Top Shop Battlement - center
-&
-nameTop Shop Battlement - center
-^*\
-3
-value*(CreepyCastle;Top Shop Battlement - right
-%
-nameTop Shop Battlement - right
-N*L
-+
-value" CreepyCastle;Outside Lanky Tower
-
-nameOutside Lanky Tower
-`*^
-4
-value+)CreepyCastle;Next to Stairs to Drawbridge
-&
-nameNext to Stairs to Drawbridge
-d*b
-6
-value-+CreepyCastle;Rocketbarrel Battlement - left
-(
-name Rocketbarrel Battlement - left
-f*d
-7
-value.,CreepyCastle;Rocketbarrel Battlement - right
-)
-name!Rocketbarrel Battlement - right
-f*d
-7
-value.,CreepyCastle;Moat Underwater by RocketBarrel
-)
-name!Moat Underwater by RocketBarrel
-R*P
--
-value$"CreepyCastle;Moat Under Drawbridge
-
-nameMoat Under Drawbridge
-X*V
-0
-value'%CreepyCastle;Next to Moat Door - left
-"
-nameNext to Moat Door - left
-Z*X
-1
-value(&CreepyCastle;Next to Moat Door - right
-#
-nameNext to Moat Door - right
-\*Z
-2
-value)'CreepyCastle;Moat Next to Ladder - left
-$
-nameMoat Next to Ladder - left
-^*\
-3
-value*(CreepyCastle;Moat Next to Ladder - right
-%
-nameMoat Next to Ladder - right
-J*H
-)
-value CreepyCastle;Tree - First Room
-
-nameTree - First Room
-b*`
-5
-value,*CreepyCastle;Ballroom - Left Candle - left
-'
-nameBallroom - Left Candle - left
-d*b
-6
-value-+CreepyCastle;Ballroom - Left Candle - right
-(
-name Ballroom - Left Candle - right
-b*`
-5
-value,*CreepyCastle;Ballroom - Back Candle - left
-'
-nameBallroom - Back Candle - left
-d*b
-6
-value-+CreepyCastle;Ballroom - Back Candle - right
-(
-name Ballroom - Back Candle - right
-d*b
-6
-value-+CreepyCastle;Ballroom - Right Candle - left
-(
-name Ballroom - Right Candle - left
-f*d
-7
-value.,CreepyCastle;Ballroom - Right Candle - right
-)
-name!Ballroom - Right Candle - right
-b*`
-5
-value,*CreepyCastle;Lower Cave - Crypt skull left
-'
-nameLower Cave - Crypt skull left
-d*b
-6
-value-+CreepyCastle;Lower Cave - Crypt skull right
-(
-name Lower Cave - Crypt skull right
 r*p
 =
 value42CreepyCastle;Ballroom - In Front of Monkeyport Pad
 /
 name'%Ballroom - In Front of Monkeyport Pad
-f*d
-7
-value.,CreepyCastle;Diddy crypt - right of the tomb
-)
-name!Diddy crypt - right of the tomb
-d*b
-6
-value-+CreepyCastle;Diddy crypt - left of the tomb
-(
-name Diddy crypt - left of the tomb
-^*\
-3
-value*(CreepyCastle;Crypt - Second intersection
-%
-nameCrypt - Second intersection
-X*V
-0
-value'%CreepyCastle;Near the crypt staircase
-"
-nameNear the crypt staircase
-P*N
-,
-value#!CreepyCastle;Behind the mausoleum
-
-nameBehind the mausoleum
-P*N
-,
-value#!CreepyCastle;Dungeon - Lanky side
-
-nameDungeon - Lanky side
-P*N
-,
-value#!CreepyCastle;Dungeon - Diddy side
-
-nameDungeon - Diddy side
-J*H
-)
-value CreepyCastle;Dungeon - DK side
-
-nameDungeon - DK side
-`*^
-4
-value+)CreepyCastle;Upper Cave Shop Intersection
-&
-nameUpper Cave Shop Intersection
-P*N
-,
-value#!CreepyCastle;Next to dungeon door
-
-nameNext to dungeon door
-J*H
-)
-value CreepyCastle;Next to the chasm
-
-nameNext to the chasm
 T*R
 .
-value%#CreepyCastle;Lowest Level Tombstone
+value%#CreepyCastle;Museum - Far Left Side
  
-nameLowest Level Tombstone
-Z*X
-1
-value(&CreepyCastle;Tombstone near lower door
-#
-nameTombstone near lower door
-F*D
-'
-valueCreepyCastle;Behind the shed
-
-nameBehind the shed
-Ê(
-tiny›(2⁄(
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (1)
-+
-name#!Castle Lobby - Central Pillar (1)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (2)
-+
-name#!Castle Lobby - Central Pillar (2)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (3)
-+
-name#!Castle Lobby - Central Pillar (3)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (4)
-+
-name#!Castle Lobby - Central Pillar (4)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (5)
-+
-name#!Castle Lobby - Central Pillar (5)
-F*D
-'
-valueCreepyCastle;Near Greenhouse
-
-nameNear Greenhouse
-R*P
--
-value$"CreepyCastle;Rocketbarrel Overhang
-
-nameRocketbarrel Overhang
-T*R
-.
-value%#CreepyCastle;Lowest ledge near tree
- 
-nameLowest ledge near tree
-P*N
-,
-value#!CreepyCastle;Near Lower Cave Shop
-
-nameNear Lower Cave Shop
-P*N
-,
-value#!CreepyCastle;Near Upper Cave Shop
-
-nameNear Upper Cave Shop
-P*N
-,
-value#!CreepyCastle;Against the Big Tree
-
-nameAgainst the Big Tree
+nameMuseum - Far Left Side
 V*T
 /
-value&$CreepyCastle;Next to Moat Tag Barrel
+value&$CreepyCastle;Museum - Far Right Side
 !
-nameNext to Moat Tag Barrel
-N*L
-+
-value" CreepyCastle;Next to Middle Shop
-
-nameNext to Middle Shop
-\*Z
-2
-value)'CreepyCastle;Outside Lanky's Greenhouse
-$
-nameOutside Lanky's Greenhouse
-N*L
-+
-value" CreepyCastle;warp Hub Battlement
-
-namewarp Hub Battlement
-`*^
-4
-value+)CreepyCastle;On Stairs to Moat Tag Barrel
-&
-nameOn Stairs to Moat Tag Barrel
-T*R
-.
-value%#CreepyCastle;Between Moat and Cliff
- 
-nameBetween Moat and Cliff
-\*Z
-2
-value)'CreepyCastle;Top Shop Battlement - left
-$
-nameTop Shop Battlement - left
-`*^
-4
-value+)CreepyCastle;Top Shop Battlement - center
-&
-nameTop Shop Battlement - center
-^*\
-3
-value*(CreepyCastle;Top Shop Battlement - right
-%
-nameTop Shop Battlement - right
-N*L
-+
-value" CreepyCastle;Outside Lanky Tower
-
-nameOutside Lanky Tower
-`*^
-4
-value+)CreepyCastle;Next to Stairs to Drawbridge
-&
-nameNext to Stairs to Drawbridge
-d*b
-6
-value-+CreepyCastle;Rocketbarrel Battlement - left
-(
-name Rocketbarrel Battlement - left
-f*d
-7
-value.,CreepyCastle;Rocketbarrel Battlement - right
-)
-name!Rocketbarrel Battlement - right
-f*d
-7
-value.,CreepyCastle;Moat Underwater by RocketBarrel
-)
-name!Moat Underwater by RocketBarrel
-R*P
--
-value$"CreepyCastle;Moat Under Drawbridge
-
-nameMoat Under Drawbridge
-X*V
-0
-value'%CreepyCastle;Next to Moat Door - left
-"
-nameNext to Moat Door - left
-Z*X
-1
-value(&CreepyCastle;Next to Moat Door - right
-#
-nameNext to Moat Door - right
-\*Z
-2
-value)'CreepyCastle;Moat Next to Ladder - left
-$
-nameMoat Next to Ladder - left
-^*\
-3
-value*(CreepyCastle;Moat Next to Ladder - right
-%
-nameMoat Next to Ladder - right
-J*H
-)
-value CreepyCastle;Tree - First Room
-
-nameTree - First Room
-b*`
-5
-value,*CreepyCastle;Ballroom - Left Candle - left
-'
-nameBallroom - Left Candle - left
-d*b
-6
-value-+CreepyCastle;Ballroom - Left Candle - right
-(
-name Ballroom - Left Candle - right
-b*`
-5
-value,*CreepyCastle;Ballroom - Back Candle - left
-'
-nameBallroom - Back Candle - left
-d*b
-6
-value-+CreepyCastle;Ballroom - Back Candle - right
-(
-name Ballroom - Back Candle - right
-d*b
-6
-value-+CreepyCastle;Ballroom - Right Candle - left
-(
-name Ballroom - Right Candle - left
-f*d
-7
-value.,CreepyCastle;Ballroom - Right Candle - right
-)
-name!Ballroom - Right Candle - right
-L*J
-*
-value!CreepyCastle;Trash Can - Cheese
-
-nameTrash Can - Cheese
-b*`
-5
-value,*CreepyCastle;Lower Cave - Crypt skull left
-'
-nameLower Cave - Crypt skull left
-d*b
-6
-value-+CreepyCastle;Lower Cave - Crypt skull right
-(
-name Lower Cave - Crypt skull right
-d*b
-6
-value-+CreepyCastle;Mausoleum - Under Grape Switch
-(
-name Mausoleum - Under Grape Switch
-r*p
-=
-value42CreepyCastle;Ballroom - In Front of Monkeyport Pad
-/
-name'%Ballroom - In Front of Monkeyport Pad
+nameMuseum - Far Right Side
 p*n
 <
 value31CreepyCastle;Museum - Tiny side - near the statue
@@ -7438,14 +12079,49 @@ n*l
 name%#Museum - Tiny side - on the factory
 X*V
 0
+value'%CreepyCastle;Tree - Near Coconut Gate
+"
+nameTree - Near Coconut Gate
+T*R
+.
+value%#CreepyCastle;Tree - Past Punch Gate
+ 
+nameTree - Past Punch Gate
+`*^
+4
+value+)CreepyCastle;Library - Strong Kong Alcove
+&
+nameLibrary - Strong Kong Alcove
+p*n
+<
+value31CreepyCastle;Chunky crypt - between right coffins
+.
+name&$Chunky crypt - between right coffins
+n*l
+;
+value20CreepyCastle;Chunky crypt - between left coffins
+-
+name%#Chunky crypt - between left coffins
+h*f
+8
+value/-CreepyCastle;Donkey crypt - behind the levers
+*
+name" Donkey crypt - behind the levers
+f*d
+7
+value.,CreepyCastle;Diddy crypt - right of the tomb
+)
+name!Diddy crypt - right of the tomb
+d*b
+6
+value-+CreepyCastle;Diddy crypt - left of the tomb
+(
+name Diddy crypt - left of the tomb
+X*V
+0
 value'%CreepyCastle;Near the crypt staircase
 "
 nameNear the crypt staircase
-P*N
-,
-value#!CreepyCastle;Behind the mausoleum
-
-nameBehind the mausoleum
 ^*\
 3
 value*(CreepyCastle;Mausoleum - sprint corridor
@@ -7466,26 +12142,6 @@ J*H
 value CreepyCastle;Dungeon - DK side
 
 nameDungeon - DK side
-`*^
-4
-value+)CreepyCastle;Upper Cave Shop Intersection
-&
-nameUpper Cave Shop Intersection
-P*N
-,
-value#!CreepyCastle;Next to dungeon door
-
-nameNext to dungeon door
-J*H
-)
-value CreepyCastle;Next to the chasm
-
-nameNext to the chasm
-T*R
-.
-value%#CreepyCastle;Lowest Level Tombstone
- 
-nameLowest Level Tombstone
 Z*X
 1
 value(&CreepyCastle;Tombstone near lower door
@@ -7496,7142 +12152,6 @@ F*D
 valueCreepyCastle;Behind the shed
 
 nameBehind the shed
-Ç+
-donkey˜*2Ù*
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (1)
-+
-name#!Castle Lobby - Central Pillar (1)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (2)
-+
-name#!Castle Lobby - Central Pillar (2)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (3)
-+
-name#!Castle Lobby - Central Pillar (3)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (4)
-+
-name#!Castle Lobby - Central Pillar (4)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (5)
-+
-name#!Castle Lobby - Central Pillar (5)
-F*D
-'
-valueCreepyCastle;Near Greenhouse
-
-nameNear Greenhouse
-R*P
--
-value$"CreepyCastle;Rocketbarrel Overhang
-
-nameRocketbarrel Overhang
-T*R
-.
-value%#CreepyCastle;Lowest ledge near tree
- 
-nameLowest ledge near tree
-P*N
-,
-value#!CreepyCastle;Near Lower Cave Shop
-
-nameNear Lower Cave Shop
-P*N
-,
-value#!CreepyCastle;Near Upper Cave Shop
-
-nameNear Upper Cave Shop
-P*N
-,
-value#!CreepyCastle;Against the Big Tree
-
-nameAgainst the Big Tree
-V*T
-/
-value&$CreepyCastle;Next to Moat Tag Barrel
-!
-nameNext to Moat Tag Barrel
-N*L
-+
-value" CreepyCastle;Next to Middle Shop
-
-nameNext to Middle Shop
-\*Z
-2
-value)'CreepyCastle;Outside Lanky's Greenhouse
-$
-nameOutside Lanky's Greenhouse
-N*L
-+
-value" CreepyCastle;warp Hub Battlement
-
-namewarp Hub Battlement
-`*^
-4
-value+)CreepyCastle;On Stairs to Moat Tag Barrel
-&
-nameOn Stairs to Moat Tag Barrel
-T*R
-.
-value%#CreepyCastle;Between Moat and Cliff
- 
-nameBetween Moat and Cliff
-\*Z
-2
-value)'CreepyCastle;Top Shop Battlement - left
-$
-nameTop Shop Battlement - left
-`*^
-4
-value+)CreepyCastle;Top Shop Battlement - center
-&
-nameTop Shop Battlement - center
-^*\
-3
-value*(CreepyCastle;Top Shop Battlement - right
-%
-nameTop Shop Battlement - right
-N*L
-+
-value" CreepyCastle;Outside Lanky Tower
-
-nameOutside Lanky Tower
-`*^
-4
-value+)CreepyCastle;Next to Stairs to Drawbridge
-&
-nameNext to Stairs to Drawbridge
-d*b
-6
-value-+CreepyCastle;Rocketbarrel Battlement - left
-(
-name Rocketbarrel Battlement - left
-f*d
-7
-value.,CreepyCastle;Rocketbarrel Battlement - right
-)
-name!Rocketbarrel Battlement - right
-f*d
-7
-value.,CreepyCastle;Moat Underwater by RocketBarrel
-)
-name!Moat Underwater by RocketBarrel
-R*P
--
-value$"CreepyCastle;Moat Under Drawbridge
-
-nameMoat Under Drawbridge
-X*V
-0
-value'%CreepyCastle;Next to Moat Door - left
-"
-nameNext to Moat Door - left
-Z*X
-1
-value(&CreepyCastle;Next to Moat Door - right
-#
-nameNext to Moat Door - right
-\*Z
-2
-value)'CreepyCastle;Moat Next to Ladder - left
-$
-nameMoat Next to Ladder - left
-^*\
-3
-value*(CreepyCastle;Moat Next to Ladder - right
-%
-nameMoat Next to Ladder - right
-J*H
-)
-value CreepyCastle;Tree - First Room
-
-nameTree - First Room
-p*n
-<
-value31CreepyCastle;Library - Room with Big Books - left
-.
-name&$Library - Room with Big Books - left
-p*n
-<
-value31CreepyCastle;Library - Room with big Books - back
-.
-name&$Library - Room with big Books - back
-b*`
-5
-value,*CreepyCastle;Library - Next to Exit - left
-'
-nameLibrary - Next to Exit - left
-d*b
-6
-value-+CreepyCastle;Library - Next to Exit - right
-(
-name Library - Next to Exit - right
-b*`
-5
-value,*CreepyCastle;Ballroom - Left Candle - left
-'
-nameBallroom - Left Candle - left
-d*b
-6
-value-+CreepyCastle;Ballroom - Left Candle - right
-(
-name Ballroom - Left Candle - right
-b*`
-5
-value,*CreepyCastle;Ballroom - Back Candle - left
-'
-nameBallroom - Back Candle - left
-d*b
-6
-value-+CreepyCastle;Ballroom - Back Candle - right
-(
-name Ballroom - Back Candle - right
-d*b
-6
-value-+CreepyCastle;Ballroom - Right Candle - left
-(
-name Ballroom - Right Candle - left
-f*d
-7
-value.,CreepyCastle;Ballroom - Right Candle - right
-)
-name!Ballroom - Right Candle - right
-b*`
-5
-value,*CreepyCastle;Lower Cave - Crypt skull left
-'
-nameLower Cave - Crypt skull left
-d*b
-6
-value-+CreepyCastle;Lower Cave - Crypt skull right
-(
-name Lower Cave - Crypt skull right
-X*V
-0
-value'%CreepyCastle;Tree - Near Coconut Gate
-"
-nameTree - Near Coconut Gate
-`*^
-4
-value+)CreepyCastle;Library - Strong Kong Alcove
-&
-nameLibrary - Strong Kong Alcove
-N*L
-+
-value" CreepyCastle;Library - Left wing
-
-nameLibrary - Left wing
-h*f
-8
-value/-CreepyCastle;Donkey crypt - behind the levers
-*
-name" Donkey crypt - behind the levers
-^*\
-3
-value*(CreepyCastle;Crypt - Second intersection
-%
-nameCrypt - Second intersection
-X*V
-0
-value'%CreepyCastle;Near the crypt staircase
-"
-nameNear the crypt staircase
-P*N
-,
-value#!CreepyCastle;Behind the mausoleum
-
-nameBehind the mausoleum
-P*N
-,
-value#!CreepyCastle;Dungeon - Lanky side
-
-nameDungeon - Lanky side
-P*N
-,
-value#!CreepyCastle;Dungeon - Diddy side
-
-nameDungeon - Diddy side
-J*H
-)
-value CreepyCastle;Dungeon - DK side
-
-nameDungeon - DK side
-`*^
-4
-value+)CreepyCastle;Upper Cave Shop Intersection
-&
-nameUpper Cave Shop Intersection
-P*N
-,
-value#!CreepyCastle;Next to dungeon door
-
-nameNext to dungeon door
-J*H
-)
-value CreepyCastle;Next to the chasm
-
-nameNext to the chasm
-T*R
-.
-value%#CreepyCastle;Lowest Level Tombstone
- 
-nameLowest Level Tombstone
-Z*X
-1
-value(&CreepyCastle;Tombstone near lower door
-#
-nameTombstone near lower door
-F*D
-'
-valueCreepyCastle;Behind the shed
-
-nameBehind the shed
-Ê)
-chunky€)2ÿ)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (1)
-+
-name#!Castle Lobby - Central Pillar (1)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (2)
-+
-name#!Castle Lobby - Central Pillar (2)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (3)
-+
-name#!Castle Lobby - Central Pillar (3)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (4)
-+
-name#!Castle Lobby - Central Pillar (4)
-j*h
-9
-value0.CreepyCastle;Castle Lobby - Central Pillar (5)
-+
-name#!Castle Lobby - Central Pillar (5)
-F*D
-'
-valueCreepyCastle;Near Greenhouse
-
-nameNear Greenhouse
-R*P
--
-value$"CreepyCastle;Rocketbarrel Overhang
-
-nameRocketbarrel Overhang
-T*R
-.
-value%#CreepyCastle;Lowest ledge near tree
- 
-nameLowest ledge near tree
-P*N
-,
-value#!CreepyCastle;Near Lower Cave Shop
-
-nameNear Lower Cave Shop
-P*N
-,
-value#!CreepyCastle;Near Upper Cave Shop
-
-nameNear Upper Cave Shop
-P*N
-,
-value#!CreepyCastle;Against the Big Tree
-
-nameAgainst the Big Tree
-V*T
-/
-value&$CreepyCastle;Next to Moat Tag Barrel
-!
-nameNext to Moat Tag Barrel
-N*L
-+
-value" CreepyCastle;Next to Middle Shop
-
-nameNext to Middle Shop
-\*Z
-2
-value)'CreepyCastle;Outside Lanky's Greenhouse
-$
-nameOutside Lanky's Greenhouse
-N*L
-+
-value" CreepyCastle;warp Hub Battlement
-
-namewarp Hub Battlement
-`*^
-4
-value+)CreepyCastle;On Stairs to Moat Tag Barrel
-&
-nameOn Stairs to Moat Tag Barrel
-T*R
-.
-value%#CreepyCastle;Between Moat and Cliff
- 
-nameBetween Moat and Cliff
-\*Z
-2
-value)'CreepyCastle;Top Shop Battlement - left
-$
-nameTop Shop Battlement - left
-`*^
-4
-value+)CreepyCastle;Top Shop Battlement - center
-&
-nameTop Shop Battlement - center
-^*\
-3
-value*(CreepyCastle;Top Shop Battlement - right
-%
-nameTop Shop Battlement - right
-N*L
-+
-value" CreepyCastle;Outside Lanky Tower
-
-nameOutside Lanky Tower
-`*^
-4
-value+)CreepyCastle;Next to Stairs to Drawbridge
-&
-nameNext to Stairs to Drawbridge
-d*b
-6
-value-+CreepyCastle;Rocketbarrel Battlement - left
-(
-name Rocketbarrel Battlement - left
-f*d
-7
-value.,CreepyCastle;Rocketbarrel Battlement - right
-)
-name!Rocketbarrel Battlement - right
-f*d
-7
-value.,CreepyCastle;Moat Underwater by RocketBarrel
-)
-name!Moat Underwater by RocketBarrel
-R*P
--
-value$"CreepyCastle;Moat Under Drawbridge
-
-nameMoat Under Drawbridge
-X*V
-0
-value'%CreepyCastle;Next to Moat Door - left
-"
-nameNext to Moat Door - left
-Z*X
-1
-value(&CreepyCastle;Next to Moat Door - right
-#
-nameNext to Moat Door - right
-\*Z
-2
-value)'CreepyCastle;Moat Next to Ladder - left
-$
-nameMoat Next to Ladder - left
-^*\
-3
-value*(CreepyCastle;Moat Next to Ladder - right
-%
-nameMoat Next to Ladder - right
-J*H
-)
-value CreepyCastle;Tree - First Room
-
-nameTree - First Room
-b*`
-5
-value,*CreepyCastle;Ballroom - Left Candle - left
-'
-nameBallroom - Left Candle - left
-d*b
-6
-value-+CreepyCastle;Ballroom - Left Candle - right
-(
-name Ballroom - Left Candle - right
-b*`
-5
-value,*CreepyCastle;Ballroom - Back Candle - left
-'
-nameBallroom - Back Candle - left
-d*b
-6
-value-+CreepyCastle;Ballroom - Back Candle - right
-(
-name Ballroom - Back Candle - right
-d*b
-6
-value-+CreepyCastle;Ballroom - Right Candle - left
-(
-name Ballroom - Right Candle - left
-f*d
-7
-value.,CreepyCastle;Ballroom - Right Candle - right
-)
-name!Ballroom - Right Candle - right
-F*D
-'
-valueCreepyCastle;Inside the Shed
-
-nameInside the Shed
-b*`
-5
-value,*CreepyCastle;Lower Cave - Crypt skull left
-'
-nameLower Cave - Crypt skull left
-d*b
-6
-value-+CreepyCastle;Lower Cave - Crypt skull right
-(
-name Lower Cave - Crypt skull right
-T*R
-.
-value%#CreepyCastle;Museum - Far Left Side
- 
-nameMuseum - Far Left Side
-V*T
-/
-value&$CreepyCastle;Museum - Far Right Side
-!
-nameMuseum - Far Right Side
-X*V
-0
-value'%CreepyCastle;Tree - Near Coconut Gate
-"
-nameTree - Near Coconut Gate
-T*R
-.
-value%#CreepyCastle;Tree - Past Punch Gate
- 
-nameTree - Past Punch Gate
-p*n
-<
-value31CreepyCastle;Chunky crypt - between right coffins
-.
-name&$Chunky crypt - between right coffins
-n*l
-;
-value20CreepyCastle;Chunky crypt - between left coffins
--
-name%#Chunky crypt - between left coffins
-^*\
-3
-value*(CreepyCastle;Crypt - Second intersection
-%
-nameCrypt - Second intersection
-X*V
-0
-value'%CreepyCastle;Near the crypt staircase
-"
-nameNear the crypt staircase
-P*N
-,
-value#!CreepyCastle;Behind the mausoleum
-
-nameBehind the mausoleum
-P*N
-,
-value#!CreepyCastle;Dungeon - Lanky side
-
-nameDungeon - Lanky side
-P*N
-,
-value#!CreepyCastle;Dungeon - Diddy side
-
-nameDungeon - Diddy side
-J*H
-)
-value CreepyCastle;Dungeon - DK side
-
-nameDungeon - DK side
-`*^
-4
-value+)CreepyCastle;Upper Cave Shop Intersection
-&
-nameUpper Cave Shop Intersection
-P*N
-,
-value#!CreepyCastle;Next to dungeon door
-
-nameNext to dungeon door
-J*H
-)
-value CreepyCastle;Next to the chasm
-
-nameNext to the chasm
-T*R
-.
-value%#CreepyCastle;Lowest Level Tombstone
- 
-nameLowest Level Tombstone
-Z*X
-1
-value(&CreepyCastle;Tombstone near lower door
-#
-nameTombstone near lower door
-F*D
-'
-valueCreepyCastle;Behind the shed
-
-nameBehind the shed
-É›
-
-AngryAztecÛ‹*Ô‹
-é.
-lankyÑ.2Å.
-X*V
-/
-value&$AngryAztec;Aztec Lobby - Pillar Wall
-#
-nameAztec Lobby - Pillar Wall
-X*V
-/
-value&$AngryAztec;Aztec Lobby - Lower Right
-#
-nameAztec Lobby - Lower Right
-^*\
-2
-value)'AngryAztec;Aztec Lobby - Left of Portal
-&
-nameAztec Lobby - Left of Portal
-`*^
-3
-value*(AngryAztec;Aztec Lobby - Right of Portal
-'
-nameAztec Lobby - Right of Portal
-T*R
--
-value$"AngryAztec;Aztec Lobby - Back Room
-!
-nameAztec Lobby - Back Room
-b*`
-4
-value+)AngryAztec;Right of Quicksand Tunnel Shop
-(
-name Right of Quicksand Tunnel Shop
-L*J
-)
-value AngryAztec;Left of Tunnel Shop
-
-nameLeft of Tunnel Shop
-D*B
-%
-valueAngryAztec;Near Oasis Shop
-
-nameNear Oasis Shop
-R*P
-,
-value#!AngryAztec;Near Vulture Cage Shop
- 
-nameNear Vulture Cage Shop
-:*8
- 
-valueAngryAztec;Behind 5DT
-
-name
-Behind 5DT
-J*H
-(
-valueAngryAztec;Oasis Shop - right
-
-nameOasis Shop - right
-V*T
-.
-value%#AngryAztec;Gong Tower Stairs - left
-"
-nameGong Tower Stairs - left
-n*l
-:
-value1/AngryAztec;Next to Tag Barrel near Vulture Cage
-.
-name&$Next to Tag Barrel near Vulture Cage
-R*P
-,
-value#!AngryAztec;Under the Vulture Cage
- 
-nameUnder the Vulture Cage
-V*T
-.
-value%#AngryAztec;5 Door Temple's 6th Door
-"
-name5 Door Temple's 6th Door
-N*L
-*
-value!AngryAztec;Right of Tunnel Shop
-
-nameRight of Tunnel Shop
-V*T
-.
-value%#AngryAztec;Near Hunky Barrel - left
-"
-nameNear Hunky Barrel - left
-X*V
-/
-value&$AngryAztec;Near Hunky Barrel - right
-#
-nameNear Hunky Barrel - right
-R*P
-,
-value#!AngryAztec;Near Snake Road - left
- 
-nameNear Snake Road - left
-T*R
--
-value$"AngryAztec;Near Snake Road - right
-!
-nameNear Snake Road - right
-d*b
-5
-value,*AngryAztec;5 Door Temple Staircase - front
-)
-name!5 Door Temple Staircase - front
-b*`
-4
-value+)AngryAztec;5 Door Temple Staircase - back
-(
-name 5 Door Temple Staircase - back
-R*P
-,
-value#!AngryAztec;Across from Vases Room
- 
-nameAcross from Vases Room
-b*`
-4
-value+)AngryAztec;First Tunnel - next to DK Door
-(
-name First Tunnel - next to DK Door
-X*V
-/
-value&$AngryAztec;First Tunnel - Near Oasis
-#
-nameFirst Tunnel - Near Oasis
-\*Z
-1
-value(&AngryAztec;Inside Quicksand Bonus Cave
-%
-nameInside Quicksand Bonus Cave
-`*^
-3
-value*(AngryAztec;Left of Quicksand Tunnel Shop
-'
-nameLeft of Quicksand Tunnel Shop
-j*h
-8
-value/-AngryAztec;Llama Temple Matching Room - right
-,
-name$"Llama Temple Matching Room - right
-h*f
-7
-value.,AngryAztec;Llama Temple Matching Room - left
-+
-name#!Llama Temple Matching Room - left
-f*d
-6
-value-+AngryAztec;Next to Tiny Temple - front left
-*
-name" Next to Tiny Temple - front left
-d*b
-5
-value,*AngryAztec;Next to Tiny Temple - back left
-)
-name!Next to Tiny Temple - back left
-h*f
-7
-value.,AngryAztec;Oasis - Next to Tunnel - far left
-+
-name#!Oasis - Next to Tunnel - far left
-`*^
-3
-value*(AngryAztec;Oasis - Next to Tunnel - left
-'
-nameOasis - Next to Tunnel - left
-\*Z
-1
-value(&AngryAztec;Far Back Triple Stairs Wall
-%
-nameFar Back Triple Stairs Wall
-\*Z
-1
-value(&AngryAztec;Next to Llama Temple - left
-%
-nameNext to Llama Temple - left
-b*`
-4
-value+)AngryAztec;Tiny Temple - Main Room - left
-(
-name Tiny Temple - Main Room - left
-b*`
-4
-value+)AngryAztec;Tiny Temple - Main Room - back
-(
-name Tiny Temple - Main Room - back
-z*x
-@
-value75AngryAztec;Tiny Temple - Across from KONG Room - left
-4
-name,*Tiny Temple - Across from KONG Room - left
-|*z
-A
-value86AngryAztec;Tiny Temple - Across from KONG Room - right
-5
-name-+Tiny Temple - Across from KONG Room - right
-á*Ñ
-F
-value=;AngryAztec;Tiny Temple - Next to Opening to Underwater Room
-:
-name20Tiny Temple - Next to Opening to Underwater Room
-è*å
-J
-valueA?AngryAztec;Tiny Temple - Across from Opening to Underwater Room
->
-name64Tiny Temple - Across from Opening to Underwater Room
-Z*X
-0
-value'%AngryAztec;Llama Temple Stairs - left
-$
-nameLlama Temple Stairs - left
-\*Z
-1
-value(&AngryAztec;Llama Temple Stairs - right
-%
-nameLlama Temple Stairs - right
-v*t
->
-value53AngryAztec;Llama Temple - Entrance Staircase - left
-2
-name*(Llama Temple - Entrance Staircase - left
-x*v
-?
-value64AngryAztec;Llama Temple - Entrance Staircase - right
-3
-name+)Llama Temple - Entrance Staircase - right
-v*t
->
-value53AngryAztec;Llama Temple - Across from the Spit Gate
-2
-name*(Llama Temple - Across from the Spit Gate
-P*N
-+
-value" AngryAztec;Lanky 5DT - Left side
-
-nameLanky 5DT - Left side
-R*P
-,
-value#!AngryAztec;Lanky 5DT - Right side
- 
-nameLanky 5DT - Right side
-r*p
-<
-value31AngryAztec;Llama Temple - Down the stairs - right
-0
-name(&Llama Temple - Down the stairs - right
-p*n
-;
-value20AngryAztec;Llama Temple - Down the stairs - left
-/
-name'%Llama Temple - Down the stairs - left
-p*n
-;
-value20AngryAztec;Llama Temple - Near top stairs - left
-/
-name'%Llama Temple - Near top stairs - left
-r*p
-<
-value31AngryAztec;Llama Temple - Near top stairs - right
-0
-name(&Llama Temple - Near top stairs - right
-z*x
-@
-value75AngryAztec;Llama Temple - Center torch below entrance
-4
-name,*Llama Temple - Center torch below entrance
-j*h
-8
-value/-AngryAztec;Llama Temple - Next to mini tunnel
-,
-name$"Llama Temple - Next to mini tunnel
-Ä*~
-C
-value:8AngryAztec;Tiny Temple - Little alcove above mini barrel
-7
-name/-Tiny Temple - Little alcove above mini barrel
-j*h
-8
-value/-AngryAztec;Tiny Temple - Next to triangle pad
-,
-name$"Tiny Temple - Next to triangle pad
-n*l
-:
-value1/AngryAztec;Tiny Temple - Vulture room back wall
-.
-name&$Tiny Temple - Vulture room back wall
-j*h
-8
-value/-AngryAztec;Tiny Temple - Tiny room right wall
-,
-name$"Tiny Temple - Tiny room right wall
-P*N
-+
-value" AngryAztec;Behind the llama cage
-
-nameBehind the llama cage
-Ó.
-diddy‰.2·.
-X*V
-/
-value&$AngryAztec;Aztec Lobby - Pillar Wall
-#
-nameAztec Lobby - Pillar Wall
-X*V
-/
-value&$AngryAztec;Aztec Lobby - Lower Right
-#
-nameAztec Lobby - Lower Right
-^*\
-2
-value)'AngryAztec;Aztec Lobby - Left of Portal
-&
-nameAztec Lobby - Left of Portal
-`*^
-3
-value*(AngryAztec;Aztec Lobby - Right of Portal
-'
-nameAztec Lobby - Right of Portal
-T*R
--
-value$"AngryAztec;Aztec Lobby - Back Room
-!
-nameAztec Lobby - Back Room
-b*`
-4
-value+)AngryAztec;Right of Quicksand Tunnel Shop
-(
-name Right of Quicksand Tunnel Shop
-L*J
-)
-value AngryAztec;Left of Tunnel Shop
-
-nameLeft of Tunnel Shop
-D*B
-%
-valueAngryAztec;Near Oasis Shop
-
-nameNear Oasis Shop
-R*P
-,
-value#!AngryAztec;Near Vulture Cage Shop
- 
-nameNear Vulture Cage Shop
-:*8
- 
-valueAngryAztec;Behind 5DT
-
-name
-Behind 5DT
-J*H
-(
-valueAngryAztec;Oasis Shop - right
-
-nameOasis Shop - right
-V*T
-.
-value%#AngryAztec;Gong Tower Stairs - left
-"
-nameGong Tower Stairs - left
-n*l
-:
-value1/AngryAztec;Next to Tag Barrel near Vulture Cage
-.
-name&$Next to Tag Barrel near Vulture Cage
-R*P
-,
-value#!AngryAztec;Under the Vulture Cage
- 
-nameUnder the Vulture Cage
-V*T
-.
-value%#AngryAztec;5 Door Temple's 6th Door
-"
-name5 Door Temple's 6th Door
-N*L
-*
-value!AngryAztec;Right of Tunnel Shop
-
-nameRight of Tunnel Shop
-V*T
-.
-value%#AngryAztec;Near Hunky Barrel - left
-"
-nameNear Hunky Barrel - left
-X*V
-/
-value&$AngryAztec;Near Hunky Barrel - right
-#
-nameNear Hunky Barrel - right
-R*P
-,
-value#!AngryAztec;Near Snake Road - left
- 
-nameNear Snake Road - left
-T*R
--
-value$"AngryAztec;Near Snake Road - right
-!
-nameNear Snake Road - right
-d*b
-5
-value,*AngryAztec;5 Door Temple Staircase - front
-)
-name!5 Door Temple Staircase - front
-b*`
-4
-value+)AngryAztec;5 Door Temple Staircase - back
-(
-name 5 Door Temple Staircase - back
-R*P
-,
-value#!AngryAztec;Across from Vases Room
- 
-nameAcross from Vases Room
-b*`
-4
-value+)AngryAztec;First Tunnel - next to DK Door
-(
-name First Tunnel - next to DK Door
-X*V
-/
-value&$AngryAztec;First Tunnel - Near Oasis
-#
-nameFirst Tunnel - Near Oasis
-\*Z
-1
-value(&AngryAztec;Inside Quicksand Bonus Cave
-%
-nameInside Quicksand Bonus Cave
-`*^
-3
-value*(AngryAztec;Left of Quicksand Tunnel Shop
-'
-nameLeft of Quicksand Tunnel Shop
-F*D
-&
-valueAngryAztec;Atop Tiny Temple
-
-nameAtop Tiny Temple
-f*d
-6
-value-+AngryAztec;Next to Tiny Temple - front left
-*
-name" Next to Tiny Temple - front left
-d*b
-5
-value,*AngryAztec;Next to Tiny Temple - back left
-)
-name!Next to Tiny Temple - back left
-h*f
-7
-value.,AngryAztec;Oasis - Next to Tunnel - far left
-+
-name#!Oasis - Next to Tunnel - far left
-`*^
-3
-value*(AngryAztec;Oasis - Next to Tunnel - left
-'
-nameOasis - Next to Tunnel - left
-\*Z
-1
-value(&AngryAztec;Far Back Triple Stairs Wall
-%
-nameFar Back Triple Stairs Wall
-\*Z
-1
-value(&AngryAztec;Next to Llama Temple - left
-%
-nameNext to Llama Temple - left
-b*`
-4
-value+)AngryAztec;Tiny Temple - Main Room - left
-(
-name Tiny Temple - Main Room - left
-b*`
-4
-value+)AngryAztec;Tiny Temple - Main Room - back
-(
-name Tiny Temple - Main Room - back
-z*x
-@
-value75AngryAztec;Tiny Temple - Across from KONG Room - left
-4
-name,*Tiny Temple - Across from KONG Room - left
-|*z
-A
-value86AngryAztec;Tiny Temple - Across from KONG Room - right
-5
-name-+Tiny Temple - Across from KONG Room - right
-á*Ñ
-F
-value=;AngryAztec;Tiny Temple - Next to Opening to Underwater Room
-:
-name20Tiny Temple - Next to Opening to Underwater Room
-è*å
-J
-valueA?AngryAztec;Tiny Temple - Across from Opening to Underwater Room
->
-name64Tiny Temple - Across from Opening to Underwater Room
-Z*X
-0
-value'%AngryAztec;Llama Temple Stairs - left
-$
-nameLlama Temple Stairs - left
-\*Z
-1
-value(&AngryAztec;Llama Temple Stairs - right
-%
-nameLlama Temple Stairs - right
-v*t
->
-value53AngryAztec;Llama Temple - Entrance Staircase - left
-2
-name*(Llama Temple - Entrance Staircase - left
-x*v
-?
-value64AngryAztec;Llama Temple - Entrance Staircase - right
-3
-name+)Llama Temple - Entrance Staircase - right
-v*t
->
-value53AngryAztec;Llama Temple - Across from the Spit Gate
-2
-name*(Llama Temple - Across from the Spit Gate
-d*b
-5
-value,*AngryAztec;Diddy 5DT - Second right branch
-)
-name!Diddy 5DT - Second right branch
-r*p
-<
-value31AngryAztec;Llama Temple - Down the stairs - right
-0
-name(&Llama Temple - Down the stairs - right
-p*n
-;
-value20AngryAztec;Llama Temple - Down the stairs - left
-/
-name'%Llama Temple - Down the stairs - left
-p*n
-;
-value20AngryAztec;Llama Temple - Near top stairs - left
-/
-name'%Llama Temple - Near top stairs - left
-r*p
-<
-value31AngryAztec;Llama Temple - Near top stairs - right
-0
-name(&Llama Temple - Near top stairs - right
-z*x
-@
-value75AngryAztec;Llama Temple - Center torch below entrance
-4
-name,*Llama Temple - Center torch below entrance
-j*h
-8
-value/-AngryAztec;Llama Temple - Next to mini tunnel
-,
-name$"Llama Temple - Next to mini tunnel
-l*j
-9
-value0.AngryAztec;Tiny Temple - Behind the guitar pad
--
-name%#Tiny Temple - Behind the guitar pad
-Ä*~
-C
-value:8AngryAztec;Tiny Temple - Little alcove above mini barrel
-7
-name/-Tiny Temple - Little alcove above mini barrel
-j*h
-8
-value/-AngryAztec;Tiny Temple - Next to triangle pad
-,
-name$"Tiny Temple - Next to triangle pad
-n*l
-:
-value1/AngryAztec;Tiny Temple - Vulture room back wall
-.
-name&$Tiny Temple - Vulture room back wall
-j*h
-8
-value/-AngryAztec;Tiny Temple - Tiny room right wall
-,
-name$"Tiny Temple - Tiny room right wall
-j*h
-8
-value/-AngryAztec;Tiny Temple - Tiny room - on the K
-,
-name$"Tiny Temple - Tiny room - on the K
-P*N
-+
-value" AngryAztec;Behind the llama cage
-
-nameBehind the llama cage
-R*P
-,
-value#!AngryAztec;On top of llama temple
- 
-nameOn top of llama temple
-ô.
-tinyê.2ç.
-X*V
-/
-value&$AngryAztec;Aztec Lobby - Pillar Wall
-#
-nameAztec Lobby - Pillar Wall
-X*V
-/
-value&$AngryAztec;Aztec Lobby - Lower Right
-#
-nameAztec Lobby - Lower Right
-^*\
-2
-value)'AngryAztec;Aztec Lobby - Left of Portal
-&
-nameAztec Lobby - Left of Portal
-`*^
-3
-value*(AngryAztec;Aztec Lobby - Right of Portal
-'
-nameAztec Lobby - Right of Portal
-T*R
--
-value$"AngryAztec;Aztec Lobby - Back Room
-!
-nameAztec Lobby - Back Room
-b*`
-4
-value+)AngryAztec;Right of Quicksand Tunnel Shop
-(
-name Right of Quicksand Tunnel Shop
-L*J
-)
-value AngryAztec;Left of Tunnel Shop
-
-nameLeft of Tunnel Shop
-D*B
-%
-valueAngryAztec;Near Oasis Shop
-
-nameNear Oasis Shop
-R*P
-,
-value#!AngryAztec;Near Vulture Cage Shop
- 
-nameNear Vulture Cage Shop
-:*8
- 
-valueAngryAztec;Behind 5DT
-
-name
-Behind 5DT
-J*H
-(
-valueAngryAztec;Oasis Shop - right
-
-nameOasis Shop - right
-V*T
-.
-value%#AngryAztec;Gong Tower Stairs - left
-"
-nameGong Tower Stairs - left
-n*l
-:
-value1/AngryAztec;Next to Tag Barrel near Vulture Cage
-.
-name&$Next to Tag Barrel near Vulture Cage
-R*P
-,
-value#!AngryAztec;Under the Vulture Cage
- 
-nameUnder the Vulture Cage
-V*T
-.
-value%#AngryAztec;5 Door Temple's 6th Door
-"
-name5 Door Temple's 6th Door
-N*L
-*
-value!AngryAztec;Right of Tunnel Shop
-
-nameRight of Tunnel Shop
-V*T
-.
-value%#AngryAztec;Near Hunky Barrel - left
-"
-nameNear Hunky Barrel - left
-X*V
-/
-value&$AngryAztec;Near Hunky Barrel - right
-#
-nameNear Hunky Barrel - right
-R*P
-,
-value#!AngryAztec;Near Snake Road - left
- 
-nameNear Snake Road - left
-T*R
--
-value$"AngryAztec;Near Snake Road - right
-!
-nameNear Snake Road - right
-d*b
-5
-value,*AngryAztec;5 Door Temple Staircase - front
-)
-name!5 Door Temple Staircase - front
-b*`
-4
-value+)AngryAztec;5 Door Temple Staircase - back
-(
-name 5 Door Temple Staircase - back
-R*P
-,
-value#!AngryAztec;Across from Vases Room
- 
-nameAcross from Vases Room
-b*`
-4
-value+)AngryAztec;First Tunnel - next to DK Door
-(
-name First Tunnel - next to DK Door
-X*V
-/
-value&$AngryAztec;First Tunnel - Near Oasis
-#
-nameFirst Tunnel - Near Oasis
-\*Z
-1
-value(&AngryAztec;Inside Quicksand Bonus Cave
-%
-nameInside Quicksand Bonus Cave
-`*^
-3
-value*(AngryAztec;Left of Quicksand Tunnel Shop
-'
-nameLeft of Quicksand Tunnel Shop
-f*d
-6
-value-+AngryAztec;Next to Tiny Temple - front left
-*
-name" Next to Tiny Temple - front left
-d*b
-5
-value,*AngryAztec;Next to Tiny Temple - back left
-)
-name!Next to Tiny Temple - back left
-h*f
-7
-value.,AngryAztec;Oasis - Next to Tunnel - far left
-+
-name#!Oasis - Next to Tunnel - far left
-`*^
-3
-value*(AngryAztec;Oasis - Next to Tunnel - left
-'
-nameOasis - Next to Tunnel - left
-\*Z
-1
-value(&AngryAztec;Far Back Triple Stairs Wall
-%
-nameFar Back Triple Stairs Wall
-\*Z
-1
-value(&AngryAztec;Next to Llama Temple - left
-%
-nameNext to Llama Temple - left
-b*`
-4
-value+)AngryAztec;Tiny Temple - Main Room - left
-(
-name Tiny Temple - Main Room - left
-b*`
-4
-value+)AngryAztec;Tiny Temple - Main Room - back
-(
-name Tiny Temple - Main Room - back
-z*x
-@
-value75AngryAztec;Tiny Temple - Across from KONG Room - left
-4
-name,*Tiny Temple - Across from KONG Room - left
-|*z
-A
-value86AngryAztec;Tiny Temple - Across from KONG Room - right
-5
-name-+Tiny Temple - Across from KONG Room - right
-á*Ñ
-F
-value=;AngryAztec;Tiny Temple - Next to Opening to Underwater Room
-:
-name20Tiny Temple - Next to Opening to Underwater Room
-è*å
-J
-valueA?AngryAztec;Tiny Temple - Across from Opening to Underwater Room
->
-name64Tiny Temple - Across from Opening to Underwater Room
-Z*X
-0
-value'%AngryAztec;Llama Temple Stairs - left
-$
-nameLlama Temple Stairs - left
-\*Z
-1
-value(&AngryAztec;Llama Temple Stairs - right
-%
-nameLlama Temple Stairs - right
-v*t
->
-value53AngryAztec;Llama Temple - Entrance Staircase - left
-2
-name*(Llama Temple - Entrance Staircase - left
-x*v
-?
-value64AngryAztec;Llama Temple - Entrance Staircase - right
-3
-name+)Llama Temple - Entrance Staircase - right
-v*t
->
-value53AngryAztec;Llama Temple - Across from the Spit Gate
-2
-name*(Llama Temple - Across from the Spit Gate
-N*L
-*
-value!AngryAztec;Tiny 5DT - Left side
-
-nameTiny 5DT - Left side
-d*b
-5
-value,*AngryAztec;Tiny 5DT - Second center tunnel
-)
-name!Tiny 5DT - Second center tunnel
-r*p
-<
-value31AngryAztec;Llama Temple - Down the stairs - right
-0
-name(&Llama Temple - Down the stairs - right
-p*n
-;
-value20AngryAztec;Llama Temple - Down the stairs - left
-/
-name'%Llama Temple - Down the stairs - left
-p*n
-;
-value20AngryAztec;Llama Temple - Near top stairs - left
-/
-name'%Llama Temple - Near top stairs - left
-r*p
-<
-value31AngryAztec;Llama Temple - Near top stairs - right
-0
-name(&Llama Temple - Near top stairs - right
-z*x
-@
-value75AngryAztec;Llama Temple - Center torch below entrance
-4
-name,*Llama Temple - Center torch below entrance
-j*h
-8
-value/-AngryAztec;Llama Temple - Next to mini tunnel
-,
-name$"Llama Temple - Next to mini tunnel
-Ä*~
-C
-value:8AngryAztec;Tiny Temple - Little alcove above mini barrel
-7
-name/-Tiny Temple - Little alcove above mini barrel
-j*h
-8
-value/-AngryAztec;Tiny Temple - Next to triangle pad
-,
-name$"Tiny Temple - Next to triangle pad
-n*l
-:
-value1/AngryAztec;Tiny Temple - Vulture room back wall
-.
-name&$Tiny Temple - Vulture room back wall
-j*h
-8
-value/-AngryAztec;Tiny Temple - Tiny room right wall
-,
-name$"Tiny Temple - Tiny room right wall
-j*h
-8
-value/-AngryAztec;Tiny Temple - Tiny room - on the K
-,
-name$"Tiny Temple - Tiny room - on the K
-P*N
-+
-value" AngryAztec;Behind the llama cage
-
-nameBehind the llama cage
-d*b
-5
-value,*AngryAztec;Behind the start of beetle race
-)
-name!Behind the start of beetle race
-ä%
-donkeyˇ$2¸$
-X*V
-/
-value&$AngryAztec;Aztec Lobby - Pillar Wall
-#
-nameAztec Lobby - Pillar Wall
-X*V
-/
-value&$AngryAztec;Aztec Lobby - Lower Right
-#
-nameAztec Lobby - Lower Right
-^*\
-2
-value)'AngryAztec;Aztec Lobby - Left of Portal
-&
-nameAztec Lobby - Left of Portal
-`*^
-3
-value*(AngryAztec;Aztec Lobby - Right of Portal
-'
-nameAztec Lobby - Right of Portal
-T*R
--
-value$"AngryAztec;Aztec Lobby - Back Room
-!
-nameAztec Lobby - Back Room
-b*`
-4
-value+)AngryAztec;Right of Quicksand Tunnel Shop
-(
-name Right of Quicksand Tunnel Shop
-L*J
-)
-value AngryAztec;Left of Tunnel Shop
-
-nameLeft of Tunnel Shop
-D*B
-%
-valueAngryAztec;Near Oasis Shop
-
-nameNear Oasis Shop
-R*P
-,
-value#!AngryAztec;Near Vulture Cage Shop
- 
-nameNear Vulture Cage Shop
-:*8
- 
-valueAngryAztec;Behind 5DT
-
-name
-Behind 5DT
-J*H
-(
-valueAngryAztec;Oasis Shop - right
-
-nameOasis Shop - right
-V*T
-.
-value%#AngryAztec;Gong Tower Stairs - left
-"
-nameGong Tower Stairs - left
-n*l
-:
-value1/AngryAztec;Next to Tag Barrel near Vulture Cage
-.
-name&$Next to Tag Barrel near Vulture Cage
-R*P
-,
-value#!AngryAztec;Under the Vulture Cage
- 
-nameUnder the Vulture Cage
-V*T
-.
-value%#AngryAztec;5 Door Temple's 6th Door
-"
-name5 Door Temple's 6th Door
-N*L
-*
-value!AngryAztec;Right of Tunnel Shop
-
-nameRight of Tunnel Shop
-V*T
-.
-value%#AngryAztec;Near Hunky Barrel - left
-"
-nameNear Hunky Barrel - left
-X*V
-/
-value&$AngryAztec;Near Hunky Barrel - right
-#
-nameNear Hunky Barrel - right
-R*P
-,
-value#!AngryAztec;Near Snake Road - left
- 
-nameNear Snake Road - left
-T*R
--
-value$"AngryAztec;Near Snake Road - right
-!
-nameNear Snake Road - right
-d*b
-5
-value,*AngryAztec;5 Door Temple Staircase - front
-)
-name!5 Door Temple Staircase - front
-b*`
-4
-value+)AngryAztec;5 Door Temple Staircase - back
-(
-name 5 Door Temple Staircase - back
-R*P
-,
-value#!AngryAztec;Across from Vases Room
- 
-nameAcross from Vases Room
-b*`
-4
-value+)AngryAztec;First Tunnel - next to DK Door
-(
-name First Tunnel - next to DK Door
-X*V
-/
-value&$AngryAztec;First Tunnel - Near Oasis
-#
-nameFirst Tunnel - Near Oasis
-b*`
-4
-value+)AngryAztec;In the sealed quicksand tunnel
-(
-name In the sealed quicksand tunnel
-\*Z
-1
-value(&AngryAztec;Inside Quicksand Bonus Cave
-%
-nameInside Quicksand Bonus Cave
-`*^
-3
-value*(AngryAztec;Left of Quicksand Tunnel Shop
-'
-nameLeft of Quicksand Tunnel Shop
-f*d
-6
-value-+AngryAztec;Far Back Triple Stairs Quicksand
-*
-name" Far Back Triple Stairs Quicksand
-f*d
-6
-value-+AngryAztec;Next to Tiny Temple - front left
-*
-name" Next to Tiny Temple - front left
-d*b
-5
-value,*AngryAztec;Next to Tiny Temple - back left
-)
-name!Next to Tiny Temple - back left
-h*f
-7
-value.,AngryAztec;Oasis - Next to Tunnel - far left
-+
-name#!Oasis - Next to Tunnel - far left
-`*^
-3
-value*(AngryAztec;Oasis - Next to Tunnel - left
-'
-nameOasis - Next to Tunnel - left
-\*Z
-1
-value(&AngryAztec;Far Back Triple Stairs Wall
-%
-nameFar Back Triple Stairs Wall
-\*Z
-1
-value(&AngryAztec;Next to Llama Temple - left
-%
-nameNext to Llama Temple - left
-Z*X
-0
-value'%AngryAztec;Llama Temple Stairs - left
-$
-nameLlama Temple Stairs - left
-\*Z
-1
-value(&AngryAztec;Llama Temple Stairs - right
-%
-nameLlama Temple Stairs - right
-v*t
->
-value53AngryAztec;Llama Temple - Entrance Staircase - left
-2
-name*(Llama Temple - Entrance Staircase - left
-x*v
-?
-value64AngryAztec;Llama Temple - Entrance Staircase - right
-3
-name+)Llama Temple - Entrance Staircase - right
-v*t
->
-value53AngryAztec;Llama Temple - Across from the Spit Gate
-2
-name*(Llama Temple - Across from the Spit Gate
-d*b
-5
-value,*AngryAztec;Donkey 5DT - First right branch
-)
-name!Donkey 5DT - First right branch
-r*p
-<
-value31AngryAztec;Llama Temple - Down the stairs - right
-0
-name(&Llama Temple - Down the stairs - right
-p*n
-;
-value20AngryAztec;Llama Temple - Down the stairs - left
-/
-name'%Llama Temple - Down the stairs - left
-p*n
-;
-value20AngryAztec;Llama Temple - Near top stairs - left
-/
-name'%Llama Temple - Near top stairs - left
-r*p
-<
-value31AngryAztec;Llama Temple - Near top stairs - right
-0
-name(&Llama Temple - Near top stairs - right
-z*x
-@
-value75AngryAztec;Llama Temple - Center torch below entrance
-4
-name,*Llama Temple - Center torch below entrance
-j*h
-8
-value/-AngryAztec;Llama Temple - Next to mini tunnel
-,
-name$"Llama Temple - Next to mini tunnel
-P*N
-+
-value" AngryAztec;Behind the llama cage
-
-nameBehind the llama cage
-l*j
-9
-value0.AngryAztec;In the quicksand near 5-door temple
--
-name%#In the quicksand near 5-door temple
-¡,
-chunky∂,2≥,
-X*V
-/
-value&$AngryAztec;Aztec Lobby - Pillar Wall
-#
-nameAztec Lobby - Pillar Wall
-X*V
-/
-value&$AngryAztec;Aztec Lobby - Lower Right
-#
-nameAztec Lobby - Lower Right
-^*\
-2
-value)'AngryAztec;Aztec Lobby - Left of Portal
-&
-nameAztec Lobby - Left of Portal
-`*^
-3
-value*(AngryAztec;Aztec Lobby - Right of Portal
-'
-nameAztec Lobby - Right of Portal
-T*R
--
-value$"AngryAztec;Aztec Lobby - Back Room
-!
-nameAztec Lobby - Back Room
-b*`
-4
-value+)AngryAztec;Right of Quicksand Tunnel Shop
-(
-name Right of Quicksand Tunnel Shop
-L*J
-)
-value AngryAztec;Left of Tunnel Shop
-
-nameLeft of Tunnel Shop
-D*B
-%
-valueAngryAztec;Near Oasis Shop
-
-nameNear Oasis Shop
-R*P
-,
-value#!AngryAztec;Near Vulture Cage Shop
- 
-nameNear Vulture Cage Shop
-:*8
- 
-valueAngryAztec;Behind 5DT
-
-name
-Behind 5DT
-J*H
-(
-valueAngryAztec;Oasis Shop - right
-
-nameOasis Shop - right
-V*T
-.
-value%#AngryAztec;Gong Tower Stairs - left
-"
-nameGong Tower Stairs - left
-n*l
-:
-value1/AngryAztec;Next to Tag Barrel near Vulture Cage
-.
-name&$Next to Tag Barrel near Vulture Cage
-R*P
-,
-value#!AngryAztec;Under the Vulture Cage
- 
-nameUnder the Vulture Cage
-V*T
-.
-value%#AngryAztec;5 Door Temple's 6th Door
-"
-name5 Door Temple's 6th Door
-N*L
-*
-value!AngryAztec;Right of Tunnel Shop
-
-nameRight of Tunnel Shop
-V*T
-.
-value%#AngryAztec;Near Hunky Barrel - left
-"
-nameNear Hunky Barrel - left
-X*V
-/
-value&$AngryAztec;Near Hunky Barrel - right
-#
-nameNear Hunky Barrel - right
-R*P
-,
-value#!AngryAztec;Near Snake Road - left
- 
-nameNear Snake Road - left
-T*R
--
-value$"AngryAztec;Near Snake Road - right
-!
-nameNear Snake Road - right
-d*b
-5
-value,*AngryAztec;5 Door Temple Staircase - front
-)
-name!5 Door Temple Staircase - front
-b*`
-4
-value+)AngryAztec;5 Door Temple Staircase - back
-(
-name 5 Door Temple Staircase - back
-R*P
-,
-value#!AngryAztec;Across from Vases Room
- 
-nameAcross from Vases Room
-b*`
-4
-value+)AngryAztec;First Tunnel - next to DK Door
-(
-name First Tunnel - next to DK Door
-X*V
-/
-value&$AngryAztec;First Tunnel - Near Oasis
-#
-nameFirst Tunnel - Near Oasis
-\*Z
-1
-value(&AngryAztec;Inside Quicksand Bonus Cave
-%
-nameInside Quicksand Bonus Cave
-`*^
-3
-value*(AngryAztec;Left of Quicksand Tunnel Shop
-'
-nameLeft of Quicksand Tunnel Shop
-f*d
-6
-value-+AngryAztec;Next to Tiny Temple - front left
-*
-name" Next to Tiny Temple - front left
-d*b
-5
-value,*AngryAztec;Next to Tiny Temple - back left
-)
-name!Next to Tiny Temple - back left
-h*f
-7
-value.,AngryAztec;Oasis - Next to Tunnel - far left
-+
-name#!Oasis - Next to Tunnel - far left
-`*^
-3
-value*(AngryAztec;Oasis - Next to Tunnel - left
-'
-nameOasis - Next to Tunnel - left
-\*Z
-1
-value(&AngryAztec;Far Back Triple Stairs Wall
-%
-nameFar Back Triple Stairs Wall
-\*Z
-1
-value(&AngryAztec;Next to Llama Temple - left
-%
-nameNext to Llama Temple - left
-b*`
-4
-value+)AngryAztec;Tiny Temple - Main Room - left
-(
-name Tiny Temple - Main Room - left
-b*`
-4
-value+)AngryAztec;Tiny Temple - Main Room - back
-(
-name Tiny Temple - Main Room - back
-z*x
-@
-value75AngryAztec;Tiny Temple - Across from KONG Room - left
-4
-name,*Tiny Temple - Across from KONG Room - left
-|*z
-A
-value86AngryAztec;Tiny Temple - Across from KONG Room - right
-5
-name-+Tiny Temple - Across from KONG Room - right
-á*Ñ
-F
-value=;AngryAztec;Tiny Temple - Next to Opening to Underwater Room
-:
-name20Tiny Temple - Next to Opening to Underwater Room
-è*å
-J
-valueA?AngryAztec;Tiny Temple - Across from Opening to Underwater Room
->
-name64Tiny Temple - Across from Opening to Underwater Room
-Z*X
-0
-value'%AngryAztec;Llama Temple Stairs - left
-$
-nameLlama Temple Stairs - left
-\*Z
-1
-value(&AngryAztec;Llama Temple Stairs - right
-%
-nameLlama Temple Stairs - right
-v*t
->
-value53AngryAztec;Llama Temple - Entrance Staircase - left
-2
-name*(Llama Temple - Entrance Staircase - left
-x*v
-?
-value64AngryAztec;Llama Temple - Entrance Staircase - right
-3
-name+)Llama Temple - Entrance Staircase - right
-v*t
->
-value53AngryAztec;Llama Temple - Across from the Spit Gate
-2
-name*(Llama Temple - Across from the Spit Gate
-X*V
-/
-value&$AngryAztec;Chunky 5DT - Intersection
-#
-nameChunky 5DT - Intersection
-R*P
-,
-value#!AngryAztec;Chunky 5DT - Left side
- 
-nameChunky 5DT - Left side
-r*p
-<
-value31AngryAztec;Llama Temple - Down the stairs - right
-0
-name(&Llama Temple - Down the stairs - right
-p*n
-;
-value20AngryAztec;Llama Temple - Down the stairs - left
-/
-name'%Llama Temple - Down the stairs - left
-p*n
-;
-value20AngryAztec;Llama Temple - Near top stairs - left
-/
-name'%Llama Temple - Near top stairs - left
-r*p
-<
-value31AngryAztec;Llama Temple - Near top stairs - right
-0
-name(&Llama Temple - Near top stairs - right
-z*x
-@
-value75AngryAztec;Llama Temple - Center torch below entrance
-4
-name,*Llama Temple - Center torch below entrance
-j*h
-8
-value/-AngryAztec;Llama Temple - Next to mini tunnel
-,
-name$"Llama Temple - Next to mini tunnel
-Ä*~
-C
-value:8AngryAztec;Tiny Temple - Little alcove above mini barrel
-7
-name/-Tiny Temple - Little alcove above mini barrel
-j*h
-8
-value/-AngryAztec;Tiny Temple - Next to triangle pad
-,
-name$"Tiny Temple - Next to triangle pad
-n*l
-:
-value1/AngryAztec;Tiny Temple - Vulture room back wall
-.
-name&$Tiny Temple - Vulture room back wall
-j*h
-8
-value/-AngryAztec;Tiny Temple - Tiny room right wall
-,
-name$"Tiny Temple - Tiny room right wall
-P*N
-+
-value" AngryAztec;Behind the llama cage
-
-nameBehind the llama cage
-∞©
-GloomyGalleonù©*ô©
-é 
-lankyÑ 2Å 
-Y*W
-1
-value(&GloomyGalleon;Galleon Lobby - Far Left
-"
-nameGalleon Lobby - Far Left
-[*Y
-2
-value)'GloomyGalleon;Galleon Lobby - Far Right
-#
-nameGalleon Lobby - Far Right
-_*]
-4
-value+)GloomyGalleon;Galleon Lobby - Close Right
-%
-nameGalleon Lobby - Close Right
-e*c
-7
-value.,GloomyGalleon;Galleon Lobby - Near DK Portal
-(
-name Galleon Lobby - Near DK Portal
-]*[
-3
-value*(GloomyGalleon;Galleon Lobby - Close Left
-$
-nameGalleon Lobby - Close Left
-[*Y
-2
-value)'GloomyGalleon;Cavern Alcove Past Planks
-#
-nameCavern Alcove Past Planks
-;*9
-"
-valueGloomyGalleon;Deep Hole
-
-name	Deep Hole
-=*;
-#
-valueGloomyGalleon;Behind 2DS
-
-name
-Behind 2DS
-Q*O
--
-value$"GloomyGalleon;Behind Enguarde Door
-
-nameBehind Enguarde Door
-5*3
-
-valueGloomyGalleon;Cactus
-
-nameCactus
-i*g
-9
-value0.GloomyGalleon;Tunnel to Shipyard - Tiny switch
-*
-name" Tunnel to Shipyard - Tiny switch
-k*i
-:
-value1/GloomyGalleon;Tunnel to Shipyard - Lanky switch
-+
-name#!Tunnel to Shipyard - Lanky switch
-U*S
-/
-value&$GloomyGalleon;Tunnel to Punch Chests
- 
-nameTunnel to Punch Chests
-K*I
-*
-value!GloomyGalleon;Edge of Blast pad
-
-nameEdge of Blast pad
-U*S
-/
-value&$GloomyGalleon;Under Baboon Blast pad
- 
-nameUnder Baboon Blast pad
-[*Y
-2
-value)'GloomyGalleon;Under RocketBarrel barrel
-#
-nameUnder RocketBarrel barrel
-W*U
-0
-value'%GloomyGalleon;Next to Cannonball game
-!
-nameNext to Cannonball game
-e*c
-7
-value.,GloomyGalleon;Next to Lighthouse Gate switch
-(
-name Next to Lighthouse Gate switch
-g*e
-8
-value/-GloomyGalleon;Entrance Tunnel - near entrance
-)
-name!Entrance Tunnel - near entrance
-a*_
-5
-value,*GloomyGalleon;Next to Shipyard Gate switch
-&
-nameNext to Shipyard Gate switch
-*}
-D
-value;9GloomyGalleon;Above the water next to the floating warp 5
-5
-name-+Above the water next to the floating warp 5
-[*Y
-2
-value)'GloomyGalleon;Cactus - bottom back left
-#
-nameCactus - bottom back left
-]*[
-3
-value*(GloomyGalleon;Cactus - bottom front left
-$
-nameCactus - bottom front left
-]*[
-3
-value*(GloomyGalleon;Cactus - bottom back right
-$
-nameCactus - bottom back right
-_*]
-4
-value+)GloomyGalleon;Cactus - bottom front right
-%
-nameCactus - bottom front right
-I*G
-)
-value GloomyGalleon;Diddy Gold Tower
-
-nameDiddy Gold Tower
-W*U
-0
-value'%GloomyGalleon;Treasure Chest Exterior
-!
-nameTreasure Chest Exterior
-G*E
-(
-valueGloomyGalleon;Cavern Mast Top
-
-nameCavern Mast Top
-[*Y
-2
-value)'GloomyGalleon;Punch Chests Room - right
-#
-namePunch Chests Room - right
-o*m
-<
-value31GloomyGalleon;Low water alcove in lighthouse area
--
-name%#Low water alcove in lighthouse area
-e*c
-7
-value.,GloomyGalleon;Behind boxes near Cavern Wreck
-(
-name Behind boxes near Cavern Wreck
-Y*W
-1
-value(&GloomyGalleon;Mechfish Gate - far left
-"
-nameMechfish Gate - far left
-Q*O
--
-value$"GloomyGalleon;Mechfish Gate - left
-
-nameMechfish Gate - left
-U*S
-/
-value&$GloomyGalleon;Mechfish Gate - middle
- 
-nameMechfish Gate - middle
-S*Q
-.
-value%#GloomyGalleon;Mechfish Gate - right
-
-nameMechfish Gate - right
-[*Y
-2
-value)'GloomyGalleon;Mechfish Gate - far right
-#
-nameMechfish Gate - far right
-Q*O
--
-value$"GloomyGalleon;Cannonball Room Exit
-
-nameCannonball Room Exit
-O*M
-,
-value#!GloomyGalleon;2DS secret 3rd door
-
-name2DS secret 3rd door
-c*a
-6
-value-+GloomyGalleon;Near Mermaid's Palace - right
-'
-nameNear Mermaid's Palace - right
-a*_
-5
-value,*GloomyGalleon;Near Mermaid's Palace - left
-&
-nameNear Mermaid's Palace - left
-y*w
-A
-value86GloomyGalleon;Near Mermaid's Palace - Under Tag Barrel
-2
-name*(Near Mermaid's Palace - Under Tag Barrel
-;*9
-"
-valueGloomyGalleon;Lanky 5DS
-
-name	Lanky 5DS
-;*9
-"
-valueGloomyGalleon;Lanky 2DS
-
-name	Lanky 2DS
-e*c
-7
-value.,GloomyGalleon;Cannonball gate tunnel - right
-(
-name Cannonball gate tunnel - right
-c*a
-6
-value-+GloomyGalleon;Cannonball gate tunnel - left
-'
-nameCannonball gate tunnel - left
-Ë!
-diddyﬁ!2€!
-Y*W
-1
-value(&GloomyGalleon;Galleon Lobby - Far Left
-"
-nameGalleon Lobby - Far Left
-[*Y
-2
-value)'GloomyGalleon;Galleon Lobby - Far Right
-#
-nameGalleon Lobby - Far Right
-_*]
-4
-value+)GloomyGalleon;Galleon Lobby - Close Right
-%
-nameGalleon Lobby - Close Right
-e*c
-7
-value.,GloomyGalleon;Galleon Lobby - Near DK Portal
-(
-name Galleon Lobby - Near DK Portal
-]*[
-3
-value*(GloomyGalleon;Galleon Lobby - Close Left
-$
-nameGalleon Lobby - Close Left
-[*Y
-2
-value)'GloomyGalleon;Cavern Alcove Past Planks
-#
-nameCavern Alcove Past Planks
-;*9
-"
-valueGloomyGalleon;Deep Hole
-
-name	Deep Hole
-=*;
-#
-valueGloomyGalleon;Behind 2DS
-
-name
-Behind 2DS
-Q*O
--
-value$"GloomyGalleon;Behind Enguarde Door
-
-nameBehind Enguarde Door
-5*3
-
-valueGloomyGalleon;Cactus
-
-nameCactus
-i*g
-9
-value0.GloomyGalleon;Tunnel to Shipyard - Tiny switch
-*
-name" Tunnel to Shipyard - Tiny switch
-k*i
-:
-value1/GloomyGalleon;Tunnel to Shipyard - Lanky switch
-+
-name#!Tunnel to Shipyard - Lanky switch
-U*S
-/
-value&$GloomyGalleon;Tunnel to Punch Chests
- 
-nameTunnel to Punch Chests
-K*I
-*
-value!GloomyGalleon;Edge of Blast pad
-
-nameEdge of Blast pad
-U*S
-/
-value&$GloomyGalleon;Under Baboon Blast pad
- 
-nameUnder Baboon Blast pad
-[*Y
-2
-value)'GloomyGalleon;Under RocketBarrel barrel
-#
-nameUnder RocketBarrel barrel
-W*U
-0
-value'%GloomyGalleon;Next to Cannonball game
-!
-nameNext to Cannonball game
-e*c
-7
-value.,GloomyGalleon;Next to Lighthouse Gate switch
-(
-name Next to Lighthouse Gate switch
-g*e
-8
-value/-GloomyGalleon;Entrance Tunnel - near entrance
-)
-name!Entrance Tunnel - near entrance
-a*_
-5
-value,*GloomyGalleon;Next to Shipyard Gate switch
-&
-nameNext to Shipyard Gate switch
-*}
-D
-value;9GloomyGalleon;Above the water next to the floating warp 5
-5
-name-+Above the water next to the floating warp 5
-[*Y
-2
-value)'GloomyGalleon;Cactus - bottom back left
-#
-nameCactus - bottom back left
-]*[
-3
-value*(GloomyGalleon;Cactus - bottom front left
-$
-nameCactus - bottom front left
-]*[
-3
-value*(GloomyGalleon;Cactus - bottom back right
-$
-nameCactus - bottom back right
-_*]
-4
-value+)GloomyGalleon;Cactus - bottom front right
-%
-nameCactus - bottom front right
-O*M
-,
-value#!GloomyGalleon;On top of Seal cage
-
-nameOn top of Seal cage
-I*G
-)
-value GloomyGalleon;Diddy Gold Tower
-
-nameDiddy Gold Tower
-W*U
-0
-value'%GloomyGalleon;Treasure Chest Exterior
-!
-nameTreasure Chest Exterior
-G*E
-(
-valueGloomyGalleon;Cavern Mast Top
-
-nameCavern Mast Top
-[*Y
-2
-value)'GloomyGalleon;Punch Chests Room - right
-#
-namePunch Chests Room - right
-o*m
-<
-value31GloomyGalleon;Low water alcove in lighthouse area
--
-name%#Low water alcove in lighthouse area
-e*c
-7
-value.,GloomyGalleon;Behind boxes near Cavern Wreck
-(
-name Behind boxes near Cavern Wreck
-Y*W
-1
-value(&GloomyGalleon;Mechfish Gate - far left
-"
-nameMechfish Gate - far left
-Q*O
--
-value$"GloomyGalleon;Mechfish Gate - left
-
-nameMechfish Gate - left
-U*S
-/
-value&$GloomyGalleon;Mechfish Gate - middle
- 
-nameMechfish Gate - middle
-S*Q
-.
-value%#GloomyGalleon;Mechfish Gate - right
-
-nameMechfish Gate - right
-[*Y
-2
-value)'GloomyGalleon;Mechfish Gate - far right
-#
-nameMechfish Gate - far right
-Q*O
--
-value$"GloomyGalleon;Cannonball Room Exit
-
-nameCannonball Room Exit
-O*M
-,
-value#!GloomyGalleon;2DS secret 3rd door
-
-name2DS secret 3rd door
-c*a
-6
-value-+GloomyGalleon;Near Mermaid's Palace - right
-'
-nameNear Mermaid's Palace - right
-a*_
-5
-value,*GloomyGalleon;Near Mermaid's Palace - left
-&
-nameNear Mermaid's Palace - left
-y*w
-A
-value86GloomyGalleon;Near Mermaid's Palace - Under Tag Barrel
-2
-name*(Near Mermaid's Palace - Under Tag Barrel
-e*c
-7
-value.,GloomyGalleon;Cannonball gate tunnel - right
-(
-name Cannonball gate tunnel - right
-c*a
-6
-value-+GloomyGalleon;Cannonball gate tunnel - left
-'
-nameCannonball gate tunnel - left
-Q*O
--
-value$"GloomyGalleon;Mechfish - Left wall
-
-nameMechfish - Left wall
-S*Q
-.
-value%#GloomyGalleon;Mechfish - Right wall
-
-nameMechfish - Right wall
-Y*W
-1
-value(&GloomyGalleon;On top of the lighthouse
-"
-nameOn top of the lighthouse
-ü 
-tinyñ 2ì 
-Y*W
-1
-value(&GloomyGalleon;Galleon Lobby - Far Left
-"
-nameGalleon Lobby - Far Left
-[*Y
-2
-value)'GloomyGalleon;Galleon Lobby - Far Right
-#
-nameGalleon Lobby - Far Right
-_*]
-4
-value+)GloomyGalleon;Galleon Lobby - Close Right
-%
-nameGalleon Lobby - Close Right
-e*c
-7
-value.,GloomyGalleon;Galleon Lobby - Near DK Portal
-(
-name Galleon Lobby - Near DK Portal
-]*[
-3
-value*(GloomyGalleon;Galleon Lobby - Close Left
-$
-nameGalleon Lobby - Close Left
-[*Y
-2
-value)'GloomyGalleon;Cavern Alcove Past Planks
-#
-nameCavern Alcove Past Planks
-;*9
-"
-valueGloomyGalleon;Deep Hole
-
-name	Deep Hole
-=*;
-#
-valueGloomyGalleon;Behind 2DS
-
-name
-Behind 2DS
-Q*O
--
-value$"GloomyGalleon;Behind Enguarde Door
-
-nameBehind Enguarde Door
-5*3
-
-valueGloomyGalleon;Cactus
-
-nameCactus
-i*g
-9
-value0.GloomyGalleon;Tunnel to Shipyard - Tiny switch
-*
-name" Tunnel to Shipyard - Tiny switch
-k*i
-:
-value1/GloomyGalleon;Tunnel to Shipyard - Lanky switch
-+
-name#!Tunnel to Shipyard - Lanky switch
-U*S
-/
-value&$GloomyGalleon;Tunnel to Punch Chests
- 
-nameTunnel to Punch Chests
-K*I
-*
-value!GloomyGalleon;Edge of Blast pad
-
-nameEdge of Blast pad
-U*S
-/
-value&$GloomyGalleon;Under Baboon Blast pad
- 
-nameUnder Baboon Blast pad
-[*Y
-2
-value)'GloomyGalleon;Under RocketBarrel barrel
-#
-nameUnder RocketBarrel barrel
-W*U
-0
-value'%GloomyGalleon;Next to Cannonball game
-!
-nameNext to Cannonball game
-e*c
-7
-value.,GloomyGalleon;Next to Lighthouse Gate switch
-(
-name Next to Lighthouse Gate switch
-g*e
-8
-value/-GloomyGalleon;Entrance Tunnel - near entrance
-)
-name!Entrance Tunnel - near entrance
-a*_
-5
-value,*GloomyGalleon;Next to Shipyard Gate switch
-&
-nameNext to Shipyard Gate switch
-*}
-D
-value;9GloomyGalleon;Above the water next to the floating warp 5
-5
-name-+Above the water next to the floating warp 5
-[*Y
-2
-value)'GloomyGalleon;Cactus - bottom back left
-#
-nameCactus - bottom back left
-]*[
-3
-value*(GloomyGalleon;Cactus - bottom front left
-$
-nameCactus - bottom front left
-]*[
-3
-value*(GloomyGalleon;Cactus - bottom back right
-$
-nameCactus - bottom back right
-_*]
-4
-value+)GloomyGalleon;Cactus - bottom front right
-%
-nameCactus - bottom front right
-I*G
-)
-value GloomyGalleon;Diddy Gold Tower
-
-nameDiddy Gold Tower
-W*U
-0
-value'%GloomyGalleon;Treasure Chest Exterior
-!
-nameTreasure Chest Exterior
-G*E
-(
-valueGloomyGalleon;Cavern Mast Top
-
-nameCavern Mast Top
-[*Y
-2
-value)'GloomyGalleon;Punch Chests Room - right
-#
-namePunch Chests Room - right
-o*m
-<
-value31GloomyGalleon;Low water alcove in lighthouse area
--
-name%#Low water alcove in lighthouse area
-e*c
-7
-value.,GloomyGalleon;Behind boxes near Cavern Wreck
-(
-name Behind boxes near Cavern Wreck
-Y*W
-1
-value(&GloomyGalleon;Mechfish Gate - far left
-"
-nameMechfish Gate - far left
-Q*O
--
-value$"GloomyGalleon;Mechfish Gate - left
-
-nameMechfish Gate - left
-U*S
-/
-value&$GloomyGalleon;Mechfish Gate - middle
- 
-nameMechfish Gate - middle
-S*Q
-.
-value%#GloomyGalleon;Mechfish Gate - right
-
-nameMechfish Gate - right
-[*Y
-2
-value)'GloomyGalleon;Mechfish Gate - far right
-#
-nameMechfish Gate - far right
-Q*O
--
-value$"GloomyGalleon;Cannonball Room Exit
-
-nameCannonball Room Exit
-O*M
-,
-value#!GloomyGalleon;2DS secret 3rd door
-
-name2DS secret 3rd door
-c*a
-6
-value-+GloomyGalleon;Near Mermaid's Palace - right
-'
-nameNear Mermaid's Palace - right
-a*_
-5
-value,*GloomyGalleon;Near Mermaid's Palace - left
-&
-nameNear Mermaid's Palace - left
-y*w
-A
-value86GloomyGalleon;Near Mermaid's Palace - Under Tag Barrel
-2
-name*(Near Mermaid's Palace - Under Tag Barrel
-O*M
-,
-value#!GloomyGalleon;In Mermaid's Palace
-
-nameIn Mermaid's Palace
-9*7
-!
-valueGloomyGalleon;Tiny 5DS
-
-name
-Tiny 5DS
-e*c
-7
-value.,GloomyGalleon;Cannonball gate tunnel - right
-(
-name Cannonball gate tunnel - right
-c*a
-6
-value-+GloomyGalleon;Cannonball gate tunnel - left
-'
-nameCannonball gate tunnel - left
-É"
-donkey¯!2ı!
-Y*W
-1
-value(&GloomyGalleon;Galleon Lobby - Far Left
-"
-nameGalleon Lobby - Far Left
-[*Y
-2
-value)'GloomyGalleon;Galleon Lobby - Far Right
-#
-nameGalleon Lobby - Far Right
-_*]
-4
-value+)GloomyGalleon;Galleon Lobby - Close Right
-%
-nameGalleon Lobby - Close Right
-e*c
-7
-value.,GloomyGalleon;Galleon Lobby - Near DK Portal
-(
-name Galleon Lobby - Near DK Portal
-]*[
-3
-value*(GloomyGalleon;Galleon Lobby - Close Left
-$
-nameGalleon Lobby - Close Left
-[*Y
-2
-value)'GloomyGalleon;Cavern Alcove Past Planks
-#
-nameCavern Alcove Past Planks
-;*9
-"
-valueGloomyGalleon;Deep Hole
-
-name	Deep Hole
-=*;
-#
-valueGloomyGalleon;Behind 2DS
-
-name
-Behind 2DS
-Q*O
--
-value$"GloomyGalleon;Behind Enguarde Door
-
-nameBehind Enguarde Door
-5*3
-
-valueGloomyGalleon;Cactus
-
-nameCactus
-i*g
-9
-value0.GloomyGalleon;Tunnel to Shipyard - Tiny switch
-*
-name" Tunnel to Shipyard - Tiny switch
-k*i
-:
-value1/GloomyGalleon;Tunnel to Shipyard - Lanky switch
-+
-name#!Tunnel to Shipyard - Lanky switch
-U*S
-/
-value&$GloomyGalleon;Tunnel to Punch Chests
- 
-nameTunnel to Punch Chests
-K*I
-*
-value!GloomyGalleon;Edge of Blast pad
-
-nameEdge of Blast pad
-U*S
-/
-value&$GloomyGalleon;Under Baboon Blast pad
- 
-nameUnder Baboon Blast pad
-[*Y
-2
-value)'GloomyGalleon;Under RocketBarrel barrel
-#
-nameUnder RocketBarrel barrel
-W*U
-0
-value'%GloomyGalleon;Next to Cannonball game
-!
-nameNext to Cannonball game
-e*c
-7
-value.,GloomyGalleon;Next to Lighthouse Gate switch
-(
-name Next to Lighthouse Gate switch
-g*e
-8
-value/-GloomyGalleon;Entrance Tunnel - near entrance
-)
-name!Entrance Tunnel - near entrance
-a*_
-5
-value,*GloomyGalleon;Next to Shipyard Gate switch
-&
-nameNext to Shipyard Gate switch
-*}
-D
-value;9GloomyGalleon;Above the water next to the floating warp 5
-5
-name-+Above the water next to the floating warp 5
-[*Y
-2
-value)'GloomyGalleon;Cactus - bottom back left
-#
-nameCactus - bottom back left
-]*[
-3
-value*(GloomyGalleon;Cactus - bottom front left
-$
-nameCactus - bottom front left
-]*[
-3
-value*(GloomyGalleon;Cactus - bottom back right
-$
-nameCactus - bottom back right
-_*]
-4
-value+)GloomyGalleon;Cactus - bottom front right
-%
-nameCactus - bottom front right
-I*G
-)
-value GloomyGalleon;Diddy Gold Tower
-
-nameDiddy Gold Tower
-W*U
-0
-value'%GloomyGalleon;Treasure Chest Exterior
-!
-nameTreasure Chest Exterior
-G*E
-(
-valueGloomyGalleon;Cavern Mast Top
-
-nameCavern Mast Top
-[*Y
-2
-value)'GloomyGalleon;Punch Chests Room - right
-#
-namePunch Chests Room - right
-o*m
-<
-value31GloomyGalleon;Low water alcove in lighthouse area
--
-name%#Low water alcove in lighthouse area
-e*c
-7
-value.,GloomyGalleon;Behind boxes near Cavern Wreck
-(
-name Behind boxes near Cavern Wreck
-Y*W
-1
-value(&GloomyGalleon;Mechfish Gate - far left
-"
-nameMechfish Gate - far left
-Q*O
--
-value$"GloomyGalleon;Mechfish Gate - left
-
-nameMechfish Gate - left
-U*S
-/
-value&$GloomyGalleon;Mechfish Gate - middle
- 
-nameMechfish Gate - middle
-S*Q
-.
-value%#GloomyGalleon;Mechfish Gate - right
-
-nameMechfish Gate - right
-[*Y
-2
-value)'GloomyGalleon;Mechfish Gate - far right
-#
-nameMechfish Gate - far right
-Q*O
--
-value$"GloomyGalleon;Cannonball Room Exit
-
-nameCannonball Room Exit
-O*M
-,
-value#!GloomyGalleon;2DS secret 3rd door
-
-name2DS secret 3rd door
-c*a
-6
-value-+GloomyGalleon;Near Mermaid's Palace - right
-'
-nameNear Mermaid's Palace - right
-a*_
-5
-value,*GloomyGalleon;Near Mermaid's Palace - left
-&
-nameNear Mermaid's Palace - left
-y*w
-A
-value86GloomyGalleon;Near Mermaid's Palace - Under Tag Barrel
-2
-name*(Near Mermaid's Palace - Under Tag Barrel
-[*Y
-2
-value)'GloomyGalleon;Lighthouse - Up the ledge
-#
-nameLighthouse - Up the ledge
-K*I
-*
-value!GloomyGalleon;Lighthouse - Left
-
-nameLighthouse - Left
-K*I
-*
-value!GloomyGalleon;Lighthouse - Back
-
-nameLighthouse - Back
-e*c
-7
-value.,GloomyGalleon;Cannonball gate tunnel - right
-(
-name Cannonball gate tunnel - right
-c*a
-6
-value-+GloomyGalleon;Cannonball gate tunnel - left
-'
-nameCannonball gate tunnel - left
-u*s
-?
-value64GloomyGalleon;Donkey 5DS - Next to the left cell bed
-0
-name(&Donkey 5DS - Next to the left cell bed
-Ú$
-chunkyÁ$2‰$
-Y*W
-1
-value(&GloomyGalleon;Galleon Lobby - Far Left
-"
-nameGalleon Lobby - Far Left
-[*Y
-2
-value)'GloomyGalleon;Galleon Lobby - Far Right
-#
-nameGalleon Lobby - Far Right
-_*]
-4
-value+)GloomyGalleon;Galleon Lobby - Close Right
-%
-nameGalleon Lobby - Close Right
-e*c
-7
-value.,GloomyGalleon;Galleon Lobby - Near DK Portal
-(
-name Galleon Lobby - Near DK Portal
-]*[
-3
-value*(GloomyGalleon;Galleon Lobby - Close Left
-$
-nameGalleon Lobby - Close Left
-[*Y
-2
-value)'GloomyGalleon;Cavern Alcove Past Planks
-#
-nameCavern Alcove Past Planks
-;*9
-"
-valueGloomyGalleon;Deep Hole
-
-name	Deep Hole
-=*;
-#
-valueGloomyGalleon;Behind 2DS
-
-name
-Behind 2DS
-Q*O
--
-value$"GloomyGalleon;Behind Enguarde Door
-
-nameBehind Enguarde Door
-5*3
-
-valueGloomyGalleon;Cactus
-
-nameCactus
-i*g
-9
-value0.GloomyGalleon;Tunnel to Shipyard - Tiny switch
-*
-name" Tunnel to Shipyard - Tiny switch
-k*i
-:
-value1/GloomyGalleon;Tunnel to Shipyard - Lanky switch
-+
-name#!Tunnel to Shipyard - Lanky switch
-U*S
-/
-value&$GloomyGalleon;Tunnel to Punch Chests
- 
-nameTunnel to Punch Chests
-K*I
-*
-value!GloomyGalleon;Edge of Blast pad
-
-nameEdge of Blast pad
-U*S
-/
-value&$GloomyGalleon;Under Baboon Blast pad
- 
-nameUnder Baboon Blast pad
-[*Y
-2
-value)'GloomyGalleon;Under RocketBarrel barrel
-#
-nameUnder RocketBarrel barrel
-W*U
-0
-value'%GloomyGalleon;Next to Cannonball game
-!
-nameNext to Cannonball game
-e*c
-7
-value.,GloomyGalleon;Next to Lighthouse Gate switch
-(
-name Next to Lighthouse Gate switch
-g*e
-8
-value/-GloomyGalleon;Entrance Tunnel - near entrance
-)
-name!Entrance Tunnel - near entrance
-a*_
-5
-value,*GloomyGalleon;Next to Shipyard Gate switch
-&
-nameNext to Shipyard Gate switch
-*}
-D
-value;9GloomyGalleon;Above the water next to the floating warp 5
-5
-name-+Above the water next to the floating warp 5
-[*Y
-2
-value)'GloomyGalleon;Cactus - bottom back left
-#
-nameCactus - bottom back left
-]*[
-3
-value*(GloomyGalleon;Cactus - bottom front left
-$
-nameCactus - bottom front left
-]*[
-3
-value*(GloomyGalleon;Cactus - bottom back right
-$
-nameCactus - bottom back right
-_*]
-4
-value+)GloomyGalleon;Cactus - bottom front right
-%
-nameCactus - bottom front right
-I*G
-)
-value GloomyGalleon;Diddy Gold Tower
-
-nameDiddy Gold Tower
-W*U
-0
-value'%GloomyGalleon;Treasure Chest Exterior
-!
-nameTreasure Chest Exterior
-G*E
-(
-valueGloomyGalleon;Cavern Mast Top
-
-nameCavern Mast Top
-[*Y
-2
-value)'GloomyGalleon;Punch Chests Room - right
-#
-namePunch Chests Room - right
-W*U
-0
-value'%GloomyGalleon;Punch Under Cavern Shop
-!
-namePunch Under Cavern Shop
-o*m
-<
-value31GloomyGalleon;Low water alcove in lighthouse area
--
-name%#Low water alcove in lighthouse area
-e*c
-7
-value.,GloomyGalleon;Behind boxes near Cavern Wreck
-(
-name Behind boxes near Cavern Wreck
-Y*W
-1
-value(&GloomyGalleon;Mechfish Gate - far left
-"
-nameMechfish Gate - far left
-Q*O
--
-value$"GloomyGalleon;Mechfish Gate - left
-
-nameMechfish Gate - left
-U*S
-/
-value&$GloomyGalleon;Mechfish Gate - middle
- 
-nameMechfish Gate - middle
-S*Q
-.
-value%#GloomyGalleon;Mechfish Gate - right
-
-nameMechfish Gate - right
-[*Y
-2
-value)'GloomyGalleon;Mechfish Gate - far right
-#
-nameMechfish Gate - far right
-Q*O
--
-value$"GloomyGalleon;Cannonball Room Exit
-
-nameCannonball Room Exit
-O*M
-,
-value#!GloomyGalleon;2DS secret 3rd door
-
-name2DS secret 3rd door
-c*a
-6
-value-+GloomyGalleon;Near Mermaid's Palace - right
-'
-nameNear Mermaid's Palace - right
-a*_
-5
-value,*GloomyGalleon;Near Mermaid's Palace - left
-&
-nameNear Mermaid's Palace - left
-y*w
-A
-value86GloomyGalleon;Near Mermaid's Palace - Under Tag Barrel
-2
-name*(Near Mermaid's Palace - Under Tag Barrel
-e*c
-7
-value.,GloomyGalleon;Cannonball gate tunnel - right
-(
-name Cannonball gate tunnel - right
-c*a
-6
-value-+GloomyGalleon;Cannonball gate tunnel - left
-'
-nameCannonball gate tunnel - left
-[*Y
-2
-value)'GloomyGalleon;Seasick ship - start left
-#
-nameSeasick ship - start left
-]*[
-3
-value*(GloomyGalleon;Seasick ship - start right
-$
-nameSeasick ship - start right
-w*u
-@
-value75GloomyGalleon;Seasick ship - after cannons front left
-1
-name)'Seasick ship - after cannons front left
-y*w
-A
-value86GloomyGalleon;Seasick ship - after cannons front right
-2
-name*(Seasick ship - after cannons front right
-o*m
-<
-value31GloomyGalleon;Seasick ship - after cannons center
--
-name%#Seasick ship - after cannons center
-a*_
-5
-value,*GloomyGalleon;Chunky 5DS - Against a chest
-&
-nameChunky 5DS - Against a chest
-Ù•
-JungleJapes„•*ﬂ•
-∞#
-lanky¶#2£#
-[*Y
-1
-value(&JungleJapes;Japes Lobby - Middle Right
-$
-nameJapes Lobby - Middle Right
-S*Q
--
-value$"JungleJapes;Japes Lobby - Far Left
- 
-nameJapes Lobby - Far Left
-Y*W
-0
-value'%JungleJapes;Japes Lobby - Close Right
-#
-nameJapes Lobby - Close Right
-U*S
-.
-value%#JungleJapes;Japes Lobby - Far Right
-!
-nameJapes Lobby - Far Right
-W*U
-/
-value&$JungleJapes;Japes Lobby - Close Left
-"
-nameJapes Lobby - Close Left
-I*G
-(
-valueJungleJapes;First Tunnel Cave
-
-nameFirst Tunnel Cave
-K*I
-)
-value JungleJapes;Near Painting Room
-
-nameNear Painting Room
-K*I
-)
-value JungleJapes;Rambi Boulder Cave
-
-nameRambi Boulder Cave
-[*Y
-1
-value(&JungleJapes;Next to Diddy Cage - right
-$
-nameNext to Diddy Cage - right
-k*i
-9
-value0.JungleJapes;Alcove Above Stormy Tunnel - right
-,
-name$"Alcove Above Stormy Tunnel - right
-i*g
-8
-value/-JungleJapes;Alcove Above Stormy Tunnel - left
-+
-name#!Alcove Above Stormy Tunnel - left
-a*_
-4
-value+)JungleJapes;Next to Minecart Exit - right
-'
-nameNext to Minecart Exit - right
-Y*W
-0
-value'%JungleJapes;Across From Minecart Exit
-#
-nameAcross From Minecart Exit
-M*K
-*
-value!JungleJapes;Next to Hive Tunnel
-
-nameNext to Hive Tunnel
-m*k
-:
-value1/JungleJapes;Hive Area - Next to Hive - far left
--
-name%#Hive Area - Next to Hive - far left
-e*c
-6
-value-+JungleJapes;Hive Area - Next to Hive - left
-)
-name!Hive Area - Next to Hive - left
-I*G
-(
-valueJungleJapes;Rambi Pool - left
-
-nameRambi Pool - left
-K*I
-)
-value JungleJapes;Rambi Pool - right
-
-nameRambi Pool - right
-i*g
-8
-value/-JungleJapes;Top of Lanky Useless Slope - left
-+
-name#!Top of Lanky Useless Slope - left
-k*i
-9
-value0.JungleJapes;Top of Lanky Useless Slope - right
-,
-name$"Top of Lanky Useless Slope - right
-M*K
-*
-value!JungleJapes;River by Tag Barrel
-
-nameRiver by Tag Barrel
-]*[
-2
-value)'JungleJapes;River by Chunky Underground
-%
-nameRiver by Chunky Underground
-Q*O
-,
-value#!JungleJapes;Low Hill Shop - right
-
-nameLow Hill Shop - right
-O*M
-+
-value" JungleJapes;Painting Hill - left
-
-namePainting Hill - left
-Q*O
-,
-value#!JungleJapes;Painting Hill - right
-
-namePainting Hill - right
-[*Y
-1
-value(&JungleJapes;First Tunnel Switch - left
-$
-nameFirst Tunnel Switch - left
-]*[
-2
-value)'JungleJapes;First Tunnel Switch - right
-%
-nameFirst Tunnel Switch - right
-W*U
-/
-value&$JungleJapes;First Tunnel - back left
-"
-nameFirst Tunnel - back left
-Y*W
-0
-value'%JungleJapes;First Tunnel - front left
-#
-nameFirst Tunnel - front left
-c*a
-5
-value,*JungleJapes;First Tunnel - Near River Exit
-(
-name First Tunnel - Near River Exit
-m*k
-:
-value1/JungleJapes;Stormy Tunnel - Near Pit River Side
--
-name%#Stormy Tunnel - Near Pit River Side
-[*Y
-1
-value(&JungleJapes;Stormy Tunnel - River Side
-$
-nameStormy Tunnel - River Side
-e*c
-6
-value-+JungleJapes;Stormy Tunnel Threeway crossing
-)
-name!Stormy Tunnel Threeway crossing
-Y*W
-0
-value'%JungleJapes;Stormy Tunnel - Crossroad
-#
-nameStormy Tunnel - Crossroad
-Y*W
-0
-value'%JungleJapes;Stormy Area - front right
-#
-nameStormy Area - front right
-W*U
-/
-value&$JungleJapes;Stormy Area - front left
-"
-nameStormy Area - front left
-Y*W
-0
-value'%JungleJapes;Stormy Area - center left
-#
-nameStormy Area - center left
-[*Y
-1
-value(&JungleJapes;Stormy Area - center right
-$
-nameStormy Area - center right
-U*S
-.
-value%#JungleJapes;Stormy Area - back left
-!
-nameStormy Area - back left
-W*U
-/
-value&$JungleJapes;Stormy Area - back right
-"
-nameStormy Area - back right
-o*m
-;
-value20JungleJapes;Painting Room - Next to the Entrance
-.
-name&$Painting Room - Next to the Entrance
-g*e
-7
-value.,JungleJapes;Painting room - Left of painting
-*
-name" Painting room - Left of painting
-i*g
-8
-value/-JungleJapes;Painting room - Right of painting
-+
-name#!Painting room - Right of painting
-c*a
-5
-value,*JungleJapes;Chunky underground - left wall
-(
-name Chunky underground - left wall
-e*c
-6
-value-+JungleJapes;Chunky underground - right wall
-)
-name!Chunky underground - right wall
-O*M
-+
-value" JungleJapes;Entrance door switch
-
-nameEntrance door switch
-S*Q
--
-value$"JungleJapes;Next to level entrance
- 
-nameNext to level entrance
-O*M
-+
-value" JungleJapes;Against the mountain
-
-nameAgainst the mountain
-K*I
-)
-value JungleJapes;Slope to Kong Cage
-
-nameSlope to Kong Cage
-Å%
-diddy˜$2Ù$
-[*Y
-1
-value(&JungleJapes;Japes Lobby - Middle Right
-$
-nameJapes Lobby - Middle Right
-S*Q
--
-value$"JungleJapes;Japes Lobby - Far Left
- 
-nameJapes Lobby - Far Left
-Y*W
-0
-value'%JungleJapes;Japes Lobby - Close Right
-#
-nameJapes Lobby - Close Right
-U*S
-.
-value%#JungleJapes;Japes Lobby - Far Right
-!
-nameJapes Lobby - Far Right
-W*U
-/
-value&$JungleJapes;Japes Lobby - Close Left
-"
-nameJapes Lobby - Close Left
-I*G
-(
-valueJungleJapes;First Tunnel Cave
-
-nameFirst Tunnel Cave
-K*I
-)
-value JungleJapes;Near Painting Room
-
-nameNear Painting Room
-K*I
-)
-value JungleJapes;Rambi Boulder Cave
-
-nameRambi Boulder Cave
-[*Y
-1
-value(&JungleJapes;Next to Diddy Cage - right
-$
-nameNext to Diddy Cage - right
-k*i
-9
-value0.JungleJapes;Alcove Above Stormy Tunnel - right
-,
-name$"Alcove Above Stormy Tunnel - right
-i*g
-8
-value/-JungleJapes;Alcove Above Stormy Tunnel - left
-+
-name#!Alcove Above Stormy Tunnel - left
-a*_
-4
-value+)JungleJapes;Next to Minecart Exit - right
-'
-nameNext to Minecart Exit - right
-Y*W
-0
-value'%JungleJapes;Across From Minecart Exit
-#
-nameAcross From Minecart Exit
-M*K
-*
-value!JungleJapes;Next to Hive Tunnel
-
-nameNext to Hive Tunnel
-m*k
-:
-value1/JungleJapes;Hive Area - Next to Hive - far left
--
-name%#Hive Area - Next to Hive - far left
-e*c
-6
-value-+JungleJapes;Hive Area - Next to Hive - left
-)
-name!Hive Area - Next to Hive - left
-I*G
-(
-valueJungleJapes;Rambi Pool - left
-
-nameRambi Pool - left
-K*I
-)
-value JungleJapes;Rambi Pool - right
-
-nameRambi Pool - right
-M*K
-*
-value!JungleJapes;River by Tag Barrel
-
-nameRiver by Tag Barrel
-]*[
-2
-value)'JungleJapes;River by Chunky Underground
-%
-nameRiver by Chunky Underground
-Q*O
-,
-value#!JungleJapes;Low Hill Shop - right
-
-nameLow Hill Shop - right
-[*Y
-1
-value(&JungleJapes;First Tunnel Switch - left
-$
-nameFirst Tunnel Switch - left
-]*[
-2
-value)'JungleJapes;First Tunnel Switch - right
-%
-nameFirst Tunnel Switch - right
-W*U
-/
-value&$JungleJapes;First Tunnel - back left
-"
-nameFirst Tunnel - back left
-Y*W
-0
-value'%JungleJapes;First Tunnel - front left
-#
-nameFirst Tunnel - front left
-c*a
-5
-value,*JungleJapes;First Tunnel - Near River Exit
-(
-name First Tunnel - Near River Exit
-m*k
-:
-value1/JungleJapes;Stormy Tunnel - Near Pit River Side
--
-name%#Stormy Tunnel - Near Pit River Side
-[*Y
-1
-value(&JungleJapes;Stormy Tunnel - River Side
-$
-nameStormy Tunnel - River Side
-e*c
-6
-value-+JungleJapes;Stormy Tunnel Threeway crossing
-)
-name!Stormy Tunnel Threeway crossing
-Y*W
-0
-value'%JungleJapes;Stormy Tunnel - Crossroad
-#
-nameStormy Tunnel - Crossroad
-Y*W
-0
-value'%JungleJapes;Stormy Area - front right
-#
-nameStormy Area - front right
-W*U
-/
-value&$JungleJapes;Stormy Area - front left
-"
-nameStormy Area - front left
-Y*W
-0
-value'%JungleJapes;Stormy Area - center left
-#
-nameStormy Area - center left
-[*Y
-1
-value(&JungleJapes;Stormy Area - center right
-$
-nameStormy Area - center right
-U*S
-.
-value%#JungleJapes;Stormy Area - back left
-!
-nameStormy Area - back left
-W*U
-/
-value&$JungleJapes;Stormy Area - back right
-"
-nameStormy Area - back right
-{*y
-A
-value86JungleJapes;Diddy Mountain - Next to Conveyor Controls
-4
-name,*Diddy Mountain - Next to Conveyor Controls
-*}
-C
-value:8JungleJapes;Diddy Mountain - between River and GB switch
-6
-name.,Diddy Mountain - between River and GB switch
-à*Ö
-G
-value><JungleJapes;Diddy Mountain - between River and Peanut Switch
-:
-name20Diddy Mountain - between River and Peanut Switch
-w*u
-?
-value64JungleJapes;Diddy Mountain - Next to the slam switch
-2
-name*(Diddy Mountain - Next to the slam switch
-c*a
-5
-value,*JungleJapes;Diddy Mountain - River grate 1
-(
-name Diddy Mountain - River grate 1
-c*a
-5
-value,*JungleJapes;Diddy Mountain - River grate 2
-(
-name Diddy Mountain - River grate 2
-c*a
-5
-value,*JungleJapes;Diddy Mountain - Minecart room
-(
-name Diddy Mountain - Minecart room
-c*a
-5
-value,*JungleJapes;Chunky underground - left wall
-(
-name Chunky underground - left wall
-e*c
-6
-value-+JungleJapes;Chunky underground - right wall
-)
-name!Chunky underground - right wall
-_*]
-3
-value*(JungleJapes;Next to the baboon blast pad
-&
-nameNext to the baboon blast pad
-O*M
-+
-value" JungleJapes;Entrance door switch
-
-nameEntrance door switch
-S*Q
--
-value$"JungleJapes;Next to level entrance
- 
-nameNext to level entrance
-O*M
-+
-value" JungleJapes;Against the mountain
-
-nameAgainst the mountain
-K*I
-)
-value JungleJapes;Slope to Kong Cage
-
-nameSlope to Kong Cage
-ä
-tinyÅ2˛
-[*Y
-1
-value(&JungleJapes;Japes Lobby - Middle Right
-$
-nameJapes Lobby - Middle Right
-S*Q
--
-value$"JungleJapes;Japes Lobby - Far Left
- 
-nameJapes Lobby - Far Left
-Y*W
-0
-value'%JungleJapes;Japes Lobby - Close Right
-#
-nameJapes Lobby - Close Right
-U*S
-.
-value%#JungleJapes;Japes Lobby - Far Right
-!
-nameJapes Lobby - Far Right
-W*U
-/
-value&$JungleJapes;Japes Lobby - Close Left
-"
-nameJapes Lobby - Close Left
-I*G
-(
-valueJungleJapes;First Tunnel Cave
-
-nameFirst Tunnel Cave
-K*I
-)
-value JungleJapes;Near Painting Room
-
-nameNear Painting Room
-K*I
-)
-value JungleJapes;Rambi Boulder Cave
-
-nameRambi Boulder Cave
-[*Y
-1
-value(&JungleJapes;Next to Diddy Cage - right
-$
-nameNext to Diddy Cage - right
-k*i
-9
-value0.JungleJapes;Alcove Above Stormy Tunnel - right
-,
-name$"Alcove Above Stormy Tunnel - right
-i*g
-8
-value/-JungleJapes;Alcove Above Stormy Tunnel - left
-+
-name#!Alcove Above Stormy Tunnel - left
-a*_
-4
-value+)JungleJapes;Next to Minecart Exit - right
-'
-nameNext to Minecart Exit - right
-Y*W
-0
-value'%JungleJapes;Across From Minecart Exit
-#
-nameAcross From Minecart Exit
-M*K
-*
-value!JungleJapes;Next to Hive Tunnel
-
-nameNext to Hive Tunnel
-m*k
-:
-value1/JungleJapes;Hive Area - Next to Hive - far left
--
-name%#Hive Area - Next to Hive - far left
-e*c
-6
-value-+JungleJapes;Hive Area - Next to Hive - left
-)
-name!Hive Area - Next to Hive - left
-I*G
-(
-valueJungleJapes;Rambi Pool - left
-
-nameRambi Pool - left
-K*I
-)
-value JungleJapes;Rambi Pool - right
-
-nameRambi Pool - right
-M*K
-*
-value!JungleJapes;River by Tag Barrel
-
-nameRiver by Tag Barrel
-]*[
-2
-value)'JungleJapes;River by Chunky Underground
-%
-nameRiver by Chunky Underground
-Q*O
-,
-value#!JungleJapes;Low Hill Shop - right
-
-nameLow Hill Shop - right
-[*Y
-1
-value(&JungleJapes;First Tunnel Switch - left
-$
-nameFirst Tunnel Switch - left
-]*[
-2
-value)'JungleJapes;First Tunnel Switch - right
-%
-nameFirst Tunnel Switch - right
-W*U
-/
-value&$JungleJapes;First Tunnel - back left
-"
-nameFirst Tunnel - back left
-Y*W
-0
-value'%JungleJapes;First Tunnel - front left
-#
-nameFirst Tunnel - front left
-c*a
-5
-value,*JungleJapes;First Tunnel - Near River Exit
-(
-name First Tunnel - Near River Exit
-m*k
-:
-value1/JungleJapes;Stormy Tunnel - Near Pit River Side
--
-name%#Stormy Tunnel - Near Pit River Side
-[*Y
-1
-value(&JungleJapes;Stormy Tunnel - River Side
-$
-nameStormy Tunnel - River Side
-e*c
-6
-value-+JungleJapes;Stormy Tunnel Threeway crossing
-)
-name!Stormy Tunnel Threeway crossing
-Y*W
-0
-value'%JungleJapes;Stormy Tunnel - Crossroad
-#
-nameStormy Tunnel - Crossroad
-Y*W
-0
-value'%JungleJapes;Stormy Area - front right
-#
-nameStormy Area - front right
-W*U
-/
-value&$JungleJapes;Stormy Area - front left
-"
-nameStormy Area - front left
-Y*W
-0
-value'%JungleJapes;Stormy Area - center left
-#
-nameStormy Area - center left
-[*Y
-1
-value(&JungleJapes;Stormy Area - center right
-$
-nameStormy Area - center right
-U*S
-.
-value%#JungleJapes;Stormy Area - back left
-!
-nameStormy Area - back left
-W*U
-/
-value&$JungleJapes;Stormy Area - back right
-"
-nameStormy Area - back right
-K*I
-)
-value JungleJapes;Hive Room 2 - left
-
-nameHive Room 2 - left
-M*K
-*
-value!JungleJapes;Hive Room 2 - right
-
-nameHive Room 2 - right
-c*a
-5
-value,*JungleJapes;Chunky underground - left wall
-(
-name Chunky underground - left wall
-e*c
-6
-value-+JungleJapes;Chunky underground - right wall
-)
-name!Chunky underground - right wall
-O*M
-+
-value" JungleJapes;Entrance door switch
-
-nameEntrance door switch
-S*Q
--
-value$"JungleJapes;Next to level entrance
- 
-nameNext to level entrance
-O*M
-+
-value" JungleJapes;Against the mountain
-
-nameAgainst the mountain
-K*I
-)
-value JungleJapes;Slope to Kong Cage
-
-nameSlope to Kong Cage
-—
-donkey∆2√
-[*Y
-1
-value(&JungleJapes;Japes Lobby - Middle Right
-$
-nameJapes Lobby - Middle Right
-S*Q
--
-value$"JungleJapes;Japes Lobby - Far Left
- 
-nameJapes Lobby - Far Left
-Y*W
-0
-value'%JungleJapes;Japes Lobby - Close Right
-#
-nameJapes Lobby - Close Right
-U*S
-.
-value%#JungleJapes;Japes Lobby - Far Right
-!
-nameJapes Lobby - Far Right
-W*U
-/
-value&$JungleJapes;Japes Lobby - Close Left
-"
-nameJapes Lobby - Close Left
-I*G
-(
-valueJungleJapes;First Tunnel Cave
-
-nameFirst Tunnel Cave
-K*I
-)
-value JungleJapes;Near Painting Room
-
-nameNear Painting Room
-K*I
-)
-value JungleJapes;Rambi Boulder Cave
-
-nameRambi Boulder Cave
-[*Y
-1
-value(&JungleJapes;Next to Diddy Cage - right
-$
-nameNext to Diddy Cage - right
-k*i
-9
-value0.JungleJapes;Alcove Above Stormy Tunnel - right
-,
-name$"Alcove Above Stormy Tunnel - right
-i*g
-8
-value/-JungleJapes;Alcove Above Stormy Tunnel - left
-+
-name#!Alcove Above Stormy Tunnel - left
-a*_
-4
-value+)JungleJapes;Next to Minecart Exit - right
-'
-nameNext to Minecart Exit - right
-Y*W
-0
-value'%JungleJapes;Across From Minecart Exit
-#
-nameAcross From Minecart Exit
-M*K
-*
-value!JungleJapes;Next to Hive Tunnel
-
-nameNext to Hive Tunnel
-m*k
-:
-value1/JungleJapes;Hive Area - Next to Hive - far left
--
-name%#Hive Area - Next to Hive - far left
-e*c
-6
-value-+JungleJapes;Hive Area - Next to Hive - left
-)
-name!Hive Area - Next to Hive - left
-I*G
-(
-valueJungleJapes;Rambi Pool - left
-
-nameRambi Pool - left
-K*I
-)
-value JungleJapes;Rambi Pool - right
-
-nameRambi Pool - right
-M*K
-*
-value!JungleJapes;River by Tag Barrel
-
-nameRiver by Tag Barrel
-]*[
-2
-value)'JungleJapes;River by Chunky Underground
-%
-nameRiver by Chunky Underground
-Q*O
-,
-value#!JungleJapes;Low Hill Shop - right
-
-nameLow Hill Shop - right
-[*Y
-1
-value(&JungleJapes;First Tunnel Switch - left
-$
-nameFirst Tunnel Switch - left
-]*[
-2
-value)'JungleJapes;First Tunnel Switch - right
-%
-nameFirst Tunnel Switch - right
-W*U
-/
-value&$JungleJapes;First Tunnel - back left
-"
-nameFirst Tunnel - back left
-Y*W
-0
-value'%JungleJapes;First Tunnel - front left
-#
-nameFirst Tunnel - front left
-c*a
-5
-value,*JungleJapes;First Tunnel - Near River Exit
-(
-name First Tunnel - Near River Exit
-m*k
-:
-value1/JungleJapes;Stormy Tunnel - Near Pit River Side
--
-name%#Stormy Tunnel - Near Pit River Side
-[*Y
-1
-value(&JungleJapes;Stormy Tunnel - River Side
-$
-nameStormy Tunnel - River Side
-e*c
-6
-value-+JungleJapes;Stormy Tunnel Threeway crossing
-)
-name!Stormy Tunnel Threeway crossing
-Y*W
-0
-value'%JungleJapes;Stormy Tunnel - Crossroad
-#
-nameStormy Tunnel - Crossroad
-Y*W
-0
-value'%JungleJapes;Stormy Area - front right
-#
-nameStormy Area - front right
-W*U
-/
-value&$JungleJapes;Stormy Area - front left
-"
-nameStormy Area - front left
-Y*W
-0
-value'%JungleJapes;Stormy Area - center left
-#
-nameStormy Area - center left
-[*Y
-1
-value(&JungleJapes;Stormy Area - center right
-$
-nameStormy Area - center right
-U*S
-.
-value%#JungleJapes;Stormy Area - back left
-!
-nameStormy Area - back left
-W*U
-/
-value&$JungleJapes;Stormy Area - back right
-"
-nameStormy Area - back right
-c*a
-5
-value,*JungleJapes;Chunky underground - left wall
-(
-name Chunky underground - left wall
-e*c
-6
-value-+JungleJapes;Chunky underground - right wall
-)
-name!Chunky underground - right wall
-_*]
-3
-value*(JungleJapes;Next to the baboon blast pad
-&
-nameNext to the baboon blast pad
-O*M
-+
-value" JungleJapes;Entrance door switch
-
-nameEntrance door switch
-S*Q
--
-value$"JungleJapes;Next to level entrance
- 
-nameNext to level entrance
-O*M
-+
-value" JungleJapes;Against the mountain
-
-nameAgainst the mountain
-K*I
-)
-value JungleJapes;Slope to Kong Cage
-
-nameSlope to Kong Cage
-ƒ
-chunkyπ2∂
-[*Y
-1
-value(&JungleJapes;Japes Lobby - Middle Right
-$
-nameJapes Lobby - Middle Right
-S*Q
--
-value$"JungleJapes;Japes Lobby - Far Left
- 
-nameJapes Lobby - Far Left
-Y*W
-0
-value'%JungleJapes;Japes Lobby - Close Right
-#
-nameJapes Lobby - Close Right
-U*S
-.
-value%#JungleJapes;Japes Lobby - Far Right
-!
-nameJapes Lobby - Far Right
-W*U
-/
-value&$JungleJapes;Japes Lobby - Close Left
-"
-nameJapes Lobby - Close Left
-I*G
-(
-valueJungleJapes;First Tunnel Cave
-
-nameFirst Tunnel Cave
-K*I
-)
-value JungleJapes;Near Painting Room
-
-nameNear Painting Room
-K*I
-)
-value JungleJapes;Rambi Boulder Cave
-
-nameRambi Boulder Cave
-[*Y
-1
-value(&JungleJapes;Next to Diddy Cage - right
-$
-nameNext to Diddy Cage - right
-k*i
-9
-value0.JungleJapes;Alcove Above Stormy Tunnel - right
-,
-name$"Alcove Above Stormy Tunnel - right
-i*g
-8
-value/-JungleJapes;Alcove Above Stormy Tunnel - left
-+
-name#!Alcove Above Stormy Tunnel - left
-a*_
-4
-value+)JungleJapes;Next to Minecart Exit - right
-'
-nameNext to Minecart Exit - right
-Y*W
-0
-value'%JungleJapes;Across From Minecart Exit
-#
-nameAcross From Minecart Exit
-M*K
-*
-value!JungleJapes;Next to Hive Tunnel
-
-nameNext to Hive Tunnel
-m*k
-:
-value1/JungleJapes;Hive Area - Next to Hive - far left
--
-name%#Hive Area - Next to Hive - far left
-e*c
-6
-value-+JungleJapes;Hive Area - Next to Hive - left
-)
-name!Hive Area - Next to Hive - left
-I*G
-(
-valueJungleJapes;Rambi Pool - left
-
-nameRambi Pool - left
-K*I
-)
-value JungleJapes;Rambi Pool - right
-
-nameRambi Pool - right
-M*K
-*
-value!JungleJapes;River by Tag Barrel
-
-nameRiver by Tag Barrel
-]*[
-2
-value)'JungleJapes;River by Chunky Underground
-%
-nameRiver by Chunky Underground
-Q*O
-,
-value#!JungleJapes;Low Hill Shop - right
-
-nameLow Hill Shop - right
-[*Y
-1
-value(&JungleJapes;First Tunnel Switch - left
-$
-nameFirst Tunnel Switch - left
-]*[
-2
-value)'JungleJapes;First Tunnel Switch - right
-%
-nameFirst Tunnel Switch - right
-W*U
-/
-value&$JungleJapes;First Tunnel - back left
-"
-nameFirst Tunnel - back left
-Y*W
-0
-value'%JungleJapes;First Tunnel - front left
-#
-nameFirst Tunnel - front left
-c*a
-5
-value,*JungleJapes;First Tunnel - Near River Exit
-(
-name First Tunnel - Near River Exit
-m*k
-:
-value1/JungleJapes;Stormy Tunnel - Near Pit River Side
--
-name%#Stormy Tunnel - Near Pit River Side
-[*Y
-1
-value(&JungleJapes;Stormy Tunnel - River Side
-$
-nameStormy Tunnel - River Side
-e*c
-6
-value-+JungleJapes;Stormy Tunnel Threeway crossing
-)
-name!Stormy Tunnel Threeway crossing
-Y*W
-0
-value'%JungleJapes;Stormy Tunnel - Crossroad
-#
-nameStormy Tunnel - Crossroad
-Y*W
-0
-value'%JungleJapes;Stormy Area - front right
-#
-nameStormy Area - front right
-W*U
-/
-value&$JungleJapes;Stormy Area - front left
-"
-nameStormy Area - front left
-Y*W
-0
-value'%JungleJapes;Stormy Area - center left
-#
-nameStormy Area - center left
-[*Y
-1
-value(&JungleJapes;Stormy Area - center right
-$
-nameStormy Area - center right
-U*S
-.
-value%#JungleJapes;Stormy Area - back left
-!
-nameStormy Area - back left
-W*U
-/
-value&$JungleJapes;Stormy Area - back right
-"
-nameStormy Area - back right
-c*a
-5
-value,*JungleJapes;Chunky underground - left wall
-(
-name Chunky underground - left wall
-e*c
-6
-value-+JungleJapes;Chunky underground - right wall
-)
-name!Chunky underground - right wall
-q*o
-<
-value31JungleJapes;Chunky underground - Kasplat platform
-/
-name'%Chunky underground - Kasplat platform
-_*]
-3
-value*(JungleJapes;Next to the baboon blast pad
-&
-nameNext to the baboon blast pad
-O*M
-+
-value" JungleJapes;Entrance door switch
-
-nameEntrance door switch
-S*Q
--
-value$"JungleJapes;Next to level entrance
- 
-nameNext to level entrance
-O*M
-+
-value" JungleJapes;Against the mountain
-
-nameAgainst the mountain
-K*I
-)
-value JungleJapes;Slope to Kong Cage
-
-nameSlope to Kong Cage
-˘€
-CrownPadÎ€*Á€
-Ì6
-FungiForest›62⁄6
-a*_
-'
-valueMushroom Exterior Top Ladder
-4
-name,*Fungi Forest: Mushroom Exterior Top Ladder
-M*K
-
-valueFront of Beanstalk
-*
-name" Fungi Forest: Front of Beanstalk
-=*;
-
-value
-Mill Grass
-"
-nameFungi Forest: Mill Grass
-;*9
-
-value	Near Well
-!
-nameFungi Forest: Near Well
-K*I
-
-valueClocktower Stumps
-)
-name!Fungi Forest: Clocktower Stumps
-A*?
-
-valueBehind Clock
-$
-nameFungi Forest: Behind Clock
-K*I
-
-valueIn front of Clock
-)
-name!Fungi Forest: In front of Clock
-I*G
-
-valueNear Blue Tunnel
-(
-name Fungi Forest: Near Blue Tunnel
-G*E
-
-valueNear Mills shop
-'
-nameFungi Forest: Near Mills shop
-O*M
-
-valueBehind rafters barn
-+
-name#!Fungi Forest: Behind rafters barn
-Q*O
-
-valueLeft of rafters barn
-,
-name$"Fungi Forest: Left of rafters barn
-K*I
-
-valueNext to Diddy Pad
-)
-name!Fungi Forest: Next to Diddy Pad
-O*M
-
-valueBehind Rafters Barn
-+
-name#!Fungi Forest: Behind Rafters Barn
-Q*O
-
-valueNear Mill Tag Barrel
-,
-name$"Fungi Forest: Near Mill Tag Barrel
-E*C
-
-valueNear Well Exit
-&
-nameFungi Forest: Near Well Exit
-=*;
-
-value
-Near Winch
-"
-nameFungi Forest: Near Winch
-Q*O
-
-valueNear Mill Punch Door
-,
-name$"Fungi Forest: Near Mill Punch Door
-U*S
-!
-valueNext to Crusher Output
-.
-name&$Fungi Forest: Next to Crusher Output
-]*[
-%
-valueEn route to Thornvine Barn
-2
-name*(Fungi Forest: En route to Thornvine Barn
-W*U
-"
-valueRight of Thornvine Barn
-/
-name'%Fungi Forest: Right of Thornvine Barn
-_*]
-&
-valueFar Right of Thornvine Barn
-3
-name+)Fungi Forest: Far Right of Thornvine Barn
-S*Q
- 
-valueBehind Thornvine Barn
--
-name%#Fungi Forest: Behind Thornvine Barn
-]*[
-%
-valueFar Left of Thornvine Barn
-2
-name*(Fungi Forest: Far Left of Thornvine Barn
-O*M
-
-valueNear Thornvine Barn
-+
-name#!Fungi Forest: Near Thornvine Barn
-S*Q
- 
-valueAlcove near the apple
--
-name%#Fungi Forest: Alcove near the apple
-O*M
-
-valueOn the Tomato Field
-+
-name#!Fungi Forest: On the Tomato Field
-O*M
-
-valueNear beanstalk shop
-+
-name#!Fungi Forest: Near beanstalk shop
-a*_
-'
-valueNear Beanstalk Area Entrance
-4
-name,*Fungi Forest: Near Beanstalk Area Entrance
-E*C
-
-valueNear Beanstalk
-&
-nameFungi Forest: Near Beanstalk
-]*[
-%
-valueNear Beanstalk Mini Monkey
-2
-name*(Fungi Forest: Near Beanstalk Mini Monkey
-O*M
-
-valueNear Giant Mushroom
-+
-name#!Fungi Forest: Near Giant Mushroom
-M*K
-
-valueNear Yellow Tunnel
-*
-name" Fungi Forest: Near Yellow Tunnel
-e*c
-)
-value Near Lower Baboon Blast Ladder
-6
-name.,Fungi Forest: Near Lower Baboon Blast Ladder
-K*I
-
-valueNear Baboon Blast
-)
-name!Fungi Forest: Near Baboon Blast
-g*e
-*
-value!Above Upper Baboon Blast Ladder
-7
-name/-Fungi Forest: Above Upper Baboon Blast Ladder
-_*]
-&
-valueMushroom Exterior Top Floor
-3
-name+)Fungi Forest: Mushroom Exterior Top Floor
-C*A
-
-valueBehind Rabbit
-%
-nameFungi Forest: Behind Rabbit
-U*S
-!
-valueNext to Rabbit's house
-.
-name&$Fungi Forest: Next to Rabbit's house
-E*C
-
-valueUnder Owl Tree
-&
-nameFungi Forest: Under Owl Tree
-M*K
-
-valueUnder the Owl Tree
-*
-name" Fungi Forest: Under the Owl Tree
-K*I
-
-valueOwl Tree Clearing
-)
-name!Fungi Forest: Owl Tree Clearing
-S*Q
- 
-valueNear Owl Rocketbarrel
--
-name%#Fungi Forest: Near Owl Rocketbarrel
-_*]
-&
-valueGrass Near Owl Rocketbarrel
-3
-name+)Fungi Forest: Grass Near Owl Rocketbarrel
-G*E
-
-valueTop of Owl Tree
-'
-nameFungi Forest: Top of Owl Tree
-7*5
-
-value	On Mill
-
-nameFungi Forest: On Mill
-Q*O
-
-valueVanilla Clock Warp 1
-,
-name$"Fungi Forest: Vanilla Clock Warp 1
-O*M
-
-valueVanilla Mill Warp 1
-+
-name#!Fungi Forest: Vanilla Mill Warp 1
-Q*O
-
-valueVanilla Clock Warp 2
-,
-name$"Fungi Forest: Vanilla Clock Warp 2
-Y*W
-#
-valueVanilla Beanstalk Warp 2
-0
-name(&Fungi Forest: Vanilla Beanstalk Warp 2
-Q*O
-
-valueVanilla Clock Warp 3
-,
-name$"Fungi Forest: Vanilla Clock Warp 3
-Q*O
-
-valueVanilla Clock Warp 4
-,
-name$"Fungi Forest: Vanilla Clock Warp 4
-W*U
-"
-valueVanilla Owl Tree Warp 4
-/
-name'%Fungi Forest: Vanilla Owl Tree Warp 4
-Q*O
-
-valueVanilla Lower Warp 5
-,
-name$"Fungi Forest: Vanilla Lower Warp 5
-Q*O
-
-valueVanilla Upper Warp 5
-,
-name$"Fungi Forest: Vanilla Upper Warp 5
-W*U
-"
-valueVanilla Mushroom Warp 3
-/
-name'%Fungi Forest: Vanilla Mushroom Warp 3
-Y*W
-#
-valueAnthill: Orange Platform
-0
-name(&Fungi Forest: Anthill: Orange Platform
-c*a
-(
-valueWinch Room: Opposite Entrance
-5
-name-+Fungi Forest: Winch Room: Opposite Entrance
-O*M
-
-valueNear Thornvine Barn
-+
-name#!Fungi Forest: Near Thornvine Barn
-c*a
-(
-valueThornvine Barn: Near Entrance
-5
-name-+Fungi Forest: Thornvine Barn: Near Entrance
-_*]
-&
-valueThornvine Barn: Near Ladder
-3
-name+)Fungi Forest: Thornvine Barn: Near Ladder
-e*c
-)
-value Thornvine Barn: Next to ladder
-6
-name.,Fungi Forest: Thornvine Barn: Next to ladder
-[*Y
-$
-valueThornvine Barn: Back Left
-1
-name)'Fungi Forest: Thornvine Barn: Back Left
-[*Y
-$
-valueMill Front: Near Conveyor
-1
-name)'Fungi Forest: Mill Front: Near Conveyor
-a*_
-'
-valueMill Front: Near Mini Monkey
-4
-name,*Fungi Forest: Mill Front: Near Mini Monkey
-W*U
-"
-valueMill front: Near levers
-/
-name'%Fungi Forest: Mill front: Near levers
-e*c
-)
-value Mill Back: near Chunky's coins
-6
-name.,Fungi Forest: Mill Back: near Chunky's coins
-g*e
-*
-value!Giant Mushroom: Near Tiny Bonus
-7
-name/-Fungi Forest: Giant Mushroom: Near Tiny Bonus
-k*i
-,
-value#!Giant Mushroom: Near Gun Switches
-9
-name1/Fungi Forest: Giant Mushroom: Near Gun Switches
-m*k
--
-value$"Giant Mushroom: Near Bottom Cannon
-:
-name20Fungi Forest: Giant Mushroom: Near Bottom Cannon
-]*[
-%
-valueGiant Mushroom: Near vines
-2
-name*(Fungi Forest: Giant Mushroom: Near vines
-i*g
-+
-value" Giant Mushroom: Next to a cannon
-8
-name0.Fungi Forest: Giant Mushroom: Next to a cannon
-w*u
-2
-value)'Giant Mushroom: Cannon below night door
-?
-name75Fungi Forest: Giant Mushroom: Cannon below night door
-s*q
-0
-value'%Giant Mushroom: On Top Viney Platform
-=
-name53Fungi Forest: Giant Mushroom: On Top Viney Platform
-[*Y
-$
-valueGiant Mushroom: Top Floor
-1
-name)'Fungi Forest: Giant Mushroom: Top Floor
-Q*O
-
-valueMill Attic: Near Box
-,
-name$"Fungi Forest: Mill Attic: Near Box
-o*m
-.
-value%#Mushroom Zingers: Opposite Entrance
-;
-name31Fungi Forest: Mushroom Zingers: Opposite Entrance
-i*g
-+
-value" Mushroom Slam: Opposite Entrance
-8
-name0.Fungi Forest: Mushroom Slam: Opposite Entrance
-Y*W
-#
-valueFace Puzzle: Near Puzzle
-0
-name(&Fungi Forest: Face Puzzle: Near Puzzle
-U*S
-!
-valueMill Back: Near Thatch
-.
-name&$Fungi Forest: Mill Back: Near Thatch
-[*Y
-$
-valueSpider: Opposite Entrance
-1
-name)'Fungi Forest: Spider: Opposite Entrance
- 8
-DKIslesæ82ª8
-W*U
-#
-valueSnide's Room: Under Rock
-.
-name&$D.K. Isles: Snide's Room: Under Rock
-a*_
-(
-valueFungi Lobby: Gorilla Gone Box
-3
-name+)D.K. Isles: Fungi Lobby: Gorilla Gone Box
-U*S
-"
-valueFront of Fungi Building
--
-name%#D.K. Isles: Front of Fungi Building
-I*G
-
-valueOn Aztec Building
-'
-nameD.K. Isles: On Aztec Building
-[*Y
-%
-valueUnder Caves Lobby Entrance
-0
-name(&D.K. Isles: Under Caves Lobby Entrance
-O*M
-
-valueCastle Lobby: Center
-*
-name" D.K. Isles: Castle Lobby: Center
-c*a
-)
-value Training Grounds: Banana Hoard
-4
-name,*D.K. Isles: Training Grounds: Banana Hoard
-a*_
-(
-valueTraining Grounds: Rear Tunnel
-3
-name+)D.K. Isles: Training Grounds: Rear Tunnel
-?*=
-
-valuePrison: Back
-"
-nameD.K. Isles: Prison: Back
-Q*O
- 
-valueBehind Fungi Building
-+
-name#!D.K. Isles: Behind Fungi Building
-Q*O
- 
-valueFungi floating island
-+
-name#!D.K. Isles: Fungi floating island
-K*I
-
-valueWaterfall Platform
-(
-name D.K. Isles: Waterfall Platform
-[*Y
-%
-valueDown Near Caves Lobby Tree
-0
-name(&D.K. Isles: Down Near Caves Lobby Tree
-?*=
-
-valueNear K. Rool
-"
-nameD.K. Isles: Near K. Rool
-I*G
-
-valueNear Fungi Cannon
-'
-nameD.K. Isles: Near Fungi Cannon
-O*M
-
-valueIn Fungi cannon rock
-*
-name" D.K. Isles: In Fungi cannon rock
-W*U
-#
-valueNext to Caves Lobby Tree
-.
-name&$D.K. Isles: Next to Caves Lobby Tree
-C*A
-
-valueIsles Boulders
-$
-nameD.K. Isles: Isles Boulders
-U*S
-"
-valueFront of Aztec Building
--
-name%#D.K. Isles: Front of Aztec Building
-Q*O
- 
-valueBehind Aztec Building
-+
-name#!D.K. Isles: Behind Aztec Building
-C*A
-
-valueOutside Prison
-$
-nameD.K. Isles: Outside Prison
-M*K
-
-valueNear Monkeyport pad
-)
-name!D.K. Isles: Near Monkeyport pad
-I*G
-
-valueBack of Krem Isle
-'
-nameD.K. Isles: Back of Krem Isle
-I*G
-
-valueUnder DK Caged GB
-'
-nameD.K. Isles: Under DK Caged GB
-Y*W
-$
-valueBack of Krem Isle (Lower)
-/
-name'%D.K. Isles: Back of Krem Isle (Lower)
-a*_
-(
-valueBehind Factory Lobby Entrance
-3
-name+)D.K. Isles: Behind Factory Lobby Entrance
-e*c
-*
-value!Right of Factory Lobby Entrance
-5
-name-+D.K. Isles: Right of Factory Lobby Entrance
-[*Y
-%
-valueBehind Helm Lobby Entrance
-0
-name(&D.K. Isles: Behind Helm Lobby Entrance
-Y*W
-$
-valueLeft Krem Isle Arm (side)
-/
-name'%D.K. Isles: Left Krem Isle Arm (side)
-K*I
-
-valueLeft Krem Isle Arm
-(
-name D.K. Isles: Left Krem Isle Arm
-M*K
-
-valueRight Krem Isle Arm
-)
-name!D.K. Isles: Right Krem Isle Arm
-;*9
-
-value
-Fairy Isle
- 
-nameD.K. Isles: Fairy Isle
-I*G
-
-valueBehind Fairy Isle
-'
-nameD.K. Isles: Behind Fairy Isle
-?*=
-
-valueSmall Island
-"
-nameD.K. Isles: Small Island
-M*K
-
-valueVanilla Ring Warp 1
-)
-name!D.K. Isles: Vanilla Ring Warp 1
-U*S
-"
-valueVanilla K. Lumsy Warp 1
--
-name%#D.K. Isles: Vanilla K. Lumsy Warp 1
-M*K
-
-valueVanilla Ring Warp 2
-)
-name!D.K. Isles: Vanilla Ring Warp 2
-O*M
-
-valueVanilla Upper Warp 2
-*
-name" D.K. Isles: Vanilla Upper Warp 2
-W*U
-#
-valueVanilla Waterfall Warp 3
-.
-name&$D.K. Isles: Vanilla Waterfall Warp 3
-M*K
-
-valueVanilla Ring Warp 5
-)
-name!D.K. Isles: Vanilla Ring Warp 5
-M*K
-
-valueVanilla Ring Warp 3
-)
-name!D.K. Isles: Vanilla Ring Warp 3
-M*K
-
-valueVanilla Ring Warp 4
-)
-name!D.K. Isles: Vanilla Ring Warp 4
-M*K
-
-valueVanilla Krem Warp 4
-)
-name!D.K. Isles: Vanilla Krem Warp 4
-Q*O
- 
-valueVanilla Island Warp 5
-+
-name#!D.K. Isles: Vanilla Island Warp 5
-_*]
-'
-valueJapes Lobby: Near Tag Barrel
-2
-name*(D.K. Isles: Japes Lobby: Near Tag Barrel
-W*U
-#
-valueJapes Lobby: Near Portal
-.
-name&$D.K. Isles: Japes Lobby: Near Portal
-[*Y
-%
-valueAztec Lobby: Front of Door
-0
-name(&D.K. Isles: Aztec Lobby: Front of Door
-_*]
-'
-valueAztec Lobby: back room right
-2
-name*(D.K. Isles: Aztec Lobby: back room right
-]*[
-&
-valueAztec Lobby: back room left
-1
-name)'D.K. Isles: Aztec Lobby: back room left
-Y*W
-$
-valueFactory Lobby: Near Lever
-/
-name'%D.K. Isles: Factory Lobby: Near Lever
-_*]
-'
-valueFactory Lobby: High Platform
-2
-name*(D.K. Isles: Factory Lobby: High Platform
-]*[
-&
-valueFactory Lobby: Above Portal
-1
-name)'D.K. Isles: Factory Lobby: Above Portal
-c*a
-)
-value Galleon Lobby: Right of Portal
-4
-name,*D.K. Isles: Galleon Lobby: Right of Portal
-a*_
-(
-valueGalleon Lobby: Left of Portal
-3
-name+)D.K. Isles: Galleon Lobby: Left of Portal
-[*Y
-%
-valueForest Lobby: On Tag Crate
-0
-name(&D.K. Isles: Forest Lobby: On Tag Crate
-_*]
-'
-valueCaves Lobby: Right of Portal
-2
-name*(D.K. Isles: Caves Lobby: Right of Portal
-W*U
-#
-valueCaves Lobby: Diddy ledge
-.
-name&$D.K. Isles: Caves Lobby: Diddy ledge
-Y*W
-$
-valueCaves Lobby: boulder room
-/
-name'%D.K. Isles: Caves Lobby: boulder room
-i*g
-,
-value#!Castle Lobby: Behind the entrance
-7
-name/-D.K. Isles: Castle Lobby: Behind the entrance
-e*c
-*
-value!Castle Lobby: Right of Entrance
-5
-name-+D.K. Isles: Castle Lobby: Right of Entrance
-_*]
-'
-valueCastle Lobby: Left of Portal
-2
-name*(D.K. Isles: Castle Lobby: Left of Portal
-c*a
-)
-value Helm Lobby: Next to Tag Barrel
-4
-name,*D.K. Isles: Helm Lobby: Next to Tag Barrel
-[*Y
-%
-valueHelm Lobby: Bonus Platform
-0
-name(&D.K. Isles: Helm Lobby: Bonus Platform
-[*Y
-%
-valueHelm Lobby: Kasplat island
-0
-name(&D.K. Isles: Helm Lobby: Kasplat island
-c*a
-)
-value Training Grounds: Far Mountain
-4
-name,*D.K. Isles: Training Grounds: Far Mountain
-k*i
--
-value$"Training Grounds: On the rear hill
-8
-name0.D.K. Isles: Training Grounds: On the rear hill
-s*q
-1
-value(&Training Grounds: On the entrance hill
-<
-name42D.K. Isles: Training Grounds: On the entrance hill
-e*c
-*
-value!Training Grounds: Near Mountain
-5
-name-+D.K. Isles: Training Grounds: Near Mountain
-]*[
-&
-valueTraining Grounds: Rear Cave
-1
-name)'D.K. Isles: Training Grounds: Rear Cave
-q*o
-0
-value'%Training Grounds: Banana Hoard (back)
-;
-name31D.K. Isles: Training Grounds: Banana Hoard (back)
-]*[
-&
-valueTraining Grounds: Near Pool
-1
-name)'D.K. Isles: Training Grounds: Near Pool
-E*C
-
-valueTreehouse: back
-%
-nameD.K. Isles: Treehouse: back
-i*g
-,
-value#!Banana Fairy Room: Right of Queen
-7
-name/-D.K. Isles: Banana Fairy Room: Right of Queen
-e*c
-*
-value!Banana Fairy Room: Behind Queen
-5
-name-+D.K. Isles: Banana Fairy Room: Behind Queen
-q*o
-0
-value'%Banana Fairy Room: Behind Fairy Chair
-;
-name31D.K. Isles: Banana Fairy Room: Behind Fairy Chair
-g*e
-+
-value" Banana Fairy Room: Rareware room
-6
-name.,D.K. Isles: Banana Fairy Room: Rareware room
-s*q
-1
-value(&Banana Fairy Room: Rareware Room right
-<
-name42D.K. Isles: Banana Fairy Room: Rareware Room right
-a*_
-(
-valueSnide's Room: Next to Snide's
-3
-name+)D.K. Isles: Snide's Room: Next to Snide's
-K*I
-
-valuePrison: Back Right
-(
-name D.K. Isles: Prison: Back Right
-I*G
-
-valuePrison: Near Left
-'
-nameD.K. Isles: Prison: Near Left
-S*Q
-!
-valuePrison: Under K. Lumsy
-,
-name$"D.K. Isles: Prison: Under K. Lumsy
-£!
-JungleJapesì!2ê!
-M*K
-
-valueNear Low Hill Shop
-*
-name" Jungle Japes: Near Low Hill Shop
-I*G
-
-valueOn Painting Hill
-(
-name Jungle Japes: On Painting Hill
-U*S
-!
-valueNext to level entrance
-.
-name&$Jungle Japes: Next to level entrance
-W*U
-"
-valueOn Tree (Starting Area)
-/
-name'%Jungle Japes: On Tree (Starting Area)
-c*a
-(
-valueNext to first tunnel entrance
-5
-name-+Jungle Japes: Next to first tunnel entrance
-K*I
-
-valueFirst Tunnel Cave
-)
-name!Jungle Japes: First Tunnel Cave
-Q*O
-
-valueIn First Tunnel Cave
-,
-name$"Jungle Japes: In First Tunnel Cave
-[*Y
-$
-valueFirst tunnel - later half
-1
-name)'Jungle Japes: First tunnel - later half
-C*A
-
-valuePainting Hill
-%
-nameJungle Japes: Painting Hill
-_*]
-&
-valueHive area near Hunky barrel
-3
-name+)Jungle Japes: Hive area near Hunky barrel
-=*;
-
-value
-Near Stump
-"
-nameJungle Japes: Near Stump
-9*7
-
-value
-Near Log
- 
-nameJungle Japes: Near Log
-K*I
-
-valueNear the Vine Pit
-)
-name!Jungle Japes: Near the Vine Pit
-9*7
-
-value
-Vine Pit
- 
-nameJungle Japes: Vine Pit
-a*_
-'
-valueUseless Lanky Slope - Middle
-4
-name,*Jungle Japes: Useless Lanky Slope - Middle
-]*[
-%
-valueUseless Lanky Slope - Left
-2
-name*(Jungle Japes: Useless Lanky Slope - Left
-U*S
-!
-valueStormy Tunnel Crossing
-.
-name&$Jungle Japes: Stormy Tunnel Crossing
-=*;
-
-value
-Rambi Pool
-"
-nameJungle Japes: Rambi Pool
-I*G
-
-valueBehind Lanky Hut
-(
-name Jungle Japes: Behind Lanky Hut
-C*A
-
-valueBehind DK Hut
-%
-nameJungle Japes: Behind DK Hut
-E*C
-
-valueLeft of DK hut
-&
-nameJungle Japes: Left of DK hut
-O*M
-
-valueNear the Rambi cage
-+
-name#!Jungle Japes: Near the Rambi cage
-M*K
-
-valueBehind Stormy Shop
-*
-name" Jungle Japes: Behind Stormy Shop
-G*E
-
-valueMinecart Alcove
-'
-nameJungle Japes: Minecart Alcove
-K*I
-
-valueNear highest shop
-)
-name!Jungle Japes: Near highest shop
-W*U
-"
-valueBehind Diddy's Mountain
-/
-name'%Jungle Japes: Behind Diddy's Mountain
-E*C
-
-valueNear Kong Cage
-&
-nameJungle Japes: Near Kong Cage
-G*E
-
-valueNear the cannon
-'
-nameJungle Japes: Near the cannon
-O*M
-
-valueBehind the Mountain
-+
-name#!Jungle Japes: Behind the Mountain
-Q*O
-
-valueNear Cannon Platform
-,
-name$"Jungle Japes: Near Cannon Platform
-[*Y
-$
-valueIn Troff 'n' Scoff Alcove
-1
-name)'Jungle Japes: In Troff 'n' Scoff Alcove
-?*=
-
-valueLower River
-#
-nameJungle Japes: Lower River
-O*M
-
-valueVanilla Near Warp 1
-+
-name#!Jungle Japes: Vanilla Near Warp 1
-O*M
-
-valueVanilla Hive Warp 5
-+
-name#!Jungle Japes: Vanilla Hive Warp 5
-O*M
-
-valueVanilla Near Warp 2
-+
-name#!Jungle Japes: Vanilla Near Warp 2
-W*U
-"
-valueVanilla Painting Warp 3
-/
-name'%Jungle Japes: Vanilla Painting Warp 3
-M*K
-
-valueVanilla Far Warp 1
-*
-name" Jungle Japes: Vanilla Far Warp 1
-Q*O
-
-valueVanilla Blast Warp 3
-,
-name$"Jungle Japes: Vanilla Blast Warp 3
-W*U
-"
-valueVanilla Mountain Warp 2
-/
-name'%Jungle Japes: Vanilla Mountain Warp 2
-S*Q
- 
-valueVanilla Tunnel Warp 4
--
-name%#Jungle Japes: Vanilla Tunnel Warp 4
-W*U
-"
-valueVanilla Mountain Warp 5
-/
-name'%Jungle Japes: Vanilla Mountain Warp 5
-S*Q
- 
-valueVanilla Stormy Warp 4
--
-name%#Jungle Japes: Vanilla Stormy Warp 4
-M*K
-
-valueBehind the boulder
-*
-name" Jungle Japes: Behind the boulder
-]*[
-%
-valueUnderground: Behind Cannon
-2
-name*(Jungle Japes: Underground: Behind Cannon
-W*U
-"
-valueUnderground: Near Vines
-/
-name'%Jungle Japes: Underground: Near Vines
-i*g
-+
-value" Mountain: Near Entrance (Ground)
-8
-name0.Jungle Japes: Mountain: Near Entrance (Ground)
-e*c
-)
-value Mountain: Near Entrance (High)
-6
-name.,Jungle Japes: Mountain: Near Entrance (High)
-O*M
-
-valueMountain: On Barrel
-+
-name#!Jungle Japes: Mountain: On Barrel
-_*]
-&
-valueMountain: Near HiLo Machine
-3
-name+)Jungle Japes: Mountain: Near HiLo Machine
-G*E
-
-valueHive: Main Room
-'
-nameJungle Japes: Hive: Main Room
-E*C
-
-valueHive: 1st Room
-&
-nameJungle Japes: Hive: 1st Room
-E*C
-
-valueHive: 3rd Room
-&
-nameJungle Japes: Hive: 3rd Room
-ƒ
-FranticFactory±2Æ
-J*H
-
-valueUnder R&D Grate
-*
-name" Frantic Factory: Under R&D Grate
->*<
-
-value	Dark Room
-$
-nameFrantic Factory: Dark Room
-J*H
-
-valueOn Foyer Carpet
-*
-name" Frantic Factory: On Foyer Carpet
-N*L
-
-valueNear Foyer carpet
-,
-name$"Frantic Factory: Near Foyer carpet
-P*N
-
-valueClock-in room left
--
-name%#Frantic Factory: Clock-in room left
-R*P
-
-valueClock-in room right
-.
-name&$Frantic Factory: Clock-in room right
-@*>
-
-value
-Near Hatch
-%
-nameFrantic Factory: Near Hatch
-N*L
-
-valueHatch Pole Center
-,
-name$"Frantic Factory: Hatch Pole Center
-N*L
-
-valueHatch Pole Bottom
-,
-name$"Frantic Factory: Hatch Pole Bottom
-^*\
-$
-valueTunnel to production room
-4
-name,*Frantic Factory: Tunnel to production room
-f*d
-(
-valueProduction Room Lower Section
-8
-name0.Frantic Factory: Production Room Lower Section
-T*R
-
-valueUnder High Conveyors
-/
-name'%Frantic Factory: Under High Conveyors
-`*^
-%
-valuePast Tiny Production Bonus
-5
-name-+Frantic Factory: Past Tiny Production Bonus
-d*b
-'
-valueVent platform near elevators
-7
-name/-Frantic Factory: Vent platform near elevators
-R*P
-
-valueStorage Room Corner
-.
-name&$Frantic Factory: Storage Room Corner
-X*V
-!
-valueNear left storage shop
-1
-name)'Frantic Factory: Near left storage shop
-Z*X
-"
-valueNear Right Storage Shop
-2
-name*(Frantic Factory: Near Right Storage Shop
-L*J
-
-valueDark Room Corner
-+
-name#!Frantic Factory: Dark Room Corner
-N*L
-
-valueArcade Room Bench
-,
-name$"Frantic Factory: Arcade Room Bench
-N*L
-
-valueNext to DK Arcade
-,
-name$"Frantic Factory: Next to DK Arcade
-N*L
-
-valueGlass Window Shop
-,
-name$"Frantic Factory: Glass Window Shop
-`*^
-%
-valueGlass Window Shop (hidden)
-5
-name-+Frantic Factory: Glass Window Shop (hidden)
-H*F
-
-valueRight Corridor
-)
-name!Frantic Factory: Right Corridor
-B*@
-
-valueNumber Game
-&
-nameFrantic Factory: Number Game
-\*Z
-#
-valueUnder Block Tower Stairs
-3
-name+)Frantic Factory: Under Block Tower Stairs
-T*R
-
-valueUnder Testing barrel
-/
-name'%Frantic Factory: Under Testing barrel
-`*^
-%
-valueTesting shop entrance left
-5
-name-+Frantic Factory: Testing shop entrance left
-N*L
-
-valueTesting shop left
-,
-name$"Frantic Factory: Testing shop left
-P*N
-
-valueTesting shop right
--
-name%#Frantic Factory: Testing shop right
-b*`
-&
-valueTesting Shop Entrance Right
-6
-name.,Frantic Factory: Testing Shop Entrance Right
-F*D
-
-valueCar Race room
-(
-name Frantic Factory: Car Race room
-H*F
-
-valueCar Race Lobby
-)
-name!Frantic Factory: Car Race Lobby
-H*F
-
-valueR&D lever room
-)
-name!Frantic Factory: R&D lever room
-X*V
-!
-valueUnder second R&D Grate
-1
-name)'Frantic Factory: Under second R&D Grate
-T*R
-
-valueVanilla Foyer Warp 2
-/
-name'%Frantic Factory: Vanilla Foyer Warp 2
-T*R
-
-valueVanilla Foyer Warp 3
-/
-name'%Frantic Factory: Vanilla Foyer Warp 3
-P*N
-
-valueVanilla R&D Warp 2
--
-name%#Frantic Factory: Vanilla R&D Warp 2
-T*R
-
-valueVanilla Snide Warp 3
-/
-name'%Frantic Factory: Vanilla Snide Warp 3
-R*P
-
-valueVanilla High Warp 4
-.
-name&$Frantic Factory: Vanilla High Warp 4
-P*N
-
-valueVanilla Low Warp 4
--
-name%#Frantic Factory: Vanilla Low Warp 4
-X*V
-!
-valueVanilla Testing Warp 5
-1
-name)'Frantic Factory: Vanilla Testing Warp 5
-T*R
-
-valueVanilla Foyer Warp 1
-/
-name'%Frantic Factory: Vanilla Foyer Warp 1
-X*V
-!
-valueVanilla Storage Warp 1
-1
-name)'Frantic Factory: Vanilla Storage Warp 1
-V*T
- 
-valueVanilla Arcade Warp 5
-0
-name(&Frantic Factory: Vanilla Arcade Warp 5
-`*^
-%
-valueCrusher: Central Safehaven
-5
-name-+Frantic Factory: Crusher: Central Safehaven
-N*L
-
-valuePower Hut: Corner
-,
-name$"Frantic Factory: Power Hut: Corner
-¯&
-CrystalCavesÁ&2‰&
-R*P
-
-valueRotating Cabin: Wall
--
-name%#Crystal Caves: Rotating Cabin: Wall
-@*>
-
-valueGiant Kosha
-$
-nameCrystal Caves: Giant Kosha
-P*N
-
-valueIn Monkeyport igloo
-,
-name$"Crystal Caves: In Monkeyport igloo
-N*L
-
-valueIn breakable igloo
-+
-name#!Crystal Caves: In breakable igloo
-H*F
-
-valueOn igloo Pillar
-(
-name Crystal Caves: On igloo Pillar
-`*^
-&
-valueUnder tag barrel near igloo
-4
-name,*Crystal Caves: Under tag barrel near igloo
-V*T
-!
-valueIn the Mini Bonus Cave
-/
-name'%Crystal Caves: In the Mini Bonus Cave
-Z*X
-#
-valueNear ice wall to boulder
-1
-name)'Crystal Caves: Near ice wall to boulder
-T*R
- 
-valuePath to Giant boulder
-.
-name&$Crystal Caves: Path to Giant boulder
-T*R
- 
-valueIn Giant Boulder Room
-.
-name&$Crystal Caves: In Giant Boulder Room
-N*L
-
-valueIn front of Cranky
-+
-name#!Crystal Caves: In front of Cranky
-\*Z
-$
-valueBelow Ice Castle (yellow)
-2
-name*(Crystal Caves: Below Ice Castle (yellow)
-X*V
-"
-valueBelow Ice castle (blue)
-0
-name(&Crystal Caves: Below Ice castle (blue)
-T*R
- 
-valueIce Castle Tag barrel
-.
-name&$Crystal Caves: Ice Castle Tag barrel
-N*L
-
-valueNext to Ice Castle
-+
-name#!Crystal Caves: Next to Ice Castle
-D*B
-
-valueOn Ice Castle
-&
-nameCrystal Caves: On Ice Castle
-N*L
-
-valueNear Small Boulder
-+
-name#!Crystal Caves: Near Small Boulder
-T*R
- 
-valueNear ice wall to shop
-.
-name&$Crystal Caves: Near ice wall to shop
-F*D
-
-valueNear cave shop
-'
-nameCrystal Caves: Near cave shop
-P*N
-
-valueUnder Small Boulder
-,
-name$"Crystal Caves: Under Small Boulder
-^*\
-%
-valueNear ice wall to Gone room
-3
-name+)Crystal Caves: Near ice wall to Gone room
-V*T
-!
-valueNear Gorilla Gone Room
-/
-name'%Crystal Caves: Near Gorilla Gone Room
-R*P
-
-valueIn Gorilla Gone Room
--
-name%#Crystal Caves: In Gorilla Gone Room
-N*L
-
-valueNear Kasplat Spire
-+
-name#!Crystal Caves: Near Kasplat Spire
-P*N
-
-valueNear Waterfall Shop
-,
-name$"Crystal Caves: Near Waterfall Shop
-\*Z
-$
-valueUnder Bridge Rocketbarrel
-2
-name*(Crystal Caves: Under Bridge Rocketbarrel
-R*P
-
-valueMini Monkeyport cave
--
-name%#Crystal Caves: Mini Monkeyport cave
-H*F
-
-valueNear headphones
-(
-name Crystal Caves: Near headphones
-J*H
-
-valueHeadphones ledge
-)
-name!Crystal Caves: Headphones ledge
-P*N
-
-valueNext to Lanky cabin
-,
-name$"Crystal Caves: Next to Lanky cabin
-V*T
-!
-valueLeft of rotating cabin
-/
-name'%Crystal Caves: Left of rotating cabin
-V*T
-!
-valueNext to rotating cabin
-/
-name'%Crystal Caves: Next to rotating cabin
-X*V
-"
-valueRight of rotating cabin
-0
-name(&Crystal Caves: Right of rotating cabin
-N*L
-
-valueCabins Center Rise
-+
-name#!Crystal Caves: Cabins Center Rise
-Z*X
-#
-valueNear cabins Rocketbarrel
-1
-name)'Crystal Caves: Near cabins Rocketbarrel
-H*F
-
-valueNear Tiny cabin
-(
-name Crystal Caves: Near Tiny cabin
-V*T
-!
-valueNear cabins Tag barrel
-/
-name'%Crystal Caves: Near cabins Tag barrel
-V*T
-!
-valueNear Diddy Upper cabin
-/
-name'%Crystal Caves: Near Diddy Upper cabin
-`*^
-&
-valueNear Diddy upper Cabin door
-4
-name,*Crystal Caves: Near Diddy upper Cabin door
-R*P
-
-valueVanilla Close Warp 1
--
-name%#Crystal Caves: Vanilla Close Warp 1
-R*P
-
-valueVanilla Close Warp 2
--
-name%#Crystal Caves: Vanilla Close Warp 2
-R*P
-
-valueVanilla Igloo Warp 1
--
-name%#Crystal Caves: Vanilla Igloo Warp 1
-T*R
- 
-valueVanilla Cabins Warp 2
-.
-name&$Crystal Caves: Vanilla Cabins Warp 2
-T*R
- 
-valueVanilla Pillar Warp 5
-.
-name&$Crystal Caves: Vanilla Pillar Warp 5
-T*R
- 
-valueVanilla Hidden Warp 3
-.
-name&$Crystal Caves: Vanilla Hidden Warp 3
-R*P
-
-valueVanilla Igloo Warp 3
--
-name%#Crystal Caves: Vanilla Igloo Warp 3
-T*R
- 
-valueVanilla Hidden Warp 4
-.
-name&$Crystal Caves: Vanilla Hidden Warp 4
-R*P
-
-valueVanilla Spire Warp 4
--
-name%#Crystal Caves: Vanilla Spire Warp 4
-R*P
-
-valueVanilla Cabin Warp 5
--
-name%#Crystal Caves: Vanilla Cabin Warp 5
-T*R
- 
-valueDK igloo: Behind Maze
-.
-name&$Crystal Caves: DK igloo: Behind Maze
-^*\
-%
-valueLanky igloo: High Platform
-3
-name+)Crystal Caves: Lanky igloo: High Platform
-d*b
-(
-valueTiny igloo: Opposite Entrance
-6
-name.,Crystal Caves: Tiny igloo: Opposite Entrance
-P*N
-
-valueLanky cabin: Carpet
-,
-name$"Crystal Caves: Lanky cabin: Carpet
-Z*X
-#
-valueDiddy Upper cabin: Right
-1
-name)'Crystal Caves: Diddy Upper cabin: Right
-`*^
-&
-valueDK cabin: Opposite Entrance
-4
-name,*Crystal Caves: DK cabin: Opposite Entrance
-^*\
-%
-valueIce Castle: Left of puzzle
-3
-name+)Crystal Caves: Ice Castle: Left of puzzle
-`*^
-&
-valueIce Castle: Right of puzzle
-4
-name,*Crystal Caves: Ice Castle: Right of puzzle
-R*P
-
-valueTiny Cabin: Interior
--
-name%#Crystal Caves: Tiny Cabin: Interior
-ì
-HideoutHelmÉ2Ä
-k*i
-,
-value#!Metal grate by Mini Monkey barrel
-9
-name1/Hideout Helm: Metal grate by Mini Monkey barrel
-_*]
-&
-valueMini Monkey room right side
-3
-name+)Hideout Helm: Mini Monkey room right side
-q*o
-/
-value&$Pineapple switch room in ammo alcove
-<
-name42Hideout Helm: Pineapple switch room in ammo alcove
-c*a
-(
-valueFirst room left of Tag barrel
-5
-name-+Hideout Helm: First room left of Tag barrel
-Q*O
-
-valueTop of Blast-o-Matic
-,
-name$"Hideout Helm: Top of Blast-o-Matic
-i*g
-+
-value" Blast-o-Matic platform left side
-8
-name0.Hideout Helm: Blast-o-Matic platform left side
-k*i
-,
-value#!Blast-o-Matic platform right side
-9
-name1/Hideout Helm: Blast-o-Matic platform right side
-M*K
-
-valueUnder K. Rool door
-*
-name" Hideout Helm: Under K. Rool door
-U*S
-!
-valueJust past K. Rool door
-.
-name&$Hideout Helm: Just past K. Rool door
-e*c
-)
-value Navigation room near terminals
-6
-name.,Hideout Helm: Navigation room near terminals
-i*g
-+
-value" Navigation room near left window
-8
-name0.Hideout Helm: Navigation room near left window
-k*i
-,
-value#!Navigation room near right window
-9
-name1/Hideout Helm: Navigation room near right window
-a*_
-'
-valueK. Rool room near kong faces
-4
-name,*Hideout Helm: K. Rool room near kong faces
-e*c
-)
-value K. Rool room in front of chair
-6
-name.,Hideout Helm: K. Rool room in front of chair
-/
-CreepyCastleﬂ/2‹/
-N*L
-
-valueGreenhouse: Center
-+
-name#!Creepy Castle: Greenhouse: Center
-X*V
-"
-valueTop of Castle Near Shop
-0
-name(&Creepy Castle: Top of Castle Near Shop
-P*N
-
-valueGreenhouse: GB area
-,
-name$"Creepy Castle: Greenhouse: GB area
-D*B
-
-valueNear the Tree
-&
-nameCreepy Castle: Near the Tree
-P*N
-
-valueNext to lowest tree
-,
-name$"Creepy Castle: Next to lowest tree
-`*^
-&
-valueNear lower entrance - right
-4
-name,*Creepy Castle: Near lower entrance - right
-Z*X
-#
-valueLowest ledge near ladder
-1
-name)'Creepy Castle: Lowest ledge near ladder
-V*T
-!
-valueGraveyard behind stone
-/
-name'%Creepy Castle: Graveyard behind stone
-h*f
-*
-value!Lowest ledge towards Lone Cliff
-8
-name0.Creepy Castle: Lowest ledge towards Lone Cliff
-P*N
-
-valueNear the lower door
-,
-name$"Creepy Castle: Near the lower door
-J*H
-
-valueUpper Gravestone
-)
-name!Creepy Castle: Upper Gravestone
-\*Z
-$
-valueNear Dungeon Tunnel Steps
-2
-name*(Creepy Castle: Near Dungeon Tunnel Steps
-P*N
-
-valueNear Dungeon Tunnel
-,
-name$"Creepy Castle: Near Dungeon Tunnel
-H*F
-
-valueOn square stone
-(
-name Creepy Castle: On square stone
-V*T
-!
-valueNext to the drawbridge
-/
-name'%Creepy Castle: Next to the drawbridge
-X*V
-"
-valueNear Lower Rocketbarrel
-0
-name(&Creepy Castle: Near Lower Rocketbarrel
-T*R
- 
-valueNear Lower Tag Barrel
-.
-name&$Creepy Castle: Near Lower Tag Barrel
-H*F
-
-valueNear Headphones
-(
-name Creepy Castle: Near Headphones
-R*P
-
-valueNear Drawbridge Exit
--
-name%#Creepy Castle: Near Drawbridge Exit
-J*H
-
-valueNear middle shop
-)
-name!Creepy Castle: Near middle shop
-<*:
-
-value	Near Shed
-"
-nameCreepy Castle: Near Shed
-N*L
-
-valueNext to Greenhouse
-+
-name#!Creepy Castle: Next to Greenhouse
-H*F
-
-valueNear Wind Tower
-(
-name Creepy Castle: Near Wind Tower
-Z*X
-#
-valueTop of Castle near fence
-1
-name)'Creepy Castle: Top of Castle near fence
-D*B
-
-valueNear top shop
-&
-nameCreepy Castle: Near top shop
-D*B
-
-valueOn Wind Tower
-&
-nameCreepy Castle: On Wind Tower
-X*V
-"
-valueVanilla Overhang Warp 2
-0
-name(&Creepy Castle: Vanilla Overhang Warp 2
-N*L
-
-valueVanilla Top Warp 5
-+
-name#!Creepy Castle: Vanilla Top Warp 5
-P*N
-
-valueVanilla Moat Warp 1
-,
-name$"Creepy Castle: Vanilla Moat Warp 1
-P*N
-
-valueVanilla Moat Warp 5
-,
-name$"Creepy Castle: Vanilla Moat Warp 5
-P*N
-
-valueVanilla Back Warp 1
-,
-name$"Creepy Castle: Vanilla Back Warp 1
-P*N
-
-valueVanilla Moat Warp 3
-,
-name$"Creepy Castle: Vanilla Moat Warp 3
-P*N
-
-valueVanilla Moat Warp 2
-,
-name$"Creepy Castle: Vanilla Moat Warp 2
-P*N
-
-valueVanilla Moat Warp 4
-,
-name$"Creepy Castle: Vanilla Moat Warp 4
-P*N
-
-valueVanilla Shop Warp 3
-,
-name$"Creepy Castle: Vanilla Shop Warp 3
-P*N
-
-valueVanilla Shed Warp 4
-,
-name$"Creepy Castle: Vanilla Shed Warp 4
-^*\
-%
-valueBallroom: Near Left Candle
-3
-name+)Creepy Castle: Ballroom: Near Left Candle
-`*^
-&
-valueBallroom: Near Right Candle
-4
-name,*Creepy Castle: Ballroom: Near Right Candle
-P*N
-
-valueBallroom: Back Left
-,
-name$"Creepy Castle: Ballroom: Back Left
-R*P
-
-valueBallroom: Back Right
--
-name%#Creepy Castle: Ballroom: Back Right
-Z*X
-#
-valueDungeon: Near Diddy Room
-1
-name)'Creepy Castle: Dungeon: Near Diddy Room
-R*P
-
-valueDungeon: Donkey Room
--
-name%#Creepy Castle: Dungeon: Donkey Room
-^*\
-%
-valueDungeon: Behind punch gate
-3
-name+)Creepy Castle: Dungeon: Behind punch gate
-P*N
-
-valueShed: Near Entrance
-,
-name$"Creepy Castle: Shed: Near Entrance
-\*Z
-$
-valueLower cave: Lower Portion
-2
-name*(Creepy Castle: Lower cave: Lower Portion
-l*j
-,
-value#!Lower cave: Also Behind Mausoleum
-:
-name20Creepy Castle: Lower cave: Also Behind Mausoleum
-T*R
- 
-valueLower cave: Near shop
-.
-name&$Creepy Castle: Lower cave: Near shop
-b*`
-'
-valueLower Cave: Behind Mausoleum
-5
-name-+Creepy Castle: Lower Cave: Behind Mausoleum
-H*F
-
-valueCrypt: entrance
-(
-name Creepy Castle: Crypt: entrance
-\*Z
-$
-valueCrypt: Near Chunky Coffin
-2
-name*(Creepy Castle: Crypt: Near Chunky Coffin
-Z*X
-#
-valueCrypt: Near Diddy Coffin
-1
-name)'Creepy Castle: Crypt: Near Diddy Coffin
-\*Z
-$
-valueCrypt: Vanilla Far Warp 1
-2
-name*(Creepy Castle: Crypt: Vanilla Far Warp 1
-`*^
-&
-valueCrypt: Vanilla Close Warp 1
-4
-name,*Creepy Castle: Crypt: Vanilla Close Warp 1
-`*^
-&
-valueCrypt: Vanilla Close Warp 2
-4
-name,*Creepy Castle: Crypt: Vanilla Close Warp 2
-`*^
-&
-valueCrypt: Vanilla Close Warp 3
-4
-name,*Creepy Castle: Crypt: Vanilla Close Warp 3
-\*Z
-$
-valueCrypt: Vanilla Far Warp 3
-2
-name*(Creepy Castle: Crypt: Vanilla Far Warp 3
-\*Z
-$
-valueCrypt: Vanilla Far Warp 2
-2
-name*(Creepy Castle: Crypt: Vanilla Far Warp 2
-P*N
-
-valueMausoleum: entrance
-,
-name$"Creepy Castle: Mausoleum: entrance
-X*V
-"
-valueMausoleum: Lanky Tunnel
-0
-name(&Creepy Castle: Mausoleum: Lanky Tunnel
-R*P
-
-valueUpper cave: Near Pit
--
-name%#Creepy Castle: Upper cave: Near Pit
-T*R
- 
-valueUpper cave: Near shop
-.
-name&$Creepy Castle: Upper cave: Near shop
-P*N
-
-valueLibrary: Crossroads
-,
-name$"Creepy Castle: Library: Crossroads
-\*Z
-$
-valueLibrary: Flying Book Room
-2
-name*(Creepy Castle: Library: Flying Book Room
-L*J
-
-valueMuseum: Near Race
-*
-name" Creepy Castle: Museum: Near Race
-R*P
-
-valueMuseum: Pillar Front
--
-name%#Creepy Castle: Museum: Pillar Front
-\*Z
-$
-valueMuseum: Pillar Back Right
-2
-name*(Creepy Castle: Museum: Pillar Back Right
-T*R
- 
-valueMuseum: Behind Pillar
-.
-name&$Creepy Castle: Museum: Behind Pillar
-Z*X
-#
-valueMuseum: Pillar Back Left
-1
-name)'Creepy Castle: Museum: Pillar Back Left
-L*J
-
-valueMuseum: Main Room
-*
-name" Creepy Castle: Museum: Main Room
-V*T
-!
-valueTrash Can: Near Cheese
-/
-name'%Creepy Castle: Trash Can: Near Cheese
-P*N
-
-valueTree: Starting Room
-,
-name$"Creepy Castle: Tree: Starting Room
-“,
-
-AngryAztec√,2¿,
-Z*X
-$
-valueTiny Temple: Vulture Room
-0
-name(&Angry Aztec: Tiny Temple: Vulture Room
-2*0
-
-valueOasis
-
-nameAngry Aztec: Oasis
-<*:
-
-value
-Chunky 5DT
-!
-nameAngry Aztec: Chunky 5DT
-h*f
-+
-value" Tiny Temple: Main room back left
-7
-name/-Angry Aztec: Tiny Temple: Main room back left
-h*f
-+
-value" Tiny Temple: Starting Room (Low)
-7
-name/-Angry Aztec: Tiny Temple: Starting Room (Low)
-j*h
-,
-value#!Tiny Temple: Starting Room (High)
-8
-name0.Angry Aztec: Tiny Temple: Starting Room (High)
-^*\
-&
-valueTiny Temple: Kong Free Room
-2
-name*(Angry Aztec: Tiny Temple: Kong Free Room
-d*b
-)
-value Tiny Temple: Next to Kong cage
-5
-name-+Angry Aztec: Tiny Temple: Next to Kong cage
-d*b
-)
-value Entrance tunnel - near DK door
-5
-name-+Angry Aztec: Entrance tunnel - near DK door
-R*P
- 
-valueQuicksand Bridge Room
-,
-name$"Angry Aztec: Quicksand Bridge Room
-F*D
-
-valueNear Oasis Sand
-&
-nameAngry Aztec: Near Oasis Sand
-L*J
-
-valueBehind Tiny Temple
-)
-name!Angry Aztec: Behind Tiny Temple
-\*Z
-%
-valueNext to Tiny Temple - left
-1
-name)'Angry Aztec: Next to Tiny Temple - left
-^*\
-&
-valueNext to Tiny Temple - right
-2
-name*(Angry Aztec: Next to Tiny Temple - right
-D*B
-
-valueOn Tiny Temple
-%
-nameAngry Aztec: On Tiny Temple
-F*D
-
-valueNear Oasis Shop
-&
-nameAngry Aztec: Near Oasis Shop
-J*H
-
-valueBehind Llama Cage
-(
-name Angry Aztec: Behind Llama Cage
-X*V
-#
-valueNear Hunky Chunky Barrel
-/
-name'%Angry Aztec: Near Hunky Chunky Barrel
-L*J
-
-valueLeft of Hunky Cage
-)
-name!Angry Aztec: Left of Hunky Cage
-N*L
-
-valueRight of Hunky Cage
-*
-name" Angry Aztec: Right of Hunky Cage
-J*H
-
-valueBehind Hunky Cage
-(
-name Angry Aztec: Behind Hunky Cage
-X*V
-#
-valueNear Llama Temple (Left)
-/
-name'%Angry Aztec: Near Llama Temple (Left)
-Z*X
-$
-valueNear Llama Temple (Right)
-0
-name(&Angry Aztec: Near Llama Temple (Right)
-P*N
-
-valueNext to Llama Temple
-+
-name#!Angry Aztec: Next to Llama Temple
-T*R
-!
-valueOn Llama Temple - back
--
-name%#Angry Aztec: On Llama Temple - back
-F*D
-
-valueOn Llama Temple
-&
-nameAngry Aztec: On Llama Temple
-\*Z
-%
-valueNear Quicksand Tunnel Shop
-1
-name)'Angry Aztec: Near Quicksand Tunnel Shop
-H*F
-
-valueOn 5-Door Temple
-'
-nameAngry Aztec: On 5-Door Temple
-R*P
- 
-valueNear Strong Kong Warp
-,
-name$"Angry Aztec: Near Strong Kong Warp
-J*H
-
-valueNear Vulture Cage
-(
-name Angry Aztec: Near Vulture Cage
-L*J
-
-valueUnder Vulture Cage
-)
-name!Angry Aztec: Under Vulture Cage
-Z*X
-$
-valueNext to Vulture cage shop
-0
-name(&Angry Aztec: Next to Vulture cage shop
-J*H
-
-valueBehind Gong tower
-(
-name Angry Aztec: Behind Gong tower
-L*J
-
-valueLeft of Gong tower
-)
-name!Angry Aztec: Left of Gong tower
-F*D
-
-valueNear Gong Tower
-&
-nameAngry Aztec: Near Gong Tower
-V*T
-"
-valueSealed Quicksand Tunnel
-.
-name&$Angry Aztec: Sealed Quicksand Tunnel
-R*P
- 
-valueVanilla Tunnel Warp 1
-,
-name$"Angry Aztec: Vanilla Tunnel Warp 1
-P*N
-
-valueVanilla Oasis Warp 2
-+
-name#!Angry Aztec: Vanilla Oasis Warp 2
-P*N
-
-valueVanilla Totem Warp 2
-+
-name#!Angry Aztec: Vanilla Totem Warp 2
-P*N
-
-valueVanilla Totem Warp 5
-+
-name#!Angry Aztec: Vanilla Totem Warp 5
-P*N
-
-valueVanilla Totem Warp 3
-+
-name#!Angry Aztec: Vanilla Totem Warp 3
-P*N
-
-valueVanilla Oasis Warp 1
-+
-name#!Angry Aztec: Vanilla Oasis Warp 1
-P*N
-
-valueVanilla Totem Warp 4
-+
-name#!Angry Aztec: Vanilla Totem Warp 4
-R*P
- 
-valueVanilla Tunnel Warp 3
-,
-name$"Angry Aztec: Vanilla Tunnel Warp 3
-P*N
-
-valueVanilla Funky Warp 4
-+
-name#!Angry Aztec: Vanilla Funky Warp 4
-R*P
- 
-valueVanilla Tunnel Warp 5
-,
-name$"Angry Aztec: Vanilla Tunnel Warp 5
-P*N
-
-valueDonkey 5DT: Dead End
-+
-name#!Angry Aztec: Donkey 5DT: Dead End
-N*L
-
-valueDiddy 5DT: Dead End
-*
-name" Angry Aztec: Diddy 5DT: Dead End
-N*L
-
-valueLanky 5DT: Dead End
-*
-name" Angry Aztec: Lanky 5DT: Dead End
-R*P
- 
-valueLanky 5DT: Right side
-,
-name$"Angry Aztec: Lanky 5DT: Right side
-L*J
-
-valueTiny 5DT: Dead End
-)
-name!Angry Aztec: Tiny 5DT: Dead End
-P*N
-
-valueTiny 5DT: Right side
-+
-name#!Angry Aztec: Tiny 5DT: Right side
-T*R
-!
-valueChunky 5DT: Right side
--
-name%#Angry Aztec: Chunky 5DT: Right side
-R*P
- 
-valueChunky 5DT: Left side
-,
-name$"Angry Aztec: Chunky 5DT: Left side
-Z*X
-$
-valueLlama Temple: Llama Right
-0
-name(&Angry Aztec: Llama Temple: Llama Right
-T*R
-!
-valueLlama Temple: Entrance
--
-name%#Angry Aztec: Llama Temple: Entrance
-j*h
-,
-value#!Llama Temple: Next to Llama Right
-8
-name0.Angry Aztec: Llama Temple: Next to Llama Right
-h*f
-+
-value" Llama Temple: Next to Llama Left
-7
-name/-Angry Aztec: Llama Temple: Next to Llama Left
-X*V
-#
-valueLlama Temple: Llama Left
-/
-name'%Angry Aztec: Llama Temple: Llama Left
-^*\
-&
-valueLlama Temple: Matching Room
-2
-name*(Angry Aztec: Llama Temple: Matching Room
-l*j
--
-value$"Llama Temple: Vanilla Close Warp 1
-9
-name1/Angry Aztec: Llama Temple: Vanilla Close Warp 1
-h*f
-+
-value" Llama Temple: Vanilla Far Warp 1
-7
-name/-Angry Aztec: Llama Temple: Vanilla Far Warp 1
-j*h
-,
-value#!Llama Temple: Vanilla Lava Warp 2
-8
-name0.Angry Aztec: Llama Temple: Vanilla Lava Warp 2
-l*j
--
-value$"Llama Temple: Vanilla Close Warp 2
-9
-name1/Angry Aztec: Llama Temple: Vanilla Close Warp 2
-V*T
-"
-valueLlama Temple: DK Switch
-.
-name&$Angry Aztec: Llama Temple: DK Switch
-V*T
-"
-valueLlama Temple: Lava Room
-.
-name&$Angry Aztec: Llama Temple: Lava Room
-·
-GloomyGalleonœ2Ã
-M*K
-
-valueUnder Cavern Shop
-+
-name#!Gloomy Galleon: Under Cavern Shop
-]*[
-$
-valueLighthouse: Interior Rear
-3
-name+)Gloomy Galleon: Lighthouse: Interior Rear
-Q*O
-
-valueFront of cannonball
--
-name%#Gloomy Galleon: Front of cannonball
-U*S
- 
-valueBehind the cannonball
-/
-name'%Gloomy Galleon: Behind the cannonball
-]*[
-$
-valueNext to cannonball cannon
-3
-name+)Gloomy Galleon: Next to cannonball cannon
-[*Y
-#
-valueEntrance tunnel crossing
-2
-name*(Gloomy Galleon: Entrance tunnel crossing
-S*Q
-
-valueTunnel to chests far
-.
-name&$Gloomy Galleon: Tunnel to chests far
-W*U
-!
-valueTunnel to chests close
-0
-name(&Gloomy Galleon: Tunnel to chests close
-S*Q
-
-valueChests tunnel alcove
-.
-name&$Gloomy Galleon: Chests tunnel alcove
-A*?
-
-valueChests room
-%
-nameGloomy Galleon: Chests room
-U*S
- 
-valueBehind Punch GB Chest
-/
-name'%Gloomy Galleon: Behind Punch GB Chest
-Y*W
-"
-valueBehind the cannon wreck
-1
-name)'Gloomy Galleon: Behind the cannon wreck
-Q*O
-
-valueLeft of cavern shop
--
-name%#Gloomy Galleon: Left of cavern shop
-S*Q
-
-valueFront of cavern shop
-.
-name&$Gloomy Galleon: Front of cavern shop
-O*M
-
-valueNear Bridge Warp 3
-,
-name$"Gloomy Galleon: Near Bridge Warp 3
-U*S
- 
-valueNear the Rocketbarrel
-/
-name'%Gloomy Galleon: Near the Rocketbarrel
-U*S
- 
-valueNear the Baboon Blast
-/
-name'%Gloomy Galleon: Near the Baboon Blast
-]*[
-$
-valueNext to Lighthouse ladder
-3
-name+)Gloomy Galleon: Next to Lighthouse ladder
-[*Y
-#
-valueOn Rocketbarrel platform
-2
-name*(Gloomy Galleon: On Rocketbarrel platform
-M*K
-
-valueLighthouse Alcove
-+
-name#!Gloomy Galleon: Lighthouse Alcove
-E*C
-
-valueOn Gold Tower
-'
-nameGloomy Galleon: On Gold Tower
-Y*W
-"
-valueVanilla Floating Warp 5
-1
-name)'Gloomy Galleon: Vanilla Floating Warp 5
-]*[
-$
-valueVanilla Lighthouse Warp 1
-3
-name+)Gloomy Galleon: Vanilla Lighthouse Warp 1
-U*S
- 
-valueVanilla Alcove Warp 3
-/
-name'%Gloomy Galleon: Vanilla Alcove Warp 3
-]*[
-$
-valueVanilla Lighthouse Warp 5
-3
-name+)Gloomy Galleon: Vanilla Lighthouse Warp 5
-U*S
- 
-valueVanilla Cavern Warp 2
-/
-name'%Gloomy Galleon: Vanilla Cavern Warp 2
-U*S
- 
-valueVanilla Bridge Warp 3
-/
-name'%Gloomy Galleon: Vanilla Bridge Warp 3
-Y*W
-"
-valueVanilla Floating Warp 2
-1
-name)'Gloomy Galleon: Vanilla Floating Warp 2
-]*[
-$
-valueVanilla Gold Tower Warp 4
-3
-name+)Gloomy Galleon: Vanilla Gold Tower Warp 4
-U*S
- 
-valueVanilla Cavern Warp 1
-/
-name'%Gloomy Galleon: Vanilla Cavern Warp 1
-Y*W
-"
-valueVanilla Floating Warp 4
-1
-name)'Gloomy Galleon: Vanilla Floating Warp 4
-c*a
-'
-valueSeasick Ship: Left of Cannon
-6
-name.,Gloomy Galleon: Seasick Ship: Left of Cannon
-W*U
-!
-valueSeasick Ship: Entrance
-0
-name(&Gloomy Galleon: Seasick Ship: Entrance
-e*c
-(
-valueSeasick Ship: Right of Cannon
-7
-name/-Gloomy Galleon: Seasick Ship: Right of Cannon
-g*e
-)
-value Seasick Ship: Back left corner
-8
-name0.Gloomy Galleon: Seasick Ship: Back left corner
-Ñ*Å
-7
-value.,Seasick Ship: Behind the non-alcoholic tower
-F
-name><Gloomy Galleon: Seasick Ship: Behind the non-alcoholic tower
-u*s
-0
-value'%Seasick Ship: Behind Spinning Barrels
-?
-name75Gloomy Galleon: Seasick Ship: Behind Spinning Barrels
-Y*W
-"
-valueLighthouse: Bottom Left
-1
-name)'Gloomy Galleon: Lighthouse: Bottom Left
-W*U
-!
-valueLighthouse: Back Right
-0
-name(&Gloomy Galleon: Lighthouse: Back Right
-Å*
-6
-value-+Lighthouse: Behind Whomp's Fortress floor 2
-E
-name=;Gloomy Galleon: Lighthouse: Behind Whomp's Fortress floor 2
-w*u
-1
-value(&Lighthouse: On top of Whomp's Fortress
-@
-name86Gloomy Galleon: Lighthouse: On top of Whomp's Fortress
-ø¯
-	TnsPortal∞¯*¨¯
-Å
-FranticFactoryÓ2Î
-@*>
-%
-valueFranticFactory;Arcade Room
-
-nameArcade Room
-H*F
-)
-value FranticFactory;Production Room
-
-nameProduction Room
-^*\
-4
-value+)FranticFactory;R&D across from Piano Game
-$
-nameR&D across from Piano Game
-@*>
-%
-valueFranticFactory;Block Tower
-
-nameBlock Tower
-B*@
-&
-valueFranticFactory;Storage Room
-
-nameStorage Room
-R*P
-.
-value%#FranticFactory;Next to Hatch - left
-
-nameNext to Hatch - left
-T*R
-/
-value&$FranticFactory;Next to Hatch - right
-
-nameNext to Hatch - right
-Z*X
-2
-value)'FranticFactory;Bottom of the Hatch Pole
-"
-nameBottom of the Hatch Pole
-l*j
-;
-value20FranticFactory;Production Room - Under Conveyors
-+
-name#!Production Room - Under Conveyors
-Z*X
-2
-value)'FranticFactory;Above Storage Spring Pad
-"
-nameAbove Storage Spring Pad
-j*h
-:
-value1/FranticFactory;Storage Room - Behind Tag Barrel
-*
-name" Storage Room - Behind Tag Barrel
-X*V
-1
-value(&FranticFactory;Under Left Storage Shop
-!
-nameUnder Left Storage Shop
-Z*X
-2
-value)'FranticFactory;Under Right Storage Shop
-"
-nameUnder Right Storage Shop
-P*N
--
-value$"FranticFactory;Next to Number Game
-
-nameNext to Number Game
-Z*X
-2
-value)'FranticFactory;R&D across from Car Race
-"
-nameR&D across from Car Race
-j*h
-:
-value1/FranticFactory;R&D - Next to Tunnel to Car Race
-*
-name" R&D - Next to Tunnel to Car Race
-p*n
-=
-value42FranticFactory;Testing Area - Under Tunnel to Shop
--
-name%#Testing Area - Under Tunnel to Shop
-F*D
-(
-valueFranticFactory;R&D - Dead End
-
-nameR&D - Dead End
-Ä*~
-E
-value<:FranticFactory;Testing Area - Air Vent Under Arcade Window
-5
-name-+Testing Area - Air Vent Under Arcade Window
-|*z
-C
-value:8FranticFactory;Testing Area - Under Arcade Window - left
-3
-name+)Testing Area - Under Arcade Window - left
-j*h
-:
-value1/FranticFactory;Testing Area - Behind Tag Barrel
-*
-name" Testing Area - Behind Tag Barrel
-^*\
-4
-value+)FranticFactory;R&D - Next to Diddy's Room
-$
-nameR&D - Next to Diddy's Room
-l*j
-;
-value20FranticFactory;Storage Room - Next to Tag Barrel
-+
-name#!Storage Room - Next to Tag Barrel
-z*x
-B
-value97FranticFactory;Production Room - Next to Diddy's Switch
-2
-name*(Production Room - Next to Diddy's Switch
-V*T
-0
-value'%FranticFactory;Above Crusher Entrance
- 
-nameAbove Crusher Entrance
-R*P
-.
-value%#FranticFactory;Arcade Room - Corner
-
-nameArcade Room - Corner
-R*P
-.
-value%#FranticFactory;Under Arcade Shelves
-
-nameUnder Arcade Shelves
-n*l
-<
-value31FranticFactory;Testing Area - Next to Mini Barrel
-,
-name$"Testing Area - Next to Mini Barrel
-v*t
-@
-value75FranticFactory;Testing Area - Base of the Block Tower
-0
-name(&Testing Area - Base of the Block Tower
-D*B
-'
-valueFranticFactory;By Foyer Shop
-
-nameBy Foyer Shop
-N*L
-,
-value#!FranticFactory;Foyer - front left
-
-nameFoyer - front left
-L*J
-+
-value" FranticFactory;Foyer - back left
-
-nameFoyer - back left
-P*N
--
-value$"FranticFactory;Foyer - front right
-
-nameFoyer - front right
-<*:
-#
-valueFranticFactory;Dark Room
-
-name	Dark Room
-R*P
-.
-value%#FranticFactory;Crusher Room - start
-
-nameCrusher Room - start
-J*H
-*
-value!FranticFactory;In the power hut
-
-nameIn the power hut
 ñ(
 CrystalCavesÖ(2Ç(
 J*H
@@ -15107,283 +12627,618 @@ W*U
 value&$FungiForest;DK's Barn - Second floor
 "
 nameDK's Barn - Second floor
-Æ(
-CreepyCastleù(2ö(
-F*D
-'
-valueCreepyCastle;Near Greenhouse
-
-nameNear Greenhouse
-R*P
--
-value$"CreepyCastle;Rocketbarrel Overhang
-
-nameRocketbarrel Overhang
-T*R
-.
-value%#CreepyCastle;Lowest ledge near tree
- 
-nameLowest ledge near tree
-P*N
-,
-value#!CreepyCastle;Near Lower Cave Shop
-
-nameNear Lower Cave Shop
-P*N
-,
-value#!CreepyCastle;Near Upper Cave Shop
-
-nameNear Upper Cave Shop
-H*F
+´
+JungleJapesõ2ò
+I*G
 (
-valueCreepyCastle;Near Sewer Grate
-
-nameNear Sewer Grate
-P*N
-,
-value#!CreepyCastle;Against the Big Tree
-
-nameAgainst the Big Tree
-V*T
-/
-value&$CreepyCastle;Next to Moat Tag Barrel
-!
-nameNext to Moat Tag Barrel
-N*L
-+
-value" CreepyCastle;Next to Middle Shop
-
-nameNext to Middle Shop
-T*R
-.
-value%#CreepyCastle;Between Moat and Cliff
- 
-nameBetween Moat and Cliff
-\*Z
-2
-value)'CreepyCastle;Top Shop Battlement - left
-$
-nameTop Shop Battlement - left
-`*^
-4
-value+)CreepyCastle;Top Shop Battlement - center
-&
-nameTop Shop Battlement - center
-^*\
-3
-value*(CreepyCastle;Top Shop Battlement - right
-%
-nameTop Shop Battlement - right
-N*L
-+
-value" CreepyCastle;Outside Lanky Tower
-
-nameOutside Lanky Tower
-`*^
-4
-value+)CreepyCastle;Next to Stairs to Drawbridge
-&
-nameNext to Stairs to Drawbridge
-d*b
-6
-value-+CreepyCastle;Rocketbarrel Battlement - left
-(
-name Rocketbarrel Battlement - left
-f*d
-7
-value.,CreepyCastle;Rocketbarrel Battlement - right
-)
-name!Rocketbarrel Battlement - right
-f*d
-7
-value.,CreepyCastle;Moat Underwater by RocketBarrel
-)
-name!Moat Underwater by RocketBarrel
-R*P
--
-value$"CreepyCastle;Moat Under Drawbridge
-
-nameMoat Under Drawbridge
-X*V
-0
-value'%CreepyCastle;Next to Moat Door - left
-"
-nameNext to Moat Door - left
-Z*X
-1
-value(&CreepyCastle;Next to Moat Door - right
-#
-nameNext to Moat Door - right
-\*Z
-2
-value)'CreepyCastle;Moat Next to Ladder - left
-$
-nameMoat Next to Ladder - left
-^*\
-3
-value*(CreepyCastle;Moat Next to Ladder - right
-%
-nameMoat Next to Ladder - right
-J*H
-)
-value CreepyCastle;Tree - First Room
+valueJungleJapes;First Tunnel Cave
 
-nameTree - First Room
-b*`
-5
-value,*CreepyCastle;Ballroom - Left Candle - left
-'
-nameBallroom - Left Candle - left
-d*b
-6
-value-+CreepyCastle;Ballroom - Left Candle - right
-(
-name Ballroom - Left Candle - right
-b*`
-5
-value,*CreepyCastle;Ballroom - Back Candle - left
-'
-nameBallroom - Back Candle - left
-d*b
-6
-value-+CreepyCastle;Ballroom - Back Candle - right
-(
-name Ballroom - Back Candle - right
-d*b
-6
-value-+CreepyCastle;Ballroom - Right Candle - left
-(
-name Ballroom - Right Candle - left
-f*d
-7
-value.,CreepyCastle;Ballroom - Right Candle - right
+nameFirst Tunnel Cave
+K*I
 )
-name!Ballroom - Right Candle - right
-b*`
-5
-value,*CreepyCastle;Lower Cave - Crypt skull left
-'
-nameLower Cave - Crypt skull left
-d*b
-6
-value-+CreepyCastle;Lower Cave - Crypt skull right
-(
-name Lower Cave - Crypt skull right
-p*n
-<
-value31CreepyCastle;Lanky wind tower - Right of Entrance
-.
-name&$Lanky wind tower - Right of Entrance
-R*P
--
-value$"CreepyCastle;Greenhouse - Dead end
-
-nameGreenhouse - Dead end
-\*Z
-2
-value)'CreepyCastle;Greenhouse - Also dead end
+value JungleJapes;Rambi Boulder Cave
+
+nameRambi Boulder Cave
+[*Y
+1
+value(&JungleJapes;Next to Diddy Cage - right
 $
-nameGreenhouse - Also dead end
-r*p
-=
-value42CreepyCastle;Ballroom - In Front of Monkeyport Pad
-/
-name'%Ballroom - In Front of Monkeyport Pad
-T*R
-.
-value%#CreepyCastle;Museum - Far Left Side
- 
-nameMuseum - Far Left Side
-V*T
-/
-value&$CreepyCastle;Museum - Far Right Side
-!
-nameMuseum - Far Right Side
-p*n
-<
-value31CreepyCastle;Museum - Tiny side - near the statue
-.
-name&$Museum - Tiny side - near the statue
-n*l
-;
-value20CreepyCastle;Museum - Tiny side - on the factory
--
-name%#Museum - Tiny side - on the factory
-X*V
-0
-value'%CreepyCastle;Tree - Near Coconut Gate
-"
-nameTree - Near Coconut Gate
-T*R
-.
-value%#CreepyCastle;Tree - Past Punch Gate
- 
-nameTree - Past Punch Gate
-`*^
+nameNext to Diddy Cage - right
+a*_
 4
-value+)CreepyCastle;Library - Strong Kong Alcove
-&
-nameLibrary - Strong Kong Alcove
-p*n
-<
-value31CreepyCastle;Chunky crypt - between right coffins
-.
-name&$Chunky crypt - between right coffins
-n*l
-;
-value20CreepyCastle;Chunky crypt - between left coffins
--
-name%#Chunky crypt - between left coffins
-h*f
-8
-value/-CreepyCastle;Donkey crypt - behind the levers
+value+)JungleJapes;Next to Minecart Exit - right
+'
+nameNext to Minecart Exit - right
+Y*W
+0
+value'%JungleJapes;Across From Minecart Exit
+#
+nameAcross From Minecart Exit
+M*K
 *
-name" Donkey crypt - behind the levers
-f*d
-7
-value.,CreepyCastle;Diddy crypt - right of the tomb
-)
-name!Diddy crypt - right of the tomb
-d*b
+value!JungleJapes;Next to Hive Tunnel
+
+nameNext to Hive Tunnel
+m*k
+:
+value1/JungleJapes;Hive Area - Next to Hive - far left
+-
+name%#Hive Area - Next to Hive - far left
+e*c
 6
-value-+CreepyCastle;Diddy crypt - left of the tomb
-(
-name Diddy crypt - left of the tomb
-X*V
-0
-value'%CreepyCastle;Near the crypt staircase
-"
-nameNear the crypt staircase
-^*\
-3
-value*(CreepyCastle;Mausoleum - sprint corridor
-%
-nameMausoleum - sprint corridor
-P*N
-,
-value#!CreepyCastle;Dungeon - Lanky side
-
-nameDungeon - Lanky side
-P*N
-,
-value#!CreepyCastle;Dungeon - Diddy side
-
-nameDungeon - Diddy side
-J*H
+value-+JungleJapes;Hive Area - Next to Hive - left
 )
-value CreepyCastle;Dungeon - DK side
+name!Hive Area - Next to Hive - left
+I*G
+(
+valueJungleJapes;Rambi Pool - left
 
-nameDungeon - DK side
-Z*X
+nameRambi Pool - left
+K*I
+)
+value JungleJapes;Rambi Pool - right
+
+nameRambi Pool - right
+M*K
+*
+value!JungleJapes;River by Tag Barrel
+
+nameRiver by Tag Barrel
+]*[
+2
+value)'JungleJapes;River by Chunky Underground
+%
+nameRiver by Chunky Underground
+Q*O
+,
+value#!JungleJapes;Low Hill Shop - right
+
+nameLow Hill Shop - right
+O*M
++
+value" JungleJapes;Painting Hill - left
+
+namePainting Hill - left
+Q*O
+,
+value#!JungleJapes;Painting Hill - right
+
+namePainting Hill - right
+[*Y
 1
-value(&CreepyCastle;Tombstone near lower door
+value(&JungleJapes;First Tunnel Switch - left
+$
+nameFirst Tunnel Switch - left
+]*[
+2
+value)'JungleJapes;First Tunnel Switch - right
+%
+nameFirst Tunnel Switch - right
+W*U
+/
+value&$JungleJapes;First Tunnel - back left
+"
+nameFirst Tunnel - back left
+Y*W
+0
+value'%JungleJapes;First Tunnel - front left
 #
-nameTombstone near lower door
-F*D
-'
-valueCreepyCastle;Behind the shed
+nameFirst Tunnel - front left
+c*a
+5
+value,*JungleJapes;First Tunnel - Near River Exit
+(
+name First Tunnel - Near River Exit
+m*k
+:
+value1/JungleJapes;Stormy Tunnel - Near Pit River Side
+-
+name%#Stormy Tunnel - Near Pit River Side
+e*c
+6
+value-+JungleJapes;Stormy Tunnel Threeway crossing
+)
+name!Stormy Tunnel Threeway crossing
+Y*W
+0
+value'%JungleJapes;Stormy Area - front right
+#
+nameStormy Area - front right
+W*U
+/
+value&$JungleJapes;Stormy Area - front left
+"
+nameStormy Area - front left
+Y*W
+0
+value'%JungleJapes;Stormy Area - center left
+#
+nameStormy Area - center left
+[*Y
+1
+value(&JungleJapes;Stormy Area - center right
+$
+nameStormy Area - center right
+U*S
+.
+value%#JungleJapes;Stormy Area - back left
+!
+nameStormy Area - back left
+W*U
+/
+value&$JungleJapes;Stormy Area - back right
+"
+nameStormy Area - back right
+o*m
+;
+value20JungleJapes;Painting Room - Next to the Entrance
+.
+name&$Painting Room - Next to the Entrance
+w*u
+?
+value64JungleJapes;Diddy Mountain - Next to the slam switch
+2
+name*(Diddy Mountain - Next to the slam switch
+c*a
+5
+value,*JungleJapes;Diddy Mountain - River grate 1
+(
+name Diddy Mountain - River grate 1
+c*a
+5
+value,*JungleJapes;Diddy Mountain - River grate 2
+(
+name Diddy Mountain - River grate 2
+c*a
+5
+value,*JungleJapes;Diddy Mountain - Minecart room
+(
+name Diddy Mountain - Minecart room
+g*e
+7
+value.,JungleJapes;Painting room - Left of painting
+*
+name" Painting room - Left of painting
+i*g
+8
+value/-JungleJapes;Painting room - Right of painting
++
+name#!Painting room - Right of painting
+c*a
+5
+value,*JungleJapes;Chunky underground - left wall
+(
+name Chunky underground - left wall
+e*c
+6
+value-+JungleJapes;Chunky underground - right wall
+)
+name!Chunky underground - right wall
+_*]
+3
+value*(JungleJapes;Next to the baboon blast pad
+&
+nameNext to the baboon blast pad
+S*Q
+-
+value$"JungleJapes;Next to level entrance
+ 
+nameNext to level entrance
+K*I
+)
+value JungleJapes;Slope to Kong Cage
+
+nameSlope to Kong Cage
+Œ 
+GloomyGalleonº 2π 
+[*Y
+2
+value)'GloomyGalleon;Cavern Alcove Past Planks
+#
+nameCavern Alcove Past Planks
+;*9
+"
+valueGloomyGalleon;Deep Hole
+
+name	Deep Hole
+=*;
+#
+valueGloomyGalleon;Behind 2DS
+
+name
+Behind 2DS
+Q*O
+-
+value$"GloomyGalleon;Behind Enguarde Door
+
+nameBehind Enguarde Door
+5*3
+
+valueGloomyGalleon;Cactus
+
+nameCactus
+i*g
+9
+value0.GloomyGalleon;Tunnel to Shipyard - Tiny switch
+*
+name" Tunnel to Shipyard - Tiny switch
+k*i
+:
+value1/GloomyGalleon;Tunnel to Shipyard - Lanky switch
++
+name#!Tunnel to Shipyard - Lanky switch
+U*S
+/
+value&$GloomyGalleon;Tunnel to Punch Chests
+ 
+nameTunnel to Punch Chests
+U*S
+/
+value&$GloomyGalleon;Under Baboon Blast pad
+ 
+nameUnder Baboon Blast pad
+[*Y
+2
+value)'GloomyGalleon;Under RocketBarrel barrel
+#
+nameUnder RocketBarrel barrel
+W*U
+0
+value'%GloomyGalleon;Next to Cannonball game
+!
+nameNext to Cannonball game
+e*c
+7
+value.,GloomyGalleon;Next to Lighthouse Gate switch
+(
+name Next to Lighthouse Gate switch
+g*e
+8
+value/-GloomyGalleon;Entrance Tunnel - near entrance
+)
+name!Entrance Tunnel - near entrance
+a*_
+5
+value,*GloomyGalleon;Next to Shipyard Gate switch
+&
+nameNext to Shipyard Gate switch
+[*Y
+2
+value)'GloomyGalleon;Cactus - bottom back left
+#
+nameCactus - bottom back left
+]*[
+3
+value*(GloomyGalleon;Cactus - bottom front left
+$
+nameCactus - bottom front left
+]*[
+3
+value*(GloomyGalleon;Cactus - bottom back right
+$
+nameCactus - bottom back right
+_*]
+4
+value+)GloomyGalleon;Cactus - bottom front right
+%
+nameCactus - bottom front right
+G*E
+(
+valueGloomyGalleon;Cavern Mast Top
 
-nameBehind the shed
+nameCavern Mast Top
+[*Y
+2
+value)'GloomyGalleon;Punch Chests Room - right
+#
+namePunch Chests Room - right
+W*U
+0
+value'%GloomyGalleon;Punch Under Cavern Shop
+!
+namePunch Under Cavern Shop
+o*m
+<
+value31GloomyGalleon;Low water alcove in lighthouse area
+-
+name%#Low water alcove in lighthouse area
+e*c
+7
+value.,GloomyGalleon;Behind boxes near Cavern Wreck
+(
+name Behind boxes near Cavern Wreck
+Y*W
+1
+value(&GloomyGalleon;Mechfish Gate - far left
+"
+nameMechfish Gate - far left
+Q*O
+-
+value$"GloomyGalleon;Mechfish Gate - left
+
+nameMechfish Gate - left
+U*S
+/
+value&$GloomyGalleon;Mechfish Gate - middle
+ 
+nameMechfish Gate - middle
+Q*O
+-
+value$"GloomyGalleon;Cannonball Room Exit
+
+nameCannonball Room Exit
+O*M
+,
+value#!GloomyGalleon;2DS secret 3rd door
+
+name2DS secret 3rd door
+c*a
+6
+value-+GloomyGalleon;Near Mermaid's Palace - right
+'
+nameNear Mermaid's Palace - right
+a*_
+5
+value,*GloomyGalleon;Near Mermaid's Palace - left
+&
+nameNear Mermaid's Palace - left
+[*Y
+2
+value)'GloomyGalleon;Lighthouse - Up the ledge
+#
+nameLighthouse - Up the ledge
+K*I
+*
+value!GloomyGalleon;Lighthouse - Left
+
+nameLighthouse - Left
+K*I
+*
+value!GloomyGalleon;Lighthouse - Back
+
+nameLighthouse - Back
+;*9
+"
+valueGloomyGalleon;Lanky 2DS
+
+name	Lanky 2DS
+e*c
+7
+value.,GloomyGalleon;Cannonball gate tunnel - right
+(
+name Cannonball gate tunnel - right
+c*a
+6
+value-+GloomyGalleon;Cannonball gate tunnel - left
+'
+nameCannonball gate tunnel - left
+[*Y
+2
+value)'GloomyGalleon;Seasick ship - start left
+#
+nameSeasick ship - start left
+]*[
+3
+value*(GloomyGalleon;Seasick ship - start right
+$
+nameSeasick ship - start right
+w*u
+@
+value75GloomyGalleon;Seasick ship - after cannons front left
+1
+name)'Seasick ship - after cannons front left
+y*w
+A
+value86GloomyGalleon;Seasick ship - after cannons front right
+2
+name*(Seasick ship - after cannons front right
+o*m
+<
+value31GloomyGalleon;Seasick ship - after cannons center
+-
+name%#Seasick ship - after cannons center
+Q*O
+-
+value$"GloomyGalleon;Mechfish - Left wall
+
+nameMechfish - Left wall
+S*Q
+.
+value%#GloomyGalleon;Mechfish - Right wall
+
+nameMechfish - Right wall
+a*_
+5
+value,*GloomyGalleon;Chunky 5DS - Against a chest
+&
+nameChunky 5DS - Against a chest
+u*s
+?
+value64GloomyGalleon;Donkey 5DS - Next to the left cell bed
+0
+name(&Donkey 5DS - Next to the left cell bed
+Å
+FranticFactoryÓ2Î
+@*>
+%
+valueFranticFactory;Arcade Room
+
+nameArcade Room
+H*F
+)
+value FranticFactory;Production Room
+
+nameProduction Room
+^*\
+4
+value+)FranticFactory;R&D across from Piano Game
+$
+nameR&D across from Piano Game
+@*>
+%
+valueFranticFactory;Block Tower
+
+nameBlock Tower
+B*@
+&
+valueFranticFactory;Storage Room
+
+nameStorage Room
+R*P
+.
+value%#FranticFactory;Next to Hatch - left
+
+nameNext to Hatch - left
+T*R
+/
+value&$FranticFactory;Next to Hatch - right
+
+nameNext to Hatch - right
+Z*X
+2
+value)'FranticFactory;Bottom of the Hatch Pole
+"
+nameBottom of the Hatch Pole
+l*j
+;
+value20FranticFactory;Production Room - Under Conveyors
++
+name#!Production Room - Under Conveyors
+Z*X
+2
+value)'FranticFactory;Above Storage Spring Pad
+"
+nameAbove Storage Spring Pad
+j*h
+:
+value1/FranticFactory;Storage Room - Behind Tag Barrel
+*
+name" Storage Room - Behind Tag Barrel
+X*V
+1
+value(&FranticFactory;Under Left Storage Shop
+!
+nameUnder Left Storage Shop
+Z*X
+2
+value)'FranticFactory;Under Right Storage Shop
+"
+nameUnder Right Storage Shop
+P*N
+-
+value$"FranticFactory;Next to Number Game
+
+nameNext to Number Game
+Z*X
+2
+value)'FranticFactory;R&D across from Car Race
+"
+nameR&D across from Car Race
+j*h
+:
+value1/FranticFactory;R&D - Next to Tunnel to Car Race
+*
+name" R&D - Next to Tunnel to Car Race
+p*n
+=
+value42FranticFactory;Testing Area - Under Tunnel to Shop
+-
+name%#Testing Area - Under Tunnel to Shop
+F*D
+(
+valueFranticFactory;R&D - Dead End
+
+nameR&D - Dead End
+Ä*~
+E
+value<:FranticFactory;Testing Area - Air Vent Under Arcade Window
+5
+name-+Testing Area - Air Vent Under Arcade Window
+|*z
+C
+value:8FranticFactory;Testing Area - Under Arcade Window - left
+3
+name+)Testing Area - Under Arcade Window - left
+j*h
+:
+value1/FranticFactory;Testing Area - Behind Tag Barrel
+*
+name" Testing Area - Behind Tag Barrel
+^*\
+4
+value+)FranticFactory;R&D - Next to Diddy's Room
+$
+nameR&D - Next to Diddy's Room
+l*j
+;
+value20FranticFactory;Storage Room - Next to Tag Barrel
++
+name#!Storage Room - Next to Tag Barrel
+z*x
+B
+value97FranticFactory;Production Room - Next to Diddy's Switch
+2
+name*(Production Room - Next to Diddy's Switch
+V*T
+0
+value'%FranticFactory;Above Crusher Entrance
+ 
+nameAbove Crusher Entrance
+R*P
+.
+value%#FranticFactory;Arcade Room - Corner
+
+nameArcade Room - Corner
+R*P
+.
+value%#FranticFactory;Under Arcade Shelves
+
+nameUnder Arcade Shelves
+n*l
+<
+value31FranticFactory;Testing Area - Next to Mini Barrel
+,
+name$"Testing Area - Next to Mini Barrel
+v*t
+@
+value75FranticFactory;Testing Area - Base of the Block Tower
+0
+name(&Testing Area - Base of the Block Tower
+D*B
+'
+valueFranticFactory;By Foyer Shop
+
+nameBy Foyer Shop
+N*L
+,
+value#!FranticFactory;Foyer - front left
+
+nameFoyer - front left
+L*J
++
+value" FranticFactory;Foyer - back left
+
+nameFoyer - back left
+P*N
+-
+value$"FranticFactory;Foyer - front right
+
+nameFoyer - front right
+<*:
+#
+valueFranticFactory;Dark Room
+
+name	Dark Room
+R*P
+.
+value%#FranticFactory;Crusher Room - start
+
+nameCrusher Room - start
+J*H
+*
+value!FranticFactory;In the power hut
+
+nameIn the power hut
 ◊.
 
 AngryAztec».2≈.
@@ -15688,882 +13543,3955 @@ P*N
 value" AngryAztec;Behind the llama cage
 
 nameBehind the llama cage
-Œ 
-GloomyGalleonº 2π 
-[*Y
-2
-value)'GloomyGalleon;Cavern Alcove Past Planks
-#
-nameCavern Alcove Past Planks
-;*9
+˘€
+CrownPadÎ€*Á€
+/
+CreepyCastleﬂ/2‹/
+N*L
+
+valueGreenhouse: Center
++
+name#!Creepy Castle: Greenhouse: Center
+X*V
 "
-valueGloomyGalleon;Deep Hole
-
-name	Deep Hole
-=*;
+valueTop of Castle Near Shop
+0
+name(&Creepy Castle: Top of Castle Near Shop
+P*N
+
+valueGreenhouse: GB area
+,
+name$"Creepy Castle: Greenhouse: GB area
+D*B
+
+valueNear the Tree
+&
+nameCreepy Castle: Near the Tree
+P*N
+
+valueNext to lowest tree
+,
+name$"Creepy Castle: Next to lowest tree
+`*^
+&
+valueNear lower entrance - right
+4
+name,*Creepy Castle: Near lower entrance - right
+Z*X
 #
-valueGloomyGalleon;Behind 2DS
+valueLowest ledge near ladder
+1
+name)'Creepy Castle: Lowest ledge near ladder
+V*T
+!
+valueGraveyard behind stone
+/
+name'%Creepy Castle: Graveyard behind stone
+h*f
+*
+value!Lowest ledge towards Lone Cliff
+8
+name0.Creepy Castle: Lowest ledge towards Lone Cliff
+P*N
+
+valueNear the lower door
+,
+name$"Creepy Castle: Near the lower door
+J*H
+
+valueUpper Gravestone
+)
+name!Creepy Castle: Upper Gravestone
+\*Z
+$
+valueNear Dungeon Tunnel Steps
+2
+name*(Creepy Castle: Near Dungeon Tunnel Steps
+P*N
+
+valueNear Dungeon Tunnel
+,
+name$"Creepy Castle: Near Dungeon Tunnel
+H*F
+
+valueOn square stone
+(
+name Creepy Castle: On square stone
+V*T
+!
+valueNext to the drawbridge
+/
+name'%Creepy Castle: Next to the drawbridge
+X*V
+"
+valueNear Lower Rocketbarrel
+0
+name(&Creepy Castle: Near Lower Rocketbarrel
+T*R
+ 
+valueNear Lower Tag Barrel
+.
+name&$Creepy Castle: Near Lower Tag Barrel
+H*F
+
+valueNear Headphones
+(
+name Creepy Castle: Near Headphones
+R*P
+
+valueNear Drawbridge Exit
+-
+name%#Creepy Castle: Near Drawbridge Exit
+J*H
+
+valueNear middle shop
+)
+name!Creepy Castle: Near middle shop
+<*:
 
-name
-Behind 2DS
-Q*O
--
-value$"GloomyGalleon;Behind Enguarde Door
-
-nameBehind Enguarde Door
-5*3
-
-valueGloomyGalleon;Cactus
-
-nameCactus
-i*g
-9
-value0.GloomyGalleon;Tunnel to Shipyard - Tiny switch
-*
-name" Tunnel to Shipyard - Tiny switch
-k*i
-:
-value1/GloomyGalleon;Tunnel to Shipyard - Lanky switch
-+
-name#!Tunnel to Shipyard - Lanky switch
-U*S
-/
-value&$GloomyGalleon;Tunnel to Punch Chests
- 
-nameTunnel to Punch Chests
-U*S
-/
-value&$GloomyGalleon;Under Baboon Blast pad
- 
-nameUnder Baboon Blast pad
-[*Y
-2
-value)'GloomyGalleon;Under RocketBarrel barrel
-#
-nameUnder RocketBarrel barrel
-W*U
-0
-value'%GloomyGalleon;Next to Cannonball game
-!
-nameNext to Cannonball game
-e*c
-7
-value.,GloomyGalleon;Next to Lighthouse Gate switch
-(
-name Next to Lighthouse Gate switch
-g*e
-8
-value/-GloomyGalleon;Entrance Tunnel - near entrance
-)
-name!Entrance Tunnel - near entrance
-a*_
-5
-value,*GloomyGalleon;Next to Shipyard Gate switch
-&
-nameNext to Shipyard Gate switch
-[*Y
-2
-value)'GloomyGalleon;Cactus - bottom back left
-#
-nameCactus - bottom back left
-]*[
-3
-value*(GloomyGalleon;Cactus - bottom front left
-$
-nameCactus - bottom front left
-]*[
-3
-value*(GloomyGalleon;Cactus - bottom back right
-$
-nameCactus - bottom back right
-_*]
-4
-value+)GloomyGalleon;Cactus - bottom front right
-%
-nameCactus - bottom front right
-G*E
-(
-valueGloomyGalleon;Cavern Mast Top
-
-nameCavern Mast Top
-[*Y
-2
-value)'GloomyGalleon;Punch Chests Room - right
-#
-namePunch Chests Room - right
-W*U
-0
-value'%GloomyGalleon;Punch Under Cavern Shop
-!
-namePunch Under Cavern Shop
-o*m
-<
-value31GloomyGalleon;Low water alcove in lighthouse area
--
-name%#Low water alcove in lighthouse area
-e*c
-7
-value.,GloomyGalleon;Behind boxes near Cavern Wreck
-(
-name Behind boxes near Cavern Wreck
-Y*W
-1
-value(&GloomyGalleon;Mechfish Gate - far left
+value	Near Shed
 "
-nameMechfish Gate - far left
-Q*O
--
-value$"GloomyGalleon;Mechfish Gate - left
-
-nameMechfish Gate - left
-U*S
-/
-value&$GloomyGalleon;Mechfish Gate - middle
- 
-nameMechfish Gate - middle
-Q*O
--
-value$"GloomyGalleon;Cannonball Room Exit
-
-nameCannonball Room Exit
-O*M
-,
-value#!GloomyGalleon;2DS secret 3rd door
+nameCreepy Castle: Near Shed
+N*L
 
-name2DS secret 3rd door
-c*a
-6
-value-+GloomyGalleon;Near Mermaid's Palace - right
-'
-nameNear Mermaid's Palace - right
-a*_
-5
-value,*GloomyGalleon;Near Mermaid's Palace - left
-&
-nameNear Mermaid's Palace - left
-[*Y
-2
-value)'GloomyGalleon;Lighthouse - Up the ledge
+valueNext to Greenhouse
++
+name#!Creepy Castle: Next to Greenhouse
+H*F
+
+valueNear Wind Tower
+(
+name Creepy Castle: Near Wind Tower
+Z*X
 #
-nameLighthouse - Up the ledge
-K*I
-*
-value!GloomyGalleon;Lighthouse - Left
-
-nameLighthouse - Left
-K*I
-*
-value!GloomyGalleon;Lighthouse - Back
-
-nameLighthouse - Back
-;*9
+valueTop of Castle near fence
+1
+name)'Creepy Castle: Top of Castle near fence
+D*B
+
+valueNear top shop
+&
+nameCreepy Castle: Near top shop
+D*B
+
+valueOn Wind Tower
+&
+nameCreepy Castle: On Wind Tower
+X*V
 "
-valueGloomyGalleon;Lanky 2DS
+valueVanilla Overhang Warp 2
+0
+name(&Creepy Castle: Vanilla Overhang Warp 2
+N*L
+
+valueVanilla Top Warp 5
++
+name#!Creepy Castle: Vanilla Top Warp 5
+P*N
+
+valueVanilla Moat Warp 1
+,
+name$"Creepy Castle: Vanilla Moat Warp 1
+P*N
+
+valueVanilla Moat Warp 5
+,
+name$"Creepy Castle: Vanilla Moat Warp 5
+P*N
+
+valueVanilla Back Warp 1
+,
+name$"Creepy Castle: Vanilla Back Warp 1
+P*N
+
+valueVanilla Moat Warp 3
+,
+name$"Creepy Castle: Vanilla Moat Warp 3
+P*N
+
+valueVanilla Moat Warp 2
+,
+name$"Creepy Castle: Vanilla Moat Warp 2
+P*N
+
+valueVanilla Moat Warp 4
+,
+name$"Creepy Castle: Vanilla Moat Warp 4
+P*N
+
+valueVanilla Shop Warp 3
+,
+name$"Creepy Castle: Vanilla Shop Warp 3
+P*N
+
+valueVanilla Shed Warp 4
+,
+name$"Creepy Castle: Vanilla Shed Warp 4
+^*\
+%
+valueBallroom: Near Left Candle
+3
+name+)Creepy Castle: Ballroom: Near Left Candle
+`*^
+&
+valueBallroom: Near Right Candle
+4
+name,*Creepy Castle: Ballroom: Near Right Candle
+P*N
+
+valueBallroom: Back Left
+,
+name$"Creepy Castle: Ballroom: Back Left
+R*P
+
+valueBallroom: Back Right
+-
+name%#Creepy Castle: Ballroom: Back Right
+Z*X
+#
+valueDungeon: Near Diddy Room
+1
+name)'Creepy Castle: Dungeon: Near Diddy Room
+R*P
+
+valueDungeon: Donkey Room
+-
+name%#Creepy Castle: Dungeon: Donkey Room
+^*\
+%
+valueDungeon: Behind punch gate
+3
+name+)Creepy Castle: Dungeon: Behind punch gate
+P*N
+
+valueShed: Near Entrance
+,
+name$"Creepy Castle: Shed: Near Entrance
+\*Z
+$
+valueLower cave: Lower Portion
+2
+name*(Creepy Castle: Lower cave: Lower Portion
+l*j
+,
+value#!Lower cave: Also Behind Mausoleum
+:
+name20Creepy Castle: Lower cave: Also Behind Mausoleum
+T*R
+ 
+valueLower cave: Near shop
+.
+name&$Creepy Castle: Lower cave: Near shop
+b*`
+'
+valueLower Cave: Behind Mausoleum
+5
+name-+Creepy Castle: Lower Cave: Behind Mausoleum
+H*F
+
+valueCrypt: entrance
+(
+name Creepy Castle: Crypt: entrance
+\*Z
+$
+valueCrypt: Near Chunky Coffin
+2
+name*(Creepy Castle: Crypt: Near Chunky Coffin
+Z*X
+#
+valueCrypt: Near Diddy Coffin
+1
+name)'Creepy Castle: Crypt: Near Diddy Coffin
+\*Z
+$
+valueCrypt: Vanilla Far Warp 1
+2
+name*(Creepy Castle: Crypt: Vanilla Far Warp 1
+`*^
+&
+valueCrypt: Vanilla Close Warp 1
+4
+name,*Creepy Castle: Crypt: Vanilla Close Warp 1
+`*^
+&
+valueCrypt: Vanilla Close Warp 2
+4
+name,*Creepy Castle: Crypt: Vanilla Close Warp 2
+`*^
+&
+valueCrypt: Vanilla Close Warp 3
+4
+name,*Creepy Castle: Crypt: Vanilla Close Warp 3
+\*Z
+$
+valueCrypt: Vanilla Far Warp 3
+2
+name*(Creepy Castle: Crypt: Vanilla Far Warp 3
+\*Z
+$
+valueCrypt: Vanilla Far Warp 2
+2
+name*(Creepy Castle: Crypt: Vanilla Far Warp 2
+P*N
+
+valueMausoleum: entrance
+,
+name$"Creepy Castle: Mausoleum: entrance
+X*V
+"
+valueMausoleum: Lanky Tunnel
+0
+name(&Creepy Castle: Mausoleum: Lanky Tunnel
+R*P
+
+valueUpper cave: Near Pit
+-
+name%#Creepy Castle: Upper cave: Near Pit
+T*R
+ 
+valueUpper cave: Near shop
+.
+name&$Creepy Castle: Upper cave: Near shop
+P*N
+
+valueLibrary: Crossroads
+,
+name$"Creepy Castle: Library: Crossroads
+\*Z
+$
+valueLibrary: Flying Book Room
+2
+name*(Creepy Castle: Library: Flying Book Room
+L*J
+
+valueMuseum: Near Race
+*
+name" Creepy Castle: Museum: Near Race
+R*P
+
+valueMuseum: Pillar Front
+-
+name%#Creepy Castle: Museum: Pillar Front
+\*Z
+$
+valueMuseum: Pillar Back Right
+2
+name*(Creepy Castle: Museum: Pillar Back Right
+T*R
+ 
+valueMuseum: Behind Pillar
+.
+name&$Creepy Castle: Museum: Behind Pillar
+Z*X
+#
+valueMuseum: Pillar Back Left
+1
+name)'Creepy Castle: Museum: Pillar Back Left
+L*J
+
+valueMuseum: Main Room
+*
+name" Creepy Castle: Museum: Main Room
+V*T
+!
+valueTrash Can: Near Cheese
+/
+name'%Creepy Castle: Trash Can: Near Cheese
+P*N
+
+valueTree: Starting Room
+,
+name$"Creepy Castle: Tree: Starting Room
+£!
+JungleJapesì!2ê!
+M*K
+
+valueNear Low Hill Shop
+*
+name" Jungle Japes: Near Low Hill Shop
+I*G
+
+valueOn Painting Hill
+(
+name Jungle Japes: On Painting Hill
+U*S
+!
+valueNext to level entrance
+.
+name&$Jungle Japes: Next to level entrance
+W*U
+"
+valueOn Tree (Starting Area)
+/
+name'%Jungle Japes: On Tree (Starting Area)
+c*a
+(
+valueNext to first tunnel entrance
+5
+name-+Jungle Japes: Next to first tunnel entrance
+K*I
+
+valueFirst Tunnel Cave
+)
+name!Jungle Japes: First Tunnel Cave
+Q*O
+
+valueIn First Tunnel Cave
+,
+name$"Jungle Japes: In First Tunnel Cave
+[*Y
+$
+valueFirst tunnel - later half
+1
+name)'Jungle Japes: First tunnel - later half
+C*A
+
+valuePainting Hill
+%
+nameJungle Japes: Painting Hill
+_*]
+&
+valueHive area near Hunky barrel
+3
+name+)Jungle Japes: Hive area near Hunky barrel
+=*;
+
+value
+Near Stump
+"
+nameJungle Japes: Near Stump
+9*7
 
-name	Lanky 2DS
-e*c
-7
-value.,GloomyGalleon;Cannonball gate tunnel - right
-(
-name Cannonball gate tunnel - right
-c*a
-6
-value-+GloomyGalleon;Cannonball gate tunnel - left
-'
-nameCannonball gate tunnel - left
-[*Y
-2
-value)'GloomyGalleon;Seasick ship - start left
-#
-nameSeasick ship - start left
-]*[
-3
-value*(GloomyGalleon;Seasick ship - start right
-$
-nameSeasick ship - start right
-w*u
-@
-value75GloomyGalleon;Seasick ship - after cannons front left
-1
-name)'Seasick ship - after cannons front left
-y*w
-A
-value86GloomyGalleon;Seasick ship - after cannons front right
-2
-name*(Seasick ship - after cannons front right
-o*m
-<
-value31GloomyGalleon;Seasick ship - after cannons center
--
-name%#Seasick ship - after cannons center
-Q*O
--
-value$"GloomyGalleon;Mechfish - Left wall
-
-nameMechfish - Left wall
-S*Q
-.
-value%#GloomyGalleon;Mechfish - Right wall
-
-nameMechfish - Right wall
-a*_
-5
-value,*GloomyGalleon;Chunky 5DS - Against a chest
-&
-nameChunky 5DS - Against a chest
-u*s
-?
-value64GloomyGalleon;Donkey 5DS - Next to the left cell bed
-0
-name(&Donkey 5DS - Next to the left cell bed
-´
-JungleJapesõ2ò
-I*G
-(
-valueJungleJapes;First Tunnel Cave
-
-nameFirst Tunnel Cave
-K*I
-)
-value JungleJapes;Rambi Boulder Cave
-
-nameRambi Boulder Cave
-[*Y
-1
-value(&JungleJapes;Next to Diddy Cage - right
-$
-nameNext to Diddy Cage - right
-a*_
-4
-value+)JungleJapes;Next to Minecart Exit - right
-'
-nameNext to Minecart Exit - right
-Y*W
-0
-value'%JungleJapes;Across From Minecart Exit
-#
-nameAcross From Minecart Exit
-M*K
-*
-value!JungleJapes;Next to Hive Tunnel
-
-nameNext to Hive Tunnel
-m*k
-:
-value1/JungleJapes;Hive Area - Next to Hive - far left
--
-name%#Hive Area - Next to Hive - far left
-e*c
-6
-value-+JungleJapes;Hive Area - Next to Hive - left
-)
-name!Hive Area - Next to Hive - left
-I*G
-(
-valueJungleJapes;Rambi Pool - left
-
-nameRambi Pool - left
-K*I
-)
-value JungleJapes;Rambi Pool - right
-
-nameRambi Pool - right
-M*K
-*
-value!JungleJapes;River by Tag Barrel
-
-nameRiver by Tag Barrel
-]*[
-2
-value)'JungleJapes;River by Chunky Underground
-%
-nameRiver by Chunky Underground
-Q*O
-,
-value#!JungleJapes;Low Hill Shop - right
-
-nameLow Hill Shop - right
-O*M
-+
-value" JungleJapes;Painting Hill - left
-
-namePainting Hill - left
-Q*O
-,
-value#!JungleJapes;Painting Hill - right
-
-namePainting Hill - right
-[*Y
-1
-value(&JungleJapes;First Tunnel Switch - left
-$
-nameFirst Tunnel Switch - left
-]*[
-2
-value)'JungleJapes;First Tunnel Switch - right
-%
-nameFirst Tunnel Switch - right
-W*U
-/
-value&$JungleJapes;First Tunnel - back left
-"
-nameFirst Tunnel - back left
-Y*W
-0
-value'%JungleJapes;First Tunnel - front left
-#
-nameFirst Tunnel - front left
-c*a
-5
-value,*JungleJapes;First Tunnel - Near River Exit
-(
-name First Tunnel - Near River Exit
-m*k
-:
-value1/JungleJapes;Stormy Tunnel - Near Pit River Side
--
-name%#Stormy Tunnel - Near Pit River Side
-e*c
-6
-value-+JungleJapes;Stormy Tunnel Threeway crossing
-)
-name!Stormy Tunnel Threeway crossing
-Y*W
-0
-value'%JungleJapes;Stormy Area - front right
-#
-nameStormy Area - front right
-W*U
-/
-value&$JungleJapes;Stormy Area - front left
-"
-nameStormy Area - front left
-Y*W
-0
-value'%JungleJapes;Stormy Area - center left
-#
-nameStormy Area - center left
-[*Y
-1
-value(&JungleJapes;Stormy Area - center right
-$
-nameStormy Area - center right
-U*S
-.
-value%#JungleJapes;Stormy Area - back left
-!
-nameStormy Area - back left
-W*U
-/
-value&$JungleJapes;Stormy Area - back right
-"
-nameStormy Area - back right
-o*m
-;
-value20JungleJapes;Painting Room - Next to the Entrance
-.
-name&$Painting Room - Next to the Entrance
-w*u
-?
-value64JungleJapes;Diddy Mountain - Next to the slam switch
-2
-name*(Diddy Mountain - Next to the slam switch
-c*a
-5
-value,*JungleJapes;Diddy Mountain - River grate 1
-(
-name Diddy Mountain - River grate 1
-c*a
-5
-value,*JungleJapes;Diddy Mountain - River grate 2
-(
-name Diddy Mountain - River grate 2
-c*a
-5
-value,*JungleJapes;Diddy Mountain - Minecart room
-(
-name Diddy Mountain - Minecart room
-g*e
-7
-value.,JungleJapes;Painting room - Left of painting
-*
-name" Painting room - Left of painting
-i*g
-8
-value/-JungleJapes;Painting room - Right of painting
-+
-name#!Painting room - Right of painting
-c*a
-5
-value,*JungleJapes;Chunky underground - left wall
-(
-name Chunky underground - left wall
-e*c
-6
-value-+JungleJapes;Chunky underground - right wall
-)
-name!Chunky underground - right wall
-_*]
-3
-value*(JungleJapes;Next to the baboon blast pad
-&
-nameNext to the baboon blast pad
-S*Q
--
-value$"JungleJapes;Next to level entrance
+value
+Near Log
  
-nameNext to level entrance
+nameJungle Japes: Near Log
 K*I
-)
-value JungleJapes;Slope to Kong Cage
 
-nameSlope to Kong Cage
+valueNear the Vine Pit
+)
+name!Jungle Japes: Near the Vine Pit
+9*7
+
+value
+Vine Pit
+ 
+nameJungle Japes: Vine Pit
+a*_
+'
+valueUseless Lanky Slope - Middle
+4
+name,*Jungle Japes: Useless Lanky Slope - Middle
+]*[
+%
+valueUseless Lanky Slope - Left
+2
+name*(Jungle Japes: Useless Lanky Slope - Left
+U*S
+!
+valueStormy Tunnel Crossing
+.
+name&$Jungle Japes: Stormy Tunnel Crossing
+=*;
+
+value
+Rambi Pool
+"
+nameJungle Japes: Rambi Pool
+I*G
+
+valueBehind Lanky Hut
+(
+name Jungle Japes: Behind Lanky Hut
+C*A
+
+valueBehind DK Hut
+%
+nameJungle Japes: Behind DK Hut
+E*C
+
+valueLeft of DK hut
+&
+nameJungle Japes: Left of DK hut
+O*M
+
+valueNear the Rambi cage
++
+name#!Jungle Japes: Near the Rambi cage
+M*K
+
+valueBehind Stormy Shop
+*
+name" Jungle Japes: Behind Stormy Shop
+G*E
+
+valueMinecart Alcove
+'
+nameJungle Japes: Minecart Alcove
+K*I
+
+valueNear highest shop
+)
+name!Jungle Japes: Near highest shop
+W*U
+"
+valueBehind Diddy's Mountain
+/
+name'%Jungle Japes: Behind Diddy's Mountain
+E*C
+
+valueNear Kong Cage
+&
+nameJungle Japes: Near Kong Cage
+G*E
+
+valueNear the cannon
+'
+nameJungle Japes: Near the cannon
+O*M
+
+valueBehind the Mountain
++
+name#!Jungle Japes: Behind the Mountain
+Q*O
+
+valueNear Cannon Platform
+,
+name$"Jungle Japes: Near Cannon Platform
+[*Y
+$
+valueIn Troff 'n' Scoff Alcove
+1
+name)'Jungle Japes: In Troff 'n' Scoff Alcove
+?*=
+
+valueLower River
+#
+nameJungle Japes: Lower River
+O*M
+
+valueVanilla Near Warp 1
++
+name#!Jungle Japes: Vanilla Near Warp 1
+O*M
+
+valueVanilla Hive Warp 5
++
+name#!Jungle Japes: Vanilla Hive Warp 5
+O*M
+
+valueVanilla Near Warp 2
++
+name#!Jungle Japes: Vanilla Near Warp 2
+W*U
+"
+valueVanilla Painting Warp 3
+/
+name'%Jungle Japes: Vanilla Painting Warp 3
+M*K
+
+valueVanilla Far Warp 1
+*
+name" Jungle Japes: Vanilla Far Warp 1
+Q*O
+
+valueVanilla Blast Warp 3
+,
+name$"Jungle Japes: Vanilla Blast Warp 3
+W*U
+"
+valueVanilla Mountain Warp 2
+/
+name'%Jungle Japes: Vanilla Mountain Warp 2
+S*Q
+ 
+valueVanilla Tunnel Warp 4
+-
+name%#Jungle Japes: Vanilla Tunnel Warp 4
+W*U
+"
+valueVanilla Mountain Warp 5
+/
+name'%Jungle Japes: Vanilla Mountain Warp 5
+S*Q
+ 
+valueVanilla Stormy Warp 4
+-
+name%#Jungle Japes: Vanilla Stormy Warp 4
+M*K
+
+valueBehind the boulder
+*
+name" Jungle Japes: Behind the boulder
+]*[
+%
+valueUnderground: Behind Cannon
+2
+name*(Jungle Japes: Underground: Behind Cannon
+W*U
+"
+valueUnderground: Near Vines
+/
+name'%Jungle Japes: Underground: Near Vines
+i*g
++
+value" Mountain: Near Entrance (Ground)
+8
+name0.Jungle Japes: Mountain: Near Entrance (Ground)
+e*c
+)
+value Mountain: Near Entrance (High)
+6
+name.,Jungle Japes: Mountain: Near Entrance (High)
+O*M
+
+valueMountain: On Barrel
++
+name#!Jungle Japes: Mountain: On Barrel
+_*]
+&
+valueMountain: Near HiLo Machine
+3
+name+)Jungle Japes: Mountain: Near HiLo Machine
+G*E
+
+valueHive: Main Room
+'
+nameJungle Japes: Hive: Main Room
+E*C
+
+valueHive: 1st Room
+&
+nameJungle Japes: Hive: 1st Room
+E*C
+
+valueHive: 3rd Room
+&
+nameJungle Japes: Hive: 3rd Room
+·
+GloomyGalleonœ2Ã
+M*K
+
+valueUnder Cavern Shop
++
+name#!Gloomy Galleon: Under Cavern Shop
+]*[
+$
+valueLighthouse: Interior Rear
+3
+name+)Gloomy Galleon: Lighthouse: Interior Rear
+Q*O
+
+valueFront of cannonball
+-
+name%#Gloomy Galleon: Front of cannonball
+U*S
+ 
+valueBehind the cannonball
+/
+name'%Gloomy Galleon: Behind the cannonball
+]*[
+$
+valueNext to cannonball cannon
+3
+name+)Gloomy Galleon: Next to cannonball cannon
+[*Y
+#
+valueEntrance tunnel crossing
+2
+name*(Gloomy Galleon: Entrance tunnel crossing
+S*Q
+
+valueTunnel to chests far
+.
+name&$Gloomy Galleon: Tunnel to chests far
+W*U
+!
+valueTunnel to chests close
+0
+name(&Gloomy Galleon: Tunnel to chests close
+S*Q
+
+valueChests tunnel alcove
+.
+name&$Gloomy Galleon: Chests tunnel alcove
+A*?
+
+valueChests room
+%
+nameGloomy Galleon: Chests room
+U*S
+ 
+valueBehind Punch GB Chest
+/
+name'%Gloomy Galleon: Behind Punch GB Chest
+Y*W
+"
+valueBehind the cannon wreck
+1
+name)'Gloomy Galleon: Behind the cannon wreck
+Q*O
+
+valueLeft of cavern shop
+-
+name%#Gloomy Galleon: Left of cavern shop
+S*Q
+
+valueFront of cavern shop
+.
+name&$Gloomy Galleon: Front of cavern shop
+O*M
+
+valueNear Bridge Warp 3
+,
+name$"Gloomy Galleon: Near Bridge Warp 3
+U*S
+ 
+valueNear the Rocketbarrel
+/
+name'%Gloomy Galleon: Near the Rocketbarrel
+U*S
+ 
+valueNear the Baboon Blast
+/
+name'%Gloomy Galleon: Near the Baboon Blast
+]*[
+$
+valueNext to Lighthouse ladder
+3
+name+)Gloomy Galleon: Next to Lighthouse ladder
+[*Y
+#
+valueOn Rocketbarrel platform
+2
+name*(Gloomy Galleon: On Rocketbarrel platform
+M*K
+
+valueLighthouse Alcove
++
+name#!Gloomy Galleon: Lighthouse Alcove
+E*C
+
+valueOn Gold Tower
+'
+nameGloomy Galleon: On Gold Tower
+Y*W
+"
+valueVanilla Floating Warp 5
+1
+name)'Gloomy Galleon: Vanilla Floating Warp 5
+]*[
+$
+valueVanilla Lighthouse Warp 1
+3
+name+)Gloomy Galleon: Vanilla Lighthouse Warp 1
+U*S
+ 
+valueVanilla Alcove Warp 3
+/
+name'%Gloomy Galleon: Vanilla Alcove Warp 3
+]*[
+$
+valueVanilla Lighthouse Warp 5
+3
+name+)Gloomy Galleon: Vanilla Lighthouse Warp 5
+U*S
+ 
+valueVanilla Cavern Warp 2
+/
+name'%Gloomy Galleon: Vanilla Cavern Warp 2
+U*S
+ 
+valueVanilla Bridge Warp 3
+/
+name'%Gloomy Galleon: Vanilla Bridge Warp 3
+Y*W
+"
+valueVanilla Floating Warp 2
+1
+name)'Gloomy Galleon: Vanilla Floating Warp 2
+]*[
+$
+valueVanilla Gold Tower Warp 4
+3
+name+)Gloomy Galleon: Vanilla Gold Tower Warp 4
+U*S
+ 
+valueVanilla Cavern Warp 1
+/
+name'%Gloomy Galleon: Vanilla Cavern Warp 1
+Y*W
+"
+valueVanilla Floating Warp 4
+1
+name)'Gloomy Galleon: Vanilla Floating Warp 4
+c*a
+'
+valueSeasick Ship: Left of Cannon
+6
+name.,Gloomy Galleon: Seasick Ship: Left of Cannon
+W*U
+!
+valueSeasick Ship: Entrance
+0
+name(&Gloomy Galleon: Seasick Ship: Entrance
+e*c
+(
+valueSeasick Ship: Right of Cannon
+7
+name/-Gloomy Galleon: Seasick Ship: Right of Cannon
+g*e
+)
+value Seasick Ship: Back left corner
+8
+name0.Gloomy Galleon: Seasick Ship: Back left corner
+Ñ*Å
+7
+value.,Seasick Ship: Behind the non-alcoholic tower
+F
+name><Gloomy Galleon: Seasick Ship: Behind the non-alcoholic tower
+u*s
+0
+value'%Seasick Ship: Behind Spinning Barrels
+?
+name75Gloomy Galleon: Seasick Ship: Behind Spinning Barrels
+Y*W
+"
+valueLighthouse: Bottom Left
+1
+name)'Gloomy Galleon: Lighthouse: Bottom Left
+W*U
+!
+valueLighthouse: Back Right
+0
+name(&Gloomy Galleon: Lighthouse: Back Right
+Å*
+6
+value-+Lighthouse: Behind Whomp's Fortress floor 2
+E
+name=;Gloomy Galleon: Lighthouse: Behind Whomp's Fortress floor 2
+w*u
+1
+value(&Lighthouse: On top of Whomp's Fortress
+@
+name86Gloomy Galleon: Lighthouse: On top of Whomp's Fortress
+ 8
+DKIslesæ82ª8
+W*U
+#
+valueSnide's Room: Under Rock
+.
+name&$D.K. Isles: Snide's Room: Under Rock
+a*_
+(
+valueFungi Lobby: Gorilla Gone Box
+3
+name+)D.K. Isles: Fungi Lobby: Gorilla Gone Box
+U*S
+"
+valueFront of Fungi Building
+-
+name%#D.K. Isles: Front of Fungi Building
+I*G
+
+valueOn Aztec Building
+'
+nameD.K. Isles: On Aztec Building
+[*Y
+%
+valueUnder Caves Lobby Entrance
+0
+name(&D.K. Isles: Under Caves Lobby Entrance
+O*M
+
+valueCastle Lobby: Center
+*
+name" D.K. Isles: Castle Lobby: Center
+c*a
+)
+value Training Grounds: Banana Hoard
+4
+name,*D.K. Isles: Training Grounds: Banana Hoard
+a*_
+(
+valueTraining Grounds: Rear Tunnel
+3
+name+)D.K. Isles: Training Grounds: Rear Tunnel
+?*=
+
+valuePrison: Back
+"
+nameD.K. Isles: Prison: Back
+Q*O
+ 
+valueBehind Fungi Building
++
+name#!D.K. Isles: Behind Fungi Building
+Q*O
+ 
+valueFungi floating island
++
+name#!D.K. Isles: Fungi floating island
+K*I
+
+valueWaterfall Platform
+(
+name D.K. Isles: Waterfall Platform
+[*Y
+%
+valueDown Near Caves Lobby Tree
+0
+name(&D.K. Isles: Down Near Caves Lobby Tree
+?*=
+
+valueNear K. Rool
+"
+nameD.K. Isles: Near K. Rool
+I*G
+
+valueNear Fungi Cannon
+'
+nameD.K. Isles: Near Fungi Cannon
+O*M
+
+valueIn Fungi cannon rock
+*
+name" D.K. Isles: In Fungi cannon rock
+W*U
+#
+valueNext to Caves Lobby Tree
+.
+name&$D.K. Isles: Next to Caves Lobby Tree
+C*A
+
+valueIsles Boulders
+$
+nameD.K. Isles: Isles Boulders
+U*S
+"
+valueFront of Aztec Building
+-
+name%#D.K. Isles: Front of Aztec Building
+Q*O
+ 
+valueBehind Aztec Building
++
+name#!D.K. Isles: Behind Aztec Building
+C*A
+
+valueOutside Prison
+$
+nameD.K. Isles: Outside Prison
+M*K
+
+valueNear Monkeyport pad
+)
+name!D.K. Isles: Near Monkeyport pad
+I*G
+
+valueBack of Krem Isle
+'
+nameD.K. Isles: Back of Krem Isle
+I*G
+
+valueUnder DK Caged GB
+'
+nameD.K. Isles: Under DK Caged GB
+Y*W
+$
+valueBack of Krem Isle (Lower)
+/
+name'%D.K. Isles: Back of Krem Isle (Lower)
+a*_
+(
+valueBehind Factory Lobby Entrance
+3
+name+)D.K. Isles: Behind Factory Lobby Entrance
+e*c
+*
+value!Right of Factory Lobby Entrance
+5
+name-+D.K. Isles: Right of Factory Lobby Entrance
+[*Y
+%
+valueBehind Helm Lobby Entrance
+0
+name(&D.K. Isles: Behind Helm Lobby Entrance
+Y*W
+$
+valueLeft Krem Isle Arm (side)
+/
+name'%D.K. Isles: Left Krem Isle Arm (side)
+K*I
+
+valueLeft Krem Isle Arm
+(
+name D.K. Isles: Left Krem Isle Arm
+M*K
+
+valueRight Krem Isle Arm
+)
+name!D.K. Isles: Right Krem Isle Arm
+;*9
+
+value
+Fairy Isle
+ 
+nameD.K. Isles: Fairy Isle
+I*G
+
+valueBehind Fairy Isle
+'
+nameD.K. Isles: Behind Fairy Isle
+?*=
+
+valueSmall Island
+"
+nameD.K. Isles: Small Island
+M*K
+
+valueVanilla Ring Warp 1
+)
+name!D.K. Isles: Vanilla Ring Warp 1
+U*S
+"
+valueVanilla K. Lumsy Warp 1
+-
+name%#D.K. Isles: Vanilla K. Lumsy Warp 1
+M*K
+
+valueVanilla Ring Warp 2
+)
+name!D.K. Isles: Vanilla Ring Warp 2
+O*M
+
+valueVanilla Upper Warp 2
+*
+name" D.K. Isles: Vanilla Upper Warp 2
+W*U
+#
+valueVanilla Waterfall Warp 3
+.
+name&$D.K. Isles: Vanilla Waterfall Warp 3
+M*K
+
+valueVanilla Ring Warp 5
+)
+name!D.K. Isles: Vanilla Ring Warp 5
+M*K
+
+valueVanilla Ring Warp 3
+)
+name!D.K. Isles: Vanilla Ring Warp 3
+M*K
+
+valueVanilla Ring Warp 4
+)
+name!D.K. Isles: Vanilla Ring Warp 4
+M*K
+
+valueVanilla Krem Warp 4
+)
+name!D.K. Isles: Vanilla Krem Warp 4
+Q*O
+ 
+valueVanilla Island Warp 5
++
+name#!D.K. Isles: Vanilla Island Warp 5
+_*]
+'
+valueJapes Lobby: Near Tag Barrel
+2
+name*(D.K. Isles: Japes Lobby: Near Tag Barrel
+W*U
+#
+valueJapes Lobby: Near Portal
+.
+name&$D.K. Isles: Japes Lobby: Near Portal
+[*Y
+%
+valueAztec Lobby: Front of Door
+0
+name(&D.K. Isles: Aztec Lobby: Front of Door
+_*]
+'
+valueAztec Lobby: back room right
+2
+name*(D.K. Isles: Aztec Lobby: back room right
+]*[
+&
+valueAztec Lobby: back room left
+1
+name)'D.K. Isles: Aztec Lobby: back room left
+Y*W
+$
+valueFactory Lobby: Near Lever
+/
+name'%D.K. Isles: Factory Lobby: Near Lever
+_*]
+'
+valueFactory Lobby: High Platform
+2
+name*(D.K. Isles: Factory Lobby: High Platform
+]*[
+&
+valueFactory Lobby: Above Portal
+1
+name)'D.K. Isles: Factory Lobby: Above Portal
+c*a
+)
+value Galleon Lobby: Right of Portal
+4
+name,*D.K. Isles: Galleon Lobby: Right of Portal
+a*_
+(
+valueGalleon Lobby: Left of Portal
+3
+name+)D.K. Isles: Galleon Lobby: Left of Portal
+[*Y
+%
+valueForest Lobby: On Tag Crate
+0
+name(&D.K. Isles: Forest Lobby: On Tag Crate
+_*]
+'
+valueCaves Lobby: Right of Portal
+2
+name*(D.K. Isles: Caves Lobby: Right of Portal
+W*U
+#
+valueCaves Lobby: Diddy ledge
+.
+name&$D.K. Isles: Caves Lobby: Diddy ledge
+Y*W
+$
+valueCaves Lobby: boulder room
+/
+name'%D.K. Isles: Caves Lobby: boulder room
+i*g
+,
+value#!Castle Lobby: Behind the entrance
+7
+name/-D.K. Isles: Castle Lobby: Behind the entrance
+e*c
+*
+value!Castle Lobby: Right of Entrance
+5
+name-+D.K. Isles: Castle Lobby: Right of Entrance
+_*]
+'
+valueCastle Lobby: Left of Portal
+2
+name*(D.K. Isles: Castle Lobby: Left of Portal
+c*a
+)
+value Helm Lobby: Next to Tag Barrel
+4
+name,*D.K. Isles: Helm Lobby: Next to Tag Barrel
+[*Y
+%
+valueHelm Lobby: Bonus Platform
+0
+name(&D.K. Isles: Helm Lobby: Bonus Platform
+[*Y
+%
+valueHelm Lobby: Kasplat island
+0
+name(&D.K. Isles: Helm Lobby: Kasplat island
+c*a
+)
+value Training Grounds: Far Mountain
+4
+name,*D.K. Isles: Training Grounds: Far Mountain
+k*i
+-
+value$"Training Grounds: On the rear hill
+8
+name0.D.K. Isles: Training Grounds: On the rear hill
+s*q
+1
+value(&Training Grounds: On the entrance hill
+<
+name42D.K. Isles: Training Grounds: On the entrance hill
+e*c
+*
+value!Training Grounds: Near Mountain
+5
+name-+D.K. Isles: Training Grounds: Near Mountain
+]*[
+&
+valueTraining Grounds: Rear Cave
+1
+name)'D.K. Isles: Training Grounds: Rear Cave
+q*o
+0
+value'%Training Grounds: Banana Hoard (back)
+;
+name31D.K. Isles: Training Grounds: Banana Hoard (back)
+]*[
+&
+valueTraining Grounds: Near Pool
+1
+name)'D.K. Isles: Training Grounds: Near Pool
+E*C
+
+valueTreehouse: back
+%
+nameD.K. Isles: Treehouse: back
+i*g
+,
+value#!Banana Fairy Room: Right of Queen
+7
+name/-D.K. Isles: Banana Fairy Room: Right of Queen
+e*c
+*
+value!Banana Fairy Room: Behind Queen
+5
+name-+D.K. Isles: Banana Fairy Room: Behind Queen
+q*o
+0
+value'%Banana Fairy Room: Behind Fairy Chair
+;
+name31D.K. Isles: Banana Fairy Room: Behind Fairy Chair
+g*e
++
+value" Banana Fairy Room: Rareware room
+6
+name.,D.K. Isles: Banana Fairy Room: Rareware room
+s*q
+1
+value(&Banana Fairy Room: Rareware Room right
+<
+name42D.K. Isles: Banana Fairy Room: Rareware Room right
+a*_
+(
+valueSnide's Room: Next to Snide's
+3
+name+)D.K. Isles: Snide's Room: Next to Snide's
+K*I
+
+valuePrison: Back Right
+(
+name D.K. Isles: Prison: Back Right
+I*G
+
+valuePrison: Near Left
+'
+nameD.K. Isles: Prison: Near Left
+S*Q
+!
+valuePrison: Under K. Lumsy
+,
+name$"D.K. Isles: Prison: Under K. Lumsy
+¯&
+CrystalCavesÁ&2‰&
+R*P
+
+valueRotating Cabin: Wall
+-
+name%#Crystal Caves: Rotating Cabin: Wall
+@*>
+
+valueGiant Kosha
+$
+nameCrystal Caves: Giant Kosha
+P*N
+
+valueIn Monkeyport igloo
+,
+name$"Crystal Caves: In Monkeyport igloo
+N*L
+
+valueIn breakable igloo
++
+name#!Crystal Caves: In breakable igloo
+H*F
+
+valueOn igloo Pillar
+(
+name Crystal Caves: On igloo Pillar
+`*^
+&
+valueUnder tag barrel near igloo
+4
+name,*Crystal Caves: Under tag barrel near igloo
+V*T
+!
+valueIn the Mini Bonus Cave
+/
+name'%Crystal Caves: In the Mini Bonus Cave
+Z*X
+#
+valueNear ice wall to boulder
+1
+name)'Crystal Caves: Near ice wall to boulder
+T*R
+ 
+valuePath to Giant boulder
+.
+name&$Crystal Caves: Path to Giant boulder
+T*R
+ 
+valueIn Giant Boulder Room
+.
+name&$Crystal Caves: In Giant Boulder Room
+N*L
+
+valueIn front of Cranky
++
+name#!Crystal Caves: In front of Cranky
+\*Z
+$
+valueBelow Ice Castle (yellow)
+2
+name*(Crystal Caves: Below Ice Castle (yellow)
+X*V
+"
+valueBelow Ice castle (blue)
+0
+name(&Crystal Caves: Below Ice castle (blue)
+T*R
+ 
+valueIce Castle Tag barrel
+.
+name&$Crystal Caves: Ice Castle Tag barrel
+N*L
+
+valueNext to Ice Castle
++
+name#!Crystal Caves: Next to Ice Castle
+D*B
+
+valueOn Ice Castle
+&
+nameCrystal Caves: On Ice Castle
+N*L
+
+valueNear Small Boulder
++
+name#!Crystal Caves: Near Small Boulder
+T*R
+ 
+valueNear ice wall to shop
+.
+name&$Crystal Caves: Near ice wall to shop
+F*D
+
+valueNear cave shop
+'
+nameCrystal Caves: Near cave shop
+P*N
+
+valueUnder Small Boulder
+,
+name$"Crystal Caves: Under Small Boulder
+^*\
+%
+valueNear ice wall to Gone room
+3
+name+)Crystal Caves: Near ice wall to Gone room
+V*T
+!
+valueNear Gorilla Gone Room
+/
+name'%Crystal Caves: Near Gorilla Gone Room
+R*P
+
+valueIn Gorilla Gone Room
+-
+name%#Crystal Caves: In Gorilla Gone Room
+N*L
+
+valueNear Kasplat Spire
++
+name#!Crystal Caves: Near Kasplat Spire
+P*N
+
+valueNear Waterfall Shop
+,
+name$"Crystal Caves: Near Waterfall Shop
+\*Z
+$
+valueUnder Bridge Rocketbarrel
+2
+name*(Crystal Caves: Under Bridge Rocketbarrel
+R*P
+
+valueMini Monkeyport cave
+-
+name%#Crystal Caves: Mini Monkeyport cave
+H*F
+
+valueNear headphones
+(
+name Crystal Caves: Near headphones
+J*H
+
+valueHeadphones ledge
+)
+name!Crystal Caves: Headphones ledge
+P*N
+
+valueNext to Lanky cabin
+,
+name$"Crystal Caves: Next to Lanky cabin
+V*T
+!
+valueLeft of rotating cabin
+/
+name'%Crystal Caves: Left of rotating cabin
+V*T
+!
+valueNext to rotating cabin
+/
+name'%Crystal Caves: Next to rotating cabin
+X*V
+"
+valueRight of rotating cabin
+0
+name(&Crystal Caves: Right of rotating cabin
+N*L
+
+valueCabins Center Rise
++
+name#!Crystal Caves: Cabins Center Rise
+Z*X
+#
+valueNear cabins Rocketbarrel
+1
+name)'Crystal Caves: Near cabins Rocketbarrel
+H*F
+
+valueNear Tiny cabin
+(
+name Crystal Caves: Near Tiny cabin
+V*T
+!
+valueNear cabins Tag barrel
+/
+name'%Crystal Caves: Near cabins Tag barrel
+V*T
+!
+valueNear Diddy Upper cabin
+/
+name'%Crystal Caves: Near Diddy Upper cabin
+`*^
+&
+valueNear Diddy upper Cabin door
+4
+name,*Crystal Caves: Near Diddy upper Cabin door
+R*P
+
+valueVanilla Close Warp 1
+-
+name%#Crystal Caves: Vanilla Close Warp 1
+R*P
+
+valueVanilla Close Warp 2
+-
+name%#Crystal Caves: Vanilla Close Warp 2
+R*P
+
+valueVanilla Igloo Warp 1
+-
+name%#Crystal Caves: Vanilla Igloo Warp 1
+T*R
+ 
+valueVanilla Cabins Warp 2
+.
+name&$Crystal Caves: Vanilla Cabins Warp 2
+T*R
+ 
+valueVanilla Pillar Warp 5
+.
+name&$Crystal Caves: Vanilla Pillar Warp 5
+T*R
+ 
+valueVanilla Hidden Warp 3
+.
+name&$Crystal Caves: Vanilla Hidden Warp 3
+R*P
+
+valueVanilla Igloo Warp 3
+-
+name%#Crystal Caves: Vanilla Igloo Warp 3
+T*R
+ 
+valueVanilla Hidden Warp 4
+.
+name&$Crystal Caves: Vanilla Hidden Warp 4
+R*P
+
+valueVanilla Spire Warp 4
+-
+name%#Crystal Caves: Vanilla Spire Warp 4
+R*P
+
+valueVanilla Cabin Warp 5
+-
+name%#Crystal Caves: Vanilla Cabin Warp 5
+T*R
+ 
+valueDK igloo: Behind Maze
+.
+name&$Crystal Caves: DK igloo: Behind Maze
+^*\
+%
+valueLanky igloo: High Platform
+3
+name+)Crystal Caves: Lanky igloo: High Platform
+d*b
+(
+valueTiny igloo: Opposite Entrance
+6
+name.,Crystal Caves: Tiny igloo: Opposite Entrance
+P*N
+
+valueLanky cabin: Carpet
+,
+name$"Crystal Caves: Lanky cabin: Carpet
+Z*X
+#
+valueDiddy Upper cabin: Right
+1
+name)'Crystal Caves: Diddy Upper cabin: Right
+`*^
+&
+valueDK cabin: Opposite Entrance
+4
+name,*Crystal Caves: DK cabin: Opposite Entrance
+^*\
+%
+valueIce Castle: Left of puzzle
+3
+name+)Crystal Caves: Ice Castle: Left of puzzle
+`*^
+&
+valueIce Castle: Right of puzzle
+4
+name,*Crystal Caves: Ice Castle: Right of puzzle
+R*P
+
+valueTiny Cabin: Interior
+-
+name%#Crystal Caves: Tiny Cabin: Interior
+Ì6
+FungiForest›62⁄6
+a*_
+'
+valueMushroom Exterior Top Ladder
+4
+name,*Fungi Forest: Mushroom Exterior Top Ladder
+M*K
+
+valueFront of Beanstalk
+*
+name" Fungi Forest: Front of Beanstalk
+=*;
+
+value
+Mill Grass
+"
+nameFungi Forest: Mill Grass
+;*9
+
+value	Near Well
+!
+nameFungi Forest: Near Well
+K*I
+
+valueClocktower Stumps
+)
+name!Fungi Forest: Clocktower Stumps
+A*?
+
+valueBehind Clock
+$
+nameFungi Forest: Behind Clock
+K*I
+
+valueIn front of Clock
+)
+name!Fungi Forest: In front of Clock
+I*G
+
+valueNear Blue Tunnel
+(
+name Fungi Forest: Near Blue Tunnel
+G*E
+
+valueNear Mills shop
+'
+nameFungi Forest: Near Mills shop
+O*M
+
+valueBehind rafters barn
++
+name#!Fungi Forest: Behind rafters barn
+Q*O
+
+valueLeft of rafters barn
+,
+name$"Fungi Forest: Left of rafters barn
+K*I
+
+valueNext to Diddy Pad
+)
+name!Fungi Forest: Next to Diddy Pad
+O*M
+
+valueBehind Rafters Barn
++
+name#!Fungi Forest: Behind Rafters Barn
+Q*O
+
+valueNear Mill Tag Barrel
+,
+name$"Fungi Forest: Near Mill Tag Barrel
+E*C
+
+valueNear Well Exit
+&
+nameFungi Forest: Near Well Exit
+=*;
+
+value
+Near Winch
+"
+nameFungi Forest: Near Winch
+Q*O
+
+valueNear Mill Punch Door
+,
+name$"Fungi Forest: Near Mill Punch Door
+U*S
+!
+valueNext to Crusher Output
+.
+name&$Fungi Forest: Next to Crusher Output
+]*[
+%
+valueEn route to Thornvine Barn
+2
+name*(Fungi Forest: En route to Thornvine Barn
+W*U
+"
+valueRight of Thornvine Barn
+/
+name'%Fungi Forest: Right of Thornvine Barn
+_*]
+&
+valueFar Right of Thornvine Barn
+3
+name+)Fungi Forest: Far Right of Thornvine Barn
+S*Q
+ 
+valueBehind Thornvine Barn
+-
+name%#Fungi Forest: Behind Thornvine Barn
+]*[
+%
+valueFar Left of Thornvine Barn
+2
+name*(Fungi Forest: Far Left of Thornvine Barn
+O*M
+
+valueNear Thornvine Barn
++
+name#!Fungi Forest: Near Thornvine Barn
+S*Q
+ 
+valueAlcove near the apple
+-
+name%#Fungi Forest: Alcove near the apple
+O*M
+
+valueOn the Tomato Field
++
+name#!Fungi Forest: On the Tomato Field
+O*M
+
+valueNear beanstalk shop
++
+name#!Fungi Forest: Near beanstalk shop
+a*_
+'
+valueNear Beanstalk Area Entrance
+4
+name,*Fungi Forest: Near Beanstalk Area Entrance
+E*C
+
+valueNear Beanstalk
+&
+nameFungi Forest: Near Beanstalk
+]*[
+%
+valueNear Beanstalk Mini Monkey
+2
+name*(Fungi Forest: Near Beanstalk Mini Monkey
+O*M
+
+valueNear Giant Mushroom
++
+name#!Fungi Forest: Near Giant Mushroom
+M*K
+
+valueNear Yellow Tunnel
+*
+name" Fungi Forest: Near Yellow Tunnel
+e*c
+)
+value Near Lower Baboon Blast Ladder
+6
+name.,Fungi Forest: Near Lower Baboon Blast Ladder
+K*I
+
+valueNear Baboon Blast
+)
+name!Fungi Forest: Near Baboon Blast
+g*e
+*
+value!Above Upper Baboon Blast Ladder
+7
+name/-Fungi Forest: Above Upper Baboon Blast Ladder
+_*]
+&
+valueMushroom Exterior Top Floor
+3
+name+)Fungi Forest: Mushroom Exterior Top Floor
+C*A
+
+valueBehind Rabbit
+%
+nameFungi Forest: Behind Rabbit
+U*S
+!
+valueNext to Rabbit's house
+.
+name&$Fungi Forest: Next to Rabbit's house
+E*C
+
+valueUnder Owl Tree
+&
+nameFungi Forest: Under Owl Tree
+M*K
+
+valueUnder the Owl Tree
+*
+name" Fungi Forest: Under the Owl Tree
+K*I
+
+valueOwl Tree Clearing
+)
+name!Fungi Forest: Owl Tree Clearing
+S*Q
+ 
+valueNear Owl Rocketbarrel
+-
+name%#Fungi Forest: Near Owl Rocketbarrel
+_*]
+&
+valueGrass Near Owl Rocketbarrel
+3
+name+)Fungi Forest: Grass Near Owl Rocketbarrel
+G*E
+
+valueTop of Owl Tree
+'
+nameFungi Forest: Top of Owl Tree
+7*5
+
+value	On Mill
+
+nameFungi Forest: On Mill
+Q*O
+
+valueVanilla Clock Warp 1
+,
+name$"Fungi Forest: Vanilla Clock Warp 1
+O*M
+
+valueVanilla Mill Warp 1
++
+name#!Fungi Forest: Vanilla Mill Warp 1
+Q*O
+
+valueVanilla Clock Warp 2
+,
+name$"Fungi Forest: Vanilla Clock Warp 2
+Y*W
+#
+valueVanilla Beanstalk Warp 2
+0
+name(&Fungi Forest: Vanilla Beanstalk Warp 2
+Q*O
+
+valueVanilla Clock Warp 3
+,
+name$"Fungi Forest: Vanilla Clock Warp 3
+Q*O
+
+valueVanilla Clock Warp 4
+,
+name$"Fungi Forest: Vanilla Clock Warp 4
+W*U
+"
+valueVanilla Owl Tree Warp 4
+/
+name'%Fungi Forest: Vanilla Owl Tree Warp 4
+Q*O
+
+valueVanilla Lower Warp 5
+,
+name$"Fungi Forest: Vanilla Lower Warp 5
+Q*O
+
+valueVanilla Upper Warp 5
+,
+name$"Fungi Forest: Vanilla Upper Warp 5
+W*U
+"
+valueVanilla Mushroom Warp 3
+/
+name'%Fungi Forest: Vanilla Mushroom Warp 3
+Y*W
+#
+valueAnthill: Orange Platform
+0
+name(&Fungi Forest: Anthill: Orange Platform
+c*a
+(
+valueWinch Room: Opposite Entrance
+5
+name-+Fungi Forest: Winch Room: Opposite Entrance
+O*M
+
+valueNear Thornvine Barn
++
+name#!Fungi Forest: Near Thornvine Barn
+c*a
+(
+valueThornvine Barn: Near Entrance
+5
+name-+Fungi Forest: Thornvine Barn: Near Entrance
+_*]
+&
+valueThornvine Barn: Near Ladder
+3
+name+)Fungi Forest: Thornvine Barn: Near Ladder
+e*c
+)
+value Thornvine Barn: Next to ladder
+6
+name.,Fungi Forest: Thornvine Barn: Next to ladder
+[*Y
+$
+valueThornvine Barn: Back Left
+1
+name)'Fungi Forest: Thornvine Barn: Back Left
+[*Y
+$
+valueMill Front: Near Conveyor
+1
+name)'Fungi Forest: Mill Front: Near Conveyor
+a*_
+'
+valueMill Front: Near Mini Monkey
+4
+name,*Fungi Forest: Mill Front: Near Mini Monkey
+W*U
+"
+valueMill front: Near levers
+/
+name'%Fungi Forest: Mill front: Near levers
+e*c
+)
+value Mill Back: near Chunky's coins
+6
+name.,Fungi Forest: Mill Back: near Chunky's coins
+g*e
+*
+value!Giant Mushroom: Near Tiny Bonus
+7
+name/-Fungi Forest: Giant Mushroom: Near Tiny Bonus
+k*i
+,
+value#!Giant Mushroom: Near Gun Switches
+9
+name1/Fungi Forest: Giant Mushroom: Near Gun Switches
+m*k
+-
+value$"Giant Mushroom: Near Bottom Cannon
+:
+name20Fungi Forest: Giant Mushroom: Near Bottom Cannon
+]*[
+%
+valueGiant Mushroom: Near vines
+2
+name*(Fungi Forest: Giant Mushroom: Near vines
+i*g
++
+value" Giant Mushroom: Next to a cannon
+8
+name0.Fungi Forest: Giant Mushroom: Next to a cannon
+w*u
+2
+value)'Giant Mushroom: Cannon below night door
+?
+name75Fungi Forest: Giant Mushroom: Cannon below night door
+s*q
+0
+value'%Giant Mushroom: On Top Viney Platform
+=
+name53Fungi Forest: Giant Mushroom: On Top Viney Platform
+[*Y
+$
+valueGiant Mushroom: Top Floor
+1
+name)'Fungi Forest: Giant Mushroom: Top Floor
+Q*O
+
+valueMill Attic: Near Box
+,
+name$"Fungi Forest: Mill Attic: Near Box
+o*m
+.
+value%#Mushroom Zingers: Opposite Entrance
+;
+name31Fungi Forest: Mushroom Zingers: Opposite Entrance
+i*g
++
+value" Mushroom Slam: Opposite Entrance
+8
+name0.Fungi Forest: Mushroom Slam: Opposite Entrance
+Y*W
+#
+valueFace Puzzle: Near Puzzle
+0
+name(&Fungi Forest: Face Puzzle: Near Puzzle
+U*S
+!
+valueMill Back: Near Thatch
+.
+name&$Fungi Forest: Mill Back: Near Thatch
+[*Y
+$
+valueSpider: Opposite Entrance
+1
+name)'Fungi Forest: Spider: Opposite Entrance
+ƒ
+FranticFactory±2Æ
+J*H
+
+valueUnder R&D Grate
+*
+name" Frantic Factory: Under R&D Grate
+>*<
+
+value	Dark Room
+$
+nameFrantic Factory: Dark Room
+J*H
+
+valueOn Foyer Carpet
+*
+name" Frantic Factory: On Foyer Carpet
+N*L
+
+valueNear Foyer carpet
+,
+name$"Frantic Factory: Near Foyer carpet
+P*N
+
+valueClock-in room left
+-
+name%#Frantic Factory: Clock-in room left
+R*P
+
+valueClock-in room right
+.
+name&$Frantic Factory: Clock-in room right
+@*>
+
+value
+Near Hatch
+%
+nameFrantic Factory: Near Hatch
+N*L
+
+valueHatch Pole Center
+,
+name$"Frantic Factory: Hatch Pole Center
+N*L
+
+valueHatch Pole Bottom
+,
+name$"Frantic Factory: Hatch Pole Bottom
+^*\
+$
+valueTunnel to production room
+4
+name,*Frantic Factory: Tunnel to production room
+f*d
+(
+valueProduction Room Lower Section
+8
+name0.Frantic Factory: Production Room Lower Section
+T*R
+
+valueUnder High Conveyors
+/
+name'%Frantic Factory: Under High Conveyors
+`*^
+%
+valuePast Tiny Production Bonus
+5
+name-+Frantic Factory: Past Tiny Production Bonus
+d*b
+'
+valueVent platform near elevators
+7
+name/-Frantic Factory: Vent platform near elevators
+R*P
+
+valueStorage Room Corner
+.
+name&$Frantic Factory: Storage Room Corner
+X*V
+!
+valueNear left storage shop
+1
+name)'Frantic Factory: Near left storage shop
+Z*X
+"
+valueNear Right Storage Shop
+2
+name*(Frantic Factory: Near Right Storage Shop
+L*J
+
+valueDark Room Corner
++
+name#!Frantic Factory: Dark Room Corner
+N*L
+
+valueArcade Room Bench
+,
+name$"Frantic Factory: Arcade Room Bench
+N*L
+
+valueNext to DK Arcade
+,
+name$"Frantic Factory: Next to DK Arcade
+N*L
+
+valueGlass Window Shop
+,
+name$"Frantic Factory: Glass Window Shop
+`*^
+%
+valueGlass Window Shop (hidden)
+5
+name-+Frantic Factory: Glass Window Shop (hidden)
+H*F
+
+valueRight Corridor
+)
+name!Frantic Factory: Right Corridor
+B*@
+
+valueNumber Game
+&
+nameFrantic Factory: Number Game
+\*Z
+#
+valueUnder Block Tower Stairs
+3
+name+)Frantic Factory: Under Block Tower Stairs
+T*R
+
+valueUnder Testing barrel
+/
+name'%Frantic Factory: Under Testing barrel
+`*^
+%
+valueTesting shop entrance left
+5
+name-+Frantic Factory: Testing shop entrance left
+N*L
+
+valueTesting shop left
+,
+name$"Frantic Factory: Testing shop left
+P*N
+
+valueTesting shop right
+-
+name%#Frantic Factory: Testing shop right
+b*`
+&
+valueTesting Shop Entrance Right
+6
+name.,Frantic Factory: Testing Shop Entrance Right
+F*D
+
+valueCar Race room
+(
+name Frantic Factory: Car Race room
+H*F
+
+valueCar Race Lobby
+)
+name!Frantic Factory: Car Race Lobby
+H*F
+
+valueR&D lever room
+)
+name!Frantic Factory: R&D lever room
+X*V
+!
+valueUnder second R&D Grate
+1
+name)'Frantic Factory: Under second R&D Grate
+T*R
+
+valueVanilla Foyer Warp 2
+/
+name'%Frantic Factory: Vanilla Foyer Warp 2
+T*R
+
+valueVanilla Foyer Warp 3
+/
+name'%Frantic Factory: Vanilla Foyer Warp 3
+P*N
+
+valueVanilla R&D Warp 2
+-
+name%#Frantic Factory: Vanilla R&D Warp 2
+T*R
+
+valueVanilla Snide Warp 3
+/
+name'%Frantic Factory: Vanilla Snide Warp 3
+R*P
+
+valueVanilla High Warp 4
+.
+name&$Frantic Factory: Vanilla High Warp 4
+P*N
+
+valueVanilla Low Warp 4
+-
+name%#Frantic Factory: Vanilla Low Warp 4
+X*V
+!
+valueVanilla Testing Warp 5
+1
+name)'Frantic Factory: Vanilla Testing Warp 5
+T*R
+
+valueVanilla Foyer Warp 1
+/
+name'%Frantic Factory: Vanilla Foyer Warp 1
+X*V
+!
+valueVanilla Storage Warp 1
+1
+name)'Frantic Factory: Vanilla Storage Warp 1
+V*T
+ 
+valueVanilla Arcade Warp 5
+0
+name(&Frantic Factory: Vanilla Arcade Warp 5
+`*^
+%
+valueCrusher: Central Safehaven
+5
+name-+Frantic Factory: Crusher: Central Safehaven
+N*L
+
+valuePower Hut: Corner
+,
+name$"Frantic Factory: Power Hut: Corner
+ì
+HideoutHelmÉ2Ä
+k*i
+,
+value#!Metal grate by Mini Monkey barrel
+9
+name1/Hideout Helm: Metal grate by Mini Monkey barrel
+_*]
+&
+valueMini Monkey room right side
+3
+name+)Hideout Helm: Mini Monkey room right side
+q*o
+/
+value&$Pineapple switch room in ammo alcove
+<
+name42Hideout Helm: Pineapple switch room in ammo alcove
+c*a
+(
+valueFirst room left of Tag barrel
+5
+name-+Hideout Helm: First room left of Tag barrel
+Q*O
+
+valueTop of Blast-o-Matic
+,
+name$"Hideout Helm: Top of Blast-o-Matic
+i*g
++
+value" Blast-o-Matic platform left side
+8
+name0.Hideout Helm: Blast-o-Matic platform left side
+k*i
+,
+value#!Blast-o-Matic platform right side
+9
+name1/Hideout Helm: Blast-o-Matic platform right side
+M*K
+
+valueUnder K. Rool door
+*
+name" Hideout Helm: Under K. Rool door
+U*S
+!
+valueJust past K. Rool door
+.
+name&$Hideout Helm: Just past K. Rool door
+e*c
+)
+value Navigation room near terminals
+6
+name.,Hideout Helm: Navigation room near terminals
+i*g
++
+value" Navigation room near left window
+8
+name0.Hideout Helm: Navigation room near left window
+k*i
+,
+value#!Navigation room near right window
+9
+name1/Hideout Helm: Navigation room near right window
+a*_
+'
+valueK. Rool room near kong faces
+4
+name,*Hideout Helm: K. Rool room near kong faces
+e*c
+)
+value K. Rool room in front of chair
+6
+name.,Hideout Helm: K. Rool room in front of chair
+“,
+
+AngryAztec√,2¿,
+Z*X
+$
+valueTiny Temple: Vulture Room
+0
+name(&Angry Aztec: Tiny Temple: Vulture Room
+2*0
+
+valueOasis
+
+nameAngry Aztec: Oasis
+<*:
+
+value
+Chunky 5DT
+!
+nameAngry Aztec: Chunky 5DT
+h*f
++
+value" Tiny Temple: Main room back left
+7
+name/-Angry Aztec: Tiny Temple: Main room back left
+h*f
++
+value" Tiny Temple: Starting Room (Low)
+7
+name/-Angry Aztec: Tiny Temple: Starting Room (Low)
+j*h
+,
+value#!Tiny Temple: Starting Room (High)
+8
+name0.Angry Aztec: Tiny Temple: Starting Room (High)
+^*\
+&
+valueTiny Temple: Kong Free Room
+2
+name*(Angry Aztec: Tiny Temple: Kong Free Room
+d*b
+)
+value Tiny Temple: Next to Kong cage
+5
+name-+Angry Aztec: Tiny Temple: Next to Kong cage
+d*b
+)
+value Entrance tunnel - near DK door
+5
+name-+Angry Aztec: Entrance tunnel - near DK door
+R*P
+ 
+valueQuicksand Bridge Room
+,
+name$"Angry Aztec: Quicksand Bridge Room
+F*D
+
+valueNear Oasis Sand
+&
+nameAngry Aztec: Near Oasis Sand
+L*J
+
+valueBehind Tiny Temple
+)
+name!Angry Aztec: Behind Tiny Temple
+\*Z
+%
+valueNext to Tiny Temple - left
+1
+name)'Angry Aztec: Next to Tiny Temple - left
+^*\
+&
+valueNext to Tiny Temple - right
+2
+name*(Angry Aztec: Next to Tiny Temple - right
+D*B
+
+valueOn Tiny Temple
+%
+nameAngry Aztec: On Tiny Temple
+F*D
+
+valueNear Oasis Shop
+&
+nameAngry Aztec: Near Oasis Shop
+J*H
+
+valueBehind Llama Cage
+(
+name Angry Aztec: Behind Llama Cage
+X*V
+#
+valueNear Hunky Chunky Barrel
+/
+name'%Angry Aztec: Near Hunky Chunky Barrel
+L*J
+
+valueLeft of Hunky Cage
+)
+name!Angry Aztec: Left of Hunky Cage
+N*L
+
+valueRight of Hunky Cage
+*
+name" Angry Aztec: Right of Hunky Cage
+J*H
+
+valueBehind Hunky Cage
+(
+name Angry Aztec: Behind Hunky Cage
+X*V
+#
+valueNear Llama Temple (Left)
+/
+name'%Angry Aztec: Near Llama Temple (Left)
+Z*X
+$
+valueNear Llama Temple (Right)
+0
+name(&Angry Aztec: Near Llama Temple (Right)
+P*N
+
+valueNext to Llama Temple
++
+name#!Angry Aztec: Next to Llama Temple
+T*R
+!
+valueOn Llama Temple - back
+-
+name%#Angry Aztec: On Llama Temple - back
+F*D
+
+valueOn Llama Temple
+&
+nameAngry Aztec: On Llama Temple
+\*Z
+%
+valueNear Quicksand Tunnel Shop
+1
+name)'Angry Aztec: Near Quicksand Tunnel Shop
+H*F
+
+valueOn 5-Door Temple
+'
+nameAngry Aztec: On 5-Door Temple
+R*P
+ 
+valueNear Strong Kong Warp
+,
+name$"Angry Aztec: Near Strong Kong Warp
+J*H
+
+valueNear Vulture Cage
+(
+name Angry Aztec: Near Vulture Cage
+L*J
+
+valueUnder Vulture Cage
+)
+name!Angry Aztec: Under Vulture Cage
+Z*X
+$
+valueNext to Vulture cage shop
+0
+name(&Angry Aztec: Next to Vulture cage shop
+J*H
+
+valueBehind Gong tower
+(
+name Angry Aztec: Behind Gong tower
+L*J
+
+valueLeft of Gong tower
+)
+name!Angry Aztec: Left of Gong tower
+F*D
+
+valueNear Gong Tower
+&
+nameAngry Aztec: Near Gong Tower
+V*T
+"
+valueSealed Quicksand Tunnel
+.
+name&$Angry Aztec: Sealed Quicksand Tunnel
+R*P
+ 
+valueVanilla Tunnel Warp 1
+,
+name$"Angry Aztec: Vanilla Tunnel Warp 1
+P*N
+
+valueVanilla Oasis Warp 2
++
+name#!Angry Aztec: Vanilla Oasis Warp 2
+P*N
+
+valueVanilla Totem Warp 2
++
+name#!Angry Aztec: Vanilla Totem Warp 2
+P*N
+
+valueVanilla Totem Warp 5
++
+name#!Angry Aztec: Vanilla Totem Warp 5
+P*N
+
+valueVanilla Totem Warp 3
++
+name#!Angry Aztec: Vanilla Totem Warp 3
+P*N
+
+valueVanilla Oasis Warp 1
++
+name#!Angry Aztec: Vanilla Oasis Warp 1
+P*N
+
+valueVanilla Totem Warp 4
++
+name#!Angry Aztec: Vanilla Totem Warp 4
+R*P
+ 
+valueVanilla Tunnel Warp 3
+,
+name$"Angry Aztec: Vanilla Tunnel Warp 3
+P*N
+
+valueVanilla Funky Warp 4
++
+name#!Angry Aztec: Vanilla Funky Warp 4
+R*P
+ 
+valueVanilla Tunnel Warp 5
+,
+name$"Angry Aztec: Vanilla Tunnel Warp 5
+P*N
+
+valueDonkey 5DT: Dead End
++
+name#!Angry Aztec: Donkey 5DT: Dead End
+N*L
+
+valueDiddy 5DT: Dead End
+*
+name" Angry Aztec: Diddy 5DT: Dead End
+N*L
+
+valueLanky 5DT: Dead End
+*
+name" Angry Aztec: Lanky 5DT: Dead End
+R*P
+ 
+valueLanky 5DT: Right side
+,
+name$"Angry Aztec: Lanky 5DT: Right side
+L*J
+
+valueTiny 5DT: Dead End
+)
+name!Angry Aztec: Tiny 5DT: Dead End
+P*N
+
+valueTiny 5DT: Right side
++
+name#!Angry Aztec: Tiny 5DT: Right side
+T*R
+!
+valueChunky 5DT: Right side
+-
+name%#Angry Aztec: Chunky 5DT: Right side
+R*P
+ 
+valueChunky 5DT: Left side
+,
+name$"Angry Aztec: Chunky 5DT: Left side
+Z*X
+$
+valueLlama Temple: Llama Right
+0
+name(&Angry Aztec: Llama Temple: Llama Right
+T*R
+!
+valueLlama Temple: Entrance
+-
+name%#Angry Aztec: Llama Temple: Entrance
+j*h
+,
+value#!Llama Temple: Next to Llama Right
+8
+name0.Angry Aztec: Llama Temple: Next to Llama Right
+h*f
++
+value" Llama Temple: Next to Llama Left
+7
+name/-Angry Aztec: Llama Temple: Next to Llama Left
+X*V
+#
+valueLlama Temple: Llama Left
+/
+name'%Angry Aztec: Llama Temple: Llama Left
+^*\
+&
+valueLlama Temple: Matching Room
+2
+name*(Angry Aztec: Llama Temple: Matching Room
+l*j
+-
+value$"Llama Temple: Vanilla Close Warp 1
+9
+name1/Angry Aztec: Llama Temple: Vanilla Close Warp 1
+h*f
++
+value" Llama Temple: Vanilla Far Warp 1
+7
+name/-Angry Aztec: Llama Temple: Vanilla Far Warp 1
+j*h
+,
+value#!Llama Temple: Vanilla Lava Warp 2
+8
+name0.Angry Aztec: Llama Temple: Vanilla Lava Warp 2
+l*j
+-
+value$"Llama Temple: Vanilla Close Warp 2
+9
+name1/Angry Aztec: Llama Temple: Vanilla Close Warp 2
+V*T
+"
+valueLlama Temple: DK Switch
+.
+name&$Angry Aztec: Llama Temple: DK Switch
+V*T
+"
+valueLlama Temple: Lava Room
+.
+name&$Angry Aztec: Llama Temple: Lava Room
 ⁄√
 KasplatÕ√*…√
-ñD
-FungiForestÜD*ÉD
-≠
-lanky£2†
-a*_
+˛5
+CreepyCastleÌ5*Í5
+Ç
+donkey˜2Ù
+c*a
+/
+value&$Castle Kasplat: Behind the Mausoleum
 .
-value%#Forest Kasplat: Behind Rafters Barn
--
-name%#Forest Kasplat: Behind Rafters Barn
-[*Y
-+
-value" Forest Kasplat: Behind beanstalk
-*
-name" Forest Kasplat: Behind beanstalk
-w*u
-9
-value0.Forest Kasplat: By Giant Mushroom Rocketbarrel
-8
-name0.Forest Kasplat: By Giant Mushroom Rocketbarrel
-q*o
-6
-value-+Forest Kasplat: Mushroom Exterior Top Floor
-5
-name-+Forest Kasplat: Mushroom Exterior Top Floor
-Y*W
-*
-value!Forest Kasplat: Near the Rabbit
-)
-name!Forest Kasplat: Near the Rabbit
-]*[
-,
-value#!Forest Kasplat: Owl Tree Clearing
-+
-name#!Forest Kasplat: Owl Tree Clearing
-e*c
-0
-value'%Forest Kasplat: Behind Thornvine Barn
-/
-name'%Forest Kasplat: Behind Thornvine Barn
-e*c
-0
-value'%Forest Kasplat: Inside Giant Mushroom
-/
-name'%Forest Kasplat: Inside Giant Mushroom
+name&$Castle Kasplat: Behind the Mausoleum
 W*U
 )
-value Forest Kasplat: Under Owl Tree
+value Castle Kasplat: Dungeon Center
 (
-name Forest Kasplat: Under Owl Tree
-u*s
-8
-value/-Forest Kasplat: Mushroom Exterior Lower Floor
-7
-name/-Forest Kasplat: Mushroom Exterior Lower Floor
-s*q
-7
-value.,Forest Kasplat: Mushroom Exterior Night Door
-6
-name.,Forest Kasplat: Mushroom Exterior Night Door
-S*Q
-'
-valueForest Kasplat: Behind Clock
-&
-nameForest Kasplat: Behind Clock
-Y*W
-*
-value!Forest Kasplat: Front Mill Room
-)
-name!Forest Kasplat: Front Mill Room
-a*_
-.
-value%#Forest Kasplat: Giant Mushroom Moat
--
-name%#Forest Kasplat: Giant Mushroom Moat
-o*m
-5
-value,*Forest Kasplat: Very Top of Giant Mushroom
-4
-name,*Forest Kasplat: Very Top of Giant Mushroom
-S*Q
-'
-valueForest Kasplat: On Mill Roof
-&
-nameForest Kasplat: On Mill Roof
-_*]
--
-value$"Forest Kasplat: Minecart Exit Well
-,
-name$"Forest Kasplat: Minecart Exit Well
-k*i
-3
-value*(Forest Kasplat: Lanky Mushroom Slam Room
-2
-name*(Forest Kasplat: Lanky Mushroom Slam Room
-ë
-diddyá2Ñ
-a*_
-.
-value%#Forest Kasplat: Behind Rafters Barn
--
-name%#Forest Kasplat: Behind Rafters Barn
-[*Y
-+
-value" Forest Kasplat: Behind beanstalk
-*
-name" Forest Kasplat: Behind beanstalk
-w*u
-9
-value0.Forest Kasplat: By Giant Mushroom Rocketbarrel
-8
-name0.Forest Kasplat: By Giant Mushroom Rocketbarrel
-q*o
-6
-value-+Forest Kasplat: Mushroom Exterior Top Floor
-5
-name-+Forest Kasplat: Mushroom Exterior Top Floor
-Y*W
-*
-value!Forest Kasplat: Near the Rabbit
-)
-name!Forest Kasplat: Near the Rabbit
-]*[
-,
-value#!Forest Kasplat: Owl Tree Clearing
-+
-name#!Forest Kasplat: Owl Tree Clearing
-e*c
+name Castle Kasplat: Dungeon Center
+g*e
+1
+value(&Castle Kasplat: Lowest Back Small Tree
 0
-value'%Forest Kasplat: Behind Thornvine Barn
-/
-name'%Forest Kasplat: Behind Thornvine Barn
-e*c
-0
-value'%Forest Kasplat: Inside Giant Mushroom
-/
-name'%Forest Kasplat: Inside Giant Mushroom
-W*U
-)
-value Forest Kasplat: Under Owl Tree
-(
-name Forest Kasplat: Under Owl Tree
-u*s
-8
-value/-Forest Kasplat: Mushroom Exterior Lower Floor
-7
-name/-Forest Kasplat: Mushroom Exterior Lower Floor
-s*q
-7
-value.,Forest Kasplat: Mushroom Exterior Night Door
-6
-name.,Forest Kasplat: Mushroom Exterior Night Door
-S*Q
-'
-valueForest Kasplat: Behind Clock
-&
-nameForest Kasplat: Behind Clock
-Y*W
-*
-value!Forest Kasplat: Front Mill Room
-)
-name!Forest Kasplat: Front Mill Room
-a*_
-.
-value%#Forest Kasplat: Giant Mushroom Moat
--
-name%#Forest Kasplat: Giant Mushroom Moat
-o*m
-5
-value,*Forest Kasplat: Very Top of Giant Mushroom
-4
-name,*Forest Kasplat: Very Top of Giant Mushroom
-S*Q
-'
-valueForest Kasplat: On Mill Roof
-&
-nameForest Kasplat: On Mill Roof
-_*]
--
-value$"Forest Kasplat: Minecart Exit Well
-,
-name$"Forest Kasplat: Minecart Exit Well
-O*M
-%
-valueForest Kasplat: Winch Room
+name(&Castle Kasplat: Lowest Back Small Tree
+K*I
+#
+valueCastle Kasplat: Ballroom
+"
+nameCastle Kasplat: Ballroom
+M*K
 $
-nameForest Kasplat: Winch Room
-´
-tiny¢2ü
-a*_
-.
-value%#Forest Kasplat: Behind Rafters Barn
--
-name%#Forest Kasplat: Behind Rafters Barn
-[*Y
-+
-value" Forest Kasplat: Behind beanstalk
-*
-name" Forest Kasplat: Behind beanstalk
-w*u
-9
-value0.Forest Kasplat: By Giant Mushroom Rocketbarrel
-8
-name0.Forest Kasplat: By Giant Mushroom Rocketbarrel
-q*o
-6
-value-+Forest Kasplat: Mushroom Exterior Top Floor
-5
-name-+Forest Kasplat: Mushroom Exterior Top Floor
+valueCastle Kasplat: Top Level
+#
+nameCastle Kasplat: Top Level
 Y*W
 *
-value!Forest Kasplat: Near the Rabbit
+value!Castle Kasplat: Inside the Tree
 )
-name!Forest Kasplat: Near the Rabbit
+name!Castle Kasplat: Inside the Tree
 ]*[
 ,
-value#!Forest Kasplat: Owl Tree Clearing
+value#!Castle Kasplat: Lower Cave Center
 +
-name#!Forest Kasplat: Owl Tree Clearing
-e*c
-0
-value'%Forest Kasplat: Behind Thornvine Barn
-/
-name'%Forest Kasplat: Behind Thornvine Barn
-e*c
-0
-value'%Forest Kasplat: Inside Giant Mushroom
-/
-name'%Forest Kasplat: Inside Giant Mushroom
-W*U
-)
-value Forest Kasplat: Under Owl Tree
-(
-name Forest Kasplat: Under Owl Tree
-u*s
-8
-value/-Forest Kasplat: Mushroom Exterior Lower Floor
-7
-name/-Forest Kasplat: Mushroom Exterior Lower Floor
-s*q
-7
-value.,Forest Kasplat: Mushroom Exterior Night Door
-6
-name.,Forest Kasplat: Mushroom Exterior Night Door
-S*Q
-'
-valueForest Kasplat: Behind Clock
-&
-nameForest Kasplat: Behind Clock
-Y*W
-*
-value!Forest Kasplat: Front Mill Room
-)
-name!Forest Kasplat: Front Mill Room
-a*_
-.
-value%#Forest Kasplat: Giant Mushroom Moat
--
-name%#Forest Kasplat: Giant Mushroom Moat
-S*Q
-'
-valueForest Kasplat: On Mill Roof
-&
-nameForest Kasplat: On Mill Roof
-_*]
--
-value$"Forest Kasplat: Minecart Exit Well
-,
-name$"Forest Kasplat: Minecart Exit Well
-[*Y
-+
-value" Forest Kasplat: Spider Boss Room
-*
-name" Forest Kasplat: Spider Boss Room
-–
-donkey≈2¬
-a*_
-.
-value%#Forest Kasplat: Behind Rafters Barn
--
-name%#Forest Kasplat: Behind Rafters Barn
-[*Y
-+
-value" Forest Kasplat: Behind beanstalk
-*
-name" Forest Kasplat: Behind beanstalk
-w*u
-9
-value0.Forest Kasplat: By Giant Mushroom Rocketbarrel
-8
-name0.Forest Kasplat: By Giant Mushroom Rocketbarrel
-q*o
-6
-value-+Forest Kasplat: Mushroom Exterior Top Floor
+name#!Castle Kasplat: Lower Cave Center
+o*m
 5
-name-+Forest Kasplat: Mushroom Exterior Top Floor
-Y*W
-*
-value!Forest Kasplat: Near the Rabbit
-)
-name!Forest Kasplat: Near the Rabbit
-]*[
-,
-value#!Forest Kasplat: Owl Tree Clearing
-+
-name#!Forest Kasplat: Owl Tree Clearing
-e*c
-0
-value'%Forest Kasplat: Behind Thornvine Barn
-/
-name'%Forest Kasplat: Behind Thornvine Barn
-e*c
-0
-value'%Forest Kasplat: Inside Giant Mushroom
-/
-name'%Forest Kasplat: Inside Giant Mushroom
-W*U
-)
-value Forest Kasplat: Under Owl Tree
-(
-name Forest Kasplat: Under Owl Tree
-u*s
-8
-value/-Forest Kasplat: Mushroom Exterior Lower Floor
-7
-name/-Forest Kasplat: Mushroom Exterior Lower Floor
-s*q
-7
-value.,Forest Kasplat: Mushroom Exterior Night Door
-6
-name.,Forest Kasplat: Mushroom Exterior Night Door
-S*Q
-'
-valueForest Kasplat: Behind Clock
-&
-nameForest Kasplat: Behind Clock
-Y*W
-*
-value!Forest Kasplat: Front Mill Room
-)
-name!Forest Kasplat: Front Mill Room
-a*_
-.
-value%#Forest Kasplat: Giant Mushroom Moat
--
-name%#Forest Kasplat: Giant Mushroom Moat
-S*Q
-'
-valueForest Kasplat: On Mill Roof
-&
-nameForest Kasplat: On Mill Roof
+value,*Castle Kasplat: Near Rocketbarrel Overhang
+4
+name,*Castle Kasplat: Near Rocketbarrel Overhang
 _*]
 -
-value$"Forest Kasplat: Minecart Exit Well
+value$"Castle Kasplat: On a lone platform
 ,
-name$"Forest Kasplat: Minecart Exit Well
-ª
-chunky∞2≠
-a*_
+name$"Castle Kasplat: On a lone platform
+c*a
+/
+value&$Castle Kasplat: Near Upper Cave Shop
 .
-value%#Forest Kasplat: Behind Rafters Barn
--
-name%#Forest Kasplat: Behind Rafters Barn
+name&$Castle Kasplat: Near Upper Cave Shop
 [*Y
 +
-value" Forest Kasplat: Behind beanstalk
+value" Castle Kasplat: Sewers Near Tree
 *
-name" Forest Kasplat: Behind beanstalk
-w*u
-9
-value0.Forest Kasplat: By Giant Mushroom Rocketbarrel
-8
-name0.Forest Kasplat: By Giant Mushroom Rocketbarrel
-q*o
-6
-value-+Forest Kasplat: Mushroom Exterior Top Floor
-5
-name-+Forest Kasplat: Mushroom Exterior Top Floor
-Y*W
-*
-value!Forest Kasplat: Near the Rabbit
-)
-name!Forest Kasplat: Near the Rabbit
-]*[
-,
-value#!Forest Kasplat: Owl Tree Clearing
+name" Castle Kasplat: Sewers Near Tree
+[*Y
 +
-name#!Forest Kasplat: Owl Tree Clearing
-e*c
-0
-value'%Forest Kasplat: Behind Thornvine Barn
-/
-name'%Forest Kasplat: Behind Thornvine Barn
-e*c
-0
-value'%Forest Kasplat: Inside Giant Mushroom
-/
-name'%Forest Kasplat: Inside Giant Mushroom
-W*U
-)
-value Forest Kasplat: Under Owl Tree
-(
-name Forest Kasplat: Under Owl Tree
-u*s
-8
-value/-Forest Kasplat: Mushroom Exterior Lower Floor
-7
-name/-Forest Kasplat: Mushroom Exterior Lower Floor
-s*q
-7
-value.,Forest Kasplat: Mushroom Exterior Night Door
-6
-name.,Forest Kasplat: Mushroom Exterior Night Door
-S*Q
-'
-valueForest Kasplat: Behind Clock
-&
-nameForest Kasplat: Behind Clock
-Y*W
+value" Castle Kasplat: Near Middle Shop
 *
-value!Forest Kasplat: Front Mill Room
-)
-name!Forest Kasplat: Front Mill Room
-a*_
-.
-value%#Forest Kasplat: Giant Mushroom Moat
--
-name%#Forest Kasplat: Giant Mushroom Moat
-S*Q
-'
-valueForest Kasplat: On Mill Roof
-&
-nameForest Kasplat: On Mill Roof
-_*]
--
-value$"Forest Kasplat: Minecart Exit Well
-,
-name$"Forest Kasplat: Minecart Exit Well
+name" Castle Kasplat: Near Middle Shop
 i*g
 2
-value)'Forest Kasplat: Chunky Face Puzzle Room
+value)'Castle Kasplat: Rocketbarrel Battlement
 1
-name)'Forest Kasplat: Chunky Face Puzzle Room
+name)'Castle Kasplat: Rocketbarrel Battlement
+c*a
+/
+value&$Castle Kasplat: Caged in the Dungeon
+.
+name&$Castle Kasplat: Caged in the Dungeon
+i*g
+2
+value)'Castle Kasplat: Entrance to DK Minecart
+1
+name)'Castle Kasplat: Entrance to DK Minecart
+I*G
+"
+valueCastle Kasplat: Library
+!
+nameCastle Kasplat: Library
+‡
+
+tiny◊
+2‘
+
+c*a
+/
+value&$Castle Kasplat: Behind the Mausoleum
+.
+name&$Castle Kasplat: Behind the Mausoleum
+W*U
+)
+value Castle Kasplat: Dungeon Center
+(
+name Castle Kasplat: Dungeon Center
+g*e
+1
+value(&Castle Kasplat: Lowest Back Small Tree
+0
+name(&Castle Kasplat: Lowest Back Small Tree
+K*I
+#
+valueCastle Kasplat: Ballroom
+"
+nameCastle Kasplat: Ballroom
+M*K
+$
+valueCastle Kasplat: Top Level
+#
+nameCastle Kasplat: Top Level
+]*[
+,
+value#!Castle Kasplat: Lower Cave Center
++
+name#!Castle Kasplat: Lower Cave Center
+o*m
+5
+value,*Castle Kasplat: Near Rocketbarrel Overhang
+4
+name,*Castle Kasplat: Near Rocketbarrel Overhang
+_*]
+-
+value$"Castle Kasplat: On a lone platform
+,
+name$"Castle Kasplat: On a lone platform
+c*a
+/
+value&$Castle Kasplat: Near Upper Cave Shop
+.
+name&$Castle Kasplat: Near Upper Cave Shop
+[*Y
++
+value" Castle Kasplat: Sewers Near Tree
+*
+name" Castle Kasplat: Sewers Near Tree
+[*Y
++
+value" Castle Kasplat: Near Middle Shop
+*
+name" Castle Kasplat: Near Middle Shop
+i*g
+2
+value)'Castle Kasplat: Rocketbarrel Battlement
+1
+name)'Castle Kasplat: Rocketbarrel Battlement
+o*m
+5
+value,*Castle Kasplat: Museum Mysterious Pedestal
+4
+name,*Castle Kasplat: Museum Mysterious Pedestal
+c*a
+/
+value&$Castle Kasplat: Caged in the Dungeon
+.
+name&$Castle Kasplat: Caged in the Dungeon
+Ò	
+chunkyÊ	2„	
+c*a
+/
+value&$Castle Kasplat: Behind the Mausoleum
+.
+name&$Castle Kasplat: Behind the Mausoleum
+W*U
+)
+value Castle Kasplat: Dungeon Center
+(
+name Castle Kasplat: Dungeon Center
+g*e
+1
+value(&Castle Kasplat: Lowest Back Small Tree
+0
+name(&Castle Kasplat: Lowest Back Small Tree
+K*I
+#
+valueCastle Kasplat: Ballroom
+"
+nameCastle Kasplat: Ballroom
+M*K
+$
+valueCastle Kasplat: Top Level
+#
+nameCastle Kasplat: Top Level
+]*[
+,
+value#!Castle Kasplat: Lower Cave Center
++
+name#!Castle Kasplat: Lower Cave Center
+o*m
+5
+value,*Castle Kasplat: Near Rocketbarrel Overhang
+4
+name,*Castle Kasplat: Near Rocketbarrel Overhang
+_*]
+-
+value$"Castle Kasplat: On a lone platform
+,
+name$"Castle Kasplat: On a lone platform
+c*a
+/
+value&$Castle Kasplat: Near Upper Cave Shop
+.
+name&$Castle Kasplat: Near Upper Cave Shop
+[*Y
++
+value" Castle Kasplat: Sewers Near Tree
+*
+name" Castle Kasplat: Sewers Near Tree
+[*Y
++
+value" Castle Kasplat: Near Middle Shop
+*
+name" Castle Kasplat: Near Middle Shop
+i*g
+2
+value)'Castle Kasplat: Rocketbarrel Battlement
+1
+name)'Castle Kasplat: Rocketbarrel Battlement
+c*a
+/
+value&$Castle Kasplat: Caged in the Dungeon
+.
+name&$Castle Kasplat: Caged in the Dungeon
+¡
+
+lanky∑
+2¥
+
+c*a
+/
+value&$Castle Kasplat: Behind the Mausoleum
+.
+name&$Castle Kasplat: Behind the Mausoleum
+W*U
+)
+value Castle Kasplat: Dungeon Center
+(
+name Castle Kasplat: Dungeon Center
+g*e
+1
+value(&Castle Kasplat: Lowest Back Small Tree
+0
+name(&Castle Kasplat: Lowest Back Small Tree
+K*I
+#
+valueCastle Kasplat: Ballroom
+"
+nameCastle Kasplat: Ballroom
+M*K
+$
+valueCastle Kasplat: Top Level
+#
+nameCastle Kasplat: Top Level
+]*[
+,
+value#!Castle Kasplat: Lower Cave Center
++
+name#!Castle Kasplat: Lower Cave Center
+o*m
+5
+value,*Castle Kasplat: Near Rocketbarrel Overhang
+4
+name,*Castle Kasplat: Near Rocketbarrel Overhang
+_*]
+-
+value$"Castle Kasplat: On a lone platform
+,
+name$"Castle Kasplat: On a lone platform
+c*a
+/
+value&$Castle Kasplat: Near Upper Cave Shop
+.
+name&$Castle Kasplat: Near Upper Cave Shop
+[*Y
++
+value" Castle Kasplat: Sewers Near Tree
+*
+name" Castle Kasplat: Sewers Near Tree
+[*Y
++
+value" Castle Kasplat: Near Middle Shop
+*
+name" Castle Kasplat: Near Middle Shop
+i*g
+2
+value)'Castle Kasplat: Rocketbarrel Battlement
+1
+name)'Castle Kasplat: Rocketbarrel Battlement
+O*M
+%
+valueCastle Kasplat: Greenhouse
+$
+nameCastle Kasplat: Greenhouse
+c*a
+/
+value&$Castle Kasplat: Caged in the Dungeon
+.
+name&$Castle Kasplat: Caged in the Dungeon
+«
+
+diddyΩ
+2∫
+
+c*a
+/
+value&$Castle Kasplat: Behind the Mausoleum
+.
+name&$Castle Kasplat: Behind the Mausoleum
+W*U
+)
+value Castle Kasplat: Dungeon Center
+(
+name Castle Kasplat: Dungeon Center
+g*e
+1
+value(&Castle Kasplat: Lowest Back Small Tree
+0
+name(&Castle Kasplat: Lowest Back Small Tree
+K*I
+#
+valueCastle Kasplat: Ballroom
+"
+nameCastle Kasplat: Ballroom
+M*K
+$
+valueCastle Kasplat: Top Level
+#
+nameCastle Kasplat: Top Level
+]*[
+,
+value#!Castle Kasplat: Lower Cave Center
++
+name#!Castle Kasplat: Lower Cave Center
+o*m
+5
+value,*Castle Kasplat: Near Rocketbarrel Overhang
+4
+name,*Castle Kasplat: Near Rocketbarrel Overhang
+_*]
+-
+value$"Castle Kasplat: On a lone platform
+,
+name$"Castle Kasplat: On a lone platform
+c*a
+/
+value&$Castle Kasplat: Near Upper Cave Shop
+.
+name&$Castle Kasplat: Near Upper Cave Shop
+[*Y
++
+value" Castle Kasplat: Sewers Near Tree
+*
+name" Castle Kasplat: Sewers Near Tree
+[*Y
++
+value" Castle Kasplat: Near Middle Shop
+*
+name" Castle Kasplat: Near Middle Shop
+i*g
+2
+value)'Castle Kasplat: Rocketbarrel Battlement
+1
+name)'Castle Kasplat: Rocketbarrel Battlement
+c*a
+/
+value&$Castle Kasplat: Caged in the Dungeon
+.
+name&$Castle Kasplat: Caged in the Dungeon
+U*S
+(
+valueCastle Kasplat: In the Clouds
+'
+nameCastle Kasplat: In the Clouds
+®6
+JungleJapesò6*ï6
+˛	
+donkeyÛ	2	
+[*Y
++
+value" Japes Kasplat: Behind Rambi Wall
+*
+name" Japes Kasplat: Behind Rambi Wall
+W*U
+)
+value Japes Kasplat: Top of mountain
+(
+name Japes Kasplat: Top of mountain
+Q*O
+&
+valueJapes Kasplat: Beehive Area
+%
+nameJapes Kasplat: Beehive Area
+[*Y
++
+value" Japes Kasplat: Hive Tunnel Lower
+*
+name" Japes Kasplat: Hive Tunnel Lower
+[*Y
++
+value" Japes Kasplat: Hive Tunnel Upper
+*
+name" Japes Kasplat: Hive Tunnel Upper
+a*_
+.
+value%#Japes Kasplat: By Lanky Slope Bonus
+-
+name%#Japes Kasplat: By Lanky Slope Bonus
+k*i
+3
+value*(Japes Kasplat: Tunnel Near Painting Room
+2
+name*(Japes Kasplat: Tunnel Near Painting Room
+S*Q
+'
+valueJapes Kasplat: Starting Area
+&
+nameJapes Kasplat: Starting Area
+[*Y
++
+value" Japes Kasplat: Diddy Peanut Cave
+*
+name" Japes Kasplat: Diddy Peanut Cave
+Q*O
+&
+valueJapes Kasplat: In the river
+%
+nameJapes Kasplat: In the river
+Y*W
+*
+value!Japes Kasplat: Rambi Water Pool
+)
+name!Japes Kasplat: Rambi Water Pool
+M*K
+$
+valueJapes Kasplat: Near Rambi
+#
+nameJapes Kasplat: Near Rambi
+W*U
+)
+value Japes Kasplat: Hillside Alcove
+(
+name Japes Kasplat: Hillside Alcove
+S*Q
+'
+valueJapes Kasplat: Minecart Exit
+&
+nameJapes Kasplat: Minecart Exit
+â
+tinyÄ2˝
+[*Y
++
+value" Japes Kasplat: Behind Rambi Wall
+*
+name" Japes Kasplat: Behind Rambi Wall
+W*U
+)
+value Japes Kasplat: Top of mountain
+(
+name Japes Kasplat: Top of mountain
+Q*O
+&
+valueJapes Kasplat: Beehive Area
+%
+nameJapes Kasplat: Beehive Area
+[*Y
++
+value" Japes Kasplat: Hive Tunnel Lower
+*
+name" Japes Kasplat: Hive Tunnel Lower
+[*Y
++
+value" Japes Kasplat: Hive Tunnel Upper
+*
+name" Japes Kasplat: Hive Tunnel Upper
+a*_
+.
+value%#Japes Kasplat: By Lanky Slope Bonus
+-
+name%#Japes Kasplat: By Lanky Slope Bonus
+k*i
+3
+value*(Japes Kasplat: Tunnel Near Painting Room
+2
+name*(Japes Kasplat: Tunnel Near Painting Room
+]*[
+,
+value#!Japes Kasplat: Inside Tiny's Cage
++
+name#!Japes Kasplat: Inside Tiny's Cage
+S*Q
+'
+valueJapes Kasplat: Starting Area
+&
+nameJapes Kasplat: Starting Area
+[*Y
++
+value" Japes Kasplat: Diddy Peanut Cave
+*
+name" Japes Kasplat: Diddy Peanut Cave
+Q*O
+&
+valueJapes Kasplat: In the river
+%
+nameJapes Kasplat: In the river
+Y*W
+*
+value!Japes Kasplat: Rambi Water Pool
+)
+name!Japes Kasplat: Rambi Water Pool
+M*K
+$
+valueJapes Kasplat: Near Rambi
+#
+nameJapes Kasplat: Near Rambi
+W*U
+)
+value Japes Kasplat: Hillside Alcove
+(
+name Japes Kasplat: Hillside Alcove
+W*U
+)
+value Japes Kasplat: Inside the Hive
+(
+name Japes Kasplat: Inside the Hive
+S*Q
+'
+valueJapes Kasplat: Painting Hill
+&
+nameJapes Kasplat: Painting Hill
+S*Q
+'
+valueJapes Kasplat: Minecart Exit
+&
+nameJapes Kasplat: Minecart Exit
+œ
+
+chunkyƒ
+2¡
+
+[*Y
++
+value" Japes Kasplat: Behind Rambi Wall
+*
+name" Japes Kasplat: Behind Rambi Wall
+W*U
+)
+value Japes Kasplat: Top of mountain
+(
+name Japes Kasplat: Top of mountain
+Q*O
+&
+valueJapes Kasplat: Beehive Area
+%
+nameJapes Kasplat: Beehive Area
+[*Y
++
+value" Japes Kasplat: Hive Tunnel Lower
+*
+name" Japes Kasplat: Hive Tunnel Lower
+[*Y
++
+value" Japes Kasplat: Hive Tunnel Upper
+*
+name" Japes Kasplat: Hive Tunnel Upper
+O*M
+%
+valueJapes Kasplat: Underground
+$
+nameJapes Kasplat: Underground
+a*_
+.
+value%#Japes Kasplat: By Lanky Slope Bonus
+-
+name%#Japes Kasplat: By Lanky Slope Bonus
+k*i
+3
+value*(Japes Kasplat: Tunnel Near Painting Room
+2
+name*(Japes Kasplat: Tunnel Near Painting Room
+S*Q
+'
+valueJapes Kasplat: Starting Area
+&
+nameJapes Kasplat: Starting Area
+[*Y
++
+value" Japes Kasplat: Diddy Peanut Cave
+*
+name" Japes Kasplat: Diddy Peanut Cave
+Q*O
+&
+valueJapes Kasplat: In the river
+%
+nameJapes Kasplat: In the river
+Y*W
+*
+value!Japes Kasplat: Rambi Water Pool
+)
+name!Japes Kasplat: Rambi Water Pool
+M*K
+$
+valueJapes Kasplat: Near Rambi
+#
+nameJapes Kasplat: Near Rambi
+W*U
+)
+value Japes Kasplat: Hillside Alcove
+(
+name Japes Kasplat: Hillside Alcove
+S*Q
+'
+valueJapes Kasplat: Minecart Exit
+&
+nameJapes Kasplat: Minecart Exit
+“
+
+lanky»
+2≈
+
+[*Y
++
+value" Japes Kasplat: Behind Rambi Wall
+*
+name" Japes Kasplat: Behind Rambi Wall
+W*U
+)
+value Japes Kasplat: Top of mountain
+(
+name Japes Kasplat: Top of mountain
+Q*O
+&
+valueJapes Kasplat: Beehive Area
+%
+nameJapes Kasplat: Beehive Area
+[*Y
++
+value" Japes Kasplat: Hive Tunnel Lower
+*
+name" Japes Kasplat: Hive Tunnel Lower
+[*Y
++
+value" Japes Kasplat: Hive Tunnel Upper
+*
+name" Japes Kasplat: Hive Tunnel Upper
+a*_
+.
+value%#Japes Kasplat: By Lanky Slope Bonus
+-
+name%#Japes Kasplat: By Lanky Slope Bonus
+k*i
+3
+value*(Japes Kasplat: Tunnel Near Painting Room
+2
+name*(Japes Kasplat: Tunnel Near Painting Room
+S*Q
+'
+valueJapes Kasplat: Starting Area
+&
+nameJapes Kasplat: Starting Area
+[*Y
++
+value" Japes Kasplat: Diddy Peanut Cave
+*
+name" Japes Kasplat: Diddy Peanut Cave
+Q*O
+&
+valueJapes Kasplat: In the river
+%
+nameJapes Kasplat: In the river
+Y*W
+*
+value!Japes Kasplat: Rambi Water Pool
+)
+name!Japes Kasplat: Rambi Water Pool
+M*K
+$
+valueJapes Kasplat: Near Rambi
+#
+nameJapes Kasplat: Near Rambi
+W*U
+)
+value Japes Kasplat: Hillside Alcove
+(
+name Japes Kasplat: Hillside Alcove
+S*Q
+'
+valueJapes Kasplat: Painting Hill
+&
+nameJapes Kasplat: Painting Hill
+S*Q
+'
+valueJapes Kasplat: Minecart Exit
+&
+nameJapes Kasplat: Minecart Exit
+ﬁ
+
+diddy‘
+2—
+
+[*Y
++
+value" Japes Kasplat: Behind Rambi Wall
+*
+name" Japes Kasplat: Behind Rambi Wall
+W*U
+)
+value Japes Kasplat: Top of mountain
+(
+name Japes Kasplat: Top of mountain
+Q*O
+&
+valueJapes Kasplat: Beehive Area
+%
+nameJapes Kasplat: Beehive Area
+[*Y
++
+value" Japes Kasplat: Hive Tunnel Lower
+*
+name" Japes Kasplat: Hive Tunnel Lower
+[*Y
++
+value" Japes Kasplat: Hive Tunnel Upper
+*
+name" Japes Kasplat: Hive Tunnel Upper
+a*_
+.
+value%#Japes Kasplat: By Lanky Slope Bonus
+-
+name%#Japes Kasplat: By Lanky Slope Bonus
+k*i
+3
+value*(Japes Kasplat: Tunnel Near Painting Room
+2
+name*(Japes Kasplat: Tunnel Near Painting Room
+S*Q
+'
+valueJapes Kasplat: Starting Area
+&
+nameJapes Kasplat: Starting Area
+[*Y
++
+value" Japes Kasplat: Diddy Peanut Cave
+*
+name" Japes Kasplat: Diddy Peanut Cave
+Q*O
+&
+valueJapes Kasplat: In the river
+%
+nameJapes Kasplat: In the river
+Y*W
+*
+value!Japes Kasplat: Rambi Water Pool
+)
+name!Japes Kasplat: Rambi Water Pool
+M*K
+$
+valueJapes Kasplat: Near Rambi
+#
+nameJapes Kasplat: Near Rambi
+W*U
+)
+value Japes Kasplat: Hillside Alcove
+(
+name Japes Kasplat: Hillside Alcove
+_*]
+-
+value$"Japes Kasplat: Inside the Mountain
+,
+name$"Japes Kasplat: Inside the Mountain
+S*Q
+'
+valueJapes Kasplat: Minecart Exit
+&
+nameJapes Kasplat: Minecart Exit
+˙0
+GloomyGalleonË0*Â0
+ˇ	
+donkeyÙ	2Ò	
+c*a
+/
+value&$Galleon Kasplat: Lighthouse Platform
+.
+name&$Galleon Kasplat: Lighthouse Platform
+]*[
+,
+value#!Galleon Kasplat: Diddy Gold Tower
++
+name#!Galleon Kasplat: Diddy Gold Tower
+_*]
+-
+value$"Galleon Kasplat: Lighthouse Alcove
+,
+name$"Galleon Kasplat: Lighthouse Alcove
+]*[
+,
+value#!Galleon Kasplat: Cannon Game Room
++
+name#!Galleon Kasplat: Cannon Game Room
+Q*O
+&
+valueGalleon Kasplat: Past Vines
+%
+nameGalleon Kasplat: Past Vines
+Y*W
+*
+value!Galleon Kasplat: Musical Cactus
+)
+name!Galleon Kasplat: Musical Cactus
+i*g
+2
+value)'Galleon Kasplat: Punch Wreck Under Shop
+1
+name)'Galleon Kasplat: Punch Wreck Under Shop
+m*k
+4
+value+)Galleon Kasplat: On the Cavern Shop Wreck
+3
+name+)Galleon Kasplat: On the Cavern Shop Wreck
+k*i
+3
+value*(Galleon Kasplat: Atop Whomp's Lighthouse
+2
+name*(Galleon Kasplat: Atop Whomp's Lighthouse
+U*S
+(
+valueGalleon Kasplat: Cannon Wreck
+'
+nameGalleon Kasplat: Cannon Wreck
+W*U
+)
+value Galleon Kasplat: Starting Area
+(
+name Galleon Kasplat: Starting Area
+a*_
+.
+value%#Galleon Kasplat: Inside Punch Chest
+-
+name%#Galleon Kasplat: Inside Punch Chest
+c*a
+/
+value&$Galleon Kasplat: Also Musical Cactus
+.
+name&$Galleon Kasplat: Also Musical Cactus
+ê	
+tinyá	2Ñ	
+c*a
+/
+value&$Galleon Kasplat: Lighthouse Platform
+.
+name&$Galleon Kasplat: Lighthouse Platform
+]*[
+,
+value#!Galleon Kasplat: Diddy Gold Tower
++
+name#!Galleon Kasplat: Diddy Gold Tower
+_*]
+-
+value$"Galleon Kasplat: Lighthouse Alcove
+,
+name$"Galleon Kasplat: Lighthouse Alcove
+]*[
+,
+value#!Galleon Kasplat: Cannon Game Room
++
+name#!Galleon Kasplat: Cannon Game Room
+Q*O
+&
+valueGalleon Kasplat: Past Vines
+%
+nameGalleon Kasplat: Past Vines
+Y*W
+*
+value!Galleon Kasplat: Musical Cactus
+)
+name!Galleon Kasplat: Musical Cactus
+i*g
+2
+value)'Galleon Kasplat: Punch Wreck Under Shop
+1
+name)'Galleon Kasplat: Punch Wreck Under Shop
+m*k
+4
+value+)Galleon Kasplat: On the Cavern Shop Wreck
+3
+name+)Galleon Kasplat: On the Cavern Shop Wreck
+U*S
+(
+valueGalleon Kasplat: Cannon Wreck
+'
+nameGalleon Kasplat: Cannon Wreck
+W*U
+)
+value Galleon Kasplat: Starting Area
+(
+name Galleon Kasplat: Starting Area
+a*_
+.
+value%#Galleon Kasplat: Inside Punch Chest
+-
+name%#Galleon Kasplat: Inside Punch Chest
+c*a
+/
+value&$Galleon Kasplat: Also Musical Cactus
+.
+name&$Galleon Kasplat: Also Musical Cactus
+È	
+chunkyﬁ	2€	
+c*a
+/
+value&$Galleon Kasplat: Lighthouse Platform
+.
+name&$Galleon Kasplat: Lighthouse Platform
+]*[
+,
+value#!Galleon Kasplat: Diddy Gold Tower
++
+name#!Galleon Kasplat: Diddy Gold Tower
+_*]
+-
+value$"Galleon Kasplat: Lighthouse Alcove
+,
+name$"Galleon Kasplat: Lighthouse Alcove
+]*[
+,
+value#!Galleon Kasplat: Cannon Game Room
++
+name#!Galleon Kasplat: Cannon Game Room
+Q*O
+&
+valueGalleon Kasplat: Past Vines
+%
+nameGalleon Kasplat: Past Vines
+Y*W
+*
+value!Galleon Kasplat: Musical Cactus
+)
+name!Galleon Kasplat: Musical Cactus
+i*g
+2
+value)'Galleon Kasplat: Punch Wreck Under Shop
+1
+name)'Galleon Kasplat: Punch Wreck Under Shop
+m*k
+4
+value+)Galleon Kasplat: On the Cavern Shop Wreck
+3
+name+)Galleon Kasplat: On the Cavern Shop Wreck
+U*S
+(
+valueGalleon Kasplat: Seasick Ship
+'
+nameGalleon Kasplat: Seasick Ship
+U*S
+(
+valueGalleon Kasplat: Cannon Wreck
+'
+nameGalleon Kasplat: Cannon Wreck
+W*U
+)
+value Galleon Kasplat: Starting Area
+(
+name Galleon Kasplat: Starting Area
+a*_
+.
+value%#Galleon Kasplat: Inside Punch Chest
+-
+name%#Galleon Kasplat: Inside Punch Chest
+c*a
+/
+value&$Galleon Kasplat: Also Musical Cactus
+.
+name&$Galleon Kasplat: Also Musical Cactus
+	
+lankyÊ	2„	
+c*a
+/
+value&$Galleon Kasplat: Lighthouse Platform
+.
+name&$Galleon Kasplat: Lighthouse Platform
+]*[
+,
+value#!Galleon Kasplat: Diddy Gold Tower
++
+name#!Galleon Kasplat: Diddy Gold Tower
+_*]
+-
+value$"Galleon Kasplat: Lighthouse Alcove
+,
+name$"Galleon Kasplat: Lighthouse Alcove
+]*[
+,
+value#!Galleon Kasplat: Cannon Game Room
++
+name#!Galleon Kasplat: Cannon Game Room
+Q*O
+&
+valueGalleon Kasplat: Past Vines
+%
+nameGalleon Kasplat: Past Vines
+Y*W
+*
+value!Galleon Kasplat: Musical Cactus
+)
+name!Galleon Kasplat: Musical Cactus
+i*g
+2
+value)'Galleon Kasplat: Punch Wreck Under Shop
+1
+name)'Galleon Kasplat: Punch Wreck Under Shop
+m*k
+4
+value+)Galleon Kasplat: On the Cavern Shop Wreck
+3
+name+)Galleon Kasplat: On the Cavern Shop Wreck
+]*[
+,
+value#!Galleon Kasplat: Lanky Gold Tower
++
+name#!Galleon Kasplat: Lanky Gold Tower
+U*S
+(
+valueGalleon Kasplat: Cannon Wreck
+'
+nameGalleon Kasplat: Cannon Wreck
+W*U
+)
+value Galleon Kasplat: Starting Area
+(
+name Galleon Kasplat: Starting Area
+a*_
+.
+value%#Galleon Kasplat: Inside Punch Chest
+-
+name%#Galleon Kasplat: Inside Punch Chest
+c*a
+/
+value&$Galleon Kasplat: Also Musical Cactus
+.
+name&$Galleon Kasplat: Also Musical Cactus
+Ó	
+diddy‰	2·	
+c*a
+/
+value&$Galleon Kasplat: Lighthouse Platform
+.
+name&$Galleon Kasplat: Lighthouse Platform
+]*[
+,
+value#!Galleon Kasplat: Diddy Gold Tower
++
+name#!Galleon Kasplat: Diddy Gold Tower
+_*]
+-
+value$"Galleon Kasplat: Lighthouse Alcove
+,
+name$"Galleon Kasplat: Lighthouse Alcove
+]*[
+,
+value#!Galleon Kasplat: Cannon Game Room
++
+name#!Galleon Kasplat: Cannon Game Room
+Q*O
+&
+valueGalleon Kasplat: Past Vines
+%
+nameGalleon Kasplat: Past Vines
+Y*W
+*
+value!Galleon Kasplat: Musical Cactus
+)
+name!Galleon Kasplat: Musical Cactus
+i*g
+2
+value)'Galleon Kasplat: Punch Wreck Under Shop
+1
+name)'Galleon Kasplat: Punch Wreck Under Shop
+m*k
+4
+value+)Galleon Kasplat: On the Cavern Shop Wreck
+3
+name+)Galleon Kasplat: On the Cavern Shop Wreck
+[*Y
++
+value" Galleon Kasplat: In the Mechfish
+*
+name" Galleon Kasplat: In the Mechfish
+U*S
+(
+valueGalleon Kasplat: Cannon Wreck
+'
+nameGalleon Kasplat: Cannon Wreck
+W*U
+)
+value Galleon Kasplat: Starting Area
+(
+name Galleon Kasplat: Starting Area
+a*_
+.
+value%#Galleon Kasplat: Inside Punch Chest
+-
+name%#Galleon Kasplat: Inside Punch Chest
+c*a
+/
+value&$Galleon Kasplat: Also Musical Cactus
+.
+name&$Galleon Kasplat: Also Musical Cactus
 ã?
 DKIslesˇ>*¸>
+•
+donkeyö2ó
+Q*O
+&
+valueIsles Kasplat: Beaver Beach
+%
+nameIsles Kasplat: Beaver Beach
+m*k
+4
+value+)Isles Kasplat: Factory Lobby above Portal
+3
+name+)Isles Kasplat: Factory Lobby above Portal
+M*K
+$
+valueIsles Kasplat: Helm Lobby
+#
+nameIsles Kasplat: Helm Lobby
+Q*O
+&
+valueIsles Kasplat: Castle Lobby
+%
+nameIsles Kasplat: Castle Lobby
+[*Y
++
+value" Isles Kasplat: Caves Lobby Punch
+*
+name" Isles Kasplat: Caves Lobby Punch
+[*Y
++
+value" Isles Kasplat: Factory Lobby Box
+*
+name" Isles Kasplat: Factory Lobby Box
+S*Q
+'
+valueIsles Kasplat: Galleon Lobby
+&
+nameIsles Kasplat: Galleon Lobby
+g*e
+1
+value(&Isles Kasplat: Inside Pound the X Rock
+0
+name(&Isles Kasplat: Inside Pound the X Rock
+i*g
+2
+value)'Isles Kasplat: Middle Back of Krem Isle
+1
+name)'Isles Kasplat: Middle Back of Krem Isle
+U*S
+(
+valueIsles Kasplat: Big X Platform
+'
+nameIsles Kasplat: Big X Platform
+]*[
+,
+value#!Isles Kasplat: Back of Cabin Isle
++
+name#!Isles Kasplat: Back of Cabin Isle
+c*a
+/
+value&$Isles Kasplat: Aztec Lobby Back Room
+.
+name&$Isles Kasplat: Aztec Lobby Back Room
+]*[
+,
+value#!Isles Kasplat: Prison Sprint Cage
++
+name#!Isles Kasplat: Prison Sprint Cage
+O*M
+%
+valueIsles Kasplat: Japes Lobby
+$
+nameIsles Kasplat: Japes Lobby
+Y*W
+*
+value!Isles Kasplat: Top of Krem Isle
+)
+name!Isles Kasplat: Top of Krem Isle
+Q*O
+&
+valueIsles Kasplat: Snide's Room
+%
+nameIsles Kasplat: Snide's Room
+U*S
+(
+valueIsles Kasplat: Waterfall Pool
+'
+nameIsles Kasplat: Waterfall Pool
+£
+tinyö2ó
+Q*O
+&
+valueIsles Kasplat: Beaver Beach
+%
+nameIsles Kasplat: Beaver Beach
+m*k
+4
+value+)Isles Kasplat: Factory Lobby above Portal
+3
+name+)Isles Kasplat: Factory Lobby above Portal
+M*K
+$
+valueIsles Kasplat: Helm Lobby
+#
+nameIsles Kasplat: Helm Lobby
+Q*O
+&
+valueIsles Kasplat: Castle Lobby
+%
+nameIsles Kasplat: Castle Lobby
+[*Y
++
+value" Isles Kasplat: Caves Lobby Punch
+*
+name" Isles Kasplat: Caves Lobby Punch
+[*Y
++
+value" Isles Kasplat: Factory Lobby Box
+*
+name" Isles Kasplat: Factory Lobby Box
+S*Q
+'
+valueIsles Kasplat: Galleon Lobby
+&
+nameIsles Kasplat: Galleon Lobby
+g*e
+1
+value(&Isles Kasplat: Inside Pound the X Rock
+0
+name(&Isles Kasplat: Inside Pound the X Rock
+i*g
+2
+value)'Isles Kasplat: Middle Back of Krem Isle
+1
+name)'Isles Kasplat: Middle Back of Krem Isle
+U*S
+(
+valueIsles Kasplat: Big X Platform
+'
+nameIsles Kasplat: Big X Platform
+]*[
+,
+value#!Isles Kasplat: Back of Cabin Isle
++
+name#!Isles Kasplat: Back of Cabin Isle
+c*a
+/
+value&$Isles Kasplat: Aztec Lobby Back Room
+.
+name&$Isles Kasplat: Aztec Lobby Back Room
+]*[
+,
+value#!Isles Kasplat: Prison Sprint Cage
++
+name#!Isles Kasplat: Prison Sprint Cage
+O*M
+%
+valueIsles Kasplat: Japes Lobby
+$
+nameIsles Kasplat: Japes Lobby
+Y*W
+*
+value!Isles Kasplat: Top of Krem Isle
+)
+name!Isles Kasplat: Top of Krem Isle
+Q*O
+&
+valueIsles Kasplat: Snide's Room
+%
+nameIsles Kasplat: Snide's Room
+U*S
+(
+valueIsles Kasplat: Waterfall Pool
+'
+nameIsles Kasplat: Waterfall Pool
+•
+chunkyö2ó
+Q*O
+&
+valueIsles Kasplat: Beaver Beach
+%
+nameIsles Kasplat: Beaver Beach
+m*k
+4
+value+)Isles Kasplat: Factory Lobby above Portal
+3
+name+)Isles Kasplat: Factory Lobby above Portal
+M*K
+$
+valueIsles Kasplat: Helm Lobby
+#
+nameIsles Kasplat: Helm Lobby
+Q*O
+&
+valueIsles Kasplat: Castle Lobby
+%
+nameIsles Kasplat: Castle Lobby
+[*Y
++
+value" Isles Kasplat: Caves Lobby Punch
+*
+name" Isles Kasplat: Caves Lobby Punch
+[*Y
++
+value" Isles Kasplat: Factory Lobby Box
+*
+name" Isles Kasplat: Factory Lobby Box
+S*Q
+'
+valueIsles Kasplat: Galleon Lobby
+&
+nameIsles Kasplat: Galleon Lobby
+g*e
+1
+value(&Isles Kasplat: Inside Pound the X Rock
+0
+name(&Isles Kasplat: Inside Pound the X Rock
+i*g
+2
+value)'Isles Kasplat: Middle Back of Krem Isle
+1
+name)'Isles Kasplat: Middle Back of Krem Isle
+U*S
+(
+valueIsles Kasplat: Big X Platform
+'
+nameIsles Kasplat: Big X Platform
+]*[
+,
+value#!Isles Kasplat: Back of Cabin Isle
++
+name#!Isles Kasplat: Back of Cabin Isle
+c*a
+/
+value&$Isles Kasplat: Aztec Lobby Back Room
+.
+name&$Isles Kasplat: Aztec Lobby Back Room
+]*[
+,
+value#!Isles Kasplat: Prison Sprint Cage
++
+name#!Isles Kasplat: Prison Sprint Cage
+O*M
+%
+valueIsles Kasplat: Japes Lobby
+$
+nameIsles Kasplat: Japes Lobby
+Y*W
+*
+value!Isles Kasplat: Top of Krem Isle
+)
+name!Isles Kasplat: Top of Krem Isle
+Q*O
+&
+valueIsles Kasplat: Snide's Room
+%
+nameIsles Kasplat: Snide's Room
+U*S
+(
+valueIsles Kasplat: Waterfall Pool
+'
+nameIsles Kasplat: Waterfall Pool
 §
 lankyö2ó
 Q*O
@@ -16748,1032 +17676,254 @@ U*S
 valueIsles Kasplat: Waterfall Pool
 '
 nameIsles Kasplat: Waterfall Pool
-£
-tinyö2ó
-Q*O
-&
-valueIsles Kasplat: Beaver Beach
-%
-nameIsles Kasplat: Beaver Beach
-m*k
-4
-value+)Isles Kasplat: Factory Lobby above Portal
-3
-name+)Isles Kasplat: Factory Lobby above Portal
-M*K
-$
-valueIsles Kasplat: Helm Lobby
-#
-nameIsles Kasplat: Helm Lobby
-Q*O
-&
-valueIsles Kasplat: Castle Lobby
-%
-nameIsles Kasplat: Castle Lobby
-[*Y
-+
-value" Isles Kasplat: Caves Lobby Punch
-*
-name" Isles Kasplat: Caves Lobby Punch
-[*Y
-+
-value" Isles Kasplat: Factory Lobby Box
-*
-name" Isles Kasplat: Factory Lobby Box
-S*Q
-'
-valueIsles Kasplat: Galleon Lobby
-&
-nameIsles Kasplat: Galleon Lobby
-g*e
-1
-value(&Isles Kasplat: Inside Pound the X Rock
-0
-name(&Isles Kasplat: Inside Pound the X Rock
-i*g
-2
-value)'Isles Kasplat: Middle Back of Krem Isle
-1
-name)'Isles Kasplat: Middle Back of Krem Isle
-U*S
-(
-valueIsles Kasplat: Big X Platform
-'
-nameIsles Kasplat: Big X Platform
-]*[
-,
-value#!Isles Kasplat: Back of Cabin Isle
-+
-name#!Isles Kasplat: Back of Cabin Isle
-c*a
-/
-value&$Isles Kasplat: Aztec Lobby Back Room
-.
-name&$Isles Kasplat: Aztec Lobby Back Room
-]*[
-,
-value#!Isles Kasplat: Prison Sprint Cage
-+
-name#!Isles Kasplat: Prison Sprint Cage
-O*M
-%
-valueIsles Kasplat: Japes Lobby
-$
-nameIsles Kasplat: Japes Lobby
-Y*W
-*
-value!Isles Kasplat: Top of Krem Isle
-)
-name!Isles Kasplat: Top of Krem Isle
-Q*O
-&
-valueIsles Kasplat: Snide's Room
-%
-nameIsles Kasplat: Snide's Room
-U*S
-(
-valueIsles Kasplat: Waterfall Pool
-'
-nameIsles Kasplat: Waterfall Pool
-•
-donkeyö2ó
-Q*O
-&
-valueIsles Kasplat: Beaver Beach
-%
-nameIsles Kasplat: Beaver Beach
-m*k
-4
-value+)Isles Kasplat: Factory Lobby above Portal
-3
-name+)Isles Kasplat: Factory Lobby above Portal
-M*K
-$
-valueIsles Kasplat: Helm Lobby
-#
-nameIsles Kasplat: Helm Lobby
-Q*O
-&
-valueIsles Kasplat: Castle Lobby
-%
-nameIsles Kasplat: Castle Lobby
-[*Y
-+
-value" Isles Kasplat: Caves Lobby Punch
-*
-name" Isles Kasplat: Caves Lobby Punch
-[*Y
-+
-value" Isles Kasplat: Factory Lobby Box
-*
-name" Isles Kasplat: Factory Lobby Box
-S*Q
-'
-valueIsles Kasplat: Galleon Lobby
-&
-nameIsles Kasplat: Galleon Lobby
-g*e
-1
-value(&Isles Kasplat: Inside Pound the X Rock
-0
-name(&Isles Kasplat: Inside Pound the X Rock
-i*g
-2
-value)'Isles Kasplat: Middle Back of Krem Isle
-1
-name)'Isles Kasplat: Middle Back of Krem Isle
-U*S
-(
-valueIsles Kasplat: Big X Platform
-'
-nameIsles Kasplat: Big X Platform
-]*[
-,
-value#!Isles Kasplat: Back of Cabin Isle
-+
-name#!Isles Kasplat: Back of Cabin Isle
-c*a
-/
-value&$Isles Kasplat: Aztec Lobby Back Room
-.
-name&$Isles Kasplat: Aztec Lobby Back Room
-]*[
-,
-value#!Isles Kasplat: Prison Sprint Cage
-+
-name#!Isles Kasplat: Prison Sprint Cage
-O*M
-%
-valueIsles Kasplat: Japes Lobby
-$
-nameIsles Kasplat: Japes Lobby
-Y*W
-*
-value!Isles Kasplat: Top of Krem Isle
-)
-name!Isles Kasplat: Top of Krem Isle
-Q*O
-&
-valueIsles Kasplat: Snide's Room
-%
-nameIsles Kasplat: Snide's Room
-U*S
-(
-valueIsles Kasplat: Waterfall Pool
-'
-nameIsles Kasplat: Waterfall Pool
-•
-chunkyö2ó
-Q*O
-&
-valueIsles Kasplat: Beaver Beach
-%
-nameIsles Kasplat: Beaver Beach
-m*k
-4
-value+)Isles Kasplat: Factory Lobby above Portal
-3
-name+)Isles Kasplat: Factory Lobby above Portal
-M*K
-$
-valueIsles Kasplat: Helm Lobby
-#
-nameIsles Kasplat: Helm Lobby
-Q*O
-&
-valueIsles Kasplat: Castle Lobby
-%
-nameIsles Kasplat: Castle Lobby
-[*Y
-+
-value" Isles Kasplat: Caves Lobby Punch
-*
-name" Isles Kasplat: Caves Lobby Punch
-[*Y
-+
-value" Isles Kasplat: Factory Lobby Box
-*
-name" Isles Kasplat: Factory Lobby Box
-S*Q
-'
-valueIsles Kasplat: Galleon Lobby
-&
-nameIsles Kasplat: Galleon Lobby
-g*e
-1
-value(&Isles Kasplat: Inside Pound the X Rock
-0
-name(&Isles Kasplat: Inside Pound the X Rock
-i*g
-2
-value)'Isles Kasplat: Middle Back of Krem Isle
-1
-name)'Isles Kasplat: Middle Back of Krem Isle
-U*S
-(
-valueIsles Kasplat: Big X Platform
-'
-nameIsles Kasplat: Big X Platform
-]*[
-,
-value#!Isles Kasplat: Back of Cabin Isle
-+
-name#!Isles Kasplat: Back of Cabin Isle
-c*a
-/
-value&$Isles Kasplat: Aztec Lobby Back Room
-.
-name&$Isles Kasplat: Aztec Lobby Back Room
-]*[
-,
-value#!Isles Kasplat: Prison Sprint Cage
-+
-name#!Isles Kasplat: Prison Sprint Cage
-O*M
-%
-valueIsles Kasplat: Japes Lobby
-$
-nameIsles Kasplat: Japes Lobby
-Y*W
-*
-value!Isles Kasplat: Top of Krem Isle
-)
-name!Isles Kasplat: Top of Krem Isle
-Q*O
-&
-valueIsles Kasplat: Snide's Room
-%
-nameIsles Kasplat: Snide's Room
-U*S
-(
-valueIsles Kasplat: Waterfall Pool
-'
-nameIsles Kasplat: Waterfall Pool
-®6
-JungleJapesò6*ï6
-“
-
-lanky»
-2≈
-
-[*Y
-+
-value" Japes Kasplat: Behind Rambi Wall
-*
-name" Japes Kasplat: Behind Rambi Wall
-W*U
-)
-value Japes Kasplat: Top of mountain
-(
-name Japes Kasplat: Top of mountain
-Q*O
-&
-valueJapes Kasplat: Beehive Area
-%
-nameJapes Kasplat: Beehive Area
-[*Y
-+
-value" Japes Kasplat: Hive Tunnel Lower
-*
-name" Japes Kasplat: Hive Tunnel Lower
-[*Y
-+
-value" Japes Kasplat: Hive Tunnel Upper
-*
-name" Japes Kasplat: Hive Tunnel Upper
-a*_
-.
-value%#Japes Kasplat: By Lanky Slope Bonus
--
-name%#Japes Kasplat: By Lanky Slope Bonus
-k*i
-3
-value*(Japes Kasplat: Tunnel Near Painting Room
-2
-name*(Japes Kasplat: Tunnel Near Painting Room
-S*Q
-'
-valueJapes Kasplat: Starting Area
-&
-nameJapes Kasplat: Starting Area
-[*Y
-+
-value" Japes Kasplat: Diddy Peanut Cave
-*
-name" Japes Kasplat: Diddy Peanut Cave
-Q*O
-&
-valueJapes Kasplat: In the river
-%
-nameJapes Kasplat: In the river
-Y*W
-*
-value!Japes Kasplat: Rambi Water Pool
-)
-name!Japes Kasplat: Rambi Water Pool
-M*K
-$
-valueJapes Kasplat: Near Rambi
-#
-nameJapes Kasplat: Near Rambi
-W*U
-)
-value Japes Kasplat: Hillside Alcove
-(
-name Japes Kasplat: Hillside Alcove
-S*Q
-'
-valueJapes Kasplat: Painting Hill
-&
-nameJapes Kasplat: Painting Hill
-S*Q
-'
-valueJapes Kasplat: Minecart Exit
-&
-nameJapes Kasplat: Minecart Exit
-ﬁ
-
-diddy‘
-2—
-
-[*Y
-+
-value" Japes Kasplat: Behind Rambi Wall
-*
-name" Japes Kasplat: Behind Rambi Wall
-W*U
-)
-value Japes Kasplat: Top of mountain
-(
-name Japes Kasplat: Top of mountain
-Q*O
-&
-valueJapes Kasplat: Beehive Area
-%
-nameJapes Kasplat: Beehive Area
-[*Y
-+
-value" Japes Kasplat: Hive Tunnel Lower
-*
-name" Japes Kasplat: Hive Tunnel Lower
-[*Y
-+
-value" Japes Kasplat: Hive Tunnel Upper
-*
-name" Japes Kasplat: Hive Tunnel Upper
-a*_
-.
-value%#Japes Kasplat: By Lanky Slope Bonus
--
-name%#Japes Kasplat: By Lanky Slope Bonus
-k*i
-3
-value*(Japes Kasplat: Tunnel Near Painting Room
-2
-name*(Japes Kasplat: Tunnel Near Painting Room
-S*Q
-'
-valueJapes Kasplat: Starting Area
-&
-nameJapes Kasplat: Starting Area
-[*Y
-+
-value" Japes Kasplat: Diddy Peanut Cave
-*
-name" Japes Kasplat: Diddy Peanut Cave
-Q*O
-&
-valueJapes Kasplat: In the river
-%
-nameJapes Kasplat: In the river
-Y*W
-*
-value!Japes Kasplat: Rambi Water Pool
-)
-name!Japes Kasplat: Rambi Water Pool
-M*K
-$
-valueJapes Kasplat: Near Rambi
-#
-nameJapes Kasplat: Near Rambi
-W*U
-)
-value Japes Kasplat: Hillside Alcove
-(
-name Japes Kasplat: Hillside Alcove
-_*]
--
-value$"Japes Kasplat: Inside the Mountain
-,
-name$"Japes Kasplat: Inside the Mountain
-S*Q
-'
-valueJapes Kasplat: Minecart Exit
-&
-nameJapes Kasplat: Minecart Exit
-â
-tinyÄ2˝
-[*Y
-+
-value" Japes Kasplat: Behind Rambi Wall
-*
-name" Japes Kasplat: Behind Rambi Wall
-W*U
-)
-value Japes Kasplat: Top of mountain
-(
-name Japes Kasplat: Top of mountain
-Q*O
-&
-valueJapes Kasplat: Beehive Area
-%
-nameJapes Kasplat: Beehive Area
-[*Y
-+
-value" Japes Kasplat: Hive Tunnel Lower
-*
-name" Japes Kasplat: Hive Tunnel Lower
-[*Y
-+
-value" Japes Kasplat: Hive Tunnel Upper
-*
-name" Japes Kasplat: Hive Tunnel Upper
-a*_
-.
-value%#Japes Kasplat: By Lanky Slope Bonus
--
-name%#Japes Kasplat: By Lanky Slope Bonus
-k*i
-3
-value*(Japes Kasplat: Tunnel Near Painting Room
-2
-name*(Japes Kasplat: Tunnel Near Painting Room
-]*[
-,
-value#!Japes Kasplat: Inside Tiny's Cage
-+
-name#!Japes Kasplat: Inside Tiny's Cage
-S*Q
-'
-valueJapes Kasplat: Starting Area
-&
-nameJapes Kasplat: Starting Area
-[*Y
-+
-value" Japes Kasplat: Diddy Peanut Cave
-*
-name" Japes Kasplat: Diddy Peanut Cave
-Q*O
-&
-valueJapes Kasplat: In the river
-%
-nameJapes Kasplat: In the river
-Y*W
-*
-value!Japes Kasplat: Rambi Water Pool
-)
-name!Japes Kasplat: Rambi Water Pool
-M*K
-$
-valueJapes Kasplat: Near Rambi
-#
-nameJapes Kasplat: Near Rambi
-W*U
-)
-value Japes Kasplat: Hillside Alcove
-(
-name Japes Kasplat: Hillside Alcove
-W*U
-)
-value Japes Kasplat: Inside the Hive
-(
-name Japes Kasplat: Inside the Hive
-S*Q
-'
-valueJapes Kasplat: Painting Hill
-&
-nameJapes Kasplat: Painting Hill
-S*Q
-'
-valueJapes Kasplat: Minecart Exit
-&
-nameJapes Kasplat: Minecart Exit
-˛	
-donkeyÛ	2	
-[*Y
-+
-value" Japes Kasplat: Behind Rambi Wall
-*
-name" Japes Kasplat: Behind Rambi Wall
-W*U
-)
-value Japes Kasplat: Top of mountain
-(
-name Japes Kasplat: Top of mountain
-Q*O
-&
-valueJapes Kasplat: Beehive Area
-%
-nameJapes Kasplat: Beehive Area
-[*Y
-+
-value" Japes Kasplat: Hive Tunnel Lower
-*
-name" Japes Kasplat: Hive Tunnel Lower
-[*Y
-+
-value" Japes Kasplat: Hive Tunnel Upper
-*
-name" Japes Kasplat: Hive Tunnel Upper
-a*_
-.
-value%#Japes Kasplat: By Lanky Slope Bonus
--
-name%#Japes Kasplat: By Lanky Slope Bonus
-k*i
-3
-value*(Japes Kasplat: Tunnel Near Painting Room
-2
-name*(Japes Kasplat: Tunnel Near Painting Room
-S*Q
-'
-valueJapes Kasplat: Starting Area
-&
-nameJapes Kasplat: Starting Area
-[*Y
-+
-value" Japes Kasplat: Diddy Peanut Cave
-*
-name" Japes Kasplat: Diddy Peanut Cave
-Q*O
-&
-valueJapes Kasplat: In the river
-%
-nameJapes Kasplat: In the river
-Y*W
-*
-value!Japes Kasplat: Rambi Water Pool
-)
-name!Japes Kasplat: Rambi Water Pool
-M*K
-$
-valueJapes Kasplat: Near Rambi
-#
-nameJapes Kasplat: Near Rambi
-W*U
-)
-value Japes Kasplat: Hillside Alcove
-(
-name Japes Kasplat: Hillside Alcove
-S*Q
-'
-valueJapes Kasplat: Minecart Exit
-&
-nameJapes Kasplat: Minecart Exit
-œ
-
-chunkyƒ
-2¡
-
-[*Y
-+
-value" Japes Kasplat: Behind Rambi Wall
-*
-name" Japes Kasplat: Behind Rambi Wall
-W*U
-)
-value Japes Kasplat: Top of mountain
-(
-name Japes Kasplat: Top of mountain
-Q*O
-&
-valueJapes Kasplat: Beehive Area
-%
-nameJapes Kasplat: Beehive Area
-[*Y
-+
-value" Japes Kasplat: Hive Tunnel Lower
-*
-name" Japes Kasplat: Hive Tunnel Lower
-[*Y
-+
-value" Japes Kasplat: Hive Tunnel Upper
-*
-name" Japes Kasplat: Hive Tunnel Upper
-O*M
-%
-valueJapes Kasplat: Underground
-$
-nameJapes Kasplat: Underground
-a*_
-.
-value%#Japes Kasplat: By Lanky Slope Bonus
--
-name%#Japes Kasplat: By Lanky Slope Bonus
-k*i
-3
-value*(Japes Kasplat: Tunnel Near Painting Room
-2
-name*(Japes Kasplat: Tunnel Near Painting Room
-S*Q
-'
-valueJapes Kasplat: Starting Area
-&
-nameJapes Kasplat: Starting Area
-[*Y
-+
-value" Japes Kasplat: Diddy Peanut Cave
-*
-name" Japes Kasplat: Diddy Peanut Cave
-Q*O
-&
-valueJapes Kasplat: In the river
-%
-nameJapes Kasplat: In the river
-Y*W
-*
-value!Japes Kasplat: Rambi Water Pool
-)
-name!Japes Kasplat: Rambi Water Pool
-M*K
-$
-valueJapes Kasplat: Near Rambi
-#
-nameJapes Kasplat: Near Rambi
-W*U
-)
-value Japes Kasplat: Hillside Alcove
-(
-name Japes Kasplat: Hillside Alcove
-S*Q
-'
-valueJapes Kasplat: Minecart Exit
-&
-nameJapes Kasplat: Minecart Exit
-Ù1
-FranticFactory·1*ﬁ1
-â
-
-lankyˇ	2¸	
-W*U
-)
-value Factory Kasplat: Starting Area
-(
-name Factory Kasplat: Starting Area
-Y*W
-*
-value!Factory Kasplat: Near Power Hut
-)
-name!Factory Kasplat: Near Power Hut
-_*]
--
-value$"Factory Kasplat: Hatch Pole Alcove
-,
-name$"Factory Kasplat: Hatch Pole Alcove
-O*M
-%
-valueFactory Kasplat: Dark Room
-$
-nameFactory Kasplat: Dark Room
-k*i
-3
-value*(Factory Kasplat: Low Production Platform
-2
-name*(Factory Kasplat: Low Production Platform
-g*e
-1
-value(&Factory Kasplat: Upper Production Pipe
-0
-name(&Factory Kasplat: Upper Production Pipe
-a*_
-.
-value%#Factory Kasplat: Base of Production
--
-name%#Factory Kasplat: Base of Production
-C*A
-
-valueFactory Kasplat: R&D
-
-nameFactory Kasplat: R&D
-Y*W
-*
-value!Factory Kasplat: Pole to Arcade
-)
-name!Factory Kasplat: Pole to Arcade
-S*Q
-'
-valueFactory Kasplat: Block Tower
-&
-nameFactory Kasplat: Block Tower
-[*Y
-+
-value" Factory Kasplat: Window Shopping
-*
-name" Factory Kasplat: Window Shopping
-S*Q
-'
-valueFactory Kasplat: By Car Race
-&
-nameFactory Kasplat: By Car Race
-U*S
-(
-valueFactory Kasplat: Crusher Room
-'
-nameFactory Kasplat: Crusher Room
-]*[
-,
-value#!Factory Kasplat: Lanky Piano Game
-+
-name#!Factory Kasplat: Lanky Piano Game
-™	
-diddy†	2ù	
-W*U
-)
-value Factory Kasplat: Starting Area
-(
-name Factory Kasplat: Starting Area
-Y*W
-*
-value!Factory Kasplat: Near Power Hut
-)
-name!Factory Kasplat: Near Power Hut
-_*]
--
-value$"Factory Kasplat: Hatch Pole Alcove
-,
-name$"Factory Kasplat: Hatch Pole Alcove
-O*M
-%
-valueFactory Kasplat: Dark Room
-$
-nameFactory Kasplat: Dark Room
-k*i
-3
-value*(Factory Kasplat: Low Production Platform
-2
-name*(Factory Kasplat: Low Production Platform
-g*e
-1
-value(&Factory Kasplat: Upper Production Pipe
-0
-name(&Factory Kasplat: Upper Production Pipe
-a*_
-.
-value%#Factory Kasplat: Base of Production
--
-name%#Factory Kasplat: Base of Production
-C*A
-
-valueFactory Kasplat: R&D
-
-nameFactory Kasplat: R&D
-Y*W
-*
-value!Factory Kasplat: Pole to Arcade
-)
-name!Factory Kasplat: Pole to Arcade
-S*Q
-'
-valueFactory Kasplat: Block Tower
-&
-nameFactory Kasplat: Block Tower
-[*Y
-+
-value" Factory Kasplat: Window Shopping
-*
-name" Factory Kasplat: Window Shopping
-S*Q
-'
-valueFactory Kasplat: By Car Race
-&
-nameFactory Kasplat: By Car Race
-U*S
-(
-valueFactory Kasplat: Crusher Room
-'
-nameFactory Kasplat: Crusher Room
-Ô
-
-tinyÊ
-2„
-
-W*U
-)
-value Factory Kasplat: Starting Area
-(
-name Factory Kasplat: Starting Area
-Y*W
-*
-value!Factory Kasplat: Near Power Hut
-)
-name!Factory Kasplat: Near Power Hut
-_*]
--
-value$"Factory Kasplat: Hatch Pole Alcove
-,
-name$"Factory Kasplat: Hatch Pole Alcove
-O*M
-%
-valueFactory Kasplat: Dark Room
-$
-nameFactory Kasplat: Dark Room
-k*i
-3
-value*(Factory Kasplat: Low Production Platform
-2
-name*(Factory Kasplat: Low Production Platform
-g*e
-1
-value(&Factory Kasplat: Upper Production Pipe
-0
-name(&Factory Kasplat: Upper Production Pipe
-a*_
-.
-value%#Factory Kasplat: Base of Production
--
-name%#Factory Kasplat: Base of Production
-C*A
-
-valueFactory Kasplat: R&D
-
-nameFactory Kasplat: R&D
-Y*W
-*
-value!Factory Kasplat: Pole to Arcade
-)
-name!Factory Kasplat: Pole to Arcade
-S*Q
-'
-valueFactory Kasplat: Block Tower
-&
-nameFactory Kasplat: Block Tower
-[*Y
-+
-value" Factory Kasplat: Window Shopping
-*
-name" Factory Kasplat: Window Shopping
-S*Q
-'
-valueFactory Kasplat: By Car Race
-&
-nameFactory Kasplat: By Car Race
-Y*W
-*
-value!Factory Kasplat: Tiny Dartboard
-)
-name!Factory Kasplat: Tiny Dartboard
-U*S
-(
-valueFactory Kasplat: Crusher Room
-'
-nameFactory Kasplat: Crusher Room
-i*g
-2
-value)'Factory Kasplat: Upper Production Twirl
-1
-name)'Factory Kasplat: Upper Production Twirl
-Ç
-
-donkey˜	2Ù	
-W*U
-)
-value Factory Kasplat: Starting Area
-(
-name Factory Kasplat: Starting Area
-Y*W
-*
-value!Factory Kasplat: Near Power Hut
-)
-name!Factory Kasplat: Near Power Hut
-_*]
--
-value$"Factory Kasplat: Hatch Pole Alcove
-,
-name$"Factory Kasplat: Hatch Pole Alcove
-O*M
-%
-valueFactory Kasplat: Dark Room
-$
-nameFactory Kasplat: Dark Room
-k*i
-3
-value*(Factory Kasplat: Low Production Platform
-2
-name*(Factory Kasplat: Low Production Platform
-g*e
-1
-value(&Factory Kasplat: Upper Production Pipe
-0
-name(&Factory Kasplat: Upper Production Pipe
-a*_
-.
-value%#Factory Kasplat: Base of Production
--
-name%#Factory Kasplat: Base of Production
-C*A
-
-valueFactory Kasplat: R&D
-
-nameFactory Kasplat: R&D
-Y*W
-*
-value!Factory Kasplat: Pole to Arcade
-)
-name!Factory Kasplat: Pole to Arcade
-S*Q
-'
-valueFactory Kasplat: Block Tower
-&
-nameFactory Kasplat: Block Tower
-[*Y
-+
-value" Factory Kasplat: Window Shopping
-*
-name" Factory Kasplat: Window Shopping
-U*S
-(
-valueFactory Kasplat: In Power Hut
-'
-nameFactory Kasplat: In Power Hut
-S*Q
-'
-valueFactory Kasplat: By Car Race
-&
-nameFactory Kasplat: By Car Race
-U*S
-(
-valueFactory Kasplat: Crusher Room
-'
-nameFactory Kasplat: Crusher Room
-´	
-chunky†	2ù	
-W*U
-)
-value Factory Kasplat: Starting Area
-(
-name Factory Kasplat: Starting Area
-Y*W
-*
-value!Factory Kasplat: Near Power Hut
-)
-name!Factory Kasplat: Near Power Hut
-_*]
--
-value$"Factory Kasplat: Hatch Pole Alcove
-,
-name$"Factory Kasplat: Hatch Pole Alcove
-O*M
-%
-valueFactory Kasplat: Dark Room
-$
-nameFactory Kasplat: Dark Room
-k*i
-3
-value*(Factory Kasplat: Low Production Platform
-2
-name*(Factory Kasplat: Low Production Platform
-g*e
-1
-value(&Factory Kasplat: Upper Production Pipe
-0
-name(&Factory Kasplat: Upper Production Pipe
-a*_
-.
-value%#Factory Kasplat: Base of Production
--
-name%#Factory Kasplat: Base of Production
-C*A
-
-valueFactory Kasplat: R&D
-
-nameFactory Kasplat: R&D
-Y*W
-*
-value!Factory Kasplat: Pole to Arcade
-)
-name!Factory Kasplat: Pole to Arcade
-S*Q
-'
-valueFactory Kasplat: Block Tower
-&
-nameFactory Kasplat: Block Tower
-[*Y
-+
-value" Factory Kasplat: Window Shopping
-*
-name" Factory Kasplat: Window Shopping
-S*Q
-'
-valueFactory Kasplat: By Car Race
-&
-nameFactory Kasplat: By Car Race
-U*S
-(
-valueFactory Kasplat: Crusher Room
-'
-nameFactory Kasplat: Crusher Room
 ﬁ<
 CrystalCavesÕ<* <
+˙
+donkeyÔ2Ï
+S*Q
+'
+valueCaves Kasplat: Ice Cave Shop
+&
+nameCaves Kasplat: Ice Cave Shop
+W*U
+)
+value Caves Kasplat: Mini Bonus Cave
+(
+name Caves Kasplat: Mini Bonus Cave
+W*U
+)
+value Caves Kasplat: Breakable igloo
+(
+name Caves Kasplat: Breakable igloo
+[*Y
++
+value" Caves Kasplat: Near 5-door Cabin
+*
+name" Caves Kasplat: Near 5-door Cabin
+g*e
+1
+value(&Caves Kasplat: Across river from Candy
+0
+name(&Caves Kasplat: Across river from Candy
+]*[
+,
+value#!Caves Kasplat: Giant Boulder Room
++
+name#!Caves Kasplat: Giant Boulder Room
+W*U
+)
+value Caves Kasplat: Near Ice Castle
+(
+name Caves Kasplat: Near Ice Castle
+Y*W
+*
+value!Caves Kasplat: On Warp 5 Pillar
+)
+name!Caves Kasplat: On Warp 5 Pillar
+_*]
+-
+value$"Caves Kasplat: Cabins Central Rise
+,
+name$"Caves Kasplat: Cabins Central Rise
+Q*O
+&
+valueCaves Kasplat: On the Igloo
+%
+nameCaves Kasplat: On the Igloo
+]*[
+,
+value#!Caves Kasplat: Water by Blast Pad
++
+name#!Caves Kasplat: Water by Blast Pad
+q*o
+6
+value-+Caves Kasplat: Tied to the Bananaport Spire
+5
+name-+Caves Kasplat: Tied to the Bananaport Spire
+u*s
+8
+value/-Caves Kasplat: Low Left Ledge Near Ice Castle
+7
+name/-Caves Kasplat: Low Left Ledge Near Ice Castle
+[*Y
++
+value" Caves Kasplat: DK Shooting Cabin
+*
+name" Caves Kasplat: DK Shooting Cabin
+[*Y
++
+value" Caves Kasplat: Gorilla Gone Cave
+*
+name" Caves Kasplat: Gorilla Gone Cave
+S*Q
+'
+valueCaves Kasplat: Starting Area
+&
+nameCaves Kasplat: Starting Area
+›
+tiny‘2—
+S*Q
+'
+valueCaves Kasplat: Ice Cave Shop
+&
+nameCaves Kasplat: Ice Cave Shop
+W*U
+)
+value Caves Kasplat: Mini Bonus Cave
+(
+name Caves Kasplat: Mini Bonus Cave
+W*U
+)
+value Caves Kasplat: Breakable igloo
+(
+name Caves Kasplat: Breakable igloo
+[*Y
++
+value" Caves Kasplat: Near 5-door Cabin
+*
+name" Caves Kasplat: Near 5-door Cabin
+g*e
+1
+value(&Caves Kasplat: Across river from Candy
+0
+name(&Caves Kasplat: Across river from Candy
+]*[
+,
+value#!Caves Kasplat: Giant Boulder Room
++
+name#!Caves Kasplat: Giant Boulder Room
+W*U
+)
+value Caves Kasplat: Near Ice Castle
+(
+name Caves Kasplat: Near Ice Castle
+]*[
+,
+value#!Caves Kasplat: Mini Room by Funky
++
+name#!Caves Kasplat: Mini Room by Funky
+Y*W
+*
+value!Caves Kasplat: On Warp 5 Pillar
+)
+name!Caves Kasplat: On Warp 5 Pillar
+_*]
+-
+value$"Caves Kasplat: Cabins Central Rise
+,
+name$"Caves Kasplat: Cabins Central Rise
+Q*O
+&
+valueCaves Kasplat: On the Igloo
+%
+nameCaves Kasplat: On the Igloo
+]*[
+,
+value#!Caves Kasplat: Water by Blast Pad
++
+name#!Caves Kasplat: Water by Blast Pad
+q*o
+6
+value-+Caves Kasplat: Tied to the Bananaport Spire
+5
+name-+Caves Kasplat: Tied to the Bananaport Spire
+u*s
+8
+value/-Caves Kasplat: Low Left Ledge Near Ice Castle
+7
+name/-Caves Kasplat: Low Left Ledge Near Ice Castle
+a*_
+.
+value%#Caves Kasplat: With the Giant Kosha
+-
+name%#Caves Kasplat: With the Giant Kosha
+[*Y
++
+value" Caves Kasplat: Gorilla Gone Cave
+*
+name" Caves Kasplat: Gorilla Gone Cave
+S*Q
+'
+valueCaves Kasplat: Starting Area
+&
+nameCaves Kasplat: Starting Area
+ù
+chunkyí2è
+S*Q
+'
+valueCaves Kasplat: Ice Cave Shop
+&
+nameCaves Kasplat: Ice Cave Shop
+W*U
+)
+value Caves Kasplat: Mini Bonus Cave
+(
+name Caves Kasplat: Mini Bonus Cave
+W*U
+)
+value Caves Kasplat: Breakable igloo
+(
+name Caves Kasplat: Breakable igloo
+[*Y
++
+value" Caves Kasplat: Near 5-door Cabin
+*
+name" Caves Kasplat: Near 5-door Cabin
+g*e
+1
+value(&Caves Kasplat: Across river from Candy
+0
+name(&Caves Kasplat: Across river from Candy
+]*[
+,
+value#!Caves Kasplat: Giant Boulder Room
++
+name#!Caves Kasplat: Giant Boulder Room
+W*U
+)
+value Caves Kasplat: Near Ice Castle
+(
+name Caves Kasplat: Near Ice Castle
+Y*W
+*
+value!Caves Kasplat: On Warp 5 Pillar
+)
+name!Caves Kasplat: On Warp 5 Pillar
+_*]
+-
+value$"Caves Kasplat: Cabins Central Rise
+,
+name$"Caves Kasplat: Cabins Central Rise
+Q*O
+&
+valueCaves Kasplat: On the Igloo
+%
+nameCaves Kasplat: On the Igloo
+]*[
+,
+value#!Caves Kasplat: Water by Blast Pad
++
+name#!Caves Kasplat: Water by Blast Pad
+q*o
+6
+value-+Caves Kasplat: Tied to the Bananaport Spire
+5
+name-+Caves Kasplat: Tied to the Bananaport Spire
+u*s
+8
+value/-Caves Kasplat: Low Left Ledge Near Ice Castle
+7
+name/-Caves Kasplat: Low Left Ledge Near Ice Castle
+[*Y
++
+value" Caves Kasplat: Gorilla Gone Cave
+*
+name" Caves Kasplat: Gorilla Gone Cave
+S*Q
+'
+valueCaves Kasplat: Starting Area
+&
+nameCaves Kasplat: Starting Area
 ˚
 lankyÒ2Ó
 S*Q
@@ -17943,631 +18093,1030 @@ S*Q
 valueCaves Kasplat: Starting Area
 &
 nameCaves Kasplat: Starting Area
-›
-tiny‘2—
-S*Q
-'
-valueCaves Kasplat: Ice Cave Shop
-&
-nameCaves Kasplat: Ice Cave Shop
-W*U
-)
-value Caves Kasplat: Mini Bonus Cave
-(
-name Caves Kasplat: Mini Bonus Cave
-W*U
-)
-value Caves Kasplat: Breakable igloo
-(
-name Caves Kasplat: Breakable igloo
-[*Y
-+
-value" Caves Kasplat: Near 5-door Cabin
-*
-name" Caves Kasplat: Near 5-door Cabin
-g*e
-1
-value(&Caves Kasplat: Across river from Candy
-0
-name(&Caves Kasplat: Across river from Candy
-]*[
-,
-value#!Caves Kasplat: Giant Boulder Room
-+
-name#!Caves Kasplat: Giant Boulder Room
-W*U
-)
-value Caves Kasplat: Near Ice Castle
-(
-name Caves Kasplat: Near Ice Castle
-]*[
-,
-value#!Caves Kasplat: Mini Room by Funky
-+
-name#!Caves Kasplat: Mini Room by Funky
-Y*W
-*
-value!Caves Kasplat: On Warp 5 Pillar
-)
-name!Caves Kasplat: On Warp 5 Pillar
-_*]
--
-value$"Caves Kasplat: Cabins Central Rise
-,
-name$"Caves Kasplat: Cabins Central Rise
-Q*O
-&
-valueCaves Kasplat: On the Igloo
-%
-nameCaves Kasplat: On the Igloo
-]*[
-,
-value#!Caves Kasplat: Water by Blast Pad
-+
-name#!Caves Kasplat: Water by Blast Pad
-q*o
-6
-value-+Caves Kasplat: Tied to the Bananaport Spire
-5
-name-+Caves Kasplat: Tied to the Bananaport Spire
-u*s
-8
-value/-Caves Kasplat: Low Left Ledge Near Ice Castle
-7
-name/-Caves Kasplat: Low Left Ledge Near Ice Castle
+ñD
+FungiForestÜD*ÉD
+–
+donkey≈2¬
 a*_
 .
-value%#Caves Kasplat: With the Giant Kosha
+value%#Forest Kasplat: Behind Rafters Barn
 -
-name%#Caves Kasplat: With the Giant Kosha
+name%#Forest Kasplat: Behind Rafters Barn
 [*Y
 +
-value" Caves Kasplat: Gorilla Gone Cave
+value" Forest Kasplat: Behind beanstalk
 *
-name" Caves Kasplat: Gorilla Gone Cave
-S*Q
-'
-valueCaves Kasplat: Starting Area
-&
-nameCaves Kasplat: Starting Area
-˙
-donkeyÔ2Ï
-S*Q
-'
-valueCaves Kasplat: Ice Cave Shop
-&
-nameCaves Kasplat: Ice Cave Shop
-W*U
-)
-value Caves Kasplat: Mini Bonus Cave
-(
-name Caves Kasplat: Mini Bonus Cave
-W*U
-)
-value Caves Kasplat: Breakable igloo
-(
-name Caves Kasplat: Breakable igloo
-[*Y
-+
-value" Caves Kasplat: Near 5-door Cabin
-*
-name" Caves Kasplat: Near 5-door Cabin
-g*e
-1
-value(&Caves Kasplat: Across river from Candy
-0
-name(&Caves Kasplat: Across river from Candy
-]*[
-,
-value#!Caves Kasplat: Giant Boulder Room
-+
-name#!Caves Kasplat: Giant Boulder Room
-W*U
-)
-value Caves Kasplat: Near Ice Castle
-(
-name Caves Kasplat: Near Ice Castle
-Y*W
-*
-value!Caves Kasplat: On Warp 5 Pillar
-)
-name!Caves Kasplat: On Warp 5 Pillar
-_*]
--
-value$"Caves Kasplat: Cabins Central Rise
-,
-name$"Caves Kasplat: Cabins Central Rise
-Q*O
-&
-valueCaves Kasplat: On the Igloo
-%
-nameCaves Kasplat: On the Igloo
-]*[
-,
-value#!Caves Kasplat: Water by Blast Pad
-+
-name#!Caves Kasplat: Water by Blast Pad
+name" Forest Kasplat: Behind beanstalk
+w*u
+9
+value0.Forest Kasplat: By Giant Mushroom Rocketbarrel
+8
+name0.Forest Kasplat: By Giant Mushroom Rocketbarrel
 q*o
 6
-value-+Caves Kasplat: Tied to the Bananaport Spire
+value-+Forest Kasplat: Mushroom Exterior Top Floor
 5
-name-+Caves Kasplat: Tied to the Bananaport Spire
-u*s
-8
-value/-Caves Kasplat: Low Left Ledge Near Ice Castle
-7
-name/-Caves Kasplat: Low Left Ledge Near Ice Castle
-[*Y
-+
-value" Caves Kasplat: DK Shooting Cabin
-*
-name" Caves Kasplat: DK Shooting Cabin
-[*Y
-+
-value" Caves Kasplat: Gorilla Gone Cave
-*
-name" Caves Kasplat: Gorilla Gone Cave
-S*Q
-'
-valueCaves Kasplat: Starting Area
-&
-nameCaves Kasplat: Starting Area
-ù
-chunkyí2è
-S*Q
-'
-valueCaves Kasplat: Ice Cave Shop
-&
-nameCaves Kasplat: Ice Cave Shop
-W*U
-)
-value Caves Kasplat: Mini Bonus Cave
-(
-name Caves Kasplat: Mini Bonus Cave
-W*U
-)
-value Caves Kasplat: Breakable igloo
-(
-name Caves Kasplat: Breakable igloo
-[*Y
-+
-value" Caves Kasplat: Near 5-door Cabin
-*
-name" Caves Kasplat: Near 5-door Cabin
-g*e
-1
-value(&Caves Kasplat: Across river from Candy
-0
-name(&Caves Kasplat: Across river from Candy
-]*[
-,
-value#!Caves Kasplat: Giant Boulder Room
-+
-name#!Caves Kasplat: Giant Boulder Room
-W*U
-)
-value Caves Kasplat: Near Ice Castle
-(
-name Caves Kasplat: Near Ice Castle
+name-+Forest Kasplat: Mushroom Exterior Top Floor
 Y*W
 *
-value!Caves Kasplat: On Warp 5 Pillar
+value!Forest Kasplat: Near the Rabbit
 )
-name!Caves Kasplat: On Warp 5 Pillar
-_*]
--
-value$"Caves Kasplat: Cabins Central Rise
-,
-name$"Caves Kasplat: Cabins Central Rise
-Q*O
-&
-valueCaves Kasplat: On the Igloo
-%
-nameCaves Kasplat: On the Igloo
+name!Forest Kasplat: Near the Rabbit
 ]*[
 ,
-value#!Caves Kasplat: Water by Blast Pad
+value#!Forest Kasplat: Owl Tree Clearing
 +
-name#!Caves Kasplat: Water by Blast Pad
-q*o
-6
-value-+Caves Kasplat: Tied to the Bananaport Spire
-5
-name-+Caves Kasplat: Tied to the Bananaport Spire
-u*s
-8
-value/-Caves Kasplat: Low Left Ledge Near Ice Castle
-7
-name/-Caves Kasplat: Low Left Ledge Near Ice Castle
-[*Y
-+
-value" Caves Kasplat: Gorilla Gone Cave
-*
-name" Caves Kasplat: Gorilla Gone Cave
-S*Q
-'
-valueCaves Kasplat: Starting Area
-&
-nameCaves Kasplat: Starting Area
-˛5
-CreepyCastleÌ5*Í5
-¡
-
-lanky∑
-2¥
-
-c*a
+name#!Forest Kasplat: Owl Tree Clearing
+e*c
+0
+value'%Forest Kasplat: Behind Thornvine Barn
 /
-value&$Castle Kasplat: Behind the Mausoleum
-.
-name&$Castle Kasplat: Behind the Mausoleum
+name'%Forest Kasplat: Behind Thornvine Barn
+e*c
+0
+value'%Forest Kasplat: Inside Giant Mushroom
+/
+name'%Forest Kasplat: Inside Giant Mushroom
 W*U
 )
-value Castle Kasplat: Dungeon Center
+value Forest Kasplat: Under Owl Tree
 (
-name Castle Kasplat: Dungeon Center
-g*e
-1
-value(&Castle Kasplat: Lowest Back Small Tree
-0
-name(&Castle Kasplat: Lowest Back Small Tree
-K*I
-#
-valueCastle Kasplat: Ballroom
-"
-nameCastle Kasplat: Ballroom
-M*K
-$
-valueCastle Kasplat: Top Level
-#
-nameCastle Kasplat: Top Level
-]*[
-,
-value#!Castle Kasplat: Lower Cave Center
-+
-name#!Castle Kasplat: Lower Cave Center
-o*m
-5
-value,*Castle Kasplat: Near Rocketbarrel Overhang
-4
-name,*Castle Kasplat: Near Rocketbarrel Overhang
+name Forest Kasplat: Under Owl Tree
+u*s
+8
+value/-Forest Kasplat: Mushroom Exterior Lower Floor
+7
+name/-Forest Kasplat: Mushroom Exterior Lower Floor
+s*q
+7
+value.,Forest Kasplat: Mushroom Exterior Night Door
+6
+name.,Forest Kasplat: Mushroom Exterior Night Door
+S*Q
+'
+valueForest Kasplat: Behind Clock
+&
+nameForest Kasplat: Behind Clock
+Y*W
+*
+value!Forest Kasplat: Front Mill Room
+)
+name!Forest Kasplat: Front Mill Room
+a*_
+.
+value%#Forest Kasplat: Giant Mushroom Moat
+-
+name%#Forest Kasplat: Giant Mushroom Moat
+S*Q
+'
+valueForest Kasplat: On Mill Roof
+&
+nameForest Kasplat: On Mill Roof
 _*]
 -
-value$"Castle Kasplat: On a lone platform
+value$"Forest Kasplat: Minecart Exit Well
 ,
-name$"Castle Kasplat: On a lone platform
-c*a
-/
-value&$Castle Kasplat: Near Upper Cave Shop
+name$"Forest Kasplat: Minecart Exit Well
+´
+tiny¢2ü
+a*_
 .
-name&$Castle Kasplat: Near Upper Cave Shop
+value%#Forest Kasplat: Behind Rafters Barn
+-
+name%#Forest Kasplat: Behind Rafters Barn
 [*Y
 +
-value" Castle Kasplat: Sewers Near Tree
+value" Forest Kasplat: Behind beanstalk
 *
-name" Castle Kasplat: Sewers Near Tree
+name" Forest Kasplat: Behind beanstalk
+w*u
+9
+value0.Forest Kasplat: By Giant Mushroom Rocketbarrel
+8
+name0.Forest Kasplat: By Giant Mushroom Rocketbarrel
+q*o
+6
+value-+Forest Kasplat: Mushroom Exterior Top Floor
+5
+name-+Forest Kasplat: Mushroom Exterior Top Floor
+Y*W
+*
+value!Forest Kasplat: Near the Rabbit
+)
+name!Forest Kasplat: Near the Rabbit
+]*[
+,
+value#!Forest Kasplat: Owl Tree Clearing
++
+name#!Forest Kasplat: Owl Tree Clearing
+e*c
+0
+value'%Forest Kasplat: Behind Thornvine Barn
+/
+name'%Forest Kasplat: Behind Thornvine Barn
+e*c
+0
+value'%Forest Kasplat: Inside Giant Mushroom
+/
+name'%Forest Kasplat: Inside Giant Mushroom
+W*U
+)
+value Forest Kasplat: Under Owl Tree
+(
+name Forest Kasplat: Under Owl Tree
+u*s
+8
+value/-Forest Kasplat: Mushroom Exterior Lower Floor
+7
+name/-Forest Kasplat: Mushroom Exterior Lower Floor
+s*q
+7
+value.,Forest Kasplat: Mushroom Exterior Night Door
+6
+name.,Forest Kasplat: Mushroom Exterior Night Door
+S*Q
+'
+valueForest Kasplat: Behind Clock
+&
+nameForest Kasplat: Behind Clock
+Y*W
+*
+value!Forest Kasplat: Front Mill Room
+)
+name!Forest Kasplat: Front Mill Room
+a*_
+.
+value%#Forest Kasplat: Giant Mushroom Moat
+-
+name%#Forest Kasplat: Giant Mushroom Moat
+S*Q
+'
+valueForest Kasplat: On Mill Roof
+&
+nameForest Kasplat: On Mill Roof
+_*]
+-
+value$"Forest Kasplat: Minecart Exit Well
+,
+name$"Forest Kasplat: Minecart Exit Well
 [*Y
 +
-value" Castle Kasplat: Near Middle Shop
+value" Forest Kasplat: Spider Boss Room
 *
-name" Castle Kasplat: Near Middle Shop
+name" Forest Kasplat: Spider Boss Room
+ª
+chunky∞2≠
+a*_
+.
+value%#Forest Kasplat: Behind Rafters Barn
+-
+name%#Forest Kasplat: Behind Rafters Barn
+[*Y
++
+value" Forest Kasplat: Behind beanstalk
+*
+name" Forest Kasplat: Behind beanstalk
+w*u
+9
+value0.Forest Kasplat: By Giant Mushroom Rocketbarrel
+8
+name0.Forest Kasplat: By Giant Mushroom Rocketbarrel
+q*o
+6
+value-+Forest Kasplat: Mushroom Exterior Top Floor
+5
+name-+Forest Kasplat: Mushroom Exterior Top Floor
+Y*W
+*
+value!Forest Kasplat: Near the Rabbit
+)
+name!Forest Kasplat: Near the Rabbit
+]*[
+,
+value#!Forest Kasplat: Owl Tree Clearing
++
+name#!Forest Kasplat: Owl Tree Clearing
+e*c
+0
+value'%Forest Kasplat: Behind Thornvine Barn
+/
+name'%Forest Kasplat: Behind Thornvine Barn
+e*c
+0
+value'%Forest Kasplat: Inside Giant Mushroom
+/
+name'%Forest Kasplat: Inside Giant Mushroom
+W*U
+)
+value Forest Kasplat: Under Owl Tree
+(
+name Forest Kasplat: Under Owl Tree
+u*s
+8
+value/-Forest Kasplat: Mushroom Exterior Lower Floor
+7
+name/-Forest Kasplat: Mushroom Exterior Lower Floor
+s*q
+7
+value.,Forest Kasplat: Mushroom Exterior Night Door
+6
+name.,Forest Kasplat: Mushroom Exterior Night Door
+S*Q
+'
+valueForest Kasplat: Behind Clock
+&
+nameForest Kasplat: Behind Clock
+Y*W
+*
+value!Forest Kasplat: Front Mill Room
+)
+name!Forest Kasplat: Front Mill Room
+a*_
+.
+value%#Forest Kasplat: Giant Mushroom Moat
+-
+name%#Forest Kasplat: Giant Mushroom Moat
+S*Q
+'
+valueForest Kasplat: On Mill Roof
+&
+nameForest Kasplat: On Mill Roof
+_*]
+-
+value$"Forest Kasplat: Minecart Exit Well
+,
+name$"Forest Kasplat: Minecart Exit Well
 i*g
 2
-value)'Castle Kasplat: Rocketbarrel Battlement
+value)'Forest Kasplat: Chunky Face Puzzle Room
 1
-name)'Castle Kasplat: Rocketbarrel Battlement
+name)'Forest Kasplat: Chunky Face Puzzle Room
+≠
+lanky£2†
+a*_
+.
+value%#Forest Kasplat: Behind Rafters Barn
+-
+name%#Forest Kasplat: Behind Rafters Barn
+[*Y
++
+value" Forest Kasplat: Behind beanstalk
+*
+name" Forest Kasplat: Behind beanstalk
+w*u
+9
+value0.Forest Kasplat: By Giant Mushroom Rocketbarrel
+8
+name0.Forest Kasplat: By Giant Mushroom Rocketbarrel
+q*o
+6
+value-+Forest Kasplat: Mushroom Exterior Top Floor
+5
+name-+Forest Kasplat: Mushroom Exterior Top Floor
+Y*W
+*
+value!Forest Kasplat: Near the Rabbit
+)
+name!Forest Kasplat: Near the Rabbit
+]*[
+,
+value#!Forest Kasplat: Owl Tree Clearing
++
+name#!Forest Kasplat: Owl Tree Clearing
+e*c
+0
+value'%Forest Kasplat: Behind Thornvine Barn
+/
+name'%Forest Kasplat: Behind Thornvine Barn
+e*c
+0
+value'%Forest Kasplat: Inside Giant Mushroom
+/
+name'%Forest Kasplat: Inside Giant Mushroom
+W*U
+)
+value Forest Kasplat: Under Owl Tree
+(
+name Forest Kasplat: Under Owl Tree
+u*s
+8
+value/-Forest Kasplat: Mushroom Exterior Lower Floor
+7
+name/-Forest Kasplat: Mushroom Exterior Lower Floor
+s*q
+7
+value.,Forest Kasplat: Mushroom Exterior Night Door
+6
+name.,Forest Kasplat: Mushroom Exterior Night Door
+S*Q
+'
+valueForest Kasplat: Behind Clock
+&
+nameForest Kasplat: Behind Clock
+Y*W
+*
+value!Forest Kasplat: Front Mill Room
+)
+name!Forest Kasplat: Front Mill Room
+a*_
+.
+value%#Forest Kasplat: Giant Mushroom Moat
+-
+name%#Forest Kasplat: Giant Mushroom Moat
+o*m
+5
+value,*Forest Kasplat: Very Top of Giant Mushroom
+4
+name,*Forest Kasplat: Very Top of Giant Mushroom
+S*Q
+'
+valueForest Kasplat: On Mill Roof
+&
+nameForest Kasplat: On Mill Roof
+_*]
+-
+value$"Forest Kasplat: Minecart Exit Well
+,
+name$"Forest Kasplat: Minecart Exit Well
+k*i
+3
+value*(Forest Kasplat: Lanky Mushroom Slam Room
+2
+name*(Forest Kasplat: Lanky Mushroom Slam Room
+ë
+diddyá2Ñ
+a*_
+.
+value%#Forest Kasplat: Behind Rafters Barn
+-
+name%#Forest Kasplat: Behind Rafters Barn
+[*Y
++
+value" Forest Kasplat: Behind beanstalk
+*
+name" Forest Kasplat: Behind beanstalk
+w*u
+9
+value0.Forest Kasplat: By Giant Mushroom Rocketbarrel
+8
+name0.Forest Kasplat: By Giant Mushroom Rocketbarrel
+q*o
+6
+value-+Forest Kasplat: Mushroom Exterior Top Floor
+5
+name-+Forest Kasplat: Mushroom Exterior Top Floor
+Y*W
+*
+value!Forest Kasplat: Near the Rabbit
+)
+name!Forest Kasplat: Near the Rabbit
+]*[
+,
+value#!Forest Kasplat: Owl Tree Clearing
++
+name#!Forest Kasplat: Owl Tree Clearing
+e*c
+0
+value'%Forest Kasplat: Behind Thornvine Barn
+/
+name'%Forest Kasplat: Behind Thornvine Barn
+e*c
+0
+value'%Forest Kasplat: Inside Giant Mushroom
+/
+name'%Forest Kasplat: Inside Giant Mushroom
+W*U
+)
+value Forest Kasplat: Under Owl Tree
+(
+name Forest Kasplat: Under Owl Tree
+u*s
+8
+value/-Forest Kasplat: Mushroom Exterior Lower Floor
+7
+name/-Forest Kasplat: Mushroom Exterior Lower Floor
+s*q
+7
+value.,Forest Kasplat: Mushroom Exterior Night Door
+6
+name.,Forest Kasplat: Mushroom Exterior Night Door
+S*Q
+'
+valueForest Kasplat: Behind Clock
+&
+nameForest Kasplat: Behind Clock
+Y*W
+*
+value!Forest Kasplat: Front Mill Room
+)
+name!Forest Kasplat: Front Mill Room
+a*_
+.
+value%#Forest Kasplat: Giant Mushroom Moat
+-
+name%#Forest Kasplat: Giant Mushroom Moat
+o*m
+5
+value,*Forest Kasplat: Very Top of Giant Mushroom
+4
+name,*Forest Kasplat: Very Top of Giant Mushroom
+S*Q
+'
+valueForest Kasplat: On Mill Roof
+&
+nameForest Kasplat: On Mill Roof
+_*]
+-
+value$"Forest Kasplat: Minecart Exit Well
+,
+name$"Forest Kasplat: Minecart Exit Well
 O*M
 %
-valueCastle Kasplat: Greenhouse
+valueForest Kasplat: Winch Room
 $
-nameCastle Kasplat: Greenhouse
-c*a
-/
-value&$Castle Kasplat: Caged in the Dungeon
-.
-name&$Castle Kasplat: Caged in the Dungeon
-«
+nameForest Kasplat: Winch Room
+Ù1
+FranticFactory·1*ﬁ1
+Ç
 
-diddyΩ
-2∫
-
-c*a
-/
-value&$Castle Kasplat: Behind the Mausoleum
-.
-name&$Castle Kasplat: Behind the Mausoleum
+donkey˜	2Ù	
 W*U
 )
-value Castle Kasplat: Dungeon Center
+value Factory Kasplat: Starting Area
 (
-name Castle Kasplat: Dungeon Center
-g*e
-1
-value(&Castle Kasplat: Lowest Back Small Tree
-0
-name(&Castle Kasplat: Lowest Back Small Tree
-K*I
-#
-valueCastle Kasplat: Ballroom
-"
-nameCastle Kasplat: Ballroom
-M*K
-$
-valueCastle Kasplat: Top Level
-#
-nameCastle Kasplat: Top Level
-]*[
-,
-value#!Castle Kasplat: Lower Cave Center
-+
-name#!Castle Kasplat: Lower Cave Center
-o*m
-5
-value,*Castle Kasplat: Near Rocketbarrel Overhang
-4
-name,*Castle Kasplat: Near Rocketbarrel Overhang
-_*]
--
-value$"Castle Kasplat: On a lone platform
-,
-name$"Castle Kasplat: On a lone platform
-c*a
-/
-value&$Castle Kasplat: Near Upper Cave Shop
-.
-name&$Castle Kasplat: Near Upper Cave Shop
-[*Y
-+
-value" Castle Kasplat: Sewers Near Tree
-*
-name" Castle Kasplat: Sewers Near Tree
-[*Y
-+
-value" Castle Kasplat: Near Middle Shop
-*
-name" Castle Kasplat: Near Middle Shop
-i*g
-2
-value)'Castle Kasplat: Rocketbarrel Battlement
-1
-name)'Castle Kasplat: Rocketbarrel Battlement
-c*a
-/
-value&$Castle Kasplat: Caged in the Dungeon
-.
-name&$Castle Kasplat: Caged in the Dungeon
-U*S
-(
-valueCastle Kasplat: In the Clouds
-'
-nameCastle Kasplat: In the Clouds
-‡
-
-tiny◊
-2‘
-
-c*a
-/
-value&$Castle Kasplat: Behind the Mausoleum
-.
-name&$Castle Kasplat: Behind the Mausoleum
-W*U
-)
-value Castle Kasplat: Dungeon Center
-(
-name Castle Kasplat: Dungeon Center
-g*e
-1
-value(&Castle Kasplat: Lowest Back Small Tree
-0
-name(&Castle Kasplat: Lowest Back Small Tree
-K*I
-#
-valueCastle Kasplat: Ballroom
-"
-nameCastle Kasplat: Ballroom
-M*K
-$
-valueCastle Kasplat: Top Level
-#
-nameCastle Kasplat: Top Level
-]*[
-,
-value#!Castle Kasplat: Lower Cave Center
-+
-name#!Castle Kasplat: Lower Cave Center
-o*m
-5
-value,*Castle Kasplat: Near Rocketbarrel Overhang
-4
-name,*Castle Kasplat: Near Rocketbarrel Overhang
-_*]
--
-value$"Castle Kasplat: On a lone platform
-,
-name$"Castle Kasplat: On a lone platform
-c*a
-/
-value&$Castle Kasplat: Near Upper Cave Shop
-.
-name&$Castle Kasplat: Near Upper Cave Shop
-[*Y
-+
-value" Castle Kasplat: Sewers Near Tree
-*
-name" Castle Kasplat: Sewers Near Tree
-[*Y
-+
-value" Castle Kasplat: Near Middle Shop
-*
-name" Castle Kasplat: Near Middle Shop
-i*g
-2
-value)'Castle Kasplat: Rocketbarrel Battlement
-1
-name)'Castle Kasplat: Rocketbarrel Battlement
-o*m
-5
-value,*Castle Kasplat: Museum Mysterious Pedestal
-4
-name,*Castle Kasplat: Museum Mysterious Pedestal
-c*a
-/
-value&$Castle Kasplat: Caged in the Dungeon
-.
-name&$Castle Kasplat: Caged in the Dungeon
-Ç
-donkey˜2Ù
-c*a
-/
-value&$Castle Kasplat: Behind the Mausoleum
-.
-name&$Castle Kasplat: Behind the Mausoleum
-W*U
-)
-value Castle Kasplat: Dungeon Center
-(
-name Castle Kasplat: Dungeon Center
-g*e
-1
-value(&Castle Kasplat: Lowest Back Small Tree
-0
-name(&Castle Kasplat: Lowest Back Small Tree
-K*I
-#
-valueCastle Kasplat: Ballroom
-"
-nameCastle Kasplat: Ballroom
-M*K
-$
-valueCastle Kasplat: Top Level
-#
-nameCastle Kasplat: Top Level
+name Factory Kasplat: Starting Area
 Y*W
 *
-value!Castle Kasplat: Inside the Tree
+value!Factory Kasplat: Near Power Hut
 )
-name!Castle Kasplat: Inside the Tree
-]*[
-,
-value#!Castle Kasplat: Lower Cave Center
-+
-name#!Castle Kasplat: Lower Cave Center
-o*m
-5
-value,*Castle Kasplat: Near Rocketbarrel Overhang
-4
-name,*Castle Kasplat: Near Rocketbarrel Overhang
+name!Factory Kasplat: Near Power Hut
 _*]
 -
-value$"Castle Kasplat: On a lone platform
+value$"Factory Kasplat: Hatch Pole Alcove
 ,
-name$"Castle Kasplat: On a lone platform
-c*a
-/
-value&$Castle Kasplat: Near Upper Cave Shop
-.
-name&$Castle Kasplat: Near Upper Cave Shop
-[*Y
-+
-value" Castle Kasplat: Sewers Near Tree
-*
-name" Castle Kasplat: Sewers Near Tree
-[*Y
-+
-value" Castle Kasplat: Near Middle Shop
-*
-name" Castle Kasplat: Near Middle Shop
-i*g
+name$"Factory Kasplat: Hatch Pole Alcove
+O*M
+%
+valueFactory Kasplat: Dark Room
+$
+nameFactory Kasplat: Dark Room
+k*i
+3
+value*(Factory Kasplat: Low Production Platform
 2
-value)'Castle Kasplat: Rocketbarrel Battlement
-1
-name)'Castle Kasplat: Rocketbarrel Battlement
-c*a
-/
-value&$Castle Kasplat: Caged in the Dungeon
-.
-name&$Castle Kasplat: Caged in the Dungeon
-i*g
-2
-value)'Castle Kasplat: Entrance to DK Minecart
-1
-name)'Castle Kasplat: Entrance to DK Minecart
-I*G
-"
-valueCastle Kasplat: Library
-!
-nameCastle Kasplat: Library
-Ò	
-chunkyÊ	2„	
-c*a
-/
-value&$Castle Kasplat: Behind the Mausoleum
-.
-name&$Castle Kasplat: Behind the Mausoleum
-W*U
-)
-value Castle Kasplat: Dungeon Center
-(
-name Castle Kasplat: Dungeon Center
+name*(Factory Kasplat: Low Production Platform
 g*e
 1
-value(&Castle Kasplat: Lowest Back Small Tree
+value(&Factory Kasplat: Upper Production Pipe
 0
-name(&Castle Kasplat: Lowest Back Small Tree
-K*I
-#
-valueCastle Kasplat: Ballroom
-"
-nameCastle Kasplat: Ballroom
-M*K
-$
-valueCastle Kasplat: Top Level
-#
-nameCastle Kasplat: Top Level
-]*[
-,
-value#!Castle Kasplat: Lower Cave Center
+name(&Factory Kasplat: Upper Production Pipe
+a*_
+.
+value%#Factory Kasplat: Base of Production
+-
+name%#Factory Kasplat: Base of Production
+C*A
+
+valueFactory Kasplat: R&D
+
+nameFactory Kasplat: R&D
+Y*W
+*
+value!Factory Kasplat: Pole to Arcade
+)
+name!Factory Kasplat: Pole to Arcade
+S*Q
+'
+valueFactory Kasplat: Block Tower
+&
+nameFactory Kasplat: Block Tower
+[*Y
 +
-name#!Castle Kasplat: Lower Cave Center
-o*m
-5
-value,*Castle Kasplat: Near Rocketbarrel Overhang
-4
-name,*Castle Kasplat: Near Rocketbarrel Overhang
+value" Factory Kasplat: Window Shopping
+*
+name" Factory Kasplat: Window Shopping
+U*S
+(
+valueFactory Kasplat: In Power Hut
+'
+nameFactory Kasplat: In Power Hut
+S*Q
+'
+valueFactory Kasplat: By Car Race
+&
+nameFactory Kasplat: By Car Race
+U*S
+(
+valueFactory Kasplat: Crusher Room
+'
+nameFactory Kasplat: Crusher Room
+Ô
+
+tinyÊ
+2„
+
+W*U
+)
+value Factory Kasplat: Starting Area
+(
+name Factory Kasplat: Starting Area
+Y*W
+*
+value!Factory Kasplat: Near Power Hut
+)
+name!Factory Kasplat: Near Power Hut
 _*]
 -
-value$"Castle Kasplat: On a lone platform
+value$"Factory Kasplat: Hatch Pole Alcove
 ,
-name$"Castle Kasplat: On a lone platform
-c*a
-/
-value&$Castle Kasplat: Near Upper Cave Shop
+name$"Factory Kasplat: Hatch Pole Alcove
+O*M
+%
+valueFactory Kasplat: Dark Room
+$
+nameFactory Kasplat: Dark Room
+k*i
+3
+value*(Factory Kasplat: Low Production Platform
+2
+name*(Factory Kasplat: Low Production Platform
+g*e
+1
+value(&Factory Kasplat: Upper Production Pipe
+0
+name(&Factory Kasplat: Upper Production Pipe
+a*_
 .
-name&$Castle Kasplat: Near Upper Cave Shop
+value%#Factory Kasplat: Base of Production
+-
+name%#Factory Kasplat: Base of Production
+C*A
+
+valueFactory Kasplat: R&D
+
+nameFactory Kasplat: R&D
+Y*W
+*
+value!Factory Kasplat: Pole to Arcade
+)
+name!Factory Kasplat: Pole to Arcade
+S*Q
+'
+valueFactory Kasplat: Block Tower
+&
+nameFactory Kasplat: Block Tower
 [*Y
 +
-value" Castle Kasplat: Sewers Near Tree
+value" Factory Kasplat: Window Shopping
 *
-name" Castle Kasplat: Sewers Near Tree
-[*Y
-+
-value" Castle Kasplat: Near Middle Shop
+name" Factory Kasplat: Window Shopping
+S*Q
+'
+valueFactory Kasplat: By Car Race
+&
+nameFactory Kasplat: By Car Race
+Y*W
 *
-name" Castle Kasplat: Near Middle Shop
+value!Factory Kasplat: Tiny Dartboard
+)
+name!Factory Kasplat: Tiny Dartboard
+U*S
+(
+valueFactory Kasplat: Crusher Room
+'
+nameFactory Kasplat: Crusher Room
 i*g
 2
-value)'Castle Kasplat: Rocketbarrel Battlement
+value)'Factory Kasplat: Upper Production Twirl
 1
-name)'Castle Kasplat: Rocketbarrel Battlement
-c*a
-/
-value&$Castle Kasplat: Caged in the Dungeon
+name)'Factory Kasplat: Upper Production Twirl
+´	
+chunky†	2ù	
+W*U
+)
+value Factory Kasplat: Starting Area
+(
+name Factory Kasplat: Starting Area
+Y*W
+*
+value!Factory Kasplat: Near Power Hut
+)
+name!Factory Kasplat: Near Power Hut
+_*]
+-
+value$"Factory Kasplat: Hatch Pole Alcove
+,
+name$"Factory Kasplat: Hatch Pole Alcove
+O*M
+%
+valueFactory Kasplat: Dark Room
+$
+nameFactory Kasplat: Dark Room
+k*i
+3
+value*(Factory Kasplat: Low Production Platform
+2
+name*(Factory Kasplat: Low Production Platform
+g*e
+1
+value(&Factory Kasplat: Upper Production Pipe
+0
+name(&Factory Kasplat: Upper Production Pipe
+a*_
 .
-name&$Castle Kasplat: Caged in the Dungeon
+value%#Factory Kasplat: Base of Production
+-
+name%#Factory Kasplat: Base of Production
+C*A
+
+valueFactory Kasplat: R&D
+
+nameFactory Kasplat: R&D
+Y*W
+*
+value!Factory Kasplat: Pole to Arcade
+)
+name!Factory Kasplat: Pole to Arcade
+S*Q
+'
+valueFactory Kasplat: Block Tower
+&
+nameFactory Kasplat: Block Tower
+[*Y
++
+value" Factory Kasplat: Window Shopping
+*
+name" Factory Kasplat: Window Shopping
+S*Q
+'
+valueFactory Kasplat: By Car Race
+&
+nameFactory Kasplat: By Car Race
+U*S
+(
+valueFactory Kasplat: Crusher Room
+'
+nameFactory Kasplat: Crusher Room
+â
+
+lankyˇ	2¸	
+W*U
+)
+value Factory Kasplat: Starting Area
+(
+name Factory Kasplat: Starting Area
+Y*W
+*
+value!Factory Kasplat: Near Power Hut
+)
+name!Factory Kasplat: Near Power Hut
+_*]
+-
+value$"Factory Kasplat: Hatch Pole Alcove
+,
+name$"Factory Kasplat: Hatch Pole Alcove
+O*M
+%
+valueFactory Kasplat: Dark Room
+$
+nameFactory Kasplat: Dark Room
+k*i
+3
+value*(Factory Kasplat: Low Production Platform
+2
+name*(Factory Kasplat: Low Production Platform
+g*e
+1
+value(&Factory Kasplat: Upper Production Pipe
+0
+name(&Factory Kasplat: Upper Production Pipe
+a*_
+.
+value%#Factory Kasplat: Base of Production
+-
+name%#Factory Kasplat: Base of Production
+C*A
+
+valueFactory Kasplat: R&D
+
+nameFactory Kasplat: R&D
+Y*W
+*
+value!Factory Kasplat: Pole to Arcade
+)
+name!Factory Kasplat: Pole to Arcade
+S*Q
+'
+valueFactory Kasplat: Block Tower
+&
+nameFactory Kasplat: Block Tower
+[*Y
++
+value" Factory Kasplat: Window Shopping
+*
+name" Factory Kasplat: Window Shopping
+S*Q
+'
+valueFactory Kasplat: By Car Race
+&
+nameFactory Kasplat: By Car Race
+U*S
+(
+valueFactory Kasplat: Crusher Room
+'
+nameFactory Kasplat: Crusher Room
+]*[
+,
+value#!Factory Kasplat: Lanky Piano Game
++
+name#!Factory Kasplat: Lanky Piano Game
+™	
+diddy†	2ù	
+W*U
+)
+value Factory Kasplat: Starting Area
+(
+name Factory Kasplat: Starting Area
+Y*W
+*
+value!Factory Kasplat: Near Power Hut
+)
+name!Factory Kasplat: Near Power Hut
+_*]
+-
+value$"Factory Kasplat: Hatch Pole Alcove
+,
+name$"Factory Kasplat: Hatch Pole Alcove
+O*M
+%
+valueFactory Kasplat: Dark Room
+$
+nameFactory Kasplat: Dark Room
+k*i
+3
+value*(Factory Kasplat: Low Production Platform
+2
+name*(Factory Kasplat: Low Production Platform
+g*e
+1
+value(&Factory Kasplat: Upper Production Pipe
+0
+name(&Factory Kasplat: Upper Production Pipe
+a*_
+.
+value%#Factory Kasplat: Base of Production
+-
+name%#Factory Kasplat: Base of Production
+C*A
+
+valueFactory Kasplat: R&D
+
+nameFactory Kasplat: R&D
+Y*W
+*
+value!Factory Kasplat: Pole to Arcade
+)
+name!Factory Kasplat: Pole to Arcade
+S*Q
+'
+valueFactory Kasplat: Block Tower
+&
+nameFactory Kasplat: Block Tower
+[*Y
++
+value" Factory Kasplat: Window Shopping
+*
+name" Factory Kasplat: Window Shopping
+S*Q
+'
+valueFactory Kasplat: By Car Race
+&
+nameFactory Kasplat: By Car Race
+U*S
+(
+valueFactory Kasplat: Crusher Room
+'
+nameFactory Kasplat: Crusher Room
 û4
 
 AngryAztecè4*å4
+È	
+donkeyﬁ	2€	
+g*e
+1
+value(&Aztec Kasplat: Sealed Quicksand Tunnel
+0
+name(&Aztec Kasplat: Sealed Quicksand Tunnel
+Q*O
+&
+valueAztec Kasplat: On the Oasis
+%
+nameAztec Kasplat: On the Oasis
+S*Q
+'
+valueAztec Kasplat: On Llama Cage
+&
+nameAztec Kasplat: On Llama Cage
+]*[
+,
+value#!Aztec Kasplat: Near giant boulder
++
+name#!Aztec Kasplat: Near giant boulder
+a*_
+.
+value%#Aztec Kasplat: Behind DK Stone Door
+-
+name%#Aztec Kasplat: Behind DK Stone Door
+[*Y
++
+value" Aztec Kasplat: Llama Temple Lava
+*
+name" Aztec Kasplat: Llama Temple Lava
+_*]
+-
+value$"Aztec Kasplat: Hunky Chunky Barrel
+,
+name$"Aztec Kasplat: Hunky Chunky Barrel
+Q*O
+&
+valueAztec Kasplat: In Vase Room
+%
+nameAztec Kasplat: In Vase Room
+a*_
+.
+value%#Aztec Kasplat: Behind 5-Door Temple
+-
+name%#Aztec Kasplat: Behind 5-Door Temple
+e*c
+0
+value'%Aztec Kasplat: Far Back Triple Stairs
+/
+name'%Aztec Kasplat: Far Back Triple Stairs
+m*k
+4
+value+)Aztec Kasplat: By the Llama in his Temple
+3
+name+)Aztec Kasplat: By the Llama in his Temple
+Y*W
+*
+value!Aztec Kasplat: Behind the Gongs
+)
+name!Aztec Kasplat: Behind the Gongs
+a*_
+.
+value%#Aztec Kasplat: Donkey 5-Door Temple
+-
+name%#Aztec Kasplat: Donkey 5-Door Temple
+ƒ
+
+tinyª
+2∏
+
+g*e
+1
+value(&Aztec Kasplat: Sealed Quicksand Tunnel
+0
+name(&Aztec Kasplat: Sealed Quicksand Tunnel
+Q*O
+&
+valueAztec Kasplat: On the Oasis
+%
+nameAztec Kasplat: On the Oasis
+S*Q
+'
+valueAztec Kasplat: On Llama Cage
+&
+nameAztec Kasplat: On Llama Cage
+]*[
+,
+value#!Aztec Kasplat: Near giant boulder
++
+name#!Aztec Kasplat: Near giant boulder
+a*_
+.
+value%#Aztec Kasplat: Behind DK Stone Door
+-
+name%#Aztec Kasplat: Behind DK Stone Door
+[*Y
++
+value" Aztec Kasplat: Llama Temple Lava
+*
+name" Aztec Kasplat: Llama Temple Lava
+_*]
+-
+value$"Aztec Kasplat: Hunky Chunky Barrel
+,
+name$"Aztec Kasplat: Hunky Chunky Barrel
+Q*O
+&
+valueAztec Kasplat: In Vase Room
+%
+nameAztec Kasplat: In Vase Room
+a*_
+.
+value%#Aztec Kasplat: Behind 5-Door Temple
+-
+name%#Aztec Kasplat: Behind 5-Door Temple
+e*c
+0
+value'%Aztec Kasplat: Far Back Triple Stairs
+/
+name'%Aztec Kasplat: Far Back Triple Stairs
+m*k
+4
+value+)Aztec Kasplat: By the Llama in his Temple
+3
+name+)Aztec Kasplat: By the Llama in his Temple
+U*S
+(
+valueAztec Kasplat: Free Tiny Room
+'
+nameAztec Kasplat: Free Tiny Room
+Y*W
+*
+value!Aztec Kasplat: Behind the Gongs
+)
+name!Aztec Kasplat: Behind the Gongs
+g*e
+1
+value(&Aztec Kasplat: Tiny Temple Mini Monkey
+0
+name(&Aztec Kasplat: Tiny Temple Mini Monkey
+∆
+
+chunkyª
+2∏
+
+g*e
+1
+value(&Aztec Kasplat: Sealed Quicksand Tunnel
+0
+name(&Aztec Kasplat: Sealed Quicksand Tunnel
+Q*O
+&
+valueAztec Kasplat: On the Oasis
+%
+nameAztec Kasplat: On the Oasis
+S*Q
+'
+valueAztec Kasplat: On Llama Cage
+&
+nameAztec Kasplat: On Llama Cage
+]*[
+,
+value#!Aztec Kasplat: Near giant boulder
++
+name#!Aztec Kasplat: Near giant boulder
+[*Y
++
+value" Aztec Kasplat: Llama Temple Lava
+*
+name" Aztec Kasplat: Llama Temple Lava
+_*]
+-
+value$"Aztec Kasplat: Hunky Chunky Barrel
+,
+name$"Aztec Kasplat: Hunky Chunky Barrel
+Q*O
+&
+valueAztec Kasplat: In Vase Room
+%
+nameAztec Kasplat: In Vase Room
+a*_
+.
+value%#Aztec Kasplat: Behind 5-Door Temple
+-
+name%#Aztec Kasplat: Behind 5-Door Temple
+e*c
+0
+value'%Aztec Kasplat: Far Back Triple Stairs
+/
+name'%Aztec Kasplat: Far Back Triple Stairs
+m*k
+4
+value+)Aztec Kasplat: By the Llama in his Temple
+3
+name+)Aztec Kasplat: By the Llama in his Temple
+U*S
+(
+valueAztec Kasplat: Free Tiny Room
+'
+nameAztec Kasplat: Free Tiny Room
+a*_
+.
+value%#Aztec Kasplat: Chunky 5-Door Temple
+-
+name%#Aztec Kasplat: Chunky 5-Door Temple
+Y*W
+*
+value!Aztec Kasplat: Behind the Gongs
+)
+name!Aztec Kasplat: Behind the Gongs
+g*e
+1
+value(&Aztec Kasplat: Tiny Temple Mini Monkey
+0
+name(&Aztec Kasplat: Tiny Temple Mini Monkey
 —
 
 lanky«
@@ -18718,1322 +19267,6 @@ g*e
 value(&Aztec Kasplat: Tiny Temple Mini Monkey
 0
 name(&Aztec Kasplat: Tiny Temple Mini Monkey
-ƒ
-
-tinyª
-2∏
-
-g*e
-1
-value(&Aztec Kasplat: Sealed Quicksand Tunnel
-0
-name(&Aztec Kasplat: Sealed Quicksand Tunnel
-Q*O
-&
-valueAztec Kasplat: On the Oasis
-%
-nameAztec Kasplat: On the Oasis
-S*Q
-'
-valueAztec Kasplat: On Llama Cage
-&
-nameAztec Kasplat: On Llama Cage
-]*[
-,
-value#!Aztec Kasplat: Near giant boulder
-+
-name#!Aztec Kasplat: Near giant boulder
-a*_
-.
-value%#Aztec Kasplat: Behind DK Stone Door
--
-name%#Aztec Kasplat: Behind DK Stone Door
-[*Y
-+
-value" Aztec Kasplat: Llama Temple Lava
-*
-name" Aztec Kasplat: Llama Temple Lava
-_*]
--
-value$"Aztec Kasplat: Hunky Chunky Barrel
-,
-name$"Aztec Kasplat: Hunky Chunky Barrel
-Q*O
-&
-valueAztec Kasplat: In Vase Room
-%
-nameAztec Kasplat: In Vase Room
-a*_
-.
-value%#Aztec Kasplat: Behind 5-Door Temple
--
-name%#Aztec Kasplat: Behind 5-Door Temple
-e*c
-0
-value'%Aztec Kasplat: Far Back Triple Stairs
-/
-name'%Aztec Kasplat: Far Back Triple Stairs
-m*k
-4
-value+)Aztec Kasplat: By the Llama in his Temple
-3
-name+)Aztec Kasplat: By the Llama in his Temple
-U*S
-(
-valueAztec Kasplat: Free Tiny Room
-'
-nameAztec Kasplat: Free Tiny Room
-Y*W
-*
-value!Aztec Kasplat: Behind the Gongs
-)
-name!Aztec Kasplat: Behind the Gongs
-g*e
-1
-value(&Aztec Kasplat: Tiny Temple Mini Monkey
-0
-name(&Aztec Kasplat: Tiny Temple Mini Monkey
-È	
-donkeyﬁ	2€	
-g*e
-1
-value(&Aztec Kasplat: Sealed Quicksand Tunnel
-0
-name(&Aztec Kasplat: Sealed Quicksand Tunnel
-Q*O
-&
-valueAztec Kasplat: On the Oasis
-%
-nameAztec Kasplat: On the Oasis
-S*Q
-'
-valueAztec Kasplat: On Llama Cage
-&
-nameAztec Kasplat: On Llama Cage
-]*[
-,
-value#!Aztec Kasplat: Near giant boulder
-+
-name#!Aztec Kasplat: Near giant boulder
-a*_
-.
-value%#Aztec Kasplat: Behind DK Stone Door
--
-name%#Aztec Kasplat: Behind DK Stone Door
-[*Y
-+
-value" Aztec Kasplat: Llama Temple Lava
-*
-name" Aztec Kasplat: Llama Temple Lava
-_*]
--
-value$"Aztec Kasplat: Hunky Chunky Barrel
-,
-name$"Aztec Kasplat: Hunky Chunky Barrel
-Q*O
-&
-valueAztec Kasplat: In Vase Room
-%
-nameAztec Kasplat: In Vase Room
-a*_
-.
-value%#Aztec Kasplat: Behind 5-Door Temple
--
-name%#Aztec Kasplat: Behind 5-Door Temple
-e*c
-0
-value'%Aztec Kasplat: Far Back Triple Stairs
-/
-name'%Aztec Kasplat: Far Back Triple Stairs
-m*k
-4
-value+)Aztec Kasplat: By the Llama in his Temple
-3
-name+)Aztec Kasplat: By the Llama in his Temple
-Y*W
-*
-value!Aztec Kasplat: Behind the Gongs
-)
-name!Aztec Kasplat: Behind the Gongs
-a*_
-.
-value%#Aztec Kasplat: Donkey 5-Door Temple
--
-name%#Aztec Kasplat: Donkey 5-Door Temple
-∆
-
-chunkyª
-2∏
-
-g*e
-1
-value(&Aztec Kasplat: Sealed Quicksand Tunnel
-0
-name(&Aztec Kasplat: Sealed Quicksand Tunnel
-Q*O
-&
-valueAztec Kasplat: On the Oasis
-%
-nameAztec Kasplat: On the Oasis
-S*Q
-'
-valueAztec Kasplat: On Llama Cage
-&
-nameAztec Kasplat: On Llama Cage
-]*[
-,
-value#!Aztec Kasplat: Near giant boulder
-+
-name#!Aztec Kasplat: Near giant boulder
-[*Y
-+
-value" Aztec Kasplat: Llama Temple Lava
-*
-name" Aztec Kasplat: Llama Temple Lava
-_*]
--
-value$"Aztec Kasplat: Hunky Chunky Barrel
-,
-name$"Aztec Kasplat: Hunky Chunky Barrel
-Q*O
-&
-valueAztec Kasplat: In Vase Room
-%
-nameAztec Kasplat: In Vase Room
-a*_
-.
-value%#Aztec Kasplat: Behind 5-Door Temple
--
-name%#Aztec Kasplat: Behind 5-Door Temple
-e*c
-0
-value'%Aztec Kasplat: Far Back Triple Stairs
-/
-name'%Aztec Kasplat: Far Back Triple Stairs
-m*k
-4
-value+)Aztec Kasplat: By the Llama in his Temple
-3
-name+)Aztec Kasplat: By the Llama in his Temple
-U*S
-(
-valueAztec Kasplat: Free Tiny Room
-'
-nameAztec Kasplat: Free Tiny Room
-a*_
-.
-value%#Aztec Kasplat: Chunky 5-Door Temple
--
-name%#Aztec Kasplat: Chunky 5-Door Temple
-Y*W
-*
-value!Aztec Kasplat: Behind the Gongs
-)
-name!Aztec Kasplat: Behind the Gongs
-g*e
-1
-value(&Aztec Kasplat: Tiny Temple Mini Monkey
-0
-name(&Aztec Kasplat: Tiny Temple Mini Monkey
-˙0
-GloomyGalleonË0*Â0
-	
-lankyÊ	2„	
-c*a
-/
-value&$Galleon Kasplat: Lighthouse Platform
-.
-name&$Galleon Kasplat: Lighthouse Platform
-]*[
-,
-value#!Galleon Kasplat: Diddy Gold Tower
-+
-name#!Galleon Kasplat: Diddy Gold Tower
-_*]
--
-value$"Galleon Kasplat: Lighthouse Alcove
-,
-name$"Galleon Kasplat: Lighthouse Alcove
-]*[
-,
-value#!Galleon Kasplat: Cannon Game Room
-+
-name#!Galleon Kasplat: Cannon Game Room
-Q*O
-&
-valueGalleon Kasplat: Past Vines
-%
-nameGalleon Kasplat: Past Vines
-Y*W
-*
-value!Galleon Kasplat: Musical Cactus
-)
-name!Galleon Kasplat: Musical Cactus
-i*g
-2
-value)'Galleon Kasplat: Punch Wreck Under Shop
-1
-name)'Galleon Kasplat: Punch Wreck Under Shop
-m*k
-4
-value+)Galleon Kasplat: On the Cavern Shop Wreck
-3
-name+)Galleon Kasplat: On the Cavern Shop Wreck
-]*[
-,
-value#!Galleon Kasplat: Lanky Gold Tower
-+
-name#!Galleon Kasplat: Lanky Gold Tower
-U*S
-(
-valueGalleon Kasplat: Cannon Wreck
-'
-nameGalleon Kasplat: Cannon Wreck
-W*U
-)
-value Galleon Kasplat: Starting Area
-(
-name Galleon Kasplat: Starting Area
-a*_
-.
-value%#Galleon Kasplat: Inside Punch Chest
--
-name%#Galleon Kasplat: Inside Punch Chest
-c*a
-/
-value&$Galleon Kasplat: Also Musical Cactus
-.
-name&$Galleon Kasplat: Also Musical Cactus
-Ó	
-diddy‰	2·	
-c*a
-/
-value&$Galleon Kasplat: Lighthouse Platform
-.
-name&$Galleon Kasplat: Lighthouse Platform
-]*[
-,
-value#!Galleon Kasplat: Diddy Gold Tower
-+
-name#!Galleon Kasplat: Diddy Gold Tower
-_*]
--
-value$"Galleon Kasplat: Lighthouse Alcove
-,
-name$"Galleon Kasplat: Lighthouse Alcove
-]*[
-,
-value#!Galleon Kasplat: Cannon Game Room
-+
-name#!Galleon Kasplat: Cannon Game Room
-Q*O
-&
-valueGalleon Kasplat: Past Vines
-%
-nameGalleon Kasplat: Past Vines
-Y*W
-*
-value!Galleon Kasplat: Musical Cactus
-)
-name!Galleon Kasplat: Musical Cactus
-i*g
-2
-value)'Galleon Kasplat: Punch Wreck Under Shop
-1
-name)'Galleon Kasplat: Punch Wreck Under Shop
-m*k
-4
-value+)Galleon Kasplat: On the Cavern Shop Wreck
-3
-name+)Galleon Kasplat: On the Cavern Shop Wreck
-[*Y
-+
-value" Galleon Kasplat: In the Mechfish
-*
-name" Galleon Kasplat: In the Mechfish
-U*S
-(
-valueGalleon Kasplat: Cannon Wreck
-'
-nameGalleon Kasplat: Cannon Wreck
-W*U
-)
-value Galleon Kasplat: Starting Area
-(
-name Galleon Kasplat: Starting Area
-a*_
-.
-value%#Galleon Kasplat: Inside Punch Chest
--
-name%#Galleon Kasplat: Inside Punch Chest
-c*a
-/
-value&$Galleon Kasplat: Also Musical Cactus
-.
-name&$Galleon Kasplat: Also Musical Cactus
-ê	
-tinyá	2Ñ	
-c*a
-/
-value&$Galleon Kasplat: Lighthouse Platform
-.
-name&$Galleon Kasplat: Lighthouse Platform
-]*[
-,
-value#!Galleon Kasplat: Diddy Gold Tower
-+
-name#!Galleon Kasplat: Diddy Gold Tower
-_*]
--
-value$"Galleon Kasplat: Lighthouse Alcove
-,
-name$"Galleon Kasplat: Lighthouse Alcove
-]*[
-,
-value#!Galleon Kasplat: Cannon Game Room
-+
-name#!Galleon Kasplat: Cannon Game Room
-Q*O
-&
-valueGalleon Kasplat: Past Vines
-%
-nameGalleon Kasplat: Past Vines
-Y*W
-*
-value!Galleon Kasplat: Musical Cactus
-)
-name!Galleon Kasplat: Musical Cactus
-i*g
-2
-value)'Galleon Kasplat: Punch Wreck Under Shop
-1
-name)'Galleon Kasplat: Punch Wreck Under Shop
-m*k
-4
-value+)Galleon Kasplat: On the Cavern Shop Wreck
-3
-name+)Galleon Kasplat: On the Cavern Shop Wreck
-U*S
-(
-valueGalleon Kasplat: Cannon Wreck
-'
-nameGalleon Kasplat: Cannon Wreck
-W*U
-)
-value Galleon Kasplat: Starting Area
-(
-name Galleon Kasplat: Starting Area
-a*_
-.
-value%#Galleon Kasplat: Inside Punch Chest
--
-name%#Galleon Kasplat: Inside Punch Chest
-c*a
-/
-value&$Galleon Kasplat: Also Musical Cactus
-.
-name&$Galleon Kasplat: Also Musical Cactus
-ˇ	
-donkeyÙ	2Ò	
-c*a
-/
-value&$Galleon Kasplat: Lighthouse Platform
-.
-name&$Galleon Kasplat: Lighthouse Platform
-]*[
-,
-value#!Galleon Kasplat: Diddy Gold Tower
-+
-name#!Galleon Kasplat: Diddy Gold Tower
-_*]
--
-value$"Galleon Kasplat: Lighthouse Alcove
-,
-name$"Galleon Kasplat: Lighthouse Alcove
-]*[
-,
-value#!Galleon Kasplat: Cannon Game Room
-+
-name#!Galleon Kasplat: Cannon Game Room
-Q*O
-&
-valueGalleon Kasplat: Past Vines
-%
-nameGalleon Kasplat: Past Vines
-Y*W
-*
-value!Galleon Kasplat: Musical Cactus
-)
-name!Galleon Kasplat: Musical Cactus
-i*g
-2
-value)'Galleon Kasplat: Punch Wreck Under Shop
-1
-name)'Galleon Kasplat: Punch Wreck Under Shop
-m*k
-4
-value+)Galleon Kasplat: On the Cavern Shop Wreck
-3
-name+)Galleon Kasplat: On the Cavern Shop Wreck
-k*i
-3
-value*(Galleon Kasplat: Atop Whomp's Lighthouse
-2
-name*(Galleon Kasplat: Atop Whomp's Lighthouse
-U*S
-(
-valueGalleon Kasplat: Cannon Wreck
-'
-nameGalleon Kasplat: Cannon Wreck
-W*U
-)
-value Galleon Kasplat: Starting Area
-(
-name Galleon Kasplat: Starting Area
-a*_
-.
-value%#Galleon Kasplat: Inside Punch Chest
--
-name%#Galleon Kasplat: Inside Punch Chest
-c*a
-/
-value&$Galleon Kasplat: Also Musical Cactus
-.
-name&$Galleon Kasplat: Also Musical Cactus
-È	
-chunkyﬁ	2€	
-c*a
-/
-value&$Galleon Kasplat: Lighthouse Platform
-.
-name&$Galleon Kasplat: Lighthouse Platform
-]*[
-,
-value#!Galleon Kasplat: Diddy Gold Tower
-+
-name#!Galleon Kasplat: Diddy Gold Tower
-_*]
--
-value$"Galleon Kasplat: Lighthouse Alcove
-,
-name$"Galleon Kasplat: Lighthouse Alcove
-]*[
-,
-value#!Galleon Kasplat: Cannon Game Room
-+
-name#!Galleon Kasplat: Cannon Game Room
-Q*O
-&
-valueGalleon Kasplat: Past Vines
-%
-nameGalleon Kasplat: Past Vines
-Y*W
-*
-value!Galleon Kasplat: Musical Cactus
-)
-name!Galleon Kasplat: Musical Cactus
-i*g
-2
-value)'Galleon Kasplat: Punch Wreck Under Shop
-1
-name)'Galleon Kasplat: Punch Wreck Under Shop
-m*k
-4
-value+)Galleon Kasplat: On the Cavern Shop Wreck
-3
-name+)Galleon Kasplat: On the Cavern Shop Wreck
-U*S
-(
-valueGalleon Kasplat: Seasick Ship
-'
-nameGalleon Kasplat: Seasick Ship
-U*S
-(
-valueGalleon Kasplat: Cannon Wreck
-'
-nameGalleon Kasplat: Cannon Wreck
-W*U
-)
-value Galleon Kasplat: Starting Area
-(
-name Galleon Kasplat: Starting Area
-a*_
-.
-value%#Galleon Kasplat: Inside Punch Chest
--
-name%#Galleon Kasplat: Inside Punch Chest
-c*a
-/
-value&$Galleon Kasplat: Also Musical Cactus
-.
-name&$Galleon Kasplat: Also Musical Cactus
-˘e
-FairyÔe*Ïe
-π
-FungiForest©2¶
-Q*O
-%
-valueFungiForest;Thornvine Barn
-&
-nameFungi Forest: Thornvine Barn
-M*K
-#
-valueFungiForest;Dark Rafters
-$
-nameFungi Forest: Dark Rafters
-W*U
-(
-valueFungiForest;Above Blue Tunnel
-)
-name!Fungi Forest: Above Blue Tunnel
-S*Q
-&
-valueFungiForest;Above the Clock
-'
-nameFungi Forest: Above the Clock
-Q*O
-%
-valueFungiForest;Above the Well
-&
-nameFungi Forest: Above the Well
-_*]
-,
-value#!FungiForest;Near Baboon Blast Pad
--
-name%#Fungi Forest: Near Baboon Blast Pad
-i*g
-1
-value(&FungiForest;Near Battle Arena Platform
-2
-name*(Fungi Forest: Near Battle Arena Platform
-_*]
-,
-value#!FungiForest;Top of Giant Mushroom
--
-name%#Fungi Forest: Top of Giant Mushroom
-S*Q
-&
-valueFungiForest;Owl Tree Tunnel
-'
-nameFungi Forest: Owl Tree Tunnel
-W*U
-(
-valueFungiForest;Above Rabbit Race
-)
-name!Fungi Forest: Above Rabbit Race
-a*_
--
-value$"FungiForest;Owl Tree Area Clearing
-.
-name&$Fungi Forest: Owl Tree Area Clearing
-I*G
-!
-valueFungiForest;Above Mill
-"
-nameFungi Forest: Above Mill
-K*I
-"
-valueFungiForest;Barn Alcove
-#
-nameFungi Forest: Barn Alcove
-m*k
-3
-value*(FungiForest;Above path to Thornvine Barn
-4
-name,*Fungi Forest: Above path to Thornvine Barn
-C*A
-
-valueFungiForest;Anthill
-
-nameFungi Forest: Anthill
-I*G
-!
-valueFungiForest;Winch Room
-"
-nameFungi Forest: Winch Room
-S*Q
-&
-valueFungiForest;Front Mill Room
-'
-nameFungi Forest: Front Mill Room
-o*m
-4
-value+)FungiForest;Giant Mushroom Interior (Low)
-5
-name-+Fungi Forest: Giant Mushroom Interior (Low)
-q*o
-5
-value,*FungiForest;Giant Mushroom Interior (High)
-6
-name.,Fungi Forest: Giant Mushroom Interior (High)
-I*G
-!
-valueFungiForest;Mill Attic
-"
-nameFungi Forest: Mill Attic
-Q*O
-%
-valueFungiForest;Back Mill Room
-&
-nameFungi Forest: Back Mill Room
-U*S
-'
-valueFungiForest;Spider Boss Room
-(
-name Fungi Forest: Spider Boss Room
-ﬂ
-DKIsles”2–
-G*E
-
-valueDKIsles;Small Island
-"
-nameD.K. Isles: Small Island
-M*K
-"
-valueDKIsles;Upper Krem Isle
-%
-nameD.K. Isles: Upper Krem Isle
-I*G
- 
-valueDKIsles;Factory Lobby
-#
-nameD.K. Isles: Factory Lobby
-E*C
-
-valueDKIsles;Fungi Lobby
-!
-nameD.K. Isles: Fungi Lobby
-C*A
-
-valueDKIsles;Aztec Roof
- 
-nameD.K. Isles: Aztec Roof
-Y*W
-(
-valueDKIsles;Behind Fungi Building
-+
-name#!D.K. Isles: Behind Fungi Building
-a*_
-,
-value#!DKIsles;Above Banana Fairy Island
-/
-name'%D.K. Isles: Above Banana Fairy Island
-M*K
-"
-valueDKIsles;Lower Krem Isle
-%
-nameD.K. Isles: Lower Krem Isle
-O*M
-#
-valueDKIsles;Above the Prison
-&
-nameD.K. Isles: Above the Prison
-Y*W
-(
-valueDKIsles;Near Lobby 3 Entrance
-+
-name#!D.K. Isles: Near Lobby 3 Entrance
-_*]
-+
-value" DKIsles;Inside Banana Fairy Isle
-.
-name&$D.K. Isles: Inside Banana Fairy Isle
-E*C
-
-valueDKIsles;Aztec Lobby
-!
-nameD.K. Isles: Aztec Lobby
-G*E
-
-valueDKIsles;Castle Lobby
-"
-nameD.K. Isles: Castle Lobby
-E*C
-
-valueDKIsles;Caves Lobby
-!
-nameD.K. Isles: Caves Lobby
-G*E
-
-valueDKIsles;Snide's Room
-"
-nameD.K. Isles: Snide's Room
-a*_
-,
-value#!DKIsles;Training Grounds Entrance
-/
-name'%D.K. Isles: Training Grounds Entrance
-o*m
-3
-value*(DKIsles;Training Grounds Hidden Mountain
-6
-name.,D.K. Isles: Training Grounds Hidden Mountain
-Q*O
-$
-valueDKIsles;Treehouse Windows
-'
-nameD.K. Isles: Treehouse Windows
-≤
-JungleJapes¢2ü
-S*Q
-&
-valueJungleJapes;Rambi Door Pool
-'
-nameJungle Japes: Rambi Door Pool
-O*M
-$
-valueJungleJapes;Painting Room
-%
-nameJungle Japes: Painting Room
-Q*O
-%
-valueJungleJapes;Near Kong Cage
-&
-nameJungle Japes: Near Kong Cage
-O*M
-$
-valueJungleJapes;Near Mountain
-%
-nameJungle Japes: Near Mountain
-i*g
-1
-value(&JungleJapes;Above Underground Entrance
-2
-name*(Jungle Japes: Above Underground Entrance
-G*E
- 
-valueJungleJapes;Hive Area
-!
-nameJungle Japes: Hive Area
-I*G
-!
-valueJungleJapes;Storm Area
-"
-nameJungle Japes: Storm Area
-K*I
-"
-valueJungleJapes;Inside Hive
-#
-nameJungle Japes: Inside Hive
-[*Y
-*
-value!JungleJapes;Underground Pathway
-+
-name#!Jungle Japes: Underground Pathway
-_*]
-,
-value#!JungleJapes;Underground Vine Area
--
-name%#Jungle Japes: Underground Vine Area
-I*G
-!
-valueJungleJapes;Mine Entry
-"
-nameJungle Japes: Mine Entry
-ö
-FranticFactoryá2Ñ
-Q*O
-%
-valueFranticFactory;Number Game
-&
-nameFrantic Factory: Number Game
-S*Q
-&
-valueFranticFactory;Testing Shop
-'
-nameFrantic Factory: Testing Shop
-K*I
-"
-valueFranticFactory;Entrance
-#
-nameFrantic Factory: Entrance
-O*M
-$
-valueFranticFactory;Hatch Pole
-%
-nameFrantic Factory: Hatch Pole
-e*c
-/
-value&$FranticFactory;Lower Production Room
-0
-name(&Frantic Factory: Lower Production Room
-g*e
-0
-value'%FranticFactory;Middle Production Room
-1
-name)'Frantic Factory: Middle Production Room
-e*c
-/
-value&$FranticFactory;Upper Production Room
-0
-name(&Frantic Factory: Upper Production Room
-S*Q
-&
-valueFranticFactory;Storage Room
-'
-nameFrantic Factory: Storage Room
-U*S
-'
-valueFranticFactory;Storage Shops
-(
-name Frantic Factory: Storage Shops
-U*S
-'
-valueFranticFactory;Arcade Tunnel
-(
-name Frantic Factory: Arcade Tunnel
-Q*O
-%
-valueFranticFactory;Arcade Room
-&
-nameFrantic Factory: Arcade Room
-]*[
-+
-value" FranticFactory;Upper Block Tower
-,
-name$"Frantic Factory: Upper Block Tower
-c*a
-.
-value%#FranticFactory;Near Dartboard Boxes
-/
-name'%Frantic Factory: Near Dartboard Boxes
-K*I
-"
-valueFranticFactory;R&D Pole
-#
-nameFrantic Factory: R&D Pole
-]*[
-+
-value" FranticFactory;Car Race Entryway
-,
-name$"Frantic Factory: Car Race Entryway
-[*Y
-*
-value!FranticFactory;Toy Monster Room
-+
-name#!Frantic Factory: Toy Monster Room
-W*U
-(
-valueFranticFactory;Diddy R&D Room
-)
-name!Frantic Factory: Diddy R&D Room
-e*c
-/
-value&$FranticFactory;Chute to Storage Room
-0
-name(&Frantic Factory: Chute to Storage Room
-M*K
-#
-valueFranticFactory;Dark Room
-$
-nameFrantic Factory: Dark Room
-S*Q
-&
-valueFranticFactory;Crusher Room
-'
-nameFrantic Factory: Crusher Room
-µ
-CrystalCaves§2°
-]*[
-+
-value" CrystalCaves;Diddy Candles Cabin
-,
-name$"Crystal Caves: Diddy Candles Cabin
-K*I
-"
-valueCrystalCaves;Tiny Igloo
-#
-nameCrystal Caves: Tiny Igloo
-M*K
-#
-valueCrystalCaves;Level Start
-$
-nameCrystal Caves: Level Start
-Y*W
-)
-value CrystalCaves;Gorilla Gone Cave
-*
-name" Crystal Caves: Gorilla Gone Cave
-W*U
-(
-valueCrystalCaves;Above Ice Castle
-)
-name!Crystal Caves: Above Ice Castle
-[*Y
-*
-value!CrystalCaves;Near Small Boulder
-+
-name#!Crystal Caves: Near Small Boulder
-Y*W
-)
-value CrystalCaves;Bananaport Pillar
-*
-name" Crystal Caves: Bananaport Pillar
-[*Y
-*
-value!CrystalCaves;Giant Boulder Cave
-+
-name#!Crystal Caves: Giant Boulder Cave
-U*S
-'
-valueCrystalCaves;Mini Bonus Cave
-(
-name Crystal Caves: Mini Bonus Cave
-M*K
-#
-valueCrystalCaves;Above Igloo
-$
-nameCrystal Caves: Above Igloo
-_*]
-,
-value#!CrystalCaves;Near Bonus Waterfall
--
-name%#Crystal Caves: Near Bonus Waterfall
-U*S
-'
-valueCrystalCaves;Monkeyport Cave
-(
-name Crystal Caves: Monkeyport Cave
-U*S
-'
-valueCrystalCaves;Near the Cabins
-(
-name Crystal Caves: Near the Cabins
-W*U
-(
-valueCrystalCaves;Near Lanky Cabin
-)
-name!Crystal Caves: Near Lanky Cabin
-c*a
-.
-value%#CrystalCaves;Under Waterfall Bridge
-/
-name'%Crystal Caves: Under Waterfall Bridge
-W*U
-(
-valueCrystalCaves;Tomato Game Room
-)
-name!Crystal Caves: Tomato Game Room
-O*M
-$
-valueCrystalCaves;Chunky Igloo
-%
-nameCrystal Caves: Chunky Igloo
-M*K
-#
-valueCrystalCaves;Diddy Igloo
-$
-nameCrystal Caves: Diddy Igloo
-O*M
-$
-valueCrystalCaves;Donkey Igloo
-%
-nameCrystal Caves: Donkey Igloo
-M*K
-#
-valueCrystalCaves;Lanky Cabin
-$
-nameCrystal Caves: Lanky Cabin
-O*M
-$
-valueCrystalCaves;Chunky Cabin
-%
-nameCrystal Caves: Chunky Cabin
-ª
-HideoutHelm´2®
-Q*O
-%
-valueHideoutHelm;Key 8 Room (1)
-&
-nameHideout Helm: Key 8 Room (1)
-Q*O
-%
-valueHideoutHelm;Key 8 Room (2)
-&
-nameHideout Helm: Key 8 Room (2)
-_*]
-,
-value#!HideoutHelm;Pineapple Switch Room
--
-name%#Hideout Helm: Pineapple Switch Room
-e*c
-/
-value&$HideoutHelm;Under Chunky Room Stairs
-0
-name(&Hideout Helm: Under Chunky Room Stairs
-c*a
-.
-value%#HideoutHelm;Above the Blast-o-Matic
-/
-name'%Hideout Helm: Above the Blast-o-Matic
-S*Q
-&
-valueHideoutHelm;Navigation Room
-'
-nameHideout Helm: Navigation Room
-ﬁ
-
-CreepyCastleÕ
-2 
-
-Y*W
-)
-value CreepyCastle;Tree Sniping Room
-*
-name" Creepy Castle: Tree Sniping Room
-Q*O
-%
-valueCreepyCastle;Near Car Race
-&
-nameCreepy Castle: Near Car Race
-A*?
-
-valueCreepyCastle;Start
-
-nameCreepy Castle: Start
-K*I
-"
-valueCreepyCastle;Above Tree
-#
-nameCreepy Castle: Above Tree
-K*I
-"
-valueCreepyCastle;Above Moat
-#
-nameCreepy Castle: Above Moat
-Y*W
-)
-value CreepyCastle;Near Library Exit
-*
-name" Creepy Castle: Near Library Exit
-[*Y
-*
-value!CreepyCastle;Above Highest Shop
-+
-name#!Creepy Castle: Above Highest Shop
-U*S
-'
-valueCreepyCastle;Near Wind Tower
-(
-name Creepy Castle: Near Wind Tower
-Q*O
-%
-valueCreepyCastle;Ballroom High
-&
-nameCreepy Castle: Ballroom High
-Q*O
-%
-valueCreepyCastle;Lanky Dungeon
-&
-nameCreepy Castle: Lanky Dungeon
-S*Q
-&
-valueCreepyCastle;Donkey Dungeon
-'
-nameCreepy Castle: Donkey Dungeon
-g*e
-0
-value'%CreepyCastle;Above Mausoleum Entrance
-1
-name)'Creepy Castle: Above Mausoleum Entrance
-U*S
-'
-valueCreepyCastle;Lower Cave Shop
-(
-name Creepy Castle: Lower Cave Shop
-_*]
-,
-value#!CreepyCastle;Above Crypt Entrance
--
-name%#Creepy Castle: Above Crypt Entrance
-K*I
-"
-valueCreepyCastle;Wind Tower
-#
-nameCreepy Castle: Wind Tower
-E*C
-
-valueCreepyCastle;Library
- 
-nameCreepy Castle: Library
-·
-
-
-AngryAztec“
-2œ
-
-W*U
-(
-valueAngryAztec;Tiny 5-Door Temple
-)
-name!Angry Aztec: Tiny 5-Door Temple
-K*I
-"
-valueAngryAztec;Llama Temple
-#
-nameAngry Aztec: Llama Temple
-E*C
-
-valueAngryAztec;Vase Room
- 
-nameAngry Aztec: Vase Room
-=*;
-
-valueAngryAztec;Oasis
-
-nameAngry Aztec: Oasis
-W*U
-(
-valueAngryAztec;Behind Tiny Temple
-)
-name!Angry Aztec: Behind Tiny Temple
-Q*O
-%
-valueAngryAztec;Near Snake Road
-&
-nameAngry Aztec: Near Snake Road
-G*E
- 
-valueAngryAztec;Hunky Cage
-!
-nameAngry Aztec: Hunky Cage
-K*I
-"
-valueAngryAztec;Around Totem
-#
-nameAngry Aztec: Around Totem
-G*E
- 
-valueAngryAztec;Gong Tower
-!
-nameAngry Aztec: Gong Tower
-G*E
- 
-valueAngryAztec;Donkey 5DT
-!
-nameAngry Aztec: Donkey 5DT
-G*E
- 
-valueAngryAztec;Chunky 5DT
-!
-nameAngry Aztec: Chunky 5DT
-E*C
-
-valueAngryAztec;Diddy 5DT
- 
-nameAngry Aztec: Diddy 5DT
-E*C
-
-valueAngryAztec;Lanky 5DT
- 
-nameAngry Aztec: Lanky 5DT
-]*[
-+
-value" AngryAztec;Start of Llama Temple
-,
-name$"Angry Aztec: Start of Llama Temple
-W*U
-(
-valueAngryAztec;Matching Game Room
-)
-name!Angry Aztec: Matching Game Room
-U*S
-'
-valueAngryAztec;Tiny Temple Start
-(
-name Angry Aztec: Tiny Temple Start
-g*e
-0
-value'%AngryAztec;Tiny Temple Kong Cage Room
-1
-name)'Angry Aztec: Tiny Temple Kong Cage Room
-æ
-GloomyGalleon¨2©
-U*S
-'
-valueGloomyGalleon;In Punch Chest
-(
-name Gloomy Galleon: In Punch Chest
-g*e
-0
-value'%GloomyGalleon;Inside Tiny 5-Door Ship
-1
-name)'Gloomy Galleon: Inside Tiny 5-Door Ship
-Y*W
-)
-value GloomyGalleon;Tiny Slam Switch
-*
-name" Gloomy Galleon: Tiny Slam Switch
-_*]
-,
-value#!GloomyGalleon;Tunnel Intersection
--
-name%#Gloomy Galleon: Tunnel Intersection
-O*M
-$
-valueGloomyGalleon;Cavern Mast
-%
-nameGloomy Galleon: Cavern Mast
-Y*W
-)
-value GloomyGalleon;Tunnel to Chests
-*
-name" Gloomy Galleon: Tunnel to Chests
-g*e
-0
-value'%GloomyGalleon;Towards the 2-Door Ship
-1
-name)'Gloomy Galleon: Towards the 2-Door Ship
-c*a
-.
-value%#GloomyGalleon;Towards the Seal Race
-/
-name'%Gloomy Galleon: Towards the Seal Race
-S*Q
-&
-valueGloomyGalleon;Around Cactus
-'
-nameGloomy Galleon: Around Cactus
-[*Y
-*
-value!GloomyGalleon;Around Lighthouse
-+
-name#!Gloomy Galleon: Around Lighthouse
-Q*O
-%
-valueGloomyGalleon;Seasick Ship
-&
-nameGloomy Galleon: Seasick Ship
-[*Y
-*
-value!GloomyGalleon;Top of Lighthouse
-+
-name#!Gloomy Galleon: Top of Lighthouse
-U*S
-'
-valueGloomyGalleon;Mermaid Window
-(
-name Gloomy Galleon: Mermaid Window
-_*]
-,
-value#!GloomyGalleon;Lanky's 5-Door Ship
--
-name%#Gloomy Galleon: Lanky's 5-Door Ship
-]*[
-+
-value" GloomyGalleon;Tiny's 2-Door Ship
-,
-name$"Gloomy Galleon: Tiny's 2-Door Ship
-K*I
-"
-valueGloomyGalleon;Submarine
-#
-nameGloomy Galleon: Submarine
-k*i
-2
-value)'GloomyGalleon;Inside the Treasure Chest
-3
-name+)Gloomy Galleon: Inside the Treasure Chest
 œê
 
 MelonCrateøê2ªê
@@ -22626,7 +21859,774 @@ q*o
 5
 value,*HideoutHelm;K. Rool room in front of chair
 6
-name.,Hideout Helm: K. Rool room in front of chairí
+name.,Hideout Helm: K. Rool room in front of chair
+˘e
+FairyÔe*Ïe
+ﬁ
+
+CreepyCastleÕ
+2 
+
+Y*W
+)
+value CreepyCastle;Tree Sniping Room
+*
+name" Creepy Castle: Tree Sniping Room
+Q*O
+%
+valueCreepyCastle;Near Car Race
+&
+nameCreepy Castle: Near Car Race
+A*?
+
+valueCreepyCastle;Start
+
+nameCreepy Castle: Start
+K*I
+"
+valueCreepyCastle;Above Tree
+#
+nameCreepy Castle: Above Tree
+K*I
+"
+valueCreepyCastle;Above Moat
+#
+nameCreepy Castle: Above Moat
+Y*W
+)
+value CreepyCastle;Near Library Exit
+*
+name" Creepy Castle: Near Library Exit
+[*Y
+*
+value!CreepyCastle;Above Highest Shop
++
+name#!Creepy Castle: Above Highest Shop
+U*S
+'
+valueCreepyCastle;Near Wind Tower
+(
+name Creepy Castle: Near Wind Tower
+Q*O
+%
+valueCreepyCastle;Ballroom High
+&
+nameCreepy Castle: Ballroom High
+Q*O
+%
+valueCreepyCastle;Lanky Dungeon
+&
+nameCreepy Castle: Lanky Dungeon
+S*Q
+&
+valueCreepyCastle;Donkey Dungeon
+'
+nameCreepy Castle: Donkey Dungeon
+g*e
+0
+value'%CreepyCastle;Above Mausoleum Entrance
+1
+name)'Creepy Castle: Above Mausoleum Entrance
+U*S
+'
+valueCreepyCastle;Lower Cave Shop
+(
+name Creepy Castle: Lower Cave Shop
+_*]
+,
+value#!CreepyCastle;Above Crypt Entrance
+-
+name%#Creepy Castle: Above Crypt Entrance
+K*I
+"
+valueCreepyCastle;Wind Tower
+#
+nameCreepy Castle: Wind Tower
+E*C
+
+valueCreepyCastle;Library
+ 
+nameCreepy Castle: Library
+≤
+JungleJapes¢2ü
+S*Q
+&
+valueJungleJapes;Rambi Door Pool
+'
+nameJungle Japes: Rambi Door Pool
+O*M
+$
+valueJungleJapes;Painting Room
+%
+nameJungle Japes: Painting Room
+Q*O
+%
+valueJungleJapes;Near Kong Cage
+&
+nameJungle Japes: Near Kong Cage
+O*M
+$
+valueJungleJapes;Near Mountain
+%
+nameJungle Japes: Near Mountain
+i*g
+1
+value(&JungleJapes;Above Underground Entrance
+2
+name*(Jungle Japes: Above Underground Entrance
+G*E
+ 
+valueJungleJapes;Hive Area
+!
+nameJungle Japes: Hive Area
+I*G
+!
+valueJungleJapes;Storm Area
+"
+nameJungle Japes: Storm Area
+K*I
+"
+valueJungleJapes;Inside Hive
+#
+nameJungle Japes: Inside Hive
+[*Y
+*
+value!JungleJapes;Underground Pathway
++
+name#!Jungle Japes: Underground Pathway
+_*]
+,
+value#!JungleJapes;Underground Vine Area
+-
+name%#Jungle Japes: Underground Vine Area
+I*G
+!
+valueJungleJapes;Mine Entry
+"
+nameJungle Japes: Mine Entry
+æ
+GloomyGalleon¨2©
+U*S
+'
+valueGloomyGalleon;In Punch Chest
+(
+name Gloomy Galleon: In Punch Chest
+g*e
+0
+value'%GloomyGalleon;Inside Tiny 5-Door Ship
+1
+name)'Gloomy Galleon: Inside Tiny 5-Door Ship
+Y*W
+)
+value GloomyGalleon;Tiny Slam Switch
+*
+name" Gloomy Galleon: Tiny Slam Switch
+_*]
+,
+value#!GloomyGalleon;Tunnel Intersection
+-
+name%#Gloomy Galleon: Tunnel Intersection
+O*M
+$
+valueGloomyGalleon;Cavern Mast
+%
+nameGloomy Galleon: Cavern Mast
+Y*W
+)
+value GloomyGalleon;Tunnel to Chests
+*
+name" Gloomy Galleon: Tunnel to Chests
+g*e
+0
+value'%GloomyGalleon;Towards the 2-Door Ship
+1
+name)'Gloomy Galleon: Towards the 2-Door Ship
+c*a
+.
+value%#GloomyGalleon;Towards the Seal Race
+/
+name'%Gloomy Galleon: Towards the Seal Race
+S*Q
+&
+valueGloomyGalleon;Around Cactus
+'
+nameGloomy Galleon: Around Cactus
+[*Y
+*
+value!GloomyGalleon;Around Lighthouse
++
+name#!Gloomy Galleon: Around Lighthouse
+Q*O
+%
+valueGloomyGalleon;Seasick Ship
+&
+nameGloomy Galleon: Seasick Ship
+[*Y
+*
+value!GloomyGalleon;Top of Lighthouse
++
+name#!Gloomy Galleon: Top of Lighthouse
+U*S
+'
+valueGloomyGalleon;Mermaid Window
+(
+name Gloomy Galleon: Mermaid Window
+_*]
+,
+value#!GloomyGalleon;Lanky's 5-Door Ship
+-
+name%#Gloomy Galleon: Lanky's 5-Door Ship
+]*[
++
+value" GloomyGalleon;Tiny's 2-Door Ship
+,
+name$"Gloomy Galleon: Tiny's 2-Door Ship
+K*I
+"
+valueGloomyGalleon;Submarine
+#
+nameGloomy Galleon: Submarine
+k*i
+2
+value)'GloomyGalleon;Inside the Treasure Chest
+3
+name+)Gloomy Galleon: Inside the Treasure Chest
+ﬂ
+DKIsles”2–
+G*E
+
+valueDKIsles;Small Island
+"
+nameD.K. Isles: Small Island
+M*K
+"
+valueDKIsles;Upper Krem Isle
+%
+nameD.K. Isles: Upper Krem Isle
+I*G
+ 
+valueDKIsles;Factory Lobby
+#
+nameD.K. Isles: Factory Lobby
+E*C
+
+valueDKIsles;Fungi Lobby
+!
+nameD.K. Isles: Fungi Lobby
+C*A
+
+valueDKIsles;Aztec Roof
+ 
+nameD.K. Isles: Aztec Roof
+Y*W
+(
+valueDKIsles;Behind Fungi Building
++
+name#!D.K. Isles: Behind Fungi Building
+a*_
+,
+value#!DKIsles;Above Banana Fairy Island
+/
+name'%D.K. Isles: Above Banana Fairy Island
+M*K
+"
+valueDKIsles;Lower Krem Isle
+%
+nameD.K. Isles: Lower Krem Isle
+O*M
+#
+valueDKIsles;Above the Prison
+&
+nameD.K. Isles: Above the Prison
+Y*W
+(
+valueDKIsles;Near Lobby 3 Entrance
++
+name#!D.K. Isles: Near Lobby 3 Entrance
+_*]
++
+value" DKIsles;Inside Banana Fairy Isle
+.
+name&$D.K. Isles: Inside Banana Fairy Isle
+E*C
+
+valueDKIsles;Aztec Lobby
+!
+nameD.K. Isles: Aztec Lobby
+G*E
+
+valueDKIsles;Castle Lobby
+"
+nameD.K. Isles: Castle Lobby
+E*C
+
+valueDKIsles;Caves Lobby
+!
+nameD.K. Isles: Caves Lobby
+G*E
+
+valueDKIsles;Snide's Room
+"
+nameD.K. Isles: Snide's Room
+a*_
+,
+value#!DKIsles;Training Grounds Entrance
+/
+name'%D.K. Isles: Training Grounds Entrance
+o*m
+3
+value*(DKIsles;Training Grounds Hidden Mountain
+6
+name.,D.K. Isles: Training Grounds Hidden Mountain
+Q*O
+$
+valueDKIsles;Treehouse Windows
+'
+nameD.K. Isles: Treehouse Windows
+µ
+CrystalCaves§2°
+]*[
++
+value" CrystalCaves;Diddy Candles Cabin
+,
+name$"Crystal Caves: Diddy Candles Cabin
+K*I
+"
+valueCrystalCaves;Tiny Igloo
+#
+nameCrystal Caves: Tiny Igloo
+M*K
+#
+valueCrystalCaves;Level Start
+$
+nameCrystal Caves: Level Start
+Y*W
+)
+value CrystalCaves;Gorilla Gone Cave
+*
+name" Crystal Caves: Gorilla Gone Cave
+W*U
+(
+valueCrystalCaves;Above Ice Castle
+)
+name!Crystal Caves: Above Ice Castle
+[*Y
+*
+value!CrystalCaves;Near Small Boulder
++
+name#!Crystal Caves: Near Small Boulder
+Y*W
+)
+value CrystalCaves;Bananaport Pillar
+*
+name" Crystal Caves: Bananaport Pillar
+[*Y
+*
+value!CrystalCaves;Giant Boulder Cave
++
+name#!Crystal Caves: Giant Boulder Cave
+U*S
+'
+valueCrystalCaves;Mini Bonus Cave
+(
+name Crystal Caves: Mini Bonus Cave
+M*K
+#
+valueCrystalCaves;Above Igloo
+$
+nameCrystal Caves: Above Igloo
+_*]
+,
+value#!CrystalCaves;Near Bonus Waterfall
+-
+name%#Crystal Caves: Near Bonus Waterfall
+U*S
+'
+valueCrystalCaves;Monkeyport Cave
+(
+name Crystal Caves: Monkeyport Cave
+U*S
+'
+valueCrystalCaves;Near the Cabins
+(
+name Crystal Caves: Near the Cabins
+W*U
+(
+valueCrystalCaves;Near Lanky Cabin
+)
+name!Crystal Caves: Near Lanky Cabin
+c*a
+.
+value%#CrystalCaves;Under Waterfall Bridge
+/
+name'%Crystal Caves: Under Waterfall Bridge
+W*U
+(
+valueCrystalCaves;Tomato Game Room
+)
+name!Crystal Caves: Tomato Game Room
+O*M
+$
+valueCrystalCaves;Chunky Igloo
+%
+nameCrystal Caves: Chunky Igloo
+M*K
+#
+valueCrystalCaves;Diddy Igloo
+$
+nameCrystal Caves: Diddy Igloo
+O*M
+$
+valueCrystalCaves;Donkey Igloo
+%
+nameCrystal Caves: Donkey Igloo
+M*K
+#
+valueCrystalCaves;Lanky Cabin
+$
+nameCrystal Caves: Lanky Cabin
+O*M
+$
+valueCrystalCaves;Chunky Cabin
+%
+nameCrystal Caves: Chunky Cabin
+π
+FungiForest©2¶
+Q*O
+%
+valueFungiForest;Thornvine Barn
+&
+nameFungi Forest: Thornvine Barn
+M*K
+#
+valueFungiForest;Dark Rafters
+$
+nameFungi Forest: Dark Rafters
+W*U
+(
+valueFungiForest;Above Blue Tunnel
+)
+name!Fungi Forest: Above Blue Tunnel
+S*Q
+&
+valueFungiForest;Above the Clock
+'
+nameFungi Forest: Above the Clock
+Q*O
+%
+valueFungiForest;Above the Well
+&
+nameFungi Forest: Above the Well
+_*]
+,
+value#!FungiForest;Near Baboon Blast Pad
+-
+name%#Fungi Forest: Near Baboon Blast Pad
+i*g
+1
+value(&FungiForest;Near Battle Arena Platform
+2
+name*(Fungi Forest: Near Battle Arena Platform
+_*]
+,
+value#!FungiForest;Top of Giant Mushroom
+-
+name%#Fungi Forest: Top of Giant Mushroom
+S*Q
+&
+valueFungiForest;Owl Tree Tunnel
+'
+nameFungi Forest: Owl Tree Tunnel
+W*U
+(
+valueFungiForest;Above Rabbit Race
+)
+name!Fungi Forest: Above Rabbit Race
+a*_
+-
+value$"FungiForest;Owl Tree Area Clearing
+.
+name&$Fungi Forest: Owl Tree Area Clearing
+I*G
+!
+valueFungiForest;Above Mill
+"
+nameFungi Forest: Above Mill
+K*I
+"
+valueFungiForest;Barn Alcove
+#
+nameFungi Forest: Barn Alcove
+m*k
+3
+value*(FungiForest;Above path to Thornvine Barn
+4
+name,*Fungi Forest: Above path to Thornvine Barn
+C*A
+
+valueFungiForest;Anthill
+
+nameFungi Forest: Anthill
+I*G
+!
+valueFungiForest;Winch Room
+"
+nameFungi Forest: Winch Room
+S*Q
+&
+valueFungiForest;Front Mill Room
+'
+nameFungi Forest: Front Mill Room
+o*m
+4
+value+)FungiForest;Giant Mushroom Interior (Low)
+5
+name-+Fungi Forest: Giant Mushroom Interior (Low)
+q*o
+5
+value,*FungiForest;Giant Mushroom Interior (High)
+6
+name.,Fungi Forest: Giant Mushroom Interior (High)
+I*G
+!
+valueFungiForest;Mill Attic
+"
+nameFungi Forest: Mill Attic
+Q*O
+%
+valueFungiForest;Back Mill Room
+&
+nameFungi Forest: Back Mill Room
+U*S
+'
+valueFungiForest;Spider Boss Room
+(
+name Fungi Forest: Spider Boss Room
+ö
+FranticFactoryá2Ñ
+Q*O
+%
+valueFranticFactory;Number Game
+&
+nameFrantic Factory: Number Game
+S*Q
+&
+valueFranticFactory;Testing Shop
+'
+nameFrantic Factory: Testing Shop
+K*I
+"
+valueFranticFactory;Entrance
+#
+nameFrantic Factory: Entrance
+O*M
+$
+valueFranticFactory;Hatch Pole
+%
+nameFrantic Factory: Hatch Pole
+e*c
+/
+value&$FranticFactory;Lower Production Room
+0
+name(&Frantic Factory: Lower Production Room
+g*e
+0
+value'%FranticFactory;Middle Production Room
+1
+name)'Frantic Factory: Middle Production Room
+e*c
+/
+value&$FranticFactory;Upper Production Room
+0
+name(&Frantic Factory: Upper Production Room
+S*Q
+&
+valueFranticFactory;Storage Room
+'
+nameFrantic Factory: Storage Room
+U*S
+'
+valueFranticFactory;Storage Shops
+(
+name Frantic Factory: Storage Shops
+U*S
+'
+valueFranticFactory;Arcade Tunnel
+(
+name Frantic Factory: Arcade Tunnel
+Q*O
+%
+valueFranticFactory;Arcade Room
+&
+nameFrantic Factory: Arcade Room
+]*[
++
+value" FranticFactory;Upper Block Tower
+,
+name$"Frantic Factory: Upper Block Tower
+c*a
+.
+value%#FranticFactory;Near Dartboard Boxes
+/
+name'%Frantic Factory: Near Dartboard Boxes
+K*I
+"
+valueFranticFactory;R&D Pole
+#
+nameFrantic Factory: R&D Pole
+]*[
++
+value" FranticFactory;Car Race Entryway
+,
+name$"Frantic Factory: Car Race Entryway
+[*Y
+*
+value!FranticFactory;Toy Monster Room
++
+name#!Frantic Factory: Toy Monster Room
+W*U
+(
+valueFranticFactory;Diddy R&D Room
+)
+name!Frantic Factory: Diddy R&D Room
+e*c
+/
+value&$FranticFactory;Chute to Storage Room
+0
+name(&Frantic Factory: Chute to Storage Room
+M*K
+#
+valueFranticFactory;Dark Room
+$
+nameFrantic Factory: Dark Room
+S*Q
+&
+valueFranticFactory;Crusher Room
+'
+nameFrantic Factory: Crusher Room
+ª
+HideoutHelm´2®
+Q*O
+%
+valueHideoutHelm;Key 8 Room (1)
+&
+nameHideout Helm: Key 8 Room (1)
+Q*O
+%
+valueHideoutHelm;Key 8 Room (2)
+&
+nameHideout Helm: Key 8 Room (2)
+_*]
+,
+value#!HideoutHelm;Pineapple Switch Room
+-
+name%#Hideout Helm: Pineapple Switch Room
+e*c
+/
+value&$HideoutHelm;Under Chunky Room Stairs
+0
+name(&Hideout Helm: Under Chunky Room Stairs
+c*a
+.
+value%#HideoutHelm;Above the Blast-o-Matic
+/
+name'%Hideout Helm: Above the Blast-o-Matic
+S*Q
+&
+valueHideoutHelm;Navigation Room
+'
+nameHideout Helm: Navigation Room
+·
+
+
+AngryAztec“
+2œ
+
+W*U
+(
+valueAngryAztec;Tiny 5-Door Temple
+)
+name!Angry Aztec: Tiny 5-Door Temple
+K*I
+"
+valueAngryAztec;Llama Temple
+#
+nameAngry Aztec: Llama Temple
+E*C
+
+valueAngryAztec;Vase Room
+ 
+nameAngry Aztec: Vase Room
+=*;
+
+valueAngryAztec;Oasis
+
+nameAngry Aztec: Oasis
+W*U
+(
+valueAngryAztec;Behind Tiny Temple
+)
+name!Angry Aztec: Behind Tiny Temple
+Q*O
+%
+valueAngryAztec;Near Snake Road
+&
+nameAngry Aztec: Near Snake Road
+G*E
+ 
+valueAngryAztec;Hunky Cage
+!
+nameAngry Aztec: Hunky Cage
+K*I
+"
+valueAngryAztec;Around Totem
+#
+nameAngry Aztec: Around Totem
+G*E
+ 
+valueAngryAztec;Gong Tower
+!
+nameAngry Aztec: Gong Tower
+G*E
+ 
+valueAngryAztec;Donkey 5DT
+!
+nameAngry Aztec: Donkey 5DT
+G*E
+ 
+valueAngryAztec;Chunky 5DT
+!
+nameAngry Aztec: Chunky 5DT
+E*C
+
+valueAngryAztec;Diddy 5DT
+ 
+nameAngry Aztec: Diddy 5DT
+E*C
+
+valueAngryAztec;Lanky 5DT
+ 
+nameAngry Aztec: Lanky 5DT
+]*[
++
+value" AngryAztec;Start of Llama Temple
+,
+name$"Angry Aztec: Start of Llama Temple
+W*U
+(
+valueAngryAztec;Matching Game Room
+)
+name!Angry Aztec: Matching Game Room
+U*S
+'
+valueAngryAztec;Tiny Temple Start
+(
+name Angry Aztec: Tiny Temple Start
+g*e
+0
+value'%AngryAztec;Tiny Temple Kong Cage Room
+1
+name)'Angry Aztec: Tiny Temple Kong Cage Roomí
 No ItemNoItemí
 DonkeyDonkeyí
 DiddyDiddyí
@@ -22820,122 +22820,2680 @@ DiveBarrelö
 DK Arcade 75mArcade75ö
 DK Arcade 100m	Arcade100ö&
 Jetpac Rocket BuildingJetpacRocket¢‡î
+ıî
+	LocationsÊî*‚î
+¬î
+
+categories≤î*Æî
+Œ6
+WrinklyDooræ6*ª6
+
+nameWrinkly Doors
+É6
+	locationsı52Ú5
+¿*Ω
+4
+location_id%#plando_JapesDonkeyDoor_wrinkly_door
+ 
+nameJapes Donkey Hint Door
+9
+vanilla_value(&JungleJapes;Japes Lobby - Middle Right
+
+kongdonkey
+
+levelJungleJapes
+π*∂
+3
+location_id$"plando_JapesDiddyDoor_wrinkly_door
+
+nameJapes Diddy Hint Door
+5
+vanilla_value$"JungleJapes;Japes Lobby - Far Left
+
+kongdiddy
+
+levelJungleJapes
+º*π
+3
+location_id$"plando_JapesLankyDoor_wrinkly_door
+
+nameJapes Lanky Hint Door
+8
+vanilla_value'%JungleJapes;Japes Lobby - Close Right
+
+konglanky
+
+levelJungleJapes
+∑*¥
+2
+location_id#!plando_JapesTinyDoor_wrinkly_door
+
+nameJapes Tiny Hint Door
+6
+vanilla_value%#JungleJapes;Japes Lobby - Far Right
+
+kongtiny
+
+levelJungleJapes
+æ*ª
+4
+location_id%#plando_JapesChunkyDoor_wrinkly_door
+ 
+nameJapes Chunky Hint Door
+7
+vanilla_value&$JungleJapes;Japes Lobby - Close Left
+
+kongchunky
+
+levelJungleJapes
+Ω*∫
+4
+location_id%#plando_AztecDonkeyDoor_wrinkly_door
+ 
+nameAztec Donkey Hint Door
+7
+vanilla_value&$AngryAztec;Aztec Lobby - Pillar Wall
+
+kongdonkey
+
+level
+AngryAztec
+∫*∑
+3
+location_id$"plando_AztecDiddyDoor_wrinkly_door
+
+nameAztec Diddy Hint Door
+7
+vanilla_value&$AngryAztec;Aztec Lobby - Lower Right
+
+kongdiddy
+
+level
+AngryAztec
+Ω*∫
+3
+location_id$"plando_AztecLankyDoor_wrinkly_door
+
+nameAztec Lanky Hint Door
+:
+vanilla_value)'AngryAztec;Aztec Lobby - Left of Portal
+
+konglanky
+
+level
+AngryAztec
+ª*∏
+2
+location_id#!plando_AztecTinyDoor_wrinkly_door
+
+nameAztec Tiny Hint Door
+;
+vanilla_value*(AngryAztec;Aztec Lobby - Right of Portal
+
+kongtiny
+
+level
+AngryAztec
+ª*∏
+4
+location_id%#plando_AztecChunkyDoor_wrinkly_door
+ 
+nameAztec Chunky Hint Door
+5
+vanilla_value$"AngryAztec;Aztec Lobby - Back Room
+
+kongchunky
+
+level
+AngryAztec
+»*≈
+6
+location_id'%plando_FactoryDonkeyDoor_wrinkly_door
+"
+nameFactory Donkey Hint Door
+:
+vanilla_value)'FranticFactory;Factory Lobby - Low Left
+
+kongdonkey
+
+levelFranticFactory
+≈*¬
+5
+location_id&$plando_FactoryDiddyDoor_wrinkly_door
+!
+nameFactory Diddy Hint Door
+:
+vanilla_value)'FranticFactory;Factory Lobby - Top Left
+
+kongdiddy
+
+levelFranticFactory
+«*ƒ
+5
+location_id&$plando_FactoryLankyDoor_wrinkly_door
+!
+nameFactory Lanky Hint Door
+<
+vanilla_value+)FranticFactory;Factory Lobby - Top Center
+
+konglanky
+
+levelFranticFactory
+√*¿
+4
+location_id%#plando_FactoryTinyDoor_wrinkly_door
+ 
+nameFactory Tiny Hint Door
+;
+vanilla_value*(FranticFactory;Factory Lobby - Top Right
+
+kongtiny
+
+levelFranticFactory
+…*∆
+6
+location_id'%plando_FactoryChunkyDoor_wrinkly_door
+"
+nameFactory Chunky Hint Door
+;
+vanilla_value*(FranticFactory;Factory Lobby - Low Right
+
+kongchunky
+
+levelFranticFactory
+∆*√
+6
+location_id'%plando_GalleonDonkeyDoor_wrinkly_door
+"
+nameGalleon Donkey Hint Door
+9
+vanilla_value(&GloomyGalleon;Galleon Lobby - Far Left
+
+kongdonkey
+
+levelGloomyGalleon
+ƒ*¡
+5
+location_id&$plando_GalleonDiddyDoor_wrinkly_door
+!
+nameGalleon Diddy Hint Door
+:
+vanilla_value)'GloomyGalleon;Galleon Lobby - Far Right
+
+kongdiddy
+
+levelGloomyGalleon
+∆*√
+5
+location_id&$plando_GalleonLankyDoor_wrinkly_door
+!
+nameGalleon Lanky Hint Door
+<
+vanilla_value+)GloomyGalleon;Galleon Lobby - Close Right
+
+konglanky
+
+levelGloomyGalleon
+∆*√
+4
+location_id%#plando_GalleonTinyDoor_wrinkly_door
+ 
+nameGalleon Tiny Hint Door
+?
+vanilla_value.,GloomyGalleon;Galleon Lobby - Near DK Portal
+
+kongtiny
+
+levelGloomyGalleon
+»*≈
+6
+location_id'%plando_GalleonChunkyDoor_wrinkly_door
+"
+nameGalleon Chunky Hint Door
+;
+vanilla_value*(GloomyGalleon;Galleon Lobby - Close Left
+
+kongchunky
+
+levelGloomyGalleon
+¬*ø
+5
+location_id&$plando_ForestDonkeyDoor_wrinkly_door
+!
+nameForest Donkey Hint Door
+9
+vanilla_value(&FungiForest;Forest Lobby - On High Box
+
+kongdonkey
+
+levelFungiForest
+ *«
+4
+location_id%#plando_ForestDiddyDoor_wrinkly_door
+ 
+nameForest Diddy Hint Door
+D
+vanilla_value31FungiForest;Forest Lobby - Near Gorilla Gone Door
+
+kongdiddy
+
+levelFungiForest
+Œ*À
+4
+location_id%#plando_ForestLankyDoor_wrinkly_door
+ 
+nameForest Lanky Hint Door
+H
+vanilla_value75FungiForest;Forest Lobby - Opposite Gorilla Gone Door
+
+konglanky
+
+levelFungiForest
+ø*º
+3
+location_id$"plando_ForestTinyDoor_wrinkly_door
+
+nameForest Tiny Hint Door
+<
+vanilla_value+)FungiForest;Forest Lobby - Near B. Locker
+
+kongtiny
+
+levelFungiForest
+ƒ*¡
+5
+location_id&$plando_ForestChunkyDoor_wrinkly_door
+!
+nameForest Chunky Hint Door
+;
+vanilla_value*(FungiForest;Forest Lobby - Near Entrance
+
+kongchunky
+
+levelFungiForest
+æ*ª
+4
+location_id%#plando_CavesDonkeyDoor_wrinkly_door
+ 
+nameCaves Donkey Hint Door
+6
+vanilla_value%#CrystalCaves;Caves Lobby - Far Left
+
+kongdonkey
+
+levelCrystalCaves
+º*π
+3
+location_id$"plando_CavesDiddyDoor_wrinkly_door
+
+nameCaves Diddy Hint Door
+7
+vanilla_value&$CrystalCaves;Caves Lobby - Top Ledge
+
+kongdiddy
+
+levelCrystalCaves
+º*π
+3
+location_id$"plando_CavesLankyDoor_wrinkly_door
+
+nameCaves Lanky Hint Door
+7
+vanilla_value&$CrystalCaves;Caves Lobby - Near Left
+
+konglanky
+
+levelCrystalCaves
+π*∂
+2
+location_id#!plando_CavesTinyDoor_wrinkly_door
+
+nameCaves Tiny Hint Door
+7
+vanilla_value&$CrystalCaves;Caves Lobby - Far Right
+
+kongtiny
+
+levelCrystalCaves
+¿*Ω
+4
+location_id%#plando_CavesChunkyDoor_wrinkly_door
+ 
+nameCaves Chunky Hint Door
+8
+vanilla_value'%CrystalCaves;Caves Lobby - Near Right
+
+kongchunky
+
+levelCrystalCaves
+À*»
+5
+location_id&$plando_CastleDonkeyDoor_wrinkly_door
+!
+nameCastle Donkey Hint Door
+A
+vanilla_value0.CreepyCastle;Castle Lobby - Central Pillar (1)
+
+kongdonkey
+
+levelCreepyCastle
+»*≈
+4
+location_id%#plando_CastleDiddyDoor_wrinkly_door
+ 
+nameCastle Diddy Hint Door
+A
+vanilla_value0.CreepyCastle;Castle Lobby - Central Pillar (2)
+
+kongdiddy
+
+levelCreepyCastle
+»*≈
+4
+location_id%#plando_CastleLankyDoor_wrinkly_door
+ 
+nameCastle Lanky Hint Door
+A
+vanilla_value0.CreepyCastle;Castle Lobby - Central Pillar (3)
+
+konglanky
+
+levelCreepyCastle
+≈*¬
+3
+location_id$"plando_CastleTinyDoor_wrinkly_door
+
+nameCastle Tiny Hint Door
+A
+vanilla_value0.CreepyCastle;Castle Lobby - Central Pillar (4)
+
+kongtiny
+
+levelCreepyCastle
+À*»
+5
+location_id&$plando_CastleChunkyDoor_wrinkly_door
+!
+nameCastle Chunky Hint Door
+A
+vanilla_value0.CreepyCastle;Castle Lobby - Central Pillar (5)
+
+kongchunky
+
+levelCreepyCastle
+
+singularwrinkly_door
+Í
+	DirtPatch‹*Ÿ
+
+nameDirt Patches
+©
+	locationsõ2ò
+•*¢
+-
+	reward_id plando_patch_0_location_reward
+
+nameDirt Patch 1
+/
+vanilla_valueJungleJapes;On Painting Hill
+(
+location_idplando_patch_0_location
+ô*ñ
+-
+	reward_id plando_patch_1_location_reward
+
+nameDirt Patch 2
+#
+vanilla_valueAngryAztec;Oasis
+(
+location_idplando_patch_1_location
+û*õ
+-
+	reward_id plando_patch_2_location_reward
+
+nameDirt Patch 3
+(
+vanilla_valueAngryAztec;Chunky 5DT
+(
+location_idplando_patch_2_location
+°*û
+-
+	reward_id plando_patch_3_location_reward
+
+nameDirt Patch 4
++
+vanilla_valueFranticFactory;Dark Room
+(
+location_idplando_patch_3_location
+∞*≠
+-
+	reward_id plando_patch_4_location_reward
+
+nameDirt Patch 5
+:
+vanilla_value)'GloomyGalleon;Lighthouse: Interior Rear
+(
+location_idplando_patch_4_location
+ß*§
+-
+	reward_id plando_patch_5_location_reward
+
+nameDirt Patch 6
+1
+vanilla_value FungiForest;Front of Beanstalk
+(
+location_idplando_patch_5_location
+ü*ú
+-
+	reward_id plando_patch_6_location_reward
+
+nameDirt Patch 7
+)
+vanilla_valueFungiForest;Mill Grass
+(
+location_idplando_patch_6_location
+°*û
+-
+	reward_id plando_patch_7_location_reward
+
+nameDirt Patch 8
++
+vanilla_valueCrystalCaves;Giant Kosha
+(
+location_idplando_patch_7_location
+≠*™
+-
+	reward_id plando_patch_8_location_reward
+
+nameDirt Patch 9
+7
+vanilla_value&$CreepyCastle;Top of Castle Near Shop
+(
+location_idplando_patch_8_location
+©*¶
+-
+	reward_id plando_patch_9_location_reward
+
+nameDirt Patch 10
+2
+vanilla_value!DKIsles;Front of Fungi Building
+(
+location_idplando_patch_9_location
+•*¢
+.
+	reward_id!plando_patch_10_location_reward
+
+nameDirt Patch 11
+,
+vanilla_valueDKIsles;On Aztec Building
+)
+location_idplando_patch_10_location
+Æ*´
+.
+	reward_id!plando_patch_11_location_reward
+
+nameDirt Patch 12
+5
+vanilla_value$"DKIsles;Under Caves Lobby Entrance
+)
+location_idplando_patch_11_location
+®*•
+.
+	reward_id!plando_patch_12_location_reward
+
+nameDirt Patch 13
+/
+vanilla_valueDKIsles;Castle Lobby: Center
+)
+location_idplando_patch_12_location
+≤*Ø
+.
+	reward_id!plando_patch_13_location_reward
+
+nameDirt Patch 14
+9
+vanilla_value(&DKIsles;Training Grounds: Banana Hoard
+)
+location_idplando_patch_13_location
+±*Æ
+.
+	reward_id!plando_patch_14_location_reward
+
+nameDirt Patch 15
+8
+vanilla_value'%DKIsles;Training Grounds: Rear Tunnel
+)
+location_idplando_patch_14_location
+†*ù
+.
+	reward_id!plando_patch_15_location_reward
+
+nameDirt Patch 16
+'
+vanilla_valueDKIsles;Prison: Back
+)
+location_idplando_patch_15_location
+
+singularpatch
+¡4
+	TnsPortal≥4*∞4
+!
+nameTroff 'n' Scoff Portals
+3
+	locations‚32ﬂ3
+π*∂
+0
+location_id!plando_JungleJapes_0_tns_portal
+#
+nameJungle Japes TnS Portal 1
+0
+vanilla_valueJungleJapes;First Tunnel Cave
+
+levelJungleJapes
+
+none_possible  
+ú*ô
+0
+location_id!plando_JungleJapes_1_tns_portal
+#
+nameJungle Japes TnS Portal 2
+
+vanilla_value 
+
+levelJungleJapes
+
+none_possible  
+∫*∑
+0
+location_id!plando_JungleJapes_2_tns_portal
+#
+nameJungle Japes TnS Portal 3
+1
+vanilla_value JungleJapes;Rambi Boulder Cave
+
+levelJungleJapes
+
+none_possible  
+†*ù
+0
+location_id!plando_JungleJapes_3_tns_portal
+#
+nameJungle Japes TnS Portal 4
+
+vanilla_valuenone
+
+levelJungleJapes
+
+none_possible 
+†*ù
+0
+location_id!plando_JungleJapes_4_tns_portal
+#
+nameJungle Japes TnS Portal 5
+
+vanilla_valuenone
+
+levelJungleJapes
+
+none_possible 
+¬*ø
+/
+location_id plando_AngryAztec_0_tns_portal
+"
+nameAngry Aztec TnS Portal 1
+<
+vanilla_value+)AngryAztec;Right of Quicksand Tunnel Shop
+
+level
+AngryAztec
+
+none_possible  
+∑*¥
+/
+location_id plando_AngryAztec_1_tns_portal
+"
+nameAngry Aztec TnS Portal 2
+1
+vanilla_value AngryAztec;Left of Tunnel Shop
+
+level
+AngryAztec
+
+none_possible  
+≥*∞
+/
+location_id plando_AngryAztec_2_tns_portal
+"
+nameAngry Aztec TnS Portal 3
+-
+vanilla_valueAngryAztec;Near Oasis Shop
+
+level
+AngryAztec
+
+none_possible  
+∫*∑
+/
+location_id plando_AngryAztec_3_tns_portal
+"
+nameAngry Aztec TnS Portal 4
+4
+vanilla_value#!AngryAztec;Near Vulture Cage Shop
+
+level
+AngryAztec
+
+none_possible 
+Æ*´
+/
+location_id plando_AngryAztec_4_tns_portal
+"
+nameAngry Aztec TnS Portal 5
+(
+vanilla_valueAngryAztec;Behind 5DT
+
+level
+AngryAztec
+
+none_possible 
+ø*º
+3
+location_id$"plando_FranticFactory_0_tns_portal
+&
+nameFrantic Factory TnS Portal 1
+-
+vanilla_valueFranticFactory;Arcade Room
+
+levelFranticFactory
+
+none_possible  
+√*¿
+3
+location_id$"plando_FranticFactory_1_tns_portal
+&
+nameFrantic Factory TnS Portal 2
+1
+vanilla_value FranticFactory;Production Room
+
+levelFranticFactory
+
+none_possible  
+Œ*À
+3
+location_id$"plando_FranticFactory_2_tns_portal
+&
+nameFrantic Factory TnS Portal 3
+<
+vanilla_value+)FranticFactory;R&D across from Piano Game
+
+levelFranticFactory
+
+none_possible  
+ø*º
+3
+location_id$"plando_FranticFactory_3_tns_portal
+&
+nameFrantic Factory TnS Portal 4
+-
+vanilla_valueFranticFactory;Block Tower
+
+levelFranticFactory
+
+none_possible 
+¿*Ω
+3
+location_id$"plando_FranticFactory_4_tns_portal
+&
+nameFrantic Factory TnS Portal 5
+.
+vanilla_valueFranticFactory;Storage Room
+
+levelFranticFactory
+
+none_possible 
+…*∆
+2
+location_id#!plando_GloomyGalleon_0_tns_portal
+%
+nameGloomy Galleon TnS Portal 1
+:
+vanilla_value)'GloomyGalleon;Cavern Alcove Past Planks
+
+levelGloomyGalleon
+
+none_possible  
+π*∂
+2
+location_id#!plando_GloomyGalleon_1_tns_portal
+%
+nameGloomy Galleon TnS Portal 2
+*
+vanilla_valueGloomyGalleon;Deep Hole
+
+levelGloomyGalleon
+
+none_possible  
+∫*∑
+2
+location_id#!plando_GloomyGalleon_2_tns_portal
+%
+nameGloomy Galleon TnS Portal 3
++
+vanilla_valueGloomyGalleon;Behind 2DS
+
+levelGloomyGalleon
+
+none_possible  
+ƒ*¡
+2
+location_id#!plando_GloomyGalleon_3_tns_portal
+%
+nameGloomy Galleon TnS Portal 4
+5
+vanilla_value$"GloomyGalleon;Behind Enguarde Door
+
+levelGloomyGalleon
+
+none_possible 
+∂*≥
+2
+location_id#!plando_GloomyGalleon_4_tns_portal
+%
+nameGloomy Galleon TnS Portal 5
+'
+vanilla_valueGloomyGalleon;Cactus
+
+levelGloomyGalleon
+
+none_possible 
+Ω*∫
+0
+location_id!plando_FungiForest_0_tns_portal
+#
+nameFungi Forest TnS Portal 1
+4
+vanilla_value#!FungiForest;Behind Thornvine Barn
+
+levelFungiForest
+
+none_possible  
+Ω*∫
+0
+location_id!plando_FungiForest_1_tns_portal
+#
+nameFungi Forest TnS Portal 2
+4
+vanilla_value#!FungiForest;Beanstalk Area Alcove
+
+levelFungiForest
+
+none_possible  
+∑*¥
+0
+location_id!plando_FungiForest_2_tns_portal
+#
+nameFungi Forest TnS Portal 3
+.
+vanilla_valueFungiForest;Near Mills Shop
+
+levelFungiForest
+
+none_possible  
+Ω*∫
+0
+location_id!plando_FungiForest_3_tns_portal
+#
+nameFungi Forest TnS Portal 4
+4
+vanilla_value#!FungiForest;Top of Giant Mushroom
+
+levelFungiForest
+
+none_possible 
+π*∂
+0
+location_id!plando_FungiForest_4_tns_portal
+#
+nameFungi Forest TnS Portal 5
+0
+vanilla_valueFungiForest;Owl Area Clearing
+
+levelFungiForest
+
+none_possible 
+Ω*∫
+1
+location_id" plando_CrystalCaves_0_tns_portal
+$
+nameCrystal Caves TnS Portal 1
+1
+vanilla_value CrystalCaves;On Rotating Cabin
+
+levelCrystalCaves
+
+none_possible  
+æ*ª
+1
+location_id" plando_CrystalCaves_1_tns_portal
+$
+nameCrystal Caves TnS Portal 2
+2
+vanilla_value!CrystalCaves;Ice Cave Near Shop
+
+levelCrystalCaves
+
+none_possible  
+æ*ª
+1
+location_id" plando_CrystalCaves_2_tns_portal
+$
+nameCrystal Caves TnS Portal 3
+2
+vanilla_value!CrystalCaves;Giant Boulder Room
+
+levelCrystalCaves
+
+none_possible  
+∫*∑
+1
+location_id" plando_CrystalCaves_3_tns_portal
+$
+nameCrystal Caves TnS Portal 4
+.
+vanilla_valueCrystalCaves;On Lanky Cabin
+
+levelCrystalCaves
+
+none_possible 
+∂*≥
+1
+location_id" plando_CrystalCaves_4_tns_portal
+$
+nameCrystal Caves TnS Portal 5
+*
+vanilla_valueCrystalCaves;Near Igloo
+
+levelCrystalCaves
+
+none_possible 
+ª*∏
+1
+location_id" plando_CreepyCastle_0_tns_portal
+$
+nameCreepy Castle TnS Portal 1
+/
+vanilla_valueCreepyCastle;Near Greenhouse
+
+levelCreepyCastle
+
+none_possible  
+¡*æ
+1
+location_id" plando_CreepyCastle_1_tns_portal
+$
+nameCreepy Castle TnS Portal 2
+5
+vanilla_value$"CreepyCastle;Rocketbarrel Overhang
+
+levelCreepyCastle
+
+none_possible  
+¬*ø
+1
+location_id" plando_CreepyCastle_2_tns_portal
+$
+nameCreepy Castle TnS Portal 3
+6
+vanilla_value%#CreepyCastle;Lowest ledge near tree
+
+levelCreepyCastle
+
+none_possible  
+¿*Ω
+1
+location_id" plando_CreepyCastle_3_tns_portal
+$
+nameCreepy Castle TnS Portal 4
+4
+vanilla_value#!CreepyCastle;Near Lower Cave Shop
+
+levelCreepyCastle
+
+none_possible 
+¿*Ω
+1
+location_id" plando_CreepyCastle_4_tns_portal
+$
+nameCreepy Castle TnS Portal 5
+4
+vanilla_value#!CreepyCastle;Near Upper Cave Shop
+
+levelCreepyCastle
+
+none_possible 
+
+singular
+tns_portal
+⁄
+Fairy–*Õ
+
+nameBanana Fairies
+õ
+	locationsç2ä
+ƒ*¡
+(
+location_idplando_fairy_0_location
+
+nameJungle Japes Fairy 1
+.
+vanilla_valueJungleJapes;Rambi Door Pool
+
+levelJungleJapes
+-
+	reward_id plando_fairy_0_location_reward
+¬*ø
+(
+location_idplando_fairy_1_location
+
+nameJungle Japes Fairy 2
+,
+vanilla_valueJungleJapes;Painting Room
+
+levelJungleJapes
+-
+	reward_id plando_fairy_1_location_reward
+ƒ*¡
+(
+location_idplando_fairy_2_location
+
+nameAngry Aztec Fairy 1
+0
+vanilla_valueAngryAztec;Tiny 5-Door Temple
+
+level
+AngryAztec
+-
+	reward_id plando_fairy_2_location_reward
+æ*ª
+(
+location_idplando_fairy_3_location
+
+nameAngry Aztec Fairy 2
+*
+vanilla_valueAngryAztec;Llama Temple
+
+level
+AngryAztec
+-
+	reward_id plando_fairy_3_location_reward
+…*∆
+(
+location_idplando_fairy_4_location
+!
+nameFrantic Factory Fairy 1
+-
+vanilla_valueFranticFactory;Number Game
+
+levelFranticFactory
+-
+	reward_id plando_fairy_4_location_reward
+ *«
+(
+location_idplando_fairy_5_location
+!
+nameFrantic Factory Fairy 2
+.
+vanilla_valueFranticFactory;Testing Shop
+
+levelFranticFactory
+-
+	reward_id plando_fairy_5_location_reward
+…*∆
+(
+location_idplando_fairy_6_location
+ 
+nameGloomy Galleon Fairy 1
+/
+vanilla_valueGloomyGalleon;In Punch Chest
+
+levelGloomyGalleon
+-
+	reward_id plando_fairy_6_location_reward
+“*œ
+(
+location_idplando_fairy_7_location
+ 
+nameGloomy Galleon Fairy 2
+8
+vanilla_value'%GloomyGalleon;Inside Tiny 5-Door Ship
+
+levelGloomyGalleon
+-
+	reward_id plando_fairy_7_location_reward
+√*¿
+(
+location_idplando_fairy_8_location
+
+nameFungi Forest Fairy 1
+-
+vanilla_valueFungiForest;Thornvine Barn
+
+levelFungiForest
+-
+	reward_id plando_fairy_8_location_reward
+¡*æ
+(
+location_idplando_fairy_9_location
+
+nameFungi Forest Fairy 2
++
+vanilla_valueFungiForest;Dark Rafters
+
+levelFungiForest
+-
+	reward_id plando_fairy_9_location_reward
+Õ* 
+)
+location_idplando_fairy_10_location
+
+nameCrystal Caves Fairy 1
+3
+vanilla_value" CrystalCaves;Diddy Candles Cabin
+
+levelCrystalCaves
+.
+	reward_id!plando_fairy_10_location_reward
+ƒ*¡
+)
+location_idplando_fairy_11_location
+
+nameCrystal Caves Fairy 2
+*
+vanilla_valueCrystalCaves;Tiny Igloo
+
+levelCrystalCaves
+.
+	reward_id!plando_fairy_11_location_reward
+À*»
+)
+location_idplando_fairy_12_location
+
+nameCreepy Castle Fairy 1
+1
+vanilla_value CreepyCastle;Tree Sniping Room
+
+levelCreepyCastle
+.
+	reward_id!plando_fairy_12_location_reward
+«*ƒ
+)
+location_idplando_fairy_13_location
+
+nameCreepy Castle Fairy 2
+-
+vanilla_valueCreepyCastle;Near Car Race
+
+levelCreepyCastle
+.
+	reward_id!plando_fairy_13_location_reward
+π*∂
+)
+location_idplando_fairy_14_location
+
+nameD.K. Isles Fairy 1
+'
+vanilla_valueDKIsles;Small Island
+
+level	DKIsles
+.
+	reward_id!plando_fairy_14_location_reward
+º*π
+)
+location_idplando_fairy_15_location
+
+nameD.K. Isles Fairy 2
+*
+vanilla_valueDKIsles;Upper Krem Isle
+
+level	DKIsles
+.
+	reward_id!plando_fairy_15_location_reward
+∫*∑
+)
+location_idplando_fairy_16_location
+
+nameD.K. Isles Fairy 3
+(
+vanilla_valueDKIsles;Factory Lobby
+
+level	DKIsles
+.
+	reward_id!plando_fairy_16_location_reward
+∏*µ
+)
+location_idplando_fairy_17_location
+
+nameD.K. Isles Fairy 4
+&
+vanilla_valueDKIsles;Fungi Lobby
+
+level	DKIsles
+.
+	reward_id!plando_fairy_17_location_reward
+≈*¬
+)
+location_idplando_fairy_18_location
+
+nameHideout Helm Fairy 1
+-
+vanilla_valueHideoutHelm;Key 8 Room (1)
+
+levelHideoutHelm
+.
+	reward_id!plando_fairy_18_location_reward
+≈*¬
+)
+location_idplando_fairy_19_location
+
+nameHideout Helm Fairy 2
+-
+vanilla_valueHideoutHelm;Key 8 Room (2)
+
+levelHideoutHelm
+.
+	reward_id!plando_fairy_19_location_reward
+
+singularfairy
+˛O
+KasplatÚO*ÔO
+
+name
+Kasplats
+¡O
+	locations≥O2∞O
+˚*¯
+8
+location_id)'plando_JapesDonkeyKasplatRando_location
+
+levelJungleJapes
+
+nameJapes Donkey Kasplat
+3
+vanilla_value" Japes Kasplat: Hive Tunnel Lower
+
+kongdonkey
+=
+	reward_id0.plando_JapesDonkeyKasplatRando_location_reward
+ˇ*¸
+7
+location_id(&plando_JapesDiddyKasplatRando_location
+
+levelJungleJapes
+
+nameJapes Diddy Kasplat
+;
+vanilla_value*(Japes Kasplat: Tunnel Near Painting Room
+
+kongdiddy
+<
+	reward_id/-plando_JapesDiddyKasplatRando_location_reward
+˙*˜
+7
+location_id(&plando_JapesLankyKasplatRando_location
+
+levelJungleJapes
+
+nameJapes Lanky Kasplat
+6
+vanilla_value%#Japes Kasplat: By Lanky Slope Bonus
+
+konglanky
+<
+	reward_id/-plando_JapesLankyKasplatRando_location_reward
+Û*
+6
+location_id'%plando_JapesTinyKasplatRando_location
+
+levelJungleJapes
+
+nameJapes Tiny Kasplat
+3
+vanilla_value" Japes Kasplat: Hive Tunnel Upper
+
+kongtiny
+;
+	reward_id.,plando_JapesTinyKasplatRando_location_reward
+ı*Ú
+8
+location_id)'plando_JapesChunkyKasplatRando_location
+
+levelJungleJapes
+
+nameJapes Chunky Kasplat
+-
+vanilla_valueJapes Kasplat: Underground
+
+kongchunky
+=
+	reward_id0.plando_JapesChunkyKasplatRando_location_reward
+˝*˙
+8
+location_id)'plando_AztecDonkeyKasplatRando_location
+
+level
+AngryAztec
+
+nameAztec Donkey Kasplat
+6
+vanilla_value%#Aztec Kasplat: Behind DK Stone Door
+
+kongdonkey
+=
+	reward_id0.plando_AztecDonkeyKasplatRando_location_reward
+Û*
+7
+location_id(&plando_AztecDiddyKasplatRando_location
+
+level
+AngryAztec
+
+nameAztec Diddy Kasplat
+0
+vanilla_valueAztec Kasplat: On Tiny Temple
+
+kongdiddy
+<
+	reward_id/-plando_AztecDiddyKasplatRando_location_reward
+ˆ*Û
+7
+location_id(&plando_AztecLankyKasplatRando_location
+
+level
+AngryAztec
+
+nameAztec Lanky Kasplat
+3
+vanilla_value" Aztec Kasplat: Llama Temple Lava
+
+konglanky
+<
+	reward_id/-plando_AztecLankyKasplatRando_location_reward
+Ù*Ò
+6
+location_id'%plando_AztecTinyKasplatRando_location
+
+level
+AngryAztec
+
+nameAztec Tiny Kasplat
+5
+vanilla_value$"Aztec Kasplat: Hunky Chunky Barrel
+
+kongtiny
+;
+	reward_id.,plando_AztecTinyKasplatRando_location_reward
+˝*˙
+8
+location_id)'plando_AztecChunkyKasplatRando_location
+
+level
+AngryAztec
+
+nameAztec Chunky Kasplat
+6
+vanilla_value%#Aztec Kasplat: Chunky 5-Door Temple
+
+kongchunky
+=
+	reward_id0.plando_AztecChunkyKasplatRando_location_reward
+ä*á
+:
+location_id+)plando_FactoryDonkeyKasplatRando_location
+
+levelFranticFactory
+ 
+nameFactory Donkey Kasplat
+9
+vanilla_value(&Factory Kasplat: Upper Production Pipe
+
+kongdonkey
+?
+	reward_id20plando_FactoryDonkeyKasplatRando_location_reward
+É*Ä
+9
+location_id*(plando_FactoryDiddyKasplatRando_location
+
+levelFranticFactory
+
+nameFactory Diddy Kasplat
+6
+vanilla_value%#Factory Kasplat: Base of Production
+
+kongdiddy
+>
+	reward_id1/plando_FactoryDiddyKasplatRando_location_reward
+Ù*Ò
+9
+location_id*(plando_FactoryLankyKasplatRando_location
+
+levelFranticFactory
+
+nameFactory Lanky Kasplat
+'
+vanilla_valueFactory Kasplat: R&D
+
+konglanky
+>
+	reward_id1/plando_FactoryLankyKasplatRando_location_reward
+˚*¯
+8
+location_id)'plando_FactoryTinyKasplatRando_location
+
+levelFranticFactory
+
+nameFactory Tiny Kasplat
+2
+vanilla_value!Factory Kasplat: Pole to Arcade
+
+kongtiny
+=
+	reward_id0.plando_FactoryTinyKasplatRando_location_reward
+Ä*˝
+:
+location_id+)plando_FactoryChunkyKasplatRando_location
+
+levelFranticFactory
+ 
+nameFactory Chunky Kasplat
+/
+vanilla_valueFactory Kasplat: Block Tower
+
+kongchunky
+?
+	reward_id20plando_FactoryChunkyKasplatRando_location_reward
+Ñ*Å
+:
+location_id+)plando_GalleonDonkeyKasplatRando_location
+
+levelGloomyGalleon
+ 
+nameGalleon Donkey Kasplat
+4
+vanilla_value#!Galleon Kasplat: Diddy Gold Tower
+
+kongdonkey
+?
+	reward_id20plando_GalleonDonkeyKasplatRando_location_reward
+Å*˛
+9
+location_id*(plando_GalleonDiddyKasplatRando_location
+
+levelGloomyGalleon
+
+nameGalleon Diddy Kasplat
+5
+vanilla_value$"Galleon Kasplat: Lighthouse Alcove
+
+kongdiddy
+>
+	reward_id1/plando_GalleonDiddyKasplatRando_location_reward
+Ä*˝
+9
+location_id*(plando_GalleonLankyKasplatRando_location
+
+levelGloomyGalleon
+
+nameGalleon Lanky Kasplat
+4
+vanilla_value#!Galleon Kasplat: Cannon Game Room
+
+konglanky
+>
+	reward_id1/plando_GalleonLankyKasplatRando_location_reward
+ˆ*Û
+8
+location_id)'plando_GalleonTinyKasplatRando_location
+
+levelGloomyGalleon
+
+nameGalleon Tiny Kasplat
+.
+vanilla_valueGalleon Kasplat: Past Vines
+
+kongtiny
+=
+	reward_id0.plando_GalleonTinyKasplatRando_location_reward
+Ç*ˇ
+:
+location_id+)plando_GalleonChunkyKasplatRando_location
+
+levelGloomyGalleon
+ 
+nameGalleon Chunky Kasplat
+2
+vanilla_value!Galleon Kasplat: Musical Cactus
+
+kongchunky
+?
+	reward_id20plando_GalleonChunkyKasplatRando_location_reward
+É*Ä
+9
+location_id*(plando_ForestDonkeyKasplatRando_location
+
+levelFungiForest
+
+nameForest Donkey Kasplat
+8
+vanilla_value'%Forest Kasplat: Behind Thornvine Barn
+
+kongdonkey
+>
+	reward_id1/plando_ForestDonkeyKasplatRando_location_reward
+ˇ*¸
+8
+location_id)'plando_ForestDiddyKasplatRando_location
+
+levelFungiForest
+
+nameForest Diddy Kasplat
+8
+vanilla_value'%Forest Kasplat: Inside Giant Mushroom
+
+kongdiddy
+=
+	reward_id0.plando_ForestDiddyKasplatRando_location_reward
+¯*ı
+8
+location_id)'plando_ForestLankyKasplatRando_location
+
+levelFungiForest
+
+nameForest Lanky Kasplat
+1
+vanilla_value Forest Kasplat: Under Owl Tree
+
+konglanky
+=
+	reward_id0.plando_ForestLankyKasplatRando_location_reward
+É*Ä
+7
+location_id(&plando_ForestTinyKasplatRando_location
+
+levelFungiForest
+
+nameForest Tiny Kasplat
+@
+vanilla_value/-Forest Kasplat: Mushroom Exterior Lower Floor
+
+kongtiny
+<
+	reward_id/-plando_ForestTinyKasplatRando_location_reward
+ä*á
+9
+location_id*(plando_ForestChunkyKasplatRando_location
+
+levelFungiForest
+
+nameForest Chunky Kasplat
+?
+vanilla_value.,Forest Kasplat: Mushroom Exterior Night Door
+
+kongchunky
+>
+	reward_id1/plando_ForestChunkyKasplatRando_location_reward
+˙*˜
+8
+location_id)'plando_CavesDonkeyKasplatRando_location
+
+levelCrystalCaves
+
+nameCaves Donkey Kasplat
+1
+vanilla_value Caves Kasplat: Near Ice Castle
+
+kongdonkey
+=
+	reward_id0.plando_CavesDonkeyKasplatRando_location_reward
+˘*ˆ
+7
+location_id(&plando_CavesDiddyKasplatRando_location
+
+levelCrystalCaves
+
+nameCaves Diddy Kasplat
+4
+vanilla_value#!Caves Kasplat: Mini Room by Funky
+
+kongdiddy
+<
+	reward_id/-plando_CavesDiddyKasplatRando_location_reward
+˜*Ù
+7
+location_id(&plando_CavesLankyKasplatRando_location
+
+levelCrystalCaves
+
+nameCaves Lanky Kasplat
+2
+vanilla_value!Caves Kasplat: On Warp 5 Pillar
+
+konglanky
+<
+	reward_id/-plando_CavesLankyKasplatRando_location_reward
+ˆ*Û
+6
+location_id'%plando_CavesTinyKasplatRando_location
+
+levelCrystalCaves
+
+nameCaves Tiny Kasplat
+5
+vanilla_value$"Caves Kasplat: Cabins Central Rise
+
+kongtiny
+;
+	reward_id.,plando_CavesTinyKasplatRando_location_reward
+˜*Ù
+8
+location_id)'plando_CavesChunkyKasplatRando_location
+
+levelCrystalCaves
+
+nameCaves Chunky Kasplat
+.
+vanilla_valueCaves Kasplat: On the Igloo
+
+kongchunky
+=
+	reward_id0.plando_CavesChunkyKasplatRando_location_reward
+˛*˚
+9
+location_id*(plando_CastleDonkeyKasplatRando_location
+
+levelCreepyCastle
+
+nameCastle Donkey Kasplat
+2
+vanilla_value!Castle Kasplat: Inside the Tree
+
+kongdonkey
+>
+	reward_id1/plando_CastleDonkeyKasplatRando_location_reward
+¸*˘
+8
+location_id)'plando_CastleDiddyKasplatRando_location
+
+levelCreepyCastle
+
+nameCastle Diddy Kasplat
+4
+vanilla_value#!Castle Kasplat: Lower Cave Center
+
+kongdiddy
+=
+	reward_id0.plando_CastleDiddyKasplatRando_location_reward
+Ö*Ç
+8
+location_id)'plando_CastleLankyKasplatRando_location
+
+levelCreepyCastle
+
+nameCastle Lanky Kasplat
+=
+vanilla_value,*Castle Kasplat: Near Rocketbarrel Overhang
+
+konglanky
+=
+	reward_id0.plando_CastleLankyKasplatRando_location_reward
+˘*ˆ
+7
+location_id(&plando_CastleTinyKasplatRando_location
+
+levelCreepyCastle
+
+nameCastle Tiny Kasplat
+5
+vanilla_value$"Castle Kasplat: On a lone platform
+
+kongtiny
+<
+	reward_id/-plando_CastleTinyKasplatRando_location_reward
+É*Ä
+9
+location_id*(plando_CastleChunkyKasplatRando_location
+
+levelCreepyCastle
+
+nameCastle Chunky Kasplat
+7
+vanilla_value&$Castle Kasplat: Near Upper Cave Shop
+
+kongchunky
+>
+	reward_id1/plando_CastleChunkyKasplatRando_location_reward
+*Ì
+8
+location_id)'plando_IslesDonkeyKasplatRando_location
+
+level	DKIsles
+
+nameIsles Donkey Kasplat
+,
+vanilla_valueIsles Kasplat: Helm Lobby
+
+kongdonkey
+=
+	reward_id0.plando_IslesDonkeyKasplatRando_location_reward
+Ó*Î
+7
+location_id(&plando_IslesDiddyKasplatRando_location
+
+level	DKIsles
+
+nameIsles Diddy Kasplat
+.
+vanilla_valueIsles Kasplat: Castle Lobby
+
+kongdiddy
+<
+	reward_id/-plando_IslesDiddyKasplatRando_location_reward
+Û*
+7
+location_id(&plando_IslesLankyKasplatRando_location
+
+level	DKIsles
+
+nameIsles Lanky Kasplat
+3
+vanilla_value" Isles Kasplat: Caves Lobby Punch
+
+konglanky
+<
+	reward_id/-plando_IslesLankyKasplatRando_location_reward
+Ô*Ï
+6
+location_id'%plando_IslesTinyKasplatRando_location
+
+level	DKIsles
+
+nameIsles Tiny Kasplat
+3
+vanilla_value" Isles Kasplat: Factory Lobby Box
+
+kongtiny
+;
+	reward_id.,plando_IslesTinyKasplatRando_location_reward
+Û*
+8
+location_id)'plando_IslesChunkyKasplatRando_location
+
+level	DKIsles
+
+nameIsles Chunky Kasplat
+/
+vanilla_valueIsles Kasplat: Galleon Lobby
+
+kongchunky
+=
+	reward_id0.plando_IslesChunkyKasplatRando_location_reward
+
+singular	kasplat
+©
+
+MelonCrateö*ó
+
+nameMelon Crates
+Á
+	locationsŸ2÷
+ß*§
+-
+	reward_id plando_crate_0_location_reward
+
+nameMelon Crate 1
+0
+vanilla_valueJungleJapes;In the Rambi Cave
+(
+location_idplando_crate_0_location
+©*¶
+-
+	reward_id plando_crate_1_location_reward
+
+nameMelon Crate 2
+2
+vanilla_value!JungleJapes;Behind the Mountain
+(
+location_idplando_crate_1_location
+§*°
+-
+	reward_id plando_crate_2_location_reward
+
+nameMelon Crate 3
+-
+vanilla_valueAngryAztec;On Llama Temple
+(
+location_idplando_crate_2_location
+§*°
+-
+	reward_id plando_crate_3_location_reward
+
+nameMelon Crate 4
+-
+vanilla_valueAngryAztec;Near Gong Tower
+(
+location_idplando_crate_3_location
+´*®
+-
+	reward_id plando_crate_4_location_reward
+
+nameMelon Crate 5
+4
+vanilla_value#!AngryAztec;Llama Temple: Entrance
+(
+location_idplando_crate_4_location
+∞*≠
+-
+	reward_id plando_crate_5_location_reward
+
+nameMelon Crate 6
+9
+vanilla_value(&FranticFactory;Near Right Storage Shop
+(
+location_idplando_crate_5_location
+¥*±
+-
+	reward_id plando_crate_6_location_reward
+
+nameMelon Crate 7
+=
+vanilla_value,*FranticFactory;Testing Shop Entrance Right
+(
+location_idplando_crate_6_location
+£*†
+-
+	reward_id plando_crate_7_location_reward
+
+nameMelon Crate 8
+,
+vanilla_valueGloomyGalleon;Near Cactus
+(
+location_idplando_crate_7_location
+©*¶
+-
+	reward_id plando_crate_8_location_reward
+
+nameMelon Crate 9
+2
+vanilla_value!FungiForest;Behind Rafters Barn
+(
+location_idplando_crate_8_location
+®*•
+-
+	reward_id plando_crate_9_location_reward
+
+nameMelon Crate 10
+0
+vanilla_valueFungiForest;Owl Tree Clearing
+(
+location_idplando_crate_9_location
+¨*©
+.
+	reward_id!plando_crate_10_location_reward
+
+nameMelon Crate 11
+2
+vanilla_value!FungiForest;Near Thornvine Barn
+)
+location_idplando_crate_10_location
+≤*Ø
+.
+	reward_id!plando_crate_11_location_reward
+
+nameMelon Crate 12
+8
+vanilla_value'%FungiForest;Thornvine Barn: Back Left
+)
+location_idplando_crate_11_location
+∂*≥
+.
+	reward_id!plando_crate_12_location_reward
+
+nameMelon Crate 13
+<
+vanilla_value+)CreepyCastle;Lower Cave: Behind Mausoleum
+)
+location_idplando_crate_12_location
+
+singularcrate
+ü
+CrownPadí*è
+
+nameBattle Crown Arenas
+ÿ
+	locations 2«
+À*»
+1
+location_id" plando_JapesBattleArena_location
+
+nameJapes Battle Arena
+%
+vanilla_valueNear Low Hill Shop
+
+levelJungleJapes
+6
+	reward_id)'plando_JapesBattleArena_location_reward
+—*Œ
+1
+location_id" plando_AztecBattleArena_location
+
+nameAztec Battle Arena
+,
+vanilla_valueTiny Temple: Vulture Room
+
+level
+AngryAztec
+6
+	reward_id)'plando_AztecBattleArena_location_reward
+’*“
+3
+location_id$"plando_FactoryBattleArena_location
+
+nameFactory Battle Arena
+&
+vanilla_valueUnder R&D Grate (1)
+
+levelFranticFactory
+8
+	reward_id+)plando_FactoryBattleArena_location_reward
+“*œ
+3
+location_id$"plando_GalleonBattleArena_location
+
+nameGalleon Battle Arena
+$
+vanilla_valueUnder Cavern Shop
+
+levelGloomyGalleon
+8
+	reward_id+)plando_GalleonBattleArena_location_reward
+ÿ*’
+2
+location_id#!plando_ForestBattleArena_location
+
+nameForest Battle Arena
+/
+vanilla_valueMushroom Exterior Top Ladder
+
+levelFungiForest
+7
+	reward_id*(plando_ForestBattleArena_location_reward
+Œ*À
+1
+location_id" plando_CavesBattleArena_location
+
+nameCaves Battle Arena
+'
+vanilla_valueRotating Cabin: Wall
+
+levelCrystalCaves
+6
+	reward_id)'plando_CavesBattleArena_location_reward
+œ*Ã
+2
+location_id#!plando_CastleBattleArena_location
+
+nameCastle Battle Arena
+%
+vanilla_valueGreenhouse: Center
+
+levelCreepyCastle
+7
+	reward_id*(plando_CastleBattleArena_location_reward
+—*Œ
+2
+location_id#!plando_IslesBattleArena1_location
+
+nameIsles Battle Arena 1
++
+vanilla_valueSnide's Room: Under Rock
+
+level	DKIsles
+7
+	reward_id*(plando_IslesBattleArena1_location_reward
+÷*”
+2
+location_id#!plando_IslesBattleArena2_location
+
+nameIsles Battle Arena 2
+0
+vanilla_valueFungi Lobby: Gorilla Gone Box
+
+level	DKIsles
+7
+	reward_id*(plando_IslesBattleArena2_location_reward
+ *«
+0
+location_id!plando_HelmBattleArena_location
+
+nameHelm Battle Arena
+'
+vanilla_valueTop of Blast-o-Matic
+
+levelHideoutHelm
+5
+	reward_id(&plando_HelmBattleArena_location_reward
+
+singulararena
+
+nameCustom Locations
+≈H
+CreepyCastle¥H*±H
+
+nameCreepy Castle
+ïH
+	locationsáH*ÑH
+û
+Lankyî2ë
+=*;
+
+valueCastleLankyMedal
+
+nameCastle Lanky Medal
+Y*W
+
+valueCastleKasplatHalfway
+4
+name,*Castle Kasplat: Near Rocketbarrel Overhang
+=*;
+
+valueCastleLankyTower
+
+nameCastle Lanky Tower
+G*E
+ 
+valueCastleLankyGreenhouse
+!
+nameCastle Lanky Greenhouse
+E*C
+
+valueCastleLankyMausoleum
+ 
+nameCastle Lanky Mausoleum
+A*?
+
+valueCastleLankyDungeon
+
+nameCastle Lanky Dungeon
+E*C
+
+value
+Balloon088
+*
+name" Castle Lanky Balloon: Wind Tower
+D*B
+
+value
+Balloon089
+)
+name!Castle Lanky Balloon: Mausoleum
+F*D
+
+value
+Balloon095
++
+name#!Castle Lanky Balloon: Dungeon (1)
+F*D
+
+value
+Balloon097
++
+name#!Castle Lanky Balloon: Dungeon (2)
+F*D
+
+valueCastleLankyHalfMedal
+!
+nameCastle Lanky Half-Medal
+ã
+TinyÇ2ˇ
+;*9
+
+valueCastleTinyMedal
+
+nameCastle Tiny Medal
+T*R
+"
+valueCastleKasplatLowerLedge
+,
+name$"Castle Kasplat: On a lone platform
+@*>
+
+valueCastleTinyCarRace
+
+nameCastle Tiny Car Race
+B*@
+
+valueCastleTinyTrashCan
+
+nameCastle Tiny Trash Can
+C*A
+
+valueCastleTinyMausoleum
+
+nameCastle Tiny Mausoleum
+D*B
+
+valueCastleTinyOverChasm
+ 
+nameCastle Tiny Over Chasm
+M*K
+
+value
+Balloon092
+2
+name*(Castle Tiny Balloon: Behind Museum Glass
+D*B
+
+value
+Balloon103
+)
+name!Castle Tiny Balloon: Near Funky
+D*B
+
+valueCastleTinyHalfMedal
+ 
+nameCastle Tiny Half-Medal
+˜
+DiddyÌ2Í
+=*;
+
+valueCastleDiddyMedal
+
+nameCastle Diddy Medal
+J*H
+!
+valueCastleDiddyAboveCastle
+#
+nameCastle Diddy Above Castle
+C*A
+
+valueCastleDiddyBallroom
+
+nameCastle Diddy Ballroom
+N*L
+
+valueCastleKasplatCrypt
++
+name#!Castle Kasplat: Lower Cave Center
+=*;
+
+valueCastleDiddyCrypt
+
+nameCastle Diddy Crypt
+A*?
+
+valueCastleDiddyDungeon
+
+nameCastle Diddy Dungeon
+D*B
+
+value
+Balloon082
+)
+name!Castle Diddy Balloon: Beside W1
+J*H
+
+value
+Balloon083
+/
+name'%Castle Diddy Balloon: Inside Ballroom
+L*J
+
+value
+Balloon090
+1
+name)'Castle Diddy Balloon: Inside the Coffin
+M*K
+
+value
+Balloon094
+2
+name*(Castle Diddy Balloon: Dungeon Chain Room
+O*M
+
+value
+Balloon102
+4
+name,*Castle Diddy Balloon: Above Crypt Entrance
+F*D
+
+valueCastleDiddyHalfMedal
+!
+nameCastle Diddy Half-Medal
+Ÿ$
+EnemiesÕ$2 $
+S*Q
+&
+valueCastleMainEnemy_NearBridge0
+'
+nameCastle Enemy: Near Bridge (0)
+S*Q
+&
+valueCastleMainEnemy_NearBridge1
+'
+nameCastle Enemy: Near Bridge (1)
+]*[
++
+value" CastleMainEnemy_WoodenExtrusion0
+,
+name$"Castle Enemy: Wooden Extrusion (0)
+]*[
++
+value" CastleMainEnemy_WoodenExtrusion1
+,
+name$"Castle Enemy: Wooden Extrusion (1)
+J*H
+#
+valueCastleMainEnemy_NearShed
+!
+nameCastle Enemy: Near Shed
+P*N
+&
+valueCastleMainEnemy_NearLibrary
+$
+nameCastle Enemy: Near Library
+L*J
+$
+valueCastleMainEnemy_NearTower
+"
+nameCastle Enemy: Near Tower
+P*N
+&
+valueCastleMainEnemy_MuseumSteps
+$
+nameCastle Enemy: Museum Steps
+Q*O
+&
+valueCastleMainEnemy_NearLowCave
+%
+nameCastle Enemy: Near Low Cave
+\*Z
++
+value" CastleMainEnemy_PathToLowKasplat
++
+name#!Castle Enemy: Path To Low Kasplat
+F*D
+!
+valueCastleMainEnemy_LowTnS
+
+nameCastle Enemy: Low TnS
+U*S
+(
+valueCastleMainEnemy_PathToDungeon
+'
+nameCastle Enemy: Path To Dungeon
+V*T
+)
+value CastleMainEnemy_NearHeadphones
+'
+nameCastle Enemy: Near Headphones
+P*N
+$
+valueCastleBallroomEnemy_Start
+&
+nameCastle Ballroom Enemy: Start
+U*S
+&
+valueCastleDungeonEnemy_FaceRoom
+)
+name!Castle Dungeon Enemy: Face Room
+W*U
+'
+valueCastleDungeonEnemy_ChairRoom
+*
+name" Castle Dungeon Enemy: Chair Room
+f*d
+.
+value%#CastleDungeonEnemy_OutsideLankyRoom
+2
+name*(Castle Dungeon Enemy: Outside Lanky Room
+Z*X
+'
+valueCastleLowCaveEnemy_NearCrypt
+-
+name%#Castle Lower Cave Enemy: Near Crypt
+\*Z
+(
+valueCastleLowCaveEnemy_StairRight
+.
+name&$Castle Lower Cave Enemy: Stair Right
+Z*X
+'
+valueCastleLowCaveEnemy_StairLeft
+-
+name%#Castle Lower Cave Enemy: Stair Left
+b*`
++
+value" CastleLowCaveEnemy_NearMausoleum
+1
+name)'Castle Lower Cave Enemy: Near Mausoleum
+Z*X
+'
+valueCastleLowCaveEnemy_NearFunky
+-
+name%#Castle Lower Cave Enemy: Near Funky
+V*T
+%
+valueCastleLowCaveEnemy_NearTag
++
+name#!Castle Lower Cave Enemy: Near Tag
+\*Z
+(
+valueCastleCryptEnemy_DiddyCoffin0
+.
+name&$Castle Crypt Enemy: Diddy Coffin (0)
+\*Z
+(
+valueCastleCryptEnemy_DiddyCoffin1
+.
+name&$Castle Crypt Enemy: Diddy Coffin (1)
+\*Z
+(
+valueCastleCryptEnemy_DiddyCoffin2
+.
+name&$Castle Crypt Enemy: Diddy Coffin (2)
+\*Z
+(
+valueCastleCryptEnemy_DiddyCoffin3
+.
+name&$Castle Crypt Enemy: Diddy Coffin (3)
+^*\
+)
+value CastleCryptEnemy_ChunkyCoffin0
+/
+name'%Castle Crypt Enemy: Chunky Coffin (0)
+^*\
+)
+value CastleCryptEnemy_ChunkyCoffin1
+/
+name'%Castle Crypt Enemy: Chunky Coffin (1)
+^*\
+)
+value CastleCryptEnemy_ChunkyCoffin2
+/
+name'%Castle Crypt Enemy: Chunky Coffin (2)
+^*\
+)
+value CastleCryptEnemy_ChunkyCoffin3
+/
+name'%Castle Crypt Enemy: Chunky Coffin (3)
+[*Y
+)
+value CastleCryptEnemy_MinecartEntry
+,
+name$"Castle Crypt Enemy: Minecart Entry
+H*F
+ 
+valueCastleCryptEnemy_Fork
+"
+nameCastle Crypt Enemy: Fork
+S*Q
+%
+valueCastleCryptEnemy_NearDiddy
+(
+name Castle Crypt Enemy: Near Diddy
+U*S
+&
+valueCastleCryptEnemy_NearChunky
+)
+name!Castle Crypt Enemy: Near Chunky
+Y*W
+(
+valueCastleMausoleumEnemy_TinyPath
++
+name#!Castle Mausoleum Enemy: Tiny Path
+`*^
+*
+value!CastleMausoleumEnemy_LankyPath0
+0
+name(&Castle Mausoleum Enemy: Lanky Path (0)
+`*^
+*
+value!CastleMausoleumEnemy_LankyPath1
+0
+name(&Castle Mausoleum Enemy: Lanky Path (1)
+`*^
++
+value" CastleUpperCaveEnemy_NearDungeon
+/
+name'%Castle Upper Cave Enemy: Near Dungeon
+X*V
+'
+valueCastleUpperCaveEnemy_NearPit
++
+name#!Castle Upper Cave Enemy: Near Pit
+b*`
+,
+value#!CastleUpperCaveEnemy_NearEntrance
+0
+name(&Castle Upper Cave Enemy: Near Entrance
+Z*X
+'
+valueCastleLibraryEnemy_ForkLeft0
+-
+name%#Castle Library Enemy: Fork Left (0)
+Z*X
+'
+valueCastleLibraryEnemy_ForkLeft1
+-
+name%#Castle Library Enemy: Fork Left (1)
+Y*W
+(
+valueCastleLibraryEnemy_ForkCenter
++
+name#!Castle Library Enemy: Fork Center
+W*U
+'
+valueCastleLibraryEnemy_ForkRight
+*
+name" Castle Library Enemy: Fork Right
+Z*X
+'
+valueCastleMuseumEnemy_MainFloor0
+-
+name%#Castle Museum Enemy: Main Floor (0)
+Z*X
+'
+valueCastleMuseumEnemy_MainFloor1
+-
+name%#Castle Museum Enemy: Main Floor (1)
+Z*X
+'
+valueCastleMuseumEnemy_MainFloor2
+-
+name%#Castle Museum Enemy: Main Floor (2)
+Z*X
+'
+valueCastleMuseumEnemy_MainFloor3
+-
+name%#Castle Museum Enemy: Main Floor (3)
+L*J
+"
+valueCastleMuseumEnemy_Start
+$
+nameCastle Museum Enemy: Start
+V*T
+%
+valueCastleTreeEnemy_StartRoom0
++
+name#!Castle Tree Enemy: Start Room (0)
+V*T
+%
+valueCastleTreeEnemy_StartRoom1
++
+name#!Castle Tree Enemy: Start Room (1)
+ó
+Donkeyå2â
+?*=
+
+valueCastleDonkeyMedal
+
+nameCastle Donkey Medal
+E*C
+
+valueCastleDonkeyTree
+$
+nameCastle Donkey Tree Sniping
+K*I
+
+valueCastleKasplatTree
+)
+name!Castle Kasplat: Inside the Tree
+C*A
+
+valueCastleDonkeyLibrary
+
+nameCastle Donkey Library
+F*D
+ 
+valueCastleDonkeyMinecarts
+ 
+nameCastle Donkey Minecart
+C*A
+
+valueCastleDonkeyDungeon
+
+nameCastle Donkey Dungeon
+T*R
+
+value
+Balloon091
+9
+name1/Castle Donkey Balloon: Beside Minecart Entrance
+@*>
+
+value
+Balloon099
+%
+nameCastle Donkey Balloon: Tree
+H*F
+ 
+valueCastleDonkeyHalfMedal
+"
+nameCastle Donkey Half-Medal
+€
+Chunky–2Õ
+?*=
+
+valueCastleChunkyMedal
+
+nameCastle Chunky Medal
+L*J
+
+valueCastleChunkyTree
++
+name#!Castle Chunky Tree Sniping Barrel
+=*;
+
+valueCastleChunkyShed
+
+nameCastle Chunky Shed
+A*?
+
+valueCastleChunkyMuseum
+
+nameCastle Chunky Museum
+?*=
+
+valueCastleChunkyCrypt
+
+nameCastle Chunky Crypt
+U*S
+!
+valueCastleKasplatNearCandy
+.
+name&$Castle Kasplat: Near Upper Cave Shop
+B*@
+
+value
+Balloon093
+'
+nameCastle Chunky Balloon: Museum
+G*E
+
+value
+Balloon096
+,
+name$"Castle Chunky Balloon: Dungeon (1)
+G*E
+
+value
+Balloon098
+,
+name$"Castle Chunky Balloon: Dungeon (2)
+@*>
+
+value
+Balloon100
+%
+nameCastle Chunky Balloon: Tree
+@*>
+
+value
+Balloon101
+%
+nameCastle Chunky Balloon: Shed
+H*F
+ 
+valueCastleChunkyHalfMedal
+"
+nameCastle Chunky Half-Medal
+Ñ
+	All Kongsˆ2Û
+P*N
+ 
+valueCastleBananaFairyTree
+*
+name" Castle Fairy (Tree Sniping Room)
+P*N
+$
+valueCastleBananaFairyBallroom
+&
+nameCastle Fairy (Near Car Race)
+T*R
+
+valueCastleBattleArena
+2
+name*(Castle Battle Arena (Greenhouse: Center)
+8*6
+
+value	CastleKey
+
+nameCastle Boss Defeated
+V*T
+!
+valueRainbowCoin_Location11
+/
+name'%Castle Dirt (Top of Castle Near Shop)
+[*Y
+ 
+valueMelonCrate_Location12
+5
+name-+Castle Crate (Lower Cave: Behind Mausoleum)
+G*E
+ 
+valueHoldableBoulderMuseum
+!
+nameCastle Boulder (Museum)
+?*=
+
+valueBreakableCastleShed
+
+nameCastle Box (Shed)
 Ù?
 ShopsÍ?*Á?
+
+nameShops
 ”?
 levels»?*≈?
-≥
-FungiForest£*†
-Ö
-	locations˜2Ù
->*<
-
-valueSuperSimianSlam
+Œ	
+CreepyCastleΩ	*∫	
+
+nameCreepy Castle
+û	
+	locationsê	2ç	
+C*A
+
+valueSuperDuperSimianSlam
 
-nameForest Cranky Shared
-8*6
-
-value
-HomingAmmo
+nameCastle Cranky Shared
+9*7
+
+valueSniperSight
 
-nameForest Funky Shared
+nameCastle Funky Shared
+;*9
+
+valueMusicUpgrade2
+
+nameCastle Candy Shared
 A*?
 
-valueDonkeyForestPotion
+valueDonkeyCastlePotion
 
-nameForest Cranky Donkey
+nameCastle Cranky Donkey
 ?*=
 
-valueDiddyForestPotion
+valueDiddyCastlePotion
 
-nameForest Cranky Diddy
+nameCastle Cranky Diddy
 ?*=
 
-valueLankyForestPotion
+valueLankyCastlePotion
 
-nameForest Cranky Lanky
+nameCastle Cranky Lanky
 =*;
 
-valueTinyForestPotion
+valueTinyCastlePotion
 
-nameForest Cranky Tiny
+nameCastle Cranky Tiny
 A*?
 
-valueChunkyForestPotion
+valueChunkyCastlePotion
 
-nameForest Cranky Chunky
+nameCastle Cranky Chunky
 =*;
 
-valueDonkeyForestGun
+valueDonkeyCastleGun
 
-nameForest Funky Donkey
+nameCastle Funky Donkey
 ;*9
 
-valueDiddyForestGun
+valueDiddyCastleGun
 
-nameForest Funky Diddy
+nameCastle Funky Diddy
 ;*9
 
-valueLankyForestGun
+valueLankyCastleGun
 
-nameForest Funky Lanky
+nameCastle Funky Lanky
 9*7
 
-valueTinyForestGun
+valueTinyCastleGun
 
-nameForest Funky Tiny
+nameCastle Funky Tiny
 =*;
 
-valueChunkyForestGun
+valueChunkyCastleGun
 
-nameForest Funky Chunky
-
-nameFungi Forest
-ﬂ
-DKIsles”*–
-∑
-	locations©2¶
-8*6
-
-value
-SimianSlam
+nameCastle Funky Chunky
+D*B
+!
+valueDonkeyCastleInstrument
 
-nameIsles Cranky Shared
--*+
-
-valueRarewareCoin
-
-nameJetpac
-?*=
+nameCastle Candy Donkey
+B*@
+ 
+valueDiddyCastleInstrument
 
-valueDonkeyIslesPotion
-
-nameIsles Cranky Donkey
-=*;
+nameCastle Candy Diddy
+B*@
+ 
+valueLankyCastleInstrument
+
+nameCastle Candy Lanky
+@*>
+
+valueTinyCastleInstrument
 
-valueDiddyIslesPotion
-
-nameIsles Cranky Diddy
-=*;
-
-valueLankyIslesPotion
-
-nameIsles Cranky Lanky
-;*9
-
-valueTinyIslesPotion
-
-nameIsles Cranky Tiny
-?*=
-
-valueChunkyIslesPotion
+nameCastle Candy Tiny
+D*B
+!
+valueChunkyCastleInstrument
 
-nameIsles Cranky Chunky
-
-name
-D.K. Isles
+nameCastle Candy Chunky
 ˜
 JungleJapesÁ*‰
+
+nameJungle Japes
 …
 	locationsª2∏
 9*7
@@ -23003,106 +25561,149 @@ FeatherGun
 valueSharedJapesGun
 
 nameJapes Funky Shared
-
-nameJungle Japes
-‹	
-FranticFactory…	*∆	
-®	
-	locationsö	2ó	
-;*9
-
-valueGorillaGrab
-
-nameFactory Cranky Donkey
-;*9
-
-valueSimianSpring
-
-nameFactory Cranky Diddy
+ı	
+GloomyGalleon„	*‡	
+
+nameGloomy Galleon
+√	
+	locationsµ	2≤	
 <*:
 
-valueBaboonBalloon
+valueMusicUpgrade1
 
-nameFactory Cranky Lanky
-;*9
-
-valuePonyTailTwirl
-
-nameFactory Cranky Tiny
-<*:
-
-valuePrimatePunch
-
-nameFactory Cranky Chunky
-8*6
-
-value	AmmoBelt1
-
-nameFactory Funky Shared
+nameGalleon Candy Shared
 C*A
 
-valueSharedFactoryPotion
+valueSharedGalleonPotion
 
-nameFactory Cranky Shared
+nameGalleon Cranky Shared
+C*A
+
+valueDonkeyGalleonPotion
+
+nameGalleon Cranky Donkey
+A*?
+
+valueDiddyGalleonPotion
+
+nameGalleon Cranky Diddy
+A*?
+
+valueLankyGalleonPotion
+
+nameGalleon Cranky Lanky
+?*=
+
+valueTinyGalleonPotion
+
+nameGalleon Cranky Tiny
+C*A
+
+valueChunkyGalleonPotion
+
+nameGalleon Cranky Chunky
 ?*=
 
-valueDonkeyFactoryGun
+valueSharedGalleonGun
 
-nameFactory Funky Donkey
+nameGalleon Funky Shared
+?*=
+
+valueDonkeyGalleonGun
+
+nameGalleon Funky Donkey
 =*;
 
-valueDiddyFactoryGun
+valueDiddyGalleonGun
 
-nameFactory Funky Diddy
+nameGalleon Funky Diddy
 =*;
 
-valueLankyFactoryGun
+valueLankyGalleonGun
 
-nameFactory Funky Lanky
+nameGalleon Funky Lanky
 ;*9
 
-valueTinyFactoryGun
+valueTinyGalleonGun
 
-nameFactory Funky Tiny
+nameGalleon Funky Tiny
 ?*=
 
-valueChunkyFactoryGun
+valueChunkyGalleonGun
 
-nameFactory Funky Chunky
+nameGalleon Funky Chunky
 F*D
 "
-valueSharedFactoryInstrument
+valueDonkeyGalleonInstrument
 
-nameFactory Candy Shared
-F*D
-"
-valueDonkeyFactoryInstrument
-
-nameFactory Candy Donkey
+nameGalleon Candy Donkey
 D*B
 !
-valueDiddyFactoryInstrument
+valueDiddyGalleonInstrument
 
-nameFactory Candy Diddy
+nameGalleon Candy Diddy
 D*B
 !
-valueLankyFactoryInstrument
+valueLankyGalleonInstrument
 
-nameFactory Candy Lanky
+nameGalleon Candy Lanky
 B*@
  
-valueTinyFactoryInstrument
+valueTinyGalleonInstrument
 
-nameFactory Candy Tiny
+nameGalleon Candy Tiny
 F*D
 "
-valueChunkyFactoryInstrument
+valueChunkyGalleonInstrument
 
-nameFactory Candy Chunky
-
-nameFrantic Factory
+nameGalleon Candy Chunky
+ﬂ
+DKIsles”*–
+
+name
+D.K. Isles
+∑
+	locations©2¶
+8*6
+
+value
+SimianSlam
+
+nameIsles Cranky Shared
+-*+
+
+valueRarewareCoin
+
+nameJetpac
+?*=
+
+valueDonkeyIslesPotion
+
+nameIsles Cranky Donkey
+=*;
+
+valueDiddyIslesPotion
+
+nameIsles Cranky Diddy
+=*;
+
+valueLankyIslesPotion
+
+nameIsles Cranky Lanky
+;*9
+
+valueTinyIslesPotion
+
+nameIsles Cranky Tiny
+?*=
+
+valueChunkyIslesPotion
+
+nameIsles Cranky Chunky
 ö	
 CrystalCavesâ	*Ü	
+
+nameCrystal Caves
 Í
 	locations‹2Ÿ
 =*;
@@ -23197,107 +25798,174 @@ B*@
 valueChunkyCavesInstrument
 
 nameCaves Candy Chunky
-
-nameCrystal Caves
-Œ	
-CreepyCastleΩ	*∫	
-û	
-	locationsê	2ç	
-C*A
-
-valueSuperDuperSimianSlam
-
-nameCastle Cranky Shared
-9*7
+≥
+FungiForest£*†
 
-valueSniperSight
+nameFungi Forest
+Ö
+	locations˜2Ù
+>*<
+
+valueSuperSimianSlam
+
+nameForest Cranky Shared
+8*6
+
+value
+HomingAmmo
 
-nameCastle Funky Shared
-;*9
-
-valueMusicUpgrade2
-
-nameCastle Candy Shared
+nameForest Funky Shared
 A*?
 
-valueDonkeyCastlePotion
+valueDonkeyForestPotion
 
-nameCastle Cranky Donkey
+nameForest Cranky Donkey
 ?*=
 
-valueDiddyCastlePotion
+valueDiddyForestPotion
 
-nameCastle Cranky Diddy
+nameForest Cranky Diddy
 ?*=
 
-valueLankyCastlePotion
+valueLankyForestPotion
 
-nameCastle Cranky Lanky
+nameForest Cranky Lanky
 =*;
 
-valueTinyCastlePotion
+valueTinyForestPotion
 
-nameCastle Cranky Tiny
+nameForest Cranky Tiny
 A*?
 
-valueChunkyCastlePotion
+valueChunkyForestPotion
 
-nameCastle Cranky Chunky
+nameForest Cranky Chunky
 =*;
 
-valueDonkeyCastleGun
+valueDonkeyForestGun
 
-nameCastle Funky Donkey
+nameForest Funky Donkey
 ;*9
 
-valueDiddyCastleGun
+valueDiddyForestGun
 
-nameCastle Funky Diddy
+nameForest Funky Diddy
 ;*9
 
-valueLankyCastleGun
+valueLankyForestGun
 
-nameCastle Funky Lanky
+nameForest Funky Lanky
 9*7
 
-valueTinyCastleGun
+valueTinyForestGun
 
-nameCastle Funky Tiny
+nameForest Funky Tiny
 =*;
 
-valueChunkyCastleGun
+valueChunkyForestGun
 
-nameCastle Funky Chunky
-D*B
-!
-valueDonkeyCastleInstrument
-
-nameCastle Candy Donkey
-B*@
- 
-valueDiddyCastleInstrument
-
-nameCastle Candy Diddy
-B*@
- 
-valueLankyCastleInstrument
-
-nameCastle Candy Lanky
-@*>
+nameForest Funky Chunky
+‹	
+FranticFactory…	*∆	
+
+nameFrantic Factory
+®	
+	locationsö	2ó	
+;*9
+
+valueGorillaGrab
 
-valueTinyCastleInstrument
+nameFactory Cranky Donkey
+;*9
+
+valueSimianSpring
+
+nameFactory Cranky Diddy
+<*:
+
+valueBaboonBalloon
+
+nameFactory Cranky Lanky
+;*9
+
+valuePonyTailTwirl
+
+nameFactory Cranky Tiny
+<*:
+
+valuePrimatePunch
+
+nameFactory Cranky Chunky
+8*6
+
+value	AmmoBelt1
+
+nameFactory Funky Shared
+C*A
+
+valueSharedFactoryPotion
+
+nameFactory Cranky Shared
+?*=
 
-nameCastle Candy Tiny
+valueDonkeyFactoryGun
+
+nameFactory Funky Donkey
+=*;
+
+valueDiddyFactoryGun
+
+nameFactory Funky Diddy
+=*;
+
+valueLankyFactoryGun
+
+nameFactory Funky Lanky
+;*9
+
+valueTinyFactoryGun
+
+nameFactory Funky Tiny
+?*=
+
+valueChunkyFactoryGun
+
+nameFactory Funky Chunky
+F*D
+"
+valueSharedFactoryInstrument
+
+nameFactory Candy Shared
+F*D
+"
+valueDonkeyFactoryInstrument
+
+nameFactory Candy Donkey
 D*B
 !
-valueChunkyCastleInstrument
+valueDiddyFactoryInstrument
 
-nameCastle Candy Chunky
-
-nameCreepy Castle
+nameFactory Candy Diddy
+D*B
+!
+valueLankyFactoryInstrument
+
+nameFactory Candy Lanky
+B*@
+ 
+valueTinyFactoryInstrument
+
+nameFactory Candy Tiny
+F*D
+"
+valueChunkyFactoryInstrument
+
+nameFactory Candy Chunky
 Î
 
 AngryAztec‹*Ÿ
+
+nameAngry Aztec
 ø
 	locations±2Æ
 8*6
@@ -23393,110 +26061,2047 @@ B*@
 valueSharedAztecInstrument
 
 nameAztec Candy Shared
-
-nameAngry Aztec
-ı	
-GloomyGalleon„	*‡	
-√	
-	locationsµ	2≤	
-<*:
-
-valueMusicUpgrade1
-
-nameGalleon Candy Shared
-C*A
-
-valueSharedGalleonPotion
-
-nameGalleon Cranky Shared
-C*A
-
-valueDonkeyGalleonPotion
-
-nameGalleon Cranky Donkey
-A*?
-
-valueDiddyGalleonPotion
-
-nameGalleon Cranky Diddy
-A*?
-
-valueLankyGalleonPotion
-
-nameGalleon Cranky Lanky
-?*=
-
-valueTinyGalleonPotion
-
-nameGalleon Cranky Tiny
-C*A
-
-valueChunkyGalleonPotion
-
-nameGalleon Cranky Chunky
-?*=
-
-valueSharedGalleonGun
-
-nameGalleon Funky Shared
-?*=
-
-valueDonkeyGalleonGun
-
-nameGalleon Funky Donkey
-=*;
-
-valueDiddyGalleonGun
-
-nameGalleon Funky Diddy
-=*;
-
-valueLankyGalleonGun
-
-nameGalleon Funky Lanky
+Ã=
+JungleJapesº=*π=
+
+nameJungle Japes
+û=
+	locationsê=*ç=
+Á
+Lanky›2⁄
 ;*9
-
-valueTinyGalleonGun
-
-nameGalleon Funky Tiny
-?*=
+
+valueJapesLankyMedal
 
-valueChunkyGalleonGun
-
-nameGalleon Funky Chunky
-F*D
-"
-valueDonkeyGalleonInstrument
-
-nameGalleon Candy Donkey
-D*B
-!
-valueDiddyGalleonInstrument
-
-nameGalleon Candy Diddy
-D*B
-!
-valueLankyGalleonInstrument
-
-nameGalleon Candy Lanky
-B*@
+nameJapes Lanky Medal
+M*K
  
-valueTinyGalleonInstrument
-
-nameGalleon Candy Tiny
-F*D
-"
-valueChunkyGalleonInstrument
+valueJapesLankyCagedBanana
+'
+nameJapes Lanky Timed Cage Banana
+K*I
 
-nameGalleon Candy Chunky
+valueJapesLankyGrapeGate
+'
+nameJapes Lanky Grape Gate Barrel
+B*@
+
+valueJapesLankySlope
+"
+nameJapes Lanky Slope Barrel
+Q*O
+
+valueJapesKasplatNearLab
+-
+name%#Japes Kasplat: By Lanky Slope Bonus
+O*M
+
+valueJapesLankyFairyCave
++
+name#!Japes Lanky Painting Room Zingers
+@*>
+
+value
+Balloon004
+%
+nameJapes Lanky Balloon: By Hut
+C*A
+
+value
+Balloon012
+(
+name Japes Lanky Balloon: By his BP
+J*H
+
+value
+Balloon014
+/
+name'%Japes Lanky Balloon: In Painting Room
+D*B
+
+valueJapesLankyHalfMedal
+ 
+nameJapes Lanky Half-Medal
+Õ
+Tinyƒ2¡
+9*7
+
+valueJapesTinyMedal
+
+nameJapes Tiny Medal
+K*I
+
+valueJapesTinyCagedBanana
+&
+nameJapes Tiny Timed Cage Banana
+S*Q
+%
+valueJapesTinyFeatherGateBarrel
+(
+name Japes Tiny Feather Gate Barrel
+T*R
+$
+valueJapesKasplatLeftTunnelFar
+*
+name" Japes Kasplat: Hive Tunnel Upper
+9*7
+
+valueJapesTinyStump
+
+nameJapes Tiny Stump
+=*;
+
+valueJapesTinyBeehive
+
+nameJapes Tiny Beehive
+?*=
+
+value
+Balloon008
+$
+nameJapes Tiny Balloon: By Hut
+F*D
+
+value
+Balloon009
++
+name#!Japes Tiny Balloon: In Fairy Room
+E*C
+
+value
+Balloon013
+*
+name" Japes Tiny Balloon: In Shellhive
+B*@
+
+valueJapesTinyHalfMedal
+
+nameJapes Tiny Half-Medal
+„
+DiddyŸ2÷
+;*9
+
+valueJapesDiddyMedal
+
+nameJapes Diddy Medal
+M*K
+ 
+valueJapesDiddyCagedBanana
+'
+nameJapes Diddy Timed Cage Banana
+H*F
+
+valueJapesDiddyMountain
+%
+nameJapes Diddy Top of Mountain
+D*B
+
+valueJapesDiddyTunnel
+#
+nameJapes Diddy Peanut Tunnel
+_*]
+'
+valueJapesKasplatNearPaintingRoom
+2
+name*(Japes Kasplat: Tunnel Near Painting Room
+B*@
+
+valueJapesDiddyMinecarts
+
+nameJapes Diddy Minecart
+I*G
+
+value
+Balloon000
+.
+name&$Japes Diddy Balloon: Inside Mountain
+A*?
+
+value
+Balloon001
+&
+nameJapes Diddy Balloon: In Cave
+?*=
+
+value
+Balloon005
+$
+nameJapes Diddy Balloon: By W5
+D*B
+
+valueJapesDiddyHalfMedal
+ 
+nameJapes Diddy Half-Medal
+É
+Enemies˜2Ù
+A*?
+
+valueJapesMainEnemy_Start
+
+nameJapes Enemy: Start
+N*L
+%
+valueJapesMainEnemy_DiddyCavern
+#
+nameJapes Enemy: Diddy Cavern
+H*F
+!
+valueJapesMainEnemy_Tunnel0
+!
+nameJapes Enemy: Tunnel (0)
+H*F
+!
+valueJapesMainEnemy_Tunnel1
+!
+nameJapes Enemy: Tunnel (1)
+F*D
+ 
+valueJapesMainEnemy_Storm0
+ 
+nameJapes Enemy: Storm (0)
+F*D
+ 
+valueJapesMainEnemy_Storm1
+ 
+nameJapes Enemy: Storm (1)
+F*D
+ 
+valueJapesMainEnemy_Storm2
+ 
+nameJapes Enemy: Storm (2)
+D*B
+
+valueJapesMainEnemy_Hive0
+
+nameJapes Enemy: Hive (0)
+D*B
+
+valueJapesMainEnemy_Hive1
+
+nameJapes Enemy: Hive (1)
+D*B
+
+valueJapesMainEnemy_Hive2
+
+nameJapes Enemy: Hive (2)
+D*B
+
+valueJapesMainEnemy_Hive3
+
+nameJapes Enemy: Hive (3)
+D*B
+
+valueJapesMainEnemy_Hive4
+
+nameJapes Enemy: Hive (4)
+Q*O
+&
+valueJapesMainEnemy_KilledInDemo
+%
+nameJapes Enemy: Killed In Demo
+V*T
+)
+value JapesMainEnemy_NearUnderground
+'
+nameJapes Enemy: Near Underground
+U*S
+'
+valueJapesMainEnemy_NearPainting0
+(
+name Japes Enemy: Near Painting (0)
+U*S
+'
+valueJapesMainEnemy_NearPainting1
+(
+name Japes Enemy: Near Painting (1)
+U*S
+'
+valueJapesMainEnemy_NearPainting2
+(
+name Japes Enemy: Near Painting (2)
+G*E
+"
+valueJapesMainEnemy_Mountain
+
+nameJapes Enemy: Mountain
+R*P
+'
+valueJapesMainEnemy_FeatherTunnel
+%
+nameJapes Enemy: Feather Tunnel
+P*N
+&
+valueJapesMainEnemy_MiddleTunnel
+$
+nameJapes Enemy: Middle Tunnel
+S*Q
+$
+valueJapesMountainEnemy_Start0
+)
+name!Japes Mountain Enemy: Start (0)
+S*Q
+$
+valueJapesMountainEnemy_Start1
+)
+name!Japes Mountain Enemy: Start (1)
+S*Q
+$
+valueJapesMountainEnemy_Start2
+)
+name!Japes Mountain Enemy: Start (2)
+S*Q
+$
+valueJapesMountainEnemy_Start3
+)
+name!Japes Mountain Enemy: Start (3)
+S*Q
+$
+valueJapesMountainEnemy_Start4
+)
+name!Japes Mountain Enemy: Start (4)
+g*e
+-
+value$"JapesMountainEnemy_NearGateSwitch0
+4
+name,*Japes Mountain Enemy: Near Gate Switch (0)
+g*e
+-
+value$"JapesMountainEnemy_NearGateSwitch1
+4
+name,*Japes Mountain Enemy: Near Gate Switch (1)
+M*K
+"
+valueJapesMountainEnemy_HiLo
+%
+nameJapes Mountain Enemy: Hi Lo
+Y*W
+'
+valueJapesMountainEnemy_Conveyor0
+,
+name$"Japes Mountain Enemy: Conveyor (0)
+Y*W
+'
+valueJapesMountainEnemy_Conveyor1
+,
+name$"Japes Mountain Enemy: Conveyor (1)
+Y*W
+(
+valueJapesShellhiveEnemy_FirstRoom
++
+name#!Japes Tiny Hive Enemy: First Room
+`*^
+*
+value!JapesShellhiveEnemy_SecondRoom0
+0
+name(&Japes Tiny Hive Enemy: Second Room (0)
+`*^
+*
+value!JapesShellhiveEnemy_SecondRoom1
+0
+name(&Japes Tiny Hive Enemy: Second Room (1)
+^*\
+)
+value JapesShellhiveEnemy_ThirdRoom0
+/
+name'%Japes Tiny Hive Enemy: Third Room (0)
+^*\
+)
+value JapesShellhiveEnemy_ThirdRoom1
+/
+name'%Japes Tiny Hive Enemy: Third Room (1)
+^*\
+)
+value JapesShellhiveEnemy_ThirdRoom2
+/
+name'%Japes Tiny Hive Enemy: Third Room (2)
+^*\
+)
+value JapesShellhiveEnemy_ThirdRoom3
+/
+name'%Japes Tiny Hive Enemy: Third Room (3)
+W*U
+'
+valueJapesShellhiveEnemy_MainRoom
+*
+name" Japes Tiny Hive Enemy: Main Room
+õ
+Donkeyê2ç
+=*;
+
+valueJapesDonkeyMedal
+
+nameJapes Donkey Medal
+:*8
+
+value	DiddyKong
+ 
+nameJapes Cage: Diddy Kong
+O*M
+!
+valueJapesDonkeyCagedBanana
+(
+name Japes Donkey Floor Cage Banana
+J*H
+!
+valueJapesDonkeyBaboonBlast
+#
+nameJapes Donkey Baboon Blast
+U*S
+%
+valueJapesKasplatLeftTunnelNear
+*
+name" Japes Kasplat: Hive Tunnel Lower
+C*A
+
+value
+Balloon002
+(
+name Japes Donkey Balloon: By Snide
+I*G
+
+value
+Balloon006
+.
+name&$Japes Donkey Balloon: By Underground
+D*B
+
+value
+Balloon007
+)
+name!Japes Donkey Balloon: By Cranky
+F*D
+
+valueJapesDonkeyHalfMedal
+!
+nameJapes Donkey Half-Medal
+Ò
+ChunkyÊ2„
+=*;
+
+valueJapesChunkyMedal
+
+nameJapes Chunky Medal
+A*?
+
+valueJapesChunkyBoulder
+
+nameJapes Chunky Boulder
+O*M
+!
+valueJapesChunkyCagedBanana
+(
+name Japes Chunky Timed Cage Banana
+U*S
+&
+valueJapesChunkyGiantBonusBarrel
+)
+name!Japes Chunky Giant Bonus Barrel
+I*G
+!
+valueJapesChunkyUnderground
+"
+nameJapes Chunky Underground
+L*J
+"
+valueJapesKasplatUnderground
+$
+nameJapes Kasplat: Underground
+F*D
+
+value
+Balloon003
++
+name#!Japes Chunky Balloon: In Cave (1)
+F*D
+
+value
+Balloon010
++
+name#!Japes Chunky Balloon: In Cave (2)
+F*D
+
+value
+Balloon011
++
+name#!Japes Chunky Balloon: In Cave (3)
+F*D
+
+valueJapesChunkyHalfMedal
+!
+nameJapes Chunky Half-Medal
+“
+	All Kongsƒ2¡
+M*K
+!
+valueJapesDonkeyFrontofCage
+&
+nameJapes in Front of Diddy Cage
+D*B
+
+valueJapesDonkeyFreeDiddy
+
+nameJapes Free Diddy Item
+R*P
+
+valueJapesBattleArena
+1
+name)'Japes Battle Arena (Near Low Hill Shop)
+Q*O
+$
+valueJapesBananaFairyRambiCave
+'
+nameJapes Fairy (Rambi Door Pool)
+O*M
+$
+valueJapesBananaFairyLankyCave
+%
+nameJapes Fairy (Painting Room)
+6*4
+
+value
+JapesKey
+
+nameJapes Boss Defeated
+N*L
+!
+valueRainbowCoin_Location00
+'
+nameJapes Dirt (On Painting Hill)
+Q*O
+ 
+valueMelonCrate_Location00
++
+name#!Japes Crate (Behind the Mountain)
+O*M
+ 
+valueMelonCrate_Location01
+)
+name!Japes Crate (In the Rambi Cave)
+<*:
+
+valueBreakableJapesDKHut
+
+nameJapes Hut (DK)
+B*@
+!
+valueBreakableJapesDiddyHut
+
+nameJapes Hut (Diddy)
+B*@
+!
+valueBreakableJapesLankyHut
+
+nameJapes Hut (Lanky)
+@*>
+ 
+valueBreakableJapesTinyHut
+
+nameJapes Hut (Tiny)
+◊4
+GloomyGalleon≈4*¬4
 
 nameGloomy Galleon
+•4
+	locationsó4*î4
+è
+LankyÖ2Ç
+?*=
+
+valueGalleonLankyMedal
+
+nameGalleon Lanky Medal
+Q*O
+ 
+valueGalleonKasplatCannons
++
+name#!Galleon Kasplat: Cannon Game Room
+P*N
+$
+valueGalleonLankyEnguardeChest
+&
+nameGalleon Lanky Enguarde Chest
+O*M
+ 
+valueGalleonLankyGoldTower
+)
+name!Galleon Lanky Gold Tower Barrel
+I*G
+ 
+valueGalleonLanky2DoorShip
+#
+nameGalleon Lanky 2 Door Ship
+I*G
+ 
+valueGalleonLanky5DoorShip
+#
+nameGalleon Lanky 5 Door Ship
+P*N
+
+value
+Balloon041
+5
+name-+Galleon Lanky Balloon: Underneath Crown (1)
+P*N
+
+value
+Balloon042
+5
+name-+Galleon Lanky Balloon: Underneath Crown (2)
+E*C
+
+value
+Balloon050
+*
+name" Galleon Lanky Balloon: Above 5DS
+H*F
+ 
+valueGalleonLankyHalfMedal
+"
+nameGalleon Lanky Half-Medal
+ª
+Tiny≤2Ø
+=*;
+
+valueGalleonTinyMedal
+
+nameGalleon Tiny Medal
+K*I
+ 
+valueGalleonKasplatNearLab
+%
+nameGalleon Kasplat: Past Vines
+G*E
+
+valueGalleonTinyPearls
+%
+nameGalleon Tiny Mermaid Reward
+L*J
+
+valueGalleonTinySubmarine
+'
+nameGalleon Tiny Submarine Barrel
+G*E
+
+valueGalleonTiny2DoorShip
+"
+nameGalleon Tiny 2 Door Ship
+G*E
+
+valueGalleonTiny5DoorShip
+"
+nameGalleon Tiny 5 Door Ship
+D*B
+
+valueGalleonPearl0
+&
+nameTreasure Chest Far Left Clam
+B*@
+
+valueGalleonPearl1
+$
+nameTreasure Chest Center Clam
+E*C
+
+valueGalleonPearl2
+'
+nameTreasure Chest Far Right Clam
+G*E
+
+valueGalleonPearl3
+)
+name!Treasure Chest Close Right Clam
+F*D
+
+valueGalleonPearl4
+(
+name Treasure Chest Close Left Clam
+@*>
+
+value
+Balloon040
+%
+nameGalleon Tiny Balloon: KEVIN
+E*C
+
+value
+Balloon051
+*
+name" Galleon Tiny Balloon: By Snide's
+E*C
+
+value
+Balloon052
+*
+name" Galleon Tiny Balloon: Gold Tower
+F*D
+
+valueGalleonTinyHalfMedal
+!
+nameGalleon Tiny Half-Medal
+¸
+DiddyÚ2Ô
+?*=
+
+valueGalleonDiddyMedal
+
+nameGalleon Diddy Medal
+P*N
+!
+valueGalleonDiddyShipSwitch
+)
+name!Galleon Diddy Top of Lighthouse
+Y*W
+'
+valueGalleonKasplatLighthouseArea
+,
+name$"Galleon Kasplat: Lighthouse Alcove
+O*M
+ 
+valueGalleonDiddyGoldTower
+)
+name!Galleon Diddy Gold Tower Barrel
+F*D
+ 
+valueGalleonDiddyMechafish
+ 
+nameGalleon Diddy Mechfish
+I*G
+ 
+valueGalleonDiddy5DoorShip
+#
+nameGalleon Diddy 5 Door Ship
+B*@
+
+value
+Balloon039
+'
+nameGalleon Diddy Balloon: Cactus
+E*C
+
+value
+Balloon044
+*
+name" Galleon Diddy Balloon: Seal Cage
+F*D
+
+value
+Balloon047
++
+name#!Galleon Diddy Balloon: Gold Tower
+H*F
+ 
+valueGalleonDiddyHalfMedal
+"
+nameGalleon Diddy Half-Medal
+“
+Enemies∆2√
+S*Q
+&
+valueGalleonMainEnemy_ChestRoom0
+'
+nameGalleon Enemy: Chest Room (0)
+S*Q
+&
+valueGalleonMainEnemy_ChestRoom1
+'
+nameGalleon Enemy: Chest Room (1)
+Y*W
+*
+value!GalleonMainEnemy_NearVineCannon
+)
+name!Galleon Enemy: Near Vine Cannon
+T*R
+(
+valueGalleonMainEnemy_CrankyCannon
+&
+nameGalleon Enemy: Cranky Cannon
+T*R
+(
+valueGalleonMainEnemy_PeanutTunnel
+&
+nameGalleon Enemy: Peanut Tunnel
+V*T
+)
+value GalleonMainEnemy_CoconutTunnel
+'
+nameGalleon Enemy: Coconut Tunnel
+[*Y
+(
+valueGalleonLighthouseEnemy_Enemy0
+-
+name%#Galleon Lighthouse Enemy: Enemy (0)
+[*Y
+(
+valueGalleonLighthouseEnemy_Enemy1
+-
+name%#Galleon Lighthouse Enemy: Enemy (1)
+ò
+Donkeyç2ä
+A*?
+
+valueGalleonDonkeyMedal
+
+nameGalleon Donkey Medal
+K*I
+"
+valueGalleonDonkeyLighthouse
+#
+nameGalleon Donkey Lighthouse
+O*M
+#
+valueGalleonDonkeyFreetheSeal
+&
+nameGalleon Donkey Free the Seal
+H*F
+ 
+valueGalleonDonkeySealRace
+"
+nameGalleon Donkey Seal Race
+S*Q
+"
+valueGalleonKasplatGoldTower
++
+name#!Galleon Kasplat: Diddy Gold Tower
+K*I
+!
+valueGalleonDonkey5DoorShip
+$
+nameGalleon Donkey 5 Door Ship
+O*M
+
+value
+Balloon045
+4
+name,*Galleon Donkey Balloon: Outside lighthouse
+N*L
+
+value
+Balloon046
+3
+name+)Galleon Donkey Balloon: Near the 3 Chests
+N*L
+
+value
+Balloon064
+3
+name+)Galleon Donkey Balloon: Inside Lighthouse
+J*H
+!
+valueGalleonDonkeyHalfMedal
+#
+nameGalleon Donkey Half-Medal
+Í
+Chunkyﬂ2‹
+A*?
+
+valueGalleonChunkyMedal
+
+nameGalleon Chunky Medal
+A*?
+
+valueGalleonChunkyChest
+
+nameGalleon Chunky Chest
+L*J
+"
+valueGalleonChunkyCannonGame
+$
+nameGalleon Chunky Cannon Game
+E*C
+
+valueGalleonChunkySeasick
+ 
+nameGalleon Chunky Seasick
+O*M
+ 
+valueGalleonKasplatNearSub
+)
+name!Galleon Kasplat: Musical Cactus
+K*I
+!
+valueGalleonChunky5DoorShip
+$
+nameGalleon Chunky 5 Door Ship
+C*A
+
+value
+Balloon043
+(
+name Galleon Chunky Balloon: Cactus
+H*F
+
+value
+Balloon048
+-
+name%#Galleon Chunky Balloon: Cannon Game
+F*D
+
+value
+Balloon049
++
+name#!Galleon Chunky Balloon: Above 2DS
+J*H
+!
+valueGalleonChunkyHalfMedal
+#
+nameGalleon Chunky Half-Medal
+Â
+	All Kongs◊2‘
+U*S
+
+valueGalleonBattleArena
+2
+name*(Galleon Battle Arena (Under Cavern Shop)
+S*Q
+%
+valueGalleonBananaFairybyCranky
+(
+name Galleon Fairy (In Punch Chest)
+[*Y
+&
+valueGalleonBananaFairy5DoorShip
+/
+name'%Galleon Fairy (In Tiny's 5-Door Ship)
+:*8
+
+value
+GalleonKey
+
+nameGalleon Boss Defeated
+Y*W
+!
+valueRainbowCoin_Location09
+2
+name*(Galleon Dirt (Lighthouse: Interior Rear)
+K*I
+ 
+valueMelonCrate_Location05
+%
+nameGalleon Crate (Near Cactus)
+T*R
+*
+value!BreakableGalleonHeadphonesChest
+$
+nameGalleon Chest (Headphones)
+Z*X
+#
+valueBreakableGalleonHighHole
+1
+name)'Galleon Chest (High platform near Hole)
+f*d
+$
+valueBreakableGalleonHighKevin
+<
+name42Galleon Chest (High platform near Enguarde Alcove)
+g*e
+#
+valueBreakableGalleonMidKevin
+>
+name64Galleon Chest (Middle platform near Enguarde Alcove)
+[*Y
+"
+valueBreakableGalleonMidHole
+3
+name+)Galleon Chest (Middle platform near Hole)
+]*[
+)
+value BreakableGalleonCloseSubmarine
+.
+name&$Galleon Chest (Close near Submarine)
+Y*W
+#
+valueBreakableGalleonClose2DS
+0
+name(&Galleon Chest (Close near 2 Door Ship)
+R*P
+&
+valueBreakableGalleonUnderTunnel
+&
+nameGalleon Chest (Under Tunnel)
+`*^
+(
+valueBreakableGalleonUnderDiddy5DS
+2
+name*(Galleon Chest (Under Diddy 5DS Entrance)
+U*S
+'
+valueBreakableGalleonNearMechFish
+(
+name Galleon Chest (Near Mech Fish)
+Q*O
+%
+valueBreakableGalleon2DSNearest
+&
+nameGalleon Chest (2DS: Nearest)
+K*I
+"
+valueBreakableGalleon2DSNear
+#
+nameGalleon Chest (2DS: Near)
+I*G
+!
+valueBreakableGalleon2DSFar
+"
+nameGalleon Chest (2DS: Far)
+S*Q
+&
+valueBreakableGalleon2DSFurthest
+'
+nameGalleon Chest (2DS: Furthest)
+—.
+DKIsles≈.*¬.
+
+name
+D.K. Isles
+©.
+	locationsõ.*ò.
+õ
+Lankyë2é
+;*9
+
+valueIslesLankyMedal
+
+nameIsles Lanky Medal
+F*D
+ 
+valueIslesLankyCagedBanana
+ 
+nameIsles Lanky Grape Cage
+M*K
+&
+valueIslesLankyPrisonOrangsprint
+!
+nameIsles Lanky Sprint Cage
+N*L
+"
+valueIslesLankyInstrumentPad
+&
+nameIsles Lanky Japes Instrument
+Q*O
+!
+valueIslesKasplatCavesLobby
+*
+name" Isles Kasplat: Caves Lobby Punch
+O*M
+ 
+valueIslesLankyCastleLobby
+)
+name!Isles Lanky Castle Lobby Barrel
+D*B
+
+valueIslesLankyHalfMedal
+ 
+nameIsles Lanky Half-Medal
+ú
+Tinyì2ê
+9*7
+
+valueIslesTinyMedal
+
+nameIsles Tiny Medal
+F*D
+
+valueIslesTinyCagedBanana
+!
+nameIsles Tiny Feather Cage
+I*G
+!
+valueIslesTinyInstrumentPad
+"
+nameIsles Tiny Saxophone Pad
+D*B
+
+valueCameraAndShockwave
+!
+nameThe Banana Fairy's Gift
+E*C
+
+valueRarewareBanana
+&
+nameReturning the Banana Fairies
+K*I
+
+valueIslesTinyAztecLobby
+'
+nameIsles Tiny Aztec Lobby Barrel
+S*Q
+#
+valueIslesKasplatFactoryLobby
+*
+name" Isles Kasplat: Factory Lobby Box
+M*K
+ 
+valueIslesTinyGalleonLobby
+'
+nameIsles Tiny Galleon Lobby Swim
+B*@
+
+valueIslesTinyHalfMedal
+
+nameIsles Tiny Half-Medal
+ä
+DiddyÄ2˝
+;*9
+
+valueIslesDiddyMedal
+
+nameIsles Diddy Medal
+P*N
+ 
+valueIslesDiddySnidesLobby
+*
+name" Isles Diddy Snides Spring Barrel
+G*E
+ 
+valueIslesDiddyCagedBanana
+!
+nameIsles Diddy Peanut Cage
+D*B
+
+valueIslesDiddySummit
+#
+nameIsles Diddy Summit Barrel
+H*F
+"
+valueIslesDiddyInstrumentPad
+ 
+nameIsles Diddy Guitar Pad
+M*K
+"
+valueIslesKasplatCastleLobby
+%
+nameIsles Kasplat: Castle Lobby
+D*B
+
+valueIslesDiddyHalfMedal
+ 
+nameIsles Diddy Half-Medal
+Å
+Enemiesı
+2Ú
+
+S*Q
+!
+valueJapesLobbyEnemy_Enemy0
+,
+name$"Isles Japes Lobby Enemy: Enemy (0)
+S*Q
+!
+valueJapesLobbyEnemy_Enemy1
+,
+name$"Isles Japes Lobby Enemy: Enemy (1)
+W*U
+#
+valueFactoryLobbyEnemy_Enemy0
+.
+name&$Isles Factory Lobby Enemy: Enemy (0)
+N*L
+ 
+valueCastleLobbyEnemy_Left
+(
+name Isles Castle Lobby Enemy: Left
+W*U
+$
+valueCastleLobbyEnemy_FarRight
+-
+name%#Isles Castle Lobby Enemy: Far Right
+Y*W
+%
+valueCastleLobbyEnemy_NearRight
+.
+name&$Isles Castle Lobby Enemy: Near Right
+W*U
+(
+valueIslesMainEnemy_PineappleCage0
+)
+name!Isles Enemy: Pineapple Cage (0)
+S*Q
+&
+valueIslesMainEnemy_FungiCannon0
+'
+nameIsles Enemy: Fungi Cannon (0)
+R*P
+'
+valueIslesMainEnemy_JapesEntrance
+%
+nameIsles Enemy: Japes Entrance
+R*P
+'
+valueIslesMainEnemy_MonkeyportPad
+%
+nameIsles Enemy: Monkeyport Pad
+Y*W
+*
+value!IslesMainEnemy_UpperFactoryPath
+)
+name!Isles Enemy: Upper Factory Path
+J*H
+#
+valueIslesMainEnemy_NearAztec
+!
+nameIsles Enemy: Near Aztec
+S*Q
+&
+valueIslesMainEnemy_FungiCannon1
+'
+nameIsles Enemy: Fungi Cannon (1)
+W*U
+(
+valueIslesMainEnemy_PineappleCage1
+)
+name!Isles Enemy: Pineapple Cage (1)
+^*\
++
+value" IslesMainEnemy_LowerFactoryPath0
+-
+name%#Isles Enemy: Lower Factory Path (0)
+^*\
++
+value" IslesMainEnemy_LowerFactoryPath1
+-
+name%#Isles Enemy: Lower Factory Path (1)
+¡
+Donkey∂2≥
+=*;
+
+valueIslesDonkeyMedal
+
+nameIsles Donkey Medal
+J*H
+!
+valueIslesDonkeyCagedBanana
+#
+nameIsles Donkey Coconut Cage
+J*H
+#
+valueIslesDonkeyInstrumentPad
+!
+nameIsles Donkey Bongos Pad
+G*E
+ 
+valueIslesDonkeyLavaBanana
+!
+nameIsles Donkey Caves Lava
+I*G
+ 
+valueIslesKasplatHelmLobby
+#
+nameIsles Kasplat: Helm Lobby
+F*D
+
+valueIslesDonkeyHalfMedal
+!
+nameIsles Donkey Half-Medal
+ö
+Chunkyè2å
+=*;
+
+valueIslesChunkyMedal
+
+nameIsles Chunky Medal
+L*J
+!
+valueIslesChunkyCagedBanana
+%
+nameIsles Chunky Pineapple Cage
+L*J
+#
+valueIslesChunkyInstrumentPad
+#
+nameIsles Chunky Triangle Pad
+G*E
+
+valueIslesChunkyPoundtheX
+"
+nameIsles Chunky Pound the X
+O*M
+#
+valueIslesKasplatGalleonLobby
+&
+nameIsles Kasplat: Galleon Lobby
+M*K
+
+valueIslesChunkyHelmLobby
+(
+name Isles Chunky Helm Lobby Barrel
+F*D
+
+valueIslesChunkyHalfMedal
+!
+nameIsles Chunky Half-Medal
+Ê
+	All Kongsÿ2’
+<*:
+
+valueTimeLocationDay
+
+namePre-Given Time (0)
+>*<
+
+valueTimeLocationNight
+
+namePre-Given Time (1)
+N*L
+
+valueIslesDonkeyJapesRock
+)
+name!Isles Japes Lobby Entrance Item
+K*I
+!
+valueIslesBananaFairyIsland
+$
+nameIsles Fairy (Small Island)
+V*T
+)
+value IslesBananaFairyCrocodisleIsle
+'
+nameIsles Fairy (Upper Krem Isle)
+[*Y
+
+valueIslesBattleArena1
+9
+name1/Isles Battle Arena 1 (Snide's Room: Under Rock)
+R*P
+'
+valueIslesBananaFairyFactoryLobby
+%
+nameIsles Fairy (Factory Lobby)
+`*^
+
+valueIslesBattleArena2
+>
+name64Isles Battle Arena 2 (Fungi Lobby: Gorilla Gone Box)
+O*M
+&
+valueIslesBananaFairyForestLobby
+#
+nameIsles Fairy (Fungi Lobby)
+U*S
+!
+valueRainbowCoin_Location03
+.
+name&$Isles Dirt (Front of Fungi Building)
+X*V
+!
+valueRainbowCoin_Location04
+1
+name)'Isles Dirt (Under Caves Lobby Entrance)
+O*M
+!
+valueRainbowCoin_Location05
+(
+name Isles Dirt (On Aztec Building)
+J*H
+!
+valueRainbowCoin_Location12
+#
+nameIsles Dirt (Prison: Back)
+[*Y
+!
+valueRainbowCoin_Location13
+4
+name,*Isles Dirt (Training Grounds: Rear Tunnel)
+\*Z
+!
+valueRainbowCoin_Location14
+5
+name-+Isles Dirt (Training Grounds: Banana Hoard)
+R*P
+!
+valueRainbowCoin_Location15
++
+name#!Isles Dirt (Castle Lobby: Center)
+T*R
+(
+valueHoldableBoulderIslesNearAztec
+&
+nameIsles Boulder (Near Level 2)
+T*R
+(
+valueHoldableBoulderIslesNearCaves
+&
+nameIsles Boulder (Near Level 6)
+O*M
+$
+valueHoldableBoulderJapesLobby
+%
+nameIsles Boulder (Japes Lobby)
+Q*O
+%
+valueHoldableBoulderCastleLobby
+&
+nameIsles Boulder (Castle Lobby)
+O*M
+$
+valueHoldableBoulderCavesLobby
+%
+nameIsles Boulder (Caves Lobby)
+ì
+Hintsâ*Ü
 
-nameShops
+nameHints
+Ú
+levelsÁ*‰
+ç
+CreepyCastle¸*˘
+
+nameCreepy Castle
+›
+	locationsœ2Ã
+B*@
+
+valueCastleDonkeyDoor
+!
+nameCastle Donkey Hint Door
+@*>
+
+valueCastleDiddyDoor
+ 
+nameCastle Diddy Hint Door
+@*>
+
+valueCastleLankyDoor
+ 
+nameCastle Lanky Hint Door
+>*<
+
+valueCastleTinyDoor
+
+nameCastle Tiny Hint Door
+B*@
+
+valueCastleChunkyDoor
+!
+nameCastle Chunky Hint Door
+É
+CrystalCavesÚ*Ô
+
+nameCrystal Caves
+”
+	locations≈2¬
+@*>
+
+valueCavesDonkeyDoor
+ 
+nameCaves Donkey Hint Door
+>*<
+
+valueCavesDiddyDoor
+
+nameCaves Diddy Hint Door
+>*<
+
+valueCavesLankyDoor
+
+nameCaves Lanky Hint Door
+<*:
+
+valueCavesTinyDoor
+
+nameCaves Tiny Hint Door
+@*>
+
+valueCavesChunkyDoor
+ 
+nameCaves Chunky Hint Door
+ã
+FungiForest˚*¯
+
+nameFungi Forest
+›
+	locationsœ2Ã
+B*@
+
+valueForestDonkeyDoor
+!
+nameForest Donkey Hint Door
+@*>
+
+valueForestDiddyDoor
+ 
+nameForest Diddy Hint Door
+@*>
+
+valueForestLankyDoor
+ 
+nameForest Lanky Hint Door
+>*<
+
+valueForestTinyDoor
+
+nameForest Tiny Hint Door
+B*@
+
+valueForestChunkyDoor
+!
+nameForest Chunky Hint Door
+Å
+JungleJapesÒ*Ó
+
+nameJungle Japes
+”
+	locations≈2¬
+@*>
+
+valueJapesDonkeyDoor
+ 
+nameJapes Donkey Hint Door
+>*<
+
+valueJapesDiddyDoor
+
+nameJapes Diddy Hint Door
+>*<
+
+valueJapesLankyDoor
+
+nameJapes Lanky Hint Door
+<*:
+
+valueJapesTinyDoor
+
+nameJapes Tiny Hint Door
+@*>
+
+valueJapesChunkyDoor
+ 
+nameJapes Chunky Hint Door
+ô
+GloomyGalleoná*Ñ
+
+nameGloomy Galleon
+Á
+	locationsŸ2÷
+D*B
+
+valueGalleonDonkeyDoor
+"
+nameGalleon Donkey Hint Door
+B*@
+
+valueGalleonDiddyDoor
+!
+nameGalleon Diddy Hint Door
+B*@
+
+valueGalleonLankyDoor
+!
+nameGalleon Lanky Hint Door
+@*>
+
+valueGalleonTinyDoor
+ 
+nameGalleon Tiny Hint Door
+D*B
+
+valueGalleonChunkyDoor
+"
+nameGalleon Chunky Hint Door
+õ
+FranticFactoryà*Ö
+
+nameFrantic Factory
+Á
+	locationsŸ2÷
+D*B
+
+valueFactoryDonkeyDoor
+"
+nameFactory Donkey Hint Door
+B*@
+
+valueFactoryDiddyDoor
+!
+nameFactory Diddy Hint Door
+B*@
+
+valueFactoryLankyDoor
+!
+nameFactory Lanky Hint Door
+@*>
+
+valueFactoryTinyDoor
+ 
+nameFactory Tiny Hint Door
+D*B
+
+valueFactoryChunkyDoor
+"
+nameFactory Chunky Hint Door
+ˇ
+
+AngryAztec*Ì
+
+nameAngry Aztec
+”
+	locations≈2¬
+@*>
+
+valueAztecDonkeyDoor
+ 
+nameAztec Donkey Hint Door
+>*<
+
+valueAztecDiddyDoor
+
+nameAztec Diddy Hint Door
+>*<
+
+valueAztecLankyDoor
+
+nameAztec Lanky Hint Door
+<*:
+
+valueAztecTinyDoor
+
+nameAztec Tiny Hint Door
+@*>
+
+valueAztecChunkyDoor
+ 
+nameAztec Chunky Hint Door
+ˆ)
+CrystalCavesÂ)*‚)
+
+nameCrystal Caves
+∆)
+	locations∏)*µ)
+„
+LankyŸ2÷
+;*9
+
+valueCavesLankyMedal
+
+nameCaves Lanky Medal
+L*J
+
+valueCavesKasplatPillar
+)
+name!Caves Kasplat: On Warp 5 Pillar
+F*D
+
+valueCavesLankyBeetleRace
+!
+nameCaves Lanky Beetle Race
+P*N
+
+valueCavesLankyCastle
+/
+name'%Caves Lanky Ice Castle Slam Challenge
+G*E
+
+valueCavesLanky5DoorIgloo
+"
+nameCaves Lanky 5 Door Igloo
+G*E
+
+valueCavesLanky1DoorCabin
+"
+nameCaves Lanky Sprint Cabin
+C*A
+
+value
+Balloon073
+(
+name Caves Lanky Balloon: Waterfall
+=*;
+
+value
+Balloon080
+"
+nameCaves Lanky Balloon: 5DI
+S*Q
+
+value
+Balloon086
+8
+name0.Caves Lanky Balloon: Inside Tile Flip Minigame
+D*B
+
+valueCavesLankyHalfMedal
+ 
+nameCaves Lanky Half-Medal
+ò
+Tinyè2å
+9*7
+
+valueCavesTinyMedal
+
+nameCaves Tiny Medal
+I*G
+
+valueCavesTinyCaveBarrel
+%
+nameCaves Tiny Mini Cave Barrel
+N*L
+#
+valueCavesTinyMonkeyportIgloo
+%
+nameCaves Tiny Monkeyport Igloo
+R*P
+ 
+valueCavesKasplatNearCandy
+,
+name$"Caves Kasplat: Cabins Central Rise
+E*C
+
+valueCavesTiny5DoorIgloo
+!
+nameCaves Tiny 5 Door Igloo
+E*C
+
+valueCavesTiny5DoorCabin
+!
+nameCaves Tiny 5 Door Cabin
+F*D
+
+value
+Balloon072
++
+name#!Caves Tiny Balloon: By Cabin Shop
+J*H
+
+value
+Balloon077
+/
+name'%Caves Tiny Balloon: By Hidden Kasplat
+<*:
+
+value
+Balloon079
+!
+nameCaves Tiny Balloon: 5DI
+<*:
+
+value
+Balloon084
+!
+nameCaves Tiny Balloon: 5DC
+B*@
+
+valueCavesTinyHalfMedal
+
+nameCaves Tiny Half-Medal
+Ì
+Diddy„2‡
+;*9
+
+valueCavesDiddyMedal
+
+nameCaves Diddy Medal
+L*J
+"
+valueCavesDiddyJetpackBarrel
+$
+nameCaves Diddy Jetpack Barrel
+Q*O
+ 
+valueCavesKasplatNearFunky
++
+name#!Caves Kasplat: Mini Room by Funky
+G*E
+
+valueCavesDiddy5DoorIgloo
+"
+nameCaves Diddy 5 Door Igloo
+R*P
+$
+valueCavesDiddy5DoorCabinLower
+(
+name Caves Diddy 5 Door Cabin Lower
+R*P
+$
+valueCavesDiddy5DoorCabinUpper
+(
+name Caves Diddy 5 Door Cabin Upper
+C*A
+
+value
+Balloon070
+(
+name Caves Diddy Balloon: Around W4
+E*C
+
+value
+Balloon075
+*
+name" Caves Diddy Balloon: Outside 5DC
+=*;
+
+value
+Balloon087
+"
+nameCaves Diddy Balloon: 5DI
+D*B
+
+valueCavesDiddyHalfMedal
+ 
+nameCaves Diddy Half-Medal
+Ã
+Enemies¿2Ω
+A*?
+
+valueCavesMainEnemy_Start
+
+nameCaves Enemy: Start
+S*Q
+'
+valueCavesMainEnemy_NearIceCastle
+&
+nameCaves Enemy: Near Ice Castle
+L*J
+$
+valueCavesMainEnemy_Outside5DC
+"
+nameCaves Enemy: Outside 5DC
+P*N
+&
+valueCavesMainEnemy_1DCWaterfall
+$
+nameCaves Enemy: 1DC Waterfall
+J*H
+#
+valueCavesMainEnemy_NearFunky
+!
+nameCaves Enemy: Near Funky
+J*H
+#
+valueCavesMainEnemy_NearSnide
+!
+nameCaves Enemy: Near Snide
+S*Q
+'
+valueCavesMainEnemy_NearBonusRoom
+&
+nameCaves Enemy: Near Bonus Room
+R*P
+'
+valueCavesMainEnemy_1DCHeadphones
+%
+nameCaves Enemy: 1DC Headphones
+O*M
+ 
+valueCaves5DIDKEnemy_Right
+)
+name!Caves Donkey Igloo Enemy: Right
+M*K
+
+valueCaves5DIDKEnemy_Left
+(
+name Caves Donkey Igloo Enemy: Left
+V*T
+%
+valueCaves5DITinyEnemy_BigEnemy
++
+name#!Caves Tiny Igloo Enemy: Big Enemy
+J*H
+
+valueCaves1DCEnemy_Near
+'
+nameCaves Lanky Cabin Enemy: Near
+Ì
+Donkey‚2ﬂ
+=*;
+
+valueCavesDonkeyMedal
+
+nameCaves Donkey Medal
+J*H
+!
+valueCavesDonkeyBaboonBlast
+#
+nameCaves Donkey Baboon Blast
+L*J
+
+valueCavesKasplatNearLab
+(
+name Caves Kasplat: Near Ice Castle
+I*G
+ 
+valueCavesDonkey5DoorIgloo
+#
+nameCaves Donkey 5 Door Igloo
+N*L
+#
+valueCavesDonkeyRotatingCabin
+%
+nameCaves Donkey Rotating Cabin
+I*G
+ 
+valueCavesDonkey5DoorCabin
+#
+nameCaves Donkey 5 Door Cabin
+L*J
+
+value
+Balloon074
+1
+name)'Caves Donkey Balloon: Entrance Ice Wall
+H*F
+
+value
+Balloon078
+-
+name%#Caves Donkey Balloon: Giant Boulder
+>*<
+
+value
+Balloon081
+#
+nameCaves Donkey Balloon: 5DI
+F*D
+
+valueCavesDonkeyHalfMedal
+!
+nameCaves Donkey Half-Medal
+‚
+Chunky◊2‘
+=*;
+
+valueCavesChunkyMedal
+
+nameCaves Chunky Medal
+J*H
+!
+valueCavesChunkyGorillaGone
+#
+nameCaves Chunky Gorilla Gone
+T*R
+&
+valueCavesChunkyTransparentIgloo
+(
+name Caves Chunky Transparent Igloo
+G*E
+
+valueCavesKasplatOn5DI
+%
+nameCaves Kasplat: On the Igloo
+I*G
+ 
+valueCavesChunky5DoorIgloo
+#
+nameCaves Chunky 5 Door Igloo
+I*G
+ 
+valueCavesChunky5DoorCabin
+#
+nameCaves Chunky 5 Door Cabin
+C*A
+
+value
+Balloon071
+(
+name Caves Chunky Balloon: By Snide
+E*C
+
+value
+Balloon076
+*
+name" Caves Chunky Balloon: Bonus Room
+>*<
+
+value
+Balloon085
+#
+nameCaves Chunky Balloon: 5DI
+F*D
+
+valueCavesChunkyHalfMedal
+!
+nameCaves Chunky Half-Medal
+ù
+	All Kongsè2å
+H*F
+ 
+valueCavesBananaFairyIgloo
+"
+nameCaves Fairy (Tiny Igloo)
+T*R
+
+valueCavesBattleArena
+3
+name+)Caves Battle Arena (Rotating Cabin: Wall)
+Q*O
+ 
+valueCavesBananaFairyCabin
++
+name#!Caves Fairy (Diddy Candles Cabin)
+6*4
+
+value
+CavesKey
+
+nameCaves Boss Defeated
+I*G
+!
+valueRainbowCoin_Location10
+"
+nameCaves Dirt (Giant Kosha)
+I*G
+$
+valueHoldableBoulderCavesSmall
+
+nameCaves Boulder (Small)
+I*G
+$
+valueHoldableBoulderCavesLarge
+
+nameCaves Boulder (Large)
 ®N
 FungiForestòN*ïN
+
+nameFungi Forest
 ˙M
 	locationsÏM*ÈM
+¿
+Lanky∂2≥
+=*;
+
+valueForestLankyMedal
+
+nameForest Lanky Medal
+G*E
+
+valueForestLankyZingers
+$
+nameForest Lanky Zinger Bounce
+X*V
+&
+valueForestLankyColoredMushrooms
+,
+name$"Forest Lanky Colored Mushroom Slam
+H*F
+ 
+valueForestLankyRabbitRace
+"
+nameForest Lanky Rabbit Race
+M*K
+
+valueForestKasplatOwlTree
+(
+name Forest Kasplat: Under Owl Tree
+F*D
+
+valueForestLankyAttic
+%
+nameForest Lanky Attic Shooting
+R*P
+
+value
+Balloon067
+7
+name/-Forest Lanky Balloon: Upper Mushroom Interior
+R*P
+
+value
+Balloon068
+7
+name/-Forest Lanky Balloon: Lower Mushroom Interior
+F*D
+
+valueForestLankyHalfMedal
+!
+nameForest Lanky Half-Medal
 í
 Tinyâ2Ü
 ;*9
@@ -23552,55 +28157,55 @@ D*B
 valueForestTinyHalfMedal
  
 nameForest Tiny Half-Medal
-¿
-Lanky∂2≥
+≠
+Diddy£2†
 =*;
 
-valueForestLankyMedal
+valueForestDiddyMedal
 
-nameForest Lanky Medal
-G*E
-
-valueForestLankyZingers
-$
-nameForest Lanky Zinger Bounce
-X*V
+nameForest Diddy Medal
+V*T
+#
+valueForestDiddyTopofMushroom
+-
+name%#Forest Diddy Top of Mushroom Barrel
+[*Y
 &
-valueForestLankyColoredMushrooms
-,
-name$"Forest Lanky Colored Mushroom Slam
+valueForestKasplatInsideMushroom
+/
+name'%Forest Kasplat: Inside Giant Mushroom
+B*@
+
+valueForestDiddyOwlRace
+
+nameForest Diddy Owl Race
 H*F
- 
-valueForestLankyRabbitRace
-"
-nameForest Lanky Rabbit Race
-M*K
-
-valueForestKasplatOwlTree
-(
-name Forest Kasplat: Under Owl Tree
-F*D
-
-valueForestLankyAttic
-%
-nameForest Lanky Attic Shooting
-R*P
-
-value
-Balloon067
-7
-name/-Forest Lanky Balloon: Upper Mushroom Interior
-R*P
-
-value
-Balloon068
-7
-name/-Forest Lanky Balloon: Lower Mushroom Interior
-F*D
-
-valueForestLankyHalfMedal
 !
-nameForest Lanky Half-Medal
+valueForestDiddyCagedBanana
+!
+nameForest Diddy Winch Cage
+F*D
+
+valueForestDiddyRafters
+#
+nameForest Diddy Dark Rafters
+E*C
+
+value
+Balloon059
+*
+name" Forest Diddy Balloon: By Snide's
+E*C
+
+value
+Balloon065
+*
+name" Forest Diddy Balloon: Winch Room
+F*D
+
+valueForestDiddyHalfMedal
+!
+nameForest Diddy Half-Medal
 ◊&
 EnemiesÀ&2»&
 S*Q
@@ -23878,6 +28483,55 @@ Z*X
 valueForestFacePuzzleEnemy_Enemy
 .
 name&$Forest Chunky Face Room Enemy: Enemy
+√
+Donkey∏2µ
+?*=
+
+valueForestDonkeyMedal
+
+nameForest Donkey Medal
+L*J
+"
+valueForestDonkeyBaboonBlast
+$
+nameForest Donkey Baboon Blast
+T*R
+&
+valueForestDonkeyMushroomCannons
+(
+name Forest Donkey Mushroom Cannons
+D*B
+
+valueForestDonkeyMill
+#
+nameForest Donkey Mill Levers
+U*S
+ 
+valueForestKasplatNearBarn
+/
+name'%Forest Kasplat: Behind Thornvine Barn
+N*L
+
+valueForestDonkeyBarn
+-
+name%#Forest Donkey Thornvine Barn Barrel
+R*P
+
+value
+Balloon061
+7
+name/-Forest Donkey Balloon: Behind Dark Attic Barn
+C*A
+
+value
+Balloon066
+(
+name Forest Donkey Balloon: In Mill
+H*F
+ 
+valueForestDonkeyHalfMedal
+"
+nameForest Donkey Half-Medal
 ≈
 Chunky∫2∑
 ?*=
@@ -23927,55 +28581,6 @@ H*F
 valueForestChunkyHalfMedal
 "
 nameForest Chunky Half-Medal
-≠
-Diddy£2†
-=*;
-
-valueForestDiddyMedal
-
-nameForest Diddy Medal
-V*T
-#
-valueForestDiddyTopofMushroom
--
-name%#Forest Diddy Top of Mushroom Barrel
-[*Y
-&
-valueForestKasplatInsideMushroom
-/
-name'%Forest Kasplat: Inside Giant Mushroom
-B*@
-
-valueForestDiddyOwlRace
-
-nameForest Diddy Owl Race
-H*F
-!
-valueForestDiddyCagedBanana
-!
-nameForest Diddy Winch Cage
-F*D
-
-valueForestDiddyRafters
-#
-nameForest Diddy Dark Rafters
-E*C
-
-value
-Balloon059
-*
-name" Forest Diddy Balloon: By Snide's
-E*C
-
-value
-Balloon065
-*
-name" Forest Diddy Balloon: Winch Room
-F*D
-
-valueForestDiddyHalfMedal
-!
-nameForest Diddy Half-Medal
 ˆ
 
 	All KongsË
@@ -24066,1867 +28671,449 @@ R*P
 valueBreakableForestMillRearMini
 &
 nameForest Box (Mill Rear: Mini)
-√
-Donkey∏2µ
-?*=
-
-valueForestDonkeyMedal
-
-nameForest Donkey Medal
-L*J
-"
-valueForestDonkeyBaboonBlast
-$
-nameForest Donkey Baboon Blast
-T*R
-&
-valueForestDonkeyMushroomCannons
-(
-name Forest Donkey Mushroom Cannons
-D*B
-
-valueForestDonkeyMill
-#
-nameForest Donkey Mill Levers
-U*S
- 
-valueForestKasplatNearBarn
-/
-name'%Forest Kasplat: Behind Thornvine Barn
-N*L
-
-valueForestDonkeyBarn
--
-name%#Forest Donkey Thornvine Barn Barrel
-R*P
-
-value
-Balloon061
-7
-name/-Forest Donkey Balloon: Behind Dark Attic Barn
-C*A
-
-value
-Balloon066
-(
-name Forest Donkey Balloon: In Mill
-H*F
- 
-valueForestDonkeyHalfMedal
-"
-nameForest Donkey Half-Medal
-
-nameFungi Forest
-—.
-DKIsles≈.*¬.
-©.
-	locationsõ.*ò.
-ú
-Tinyì2ê
-9*7
-
-valueIslesTinyMedal
-
-nameIsles Tiny Medal
-F*D
-
-valueIslesTinyCagedBanana
-!
-nameIsles Tiny Feather Cage
-I*G
-!
-valueIslesTinyInstrumentPad
-"
-nameIsles Tiny Saxophone Pad
-D*B
-
-valueCameraAndShockwave
-!
-nameThe Banana Fairy's Gift
-E*C
-
-valueRarewareBanana
-&
-nameReturning the Banana Fairies
-K*I
-
-valueIslesTinyAztecLobby
-'
-nameIsles Tiny Aztec Lobby Barrel
-S*Q
-#
-valueIslesKasplatFactoryLobby
-*
-name" Isles Kasplat: Factory Lobby Box
-M*K
- 
-valueIslesTinyGalleonLobby
-'
-nameIsles Tiny Galleon Lobby Swim
-B*@
-
-valueIslesTinyHalfMedal
-
-nameIsles Tiny Half-Medal
-õ
-Lankyë2é
-;*9
-
-valueIslesLankyMedal
-
-nameIsles Lanky Medal
-F*D
- 
-valueIslesLankyCagedBanana
- 
-nameIsles Lanky Grape Cage
-M*K
-&
-valueIslesLankyPrisonOrangsprint
-!
-nameIsles Lanky Sprint Cage
-N*L
-"
-valueIslesLankyInstrumentPad
-&
-nameIsles Lanky Japes Instrument
-Q*O
-!
-valueIslesKasplatCavesLobby
-*
-name" Isles Kasplat: Caves Lobby Punch
-O*M
- 
-valueIslesLankyCastleLobby
-)
-name!Isles Lanky Castle Lobby Barrel
-D*B
-
-valueIslesLankyHalfMedal
- 
-nameIsles Lanky Half-Medal
-Å
-Enemiesı
-2Ú
-
-S*Q
-!
-valueJapesLobbyEnemy_Enemy0
-,
-name$"Isles Japes Lobby Enemy: Enemy (0)
-S*Q
-!
-valueJapesLobbyEnemy_Enemy1
-,
-name$"Isles Japes Lobby Enemy: Enemy (1)
-W*U
-#
-valueFactoryLobbyEnemy_Enemy0
-.
-name&$Isles Factory Lobby Enemy: Enemy (0)
-N*L
- 
-valueCastleLobbyEnemy_Left
-(
-name Isles Castle Lobby Enemy: Left
-W*U
-$
-valueCastleLobbyEnemy_FarRight
--
-name%#Isles Castle Lobby Enemy: Far Right
-Y*W
-%
-valueCastleLobbyEnemy_NearRight
-.
-name&$Isles Castle Lobby Enemy: Near Right
-W*U
-(
-valueIslesMainEnemy_PineappleCage0
-)
-name!Isles Enemy: Pineapple Cage (0)
-S*Q
-&
-valueIslesMainEnemy_FungiCannon0
-'
-nameIsles Enemy: Fungi Cannon (0)
-R*P
-'
-valueIslesMainEnemy_JapesEntrance
-%
-nameIsles Enemy: Japes Entrance
-R*P
-'
-valueIslesMainEnemy_MonkeyportPad
-%
-nameIsles Enemy: Monkeyport Pad
-Y*W
-*
-value!IslesMainEnemy_UpperFactoryPath
-)
-name!Isles Enemy: Upper Factory Path
-J*H
-#
-valueIslesMainEnemy_NearAztec
-!
-nameIsles Enemy: Near Aztec
-S*Q
-&
-valueIslesMainEnemy_FungiCannon1
-'
-nameIsles Enemy: Fungi Cannon (1)
-W*U
-(
-valueIslesMainEnemy_PineappleCage1
-)
-name!Isles Enemy: Pineapple Cage (1)
-^*\
-+
-value" IslesMainEnemy_LowerFactoryPath0
--
-name%#Isles Enemy: Lower Factory Path (0)
-^*\
-+
-value" IslesMainEnemy_LowerFactoryPath1
--
-name%#Isles Enemy: Lower Factory Path (1)
-ö
-Chunkyè2å
-=*;
-
-valueIslesChunkyMedal
-
-nameIsles Chunky Medal
-L*J
-!
-valueIslesChunkyCagedBanana
-%
-nameIsles Chunky Pineapple Cage
-L*J
-#
-valueIslesChunkyInstrumentPad
-#
-nameIsles Chunky Triangle Pad
-G*E
-
-valueIslesChunkyPoundtheX
-"
-nameIsles Chunky Pound the X
-O*M
-#
-valueIslesKasplatGalleonLobby
-&
-nameIsles Kasplat: Galleon Lobby
-M*K
-
-valueIslesChunkyHelmLobby
-(
-name Isles Chunky Helm Lobby Barrel
-F*D
-
-valueIslesChunkyHalfMedal
-!
-nameIsles Chunky Half-Medal
-ä
-DiddyÄ2˝
-;*9
-
-valueIslesDiddyMedal
-
-nameIsles Diddy Medal
-P*N
- 
-valueIslesDiddySnidesLobby
-*
-name" Isles Diddy Snides Spring Barrel
-G*E
- 
-valueIslesDiddyCagedBanana
-!
-nameIsles Diddy Peanut Cage
-D*B
-
-valueIslesDiddySummit
-#
-nameIsles Diddy Summit Barrel
-H*F
-"
-valueIslesDiddyInstrumentPad
- 
-nameIsles Diddy Guitar Pad
-M*K
-"
-valueIslesKasplatCastleLobby
-%
-nameIsles Kasplat: Castle Lobby
-D*B
-
-valueIslesDiddyHalfMedal
- 
-nameIsles Diddy Half-Medal
-Ê
-	All Kongsÿ2’
-<*:
-
-valueTimeLocationDay
-
-namePre-Given Time (0)
->*<
-
-valueTimeLocationNight
-
-namePre-Given Time (1)
-N*L
-
-valueIslesDonkeyJapesRock
-)
-name!Isles Japes Lobby Entrance Item
-K*I
-!
-valueIslesBananaFairyIsland
-$
-nameIsles Fairy (Small Island)
-V*T
-)
-value IslesBananaFairyCrocodisleIsle
-'
-nameIsles Fairy (Upper Krem Isle)
-[*Y
-
-valueIslesBattleArena1
-9
-name1/Isles Battle Arena 1 (Snide's Room: Under Rock)
-R*P
-'
-valueIslesBananaFairyFactoryLobby
-%
-nameIsles Fairy (Factory Lobby)
-`*^
-
-valueIslesBattleArena2
->
-name64Isles Battle Arena 2 (Fungi Lobby: Gorilla Gone Box)
-O*M
-&
-valueIslesBananaFairyForestLobby
-#
-nameIsles Fairy (Fungi Lobby)
-U*S
-!
-valueRainbowCoin_Location03
-.
-name&$Isles Dirt (Front of Fungi Building)
-X*V
-!
-valueRainbowCoin_Location04
-1
-name)'Isles Dirt (Under Caves Lobby Entrance)
-O*M
-!
-valueRainbowCoin_Location05
-(
-name Isles Dirt (On Aztec Building)
-J*H
-!
-valueRainbowCoin_Location12
-#
-nameIsles Dirt (Prison: Back)
-[*Y
-!
-valueRainbowCoin_Location13
-4
-name,*Isles Dirt (Training Grounds: Rear Tunnel)
-\*Z
-!
-valueRainbowCoin_Location14
-5
-name-+Isles Dirt (Training Grounds: Banana Hoard)
-R*P
-!
-valueRainbowCoin_Location15
-+
-name#!Isles Dirt (Castle Lobby: Center)
-T*R
-(
-valueHoldableBoulderIslesNearAztec
-&
-nameIsles Boulder (Near Level 2)
-T*R
-(
-valueHoldableBoulderIslesNearCaves
-&
-nameIsles Boulder (Near Level 6)
-O*M
-$
-valueHoldableBoulderJapesLobby
-%
-nameIsles Boulder (Japes Lobby)
-Q*O
-%
-valueHoldableBoulderCastleLobby
-&
-nameIsles Boulder (Castle Lobby)
-O*M
-$
-valueHoldableBoulderCavesLobby
-%
-nameIsles Boulder (Caves Lobby)
-¡
-Donkey∂2≥
-=*;
-
-valueIslesDonkeyMedal
-
-nameIsles Donkey Medal
-J*H
-!
-valueIslesDonkeyCagedBanana
-#
-nameIsles Donkey Coconut Cage
-J*H
-#
-valueIslesDonkeyInstrumentPad
-!
-nameIsles Donkey Bongos Pad
-G*E
- 
-valueIslesDonkeyLavaBanana
-!
-nameIsles Donkey Caves Lava
-I*G
- 
-valueIslesKasplatHelmLobby
-#
-nameIsles Kasplat: Helm Lobby
-F*D
-
-valueIslesDonkeyHalfMedal
-!
-nameIsles Donkey Half-Medal
-
-name
-D.K. Isles
-ì
-Hintsâ*Ü
-Ú
-levelsÁ*‰
-õ
-FranticFactoryà*Ö
-Á
-	locationsŸ2÷
-D*B
-
-valueFactoryDonkeyDoor
-"
-nameFactory Donkey Hint Door
-B*@
-
-valueFactoryDiddyDoor
-!
-nameFactory Diddy Hint Door
-B*@
-
-valueFactoryLankyDoor
-!
-nameFactory Lanky Hint Door
-@*>
-
-valueFactoryTinyDoor
- 
-nameFactory Tiny Hint Door
-D*B
-
-valueFactoryChunkyDoor
-"
-nameFactory Chunky Hint Door
-
-nameFrantic Factory
-É
-CrystalCavesÚ*Ô
-”
-	locations≈2¬
-@*>
-
-valueCavesDonkeyDoor
- 
-nameCaves Donkey Hint Door
->*<
-
-valueCavesDiddyDoor
-
-nameCaves Diddy Hint Door
->*<
-
-valueCavesLankyDoor
-
-nameCaves Lanky Hint Door
-<*:
-
-valueCavesTinyDoor
-
-nameCaves Tiny Hint Door
-@*>
-
-valueCavesChunkyDoor
- 
-nameCaves Chunky Hint Door
-
-nameCrystal Caves
-ã
-FungiForest˚*¯
-›
-	locationsœ2Ã
-B*@
-
-valueForestDonkeyDoor
-!
-nameForest Donkey Hint Door
-@*>
-
-valueForestDiddyDoor
- 
-nameForest Diddy Hint Door
-@*>
-
-valueForestLankyDoor
- 
-nameForest Lanky Hint Door
->*<
-
-valueForestTinyDoor
-
-nameForest Tiny Hint Door
-B*@
-
-valueForestChunkyDoor
-!
-nameForest Chunky Hint Door
-
-nameFungi Forest
-ç
-CreepyCastle¸*˘
-›
-	locationsœ2Ã
-B*@
-
-valueCastleDonkeyDoor
-!
-nameCastle Donkey Hint Door
-@*>
-
-valueCastleDiddyDoor
- 
-nameCastle Diddy Hint Door
-@*>
-
-valueCastleLankyDoor
- 
-nameCastle Lanky Hint Door
->*<
-
-valueCastleTinyDoor
-
-nameCastle Tiny Hint Door
-B*@
-
-valueCastleChunkyDoor
-!
-nameCastle Chunky Hint Door
+¿*
+	Minigames≤**Ø*
+
+name	Minigames
+ó*
+levelså**â*
+°
+CreepyCastleê*ç
 
 nameCreepy Castle
-ˇ
-
-AngryAztec*Ì
-”
-	locations≈2¬
-@*>
-
-valueAztecDonkeyDoor
- 
-nameAztec Donkey Hint Door
->*<
-
-valueAztecDiddyDoor
-
-nameAztec Diddy Hint Door
->*<
-
-valueAztecLankyDoor
-
-nameAztec Lanky Hint Door
-<*:
-
-valueAztecTinyDoor
-
-nameAztec Tiny Hint Door
-@*>
-
-valueAztecChunkyDoor
- 
-nameAztec Chunky Hint Door
-
-nameAngry Aztec
-ô
-GloomyGalleoná*Ñ
-Á
-	locationsŸ2÷
-D*B
-
-valueGalleonDonkeyDoor
-"
-nameGalleon Donkey Hint Door
-B*@
-
-valueGalleonDiddyDoor
-!
-nameGalleon Diddy Hint Door
-B*@
-
-valueGalleonLankyDoor
-!
-nameGalleon Lanky Hint Door
-@*>
-
-valueGalleonTinyDoor
- 
-nameGalleon Tiny Hint Door
-D*B
-
-valueGalleonChunkyDoor
-"
-nameGalleon Chunky Hint Door
-
-nameGloomy Galleon
-Å
-JungleJapesÒ*Ó
-”
-	locations≈2¬
-@*>
-
-valueJapesDonkeyDoor
- 
-nameJapes Donkey Hint Door
->*<
-
-valueJapesDiddyDoor
-
-nameJapes Diddy Hint Door
->*<
-
-valueJapesLankyDoor
-
-nameJapes Lanky Hint Door
-<*:
-
-valueJapesTinyDoor
-
-nameJapes Tiny Hint Door
-@*>
-
-valueJapesChunkyDoor
- 
-nameJapes Chunky Hint Door
-
-nameJungle Japes
-
-nameHints
-≈H
-CreepyCastle¥H*±H
-ïH
-	locationsáH*ÑH
-ã
-TinyÇ2ˇ
-;*9
-
-valueCastleTinyMedal
-
-nameCastle Tiny Medal
-T*R
-"
-valueCastleKasplatLowerLedge
-,
-name$"Castle Kasplat: On a lone platform
-@*>
-
-valueCastleTinyCarRace
-
-nameCastle Tiny Car Race
-B*@
-
-valueCastleTinyTrashCan
-
-nameCastle Tiny Trash Can
-C*A
-
-valueCastleTinyMausoleum
-
-nameCastle Tiny Mausoleum
-D*B
-
-valueCastleTinyOverChasm
- 
-nameCastle Tiny Over Chasm
-M*K
-
-value
-Balloon092
-2
-name*(Castle Tiny Balloon: Behind Museum Glass
-D*B
-
-value
-Balloon103
-)
-name!Castle Tiny Balloon: Near Funky
-D*B
-
-valueCastleTinyHalfMedal
- 
-nameCastle Tiny Half-Medal
-û
-Lankyî2ë
-=*;
-
-valueCastleLankyMedal
-
-nameCastle Lanky Medal
-Y*W
-
-valueCastleKasplatHalfway
-4
-name,*Castle Kasplat: Near Rocketbarrel Overhang
-=*;
-
-valueCastleLankyTower
-
-nameCastle Lanky Tower
-G*E
- 
-valueCastleLankyGreenhouse
-!
-nameCastle Lanky Greenhouse
-E*C
-
-valueCastleLankyMausoleum
- 
-nameCastle Lanky Mausoleum
-A*?
-
-valueCastleLankyDungeon
-
-nameCastle Lanky Dungeon
-E*C
-
-value
-Balloon088
-*
-name" Castle Lanky Balloon: Wind Tower
-D*B
-
-value
-Balloon089
-)
-name!Castle Lanky Balloon: Mausoleum
-F*D
-
-value
-Balloon095
-+
-name#!Castle Lanky Balloon: Dungeon (1)
-F*D
-
-value
-Balloon097
-+
-name#!Castle Lanky Balloon: Dungeon (2)
-F*D
-
-valueCastleLankyHalfMedal
-!
-nameCastle Lanky Half-Medal
-Ÿ$
-EnemiesÕ$2 $
-S*Q
-&
-valueCastleMainEnemy_NearBridge0
-'
-nameCastle Enemy: Near Bridge (0)
-S*Q
-&
-valueCastleMainEnemy_NearBridge1
-'
-nameCastle Enemy: Near Bridge (1)
-]*[
-+
-value" CastleMainEnemy_WoodenExtrusion0
-,
-name$"Castle Enemy: Wooden Extrusion (0)
-]*[
-+
-value" CastleMainEnemy_WoodenExtrusion1
-,
-name$"Castle Enemy: Wooden Extrusion (1)
-J*H
-#
-valueCastleMainEnemy_NearShed
-!
-nameCastle Enemy: Near Shed
-P*N
-&
-valueCastleMainEnemy_NearLibrary
-$
-nameCastle Enemy: Near Library
-L*J
-$
-valueCastleMainEnemy_NearTower
-"
-nameCastle Enemy: Near Tower
-P*N
-&
-valueCastleMainEnemy_MuseumSteps
-$
-nameCastle Enemy: Museum Steps
-Q*O
-&
-valueCastleMainEnemy_NearLowCave
-%
-nameCastle Enemy: Near Low Cave
-\*Z
-+
-value" CastleMainEnemy_PathToLowKasplat
-+
-name#!Castle Enemy: Path To Low Kasplat
-F*D
-!
-valueCastleMainEnemy_LowTnS
-
-nameCastle Enemy: Low TnS
-U*S
-(
-valueCastleMainEnemy_PathToDungeon
-'
-nameCastle Enemy: Path To Dungeon
-V*T
-)
-value CastleMainEnemy_NearHeadphones
-'
-nameCastle Enemy: Near Headphones
-P*N
-$
-valueCastleBallroomEnemy_Start
-&
-nameCastle Ballroom Enemy: Start
-U*S
-&
-valueCastleDungeonEnemy_FaceRoom
-)
-name!Castle Dungeon Enemy: Face Room
-W*U
-'
-valueCastleDungeonEnemy_ChairRoom
-*
-name" Castle Dungeon Enemy: Chair Room
-f*d
-.
-value%#CastleDungeonEnemy_OutsideLankyRoom
-2
-name*(Castle Dungeon Enemy: Outside Lanky Room
-Z*X
-'
-valueCastleLowCaveEnemy_NearCrypt
--
-name%#Castle Lower Cave Enemy: Near Crypt
-\*Z
-(
-valueCastleLowCaveEnemy_StairRight
-.
-name&$Castle Lower Cave Enemy: Stair Right
-Z*X
-'
-valueCastleLowCaveEnemy_StairLeft
--
-name%#Castle Lower Cave Enemy: Stair Left
-b*`
-+
-value" CastleLowCaveEnemy_NearMausoleum
-1
-name)'Castle Lower Cave Enemy: Near Mausoleum
-Z*X
-'
-valueCastleLowCaveEnemy_NearFunky
--
-name%#Castle Lower Cave Enemy: Near Funky
-V*T
-%
-valueCastleLowCaveEnemy_NearTag
-+
-name#!Castle Lower Cave Enemy: Near Tag
-\*Z
-(
-valueCastleCryptEnemy_DiddyCoffin0
-.
-name&$Castle Crypt Enemy: Diddy Coffin (0)
-\*Z
-(
-valueCastleCryptEnemy_DiddyCoffin1
-.
-name&$Castle Crypt Enemy: Diddy Coffin (1)
-\*Z
-(
-valueCastleCryptEnemy_DiddyCoffin2
-.
-name&$Castle Crypt Enemy: Diddy Coffin (2)
-\*Z
-(
-valueCastleCryptEnemy_DiddyCoffin3
-.
-name&$Castle Crypt Enemy: Diddy Coffin (3)
-^*\
-)
-value CastleCryptEnemy_ChunkyCoffin0
-/
-name'%Castle Crypt Enemy: Chunky Coffin (0)
-^*\
-)
-value CastleCryptEnemy_ChunkyCoffin1
-/
-name'%Castle Crypt Enemy: Chunky Coffin (1)
-^*\
-)
-value CastleCryptEnemy_ChunkyCoffin2
-/
-name'%Castle Crypt Enemy: Chunky Coffin (2)
-^*\
-)
-value CastleCryptEnemy_ChunkyCoffin3
-/
-name'%Castle Crypt Enemy: Chunky Coffin (3)
+Ò
+	locations„2‡
 [*Y
-)
-value CastleCryptEnemy_MinecartEntry
-,
-name$"Castle Crypt Enemy: Minecart Entry
-H*F
- 
-valueCastleCryptEnemy_Fork
-"
-nameCastle Crypt Enemy: Fork
-S*Q
-%
-valueCastleCryptEnemy_NearDiddy
-(
-name Castle Crypt Enemy: Near Diddy
-U*S
-&
-valueCastleCryptEnemy_NearChunky
-)
-name!Castle Crypt Enemy: Near Chunky
-Y*W
-(
-valueCastleMausoleumEnemy_TinyPath
-+
-name#!Castle Mausoleum Enemy: Tiny Path
-`*^
-*
-value!CastleMausoleumEnemy_LankyPath0
-0
-name(&Castle Mausoleum Enemy: Lanky Path (0)
-`*^
-*
-value!CastleMausoleumEnemy_LankyPath1
-0
-name(&Castle Mausoleum Enemy: Lanky Path (1)
-`*^
-+
-value" CastleUpperCaveEnemy_NearDungeon
-/
-name'%Castle Upper Cave Enemy: Near Dungeon
-X*V
-'
-valueCastleUpperCaveEnemy_NearPit
-+
-name#!Castle Upper Cave Enemy: Near Pit
-b*`
-,
-value#!CastleUpperCaveEnemy_NearEntrance
-0
-name(&Castle Upper Cave Enemy: Near Entrance
-Z*X
-'
-valueCastleLibraryEnemy_ForkLeft0
--
-name%#Castle Library Enemy: Fork Left (0)
-Z*X
-'
-valueCastleLibraryEnemy_ForkLeft1
--
-name%#Castle Library Enemy: Fork Left (1)
-Y*W
-(
-valueCastleLibraryEnemy_ForkCenter
-+
-name#!Castle Library Enemy: Fork Center
-W*U
-'
-valueCastleLibraryEnemy_ForkRight
-*
-name" Castle Library Enemy: Fork Right
-Z*X
-'
-valueCastleMuseumEnemy_MainFloor0
--
-name%#Castle Museum Enemy: Main Floor (0)
-Z*X
-'
-valueCastleMuseumEnemy_MainFloor1
--
-name%#Castle Museum Enemy: Main Floor (1)
-Z*X
-'
-valueCastleMuseumEnemy_MainFloor2
--
-name%#Castle Museum Enemy: Main Floor (2)
-Z*X
-'
-valueCastleMuseumEnemy_MainFloor3
--
-name%#Castle Museum Enemy: Main Floor (3)
-L*J
-"
-valueCastleMuseumEnemy_Start
-$
-nameCastle Museum Enemy: Start
-V*T
-%
-valueCastleTreeEnemy_StartRoom0
-+
-name#!Castle Tree Enemy: Start Room (0)
-V*T
-%
-valueCastleTreeEnemy_StartRoom1
-+
-name#!Castle Tree Enemy: Start Room (1)
-€
-Chunky–2Õ
-?*=
-
-valueCastleChunkyMedal
-
-nameCastle Chunky Medal
-L*J
-
-valueCastleChunkyTree
-+
-name#!Castle Chunky Tree Sniping Barrel
-=*;
-
-valueCastleChunkyShed
-
-nameCastle Chunky Shed
-A*?
-
-valueCastleChunkyMuseum
-
-nameCastle Chunky Museum
-?*=
-
-valueCastleChunkyCrypt
-
-nameCastle Chunky Crypt
-U*S
-!
-valueCastleKasplatNearCandy
-.
-name&$Castle Kasplat: Near Upper Cave Shop
-B*@
-
-value
-Balloon093
-'
-nameCastle Chunky Balloon: Museum
-G*E
-
-value
-Balloon096
-,
-name$"Castle Chunky Balloon: Dungeon (1)
-G*E
-
-value
-Balloon098
-,
-name$"Castle Chunky Balloon: Dungeon (2)
-@*>
-
-value
-Balloon100
-%
-nameCastle Chunky Balloon: Tree
-@*>
-
-value
-Balloon101
-%
-nameCastle Chunky Balloon: Shed
-H*F
- 
-valueCastleChunkyHalfMedal
-"
-nameCastle Chunky Half-Medal
-˜
-DiddyÌ2Í
-=*;
-
-valueCastleDiddyMedal
-
-nameCastle Diddy Medal
-J*H
 !
 valueCastleDiddyAboveCastle
 #
 nameCastle Diddy Above Castle
-C*A
+
+kongDiddy
+^*\
+
+valueCastleChunkyTree
++
+name#!Castle Chunky Tree Sniping Barrel
+
+kongChunky
+T*R
 
 valueCastleDiddyBallroom
 
 nameCastle Diddy Ballroom
+
+kongDiddy
 N*L
-
-valueCastleKasplatCrypt
-+
-name#!Castle Kasplat: Lower Cave Center
-=*;
 
-valueCastleDiddyCrypt
+valueCastleLankyTower
 
-nameCastle Diddy Crypt
-A*?
+nameCastle Lanky Tower
+
+kongLanky
+Q*O
+
+valueCastleChunkyCrypt
 
-valueCastleDiddyDungeon
-
-nameCastle Diddy Dungeon
-D*B
-
-value
-Balloon082
-)
-name!Castle Diddy Balloon: Beside W1
-J*H
-
-value
-Balloon083
-/
-name'%Castle Diddy Balloon: Inside Ballroom
-L*J
-
-value
-Balloon090
-1
-name)'Castle Diddy Balloon: Inside the Coffin
-M*K
-
-value
-Balloon094
-2
-name*(Castle Diddy Balloon: Dungeon Chain Room
-O*M
-
-value
-Balloon102
-4
-name,*Castle Diddy Balloon: Above Crypt Entrance
-F*D
-
-valueCastleDiddyHalfMedal
-!
-nameCastle Diddy Half-Medal
-Ñ
-	All Kongsˆ2Û
-P*N
- 
-valueCastleBananaFairyTree
-*
-name" Castle Fairy (Tree Sniping Room)
-P*N
-$
-valueCastleBananaFairyBallroom
-&
-nameCastle Fairy (Near Car Race)
+nameCastle Chunky Crypt
+
+kongChunky
 T*R
-
-valueCastleBattleArena
-2
-name*(Castle Battle Arena (Greenhouse: Center)
-8*6
-
-value	CastleKey
 
-nameCastle Boss Defeated
-V*T
-!
-valueRainbowCoin_Location11
-/
-name'%Castle Dirt (Top of Castle Near Shop)
-[*Y
+valueCastleTinyOverChasm
  
-valueMelonCrate_Location12
-5
-name-+Castle Crate (Lower Cave: Behind Mausoleum)
-G*E
- 
-valueHoldableBoulderMuseum
-!
-nameCastle Boulder (Museum)
-?*=
-
-valueBreakableCastleShed
-
-nameCastle Box (Shed)
-ó
-Donkeyå2â
-?*=
-
-valueCastleDonkeyMedal
+nameCastle Tiny Over Chasm
+
+kongTiny
+R*P
 
-nameCastle Donkey Medal
-E*C
-
-valueCastleDonkeyTree
-$
-nameCastle Donkey Tree Sniping
-K*I
-
-valueCastleKasplatTree
-)
-name!Castle Kasplat: Inside the Tree
-C*A
+valueCastleLankyDungeon
 
-valueCastleDonkeyLibrary
-
-nameCastle Donkey Library
-F*D
- 
-valueCastleDonkeyMinecarts
- 
-nameCastle Donkey Minecart
-C*A
-
-valueCastleDonkeyDungeon
-
-nameCastle Donkey Dungeon
-T*R
-
-value
-Balloon091
-9
-name1/Castle Donkey Balloon: Beside Minecart Entrance
-@*>
-
-value
-Balloon099
-%
-nameCastle Donkey Balloon: Tree
-H*F
- 
-valueCastleDonkeyHalfMedal
-"
-nameCastle Donkey Half-Medal
-
-nameCreepy Castle
-Ã=
-JungleJapesº=*π=
-û=
-	locationsê=*ç=
-Õ
-Tinyƒ2¡
-9*7
-
-valueJapesTinyMedal
-
-nameJapes Tiny Medal
-K*I
-
-valueJapesTinyCagedBanana
-&
-nameJapes Tiny Timed Cage Banana
-S*Q
-%
-valueJapesTinyFeatherGateBarrel
-(
-name Japes Tiny Feather Gate Barrel
-T*R
-$
-valueJapesKasplatLeftTunnelFar
-*
-name" Japes Kasplat: Hive Tunnel Upper
-9*7
-
-valueJapesTinyStump
-
-nameJapes Tiny Stump
-=*;
-
-valueJapesTinyBeehive
-
-nameJapes Tiny Beehive
-?*=
-
-value
-Balloon008
-$
-nameJapes Tiny Balloon: By Hut
-F*D
-
-value
-Balloon009
-+
-name#!Japes Tiny Balloon: In Fairy Room
-E*C
-
-value
-Balloon013
-*
-name" Japes Tiny Balloon: In Shellhive
-B*@
-
-valueJapesTinyHalfMedal
-
-nameJapes Tiny Half-Medal
-Á
-Lanky›2⁄
-;*9
-
-valueJapesLankyMedal
-
-nameJapes Lanky Medal
-M*K
- 
-valueJapesLankyCagedBanana
-'
-nameJapes Lanky Timed Cage Banana
-K*I
+nameCastle Lanky Dungeon
+
+kongLanky
+¿
+JungleJapes∞*≠
+
+nameJungle Japes
+í
+	locationsÑ2Å
+\*Z
 
 valueJapesLankyGrapeGate
 '
 nameJapes Lanky Grape Gate Barrel
-B*@
-
-valueJapesLankySlope
-"
-nameJapes Lanky Slope Barrel
-Q*O
-
-valueJapesKasplatNearLab
--
-name%#Japes Kasplat: By Lanky Slope Bonus
-O*M
-
-valueJapesLankyFairyCave
-+
-name#!Japes Lanky Painting Room Zingers
-@*>
-
-value
-Balloon004
+
+kongLanky
+c*a
 %
-nameJapes Lanky Balloon: By Hut
-C*A
-
-value
-Balloon012
+valueJapesTinyFeatherGateBarrel
 (
-name Japes Lanky Balloon: By his BP
-J*H
-
-value
-Balloon014
-/
-name'%Japes Lanky Balloon: In Painting Room
-D*B
-
-valueJapesLankyHalfMedal
- 
-nameJapes Lanky Half-Medal
-É
-Enemies˜2Ù
-A*?
-
-valueJapesMainEnemy_Start
-
-nameJapes Enemy: Start
-N*L
-%
-valueJapesMainEnemy_DiddyCavern
-#
-nameJapes Enemy: Diddy Cavern
-H*F
-!
-valueJapesMainEnemy_Tunnel0
-!
-nameJapes Enemy: Tunnel (0)
-H*F
-!
-valueJapesMainEnemy_Tunnel1
-!
-nameJapes Enemy: Tunnel (1)
-F*D
- 
-valueJapesMainEnemy_Storm0
- 
-nameJapes Enemy: Storm (0)
-F*D
- 
-valueJapesMainEnemy_Storm1
- 
-nameJapes Enemy: Storm (1)
-F*D
- 
-valueJapesMainEnemy_Storm2
- 
-nameJapes Enemy: Storm (2)
-D*B
-
-valueJapesMainEnemy_Hive0
-
-nameJapes Enemy: Hive (0)
-D*B
-
-valueJapesMainEnemy_Hive1
-
-nameJapes Enemy: Hive (1)
-D*B
-
-valueJapesMainEnemy_Hive2
-
-nameJapes Enemy: Hive (2)
-D*B
-
-valueJapesMainEnemy_Hive3
-
-nameJapes Enemy: Hive (3)
-D*B
-
-valueJapesMainEnemy_Hive4
-
-nameJapes Enemy: Hive (4)
-Q*O
-&
-valueJapesMainEnemy_KilledInDemo
-%
-nameJapes Enemy: Killed In Demo
-V*T
-)
-value JapesMainEnemy_NearUnderground
-'
-nameJapes Enemy: Near Underground
-U*S
-'
-valueJapesMainEnemy_NearPainting0
-(
-name Japes Enemy: Near Painting (0)
-U*S
-'
-valueJapesMainEnemy_NearPainting1
-(
-name Japes Enemy: Near Painting (1)
-U*S
-'
-valueJapesMainEnemy_NearPainting2
-(
-name Japes Enemy: Near Painting (2)
-G*E
-"
-valueJapesMainEnemy_Mountain
-
-nameJapes Enemy: Mountain
-R*P
-'
-valueJapesMainEnemy_FeatherTunnel
-%
-nameJapes Enemy: Feather Tunnel
-P*N
-&
-valueJapesMainEnemy_MiddleTunnel
-$
-nameJapes Enemy: Middle Tunnel
-S*Q
-$
-valueJapesMountainEnemy_Start0
-)
-name!Japes Mountain Enemy: Start (0)
-S*Q
-$
-valueJapesMountainEnemy_Start1
-)
-name!Japes Mountain Enemy: Start (1)
-S*Q
-$
-valueJapesMountainEnemy_Start2
-)
-name!Japes Mountain Enemy: Start (2)
-S*Q
-$
-valueJapesMountainEnemy_Start3
-)
-name!Japes Mountain Enemy: Start (3)
-S*Q
-$
-valueJapesMountainEnemy_Start4
-)
-name!Japes Mountain Enemy: Start (4)
+name Japes Tiny Feather Gate Barrel
+
+kongTiny
 g*e
--
-value$"JapesMountainEnemy_NearGateSwitch0
-4
-name,*Japes Mountain Enemy: Near Gate Switch (0)
-g*e
--
-value$"JapesMountainEnemy_NearGateSwitch1
-4
-name,*Japes Mountain Enemy: Near Gate Switch (1)
-M*K
-"
-valueJapesMountainEnemy_HiLo
-%
-nameJapes Mountain Enemy: Hi Lo
-Y*W
-'
-valueJapesMountainEnemy_Conveyor0
-,
-name$"Japes Mountain Enemy: Conveyor (0)
-Y*W
-'
-valueJapesMountainEnemy_Conveyor1
-,
-name$"Japes Mountain Enemy: Conveyor (1)
-Y*W
-(
-valueJapesShellhiveEnemy_FirstRoom
-+
-name#!Japes Tiny Hive Enemy: First Room
-`*^
-*
-value!JapesShellhiveEnemy_SecondRoom0
-0
-name(&Japes Tiny Hive Enemy: Second Room (0)
-`*^
-*
-value!JapesShellhiveEnemy_SecondRoom1
-0
-name(&Japes Tiny Hive Enemy: Second Room (1)
-^*\
-)
-value JapesShellhiveEnemy_ThirdRoom0
-/
-name'%Japes Tiny Hive Enemy: Third Room (0)
-^*\
-)
-value JapesShellhiveEnemy_ThirdRoom1
-/
-name'%Japes Tiny Hive Enemy: Third Room (1)
-^*\
-)
-value JapesShellhiveEnemy_ThirdRoom2
-/
-name'%Japes Tiny Hive Enemy: Third Room (2)
-^*\
-)
-value JapesShellhiveEnemy_ThirdRoom3
-/
-name'%Japes Tiny Hive Enemy: Third Room (3)
-W*U
-'
-valueJapesShellhiveEnemy_MainRoom
-*
-name" Japes Tiny Hive Enemy: Main Room
-Ò
-ChunkyÊ2„
-=*;
-
-valueJapesChunkyMedal
-
-nameJapes Chunky Medal
-A*?
-
-valueJapesChunkyBoulder
-
-nameJapes Chunky Boulder
-O*M
-!
-valueJapesChunkyCagedBanana
-(
-name Japes Chunky Timed Cage Banana
-U*S
 &
 valueJapesChunkyGiantBonusBarrel
 )
 name!Japes Chunky Giant Bonus Barrel
-I*G
-!
-valueJapesChunkyUnderground
-"
-nameJapes Chunky Underground
-L*J
-"
-valueJapesKasplatUnderground
-$
-nameJapes Kasplat: Underground
-F*D
-
-value
-Balloon003
-+
-name#!Japes Chunky Balloon: In Cave (1)
-F*D
-
-value
-Balloon010
-+
-name#!Japes Chunky Balloon: In Cave (2)
-F*D
-
-value
-Balloon011
-+
-name#!Japes Chunky Balloon: In Cave (3)
-F*D
-
-valueJapesChunkyHalfMedal
-!
-nameJapes Chunky Half-Medal
-„
-DiddyŸ2÷
-;*9
+
+kongChunky
+S*Q
 
-valueJapesDiddyMedal
-
-nameJapes Diddy Medal
-M*K
- 
-valueJapesDiddyCagedBanana
-'
-nameJapes Diddy Timed Cage Banana
-H*F
-
-valueJapesDiddyMountain
-%
-nameJapes Diddy Top of Mountain
-D*B
-
-valueJapesDiddyTunnel
-#
-nameJapes Diddy Peanut Tunnel
-_*]
-'
-valueJapesKasplatNearPaintingRoom
-2
-name*(Japes Kasplat: Tunnel Near Painting Room
-B*@
-
-valueJapesDiddyMinecarts
-
-nameJapes Diddy Minecart
-I*G
-
-value
-Balloon000
-.
-name&$Japes Diddy Balloon: Inside Mountain
-A*?
-
-value
-Balloon001
-&
-nameJapes Diddy Balloon: In Cave
-?*=
-
-value
-Balloon005
-$
-nameJapes Diddy Balloon: By W5
-D*B
-
-valueJapesDiddyHalfMedal
- 
-nameJapes Diddy Half-Medal
-“
-	All Kongsƒ2¡
-M*K
-!
-valueJapesDonkeyFrontofCage
-&
-nameJapes in Front of Diddy Cage
-D*B
-
-valueJapesDonkeyFreeDiddy
-
-nameJapes Free Diddy Item
-R*P
-
-valueJapesBattleArena
-1
-name)'Japes Battle Arena (Near Low Hill Shop)
-Q*O
-$
-valueJapesBananaFairyRambiCave
-'
-nameJapes Fairy (Rambi Door Pool)
-O*M
-$
-valueJapesBananaFairyLankyCave
-%
-nameJapes Fairy (Painting Room)
-6*4
-
-value
-JapesKey
-
-nameJapes Boss Defeated
-N*L
-!
-valueRainbowCoin_Location00
-'
-nameJapes Dirt (On Painting Hill)
-Q*O
- 
-valueMelonCrate_Location00
-+
-name#!Japes Crate (Behind the Mountain)
-O*M
- 
-valueMelonCrate_Location01
-)
-name!Japes Crate (In the Rambi Cave)
-<*:
-
-valueBreakableJapesDKHut
+valueJapesLankySlope
+"
+nameJapes Lanky Slope Barrel
+
+kongLanky
+ÿ
+GloomyGalleon∆*√
 
-nameJapes Hut (DK)
-B*@
-!
-valueBreakableJapesDiddyHut
-
-nameJapes Hut (Diddy)
-B*@
-!
-valueBreakableJapesLankyHut
-
-nameJapes Hut (Lanky)
-@*>
+nameGloomy Galleon
+¶
+	locationsò2ï
+`*^
  
-valueBreakableJapesTinyHut
-
-nameJapes Hut (Tiny)
-õ
-Donkeyê2ç
-=*;
-
-valueJapesDonkeyMedal
-
-nameJapes Donkey Medal
-:*8
-
-value	DiddyKong
+valueGalleonDiddyGoldTower
+)
+name!Galleon Diddy Gold Tower Barrel
+
+kongDiddy
+`*^
  
-nameJapes Cage: Diddy Kong
-O*M
+valueGalleonLankyGoldTower
+)
+name!Galleon Lanky Gold Tower Barrel
+
+kongLanky
+\*Z
+
+valueGalleonTinySubmarine
+'
+nameGalleon Tiny Submarine Barrel
+
+kongTiny
+W*U
+
+valueGalleonTiny2DoorShip
+"
+nameGalleon Tiny 2 Door Ship
+
+kongTiny
+]*[
 !
-valueJapesDonkeyCagedBanana
-(
-name Japes Donkey Floor Cage Banana
-J*H
-!
-valueJapesDonkeyBaboonBlast
+valueGalleonDonkey5DoorShip
+$
+nameGalleon Donkey 5 Door Ship
+
+kongDonkey
+Z*X
+ 
+valueGalleonDiddy5DoorShip
 #
-nameJapes Donkey Baboon Blast
-U*S
-%
-valueJapesKasplatLeftTunnelNear
-*
-name" Japes Kasplat: Hive Tunnel Lower
-C*A
-
-value
-Balloon002
-(
-name Japes Donkey Balloon: By Snide
-I*G
-
-value
-Balloon006
-.
-name&$Japes Donkey Balloon: By Underground
-D*B
-
-value
-Balloon007
-)
-name!Japes Donkey Balloon: By Cranky
-F*D
-
-valueJapesDonkeyHalfMedal
+nameGalleon Diddy 5 Door Ship
+
+kongDiddy
+]*[
 !
-nameJapes Donkey Half-Medal
-
-nameJungle Japes
-í2
-FranticFactoryˇ1*¸1
-ﬁ1
-	locations–1*Õ1
-Í
-Tiny·2ﬁ
-=*;
-
-valueFactoryTinyMedal
-
-nameFactory Tiny Medal
-E*C
-
-valueFactoryTinyDartboard
- 
-nameFactory Tiny Dartboard
-B*@
-
-valueFactoryTinyCarRace
-
-nameFactory Tiny Car Race
-I*G
+valueGalleonChunky5DoorShip
+$
+nameGalleon Chunky 5 Door Ship
+
+kongChunky
+ì
+DKIslesá*Ñ
+
+name
+D.K. Isles
+Î
+	locations›2⁄
+[*Y
 
-valueFactoryTinybyArcade
-%
-nameFactory Tiny Mini by Arcade
-O*M
+valueIslesTinyAztecLobby
+'
+nameIsles Tiny Aztec Lobby Barrel
+
+kongTiny
+a*_
  
-valueFactoryKasplatStorage
+valueIslesDiddySnidesLobby
+*
+name" Isles Diddy Snides Spring Barrel
+
+kongDiddy
+U*S
+
+valueIslesDiddySummit
+#
+nameIsles Diddy Summit Barrel
+
+kongDiddy
+`*^
+ 
+valueIslesLankyCastleLobby
 )
-name!Factory Kasplat: Pole to Arcade
-Q*O
+name!Isles Lanky Castle Lobby Barrel
+
+kongLanky
+_*]
+
+valueIslesChunkyHelmLobby
+(
+name Isles Chunky Helm Lobby Barrel
+
+kongChunky
+∂
+CrystalCaves•*¢
+
+nameCrystal Caves
+Ü
+	locations¯2ı
+\*Z
+!
+valueCavesDonkeyBaboonBlast
+#
+nameCaves Donkey Baboon Blast
+
+kongDonkey
+]*[
+"
+valueCavesDiddyJetpackBarrel
+$
+nameCaves Diddy Jetpack Barrel
+
+kongDiddy
+Y*W
+
+valueCavesTinyCaveBarrel
+%
+nameCaves Tiny Mini Cave Barrel
+
+kongTiny
+[*Y
+ 
+valueCavesChunky5DoorCabin
+#
+nameCaves Chunky 5 Door Cabin
+
+kongChunky
+ä
+FungiForest˙*˜
+
+nameFungi Forest
+‹
+	locationsŒ2À
+g*e
+#
+valueForestDiddyTopofMushroom
+-
+name%#Forest Diddy Top of Mushroom Barrel
+
+kongDiddy
+^*\
+#
+valueForestTinyMushroomBarrel
+%
+nameForest Tiny Mushroom Barrel
+
+kongTiny
+^*\
+"
+valueForestDonkeyBaboonBlast
+$
+nameForest Donkey Baboon Blast
+
+kongDonkey
+i*g
+&
+valueForestLankyColoredMushrooms
+,
+name$"Forest Lanky Colored Mushroom Slam
+
+kongLanky
+S*Q
+
+valueForestDiddyOwlRace
+
+nameForest Diddy Owl Race
+
+kongDiddy
+`*^
+
+valueForestDonkeyBarn
+-
+name%#Forest Donkey Thornvine Barn Barrel
+
+kongDonkey
+ø
+FranticFactory¨*©
+
+nameFrantic Factory
+ã
+	locations˝2˙
+[*Y
+!
+valueFactoryDiddyBlockTower
+#
+nameFactory Diddy Block Tower
+
+kongDiddy
+j*h
+(
+valueFactoryLankyTestingRoomBarrel
++
+name#!Factory Lanky Testing Room Barrel
+
+kongLanky
+i*g
+'
+valueFactoryDiddyChunkyRoomBarrel
++
+name#!Factory Diddy Storage Room Barrel
+
+kongDiddy
+a*_
+ 
+valueFactoryChunkybyArcade
+)
+name!Factory Chunky Barrel by Arcade
+
+kongChunky
+a*_
 $
 valueFactoryTinyProductionRoom
 '
 nameFactory Tiny Production Twirl
-C*A
+
+kongTiny
+Ì
+HideoutHelm›*⁄
+
+nameHideout Helm
+ø
+	locations±2Æ
+E*C
+
+valueHelmDonkey1
+
+nameHelm Donkey 1
+
+kongDonkey
+E*C
+
+valueHelmDonkey2
+
+nameHelm Donkey 2
+
+kongDonkey
+B*@
 
 value
-Balloon028
-(
-name Factory Tiny Balloon: By Snide
-J*H
+HelmDiddy1
+
+nameHelm Diddy 1
+
+kongDiddy
+B*@
 
 value
-Balloon035
-/
-name'%Factory Tiny Balloon: Production Room
-J*H
+HelmDiddy2
+
+nameHelm Diddy 2
+
+kongDiddy
+B*@
 
 value
-Balloon036
-/
-name'%Factory Tiny Balloon: By Testing Shop
-F*D
-
-valueFactoryTinyHalfMedal
+HelmLanky1
+
+nameHelm Lanky 1
+
+kongLanky
+B*@
+
+value
+HelmLanky2
+
+nameHelm Lanky 2
+
+kongLanky
+?*=
+
+value	HelmTiny1
+
+nameHelm Tiny 1
+
+kongTiny
+?*=
+
+value	HelmTiny2
+
+nameHelm Tiny 2
+
+kongTiny
+E*C
+
+valueHelmChunky1
+
+nameHelm Chunky 1
+
+kongChunky
+E*C
+
+valueHelmChunky2
+
+nameHelm Chunky 2
+
+kongChunky
+∂
+
+AngryAztecß*§
+
+nameAngry Aztec
+ä
+	locations¸2˘
+p*n
+#
+valueAztecDonkeyQuicksandCave
+5
+name-+Aztec Donkey Sealed Quicksand Tunnel Barrel
+
+kongDonkey
+b*`
 !
-nameFactory Tiny Half-Medal
+valueAztecChunkyCagedBarrel
+)
+name!Aztec Chunky Giant Caged Barrel
+
+kongChunky
+Z*X
+ 
+valueAztecLanky5DoorTemple
+#
+nameAztec Lanky 5 Door Temple
+
+kongLanky
+]*[
+!
+valueAztecChunky5DoorTemple
+$
+nameAztec Chunky 5 Door Temple
+
+kongChunky
+f*d
+&
+valueAztecLankyLlamaTempleBarrel
+)
+name!Aztec Lanky Llama Temple Barrel
+
+kongLanky
+í2
+FranticFactoryˇ1*¸1
+
+nameFrantic Factory
+ﬁ1
+	locations–1*Õ1
 Û
 LankyÈ2Ê
 ?*=
@@ -25983,6 +29170,116 @@ H*F
 valueFactoryLankyHalfMedal
 "
 nameFactory Lanky Half-Medal
+Í
+Tiny·2ﬁ
+=*;
+
+valueFactoryTinyMedal
+
+nameFactory Tiny Medal
+E*C
+
+valueFactoryTinyDartboard
+ 
+nameFactory Tiny Dartboard
+B*@
+
+valueFactoryTinyCarRace
+
+nameFactory Tiny Car Race
+I*G
+
+valueFactoryTinybyArcade
+%
+nameFactory Tiny Mini by Arcade
+O*M
+ 
+valueFactoryKasplatStorage
+)
+name!Factory Kasplat: Pole to Arcade
+Q*O
+$
+valueFactoryTinyProductionRoom
+'
+nameFactory Tiny Production Twirl
+C*A
+
+value
+Balloon028
+(
+name Factory Tiny Balloon: By Snide
+J*H
+
+value
+Balloon035
+/
+name'%Factory Tiny Balloon: Production Room
+J*H
+
+value
+Balloon036
+/
+name'%Factory Tiny Balloon: By Testing Shop
+F*D
+
+valueFactoryTinyHalfMedal
+!
+nameFactory Tiny Half-Medal
+ö
+Diddyê2ç
+?*=
+
+valueFactoryDiddyMedal
+
+nameFactory Diddy Medal
+J*H
+!
+valueFactoryDiddyBlockTower
+#
+nameFactory Diddy Block Tower
+H*F
+
+valueFactoryDiddyRandD
+&
+nameFactory Diddy Charge Enemies
+X*V
+'
+valueFactoryDiddyChunkyRoomBarrel
++
+name#!Factory Diddy Storage Room Barrel
+\*Z
+)
+value FactoryKasplatProductionBottom
+-
+name%#Factory Kasplat: Base of Production
+T*R
+%
+valueFactoryDiddyProductionRoom
+)
+name!Factory Diddy Production Spring
+H*F
+
+value
+Balloon029
+-
+name%#Factory Diddy Balloon: R&D Room (1)
+H*F
+
+value
+Balloon030
+-
+name%#Factory Diddy Balloon: R&D Room (2)
+H*F
+
+value
+Balloon034
+-
+name%#Factory Diddy Balloon: R&D Room (3)
+H*F
+ 
+valueFactoryDiddyHalfMedal
+"
+nameFactory Diddy Half-Medal
 ñ
 Enemiesä2á
 W*U
@@ -26080,164 +29377,6 @@ Q*O
 valueFactoryMainEnemy_DarkRoom1
 &
 nameFactory Enemy: Dark Room (1)
-˝
-ChunkyÚ2Ô
-A*?
-
-valueFactoryChunkyMedal
-
-nameFactory Chunky Medal
-K*I
-
-valueFactoryKasplatBlocks
-&
-nameFactory Kasplat: Block Tower
-G*E
-
-valueFactoryChunkyRandD
-$
-nameFactory Chunky Toy Monster
-H*F
- 
-valueFactoryChunkyDarkRoom
-"
-nameFactory Chunky Dark Room
-O*M
- 
-valueFactoryChunkybyArcade
-)
-name!Factory Chunky Barrel by Arcade
-U*S
-&
-valueFactoryChunkyProductionRoom
-)
-name!Factory Chunky Production Timer
-B*@
-
-value
-Balloon025
-'
-nameFactory Chunky Balloon: Hatch
-H*F
-
-value
-Balloon026
--
-name%#Factory Chunky Balloon: Above Snide
-H*F
-
-value
-Balloon038
--
-name%#Factory Chunky Balloon: Toy monster
-J*H
-!
-valueFactoryChunkyHalfMedal
-#
-nameFactory Chunky Half-Medal
-ö
-Diddyê2ç
-?*=
-
-valueFactoryDiddyMedal
-
-nameFactory Diddy Medal
-J*H
-!
-valueFactoryDiddyBlockTower
-#
-nameFactory Diddy Block Tower
-H*F
-
-valueFactoryDiddyRandD
-&
-nameFactory Diddy Charge Enemies
-X*V
-'
-valueFactoryDiddyChunkyRoomBarrel
-+
-name#!Factory Diddy Storage Room Barrel
-\*Z
-)
-value FactoryKasplatProductionBottom
--
-name%#Factory Kasplat: Base of Production
-T*R
-%
-valueFactoryDiddyProductionRoom
-)
-name!Factory Diddy Production Spring
-H*F
-
-value
-Balloon029
--
-name%#Factory Diddy Balloon: R&D Room (1)
-H*F
-
-value
-Balloon030
--
-name%#Factory Diddy Balloon: R&D Room (2)
-H*F
-
-value
-Balloon034
--
-name%#Factory Diddy Balloon: R&D Room (3)
-H*F
- 
-valueFactoryDiddyHalfMedal
-"
-nameFactory Diddy Half-Medal
-‡
-	All Kongs“2œ
-R*P
-'
-valueFactoryBananaFairybyCounting
-%
-nameFactory Fairy (Number Game)
-P*N
-$
-valueFactoryBananaFairybyFunky
-&
-nameFactory Fairy (Testing Shop)
-S*Q
-
-valueFactoryBattleArena
-0
-name(&Factory Battle Arena (Under R&D Grate)
-I*G
-!
-valueFactoryLankyFreeChunky
-"
-nameFactory Free Chunky Item
-:*8
-
-value
-FactoryKey
-
-nameFactory Boss Defeated
-I*G
-!
-valueRainbowCoin_Location02
-"
-nameFactory Dirt (Dark Room)
-[*Y
- 
-valueMelonCrate_Location03
-5
-name-+Factory Crate (Testing Shop Entrance Right)
-W*U
- 
-valueMelonCrate_Location04
-1
-name)'Factory Crate (Near Right Storage Shop)
-J*H
-#
-valueBreakableFactoryDarkRoom
-!
-nameFactory Box (Dark Room)
 Œ
 Donkey√2¿
 A*?
@@ -26298,836 +29437,142 @@ J*H
 valueFactoryDonkeyHalfMedal
 #
 nameFactory Donkey Half-Medal
-
-nameFrantic Factory
-¿*
-	Minigames≤**Ø*
-ó*
-levelså**â*
-ä
-FungiForest˙*˜
-‹
-	locationsŒ2À
-g*e
-
-kongDiddy
-#
-valueForestDiddyTopofMushroom
--
-name%#Forest Diddy Top of Mushroom Barrel
-^*\
-
-kongTiny
-#
-valueForestTinyMushroomBarrel
-%
-nameForest Tiny Mushroom Barrel
-^*\
-
-kongDonkey
-"
-valueForestDonkeyBaboonBlast
-$
-nameForest Donkey Baboon Blast
-i*g
-
-kongLanky
-&
-valueForestLankyColoredMushrooms
-,
-name$"Forest Lanky Colored Mushroom Slam
-S*Q
-
-kongDiddy
+˝
+ChunkyÚ2Ô
+A*?
 
-valueForestDiddyOwlRace
-
-nameForest Diddy Owl Race
-`*^
-
-kongDonkey
-
-valueForestDonkeyBarn
--
-name%#Forest Donkey Thornvine Barn Barrel
-
-nameFungi Forest
-ì
-DKIslesá*Ñ
-Î
-	locations›2⁄
-[*Y
-
-kongTiny
+valueFactoryChunkyMedal
 
-valueIslesTinyAztecLobby
-'
-nameIsles Tiny Aztec Lobby Barrel
-a*_
-
-kongDiddy
- 
-valueIslesDiddySnidesLobby
-*
-name" Isles Diddy Snides Spring Barrel
-U*S
-
-kongDiddy
-
-valueIslesDiddySummit
-#
-nameIsles Diddy Summit Barrel
-`*^
-
-kongLanky
- 
-valueIslesLankyCastleLobby
-)
-name!Isles Lanky Castle Lobby Barrel
-_*]
-
-kongChunky
+nameFactory Chunky Medal
+K*I
 
-valueIslesChunkyHelmLobby
-(
-name Isles Chunky Helm Lobby Barrel
-
-name
-D.K. Isles
-¿
-JungleJapes∞*≠
-í
-	locationsÑ2Å
-\*Z
-
-kongLanky
-
-valueJapesLankyGrapeGate
-'
-nameJapes Lanky Grape Gate Barrel
-c*a
-
-kongTiny
-%
-valueJapesTinyFeatherGateBarrel
-(
-name Japes Tiny Feather Gate Barrel
-g*e
-
-kongChunky
+valueFactoryKasplatBlocks
 &
-valueJapesChunkyGiantBonusBarrel
-)
-name!Japes Chunky Giant Bonus Barrel
-S*Q
-
-kongLanky
-
-valueJapesLankySlope
+nameFactory Kasplat: Block Tower
+G*E
+
+valueFactoryChunkyRandD
+$
+nameFactory Chunky Toy Monster
+H*F
+ 
+valueFactoryChunkyDarkRoom
 "
-nameJapes Lanky Slope Barrel
-
-nameJungle Japes
-ø
-FranticFactory¨*©
-ã
-	locations˝2˙
-[*Y
-
-kongDiddy
-!
-valueFactoryDiddyBlockTower
-#
-nameFactory Diddy Block Tower
-j*h
-
-kongLanky
-(
-valueFactoryLankyTestingRoomBarrel
-+
-name#!Factory Lanky Testing Room Barrel
-i*g
-
-kongDiddy
-'
-valueFactoryDiddyChunkyRoomBarrel
-+
-name#!Factory Diddy Storage Room Barrel
-a*_
-
-kongChunky
+nameFactory Chunky Dark Room
+O*M
  
 valueFactoryChunkybyArcade
 )
 name!Factory Chunky Barrel by Arcade
-a*_
-
-kongTiny
-$
-valueFactoryTinyProductionRoom
-'
-nameFactory Tiny Production Twirl
-
-nameFrantic Factory
-∂
-CrystalCaves•*¢
-Ü
-	locations¯2ı
-\*Z
-
-kongDonkey
-!
-valueCavesDonkeyBaboonBlast
-#
-nameCaves Donkey Baboon Blast
-]*[
-
-kongDiddy
-"
-valueCavesDiddyJetpackBarrel
-$
-nameCaves Diddy Jetpack Barrel
-Y*W
-
-kongTiny
-
-valueCavesTinyCaveBarrel
-%
-nameCaves Tiny Mini Cave Barrel
-[*Y
-
-kongChunky
- 
-valueCavesChunky5DoorCabin
-#
-nameCaves Chunky 5 Door Cabin
-
-nameCrystal Caves
-Ì
-HideoutHelm›*⁄
-ø
-	locations±2Æ
-E*C
-
-kongDonkey
-
-valueHelmDonkey1
-
-nameHelm Donkey 1
-E*C
-
-kongDonkey
-
-valueHelmDonkey2
-
-nameHelm Donkey 2
-B*@
-
-kongDiddy
-
-value
-HelmDiddy1
-
-nameHelm Diddy 1
-B*@
-
-kongDiddy
-
-value
-HelmDiddy2
-
-nameHelm Diddy 2
-B*@
-
-kongLanky
-
-value
-HelmLanky1
-
-nameHelm Lanky 1
-B*@
-
-kongLanky
-
-value
-HelmLanky2
-
-nameHelm Lanky 2
-?*=
-
-kongTiny
-
-value	HelmTiny1
-
-nameHelm Tiny 1
-?*=
-
-kongTiny
-
-value	HelmTiny2
-
-nameHelm Tiny 2
-E*C
-
-kongChunky
-
-valueHelmChunky1
-
-nameHelm Chunky 1
-E*C
-
-kongChunky
-
-valueHelmChunky2
-
-nameHelm Chunky 2
-
-nameHideout Helm
-°
-CreepyCastleê*ç
-Ò
-	locations„2‡
-[*Y
-
-kongDiddy
-!
-valueCastleDiddyAboveCastle
-#
-nameCastle Diddy Above Castle
-^*\
-
-kongChunky
-
-valueCastleChunkyTree
-+
-name#!Castle Chunky Tree Sniping Barrel
-T*R
-
-kongDiddy
-
-valueCastleDiddyBallroom
-
-nameCastle Diddy Ballroom
-N*L
-
-kongLanky
-
-valueCastleLankyTower
-
-nameCastle Lanky Tower
-Q*O
-
-kongChunky
-
-valueCastleChunkyCrypt
-
-nameCastle Chunky Crypt
-T*R
-
-kongTiny
-
-valueCastleTinyOverChasm
- 
-nameCastle Tiny Over Chasm
-R*P
-
-kongLanky
-
-valueCastleLankyDungeon
-
-nameCastle Lanky Dungeon
-
-nameCreepy Castle
-∂
-
-AngryAztecß*§
-ä
-	locations¸2˘
-p*n
-
-kongDonkey
-#
-valueAztecDonkeyQuicksandCave
-5
-name-+Aztec Donkey Sealed Quicksand Tunnel Barrel
-b*`
-
-kongChunky
-!
-valueAztecChunkyCagedBarrel
-)
-name!Aztec Chunky Giant Caged Barrel
-Z*X
-
-kongLanky
- 
-valueAztecLanky5DoorTemple
-#
-nameAztec Lanky 5 Door Temple
-]*[
-
-kongChunky
-!
-valueAztecChunky5DoorTemple
-$
-nameAztec Chunky 5 Door Temple
-f*d
-
-kongLanky
+U*S
 &
-valueAztecLankyLlamaTempleBarrel
+valueFactoryChunkyProductionRoom
 )
-name!Aztec Lanky Llama Temple Barrel
-
-nameAngry Aztec
-ÿ
-GloomyGalleon∆*√
-¶
-	locationsò2ï
-`*^
-
-kongDiddy
- 
-valueGalleonDiddyGoldTower
-)
-name!Galleon Diddy Gold Tower Barrel
-`*^
-
-kongLanky
- 
-valueGalleonLankyGoldTower
-)
-name!Galleon Lanky Gold Tower Barrel
-\*Z
-
-kongTiny
-
-valueGalleonTinySubmarine
-'
-nameGalleon Tiny Submarine Barrel
-W*U
-
-kongTiny
-
-valueGalleonTiny2DoorShip
-"
-nameGalleon Tiny 2 Door Ship
-]*[
-
-kongDonkey
-!
-valueGalleonDonkey5DoorShip
-$
-nameGalleon Donkey 5 Door Ship
-Z*X
-
-kongDiddy
- 
-valueGalleonDiddy5DoorShip
-#
-nameGalleon Diddy 5 Door Ship
-]*[
-
-kongChunky
-!
-valueGalleonChunky5DoorShip
-$
-nameGalleon Chunky 5 Door Ship
-
-nameGloomy Galleon
-
-name	Minigames
-ˆ)
-CrystalCavesÂ)*‚)
-∆)
-	locations∏)*µ)
-ò
-Tinyè2å
-9*7
-
-valueCavesTinyMedal
-
-nameCaves Tiny Medal
-I*G
-
-valueCavesTinyCaveBarrel
-%
-nameCaves Tiny Mini Cave Barrel
-N*L
-#
-valueCavesTinyMonkeyportIgloo
-%
-nameCaves Tiny Monkeyport Igloo
-R*P
- 
-valueCavesKasplatNearCandy
-,
-name$"Caves Kasplat: Cabins Central Rise
-E*C
-
-valueCavesTiny5DoorIgloo
-!
-nameCaves Tiny 5 Door Igloo
-E*C
-
-valueCavesTiny5DoorCabin
-!
-nameCaves Tiny 5 Door Cabin
-F*D
-
-value
-Balloon072
-+
-name#!Caves Tiny Balloon: By Cabin Shop
-J*H
-
-value
-Balloon077
-/
-name'%Caves Tiny Balloon: By Hidden Kasplat
-<*:
-
-value
-Balloon079
-!
-nameCaves Tiny Balloon: 5DI
-<*:
-
-value
-Balloon084
-!
-nameCaves Tiny Balloon: 5DC
+name!Factory Chunky Production Timer
 B*@
-
-valueCavesTinyHalfMedal
-
-nameCaves Tiny Half-Medal
-„
-LankyŸ2÷
-;*9
-
-valueCavesLankyMedal
-
-nameCaves Lanky Medal
-L*J
-
-valueCavesKasplatPillar
-)
-name!Caves Kasplat: On Warp 5 Pillar
-F*D
-
-valueCavesLankyBeetleRace
-!
-nameCaves Lanky Beetle Race
-P*N
-
-valueCavesLankyCastle
-/
-name'%Caves Lanky Ice Castle Slam Challenge
-G*E
-
-valueCavesLanky5DoorIgloo
-"
-nameCaves Lanky 5 Door Igloo
-G*E
-
-valueCavesLanky1DoorCabin
-"
-nameCaves Lanky Sprint Cabin
-C*A
 
 value
-Balloon073
-(
-name Caves Lanky Balloon: Waterfall
-=*;
-
-value
-Balloon080
-"
-nameCaves Lanky Balloon: 5DI
-S*Q
-
-value
-Balloon086
-8
-name0.Caves Lanky Balloon: Inside Tile Flip Minigame
-D*B
-
-valueCavesLankyHalfMedal
- 
-nameCaves Lanky Half-Medal
-Ã
-Enemies¿2Ω
-A*?
-
-valueCavesMainEnemy_Start
-
-nameCaves Enemy: Start
-S*Q
+Balloon025
 '
-valueCavesMainEnemy_NearIceCastle
-&
-nameCaves Enemy: Near Ice Castle
-L*J
-$
-valueCavesMainEnemy_Outside5DC
-"
-nameCaves Enemy: Outside 5DC
-P*N
-&
-valueCavesMainEnemy_1DCWaterfall
-$
-nameCaves Enemy: 1DC Waterfall
-J*H
-#
-valueCavesMainEnemy_NearFunky
-!
-nameCaves Enemy: Near Funky
-J*H
-#
-valueCavesMainEnemy_NearSnide
-!
-nameCaves Enemy: Near Snide
-S*Q
-'
-valueCavesMainEnemy_NearBonusRoom
-&
-nameCaves Enemy: Near Bonus Room
-R*P
-'
-valueCavesMainEnemy_1DCHeadphones
-%
-nameCaves Enemy: 1DC Headphones
-O*M
- 
-valueCaves5DIDKEnemy_Right
-)
-name!Caves Donkey Igloo Enemy: Right
-M*K
-
-valueCaves5DIDKEnemy_Left
-(
-name Caves Donkey Igloo Enemy: Left
-V*T
-%
-valueCaves5DITinyEnemy_BigEnemy
-+
-name#!Caves Tiny Igloo Enemy: Big Enemy
-J*H
-
-valueCaves1DCEnemy_Near
-'
-nameCaves Lanky Cabin Enemy: Near
-‚
-Chunky◊2‘
-=*;
-
-valueCavesChunkyMedal
-
-nameCaves Chunky Medal
-J*H
-!
-valueCavesChunkyGorillaGone
-#
-nameCaves Chunky Gorilla Gone
-T*R
-&
-valueCavesChunkyTransparentIgloo
-(
-name Caves Chunky Transparent Igloo
-G*E
-
-valueCavesKasplatOn5DI
-%
-nameCaves Kasplat: On the Igloo
-I*G
- 
-valueCavesChunky5DoorIgloo
-#
-nameCaves Chunky 5 Door Igloo
-I*G
- 
-valueCavesChunky5DoorCabin
-#
-nameCaves Chunky 5 Door Cabin
-C*A
-
-value
-Balloon071
-(
-name Caves Chunky Balloon: By Snide
-E*C
-
-value
-Balloon076
-*
-name" Caves Chunky Balloon: Bonus Room
->*<
-
-value
-Balloon085
-#
-nameCaves Chunky Balloon: 5DI
-F*D
-
-valueCavesChunkyHalfMedal
-!
-nameCaves Chunky Half-Medal
-Ì
-Diddy„2‡
-;*9
-
-valueCavesDiddyMedal
-
-nameCaves Diddy Medal
-L*J
-"
-valueCavesDiddyJetpackBarrel
-$
-nameCaves Diddy Jetpack Barrel
-Q*O
- 
-valueCavesKasplatNearFunky
-+
-name#!Caves Kasplat: Mini Room by Funky
-G*E
-
-valueCavesDiddy5DoorIgloo
-"
-nameCaves Diddy 5 Door Igloo
-R*P
-$
-valueCavesDiddy5DoorCabinLower
-(
-name Caves Diddy 5 Door Cabin Lower
-R*P
-$
-valueCavesDiddy5DoorCabinUpper
-(
-name Caves Diddy 5 Door Cabin Upper
-C*A
-
-value
-Balloon070
-(
-name Caves Diddy Balloon: Around W4
-E*C
-
-value
-Balloon075
-*
-name" Caves Diddy Balloon: Outside 5DC
-=*;
-
-value
-Balloon087
-"
-nameCaves Diddy Balloon: 5DI
-D*B
-
-valueCavesDiddyHalfMedal
- 
-nameCaves Diddy Half-Medal
-ù
-	All Kongsè2å
-H*F
- 
-valueCavesBananaFairyIgloo
-"
-nameCaves Fairy (Tiny Igloo)
-T*R
-
-valueCavesBattleArena
-3
-name+)Caves Battle Arena (Rotating Cabin: Wall)
-Q*O
- 
-valueCavesBananaFairyCabin
-+
-name#!Caves Fairy (Diddy Candles Cabin)
-6*4
-
-value
-CavesKey
-
-nameCaves Boss Defeated
-I*G
-!
-valueRainbowCoin_Location10
-"
-nameCaves Dirt (Giant Kosha)
-I*G
-$
-valueHoldableBoulderCavesSmall
-
-nameCaves Boulder (Small)
-I*G
-$
-valueHoldableBoulderCavesLarge
-
-nameCaves Boulder (Large)
-Ì
-Donkey‚2ﬂ
-=*;
-
-valueCavesDonkeyMedal
-
-nameCaves Donkey Medal
-J*H
-!
-valueCavesDonkeyBaboonBlast
-#
-nameCaves Donkey Baboon Blast
-L*J
-
-valueCavesKasplatNearLab
-(
-name Caves Kasplat: Near Ice Castle
-I*G
- 
-valueCavesDonkey5DoorIgloo
-#
-nameCaves Donkey 5 Door Igloo
-N*L
-#
-valueCavesDonkeyRotatingCabin
-%
-nameCaves Donkey Rotating Cabin
-I*G
- 
-valueCavesDonkey5DoorCabin
-#
-nameCaves Donkey 5 Door Cabin
-L*J
-
-value
-Balloon074
-1
-name)'Caves Donkey Balloon: Entrance Ice Wall
+nameFactory Chunky Balloon: Hatch
 H*F
 
 value
-Balloon078
+Balloon026
 -
-name%#Caves Donkey Balloon: Giant Boulder
->*<
+name%#Factory Chunky Balloon: Above Snide
+H*F
 
 value
-Balloon081
-#
-nameCaves Donkey Balloon: 5DI
-F*D
-
-valueCavesDonkeyHalfMedal
+Balloon038
+-
+name%#Factory Chunky Balloon: Toy monster
+J*H
 !
-nameCaves Donkey Half-Medal
-
-nameCrystal Caves
+valueFactoryChunkyHalfMedal
+#
+nameFactory Chunky Half-Medal
+‡
+	All Kongs“2œ
+R*P
+'
+valueFactoryBananaFairybyCounting
+%
+nameFactory Fairy (Number Game)
+P*N
+$
+valueFactoryBananaFairybyFunky
+&
+nameFactory Fairy (Testing Shop)
+S*Q
+
+valueFactoryBattleArena
+0
+name(&Factory Battle Arena (Under R&D Grate)
+I*G
+!
+valueFactoryLankyFreeChunky
+"
+nameFactory Free Chunky Item
+:*8
+
+value
+FactoryKey
+
+nameFactory Boss Defeated
+I*G
+!
+valueRainbowCoin_Location02
+"
+nameFactory Dirt (Dark Room)
+[*Y
+ 
+valueMelonCrate_Location03
+5
+name-+Factory Crate (Testing Shop Entrance Right)
+W*U
+ 
+valueMelonCrate_Location04
+1
+name)'Factory Crate (Near Right Storage Shop)
+J*H
+#
+valueBreakableFactoryDarkRoom
+!
+nameFactory Box (Dark Room)
 Œ
 HideoutHelmæ*ª
+
+nameHideout Helm
 †
 	locationsí*è
+∑
+Medals¨2©
+;*9
+
+valueHelmDonkeyMedal
+
+nameHelm Donkey Medal
+;*9
+
+valueHelmChunkyMedal
+
+nameHelm Chunky Medal
+7*5
+
+valueHelmTinyMedal
+
+nameHelm Tiny Medal
+9*7
+
+valueHelmLankyMedal
+
+nameHelm Lanky Medal
+9*7
+
+valueHelmDiddyMedal
+
+nameHelm Diddy Medal
 ß
 Enemiesõ2ò
 D*B
@@ -27225,33 +29670,6 @@ D*B
 valueHelmMainEnemy_NavLeft
 
 nameHelm Enemy: Nav Left
-∑
-Medals¨2©
-;*9
-
-valueHelmDonkeyMedal
-
-nameHelm Donkey Medal
-;*9
-
-valueHelmChunkyMedal
-
-nameHelm Chunky Medal
-7*5
-
-valueHelmTinyMedal
-
-nameHelm Tiny Medal
-9*7
-
-valueHelmLankyMedal
-
-nameHelm Lanky Medal
-9*7
-
-valueHelmDiddyMedal
-
-nameHelm Diddy Medal
 ®
 	All Kongsö2ó
 R*P
@@ -27274,2033 +29692,13 @@ F*D
 value	HelmKey
 
 nameThe End of Helm
-
-nameHideout Helm
-ıî
-	LocationsÊî*‚î
-¬î
-
-categories≤î*Æî
-Í
-	DirtPatch‹*Ÿ
-
-singularpatch
-©
-	locationsõ2ò
-•*¢
-/
-vanilla_valueJungleJapes;On Painting Hill
--
-	reward_id plando_patch_0_location_reward
-(
-location_idplando_patch_0_location
-
-nameDirt Patch 1
-ô*ñ
-#
-vanilla_valueAngryAztec;Oasis
--
-	reward_id plando_patch_1_location_reward
-(
-location_idplando_patch_1_location
-
-nameDirt Patch 2
-û*õ
-(
-vanilla_valueAngryAztec;Chunky 5DT
--
-	reward_id plando_patch_2_location_reward
-(
-location_idplando_patch_2_location
-
-nameDirt Patch 3
-°*û
-+
-vanilla_valueFranticFactory;Dark Room
--
-	reward_id plando_patch_3_location_reward
-(
-location_idplando_patch_3_location
-
-nameDirt Patch 4
-∞*≠
-:
-vanilla_value)'GloomyGalleon;Lighthouse: Interior Rear
--
-	reward_id plando_patch_4_location_reward
-(
-location_idplando_patch_4_location
-
-nameDirt Patch 5
-ß*§
-1
-vanilla_value FungiForest;Front of Beanstalk
--
-	reward_id plando_patch_5_location_reward
-(
-location_idplando_patch_5_location
-
-nameDirt Patch 6
-ü*ú
-)
-vanilla_valueFungiForest;Mill Grass
--
-	reward_id plando_patch_6_location_reward
-(
-location_idplando_patch_6_location
-
-nameDirt Patch 7
-°*û
-+
-vanilla_valueCrystalCaves;Giant Kosha
--
-	reward_id plando_patch_7_location_reward
-(
-location_idplando_patch_7_location
-
-nameDirt Patch 8
-≠*™
-7
-vanilla_value&$CreepyCastle;Top of Castle Near Shop
--
-	reward_id plando_patch_8_location_reward
-(
-location_idplando_patch_8_location
-
-nameDirt Patch 9
-©*¶
-2
-vanilla_value!DKIsles;Front of Fungi Building
--
-	reward_id plando_patch_9_location_reward
-(
-location_idplando_patch_9_location
-
-nameDirt Patch 10
-•*¢
-,
-vanilla_valueDKIsles;On Aztec Building
-.
-	reward_id!plando_patch_10_location_reward
-)
-location_idplando_patch_10_location
-
-nameDirt Patch 11
-Æ*´
-5
-vanilla_value$"DKIsles;Under Caves Lobby Entrance
-.
-	reward_id!plando_patch_11_location_reward
-)
-location_idplando_patch_11_location
-
-nameDirt Patch 12
-®*•
-/
-vanilla_valueDKIsles;Castle Lobby: Center
-.
-	reward_id!plando_patch_12_location_reward
-)
-location_idplando_patch_12_location
-
-nameDirt Patch 13
-≤*Ø
-9
-vanilla_value(&DKIsles;Training Grounds: Banana Hoard
-.
-	reward_id!plando_patch_13_location_reward
-)
-location_idplando_patch_13_location
-
-nameDirt Patch 14
-±*Æ
-8
-vanilla_value'%DKIsles;Training Grounds: Rear Tunnel
-.
-	reward_id!plando_patch_14_location_reward
-)
-location_idplando_patch_14_location
-
-nameDirt Patch 15
-†*ù
-'
-vanilla_valueDKIsles;Prison: Back
-.
-	reward_id!plando_patch_15_location_reward
-)
-location_idplando_patch_15_location
-
-nameDirt Patch 16
-
-nameDirt Patches
-Œ6
-WrinklyDooræ6*ª6
-
-singularwrinkly_door
-É6
-	locationsı52Ú5
-¿*Ω
-
-kongdonkey
-9
-vanilla_value(&JungleJapes;Japes Lobby - Middle Right
-4
-location_id%#plando_JapesDonkeyDoor_wrinkly_door
-
-levelJungleJapes
- 
-nameJapes Donkey Hint Door
-π*∂
-
-kongdiddy
-5
-vanilla_value$"JungleJapes;Japes Lobby - Far Left
-3
-location_id$"plando_JapesDiddyDoor_wrinkly_door
-
-levelJungleJapes
-
-nameJapes Diddy Hint Door
-º*π
-
-konglanky
-8
-vanilla_value'%JungleJapes;Japes Lobby - Close Right
-3
-location_id$"plando_JapesLankyDoor_wrinkly_door
-
-levelJungleJapes
-
-nameJapes Lanky Hint Door
-∑*¥
-
-kongtiny
-6
-vanilla_value%#JungleJapes;Japes Lobby - Far Right
-2
-location_id#!plando_JapesTinyDoor_wrinkly_door
-
-levelJungleJapes
-
-nameJapes Tiny Hint Door
-æ*ª
-
-kongchunky
-7
-vanilla_value&$JungleJapes;Japes Lobby - Close Left
-4
-location_id%#plando_JapesChunkyDoor_wrinkly_door
-
-levelJungleJapes
- 
-nameJapes Chunky Hint Door
-Ω*∫
-
-kongdonkey
-7
-vanilla_value&$AngryAztec;Aztec Lobby - Pillar Wall
-4
-location_id%#plando_AztecDonkeyDoor_wrinkly_door
-
-level
-AngryAztec
- 
-nameAztec Donkey Hint Door
-∫*∑
-
-kongdiddy
-7
-vanilla_value&$AngryAztec;Aztec Lobby - Lower Right
-3
-location_id$"plando_AztecDiddyDoor_wrinkly_door
-
-level
-AngryAztec
-
-nameAztec Diddy Hint Door
-Ω*∫
-
-konglanky
-:
-vanilla_value)'AngryAztec;Aztec Lobby - Left of Portal
-3
-location_id$"plando_AztecLankyDoor_wrinkly_door
-
-level
-AngryAztec
-
-nameAztec Lanky Hint Door
-ª*∏
-
-kongtiny
-;
-vanilla_value*(AngryAztec;Aztec Lobby - Right of Portal
-2
-location_id#!plando_AztecTinyDoor_wrinkly_door
-
-level
-AngryAztec
-
-nameAztec Tiny Hint Door
-ª*∏
-
-kongchunky
-5
-vanilla_value$"AngryAztec;Aztec Lobby - Back Room
-4
-location_id%#plando_AztecChunkyDoor_wrinkly_door
-
-level
-AngryAztec
- 
-nameAztec Chunky Hint Door
-»*≈
-
-kongdonkey
-:
-vanilla_value)'FranticFactory;Factory Lobby - Low Left
-6
-location_id'%plando_FactoryDonkeyDoor_wrinkly_door
-
-levelFranticFactory
-"
-nameFactory Donkey Hint Door
-≈*¬
-
-kongdiddy
-:
-vanilla_value)'FranticFactory;Factory Lobby - Top Left
-5
-location_id&$plando_FactoryDiddyDoor_wrinkly_door
-
-levelFranticFactory
-!
-nameFactory Diddy Hint Door
-«*ƒ
-
-konglanky
-<
-vanilla_value+)FranticFactory;Factory Lobby - Top Center
-5
-location_id&$plando_FactoryLankyDoor_wrinkly_door
-
-levelFranticFactory
-!
-nameFactory Lanky Hint Door
-√*¿
-
-kongtiny
-;
-vanilla_value*(FranticFactory;Factory Lobby - Top Right
-4
-location_id%#plando_FactoryTinyDoor_wrinkly_door
-
-levelFranticFactory
- 
-nameFactory Tiny Hint Door
-…*∆
-
-kongchunky
-;
-vanilla_value*(FranticFactory;Factory Lobby - Low Right
-6
-location_id'%plando_FactoryChunkyDoor_wrinkly_door
-
-levelFranticFactory
-"
-nameFactory Chunky Hint Door
-∆*√
-
-kongdonkey
-9
-vanilla_value(&GloomyGalleon;Galleon Lobby - Far Left
-6
-location_id'%plando_GalleonDonkeyDoor_wrinkly_door
-
-levelGloomyGalleon
-"
-nameGalleon Donkey Hint Door
-ƒ*¡
-
-kongdiddy
-:
-vanilla_value)'GloomyGalleon;Galleon Lobby - Far Right
-5
-location_id&$plando_GalleonDiddyDoor_wrinkly_door
-
-levelGloomyGalleon
-!
-nameGalleon Diddy Hint Door
-∆*√
-
-konglanky
-<
-vanilla_value+)GloomyGalleon;Galleon Lobby - Close Right
-5
-location_id&$plando_GalleonLankyDoor_wrinkly_door
-
-levelGloomyGalleon
-!
-nameGalleon Lanky Hint Door
-∆*√
-
-kongtiny
-?
-vanilla_value.,GloomyGalleon;Galleon Lobby - Near DK Portal
-4
-location_id%#plando_GalleonTinyDoor_wrinkly_door
-
-levelGloomyGalleon
- 
-nameGalleon Tiny Hint Door
-»*≈
-
-kongchunky
-;
-vanilla_value*(GloomyGalleon;Galleon Lobby - Close Left
-6
-location_id'%plando_GalleonChunkyDoor_wrinkly_door
-
-levelGloomyGalleon
-"
-nameGalleon Chunky Hint Door
-¬*ø
-
-kongdonkey
-9
-vanilla_value(&FungiForest;Forest Lobby - On High Box
-5
-location_id&$plando_ForestDonkeyDoor_wrinkly_door
-
-levelFungiForest
-!
-nameForest Donkey Hint Door
- *«
-
-kongdiddy
-D
-vanilla_value31FungiForest;Forest Lobby - Near Gorilla Gone Door
-4
-location_id%#plando_ForestDiddyDoor_wrinkly_door
-
-levelFungiForest
- 
-nameForest Diddy Hint Door
-Œ*À
-
-konglanky
-H
-vanilla_value75FungiForest;Forest Lobby - Opposite Gorilla Gone Door
-4
-location_id%#plando_ForestLankyDoor_wrinkly_door
-
-levelFungiForest
- 
-nameForest Lanky Hint Door
-ø*º
-
-kongtiny
-<
-vanilla_value+)FungiForest;Forest Lobby - Near B. Locker
-3
-location_id$"plando_ForestTinyDoor_wrinkly_door
-
-levelFungiForest
-
-nameForest Tiny Hint Door
-ƒ*¡
-
-kongchunky
-;
-vanilla_value*(FungiForest;Forest Lobby - Near Entrance
-5
-location_id&$plando_ForestChunkyDoor_wrinkly_door
-
-levelFungiForest
-!
-nameForest Chunky Hint Door
-æ*ª
-
-kongdonkey
-6
-vanilla_value%#CrystalCaves;Caves Lobby - Far Left
-4
-location_id%#plando_CavesDonkeyDoor_wrinkly_door
-
-levelCrystalCaves
- 
-nameCaves Donkey Hint Door
-º*π
-
-kongdiddy
-7
-vanilla_value&$CrystalCaves;Caves Lobby - Top Ledge
-3
-location_id$"plando_CavesDiddyDoor_wrinkly_door
-
-levelCrystalCaves
-
-nameCaves Diddy Hint Door
-º*π
-
-konglanky
-7
-vanilla_value&$CrystalCaves;Caves Lobby - Near Left
-3
-location_id$"plando_CavesLankyDoor_wrinkly_door
-
-levelCrystalCaves
-
-nameCaves Lanky Hint Door
-π*∂
-
-kongtiny
-7
-vanilla_value&$CrystalCaves;Caves Lobby - Far Right
-2
-location_id#!plando_CavesTinyDoor_wrinkly_door
-
-levelCrystalCaves
-
-nameCaves Tiny Hint Door
-¿*Ω
-
-kongchunky
-8
-vanilla_value'%CrystalCaves;Caves Lobby - Near Right
-4
-location_id%#plando_CavesChunkyDoor_wrinkly_door
-
-levelCrystalCaves
- 
-nameCaves Chunky Hint Door
-À*»
-
-kongdonkey
-A
-vanilla_value0.CreepyCastle;Castle Lobby - Central Pillar (1)
-5
-location_id&$plando_CastleDonkeyDoor_wrinkly_door
-
-levelCreepyCastle
-!
-nameCastle Donkey Hint Door
-»*≈
-
-kongdiddy
-A
-vanilla_value0.CreepyCastle;Castle Lobby - Central Pillar (2)
-4
-location_id%#plando_CastleDiddyDoor_wrinkly_door
-
-levelCreepyCastle
- 
-nameCastle Diddy Hint Door
-»*≈
-
-konglanky
-A
-vanilla_value0.CreepyCastle;Castle Lobby - Central Pillar (3)
-4
-location_id%#plando_CastleLankyDoor_wrinkly_door
-
-levelCreepyCastle
- 
-nameCastle Lanky Hint Door
-≈*¬
-
-kongtiny
-A
-vanilla_value0.CreepyCastle;Castle Lobby - Central Pillar (4)
-3
-location_id$"plando_CastleTinyDoor_wrinkly_door
-
-levelCreepyCastle
-
-nameCastle Tiny Hint Door
-À*»
-
-kongchunky
-A
-vanilla_value0.CreepyCastle;Castle Lobby - Central Pillar (5)
-5
-location_id&$plando_CastleChunkyDoor_wrinkly_door
-
-levelCreepyCastle
-!
-nameCastle Chunky Hint Door
-
-nameWrinkly Doors
-ü
-CrownPadí*è
-
-singulararena
-ÿ
-	locations 2«
-À*»
-
-levelJungleJapes
-%
-vanilla_valueNear Low Hill Shop
-6
-	reward_id)'plando_JapesBattleArena_location_reward
-1
-location_id" plando_JapesBattleArena_location
-
-nameJapes Battle Arena
-—*Œ
-
-level
-AngryAztec
-,
-vanilla_valueTiny Temple: Vulture Room
-6
-	reward_id)'plando_AztecBattleArena_location_reward
-1
-location_id" plando_AztecBattleArena_location
-
-nameAztec Battle Arena
-’*“
-
-levelFranticFactory
-&
-vanilla_valueUnder R&D Grate (1)
-8
-	reward_id+)plando_FactoryBattleArena_location_reward
-3
-location_id$"plando_FactoryBattleArena_location
-
-nameFactory Battle Arena
-“*œ
-
-levelGloomyGalleon
-$
-vanilla_valueUnder Cavern Shop
-8
-	reward_id+)plando_GalleonBattleArena_location_reward
-3
-location_id$"plando_GalleonBattleArena_location
-
-nameGalleon Battle Arena
-ÿ*’
-
-levelFungiForest
-/
-vanilla_valueMushroom Exterior Top Ladder
-7
-	reward_id*(plando_ForestBattleArena_location_reward
-2
-location_id#!plando_ForestBattleArena_location
-
-nameForest Battle Arena
-Œ*À
-
-levelCrystalCaves
-'
-vanilla_valueRotating Cabin: Wall
-6
-	reward_id)'plando_CavesBattleArena_location_reward
-1
-location_id" plando_CavesBattleArena_location
-
-nameCaves Battle Arena
-œ*Ã
-
-levelCreepyCastle
-%
-vanilla_valueGreenhouse: Center
-7
-	reward_id*(plando_CastleBattleArena_location_reward
-2
-location_id#!plando_CastleBattleArena_location
-
-nameCastle Battle Arena
-—*Œ
-
-level	DKIsles
-+
-vanilla_valueSnide's Room: Under Rock
-7
-	reward_id*(plando_IslesBattleArena1_location_reward
-2
-location_id#!plando_IslesBattleArena1_location
-
-nameIsles Battle Arena 1
-÷*”
-
-level	DKIsles
-0
-vanilla_valueFungi Lobby: Gorilla Gone Box
-7
-	reward_id*(plando_IslesBattleArena2_location_reward
-2
-location_id#!plando_IslesBattleArena2_location
-
-nameIsles Battle Arena 2
- *«
-
-levelHideoutHelm
-'
-vanilla_valueTop of Blast-o-Matic
-5
-	reward_id(&plando_HelmBattleArena_location_reward
-0
-location_id!plando_HelmBattleArena_location
-
-nameHelm Battle Arena
-
-nameBattle Crown Arenas
-¡4
-	TnsPortal≥4*∞4
-
-singular
-tns_portal
-3
-	locations‚32ﬂ3
-π*∂
-
-levelJungleJapes
-0
-vanilla_valueJungleJapes;First Tunnel Cave
-
-none_possible  
-0
-location_id!plando_JungleJapes_0_tns_portal
-#
-nameJungle Japes TnS Portal 1
-ú*ô
-
-levelJungleJapes
-
-vanilla_value 
-
-none_possible  
-0
-location_id!plando_JungleJapes_1_tns_portal
-#
-nameJungle Japes TnS Portal 2
-∫*∑
-
-levelJungleJapes
-1
-vanilla_value JungleJapes;Rambi Boulder Cave
-
-none_possible  
-0
-location_id!plando_JungleJapes_2_tns_portal
-#
-nameJungle Japes TnS Portal 3
-†*ù
-
-levelJungleJapes
-
-vanilla_valuenone
-
-none_possible 
-0
-location_id!plando_JungleJapes_3_tns_portal
-#
-nameJungle Japes TnS Portal 4
-†*ù
-
-levelJungleJapes
-
-vanilla_valuenone
-
-none_possible 
-0
-location_id!plando_JungleJapes_4_tns_portal
-#
-nameJungle Japes TnS Portal 5
-¬*ø
-
-level
-AngryAztec
-<
-vanilla_value+)AngryAztec;Right of Quicksand Tunnel Shop
-
-none_possible  
-/
-location_id plando_AngryAztec_0_tns_portal
-"
-nameAngry Aztec TnS Portal 1
-∑*¥
-
-level
-AngryAztec
-1
-vanilla_value AngryAztec;Left of Tunnel Shop
-
-none_possible  
-/
-location_id plando_AngryAztec_1_tns_portal
-"
-nameAngry Aztec TnS Portal 2
-≥*∞
-
-level
-AngryAztec
--
-vanilla_valueAngryAztec;Near Oasis Shop
-
-none_possible  
-/
-location_id plando_AngryAztec_2_tns_portal
-"
-nameAngry Aztec TnS Portal 3
-∫*∑
-
-level
-AngryAztec
-4
-vanilla_value#!AngryAztec;Near Vulture Cage Shop
-
-none_possible 
-/
-location_id plando_AngryAztec_3_tns_portal
-"
-nameAngry Aztec TnS Portal 4
-Æ*´
-
-level
-AngryAztec
-(
-vanilla_valueAngryAztec;Behind 5DT
-
-none_possible 
-/
-location_id plando_AngryAztec_4_tns_portal
-"
-nameAngry Aztec TnS Portal 5
-ø*º
-
-levelFranticFactory
--
-vanilla_valueFranticFactory;Arcade Room
-
-none_possible  
-3
-location_id$"plando_FranticFactory_0_tns_portal
-&
-nameFrantic Factory TnS Portal 1
-√*¿
-
-levelFranticFactory
-1
-vanilla_value FranticFactory;Production Room
-
-none_possible  
-3
-location_id$"plando_FranticFactory_1_tns_portal
-&
-nameFrantic Factory TnS Portal 2
-Œ*À
-
-levelFranticFactory
-<
-vanilla_value+)FranticFactory;R&D across from Piano Game
-
-none_possible  
-3
-location_id$"plando_FranticFactory_2_tns_portal
-&
-nameFrantic Factory TnS Portal 3
-ø*º
-
-levelFranticFactory
--
-vanilla_valueFranticFactory;Block Tower
-
-none_possible 
-3
-location_id$"plando_FranticFactory_3_tns_portal
-&
-nameFrantic Factory TnS Portal 4
-¿*Ω
-
-levelFranticFactory
-.
-vanilla_valueFranticFactory;Storage Room
-
-none_possible 
-3
-location_id$"plando_FranticFactory_4_tns_portal
-&
-nameFrantic Factory TnS Portal 5
-…*∆
-
-levelGloomyGalleon
-:
-vanilla_value)'GloomyGalleon;Cavern Alcove Past Planks
-
-none_possible  
-2
-location_id#!plando_GloomyGalleon_0_tns_portal
-%
-nameGloomy Galleon TnS Portal 1
-π*∂
-
-levelGloomyGalleon
-*
-vanilla_valueGloomyGalleon;Deep Hole
-
-none_possible  
-2
-location_id#!plando_GloomyGalleon_1_tns_portal
-%
-nameGloomy Galleon TnS Portal 2
-∫*∑
-
-levelGloomyGalleon
-+
-vanilla_valueGloomyGalleon;Behind 2DS
-
-none_possible  
-2
-location_id#!plando_GloomyGalleon_2_tns_portal
-%
-nameGloomy Galleon TnS Portal 3
-ƒ*¡
-
-levelGloomyGalleon
-5
-vanilla_value$"GloomyGalleon;Behind Enguarde Door
-
-none_possible 
-2
-location_id#!plando_GloomyGalleon_3_tns_portal
-%
-nameGloomy Galleon TnS Portal 4
-∂*≥
-
-levelGloomyGalleon
-'
-vanilla_valueGloomyGalleon;Cactus
-
-none_possible 
-2
-location_id#!plando_GloomyGalleon_4_tns_portal
-%
-nameGloomy Galleon TnS Portal 5
-Ω*∫
-
-levelFungiForest
-4
-vanilla_value#!FungiForest;Behind Thornvine Barn
-
-none_possible  
-0
-location_id!plando_FungiForest_0_tns_portal
-#
-nameFungi Forest TnS Portal 1
-Ω*∫
-
-levelFungiForest
-4
-vanilla_value#!FungiForest;Beanstalk Area Alcove
-
-none_possible  
-0
-location_id!plando_FungiForest_1_tns_portal
-#
-nameFungi Forest TnS Portal 2
-∑*¥
-
-levelFungiForest
-.
-vanilla_valueFungiForest;Near Mills Shop
-
-none_possible  
-0
-location_id!plando_FungiForest_2_tns_portal
-#
-nameFungi Forest TnS Portal 3
-Ω*∫
-
-levelFungiForest
-4
-vanilla_value#!FungiForest;Top of Giant Mushroom
-
-none_possible 
-0
-location_id!plando_FungiForest_3_tns_portal
-#
-nameFungi Forest TnS Portal 4
-π*∂
-
-levelFungiForest
-0
-vanilla_valueFungiForest;Owl Area Clearing
-
-none_possible 
-0
-location_id!plando_FungiForest_4_tns_portal
-#
-nameFungi Forest TnS Portal 5
-Ω*∫
-
-levelCrystalCaves
-1
-vanilla_value CrystalCaves;On Rotating Cabin
-
-none_possible  
-1
-location_id" plando_CrystalCaves_0_tns_portal
-$
-nameCrystal Caves TnS Portal 1
-æ*ª
-
-levelCrystalCaves
-2
-vanilla_value!CrystalCaves;Ice Cave Near Shop
-
-none_possible  
-1
-location_id" plando_CrystalCaves_1_tns_portal
-$
-nameCrystal Caves TnS Portal 2
-æ*ª
-
-levelCrystalCaves
-2
-vanilla_value!CrystalCaves;Giant Boulder Room
-
-none_possible  
-1
-location_id" plando_CrystalCaves_2_tns_portal
-$
-nameCrystal Caves TnS Portal 3
-∫*∑
-
-levelCrystalCaves
-.
-vanilla_valueCrystalCaves;On Lanky Cabin
-
-none_possible 
-1
-location_id" plando_CrystalCaves_3_tns_portal
-$
-nameCrystal Caves TnS Portal 4
-∂*≥
-
-levelCrystalCaves
-*
-vanilla_valueCrystalCaves;Near Igloo
-
-none_possible 
-1
-location_id" plando_CrystalCaves_4_tns_portal
-$
-nameCrystal Caves TnS Portal 5
-ª*∏
-
-levelCreepyCastle
-/
-vanilla_valueCreepyCastle;Near Greenhouse
-
-none_possible  
-1
-location_id" plando_CreepyCastle_0_tns_portal
-$
-nameCreepy Castle TnS Portal 1
-¡*æ
-
-levelCreepyCastle
-5
-vanilla_value$"CreepyCastle;Rocketbarrel Overhang
-
-none_possible  
-1
-location_id" plando_CreepyCastle_1_tns_portal
-$
-nameCreepy Castle TnS Portal 2
-¬*ø
-
-levelCreepyCastle
-6
-vanilla_value%#CreepyCastle;Lowest ledge near tree
-
-none_possible  
-1
-location_id" plando_CreepyCastle_2_tns_portal
-$
-nameCreepy Castle TnS Portal 3
-¿*Ω
-
-levelCreepyCastle
-4
-vanilla_value#!CreepyCastle;Near Lower Cave Shop
-
-none_possible 
-1
-location_id" plando_CreepyCastle_3_tns_portal
-$
-nameCreepy Castle TnS Portal 4
-¿*Ω
-
-levelCreepyCastle
-4
-vanilla_value#!CreepyCastle;Near Upper Cave Shop
-
-none_possible 
-1
-location_id" plando_CreepyCastle_4_tns_portal
-$
-nameCreepy Castle TnS Portal 5
-!
-nameTroff 'n' Scoff Portals
-˛O
-KasplatÚO*ÔO
-
-singular	kasplat
-¡O
-	locations≥O2∞O
-˚*¯
-
-kongdonkey
-3
-vanilla_value" Japes Kasplat: Hive Tunnel Lower
-=
-	reward_id0.plando_JapesDonkeyKasplatRando_location_reward
-8
-location_id)'plando_JapesDonkeyKasplatRando_location
-
-levelJungleJapes
-
-nameJapes Donkey Kasplat
-ˇ*¸
-
-kongdiddy
-;
-vanilla_value*(Japes Kasplat: Tunnel Near Painting Room
-<
-	reward_id/-plando_JapesDiddyKasplatRando_location_reward
-7
-location_id(&plando_JapesDiddyKasplatRando_location
-
-levelJungleJapes
-
-nameJapes Diddy Kasplat
-˙*˜
-
-konglanky
-6
-vanilla_value%#Japes Kasplat: By Lanky Slope Bonus
-<
-	reward_id/-plando_JapesLankyKasplatRando_location_reward
-7
-location_id(&plando_JapesLankyKasplatRando_location
-
-levelJungleJapes
-
-nameJapes Lanky Kasplat
-Û*
-
-kongtiny
-3
-vanilla_value" Japes Kasplat: Hive Tunnel Upper
-;
-	reward_id.,plando_JapesTinyKasplatRando_location_reward
-6
-location_id'%plando_JapesTinyKasplatRando_location
-
-levelJungleJapes
-
-nameJapes Tiny Kasplat
-ı*Ú
-
-kongchunky
--
-vanilla_valueJapes Kasplat: Underground
-=
-	reward_id0.plando_JapesChunkyKasplatRando_location_reward
-8
-location_id)'plando_JapesChunkyKasplatRando_location
-
-levelJungleJapes
-
-nameJapes Chunky Kasplat
-˝*˙
-
-kongdonkey
-6
-vanilla_value%#Aztec Kasplat: Behind DK Stone Door
-=
-	reward_id0.plando_AztecDonkeyKasplatRando_location_reward
-8
-location_id)'plando_AztecDonkeyKasplatRando_location
-
-level
-AngryAztec
-
-nameAztec Donkey Kasplat
-Û*
-
-kongdiddy
-0
-vanilla_valueAztec Kasplat: On Tiny Temple
-<
-	reward_id/-plando_AztecDiddyKasplatRando_location_reward
-7
-location_id(&plando_AztecDiddyKasplatRando_location
-
-level
-AngryAztec
-
-nameAztec Diddy Kasplat
-ˆ*Û
-
-konglanky
-3
-vanilla_value" Aztec Kasplat: Llama Temple Lava
-<
-	reward_id/-plando_AztecLankyKasplatRando_location_reward
-7
-location_id(&plando_AztecLankyKasplatRando_location
-
-level
-AngryAztec
-
-nameAztec Lanky Kasplat
-Ù*Ò
-
-kongtiny
-5
-vanilla_value$"Aztec Kasplat: Hunky Chunky Barrel
-;
-	reward_id.,plando_AztecTinyKasplatRando_location_reward
-6
-location_id'%plando_AztecTinyKasplatRando_location
-
-level
-AngryAztec
-
-nameAztec Tiny Kasplat
-˝*˙
-
-kongchunky
-6
-vanilla_value%#Aztec Kasplat: Chunky 5-Door Temple
-=
-	reward_id0.plando_AztecChunkyKasplatRando_location_reward
-8
-location_id)'plando_AztecChunkyKasplatRando_location
-
-level
-AngryAztec
-
-nameAztec Chunky Kasplat
-ä*á
-
-kongdonkey
-9
-vanilla_value(&Factory Kasplat: Upper Production Pipe
-?
-	reward_id20plando_FactoryDonkeyKasplatRando_location_reward
-:
-location_id+)plando_FactoryDonkeyKasplatRando_location
-
-levelFranticFactory
- 
-nameFactory Donkey Kasplat
-É*Ä
-
-kongdiddy
-6
-vanilla_value%#Factory Kasplat: Base of Production
->
-	reward_id1/plando_FactoryDiddyKasplatRando_location_reward
-9
-location_id*(plando_FactoryDiddyKasplatRando_location
-
-levelFranticFactory
-
-nameFactory Diddy Kasplat
-Ù*Ò
-
-konglanky
-'
-vanilla_valueFactory Kasplat: R&D
->
-	reward_id1/plando_FactoryLankyKasplatRando_location_reward
-9
-location_id*(plando_FactoryLankyKasplatRando_location
-
-levelFranticFactory
-
-nameFactory Lanky Kasplat
-˚*¯
-
-kongtiny
-2
-vanilla_value!Factory Kasplat: Pole to Arcade
-=
-	reward_id0.plando_FactoryTinyKasplatRando_location_reward
-8
-location_id)'plando_FactoryTinyKasplatRando_location
-
-levelFranticFactory
-
-nameFactory Tiny Kasplat
-Ä*˝
-
-kongchunky
-/
-vanilla_valueFactory Kasplat: Block Tower
-?
-	reward_id20plando_FactoryChunkyKasplatRando_location_reward
-:
-location_id+)plando_FactoryChunkyKasplatRando_location
-
-levelFranticFactory
- 
-nameFactory Chunky Kasplat
-Ñ*Å
-
-kongdonkey
-4
-vanilla_value#!Galleon Kasplat: Diddy Gold Tower
-?
-	reward_id20plando_GalleonDonkeyKasplatRando_location_reward
-:
-location_id+)plando_GalleonDonkeyKasplatRando_location
-
-levelGloomyGalleon
- 
-nameGalleon Donkey Kasplat
-Å*˛
-
-kongdiddy
-5
-vanilla_value$"Galleon Kasplat: Lighthouse Alcove
->
-	reward_id1/plando_GalleonDiddyKasplatRando_location_reward
-9
-location_id*(plando_GalleonDiddyKasplatRando_location
-
-levelGloomyGalleon
-
-nameGalleon Diddy Kasplat
-Ä*˝
-
-konglanky
-4
-vanilla_value#!Galleon Kasplat: Cannon Game Room
->
-	reward_id1/plando_GalleonLankyKasplatRando_location_reward
-9
-location_id*(plando_GalleonLankyKasplatRando_location
-
-levelGloomyGalleon
-
-nameGalleon Lanky Kasplat
-ˆ*Û
-
-kongtiny
-.
-vanilla_valueGalleon Kasplat: Past Vines
-=
-	reward_id0.plando_GalleonTinyKasplatRando_location_reward
-8
-location_id)'plando_GalleonTinyKasplatRando_location
-
-levelGloomyGalleon
-
-nameGalleon Tiny Kasplat
-Ç*ˇ
-
-kongchunky
-2
-vanilla_value!Galleon Kasplat: Musical Cactus
-?
-	reward_id20plando_GalleonChunkyKasplatRando_location_reward
-:
-location_id+)plando_GalleonChunkyKasplatRando_location
-
-levelGloomyGalleon
- 
-nameGalleon Chunky Kasplat
-É*Ä
-
-kongdonkey
-8
-vanilla_value'%Forest Kasplat: Behind Thornvine Barn
->
-	reward_id1/plando_ForestDonkeyKasplatRando_location_reward
-9
-location_id*(plando_ForestDonkeyKasplatRando_location
-
-levelFungiForest
-
-nameForest Donkey Kasplat
-ˇ*¸
-
-kongdiddy
-8
-vanilla_value'%Forest Kasplat: Inside Giant Mushroom
-=
-	reward_id0.plando_ForestDiddyKasplatRando_location_reward
-8
-location_id)'plando_ForestDiddyKasplatRando_location
-
-levelFungiForest
-
-nameForest Diddy Kasplat
-¯*ı
-
-konglanky
-1
-vanilla_value Forest Kasplat: Under Owl Tree
-=
-	reward_id0.plando_ForestLankyKasplatRando_location_reward
-8
-location_id)'plando_ForestLankyKasplatRando_location
-
-levelFungiForest
-
-nameForest Lanky Kasplat
-É*Ä
-
-kongtiny
-@
-vanilla_value/-Forest Kasplat: Mushroom Exterior Lower Floor
-<
-	reward_id/-plando_ForestTinyKasplatRando_location_reward
-7
-location_id(&plando_ForestTinyKasplatRando_location
-
-levelFungiForest
-
-nameForest Tiny Kasplat
-ä*á
-
-kongchunky
-?
-vanilla_value.,Forest Kasplat: Mushroom Exterior Night Door
->
-	reward_id1/plando_ForestChunkyKasplatRando_location_reward
-9
-location_id*(plando_ForestChunkyKasplatRando_location
-
-levelFungiForest
-
-nameForest Chunky Kasplat
-˙*˜
-
-kongdonkey
-1
-vanilla_value Caves Kasplat: Near Ice Castle
-=
-	reward_id0.plando_CavesDonkeyKasplatRando_location_reward
-8
-location_id)'plando_CavesDonkeyKasplatRando_location
-
-levelCrystalCaves
-
-nameCaves Donkey Kasplat
-˘*ˆ
-
-kongdiddy
-4
-vanilla_value#!Caves Kasplat: Mini Room by Funky
-<
-	reward_id/-plando_CavesDiddyKasplatRando_location_reward
-7
-location_id(&plando_CavesDiddyKasplatRando_location
-
-levelCrystalCaves
-
-nameCaves Diddy Kasplat
-˜*Ù
-
-konglanky
-2
-vanilla_value!Caves Kasplat: On Warp 5 Pillar
-<
-	reward_id/-plando_CavesLankyKasplatRando_location_reward
-7
-location_id(&plando_CavesLankyKasplatRando_location
-
-levelCrystalCaves
-
-nameCaves Lanky Kasplat
-ˆ*Û
-
-kongtiny
-5
-vanilla_value$"Caves Kasplat: Cabins Central Rise
-;
-	reward_id.,plando_CavesTinyKasplatRando_location_reward
-6
-location_id'%plando_CavesTinyKasplatRando_location
-
-levelCrystalCaves
-
-nameCaves Tiny Kasplat
-˜*Ù
-
-kongchunky
-.
-vanilla_valueCaves Kasplat: On the Igloo
-=
-	reward_id0.plando_CavesChunkyKasplatRando_location_reward
-8
-location_id)'plando_CavesChunkyKasplatRando_location
-
-levelCrystalCaves
-
-nameCaves Chunky Kasplat
-˛*˚
-
-kongdonkey
-2
-vanilla_value!Castle Kasplat: Inside the Tree
->
-	reward_id1/plando_CastleDonkeyKasplatRando_location_reward
-9
-location_id*(plando_CastleDonkeyKasplatRando_location
-
-levelCreepyCastle
-
-nameCastle Donkey Kasplat
-¸*˘
-
-kongdiddy
-4
-vanilla_value#!Castle Kasplat: Lower Cave Center
-=
-	reward_id0.plando_CastleDiddyKasplatRando_location_reward
-8
-location_id)'plando_CastleDiddyKasplatRando_location
-
-levelCreepyCastle
-
-nameCastle Diddy Kasplat
-Ö*Ç
-
-konglanky
-=
-vanilla_value,*Castle Kasplat: Near Rocketbarrel Overhang
-=
-	reward_id0.plando_CastleLankyKasplatRando_location_reward
-8
-location_id)'plando_CastleLankyKasplatRando_location
-
-levelCreepyCastle
-
-nameCastle Lanky Kasplat
-˘*ˆ
-
-kongtiny
-5
-vanilla_value$"Castle Kasplat: On a lone platform
-<
-	reward_id/-plando_CastleTinyKasplatRando_location_reward
-7
-location_id(&plando_CastleTinyKasplatRando_location
-
-levelCreepyCastle
-
-nameCastle Tiny Kasplat
-É*Ä
-
-kongchunky
-7
-vanilla_value&$Castle Kasplat: Near Upper Cave Shop
->
-	reward_id1/plando_CastleChunkyKasplatRando_location_reward
-9
-location_id*(plando_CastleChunkyKasplatRando_location
-
-levelCreepyCastle
-
-nameCastle Chunky Kasplat
-*Ì
-
-kongdonkey
-,
-vanilla_valueIsles Kasplat: Helm Lobby
-=
-	reward_id0.plando_IslesDonkeyKasplatRando_location_reward
-8
-location_id)'plando_IslesDonkeyKasplatRando_location
-
-level	DKIsles
-
-nameIsles Donkey Kasplat
-Ó*Î
-
-kongdiddy
-.
-vanilla_valueIsles Kasplat: Castle Lobby
-<
-	reward_id/-plando_IslesDiddyKasplatRando_location_reward
-7
-location_id(&plando_IslesDiddyKasplatRando_location
-
-level	DKIsles
-
-nameIsles Diddy Kasplat
-Û*
-
-konglanky
-3
-vanilla_value" Isles Kasplat: Caves Lobby Punch
-<
-	reward_id/-plando_IslesLankyKasplatRando_location_reward
-7
-location_id(&plando_IslesLankyKasplatRando_location
-
-level	DKIsles
-
-nameIsles Lanky Kasplat
-Ô*Ï
-
-kongtiny
-3
-vanilla_value" Isles Kasplat: Factory Lobby Box
-;
-	reward_id.,plando_IslesTinyKasplatRando_location_reward
-6
-location_id'%plando_IslesTinyKasplatRando_location
-
-level	DKIsles
-
-nameIsles Tiny Kasplat
-Û*
-
-kongchunky
-/
-vanilla_valueIsles Kasplat: Galleon Lobby
-=
-	reward_id0.plando_IslesChunkyKasplatRando_location_reward
-8
-location_id)'plando_IslesChunkyKasplatRando_location
-
-level	DKIsles
-
-nameIsles Chunky Kasplat
-
-name
-Kasplats
-⁄
-Fairy–*Õ
-
-singularfairy
-õ
-	locationsç2ä
-ƒ*¡
-
-levelJungleJapes
-.
-vanilla_valueJungleJapes;Rambi Door Pool
--
-	reward_id plando_fairy_0_location_reward
-(
-location_idplando_fairy_0_location
-
-nameJungle Japes Fairy 1
-¬*ø
-
-levelJungleJapes
-,
-vanilla_valueJungleJapes;Painting Room
--
-	reward_id plando_fairy_1_location_reward
-(
-location_idplando_fairy_1_location
-
-nameJungle Japes Fairy 2
-ƒ*¡
-
-level
-AngryAztec
-0
-vanilla_valueAngryAztec;Tiny 5-Door Temple
--
-	reward_id plando_fairy_2_location_reward
-(
-location_idplando_fairy_2_location
-
-nameAngry Aztec Fairy 1
-æ*ª
-
-level
-AngryAztec
-*
-vanilla_valueAngryAztec;Llama Temple
--
-	reward_id plando_fairy_3_location_reward
-(
-location_idplando_fairy_3_location
-
-nameAngry Aztec Fairy 2
-…*∆
-
-levelFranticFactory
--
-vanilla_valueFranticFactory;Number Game
--
-	reward_id plando_fairy_4_location_reward
-(
-location_idplando_fairy_4_location
-!
-nameFrantic Factory Fairy 1
- *«
-
-levelFranticFactory
-.
-vanilla_valueFranticFactory;Testing Shop
--
-	reward_id plando_fairy_5_location_reward
-(
-location_idplando_fairy_5_location
-!
-nameFrantic Factory Fairy 2
-…*∆
-
-levelGloomyGalleon
-/
-vanilla_valueGloomyGalleon;In Punch Chest
--
-	reward_id plando_fairy_6_location_reward
-(
-location_idplando_fairy_6_location
- 
-nameGloomy Galleon Fairy 1
-“*œ
-
-levelGloomyGalleon
-8
-vanilla_value'%GloomyGalleon;Inside Tiny 5-Door Ship
--
-	reward_id plando_fairy_7_location_reward
-(
-location_idplando_fairy_7_location
- 
-nameGloomy Galleon Fairy 2
-√*¿
-
-levelFungiForest
--
-vanilla_valueFungiForest;Thornvine Barn
--
-	reward_id plando_fairy_8_location_reward
-(
-location_idplando_fairy_8_location
-
-nameFungi Forest Fairy 1
-¡*æ
-
-levelFungiForest
-+
-vanilla_valueFungiForest;Dark Rafters
--
-	reward_id plando_fairy_9_location_reward
-(
-location_idplando_fairy_9_location
-
-nameFungi Forest Fairy 2
-Õ* 
-
-levelCrystalCaves
-3
-vanilla_value" CrystalCaves;Diddy Candles Cabin
-.
-	reward_id!plando_fairy_10_location_reward
-)
-location_idplando_fairy_10_location
-
-nameCrystal Caves Fairy 1
-ƒ*¡
-
-levelCrystalCaves
-*
-vanilla_valueCrystalCaves;Tiny Igloo
-.
-	reward_id!plando_fairy_11_location_reward
-)
-location_idplando_fairy_11_location
-
-nameCrystal Caves Fairy 2
-À*»
-
-levelCreepyCastle
-1
-vanilla_value CreepyCastle;Tree Sniping Room
-.
-	reward_id!plando_fairy_12_location_reward
-)
-location_idplando_fairy_12_location
-
-nameCreepy Castle Fairy 1
-«*ƒ
-
-levelCreepyCastle
--
-vanilla_valueCreepyCastle;Near Car Race
-.
-	reward_id!plando_fairy_13_location_reward
-)
-location_idplando_fairy_13_location
-
-nameCreepy Castle Fairy 2
-π*∂
-
-level	DKIsles
-'
-vanilla_valueDKIsles;Small Island
-.
-	reward_id!plando_fairy_14_location_reward
-)
-location_idplando_fairy_14_location
-
-nameD.K. Isles Fairy 1
-º*π
-
-level	DKIsles
-*
-vanilla_valueDKIsles;Upper Krem Isle
-.
-	reward_id!plando_fairy_15_location_reward
-)
-location_idplando_fairy_15_location
-
-nameD.K. Isles Fairy 2
-∫*∑
-
-level	DKIsles
-(
-vanilla_valueDKIsles;Factory Lobby
-.
-	reward_id!plando_fairy_16_location_reward
-)
-location_idplando_fairy_16_location
-
-nameD.K. Isles Fairy 3
-∏*µ
-
-level	DKIsles
-&
-vanilla_valueDKIsles;Fungi Lobby
-.
-	reward_id!plando_fairy_17_location_reward
-)
-location_idplando_fairy_17_location
-
-nameD.K. Isles Fairy 4
-≈*¬
-
-levelHideoutHelm
--
-vanilla_valueHideoutHelm;Key 8 Room (1)
-.
-	reward_id!plando_fairy_18_location_reward
-)
-location_idplando_fairy_18_location
-
-nameHideout Helm Fairy 1
-≈*¬
-
-levelHideoutHelm
--
-vanilla_valueHideoutHelm;Key 8 Room (2)
-.
-	reward_id!plando_fairy_19_location_reward
-)
-location_idplando_fairy_19_location
-
-nameHideout Helm Fairy 2
-
-nameBanana Fairies
-©
-
-MelonCrateö*ó
-
-singularcrate
-Á
-	locationsŸ2÷
-ß*§
-0
-vanilla_valueJungleJapes;In the Rambi Cave
--
-	reward_id plando_crate_0_location_reward
-(
-location_idplando_crate_0_location
-
-nameMelon Crate 1
-©*¶
-2
-vanilla_value!JungleJapes;Behind the Mountain
--
-	reward_id plando_crate_1_location_reward
-(
-location_idplando_crate_1_location
-
-nameMelon Crate 2
-§*°
--
-vanilla_valueAngryAztec;On Llama Temple
--
-	reward_id plando_crate_2_location_reward
-(
-location_idplando_crate_2_location
-
-nameMelon Crate 3
-§*°
--
-vanilla_valueAngryAztec;Near Gong Tower
--
-	reward_id plando_crate_3_location_reward
-(
-location_idplando_crate_3_location
-
-nameMelon Crate 4
-´*®
-4
-vanilla_value#!AngryAztec;Llama Temple: Entrance
--
-	reward_id plando_crate_4_location_reward
-(
-location_idplando_crate_4_location
-
-nameMelon Crate 5
-∞*≠
-9
-vanilla_value(&FranticFactory;Near Right Storage Shop
--
-	reward_id plando_crate_5_location_reward
-(
-location_idplando_crate_5_location
-
-nameMelon Crate 6
-¥*±
-=
-vanilla_value,*FranticFactory;Testing Shop Entrance Right
--
-	reward_id plando_crate_6_location_reward
-(
-location_idplando_crate_6_location
-
-nameMelon Crate 7
-£*†
-,
-vanilla_valueGloomyGalleon;Near Cactus
--
-	reward_id plando_crate_7_location_reward
-(
-location_idplando_crate_7_location
-
-nameMelon Crate 8
-©*¶
-2
-vanilla_value!FungiForest;Behind Rafters Barn
--
-	reward_id plando_crate_8_location_reward
-(
-location_idplando_crate_8_location
-
-nameMelon Crate 9
-®*•
-0
-vanilla_valueFungiForest;Owl Tree Clearing
--
-	reward_id plando_crate_9_location_reward
-(
-location_idplando_crate_9_location
-
-nameMelon Crate 10
-¨*©
-2
-vanilla_value!FungiForest;Near Thornvine Barn
-.
-	reward_id!plando_crate_10_location_reward
-)
-location_idplando_crate_10_location
-
-nameMelon Crate 11
-≤*Ø
-8
-vanilla_value'%FungiForest;Thornvine Barn: Back Left
-.
-	reward_id!plando_crate_11_location_reward
-)
-location_idplando_crate_11_location
-
-nameMelon Crate 12
-∂*≥
-<
-vanilla_value+)CreepyCastle;Lower Cave: Behind Mausoleum
-.
-	reward_id!plando_crate_12_location_reward
-)
-location_idplando_crate_12_location
-
-nameMelon Crate 13
-
-nameMelon Crates
-
-nameCustom Locations
 ≈Z
 
 AngryAztec∂Z*≥Z
+
+nameAngry Aztec
 ôZ
 	locationsãZ*àZ
-á
-Tiny˛2˚
-9*7
-
-valueAztecTinyMedal
-
-nameAztec Tiny Medal
-H*F
- 
-valueAztecTinyKlaptrapRoom
-"
-nameAztec Tiny Klaptrap Room
-P*N
-
-valueAztecKasplatNearLab
-,
-name$"Aztec Kasplat: Hunky Chunky Barrel
-G*E
-
-valueAztecTiny5DoorTemple
-"
-nameAztec Tiny 5 Door Temple
-D*B
-
-valueAztecTinyBeetleRace
- 
-nameAztec Tiny Beetle Race
-U*S
-
-valueAztecTinyLlamaTemple
-0
-name(&Aztec Tiny Llama Temple Lava Pedestals
-R*P
-
-value
-Balloon015
-7
-name/-Aztec Tiny Balloon: Tiny Temple Kong Room (2)
-R*P
-
-value
-Balloon016
-7
-name/-Aztec Tiny Balloon: Tiny Temple Kong Room (1)
-P*N
-
-value
-Balloon018
-5
-name-+Aztec Tiny Balloon: Llama Temple above lava
-B*@
-
-valueAztecTinyHalfMedal
-
-nameAztec Tiny Half-Medal
 á
 Lanky˝2˙
 ;*9
@@ -29356,6 +29754,117 @@ D*B
 valueAztecLankyHalfMedal
  
 nameAztec Lanky Half-Medal
+á
+Tiny˛2˚
+9*7
+
+valueAztecTinyMedal
+
+nameAztec Tiny Medal
+H*F
+ 
+valueAztecTinyKlaptrapRoom
+"
+nameAztec Tiny Klaptrap Room
+P*N
+
+valueAztecKasplatNearLab
+,
+name$"Aztec Kasplat: Hunky Chunky Barrel
+G*E
+
+valueAztecTiny5DoorTemple
+"
+nameAztec Tiny 5 Door Temple
+D*B
+
+valueAztecTinyBeetleRace
+ 
+nameAztec Tiny Beetle Race
+U*S
+
+valueAztecTinyLlamaTemple
+0
+name(&Aztec Tiny Llama Temple Lava Pedestals
+R*P
+
+value
+Balloon015
+7
+name/-Aztec Tiny Balloon: Tiny Temple Kong Room (2)
+R*P
+
+value
+Balloon016
+7
+name/-Aztec Tiny Balloon: Tiny Temple Kong Room (1)
+P*N
+
+value
+Balloon018
+5
+name-+Aztec Tiny Balloon: Llama Temple above lava
+B*@
+
+valueAztecTinyHalfMedal
+
+nameAztec Tiny Half-Medal
+≈
+Diddyª2∏
+;*9
+
+valueAztecDiddyMedal
+
+nameAztec Diddy Medal
+P*N
+#
+valueAztecKasplatOnTinyTemple
+'
+nameAztec Kasplat: On Tiny Temple
+8*6
+
+value
+TinyKong
+
+nameAztec Cage: Tiny Kong
+B*@
+
+valueAztecDiddyRamGongs
+
+nameAztec Diddy Ram Gongs
+H*F
+ 
+valueAztecDiddyVultureRace
+"
+nameAztec Diddy Vulture Race
+I*G
+ 
+valueAztecDiddy5DoorTemple
+#
+nameAztec Diddy 5 Door Temple
+=*;
+
+value
+Balloon021
+"
+nameAztec Diddy Balloon: 5DT
+H*F
+
+value
+Balloon055
+-
+name%#Aztec Diddy Balloon: By Tiny Temple
+E*C
+
+value
+Balloon058
+*
+name" Aztec Diddy Balloon: Rear Tunnel
+D*B
+
+valueAztecDiddyHalfMedal
+ 
+nameAztec Diddy Half-Medal
 Ö3
 Enemies˘22ˆ2
 M*K
@@ -29713,6 +30222,61 @@ e*c
 valueAztecTempleEnemy_KongRoom4
 0
 name(&Aztec Tiny Temple Enemy: Kong Room (4)
+ê
+DonkeyÖ2Ç
+=*;
+
+valueAztecDonkeyMedal
+
+nameAztec Donkey Medal
+L*J
+
+valueAztecDonkeyFreeLlama
+'
+nameAztec Donkey Free Llama Blast
+U*S
+"
+valueAztecKasplatSandyBridge
+-
+name%#Aztec Kasplat: Behind DK Stone Door
+^*\
+#
+valueAztecDonkeyQuicksandCave
+5
+name-+Aztec Donkey Sealed Quicksand Tunnel Barrel
+K*I
+!
+valueAztecDonkey5DoorTemple
+$
+nameAztec Donkey 5 Door Temple
+:*8
+
+value	LankyKong
+ 
+nameAztec Cage: Lanky Kong
+I*G
+
+value
+Balloon054
+.
+name&$Aztec Donkey Balloon: Snake Road (1)
+U*S
+
+value
+Balloon056
+:
+name20Aztec Donkey Balloon: Llama Temple Exterior Rear
+I*G
+
+value
+Balloon057
+.
+name&$Aztec Donkey Balloon: Snake Road (2)
+F*D
+
+valueAztecDonkeyHalfMedal
+!
+nameAztec Donkey Half-Medal
 Â
 Chunky⁄2◊
 =*;
@@ -29768,62 +30332,6 @@ F*D
 valueAztecChunkyHalfMedal
 !
 nameAztec Chunky Half-Medal
-≈
-Diddyª2∏
-;*9
-
-valueAztecDiddyMedal
-
-nameAztec Diddy Medal
-P*N
-#
-valueAztecKasplatOnTinyTemple
-'
-nameAztec Kasplat: On Tiny Temple
-8*6
-
-value
-TinyKong
-
-nameAztec Cage: Tiny Kong
-B*@
-
-valueAztecDiddyRamGongs
-
-nameAztec Diddy Ram Gongs
-H*F
- 
-valueAztecDiddyVultureRace
-"
-nameAztec Diddy Vulture Race
-I*G
- 
-valueAztecDiddy5DoorTemple
-#
-nameAztec Diddy 5 Door Temple
-=*;
-
-value
-Balloon021
-"
-nameAztec Diddy Balloon: 5DT
-H*F
-
-value
-Balloon055
--
-name%#Aztec Diddy Balloon: By Tiny Temple
-E*C
-
-value
-Balloon058
-*
-name" Aztec Diddy Balloon: Rear Tunnel
-D*B
-
-valueAztecDiddyHalfMedal
- 
-nameAztec Diddy Half-Medal
 ¶	
 	All Kongsò	2ï	
 A*?
@@ -29906,515 +30414,7 @@ D*B
 
 valueHoldableVasePlus
 
-nameAztec Vase (Plus)
-ê
-DonkeyÖ2Ç
-=*;
-
-valueAztecDonkeyMedal
-
-nameAztec Donkey Medal
-L*J
-
-valueAztecDonkeyFreeLlama
-'
-nameAztec Donkey Free Llama Blast
-U*S
-"
-valueAztecKasplatSandyBridge
--
-name%#Aztec Kasplat: Behind DK Stone Door
-^*\
-#
-valueAztecDonkeyQuicksandCave
-5
-name-+Aztec Donkey Sealed Quicksand Tunnel Barrel
-K*I
-!
-valueAztecDonkey5DoorTemple
-$
-nameAztec Donkey 5 Door Temple
-:*8
-
-value	LankyKong
- 
-nameAztec Cage: Lanky Kong
-I*G
-
-value
-Balloon054
-.
-name&$Aztec Donkey Balloon: Snake Road (1)
-U*S
-
-value
-Balloon056
-:
-name20Aztec Donkey Balloon: Llama Temple Exterior Rear
-I*G
-
-value
-Balloon057
-.
-name&$Aztec Donkey Balloon: Snake Road (2)
-F*D
-
-valueAztecDonkeyHalfMedal
-!
-nameAztec Donkey Half-Medal
-
-nameAngry Aztec
-◊4
-GloomyGalleon≈4*¬4
-•4
-	locationsó4*î4
-ª
-Tiny≤2Ø
-=*;
-
-valueGalleonTinyMedal
-
-nameGalleon Tiny Medal
-K*I
- 
-valueGalleonKasplatNearLab
-%
-nameGalleon Kasplat: Past Vines
-G*E
-
-valueGalleonTinyPearls
-%
-nameGalleon Tiny Mermaid Reward
-L*J
-
-valueGalleonTinySubmarine
-'
-nameGalleon Tiny Submarine Barrel
-G*E
-
-valueGalleonTiny2DoorShip
-"
-nameGalleon Tiny 2 Door Ship
-G*E
-
-valueGalleonTiny5DoorShip
-"
-nameGalleon Tiny 5 Door Ship
-D*B
-
-valueGalleonPearl0
-&
-nameTreasure Chest Far Left Clam
-B*@
-
-valueGalleonPearl1
-$
-nameTreasure Chest Center Clam
-E*C
-
-valueGalleonPearl2
-'
-nameTreasure Chest Far Right Clam
-G*E
-
-valueGalleonPearl3
-)
-name!Treasure Chest Close Right Clam
-F*D
-
-valueGalleonPearl4
-(
-name Treasure Chest Close Left Clam
-@*>
-
-value
-Balloon040
-%
-nameGalleon Tiny Balloon: KEVIN
-E*C
-
-value
-Balloon051
-*
-name" Galleon Tiny Balloon: By Snide's
-E*C
-
-value
-Balloon052
-*
-name" Galleon Tiny Balloon: Gold Tower
-F*D
-
-valueGalleonTinyHalfMedal
-!
-nameGalleon Tiny Half-Medal
-è
-LankyÖ2Ç
-?*=
-
-valueGalleonLankyMedal
-
-nameGalleon Lanky Medal
-Q*O
- 
-valueGalleonKasplatCannons
-+
-name#!Galleon Kasplat: Cannon Game Room
-P*N
-$
-valueGalleonLankyEnguardeChest
-&
-nameGalleon Lanky Enguarde Chest
-O*M
- 
-valueGalleonLankyGoldTower
-)
-name!Galleon Lanky Gold Tower Barrel
-I*G
- 
-valueGalleonLanky2DoorShip
-#
-nameGalleon Lanky 2 Door Ship
-I*G
- 
-valueGalleonLanky5DoorShip
-#
-nameGalleon Lanky 5 Door Ship
-P*N
-
-value
-Balloon041
-5
-name-+Galleon Lanky Balloon: Underneath Crown (1)
-P*N
-
-value
-Balloon042
-5
-name-+Galleon Lanky Balloon: Underneath Crown (2)
-E*C
-
-value
-Balloon050
-*
-name" Galleon Lanky Balloon: Above 5DS
-H*F
- 
-valueGalleonLankyHalfMedal
-"
-nameGalleon Lanky Half-Medal
-“
-Enemies∆2√
-S*Q
-&
-valueGalleonMainEnemy_ChestRoom0
-'
-nameGalleon Enemy: Chest Room (0)
-S*Q
-&
-valueGalleonMainEnemy_ChestRoom1
-'
-nameGalleon Enemy: Chest Room (1)
-Y*W
-*
-value!GalleonMainEnemy_NearVineCannon
-)
-name!Galleon Enemy: Near Vine Cannon
-T*R
-(
-valueGalleonMainEnemy_CrankyCannon
-&
-nameGalleon Enemy: Cranky Cannon
-T*R
-(
-valueGalleonMainEnemy_PeanutTunnel
-&
-nameGalleon Enemy: Peanut Tunnel
-V*T
-)
-value GalleonMainEnemy_CoconutTunnel
-'
-nameGalleon Enemy: Coconut Tunnel
-[*Y
-(
-valueGalleonLighthouseEnemy_Enemy0
--
-name%#Galleon Lighthouse Enemy: Enemy (0)
-[*Y
-(
-valueGalleonLighthouseEnemy_Enemy1
--
-name%#Galleon Lighthouse Enemy: Enemy (1)
-Í
-Chunkyﬂ2‹
-A*?
-
-valueGalleonChunkyMedal
-
-nameGalleon Chunky Medal
-A*?
-
-valueGalleonChunkyChest
-
-nameGalleon Chunky Chest
-L*J
-"
-valueGalleonChunkyCannonGame
-$
-nameGalleon Chunky Cannon Game
-E*C
-
-valueGalleonChunkySeasick
- 
-nameGalleon Chunky Seasick
-O*M
- 
-valueGalleonKasplatNearSub
-)
-name!Galleon Kasplat: Musical Cactus
-K*I
-!
-valueGalleonChunky5DoorShip
-$
-nameGalleon Chunky 5 Door Ship
-C*A
-
-value
-Balloon043
-(
-name Galleon Chunky Balloon: Cactus
-H*F
-
-value
-Balloon048
--
-name%#Galleon Chunky Balloon: Cannon Game
-F*D
-
-value
-Balloon049
-+
-name#!Galleon Chunky Balloon: Above 2DS
-J*H
-!
-valueGalleonChunkyHalfMedal
-#
-nameGalleon Chunky Half-Medal
-¸
-DiddyÚ2Ô
-?*=
-
-valueGalleonDiddyMedal
-
-nameGalleon Diddy Medal
-P*N
-!
-valueGalleonDiddyShipSwitch
-)
-name!Galleon Diddy Top of Lighthouse
-Y*W
-'
-valueGalleonKasplatLighthouseArea
-,
-name$"Galleon Kasplat: Lighthouse Alcove
-O*M
- 
-valueGalleonDiddyGoldTower
-)
-name!Galleon Diddy Gold Tower Barrel
-F*D
- 
-valueGalleonDiddyMechafish
- 
-nameGalleon Diddy Mechfish
-I*G
- 
-valueGalleonDiddy5DoorShip
-#
-nameGalleon Diddy 5 Door Ship
-B*@
-
-value
-Balloon039
-'
-nameGalleon Diddy Balloon: Cactus
-E*C
-
-value
-Balloon044
-*
-name" Galleon Diddy Balloon: Seal Cage
-F*D
-
-value
-Balloon047
-+
-name#!Galleon Diddy Balloon: Gold Tower
-H*F
- 
-valueGalleonDiddyHalfMedal
-"
-nameGalleon Diddy Half-Medal
-Â
-	All Kongs◊2‘
-U*S
-
-valueGalleonBattleArena
-2
-name*(Galleon Battle Arena (Under Cavern Shop)
-S*Q
-%
-valueGalleonBananaFairybyCranky
-(
-name Galleon Fairy (In Punch Chest)
-[*Y
-&
-valueGalleonBananaFairy5DoorShip
-/
-name'%Galleon Fairy (In Tiny's 5-Door Ship)
-:*8
-
-value
-GalleonKey
-
-nameGalleon Boss Defeated
-Y*W
-!
-valueRainbowCoin_Location09
-2
-name*(Galleon Dirt (Lighthouse: Interior Rear)
-K*I
- 
-valueMelonCrate_Location05
-%
-nameGalleon Crate (Near Cactus)
-T*R
-*
-value!BreakableGalleonHeadphonesChest
-$
-nameGalleon Chest (Headphones)
-Z*X
-#
-valueBreakableGalleonHighHole
-1
-name)'Galleon Chest (High platform near Hole)
-f*d
-$
-valueBreakableGalleonHighKevin
-<
-name42Galleon Chest (High platform near Enguarde Alcove)
-g*e
-#
-valueBreakableGalleonMidKevin
->
-name64Galleon Chest (Middle platform near Enguarde Alcove)
-[*Y
-"
-valueBreakableGalleonMidHole
-3
-name+)Galleon Chest (Middle platform near Hole)
-]*[
-)
-value BreakableGalleonCloseSubmarine
-.
-name&$Galleon Chest (Close near Submarine)
-Y*W
-#
-valueBreakableGalleonClose2DS
-0
-name(&Galleon Chest (Close near 2 Door Ship)
-R*P
-&
-valueBreakableGalleonUnderTunnel
-&
-nameGalleon Chest (Under Tunnel)
-`*^
-(
-valueBreakableGalleonUnderDiddy5DS
-2
-name*(Galleon Chest (Under Diddy 5DS Entrance)
-U*S
-'
-valueBreakableGalleonNearMechFish
-(
-name Galleon Chest (Near Mech Fish)
-Q*O
-%
-valueBreakableGalleon2DSNearest
-&
-nameGalleon Chest (2DS: Nearest)
-K*I
-"
-valueBreakableGalleon2DSNear
-#
-nameGalleon Chest (2DS: Near)
-I*G
-!
-valueBreakableGalleon2DSFar
-"
-nameGalleon Chest (2DS: Far)
-S*Q
-&
-valueBreakableGalleon2DSFurthest
-'
-nameGalleon Chest (2DS: Furthest)
-ò
-Donkeyç2ä
-A*?
-
-valueGalleonDonkeyMedal
-
-nameGalleon Donkey Medal
-K*I
-"
-valueGalleonDonkeyLighthouse
-#
-nameGalleon Donkey Lighthouse
-O*M
-#
-valueGalleonDonkeyFreetheSeal
-&
-nameGalleon Donkey Free the Seal
-H*F
- 
-valueGalleonDonkeySealRace
-"
-nameGalleon Donkey Seal Race
-S*Q
-"
-valueGalleonKasplatGoldTower
-+
-name#!Galleon Kasplat: Diddy Gold Tower
-K*I
-!
-valueGalleonDonkey5DoorShip
-$
-nameGalleon Donkey 5 Door Ship
-O*M
-
-value
-Balloon045
-4
-name,*Galleon Donkey Balloon: Outside lighthouse
-N*L
-
-value
-Balloon046
-3
-name+)Galleon Donkey Balloon: Near the 3 Chests
-N*L
-
-value
-Balloon064
-3
-name+)Galleon Donkey Balloon: Inside Lighthouse
-J*H
-!
-valueGalleonDonkeyHalfMedal
-#
-nameGalleon Donkey Half-Medal
-
-nameGloomy Galleon™!
+nameAztec Vase (Plus)™!
 Army Dillo 1 (Japes)	JapesBoss™
 Dogadon 1 (Aztec)	AztecBoss™!
 Mad Jack (Factory)FactoryBoss™!
@@ -30698,758 +30698,6 @@ Monkeyport30¬
 Snide95¬
 Fairy Camera52¬
 	Shockwave53 —T
-•B
-BGMùB*öB
-àB
-subcategoriesˆA*ÛA
-Ó
-Factory‚*ﬂ
-≤
-songs®2•
-5*3
-
-valueFactoryMain
-
-nameFrantic Factory
-M*K
-
-valueFactoryProduction
-+
-name#!Frantic Factory (Production Room)
-M*K
-(
-valueFactoryResearchAndDevelopment
-
-nameFrantic Factory (R&D)
-G*E
-
-valueFactoryCrusher
-(
-name Frantic Factory (Crusher Room)
-C*A
-
-valueFactoryCarRace
-$
-nameFrantic Factory (Car Race)
-@*>
-
-valueFactoryJack
-$
-nameFrantic Factory (Mad Jack)
-
-typeBGM
-
-nameFrantic Factory
-ï
-Islesã*à
-‚
-songsÿ2’
-:*8
-
-valueTrainingGrounds
-
-nameTraining Grounds
-(*&
-
-valueIsles
-
-name
-DK Isles
-A*?
-
-valueIslesKremIsle
-#
-nameDK Isles (K. Rool's Ship)
-B*@
-
-valueIslesKLumsy
-&
-nameDK Isles (K. Lumsy's Prison)
-A*?
-
-value
-IslesBFI
-(
-name DK Isles (Banana Fairy Island)
-@*>
-
-valueIslesSnideRoom
-!
-nameDK Isles (Snide's Room)
-9*7
-
-value
-JapesLobby
-
-nameJungle Japes (Lobby)
-8*6
-
-value
-AztecLobby
-
-nameAngry Aztec (Lobby)
->*<
-
-valueFactoryLobby
-!
-nameFrantic Factory (Lobby)
-=*;
-
-valueGalleonLobby
- 
-nameGloomy Galleon (Lobby)
-:*8
-
-valueForestLobby
-
-nameFungi Forest (Lobby)
-:*8
-
-value
-CavesLobby
-
-nameCrystal Caves (Lobby)
-;*9
-
-valueCastleLobby
-
-nameCreepy Castle (Lobby)
-8*6
-
-value	HelmLobby
-
-nameHideout Helm (Lobby)
-
-typeBGM
-
-name
-DK Isles
-¡
-Japes∑*¥
-ä
-songsÄ2˝
-0*.
-
-value	JapesMain
-
-nameJungle Japes
-A*?
-
-value
-JapesStart
-&
-nameJungle Japes (Starting Area)
-=*;
-
-valueJapesTunnels
- 
-nameJungle Japes (Tunnels)
-A*?
-
-value
-JapesStorm
-&
-nameJungle Japes (Cranky's Area)
-E*C
-
-value
-JapesCaves
-*
-name" Jungle Japes (Caves/Underground)
-@*>
-
-value
-JapesBlast
-%
-nameJungle Japes (Baboon Blast)
-;*9
-
-value	JapesCart
-!
-nameJungle Japes (Minecart)
->*<
-
-value
-JapesDillo
-#
-nameJungle Japes (Army Dillo)
-
-typeBGM
-
-nameJungle Japes
-†
-Minigameì*ê
-È
-songsﬂ2‹
-3*1
-
-value	Minigames
-
-nameBonus Minigames
-3*1
-
-valueMadMazeMaul
-
-nameMad Maze Maul
-6*4
-
-valueStealthySnoop
-
-nameStealthy Snoop
-8*6
-
-valueMinecartMayhem
-
-nameMinecart Mayhem
-
-typeBGM
-
-name	Minigames
-Ï
-Story‚*ﬂ
-≤
-songs®2•
-,**
-
-value
-MainMenu
-
-name	Main Menu
-.*,
-
-value	PauseMenu
-
-name
-Pause Menu
-4*2
-
-valueNintendoLogo
-
-nameNintendo Logo
-7*5
-
-value
-IntroStory
-
-nameIntro Story Medley
-4*2
-
-value
-KRoolTheme
-
-nameK. Rool's Theme
-@*>
-
-valueKLumsyCelebration
-
-nameK. Lumsy Celebration
-6*4
-
-valueKRoolTakeoff
-
-nameK. Rool Takeoff
-:*8
-
-valueKRoolEntrance
-
-nameK. Rool's Entrance
-6*4
-
-valueKLumsyEnding
-
-nameK. Lumsy Ending
-2*0
-
-valueEndSequence
-
-nameEnd Sequence
-
-typeBGM
-
-nameMenus and Story
-ÿ
-MovesŒ*À
-ú
-songsí2è
-0*.
-
-value
-StrongKong
-
-nameStrong Kong
-9*7
-
-valueRocketbarrel
-
-nameRocketbarrel Boost
-2*0
-
-valueSprint
-
-nameOrangstand Sprint
-0*.
-
-value
-MiniMonkey
-
-nameMini Monkey
-2*0
-
-valueHunkyChunky
-
-nameHunky Chunky
-2*0
-
-valueGorillaGone
-
-nameGorilla Gone
-%*#
-
-valueRambi
-
-nameRambi
-+*)
-
-value
-Enguarde
-
-name
-Enguarde
-
-typeBGM
-
-nameMoves and Animals
-¥
-Aztec™*ß
-˛
-songsÙ2Ò
-/*-
-
-value	AztecMain
-
-nameAngry Aztec
-<*:
-
-valueAztecTunnels
-
-nameAngry Aztec (Tunnels)
-:*8
-
-valueAztecTemple
-
-nameAngry Aztec (Temple)
-4*2
-
-value
-Aztec5DT
-
-nameAngry Aztec (5DT)
-?*=
-
-value
-AztecBlast
-$
-nameAngry Aztec (Baboon Blast)
-@*>
-
-valueAztecBeetle
-$
-nameAngry Aztec (Beetle Slide)
-M*K
-
-valueAztecChunkyKlaptraps
-(
-name Angry Aztec (Chunky Klaptraps)
-<*:
-
-valueAztecDogadon
-
-nameAngry Aztec (Dogadon)
-
-typeBGM
-
-nameAngry Aztec
-Ò
-CastleÊ*„
-∏
-songsÆ2´
-.*,
-
-valueCastle
-
-nameCreepy Castle
-9*7
-
-value
-CastleShed
-
-nameCreepy Castle (Shed)
-9*7
-
-value
-CastleTree
-
-nameCreepy Castle (Tree)
-?*=
-
-valueCastleTunnels
-!
-nameCreepy Castle (Tunnels)
-;*9
-
-valueCastleCrypt
-
-nameCreepy Castle (Crypt)
-H*F
-
-valueCastleInnerCrypts
-&
-nameCreepy Castle (Inner Crypts)
-P*N
-
-valueCastleDungeon_Chains
-+
-name#!Creepy Castle (Dungeon w/ Chains)
-U*S
-!
-valueCastleDungeon_NoChains
-.
-name&$Creepy Castle (Dungeon w/out Chains)
-A*?
-
-valueCastleBallroom
-"
-nameCreepy Castle (Ballroom)
-=*;
-
-valueCastleMuseum
- 
-nameCreepy Castle (Museum)
-E*C
-
-valueCastleGreenhouse
-$
-nameCreepy Castle (Greenhouse)
-?*=
-
-valueCastleTrash
-#
-nameCreepy Castle (Trash Can)
-@*>
-
-valueCastleTower
-$
-nameCreepy Castle (Wind Tower)
-B*@
-
-valueCastleBlast
-&
-nameCreepy Castle (Baboon Blast)
-=*;
-
-value
-CastleCart
-"
-nameCreepy Castle (Minecart)
-C*A
-
-valueCastleKutOut
-&
-nameCreepy Castle (King Kut-Out)
-
-typeBGM
-
-nameCreepy Castle
-Ã
-Forest¡*æ
-î
-songsä2á
-6*4
-
-value	ForestDay
-
-nameFungi Forest (Day)
-:*8
-
-valueForestNight
-
-nameFungi Forest (Night)
-8*6
-
-value
-ForestBarn
-
-nameFungi Forest (Barn)
-8*6
-
-value
-ForestMill
-
-nameFungi Forest (Mill)
->*<
-
-valueForestAnthill
- 
-nameFungi Forest (Anthill)
-F*D
-
-valueForestMushroom
-'
-nameFungi Forest (Giant Mushroom)
-O*M
-
-valueForestMushroomRooms
-+
-name#!Fungi Forest (Mushroom Top Rooms)
-<*:
-
-valueForestSpider
-
-nameFungi Forest (Spider)
-A*?
-
-valueForestBlast
-%
-nameFungi Forest (Baboon Blast)
-E*C
-
-valueForestRabbitRace
-$
-nameFungi Forest (Rabbit Race)
-<*:
-
-value
-ForestCart
-!
-nameFungi Forest (Minecart)
->*<
-
-valueForestDogadon
- 
-nameFungi Forest (Dogadon)
-
-typeBGM
-
-nameFungi Forest
-ö
-Cavesê*ç
-‚
-songsÿ2’
--*+
-
-valueCaves
-
-nameCrystal Caves
-<*:
-
-valueCavesIgloos
- 
-nameCrystal Caves (Igloos)
-<*:
-
-valueCavesCabins
- 
-nameCrystal Caves (Cabins)
-I*G
-
-valueCavesRotatingRoom
-'
-nameCrystal Caves (Rotating Room)
-J*H
-
-valueCavesTantrum
--
-name%#Crystal Caves (Giant Kosha Tantrum)
-A*?
-
-value
-CavesBlast
-&
-nameCrystal Caves (Baboon Blast)
-F*D
-
-valueCavesIceCastle
-'
-nameCrystal Caves (Tile Flipping)
-E*C
-
-valueCavesBeetleRace
-%
-nameCrystal Caves (Beetle Race)
-?*=
-
-value
-CavesDillo
-$
-nameCrystal Caves (Army Dillo)
-
-typeBGM
-
-nameCrystal Caves
-ë
-Helmà*Ö
-€
-songs—2Œ
-C*A
-
-value	HelmBoMOn
-)
-name!Hideout Helm (Blast-O-Matic On)
-E*C
-
-value
-HelmBoMOff
-*
-name" Hideout Helm (Blast-O-Matic Off)
-@*>
-
-value	HelmBonus
-&
-nameHideout Helm (Bonus Barrels)
-
-typeBGM
-
-nameHideout Helm
-™
-NPC¢*ü
-˝
-songsÛ2
--*+
-
-valueCranky
-
-nameCranky's Lab
-+*)
-
-valueFunky
-
-nameFunky's Hut
-2*0
-
-valueCandy
-
-nameCandy's Music Shop
-**(
-
-valueSnide
-
-name
-Snide's HQ
-2*0
-
-valueWrinklyKong
-
-nameWrinkly Kong
-
-typeBGM
-
-nameNPCs
-ƒ
-Galleon∏*µ
-â
-songsˇ2¸
-A*?
-
-valueGalleonTunnels
-"
-nameGloomy Galleon (Tunnels)
-A*?
-
-valueGalleonOutside
-"
-nameGloomy Galleon (Outside)
-G*E
-
-valueGalleonLighthouse
-%
-nameGloomy Galleon (Lighthouse)
-J*H
-
-valueGalleonMechFish
-*
-name" Gloomy Galleon (Mechanical Fish)
-9*7
-
-value
-Galleon2DS
-
-nameGloomy Galleon (2DS)
-C*A
-
-value
-Galleon5DS
-(
-name Gloomy Galleon (5DS/Submarine)
-H*F
-
-valueGalleonMermaid
-)
-name!Gloomy Galleon (Mermaid Palace)
-D*B
-
-valueGalleonChest
-'
-nameGloomy Galleon (Pearls Chest)
-D*B
-
-valueGalleonBlast
-'
-nameGloomy Galleon (Baboon Blast)
-D*B
-
-valueGalleonSealRace
-$
-nameGloomy Galleon (Seal Race)
-C*A
-
-valueGalleonPufftoss
-#
-nameGloomy Galleon (Pufftoss)
-
-typeBGM
-
-nameGloomy Galleon
-ó
-Battleå*â
-‰
-songs⁄2◊
-2*0
-
-valueBattleArena
-
-nameBattle Arena
-5*3
-
-valueTroffNScoff
-
-nameTroff 'n' Scoff
-F*D
-
-valueAwaitingBossEntry
-$
-nameAwaiting Entering the Boss
-<*:
-
-valueBossIntroduction
-
-nameBoss Introduction
-,**
-
-value
-MiniBoss
-
-name	Mini Boss
-6*4
-
-valueKRoolBattle
-
-nameK. Rool's Battle
-
-typeBGM
-
-name	Battles
-
-nameBGM
 ¶
 ItemsEventsñ*ì
 Ù
@@ -31547,6 +30795,63 @@ FinalCBGet
 typeEvent
 
 nameEvents
+∆
+	MinorItem∏*µ
+Ü
+songs¸2˘
+9*7
+
+valueMelonSliceDrop
+
+nameMelon Slice Drop
+7*5
+
+valueMelonSliceGet
+
+nameMelon Slice Get
+7*5
+
+valueBananaCoinGet
+
+nameBanana Coin Get
+?*=
+
+valueCrystalCoconutGet
+
+nameCrystal Coconut Get
+.*,
+
+value	FairyTick
+
+name
+Fairy Tick
+;*9
+
+valueMinecartCoinGet
+
+nameMinecart Coin Get
+9*7
+
+value	DropCoins
+
+nameDrop Coins (Minecart)
+/*-
+
+value
+Checkpoint
+
+name
+Checkpoint
+0*.
+
+value
+NormalStar
+
+nameNormal Star
+
+type	MinorItem
+
+nameMinor Items
 ˆ
 	MajorItemË*Â
 ∂
@@ -31624,10 +30929,849 @@ FinalCBGet
 type	MajorItem
 
 nameMajor Items
-∆
-	MinorItem∏*µ
-Ü
-songs¸2˘
+
+nameItems and Events
+•B
+BGMùB*öB
+àB
+subcategoriesˆA*ÛA
+¡
+Japes∑*¥
+ä
+songsÄ2˝
+0*.
+
+value	JapesMain
+
+nameJungle Japes
+A*?
+
+value
+JapesStart
+&
+nameJungle Japes (Starting Area)
+=*;
+
+valueJapesTunnels
+ 
+nameJungle Japes (Tunnels)
+A*?
+
+value
+JapesStorm
+&
+nameJungle Japes (Cranky's Area)
+E*C
+
+value
+JapesCaves
+*
+name" Jungle Japes (Caves/Underground)
+@*>
+
+value
+JapesBlast
+%
+nameJungle Japes (Baboon Blast)
+;*9
+
+value	JapesCart
+!
+nameJungle Japes (Minecart)
+>*<
+
+value
+JapesDillo
+#
+nameJungle Japes (Army Dillo)
+
+typeBGM
+
+nameJungle Japes
+™
+NPC¢*ü
+˝
+songsÛ2
+-*+
+
+valueCranky
+
+nameCranky's Lab
++*)
+
+valueFunky
+
+nameFunky's Hut
+2*0
+
+valueCandy
+
+nameCandy's Music Shop
+**(
+
+valueSnide
+
+name
+Snide's HQ
+2*0
+
+valueWrinklyKong
+
+nameWrinkly Kong
+
+typeBGM
+
+nameNPCs
+¥
+Aztec™*ß
+˛
+songsÙ2Ò
+/*-
+
+value	AztecMain
+
+nameAngry Aztec
+<*:
+
+valueAztecTunnels
+
+nameAngry Aztec (Tunnels)
+:*8
+
+valueAztecTemple
+
+nameAngry Aztec (Temple)
+4*2
+
+value
+Aztec5DT
+
+nameAngry Aztec (5DT)
+?*=
+
+value
+AztecBlast
+$
+nameAngry Aztec (Baboon Blast)
+@*>
+
+valueAztecBeetle
+$
+nameAngry Aztec (Beetle Slide)
+M*K
+
+valueAztecChunkyKlaptraps
+(
+name Angry Aztec (Chunky Klaptraps)
+<*:
+
+valueAztecDogadon
+
+nameAngry Aztec (Dogadon)
+
+typeBGM
+
+nameAngry Aztec
+ï
+Islesã*à
+‚
+songsÿ2’
+:*8
+
+valueTrainingGrounds
+
+nameTraining Grounds
+(*&
+
+valueIsles
+
+name
+DK Isles
+A*?
+
+valueIslesKremIsle
+#
+nameDK Isles (K. Rool's Ship)
+B*@
+
+valueIslesKLumsy
+&
+nameDK Isles (K. Lumsy's Prison)
+A*?
+
+value
+IslesBFI
+(
+name DK Isles (Banana Fairy Island)
+@*>
+
+valueIslesSnideRoom
+!
+nameDK Isles (Snide's Room)
+9*7
+
+value
+JapesLobby
+
+nameJungle Japes (Lobby)
+8*6
+
+value
+AztecLobby
+
+nameAngry Aztec (Lobby)
+>*<
+
+valueFactoryLobby
+!
+nameFrantic Factory (Lobby)
+=*;
+
+valueGalleonLobby
+ 
+nameGloomy Galleon (Lobby)
+:*8
+
+valueForestLobby
+
+nameFungi Forest (Lobby)
+:*8
+
+value
+CavesLobby
+
+nameCrystal Caves (Lobby)
+;*9
+
+valueCastleLobby
+
+nameCreepy Castle (Lobby)
+8*6
+
+value	HelmLobby
+
+nameHideout Helm (Lobby)
+
+typeBGM
+
+name
+DK Isles
+Ï
+Story‚*ﬂ
+≤
+songs®2•
+,**
+
+value
+MainMenu
+
+name	Main Menu
+.*,
+
+value	PauseMenu
+
+name
+Pause Menu
+4*2
+
+valueNintendoLogo
+
+nameNintendo Logo
+7*5
+
+value
+IntroStory
+
+nameIntro Story Medley
+4*2
+
+value
+KRoolTheme
+
+nameK. Rool's Theme
+@*>
+
+valueKLumsyCelebration
+
+nameK. Lumsy Celebration
+6*4
+
+valueKRoolTakeoff
+
+nameK. Rool Takeoff
+:*8
+
+valueKRoolEntrance
+
+nameK. Rool's Entrance
+6*4
+
+valueKLumsyEnding
+
+nameK. Lumsy Ending
+2*0
+
+valueEndSequence
+
+nameEnd Sequence
+
+typeBGM
+
+nameMenus and Story
+ë
+Helmà*Ö
+€
+songs—2Œ
+C*A
+
+value	HelmBoMOn
+)
+name!Hideout Helm (Blast-O-Matic On)
+E*C
+
+value
+HelmBoMOff
+*
+name" Hideout Helm (Blast-O-Matic Off)
+@*>
+
+value	HelmBonus
+&
+nameHideout Helm (Bonus Barrels)
+
+typeBGM
+
+nameHideout Helm
+Ò
+CastleÊ*„
+∏
+songsÆ2´
+.*,
+
+valueCastle
+
+nameCreepy Castle
+9*7
+
+value
+CastleShed
+
+nameCreepy Castle (Shed)
+9*7
+
+value
+CastleTree
+
+nameCreepy Castle (Tree)
+?*=
+
+valueCastleTunnels
+!
+nameCreepy Castle (Tunnels)
+;*9
+
+valueCastleCrypt
+
+nameCreepy Castle (Crypt)
+H*F
+
+valueCastleInnerCrypts
+&
+nameCreepy Castle (Inner Crypts)
+P*N
+
+valueCastleDungeon_Chains
++
+name#!Creepy Castle (Dungeon w/ Chains)
+U*S
+!
+valueCastleDungeon_NoChains
+.
+name&$Creepy Castle (Dungeon w/out Chains)
+A*?
+
+valueCastleBallroom
+"
+nameCreepy Castle (Ballroom)
+=*;
+
+valueCastleMuseum
+ 
+nameCreepy Castle (Museum)
+E*C
+
+valueCastleGreenhouse
+$
+nameCreepy Castle (Greenhouse)
+?*=
+
+valueCastleTrash
+#
+nameCreepy Castle (Trash Can)
+@*>
+
+valueCastleTower
+$
+nameCreepy Castle (Wind Tower)
+B*@
+
+valueCastleBlast
+&
+nameCreepy Castle (Baboon Blast)
+=*;
+
+value
+CastleCart
+"
+nameCreepy Castle (Minecart)
+C*A
+
+valueCastleKutOut
+&
+nameCreepy Castle (King Kut-Out)
+
+typeBGM
+
+nameCreepy Castle
+ó
+Battleå*â
+‰
+songs⁄2◊
+2*0
+
+valueBattleArena
+
+nameBattle Arena
+5*3
+
+valueTroffNScoff
+
+nameTroff 'n' Scoff
+F*D
+
+valueAwaitingBossEntry
+$
+nameAwaiting Entering the Boss
+<*:
+
+valueBossIntroduction
+
+nameBoss Introduction
+,**
+
+value
+MiniBoss
+
+name	Mini Boss
+6*4
+
+valueKRoolBattle
+
+nameK. Rool's Battle
+
+typeBGM
+
+name	Battles
+Ó
+Factory‚*ﬂ
+≤
+songs®2•
+5*3
+
+valueFactoryMain
+
+nameFrantic Factory
+M*K
+
+valueFactoryProduction
++
+name#!Frantic Factory (Production Room)
+M*K
+(
+valueFactoryResearchAndDevelopment
+
+nameFrantic Factory (R&D)
+G*E
+
+valueFactoryCrusher
+(
+name Frantic Factory (Crusher Room)
+C*A
+
+valueFactoryCarRace
+$
+nameFrantic Factory (Car Race)
+@*>
+
+valueFactoryJack
+$
+nameFrantic Factory (Mad Jack)
+
+typeBGM
+
+nameFrantic Factory
+†
+Minigameì*ê
+È
+songsﬂ2‹
+3*1
+
+value	Minigames
+
+nameBonus Minigames
+3*1
+
+valueMadMazeMaul
+
+nameMad Maze Maul
+6*4
+
+valueStealthySnoop
+
+nameStealthy Snoop
+8*6
+
+valueMinecartMayhem
+
+nameMinecart Mayhem
+
+typeBGM
+
+name	Minigames
+ƒ
+Galleon∏*µ
+â
+songsˇ2¸
+A*?
+
+valueGalleonTunnels
+"
+nameGloomy Galleon (Tunnels)
+A*?
+
+valueGalleonOutside
+"
+nameGloomy Galleon (Outside)
+G*E
+
+valueGalleonLighthouse
+%
+nameGloomy Galleon (Lighthouse)
+J*H
+
+valueGalleonMechFish
+*
+name" Gloomy Galleon (Mechanical Fish)
+9*7
+
+value
+Galleon2DS
+
+nameGloomy Galleon (2DS)
+C*A
+
+value
+Galleon5DS
+(
+name Gloomy Galleon (5DS/Submarine)
+H*F
+
+valueGalleonMermaid
+)
+name!Gloomy Galleon (Mermaid Palace)
+D*B
+
+valueGalleonChest
+'
+nameGloomy Galleon (Pearls Chest)
+D*B
+
+valueGalleonBlast
+'
+nameGloomy Galleon (Baboon Blast)
+D*B
+
+valueGalleonSealRace
+$
+nameGloomy Galleon (Seal Race)
+C*A
+
+valueGalleonPufftoss
+#
+nameGloomy Galleon (Pufftoss)
+
+typeBGM
+
+nameGloomy Galleon
+ö
+Cavesê*ç
+‚
+songsÿ2’
+-*+
+
+valueCaves
+
+nameCrystal Caves
+<*:
+
+valueCavesIgloos
+ 
+nameCrystal Caves (Igloos)
+<*:
+
+valueCavesCabins
+ 
+nameCrystal Caves (Cabins)
+I*G
+
+valueCavesRotatingRoom
+'
+nameCrystal Caves (Rotating Room)
+J*H
+
+valueCavesTantrum
+-
+name%#Crystal Caves (Giant Kosha Tantrum)
+A*?
+
+value
+CavesBlast
+&
+nameCrystal Caves (Baboon Blast)
+F*D
+
+valueCavesIceCastle
+'
+nameCrystal Caves (Tile Flipping)
+E*C
+
+valueCavesBeetleRace
+%
+nameCrystal Caves (Beetle Race)
+?*=
+
+value
+CavesDillo
+$
+nameCrystal Caves (Army Dillo)
+
+typeBGM
+
+nameCrystal Caves
+Ã
+Forest¡*æ
+î
+songsä2á
+6*4
+
+value	ForestDay
+
+nameFungi Forest (Day)
+:*8
+
+valueForestNight
+
+nameFungi Forest (Night)
+8*6
+
+value
+ForestBarn
+
+nameFungi Forest (Barn)
+8*6
+
+value
+ForestMill
+
+nameFungi Forest (Mill)
+>*<
+
+valueForestAnthill
+ 
+nameFungi Forest (Anthill)
+F*D
+
+valueForestMushroom
+'
+nameFungi Forest (Giant Mushroom)
+O*M
+
+valueForestMushroomRooms
++
+name#!Fungi Forest (Mushroom Top Rooms)
+<*:
+
+valueForestSpider
+
+nameFungi Forest (Spider)
+A*?
+
+valueForestBlast
+%
+nameFungi Forest (Baboon Blast)
+E*C
+
+valueForestRabbitRace
+$
+nameFungi Forest (Rabbit Race)
+<*:
+
+value
+ForestCart
+!
+nameFungi Forest (Minecart)
+>*<
+
+valueForestDogadon
+ 
+nameFungi Forest (Dogadon)
+
+typeBGM
+
+nameFungi Forest
+ÿ
+MovesŒ*À
+ú
+songsí2è
+0*.
+
+value
+StrongKong
+
+nameStrong Kong
+9*7
+
+valueRocketbarrel
+
+nameRocketbarrel Boost
+2*0
+
+valueSprint
+
+nameOrangstand Sprint
+0*.
+
+value
+MiniMonkey
+
+nameMini Monkey
+2*0
+
+valueHunkyChunky
+
+nameHunky Chunky
+2*0
+
+valueGorillaGone
+
+nameGorilla Gone
+%*#
+
+valueRambi
+
+nameRambi
++*)
+
+value
+Enguarde
+
+name
+Enguarde
+
+typeBGM
+
+nameMoves and Animals
+
+nameBGM“ÜK
+Á
+Event›2⁄
+)*'
+
+value	Success
+
+name	Success
+)*'
+
+value	Failure
+
+name	Failure
+6*4
+
+valueSuccessRaces
+
+nameSuccess (Races)
+B*@
+
+valueFailureRaces
+%
+nameFailure (Races & Try Again)
+0*.
+
+value
+BossUnlock
+
+nameBoss Unlock
+0*.
+
+value
+BossDefeat
+
+nameBoss Defeat
+,**
+
+valueBongos
+
+nameBongo Blast
+.*,
+
+valueGuitar
+
+nameGuitar Gazump
+2*0
+
+value
+Trombone
+
+nameTrombone Tremor
+2*0
+
+value	Saxophone
+
+nameSaxophone Slam
+3*1
+
+value
+Triangle
+
+nameTriangle Trample
+6*4
+
+valueBaboonBalloon
+
+nameBaboon Balloon
+7*5
+
+valueTransformation
+
+nameTransformation
+@*>
+
+valueVultureRing
+$
+nameGoing through Vulture Ring
+A*?
+
+valueBBlastFinalStar
+!
+nameBarrel Blast Final Star
+1*/
+
+value
+FinalCBGet
+
+name100th CB Get
+ä
+	MinorItem¸2˘
 9*7
 
 valueMelonSliceDrop
@@ -31677,12 +31821,77 @@ Checkpoint
 NormalStar
 
 nameNormal Star
+∫
+	MajorItem¨2©
+,**
 
-type	MinorItem
-
-nameMinor Items
+value
+OhBanana
+
+name	Oh Banana
+5*3
+
+valueGBGet
+
+nameGolden Banana/Key Get
+**(
+
+value	MoveGet
+
+name
+Move Get
+(*&
+
+valueGunGet
+
+name	Gun Get
+9*7
+
+valueBananaMedalGet
 
-nameItems and Events“ÜK
+nameBanana Medal Get
+6*4
+
+valueBlueprintDrop
+
+nameBlueprint Drop
+4*2
+
+valueBlueprintGet
+
+nameBlueprint Get
+6*4
+
+valueHeadphonesGet
+
+nameHeadphones Get
+;*9
+
+valueDropRainbowCoin
+
+nameDrop Rainbow Coin
+9*7
+
+valueRainbowCoinGet
+
+nameRainbow Coin Get
+9*7
+
+valueCompanyCoinGet
+
+nameCompany Coin Get
+**(
+
+value	BeanGet
+
+name
+Bean Get
+,**
+
+value
+PearlGet
+
+name	Pearl Get
 œ:
 BGM«:2ƒ:
 :*8
@@ -32322,216 +32531,7 @@ KRoolTheme
 
 valueMonkeySmash
 
-nameMonkey Smash
-Á
-Event›2⁄
-)*'
-
-value	Success
-
-name	Success
-)*'
-
-value	Failure
-
-name	Failure
-6*4
-
-valueSuccessRaces
-
-nameSuccess (Races)
-B*@
-
-valueFailureRaces
-%
-nameFailure (Races & Try Again)
-0*.
-
-value
-BossUnlock
-
-nameBoss Unlock
-0*.
-
-value
-BossDefeat
-
-nameBoss Defeat
-,**
-
-valueBongos
-
-nameBongo Blast
-.*,
-
-valueGuitar
-
-nameGuitar Gazump
-2*0
-
-value
-Trombone
-
-nameTrombone Tremor
-2*0
-
-value	Saxophone
-
-nameSaxophone Slam
-3*1
-
-value
-Triangle
-
-nameTriangle Trample
-6*4
-
-valueBaboonBalloon
-
-nameBaboon Balloon
-7*5
-
-valueTransformation
-
-nameTransformation
-@*>
-
-valueVultureRing
-$
-nameGoing through Vulture Ring
-A*?
-
-valueBBlastFinalStar
-!
-nameBarrel Blast Final Star
-1*/
-
-value
-FinalCBGet
-
-name100th CB Get
-∫
-	MajorItem¨2©
-,**
-
-value
-OhBanana
-
-name	Oh Banana
-5*3
-
-valueGBGet
-
-nameGolden Banana/Key Get
-**(
-
-value	MoveGet
-
-name
-Move Get
-(*&
-
-valueGunGet
-
-name	Gun Get
-9*7
-
-valueBananaMedalGet
-
-nameBanana Medal Get
-6*4
-
-valueBlueprintDrop
-
-nameBlueprint Drop
-4*2
-
-valueBlueprintGet
-
-nameBlueprint Get
-6*4
-
-valueHeadphonesGet
-
-nameHeadphones Get
-;*9
-
-valueDropRainbowCoin
-
-nameDrop Rainbow Coin
-9*7
-
-valueRainbowCoinGet
-
-nameRainbow Coin Get
-9*7
-
-valueCompanyCoinGet
-
-nameCompany Coin Get
-**(
-
-value	BeanGet
-
-name
-Bean Get
-,**
-
-value
-PearlGet
-
-name	Pearl Get
-ä
-	MinorItem¸2˘
-9*7
-
-valueMelonSliceDrop
-
-nameMelon Slice Drop
-7*5
-
-valueMelonSliceGet
-
-nameMelon Slice Get
-7*5
-
-valueBananaCoinGet
-
-nameBanana Coin Get
-?*=
-
-valueCrystalCoconutGet
-
-nameCrystal Coconut Get
-.*,
-
-value	FairyTick
-
-name
-Fairy Tick
-;*9
-
-valueMinecartCoinGet
-
-nameMinecart Coin Get
-9*7
-
-value	DropCoins
-
-nameDrop Coins (Minecart)
-/*-
-
-value
-Checkpoint
-
-name
-Checkpoint
-0*.
-
-value
-NormalStar
-
-nameNormal Star⁄Ö
+nameMonkey Smash⁄Ö
 Japes Coconut Gatesjapes_coconut_gatesWThe gates that block the tunnels from Japes main to its various tunnels will be opened. 
 ⁄b
 Japes Shellhive Gatejapes_shellhive_gate2The gate to the shellhive area in Japes is opened. ⁄W

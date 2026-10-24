@@ -404,8 +404,7 @@ LogicRegions = {
         TransitionFront(Regions.CabinDoor, lambda _: True,),
     ]),
 
-    Regions.CabinDoor: Region("Cabin Door", HintRegion.OuterIsles, Levels.DKIsles, False, None, [
-        ], [], [
+    Regions.CabinDoor: Region("Cabin Door", HintRegion.OuterIsles, Levels.DKIsles, False, None, [], [], [
             TransitionFront(Regions.CabinIsle, lambda l: not l.assumeLevel5Entry),
             TransitionFront(Regions.FungiForestLobby, lambda _: True, Transitions.IslesMainToForestLobby),
     ]),
