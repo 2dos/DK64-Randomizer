@@ -220,6 +220,7 @@ def map_page_index(map_id: typing.Any) -> int:
         return -1
     return PACK_MAPS.index(pack_map) if pack_map else -1
 
+
 SECTION_NAMES = {
     "5 Door Temple/Aztec Dirt: Chunky Temple": "Aztec Dirt (Chunky 5DT)",
     "Aztec Boulder: Tunnel/Aztec Boulder: Tunnel": "Aztec Boulder (Tunnel)",

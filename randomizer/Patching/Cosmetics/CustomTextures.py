@@ -144,7 +144,6 @@ def getImageChunk(im_f, width: int, height: int):
 
 def getColorPalette(im_f, color_count: int, allow_alpha: bool):
     """Reduce the color count within an image."""
-
     has_alpha = False
     if allow_alpha:
         if im_f.mode != "RGBA":

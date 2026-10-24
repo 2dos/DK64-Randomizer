@@ -89,7 +89,6 @@ MAX_SETTINGS_BYTES = 1 << 14
 
 def settings_to_proto(settings: "Settings") -> settings_pb2.SettingsInfo:
     """Convert a Settings object to a SettingsInfo protobuf message."""
-
     proto = settings_pb2.SettingsInfo()
     _populate_item_settings(settings, proto.item_settings)
     _populate_requirement_settings(settings, proto.requirement_settings)
@@ -104,7 +103,6 @@ def settings_to_proto(settings: "Settings") -> settings_pb2.SettingsInfo:
 
 def proto_to_settings(proto: settings_pb2.SettingsInfo, settings: "Settings") -> None:
     """Apply settings from a SettingsInfo protobuf message to a Settings object."""
-
     _apply_item_settings(proto.item_settings, settings)
     _apply_requirement_settings(proto.requirement_settings, settings)
     _apply_overworld_settings(proto.overworld_settings, settings)

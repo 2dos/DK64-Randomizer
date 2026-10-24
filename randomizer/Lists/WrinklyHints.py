@@ -360,7 +360,7 @@ def GetRegionIdOfLocation(spoiler, location_id: Locations) -> Regions:
 
 
 def GetHintItemTiedRegions(spoiler) -> dict:
-    """Returns HintRegion for every Wrinkly hint placed by item rando."""
+    """Return HintRegion for every Wrinkly hint placed by item rando."""
     regions = {}
     if not spoiler.settings.shuffle_items:
         return regions

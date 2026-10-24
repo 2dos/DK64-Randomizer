@@ -142,8 +142,8 @@ class FillAlgorithm(IntEnum):
 
 class FreeTradeSetting(IntEnum):
     none = 0
-    not_blueprints = 1
-    major_collectibles = 2
+    all = 1
+    all_cbs = 2
 
 class FungiTimeSetting(IntEnum):
     day = 1
@@ -405,6 +405,14 @@ class MinigamesListSelected(IntEnum):
     arenas = 17
     training_minigames = 18
     arcade = 19
+
+class CustomMinigamesSelected(IntEnum):
+    vanilla = 1
+    game_2048 = 2
+    hexagon = 6
+    minesweeper = 7
+    picross = 8
+    wordle = 10
 
 class MiscChangesSelected(IntEnum):
     auto_dance_skip = 1
@@ -966,6 +974,9 @@ class SettingsStringEnum(IntEnum):
     season5_door_rando = 332
     season5_crate_rando = 333
     lives = 334
+    custom_minigames_enabled = 335
+    arcade_minigame_pool_selected = 336
+    jetpac_minigame_pool_selected = 337
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1000,6 +1011,7 @@ SettingsMap: dict = {
     "enemies_selected": Enemies,
     "enguarde_colors": CharacterColors,
     "excluded_songs_selected": ExcludedSongs,
+    "free_trade_setting": FreeTradeSetting,
     "fungi_time": FungiTimeSetting,
     "galleon_water": GalleonWaterSetting,
     "gb_colors": CharacterColors,
@@ -1021,6 +1033,8 @@ SettingsMap: dict = {
     "logic_type": LogicType,
     "microhints_enabled": MicrohintsEnabled,
     "minigames_list_selected": MinigamesListSelected,
+    "arcade_minigame_pool_selected": CustomMinigamesSelected,
+    "jetpac_minigame_pool_selected": CustomMinigamesSelected,
     "cb_rando_list_selected": Levels,
     "misc_changes_selected": MiscChangesSelected,
     "bosses_selected": Maps,
@@ -1184,7 +1198,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.fast_start_beginning_of_game_dummy: SettingsStringDataType.bool,
     SettingsStringEnum.fast_warps: SettingsStringDataType.bool,
     SettingsStringEnum.fps_display: SettingsStringDataType.bool,
-    SettingsStringEnum.free_trade_setting: SettingsStringDataType.bool,
+    SettingsStringEnum.free_trade_setting: FreeTradeSetting,
     SettingsStringEnum.generate_spoilerlog: SettingsStringDataType.bool,
     SettingsStringEnum.glitches_selected: SettingsStringDataType.list,
     SettingsStringEnum.tricks_selected: SettingsStringDataType.list,
@@ -1243,6 +1257,9 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.medal_requirement: SettingsStringDataType.u8,
     SettingsStringEnum.microhints_enabled: MicrohintsEnabled,
     SettingsStringEnum.minigames_list_selected: SettingsStringDataType.list,
+    SettingsStringEnum.custom_minigames_enabled: SettingsStringDataType.bool,
+    SettingsStringEnum.arcade_minigame_pool_selected: SettingsStringDataType.list,
+    SettingsStringEnum.jetpac_minigame_pool_selected: SettingsStringDataType.list,
     SettingsStringEnum.cb_rando_enabled: SettingsStringDataType.bool,
     SettingsStringEnum.cb_rando_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.misc_changes_selected: SettingsStringDataType.list,
@@ -1482,6 +1499,8 @@ SettingsStringListTypeMap: dict = {
     SettingsStringEnum.tricks_selected: TricksSelected,
     SettingsStringEnum.item_rando_list_selected: ItemRandoListSelected,
     SettingsStringEnum.minigames_list_selected: MinigamesListSelected,
+    SettingsStringEnum.arcade_minigame_pool_selected: CustomMinigamesSelected,
+    SettingsStringEnum.jetpac_minigame_pool_selected: CustomMinigamesSelected,
     SettingsStringEnum.cb_rando_list_selected: Levels,
     SettingsStringEnum.misc_changes_selected: MiscChangesSelected,
     SettingsStringEnum.bosses_selected: Maps,

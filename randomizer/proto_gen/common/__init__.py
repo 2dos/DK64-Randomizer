@@ -1,1 +1,1 @@
-# Generated protobuf common package
+"""Generated protobuf common package."""
