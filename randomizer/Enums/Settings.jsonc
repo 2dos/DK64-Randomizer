@@ -312,13 +312,14 @@
     FreeTradeSetting:
     - Determines if Kongs can collect items assigned to other Kongs.
     - none: Items can only be collected by their original Kong.
-    - not_blueprints: Major items can be collected by any Kong, except for blueprints.
-    - major_collectibles: Major items can be collected by any Kong.
+    - all: Items and blueprints can be collected by any Kong.
+    - all_cbs: Items, blueprints and colored bananas can be collected by any Kong.
+    - all is 1 so that the old on/off value (True) still means all.
   */
   "FreeTradeSetting": {
     "none": 0,
-    "not_blueprints": 1,
-    "major_collectibles": 2
+    "all": 1,
+    "all_cbs": 2
   },
 
   /*
@@ -759,6 +760,22 @@
     "arenas": 17,
     "training_minigames": 18,
     "arcade": 19
+  },
+
+  /*
+    CustomMinigamesSelected:
+    - Minigames that can replace DK Arcade and Jetpac, used for the web selector.
+    - vanilla: The original game for that machine.
+    - 3, 4, 5 and 9 (Arkanoid, Connect 4, Flappy Bird, Snake) were removed. Only reuse a number to bring back
+      that same game, so old settings strings still mean the same thing.
+  */
+  "CustomMinigamesSelected": {
+    "vanilla": 1,
+    "game_2048": 2,
+    "hexagon": 6,
+    "minesweeper": 7,
+    "picross": 8,
+    "wordle": 10
   },
 
   /*
@@ -1516,7 +1533,10 @@
     "half_medal_percentage": 331,
     "season5_door_rando": 332,
     "season5_crate_rando": 333,
-    "lives": 334
+    "lives": 334,
+    "custom_minigames_enabled": 335,
+    "arcade_minigame_pool_selected": 336,
+    "jetpac_minigame_pool_selected": 337
   },
   /*
     SettingsStringDataType:
@@ -1561,6 +1581,7 @@
     "enemies_selected": { "obj": "Enemies" },
     "enguarde_colors": { "obj": "CharacterColors" },
     "excluded_songs_selected": { "obj": "ExcludedSongs" },
+    "free_trade_setting": { "obj": "FreeTradeSetting" },
     "fungi_time": { "obj": "FungiTimeSetting" },
     "galleon_water": { "obj": "GalleonWaterSetting" },
     "gb_colors": { "obj": "CharacterColors" },
@@ -1582,6 +1603,8 @@
     "logic_type": { "obj": "LogicType" },
     "microhints_enabled": { "obj": "MicrohintsEnabled" },
     "minigames_list_selected": { "obj": "MinigamesListSelected" },
+    "arcade_minigame_pool_selected": { "obj": "CustomMinigamesSelected" },
+    "jetpac_minigame_pool_selected": { "obj": "CustomMinigamesSelected" },
     "cb_rando_list_selected": { "obj": "Levels" },
     "misc_changes_selected": { "obj": "MiscChangesSelected" },
     "bosses_selected": { "obj": "Maps" },
@@ -1803,7 +1826,7 @@
     },
     "SettingsStringEnum.fast_warps": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.fps_display": { "obj": "SettingsStringDataType.bool" },
-    "SettingsStringEnum.free_trade_setting": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.free_trade_setting": { "obj": "FreeTradeSetting" },
     "SettingsStringEnum.generate_spoilerlog": {
       "obj": "SettingsStringDataType.bool"
     },
@@ -1934,6 +1957,15 @@
     },
     "SettingsStringEnum.microhints_enabled": { "obj": "MicrohintsEnabled" },
     "SettingsStringEnum.minigames_list_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.custom_minigames_enabled": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.arcade_minigame_pool_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.jetpac_minigame_pool_selected": {
       "obj": "SettingsStringDataType.list"
     },
     "SettingsStringEnum.cb_rando_enabled": {
@@ -2373,6 +2405,12 @@
     },
     "SettingsStringEnum.minigames_list_selected": {
       "obj": "MinigamesListSelected"
+    },
+    "SettingsStringEnum.arcade_minigame_pool_selected": {
+      "obj": "CustomMinigamesSelected"
+    },
+    "SettingsStringEnum.jetpac_minigame_pool_selected": {
+      "obj": "CustomMinigamesSelected"
     },
     "SettingsStringEnum.cb_rando_list_selected": {
       "obj": "Levels"

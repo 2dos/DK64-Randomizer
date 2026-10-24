@@ -437,12 +437,23 @@
             "ignore": true
         },
         "free_trade_setting": {
-            "setting_type": "bool",
+            "setting_type": "choice_single",
             "options": {
-                "easy": 100,
-                "standard": 90,
-                "difficult": 80,
-                "difficult_with_qol_shuffle": 80
+                "easy": {
+                    "all": 100
+                },
+                "standard": {
+                    "none": 10,
+                    "all": 90
+                },
+                "difficult": {
+                    "none": 20,
+                    "all": 80
+                },
+                "difficult_with_qol_shuffle": {
+                    "none": 20,
+                    "all": 80
+                }
             },
             "qol_uses_hard": true
         },

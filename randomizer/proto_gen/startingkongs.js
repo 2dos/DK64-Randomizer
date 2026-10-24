@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.StartingKongs');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 
 goog.forwardDeclare('proto.randomizer.proto.common.KongId');
 /**
@@ -86,7 +88,7 @@ specifiedStartingKong: (f = jspb.Message.getField(msg, 3)) == null ? undefined :
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.StartingKongs}
  */
 proto.randomizer.proto.StartingKongs.deserializeBinary = function(bytes) {

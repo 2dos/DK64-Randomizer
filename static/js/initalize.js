@@ -108,33 +108,42 @@ if (location.hostname != "localhost") {
   document.getElementById("plando_string_section").style.display = "none";
 }
 
+function parse_convert_settings_response(request) {
+  // Return the /convert_settings JSON body, or throw with the server's error message.
+  var body = null;
+  try {
+    body = JSON.parse(request.responseText);
+  } catch (e) {
+    body = null;
+  }
+  if (request.status !== 200 || body === null || body.error) {
+    throw new Error((body && body.error) || "The settings server could not be reached.");
+  }
+  return body;
+}
+
 function decrypt_settings_string_enum(settings_string) {
   // fetch the web endpoint /convert_settings_string using ajax syncronously
-  var response = $.ajax({
+  var request = $.ajax({
     type: "POST",
     url: base_url + "/convert_settings" + "?branch=" + branch,
     data: JSON.stringify({ settings: settings_string }),
     contentType: "application/json",
     async: false,
-  }).responseText;
-  // Convert the json response to a string
-  var settings = JSON.parse(response);
-  return settings;
+  });
+  return parse_convert_settings_response(request);
 }
 
 function encrypt_settings_string_enum(settings) {
   // fetch the web endpoint /convert_settings_string using ajax syncronously
-  var response = $.ajax({
+  var request = $.ajax({
     type: "POST",
     url: base_url + "/convert_settings" + "?branch=" + branch,
     data: JSON.stringify({ settings: JSON.stringify(settings) }),
     contentType: "application/json",
     async: false,
-  }).responseText;
-  // Convert the json response to a string
-  var set = JSON.parse(response);
-  var settings_string = set["settings_string"];
-  return settings_string;
+  });
+  return parse_convert_settings_response(request)["settings_string"];
 }
 
 async function try_to_load_from_args() {
@@ -1415,10 +1424,15 @@ function trigger_preset_event(event) {
     // Define a queue to batch DOM updates
     const updateQueue = [];
 
-    import_settings_string_internal(presets.settings_string);
-    generateToast(
-      `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
-    );
+    import_settings_string_internal(presets.settings_string)
+      .then(() => {
+        generateToast(
+          `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
+        );
+      })
+      .catch((error) => {
+        generateToast(`Could not apply the "${presets.name}" preset: ${error.message}`, true);
+      });
   }
 }
 
@@ -1616,6 +1630,14 @@ function load_settings(json) {
 
       // Boolean values for checkboxes
       if (value === "True" || value === "False") {
+        if (element.tagName === "SELECT") {
+          const legacyValue = element.getAttribute(value === "True" ? "data-legacy-on" : "data-legacy-off");
+          if (legacyValue !== null && element.value !== legacyValue) {
+            element.value = legacyValue;
+            valueChanged = true;
+          }
+          return;
+        }
         if (element.checked !== (value === "True")) {
           element.checked = value === "True";
           valueChanged = true;

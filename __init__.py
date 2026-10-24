@@ -78,12 +78,14 @@ if baseclasses_loaded:
         ShuffleLoadingZones,
         TricksSelected,
         SlamRequirement,
+        SettingsMap,
     )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
     from randomizer.Enums.EnemySubtypes import EnemySubtype
     from randomizer.Lists import Item as DK64RItem
     from randomizer.Lists.Location import ShopLocationReference, SharedShopLocations
+    from randomizer.Lists.Multiselectors import getCustomMinigameName
     from randomizer.Lists.ShufflableExit import ShufflableExits
     from randomizer.Lists.Switches import SwitchInfo
     from randomizer.Lists.EnemyTypes import EnemyLoc, EnemyMetaData
@@ -185,7 +187,8 @@ if baseclasses_loaded:
 
             Download the DK64 tracker pack from https://github.com/UmedMuzl/dk64pt/releases
             and point this setting to the downloaded .zip file to enable map tracking in Universal Tracker.
-            Leave empty to disable map tracking.
+            Needs dk64pt 0.9.0 or newer.
+            The file name must end in a lowercase ".zip".
             """
 
             description = "Universal Tracker Pack Path (Optional)"
@@ -264,7 +267,7 @@ if baseclasses_loaded:
         def shared_item_group() -> str:
             """Item group for Training Moves."""
             res = set()
-            training_items = ["Vines", "Diving", "Oranges", "Barrels", "Climbing", "Cannons", "progression Slam", "Fairy Camera", "Shockwave"]
+            training_items = ["Vines", "Diving", "Oranges", "Barrels", "Climbing", "Cannons", "Progressive Slam", "Fairy Camera", "Shockwave"]
             for item in training_items:
                 if item in full_item_table:
                     res.add(item)
@@ -318,7 +321,7 @@ if baseclasses_loaded:
         def lanky_item_group() -> str:
             """Item group for Lanky Moves."""
             res = set()
-            lanky_items = ["Grape", "Trombone", "Orangstand", "Orangstand Spring", "Baboon Balloon"]
+            lanky_items = ["Grape", "Trombone", "Orangstand", "Orangstand Sprint", "Baboon Balloon"]
             for item in lanky_items:
                 if item in full_item_table:
                     res.add(item)
@@ -336,7 +339,7 @@ if baseclasses_loaded:
         def chunky_item_group() -> str:
             """Item group for Chunky Moves."""
             res = set()
-            chunky_items = ["Pineapple", "Triangle", "Primate Punch", "Hunky Chunky", "Triangle"]
+            chunky_items = ["Pineapple", "Triangle", "Primate Punch", "Hunky Chunky", "Gorilla Gone"]
             for item in chunky_items:
                 if item in full_item_table:
                     res.add(item)
@@ -889,6 +892,15 @@ if baseclasses_loaded:
         def create_items(self) -> None:
             """Create the items."""
             itempool: typing.List[DK64Item] = setup_items(self)
+            if hasattr(self.multiworld, "generation_is_fake"):
+                # Universal Tracker only draws item panel icons for items in the pool. Starting and pre-placed items aren't in it
+                in_pool = {item.name for item in itempool}
+                elsewhere = [item.name for item in self.multiworld.precollected_items[self.player]]
+                elsewhere += [location.item.name for location in self.multiworld.get_locations(self.player) if location.item is not None and location.item.code is not None]
+                for name in dict.fromkeys(elsewhere):
+                    if name in Tracker.ITEM_PANEL_ITEMS and name not in in_pool:
+                        itempool.append(self.create_item(name))
+                        in_pool.add(name)
             self.multiworld.itempool += itempool
 
         def get_filler_item_name(self) -> str:
@@ -1372,7 +1384,16 @@ if baseclasses_loaded:
                     return list(obj)
                 raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
 
-            current_settings = {key: getattr(spoiler.settings, key, value) for key, value in spoiler.settings.form_data.items()}
+            def embedded_value(key, original):
+                current = getattr(spoiler.settings, key, original)
+                expected = SettingsMap.get(key)
+                if expected is not None:
+                    values = current if isinstance(current, (list, tuple, set, frozenset)) else [current]
+                    if any(isinstance(v, enum.Enum) and not isinstance(v, expected) for v in values):
+                        return original
+                return current
+
+            current_settings = {key: embedded_value(key, value) for key, value in spoiler.settings.form_data.items()}
             settings_json = json.dumps(current_settings, default=_settings_default)
 
             # Zip all the data into a single file.
@@ -1490,6 +1511,7 @@ if baseclasses_loaded:
                 "LankyFreeingKong": self.spoiler.settings.lanky_freeing_kong,
                 "HelmOrder": ", ".join([str(room) for room in self.spoiler.settings.helm_order]),
                 "OpenLobbies": self.spoiler.settings.open_lobbies,
+                "FreeTradeCBs": self.spoiler.settings.free_trade_cbs,
                 "KroolInBossPool": self.spoiler.settings.krool_in_boss_pool,
                 "SwitchSanity": (
                     {
@@ -1540,8 +1562,7 @@ if baseclasses_loaded:
                     if "dropsanity" in self.options.item_pool
                     else {}
                 ),
-                "Shopkeepers": self.options.shopowners_in_pool.value,
-                "HalfMedals": self.options.half_medals_in_pool.value,
+                "Shopkeepers": "shopkeepers" in self.options.item_pool,
                 "HalfMedalPercentage": self.spoiler.settings.half_medal_percentage,
                 "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
                 "Autocomplete": self.options.auto_complete_bonus_barrels.value,
@@ -1656,6 +1677,9 @@ if baseclasses_loaded:
                 spoiler_handle.write("Shuffled Bonus Barrels: \n")
                 for loc, minigame in self.spoiler.shuffled_barrel_data.items():
                     spoiler_handle.write(f" - {loc.name}: {minigame.minigame.name}\n")
+            if self.spoiler.settings.custom_minigames_enabled:
+                spoiler_handle.write(f"DK Arcade Minigame: {getCustomMinigameName(self.spoiler.settings.arcade_custom_minigame)}\n")
+                spoiler_handle.write(f"Jetpac Minigame: {getCustomMinigameName(self.spoiler.settings.jetpac_custom_minigame)}\n")
             spoiler_handle.write("Generated Time: " + time.strftime("%d-%m-%Y %H:%M:%S", time.gmtime()) + " GMT")
             spoiler_handle.write("\n")
             spoiler_handle.write("Randomizer Version: " + self.spoiler.settings.version)
@@ -1868,6 +1892,7 @@ if baseclasses_loaded:
 
         def interpret_slot_data(self, slot_data: dict[str, any]) -> dict[str, any]:
             """Parse slot data for any logical bits that need to match the real generation. Used by Universal Tracker."""
+            Tracker.store_item_panel_groups()
             # Parse the string data
             version = slot_data["Version"]
 
@@ -1981,6 +2006,7 @@ if baseclasses_loaded:
             relevant_data["HelmOrder"] = [int(room) for room in helm_order]
             relevant_data["SwitchSanity"] = switchsanity
             relevant_data["OpenLobbies"] = open_lobbies
+            relevant_data["FreeTradeCBs"] = slot_data.get("FreeTradeCBs", False)
             relevant_data["LogicType"] = logic_type
             relevant_data["TricksSelected"] = [TricksSelected[trick] for trick in tricks_selected if trick != ""]
             relevant_data["GlitchesSelected"] = [GlitchesSelected[glitch] for glitch in glitches_selected if glitch != ""]

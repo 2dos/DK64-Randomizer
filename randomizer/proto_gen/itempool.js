@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.ItemPool');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 
 goog.forwardDeclare('proto.randomizer.proto.ItemRandoListSelected');
 /**
@@ -92,7 +94,7 @@ checksList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.ItemPool}
  */
 proto.randomizer.proto.ItemPool.deserializeBinary = function(bytes) {
@@ -117,16 +119,10 @@ proto.randomizer.proto.ItemPool.deserializeBinaryFromReader = function(msg, read
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var values = /** @type {!Array<!proto.randomizer.proto.ItemRandoListSelected>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addItems(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getItemsList());
       break;
     case 2:
-      var values = /** @type {!Array<!proto.randomizer.proto.ItemRandoListSelected>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addChecks(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getChecksList());
       break;
     default:
       reader.skipField();

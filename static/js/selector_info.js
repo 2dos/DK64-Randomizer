@@ -264,6 +264,86 @@ window.SELECTOR_INFO = {
       "value": "DKIsles"
     }
   ],
+  "custom_minigames": [
+    {
+      "check_count": 0,
+      "default": 0,
+      "is_check": false,
+      "is_dummy": false,
+      "item_count": 0,
+      "name": "Vanilla",
+      "num_val": 0,
+      "shift": -1,
+      "tied": "",
+      "tooltip": "The original game for this machine (DK Arcade or Jetpac).",
+      "value": "vanilla"
+    },
+    {
+      "check_count": 0,
+      "default": 0,
+      "is_check": false,
+      "is_dummy": false,
+      "item_count": 0,
+      "name": "2048",
+      "num_val": 0,
+      "shift": -1,
+      "tied": "",
+      "tooltip": "Slide tiles to merge equal numbers. Reach the 512 tile to win (128 in bonus barrels).",
+      "value": "game_2048"
+    },
+    {
+      "check_count": 0,
+      "default": 0,
+      "is_check": false,
+      "is_dummy": false,
+      "item_count": 0,
+      "name": "Hexagon",
+      "num_val": 0,
+      "shift": -1,
+      "tied": "",
+      "tooltip": "Rotate around the center and dodge the closing walls. Survive 45 seconds to win (less in bonus barrels).",
+      "value": "hexagon"
+    },
+    {
+      "check_count": 0,
+      "default": 0,
+      "is_check": false,
+      "is_dummy": false,
+      "item_count": 0,
+      "name": "Minesweeper",
+      "num_val": 0,
+      "shift": -1,
+      "tied": "",
+      "tooltip": "Clear a 9x9 board hiding 10 mines. The first dig is always safe.",
+      "value": "minesweeper"
+    },
+    {
+      "check_count": 0,
+      "default": 0,
+      "is_check": false,
+      "is_dummy": false,
+      "item_count": 0,
+      "name": "Picross",
+      "num_val": 0,
+      "shift": -1,
+      "tied": "",
+      "tooltip": "Solve a random 10x10 nonogram from its clues. Five mistakes and you lose.",
+      "value": "picross"
+    },
+    {
+      "check_count": 0,
+      "default": 0,
+      "is_check": false,
+      "is_dummy": false,
+      "item_count": 0,
+      "name": "Wordle",
+      "num_val": 0,
+      "shift": -1,
+      "tied": "",
+      "tooltip": "Guess the five-letter word for this seed in six tries.",
+      "value": "wordle"
+    }
+  ],
   "custom_starting_moves": [
     {
       "check_count": 0,
@@ -1462,7 +1542,7 @@ window.SELECTOR_INFO = {
       "item_count": 0,
       "name": "Factory Piano Game",
       "num_val": 0,
-      "shift": 0,
+      "shift": -1,
       "tied": "",
       "tooltip": "The piano game in Factory will only require the 3, 5 and 7 long sequences to be recalled.",
       "value": "factory_piano_game"
@@ -3801,8 +3881,8 @@ window.SELECTOR_INFO = {
           "value": "Entrance tunnel - near DK door"
         },
         {
-          "name": "Angry Aztec: Blueprint Room",
-          "value": "Blueprint Room"
+          "name": "Angry Aztec: Quicksand Bridge Room",
+          "value": "Quicksand Bridge Room"
         },
         {
           "name": "Angry Aztec: Near Oasis Sand",
@@ -3967,6 +4047,10 @@ window.SELECTOR_INFO = {
         {
           "name": "Angry Aztec: Tiny 5DT: Dead End",
           "value": "Tiny 5DT: Dead End"
+        },
+        {
+          "name": "Angry Aztec: Tiny 5DT: Right side",
+          "value": "Tiny 5DT: Right side"
         },
         {
           "name": "Angry Aztec: Chunky 5DT: Right side",
@@ -4271,6 +4355,10 @@ window.SELECTOR_INFO = {
           "value": "Upper cave: Near shop"
         },
         {
+          "name": "Creepy Castle: Library: Crossroads",
+          "value": "Library: Crossroads"
+        },
+        {
           "name": "Creepy Castle: Library: Flying Book Room",
           "value": "Library: Flying Book Room"
         },
@@ -4339,6 +4427,10 @@ window.SELECTOR_INFO = {
         {
           "name": "Crystal Caves: Near ice wall to boulder",
           "value": "Near ice wall to boulder"
+        },
+        {
+          "name": "Crystal Caves: Path to Giant boulder",
+          "value": "Path to Giant boulder"
         },
         {
           "name": "Crystal Caves: In Giant Boulder Room",
@@ -4989,8 +5081,8 @@ window.SELECTOR_INFO = {
           "value": "Car Race room"
         },
         {
-          "name": "Frantic Factory: Also car race room",
-          "value": "Also car race room"
+          "name": "Frantic Factory: Car Race Lobby",
+          "value": "Car Race Lobby"
         },
         {
           "name": "Frantic Factory: R&D lever room",
@@ -5065,6 +5157,10 @@ window.SELECTOR_INFO = {
         {
           "name": "Fungi Forest: Near Well",
           "value": "Near Well"
+        },
+        {
+          "name": "Fungi Forest: Clocktower Stumps",
+          "value": "Clocktower Stumps"
         },
         {
           "name": "Fungi Forest: Behind Clock",
@@ -5339,6 +5435,10 @@ window.SELECTOR_INFO = {
           "value": "Giant Mushroom: On Top Viney Platform"
         },
         {
+          "name": "Fungi Forest: Giant Mushroom: Top Floor",
+          "value": "Giant Mushroom: Top Floor"
+        },
+        {
           "name": "Fungi Forest: Mill Attic: Near Box",
           "value": "Mill Attic: Near Box"
         },
@@ -5561,6 +5661,10 @@ window.SELECTOR_INFO = {
         {
           "name": "Hideout Helm: Under K. Rool door",
           "value": "Under K. Rool door"
+        },
+        {
+          "name": "Hideout Helm: Just past K. Rool door",
+          "value": "Just past K. Rool door"
         },
         {
           "name": "Hideout Helm: Navigation room near terminals",
@@ -6052,8 +6156,8 @@ window.SELECTOR_INFO = {
         "value": "AngryAztec;Entrance tunnel - near DK door"
       },
       {
-        "name": "Angry Aztec: Blueprint Room",
-        "value": "AngryAztec;Blueprint Room"
+        "name": "Angry Aztec: Quicksand Bridge Room",
+        "value": "AngryAztec;Quicksand Bridge Room"
       },
       {
         "name": "Angry Aztec: Near Oasis Sand",
@@ -6218,6 +6322,10 @@ window.SELECTOR_INFO = {
       {
         "name": "Angry Aztec: Tiny 5DT: Dead End",
         "value": "AngryAztec;Tiny 5DT: Dead End"
+      },
+      {
+        "name": "Angry Aztec: Tiny 5DT: Right side",
+        "value": "AngryAztec;Tiny 5DT: Right side"
       },
       {
         "name": "Angry Aztec: Chunky 5DT: Right side",
@@ -6428,8 +6536,8 @@ window.SELECTOR_INFO = {
         "value": "FranticFactory;Car Race room"
       },
       {
-        "name": "Frantic Factory: Also car race room",
-        "value": "FranticFactory;Also car race room"
+        "name": "Frantic Factory: Car Race Lobby",
+        "value": "FranticFactory;Car Race Lobby"
       },
       {
         "name": "Frantic Factory: R&D lever room",
@@ -6666,6 +6774,10 @@ window.SELECTOR_INFO = {
       {
         "name": "Fungi Forest: Mill Grass",
         "value": "FungiForest;Mill Grass"
+      },
+      {
+        "name": "Fungi Forest: Clocktower Stumps",
+        "value": "FungiForest;Clocktower Stumps"
       },
       {
         "name": "Fungi Forest: Behind Clock",
@@ -6932,6 +7044,10 @@ window.SELECTOR_INFO = {
         "value": "FungiForest;Giant Mushroom: On Top Viney Platform"
       },
       {
+        "name": "Fungi Forest: Giant Mushroom: Top Floor",
+        "value": "FungiForest;Giant Mushroom: Top Floor"
+      },
+      {
         "name": "Fungi Forest: Mill Attic: Near Box",
         "value": "FungiForest;Mill Attic: Near Box"
       },
@@ -6990,6 +7106,10 @@ window.SELECTOR_INFO = {
       {
         "name": "Crystal Caves: Near ice wall to boulder",
         "value": "CrystalCaves;Near ice wall to boulder"
+      },
+      {
+        "name": "Crystal Caves: Path to Giant boulder",
+        "value": "CrystalCaves;Path to Giant boulder"
       },
       {
         "name": "Crystal Caves: In Giant Boulder Room",
@@ -7428,6 +7548,10 @@ window.SELECTOR_INFO = {
         "value": "CreepyCastle;Upper cave: Near shop"
       },
       {
+        "name": "Creepy Castle: Library: Crossroads",
+        "value": "CreepyCastle;Library: Crossroads"
+      },
+      {
         "name": "Creepy Castle: Library: Enemy Gauntlet Room",
         "value": "CreepyCastle;Library: Enemy Gauntlet Room"
       },
@@ -7454,6 +7578,10 @@ window.SELECTOR_INFO = {
       {
         "name": "Creepy Castle: Museum: Pillar Back Left",
         "value": "CreepyCastle;Museum: Pillar Back Left"
+      },
+      {
+        "name": "Creepy Castle: Museum: Atop the Pillar",
+        "value": "CreepyCastle;Museum: Atop the Pillar"
       },
       {
         "name": "Creepy Castle: Museum: Main Room",
@@ -11172,8 +11300,8 @@ window.SELECTOR_INFO = {
         "value": "AngryAztec;Entrance tunnel - near DK door"
       },
       {
-        "name": "Angry Aztec: Blueprint Room",
-        "value": "AngryAztec;Blueprint Room"
+        "name": "Angry Aztec: Quicksand Bridge Room",
+        "value": "AngryAztec;Quicksand Bridge Room"
       },
       {
         "name": "Angry Aztec: Near Oasis Sand",
@@ -11338,6 +11466,10 @@ window.SELECTOR_INFO = {
       {
         "name": "Angry Aztec: Tiny 5DT: Dead End",
         "value": "AngryAztec;Tiny 5DT: Dead End"
+      },
+      {
+        "name": "Angry Aztec: Tiny 5DT: Right side",
+        "value": "AngryAztec;Tiny 5DT: Right side"
       },
       {
         "name": "Angry Aztec: Chunky 5DT: Right side",
@@ -11540,8 +11672,8 @@ window.SELECTOR_INFO = {
         "value": "FranticFactory;Car Race room"
       },
       {
-        "name": "Frantic Factory: Also car race room",
-        "value": "FranticFactory;Also car race room"
+        "name": "Frantic Factory: Car Race Lobby",
+        "value": "FranticFactory;Car Race Lobby"
       },
       {
         "name": "Frantic Factory: R&D lever room",
@@ -11816,6 +11948,10 @@ window.SELECTOR_INFO = {
         "value": "FungiForest;Near Well"
       },
       {
+        "name": "Fungi Forest: Clocktower Stumps",
+        "value": "FungiForest;Clocktower Stumps"
+      },
+      {
         "name": "Fungi Forest: Behind Clock",
         "value": "FungiForest;Behind Clock"
       },
@@ -12072,6 +12208,10 @@ window.SELECTOR_INFO = {
         "value": "FungiForest;Giant Mushroom: On Top Viney Platform"
       },
       {
+        "name": "Fungi Forest: Giant Mushroom: Top Floor",
+        "value": "FungiForest;Giant Mushroom: Top Floor"
+      },
+      {
         "name": "Fungi Forest: Mill Attic: Near Box",
         "value": "FungiForest;Mill Attic: Near Box"
       },
@@ -12122,6 +12262,10 @@ window.SELECTOR_INFO = {
       {
         "name": "Crystal Caves: Near ice wall to boulder",
         "value": "CrystalCaves;Near ice wall to boulder"
+      },
+      {
+        "name": "Crystal Caves: Path to Giant boulder",
+        "value": "CrystalCaves;Path to Giant boulder"
       },
       {
         "name": "Crystal Caves: In Giant Boulder Room",
@@ -12560,6 +12704,10 @@ window.SELECTOR_INFO = {
         "value": "CreepyCastle;Upper cave: Near shop"
       },
       {
+        "name": "Creepy Castle: Library: Crossroads",
+        "value": "CreepyCastle;Library: Crossroads"
+      },
+      {
         "name": "Creepy Castle: Library: Enemy Gauntlet Room",
         "value": "CreepyCastle;Library: Enemy Gauntlet Room"
       },
@@ -12586,6 +12734,10 @@ window.SELECTOR_INFO = {
       {
         "name": "Creepy Castle: Museum: Pillar Back Left",
         "value": "CreepyCastle;Museum: Pillar Back Left"
+      },
+      {
+        "name": "Creepy Castle: Museum: Atop the Pillar",
+        "value": "CreepyCastle;Museum: Atop the Pillar"
       },
       {
         "name": "Creepy Castle: Museum: Main Room",
@@ -12948,6 +13100,10 @@ window.SELECTOR_INFO = {
         "value": "HideoutHelm;Under K. Rool door"
       },
       {
+        "name": "Hideout Helm: Just past K. Rool door",
+        "value": "HideoutHelm;Just past K. Rool door"
+      },
+      {
         "name": "Hideout Helm: Navigation room near terminals",
         "value": "HideoutHelm;Navigation room near terminals"
       },
@@ -12971,12 +13127,12 @@ window.SELECTOR_INFO = {
     "TnsPortal": {
       "AngryAztec": [
         {
-          "name": "Near Quicksand Tunnel Shop",
-          "value": "AngryAztec;Near Quicksand Tunnel Shop"
+          "name": "Right of Quicksand Tunnel Shop",
+          "value": "AngryAztec;Right of Quicksand Tunnel Shop"
         },
         {
-          "name": "Near Tunnel Shop",
-          "value": "AngryAztec;Near Tunnel Shop"
+          "name": "Left of Tunnel Shop",
+          "value": "AngryAztec;Left of Tunnel Shop"
         },
         {
           "name": "Near Oasis Shop",
@@ -13027,6 +13183,10 @@ window.SELECTOR_INFO = {
           "value": "AngryAztec;5 Door Temple's 6th Door"
         },
         {
+          "name": "Right of Tunnel Shop",
+          "value": "AngryAztec;Right of Tunnel Shop"
+        },
+        {
           "name": "Near Hunky Barrel - left",
           "value": "AngryAztec;Near Hunky Barrel - left"
         },
@@ -13053,6 +13213,18 @@ window.SELECTOR_INFO = {
         {
           "name": "First Tunnel - Near Oasis",
           "value": "AngryAztec;First Tunnel - Near Oasis"
+        },
+        {
+          "name": "Inside Quicksand Bonus Cave",
+          "value": "AngryAztec;Inside Quicksand Bonus Cave"
+        },
+        {
+          "name": "Left of Quicksand Tunnel Shop",
+          "value": "AngryAztec;Left of Quicksand Tunnel Shop"
+        },
+        {
+          "name": "Atop Tiny Temple",
+          "value": "AngryAztec;Atop Tiny Temple"
         },
         {
           "name": "Next to Tiny Temple - front left",
@@ -13247,6 +13419,10 @@ window.SELECTOR_INFO = {
         {
           "name": "Top Shop Battlement - right",
           "value": "CreepyCastle;Top Shop Battlement - right"
+        },
+        {
+          "name": "Outside Lanky Tower",
+          "value": "CreepyCastle;Outside Lanky Tower"
         },
         {
           "name": "Next to Stairs to Drawbridge",
@@ -13637,8 +13813,8 @@ window.SELECTOR_INFO = {
           "value": "FranticFactory;Production Room"
         },
         {
-          "name": "R&D",
-          "value": "FranticFactory;R&D"
+          "name": "R&D across from Piano Game",
+          "value": "FranticFactory;R&D across from Piano Game"
         },
         {
           "name": "Block Tower",
@@ -13665,6 +13841,10 @@ window.SELECTOR_INFO = {
           "value": "FranticFactory;Production Room - Under Conveyors"
         },
         {
+          "name": "Above Storage Spring Pad",
+          "value": "FranticFactory;Above Storage Spring Pad"
+        },
+        {
           "name": "Storage Room - Behind Tag Barrel",
           "value": "FranticFactory;Storage Room - Behind Tag Barrel"
         },
@@ -13679,6 +13859,10 @@ window.SELECTOR_INFO = {
         {
           "name": "Next to Number Game",
           "value": "FranticFactory;Next to Number Game"
+        },
+        {
+          "name": "R&D across from Car Race",
+          "value": "FranticFactory;R&D across from Car Race"
         },
         {
           "name": "R&D - Next to Tunnel to Car Race",
@@ -13717,8 +13901,16 @@ window.SELECTOR_INFO = {
           "value": "FranticFactory;Production Room - Next to Diddy's Switch"
         },
         {
+          "name": "Above Crusher Entrance",
+          "value": "FranticFactory;Above Crusher Entrance"
+        },
+        {
           "name": "Arcade Room - Corner",
           "value": "FranticFactory;Arcade Room - Corner"
+        },
+        {
+          "name": "Under Arcade Shelves",
+          "value": "FranticFactory;Under Arcade Shelves"
         },
         {
           "name": "Testing Area - Next to Mini Barrel",
@@ -13727,6 +13919,10 @@ window.SELECTOR_INFO = {
         {
           "name": "Testing Area - Base of the Block Tower",
           "value": "FranticFactory;Testing Area - Base of the Block Tower"
+        },
+        {
+          "name": "By Foyer Shop",
+          "value": "FranticFactory;By Foyer Shop"
         },
         {
           "name": "Foyer - front left",
@@ -13833,6 +14029,10 @@ window.SELECTOR_INFO = {
         {
           "name": "Mushroom Area - Next to Shop",
           "value": "FungiForest;Mushroom Area - Next to Shop"
+        },
+        {
+          "name": "Behind Clocktower Tree",
+          "value": "FungiForest;Behind Clocktower Tree"
         },
         {
           "name": "Center - Next to Pink Tunnel - left",
@@ -14251,12 +14451,12 @@ window.SELECTOR_INFO = {
           "value": "JungleJapes;Next to the baboon blast pad"
         },
         {
-          "name": "Entrance door switch",
-          "value": "JungleJapes;Entrance door switch"
-        },
-        {
           "name": "Next to level entrance",
           "value": "JungleJapes;Next to level entrance"
+        },
+        {
+          "name": "Slope to Kong Cage",
+          "value": "JungleJapes;Slope to Kong Cage"
         }
       ]
     },
@@ -14284,12 +14484,12 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;Aztec Lobby - Back Room"
           },
           {
-            "name": "Near Quicksand Tunnel Shop",
-            "value": "AngryAztec;Near Quicksand Tunnel Shop"
+            "name": "Right of Quicksand Tunnel Shop",
+            "value": "AngryAztec;Right of Quicksand Tunnel Shop"
           },
           {
-            "name": "Near Tunnel Shop",
-            "value": "AngryAztec;Near Tunnel Shop"
+            "name": "Left of Tunnel Shop",
+            "value": "AngryAztec;Left of Tunnel Shop"
           },
           {
             "name": "Near Oasis Shop",
@@ -14324,6 +14524,10 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;5 Door Temple's 6th Door"
           },
           {
+            "name": "Right of Tunnel Shop",
+            "value": "AngryAztec;Right of Tunnel Shop"
+          },
+          {
             "name": "Near Hunky Barrel - left",
             "value": "AngryAztec;Near Hunky Barrel - left"
           },
@@ -14348,12 +14552,24 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;5 Door Temple Staircase - back"
           },
           {
+            "name": "Across from Vases Room",
+            "value": "AngryAztec;Across from Vases Room"
+          },
+          {
             "name": "First Tunnel - next to DK Door",
             "value": "AngryAztec;First Tunnel - next to DK Door"
           },
           {
             "name": "First Tunnel - Near Oasis",
             "value": "AngryAztec;First Tunnel - Near Oasis"
+          },
+          {
+            "name": "Inside Quicksand Bonus Cave",
+            "value": "AngryAztec;Inside Quicksand Bonus Cave"
+          },
+          {
+            "name": "Left of Quicksand Tunnel Shop",
+            "value": "AngryAztec;Left of Quicksand Tunnel Shop"
           },
           {
             "name": "Next to Tiny Temple - front left",
@@ -14498,12 +14714,12 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;Aztec Lobby - Back Room"
           },
           {
-            "name": "Near Quicksand Tunnel Shop",
-            "value": "AngryAztec;Near Quicksand Tunnel Shop"
+            "name": "Right of Quicksand Tunnel Shop",
+            "value": "AngryAztec;Right of Quicksand Tunnel Shop"
           },
           {
-            "name": "Near Tunnel Shop",
-            "value": "AngryAztec;Near Tunnel Shop"
+            "name": "Left of Tunnel Shop",
+            "value": "AngryAztec;Left of Tunnel Shop"
           },
           {
             "name": "Near Oasis Shop",
@@ -14538,6 +14754,10 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;5 Door Temple's 6th Door"
           },
           {
+            "name": "Right of Tunnel Shop",
+            "value": "AngryAztec;Right of Tunnel Shop"
+          },
+          {
             "name": "Near Hunky Barrel - left",
             "value": "AngryAztec;Near Hunky Barrel - left"
           },
@@ -14562,12 +14782,28 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;5 Door Temple Staircase - back"
           },
           {
+            "name": "Across from Vases Room",
+            "value": "AngryAztec;Across from Vases Room"
+          },
+          {
             "name": "First Tunnel - next to DK Door",
             "value": "AngryAztec;First Tunnel - next to DK Door"
           },
           {
             "name": "First Tunnel - Near Oasis",
             "value": "AngryAztec;First Tunnel - Near Oasis"
+          },
+          {
+            "name": "Inside Quicksand Bonus Cave",
+            "value": "AngryAztec;Inside Quicksand Bonus Cave"
+          },
+          {
+            "name": "Left of Quicksand Tunnel Shop",
+            "value": "AngryAztec;Left of Quicksand Tunnel Shop"
+          },
+          {
+            "name": "Atop Tiny Temple",
+            "value": "AngryAztec;Atop Tiny Temple"
           },
           {
             "name": "Next to Tiny Temple - front left",
@@ -14720,12 +14956,12 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;Aztec Lobby - Back Room"
           },
           {
-            "name": "Near Quicksand Tunnel Shop",
-            "value": "AngryAztec;Near Quicksand Tunnel Shop"
+            "name": "Right of Quicksand Tunnel Shop",
+            "value": "AngryAztec;Right of Quicksand Tunnel Shop"
           },
           {
-            "name": "Near Tunnel Shop",
-            "value": "AngryAztec;Near Tunnel Shop"
+            "name": "Left of Tunnel Shop",
+            "value": "AngryAztec;Left of Tunnel Shop"
           },
           {
             "name": "Near Oasis Shop",
@@ -14760,6 +14996,10 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;5 Door Temple's 6th Door"
           },
           {
+            "name": "Right of Tunnel Shop",
+            "value": "AngryAztec;Right of Tunnel Shop"
+          },
+          {
             "name": "Near Hunky Barrel - left",
             "value": "AngryAztec;Near Hunky Barrel - left"
           },
@@ -14784,6 +15024,10 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;5 Door Temple Staircase - back"
           },
           {
+            "name": "Across from Vases Room",
+            "value": "AngryAztec;Across from Vases Room"
+          },
+          {
             "name": "First Tunnel - next to DK Door",
             "value": "AngryAztec;First Tunnel - next to DK Door"
           },
@@ -14794,6 +15038,14 @@ window.SELECTOR_INFO = {
           {
             "name": "In the sealed quicksand tunnel",
             "value": "AngryAztec;In the sealed quicksand tunnel"
+          },
+          {
+            "name": "Inside Quicksand Bonus Cave",
+            "value": "AngryAztec;Inside Quicksand Bonus Cave"
+          },
+          {
+            "name": "Left of Quicksand Tunnel Shop",
+            "value": "AngryAztec;Left of Quicksand Tunnel Shop"
           },
           {
             "name": "Far Back Triple Stairs Quicksand",
@@ -14902,12 +15154,12 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;Aztec Lobby - Back Room"
           },
           {
-            "name": "Near Quicksand Tunnel Shop",
-            "value": "AngryAztec;Near Quicksand Tunnel Shop"
+            "name": "Right of Quicksand Tunnel Shop",
+            "value": "AngryAztec;Right of Quicksand Tunnel Shop"
           },
           {
-            "name": "Near Tunnel Shop",
-            "value": "AngryAztec;Near Tunnel Shop"
+            "name": "Left of Tunnel Shop",
+            "value": "AngryAztec;Left of Tunnel Shop"
           },
           {
             "name": "Near Oasis Shop",
@@ -14942,6 +15194,10 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;5 Door Temple's 6th Door"
           },
           {
+            "name": "Right of Tunnel Shop",
+            "value": "AngryAztec;Right of Tunnel Shop"
+          },
+          {
             "name": "Near Hunky Barrel - left",
             "value": "AngryAztec;Near Hunky Barrel - left"
           },
@@ -14966,12 +15222,24 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;5 Door Temple Staircase - back"
           },
           {
+            "name": "Across from Vases Room",
+            "value": "AngryAztec;Across from Vases Room"
+          },
+          {
             "name": "First Tunnel - next to DK Door",
             "value": "AngryAztec;First Tunnel - next to DK Door"
           },
           {
             "name": "First Tunnel - Near Oasis",
             "value": "AngryAztec;First Tunnel - Near Oasis"
+          },
+          {
+            "name": "Inside Quicksand Bonus Cave",
+            "value": "AngryAztec;Inside Quicksand Bonus Cave"
+          },
+          {
+            "name": "Left of Quicksand Tunnel Shop",
+            "value": "AngryAztec;Left of Quicksand Tunnel Shop"
           },
           {
             "name": "Llama Temple Matching Room - right",
@@ -15124,12 +15392,12 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;Aztec Lobby - Back Room"
           },
           {
-            "name": "Near Quicksand Tunnel Shop",
-            "value": "AngryAztec;Near Quicksand Tunnel Shop"
+            "name": "Right of Quicksand Tunnel Shop",
+            "value": "AngryAztec;Right of Quicksand Tunnel Shop"
           },
           {
-            "name": "Near Tunnel Shop",
-            "value": "AngryAztec;Near Tunnel Shop"
+            "name": "Left of Tunnel Shop",
+            "value": "AngryAztec;Left of Tunnel Shop"
           },
           {
             "name": "Near Oasis Shop",
@@ -15164,6 +15432,10 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;5 Door Temple's 6th Door"
           },
           {
+            "name": "Right of Tunnel Shop",
+            "value": "AngryAztec;Right of Tunnel Shop"
+          },
+          {
             "name": "Near Hunky Barrel - left",
             "value": "AngryAztec;Near Hunky Barrel - left"
           },
@@ -15188,12 +15460,24 @@ window.SELECTOR_INFO = {
             "value": "AngryAztec;5 Door Temple Staircase - back"
           },
           {
+            "name": "Across from Vases Room",
+            "value": "AngryAztec;Across from Vases Room"
+          },
+          {
             "name": "First Tunnel - next to DK Door",
             "value": "AngryAztec;First Tunnel - next to DK Door"
           },
           {
             "name": "First Tunnel - Near Oasis",
             "value": "AngryAztec;First Tunnel - Near Oasis"
+          },
+          {
+            "name": "Inside Quicksand Bonus Cave",
+            "value": "AngryAztec;Inside Quicksand Bonus Cave"
+          },
+          {
+            "name": "Left of Quicksand Tunnel Shop",
+            "value": "AngryAztec;Left of Quicksand Tunnel Shop"
           },
           {
             "name": "Next to Tiny Temple - front left",
@@ -15384,6 +15668,10 @@ window.SELECTOR_INFO = {
             "value": "CreepyCastle;Outside Lanky's Greenhouse"
           },
           {
+            "name": "warp Hub Battlement",
+            "value": "CreepyCastle;warp Hub Battlement"
+          },
+          {
             "name": "On Stairs to Moat Tag Barrel",
             "value": "CreepyCastle;On Stairs to Moat Tag Barrel"
           },
@@ -15402,6 +15690,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Top Shop Battlement - right",
             "value": "CreepyCastle;Top Shop Battlement - right"
+          },
+          {
+            "name": "Outside Lanky Tower",
+            "value": "CreepyCastle;Outside Lanky Tower"
           },
           {
             "name": "Next to Stairs to Drawbridge",
@@ -15540,6 +15832,10 @@ window.SELECTOR_INFO = {
             "value": "CreepyCastle;Next to the chasm"
           },
           {
+            "name": "Lowest Level Tombstone",
+            "value": "CreepyCastle;Lowest Level Tombstone"
+          },
+          {
             "name": "Tombstone near lower door",
             "value": "CreepyCastle;Tombstone near lower door"
           },
@@ -15606,6 +15902,10 @@ window.SELECTOR_INFO = {
             "value": "CreepyCastle;Outside Lanky's Greenhouse"
           },
           {
+            "name": "warp Hub Battlement",
+            "value": "CreepyCastle;warp Hub Battlement"
+          },
+          {
             "name": "On Stairs to Moat Tag Barrel",
             "value": "CreepyCastle;On Stairs to Moat Tag Barrel"
           },
@@ -15624,6 +15924,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Top Shop Battlement - right",
             "value": "CreepyCastle;Top Shop Battlement - right"
+          },
+          {
+            "name": "Outside Lanky Tower",
+            "value": "CreepyCastle;Outside Lanky Tower"
           },
           {
             "name": "Next to Stairs to Drawbridge",
@@ -15746,6 +16050,10 @@ window.SELECTOR_INFO = {
             "value": "CreepyCastle;Next to the chasm"
           },
           {
+            "name": "Lowest Level Tombstone",
+            "value": "CreepyCastle;Lowest Level Tombstone"
+          },
+          {
             "name": "Tombstone near lower door",
             "value": "CreepyCastle;Tombstone near lower door"
           },
@@ -15812,6 +16120,10 @@ window.SELECTOR_INFO = {
             "value": "CreepyCastle;Outside Lanky's Greenhouse"
           },
           {
+            "name": "warp Hub Battlement",
+            "value": "CreepyCastle;warp Hub Battlement"
+          },
+          {
             "name": "On Stairs to Moat Tag Barrel",
             "value": "CreepyCastle;On Stairs to Moat Tag Barrel"
           },
@@ -15830,6 +16142,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Top Shop Battlement - right",
             "value": "CreepyCastle;Top Shop Battlement - right"
+          },
+          {
+            "name": "Outside Lanky Tower",
+            "value": "CreepyCastle;Outside Lanky Tower"
           },
           {
             "name": "Next to Stairs to Drawbridge",
@@ -15972,6 +16288,10 @@ window.SELECTOR_INFO = {
             "value": "CreepyCastle;Next to the chasm"
           },
           {
+            "name": "Lowest Level Tombstone",
+            "value": "CreepyCastle;Lowest Level Tombstone"
+          },
+          {
             "name": "Tombstone near lower door",
             "value": "CreepyCastle;Tombstone near lower door"
           },
@@ -16038,6 +16358,10 @@ window.SELECTOR_INFO = {
             "value": "CreepyCastle;Outside Lanky's Greenhouse"
           },
           {
+            "name": "warp Hub Battlement",
+            "value": "CreepyCastle;warp Hub Battlement"
+          },
+          {
             "name": "On Stairs to Moat Tag Barrel",
             "value": "CreepyCastle;On Stairs to Moat Tag Barrel"
           },
@@ -16056,6 +16380,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Top Shop Battlement - right",
             "value": "CreepyCastle;Top Shop Battlement - right"
+          },
+          {
+            "name": "Outside Lanky Tower",
+            "value": "CreepyCastle;Outside Lanky Tower"
           },
           {
             "name": "Next to Stairs to Drawbridge",
@@ -16186,6 +16514,10 @@ window.SELECTOR_INFO = {
             "value": "CreepyCastle;Next to the chasm"
           },
           {
+            "name": "Lowest Level Tombstone",
+            "value": "CreepyCastle;Lowest Level Tombstone"
+          },
+          {
             "name": "Tombstone near lower door",
             "value": "CreepyCastle;Tombstone near lower door"
           },
@@ -16252,6 +16584,10 @@ window.SELECTOR_INFO = {
             "value": "CreepyCastle;Outside Lanky's Greenhouse"
           },
           {
+            "name": "warp Hub Battlement",
+            "value": "CreepyCastle;warp Hub Battlement"
+          },
+          {
             "name": "On Stairs to Moat Tag Barrel",
             "value": "CreepyCastle;On Stairs to Moat Tag Barrel"
           },
@@ -16270,6 +16606,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Top Shop Battlement - right",
             "value": "CreepyCastle;Top Shop Battlement - right"
+          },
+          {
+            "name": "Outside Lanky Tower",
+            "value": "CreepyCastle;Outside Lanky Tower"
           },
           {
             "name": "Next to Stairs to Drawbridge",
@@ -16400,6 +16740,10 @@ window.SELECTOR_INFO = {
             "value": "CreepyCastle;Next to the chasm"
           },
           {
+            "name": "Lowest Level Tombstone",
+            "value": "CreepyCastle;Lowest Level Tombstone"
+          },
+          {
             "name": "Tombstone near lower door",
             "value": "CreepyCastle;Tombstone near lower door"
           },
@@ -16464,6 +16808,10 @@ window.SELECTOR_INFO = {
             "value": "CrystalCaves;Cabins Useless Ledge"
           },
           {
+            "name": "Beneath Igloo triangle pad",
+            "value": "CrystalCaves;Beneath Igloo triangle pad"
+          },
+          {
             "name": "Near the small Boulder Switch",
             "value": "CrystalCaves;Near the small Boulder Switch"
           },
@@ -16502,6 +16850,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Left of Mini Bonus Cave",
             "value": "CrystalCaves;Left of Mini Bonus Cave"
+          },
+          {
+            "name": "Mini Bonus Cave",
+            "value": "CrystalCaves;Mini Bonus Cave"
           },
           {
             "name": "Level Entrance - right",
@@ -16702,6 +17054,10 @@ window.SELECTOR_INFO = {
             "value": "CrystalCaves;Cabins Useless Ledge"
           },
           {
+            "name": "Beneath Igloo triangle pad",
+            "value": "CrystalCaves;Beneath Igloo triangle pad"
+          },
+          {
             "name": "Near the small Boulder Switch",
             "value": "CrystalCaves;Near the small Boulder Switch"
           },
@@ -16740,6 +17096,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Left of Mini Bonus Cave",
             "value": "CrystalCaves;Left of Mini Bonus Cave"
+          },
+          {
+            "name": "Mini Bonus Cave",
+            "value": "CrystalCaves;Mini Bonus Cave"
           },
           {
             "name": "Level Entrance - right",
@@ -16924,6 +17284,10 @@ window.SELECTOR_INFO = {
             "value": "CrystalCaves;Cabins Useless Ledge"
           },
           {
+            "name": "Beneath Igloo triangle pad",
+            "value": "CrystalCaves;Beneath Igloo triangle pad"
+          },
+          {
             "name": "Near the small Boulder Switch",
             "value": "CrystalCaves;Near the small Boulder Switch"
           },
@@ -16962,6 +17326,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Left of Mini Bonus Cave",
             "value": "CrystalCaves;Left of Mini Bonus Cave"
+          },
+          {
+            "name": "Mini Bonus Cave",
+            "value": "CrystalCaves;Mini Bonus Cave"
           },
           {
             "name": "Level Entrance - right",
@@ -17150,6 +17518,10 @@ window.SELECTOR_INFO = {
             "value": "CrystalCaves;Cabins Useless Ledge"
           },
           {
+            "name": "Beneath Igloo triangle pad",
+            "value": "CrystalCaves;Beneath Igloo triangle pad"
+          },
+          {
             "name": "Near the small Boulder Switch",
             "value": "CrystalCaves;Near the small Boulder Switch"
           },
@@ -17188,6 +17560,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Left of Mini Bonus Cave",
             "value": "CrystalCaves;Left of Mini Bonus Cave"
+          },
+          {
+            "name": "Mini Bonus Cave",
+            "value": "CrystalCaves;Mini Bonus Cave"
           },
           {
             "name": "Level Entrance - right",
@@ -17380,6 +17756,10 @@ window.SELECTOR_INFO = {
             "value": "CrystalCaves;Cabins Useless Ledge"
           },
           {
+            "name": "Beneath Igloo triangle pad",
+            "value": "CrystalCaves;Beneath Igloo triangle pad"
+          },
+          {
             "name": "Near the small Boulder Switch",
             "value": "CrystalCaves;Near the small Boulder Switch"
           },
@@ -17418,6 +17798,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Left of Mini Bonus Cave",
             "value": "CrystalCaves;Left of Mini Bonus Cave"
+          },
+          {
+            "name": "Mini Bonus Cave",
+            "value": "CrystalCaves;Mini Bonus Cave"
           },
           {
             "name": "Level Entrance - right",
@@ -17580,8 +17964,8 @@ window.SELECTOR_INFO = {
             "value": "FranticFactory;Production Room"
           },
           {
-            "name": "R&D",
-            "value": "FranticFactory;R&D"
+            "name": "R&D across from Piano Game",
+            "value": "FranticFactory;R&D across from Piano Game"
           },
           {
             "name": "Block Tower",
@@ -17628,6 +18012,10 @@ window.SELECTOR_INFO = {
             "value": "FranticFactory;Next to Number Game"
           },
           {
+            "name": "R&D across from Car Race",
+            "value": "FranticFactory;R&D across from Car Race"
+          },
+          {
             "name": "R&D - Next to Tunnel to Car Race",
             "value": "FranticFactory;R&D - Next to Tunnel to Car Race"
           },
@@ -17672,8 +18060,16 @@ window.SELECTOR_INFO = {
             "value": "FranticFactory;Production Room - Next to Diddy's Switch"
           },
           {
+            "name": "Above Crusher Entrance",
+            "value": "FranticFactory;Above Crusher Entrance"
+          },
+          {
             "name": "Arcade Room - Corner",
             "value": "FranticFactory;Arcade Room - Corner"
+          },
+          {
+            "name": "Under Arcade Shelves",
+            "value": "FranticFactory;Under Arcade Shelves"
           },
           {
             "name": "Testing Area - Next to Mini Barrel",
@@ -17682,6 +18078,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Testing Area - Base of the Block Tower",
             "value": "FranticFactory;Testing Area - Base of the Block Tower"
+          },
+          {
+            "name": "By Foyer Shop",
+            "value": "FranticFactory;By Foyer Shop"
           },
           {
             "name": "Foyer - Under Clock",
@@ -17738,8 +18138,8 @@ window.SELECTOR_INFO = {
             "value": "FranticFactory;Production Room"
           },
           {
-            "name": "R&D",
-            "value": "FranticFactory;R&D"
+            "name": "R&D across from Piano Game",
+            "value": "FranticFactory;R&D across from Piano Game"
           },
           {
             "name": "Block Tower",
@@ -17766,6 +18166,10 @@ window.SELECTOR_INFO = {
             "value": "FranticFactory;Production Room - Under Conveyors"
           },
           {
+            "name": "Above Storage Spring Pad",
+            "value": "FranticFactory;Above Storage Spring Pad"
+          },
+          {
             "name": "Storage Room - Behind Tag Barrel",
             "value": "FranticFactory;Storage Room - Behind Tag Barrel"
           },
@@ -17780,6 +18184,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Next to Number Game",
             "value": "FranticFactory;Next to Number Game"
+          },
+          {
+            "name": "R&D across from Car Race",
+            "value": "FranticFactory;R&D across from Car Race"
           },
           {
             "name": "R&D - Next to Tunnel to Car Race",
@@ -17826,8 +18234,16 @@ window.SELECTOR_INFO = {
             "value": "FranticFactory;Production Room - Next to Diddy's Switch"
           },
           {
+            "name": "Above Crusher Entrance",
+            "value": "FranticFactory;Above Crusher Entrance"
+          },
+          {
             "name": "Arcade Room - Corner",
             "value": "FranticFactory;Arcade Room - Corner"
+          },
+          {
+            "name": "Under Arcade Shelves",
+            "value": "FranticFactory;Under Arcade Shelves"
           },
           {
             "name": "Testing Area - Next to Mini Barrel",
@@ -17836,6 +18252,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Testing Area - Base of the Block Tower",
             "value": "FranticFactory;Testing Area - Base of the Block Tower"
+          },
+          {
+            "name": "By Foyer Shop",
+            "value": "FranticFactory;By Foyer Shop"
           },
           {
             "name": "Foyer - Under Clock",
@@ -17892,8 +18312,8 @@ window.SELECTOR_INFO = {
             "value": "FranticFactory;Production Room"
           },
           {
-            "name": "R&D",
-            "value": "FranticFactory;R&D"
+            "name": "R&D across from Piano Game",
+            "value": "FranticFactory;R&D across from Piano Game"
           },
           {
             "name": "Block Tower",
@@ -17934,6 +18354,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Next to Number Game",
             "value": "FranticFactory;Next to Number Game"
+          },
+          {
+            "name": "R&D across from Car Race",
+            "value": "FranticFactory;R&D across from Car Race"
           },
           {
             "name": "R&D - Next to Tunnel to Car Race",
@@ -17980,8 +18404,16 @@ window.SELECTOR_INFO = {
             "value": "FranticFactory;Production Room - Next to Diddy's Switch"
           },
           {
+            "name": "Above Crusher Entrance",
+            "value": "FranticFactory;Above Crusher Entrance"
+          },
+          {
             "name": "Arcade Room - Corner",
             "value": "FranticFactory;Arcade Room - Corner"
+          },
+          {
+            "name": "Under Arcade Shelves",
+            "value": "FranticFactory;Under Arcade Shelves"
           },
           {
             "name": "Testing Area - Next to Mini Barrel",
@@ -17990,6 +18422,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Testing Area - Base of the Block Tower",
             "value": "FranticFactory;Testing Area - Base of the Block Tower"
+          },
+          {
+            "name": "By Foyer Shop",
+            "value": "FranticFactory;By Foyer Shop"
           },
           {
             "name": "Foyer - Under Clock",
@@ -18046,8 +18482,8 @@ window.SELECTOR_INFO = {
             "value": "FranticFactory;Production Room"
           },
           {
-            "name": "R&D",
-            "value": "FranticFactory;R&D"
+            "name": "R&D across from Piano Game",
+            "value": "FranticFactory;R&D across from Piano Game"
           },
           {
             "name": "Block Tower",
@@ -18088,6 +18524,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Next to Number Game",
             "value": "FranticFactory;Next to Number Game"
+          },
+          {
+            "name": "R&D across from Car Race",
+            "value": "FranticFactory;R&D across from Car Race"
           },
           {
             "name": "R&D - Next to Tunnel to Car Race",
@@ -18134,8 +18574,16 @@ window.SELECTOR_INFO = {
             "value": "FranticFactory;Production Room - Next to Diddy's Switch"
           },
           {
+            "name": "Above Crusher Entrance",
+            "value": "FranticFactory;Above Crusher Entrance"
+          },
+          {
             "name": "Arcade Room - Corner",
             "value": "FranticFactory;Arcade Room - Corner"
+          },
+          {
+            "name": "Under Arcade Shelves",
+            "value": "FranticFactory;Under Arcade Shelves"
           },
           {
             "name": "Testing Area - Next to Mini Barrel",
@@ -18144,6 +18592,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Testing Area - Base of the Block Tower",
             "value": "FranticFactory;Testing Area - Base of the Block Tower"
+          },
+          {
+            "name": "By Foyer Shop",
+            "value": "FranticFactory;By Foyer Shop"
           },
           {
             "name": "Foyer - Under Clock",
@@ -18208,8 +18660,8 @@ window.SELECTOR_INFO = {
             "value": "FranticFactory;Production Room"
           },
           {
-            "name": "R&D",
-            "value": "FranticFactory;R&D"
+            "name": "R&D across from Piano Game",
+            "value": "FranticFactory;R&D across from Piano Game"
           },
           {
             "name": "Block Tower",
@@ -18250,6 +18702,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Next to Number Game",
             "value": "FranticFactory;Next to Number Game"
+          },
+          {
+            "name": "R&D across from Car Race",
+            "value": "FranticFactory;R&D across from Car Race"
           },
           {
             "name": "R&D - Next to Tunnel to Car Race",
@@ -18304,8 +18760,16 @@ window.SELECTOR_INFO = {
             "value": "FranticFactory;Production Room - Next to Diddy's Switch"
           },
           {
+            "name": "Above Crusher Entrance",
+            "value": "FranticFactory;Above Crusher Entrance"
+          },
+          {
             "name": "Arcade Room - Corner",
             "value": "FranticFactory;Arcade Room - Corner"
+          },
+          {
+            "name": "Under Arcade Shelves",
+            "value": "FranticFactory;Under Arcade Shelves"
           },
           {
             "name": "Testing Area - Next to Mini Barrel",
@@ -18314,6 +18778,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Testing Area - Base of the Block Tower",
             "value": "FranticFactory;Testing Area - Base of the Block Tower"
+          },
+          {
+            "name": "By Foyer Shop",
+            "value": "FranticFactory;By Foyer Shop"
           },
           {
             "name": "Foyer - Under Clock",
@@ -18396,6 +18864,10 @@ window.SELECTOR_INFO = {
             "value": "FungiForest;Mill right side - right"
           },
           {
+            "name": "Mill Roof - Sloped",
+            "value": "FungiForest;Mill Roof - Sloped"
+          },
+          {
             "name": "Mill Roof - tower",
             "value": "FungiForest;Mill Roof - tower"
           },
@@ -18422,6 +18894,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Owl Area - Near Rocketbarrel Barrel - far left",
             "value": "FungiForest;Owl Area - Near Rocketbarrel Barrel - far left"
+          },
+          {
+            "name": "Beanstalk Area - Left of Shop",
+            "value": "FungiForest;Beanstalk Area - Left of Shop"
           },
           {
             "name": "Beanstalk Area - Behind Beanstalk right",
@@ -18520,8 +18996,8 @@ window.SELECTOR_INFO = {
             "value": "FungiForest;Giant mushroom - Top towards tag barrel"
           },
           {
-            "name": "Night door in the owl tree",
-            "value": "FungiForest;Night door in the owl tree"
+            "name": "Top of Giant Mushroom Exterior Exit",
+            "value": "FungiForest;Top of Giant Mushroom Exterior Exit"
           },
           {
             "name": "Lanky's colored mushrooms room",
@@ -18590,6 +19066,10 @@ window.SELECTOR_INFO = {
             "value": "FungiForest;Mill right side - right"
           },
           {
+            "name": "Mill Roof - Sloped",
+            "value": "FungiForest;Mill Roof - Sloped"
+          },
+          {
             "name": "Mill Roof - tower",
             "value": "FungiForest;Mill Roof - tower"
           },
@@ -18618,6 +19098,10 @@ window.SELECTOR_INFO = {
             "value": "FungiForest;Owl Area - Near Rocketbarrel Barrel - far left"
           },
           {
+            "name": "Beanstalk Area - Left of Shop",
+            "value": "FungiForest;Beanstalk Area - Left of Shop"
+          },
+          {
             "name": "Beanstalk Area - Behind Beanstalk right",
             "value": "FungiForest;Beanstalk Area - Behind Beanstalk right"
           },
@@ -18636,6 +19120,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Mushroom Area - Next to Shop",
             "value": "FungiForest;Mushroom Area - Next to Shop"
+          },
+          {
+            "name": "Behind Clocktower Tree",
+            "value": "FungiForest;Behind Clocktower Tree"
           },
           {
             "name": "Center - Next to Pink Tunnel - left",
@@ -18710,6 +19198,10 @@ window.SELECTOR_INFO = {
             "value": "FungiForest;Giant mushroom - Top towards tag barrel"
           },
           {
+            "name": "Top of Giant Mushroom Exterior Exit",
+            "value": "FungiForest;Top of Giant Mushroom Exterior Exit"
+          },
+          {
             "name": "Night door in the owl tree",
             "value": "FungiForest;Night door in the owl tree"
           },
@@ -18780,6 +19272,10 @@ window.SELECTOR_INFO = {
             "value": "FungiForest;Mill right side - right"
           },
           {
+            "name": "Mill Roof - Sloped",
+            "value": "FungiForest;Mill Roof - Sloped"
+          },
+          {
             "name": "Mill Roof - tower",
             "value": "FungiForest;Mill Roof - tower"
           },
@@ -18806,6 +19302,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Owl Area - Near Rocketbarrel Barrel - far left",
             "value": "FungiForest;Owl Area - Near Rocketbarrel Barrel - far left"
+          },
+          {
+            "name": "Beanstalk Area - Left of Shop",
+            "value": "FungiForest;Beanstalk Area - Left of Shop"
           },
           {
             "name": "Beanstalk Area - Behind Beanstalk right",
@@ -18904,8 +19404,8 @@ window.SELECTOR_INFO = {
             "value": "FungiForest;Giant mushroom - Top towards tag barrel"
           },
           {
-            "name": "Night door in the owl tree",
-            "value": "FungiForest;Night door in the owl tree"
+            "name": "Top of Giant Mushroom Exterior Exit",
+            "value": "FungiForest;Top of Giant Mushroom Exterior Exit"
           },
           {
             "name": "Lanky's colored mushrooms room",
@@ -18974,6 +19474,10 @@ window.SELECTOR_INFO = {
             "value": "FungiForest;Mill right side - right"
           },
           {
+            "name": "Mill Roof - Sloped",
+            "value": "FungiForest;Mill Roof - Sloped"
+          },
+          {
             "name": "Mill Roof - tower",
             "value": "FungiForest;Mill Roof - tower"
           },
@@ -19002,6 +19506,10 @@ window.SELECTOR_INFO = {
             "value": "FungiForest;Owl Area - Near Rocketbarrel Barrel - far left"
           },
           {
+            "name": "Beanstalk Area - Left of Shop",
+            "value": "FungiForest;Beanstalk Area - Left of Shop"
+          },
+          {
             "name": "Beanstalk Area - Behind Beanstalk right",
             "value": "FungiForest;Beanstalk Area - Behind Beanstalk right"
           },
@@ -19020,6 +19528,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Mushroom Area - Next to Shop",
             "value": "FungiForest;Mushroom Area - Next to Shop"
+          },
+          {
+            "name": "Behind Clocktower Tree",
+            "value": "FungiForest;Behind Clocktower Tree"
           },
           {
             "name": "Center - Next to Pink Tunnel - left",
@@ -19094,8 +19606,8 @@ window.SELECTOR_INFO = {
             "value": "FungiForest;Giant mushroom - Top towards tag barrel"
           },
           {
-            "name": "Night door in the owl tree",
-            "value": "FungiForest;Night door in the owl tree"
+            "name": "Top of Giant Mushroom Exterior Exit",
+            "value": "FungiForest;Top of Giant Mushroom Exterior Exit"
           },
           {
             "name": "Lanky's colored mushrooms room",
@@ -19164,6 +19676,10 @@ window.SELECTOR_INFO = {
             "value": "FungiForest;Mill right side - right"
           },
           {
+            "name": "Mill Roof - Sloped",
+            "value": "FungiForest;Mill Roof - Sloped"
+          },
+          {
             "name": "Mill Roof - tower",
             "value": "FungiForest;Mill Roof - tower"
           },
@@ -19190,6 +19706,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Owl Area - Near Rocketbarrel Barrel - far left",
             "value": "FungiForest;Owl Area - Near Rocketbarrel Barrel - far left"
+          },
+          {
+            "name": "Beanstalk Area - Left of Shop",
+            "value": "FungiForest;Beanstalk Area - Left of Shop"
           },
           {
             "name": "Beanstalk Area - Behind Beanstalk right",
@@ -19284,8 +19804,8 @@ window.SELECTOR_INFO = {
             "value": "FungiForest;Giant mushroom - Top towards tag barrel"
           },
           {
-            "name": "Night door in the owl tree",
-            "value": "FungiForest;Night door in the owl tree"
+            "name": "Top of Giant Mushroom Exterior Exit",
+            "value": "FungiForest;Top of Giant Mushroom Exterior Exit"
           },
           {
             "name": "Lanky's colored mushrooms room",
@@ -19352,6 +19872,10 @@ window.SELECTOR_INFO = {
             "value": "GloomyGalleon;Tunnel to Punch Chests"
           },
           {
+            "name": "Edge of Blast pad",
+            "value": "GloomyGalleon;Edge of Blast pad"
+          },
+          {
             "name": "Under Baboon Blast pad",
             "value": "GloomyGalleon;Under Baboon Blast pad"
           },
@@ -19376,6 +19900,10 @@ window.SELECTOR_INFO = {
             "value": "GloomyGalleon;Next to Shipyard Gate switch"
           },
           {
+            "name": "Above the water next to the floating warp 5",
+            "value": "GloomyGalleon;Above the water next to the floating warp 5"
+          },
+          {
             "name": "Cactus - bottom back left",
             "value": "GloomyGalleon;Cactus - bottom back left"
           },
@@ -19390,6 +19918,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Cactus - bottom front right",
             "value": "GloomyGalleon;Cactus - bottom front right"
+          },
+          {
+            "name": "Diddy Gold Tower",
+            "value": "GloomyGalleon;Diddy Gold Tower"
           },
           {
             "name": "Treasure Chest Exterior",
@@ -19542,6 +20074,10 @@ window.SELECTOR_INFO = {
             "value": "GloomyGalleon;Tunnel to Punch Chests"
           },
           {
+            "name": "Edge of Blast pad",
+            "value": "GloomyGalleon;Edge of Blast pad"
+          },
+          {
             "name": "Under Baboon Blast pad",
             "value": "GloomyGalleon;Under Baboon Blast pad"
           },
@@ -19566,6 +20102,10 @@ window.SELECTOR_INFO = {
             "value": "GloomyGalleon;Next to Shipyard Gate switch"
           },
           {
+            "name": "Above the water next to the floating warp 5",
+            "value": "GloomyGalleon;Above the water next to the floating warp 5"
+          },
+          {
             "name": "Cactus - bottom back left",
             "value": "GloomyGalleon;Cactus - bottom back left"
           },
@@ -19584,6 +20124,10 @@ window.SELECTOR_INFO = {
           {
             "name": "On top of Seal cage",
             "value": "GloomyGalleon;On top of Seal cage"
+          },
+          {
+            "name": "Diddy Gold Tower",
+            "value": "GloomyGalleon;Diddy Gold Tower"
           },
           {
             "name": "Treasure Chest Exterior",
@@ -19720,6 +20264,10 @@ window.SELECTOR_INFO = {
             "value": "GloomyGalleon;Tunnel to Punch Chests"
           },
           {
+            "name": "Edge of Blast pad",
+            "value": "GloomyGalleon;Edge of Blast pad"
+          },
+          {
             "name": "Under Baboon Blast pad",
             "value": "GloomyGalleon;Under Baboon Blast pad"
           },
@@ -19744,6 +20292,10 @@ window.SELECTOR_INFO = {
             "value": "GloomyGalleon;Next to Shipyard Gate switch"
           },
           {
+            "name": "Above the water next to the floating warp 5",
+            "value": "GloomyGalleon;Above the water next to the floating warp 5"
+          },
+          {
             "name": "Cactus - bottom back left",
             "value": "GloomyGalleon;Cactus - bottom back left"
           },
@@ -19758,6 +20310,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Cactus - bottom front right",
             "value": "GloomyGalleon;Cactus - bottom front right"
+          },
+          {
+            "name": "Diddy Gold Tower",
+            "value": "GloomyGalleon;Diddy Gold Tower"
           },
           {
             "name": "Treasure Chest Exterior",
@@ -19898,6 +20454,10 @@ window.SELECTOR_INFO = {
             "value": "GloomyGalleon;Tunnel to Punch Chests"
           },
           {
+            "name": "Edge of Blast pad",
+            "value": "GloomyGalleon;Edge of Blast pad"
+          },
+          {
             "name": "Under Baboon Blast pad",
             "value": "GloomyGalleon;Under Baboon Blast pad"
           },
@@ -19922,6 +20482,10 @@ window.SELECTOR_INFO = {
             "value": "GloomyGalleon;Next to Shipyard Gate switch"
           },
           {
+            "name": "Above the water next to the floating warp 5",
+            "value": "GloomyGalleon;Above the water next to the floating warp 5"
+          },
+          {
             "name": "Cactus - bottom back left",
             "value": "GloomyGalleon;Cactus - bottom back left"
           },
@@ -19936,6 +20500,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Cactus - bottom front right",
             "value": "GloomyGalleon;Cactus - bottom front right"
+          },
+          {
+            "name": "Diddy Gold Tower",
+            "value": "GloomyGalleon;Diddy Gold Tower"
           },
           {
             "name": "Treasure Chest Exterior",
@@ -20068,6 +20636,10 @@ window.SELECTOR_INFO = {
             "value": "GloomyGalleon;Tunnel to Punch Chests"
           },
           {
+            "name": "Edge of Blast pad",
+            "value": "GloomyGalleon;Edge of Blast pad"
+          },
+          {
             "name": "Under Baboon Blast pad",
             "value": "GloomyGalleon;Under Baboon Blast pad"
           },
@@ -20092,6 +20664,10 @@ window.SELECTOR_INFO = {
             "value": "GloomyGalleon;Next to Shipyard Gate switch"
           },
           {
+            "name": "Above the water next to the floating warp 5",
+            "value": "GloomyGalleon;Above the water next to the floating warp 5"
+          },
+          {
             "name": "Cactus - bottom back left",
             "value": "GloomyGalleon;Cactus - bottom back left"
           },
@@ -20106,6 +20682,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Cactus - bottom front right",
             "value": "GloomyGalleon;Cactus - bottom front right"
+          },
+          {
+            "name": "Diddy Gold Tower",
+            "value": "GloomyGalleon;Diddy Gold Tower"
           },
           {
             "name": "Treasure Chest Exterior",
@@ -20358,6 +20938,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Against the mountain",
             "value": "JungleJapes;Against the mountain"
+          },
+          {
+            "name": "Slope to Kong Cage",
+            "value": "JungleJapes;Slope to Kong Cage"
           }
         ],
         "diddy": [
@@ -20556,6 +21140,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Against the mountain",
             "value": "JungleJapes;Against the mountain"
+          },
+          {
+            "name": "Slope to Kong Cage",
+            "value": "JungleJapes;Slope to Kong Cage"
           }
         ],
         "donkey": [
@@ -20726,6 +21314,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Against the mountain",
             "value": "JungleJapes;Against the mountain"
+          },
+          {
+            "name": "Slope to Kong Cage",
+            "value": "JungleJapes;Slope to Kong Cage"
           }
         ],
         "lanky": [
@@ -20920,6 +21512,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Against the mountain",
             "value": "JungleJapes;Against the mountain"
+          },
+          {
+            "name": "Slope to Kong Cage",
+            "value": "JungleJapes;Slope to Kong Cage"
           }
         ],
         "tiny": [
@@ -21094,6 +21690,10 @@ window.SELECTOR_INFO = {
           {
             "name": "Against the mountain",
             "value": "JungleJapes;Against the mountain"
+          },
+          {
+            "name": "Slope to Kong Cage",
+            "value": "JungleJapes;Slope to Kong Cage"
           }
         ]
       }
@@ -27808,14 +28408,14 @@ window.SELECTOR_INFO = {
               "location_id": "plando_AngryAztec_0_tns_portal",
               "name": "Angry Aztec TnS Portal 1",
               "none_possible": false,
-              "vanilla_value": "AngryAztec;Near Quicksand Tunnel Shop"
+              "vanilla_value": "AngryAztec;Right of Quicksand Tunnel Shop"
             },
             {
               "level": "AngryAztec",
               "location_id": "plando_AngryAztec_1_tns_portal",
               "name": "Angry Aztec TnS Portal 2",
               "none_possible": false,
-              "vanilla_value": "AngryAztec;Near Tunnel Shop"
+              "vanilla_value": "AngryAztec;Left of Tunnel Shop"
             },
             {
               "level": "AngryAztec",
@@ -27857,7 +28457,7 @@ window.SELECTOR_INFO = {
               "location_id": "plando_FranticFactory_2_tns_portal",
               "name": "Frantic Factory TnS Portal 3",
               "none_possible": false,
-              "vanilla_value": "FranticFactory;R&D"
+              "vanilla_value": "FranticFactory;R&D across from Piano Game"
             },
             {
               "level": "FranticFactory",

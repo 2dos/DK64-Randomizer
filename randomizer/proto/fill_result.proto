@@ -45,6 +45,8 @@ message FillResult {
 message LocationAssignments {
   // Map of location ID to item ID
   map<uint32, uint32> assignments = 1;
+
+  repeated uint32 inaccessible_locations = 2;  // LocationId
 }
 
 // Move shop data - 3D structure of shop moves
@@ -388,7 +390,9 @@ message HintData {
   HintSet hint_set = 1;
   
   // Tied hint flags
-  map<string, uint32> tied_hint_flags = 2;
+  reserved 2;
+  reserved "tied_hint_flags";
+  repeated TiedHintFlag ordered_tied_hint_flags = 7;
   
   // Tied hint regions (35 entries)
   repeated uint32 tied_hint_regions = 3;  // HintRegionId
@@ -413,6 +417,12 @@ message Hint {
   string hint_text = 2;
   bool important = 3;
   uint32 priority = 4;
+  optional string short_hint = 5;  // Shortened text for the pause menu
+}
+
+message TiedHintFlag {
+  string hint_name = 1;
+  uint32 flag = 2;
 }
 
 message Microhint {
@@ -436,68 +446,13 @@ message LevelSpoilerItem {
 
 // Path data for WotH and playthrough
 message PathData {
-  // Way of the Hoard locations
-  repeated uint32 woth_locations = 1;  // LocationId
-  
-  // Way of the Hoard paths - map of destination location to path
-  map<uint32, LocationPath> woth_paths = 2;
-  
-  // K. Rool phase paths
-  map<string, LocationPath> krool_paths = 3;
-  
-  // Rabbit path (if rabbit win condition)
-  repeated uint32 rabbit_path = 4;
-  
-  // DK Rap verse paths
-  map<string, LocationPath> rap_win_con_paths = 5;
-  
-  // Other interesting item paths
-  map<uint32, LocationPath> other_paths = 6;
-  
-  // Playthrough spheres
-  repeated Sphere playthrough = 7;
-  
+  // Only data the patcher reads lives here
+  reserved 1 to 7, 9 to 12;
+  reserved "woth_locations", "woth_paths", "krool_paths", "rabbit_path", "rap_win_con_paths", "other_paths",
+      "playthrough", "foolish_region_names", "pathless_moves", "region_hintable_count", "accessible_hints_for_location";
+
   // Major items list
   repeated uint32 major_items = 8;  // ItemId
-  
-  // Foolish region names
-  repeated string foolish_region_names = 9;
-  
-  // Pathless moves
-  repeated uint32 pathless_moves = 10;  // ItemId
-  
-  // Region hintable count
-  map<string, RegionItemCounts> region_hintable_count = 11;  // region_name -> item counts
-  
-  // Accessible hints for location (for WotH hints)
-  map<uint32, AccessibleHints> accessible_hints_for_location = 12;
-}
-
-message LocationPath {
-  repeated uint32 locations = 1;  // LocationId
-}
-
-message Sphere {
-  repeated SphereLocation locations = 1;
-}
-
-message SphereLocation {
-  uint32 location_id = 1;
-  uint32 item_id = 2;
-}
-
-message AccessibleHints {
-  repeated string hint_names = 1;
-}
-
-message RegionItemCounts {
-  map<string, RegionItemData> items = 1;  // item_name -> item data
-}
-
-message RegionItemData {
-  string plural = 1;
-  uint32 count = 2;
-  repeated uint32 shuffled_locations = 3;  // LocationId
 }
 
 // Miscellaneous patching data
@@ -554,6 +509,15 @@ message MiscPatchingData {
   repeated bool helm_kong_flags = 35;     // length 5
   repeated uint32 seed_hash = 36;         // 5 digits (0..9) baked into the ROM at varspace +0x129
   repeated uint32 hint_door_item_counts_level = 37;  // per-level hint-door costs, reordered during Fill
+  repeated ResolvedSetting resolved_settings = 38;
+  // Randomizer version
+  string generator_version = 39;
+  uint64 patch_rng_seed = 40;
+}
+
+message ResolvedSetting {
+  string name = 1;
+  string json_value = 2;
 }
 
 message SwitchsanityAssignment {

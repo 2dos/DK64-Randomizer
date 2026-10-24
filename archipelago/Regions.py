@@ -401,8 +401,9 @@ def create_region(
             set_rule(location, lambda state: True)
         else:
             set_rule(location, lambda state, player=player, collectible=collectible: hasDK64RCollectible(state, player, collectible))
-        # Skip kong requirements for minimal logic
-        if not minimal_logic:
+        # Skip kong requirements for minimal logic, and for CBs that any Kong can collect
+        free_trade_cb = logic_holder.settings.free_trade_cbs and collectible.type in (Collectibles.banana, Collectibles.bunch)
+        if not minimal_logic and not free_trade_cb:
             kong_name = name_for_kong[collectible.kong]
             add_rule(location, lambda state, kong_name=kong_name: state.has(kong_name, player))
         quantity = collectible.amount

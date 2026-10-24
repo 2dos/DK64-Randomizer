@@ -157,7 +157,7 @@ class StartingKongCount(Range):
     display_name = "Starting Kong Count"
     range_start = 1
     range_end = 5
-    default = 1
+    default = 2
 
 
 _STARTING_MOVE_VALID_KEYS = frozenset(
@@ -197,7 +197,7 @@ _STARTING_MOVE_VALID_KEYS = frozenset(
         "Saxophone",
         "Triangle",
         "Trombone",
-        # Progressive upgrades (can appear multiple times in a pool list for multiple copies)
+        # Progressive upgrades
         "Progressive Ammo Belt",
         "Progressive Instrument Upgrade",
         "Progressive Slam",
@@ -229,13 +229,13 @@ _STARTING_MOVE_VALID_KEYS = frozenset(
 )
 
 
-class _BaseStartingMovePool(OptionList):
+class BaseStartingMovePool(OptionList):
     """Base class for starting move pool item lists."""
 
     valid_keys = _STARTING_MOVE_VALID_KEYS
 
 
-class StartingMovePool1(_BaseStartingMovePool):
+class StartingMovePool1(BaseStartingMovePool):
     """Items available in starting move Pool 1. A random selection of this pool will be given at game start.
 
     Progressive items (Progressive Slam, Progressive Ammo Belt, Progressive Instrument Upgrade)
@@ -295,7 +295,7 @@ class StartingMovePool1Count(Range):
     default = 3
 
 
-class StartingMovePool2(_BaseStartingMovePool):
+class StartingMovePool2(BaseStartingMovePool):
     """Items available in starting move Pool 2. A selection of this pool will be given at game start.
 
     By default contains bait potions, Fairy Camera, Snide, and one Progressive Slam.
@@ -322,10 +322,10 @@ class StartingMovePool2Count(Range):
     display_name = "Starting Move Pool 2 Count"
     range_start = 0
     range_end = 999
-    default = 999
+    default = 6
 
 
-class StartingMovePool3(_BaseStartingMovePool):
+class StartingMovePool3(BaseStartingMovePool):
     """Items available in starting move Pool 3. A selection of this pool will be given at game start.
 
     By default contains the shopkeepers (Cranky, Funky, Candy).
@@ -344,7 +344,7 @@ class StartingMovePool3Count(Range):
     default = 2
 
 
-class StartingMovePool4(_BaseStartingMovePool):
+class StartingMovePool4(BaseStartingMovePool):
     """Items available in starting move Pool 4. A selection of this pool will be given at game start.
 
     By default contains extra bait potion copies (one Ammo Belt + two Instrument Upgrades).
@@ -364,10 +364,10 @@ class StartingMovePool4Count(Range):
     display_name = "Starting Move Pool 4 Count"
     range_start = 0
     range_end = 999
-    default = 0
+    default = 2
 
 
-class StartingMovePool5(_BaseStartingMovePool):
+class StartingMovePool5(BaseStartingMovePool):
     """Items available in starting move Pool 5. A selection of this pool will be given at game start.
 
     Empty by default. Use this as a custom pool for any additional starting moves.
@@ -532,7 +532,7 @@ class MedalColorBananaRequirement(Range):
     display_name = "Medal CB Requirements"
     range_start = 1
     range_end = 100
-    default = 40
+    default = 55
 
 
 class MedalDistribution(Choice):
@@ -592,7 +592,7 @@ class NumberOfStartingKeys(Range):
     display_name = "Amount of Pregiven Keys"
     range_start = 0
     range_end = 8
-    default = 0
+    default = 3
 
 
 class RequireBeatingKrool(DefaultOnToggle):
@@ -920,7 +920,7 @@ class RemoveBarriers(OptionList):
     ]
 
 
-_ITEM_POOL_VALID_KEYS = frozenset(
+ITEM_POOL_VALID_KEYS = frozenset(
     [
         "crowns",
         "blueprints",
@@ -971,7 +971,7 @@ class ItemPool(OptionList):
     """
 
     display_name = "Item Pool"
-    valid_keys = _ITEM_POOL_VALID_KEYS
+    valid_keys = ITEM_POOL_VALID_KEYS
     default = [
         "crowns",
         "blueprints",
@@ -992,11 +992,10 @@ class ItemPool(OptionList):
             raise OptionError(f"Invalid item_pool keys: {', '.join(invalid)}. Must be one of: {', '.join(sorted(self.valid_keys))}")
 
 
-class RandomizeBlockers(Toggle):
+class RandomizeBlockers(DefaultOnToggle):
     """Determines if B. Locker values are randomized."""
 
     display_name = "Randomize B. Lockers"
-    default = True
 
 
 class MaximumBLocker(Range):
@@ -1014,7 +1013,7 @@ class ChaosBLockers(Toggle):
     display_name = "Chaos B. Lockers"
 
 
-class MaximizeHelmBLocker(Toggle):
+class MaximizeHelmBLocker(DefaultOnToggle):
     """Ensures that Level 8's B. Locker will always be at the maximum value."""
 
     display_name = "Maximize Helm B. Locker"
@@ -1093,11 +1092,10 @@ class LevelBlockers(OptionDict):
             raise OptionError("Found errors with option level_blockers:\n" + "\n".join(accumulated_errors))
 
 
-class RandomizeTroff(Toggle):
+class RandomizeTroff(DefaultOnToggle):
     """Determines if Troff n Scoff banana values are randomized."""
 
     display_name = "Randomize Troff n Scoff"
-    default = True
 
 
 class MaximumTroff(Range):
@@ -1228,18 +1226,6 @@ class MicroHints(Choice):
     option_some = 1
     option_all = 2
     default = 2
-
-
-class HalfMedals(Toggle):
-    """Determines if Half Medals are added to the pool.
-
-    Half Medals send at a fraction of the colored bananas a full Medal needs, controlled by the
-    Half Medal Percentage option.
-    """
-
-    display_name = "Half Medals in Pool"
-
-    default = False
 
 
 class HalfMedalPercentage(Range):
@@ -1522,10 +1508,9 @@ class HelmDoor2Item(Choice):
     default = 1
 
 
-class SmallerShops(Toggle):
+class SmallerShops(DefaultOnToggle):
     """If enabled, shops would have a max of 3 items to sell."""
 
-    default = True
     display_name = "Smaller Shops"
 
 
@@ -1697,7 +1682,7 @@ class SnideMaximum(Range):
 
     range_start = 0
     range_end = 40
-    default = 20
+    default = 16
 
 
 class SharedShops(Toggle):
@@ -1780,6 +1765,80 @@ class AlternateMinecartMayhem(Toggle):
     """If enabled, Minecart Mayhem will be a coin based bonus barrel and the timer will be removed."""
 
     display_name = "Alternate Minecart Mayhem"
+
+
+class CustomArcadeMinigames(Toggle):
+    """If enabled, DK Arcade and Jetpac are replaced by custom minigames.
+
+    Each machine picks one minigame at random from its pool (see dk_arcade_minigame_pool and jetpac_minigame_pool).
+    Jetpac won't get the same custom minigame as DK Arcade unless the Jetpac pool has nothing else.
+    A custom DK Arcade game gives the Round 1 reward on its first win unless Round 1 was already collected, then the Nintendo Coin.
+    In Archipelago, the Round 1 reward is always in the Baboon Blast course, so one win gives the Nintendo Coin.
+    """
+
+    display_name = "Custom Arcade Minigames"
+
+
+class DKArcadeMinigamePool(OptionList):
+    """Determines which minigames DK Arcade can become when custom_arcade_minigames is enabled.
+
+    One is picked at random. Leave empty to allow every custom minigame. Add "vanilla" to allow the original DK Arcade.
+
+    Valid Keys:
+    "vanilla"
+    "game_2048"
+    "hexagon"
+    "minesweeper"
+    "picross"
+    "wordle"
+    """
+
+    display_name = "DK Arcade Minigame Pool"
+    valid_keys = {
+        "vanilla",
+        "game_2048",
+        "hexagon",
+        "minesweeper",
+        "picross",
+        "wordle",
+    }
+    default = []
+
+
+class JetpacMinigamePool(OptionList):
+    """Determines which minigames Jetpac can become when custom_arcade_minigames is enabled.
+
+    One is picked at random. Leave empty to allow every custom minigame. Add "vanilla" to allow the original Jetpac.
+
+    Valid Keys:
+    "vanilla"
+    "game_2048"
+    "hexagon"
+    "minesweeper"
+    "picross"
+    "wordle"
+    """
+
+    display_name = "Jetpac Minigame Pool"
+    valid_keys = {
+        "vanilla",
+        "game_2048",
+        "hexagon",
+        "minesweeper",
+        "picross",
+        "wordle",
+    }
+    default = []
+
+
+class FreeTradeCBs(Toggle):
+    """If enabled, Colored Bananas and Banana Bunches can be collected by any Kong.
+
+    Items and Blueprints can always be collected by any Kong in Archipelago. This extends that to Colored Bananas.
+    Banana Coins and Balloons still need their own Kong.
+    """
+
+    display_name = "Free Trade CBs"
 
 
 class EnemiesSelected(OptionList):
@@ -1891,7 +1950,6 @@ class LoadingZoneRando(TextChoice):
     default = 0
 
 
-# Yes this was implemented after LZR
 class GalleonWaterLevel(Choice):
     """Determines what level the water in Galleon is set to."""
 
@@ -1918,7 +1976,7 @@ class AlterSwitchAllocation(OptionDict):
     - "level_1" through "level_8"
 
     Valid Values:
-    - "none": No slam required (White)
+    - "none": No slam required (Activates on step)
     - "green": Green Slam (Simian Slam)
     - "blue": Blue Slam (Super Simian Slam)
     - "red": Red Slam (Super Duper Simian Slam)
@@ -1973,14 +2031,18 @@ class DKPortalLocationRando(Choice):
     DK Portals are the exits that return you from a level to its lobby.
 
     - off: DK Portals remain in their vanilla locations
-    - main_only: DK Portals can only appear in main level areas (not bonus barrels, buildings, etc.)
-    - all: DK Portals can appear anywhere in the level
+    - main_only: DK Portals can only appear in main level areas and never underwater
+    - main_only_underwater: Same as main_only, but DK Portals can also appear underwater
+    - all: DK Portals can appear anywhere in the level except underwater
+    - all_underwater: DK Portals can appear anywhere in the level, including underwater
     """
 
     display_name = "DK Portal Location Rando"
     option_off = 0
     option_main_only = 1
     option_all = 2
+    option_main_only_underwater = 3
+    option_all_underwater = 4
     default = 0
 
 
@@ -2034,7 +2096,6 @@ class DK64Options(PerGameCommonOptions):
     item_pool: ItemPool
     logic_type: LogicType
     tricks_selected: TricksSelected
-    half_medals_in_pool: HalfMedals
     half_medal_percentage: HalfMedalPercentage
     glitches_selected: GlitchesSelected
     hard_mode_selected: HardModeSelected
@@ -2081,6 +2142,9 @@ class DK64Options(PerGameCommonOptions):
     pearl_filler_weight: PearlFillerWeight
     rainbowcoin_filler_weight: RainbowCoinFillerWeight
     alternate_minecart_mayhem: AlternateMinecartMayhem
+    custom_arcade_minigames: CustomArcadeMinigames
+    dk_arcade_minigame_pool: DKArcadeMinigamePool
+    jetpac_minigame_pool: JetpacMinigamePool
     enemies_selected: EnemiesSelected
     shop_prices: ShopPrices
     loading_zone_rando: LoadingZoneRando
@@ -2090,6 +2154,7 @@ class DK64Options(PerGameCommonOptions):
     krusha_model_mode: KrushaRandom
     kong_models: KongModels
     allowed_bosses: AllowedBosses
+    free_trade_cbs: FreeTradeCBs
     random_starting_region: RandomStartingLocation
     dk_portal_location_rando: DKPortalLocationRando
 
@@ -2146,14 +2211,7 @@ dk64_option_groups: List[OptionGroup] = [
             StartingMovePool5Count,
             HelmKeyLock,
             ItemPool,
-            ClimbingShuffle,
-            ShopKeepers,
-            BouldersInPool,
-            Dropsanity,
-            HintItemRandomization,
-            HalfMedals,
             HalfMedalPercentage,
-            SnideTurninsToThePool,
             SnideMaximum,
         ],
     ),
@@ -2194,6 +2252,7 @@ dk64_option_groups: List[OptionGroup] = [
             KongModels,
             AllowedBosses,
             AlterSwitchAllocation,
+            FreeTradeCBs,
         ],
     ),
     OptionGroup(
@@ -2204,6 +2263,9 @@ dk64_option_groups: List[OptionGroup] = [
             AutoCompleteBonusBarrels,
             HelmRoomBonusCount,
             AlternateMinecartMayhem,
+            CustomArcadeMinigames,
+            DKArcadeMinigamePool,
+            JetpacMinigamePool,
         ],
     ),
     OptionGroup(

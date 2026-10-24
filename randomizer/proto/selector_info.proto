@@ -58,4 +58,5 @@ message SelectorInfo {
   repeated SelectorEntry remove_barriers = 27;
   repeated SelectorEntry faster_checks = 28;
   repeated SelectorEntry cb_rando_levels = 29;
+  repeated SelectorEntry custom_minigames = 30;
 }

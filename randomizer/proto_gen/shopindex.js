@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.ShopIndex');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.KongMoveList');
 
 /**
@@ -92,7 +94,7 @@ kongMovesList: jspb.Message.toObjectList(msg.getKongMovesList(),
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.ShopIndex}
  */
 proto.randomizer.proto.ShopIndex.deserializeBinary = function(bytes) {

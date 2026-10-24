@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.ItemSettings');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.IceTrapSettings');
 goog.require('proto.randomizer.proto.ItemCounts');
 goog.require('proto.randomizer.proto.ItemPool');
@@ -103,7 +105,7 @@ maxSnideRewardRequirement: jspb.Message.getFieldWithDefault(msg, 7, 0)
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.ItemSettings}
  */
 proto.randomizer.proto.ItemSettings.deserializeBinary = function(bytes) {
@@ -142,10 +144,7 @@ proto.randomizer.proto.ItemSettings.deserializeBinaryFromReader = function(msg, 
       msg.addStartingMovePools(value);
       break;
     case 4:
-      var values = /** @type {!Array<!proto.randomizer.proto.ItemRandoFiller>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addFillerItems(values[i]);
-      }
+      reader.readPackableEnumInto(msg.getFillerItemsList());
       break;
     case 5:
       var value = new proto.randomizer.proto.IceTrapSettings;

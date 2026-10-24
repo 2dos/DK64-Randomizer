@@ -16,6 +16,8 @@ goog.provide('proto.randomizer.proto.SettingsInfo');
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.EndgameSettings');
 goog.require('proto.randomizer.proto.ItemSettings');
 goog.require('proto.randomizer.proto.OverworldSettings');
@@ -81,7 +83,9 @@ requirementSettings: (f = msg.getRequirementSettings()) && proto.randomizer.prot
 overworldSettings: (f = msg.getOverworldSettings()) && proto.randomizer.proto.OverworldSettings.toObject(includeInstance, f),
 endgameSettings: (f = msg.getEndgameSettings()) && proto.randomizer.proto.EndgameSettings.toObject(includeInstance, f),
 qolSettings: (f = msg.getQolSettings()) && proto.randomizer.proto.QualityOfLifeSettings.toObject(includeInstance, f),
-plandomizerSettings: (f = msg.getPlandomizerSettings()) && proto.randomizer.proto.PlandomizerSettings.toObject(includeInstance, f)
+plandomizerSettings: (f = msg.getPlandomizerSettings()) && proto.randomizer.proto.PlandomizerSettings.toObject(includeInstance, f),
+generateSpoilerlog: jspb.Message.getBooleanFieldWithDefault(msg, 8, false),
+hasPassword: jspb.Message.getBooleanFieldWithDefault(msg, 9, false)
   };
 
   if (includeInstance) {
@@ -94,7 +98,7 @@ plandomizerSettings: (f = msg.getPlandomizerSettings()) && proto.randomizer.prot
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.SettingsInfo}
  */
 proto.randomizer.proto.SettingsInfo.deserializeBinary = function(bytes) {
@@ -147,6 +151,14 @@ proto.randomizer.proto.SettingsInfo.deserializeBinaryFromReader = function(msg, 
       var value = new proto.randomizer.proto.PlandomizerSettings;
       reader.readMessage(value,proto.randomizer.proto.PlandomizerSettings.deserializeBinaryFromReader);
       msg.setPlandomizerSettings(value);
+      break;
+    case 8:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setGenerateSpoilerlog(value);
+      break;
+    case 9:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setHasPassword(value);
       break;
     default:
       reader.skipField();
@@ -223,6 +235,20 @@ proto.randomizer.proto.SettingsInfo.serializeBinaryToWriter = function(message, 
       6,
       f,
       proto.randomizer.proto.PlandomizerSettings.serializeBinaryToWriter
+    );
+  }
+  f = message.getGenerateSpoilerlog();
+  if (f) {
+    writer.writeBool(
+      8,
+      f
+    );
+  }
+  f = message.getHasPassword();
+  if (f) {
+    writer.writeBool(
+      9,
+      f
     );
   }
 };
@@ -447,6 +473,42 @@ proto.randomizer.proto.SettingsInfo.prototype.clearPlandomizerSettings = functio
  */
 proto.randomizer.proto.SettingsInfo.prototype.hasPlandomizerSettings = function() {
   return jspb.Message.getField(this, 6) != null;
+};
+
+
+/**
+ * optional bool generate_spoilerlog = 8;
+ * @return {boolean}
+ */
+proto.randomizer.proto.SettingsInfo.prototype.getGenerateSpoilerlog = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 8, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.SettingsInfo} returns this
+ */
+proto.randomizer.proto.SettingsInfo.prototype.setGenerateSpoilerlog = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 8, value);
+};
+
+
+/**
+ * optional bool has_password = 9;
+ * @return {boolean}
+ */
+proto.randomizer.proto.SettingsInfo.prototype.getHasPassword = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 9, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.randomizer.proto.SettingsInfo} returns this
+ */
+proto.randomizer.proto.SettingsInfo.prototype.setHasPassword = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 9, value);
 };
 
 

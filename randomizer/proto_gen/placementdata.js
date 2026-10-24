@@ -17,6 +17,8 @@ goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
 goog.require('jspb.Map');
 goog.require('jspb.Message');
+goog.require('jspb.binary.bytesource');
+goog.require('jspb.internal.public_for_gencode');
 goog.require('proto.randomizer.proto.BalloonPlacement');
 goog.require('proto.randomizer.proto.CBPlacement');
 goog.require('proto.randomizer.proto.CoinPlacement');
@@ -109,7 +111,7 @@ enemyRandoDataMap: (f = msg.getEnemyRandoDataMap()) ? f.toObject(includeInstance
 
 /**
  * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @param {jspb.binary.bytesource.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.randomizer.proto.PlacementData}
  */
 proto.randomizer.proto.PlacementData.deserializeBinary = function(bytes) {
@@ -165,10 +167,7 @@ proto.randomizer.proto.PlacementData.deserializeBinaryFromReader = function(msg,
       msg.addRaceCoinPlacements(value);
       break;
     case 7:
-      var values = /** @type {!Array<boolean>} */ (reader.isDelimited() ? reader.readPackedBool() : [reader.readBool()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addPkmnSnapData(values[i]);
-      }
+      reader.readPackableBoolInto(msg.getPkmnSnapDataList());
       break;
     case 8:
       var value = msg.getEnemyRandoDataMap();
@@ -231,7 +230,12 @@ proto.randomizer.proto.PlacementData.serializeBinaryToWriter = function(message,
   }
   f = message.getCoinRequirementsMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(4, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeUint32);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getCoinRequirementsMap(true),
+    4,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeUint32);
   }
   f = message.getCoinPlacementsList();
   if (f.length > 0) {
@@ -258,7 +262,13 @@ proto.randomizer.proto.PlacementData.serializeBinaryToWriter = function(message,
   }
   f = message.getEnemyRandoDataMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(8, writer, jspb.BinaryWriter.prototype.writeUint32, jspb.BinaryWriter.prototype.writeMessage, proto.randomizer.proto.EnemyRandoMapEntries.serializeBinaryToWriter);
+jspb.internal.public_for_gencode.serializeMapToBinary(
+    message.getEnemyRandoDataMap(true),
+    8,
+    writer,
+    jspb.BinaryWriter.prototype.writeUint32,
+    jspb.BinaryWriter.prototype.writeMessage,
+    proto.randomizer.proto.EnemyRandoMapEntries.serializeBinaryToWriter);
   }
 };
 

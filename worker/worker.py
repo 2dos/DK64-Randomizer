@@ -23,7 +23,7 @@ from opentelemetry._logs import set_logger_provider
 from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from randomizer.Settings import Settings
-from randomizer.ProtoSerializer import serialize_settings_to_base64, deserialize_settings_from_base64, proto_to_settings, settings_to_proto
+from randomizer.ProtoSerializer import serialize_settings_to_base64, deserialize_settings_from_base64, proto_to_settings, settings_string_to_form_data, settings_to_proto
 
 from version import version
 import logging
@@ -32,7 +32,6 @@ from tasks import generate_seed
 from opentelemetry_instrumentation_rq import RQInstrumentor
 from randomizer.Lists.Exceptions import SettingsIncompatibleException, PlandoIncompatibleException
 from opentelemetry.instrumentation.redis import RedisInstrumentor
-from types import SimpleNamespace
 
 BRANCH = os.environ.get("BRANCH", "LOCAL")
 listen_branch = BRANCH
@@ -91,24 +90,22 @@ if __name__ == "__main__" and os.environ.get("BRANCH", "LOCAL") != "LOCAL":
 
 @api.route("/convert_settings", methods=["POST"])
 def convert_settings():
-    """Convert settings between JSON and protobuf string formats."""
-    data = request.get_json()
-    if "settings" in data:
-        try:
-            # Attempt to interpret `settings` as JSON
-            settings_json = json.loads(data["settings"])
-            # If successful, convert to Settings object and serialize to proto
-            settings_obj = Settings(settings_json)
-            proto_string = settings_obj.to_proto_string()
+    """Convert settings between form JSON and settings strings."""
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or not isinstance(data.get("settings"), str):
+        return jsonify({"error": "Expected a JSON body with a 'settings' string."}), 400
+    try:
+        settings_json = json.loads(data["settings"])
+    except json.JSONDecodeError:
+        settings_json = None
+    try:
+        if isinstance(settings_json, dict):
+            proto_string = serialize_settings_to_base64(Settings.unresolved_from_form(settings_json))
             return jsonify({"settings_string": proto_string})
-        except json.JSONDecodeError:
-            # If `settings` is not JSON, deserialize from proto string
-            proto = deserialize_settings_from_base64(data["settings"])
-            settings_container = SimpleNamespace()
-            proto_to_settings(proto, settings_container)
-            return jsonify(settings_container.__dict__)
-    else:
-        return jsonify({"error": "Invalid data"}), 400
+        return jsonify(settings_string_to_form_data(data["settings"]))
+    except (ValueError, TypeError, AttributeError, KeyError) as e:
+        logging.info(f"convert_settings rejected input: {e}")
+        return jsonify({"error": str(e)}), 400
 
 
 @api.route("/export_archipelago_yaml", methods=["POST"])
@@ -129,10 +126,10 @@ def export_archipelago_yaml():
         if isinstance(settings_data, str):
             # Check if it looks like a proto string (not JSON)
             if not settings_data.strip().startswith("{"):
-                proto = deserialize_settings_from_base64(settings_data)
-                from google.protobuf.json_format import MessageToDict
-
-                settings_data = MessageToDict(proto, preserving_proto_field_name=True)
+                try:
+                    settings_data = settings_string_to_form_data(settings_data)
+                except ValueError as e:
+                    return jsonify({"error": str(e), "success": False}), 400
             else:
                 # It's a JSON string, parse it
                 settings_data = json.loads(settings_data)
@@ -182,8 +179,9 @@ def runWorker(jobs):
         if isinstance(exc_value, (SettingsIncompatibleException, PlandoIncompatibleException)):
             # Do not retry the job
             job.meta["retry"] = False
-            job.save_meta()
-            return False  # Return False to indicate that the job should not be retried
+            job.retries_left = 0
+            job.save()
+            return False
         return True  # For other exceptions, retry the job
 
     worker.push_exc_handler(handle_exception)

@@ -359,6 +359,18 @@ def GetRegionIdOfLocation(spoiler, location_id: Locations) -> Regions:
     raise Exception(f"Unable to find Region for Location {location_id.name}")  # This should never trigger!
 
 
+def GetHintItemTiedRegions(spoiler) -> dict:
+    """Returns HintRegion for every Wrinkly hint placed by item rando."""
+    regions = {}
+    if not spoiler.settings.shuffle_items:
+        return regions
+    for item in spoiler.item_assignment:
+        if item.new_type == Types.Hint:
+            region_id = GetRegionIdOfLocation(spoiler, item.location)
+            regions[item.new_item - Items.JapesDonkeyHint] = spoiler.RegionList[region_id].hint_name
+    return regions
+
+
 def GetLocationIdsInHintRegion(spoiler, hint_region_id: HintRegion) -> List[Locations]:
     """Given the id of a hint region, return a list of Location ids that belong to it."""
     location_ids_in_region = []

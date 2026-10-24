@@ -20,6 +20,7 @@ from randomizer.Enums.Settings import (
     BananaportRando,
     BLockerSetting,
     DKPortalRando,
+    FreeTradeSetting,
     GlitchesSelected,
     LogicType,
     HardBossesSelected,
@@ -52,7 +53,7 @@ from randomizer.Lists.Minigame import (
     TrainingMinigameLocations,
     MinigameSelector,
 )
-from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector, QoLSelector, BossesSelector
+from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector, QoLSelector, BossesSelector, CustomMinigameSelector, getCustomMinigameName
 from randomizer.Lists.EnemyTypes import EnemySelector, enemy_location_list
 from randomizer.Lists.WrinklyHints import HintSet
 from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
@@ -368,7 +369,7 @@ class Spoiler:
         settings["Complex Level Order"] = self.settings.hard_level_progression
         settings["Progressive Switch Strength"] = self.settings.alter_switch_allocation
         settings["Switchsanity"] = self.settings.switchsanity_enabled
-        settings["Free Trade Agreement"] = self.settings.free_trade_setting
+        settings["Free Trade Agreement"] = FreeTradeSetting(self.settings.free_trade_setting).name
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
         settings["Randomize Crates"] = self.settings.random_crates
@@ -474,6 +475,10 @@ class Spoiler:
         settings["No Joke Hints"] = self.settings.serious_hints
         settings["Item Reward Previews"] = self.settings.item_reward_previews
         settings["Bonus Barrel Rando"] = self.dumpMultiselector(self.settings.minigames_list_selected, MinigameSelector)
+        settings["Custom Arcade Minigames"] = self.settings.custom_minigames_enabled
+        if self.settings.custom_minigames_enabled:
+            settings["DK Arcade Minigame Pool"] = self.dumpMultiselector(self.settings.arcade_minigame_pool_selected, CustomMinigameSelector) or "All custom minigames"
+            settings["Jetpac Minigame Pool"] = self.dumpMultiselector(self.settings.jetpac_minigame_pool_selected, CustomMinigameSelector) or "All custom minigames"
         if any(self.settings.enemies_selected):
             value_lst = [x.name for x in self.settings.enemies_selected]
             settings["Enemy Rando"] = [enemy["name"] for enemy in EnemySelector if enemy["value"] in value_lst]
@@ -534,6 +539,9 @@ class Spoiler:
         humanspoiler["Requirements"]["Kong Puzzles"]["Llama Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
         humanspoiler["Requirements"]["Kong Puzzles"]["Factory Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
         humanspoiler["Requirements"]["Miscellaneous"]["Jetpac Medal Requirement"] = self.settings.medal_requirement
+        if self.settings.custom_minigames_enabled:
+            humanspoiler["Requirements"]["Miscellaneous"]["DK Arcade Minigame"] = getCustomMinigameName(self.settings.arcade_custom_minigame)
+            humanspoiler["Requirements"]["Miscellaneous"]["Jetpac Minigame"] = getCustomMinigameName(self.settings.jetpac_custom_minigame)
         race_maps = {
             Maps.JapesMinecarts: "Japes Minecart",
             Maps.AztecTinyRace: "Aztec Beetle Race",

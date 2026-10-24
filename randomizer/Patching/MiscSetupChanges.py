@@ -309,13 +309,9 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
         {"map": Maps.FranticFactory, "item_list": [0x14D, 0x14C, 0x14B, 0x14A]},
         {"map": Maps.CastleCrypt, "item_list": [0x247, 0x248, 0x249, 0x24A]},
     ]
-    if (
-        not spoiler.settings.perma_death
-        and spoiler.settings.damage_amount
-        not in (
-            DamageAmount.quad,
-            DamageAmount.ohko,
-        )
+    if not spoiler.settings.perma_death and spoiler.settings.damage_amount not in (
+        DamageAmount.quad,
+        DamageAmount.ohko,
     ):
         swap_list.append({"map": Maps.CastleMuseum, "item_list": [0x17]})
     number_gb_data = [

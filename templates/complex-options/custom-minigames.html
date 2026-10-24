@@ -1,0 +1,52 @@
+{% from 'dropdown_multiselector.html' import dropdown_multiselector %}
+<div class="form-check form-switch item-switch" data-toggle="tooltip"
+     title="DK Arcade and Jetpac are replaced by custom minigames. Use the cog to choose which minigames each machine can become; one is picked at random for each machine.&#10;- DK Arcade pays out like the original: the first win gives the Round 1 reward (unless it was already collected, such as with the Factory Arcade Round 1 faster check), then a later win gives the Nintendo Coin.&#10;- Faster Checks (Arcade and Jetpac), the puzzle rando arcade order and Jetpac platforms, Shuffled Jetpac Enemies and arcade/Jetpac cosmetics do not apply to a machine running a custom minigame.">
+    <input class="form-check-input"
+           type="checkbox"
+           role="switch"
+           name="custom_minigames_enabled"
+           id="custom_minigames_enabled"
+           display_name="Custom Arcade Minigames"
+           value="True"/>
+    <label class="form-check-label" for="custom_minigames_enabled">
+        Custom Arcade Minigames
+    </label>
+    <input class="customize"
+           type="button"
+           href="#"
+           id="customMinigamesModalActivator"
+           data-bs-toggle="modal"
+           data-bs-target="#customMinigamesModal"
+           data-toggle="modal"
+           title="Choose which minigames DK Arcade and Jetpac can become."/>
+</div>
+<div class="modal fade" id="customMinigamesModal" tabindex="-1" aria-labelledby="customMinigamesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title title" id="customMinigamesModalLabel">CUSTOM ARCADE MINIGAMES</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="min-height: 300px;">
+                <div class="container-fluid">
+                    <div class="fst-italic text-center">
+                        <div>One minigame is picked at random from each machine's list.</div>
+                        <div>If nothing is ticked, any custom minigame can appear. Tick Vanilla to allow the original game.</div>
+                        <div>Jetpac won't get the same minigame as DK Arcade unless Jetpac's list has nothing else.</div>
+                    </div>
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="col d-flex justify-content-center">
+                            {{ dropdown_multiselector(custom_minigames, "arcade_minigame_pool", "DK Arcade", "This will open a dropdown that will let you choose which minigames DK Arcade can become.", 10) }}
+                        </div>
+                        <div class="col d-flex justify-content-center">
+                            {{ dropdown_multiselector(custom_minigames, "jetpac_minigame_pool", "Jetpac", "This will open a dropdown that will let you choose which minigames Jetpac can become.", 10) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
