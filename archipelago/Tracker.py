@@ -11,7 +11,9 @@ from archipelago.Regions import all_locations
 class ItemLayoutSection:
     """A section of UT's item panel."""
 
-    def __init__(self, name: str, item_group: str, cols: int, item_size: typing.Tuple[int, int]):
+    def __init__(
+        self, name: str, item_group: str, cols: int, item_size: typing.Tuple[int, int]
+    ):
         """Create a left-to-right section showing the items in item_group."""
         self.name = name
         self.items = [item_group]
@@ -23,22 +25,96 @@ class ItemLayoutSection:
 
 
 ITEM_PANEL = [
-    ("Kongs", ["Donkey", "Coconut", "Bongos", "Gorilla Grab", "Baboon Blast", "Strong Kong"]),
-    ("", ["Diddy", "Peanut", "Guitar", "Chimpy Charge", "Simian Spring", "Rocketbarrel Boost"]),
-    ("", ["Lanky", "Grape", "Trombone", "Orangstand", "Baboon Balloon", "Orangstand Sprint"]),
-    ("", ["Tiny", "Feather", "Saxophone", "Pony Tail Twirl", "Monkeyport", "Mini Monkey"]),
-    ("", ["Chunky", "Pineapple", "Triangle", "Primate Punch", "Gorilla Gone", "Hunky Chunky"]),
+    (
+        "Kongs",
+        ["Donkey", "Coconut", "Bongos", "Gorilla Grab", "Baboon Blast", "Strong Kong"],
+    ),
+    (
+        "",
+        [
+            "Diddy",
+            "Peanut",
+            "Guitar",
+            "Chimpy Charge",
+            "Simian Spring",
+            "Rocketbarrel Boost",
+        ],
+    ),
+    (
+        "",
+        [
+            "Lanky",
+            "Grape",
+            "Trombone",
+            "Orangstand",
+            "Baboon Balloon",
+            "Orangstand Sprint",
+        ],
+    ),
+    (
+        "",
+        [
+            "Tiny",
+            "Feather",
+            "Saxophone",
+            "Pony Tail Twirl",
+            "Monkeyport",
+            "Mini Monkey",
+        ],
+    ),
+    (
+        "",
+        [
+            "Chunky",
+            "Pineapple",
+            "Triangle",
+            "Primate Punch",
+            "Gorilla Gone",
+            "Hunky Chunky",
+        ],
+    ),
     ("Shared Moves", ["Climbing", "Vines", "Diving", "Oranges", "Barrels", "Cannons"]),
-    ("", ["Progressive Slam", "Fairy Camera", "Shockwave", "Homing Ammo", "Sniper Sight"]),
+    (
+        "",
+        [
+            "Progressive Slam",
+            "Fairy Camera",
+            "Shockwave",
+            "Homing Ammo",
+            "Sniper Sight",
+        ],
+    ),
     ("", ["Cranky", "Funky", "Candy", "Snide", "Day", "Night"]),
-    ("Collectibles", ["Golden Banana", "Banana Medal", "Battle Crown", "Banana Fairy", "Rainbow Coin", "Pearl"]),
+    (
+        "Collectibles",
+        [
+            "Golden Banana",
+            "Banana Medal",
+            "Battle Crown",
+            "Banana Fairy",
+            "Rainbow Coin",
+            "Pearl",
+        ],
+    ),
     ("", ["The Bean", "Nintendo Coin", "Rareware Coin"]),
-    ("", ["Donkey Blueprint", "Diddy Blueprint", "Lanky Blueprint", "Tiny Blueprint", "Chunky Blueprint"]),
+    (
+        "",
+        [
+            "Donkey Blueprint",
+            "Diddy Blueprint",
+            "Lanky Blueprint",
+            "Tiny Blueprint",
+            "Chunky Blueprint",
+        ],
+    ),
     ("Keys", ["Key 1", "Key 2", "Key 3", "Key 4"]),
     ("", ["Key 5", "Key 6", "Key 7", "Key 8"]),
 ]
 
-ITEM_PANEL_GROUPS = {f"DK64 Tracker Line {number}": items for number, (_, items) in enumerate(ITEM_PANEL, start=1)}
+ITEM_PANEL_GROUPS = {
+    f"DK64 Tracker Line {number}": items
+    for number, (_, items) in enumerate(ITEM_PANEL, start=1)
+}
 ITEM_PANEL_ITEMS = {item for _, items in ITEM_PANEL for item in items}
 
 
@@ -54,12 +130,21 @@ def store_item_panel_groups():
         if App.get_running_app() is not None:
             checksums.add(App.get_running_app().ctx.checksums.get(world.game))
         for checksum in checksums - {None}:
-            cache = Utils.persistent_load().get("groups_by_checksum", {}).get(checksum, {})
+            cache = (
+                Utils.persistent_load().get("groups_by_checksum", {}).get(checksum, {})
+            )
             game_cache = dict(cache.get(world.game, {}))
-            game_cache["item_name_groups"] = {**game_cache.get("item_name_groups", {}), **ITEM_PANEL_GROUPS}
-            Utils.persistent_store("groups_by_checksum", checksum, {**cache, world.game: game_cache})
+            game_cache["item_name_groups"] = {
+                **game_cache.get("item_name_groups", {}),
+                **ITEM_PANEL_GROUPS,
+            }
+            Utils.persistent_store(
+                "groups_by_checksum", checksum, {**cache, world.game: game_cache}
+            )
     except Exception as err:
-        logging.warning(f"Couldn't set up the DK64 item panel for Universal Tracker: {err}")
+        logging.warning(
+            f"Couldn't set up the DK64 item panel for Universal Tracker: {err}"
+        )
 
 
 PACK_MAPS = [
@@ -140,7 +225,13 @@ DK64_MAPS = {
     "lanky5dt": (Maps.AztecLanky5DTemple,),
     "tiny5dt": (Maps.AztecTiny5DTemple,),
     "chunky5dt": (Maps.AztecChunky5DTemple,),
-    "factory": (Maps.FranticFactory, Maps.FactoryTinyRace, Maps.FactoryPowerHut, Maps.FactoryCrusher, Maps.FactoryBaboonBlast),
+    "factory": (
+        Maps.FranticFactory,
+        Maps.FactoryTinyRace,
+        Maps.FactoryPowerHut,
+        Maps.FactoryCrusher,
+        Maps.FactoryBaboonBlast,
+    ),
     "galleon": (
         Maps.GloomyGalleon,
         Maps.GalleonSickBay,
@@ -207,7 +298,11 @@ DK64_MAPS = {
     "dungeon": (Maps.CastleDungeon,),
     "helm": (Maps.HideoutHelm,),
 }
-DK64_MAP_TO_PACK_MAP = {int(dk64_map): pack_map for pack_map, dk64_maps in DK64_MAPS.items() for dk64_map in dk64_maps}
+DK64_MAP_TO_PACK_MAP = {
+    int(dk64_map): pack_map
+    for pack_map, dk64_maps in DK64_MAPS.items()
+    for dk64_map in dk64_maps
+}
 
 
 def map_page_index(map_id: typing.Any) -> int:
@@ -215,7 +310,9 @@ def map_page_index(map_id: typing.Any) -> int:
     if map_id in (None, "", b""):
         return PACK_MAPS.index("isles")  # nothing stored yet
     try:
-        pack_map = DK64_MAP_TO_PACK_MAP.get(int(map_id, 0) if isinstance(map_id, str) else int(map_id))
+        pack_map = DK64_MAP_TO_PACK_MAP.get(
+            int(map_id, 0) if isinstance(map_id, str) else int(map_id)
+        )
     except (TypeError, ValueError):
         return -1
     return PACK_MAPS.index(pack_map) if pack_map else -1
@@ -447,20 +544,63 @@ tracker_world = {
     ],
     "map_page_groups": [
         ("Overview", ["overview"]),
-        ("DK Isles", ["isles", "training", "snidelobby", "japeslobby", "azteclobby", "factorylobby", "galleonlobby", "forestlobby", "caveslobby", "castlelobby", "helmlobby"]),
+        (
+            "DK Isles",
+            [
+                "isles",
+                "training",
+                "snidelobby",
+                "japeslobby",
+                "azteclobby",
+                "factorylobby",
+                "galleonlobby",
+                "forestlobby",
+                "caveslobby",
+                "castlelobby",
+                "helmlobby",
+            ],
+        ),
         ("Snide's HQ", ["snidehq"]),
         ("Jungle Japes", ["japes", "japesunder", "japesmountain", "shellhive"]),
-        ("Angry Aztec", ["aztec", "tinytemple", "llamatemple", "dk5dt", "diddy5dt", "lanky5dt", "tiny5dt", "chunky5dt"]),
+        (
+            "Angry Aztec",
+            [
+                "aztec",
+                "tinytemple",
+                "llamatemple",
+                "dk5dt",
+                "diddy5dt",
+                "lanky5dt",
+                "tiny5dt",
+                "chunky5dt",
+            ],
+        ),
         ("Frantic Factory", ["factory"]),
         ("Gloomy Galleon", ["galleon"]),
         ("Fungi Forest", ["forest", "frontmill", "rearmill", "barn"]),
         ("Crystal Caves", ["caves"]),
-        ("Creepy Castle", ["castle", "ballroom", "museum", "crypthub", "crypt", "dungeontunnel", "dungeon"]),
+        (
+            "Creepy Castle",
+            [
+                "castle",
+                "ballroom",
+                "museum",
+                "crypthub",
+                "crypt",
+                "dungeontunnel",
+                "dungeon",
+            ],
+        ),
         ("Hideout Helm", ["helm"]),
     ],
     "map_page_setting_key": "DK64Rando_{team}_{player}_map",
     "map_page_index": map_page_index,
-    "poptracker_name_mapping": {section: all_locations[location] for section, location in SECTION_NAMES.items()},
+    "poptracker_name_mapping": {
+        section: all_locations[location] for section, location in SECTION_NAMES.items()
+    },
     "item_page_items": ["items/ut_items.json"],
-    "map_page_item_layouts_left": [ItemLayoutSection(heading, group, cols=6, item_size=(36, 36)) for (heading, _), group in zip(ITEM_PANEL, ITEM_PANEL_GROUPS)],
+    "map_page_item_layouts_left": [
+        ItemLayoutSection(heading, group, cols=6, item_size=(36, 36))
+        for (heading, _), group in zip(ITEM_PANEL, ITEM_PANEL_GROUPS)
+    ],
 }
