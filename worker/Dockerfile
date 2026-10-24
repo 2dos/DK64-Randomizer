@@ -30,7 +30,8 @@ RUN mv /app/static /app/worker/static && \
     mv /app/randomizer /app/worker/randomizer && \
     mv /app/version.py /app/worker/version.py && \
     mv /app/js.py /app/worker/js.py && \
-    mv /app/base-hack /app/worker/base-hack/
+    mv /app/base-hack /app/worker/base-hack/ && \
+    mv /app/archipelago /app/worker/archipelago
 
 # Command to run the application
 CMD ["python", "worker.py"]
