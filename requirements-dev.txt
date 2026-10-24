@@ -13,7 +13,7 @@ cpplint==2.0.2
 GitPython==3.2.1
 pytest-xdist==3.8.0
 parameterized==0.9.0
-protobuf==6.31.1
+protobuf==6.33.5
 pyxdelta==0.2.3
 pillow==13.0.0
 -r requirements.txt
