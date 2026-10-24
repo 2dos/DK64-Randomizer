@@ -882,7 +882,7 @@ LocationListOriginal = {
     Locations.BreakableForestMillRearTriangle: Location(Levels.FungiForest, "Forest Box (Mill Rear: Triangle)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.ForestMillBack, -1, 0x43B)]),
     Locations.BreakableForestMillRearMini: Location(Levels.FungiForest, "Forest Box (Mill Rear: Mini)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.ForestMillBack, -1, 0x43C)]),
     Locations.BreakableCastleShed: Location(Levels.CreepyCastle, "Castle Box (Shed)", Items.Breakable, Types.Breakable, Kongs.any, [MapIDCombo(Maps.CastleShed, -1, 0x43D)]),
-    
+
     # Balloons
     Locations.Balloon000: Location(Levels.JungleJapes, "Japes Diddy Balloon: Inside Mountain", Items.Balloon, Types.Balloon, Kongs.diddy, [MapIDCombo(Maps.JapesMountain, -1, BALLOON_FLAG_START + 0)]),
     Locations.Balloon001: Location(Levels.JungleJapes, "Japes Diddy Balloon: In Cave", Items.Balloon, Types.Balloon, Kongs.diddy, [MapIDCombo(Maps.JungleJapes, -1, BALLOON_FLAG_START + 1)]),
