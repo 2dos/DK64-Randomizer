@@ -3046,13 +3046,17 @@ class Settings:
                 # Company coins cannot be on fairies
                 # Keys can be on fairies, but this is staggeringly rare
                 if Types.Key in self.shuffled_location_types and (self.crown_door_item == BarrierItems.Key or self.coin_door_item == BarrierItems.Key):
-                    self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy1)
-                    self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy2)
+                    if Locations.HelmBananaFairy1 in self.valid_locations[Types.Key]:
+                        self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy1)
+                    if Locations.HelmBananaFairy2 in self.valid_locations[Types.Key]:
+                        self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy2)
                 # Medals cannot be on fairies
                 # The big winner: Crowns will not be locked behind a crown door requirement
                 if Types.Crown in self.shuffled_location_types and (self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown):
-                    self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy1)
-                    self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy2)
+                    if Locations.HelmBananaFairy1 in self.valid_locations[Types.Crown]:
+                        self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy1)
+                    if Locations.HelmBananaFairy2 in self.valid_locations[Types.Crown]:
+                        self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy2)
                 # Fairies are the one exception: these are allowed to be vanilla
                 # Rainbow coins cannot be on fairies
                 # The Bean/Pearls cannot be on fairies (you might be sensing a pattern here)
