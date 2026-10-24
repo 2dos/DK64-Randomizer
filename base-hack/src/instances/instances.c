@@ -181,6 +181,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						hideObject(behaviour_pointer);
 						behaviour_pointer->pause_state = 1;
 					}
+				} else if (param2 == 18) { // Free
+					giveItemFromKongData(&kong_check_data[KONGCHECK_LLAMA], FLAG_KONG_LANKY);
 				}
 				break;
 			case MAP_TROFFNSCOFF:
