@@ -246,8 +246,8 @@ void initHack(int source) {
 			DamageMultiplier = Rando.damage_multiplier; // Keep for Crowd Control. Needs it to know what to set damage mult back to
 			initItemRandoPointer();
 			initAP();
-			RandomizerVersion = 5;
-			RandomizerSubVersion = 1;  // Use this for tracker changes
+			RandomizerVersion = 6;
+			RandomizerSubVersion = 0;  // Use this for tracker changes
 			// Kong Rando
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
