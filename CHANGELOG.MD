@@ -85,6 +85,7 @@ This is the changelog for the initial push of 6.0 into Dev:
       - Breakables
       - Dropsanity
   - A fully customizable starting moves pool which mirrors how the site does it. (You're welcome Bethany)
+  - Progressive Switch Strength (you can change the Simian Slam switch strengths in each level, choosing between white, green, blue, and red)
   - We now have Krusha and Co. added as playable characters in the krusha_model_mode and kong_models settings
   - Troff n Scoff CB customization
   - Random DK Portal Locations
