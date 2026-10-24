@@ -142,7 +142,3 @@ void HelmBarrelCode(void) {
 int CrownDoorCheck(void) {
 	return isItemRequirementSatisfied(&Rando.crown_door_requirement);
 }
-
-int CoinDoorCheck(void) {
-	return isItemRequirementSatisfied(&Rando.coin_door_requirement);
-}

@@ -50,7 +50,7 @@
 | Frantic Factory | Factory Kasplat: Starting Area | `self.additional_logic = lambda _: True` | 
 | Frantic Factory | Factory Kasplat: Near Power Hut | `self.additional_logic = lambda _: True` | 
 | Frantic Factory | Factory Kasplat: Hatch Pole Alcove | `self.additional_logic = lambda _: True` | 
-| Frantic Factory | Factory Kasplat: Dark Room | `(l.punch and l.chunky) or l.CanPhase()` | 
+| Frantic Factory | Factory Kasplat: Dark Room | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()` | 
 | Frantic Factory | Factory Kasplat: Low Production Platform | `self.additional_logic = lambda _: True` | 
 | Frantic Factory | Factory Kasplat: Upper Production Pipe | `self.additional_logic = lambda _: True` | 
 | Frantic Factory | Factory Kasplat: Base of Production | `self.additional_logic = lambda _: True` | 
@@ -75,7 +75,7 @@
 | Gloomy Galleon | Galleon Kasplat: Past Vines | `self.additional_logic = lambda _: True` | 
 | Gloomy Galleon | Galleon Kasplat: Musical Cactus | `self.additional_logic = lambda _: True` | 
 | Gloomy Galleon | Galleon Kasplat: Punch Wreck Under Shop | `(l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False, False)` | 
-| Gloomy Galleon | Galleon Kasplat: On the Cavern Shop Wreck | `self.additional_logic = lambda _: True` | 
+| Gloomy Galleon | Galleon Kasplat: On the Cavern Shop Wreck | `l.cannons` | 
 | Galleon Lighthouse | Galleon Kasplat: Atop Whomp's Lighthouse | `self.additional_logic = lambda _: True` | 
 | Galleon Mechafish | Galleon Kasplat: In the Mechfish | `self.additional_logic = lambda _: True` | 
 | Gloomy Galleon | Galleon Kasplat: Lanky Gold Tower | `(Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.monkey_maneuvers)) and l.balloon` | 
@@ -99,7 +99,7 @@
 | Fungi Forest | Forest Kasplat: Under Owl Tree | `self.additional_logic = lambda _: True` | 
 | Fungi Forest | Forest Kasplat: Mushroom Exterior Lower Floor | `self.additional_logic = lambda _: True` | 
 | Fungi Forest | Forest Kasplat: Mushroom Exterior Night Door | `self.additional_logic = lambda _: True` | 
-| Fungi Forest | Forest Kasplat: Behind Clock | `self.additional_logic = lambda _: True` | 
+| Fungi Forest | Forest Kasplat: Behind Clock | `l.cannons or (l.isdiddy and l.jetpack) or l.climbing` | 
 | Forest Mill Front | Forest Kasplat: Front Mill Room | `self.additional_logic = lambda _: True` | 
 | Fungi Forest | Forest Kasplat: Giant Mushroom Moat | `l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any))` | 
 | Fungi Forest | Forest Kasplat: Very Top of Giant Mushroom | `additional_logic=lambda _: True` | 

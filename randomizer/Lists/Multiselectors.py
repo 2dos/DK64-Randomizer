@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Settings import CustomMinigamesSelected
 
 
 class MultiselectorItem:
@@ -167,7 +168,7 @@ FasterCheckItems = [
     MultiselectorItem("Factory Toy Monster Fight", -1, "The toy monster fight in Factory will remove the initial enemy killing phase."),
     MultiselectorItem(
         "Factory Piano Game",
-        0,
+        -1,
         "The piano game in Factory will only require the 3, 5 and 7 long sequences to be recalled.",
     ),
     MultiselectorItem("Factory Diddy RnD", 1, "Only one enemy wave will need to be completed in the pincode room."),
@@ -278,3 +279,43 @@ BossesSelector = [
     }
     for map_id, name, in bosses.items()
 ]
+
+
+class CustomMinigame:
+    """Custom DK Arcade/Jetpac minigame information."""
+
+    def __init__(self, name: str, bin_name: Optional[str], tooltip: str) -> None:
+        """Initialize with given data."""
+        self.name = name
+        self.bin_name = bin_name  # Loads base-hack/minigame/<bin_name>.bin, None keeps the vanilla game
+        self.tooltip = tooltip
+
+
+# If you make changes to this list, make sure to change the corresponding
+# CustomMinigamesSelected enum in randomizer.Enums.Settings.
+CustomMinigameData = {
+    CustomMinigamesSelected.vanilla: CustomMinigame("Vanilla", None, "The original game for this machine (DK Arcade or Jetpac)."),
+    CustomMinigamesSelected.game_2048: CustomMinigame("2048", "2048", "Slide tiles to merge equal numbers. Reach the 512 tile to win (128 in bonus barrels)."),
+    CustomMinigamesSelected.hexagon: CustomMinigame("Hexagon", "hexagon", "Rotate around the center and dodge the closing walls. Survive 45 seconds to win (less in bonus barrels)."),
+    CustomMinigamesSelected.minesweeper: CustomMinigame("Minesweeper", "minesweeper", "Clear a 9x9 board hiding 10 mines. The first dig is always safe."),
+    CustomMinigamesSelected.picross: CustomMinigame("Picross", "picross", "Solve a random 10x10 nonogram from its clues. Five mistakes and you lose."),
+    CustomMinigamesSelected.wordle: CustomMinigame("Wordle", "wordle", "Guess the five-letter word for this seed in six tries."),
+}
+
+CustomMinigameSelector = [
+    {
+        "name": minigame.name,
+        "value": key.name,
+        "tooltip": minigame.tooltip,
+        "shift": -1,
+    }
+    for key, minigame in CustomMinigameData.items()
+]
+
+
+def getCustomMinigameName(bin_name: Optional[str]) -> str:
+    """Get the display name of the custom minigame loaded from a bin, or Vanilla if there is none."""
+    for minigame in CustomMinigameData.values():
+        if minigame.bin_name == bin_name:
+            return minigame.name
+    return str(bin_name)

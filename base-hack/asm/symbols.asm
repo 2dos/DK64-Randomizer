@@ -210,6 +210,7 @@
 .definelabel MusicTrackChannels, 0x807458DC
 .definelabel BoatSpeeds, 0x8075A04C
 .definelabel textParameter, 0x80750AC8
+.definelabel synthesizer, 0x8076D708
 
 .definelabel collisionType, 0x807FBD70
 .definelabel collisionActive, 0x807FBB85
@@ -286,3 +287,4 @@
 .definelabel DLPointers, 0x8076A050
 .definelabel CameraDL, 0x8076A048
 .definelabel DLArray, 0x80767CE8
+.definelabel MinigameInput, 0x807ECDE8

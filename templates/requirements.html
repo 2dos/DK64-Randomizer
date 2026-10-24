@@ -244,7 +244,7 @@
                     </label>
                 </div>
                 {{ toggle_input("shops_dont_cost", "Tooie-Style Shops", "Shops will not deduct coins from the player, but will require a certain amount of coins to purchase the item, akin to Banjo-Tooie's Jamjars silos.") }}
-                {{ toggle_input("free_trade_setting", "Free Trade Agreement", "Allow Kongs to pick up items assigned to other kongs.")}}
+                <div class="item-switch" aria-hidden="true"></div>
             </div>
             <div class="flex-container">
                 {{ dropdown_multiselector(remove_barriers, "remove_barriers", "Remove Barriers", "This will open a dropdown that will let you customize what barriers are removed.", 12, 1) }}
@@ -354,6 +354,28 @@
                         </option>
                         <option value="chaos" title="Values picked can be any range between easy, medium and hard">
                             Chaos
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Free Trade Agreement</p>
+                    <select name="free_trade_setting"
+                            id="free_trade_setting"
+                            display_name="Free Trade Agreement"
+                            class="form-select"
+                            aria-label="Free Trade Agreement"
+                            data-toggle="tooltip"
+                            data-legacy-on="all"
+                            data-legacy-off="none"
+                            title="Allow Kongs to pick up items assigned to other Kongs.&#10;-Off: Items can only be collected by their own Kong.&#10;-All: Items and Blueprints can be collected by any Kong.&#10;-All + CBs: Colored Bananas can also be collected by any Kong.">
+                        <option selected value="none">
+                            Off
+                        </option>
+                        <option value="all">
+                            All
+                        </option>
+                        <option value="all_cbs">
+                            All + CBs
                         </option>
                     </select>
                 </div>

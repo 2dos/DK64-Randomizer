@@ -19,7 +19,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 # Always Off
 - Dim Solved Hints
 - Enable Plandomizer
-- Irondonk
+- Wipe File on Death
 - Guaranteed Starting Keys
 - No Joke Hints
 
@@ -123,7 +123,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Castle Car Race: 70%
 	- Jetpac: 70%
 - Fast Warps: 80%
-- Free Trade Setting: 
+- Free Trade Agreement: 
 	- None: 20%
 	- Not Blueprints: 30%
 	- Major Collectibles: 50%

@@ -28,7 +28,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Hard Mode
 - Helm Hurry Mode
 - Mirror Mode
-- Irondonk
+- Wipe File on Death
 - Guaranteed Starting Keys
 
 # Other Settings
@@ -126,7 +126,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Castle Minecart: 70%
 	- Castle Car Race: 70%
 	- Jetpac: 70%
-- Free Trade Setting: 
+- Free Trade Agreement: 
 	- None: 10%
 	- Not Blueprints: 30%
 	- Major Collectibles: 60%

@@ -2,6 +2,7 @@
 
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Lists import Exceptions
 from randomizer.Lists.CustomLocations import CustomLocations, LocationTags, LocationTypes
 from randomizer.LogicClasses import LocationLogic
 
@@ -56,7 +57,10 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
                 location_to_string = str(crown_locations[global_crown_idx + i].value)
                 if spoiler.settings.plandomizer_dict["plando_battle_arenas"][location_to_string] != -1:
                     plando_crown_name = spoiler.settings.plandomizer_dict["plando_battle_arenas"][location_to_string]
-                    plando_crown_obj = [x for x in CustomLocations[level] if x.name == plando_crown_name][0]
+                    matching_crowns = [x for x in CustomLocations[level] if x.name == plando_crown_name]
+                    if not matching_crowns:
+                        raise Exceptions.PlandoIncompatibleException(f"Unknown battle arena location: {plando_crown_name}.")
+                    plando_crown_obj = matching_crowns[0]
                     crowns[i] = CustomLocations[level].index(plando_crown_obj)
         crown_data = {}
         for crown_index in crowns:

@@ -7,7 +7,7 @@
         {
             "conditions": [
                 {"function": 1, "inverted": false, "parameters": [0, 0, 0]},
-                {"function": 6, "inverted": false, "parameters": [7, 0, 71]}
+                {"function": 45, "inverted": false, "parameters": [6, 0, 0]}
             ],
             "executions": [
                 {"function": 1, "parameters": [50, 0, 0]}
@@ -16,7 +16,7 @@
         {
             "conditions": [
                 {"function": 1, "inverted": false, "parameters": [0, 0, 0]},
-                {"function": 6, "inverted": false, "parameters": [7, 1, 71]}
+                {"function": 45, "inverted": true, "parameters": [6, 0, 0]}
             ],
             "executions": [
                 {"function": 38, "parameters": [2, 0, 0]}

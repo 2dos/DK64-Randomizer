@@ -4,11 +4,11 @@ import sys
 import json
 import platform
 from typing import BinaryIO
+from randomizer.ProtoSerializer import settings_string_to_form_data
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 from randomizer.Patching.ASMPatcher import patchAssembly, patchAssemblyCosmetic
 from randomizer.Patching.Library.DataTypes import float_to_hex
-from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Items import Items
 from randomizer.Patching.MirrorMode import truncateFiles
@@ -23,14 +23,16 @@ ROM_HEADER = platform.system() == "Linux"
 if not APPLY_VARIABLES:
     sys.exit()
 
-settings_string = "fmEAABCgOFgcMA4aAw4Bh4DEAGIgMSAomBRQCioFFgOL5MYKI4KRsKjIhGgWO0L0AA1+AAzBAAJhgAAxQAAf6BpkBQEDAQHAwQCAkFBQMCwcGBEATqljcADeADgADiADkADmADoAFyACZgITh6BChAYGGEGhIJrIBWgWiWkWmWomqms2u2xbNbUNttxt1O6t5uEuAt8O+vCuIOcuMOROVuYOgOkuqOtOxu2GiJKakyi4wDrVEqAQUQKMFIClBTAQRcE9TZPlm2YhGyyH6fhkJZWwFuAkZjFNIEOh8QpqSXosQti9U6FRCwCEzCiASJHaqqsoGMsOTJO8RQHK8gVjg88ljAyAABVM8Q3QQT4SyqgxWC6LY9meLIMEcMAzmSWBdgcKYqFoY4rA0FYhiKNYXE8JIQn8SxBkiXReEQZCALFgUEYmEQSEotFAgDgeBQYDQkE4dEINBwVF41CwpCIJGAuBC+BhoDBWMVYX2ABl4uF1hAYqGQzYgAdgB+gIpwJDEZDpWx6dDxI0VniavN7w6R4wCHdcQZaxCC9fP4Bs8fDCaOd3Ur2VmZxTZ1bF8KcKAeEQyGQlS2Nc+ET+ALIAgoG1CiPBEMhTHQlS2Nc+EZTpW18Z1vnfPIGUimonse4PXLfIrBG8w8IMUkow9JZhpx6Gl8CQIg1txBZpyCKa7Lbr9T0AHyAPUAfQA9gB9gA"
-setting_data = decrypt_settings_string_enum(settings_string)
+settings_string = "eNqVkj1MFEEUx_f_Zvd2du5rbrmDZe-DveXrOL6OBcwFI54daoPix5mgkBiVSg02VIZYUZKYGENFJ4WFsaI0BuP3R6wsLY2VpaWzc5AYO2eyv8zMe2_eznt_8RVuUjiTY1Ph0PD0bM11hSRmOaI6UvFL3V4-5WZdQ8-yKMJMjE80eDKdkbmuQk9vsdwX9A9EM4P10UMnwx8SIXeEdnHzhW6v1y-VK0E17B8YHBqujYyNT0w2ZiXz08JJjU7NrDzFE5K2bwu2fPWaJN8SrB5N-0YI1Acl_CpnknksQA0NNNHCAi1Sm1Zpjd3FBjZBUZq_hax5-UDUZMNq1tx9EhlOLgedNq2Ezb3Iz3K43Dgc3iOEJCt1kohIJuZIRmdSsQPUIGLs_AHU1uSQliJJrqh-Q9HUtCQpJrTV1idcxv6OInGhVkltSykST6tVRluyaiV1bE5FEXfV16V2eR1dkKZit7b36Fs9fdKr6WsWNUuaZc2KZp9moO-paoYSa1hPIsdM20mmsm7XBqlqbYFtg-0gC2K6OKpZqXQmuwvaQ-Tf52adGlg3HoA4toBt4DGwC-yBXqLAX2EHd5YO8Brv8QEf8Qmf8Q79143q7eXgxiV56sT8yVax0pdwzt06fuHylbGbzaXpi-0Vq_QF-Ab87GROHOWVuV_AJuE5Gb_JCu8JW1WeMTLdY6rA3EMYP_Q_6CsF-zQ3Hyi9hKYkz6jnFRErKIpbGtOSrYhzdHRVfwhxNjZ0nA5lhkW0sapq2JHZP7XAM2AfeAG8ATov-w78ANRrjrL9fZFqxUQsKZWEOrY53_WUTJJeMnBqTsNuWi17gS3abWuVtaitIv8AXRRpeQ"
+setting_data = settings_string_to_form_data(settings_string)
+setting_data["seed"] = 0
 settings = Settings(setting_data)
+settings.arcade_custom_minigame = "match_three"
 spoiler = Spoiler(settings)
 settings.resolve_settings()
 # Couple settings needed for patching
-spoiler.dk_face_puzzle = [0] * 9
-spoiler.chunky_face_puzzle = [0] * 9
+spoiler.dk_face_puzzle = [1] * 9
+spoiler.chunky_face_puzzle = [1] * 9
 spoiler.arcade_order = [1, 4, 3, 2]
 spoiler.japes_rock_actor = 45
 spoiler.aztec_vulture_actor = 45
@@ -194,7 +196,7 @@ with open("./base-hack/include/variable_space_structs.h", "r") as varspace:
                 if lz_type == 9 and lz_map == 0xB0 and lz_exit == 0:
                     writeToROMNoOffset(isles_list + (0x38 * lz_index) + 0x12, set_variables[x][0], 2, "Isles -> TGrounds Zone Map")
                     writeToROMNoOffset(isles_list + (0x38 * lz_index) + 0x14, set_variables[x][1], 2, "Isles -> TGrounds Zone Exit")
-        elif x in ("quality_of_life", "moves_pregiven", "disabled_music", "hard_mode", "rom_flags"):
+        elif x in ("quality_of_life", "disabled_music", "hard_mode", "rom_flags"):
             if x == "quality_of_life":
                 order = [
                     "reduce_lag",
@@ -223,51 +225,6 @@ with open("./base-hack/include/variable_space_structs.h", "r") as varspace:
                     "cannon_game_speed",
                 ]
                 bitfield_offset = 0xB0
-            elif x == "moves_pregiven":
-                order = [
-                    "blast",
-                    "strong_kong",
-                    "grab",
-                    "charge",
-                    "rocketbarrel",
-                    "spring",
-                    "ostand",
-                    "balloon",
-                    "osprint",
-                    "mini",
-                    "twirl",
-                    "monkeyport",
-                    "hunky",
-                    "punch",
-                    "gone",
-                    "slam_upgrade_0",
-                    "slam_upgrade_1",
-                    "slam_upgrade_2",
-                    "coconut",
-                    "peanut",
-                    "grape",
-                    "feather",
-                    "pineapple",
-                    "bongos",
-                    "guitar",
-                    "trombone",
-                    "sax",
-                    "triangle",
-                    "belt_upgrade_0",
-                    "belt_upgrade_1",
-                    "homing",
-                    "sniper",
-                    "ins_upgrade_0",
-                    "ins_upgrade_1",
-                    "ins_upgrade_2",
-                    "dive",
-                    "oranges",
-                    "barrels",
-                    "vines",
-                    "camera",
-                    "shockwave",
-                ]
-                bitfield_offset = 0xD5
             elif x == "disabled_music":
                 order = [
                     "wrinkly",
@@ -334,6 +291,7 @@ with open(ROM_FILE, "r+b") as rom:
     patchAssemblyCosmetic(ROM_COPY, settings, False)
     rom.seek(0x1FF3000)
     rom.write(b"BALLAAM\x00")
+    # ApplyMirrorModeNew(ROM_COPY)
     truncateFiles(ROM_COPY)
     if ROM_HEADER:
         # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM

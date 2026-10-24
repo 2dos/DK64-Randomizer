@@ -101,12 +101,15 @@ async function setup_pyodide() {
         if (!window.pyodide) {
             pyodide = await loadPyodide();
             const url = window.location.origin;
+ 
+            await pyodide.loadPackage("protobuf");
             await pyodide.loadPackage(url + "/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl");
             await pyodide.loadPackage("pillow");
             if (location.hostname == "dev.dk64randomizer.com" || location.hostname == "dk64randomizer.com") {
                 await pyodide.loadPackage("micropip");
                 const micropip = pyodide.pyimport("micropip");
-                await micropip.install(url + "/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl");
+                // Force reinstall with timestamp to bypass cache
+                await micropip.install(url + "/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl?t=" + Date.now(), {keep_going: true});
             }
         }
     } catch (error) {
@@ -155,6 +158,23 @@ function should_clear_setting(select) {
 }
 
 // Assuming Items and SettingsMap objects are already defined
+
+function get_cosmetic_music_field_names() {
+    /**
+     * Return the names of all form fields whose values are allowed to override the
+     * settings embedded in a patch file at apply time
+     */
+    const names = new Set(["music_selections", "homebrew_header", "homebrew_header_patch"]);
+    for (const sel of ["#nav-cosmetics", "#nav-music"]) {
+        const root = document.querySelector(sel);
+        if (!root) continue;
+        for (const el of root.querySelectorAll("input[name], select[name]")) {
+            names.add(el.name);
+        }
+    }
+    return Array.from(names);
+}
+window.get_cosmetic_music_field_names = get_cosmetic_music_field_names;
 
 function serialize_settings(include_plando = false) {
     /**
@@ -366,8 +386,8 @@ else:
     return JSON.stringify(form_data);
 }
 
-// Event binding for exporting settings to a string
-document.getElementById("export_settings").addEventListener("click", export_settings_string);
+// Event binding for exporting settings to a string (also bound inline on button)
+document.getElementById("export_string_option").addEventListener("click", export_settings_string);
 
 function export_settings_string(event) {
     /**
@@ -378,9 +398,13 @@ function export_settings_string(event) {
     let setting_data = serialize_settings();
     // Convert settings_data back into json from the string
     setting_data = JSON.parse(setting_data);
-    let settings_string = encrypt_settings_string_enum(setting_data);
-    document.getElementById("settings_string").value = settings_string;
-    generateToast("Exported settings string to the setting string input field.");
+    try {
+        let settings_string = encrypt_settings_string_enum(setting_data);
+        document.getElementById("settings_string").value = settings_string;
+        generateToast("Exported settings string to the setting string input field.");
+    } catch (error) {
+        generateToast("Could not export the settings string: " + error.message, true);
+    }
 }
 
 // Event binding for generating a seed
@@ -512,12 +536,16 @@ async function import_settings_string_internal(settingsString) {
     for (let key in settings) {
         try {
             if (typeof settings[key] === "boolean") {
-                if (settings[key] === false) {
-                    document.getElementsByName(key)[0].checked = false;
-                } else {
-                    document.getElementsByName(key)[0].checked = true;
+                const element = document.getElementsByName(key)[0];
+                if (!element) {
+                    continue;
                 }
-                document.getElementsByName(key)[0].removeAttribute("disabled");
+                if (settings[key] === false) {
+                    element.checked = false;
+                } else {
+                    element.checked = true;
+                }
+                element.removeAttribute("disabled");
             } else if (Array.isArray(settings[key])) {
                 if (key.startsWith("starting_moves_list_")) {
                     select = document.getElementById(key);
@@ -531,6 +559,9 @@ async function import_settings_string_internal(settingsString) {
                 }
 
                 const selector = document.getElementById(key);
+                if (!selector) {
+                    continue;
+                }
 
                 if (selector.tagName === "SELECT") {
                     let MapName = SettingsMap[key];
@@ -727,6 +758,9 @@ async function import_settings_string_internal(settingsString) {
                 }
             } else {
                 const selector = document.getElementById(key);
+                if (!selector) {
+                    continue;
+                }
                 if (selector.tagName === "SELECT" && key !== "random-weights") {
                     let MapName = SettingsMap[key];
                     // Flip the attributes so the value is the key and the key is the value
@@ -769,10 +803,87 @@ async function import_settings_string(event) {
     
     document.getElementById("settings_string").value = document.getElementById("settings_string").value.trim();
     const settingsString = document.getElementById("settings_string").value;
-    import_settings_string_internal(settingsString);
-    generateToast("Imported settings string. All non-cosmetic settings have been overwritten.");
+    if (settingsString === "") {
+        generateToast("Paste a settings string to import.", true);
+        return;
+    }
+    try {
+        await import_settings_string_internal(settingsString);
+        generateToast("Imported settings string. All non-cosmetic settings have been overwritten.");
+    } catch (error) {
+        generateToast("Could not import the settings string: " + error.message, true);
+    }
 }
 
 document.getElementById("import_settings").addEventListener("click", import_settings_string);
+
+async function export_archipelago_yaml(event) {
+    /**
+     * Export current settings to Archipelago YAML format.
+     */
+    if (event != null) {
+        event.preventDefault();
+    }
+    
+    // Serialize current settings
+    let settings = serialize_settings(false);
+    
+    // Debug: Check what's being serialized for list fields
+    let settings_obj = JSON.parse(settings);
+    console.log("remove_barriers_selected:", settings_obj.remove_barriers_selected);
+    console.log("tricks_selected:", settings_obj.tricks_selected);
+    console.log("enemies_selected:", settings_obj.enemies_selected);
+    
+    // Get player name from user
+    let player_name = prompt("Enter player name for YAML file:", "Player");
+    if (!player_name) {
+        player_name = "Player";
+    }
+    
+    // Prepare request data
+    let request_data = {
+        settings: settings,
+        player_name: player_name,
+        game_version: "0.6.6"
+    };
+    
+    try {
+        // Show loading toast
+        generateToast("Generating Archipelago YAML...");
+        
+        // Call API endpoint
+        let response = await fetch(base_url + "/export_archipelago_yaml?branch=" + branch, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(request_data)
+        });
+        
+        if (response.ok) {
+            // Download the YAML file
+            let blob = await response.blob();
+            let url = window.URL.createObjectURL(blob);
+            let a = document.createElement("a");
+            a.href = url;
+            a.download = `${player_name} Kong.yaml`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            
+            generateToast("Archipelago YAML exported successfully!");
+        } else {
+            let error_data = await response.json();
+            generateToast("Error exporting YAML: " + (error_data.error || "Unknown error"), true);
+        }
+    } catch (error) {
+        console.error("Error exporting YAML:", error);
+        generateToast("Error exporting YAML: " + error.message, true);
+    }
+}
+
+// Add event listener for export YAML dropdown item
+document.getElementById("export_yaml_option").addEventListener("click", export_archipelago_yaml);
 
 window["setup_pyodide"] = setup_pyodide;
