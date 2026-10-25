@@ -388,10 +388,10 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
             else:
                 # Only modify the instance script
                 if pad_type == SwitchType.GunSwitch:
+                    KONG_PELLETS = [48, 36, 42, 43, 38]
                     if pad_kong == Kongs.any:
                         replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": "COND 16 | 4 1 0"})
                     else:
-                        KONG_PELLETS = [48, 36, 42, 43, 38]
                         replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": f"COND 24 | {KONG_PELLETS[pad_kong]} 1 0"})
                 elif pad_type in (SwitchType.InstrumentPad, SwitchType.SlamSwitch):
                     if pad_kong == Kongs.any:
@@ -420,11 +420,11 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
                         replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {f"COND 33 | {control_states[slot_data.default_kong][1]} 0 0": f"COND 33 | {control_states[pad_kong][1]} 0 0"})
                     replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {f"COND 24 | {slot_data.default_kong + 2} 1 0": f"COND 24 | {pad_kong + 2} 1 0"})
                 elif pad_type == SwitchType.GunInstrumentCombo:
+                    KONG_PELLETS = [48, 36, 42, 43, 38]
                     if pad_kong == Kongs.any:
                         replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[0]], {f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": "COND 16 | 4 1 0"})
                         replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[1]], {f"COND 25 | {slot_data.default_kong + 2} 0 0": "COND 0 | 0 0 0"})
                     else:
-                        KONG_PELLETS = [48, 36, 42, 43, 38]
                         replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[0]], {f"COND 24 | {KONG_PELLETS[slot_data.default_kong]} 1 0": f"COND 24 | {KONG_PELLETS[pad_kong]} 1 0"})
                         replaceScriptLines(ROM_COPY, slot_data.map_id, [slot_data.ids[1]], {f"COND 25 | {slot_data.default_kong + 2} 0 0": f"COND 25 | {pad_kong + 2} 0 0"})
 

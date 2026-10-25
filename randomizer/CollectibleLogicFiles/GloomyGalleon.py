@@ -10,7 +10,7 @@ from randomizer.LogicClasses import Collectible
 LogicRegions = {
     Regions.GloomyGalleonStart: [
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda _: True, None, 2),
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.cannons, None, 2),
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 5),
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and ((l.punch and l.chunky) or l.CanPhase()), None, 2),
         Collectible(Collectibles.banana, Kongs.tiny, lambda _: True, None, 5),  # tunnel side 1
@@ -19,7 +19,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda _: True, None, 1),  # On Warp 2
         Collectible(Collectibles.banana, Kongs.chunky, lambda _: True, None, 5),  # Chests
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda _: True, None, 5),  # Cranky's lab
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.cannons, None, 5),  # Cranky's lab
         Collectible(Collectibles.coin, Kongs.chunky, lambda _: True, None, 3),  # Towards chests
     ],
     Regions.GalleonPastVines: [
