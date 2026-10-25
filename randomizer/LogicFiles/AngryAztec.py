@@ -185,7 +185,7 @@ LogicRegions = {
     ]),
 
     Regions.AngryAztecMain: Region("Angry Aztec Main", HintRegion.OasisAndTotem, Levels.AngryAztec, True, -1, [
-        LocationLogic(Locations.AztecDiddyRamGongs, lambda l: l.charge and l.jetpack and l.diddy),
+        LocationLogic(Locations.AztecDiddyRamGongs, lambda l: l.hasMoveSwitchsanity(Switches.AztecGongTower, False) and l.jetpack and l.diddy),
         LocationLogic(Locations.AztecDiddyVultureRace, lambda l: l.jetpack and l.diddy),
         LocationLogic(Locations.MelonCrate_Location06, lambda l: (l.jetpack and l.isdiddy) or l.CanMoonkick()),
         LocationLogic(Locations.MelonCrate_Location07, lambda _: True),
@@ -216,7 +216,7 @@ LogicRegions = {
         TransitionFront(Regions.LankyTempleEntrance, lambda l: (Events.FedTotem in l.Events and l.grape and l.islanky) or l.CanPhase(), Transitions.AztecMainToLanky),
         TransitionFront(Regions.TinyTempleEntrance, lambda l: (Events.FedTotem in l.Events and l.feather and l.istiny) or l.CanPhase(), Transitions.AztecMainToTiny),
         TransitionFront(Regions.ChunkyTempleEntrance, lambda l: (Events.FedTotem in l.Events and l.pineapple and l.ischunky) or l.CanPhase() or (l.generalclips and l.ischunky and l.hunkyChunky), Transitions.AztecMainToChunky),
-        TransitionFront(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Transitions.AztecMainToRace),
+        TransitionFront(Regions.AztecTinyRace, lambda l: l.hasMoveSwitchsanity(Switches.AztecGongTower, False) and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Transitions.AztecMainToRace),
         TransitionFront(Regions.LlamaTemple, lambda l: l.canOpenLlamaTemple() or l.CanPhase() or (l.generalclips and (l.isdonkey or l.isdiddy or l.istiny or l.ischunky)), Transitions.AztecMainToLlama),
         TransitionFront(Regions.AztecBaboonBlast, lambda l: l.blast and l.isdonkey),  # , Transitions.AztecMainToBBlast),
         TransitionFront(Regions.Snide, lambda l: l.snideAccess),

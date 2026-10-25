@@ -283,7 +283,7 @@ LogicRegions = {
     ]),
 
     Regions.AngryAztecLobby: Region("Angry Aztec Lobby", HintRegion.EarlyLobbies, Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesTinyAztecLobby, lambda l: (((l.charge and l.diddy and l.twirl) or l.settings.bonus_barrels == MinigameBarrels.skip) and l.istiny) or (l.settings.bonus_barrels == MinigameBarrels.skip and l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.IslesTinyAztecLobby, lambda l: (((l.hasMoveSwitchsanity(Switches.AztecLobbyGong, False) and l.twirl) or l.settings.bonus_barrels == MinigameBarrels.skip) and l.istiny) or (l.settings.bonus_barrels == MinigameBarrels.skip and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(1)),
         LocationLogic(Locations.AztecDiddyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(1)),
         LocationLogic(Locations.AztecLankyDoor, lambda l: not l.settings.wrinkly_location_rando and l.canUnlockHintDoor(1)),
@@ -454,15 +454,15 @@ LogicRegions = {
     ]),
 
     Regions.CrystalCavesLobby: Region("Crystal Caves Lobby", HintRegion.LateLobbies, Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesDonkeyLavaBanana, lambda l: ((l.punch and l.chunky and l.strongKong) or l.CanPhase()) and l.donkey),
+        LocationLogic(Locations.IslesDonkeyLavaBanana, lambda l: ((l.hasMoveSwitchsanity(Switches.CavesLobbyBP, False) and l.hasMoveSwitchsanity(Switches.CavesLobbyLava, False) and l.strongKong) or l.CanPhase()) and l.donkey),
         LocationLogic(Locations.IslesDiddyInstrumentPad, lambda l: l.jetpack and l.guitar and l.diddy),
-        LocationLogic(Locations.IslesKasplatCavesLobby, lambda l: not l.settings.kasplat_rando and ((l.punch and l.chunky) or l.CanPhase() or l.ledgeclip)),
-        LocationLogic(Locations.CavesDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles) and l.canUnlockHintDoor(5)),
-        LocationLogic(Locations.CavesDiddyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles) and ((l.isdiddy and l.jetpack) or l.CanMoonkick()) and l.canUnlockHintDoor(5)),
-        LocationLogic(Locations.CavesLankyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles) and l.canUnlockHintDoor(5)),
-        LocationLogic(Locations.CavesTinyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles) and l.canUnlockHintDoor(5)),
-        LocationLogic(Locations.CavesChunkyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.punch and l.chunky and l.barrels) or l.settings.remove_wrinkly_puzzles) and l.canUnlockHintDoor(5)),
-        LocationLogic(Locations.HoldableBoulderCavesLobby, lambda l: l.barrels and l.chunky and (l.punch or l.CanPhase())),
+        LocationLogic(Locations.IslesKasplatCavesLobby, lambda l: not l.settings.kasplat_rando and (l.hasMoveSwitchsanity(Switches.CavesLobbyBP, False) or l.CanPhase() or l.ledgeclip)),
+        LocationLogic(Locations.CavesDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.hasMoveSwitchsanity(Switches.CavesLobbyBP, False) and l.barrels) or l.settings.remove_wrinkly_puzzles) and l.canUnlockHintDoor(5)),
+        LocationLogic(Locations.CavesDiddyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.hasMoveSwitchsanity(Switches.CavesLobbyBP, False) and l.barrels) or l.settings.remove_wrinkly_puzzles) and ((l.isdiddy and l.jetpack) or l.CanMoonkick()) and l.canUnlockHintDoor(5)),
+        LocationLogic(Locations.CavesLankyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.hasMoveSwitchsanity(Switches.CavesLobbyBP, False) and l.barrels) or l.settings.remove_wrinkly_puzzles) and l.canUnlockHintDoor(5)),
+        LocationLogic(Locations.CavesTinyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.hasMoveSwitchsanity(Switches.CavesLobbyBP, False) and l.barrels) or l.settings.remove_wrinkly_puzzles) and l.canUnlockHintDoor(5)),
+        LocationLogic(Locations.CavesChunkyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.hasMoveSwitchsanity(Switches.CavesLobbyBP, False) and l.barrels) or l.settings.remove_wrinkly_puzzles) and l.canUnlockHintDoor(5)),
+        LocationLogic(Locations.HoldableBoulderCavesLobby, lambda l: l.barrels and l.chunky and (l.hasMoveSwitchsanity(Switches.CavesLobbyBP, False) or l.CanPhase())),
     ], [
         Event(Events.CavesLobbyAccessed, lambda _: True),
     ], [

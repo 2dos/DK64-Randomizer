@@ -70,7 +70,6 @@ LogicRegions = {
         TransitionFront(Regions.FunkyCaves, lambda l: l.funkyAccess),
         TransitionFront(Regions.CrankyCaves, lambda l: l.crankyAccess),
         TransitionFront(Regions.CavesSnideArea, lambda l: l.hasMoveSwitchsanity(Switches.CavesSnideCave, False) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
-        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls))),
         TransitionFront(Regions.CavesBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.CavesMainToBBlast)
     ]),
 
