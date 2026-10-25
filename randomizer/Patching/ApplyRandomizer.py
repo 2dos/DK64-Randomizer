@@ -761,6 +761,8 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
             0xE,  # Day Gate - Punch Door
             0x12,  # Day Gate - Snide Area
         ],
+        Maps.ForestMillFront: [0xB],  # Day Gate - Mill Front
+        Maps.ForestMillBack: [0xF],  # Day Gate - Mill Rear
     }
     night_script = {
         Maps.FungiForest: [
@@ -775,11 +777,7 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
             0x46,  # Night Gate - Crown Trapdoor
         ],
         Maps.ForestGiantMushroom: [0x11],  # Night Gate - GMush Interior
-        Maps.ForestMillFront: [0xB],  # Night Gate - Mill Front
-        Maps.ForestMillBack: [
-            0xF,  # Night Gate - Mill Rear
-            0x2,  # Night Gate - Spider Web
-        ],
+        Maps.ForestMillBack: [0x2],  # Night Gate - Spider Web
     }
     time_val = spoiler.settings.fungi_time_internal
     if time_val in fungi_times:
