@@ -1596,13 +1596,11 @@ class KongModels(OptionDict):
     Valid Values (varies by kong):
     - "default": Normal Kong (all kongs)
     - "krusha": Krusha (all kongs)
-    - "krool_fight": K. Rool fight model (all kongs)
-    - "krool_cutscene": K. Rool cutscene model (all kongs)
+    - "krool_fight": K. Rool fight model (DK, Diddy and Tiny Only)
+    - "krool_cutscene": K. Rool cutscene model (DK, Diddy and Tiny Only)
     - "cranky": Cranky Kong (DK only)
     - "candy": Candy Kong (Tiny only)
     - "funky": Funky Kong (Diddy only)
-    - "rabbit": Rabbit (Diddy only)
-    - "robokrem": Robo Kremling (Lanky only)
 
     Example: {"dk": "krusha", "tiny": "candy"}
     """
@@ -1612,14 +1610,14 @@ class KongModels(OptionDict):
     valid_keys = frozenset(["dk", "diddy", "lanky", "tiny", "chunky"])
 
     # Models available to all kongs
-    common_models = {"default", "krusha", "krool_fight", "krool_cutscene"}
+    common_models = {"default", "krusha"}
 
     # Kong-specific models
     kong_specific_models = {
-        "dk": {"cranky"},
-        "diddy": {"funky", "rabbit"},
-        "lanky": {"robokrem"},
-        "tiny": {"candy"},
+        "dk": {"cranky", "krool_fight", "krool_cutscene"},
+        "diddy": {"funky", "krool_fight", "krool_cutscene"},
+        "lanky": set(),
+        "tiny": {"candy", "krool_fight", "krool_cutscene"},
         "chunky": set(),
     }
 
