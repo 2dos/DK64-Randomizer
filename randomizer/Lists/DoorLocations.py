@@ -151,7 +151,7 @@ class DoorData:
             else:
                 if DoorType.dk_portal in self.door_type:
                     self.door_type.remove(DoorType.dk_portal)
-        if spoiler.settings.dk_portal_location_rando_v2 == DKPortalRando.main_only:
+        if spoiler.settings.dk_portal_location_rando_v2 in (DKPortalRando.main_only, DKPortalRando.main_only_underwater):
             if self.map not in LEVEL_MAIN_MAPS and DoorType.dk_portal in self.door_type:
                 self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
         if not allow_underwater:
