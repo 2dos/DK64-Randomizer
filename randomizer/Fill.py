@@ -496,8 +496,8 @@ def GetAccessibleLocations(
 
                     # Handle dusk time setting
                     if settings.fungi_time == FungiTimeSetting.dusk:
-                        region_list_dest.dayAccess[kong] = True
-                        region_list_dest.nightAccess[kong] = True
+                        region_list_dest.dayAccess[kong] = region_list_dest.dayAccess[kong] or spoiler.LogicVariables.dayAccess
+                        region_list_dest.nightAccess[kong] = region_list_dest.nightAccess[kong] or spoiler.LogicVariables.nightAccess
 
                 # Deathwarps currently send to the vanilla destination
                 if region.deathwarp and not settings.perma_death:

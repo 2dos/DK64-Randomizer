@@ -104,7 +104,9 @@ LogicRegions = {
         LocationLogic(Locations.Balloon031, lambda l: l.isdonkey and l.coconut),
         LocationLogic(Locations.Balloon034, lambda l: l.isdiddy and l.peanut and (l.guitar or l.CanAccessRNDRoom())),
         LocationLogic(Locations.Balloon038, lambda l: l.ischunky and l.pineapple and ((l.triangle and l.climbing and l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False)) or l.CanAccessRNDRoom())),
-    ], [], [
+    ], [
+        Event(Events.BHDMCheck, lambda l: ((l.triangle and l.climbing) or l.CanAccessRNDRoom()) and l.punch and l.hunkyChunky and l.ischunky and l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False)),
+    ], [
         TransitionFront(Regions.ChunkyRoomPlatform, lambda _: True),
         TransitionFront(Regions.RandD, lambda _: True),
     ]),
@@ -205,6 +207,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: not l.checkFastCheck(FasterChecksSelected.factory_arcade_round_1) and (Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey)),
     ], [
         Event(Events.FactoryW5aTagged, lambda _: True),
+        Event(Events.ArcadeR2Check, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey and (l.GetCoins(Kongs.donkey) >= 2)),
     ], [
         TransitionFront(Regions.FactoryArcadePole, lambda _: True),
     ]),

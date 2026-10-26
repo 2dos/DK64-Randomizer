@@ -10,7 +10,7 @@ from randomizer.LogicClasses import TransitionFront
 class ShopLocation:
     """Class which stores data for a shop location."""
 
-    def __init__(self, shop, map, containing_region, shop_exit, locked=False):
+    def __init__(self, shop, map, containing_region, shop_exit, locked=False, additional_logic=None):
         """Initialize with given parameters."""
         self.shop = shop
         self.map = map
@@ -19,6 +19,10 @@ class ShopLocation:
         self.containing_region = containing_region
         self.shop_exit = shop_exit
         self.new_shop_exit = shop_exit
+        if additional_logic:
+            self.additional_logic = additional_logic
+        else:
+            self.additional_logic = lambda _: True
 
     def setShop(self, shop):
         """Assign new shop to shop location object."""
@@ -49,7 +53,7 @@ available_shops = {
         ShopLocation(Regions.Snide, Maps.FranticFactory, Regions.Testing, Regions.Snide),
     ],
     Levels.GloomyGalleon: [
-        ShopLocation(Regions.CrankyGeneric, Maps.GloomyGalleon, Regions.GloomyGalleonStart, Regions.CrankyGalleon),
+        ShopLocation(Regions.CrankyGeneric, Maps.GloomyGalleon, Regions.GloomyGalleonStart, Regions.CrankyGalleon, additional_logic=lambda l: l.cannons),
         ShopLocation(Regions.CandyGeneric, Maps.GloomyGalleon, Regions.Shipyard, Regions.CandyGalleon),
         ShopLocation(Regions.FunkyGeneric, Maps.GloomyGalleon, Regions.Shipyard, Regions.FunkyGalleon),
         ShopLocation(Regions.Snide, Maps.GloomyGalleon, Regions.LighthouseSnideAlcove, Regions.Snide),
@@ -144,13 +148,13 @@ def ShuffleShopLocations(spoiler):
                 # Add exit to new containing region for logical access
                 region = spoiler.RegionList[shop.containing_region]
                 if shop.new_shop == Regions.CrankyGeneric:
-                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.crankyAccess))
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.crankyAccess and shop.additional_logic(l)))
                 elif shop.new_shop == Regions.FunkyGeneric:
-                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.funkyAccess))
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.funkyAccess and shop.additional_logic(l)))
                 elif shop.new_shop == Regions.CandyGeneric:
-                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.candyAccess))
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.candyAccess and shop.additional_logic(l)))
                 elif shop.new_shop == Regions.Snide:
-                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.snideAccess))
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.snideAccess and shop.additional_logic(l)))
         assortment[level] = assortment_in_level
     # Write Assortment to spoiler
     spoiler.shuffled_shop_locations = assortment

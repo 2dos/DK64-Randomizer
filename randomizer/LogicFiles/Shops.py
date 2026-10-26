@@ -1,11 +1,12 @@
 # fmt: off
 """Logic file for shops."""
 
+from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion
-from randomizer.LogicClasses import LocationLogic, Region, TransitionFront
+from randomizer.LogicClasses import LocationLogic, Region, TransitionFront, Event
 
 LogicRegions = {
     Regions.FunkyGeneric: Region("Funky Generic", HintRegion.Error, Levels.Shops, False, None, [], [], []),
@@ -146,7 +147,9 @@ LogicRegions = {
 
     Regions.CrankyGeneric: Region("Cranky Generic", HintRegion.Jetpac, Levels.Shops, False, None, [
         LocationLogic(Locations.RarewareCoin, lambda l: l.CanGetRarewareCoin()),
-    ], [], []),
+    ], [
+        Event(Events.JetpacCheck, lambda l: l.CanGetRarewareCoin()),
+    ], []),
 
     Regions.CrankyJapes: Region("Cranky Japes", HintRegion.JapesShops, Levels.Shops, False, None, [
         LocationLogic(Locations.SharedJapesPotion, lambda l: l.CanBuy(Locations.SharedJapesPotion)),

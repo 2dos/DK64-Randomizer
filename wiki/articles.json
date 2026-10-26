@@ -146,16 +146,16 @@
         "link": "CustomLocationsColoredBananas"
     },
     {
+        "name": "Custom Locations: Doors",
+        "link": "CustomLocationsDoors"
+    },
+    {
         "name": "Custom Locations: Fairies",
         "link": "CustomLocationsFairies"
     },
     {
         "name": "Custom Locations: Kasplats",
         "link": "CustomLocationsKasplats"
-    },
-    {
-        "name": "Custom Locations: Doors",
-        "link": "CustomLocationsDoors"
     },
     {
         "name": "Custom Locations: Miscellaneous",
