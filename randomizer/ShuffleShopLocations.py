@@ -10,7 +10,7 @@ from randomizer.LogicClasses import TransitionFront
 class ShopLocation:
     """Class which stores data for a shop location."""
 
-    def __init__(self, shop, map, containing_region, shop_exit, locked=False, additional_logic = None):
+    def __init__(self, shop, map, containing_region, shop_exit, locked=False, additional_logic=None):
         """Initialize with given parameters."""
         self.shop = shop
         self.map = map
