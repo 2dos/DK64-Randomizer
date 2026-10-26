@@ -146,7 +146,9 @@ LogicRegions = {
 
     Regions.CrankyGeneric: Region("Cranky Generic", HintRegion.Jetpac, Levels.Shops, False, None, [
         LocationLogic(Locations.RarewareCoin, lambda l: l.CanGetRarewareCoin()),
-    ], [], []),
+    ], [
+        Event(Events.JetpacCheck, lambda l: l.CanGetRarewareCoin()),
+    ], []),
 
     Regions.CrankyJapes: Region("Cranky Japes", HintRegion.JapesShops, Levels.Shops, False, None, [
         LocationLogic(Locations.SharedJapesPotion, lambda l: l.CanBuy(Locations.SharedJapesPotion)),

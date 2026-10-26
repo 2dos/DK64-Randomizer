@@ -258,7 +258,9 @@ LogicRegions = {
 
     Regions.RarewareGBRoom: Region("Rareware GB Room", HintRegion.OuterIsles, Levels.DKIsles, False, None, [
         LocationLogic(Locations.RarewareBanana, lambda _: True),
-    ], [], [
+    ], [
+        Event(Events.RarewareGBCheck, lambda _: True),
+    ], [
         TransitionFront(Regions.BananaFairyRoom, lambda _: True),
     ]),
 

@@ -301,7 +301,9 @@ LogicRegions = {
 
     Regions.Mechafish: Region("Mechafish", HintRegion.ShipyardOutskirts, Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonDiddyMechafish, lambda l: l.HasGun(Kongs.diddy) or (l.settings.free_trade_items and l.HasGun(Kongs.any))),
-    ], [], [
+    ], [
+        Event(Events.MechFishCheck, lambda l: l.HasGun(Kongs.diddy) or (l.settings.free_trade_items and l.HasGun(Kongs.any))),
+    ], [
         TransitionFront(Regions.ShipyardUnderwater, lambda _: True, Transitions.GalleonMechFishToShipyard)
     ]),
 
