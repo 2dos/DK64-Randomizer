@@ -95,7 +95,7 @@ BOULDERS_DONT_DESTROY = True
 CAN_THROW_KEGS = True
 CAN_THROW_APPLES = True
 DISABLE_LONG_JUMP = False
-TS = True
+TURF_SURF = False
 TEST_HUNKY_FIX = False
 BETTER_JUMPS = True
 INSTANCE_SCRIPT_ADJUSTMENTS = True
@@ -2298,7 +2298,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     writeValue(ROM_COPY, 0x806010DE, Overlay.Static, getLo(MUSIC_MIDI_OFFSET), offset_dict)
     writeValue(ROM_COPY, 0x806010EE, Overlay.Static, (SONG_COUNT + 1) * 4, offset_dict)
 
-    if TS:
+    if TURF_SURF:
         writeValue(ROM_COPY, 0x8074B00C, Overlay.Static, -1, offset_dict, 2, True)  # Allow any kongs to pick up boulders
         for x in range(5):
             writeFloat(ROM_COPY, 0x807532D4 + (4 * x), Overlay.Static, 140, offset_dict)  # Speed up carry speed
@@ -2694,7 +2694,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     if not settings.disable_racing_patches:
         writeValue(ROM_COPY, 0x806D0328, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
         writeValue(ROM_COPY, 0x806CBE04, Overlay.Static, 0x1000, offset_dict)  # Disable Fungi OSprint Slowdown
-        if not TS:
+        if not TURF_SURF:
             writeFloat(ROM_COPY, 0x807532E4, Overlay.Static, 90, offset_dict)  # Set Chunky pickup speed to 90 (instead of 100)
         writeValue(ROM_COPY, 0x806BEB76, Overlay.Static, 0x3FE8, offset_dict)  # Tone down the rabbit race 1 speed to 0.75x rather than 1.0x
 

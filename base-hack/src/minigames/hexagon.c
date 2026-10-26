@@ -1055,7 +1055,6 @@ void loop(Gfx **dl_ptr) {
         default:
             break;
     }
-    handleMusic();
     handleMusic2();
     *dl_ptr = dl;
 }

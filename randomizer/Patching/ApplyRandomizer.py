@@ -415,6 +415,22 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
                                 f"COND 23 | {control_states[slot_data.default_kong][0]} {control_states[slot_data.default_kong][1]} 0": f"COND 23 | {control_states[pad_kong][0]} {control_states[pad_kong][1]} 0"
                             },
                         )
+                    elif slot == Switches.AztecOKONGPuzzle:
+                        ids = [
+                            0x0C,
+                            0x0D,
+                            0x0E,
+                            0x0F,
+                            0x14,
+                        ]
+                        replaceScriptLines(
+                            ROM_COPY,
+                            slot_data.map_id,
+                            ids,
+                            {
+                                f"COND 23 | {control_states[slot_data.default_kong][0]} {control_states[slot_data.default_kong][1]} 0": f"COND 23 | {control_states[pad_kong][0]} {control_states[pad_kong][1]} 0"
+                            },
+                        )
                     else:
                         replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {f"COND 23 | {control_states[slot_data.default_kong][0]} 0 0": f"COND 23 | {control_states[pad_kong][0]} 0 0"})
                         replaceScriptLines(ROM_COPY, slot_data.map_id, slot_data.ids, {f"COND 33 | {control_states[slot_data.default_kong][1]} 0 0": f"COND 33 | {control_states[pad_kong][1]} 0 0"})
