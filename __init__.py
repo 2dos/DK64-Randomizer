@@ -1483,6 +1483,7 @@ if baseclasses_loaded:
                 "tag_link": self.options.tag_link.value,
                 "trap_link": self.options.trap_link.value,
                 "damage_link": self.options.damage_link.value,
+                "knockback_link": self.options.knockback_link.value,
                 "receive_notifications": self.options.receive_notifications.value,
                 "LevelOrder": ", ".join([level.name for order, level in self.spoiler.settings.level_order.items()]),
                 "StartingKongs": ", ".join([kong.name for kong in self.spoiler.settings.starting_kong_list]),
@@ -1892,7 +1893,6 @@ if baseclasses_loaded:
 
         def interpret_slot_data(self, slot_data: dict[str, any]) -> dict[str, any]:
             """Parse slot data for any logical bits that need to match the real generation. Used by Universal Tracker."""
-            Tracker.store_item_panel_groups()
             # Parse the string data
             version = slot_data["Version"]
 

@@ -1004,9 +1004,10 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     writeValue(ROM_COPY, 0x806F90C8, Overlay.Static, 0x24040000 | (20 * 150), offset_dict, 4)  # set min coconuts to 3000 (20 crystals)
 
     # Damage mask
-    damage_addrs = [0x806EE138, 0x806EE330, 0x806EE480, 0x806EEA20, 0x806EEEA4, 0x806EF910, 0x806EF9D0, 0x806F5860]
+    damage_addrs = [0x806EE138, 0x806EE330, 0x806EE480, 0x806EEA20, 0x806EF910, 0x806EF9D0, 0x806F5860]
     for addr in damage_addrs:
         writeFunction(ROM_COPY, addr, Overlay.Static, "applyDamageMask", offset_dict)
+    writeFunction(ROM_COPY, 0x806EEEA4, Overlay.Static, "applyKnockbackDamage", offset_dict)  # takeDamage: also sends Knockback Link
     writeFunction(ROM_COPY, 0x80031524, Overlay.Boss, "applyDamageMask", offset_dict)
 
     writeFunction(ROM_COPY, 0x806D2FC0, Overlay.Static, "fixRBSlowTurn", offset_dict)  # Slow Turn Fix

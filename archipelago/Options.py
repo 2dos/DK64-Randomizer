@@ -822,6 +822,15 @@ class DamageLink(Toggle):
     display_name = "Damage Link"
 
 
+class KnockbackLink(Toggle):
+    """Determines if Knockback Link is enabled.
+
+    If enabled, when your kong takes a hit that knocks it back, other players with Knockback Link enabled are knocked back, and their knockbacks knock your kong back.
+    """
+
+    display_name = "Knockback Link"
+
+
 class MirrorMode(Toggle):
     """Determines whether the game will be horizontally Mirrored."""
 
@@ -2053,6 +2062,7 @@ class DK64Options(PerGameCommonOptions):
     tag_link: TagLink
     trap_link: TrapLink
     damage_link: DamageLink
+    knockback_link: KnockbackLink
     goal: Goal
     pregiven_keys: NumberOfStartingKeys
     require_beating_krool: RequireBeatingKrool
@@ -2329,6 +2339,7 @@ dk64_option_groups: List[OptionGroup] = [
             RingLink,
             TrapLink,
             DamageLink,
+            KnockbackLink,
             DeathLink,
         ],
     ),

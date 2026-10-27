@@ -168,6 +168,7 @@ class DK64Client:
     ENABLE_TAGLINK = False
     ENABLE_TRAPLINK = False
     ENABLE_DAMAGELINK = False
+    ENABLE_KNOCKBACKLINK = False
     deathlink_debounce = True
     pending_deathlink = False
 
@@ -891,7 +892,7 @@ class DK64Client:
 
         return data
 
-    async def main_tick(self, item_get_cb, deathlink_cb, map_change_cb, ring_link, tag_link, trap_link, damage_link, hint_cb=None):
+    async def main_tick(self, item_get_cb, deathlink_cb, map_change_cb, ring_link, tag_link, trap_link, damage_link, knockback_link, hint_cb=None):
         """Game loop tick."""
         await self.readChecks(item_get_cb)
         # await self.item_tracker.readItems()
@@ -930,6 +931,8 @@ class DK64Client:
             await trap_link()
         if self.ENABLE_DAMAGELINK:
             await damage_link()
+        if self.ENABLE_KNOCKBACKLINK:
+            await knockback_link()
 
         # Check for hint access
         if hint_cb:
@@ -1102,6 +1105,21 @@ class DK64CommandProcessor(ClientCommandProcessor):
                 self.ctx.tags.add("SharedDamage")
             create_task_log_exception(self.ctx.send_msgs([{"cmd": "ConnectUpdate", "tags": self.ctx.tags}]))
 
+    def _cmd_knockbacklink(self):
+        """Toggle knockbacklink from client. Overrides default setting."""
+        if isinstance(self.ctx, DK64Context):
+            if self.ctx.ENABLE_KNOCKBACKLINK:
+                self.ctx.ENABLE_KNOCKBACKLINK = False
+                self.ctx.client.ENABLE_KNOCKBACKLINK = False
+                self.ctx.tags.discard("KnockbackLink")
+                logger.info("Knockbacklink disabled")
+            else:
+                self.ctx.ENABLE_KNOCKBACKLINK = True
+                self.ctx.client.ENABLE_KNOCKBACKLINK = True
+                logger.info("Knockbacklink enabled")
+                self.ctx.tags.add("KnockbackLink")
+            create_task_log_exception(self.ctx.send_msgs([{"cmd": "ConnectUpdate", "tags": self.ctx.tags}]))
+
 
 class DK64Context(CommonContext):
     """Context for Donkey Kong 64."""
@@ -1116,6 +1134,8 @@ class DK64Context(CommonContext):
     ENABLE_TAGLINK = False
     ENABLE_TRAPLINK = False
     ENABLE_DAMAGELINK = False
+    ENABLE_KNOCKBACKLINK = False
+    pending_knockbacks = 0
     pending_damage = 0
     self_inflicted = 0
     prev_health = None
@@ -1308,6 +1328,12 @@ class DK64Context(CommonContext):
                     self.ENABLE_DAMAGELINK = True
                     self.client.ENABLE_DAMAGELINK = True
                     asyncio.create_task(self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}]))
+            if self.slot_data.get("knockback_link"):
+                if "KnockbackLink" not in self.tags:
+                    self.tags.add("KnockbackLink")
+                    self.ENABLE_KNOCKBACKLINK = True
+                    self.client.ENABLE_KNOCKBACKLINK = True
+                    asyncio.create_task(self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}]))
             if self.slot_data.get("receive_notifications"):
                 self.client.send_mode = self.slot_data.get("receive_notifications")
             # Set Helm Hurry flag in client
@@ -1363,6 +1389,9 @@ class DK64Context(CommonContext):
                     points = int(args["data"].get("damage_points", 0))
                     if points > 0:
                         self.pending_damage += min(points, INCOMING_PACKET_CAP)
+            if "KnockbackLink" in self.tags and "KnockbackLink" in args.get("tags", []):
+                if args["data"].get("uuid") != str(self.instance_id):  # ignore our own echo
+                    self.pending_knockbacks += 1
 
     async def send_ring_link(self, amount: int):
         """Send a ring link message."""
@@ -1591,6 +1620,45 @@ class DK64Context(CommonContext):
             self.self_inflicted = 0  # once you die, reset points
         self.prev_health = health
 
+    async def send_knockback_link(self):
+        """Send a KnockbackLink bounce."""
+        if "KnockbackLink" not in self.tags or self.slot is None:
+            return
+        if not hasattr(self, "instance_id"):
+            self.instance_id = time.time()
+        player_name = self.player_names.get(self.slot)
+        await self.send_msgs(
+            [
+                {
+                    "cmd": "Bounce",
+                    "tags": ["KnockbackLink"],
+                    "data": {
+                        "time": time.time(),
+                        "uuid": str(self.instance_id),
+                        "source": player_name,
+                        "cause": f"{player_name} was knocked back",
+                        "value": {"x": 0.0, "y": 1.0, "z": 0.0},  # DK64 doesn't track the knockback direction, so send a plain one
+                    },
+                }
+            ]
+        )
+
+    async def handle_knockback_link(self):
+        """Send the kong's knockbacks and pass received ones to the game."""
+        if not self.client.ENABLE_KNOCKBACKLINK:
+            return
+        n64 = self.client.n64_client
+        base = self.client.memory_pointer
+        if n64.read_u8(base + DK64MemoryMap.send_knockback):
+            await self.send_knockback_link()
+            n64.write_u8(base + DK64MemoryMap.send_knockback, 0)
+        if not self.client.ENABLE_KNOCKBACKLINK:
+            return
+        # The game clears this once it has knocked the kong back
+        if self.pending_knockbacks and not n64.read_u8(base + DK64MemoryMap.receive_knockback):
+            n64.write_u8(base + DK64MemoryMap.receive_knockback, 1)
+            self.pending_knockbacks -= 1
+
     async def send_tag_link(self, kong: int):
         """Send a tag link message."""
         if "TagLink" not in self.tags or self.slot is None:
@@ -1807,6 +1875,10 @@ class DK64Context(CommonContext):
             """Handle a damage link."""
             await self.handle_damage_link()
 
+        async def knockback_link():
+            """Handle a knockback link."""
+            await self.handle_knockback_link()
+
         async def deathlink():
             """Handle a deathlink."""
             await self.send_deathlink()
@@ -1882,7 +1954,7 @@ class DK64Context(CommonContext):
                     if status is False:
                         await asyncio.sleep(0.033)
                         continue
-                    await self.client.main_tick(on_item_get, deathlink, map_change, ring_link, tag_link, trap_link, damage_link, hint_accessed)
+                    await self.client.main_tick(on_item_get, deathlink, map_change, ring_link, tag_link, trap_link, damage_link, knockback_link, hint_accessed)
                     await asyncio.sleep(0.033)
                     now = time.time()
                     if self.last_resend + 0.5 < now:

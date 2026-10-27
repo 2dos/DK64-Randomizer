@@ -112,22 +112,49 @@ int canDie(void) {
     return 1;
 }
 
+// Knockback Link
+#define ACTION_KNOCKBACK 0x2F // takeDamage (0x807FD6F2)
+
+int applyKnockbackDamage(int player_index, int damage) {
+    int died = applyDamageMask(player_index, damage);
+    if (!died) {
+        ap_info.send_knockback = 1;
+    }
+    return died;
+}
+
+static int canReceiveKnockback(void) {
+    if (!Player || !cc_allower_generic() || !canLoadIceTrap(ICETRAP_SLIP)) {
+        return 0;
+    }
+    if (Player->invulnerability_timer || Player->vehicle_actor_pointer) {
+        return 0;
+    }
+    if ((TBVoidByte & 0x30) == 0) {
+        return 0; // In a tag barrel
+    }
+    return SwapObject->action_type == -1;
+}
+
 void handleDamageLink(void) {
-    if ((ap_info.receive_damage == 0) || !canLoadIceTrap(ICETRAP_BUBBLE)) {
-        return;
+    if (ap_info.receive_death) {
+        return; // Already waiting on the kop
     }
     int damage = ap_info.receive_damage; // quarter-melons of damage to take
-    ap_info.receive_damage = 0;
-    if (CollectableBase.Health <= damage) {
-        // Reaching 0 melons doesn't kill on its own, so we spawn the kop and send a deathlink because funny
-        sendDeath();
-        ap_info.receive_death = 1;
-    } else {
-        if (Player) {
-            // Zero i-frames so the hit isn't ignored
-            Player->invulnerability_timer = 0;
+    if (damage && canLoadIceTrap(ICETRAP_BUBBLE)) {
+        ap_info.receive_damage = 0;
+        if (CollectableBase.Health <= damage) {
+            // Reaching 0 melons doesn't kill on its own, so we spawn the kop and send a deathlink because funny
+            sendDeath();
+            ap_info.receive_death = 1;
+            return;
         }
-        applyDamage(0, -damage); // take it all at once
+        applyDamage(0, -damage); // take it all at once, without this kong's damage multiplier
+    }
+    if (ap_info.receive_knockback && canReceiveKnockback()) {
+        *(int*)(0x807FD6F0) = 0; // No damage, so takeDamage doesn't send it back out
+        setAction(ACTION_KNOCKBACK, 0, 0);
+        ap_info.receive_knockback = 0;
     }
 }
 
@@ -182,7 +209,9 @@ void handleArchipelagoFeed(void) {
     }
     if (ap_info.can_die) {
         if (ap_info.receive_death) {
-            cc_enabler_spawnkop();
+            if (cc_enabler_spawnkop()) {
+                refillHealth(0); // Prevents damagelink chaining
+            }
             ap_info.receive_death = 0;
         }
     }
