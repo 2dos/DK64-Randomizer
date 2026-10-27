@@ -103,8 +103,8 @@ typedef struct archipelago_data {
     /* 0x064 */ unsigned char helm_hurry_item;
     /* 0x065 */ unsigned char can_receive_shopkeeper;
     /* 0x066 */ unsigned char receive_damage; // DamageLink: client writes quarter-melon units of incoming damage. Game applies one per frame when safe, decrements.
-    /* 0x067 */ unsigned char send_knockback; // KnockbackLink
-    /* 0x068 */ unsigned char receive_knockback; // KnockbackLink
+    /* 0x067 */ unsigned char send_knockback; // KnockbackLink: takeDamage sets this to 1 when the donk player is knocked back. Set this back to 0 once it's sent
+    /* 0x068 */ unsigned char receive_knockback; // KnockbackLink: Set this to 1 to knock the donk player back. The game waits until it's safe, then sets this back to 0
 } archipelago_data;
 
 extern archipelago_data *APData;
@@ -115,7 +115,6 @@ extern void saveAPCounter(void);
 extern int isAPEnabled(void);
 extern void sendDeath(void);
 extern void handleDamageLink(void);
-extern void handleKnockbackLink(void);
 extern void sendTrapLink(ICE_TRAP_TYPES trap_type);
 extern Gfx *displayAPConnection(Gfx *dl);
 extern int canReceiveShopkeeperItem(void);

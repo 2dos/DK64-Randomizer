@@ -825,7 +825,7 @@ class DamageLink(Toggle):
 class KnockbackLink(Toggle):
     """Determines if Knockback Link is enabled.
 
-    If enabled, when your kong is knocked back by a hit or an explosion, other players with Knockback Link enabled are knocked back, and their knockbacks knock your kong back.
+    If enabled, when your kong takes a hit that knocks it back, other players with Knockback Link enabled are knocked back, and their knockbacks knock your kong back.
     """
 
     display_name = "Knockback Link"

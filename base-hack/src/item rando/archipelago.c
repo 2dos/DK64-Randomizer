@@ -112,39 +112,19 @@ int canDie(void) {
     return 1;
 }
 
-void handleDamageLink(void) {
-    if ((ap_info.receive_damage == 0) || !canLoadIceTrap(ICETRAP_BUBBLE)) {
-        return;
-    }
-    int damage = ap_info.receive_damage; // quarter-melons of damage to take
-    ap_info.receive_damage = 0;
-    if (CollectableBase.Health <= damage) {
-        // Reaching 0 melons doesn't kill on its own, so we spawn the kop and send a deathlink because funny
-        sendDeath();
-        ap_info.receive_death = 1;
-    } else {
-        if (Player) {
-            // Zero i-frames so the hit isn't ignored
-            Player->invulnerability_timer = 0;
-        }
-        applyDamage(0, -damage); // take it all at once
-    }
-}
-
 // Knockback Link
-#define ACTION_KNOCKBACK 0x2F // Vanilla hit knockback
+#define ACTION_KNOCKBACK 0x2F // takeDamage (0x807FD6F2)
 
-ROM_DATA static unsigned char was_knocked_back = 0;
-ROM_DATA static unsigned char knockback_received = 0; // Frames left for the knockback we queued to start
-
-static int isKnockedBack(void) {
-    // Hit, Klump, underwater hit and TNT knockbacks
-    int control_state = Player->control_state;
-    return (control_state == 0x31) || (control_state == 0x35) || (control_state == 0x37) || (control_state == 0x66);
+int applyKnockbackDamage(int player_index, int damage) {
+    int died = applyDamageMask(player_index, damage);
+    if (!died) {
+        ap_info.send_knockback = 1;
+    }
+    return died;
 }
 
 static int canReceiveKnockback(void) {
-    if (!cc_allower_generic() || !canLoadIceTrap(ICETRAP_SLIP)) {
+    if (!Player || !cc_allower_generic() || !canLoadIceTrap(ICETRAP_SLIP)) {
         return 0;
     }
     if (Player->invulnerability_timer || Player->vehicle_actor_pointer) {
@@ -156,28 +136,25 @@ static int canReceiveKnockback(void) {
     return SwapObject->action_type == -1;
 }
 
-void handleKnockbackLink(void) {
-    if (!Player) {
-        return;
+void handleDamageLink(void) {
+    if (ap_info.receive_death) {
+        return; // Already waiting on the kop
     }
-    int knocked_back = isKnockedBack();
-    if (knocked_back && !was_knocked_back) {
-        if (knockback_received) {
-            Player->invulnerability_timer = 0; // Received knockbacks don't give i-frames
-            knockback_received = 0;
-        } else {
-            ap_info.send_knockback = 1;
+    int damage = ap_info.receive_damage; // quarter-melons of damage to take
+    if (damage && canLoadIceTrap(ICETRAP_BUBBLE)) {
+        ap_info.receive_damage = 0;
+        if (CollectableBase.Health <= damage) {
+            // Reaching 0 melons doesn't kill on its own, so we spawn the kop and send a deathlink because funny
+            sendDeath();
+            ap_info.receive_death = 1;
+            return;
         }
-    }
-    was_knocked_back = knocked_back;
-    if (knockback_received) {
-        knockback_received -= 1;
+        applyDamage(0, -damage); // take it all at once, without this kong's damage multiplier
     }
     if (ap_info.receive_knockback && canReceiveKnockback()) {
-        *(int*)(0x807FD6F0) = 0; // No damage
+        *(int*)(0x807FD6F0) = 0; // No damage, so takeDamage doesn't send it back out
         setAction(ACTION_KNOCKBACK, 0, 0);
         ap_info.receive_knockback = 0;
-        knockback_received = 3;
     }
 }
 
@@ -262,8 +239,6 @@ void handleArchipelagoFeed(void) {
     }
     // Damage link
     handleDamageLink();
-    // Knockback link
-    handleKnockbackLink();
     // Helm Hurry item handling
     if (ap_info.helm_hurry_item) {
         addHelmTime(ap_info.helm_hurry_item, 1);

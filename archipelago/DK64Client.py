@@ -1652,6 +1652,8 @@ class DK64Context(CommonContext):
         if n64.read_u8(base + DK64MemoryMap.send_knockback):
             await self.send_knockback_link()
             n64.write_u8(base + DK64MemoryMap.send_knockback, 0)
+        if not self.client.ENABLE_KNOCKBACKLINK:
+            return
         # The game clears this once it has knocked the kong back
         if self.pending_knockbacks and not n64.read_u8(base + DK64MemoryMap.receive_knockback):
             n64.write_u8(base + DK64MemoryMap.receive_knockback, 1)
