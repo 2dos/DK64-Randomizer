@@ -6,7 +6,6 @@ from randomizer.Enums.Maps import Maps
 
 from archipelago.Regions import all_locations
 
-
 ITEM_PANEL = [
     (
         "Kongs",
