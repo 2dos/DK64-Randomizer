@@ -631,11 +631,14 @@ def hueShiftImageContainer(table: int, image: int, width: int, height: int, form
             if format == TextureFormat.RGBA32:
                 bytes_array.extend(pix_data)
             elif format == TextureFormat.RGBA5551:
-                red = int((pix_data[0] >> 3) << 11)
-                green = int((pix_data[1] >> 3) << 6)
-                blue = int((pix_data[2] >> 3) << 1)
-                alpha = int(pix_data[3] != 0)
-                value = red | green | blue | alpha
+                if pix_data[3] == 0:
+                    value = 0
+                else:
+                    red = int((pix_data[0] >> 3) << 11)
+                    green = int((pix_data[1] >> 3) << 6)
+                    blue = int((pix_data[2] >> 3) << 1)
+                    alpha = int(pix_data[3] != 0)
+                    value = red | green | blue | alpha
                 bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
     px_data = bytearray(bytes_array)
     if table != 7:
