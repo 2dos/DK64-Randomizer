@@ -1892,7 +1892,6 @@ if baseclasses_loaded:
 
         def interpret_slot_data(self, slot_data: dict[str, any]) -> dict[str, any]:
             """Parse slot data for any logical bits that need to match the real generation. Used by Universal Tracker."""
-            Tracker.store_item_panel_groups()
             # Parse the string data
             version = slot_data["Version"]
 

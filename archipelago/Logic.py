@@ -1753,7 +1753,12 @@ class LogicVarHolder:
 
     def IsBossReachable(self, level):
         """Check if the boss banana requirement is met."""
-        return self.HasEnoughKongs(level) and ((sum(self.ColoredBananas[level]) >= self.settings.BossBananas[level]) or self.troff_skip)
+        if self.settings.free_trade_cbs:
+            # Any Kong can pick up any color but kong is still needed for tns
+            boss_bananas = sum(self.ColoredBananas[level][kong] for kong in self.GetKongs())
+        else:
+            boss_bananas = sum(self.ColoredBananas[level])
+        return self.HasEnoughKongs(level) and ((boss_bananas >= self.settings.BossBananas[level]) or self.troff_skip)
 
     def HasEnoughKongs(self, level, forPreviousLevel=False):
         """Check if kongs are required for progression, do we have enough to reach the given level."""
