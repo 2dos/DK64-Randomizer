@@ -3,3 +3,4 @@
 
 # Hide proto gencode from PRs/LOCs (it's still readable you just have to open it manually)
 randomizer/proto_gen/* linguist-generated=true
+static/data/selector_info.pb linguist-generated=true
