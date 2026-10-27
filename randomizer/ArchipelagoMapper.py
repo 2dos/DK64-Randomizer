@@ -606,6 +606,7 @@ SETTINGS: Dict[str, Optional[Rule]] = {
     "ring_link": AP_ONLY,
     "trap_link": AP_ONLY,
     "damage_link": AP_ONLY,
+    "knockback_link": AP_ONLY,
     "death_link": AP_ONLY,
     # Quality of Life
     "enable_cutscenes": enable_cutscenes,
