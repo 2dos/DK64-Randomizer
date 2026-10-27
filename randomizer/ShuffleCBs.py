@@ -74,20 +74,32 @@ def addBalloon(spoiler, balloon: Balloon, enum_val: int, name: str, level: Level
 
 
 def removeBalloons(spoiler):
-    """Remove all vanilla balloons from Logic regions."""
-    level_logic_regions = [
-        randomizer.LogicFiles.DKIsles.LogicRegions,
-        randomizer.LogicFiles.JungleJapes.LogicRegions,
-        randomizer.LogicFiles.AngryAztec.LogicRegions,
-        randomizer.LogicFiles.FranticFactory.LogicRegions,
-        randomizer.LogicFiles.GloomyGalleon.LogicRegions,
-        randomizer.LogicFiles.FungiForest.LogicRegions,
-        randomizer.LogicFiles.CrystalCaves.LogicRegions,
-        randomizer.LogicFiles.CreepyCastle.LogicRegions,
-    ]
+    """Remove all vanilla balloons from Logic regions where CBs are shuffled."""
+    level_logic_regions = []
+    if Levels.DKIsles in spoiler.settings.cb_rando_list_selected:
+        level_logic_regions.append(randomizer.LogicFiles.DKIsles.LogicRegions)
+    if Levels.JungleJapes in spoiler.settings.cb_rando_list_selected:
+        level_logic_regions.append(randomizer.LogicFiles.JungleJapes.LogicRegions)
+    if Levels.AngryAztec in spoiler.settings.cb_rando_list_selected:
+        level_logic_regions.append(randomizer.LogicFiles.AngryAztec.LogicRegions)
+    if Levels.FranticFactory in spoiler.settings.cb_rando_list_selected:
+        level_logic_regions.append(randomizer.LogicFiles.FranticFactory.LogicRegions)
+    if Levels.GloomyGalleon in spoiler.settings.cb_rando_list_selected:
+        level_logic_regions.append(randomizer.LogicFiles.GloomyGalleon.LogicRegions)
+    if Levels.FungiForest in spoiler.settings.cb_rando_list_selected:
+        level_logic_regions.append(randomizer.LogicFiles.FungiForest.LogicRegions)
+    if Levels.CrystalCaves in spoiler.settings.cb_rando_list_selected:
+        level_logic_regions.append(randomizer.LogicFiles.CrystalCaves.LogicRegions)
+    if Levels.CreepyCastle in spoiler.settings.cb_rando_list_selected:
+        level_logic_regions.append(randomizer.LogicFiles.CreepyCastle.LogicRegions)
+
     for level in level_logic_regions:
         for region in level:
             region_data = spoiler.RegionList[region]
+            removed_locations = [loc for loc in region_data.locations if loc.id >= Locations.Balloon000 and loc.id <= Locations.Balloon103]
+            for loc in removed_locations:
+                # Use the inaccessible flag to mark the location as needing new logic (if it gets one)
+                spoiler.LocationList[loc.id].inaccessible = True
             region_data.locations = [x for x in region_data.locations if x.id < Locations.Balloon000 or x.id > Locations.Balloon103]
 
 
@@ -150,16 +162,16 @@ def ShuffleCBs(spoiler):
         MAX_SINGLES = int(MAX_SINGLES * INCREASE_FACTOR)
         MAX_BUNCHES = int(MAX_BUNCHES * INCREASE_FACTOR)
         PLACEMENT_LIMIT = 1400
-    # Calculate how many CBs to remove from the total based off what levels aren't placed
+    # Calculate how many CBs to remove from the total placeable CB count based off what levels aren't placed
     levels_to_place = []
     for level in level_data:
-        is_level_placed = IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, level)
-        if is_level_placed:
-            # Level is placed, no need to remove CBs
+        is_level_to_be_placed = IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, level)
+        if is_level_to_be_placed:
+            # Level is to be placed, no need to use it to remove CBs from the cap of CBs to be placed
             levels_to_place.append(level)
             continue
         if level == Levels.DKIsles:
-            # Isles has no CBs in vanilla, don't place
+            # Isles has no CBs in vanilla, nothing to do here
             continue
         vanilla_regions = level_data[level]["vanilla"]
         singles_in_vanilla = 0
@@ -168,11 +180,11 @@ def ShuffleCBs(spoiler):
         for region, region_items in vanilla_regions.items():
             for item in region_items:
                 if item.type == Collectibles.balloon:
-                    balloon_in_vanilla += 1
+                    balloon_in_vanilla += item.amount
                 elif item.type == Collectibles.bunch:
-                    bunches_in_vanilla += 1
+                    bunches_in_vanilla += item.amount
                 elif item.type == Collectibles.banana:
-                    singles_in_vanilla += 1
+                    singles_in_vanilla += item.amount
         MAX_BALLOONS -= balloon_in_vanilla
         MAX_SINGLES -= singles_in_vanilla
         MAX_BUNCHES -= bunches_in_vanilla
@@ -396,13 +408,19 @@ def ShuffleCBs(spoiler):
                 sorted_balloons = spoiler.balloon_placement.copy()
                 sorted_balloons = sorted(sorted_balloons, key=lambda d: d["score"])
                 for balloon_index, balloon_data in enumerate(sorted_balloons):
+                    next_free_location = Locations.Balloon000
+                    while not spoiler.LocationList[next_free_location].inaccessible:  # Per the removeBalloons function, inaccessible locations can have a new location logic assigned to it
+                        next_free_location += 1
+                        if next_free_location > Locations.Balloon103:
+                            raise Ex.CBFillFailureException("No more free balloon locations available to place balloon location logic.")
+                    spoiler.LocationList[next_free_location].inaccessible = False
                     if balloon_index < 104:  # Hard limit on balloon locations
-                        balloon_data["enum"] = Locations.Balloon000 + balloon_index
+                        balloon_data["enum"] = next_free_location
                         addBalloon(spoiler, balloon_data["balloon"], balloon_data["enum"], balloon_data["name"], balloon_data["level"], balloon_data["kong"])
                         balloon_data["balloon"] = None  # Clear reference
 
             return
-        except Ex.CBFillFailureException:
+        except Ex.CBFillFailureException as ex:
             if retries >= 10:
                 js.postMessage("CB Randomizer failed to fill. REPORT THIS TO THE DEVS!!")
                 raise Ex.CBFillFailureException
