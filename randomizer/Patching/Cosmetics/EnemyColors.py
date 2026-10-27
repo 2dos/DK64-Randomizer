@@ -660,7 +660,7 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
         sand_shift = getRandomHueShift()
         ice_shift = getRandomHueShift()
     if sand_shift is not None:
-        hueShiftImageContainer(25, 0x565, 32, 32, TextureFormat.RGBA5551, sand_shift, ROM_COPY)  # Aztec Sand
+        hueShiftImageContainer(25, 0x565, 1360, 1, TextureFormat.RGBA5551, sand_shift, ROM_COPY)  # Aztec Sand
     if ice_shift is not None:
         paintCavesAColor(ROM_COPY, ice_shift)
     if IsColorOptionSelected(settings, ColorOptions.environment):
