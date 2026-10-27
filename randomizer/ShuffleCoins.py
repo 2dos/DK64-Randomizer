@@ -135,10 +135,10 @@ def ShuffleCoins(spoiler):
             return
         except Ex.CoinFillFailureException:
             if retries >= 10:
-                js.postMessage("Coin Randomizer failed to fill. REPORT THIS TO THE DEVS!!")
+                js.postMessage("Coin Randomizer failed to randomize coin locations. REPORT THIS TO THE DEVS!!")
                 raise Ex.CoinFillFailureException
             retries += 1
-            js.postMessage("Coin Randomizer failed to fill. Tries: " + str(retries))
+            js.postMessage("Coin Randomizer failed to randomize coin locations. Tries: " + str(retries))
 
 
 RACE_COINS_TO_PLACE = 97 + 71 + 25 + 19 + 87 + 77 + 68 + 17
