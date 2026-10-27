@@ -197,6 +197,7 @@ def ShuffleCBs(spoiler):
             total_singles = 0
             total_bunches = 0
             cb_data = []
+            spoiler.balloon_placement = []
             # First, remove all placed colored bananas
             for region_id in spoiler.CollectibleRegions.keys():
                 map_id = RegionMapList[region_id]
