@@ -1207,7 +1207,7 @@ def getWrinklyScript(map_id: Maps, kong: Kongs, item_id: int) -> list[int]:
             ScriptBlock(
                 [
                     IScript_IsState(0),
-                    FunctionData(6, [7, short_to_ushort(-7), 0], True),
+                    FunctionData(6, [7, short_to_ushort(-7), kong], True),
                 ],
                 [
                     IScript_SetState(20),
@@ -1216,7 +1216,7 @@ def getWrinklyScript(map_id: Maps, kong: Kongs, item_id: int) -> list[int]:
             ScriptBlock(
                 [
                     IScript_IsState(0),
-                    FunctionData(6, [7, short_to_ushort(-7), 0]),
+                    FunctionData(6, [7, short_to_ushort(-7), kong]),
                     IScript_IsFlagSet(view_flag),
                 ],
                 [
@@ -1228,7 +1228,7 @@ def getWrinklyScript(map_id: Maps, kong: Kongs, item_id: int) -> list[int]:
             ScriptBlock(
                 [
                     IScript_IsState(0),
-                    FunctionData(6, [7, short_to_ushort(-7), 0]),
+                    FunctionData(6, [7, short_to_ushort(-7), kong]),
                     IScript_IsFlagSet(view_flag, FlagType.permanent, True),
                 ],
                 [

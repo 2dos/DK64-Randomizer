@@ -37,6 +37,8 @@ def generateCosmeticSet(settings: Settings, file_data: list, slot_keys: list) ->
         selected_forced = False
         selected_name = None
         if key in assignment_data["assignments"]:
+            if len(assignment_data["assignments"][key]) == 0:
+                continue
             available_slots = [x for x in assignment_data["assignments"][key] if x in available_values]
             if len(available_slots) > 0:
                 selected_name = settings.random.choice(available_slots)
@@ -252,6 +254,7 @@ class PaintingData:
         self.color_count = color_count
         self.name = None
         self.file = None
+        self.provided_file = False
 
 
 def writeCustomPaintings(settings: Settings, ROM_COPY: ROM) -> None:
@@ -301,7 +304,10 @@ def writeCustomPaintings(settings: Settings, ROM_COPY: ROM) -> None:
             if painting.key == key:
                 painting.name = generated_set[key][1]
                 painting.file = generated_set[key][0]
+                painting.provided_file = True
     for painting in PAINTING_INFO:
+        if not painting.provided_file:
+            continue
         im_f = Image.open(BytesIO(bytes(painting.file)))
         im_f = getImageChunk(im_f, painting.width, painting.height)
         im_f = im_f.transpose(Image.FLIP_TOP_BOTTOM).convert("RGBA")
@@ -351,20 +357,34 @@ def writeCustomPaintings(settings: Settings, ROM_COPY: ROM) -> None:
                     tformat = TextureFormat.CI4
                 writeColorImageToROM(ci_px_data, 25, main_index, chunk_w, chunk_h, False, tformat, ROM_COPY)
                 writeColorImageToROM(ci_palette, 25, palette_index, color_count, 1, False, TextureFormat.RGBA5551, ROM_COPY)
-    settings.painting_isles = PAINTING_INFO[0].name
-    settings.painting_museum_krool = PAINTING_INFO[1].name
-    settings.painting_museum_knight = PAINTING_INFO[2].name
-    settings.painting_museum_swords = PAINTING_INFO[3].name
-    settings.painting_treehouse_dolphin = PAINTING_INFO[4].name
-    settings.painting_treehouse_candy = PAINTING_INFO[5].name
-    settings.painting_krool_run = PAINTING_INFO[6].name
-    settings.painting_krool_blunderbuss = PAINTING_INFO[7].name
-    settings.painting_krool_head = PAINTING_INFO[8].name
-    settings.painting_factory_map_lobby = PAINTING_INFO[9].name
-    settings.painting_factory_map_production = PAINTING_INFO[10].name
-    settings.painting_factory_map_testing = PAINTING_INFO[11].name
-    settings.painting_factory_map_rnd = PAINTING_INFO[12].name
-    settings.painting_factory_graph = PAINTING_INFO[13].name
+    if PAINTING_INFO[0].provided_file:
+        settings.painting_isles = PAINTING_INFO[0].name
+    if PAINTING_INFO[1].provided_file:
+        settings.painting_museum_krool = PAINTING_INFO[1].name
+    if PAINTING_INFO[2].provided_file:
+        settings.painting_museum_knight = PAINTING_INFO[2].name
+    if PAINTING_INFO[3].provided_file:
+        settings.painting_museum_swords = PAINTING_INFO[3].name
+    if PAINTING_INFO[4].provided_file:
+        settings.painting_treehouse_dolphin = PAINTING_INFO[4].name
+    if PAINTING_INFO[5].provided_file:
+        settings.painting_treehouse_candy = PAINTING_INFO[5].name
+    if PAINTING_INFO[6].provided_file:
+        settings.painting_krool_run = PAINTING_INFO[6].name
+    if PAINTING_INFO[7].provided_file:
+        settings.painting_krool_blunderbuss = PAINTING_INFO[7].name
+    if PAINTING_INFO[8].provided_file:
+        settings.painting_krool_head = PAINTING_INFO[8].name
+    if PAINTING_INFO[9].provided_file:
+        settings.painting_factory_map_lobby = PAINTING_INFO[9].name
+    if PAINTING_INFO[10].provided_file:
+        settings.painting_factory_map_production = PAINTING_INFO[10].name
+    if PAINTING_INFO[11].provided_file:
+        settings.painting_factory_map_testing = PAINTING_INFO[11].name
+    if PAINTING_INFO[12].provided_file:
+        settings.painting_factory_map_rnd = PAINTING_INFO[12].name
+    if PAINTING_INFO[13].provided_file:
+        settings.painting_factory_graph = PAINTING_INFO[13].name
 
 
 def writeCustomDecals(settings: Settings, ROM_COPY: ROM) -> None:
@@ -390,7 +410,10 @@ def writeCustomDecals(settings: Settings, ROM_COPY: ROM) -> None:
             if decal.key == key:
                 decal.name = generated_set[key][1]
                 decal.file = generated_set[key][0]
+                decal.provided_file = True
     for di, decal in enumerate(DECAL_INFO):
+        if not decal.provided_file:
+            continue
         im_f = Image.open(BytesIO(bytes(decal.file)))
         if di in (0, 1):
             w, h = im_f.size
@@ -425,8 +448,10 @@ def writeCustomDecals(settings: Settings, ROM_COPY: ROM) -> None:
                     tformat = TextureFormat.CI4
                 writeColorImageToROM(ci_px_data, 25, main_index, chunk_w, chunk_h, False, tformat, ROM_COPY)
                 writeColorImageToROM(ci_palette, 25, palette_index, color_count, 1, False, TextureFormat.RGBA5551, ROM_COPY)
-    settings.decal_krool = DECAL_INFO[0].name
-    settings.decal_dk = DECAL_INFO[1].name
+    if DECAL_INFO[0].provided_file:
+        settings.decal_krool = DECAL_INFO[0].name
+    if DECAL_INFO[1].provided_file:
+        settings.decal_dk = DECAL_INFO[1].name
 
 
 class ArcadeSprite:
@@ -810,7 +835,10 @@ def writeCustomReels(settings: Settings, ROM_COPY: ROM) -> None:
             if reel.key == key:
                 reel.name = generated_set[key][1]
                 reel.file = generated_set[key][0]
+                reel.provided_file = True
     for reel in REEL_INFO:
+        if not reel.provided_file:
+            continue
         im_f = Image.open(BytesIO(bytes(reel.file))).convert("RGBA")
         im_f = getImageShrink(im_f, reel.width, reel.height)
         im_f = im_f.transpose(Image.FLIP_TOP_BOTTOM).convert("RGBA")
