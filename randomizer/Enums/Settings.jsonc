@@ -1091,6 +1091,19 @@
   },
 
   /*
+    TagAnywhere:
+    - Determines how tag anywhere behaves.
+    - off: No Tag Anywhere.
+    - restricted: Tagging is blocked when the kong is too far (vertically) off the floor.
+    - on: Fully enabled (pre-6.0 default on behavior)
+  */
+  "TagAnywhere": {
+    "off": 0,
+    "restricted": 1,
+    "on": 2
+  },
+
+  /*
     TrainingBarrels:
     - Determines if and how training barrels are randomized.
     - normal: Training barrels give vanilla moves.
@@ -1578,6 +1591,7 @@
     "diddy_colors": { "obj": "CharacterColors" },
     "dk_colors": { "obj": "CharacterColors" },
     "dpad_display": { "obj": "DPadDisplays" },
+    "enable_tag_anywhere": { "obj": "TagAnywhere" },
     "enemies_selected": { "obj": "Enemies" },
     "enguarde_colors": { "obj": "CharacterColors" },
     "excluded_songs_selected": { "obj": "ExcludedSongs" },
@@ -1806,7 +1820,7 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.enable_tag_anywhere": {
-      "obj": "SettingsStringDataType.bool"
+      "obj": "TagAnywhere"
     },
     "SettingsStringEnum.enemies_selected": {
       "obj": "SettingsStringDataType.list"

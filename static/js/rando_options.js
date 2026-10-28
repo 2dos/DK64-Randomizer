@@ -1118,7 +1118,7 @@ document
 // Disable 'Disable Tag Spawn' option when 'Tag Anywhere' is off
 function disable_tag_spawn() {
   const tagBarrels = document.getElementById("disable_tag_barrels");
-  if (!document.getElementById("enable_tag_anywhere").checked) {
+  if (document.getElementById("enable_tag_anywhere").value == "off") {
     tagBarrels.setAttribute("disabled", "disabled");
     tagBarrels.checked = false;
   } else {
@@ -1128,14 +1128,14 @@ function disable_tag_spawn() {
 
 document
   .getElementById("enable_tag_anywhere")
-  .addEventListener("click", disable_tag_spawn);
+  .addEventListener("change", disable_tag_spawn);
 
 // Enable 'Tag Anywhere' if 'Disable Tag Spawn' option is on
 document
   .getElementById("disable_tag_barrels")
   .addEventListener("click", function (evt) {
     if (document.getElementById("disable_tag_barrels").checked) {
-      document.getElementById("enable_tag_anywhere").checked = true;
+      document.getElementById("enable_tag_anywhere").value = "on";
     }
   });
 

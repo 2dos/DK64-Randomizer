@@ -102,7 +102,9 @@
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 1,
-    "enable_tag_anywhere": 1,
+    "enable_tag_anywhere": {
+      "on": 1.0
+    },
     "enemies_selected": {},
     "enemy_drop_rando": 0,
     "enemy_rando": 0.95,
@@ -547,7 +549,9 @@
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.9,
-    "enable_tag_anywhere": 1,
+    "enable_tag_anywhere": {
+      "on": 1.0
+    },
     "enemies_selected": {},
     "enemy_drop_rando": 0.25,
     "enemy_rando": 0.95,
@@ -1014,7 +1018,9 @@
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.5,
-    "enable_tag_anywhere": 1,
+    "enable_tag_anywhere": {
+      "on": 1.0
+    },
     "enemies_selected": {},
     "enemy_drop_rando": 0.6,
     "enemy_rando": 0.95,
@@ -1524,7 +1530,10 @@
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.5,
-    "enable_tag_anywhere": 0.9,
+    "enable_tag_anywhere": {
+      "on": 0.9,
+      "off": 0.1
+    },
     "enemies_selected": {},
     "enemy_drop_rando": 0.6,
     "enemy_rando": 0.95,

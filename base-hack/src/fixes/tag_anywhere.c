@@ -436,6 +436,11 @@ int canTagAnywhere(void) {
     if (Player->collision_queue_pointer) {
         return 0;
     }
+    if (Rando.tag_anywhere == 1) {
+        if ((Player->yPos - Player->floor) > 40.0f) {
+            return 0;
+        } 
+    }
     if (LZFadeoutProgress > 15.0f) {
         // Can cause inconsistent graphical crashes
         return 0;

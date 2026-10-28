@@ -40,18 +40,6 @@
                 </div>
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                            title="This option will allow you to switch kongs almost anywhere using DPad left or DPad right.&#10;You will still need to unlock the kong in order to tag to them.&#10;You cannot switch kongs in rooms or areas that would otherwise break the puzzle.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="enable_tag_anywhere"
-                                id="enable_tag_anywhere"
-                                display_name="Enable Tag Anywhere"
-                                value="True"/>
-                        Tag Anywhere
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
                             title="Will display the face of each Kong that has an item to purchase there or 'SOLD OUT' if all items are purchased.">
                         <input class="form-check-input"
                                 type="checkbox"
@@ -153,7 +141,26 @@
                     </label>
                 </div>
                 {{ toggle_input("less_fragile_boulders", "Less Fragile Boulders", "Boulders, Kegs, Vases and the Apple will not destroy upon making contact with the ground", True) }}
-                <div class="spacer"></div>
+                <div class="item-select">
+                    <p class="select-title">Tag Anywhere</p>
+                    <select name="enable_tag_anywhere"
+                            id="enable_tag_anywhere"
+                            display_name="Tag Anywhere"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="This option will allow you to switch kongs almost anywhere using DPad left or DPad right.&#10;You will still need to unlock the kong in order to tag to them.&#10;You cannot switch kongs in rooms or areas that would otherwise break the puzzle.&#10;Off - Option is disabled.&#10;On - Tag Anywhere is fully enabled&#10;Restricted - Disables tag anywhere in some situations where abusing each kong's attributes can allow for crossing gaps or scaling vertical spaces you otherwise wouldn't be able to do.">
+                        <option value="off">
+                            Off
+                        </option>
+                        <option value="restricted">
+                            Restricted
+                        </option>
+                        <option selected value="on">
+                            On
+                        </option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="col border panel">

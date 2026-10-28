@@ -421,7 +421,7 @@ class Spoiler:
         settings["Fast Start"] = self.settings.fast_start_beginning_of_game
         settings["Helm Setting"] = self.settings.helm_setting.name
         settings["Helm Room Bonus Count"] = int(self.settings.helm_room_bonus_count)
-        settings["Tag Anywhere"] = self.settings.enable_tag_anywhere
+        settings["Tag Anywhere"] = self.settings.enable_tag_anywhere.name
         settings["Kongless Hint Doors"] = self.settings.wrinkly_available
         settings["Quality of Life"] = self.dumpMultiselector(self.settings.misc_changes_selected, QoLSelector)
         settings["Fast GBs"] = self.dumpMultiselector(self.settings.faster_checks_selected, FasterCheckSelector)

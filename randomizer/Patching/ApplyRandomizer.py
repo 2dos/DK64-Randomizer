@@ -26,6 +26,7 @@ from randomizer.Enums.Settings import (
     ShockwaveStatus,
     ShuffleLoadingZones,
     SlamRequirement,
+    TagAnywhere,
     WinConditionComplex,
     WrinklyHints,
 )
@@ -301,7 +302,6 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
 
     boolean_props = [
         BooleanProperties(spoiler.settings.fast_start_beginning_of_game, 0x2E),  # Fast Start Game
-        BooleanProperties(spoiler.settings.enable_tag_anywhere, 0x30),  # Tag Anywhere
         BooleanProperties(spoiler.settings.no_melons, 0x128),  # No Melon Drops
         BooleanProperties(spoiler.settings.bonus_barrel_auto_complete, 0x126),  # Auto-Complete Bonus Barrels
         BooleanProperties(spoiler.settings.warp_to_isles, 0x135),  # Warp to Isles
@@ -347,6 +347,10 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
     ROM_COPY.seek(sav + 0x4E)
     ROM_COPY.write(int(spoiler.settings.coin_door_item))
     ROM_COPY.write(spoiler.settings.coin_door_item_count)
+
+    # Tag Anywhere
+    ROM_COPY.seek(sav + 0x30)
+    ROM_COPY.write(int(spoiler.settings.enable_tag_anywhere))
 
     if spoiler.settings.pause_hints_setting == PauseHintSetting.lockout:
         ROM_COPY.seek(sav + 0x136)
@@ -454,7 +458,7 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
     ROM_COPY.seek(sav + 0x1E3)
     ROM_COPY.write(req_val)
 
-    if spoiler.settings.enable_tag_anywhere:
+    if spoiler.settings.enable_tag_anywhere != TagAnywhere.off:
         ta_blocks = {
             Maps.AngryAztec: [0x24],
             Maps.CastleCrypt: [0xD, 0xE, 0xF],

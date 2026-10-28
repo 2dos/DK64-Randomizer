@@ -2,7 +2,6 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 
 # Always On
 - Auto Key Turn Ins
-- Enable Tag Anywhere
 - Faster Checks Enabled
 - Fast Start - Beginning of Game
 - Fast Warps
@@ -107,6 +106,8 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Dos Door Rando: 40%
 - Enable Progressive Hints: 50%
 - Enable Shop Hints: 90%
+- Tag Anywhere: 
+	- On: 100%
 - Enemy Drop Rando: 25%
 - Enemy Rando: 95%
 - Enemy Speed Rando: 50%

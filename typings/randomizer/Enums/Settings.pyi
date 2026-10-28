@@ -581,6 +581,11 @@ class SwitchsanityKong(IntEnum):
     random = 5
     any = 6
 
+class TagAnywhere(IntEnum):
+    off = 0
+    restricted = 1
+    on = 2
+
 class TrainingBarrels(IntEnum):
     normal = 0
     shuffled = 1
@@ -1008,6 +1013,7 @@ SettingsMap: dict = {
     "diddy_colors": CharacterColors,
     "dk_colors": CharacterColors,
     "dpad_display": DPadDisplays,
+    "enable_tag_anywhere": TagAnywhere,
     "enemies_selected": Enemies,
     "enguarde_colors": CharacterColors,
     "excluded_songs_selected": ExcludedSongs,
@@ -1189,7 +1195,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.dk_portal_location_rando_v2: DKPortalRando,
     SettingsStringEnum.enable_plandomizer: SettingsStringDataType.bool,
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
-    SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,
+    SettingsStringEnum.enable_tag_anywhere: TagAnywhere,
     SettingsStringEnum.enemies_selected: SettingsStringDataType.list,
     SettingsStringEnum.filler_items_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_rando: SettingsStringDataType.bool,

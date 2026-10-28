@@ -102,7 +102,9 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Dos Door Rando: 60%
 - Enable Progressive Hints: 50%
 - Enable Shop Hints: 50%
-- Enable Tag Anywhere: 90%
+- Tag Anywhere: 
+	- On: 90%
+	- Off: 10%
 - Enemy Drop Rando: 60%
 - Enemy Rando: 95%
 - Enemy Speed Rando: 70%

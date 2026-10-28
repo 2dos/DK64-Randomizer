@@ -4,7 +4,6 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Auto Key Turn Ins
 - Dim Solved Hints
 - Enable Shop Hints
-- Enable Tag Anywhere
 - Faster Checks Enabled
 - Fast Start - Beginning of Game
 - Fast Warps
@@ -117,6 +116,8 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Random DK Portal Locations: 
 	- Off: 100%
 - Enable Progressive Hints: 50%
+- Tag Anywhere: 
+	- On: 100%
 - Enemy Rando: 95%
 - Enemy Speed Rando: 50%
 - Randomize Enemy Sizes: 90%

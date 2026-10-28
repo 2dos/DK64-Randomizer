@@ -851,7 +851,7 @@ class Settings:
         self.pause_hints_lockout_timer = 0
         self.half_medal_percentage = 50
         self.shorten_boss = False
-        self.enable_tag_anywhere = None
+        self.enable_tag_anywhere = TagAnywhere.off
         self.krool_phase_order_rando = None
         self.krool_access = False
         self.win_condition_spawns_ship = False  # 0 = Key-based, 1 = Win condition-based

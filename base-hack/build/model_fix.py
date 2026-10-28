@@ -757,10 +757,13 @@ with open(ROMName, "rb") as rom:
         "chunky": (0x41, 0xFF, 0x25),
     }
     obj_mapping = {
-        "punch_gate": 114
+        "punch_gate": {
+            "obj_id": 114
+        }
     }
     PUNCH_GRATE_FACE_DELTA = 8
-    for obj_name, obj_id in obj_mapping.items():
+    for obj_name, obj_data in obj_mapping.items():
+        obj_id = obj_data["obj_id"]
         for name, color in color_mapping.items():
             rom.seek(modeltwo_table + (obj_id << 2))
             model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")

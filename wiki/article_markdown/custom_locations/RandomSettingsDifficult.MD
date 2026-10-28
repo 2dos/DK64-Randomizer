@@ -3,7 +3,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 # Always On
 - Auto Key Turn Ins
 - DK Phase requires Baboon Blast
-- Enable Tag Anywhere
 - Faster Checks Enabled
 - Fast Start - Beginning of Game
 - Fast Warps
@@ -108,6 +107,8 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Dos Door Rando: 60%
 - Enable Progressive Hints: 50%
 - Enable Shop Hints: 50%
+- Tag Anywhere: 
+	- On: 100%
 - Enemy Drop Rando: 60%
 - Enemy Rando: 95%
 - Enemy Speed Rando: 70%
