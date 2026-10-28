@@ -61,7 +61,7 @@ resource = Resource(
         "container.name": socket.gethostname(),
     }
 )
-app = Flask(__name__, static_folder="", template_folder="templates")
+app = Flask(__name__, static_folder="static", template_folder="templates")
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
 flask_api_doc(app, config_path="./swagger.yaml", url_prefix="/api/doc", title="API doc")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
@@ -242,23 +242,26 @@ def submit_task():
     """Submit a task to the worker queue."""
     data = request.json
     branch = request.args.get("branch", "stable")
+    if not isinstance(data, dict) or "settings_data" not in data:
+        return set_response({"error": "Invalid payload"}, 400)
+    settings_data = data.get("settings_data")
+    if isinstance(settings_data, str):
+        try:
+            settings_data = json.loads(settings_data)
+        except Exception:
+            return set_response({"error": "Invalid settings JSON"}, 400)
+    if not isinstance(settings_data, dict) or not settings_data:
+        return set_response({"error": "Settings must be a non-empty JSON object"}, 400)
     if os.environ.get("TEST_REDIS") == "1":
         # Start the task immediately if we're using a fake Redis server
         # Make it a thread, and we're going to directly import and call the function
         from worker.tasks import generate_seed
 
         global tasks
-        json_data = json.loads(data.get("settings_data"))
-        task_thread = TaskThread(task_id="testingID", target=generate_seed, args=(json_data,))
+        task_thread = TaskThread(task_id="testingID", target=generate_seed, args=(settings_data,))
         tasks["testingID"] = task_thread
         task_thread.start()
         return set_response(json.dumps({"task_id": "testingID", "status": "queued", "priority": "High"}), 200)
-    if not data or "settings_data" not in data:
-        return set_response(json.dumps({"error": "Invalid payload"}), 400)
-    if isinstance(data.get("settings_data"), str):
-        settings_data = json.loads(data.get("settings_data"))
-    else:
-        settings_data = data.get("settings_data")
     user_ip = get_user_ip()
     # Check the last submission time for this IP
     last_submission_key = f"last_submission:{user_ip}"
