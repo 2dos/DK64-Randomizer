@@ -14,7 +14,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup python
-        uses: actions/setup-python@v6.2.0
+        uses: actions/setup-python@v7.1.0
         with:
             python-version: 3.10.9
             architecture: x64
