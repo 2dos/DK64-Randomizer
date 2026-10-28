@@ -20,7 +20,7 @@ def seekFileOffset(fh: BinaryIO, address: int):
 
 PULL_VERSION = 2
 ACTOR_DUMP = "actor_data.json"
-FORCE_REBUILD = True
+FORCE_REBUILD = False
 if os.path.exists(ACTOR_DUMP):
     with open(ACTOR_DUMP, "r") as fh:
         data = json.load(fh)
