@@ -8,7 +8,7 @@ pydocstyle==6.3.0
 css-html-js-minify==2.5.5
 bs4==0.0.2
 beautifulsoup4==4.15.0
-djlint==1.47.0
+djlint==1.47.1
 cpplint==2.0.2
 GitPython==3.2.1
 pytest-xdist==3.8.0
