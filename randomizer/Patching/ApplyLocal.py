@@ -158,15 +158,11 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
 
         fill_result = extracted_variables["fill_result_proto"]
 
-        if not hasattr(js, "patchedRom") or js.patchedRom is None:
-            raise RuntimeError("Proto patch flow: js.patchedRom is not initialized. " "apply_base_hack_bps() must run before patching_response().")
         for _global_name in ("rom_symbols", "pointer_addresses"):
             _val = getattr(js, _global_name, None)
             if _val is not None and hasattr(_val, "to_py"):
                 setattr(js, _global_name, _val.to_py())
 
-        # Create new ROM object that uses the base-hack patchedRom
-        ROM_COPY = ROM()
         ApplyRandomizer.patching_response(fill_result, settings, ROM_COPY)
 
     if major != patch_major or minor != patch_minor:
@@ -227,7 +223,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 ROM_COPY.seek(unc_table + (chunky_slots[model_slot] * 4))
                 ROM_COPY.writeMultipleBytes(unc_size, 4)
         # Fetch hash images before they're altered by cosmetic changes
-        loaded_hash = get_hash_images("browser", "hash")
+        loaded_hash = get_hash_images("browser", "hash", ROM_COPY)
         apply_cosmetic_colors(settings, ROM_COPY)
 
         if settings.override_cosmetics:
