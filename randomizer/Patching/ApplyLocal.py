@@ -25,7 +25,7 @@ from randomizer.Patching.CosmeticColors import (
 )
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
-from randomizer.Patching.Patcher import ROM, BufferROM
+from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Library.Generic import recalculatePointerJSON, camelCaseToWords, getHoliday, Holidays, IsColorOptionSelected, TERMINATING_SFXS
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, writeText
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic, disableDynamicReverb, fixLankyIncompatibility
@@ -158,19 +158,12 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
 
         fill_result = extracted_variables["fill_result_proto"]
 
-        if not hasattr(js, "patchedRom") or js.patchedRom is None:
-            raise RuntimeError("Proto patch flow: js.patchedRom is not initialized. " "apply_base_hack_bps() must run before patching_response().")
         for _global_name in ("rom_symbols", "pointer_addresses"):
             _val = getattr(js, _global_name, None)
             if _val is not None and hasattr(_val, "to_py"):
                 setattr(js, _global_name, _val.to_py())
 
-        # Patch a Python copy of the ROM and copy it back once
-        rom_array = js.patchedRom._u8array
-        rom_copy = BufferROM(rom_array.to_bytes())
-        ApplyRandomizer.patching_response(fill_result, settings, rom_copy)
-        rom_array.assign(rom_copy.rom.getbuffer()[: rom_array.length])
-        ROM_COPY = ROM()
+        ApplyRandomizer.patching_response(fill_result, settings, ROM_COPY)
 
     if major != patch_major or minor != patch_minor:
         js.document.getElementById("patch_version_warning").hidden = False
@@ -230,7 +223,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 ROM_COPY.seek(unc_table + (chunky_slots[model_slot] * 4))
                 ROM_COPY.writeMultipleBytes(unc_size, 4)
         # Fetch hash images before they're altered by cosmetic changes
-        loaded_hash = get_hash_images("browser", "hash")
+        loaded_hash = get_hash_images("browser", "hash", ROM_COPY)
         apply_cosmetic_colors(settings, ROM_COPY)
 
         if settings.override_cosmetics:

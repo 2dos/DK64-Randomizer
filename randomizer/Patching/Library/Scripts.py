@@ -1,5 +1,7 @@
 """Instance Script library functions and classes."""
 
+import struct
+
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
@@ -2046,6 +2048,14 @@ def replaceScriptLines(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int]
         script_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
         block_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
         file_offset += 6
+        if script_id not in item_ids:
+            # Skip over scripts that aren't being changed
+            for _ in range(block_count):
+                ROM_COPY.seek(script_table + file_offset)
+                file_offset += 2 + (8 * int.from_bytes(ROM_COPY.readBytes(2), "big"))
+                ROM_COPY.seek(script_table + file_offset)
+                file_offset += 2 + (8 * int.from_bytes(ROM_COPY.readBytes(2), "big"))
+            continue
         for _ in range(block_count):
             ROM_COPY.seek(script_table + file_offset)
             cond_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
@@ -2121,10 +2131,9 @@ def addNewScript(ROM_COPY: LocalROM, cont_map_id: int, item_ids: list[int], styp
             file_offset += 2 + (8 * exec_count)
         script_end = script_table + file_offset
         if script_id not in item_ids:
-            script_data = []
+            word_count = (script_end - script_start) // 2
             ROM_COPY.seek(script_start)
-            for x in range(int((script_end - script_start) / 2)):
-                script_data.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+            script_data = list(struct.unpack(f">{word_count}H", ROM_COPY.readBytes(word_count * 2)))
             good_scripts.append(script_data)
     # Get new script data
     for item_id in item_ids:
