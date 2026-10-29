@@ -4100,13 +4100,12 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     spoiler.Reset()
     ShuffleExits.Reset(spoiler)
     spoiler.createJson()
-    js.postMessage("Patching ROM...")
 
-    # print(spoiler)
-    # print(spoiler.json)
-    fill_proto = fill_result_to_proto(spoiler)
-    patch_data, password = ApplyRandomizer.patching_response(fill_proto, spoiler.settings)
-    return patch_data, spoiler, password
+    # The ROM is patched in the browser from the serialized fill result
+    password = None
+    if spoiler.settings.has_password:
+        _, password = ApplyRandomizer.encPass(spoiler)
+    return fill_result_to_proto(spoiler).SerializeToString(), spoiler, password
 
 
 class ItemReference:

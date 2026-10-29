@@ -304,3 +304,14 @@ class LocalROM:
             bytes: List of bytes read from current position.
         """
         return bytes(self.rom.read(len))
+
+class BufferROM(LocalROM):
+    """LocalROM over ROM data already in memory, so the browser can patch without a JS call per byte."""
+
+    def __init__(self, data: bytes) -> None:
+        """Wrap a copy of the ROM data."""
+        self.rom = BytesIO(data)
+
+    def write(self, val: int) -> None:
+        """Write one byte, wrapping out of range values like the JS ROM does."""
+        self.rom.write(bytes([int(val or 0) & 0xFF]))
