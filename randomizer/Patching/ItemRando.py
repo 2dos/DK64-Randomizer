@@ -8,6 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import ItemRandoListSelected, MicrohintsEnabled, TrainingBarrels, SpoilerHints
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
+from randomizer.Lists.Location import BALLOON_FLAG_START
 from randomizer.Patching.Library.DataTypes import intf_to_float
 from randomizer.Patching.Library.Generic import setItemReferenceName, ReqItems
 from randomizer.Patching.Library.ItemRando import (
@@ -1125,7 +1126,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         else:
                             raise Exception("Melon Crate Item Placement Error")
                     elif item.old_item == Types.Balloon:
-                        index = item.location - Locations.Balloon000
+                        index = item.old_flag - BALLOON_FLAG_START
                         if index < 104:
                             addr = getItemTableWriteAddress(ROM_COPY, Types.Balloon, index, offset_dict)
                             ROM_COPY.seek(addr)
