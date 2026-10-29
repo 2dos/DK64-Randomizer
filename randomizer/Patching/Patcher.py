@@ -305,6 +305,7 @@ class LocalROM:
         """
         return bytes(self.rom.read(len))
 
+
 class BufferROM(LocalROM):
     """LocalROM over ROM data already in memory, so the browser can patch without a JS call per byte."""
 
