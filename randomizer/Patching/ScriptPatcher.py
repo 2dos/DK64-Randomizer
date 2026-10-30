@@ -107,9 +107,14 @@ def patchScripts(spoiler, ROM_COPY):
         addNewScript(ROM_COPY, Maps.FactoryBaboonBlast, [0x1], ScriptTypes.FactoryBlastController)
     if spoiler.settings.more_cutscene_skips == ExtraCutsceneSkips.auto:
         # Remove Charge Cutscene
-        replaceScriptLines(ROM_COPY, Maps.JapesMountain, [0x37], {"COND 52 | 3 1 0", "COND 0 | 0 0 0"})
+        replaceScriptLines(ROM_COPY, Maps.JapesMountain, [0x37], {"COND 52 | 3 1 0": "COND 0 | 0 0 0"})
         # Remove Aztec Coconut Cutscene
         replaceScriptLines(ROM_COPY, Maps.AngryAztec, [0xD], {"EXEC 37 | 23 1 0": "EXEC 83 | 0 0 0"})
+        # Speed up llama lava gate raise
+        replaceScriptLines(ROM_COPY, Maps.AztecLlamaTemple, [0x16], {
+            "EXEC 3 | 0 130 0": "EXEC 3 | 0 100 0",
+            "COND 4 | 130 0 0": "COND 4 | 199 0 0"
+        })
     # Helm Pads
     helm_pad_data = {
         0x2C: {
