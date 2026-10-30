@@ -907,6 +907,8 @@ barrel_im_left = base_64_im.crop((0, 0, 32, 64))
 barrel_im_right = base_64_im.crop((32, 0, 64, 64))
 barrel_im_left.save(f"{disp_dir}osprint_logo_left.png")
 barrel_im_right.save(f"{disp_dir}osprint_logo_right.png")
+Image.open(f"{tracker_dir}diddy_move.png").resize((32, 32)).save(f"{disp_dir}charge_icon.png")
+Image.open(f"{tracker_dir}chunky_move.png").resize((32, 32)).save(f"{disp_dir}punch_icon.png")
 
 # Beetle custom enemy
 for x in range(7):
@@ -990,6 +992,8 @@ for kong_local_index, kong in enumerate(["chunky", "tiny", "dk"]):
             slot_image = puzzle_im.crop((32 * x, 32 * y, 32 * (x + 1), 32 * (y + 1)))
             slot_image.save(f"{disp_dir}facepuzzle_{hex(image_index)}.png")
             slot_image.save(f"{disp_dir}dupepuzzle_{hex(image_index)}.png")
+
+
 
 
 def alterWood(image):

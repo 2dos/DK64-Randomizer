@@ -437,7 +437,11 @@ int canTagAnywhere(void) {
         return 0;
     }
     if (Rando.tag_anywhere == 1) {
-        if ((Player->yPos - Player->floor) > 40.0f) {
+        float referenced_floor = Player->floor;
+        if (Player->water_floor > Player->floor) {
+            referenced_floor = Player->water_floor;
+        }
+        if ((Player->yPos - referenced_floor) > 40.0f) {
             return 0;
         } 
     }

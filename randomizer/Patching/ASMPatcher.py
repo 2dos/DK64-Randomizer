@@ -777,7 +777,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
         val = -1
         if x < len(enabled_screens):
             val = enabled_screens[x]
-        writeValue(ROM_COPY, enabled_pause_rom + x, Overlay.Custom, val, offset_dict, True)
+        writeValue(ROM_COPY, enabled_pause_rom + x, Overlay.Custom, val, offset_dict, 1, True)
 
     kong_model_setting_values = [
         settings.kong_model_dk,

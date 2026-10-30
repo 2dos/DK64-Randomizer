@@ -5,7 +5,7 @@ import zlib
 import math
 
 from BuildEnums import TableNames, ExtraTextures
-from BuildLib import ROMName, main_pointer_table_offset, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS, hueShiftColor
+from BuildLib import ROMName, main_pointer_table_offset, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS, hueShiftColor, short_to_ushort
 
 # lanky_fix = """
 #     E7 00 00 00 00 00 00 00
@@ -269,6 +269,22 @@ def recolorBones(filename: str, bones: list[int], color: tuple):
             for seg in original_color:
                 fh.write(seg.to_bytes(1, "big"))
 
+class Vert:
+    def __init__(self, coords: list, uv: list, rgba: list):
+        self.coords = coords.copy()
+        self.uv = uv.copy()
+        self.rgba = rgba.copy()
+
+    def to_bytes(self):
+        by = []
+        for c in self.coords:
+            val = short_to_ushort(c)
+            by.extend([(val >> 8) & 0xFF, val & 0xFF])
+        by.extend([0, 0])
+        for val in self.uv:
+            by.extend([(val >> 8) & 0xFF, val & 0xFF])
+        by.extend(self.rgba)
+        return by
 
 with open(ROMName, "rb") as rom:
     rom.seek(main_pointer_table_offset + (TableNames.ActorGeometry * 4))
@@ -752,19 +768,44 @@ with open(ROMName, "rb") as rom:
                 fh.write(tex.to_bytes(2, "big"))
             fh.write((0).to_bytes(2, "big"))
     # Punch Grates
-    color_mapping = {
-        "diddy": (0xFF, 0x00, 0x00),
-        "chunky": (0x41, 0xFF, 0x25),
+    texture_mapping = {
+        "diddy": getBonusSkinOffset(ExtraTextures.ChargeIcon),
+        "chunky": getBonusSkinOffset(ExtraTextures.PunchIcon),
     }
     obj_mapping = {
         "punch_gate": {
-            "obj_id": 114
+            "obj_id": 114,
+            "verts": [
+                Vert([0, 25, 0], [0x1E0, 0x40], [0xFF, 0xFF, 0xFF, 0xFF]),
+                Vert([0, 10, 15], [0x3C0, 0x420], [0xFF, 0xFF, 0xFF, 0xFF]),
+                Vert([0, 10, 0], [0x1E0, 0x420], [0xFF, 0xFF, 0xFF, 0xFF]),
+                Vert([0, 25, 15], [0x3C0, 0x40], [0xFF, 0xFF, 0xFF, 0xFF]),
+                Vert([0, 25, -10], [0xFFE0, 0x40], [0xFF, 0xFF, 0xFF, 0xFF]),
+                Vert([0, 10, -10], [0xFFE0, 0x420], [0xFF, 0xFF, 0xFF, 0xFF]),
+            ],
+            "dl_trail": 0x10,
+            "block": 0x40,
+            "invert_tri": False,
+        },
+        "ice_wall": {
+            "obj_id": 510,
+            "verts": [
+                Vert([0, 30, 0], [0x1E0, 0x40], [0xFF, 0xFF, 0xFF, 0xFF]),
+                Vert([0, 5, 25], [0x3C0, 0x420], [0xFF, 0xFF, 0xFF, 0xFF]),
+                Vert([0, 5, 0], [0x1E0, 0x420], [0xFF, 0xFF, 0xFF, 0xFF]),
+                Vert([0, 30, 25], [0x3C0, 0x40], [0xFF, 0xFF, 0xFF, 0xFF]),
+                Vert([0, 30, -10], [0xFFE0, 0x40], [0xFF, 0xFF, 0xFF, 0xFF]),
+                Vert([0, 5, -10], [0xFFE0, 0x420], [0xFF, 0xFF, 0xFF, 0xFF]),
+            ],
+            "dl_trail": 0x20,
+            "block": 0x44,
+            "invert_tri": True
         }
     }
     PUNCH_GRATE_FACE_DELTA = 8
     for obj_name, obj_data in obj_mapping.items():
         obj_id = obj_data["obj_id"]
-        for name, color in color_mapping.items():
+        for name, tex in texture_mapping.items():
             rom.seek(modeltwo_table + (obj_id << 2))
             model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
             model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
@@ -778,37 +819,111 @@ with open(ROMName, "rb") as rom:
             with open(f"{obj_name}_{name}.bin", "wb") as fh:
                 fh.write(data)
             with open(f"{obj_name}_{name}.bin", "r+b") as fh:
+                # Define verts
+                vert_bytes = obj_data["verts"].copy()
+                # Address getters
+                block_start = obj_data["block"]
+                fh.seek(block_start)
+                pre_dl_start = int.from_bytes(fh.read(4), "big")
+                pre_dl_end = int.from_bytes(fh.read(4), "big")
                 fh.seek(0x48)
                 vert_start = int.from_bytes(fh.read(4), "big")
                 vert_end = int.from_bytes(fh.read(4), "big")
                 vert_count = int((vert_end - vert_start) / 0x10)
-                for x in range(vert_count):
-                    fh.seek(vert_start + 0xC + (x * 0x10))
-                    for c in color:
-                        fh.write(c.to_bytes(1, "big"))
+                # Generate DL
+                post_dl_bytes = [
+                    0xD9FFFFFF, 0x00000000,
+                    0xD9FFFFFF, 0x00000001,
+                    0xD7000002, 0xFFFFFFFF,
+                    0xD9F9FFFF, 0x00000000,
+                    0x01000000 + (len(vert_bytes) << 12) + (len(vert_bytes) << 1), 0x08000000 + (vert_end - vert_start),
+                    0xE7000000, 0x00000000,
+                    0xE200001C, 0x0C184DD8,
+                    0xE3000A01, 0x00100000,
+                    0xE3000F00, 0x00000000,
+                    0xE7000000, 0x00000000,
+                    0xFC121803, 0xFFFFFFF8,
+                    0xE7000000, 0x00000000,
+                    0xFD100000, tex,
+                    0xF5100000, 0x07014050,
+                    0xE6000000, 0x00000000,
+                    0xF3000000, 0x073FF100,
+                    0xE7000000, 0x00000000,
+                    0xF5101000, 0x00014050,
+                    0xF2000000, 0x0007C07C,
+                    0xE7000000, 0x00000000,
+                    0xE3001001, 0x00000000,
+                ]
+                if obj_data.get("invert_tri", False):
+                    post_dl_bytes.extend([
+                        0x05000402, 0x00000000,
+                        0x05000206, 0x00000000,
+                        0x05080400, 0x00000000,
+                        0x05080A04, 0x00000000
+                    ])
+                else:
+                    post_dl_bytes.extend([
+                        0x05000204, 0x00000000,
+                        0x05000602, 0x00000000,
+                        0x05080004, 0x00000000,
+                        0x0508040A, 0x00000000
+                    ])
+                # Copy blocks
+                trail = obj_data["dl_trail"]
+                fh.seek(0)
+                pre_first_dl = fh.read(pre_dl_end - trail)
+                first_dl_trail = fh.read(trail)
+                fh.seek(pre_dl_end)
+                post_first_dl = fh.read(vert_end - pre_dl_end)
+                post_verts = fh.read()
+                # Write
+                fh.seek(0)
+                fh.write(pre_first_dl)
+                for x in post_dl_bytes:
+                    fh.write(x.to_bytes(4, "big"))
+                fh.write(first_dl_trail)
+                fh.write(post_first_dl)
+                for x in vert_bytes:
+                    for y in x.to_bytes():
+                        fh.write(y.to_bytes(1, "big"))
+                fh.write(post_verts)
+                # Shift addresses
+                shift = len(post_dl_bytes) * 4
+                ct = (0x70 - block_start) >> 2
+                for x in range(ct):
+                    addr = block_start + 4 + (4 * x)
+                    if addr == 0x4C:
+                        shift += (len(vert_bytes) * 0x10)
+                    if addr > 0x70:
+                        continue
+                    fh.seek(addr)
+                    val = int.from_bytes(fh.read(4), "big")
+                    new_val = val + shift
+                    fh.seek(addr)
+                    fh.write(new_val.to_bytes(4, "big"))
     # Ice Wall
-    texture_mapping = {
-        "diddy": (getBonusSkinOffset(ExtraTextures.DiddyIcePalette0), getBonusSkinOffset(ExtraTextures.DiddyIcePalette1)),
-        "chunky": (getBonusSkinOffset(ExtraTextures.ChunkyIcePalette0), getBonusSkinOffset(ExtraTextures.ChunkyIcePalette1)),
-    }
-    for name, textures in texture_mapping.items():
-        rom.seek(modeltwo_table + (510 << 2))
-        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-        model_size = model_end - model_start
-        rom.seek(model_start)
-        indic = int.from_bytes(rom.read(2), "big")
-        rom.seek(model_start)
-        data = rom.read(model_size)
-        if indic == 0x1F8B:
-            data = zlib.decompress(data, (15 + 32))
-        with open(f"ice_wall_{name}.bin", "wb") as fh:
-            fh.write(data)
-        with open(f"ice_wall_{name}.bin", "r+b") as fh:
-            fh.seek(0x234)
-            fh.write(textures[0].to_bytes(4, "big"))
-            fh.seek(0x144)
-            fh.write(textures[1].to_bytes(4, "big"))
+    # texture_mapping = {
+    #     "diddy": (getBonusSkinOffset(ExtraTextures.DiddyIcePalette0), getBonusSkinOffset(ExtraTextures.DiddyIcePalette1)),
+    #     "chunky": (getBonusSkinOffset(ExtraTextures.ChunkyIcePalette0), getBonusSkinOffset(ExtraTextures.ChunkyIcePalette1)),
+    # }
+    # for name, textures in texture_mapping.items():
+    #     rom.seek(modeltwo_table + (510 << 2))
+    #     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    #     model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    #     model_size = model_end - model_start
+    #     rom.seek(model_start)
+    #     indic = int.from_bytes(rom.read(2), "big")
+    #     rom.seek(model_start)
+    #     data = rom.read(model_size)
+    #     if indic == 0x1F8B:
+    #         data = zlib.decompress(data, (15 + 32))
+    #     with open(f"ice_wall_{name}.bin", "wb") as fh:
+    #         fh.write(data)
+    #     with open(f"ice_wall_{name}.bin", "r+b") as fh:
+    #         fh.seek(0x234)
+    #         fh.write(textures[0].to_bytes(4, "big"))
+    #         fh.seek(0x144)
+    #         fh.write(textures[1].to_bytes(4, "big"))
     # New T&S Portal
     rom.seek(modeltwo_table + (0x2AC << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
