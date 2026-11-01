@@ -610,9 +610,13 @@ class SwitchsanityOptions(OptionDict):
 
     Set each switch to the kong that controls it, or "off" to leave it at its vanilla assignment.
 
-    Kong switches accept: "off", "donkey", "diddy", "lanky", "tiny", "chunky", "random", "any"
+    Most switches accept: "off", "donkey", "diddy", "lanky", "tiny", "chunky", "random", "any"
     The isles_helm_lobby switch (Gorilla Gone pad) also accepts:
         "bongos", "guitar", "trombone", "sax", "triangle", "lever", "gong", "gone_pad"
+    The isles_to_kroc_top (Monkeyport to top of Krem Isle) ONLY accepts:
+        "off", "donkey", "lanky", "tiny", "random"
+    Any gongs, ice walls, or grates (as well as aztec_free_tiny) ONLY accept:
+        "off", "diddy", "chunky", "random"
 
     Switch keys (one per switch across all levels):
     - isles_to_kroc_top, isles_helm_lobby, isles_aztec_lobby_back_room
