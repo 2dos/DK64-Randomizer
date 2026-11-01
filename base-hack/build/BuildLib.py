@@ -631,6 +631,7 @@ def imageToMinMap(img_path: str):
             case _:
                 print("unknown mode")
 
+
 def short_to_ushort(val: int):
     """Convert a short to the ushort representation."""
     if val < 0:

@@ -994,8 +994,6 @@ for kong_local_index, kong in enumerate(["chunky", "tiny", "dk"]):
             slot_image.save(f"{disp_dir}dupepuzzle_{hex(image_index)}.png")
 
 
-
-
 def alterWood(image):
     """Alter the wood color to our dark red color."""
     output = hueShift(image, 315)

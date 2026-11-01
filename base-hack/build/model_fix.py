@@ -269,13 +269,17 @@ def recolorBones(filename: str, bones: list[int], color: tuple):
             for seg in original_color:
                 fh.write(seg.to_bytes(1, "big"))
 
+
 class Vert:
+    """Vert definition class."""
     def __init__(self, coords: list, uv: list, rgba: list):
+        """Initialize with given parameters."""
         self.coords = coords.copy()
         self.uv = uv.copy()
         self.rgba = rgba.copy()
 
     def to_bytes(self):
+        """Convert parameters to a byte stream."""
         by = []
         for c in self.coords:
             val = short_to_ushort(c)
@@ -285,6 +289,7 @@ class Vert:
             by.extend([(val >> 8) & 0xFF, val & 0xFF])
         by.extend(self.rgba)
         return by
+
 
 with open(ROMName, "rb") as rom:
     rom.seek(main_pointer_table_offset + (TableNames.ActorGeometry * 4))
