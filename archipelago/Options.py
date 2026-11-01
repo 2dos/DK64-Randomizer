@@ -609,6 +609,7 @@ class SwitchsanityOptions(OptionDict):
     """Customizes each Switchsanity switch individually.
 
     Set each switch to the kong that controls it, or "off" to leave it at its vanilla assignment.
+    Special keys: "random" means the switch will be for a random Kong, "any" means the switch will be usable by all Kongs
 
     Most switches accept: "off", "donkey", "diddy", "lanky", "tiny", "chunky", "random", "any"
     The isles_helm_lobby switch (Gorilla Gone pad) also accepts:
