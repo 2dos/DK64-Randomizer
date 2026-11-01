@@ -631,7 +631,6 @@ class SwitchsanityOptions(OptionDict):
 
     KONG_SWITCHES = frozenset(
         [
-            "isles_to_kroc_top",
             "isles_aztec_lobby_back_room",
             "isles_fungi_lobby_fairy",
             "isles_spawn_rocketbarrel",
@@ -647,19 +646,25 @@ class SwitchsanityOptions(OptionDict):
             "aztec_sand_tunnel",
             "aztec_to_connector_tunnel",
             "aztec_free_lanky",
-            "aztec_free_tiny",
-            "aztec_gong_tower",
-            "aztec_lobby_gong",
             "factory_free_kong",
-            "factory_dark_grate",
-            "factory_bonus_grate",
-            "factory_monster_grate",
             "galleon_to_lighthouse_side",
             "galleon_to_shipwreck_side",
             "galleon_to_cannon_game",
             "fungi_yellow_tunnel",
             "fungi_green_tunnel_near",
             "fungi_green_tunnel_far",
+        ]
+    )
+    PORT_SWITCHES = frozenset(["isles_to_kroc_top"])
+    GONE_SWITCHES = frozenset(["isles_helm_lobby"])
+    GONGS_AND_WALLS = frozenset(
+        [
+            "aztec_gong_tower",
+            "aztec_lobby_gong",
+            "aztec_free_tiny",
+            "factory_dark_grate",
+            "factory_bonus_grate",
+            "factory_monster_grate",
             "caves_gone_cave",
             "caves_snide_cave",
             "caves_boulder_cave",
@@ -667,11 +672,12 @@ class SwitchsanityOptions(OptionDict):
             "caves_lobby_lava",
         ]
     )
-    GONE_SWITCHES = frozenset(["isles_helm_lobby"])
-    valid_keys = KONG_SWITCHES | GONE_SWITCHES
+    valid_keys = KONG_SWITCHES | PORT_SWITCHES | GONE_SWITCHES | GONGS_AND_WALLS
 
     KONG_VALUES = frozenset(["off", "donkey", "diddy", "lanky", "tiny", "chunky", "random", "any"])
+    PORT_VALUES = frozenset(["off", "donkey", "lanky", "tiny", "random"])
     GONE_VALUES = frozenset(["off", "bongos", "guitar", "trombone", "sax", "triangle", "lever", "gong", "gone_pad", "random"])
+    GONGS_AND_WALLS_VALUES = frozenset(["off", "diddy", "chunky", "random"])
 
     default = {
         "isles_to_kroc_top": "off",
@@ -717,9 +723,15 @@ class SwitchsanityOptions(OptionDict):
         for key, value in self.value.items():
             if key not in self.valid_keys:
                 raise OptionError(f"Invalid switchsanity key '{key}'. Must be one of the documented switch names.")
-            if key in self.GONE_SWITCHES:
+            elif key in self.PORT_SWITCHES:
+                if value not in self.PORT_VALUES:
+                    raise OptionError(f"Invalid value '{value}' for switch '{key}'. " f"Must be one of: {', '.join(sorted(self.PORT_VALUES))}")
+            elif key in self.GONE_SWITCHES:
                 if value not in self.GONE_VALUES:
                     raise OptionError(f"Invalid value '{value}' for switch '{key}'. " f"Must be one of: {', '.join(sorted(self.GONE_VALUES))}")
+            elif key in self.GONGS_AND_WALLS:
+                if value not in self.GONGS_AND_WALLS_VALUES:
+                    raise OptionError(f"Invalid value '{value}' for switch '{key}'. " f"Must be one of: {', '.join(sorted(self.GONGS_AND_WALLS_VALUES))}")
             else:
                 if value not in self.KONG_VALUES:
                     raise OptionError(f"Invalid value '{value}' for switch '{key}'. " f"Must be one of: {', '.join(sorted(self.KONG_VALUES))}")

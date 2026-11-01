@@ -431,6 +431,17 @@ def handle_fake_generation_settings(settings: Settings, multiworld: MultiWorld) 
                     settings.ut_dk_portal_locations = passthrough["DKPortalLocations"]
 
 
+def generate_from_parsed_range(option_value: str, min: int, max: int, random: Random):
+    """Randomize an OptionDict range value, either within a given range or from min (inclusive) to max (exclusive)."""
+    try:
+        result = int(option_value)
+        return result
+    except (TypeError, ValueError):
+        upper_bound = max if option_value == "random" else int(option_value.split("-")[1]) + 1
+        lower_bound = min if option_value == "random" else int(option_value.split("-")[0])
+        return random.randrange(lower_bound, upper_bound)
+
+
 def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Random) -> Settings:
     """Fill and configure all DK64 settings."""
     # Start with default settings
@@ -494,14 +505,14 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
 
     # Apply blocker settings
     blocker_options: list[int] = [
-        options.level_blockers.value.get("level_1", 0),
-        options.level_blockers.value.get("level_2", 0),
-        options.level_blockers.value.get("level_3", 0),
-        options.level_blockers.value.get("level_4", 0),
-        options.level_blockers.value.get("level_5", 0),
-        options.level_blockers.value.get("level_6", 0),
-        options.level_blockers.value.get("level_7", 0),
-        options.level_blockers.value.get("level_8", 64),
+        generate_from_parsed_range(options.level_blockers.value.get("level_1", 0), 0, 202, random_obj),
+        generate_from_parsed_range(options.level_blockers.value.get("level_2", 0), 0, 202, random_obj),
+        generate_from_parsed_range(options.level_blockers.value.get("level_3", 0), 0, 202, random_obj),
+        generate_from_parsed_range(options.level_blockers.value.get("level_4", 0), 0, 202, random_obj),
+        generate_from_parsed_range(options.level_blockers.value.get("level_5", 0), 0, 202, random_obj),
+        generate_from_parsed_range(options.level_blockers.value.get("level_6", 0), 0, 202, random_obj),
+        generate_from_parsed_range(options.level_blockers.value.get("level_7", 0), 0, 202, random_obj),
+        generate_from_parsed_range(options.level_blockers.value.get("level_8", 64), 0, 202, random_obj),
     ]
     settings_dict["maximize_helm_blocker"] = options.maximize_level8_blocker.value
     if options.enable_chaos_blockers.value:
@@ -965,12 +976,28 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
         HelmDoorItem.req_bean: "bean",
         HelmDoorItem.req_pearl: "pearls",
     }
+    max_values_dict: dict[str, int] = {
+        "golden_bananas": 201,
+        "blueprints": 40,
+        "company_coins": 2,
+        "keys": 8,
+        "medals": 40,
+        "crowns": 10,
+        "fairies": 20,
+        "rainbow_coins": 16,
+        "bean": 1,
+        "pearls": 5,
+    }
     settings_dict["crown_door_item"] = HelmDoorItem(options.crown_door_item.value)
+    if settings_dict["crown_door_item"] == HelmDoorItem.vanilla:
+        settings_dict["crown_door_item"] = HelmDoorItem.req_crown
     crown_item_key = door_item_to_key.get(settings_dict["crown_door_item"])
-    settings_dict["crown_door_item_count"] = options.helm_door_item_count.value.get(crown_item_key, 1) if crown_item_key else 1
+    settings_dict["crown_door_item_count"] = generate_from_parsed_range(options.helm_door_item_count.value.get(crown_item_key, 1), 1, max_values_dict[crown_item_key] - 1, random_obj)
     settings_dict["coin_door_item"] = HelmDoorItem(options.coin_door_item.value)
+    if settings_dict["coin_door_item"] == HelmDoorItem.vanilla:
+        settings_dict["coin_door_item"] = HelmDoorItem.req_companycoins
     coin_item_key = door_item_to_key.get(settings_dict["coin_door_item"])
-    settings_dict["coin_door_item_count"] = options.helm_door_item_count.value.get(coin_item_key, 1) if coin_item_key else 1
+    settings_dict["coin_door_item_count"] = generate_from_parsed_range(options.helm_door_item_count.value.get(coin_item_key, 1), 1, max_values_dict[coin_item_key] - 1, random_obj)
 
     if hasattr(multiworld, "generation_is_fake"):
         if hasattr(multiworld, "re_gen_passthrough"):
