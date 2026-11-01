@@ -1054,6 +1054,7 @@ export enum SettingsStringEnum {
     custom_minigames_enabled = 335,
     arcade_minigame_pool_selected = 336,
     jetpac_minigame_pool_selected = 337,
+    misc_movement_changes = 338,
 }
 
 export enum SettingsStringDataType {
@@ -1497,6 +1498,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.item_rando_list_9: SettingsStringDataType.list,
     SettingsStringEnum.decouple_item_rando: SettingsStringDataType.bool,
     SettingsStringEnum.shops_dont_cost: SettingsStringDataType.bool,
+    SettingsStringEnum.misc_movement_changes: SettingsStringDataType.bool,
     SettingsStringEnum.alt_minecart_mayhem: SettingsStringDataType.bool,
     SettingsStringEnum.less_fragile_boulders: SettingsStringDataType.bool,
     SettingsStringEnum.no_consumable_upgrades: SettingsStringDataType.bool,

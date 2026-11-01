@@ -1549,7 +1549,8 @@
     "lives": 334,
     "custom_minigames_enabled": 335,
     "arcade_minigame_pool_selected": 336,
-    "jetpac_minigame_pool_selected": 337
+    "jetpac_minigame_pool_selected": 337,
+    "misc_movement_changes": 338
   },
   /*
     SettingsStringDataType:
@@ -2333,6 +2334,7 @@
     },
     "SettingsStringEnum.decouple_item_rando": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.shops_dont_cost": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.misc_movement_changes": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.alt_minecart_mayhem": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.less_fragile_boulders": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.no_consumable_upgrades": { "obj": "SettingsStringDataType.bool" },

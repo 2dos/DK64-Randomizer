@@ -899,6 +899,7 @@ class Settings:
         self.crypt_levers = [1, 4, 3]
         self.dartboard_order = [3, 1, 2, 0, 5, 4]  # Orange, Melon, Banana, Crystal, Medal, Ammo Crate
         self.diddy_rnd_doors = [[0] * 4, [0] * 4, [0] * 4]
+        self.misc_movement_changes = False  # Charge jumps
         # self.enemy_rando = False  # Deprecated
         # self.crown_enemy_rando = CrownEnemyRando.off  # Deprecated
         self.crown_enemy_difficulty = CrownEnemyDifficulty.vanilla
