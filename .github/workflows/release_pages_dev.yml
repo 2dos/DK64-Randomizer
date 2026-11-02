@@ -1,4 +1,3 @@
----
 name: Release to Github Pages
 on:
   push:
@@ -9,6 +8,9 @@ jobs:
     if: contains(github.actor, '[bot]')
     steps:
     - uses: actions/checkout@v7
+      with:
+        token: ${{ secrets.ACCESS_TOKEN }}
+        persist-credentials: true
 
     - name: Check if archipelago.json version is newer than latest release
       id: check_version
@@ -59,13 +61,13 @@ jobs:
 
     - name: Build minified versions
       run: python3 ./tools/prepare_live.py
-    
+
     - name: Remove Git Ignore (This might be changed in the future)
       run: rm .gitignore
 
     - name: Move Files
       run: mkdir ./deploy-directory && mv -f ./* ./deploy-directory/ || true
-    
+
     - name: Pre Write Files
       run: echo 'This repo Dev Github Pages for DK64Rando, you need to go to https://github.com/2dos/DK64-Randomizer' > ./deploy-directory/README.md && echo 'dev.dk64randomizer.com' > ./deploy-directory/CNAME && touch ./deploy-directory/.nojekyll
 
@@ -79,7 +81,7 @@ jobs:
         DEST_BRANCH: main
         DEST_FOLDER: ./
         DEST_PREDEPLOY_CLEANUP: rm -rf ./*
-    
+
     - name: Get version from archipelago.json
       if: steps.check_version.outputs.version_changed == 'true'
       id: get_version
@@ -103,4 +105,3 @@ jobs:
           This release contains the dk64.apworld file that can be used with the Archipelago multiworld randomizer.
         artifacts: ./deploy-directory/dk64.apworld
         makeLatest: true
-
