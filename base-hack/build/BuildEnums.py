@@ -979,6 +979,8 @@ class ExtraTextures(IntEnum):
     FacePuzzleChunky8 = auto()
     KongBananzaBlack = auto()
     KongBananzaGrey = auto()
+    ChargeIcon = auto()
+    PunchIcon = auto()
 
 
 class MoveTypes(IntEnum):

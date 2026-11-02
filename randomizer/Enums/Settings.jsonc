@@ -1091,6 +1091,19 @@
   },
 
   /*
+    TagAnywhere:
+    - Determines how tag anywhere behaves.
+    - off: No Tag Anywhere.
+    - restricted: Tagging is blocked when the kong is too far (vertically) off the floor.
+    - on: Fully enabled (pre-6.0 default on behavior)
+  */
+  "TagAnywhere": {
+    "off": 0,
+    "restricted": 1,
+    "on": 2
+  },
+
+  /*
     TrainingBarrels:
     - Determines if and how training barrels are randomized.
     - normal: Training barrels give vanilla moves.
@@ -1536,7 +1549,8 @@
     "lives": 334,
     "custom_minigames_enabled": 335,
     "arcade_minigame_pool_selected": 336,
-    "jetpac_minigame_pool_selected": 337
+    "jetpac_minigame_pool_selected": 337,
+    "misc_movement_changes": 338
   },
   /*
     SettingsStringDataType:
@@ -1578,6 +1592,7 @@
     "diddy_colors": { "obj": "CharacterColors" },
     "dk_colors": { "obj": "CharacterColors" },
     "dpad_display": { "obj": "DPadDisplays" },
+    "enable_tag_anywhere": { "obj": "TagAnywhere" },
     "enemies_selected": { "obj": "Enemies" },
     "enguarde_colors": { "obj": "CharacterColors" },
     "excluded_songs_selected": { "obj": "ExcludedSongs" },
@@ -1806,7 +1821,7 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.enable_tag_anywhere": {
-      "obj": "SettingsStringDataType.bool"
+      "obj": "TagAnywhere"
     },
     "SettingsStringEnum.enemies_selected": {
       "obj": "SettingsStringDataType.list"
@@ -2319,6 +2334,7 @@
     },
     "SettingsStringEnum.decouple_item_rando": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.shops_dont_cost": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.misc_movement_changes": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.alt_minecart_mayhem": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.less_fragile_boulders": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.no_consumable_upgrades": { "obj": "SettingsStringDataType.bool" },

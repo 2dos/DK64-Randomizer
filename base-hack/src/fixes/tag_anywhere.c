@@ -436,6 +436,15 @@ int canTagAnywhere(void) {
     if (Player->collision_queue_pointer) {
         return 0;
     }
+    if (Rando.tag_anywhere == 1) {
+        float referenced_floor = Player->floor;
+        if (Player->water_floor > Player->floor) {
+            referenced_floor = Player->water_floor;
+        }
+        if ((Player->yPos - referenced_floor) > 40.0f) {
+            return 0;
+        } 
+    }
     if (LZFadeoutProgress > 15.0f) {
         // Can cause inconsistent graphical crashes
         return 0;

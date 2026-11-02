@@ -581,6 +581,11 @@ class SwitchsanityKong(IntEnum):
     random = 5
     any = 6
 
+class TagAnywhere(IntEnum):
+    off = 0
+    restricted = 1
+    on = 2
+
 class TrainingBarrels(IntEnum):
     normal = 0
     shuffled = 1
@@ -977,6 +982,7 @@ class SettingsStringEnum(IntEnum):
     custom_minigames_enabled = 335
     arcade_minigame_pool_selected = 336
     jetpac_minigame_pool_selected = 337
+    misc_movement_changes = 338
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1008,6 +1014,7 @@ SettingsMap: dict = {
     "diddy_colors": CharacterColors,
     "dk_colors": CharacterColors,
     "dpad_display": DPadDisplays,
+    "enable_tag_anywhere": TagAnywhere,
     "enemies_selected": Enemies,
     "enguarde_colors": CharacterColors,
     "excluded_songs_selected": ExcludedSongs,
@@ -1189,7 +1196,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.dk_portal_location_rando_v2: DKPortalRando,
     SettingsStringEnum.enable_plandomizer: SettingsStringDataType.bool,
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
-    SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,
+    SettingsStringEnum.enable_tag_anywhere: TagAnywhere,
     SettingsStringEnum.enemies_selected: SettingsStringDataType.list,
     SettingsStringEnum.filler_items_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_rando: SettingsStringDataType.bool,
@@ -1417,6 +1424,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.item_rando_list_9: SettingsStringDataType.list,
     SettingsStringEnum.decouple_item_rando: SettingsStringDataType.bool,
     SettingsStringEnum.shops_dont_cost: SettingsStringDataType.bool,
+    SettingsStringEnum.misc_movement_changes: SettingsStringDataType.bool,
     SettingsStringEnum.alt_minecart_mayhem: SettingsStringDataType.bool,
     SettingsStringEnum.less_fragile_boulders: SettingsStringDataType.bool,
     SettingsStringEnum.no_consumable_upgrades: SettingsStringDataType.bool,

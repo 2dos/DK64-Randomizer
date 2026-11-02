@@ -27,7 +27,7 @@ settings_string = "eNqVkj1MFEEUx_f_Zvd2du5rbrmDZe-DveXrOL6OBcwFI54daoPix5mgkBiVS
 setting_data = settings_string_to_form_data(settings_string)
 setting_data["seed"] = 0
 settings = Settings(setting_data)
-settings.arcade_custom_minigame = "match_three"
+settings.arcade_custom_minigame = "2048"
 spoiler = Spoiler(settings)
 settings.resolve_settings()
 # Couple settings needed for patching

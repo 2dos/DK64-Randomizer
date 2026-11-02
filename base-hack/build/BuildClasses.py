@@ -8,7 +8,7 @@ import platform
 
 import encoders
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, Overlay
-from BuildLib import float_to_hex, main_pointer_table_offset, convertToRGBA32, convertToRGBA5551, convertToI4, convertToI8, convertToIA4, convertToIA8
+from BuildLib import float_to_hex, main_pointer_table_offset, convertToRGBA32, convertToRGBA5551, convertToI4, convertToI8, convertToIA4, convertToIA8, short_to_ushort
 
 
 class File:
@@ -705,3 +705,25 @@ class MoveName:
         self.name = name
         self.move_type = move_type
         self.latin = latin
+
+
+class Vert:
+    """Vert definition class."""
+
+    def __init__(self, coords: list, uv: list, rgba: list):
+        """Initialize with given parameters."""
+        self.coords = coords.copy()
+        self.uv = uv.copy()
+        self.rgba = rgba.copy()
+
+    def to_bytes(self):
+        """Convert parameters to a byte stream."""
+        by = []
+        for c in self.coords:
+            val = short_to_ushort(c)
+            by.extend([(val >> 8) & 0xFF, val & 0xFF])
+        by.extend([0, 0])
+        for val in self.uv:
+            by.extend([(val >> 8) & 0xFF, val & 0xFF])
+        by.extend(self.rgba)
+        return by
