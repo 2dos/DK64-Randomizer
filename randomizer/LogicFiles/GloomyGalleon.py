@@ -87,7 +87,7 @@ LogicRegions = {
     Regions.GalleonBeyondPineappleGate: Region("Galleon Beyond Pineapple Gate", HintRegion.GalleonCaverns, Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonChunkyCannonGame, lambda l: l.CanGetOnCannonGamePlatform() and l.ischunky and l.barrels),
         LocationLogic(Locations.GalleonKasplatCannons, lambda l: not l.settings.kasplat_rando and l.CanGetOnCannonGamePlatform()),
-        LocationLogic(Locations.Balloon048, lambda l: l.ischunky and l.pineapple and l.CanGetOnCannonGamePlatform()),
+        LocationLogic(Locations.Balloon048, lambda l: l.ischunky and l.pineapple and l.CanGetOnCannonGamePlatform() and l.swim),
     ], [], [
         TransitionFront(Regions.GloomyGalleonStart, lambda l: Events.GalleonCannonRoomOpened in l.Events or l.CanPhaseswim() or (l.CanPhase() and l.CanGetOnCannonGamePlatform())),
         TransitionFront(Regions.Shipyard, lambda l: (l.CanPhaseswim() or (l.CanPhase() and l.CanGetOnCannonGamePlatform())) and (not l.IsLavaWater() or l.Melons >= 2)),
