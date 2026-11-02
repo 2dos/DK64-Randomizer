@@ -43,7 +43,6 @@ from oauth import DiscordAuth
 from functools import wraps
 from swagger_ui import flask_api_doc
 from werkzeug.middleware.proxy_fix import ProxyFix
-from opentelemetry_instrumentation_rq import RQInstrumentor
 
 COOLDOWN_PERIOD = 300  # 5 minutes in seconds
 JOB_TIMEOUT = 300  # Timeout in seconds (5 minutes)
@@ -91,7 +90,6 @@ if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
     meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
     metrics.set_meter_provider(meterProvider)
-    RQInstrumentor().instrument()
     RequestsInstrumentor().instrument()
     RedisInstrumentor().instrument()
     FlaskInstrumentor().instrument_app(app)

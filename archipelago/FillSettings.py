@@ -991,13 +991,20 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     settings_dict["crown_door_item"] = HelmDoorItem(options.crown_door_item.value)
     if settings_dict["crown_door_item"] == HelmDoorItem.vanilla:
         settings_dict["crown_door_item"] = HelmDoorItem.req_crown
+    if settings_dict["crown_door_item"] in [HelmDoorItem.easy_random, HelmDoorItem.medium_random, HelmDoorItem.hard_random]:
+        settings_dict["crown_door_item"] = random_obj.choice(door_item_to_key.keys())
     crown_item_key = door_item_to_key.get(settings_dict["crown_door_item"])
-    settings_dict["crown_door_item_count"] = generate_from_parsed_range(options.helm_door_item_count.value.get(crown_item_key, 1), 1, max_values_dict[crown_item_key] - 1, random_obj)
+    if settings_dict["crown_door_item"] != HelmDoorItem.opened:
+        settings_dict["crown_door_item_count"] = generate_from_parsed_range(options.helm_door_item_count.value.get(crown_item_key, 1), 1, max_values_dict[crown_item_key] + 1, random_obj)
+
     settings_dict["coin_door_item"] = HelmDoorItem(options.coin_door_item.value)
     if settings_dict["coin_door_item"] == HelmDoorItem.vanilla:
         settings_dict["coin_door_item"] = HelmDoorItem.req_companycoins
+    if settings_dict["crown_door_item"] in [HelmDoorItem.easy_random, HelmDoorItem.medium_random, HelmDoorItem.hard_random]:
+        settings_dict["crown_door_item"] = random_obj.choice(door_item_to_key.keys())
     coin_item_key = door_item_to_key.get(settings_dict["coin_door_item"])
-    settings_dict["coin_door_item_count"] = generate_from_parsed_range(options.helm_door_item_count.value.get(coin_item_key, 1), 1, max_values_dict[coin_item_key] - 1, random_obj)
+    if settings_dict["crown_door_item"] != HelmDoorItem.opened:
+        settings_dict["coin_door_item_count"] = generate_from_parsed_range(options.helm_door_item_count.value.get(coin_item_key, 1), 1, max_values_dict[coin_item_key] + 1, random_obj)
 
     if hasattr(multiworld, "generation_is_fake"):
         if hasattr(multiworld, "re_gen_passthrough"):
