@@ -5,6 +5,7 @@ import zlib
 import math
 
 from BuildEnums import TableNames, ExtraTextures
+from BuildClasses import Vert
 from BuildLib import ROMName, main_pointer_table_offset, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS, hueShiftColor, short_to_ushort
 
 # lanky_fix = """
@@ -268,28 +269,6 @@ def recolorBones(filename: str, bones: list[int], color: tuple):
             fh.seek(0x28 + (vert * 0x10) + 0xC)
             for seg in original_color:
                 fh.write(seg.to_bytes(1, "big"))
-
-
-class Vert:
-    """Vert definition class."""
-    
-    def __init__(self, coords: list, uv: list, rgba: list):
-        """Initialize with given parameters."""
-        self.coords = coords.copy()
-        self.uv = uv.copy()
-        self.rgba = rgba.copy()
-
-    def to_bytes(self):
-        """Convert parameters to a byte stream."""
-        by = []
-        for c in self.coords:
-            val = short_to_ushort(c)
-            by.extend([(val >> 8) & 0xFF, val & 0xFF])
-        by.extend([0, 0])
-        for val in self.uv:
-            by.extend([(val >> 8) & 0xFF, val & 0xFF])
-        by.extend(self.rgba)
-        return by
 
 
 with open(ROMName, "rb") as rom:
