@@ -709,7 +709,7 @@ class MoveName:
 
 class Vert:
     """Vert definition class."""
-    
+
     def __init__(self, coords: list, uv: list, rgba: list):
         """Initialize with given parameters."""
         self.coords = coords.copy()
