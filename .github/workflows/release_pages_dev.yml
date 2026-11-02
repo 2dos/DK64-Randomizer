@@ -71,6 +71,10 @@ jobs:
     - name: Pre Write Files
       run: echo 'This repo Dev Github Pages for DK64Rando, you need to go to https://github.com/2dos/DK64-Randomizer' > ./deploy-directory/README.md && echo 'dev.dk64randomizer.com' > ./deploy-directory/CNAME && touch ./deploy-directory/.nojekyll
 
+    - name: Configure Git Credentials
+      run: |
+        git config --global url."https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
     - name: Deploy to Github Pages
       uses: hpcodecraft/action-deploy-workspace-to-repo@v2.2
       env:
