@@ -559,16 +559,29 @@ with open(ROMName, "rb") as rom:
             fh.write(data)
         with open(f"{name}_item_om2.bin", "r+b") as fh:
             # Rotate
-            # for x in range(24):
-            #     vert_start = 0x1D0 + (x * 8)
-            #     fh.seek(vert_start)
-            #     coords = []
-            #     for y in range(3):
-            #         v = int.from_bytes(fh.read(2), "big")
-            #         coords.append(v)
-            #     fh.seek(vert_start)
-            #     for y in range(3):
-            #         fh.write(coords[(y + 1) % 3].to_bytes(2, "big"))
+            for x in range(12):
+                vert_start = 0x1D0 + (x * 0x10)
+                fh.seek(vert_start)
+                coords = []
+                uv = []
+                for y in range(3):
+                    v = int.from_bytes(fh.read(2), "big")
+                    if v > 32767:
+                        v -= 65536
+                    coords.append(v)
+                fh.seek(vert_start + 8)
+                for y in range(3):
+                    uv.append(int.from_bytes(fh.read(2), "big"))
+                fh.seek(vert_start)
+                for y in range(3):
+                    v = coords[(y + 1) % 3]
+                    v = int(v / 2)
+                    if v < 0:
+                        v += 65536
+                    fh.write(v.to_bytes(2, "big"))
+                fh.seek(vert_start + 8)
+                fh.write(uv[1].to_bytes(2, "big"))
+                fh.write(uv[0].to_bytes(2, "big"))
             # Replace Image
             fh.seek(0xDC)
             fh.write(index.to_bytes(4, "big"))
