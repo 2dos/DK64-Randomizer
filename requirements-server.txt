@@ -1,9 +1,10 @@
 opentelemetry-exporter-otlp-proto-http
 opentelemetry-instrumentation-flask
+opentelemetry-instrumentation-rq
 opentelemetry-instrumentation-requests
 opentelemetry-instrumentation-redis
 redis
-rq
+rq==2.12.0
 apscheduler==3.11.3
 flask-cors==6.0.5
 requests
