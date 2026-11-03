@@ -34,7 +34,7 @@ def genGIFFrame(im: Image, cap=128):
     return im
 
 
-def get_hash_images(type="local", mode="hash", rom=None):
+def get_hash_images(type="local", mode="hash"):
     """Get and return a list of hash images for the website UI."""
     images = [
         ImageInfo("bongos", "rgba16", 25, 5548, 40, 40, "hash"),
@@ -60,9 +60,7 @@ def get_hash_images(type="local", mode="hash", rom=None):
     loaded_images = []
     gif_frames = []
     rom_type = None
-    if rom is not None:
-        rom_type = rom
-    elif type == "browser":
+    if type == "browser":
         if mode in ("loading-fairy", "loading-dead"):
             rom_type = ROM(js.romFile)
         else:
