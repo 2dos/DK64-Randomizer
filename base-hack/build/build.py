@@ -558,6 +558,22 @@ file_dict = [
     File(name="Ice Wall (Chunky)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29F, source_file="ice_wall_chunky.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Animation Code", pointer_table_index=TableNames.Unknown13, file_index=0, source_file="animation_code.bin", do_not_delete_source=True),
     File(
+        name="Charge Icon",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.ChargeIcon),
+        source_file="assets/displays/charge_icon.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="Punch Icon",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.PunchIcon),
+        source_file="assets/displays/punch_icon.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
         name="Disco Shirt",
         pointer_table_index=TableNames.TexturesGeometry,
         file_index=getBonusSkinOffset(ExtraTextures.DiscoDonkShirt),
@@ -2754,6 +2770,8 @@ with open(newROMName, "r+b") as fh:
         "taskimage5",
         "taskimage6",
         "taskimage7",
+        "charge_icon",
+        "punch_icon",
     ]
     hash_items = [
         "dk_tie_palette",

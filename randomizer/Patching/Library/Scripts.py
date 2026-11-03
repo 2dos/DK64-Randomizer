@@ -2226,6 +2226,7 @@ def setProgSlamStrength(ROM_COPY: LocalROM, settings):
                     obj_ids,
                     {
                         f"COND 37 | {x} 0 0": f"COND 37 | {slam_strength} 0 0",
+                        f"CONDINV 37 | {x} 0 0": f"CONDINV 37 | {slam_strength} 0 0",
                     },
                 )
         else:
@@ -2236,6 +2237,7 @@ def setProgSlamStrength(ROM_COPY: LocalROM, settings):
                     obj_ids,
                     {
                         f"COND 37 | {x} 0 0": "COND 0 | 0 0 0",
+                        f"CONDINV 37 | {x} 0 0": "CONDINV 0 | 0 0 0",
                     },
                 )
             replaceScriptLines(

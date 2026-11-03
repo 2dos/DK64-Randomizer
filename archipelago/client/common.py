@@ -284,6 +284,8 @@ def check_version():
                         logger.warning("-" * 50)
                         logger.warning("New version of DK64 Rando available, but no APWorld file found. Please update manually.")
                         logger.warning("-" * 50)
+                elif release_branch.startswith("v"):
+                    logger.info(f"You are running pinned version {release_branch} of DK64 Rando.")
                 else:
                     logger.info("You are running the latest version of DK64 Rando.")
     except Exception as e:

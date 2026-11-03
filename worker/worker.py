@@ -29,7 +29,6 @@ from version import version
 import logging
 import sys
 from tasks import generate_seed
-from opentelemetry_instrumentation_rq import RQInstrumentor
 from randomizer.Lists.Exceptions import SettingsIncompatibleException, PlandoIncompatibleException
 from opentelemetry.instrumentation.redis import RedisInstrumentor
 
@@ -78,7 +77,6 @@ if __name__ == "__main__" and os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
     metrics.set_meter_provider(meterProvider)
     FlaskInstrumentor().instrument_app(app)
-    RQInstrumentor().instrument()
     RedisInstrumentor().instrument()
     # create the providers
     logger_provider = LoggerProvider(resource=resource)

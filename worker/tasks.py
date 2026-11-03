@@ -11,6 +11,7 @@ import logging
 from datetime import timezone, datetime
 from io import BytesIO
 import sys
+from opentelemetry import metrics
 from randomizer.Patching import BPS as bps
 from rq import get_current_job
 from randomizer.Enums.Settings import SettingsMap
@@ -22,11 +23,17 @@ from version import version
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler(sys.stdout))
+meter = metrics.get_meter("worker")
+jobs = meter.create_counter("worker.jobs", unit="jobs")
+job_duration = meter.create_histogram("worker.job.duration", unit="s")
 
 
 def generate_seed(settings_dict):
     """Generate a seed with the given settings."""
     print("Running task with")
+    started_at = time.time()
+    outcome = "success"
+    job = None
     try:
         if isinstance(settings_dict, str):
             settings_dict = json.loads(settings_dict)
@@ -57,11 +64,28 @@ def generate_seed(settings_dict):
         return update_seed_results(patch, spoiler, settings_dict, password, delayed_timestamp, original_settings_json)
 
     except Exception as e:
+        outcome = "failure"
         logger.info(traceback.format_exc())
         # Return the error and the type of error.
         error = str(type(e).__name__) + ": " + str(e)
         raise e
         # queue.put(error)
+    finally:
+        if job is not None:
+            attributes = {
+                "priority": job.origin,
+                "ip": job.meta.get("ip"),
+                "branch": job.meta.get("branch"),
+                "outcome": outcome,
+            }
+            # Its not perfect that we're tracking it based on when the job runs, we might end up with orphaned jobs
+            # but like, its better than nothing.
+            jobs.add(1, attributes)
+            # This actually tracks the data we're sending, we're just gonna round here because I don't want to deal
+            # with floating data in signoz (to be clear it might be dumb easy, but I'm lazy, someone else check me if they care)
+            job_duration.record(int(time.time() - started_at), attributes)
+            # TODO: Double check if I need to shrink this more before the job times out
+            metrics.get_meter_provider().force_flush(timeout_millis=1000)
 
 
 def cleanup_settings(settings):

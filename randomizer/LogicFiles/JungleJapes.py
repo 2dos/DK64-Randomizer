@@ -271,7 +271,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesBananaFairyRambiCave, lambda l: l.camera),
         LocationLogic(Locations.MelonCrate_Location01, lambda _: True),
         LocationLogic(Locations.Balloon003, lambda l: l.ischunky and l.pineapple),
-        LocationLogic(Locations.Balloon009, lambda l: l.istiny and l.feather),
+        LocationLogic(Locations.Balloon009, lambda l: l.istiny and l.feather and l.swim),
         LocationLogic(Locations.Balloon010, lambda l: l.ischunky and l.pineapple),
         LocationLogic(Locations.Balloon011, lambda l: l.ischunky and l.pineapple),
     ], [

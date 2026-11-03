@@ -97,7 +97,6 @@ CAN_THROW_APPLES = True
 DISABLE_LONG_JUMP = False
 TURF_SURF = False
 TEST_HUNKY_FIX = False
-BETTER_JUMPS = True
 INSTANCE_SCRIPT_ADJUSTMENTS = True
 PIANO_SFX_RANDO = True
 
@@ -777,7 +776,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
         val = -1
         if x < len(enabled_screens):
             val = enabled_screens[x]
-        writeValue(ROM_COPY, enabled_pause_rom + x, Overlay.Custom, val, offset_dict, True)
+        writeValue(ROM_COPY, enabled_pause_rom + x, Overlay.Custom, val, offset_dict, 1, True)
 
     kong_model_setting_values = [
         settings.kong_model_dk,
@@ -2316,7 +2315,7 @@ def patchAssembly(ROM_COPY: LocalROM, spoiler):
     if TEST_HUNKY_FIX:
         writeValue(ROM_COPY, 0x8067185A, Overlay.Static, 0x64, offset_dict)
         writeValue(ROM_COPY, 0x80671814, Overlay.Static, 0, offset_dict, 4)
-    if BETTER_JUMPS:
+    if settings.misc_movement_changes:
         writeValue(ROM_COPY, 0x806E1C6C, Overlay.Static, 0, offset_dict, 4)
 
     # Cannon code w/ flag check
