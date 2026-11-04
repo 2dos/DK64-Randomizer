@@ -68,7 +68,6 @@
         "Generate Protobuf code",
         "Generate PyI Stubs",
         "Update CB requirements",
-        "Generate Selector Info",
       ],
       "problemMatcher": []
     },
