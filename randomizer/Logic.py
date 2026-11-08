@@ -997,7 +997,7 @@ class LogicVarHolder:
         if self.spoiler.LocationList[Locations.LankyKong].item == Items.NoItem:
             return self.CanLlamaSpit(self) and self.swim and (self.IsKong(self.settings.lanky_freeing_kong) or self.settings.free_trade_items)
         else:
-            return (self.swim and self.hasMoveSwitchsanity(Switches.AztecLlamaPuzzle)) or self.CanPhase() or self.CanPhaseswim()
+            return self.hasMoveSwitchsanity(Switches.AztecLlamaPuzzle) and (self.CanPhase() or self.CanPhaseswim() or self.swim)
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""

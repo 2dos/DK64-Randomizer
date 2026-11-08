@@ -43,7 +43,6 @@ from randomizer.Enums.Settings import (
     HardBossesSelected,
     HardModeSelected,
     HelmDoorItem,
-    ItemRandoFiller,
     ItemRandoListSelected,
     KongModels,
     LevelRandomization,
@@ -94,12 +93,10 @@ def in_item_pool(item: str) -> Rule:
 def trap_weight(key: str) -> Rule:
     """Turn a website trap weight (0, 1, 2, 3 or more) into none, low, medium or high.
 
-    Every trap weight is "none" when ice traps aren't in the website's filler items.
+    Whether there are traps at all comes from trap_fill_percentage.
     """
 
     def rule(website: WebsiteSettings) -> Optional[str]:
-        if "icetraps" not in website.names("filler_items_selected", ItemRandoFiller):
-            return "none"
         weight = website.number(key)
         if weight is None:
             return None
@@ -253,23 +250,41 @@ def level_troff(website: WebsiteSettings) -> Dict[str, int]:
 # item pool entry
 ITEM_POOL_CATEGORIES = {
     "crown": "crowns",
+    "arenas": "crowns",
     "blueprint": "blueprints",
+    "kasplat": "blueprints",
     "medal": "medals",
+    "medal_checks": "medals",
+    "medal_checks_helm": "medals",
     "nintendocoin": "company_coins",
+    "arcade": "company_coins",
     "rarewarecoin": "company_coins",
+    "jetpac": "company_coins",
     "fairy": "fairies",
+    "fairy_checks": "fairies",
     "rainbowcoin": "rainbow_coins",
+    "dirt_patches": "rainbow_coins",
     "bean": "bean",
+    "anthillreward": "bean",
     "pearl": "pearls",
+    "clams": "pearls",
     "crateitem": "crates",
+    "dummyitem_crateitem": "crates",
     "hint": "hints",
+    "wrinkly": "hints",
     "shopowners": "shopkeepers",
+    "halfmedal": "half_medals",
     "dummyitem_halfmedal": "half_medals",
     "blueprintbanana": "snide_turnins",
+    "sniderewards": "snide_turnins",
     "fungitime": "time_of_day",
+    "boulderitem": "boulders",
     "dummyitem_boulderitem": "boulders",
+    "balloon": "balloons",
     "dummyitem_balloon": "balloons",
+    "breakable": "breakables",
     "dummyitem_breakable": "breakables",
+    "enemies": "dropsanity",
     "dummyitem_enemies": "dropsanity",
 }
 
@@ -278,6 +293,7 @@ def item_pool(website: WebsiteSettings) -> List[str]:
     """Return the AP item pool categories found in the website's shuffled pools.
 
     Moves, Golden Bananas, shops, Kongs and keys are always in the AP pool, so they have no category.
+    AP can't split items from checks, so with decoupled pools a category counts if either side is shuffled.
     """
     return sorted({ITEM_POOL_CATEGORIES[item] for item in website.shuffled_items() if item in ITEM_POOL_CATEGORIES})
 
@@ -481,6 +497,38 @@ def enable_cutscenes(website: WebsiteSettings) -> Optional[bool]:
     return website.name("more_cutscene_skips", ExtraCutsceneSkips) != "auto"
 
 
+# Archipelago options for every game
+
+# Starting keys go into the AP common yaml option. Key 8 is not included here since Don't start with Key 8 is globally enabled in AP
+KEY_ITEMS = {
+    "JungleJapesKey": "Key 1",
+    "AngryAztecKey": "Key 2",
+    "FranticFactoryKey": "Key 3",
+    "GloomyGalleonKey": "Key 4",
+    "FungiForestKey": "Key 5",
+    "CrystalCavesKey": "Key 6",
+    "CreepyCastleKey": "Key 7",
+}
+
+
+def common_options(website: WebsiteSettings) -> Dict[str, Any]:
+    """Return the options every Archipelago game has."""
+    keys = website.names("starting_keys_list_selected", Items) if website.flag("select_keys") else []
+    return {
+        "progression_balancing": "normal",
+        "accessibility": "full",
+        "local_items": [],
+        "non_local_items": [],
+        "start_inventory": {KEY_ITEMS[key]: 1 for key in keys if key in KEY_ITEMS},
+        "start_hints": [],
+        "start_location_hints": [],
+        "exclude_locations": [],
+        "priority_locations": [],
+        "item_links": [],
+        "plando_items": [],
+    }
+
+
 # ---------------------------------------------------------------------------
 # SETTINGS: every AP option, and where its value comes from on the website.
 # Sections and order follow the option groups in archipelago/Options.py.
@@ -651,9 +699,18 @@ class WebsiteSettings:
         return [name for name in (enum_name(value, enum) for value in values) if name is not None]
 
     def shuffled_items(self) -> List[str]:
-        """Return the ItemRandoListSelected names in every shuffled item and check pool."""
-        # Pools 1-4 hold items and 6-9 hold checks. Pools 0 and 5 are the "not shuffled" lists.
-        return [item for pool in (1, 2, 3, 4, 6, 7, 8, 9) for item in self.names(f"item_rando_list_{pool}", ItemRandoListSelected)]
+        """Return the ItemRandoListSelected names in the shuffled pools the website uses.
+
+        Pools 1-4 hold items and 6-9 hold checks. Pools 0 and 5 are the "not shuffled" lists.
+        Coupled, the website hides the check pools and pairs each check with its item, so only pools 1-4 count.
+        Decoupled, it hides the dummy items instead, so those are left out.
+        """
+        decoupled = self.flag("decouple_item_rando")
+        pools = (1, 2, 3, 4, 6, 7, 8, 9) if decoupled else (1, 2, 3, 4)
+        items = [item for pool in pools for item in self.names(f"item_rando_list_{pool}", ItemRandoListSelected)]
+        if decoupled:
+            items = [item for item in items if not item.startswith("dummyitem_")]
+        return items
 
 
 def enum_name(value: Any, enum: Type[Enum]) -> Optional[str]:
@@ -836,6 +893,8 @@ def export_to_yaml(settings_dict: Dict[str, Any], player_name: str = "Player", g
                 text += f"  {name}:\n" + "".join(f"  - {item}\n" for item in value)
             else:
                 text += f"  {name}: {value}\n"
+    common = yaml.dump(common_options(website), default_flow_style=False, sort_keys=False, allow_unicode=True, width=120)
+    text = text.rstrip("\n") + "\n  # Archipelago options for every game:\n" + "".join(f"  {line}\n" for line in common.splitlines())
     return "# Donkey Kong 64 Randomizer\n# Generated from https://dk64randomizer.com \n\n" + text
 
 
