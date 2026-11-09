@@ -40,9 +40,6 @@ class ROM:
             self.rom = js.patchedRom
         else:
             self.rom = file
-        if self.rom is not None:
-            self.u8array = self.rom._u8array
-            self.data = BytesIO(self.u8array.to_bytes())
 
     def write(self, val: int):
         """Write value to current position.
@@ -52,7 +49,7 @@ class ROM:
         Args:
             val (int): Int value to write.
         """
-        self.data.write(bytes([int(val or 0) & 0xFF]))
+        self.rom.writeU8(val)
 
     def writeBytes(self, byte_data: bytes):
         """Write an array a bytes to the current position.
@@ -62,7 +59,7 @@ class ROM:
         Args:
             byte_data (bytes): Bytes object to write to current position.
         """
-        self.data.write(bytes(byte_data))
+        self.rom.writeBytes(bytes(byte_data))
 
     def writeMultipleBytes(self, value: int, size: int):
         """Write multiple bytes of a size to the current position.
@@ -102,7 +99,6 @@ class ROM:
         Args:
             file_id (str): Name of file to save as.
         """
-        self.u8array.assign(self.data.getbuffer()[: self.u8array.length])
         self.rom.fileName = file_name
         self.rom.save()
 
@@ -112,7 +108,7 @@ class ROM:
         Args:
             val (int): Position to seek to.
         """
-        self.data.seek(val)
+        self.rom.seek(val)
 
     def readBytes(self, len: int):
         """Read bytes from current position.
@@ -125,9 +121,45 @@ class ROM:
         Returns:
             bytes: List of bytes read from current position.
         """
-        offset = self.data.tell()
-        result = self.data.read(len)
-        if self.data.tell() - offset != len:
+        if self.rom is None:
+            raise RuntimeError("ROM object is None - ROM not initialized")
+
+        # Check if ROM has readBytes method
+        if not hasattr(self.rom, "readBytes"):
+            raise RuntimeError(f"ROM object does not have readBytes method. Type: {type(self.rom)}")
+
+        try:
+            result = self.rom.readBytes(len)
+        except Exception as e:
+            # Get current file position for debugging
+            offset = self.rom.offset if hasattr(self.rom, "offset") else "unknown"
+            raise RuntimeError(f"Failed to read {len} bytes at offset {offset}: {str(e)}") from e
+
+        # Convert JsProxy to Python bytes (for Pyodide compatibility)
+        if hasattr(result, "to_py"):
+            result = result.to_py()
+
+        if result is None:
+            offset = self.rom.offset if hasattr(self.rom, "offset") else "unknown"
+            raise RuntimeError(
+                f"readBytes returned None for len={len} at offset {offset}. "
+                f"This usually means the ROM file position is invalid or the ROM wasn't properly initialized. "
+                f"For proto-based patches, ensure patchedRom.convert() was called."
+            )
+
+        # Detect past-EOF reads: Pyodide turns JS `undefined` (from reading
+        # past _u8array's end) into Python None inside the result list. The
+        # outer object isn't None, but its elements are, which makes the
+        # subsequent `bytes(result)` raise a cryptic
+        # `TypeError: 'NoneType' object cannot be interpreted as an integer`.
+        # Surface a clearer message instead so the real cause (ROM not
+        # base-hack-converted / read past EOF) is obvious.
+        try:
+            has_none_element = any(b is None for b in result)
+        except TypeError:
+            has_none_element = False
+        if has_none_element:
+            offset = self.rom.offset if hasattr(self.rom, "offset") else "unknown"
             file_size = self.rom.fileSize if hasattr(self.rom, "fileSize") else "unknown"
             raise RuntimeError(
                 f"readBytes read past end of ROM: tried to read {len} bytes "
@@ -136,13 +168,12 @@ class ROM:
                 f"proto-based (.lanky) patches, make sure apply_base_hack_bps() "
                 f"ran before patching_response()."
             )
-        return result
+
+        return bytes(result)
 
     def fixChecksum(self):
         """Fix the checksum of the current file."""
-        self.u8array.assign(self.data.getbuffer()[: self.u8array.length])
         js.fixChecksum(self.rom)
-        self.data = BytesIO(self.u8array.to_bytes())
 
     def fixSecurityValue(self):
         """Set the security code and update the rom checksum."""

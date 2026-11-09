@@ -4105,10 +4105,8 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     # print(spoiler)
     # print(spoiler.json)
     fill_proto = fill_result_to_proto(spoiler)
-    password = None
-    if spoiler.settings.has_password:
-        _, password = ApplyRandomizer.encPass(spoiler)
-    return fill_proto.SerializeToString(), spoiler, password
+    patch_data, password = ApplyRandomizer.patching_response(fill_proto, spoiler.settings)
+    return patch_data, spoiler, password
 
 
 class ItemReference:
