@@ -1338,7 +1338,7 @@ class LogicVarHolder:
 
     def CanMoontail(self):
         """Determine whether the player can perform a Moontail."""
-        return self.moontail and self.isdiddy and (not self.isKrushaAdjacent(Kongs.diddy)) # Krusha doesnt have the jump height that Diddy has
+        return self.moontail and self.isdiddy and (not self.isKrushaAdjacent(Kongs.diddy))  # Krusha doesnt have the jump height that Diddy has
 
     def CanPhase(self):
         """Determine whether the player can phase."""
