@@ -208,19 +208,31 @@ ColoredBananaGroupList = [
         region=Regions.TrainingGrounds,
         logic=lambda l: l.swim,
         locations=[
-            [5, 1.0, 1888, -182, 985],
-            [5, 1.0, 1888, -182, 1111],
-            [5, 1.0, 1888, -182, 1236],
+            [1, 1.0, 1891, -180, 1276],
+            [1, 1.0, 1935, -180, 1244],
+            [1, 1.0, 1962, -180, 1197],
+            [1, 1.0, 1967, -180, 1143],
+            [1, 1.0, 1951, -180, 1092],
+            [1, 1.0, 1914, -180, 1052],
+            [1, 1.0, 1865, -180, 1030],
+            [1, 1.0, 1811, -180, 1030],
+            [1, 1.0, 1762, -180, 1052],
+            [1, 1.0, 1725, -180, 1092],
+            [1, 1.0, 1709, -180, 1143],
+            [1, 1.0, 1714, -180, 1197],
+            [1, 1.0, 1741, -180, 1244],
+            [1, 1.0, 1785, -180, 1276],
+            [1, 1.0, 1838, -180, 1287],
         ],
     ),
     ColoredBananaGroup(
         group=16,
         map_id=Maps.TrainingGrounds,
-        name="Behind the waterfall",
+        name="Waterfall",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
         locations=[
-            [5, 1.3, 2011, 7, 1188],
+            [5, 1.0, 1964, 30, 1176],
         ],
     ),
     ColoredBananaGroup(
@@ -489,7 +501,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=37,
         map_id=Maps.Isles,
-        name="Tree between tag barrel and Japes",
+        name="Around tree between tag barrel and Japes",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
         locations=[
@@ -503,7 +515,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=38,
         map_id=Maps.Isles,
-        name="Tree next to Japes",
+        name="Top of tree next to Japes",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
         logic=lambda l: (l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy),
@@ -514,7 +526,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=38,
         map_id=Maps.Isles,
-        name="Tree next to Japes",
+        name="Around tree next to Japes",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
         locations=[
@@ -528,7 +540,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=39,
         map_id=Maps.Isles,
-        name="Tree on beaver beach",
+        name="Top of tree on beaver beach",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
         logic=lambda l: (l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy),
@@ -539,7 +551,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=39,
         map_id=Maps.Isles,
-        name="Tree on beaver beach",
+        name="Around tree on beaver beach",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
         locations=[
@@ -553,7 +565,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=40,
         map_id=Maps.Isles,
-        name="Tree near W3",
+        name="Top of tree near W3",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
         logic=lambda l: (l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy),
@@ -564,7 +576,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=40,
         map_id=Maps.Isles,
-        name="Tree near W3",
+        name="Around tree near W3",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
         locations=[
@@ -663,7 +675,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=46,
         map_id=Maps.Isles,
-        name="Tree below Caves",
+        name="Top of tree below Caves",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesHill,
         locations=[
@@ -673,7 +685,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=46,
         map_id=Maps.Isles,
-        name="Tree below caves",
+        name="Around tree below caves",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IslesMain,
         locations=[
@@ -984,7 +996,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=70,
         map_id=Maps.Isles,
-        name="Up and around the fairy tree",
+        name="Top of the fairy tree",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.OuterIsles,
         logic=lambda l: (l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy),
@@ -995,7 +1007,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=70,
         map_id=Maps.Isles,
-        name="Up and around the fairy tree",
+        name="Around the fairy tree",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.OuterIsles,
         locations=[
@@ -2903,6 +2915,20 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
         locations=[[5, 1.0, 1412, 84, 1386], [5, 1.0, 1239, 86, 1055]],
+    ),
+    ColoredBananaGroup(
+        group=226,
+        map_id=Maps.CreepyCastleLobby,
+        name="Trophy flip spot",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.CreepyCastleLobby,
+        locations=[
+            [1, 1.0, 620, 71, 522],
+            [1, 1.0, 620, 85, 522],
+            [1, 1.0, 620, 100, 522],
+            [1, 1.0, 620, 114, 522],
+            [1, 1.0, 620, 128, 522],
+        ],
     ),
 ]
 

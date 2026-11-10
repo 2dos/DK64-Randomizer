@@ -2206,7 +2206,7 @@ ColoredBananaGroupList = [
         name="Above the meme hidden dirt patch",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MillArea,
-        locations=[[5, 1.6, 4655, 190, 4160]],
+        locations=[[5, 1.0, 4683, 180, 4165]],
     ),
     ColoredBananaGroup(
         group=177,
