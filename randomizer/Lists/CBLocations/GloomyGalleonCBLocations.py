@@ -1885,7 +1885,13 @@ ColoredBananaGroupList = [
         name="On Kevin's spot (lighthouse alcove)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseSurface,
-        locations=[[5, 2.0, 686, 1590, 4134]],
+        locations=[
+            [1, 1.0, 686, 1570, 4134],
+            [1, 1.0, 686, 1580, 4134],
+            [1, 1.0, 686, 1590, 4134],
+            [1, 1.0, 686, 1600, 4134],
+            [1, 1.0, 686, 1610, 4134],
+        ],
     ),
     ColoredBananaGroup(
         group=159,

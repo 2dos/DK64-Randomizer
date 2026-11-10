@@ -764,10 +764,9 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=51,
         map_id=Maps.JapesUnderGround,
-        name="On blueprint platform",
+        name="In the big scary mouth",
         konglist=[Kongs.chunky],
         region=Regions.JapesCatacomb,
-        logic=lambda l: l.pineapple and l.can_use_vines and l.ischunky,
         locations=[[5, 1.0, 203, 5, 686]],
     ),
     ColoredBananaGroup(
