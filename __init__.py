@@ -46,7 +46,7 @@ if baseclasses_loaded:
     from archipelago.Items import DK64Item, full_item_table, setup_items
     from archipelago.Options import DK64Options, Goal, SwitchsanityOptions, SelectStartingKong, dk64_option_groups, LoadingZoneRando
     from archipelago.Prices import generate_prices
-    from archipelago.Regions import all_locations, create_regions, connect_regions, connect_exit_level_and_deathwarp, connect_glitch_transitions
+    from archipelago.Regions import all_locations, create_regions, connect_regions, connect_exit_level, connect_glitch_transitions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
     from worlds.AutoWorld import WebWorld, World, AutoLogicRegister
@@ -1001,8 +1001,8 @@ if baseclasses_loaded:
                             if entrance not in original_region.entrances:
                                 original_region.entrances.append(entrance)
 
-                # Handle exit level and deathwarp
-                connect_exit_level_and_deathwarp(self, self.er_placement_state)
+                # Handle exit level
+                connect_exit_level(self, self.er_placement_state)
 
                 # Handle glitch transitions
                 connect_glitch_transitions(self, self.er_placement_state)

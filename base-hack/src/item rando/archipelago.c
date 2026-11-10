@@ -124,7 +124,10 @@ int applyKnockbackDamage(int player_index, int damage) {
 }
 
 static int canReceiveKnockback(void) {
-    if (!Player || !cc_allower_generic() || !canLoadIceTrap(ICETRAP_SLIP)) {
+    if (ObjectModel2Timer < 90) {
+        return 0; // Prevents getting knocked back into a loading zone
+    }
+    if (!Player || !cc_allower_generic() || !canLoadIceTrap(ICETRAP_BUBBLE)) {
         return 0;
     }
     if (Player->invulnerability_timer || Player->vehicle_actor_pointer) {

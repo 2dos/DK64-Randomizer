@@ -52,6 +52,7 @@ from randomizer.Enums.Settings import (
     TroffSetting,
     WrinklyHints,
     KroolInBossPool,
+    TagAnywhere,
 )
 from randomizer.Enums.Items import Items as DK64RItems
 from randomizer.Enums.Types import Types
