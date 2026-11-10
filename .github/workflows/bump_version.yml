@@ -14,7 +14,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v6.2.0
         with:
-            python-version: 3.10.9
+            python-version: 3.11.15
             architecture: x64
 
       - name: Install bump2version
