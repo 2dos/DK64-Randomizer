@@ -35,6 +35,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.LogicClasses import Collectible, LocationLogic, Balloon
 from randomizer.Patching.Library.Generic import IsItemSelected
 from randomizer.Lists.MapsAndExits import RegionMapList, LevelMapTable
+from randomizer.Lists.Location import BALLOON_FLAG_START
 
 
 def addBalloon(spoiler, balloon: Balloon, enum_val: int, name: str, level: Levels, kong: Kongs):
@@ -101,6 +102,18 @@ def removeBalloons(spoiler):
                 # Use the inaccessible flag to mark the location as needing new logic (if it gets one)
                 spoiler.LocationList[loc.id].inaccessible = True
             region_data.locations = [x for x in region_data.locations if x.id < Locations.Balloon000 or x.id > Locations.Balloon103]
+
+
+def setBalloonFlags(spoiler):
+    """Give each balloon location the flag of its balloon."""
+    balloons = []
+    for region in spoiler.RegionList.values():
+        for loc in region.locations:
+            location = spoiler.LocationList[loc.id]
+            if location.type == Types.Balloon:
+                balloons.append((location.default_mapid_data[0].map, loc.id))
+    for index, (_, location_id) in enumerate(sorted(balloons)):  # Within a map, the location numbers are already in setup order
+        spoiler.LocationList[location_id].default_mapid_data[0].flag = BALLOON_FLAG_START + index
 
 
 level_data = {
@@ -419,6 +432,7 @@ def ShuffleCBs(spoiler):
                         balloon_data["enum"] = next_free_location
                         addBalloon(spoiler, balloon_data["balloon"], balloon_data["enum"], balloon_data["name"], balloon_data["level"], balloon_data["kong"])
                         balloon_data["balloon"] = None  # Clear reference
+                setBalloonFlags(spoiler)
 
             return
         except Ex.CBFillFailureException as ex:

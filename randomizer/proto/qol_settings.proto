@@ -42,6 +42,12 @@ enum CutsceneSkips {
     CUTSCENE_SKIPS_AUTO = 3;
 }
 
+enum TagAnywhere {
+    TAG_ANYWHERE_OFF = 0;
+    TAG_ANYWHERE_ON = 1;
+    TAG_ANYWHERE_RESTRICTED = 2;
+}
+
 enum WrinklyHints {
     WRINKLY_HINTS_UNSPECIFIED = 0;
     WRINKLY_HINTS_OFF = 1;
@@ -145,7 +151,7 @@ message QualityOfLifeSettings {
 
     bool shorten_boss_fights = 3;
 
-    bool tag_anywhere = 4;
+    TagAnywhere tag_anywhere = 4;
 
     bool shop_indicator = 5;
     

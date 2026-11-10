@@ -30,7 +30,7 @@ LogicRegions = {
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location
-    Regions.CrystalCavesEntryHandler: Region("Crystal Caves Entry Handler", HintRegion.Error, Levels.CreepyCastle, False, None, [], [
+    Regions.CrystalCavesEntryHandler: Region("Crystal Caves Entry Handler", HintRegion.Error, Levels.CrystalCaves, False, None, [], [
         Event(Events.CavesEntered, lambda _: True),
     ], [
         TransitionFront(Regions.CrystalCavesLobby, lambda _: True, Transitions.CavesToIsles),

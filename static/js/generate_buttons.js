@@ -168,8 +168,8 @@ function get_cosmetic_music_field_names() {
     for (const sel of ["#nav-cosmetics", "#nav-music"]) {
         const root = document.querySelector(sel);
         if (!root) continue;
-        for (const el of root.querySelectorAll("input[name], select[name]")) {
-            names.add(el.name);
+        for (const el of root.querySelectorAll("[name]")) {
+            names.add(el.getAttribute("name"));
         }
     }
     return Array.from(names);
