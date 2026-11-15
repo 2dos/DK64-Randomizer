@@ -333,7 +333,6 @@ SWITCHES = [
     "aztec_free_tiny",
     "aztec_gong_tower",
     "aztec_lobby_gong",
-    "factory_free_kong",
     "factory_dark_grate",
     "factory_bonus_grate",
     "factory_monster_grate",
