@@ -378,7 +378,7 @@ LogicRegions = {
     ),
 
     Regions.LlamaTemple: Region("Llama Temple", HintRegion.LlamaTemple, Levels.AngryAztec, True, -1, [
-        LocationLogic(Locations.LankyKong, lambda l: l.CanFreeLanky()),
+        LocationLogic(Locations.LankyKong, lambda l: l.CanFreeLanky() and l.hasMoveSwitchsanity(Switches.AztecLlamaPuzzle)),
         LocationLogic(Locations.AztecDonkeyFreeLanky, lambda l: l.CanFreeLanky()),
         LocationLogic(Locations.AztecLankyLlamaTempleBarrel, lambda l: l.trombone and ((l.handstand and l.islanky) or (l.settings.free_trade_items and ((l.istiny and ((l.twirl and l.monkey_maneuvers) or l.slope_resets)) or l.CanMoonkick()))), MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecBananaFairyLlamaTemple, lambda l: l.camera),

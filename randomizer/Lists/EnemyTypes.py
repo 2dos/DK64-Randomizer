@@ -595,6 +595,7 @@ EnemyMetaData = {
         name="Zinger (Flamethrower)",
         e_type=EnemySubtype.Air,
         air=True,
+        crown_enabled=False,
         crown_weight=7,
         disruptive=1,
         interaction=InteractionMethods(kill_melee=False, kill_orange=False, kill_shockwave=False),

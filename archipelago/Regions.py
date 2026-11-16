@@ -778,8 +778,19 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
     connect(world, "IslesMain", "IslesMainUpper", lambda state: True)
     connect(world, "IslesMain", "KremIsleBeyondLift", lambda state: True)
 
-    # Random starting region exit connection
-    if spoiler and hasattr(settings, "starting_region") and settings.starting_region:
+    # Deathwarps send you to the level's DK portal
+    for region_id, region_obj in all_logic_regions.items():
+        if region_obj.deathwarp:
+            connect(
+                world,
+                region_id.name,
+                region_obj.deathwarp.dest.name,
+                lambda state, player=world.player, exit=region_obj.deathwarp: hasDK64RTransition(state, player, exit),
+                "Deathwarp: " + region_id.name + "->" + region_obj.deathwarp.dest.name,
+            )
+
+    # Random starting region exit connection. With loading zones shuffled, Exit Level is connected after entrance randomization instead
+    if spoiler and hasattr(settings, "starting_region") and settings.starting_region and settings.level_randomization != LevelRandomization.loadingzone:
         starting_region_id = settings.starting_region.get("region")
         if starting_region_id is not None:
             starting_region_obj = all_logic_regions.get(starting_region_id)
@@ -834,17 +845,6 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
 
     # Loading zone randomization special connections
     if pairings:
-        # Handle deathwarps
-        for region_id, region_obj in all_logic_regions.items():
-            if region_obj.deathwarp:
-                connect(
-                    world,
-                    region_id.name,
-                    region_obj.deathwarp.dest.name,
-                    lambda state, player=world.player, exit=region_obj.deathwarp: hasDK64RTransition(state, player, exit),
-                    "Deathwarp: " + region_id.name + "->" + region_obj.deathwarp.dest.name,
-                )
-
         # Handle exit level connections
         exit_level_transition_dict = {
             Levels.JungleJapes: ShufflableExits[Transitions.JapesToIsles].name,
@@ -892,8 +892,8 @@ def connect_glitch_transitions(world: World, er_placement_state: ERPlacementStat
                 )
 
 
-def connect_exit_level_and_deathwarp(world: World, er_placement_state: ERPlacementState):
-    """Connect exit level and deathwarp transitions."""
+def connect_exit_level(world: World, er_placement_state: ERPlacementState):
+    """Connect exit level transitions."""
     entrances = er_placement_state.placements
 
     exit_level_transition_dict = {
@@ -909,16 +909,6 @@ def connect_exit_level_and_deathwarp(world: World, er_placement_state: ERPlaceme
     exit_level_target_dict = {key: next((entrance for entrance in entrances if entrance.name == value), None) for key, value in exit_level_transition_dict.items()}
 
     for region_id, region_obj in all_logic_regions.items():
-        # Deathwarp
-        if region_obj.deathwarp:
-            connect(
-                world,
-                region_id.name,
-                region_obj.deathwarp.dest.name,
-                lambda state, player=world.player, exit=region_obj.deathwarp: hasDK64RTransition(state, player, exit),
-                "Deathwarp: " + region_id.name + "->" + region_obj.deathwarp.dest.name,
-            )
-        # Exit level
         if not region_obj.restart and region_obj.level in exit_level_target_dict:
             connect(
                 world,

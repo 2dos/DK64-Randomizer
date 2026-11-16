@@ -42,7 +42,7 @@ jobs:
     - name: Setup python
       uses: actions/setup-python@v6.2.0
       with:
-          python-version: 3.13.0
+          python-version: 3.13.18
           architecture: x64
 
     - name: Install packages

@@ -648,10 +648,8 @@ class SwitchsanityOptions(OptionDict):
             "aztec_llama_front",
             "aztec_llama_side",
             "aztec_llama_back",
-            "aztec_sand_tunnel",
             "aztec_to_connector_tunnel",
             "aztec_free_lanky",
-            "factory_free_kong",
             "galleon_to_lighthouse_side",
             "galleon_to_shipwreck_side",
             "galleon_to_cannon_game",
@@ -677,12 +675,14 @@ class SwitchsanityOptions(OptionDict):
             "caves_lobby_lava",
         ]
     )
-    valid_keys = KONG_SWITCHES | PORT_SWITCHES | GONE_SWITCHES | GONGS_AND_WALLS
+    FACE_SWITCHES = frozenset(["aztec_sand_tunnel"])
+    valid_keys = KONG_SWITCHES | PORT_SWITCHES | GONE_SWITCHES | GONGS_AND_WALLS | FACE_SWITCHES
 
     KONG_VALUES = frozenset(["off", "donkey", "diddy", "lanky", "tiny", "chunky", "random", "any"])
     PORT_VALUES = frozenset(["off", "donkey", "lanky", "tiny", "random"])
     GONE_VALUES = frozenset(["off", "bongos", "guitar", "trombone", "sax", "triangle", "lever", "gong", "gone_pad", "random"])
     GONGS_AND_WALLS_VALUES = frozenset(["off", "diddy", "chunky", "random"])
+    FACE_VALUES = frozenset(["off", "donkey", "diddy", "lanky", "tiny", "chunky", "random"])
 
     default = {
         "isles_to_kroc_top": "off",
@@ -705,7 +705,6 @@ class SwitchsanityOptions(OptionDict):
         "aztec_free_tiny": "off",
         "aztec_gong_tower": "off",
         "aztec_lobby_gong": "off",
-        "factory_free_kong": "off",
         "factory_dark_grate": "off",
         "factory_bonus_grate": "off",
         "factory_monster_grate": "off",
@@ -737,6 +736,9 @@ class SwitchsanityOptions(OptionDict):
             elif key in self.GONGS_AND_WALLS:
                 if value not in self.GONGS_AND_WALLS_VALUES:
                     raise OptionError(f"Invalid value '{value}' for switch '{key}'. " f"Must be one of: {', '.join(sorted(self.GONGS_AND_WALLS_VALUES))}")
+            elif key in self.FACE_SWITCHES:
+                if value not in self.FACE_VALUES:
+                    raise OptionError(f"Invalid value '{value}' for switch '{key}'. " f"Must be one of: {', '.join(sorted(self.FACE_VALUES))}")
             else:
                 if value not in self.KONG_VALUES:
                     raise OptionError(f"Invalid value '{value}' for switch '{key}'. " f"Must be one of: {', '.join(sorted(self.KONG_VALUES))}")

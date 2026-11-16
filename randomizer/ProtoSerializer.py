@@ -11,7 +11,7 @@ from types import SimpleNamespace
 from typing import Any, Dict, Iterable, List, Tuple, TYPE_CHECKING
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import FreeTradeSetting, HardBossesSelected, HardModeSelected, HelmDoorItem, MiscChangesSelected, SlamRequirement
+from randomizer.Enums.Settings import FreeTradeSetting, HardBossesSelected, HardModeSelected, HelmDoorItem, MiscChangesSelected, SlamRequirement, TagAnywhere
 from randomizer.Enums.Types import BarrierItems
 
 from randomizer.proto_gen import (
@@ -881,7 +881,6 @@ def _apply_endgame_settings(proto: endgame_settings_pb2.EndgameSettings, setting
 
 # (QoL proto bool, Settings attribute) pairs for simple passthroughs.
 _QOL_BOOL_FIELDS: Tuple[Tuple[str, str], ...] = (
-    ("tag_anywhere", "enable_tag_anywhere"),
     ("fast_warps", "fast_warps"),
     ("portal_numbers", "portal_numbers"),
     ("item_reward_previews", "item_reward_previews"),
@@ -892,6 +891,10 @@ _QOL_BOOL_FIELDS: Tuple[Tuple[str, str], ...] = (
     ("disable_racing_patches", "disable_racing_patches"),
     ("less_fragile_boulders", "less_fragile_boulders"),
 )
+
+# Default proto strings to TagAnywhere.on
+TAG_ANYWHERE_TO_PROTO: Dict[int, int] = {TagAnywhere.off: 0, TagAnywhere.on: 1, TagAnywhere.restricted: 2}
+PROTO_TO_TAG_ANYWHERE: Dict[int, TagAnywhere] = {v: k for k, v in TAG_ANYWHERE_TO_PROTO.items()}
 
 # Proto bool fields on misc_changes. Each name must match a
 # MiscChangesSelected enum member.
@@ -952,6 +955,7 @@ def _populate_qol_settings(settings: "Settings", proto: qol_settings_pb2.Quality
     proto.enemy_kill_crown_timer = bool(getattr(settings, "enemy_kill_crown_timer", False))
 
     proto.cutscene_skips = settings.more_cutscene_skips
+    proto.tag_anywhere = TAG_ANYWHERE_TO_PROTO.get(settings.enable_tag_anywhere, 0)
 
     # MiscChanges: each proto bool mirrors an enum member of MiscChangesSelected.
     for field in _MISC_CHANGES_FIELDS:
@@ -989,6 +993,7 @@ def _apply_qol_settings(proto: qol_settings_pb2.QualityOfLifeSettings, settings:
     settings.enemy_kill_crown_timer = bool(proto.enemy_kill_crown_timer)
 
     settings.more_cutscene_skips = proto.cutscene_skips
+    settings.enable_tag_anywhere = PROTO_TO_TAG_ANYWHERE.get(proto.tag_anywhere, TagAnywhere.off)
 
     settings.misc_changes_selected = [MiscChangesSelected[field] for field in _MISC_CHANGES_FIELDS if getattr(proto.misc_changes, field)]
 

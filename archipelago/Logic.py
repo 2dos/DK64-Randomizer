@@ -1293,7 +1293,7 @@ class LogicVarHolder:
 
     def CanMoonkick(self):
         """Determine whether the player can perform a moonkick."""
-        return self.moonkicks and self.isdonkey and self.settings.kong_model_dk == KongModels.default
+        return self.moonkicks and self.isdonkey and (not self.isKrushaAdjacent(Kongs.donkey))
 
     def CanOStandTBSNoclip(self):
         """Determine whether the player can perform Orangstand TBS Noclip."""
@@ -1338,7 +1338,7 @@ class LogicVarHolder:
 
     def CanMoontail(self):
         """Determine whether the player can perform a Moontail."""
-        return self.moontail and self.isdiddy and self.settings.kong_model_diddy == KongModels.default  # Krusha doesnt have the jump height that Diddy has
+        return self.moontail and self.isdiddy and (not self.isKrushaAdjacent(Kongs.diddy))  # Krusha doesnt have the jump height that Diddy has
 
     def CanPhase(self):
         """Determine whether the player can phase."""
