@@ -3,6 +3,7 @@
 import math
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Kongs import Kongs
 
 
 def offset_position(x0, y0, z0, rot_x, rot_y, rot_z, rot_x_offset=0, rot_y_offset=130.9, dist=275.282):
@@ -58,6 +59,15 @@ class ShipObject:
 
 
 ship_locations: list[ShipObject] = [
+    ShipObject(
+        name="Jungle Japes: Tunnel Pit",
+        map_index=Maps.JungleJapes,
+        coords=[1111.0279601845448, 241.46378990793355, 2610.778781947251],
+        region=Regions.JapesBeyondCoconutGate1,
+        euler_rotation=[-2.651435570095813, -0.5076015845606393, -3.182218107970001],
+        rotation=[-2.6193376863779982, -0.6534168391208102, -3.155532390482259],
+        scale=0.23180298652872366,
+    ),
     ShipObject(
         name="Jungle Japes: Cannon Platform",
         map_index=Maps.JungleJapes,
@@ -132,6 +142,15 @@ ship_locations: list[ShipObject] = [
         scale=0.25,
     ),
     ShipObject(
+        name="Gloomy Galleon: Seal Race",
+        map_index=Maps.GalleonSealRace,
+        coords=[1287.5487953750483, 107.4316974087447, 1255.164802452952],
+        region=Regions.SealRace,
+        euler_rotation=[-24.25793996379749, 24.489740629655714, -82.25994934903025],
+        rotation=[-27.38644498422669, -20.867192074737957, -82.46302920819876],
+        scale=0.1896886896448536,
+    ),
+    ShipObject(
         name="Creepy Castle: Graveyard",
         map_index=Maps.CreepyCastle,
         coords=[608.794859027693, 523.6666666666666, 1843.6024908447173],
@@ -139,5 +158,52 @@ ship_locations: list[ShipObject] = [
         euler_rotation=[0, 0, 0],
         rotation=[0, 0, 0],
         scale=0.25,
+    ),
+    ShipObject(
+        name="Angry Aztec: Behind Tiny Temple",
+        map_index=Maps.AngryAztec,
+        coords=[3288.1151806999364, 308.1916282586341, 564.7828682151219],
+        region=Regions.AngryAztecOasis,
+        euler_rotation=[-122.96225216498352, -9.122278859900742, -56.744598937867494],
+        rotation=[-135.26630541158016, -40.86828080213086, 44.276322703294895],
+        scale=0.17808415392923396,
+    ),
+    ShipObject(
+        name="Aztec Diddy 5DT: first Dead End",
+        map_index=Maps.AztecDiddy5DTemple,
+        coords=[1068.2411385297514, 22.069144253248968, 499.25006748900745],
+        region=Regions.DiddyTemple,
+        logic=lambda l: l.peanut and l.isdiddy,
+        euler_rotation=[176.84984754923016, -1.6417714082440775, 179.1344778476109],
+        rotation=[-176.87364773291648, -1.6866839734739252, -179.22565685669267],
+        scale=0.12566399611157414,
+    ),
+    ShipObject(
+        name="Frantic Factory",
+        map_index=Maps.FranticFactory,
+        coords=[1237.6786951789884, 840.5649425967421, 2463.2606928196446],
+        region=Regions.FranticFactoryStart,
+        euler_rotation=[175.77165496437004, -79.16153166180253, 171.45692443351345],
+        rotation=[158.83861965697028, -78.39935690365944, -157.6287332371497],
+        scale=0.16081434528564345,
+    ),
+    ShipObject(
+        name="Training Grounds: Above Entrance Side Hill",
+        map_index=Maps.TrainingGrounds,
+        coords=[1407.1958916631381, 238.56847519761564, 765.434639678629],
+        region=Regions.TrainingGrounds,
+        logic=lambda l: l.climbing and ((l.twirl and l.istiny) or (l.monkey_maneuvers and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
+        euler_rotation=[0, -22.61997038112152, 0],
+        rotation=[0, -22.61997038112152, 0],
+        scale=0.3674513816901592,
+    ),
+    ShipObject(
+        name="Creepy Castle: Behind Big Cheese",
+        map_index=Maps.CastleTrashCan,
+        coords=[615.6221453160375, 17.486630216375616, 574.2009442274605],
+        region=Regions.TrashCan,
+        euler_rotation=[94.65120230245797, -5.613700020787295, -179.23036684963267],
+        rotation=[-94.62891559754138, 0.3126330092360109, 174.34255844627708],
+        scale=0.13468327105513667,
     ),
 ]

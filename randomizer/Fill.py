@@ -4207,7 +4207,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         Items.PhotoKosha,
         Items.PhotoKremling,
         Items.PhotoKrossbones,
-        Items.PhotoMrDice0,
+        # Items.PhotoMrDice0,
         Items.PhotoMrDice1,
         Items.PhotoMushroomMan,
         Items.PhotoPufftup,
@@ -4229,6 +4229,16 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     ]
     if len(spoiler.settings.enemies_selected) > 0:
         randomize_enemies_0(spoiler)
+    # Kremling Kapture can't require more photos than there are enemy types to photograph. Kasplats don't count
+    kasplat_photos = (Items.PhotoKasplatDK, Items.PhotoKasplatDiddy, Items.PhotoKasplatLanky, Items.PhotoKasplatTiny, Items.PhotoKasplatChunky)
+    max_photos = len([subject for subject in spoiler.valid_photo_items if subject not in kasplat_photos])
+    if spoiler.settings.win_condition_item == WinConditionComplex.krem_kapture:
+        spoiler.settings.win_condition_count = min(spoiler.settings.win_condition_count, max_photos)
+    elif spoiler.settings.win_condition_item == WinConditionComplex.tasks:
+        for task_index in range(1, 9):
+            if getattr(spoiler.settings, f"task_{task_index}_condition") == WinConditionComplex.krem_kapture:
+                task_count = getattr(spoiler.settings, f"task_{task_index}_count")
+                setattr(spoiler.settings, f"task_{task_index}_count", min(task_count, max_photos))
     # Handle bonus barrels
     if (
         spoiler.settings.bonus_barrels in (MinigameBarrels.random, MinigameBarrels.selected)
@@ -4525,6 +4535,8 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
             found_incompatibilities += "Progressive hints cannot be enabled if pause screen hint display is turned off. "
         if Types.Hint in settings.shuffled_location_types:
             found_incompatibilities += "Hints cannot be in the item pool if pause screen hint display is turned off. "
+    if settings.win_condition_item == WinConditionComplex.tasks and all(getattr(settings, f"task_{i}_condition") == WinConditionComplex.inactive for i in range(1, 9)):
+        found_incompatibilities += "The Tasks win condition needs at least one task. "
     if found_incompatibilities != "":
         raise Ex.SettingsIncompatibleException(found_incompatibilities)
 

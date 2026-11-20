@@ -22,7 +22,7 @@ class Goal(Choice):
     Options:
     - acquire_keys_3_and_8: Acquire both Keys 3 and Key 8 to win.
     - acquire_key_8: Win by obtaining Key 8, which is normally found at the end of Hideout Helm.
-    - kremling_kapture: Take a picture of every enemy to win.
+    - kremling_kapture: Take pictures of a certain number of enemy types with the Fairy Camera to win. See goal_quantity option for more info.
     - dk_rap: Obtain all items mentioned in the DK Rap to win.
     - golden_bananas: Find a certain number of Golden Bananas to win. See goal_quantity option for more info.
     - blueprints: Find a certain number of Blueprints to win. See goal_quantity option for more info.
@@ -39,6 +39,13 @@ class Goal(Choice):
     - treasure_hurry: Run down the timer by collecting treasure! You win when the timer reaches 0. If you beat Helm, the wincon automatically changes to beating K. Rool.
     - krools_challenge: K. Rool's ship does not spawn until you collect All keys, Defeat All bosses, Play all Bonus Barrels, and collect All Blueprints.
     - kill_the_rabbit: Kill the rabbit in Chunky's igloo in Caves. Turn it to Ash. Simple as that.
+    - mechanical_fish: Shoot the Mechanical Fish's heart in Gloomy Galleon to win.
+    - dk_arcade: Beat the second round of DK Arcade in Frantic Factory to win.
+    - jetpac: Beat Jetpac in Cranky's Lab to win.
+    - toy_monster: Defeat the Toy Monster in Frantic Factory to win.
+    - rareware_gb: Return the Banana Fairies and collect the Banana Fairy Queen's reward to win.
+    - blast_courses: Complete a certain number of Baboon Blast courses to win. See goal_quantity option for more info.
+    - tasks: Complete every task listed in the goal_tasks option to win. See goal_tasks option for more info.
     """
 
     display_name = "Goal"
@@ -61,7 +68,41 @@ class Goal(Choice):
     option_treasure_hurry = 16
     option_krools_challenge = 17
     option_kill_the_rabbit = 18
+    option_mechanical_fish = 19
+    option_dk_arcade = 20
+    option_jetpac = 21
+    option_toy_monster = 22
+    option_rareware_gb = 23
+    option_blast_courses = 24
+    option_tasks = 25
     default = 7
+
+
+def quantity_value_errors(key: str, value: typing.Any, minimum: int, maximum: int) -> List[str]:
+    """Return the problems with one amount: a number, "random", or a range in the form "x-y"."""
+    errors = []
+    if isinstance(value, numbers.Integral):
+        value = int(value)
+        if value > maximum:
+            errors.append(f"{key}: {value} is higher than maximum allowed value {maximum}")
+        elif value < minimum:
+            errors.append(f"{key}: {value} is lower than minimum allowed value {minimum}")
+    elif value != "random":
+        split = value.split("-")
+        if len(split) != 2:
+            errors.append(f'{key}: {value} is not an integer or range, nor is it "random".')
+        else:
+            for bound in split:
+                try:
+                    bound = int(bound)
+                except (ValueError, TypeError):
+                    errors.append(f'{key}: {value} is not an integer or range, nor is it "random".')
+                    continue
+                if bound > maximum:
+                    errors.append(f"{key}: Upper edge of range {bound} is higher than maximum allowed value {maximum}")
+                elif bound < minimum:
+                    errors.append(f"{key}: Lower edge of range {bound} is lower than minimum allowed value {minimum}")
+    return errors
 
 
 class GoalQuantity(OptionDict):
@@ -69,6 +110,7 @@ class GoalQuantity(OptionDict):
 
     You can set multiple values to account for any win conditions above, but it will only use the one that matches the win condition.
     (i.e. if you set your win condition to "blueprints", the "keys" field will be ignored) This is useful in case you randomize your win condition.
+    The "tasks" goal sets its amounts in the goal_tasks option instead.
 
     Valid Keys:
     - "golden_bananas"
@@ -82,6 +124,8 @@ class GoalQuantity(OptionDict):
     - "pearls"
     - "bosses"
     - "bonuses"
+    - "kremling_kapture": enemy types to photograph. Amounts above what your seed can photograph (Kasplats excluded) are lowered to that number, so 44 means all of them.
+    - "blast_courses"
 
     Valid Values:
     - a number from 1 to the maximum value for the key type
@@ -102,6 +146,8 @@ class GoalQuantity(OptionDict):
         "pearls": 5,
         "bosses": 7,
         "bonuses": 53,
+        "kremling_kapture": 44,
+        "blast_courses": 7,
     }
 
     def verify(self, world: type[World], player_name: str, plando_options: PlandoOptions) -> None:
@@ -113,36 +159,95 @@ class GoalQuantity(OptionDict):
                 raise OptionError(f"{key} is not a valid key for goal_quantity.")
 
         accumulated_errors = []
-
         for key, value in self.value.items():
-            max = self.max_values_dict[key]
-            if isinstance(value, numbers.Integral):
-                value = int(value)
-                if value > max:
-                    accumulated_errors.append(f"{key}: {value} is higher than maximum allowed value {max}")
-                elif value < self.min:
-                    accumulated_errors.append(f"{key}: {value} is lower than minimum allowed value {self.min}")
-            else:
-                if value == "random":
-                    continue
-                split = value.split("-")
-                if len(split) != 2:
-                    accumulated_errors.append(f'{key}: {value} is not an integer or range, nor is it "random".')
-                else:
-                    for bound in split:
-                        try:
-                            bound = int(bound)
-                        except (ValueError, TypeError):
-                            accumulated_errors.append(f'{key}: {value} is not an integer or range, nor is it "random".')
-                            continue
-                        if bound > max:
-                            accumulated_errors.append(f"{key}: Upper edge of range {bound} is higher than maximum allowed value {max}")
-                        elif bound < self.min:
-                            accumulated_errors.append(f"{key}: Lower edge of range {bound} is lower than minimum allowed value {self.min}")
+            accumulated_errors.extend(quantity_value_errors(key, value, self.min, self.max_values_dict[key]))
         if accumulated_errors:
             raise OptionError("Found errors with option goal_quantity:\n" + "\n".join(accumulated_errors))
 
-    default = {"golden_bananas": 100, "blueprints": 20, "company_coins": 2, "keys": 8, "medals": 15, "crowns": 5, "fairies": 15, "rainbow_coins": 10, "pearls": 3, "bosses": 7, "bonuses": 15}
+    default = {
+        "golden_bananas": 100,
+        "blueprints": 20,
+        "company_coins": 2,
+        "keys": 8,
+        "medals": 15,
+        "crowns": 5,
+        "fairies": 15,
+        "rainbow_coins": 10,
+        "pearls": 3,
+        "bosses": 7,
+        "bonuses": 15,
+        "kremling_kapture": 44,
+        "blast_courses": 7,
+    }
+
+
+class GoalTasks(OptionDict):
+    """Determines the tasks you need to complete to goal when your goal is "tasks". Every listed task must be completed.
+
+    This option is ignored for every other goal. List up to 8 tasks, each one at most once.
+
+    Tasks that need an amount (maximum in parenthesis):
+    - "keys" (8), "golden_bananas" (201), "blueprints" (40), "company_coins" (2), "medals" (40), "crowns" (10)
+    - "fairies" (20), "rainbow_coins" (16), "pearls" (5), "bosses" (7), "bonuses" (53), "blast_courses" (7)
+    - "kremling_kapture" (44): enemy types to photograph. Amounts above what your seed can photograph (Kasplats excluded) are lowered to that number.
+
+    Tasks without an amount (use 1):
+    - "acquire_key_8", "dk_rap", "kill_the_rabbit", "bean", "mechanical_fish", "dk_arcade", "jetpac", "toy_monster", "rareware_gb"
+
+    The tasks work like the goals with the same name, see the goal option for what each one means.
+    Having bonuses as a task disables auto_complete_bonus_barrels.
+
+    Valid Values:
+    - a number from 1 to the maximum value for the task
+    - "random", which will pick a random valid value for you
+    - a range in the form "x-y", which will pick a random valid value between x and y
+    """
+
+    display_name = "Goal Tasks"
+    min = 1
+    max_tasks = 8
+    max_values_dict: dict[str, int] = {
+        "keys": 8,
+        "acquire_key_8": 1,
+        "kremling_kapture": 44,
+        "dk_rap": 1,
+        "kill_the_rabbit": 1,
+        "golden_bananas": 201,
+        "blueprints": 40,
+        "company_coins": 2,
+        "medals": 40,
+        "crowns": 10,
+        "fairies": 20,
+        "rainbow_coins": 16,
+        "bean": 1,
+        "pearls": 5,
+        "bosses": 7,
+        "bonuses": 53,
+        "mechanical_fish": 1,
+        "dk_arcade": 1,
+        "jetpac": 1,
+        "toy_monster": 1,
+        "rareware_gb": 1,
+        "blast_courses": 7,
+    }
+
+    def verify(self, world: type[World], player_name: str, plando_options: PlandoOptions) -> None:
+        """Verify Goal Tasks."""
+        super(GoalTasks, self).verify(world, player_name, plando_options)
+
+        for key in self.value.keys():
+            if key not in self.max_values_dict.keys():
+                raise OptionError(f"{key} is not a valid key for goal_tasks.")
+        if len(self.value) > self.max_tasks:
+            raise OptionError(f"goal_tasks can list at most {self.max_tasks} tasks.")
+
+        accumulated_errors = []
+        for key, value in self.value.items():
+            accumulated_errors.extend(quantity_value_errors(key, value, self.min, self.max_values_dict[key]))
+        if accumulated_errors:
+            raise OptionError("Found errors with option goal_tasks:\n" + "\n".join(accumulated_errors))
+
+    default = {"keys": 8, "golden_bananas": 100}
 
 
 class OpenLobbies(Toggle):
@@ -599,7 +704,7 @@ class RequireBeatingKrool(DefaultOnToggle):
     """Require defeating K. Rool in addition to the win condition requirements.
 
     K. Rool's ship will not spawn until you meet your win condition requirements, and you must defeat K. Rool to win.
-    Automatically enabled for Krool's Challenge. Automatically disabled for Kill the Rabbit.
+    Automatically enabled for Krool's Challenge and Treasure Hurry.
     """
 
     display_name = "Require Beating K. Rool"
@@ -2151,6 +2256,7 @@ class DK64Options(PerGameCommonOptions):
     harder_bosses: HardBosses
     puzzle_rando: PuzzleRando
     goal_quantity: GoalQuantity
+    goal_tasks: GoalTasks
     select_starting_kong: SelectStartingKong
     ice_floor_weight: IceFloorWeight
     paper_weight: PaperTrapWeight
@@ -2193,6 +2299,7 @@ dk64_option_groups: List[OptionGroup] = [
             Goal,
             RequireBeatingKrool,
             GoalQuantity,
+            GoalTasks,
             NumberOfStartingKeys,
             HelmPhaseCount,
             HelmDoor1Item,

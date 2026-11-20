@@ -164,6 +164,21 @@ int canAccessWinCondition(int master_win_con, RequirementArg *custom_win_con_dat
     return 0;
 }
 
+int isPokesnapGoalActive(void) {
+    // Kremling Kapture can be the main goal or one of the tasks
+    if (Rando.win_condition == GOAL_POKESNAP) {
+        return 1;
+    }
+    if (Rando.win_condition == GOAL_TASKS) {
+        for (int i = 0; i < 8; i++) {
+            if ((Rando.tasks[i].active) && (Rando.tasks[i].goal_type == GOAL_POKESNAP)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
 void checkSeedVictory(void) {
     if (!checkFlag(FLAG_GAME_BEATEN, FLAGTYPE_PERMANENT)) {
         // If win_condition_spawns_ship is enabled, don't trigger victory on win condition items - only when K. Rool is defeated

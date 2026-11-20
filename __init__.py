@@ -42,7 +42,7 @@ if baseclasses_loaded:
     import randomizer.ItemPool as DK64RItemPool
 
     from randomizer.Enums.Items import Items as DK64RItems
-    from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity, pp_wincon
+    from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity, pp_tasks, pp_wincon
     from archipelago.Items import DK64Item, full_item_table, setup_items
     from archipelago.Options import DK64Options, Goal, SwitchsanityOptions, SelectStartingKong, dk64_option_groups, LoadingZoneRando
     from archipelago.Prices import generate_prices
@@ -79,6 +79,7 @@ if baseclasses_loaded:
         TricksSelected,
         SlamRequirement,
         SettingsMap,
+        WinConditionComplex,
     )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
@@ -1076,7 +1077,7 @@ if baseclasses_loaded:
                                 ap_item_is_major_item = True
                                 ap_major_item_type = archipelago_item_type
                         # Collectibles don't get placed in the LocationList
-                        elif "Collectible" in ap_item.name or "Boss Defeated" == ap_item.name or "Bonus Completed" in ap_item.name:
+                        elif "Collectible" in ap_item.name or "Boss Defeated" == ap_item.name or "Bonus Completed" in ap_item.name or "Blast Course Completed" == ap_item.name:
                             continue
                         else:
                             dk64_item = logic_item_name_to_id[ap_item.name]
@@ -1417,6 +1418,18 @@ if baseclasses_loaded:
             """Modify the multidata."""
             pass
 
+        def get_win_condition_tasks(self) -> list:
+            """Get the [condition, count] pair of each active task, empty if the goal isn't tasks."""
+            settings = self.spoiler.settings
+            if settings.win_condition_item != WinConditionComplex.tasks:
+                return []
+            tasks = []
+            for task_index in range(1, 9):
+                task_condition = getattr(settings, f"task_{task_index}_condition")
+                if task_condition != WinConditionComplex.inactive:
+                    tasks.append([int(task_condition), int(getattr(settings, f"task_{task_index}_count"))])
+            return tasks
+
         def get_smaller_shops_data(self) -> dict:
             """Get information about which shops appear with smaller shops enabled."""
             if not (self.options.smaller_shops.value and Types.Shop in self.spoiler.settings.shuffled_location_types):
@@ -1476,6 +1489,9 @@ if baseclasses_loaded:
             slot_data = {
                 "Goal": self.options.goal.value,
                 "win_condition_item": self.spoiler.settings.win_condition_item.value,
+                "win_condition_count": int(self.spoiler.settings.win_condition_count),
+                "win_condition_spawns_ship": bool(self.spoiler.settings.win_condition_spawns_ship),
+                "win_condition_tasks": self.get_win_condition_tasks(),
                 "helm_hurry": self.spoiler.settings.helm_hurry,
                 "PlayerNum": self.player,
                 "death_link": self.options.death_link.value,
@@ -1566,7 +1582,7 @@ if baseclasses_loaded:
                 "Shopkeepers": "shopkeepers" in self.options.item_pool,
                 "HalfMedalPercentage": self.spoiler.settings.half_medal_percentage,
                 "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
-                "Autocomplete": self.options.auto_complete_bonus_barrels.value,
+                "Autocomplete": bool(self.spoiler.settings.bonus_barrel_auto_complete),
                 "HelmBarrelCount": self.options.helm_room_bonus_count.value,
                 "CrownDoorItem": self.spoiler.settings.crown_door_item.name,
                 "CrownDoorItemCount": self.spoiler.settings.crown_door_item_count,
@@ -1625,6 +1641,10 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write(f"Goal: {pp_wincon(self.spoiler.settings.win_condition_item, self.spoiler.settings.win_condition_count)}")
             spoiler_handle.write("\n")
+            if self.spoiler.settings.win_condition_item == WinConditionComplex.tasks:
+                for task in pp_tasks(self.spoiler.settings):
+                    spoiler_handle.write(f"    Task: {task}")
+                    spoiler_handle.write("\n")
             spoiler_handle.write("Level Order: " + ", ".join([level.name for order, level in self.spoiler.settings.level_order.items()]))
             spoiler_handle.write("\n")
             human_boss_order = []
@@ -1775,7 +1795,7 @@ if baseclasses_loaded:
         def isMajorItem(self, item: DK64Item):
             """Determine whether a DK64Item is a Major Item."""
             # Events, colored bananas, tokens
-            if "," in item.name or "Boss Defeated" in item.name or "Bonus Completed" in item.name:
+            if "," in item.name or "Boss Defeated" in item.name or "Bonus Completed" in item.name or "Blast Course Completed" in item.name:
                 return False
             # Not progression
             if item.classification != ItemClassification.progression and item.classification != ItemClassification.progression_skip_balancing:
@@ -1803,7 +1823,7 @@ if baseclasses_loaded:
                 return False
             if location.item.name == "BananaHoard":
                 return False
-            if location.item.name == "Boss Defeated" or location.item.name == "Bonus Completed":
+            if location.item.name in ("Boss Defeated", "Bonus Completed", "Blast Course Completed"):
                 return False
             for loc in self.spoiler.LocationList.keys():
                 if self.spoiler.LocationList[loc].name == location.name:
@@ -2046,4 +2066,9 @@ if baseclasses_loaded:
             relevant_data["StartingRegion"] = starting_region
             relevant_data["DKPortalLocations"] = dk_portal_locations
             relevant_data["StartingMovePools"] = starting_move_pools
+            if "win_condition_count" in slot_data:
+                relevant_data["WinConditionItem"] = slot_data["win_condition_item"]
+                relevant_data["WinConditionCount"] = slot_data["win_condition_count"]
+                relevant_data["WinConditionSpawnsShip"] = slot_data["win_condition_spawns_ship"]
+                relevant_data["WinConditionTasks"] = slot_data["win_condition_tasks"]
             return relevant_data
