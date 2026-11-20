@@ -164,14 +164,14 @@ int canAccessWinCondition(int master_win_con, RequirementArg *custom_win_con_dat
     return 0;
 }
 
-int isPokesnapGoalActive(void) {
-    // Kremling Kapture can be the main goal or one of the tasks
-    if (Rando.win_condition == GOAL_POKESNAP) {
+int isGoalActive(win_conditions goal) {
+    // Check if the win condition is this goal or has it as one of its tasks
+    if (Rando.win_condition == goal) {
         return 1;
     }
-    if (Rando.win_condition == GOAL_TASKS) {
+    if ((Rando.win_condition == GOAL_TASKS) || (Rando.win_condition == GOAL_TASKSNOPAUSE)) {
         for (int i = 0; i < 8; i++) {
-            if ((Rando.tasks[i].active) && (Rando.tasks[i].goal_type == GOAL_POKESNAP)) {
+            if ((Rando.tasks[i].active) && (Rando.tasks[i].goal_type == goal)) {
                 return 1;
             }
         }
