@@ -8,6 +8,7 @@ from typing import Any
 from random import Random
 
 from BaseClasses import MultiWorld
+from Options import OptionError
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
@@ -53,6 +54,7 @@ from randomizer.Enums.Settings import (
     WrinklyHints,
     KroolInBossPool,
     TagAnywhere,
+    WinConditionComplex,
 )
 from randomizer.Enums.Items import Items as DK64RItems
 from randomizer.Enums.Types import Types
@@ -74,7 +76,7 @@ from archipelago.Options import (
     RandomStartingLocation,
     DK64Options,
 )
-from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity
+from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, build_goal_tasks, calculate_quantity
 from archipelago.Logic import logic_item_name_to_id
 
 
@@ -910,9 +912,19 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     if options.goal in QUANTITY_GOALS.keys():
         goal_name = QUANTITY_GOALS[options.goal]
         settings_dict["win_condition_count"] = calculate_quantity(goal_name, options.goal_quantity.value, random_obj)
+    if options.goal == Goal.option_tasks:
+        tasks = build_goal_tasks(options.goal_tasks.value, random_obj)
+        if len(tasks) == 0:
+            raise OptionError("Donkey Kong 64: goal is set to tasks, but goal_tasks has no tasks.")
+        for task_index in range(8):
+            task_condition, task_count = tasks[task_index] if task_index < len(tasks) else (WinConditionComplex.inactive, 1)
+            settings_dict[f"task_{task_index + 1}_condition"] = task_condition
+            settings_dict[f"task_{task_index + 1}_count"] = task_count
     if options.goal == Goal.option_treasure_hurry:
         settings_dict.update(
             {
+                "win_condition_count": 8,
+                "win_condition_spawns_ship": True,
                 "helm_hurry": True,
                 "helmhurry_list_starting_time": 60000,
                 "helmhurry_list_golden_banana": -60,
@@ -963,7 +975,9 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     settings_dict["custom_minigames_enabled"] = bool(options.custom_arcade_minigames.value)
     settings_dict["arcade_minigame_pool_selected"] = [CustomMinigamesSelected[minigame] for minigame in options.dk_arcade_minigame_pool]
     settings_dict["jetpac_minigame_pool_selected"] = [CustomMinigamesSelected[minigame] for minigame in options.jetpac_minigame_pool]
-    settings_dict["bonus_barrel_auto_complete"] = options.auto_complete_bonus_barrels.value and options.goal.value != Goal.option_bonuses
+    # Bonus barrels can't be auto-completed when completing them is the goal or one of the tasks
+    goal_conditions = [settings_dict["win_condition_item"]] + [settings_dict.get(f"task_{task_index}_condition") for task_index in range(1, 9)]
+    settings_dict["bonus_barrel_auto_complete"] = bool(options.auto_complete_bonus_barrels.value) and WinConditionComplex.req_bonuses not in goal_conditions
     settings_dict["helm_room_bonus_count"] = HelmBonuses(options.helm_room_bonus_count.value)
     door_item_to_key: dict[HelmDoorItem, str] = {
         HelmDoorItem.req_gb: "golden_bananas",
@@ -1013,6 +1027,16 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
                 passthrough = multiworld.re_gen_passthrough["Donkey Kong 64"]
                 settings_dict["bonus_barrel_auto_complete"] = passthrough["Autocomplete"]
                 settings_dict["helm_room_bonus_count"] = HelmBonuses(passthrough["HelmBarrelCount"])
+                # UT rerolls the YAML, so keep the goal and amounts the seed was generated with
+                if "WinConditionCount" in passthrough:
+                    settings_dict["win_condition_item"] = WinConditionComplex(passthrough["WinConditionItem"])
+                    settings_dict["win_condition_count"] = passthrough["WinConditionCount"]
+                    settings_dict["win_condition_spawns_ship"] = passthrough["WinConditionSpawnsShip"]
+                    saved_tasks = passthrough["WinConditionTasks"]
+                    for task_index in range(8):
+                        task_condition, task_count = saved_tasks[task_index] if task_index < len(saved_tasks) else (WinConditionComplex.inactive, 1)
+                        settings_dict[f"task_{task_index + 1}_condition"] = WinConditionComplex(task_condition)
+                        settings_dict[f"task_{task_index + 1}_count"] = task_count
 
     # Handle fake generation keys if needed
     if hasattr(multiworld, "generation_is_fake"):

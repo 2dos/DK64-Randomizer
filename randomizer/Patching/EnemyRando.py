@@ -863,6 +863,9 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
                     True,  # Ghost
                     True,  # Pufftup
                     True,  # Kosha
+                    False,  # Bug
+                    False,  # Zinger (Flamethrower)
+                    False,  # Scarab
                     True,  # Fairy Queen
                     True,  # Ice Tomato
                     True,  # Mermaid
@@ -870,6 +873,8 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
                     True,  # Mechfish
                     True,  # Seal
                 ]
+            if len(spoiler.pkmn_snap_data) != len(pkmn_snap_enemies):
+                raise Exception(f"Kremling Kapture enemy data has {len(spoiler.pkmn_snap_data)} entries, expected {len(pkmn_snap_enemies)}")
             for enemy_index, spawned in enumerate(spoiler.pkmn_snap_data):
                 if spawned:
                     offset = enemy_index >> 3

@@ -106,7 +106,7 @@ void cFuncLoop(void) {
 		RLock = 1;
 		DLock[4] = 1;
 	}
-	if (Rando.win_condition == GOAL_POKESNAP) {
+	if (isGoalActive(GOAL_POKESNAP)) {
 		int picture_bitfield = 0;
 		if (Player) {
 			int control_state = Player->control_state;
@@ -555,7 +555,7 @@ Gfx* displayListModifiers(Gfx* dl) {
 					hud_timer = 0;
 				}
 			}
-			if (Rando.win_condition == GOAL_POKESNAP) {
+			if (isGoalActive(GOAL_POKESNAP)) {
 				int pkmn_f = 0;
 				int pkmn_n = 0;
 				int pkmn_d = 0;

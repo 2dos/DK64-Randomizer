@@ -148,20 +148,27 @@ GOAL_NAMES = {
     "req_pearl": "pearls",
     "req_bosses": "bosses",
     "req_bonuses": "bonuses",
+    "mech_fish": "mechanical_fish",
+    "arcade": "dk_arcade",
+    "bad_hit_detection_man": "toy_monster",
+    "rareware_gb_check": "rareware_gb",
 }
 
-GOAL_QUANTITY_DEFAULTS = {
-    "golden_bananas": 100,
-    "blueprints": 20,
-    "company_coins": 2,
-    "keys": 8,
-    "medals": 15,
-    "crowns": 5,
-    "fairies": 15,
-    "rainbow_coins": 10,
-    "pearls": 3,
-    "bosses": 7,
-    "bonuses": 15,
+# Website win conditions whose count goes into goal_quantity
+GOAL_QUANTITY_KEYS = {
+    "req_gb": "golden_bananas",
+    "req_bp": "blueprints",
+    "req_companycoins": "company_coins",
+    "req_key": "keys",
+    "req_medal": "medals",
+    "req_crown": "crowns",
+    "req_fairy": "fairies",
+    "req_rainbowcoin": "rainbow_coins",
+    "req_pearl": "pearls",
+    "req_bosses": "bosses",
+    "req_bonuses": "bonuses",
+    "krem_kapture": "kremling_kapture",
+    "blast_courses": "blast_courses",
 }
 
 HELM_DOOR_ITEMS = {
@@ -183,17 +190,51 @@ def goal(website: WebsiteSettings) -> Optional[str]:
     if website.flag("helm_hurry"):
         return "treasure_hurry"
     win_condition = website.name("win_condition_item", WinConditionComplex)
-    return GOAL_NAMES.get(win_condition, win_condition)
+    ap_goal = GOAL_NAMES.get(win_condition, win_condition)
+    if ap_goal not in ap_choices("goal"):
+        logging.warning("ArchipelagoMapper: win condition %s has no Archipelago goal, using the AP default", win_condition)
+        if win_condition is not None:
+            tip = " To randomize the goal, give goal weights in this YAML." if win_condition.endswith("_random") else ""
+            website.notes.append(f"Win condition {win_condition} has no Archipelago goal, so the AP default goal is used.{tip}")
+        return None
+    if ap_goal == "tasks" and goal_tasks(website) is None:
+        logging.warning("ArchipelagoMapper: the website's tasks have nothing AP can use, using the AP default goal")
+        website.notes.append("None of the website's tasks have an Archipelago goal, so the AP default goal is used.")
+        return None
+    return ap_goal
 
 
-def goal_quantity(website: WebsiteSettings) -> Dict[str, int]:
+def goal_quantity(website: WebsiteSettings) -> Optional[Dict[str, Any]]:
     """Return the amount every quantity goal needs. Only the picked goal's amount comes from the website."""
-    quantities = dict(GOAL_QUANTITY_DEFAULTS)
-    win_condition = website.name("win_condition_item", WinConditionComplex) or ""
+    quantities = dict(ap_attribute("goal_quantity", "default") or {})
+    maximums = ap_attribute("goal_quantity", "max_values_dict") or {}
+    win_condition = website.name("win_condition_item", WinConditionComplex)
+    key = GOAL_QUANTITY_KEYS.get(win_condition)
     amount = website.number("win_condition_count")
-    if win_condition.startswith("req_") and win_condition in GOAL_NAMES and amount:
-        quantities[GOAL_NAMES[win_condition]] = amount
-    return quantities
+    if key in maximums and amount:
+        quantities[key] = max(1, min(amount, maximums[key]))
+    return quantities or None
+
+
+def goal_tasks(website: WebsiteSettings) -> Optional[Dict[str, int]]:
+    """Return the website's tasks when its win condition is tasks. A task picked twice keeps the larger amount."""
+    if website.flag("helm_hurry") or website.name("win_condition_item", WinConditionComplex) != "tasks":
+        return None
+    maximums = ap_attribute("goal_tasks", "max_values_dict") or {}
+    tasks: Dict[str, int] = {}
+    for task_index in range(1, 9):
+        condition = website.name(f"task_{task_index}_condition", WinConditionComplex)
+        task = GOAL_NAMES.get(condition, condition)
+        if task not in maximums:
+            # No task in this slot, or one AP doesn't have
+            continue
+        amount = website.number(f"task_{task_index}_count", 1)
+        if amount < 1 and (condition in GOAL_QUANTITY_KEYS or condition == "req_bean"):
+            # A task that needs 0 of something is always complete
+            continue
+        amount = max(1, min(amount, maximums[task]))
+        tasks[task] = max(tasks.get(task, 0), amount)
+    return tasks or None
 
 
 def helm_door_item_count(website: WebsiteSettings) -> Dict[str, int]:
@@ -539,6 +580,7 @@ SETTINGS: Dict[str, Optional[Rule]] = {
     "goal": goal,
     "require_beating_krool": "win_condition_spawns_ship",
     "goal_quantity": goal_quantity,
+    "goal_tasks": goal_tasks,
     "pregiven_keys": "krool_key_count",
     "helm_phase_count": "helm_phase_count",
     "crown_door_item": "crown_door_item",
@@ -668,6 +710,8 @@ class WebsiteSettings:
     def __init__(self, settings: Dict[str, Any]) -> None:
         """Wrap the website's settings dict."""
         self.settings = settings
+        # Website settings Archipelago can't express, written into the YAML as comments
+        self.notes: List[str] = []
 
     def get(self, key: str) -> Any:
         """Return the raw value, or None if the website didn't send it."""
@@ -761,6 +805,7 @@ class APOption:
     choices: Dict[str, int] = field(default_factory=dict)
     range_start: Optional[int] = None
     range_end: Optional[int] = None
+    attributes: Dict[str, Any] = field(default_factory=dict)
 
     def choice_name(self, number: int) -> Optional[str]:
         """Return the name of the choice with this number."""
@@ -821,6 +866,7 @@ def read_option_class(class_name: str, classes: Dict[str, ast.ClassDef]) -> APOp
                 if value is not None:
                     attributes[line.target.id] = value
 
+    option.attributes = attributes
     option.default = attributes.get("default")
     if option.default is None and option.kind in ("toggle", "default_on_toggle"):
         option.default = option.kind == "default_on_toggle"
@@ -858,6 +904,12 @@ def ap_choices(option_name: str) -> Dict[str, int]:
     return option.choices if option else {}
 
 
+def ap_attribute(option_name: str, attribute: str) -> Any:
+    """Return a constant set on an AP option's class, like goal_quantity's max_values_dict, or None."""
+    option = read_ap_options().get(option_name)
+    return option.attributes.get(attribute) if option else None
+
+
 def export_to_yaml(settings_dict: Dict[str, Any], player_name: str = "Player", game_version: str = "0.6.7") -> str:
     """Build the Archipelago player YAML."""
     ap_options = read_ap_options()
@@ -885,6 +937,8 @@ def export_to_yaml(settings_dict: Dict[str, Any], player_name: str = "Player", g
 
     data = {"name": player_name, "game": "Donkey Kong 64", "requires": {"version": game_version}, "Donkey Kong 64": chosen}
     text = yaml.dump(data, default_flow_style=False, sort_keys=False, allow_unicode=True, width=120)
+    if website.notes:
+        text = text.rstrip("\n") + "\n  # Website settings Archipelago doesn't have:\n" + "".join(f"  # - {note}\n" for note in website.notes)
     if defaults:
         text = text.rstrip("\n") + "\n  # Default settings (not found in form data):\n"
         for name, value in sorted(defaults.items()):

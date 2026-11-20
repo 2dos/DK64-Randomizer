@@ -117,26 +117,30 @@ int hasBeatenDKRapWinCon(void) {
     return 1;
 }
 
+int getPkmnSnapCount(int* total) {
+    // Count the photos taken, and how many enemy types can be photographed
+    int captured = 0;
+    int enabled = 0;
+    for (unsigned int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
+        int offset = i >> 3;
+        int shift = i & 7;
+        if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
+            enabled++;
+            captured += checkFlag(FLAG_PKMNSNAP_PICTURES + i, FLAGTYPE_PERMANENT);
+        }
+    }
+    *total = enabled;
+    return captured;
+}
+
 int canAccessWinCondition(int master_win_con, RequirementArg *custom_win_con_data) {
     // Check if the win condition requirements are met
     switch(master_win_con) {                
         case GOAL_POKESNAP:
             // Pokemon Snap - check if all required photos are taken
             {
-                int count = 0;
-                for (unsigned int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
-                    int offset = i >> 3;
-                    int shift = i & 7;
-                    if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
-                        if (checkFlag(FLAG_PKMNSNAP_PICTURES + i, FLAGTYPE_PERMANENT)) {
-                            count++;
-                        }
-                    }
-                }
-                if (count >= custom_win_con_data->count) {
-                    return 1;
-                }
-                return 0;
+                int total = 0;
+                return getPkmnSnapCount(&total) >= custom_win_con_data->count;
             }
         case GOAL_DKRAP:
             // DK Rap - check for DK Rap completion
@@ -160,6 +164,21 @@ int canAccessWinCondition(int master_win_con, RequirementArg *custom_win_con_dat
         
         case GOAL_REQITEM:
             return getItemCount_new(custom_win_con_data->item_req_solo.item, custom_win_con_data->item_req_solo.level, 0);
+    }
+    return 0;
+}
+
+int isGoalActive(win_conditions goal) {
+    // Check if the win condition is this goal or has it as one of its tasks
+    if (Rando.win_condition == goal) {
+        return 1;
+    }
+    if ((Rando.win_condition == GOAL_TASKS) || (Rando.win_condition == GOAL_TASKSNOPAUSE)) {
+        for (int i = 0; i < 8; i++) {
+            if ((Rando.tasks[i].active) && (Rando.tasks[i].goal_type == goal)) {
+                return 1;
+            }
+        }
     }
     return 0;
 }
@@ -258,14 +277,8 @@ int getPkmnSnapData(int* frames, int* current, int* total) {
 
 void pokemonSnapMode(void) {
     if (isSnapEnemyInRange(1)) {
-        int captured_count = 0;
         int total_count = 0;
-        for (unsigned int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
-            captured_count += checkFlag(FLAG_PKMNSNAP_PICTURES + i, FLAGTYPE_PERMANENT);
-            int offset = i >> 3;
-            int shift = i & 7;
-            total_count += ((Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) != 0);
-        }
+        int captured_count = getPkmnSnapCount(&total_count);
         pkmn_snap_frames = 1;
         pkmn_snap_current = captured_count;
         pkmn_snap_total = total_count;

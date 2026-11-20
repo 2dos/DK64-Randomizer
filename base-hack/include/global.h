@@ -207,6 +207,7 @@ extern void checkVictory_flaghook(int flag);
 extern void winRabbitSeed(int song, float volume);
 extern void safeguardRabbitReward(void);
 extern int canAccessWinCondition(int master_win_con, RequirementArg *custom_win_con_data);
+extern int isGoalActive(win_conditions goal);
 extern void updateSkippableCutscenes(void);
 extern void adjustAnimationTables(void);
 extern void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_index);

@@ -150,7 +150,7 @@ class Spoiler:
             Items.PhotoKosha,
             Items.PhotoKremling,
             Items.PhotoKrossbones,
-            Items.PhotoMrDice0,
+            # Items.PhotoMrDice0,  # Only in the Toy Monster fight
             Items.PhotoMrDice1,
             Items.PhotoMushroomMan,
             Items.PhotoPufftup,
@@ -430,6 +430,9 @@ class Spoiler:
         settings["Random Win Condition"] = self.settings.win_condition_random
         if not self.settings.win_condition_random:
             wc_count = self.settings.win_condition_count
+            if self.settings.win_condition_item == WinConditionComplex.tasks:
+                # The tasks win condition doesn't use the count, show how many tasks are active instead
+                wc_count = len([i for i in range(1, 9) if getattr(self.settings, f"task_{i}_condition") != WinConditionComplex.inactive])
             win_con_name_table = {
                 WinConditionComplex.beat_krool: "Beat K. Rool",
                 WinConditionComplex.get_key8: "Acquire Key 8",

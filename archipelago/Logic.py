@@ -350,6 +350,7 @@ class LogicVarHolder:
         eventArchItems = []
         bossesDefeated = 0
         bonusesCompleted = 0
+        blastsCompleted = 0
         for item_name, item_count in collectionState.prog_items[self.ap_player].items():
             if item_name.startswith("Collectible CBs"):
                 for i in range(item_count):
@@ -363,6 +364,8 @@ class LogicVarHolder:
                 bossesDefeated += item_count
             elif item_name.startswith("Bonus Completed"):
                 bonusesCompleted += item_count
+            elif item_name.startswith("Blast Course Completed"):
+                blastsCompleted += item_count
             else:
                 corresponding_item_id = logic_item_name_to_id[item_name]
                 for i in range(item_count):
@@ -380,6 +383,8 @@ class LogicVarHolder:
         self.Events = event_list
 
         self.bosses_beaten = bossesDefeated
+        self.bonuses_beaten = bonusesCompleted
+        self.blasts_beaten = blastsCompleted
 
         self.Update(ownedItems)
 
@@ -446,6 +451,8 @@ class LogicVarHolder:
             self.bosses_beaten += 1
         elif ap_item.name.startswith("Bonus Completed"):
             self.bonuses_beaten += 1
+        elif ap_item.name.startswith("Blast Course Completed"):
+            self.blasts_beaten += 1
         else:
             corresponding_item_id = logic_item_name_to_id[ap_item.name]
             self.latest_owned_items.append(corresponding_item_id)
@@ -709,6 +716,8 @@ class LogicVarHolder:
             self.bosses_beaten -= 1
         elif ap_item.name.startswith("Bonus Completed"):
             self.bonuses_beaten -= 1
+        elif ap_item.name.startswith("Blast Course Completed"):
+            self.blasts_beaten -= 1
         else:
             corresponding_item_id = logic_item_name_to_id[ap_item.name]
             self.latest_owned_items.remove(corresponding_item_id)
@@ -1654,80 +1663,7 @@ class LogicVarHolder:
         """Make sure that each required key has been turned in, or if ship spawn method is win condition-based, check if win condition items are obtained."""
         # If using win condition-based ship spawning, check if win condition item requirements are met
         if self.settings.win_condition_spawns_ship:
-            condition = self.settings.win_condition_item
-            if condition == WinConditionComplex.krem_kapture:
-                for subject in self.spoiler.valid_photo_items:
-                    if subject in (
-                        Items.PhotoKasplatDK,
-                        Items.PhotoKasplatDiddy,
-                        Items.PhotoKasplatLanky,
-                        Items.PhotoKasplatTiny,
-                        Items.PhotoKasplatChunky,
-                    ):
-                        continue
-                    if self.Photos.get(subject, 0) == 0:
-                        return False
-                return self.camera
-            elif condition == WinConditionComplex.get_key8:
-                return self.HelmKey
-            elif condition == WinConditionComplex.dk_rap_items:
-                dk_rap_items = [
-                    self.donkey,
-                    self.diddy,
-                    self.lanky,
-                    self.tiny,
-                    self.chunky,
-                    self.coconut,
-                    self.peanut,
-                    self.grape,
-                    self.pineapple,
-                    self.guitar,
-                    self.trombone,
-                    self.strongKong,
-                    self.jetpack,
-                    self.handstand,
-                    self.balloon,
-                    self.mini,
-                    self.twirl,
-                    self.barrels,
-                    self.oranges,
-                    self.climbing,
-                    self.crankyAccess,
-                ]
-                return all(dk_rap_items)
-            elif condition == WinConditionComplex.kill_the_rabbit:
-                return Events.KilledRabbit in self.Events
-            elif condition == WinConditionComplex.mech_fish:
-                return Events.MechFishCheck in self.Events
-            elif condition == WinConditionComplex.arcade:
-                return Events.ArcadeR2Check in self.Events
-            elif condition == WinConditionComplex.jetpac:
-                return Events.JetpacCheck in self.Events
-            elif condition == WinConditionComplex.bad_hit_detection_man:
-                return Events.BHDMCheck in self.Events
-            elif condition == WinConditionComplex.rareware_gb_check:
-                return Events.RarewareGBCheck in self.Events
-            elif condition == WinConditionComplex.req_bonuses:
-                return self.bonuses_beaten >= self.settings.win_condition_count
-            elif condition == WinConditionComplex.req_bosses:
-                return self.bosses_beaten >= self.settings.win_condition_count
-            else:
-                # Item-based win conditions
-                win_con_table = {
-                    WinConditionComplex.req_bean: BarrierItems.Bean,
-                    WinConditionComplex.req_bp: BarrierItems.Blueprint,
-                    WinConditionComplex.req_companycoins: BarrierItems.CompanyCoin,
-                    WinConditionComplex.req_crown: BarrierItems.Crown,
-                    WinConditionComplex.req_fairy: BarrierItems.Fairy,
-                    WinConditionComplex.req_key: BarrierItems.Key,
-                    WinConditionComplex.req_gb: BarrierItems.GoldenBanana,
-                    WinConditionComplex.req_medal: BarrierItems.Medal,
-                    WinConditionComplex.req_pearl: BarrierItems.Pearl,
-                    WinConditionComplex.req_rainbowcoin: BarrierItems.RainbowCoin,
-                }
-                if condition in win_con_table:
-                    return self.ItemCheck(win_con_table[condition], self.settings.win_condition_count)
-                return True
+            return self.WinConditionRequirementsMet()
 
         # Otherwise use key-based access
         required_base_keys = [
@@ -1953,6 +1889,8 @@ class LogicVarHolder:
         if condition == WinConditionComplex.beat_krool:
             return Events.KRoolDefeated in self.Events
         elif condition == WinConditionComplex.krem_kapture:
+            photos = 0
+            subjects = 0
             for subject in self.spoiler.valid_photo_items:
                 if subject in (
                     Items.PhotoKasplatDK,
@@ -1962,10 +1900,11 @@ class LogicVarHolder:
                     Items.PhotoKasplatChunky,
                 ):
                     continue
-                if self.Photos.get(subject, 0) == 0:
-                    # print(f"Could not reach {subject.name}")
-                    return False
-            result = self.camera
+                subjects += 1
+                if self.Photos.get(subject, 0) != 0:
+                    photos += 1
+            # Asking for more photos than there are enemy types to photograph means all of them
+            result = self.camera and photos >= min(count, subjects)
             return result
         elif condition == WinConditionComplex.get_key8:
             result = self.HelmKey
@@ -2007,8 +1946,8 @@ class LogicVarHolder:
             result = True
             return result
         elif condition == WinConditionComplex.krools_challenge:
-            # Krool's Challenge: Beat K. Rool + collect all Keys, Blueprints, Bosses, and Bonus Barrels
-            return Events.KRoolDefeated in self.Events and self.ItemCheck(BarrierItems.Key, 8) and self.ItemCheck(BarrierItems.Blueprint, 40) and self.bosses_beaten >= 7 and self.bonuses_beaten >= 43
+            # Krool's Challenge: collect all Keys, Blueprints, Bosses, and Bonus Barrels, then beat K. Rool (win_condition_spawns_ship is always on for it)
+            return self.ItemCheck(BarrierItems.Key, 8) and self.ItemCheck(BarrierItems.Blueprint, 40) and self.bosses_beaten >= 7 and self.bonuses_beaten >= 43
         elif condition == WinConditionComplex.kill_the_rabbit:
             result = Events.KilledRabbit in self.Events
             return result
@@ -2028,13 +1967,13 @@ class LogicVarHolder:
             result = Events.RarewareGBCheck in self.Events
             return result
         elif condition == WinConditionComplex.blast_courses:
-            result = self.blasts_beaten >= self.settings.win_condition_count
+            result = self.blasts_beaten >= count
             return result
         elif condition == WinConditionComplex.req_bonuses:
-            result = self.bonuses_beaten >= self.settings.win_condition_count
+            result = self.bonuses_beaten >= count
             return result
         elif condition == WinConditionComplex.req_bosses:
-            result = self.bosses_beaten >= self.settings.win_condition_count
+            result = self.bosses_beaten >= count
             return result
         # Get X amount of Y item win cons
         win_con_table = {
@@ -2056,9 +1995,13 @@ class LogicVarHolder:
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
-        condition = self.settings.win_condition_item
         # When using win condition-based ship spawning, always require K. Rool defeat in addition to win condition items
         krool_complete = not self.settings.win_condition_spawns_ship or Events.KRoolDefeated in self.Events
+        return self.WinConditionRequirementsMet() and krool_complete
+
+    def WinConditionRequirementsMet(self):
+        """Check if the win condition's requirements are met, not counting the K. Rool defeat that ship spawning adds."""
+        condition = self.settings.win_condition_item
         main_condition = True
         if condition == WinConditionComplex.tasks:
             task_segments = [
@@ -2077,7 +2020,7 @@ class LogicVarHolder:
                 main_condition = main_condition and self.WinConditionSegmentMet(task["type"], task["count"])
         else:
             main_condition = self.WinConditionSegmentMet(condition, self.settings.win_condition_count)
-        return main_condition and krool_complete
+        return main_condition
 
     def CanGetRarewareCoin(self):
         """Check if you meet the logical requirements to obtain the Rareware Coin."""
