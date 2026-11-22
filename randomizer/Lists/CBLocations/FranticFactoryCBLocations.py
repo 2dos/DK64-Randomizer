@@ -2460,7 +2460,7 @@ BalloonList = [
         name="Tunnel from hatch to production",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.LowerCore,
         points=[[438, 200, 1959], [52, 130, 1959], [38, 110, 1718], [52, 130, 1959]],
     ),
     Balloon(
@@ -2469,7 +2469,7 @@ BalloonList = [
         name="Around the lower production pipe",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.LowerCore,
         points=[[821, 150, 1517], [874, 211, 1470], [970, 138, 1390], [912, 84, 1409], [846, 171, 1405], [895, 191, 1490], [947, 124, 1496], [832, 69, 1537]],
     ),
     Balloon(
