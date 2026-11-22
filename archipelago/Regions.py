@@ -55,6 +55,9 @@ from randomizer.CollectibleLogicFiles import (
 )
 
 BASE_ID = 0xD64000
+# Baboon Blast courses: three are completed at their reward location, the other four by the event they trigger
+BLAST_COURSE_LOCATIONS = (Locations.JapesDonkeyBaboonBlast, Locations.ForestDonkeyBaboonBlast, Locations.CavesDonkeyBaboonBlast)
+BLAST_COURSE_EVENTS = (Events.LlamaFreed, Events.ArcadeLeverSpawned, Events.SealReleased, Events.CastleTreeOpened)
 
 
 class DK64Location(Location):
@@ -275,9 +278,6 @@ def create_region(
                 vendor_level_key = (location_obj.level, location_obj.vendor)
                 if (not hasattr(multiworld, "generation_is_fake")) and vendor_level_key in logic_holder.shared_shop_vendors:
                     continue
-            # Skip enemy photos if the win condition is not Krem Kapture.
-            if location_obj.type == Types.EnemyPhoto and logic_holder.settings.win_condition_item != WinConditionComplex.krem_kapture:
-                continue
             # Skip hint locations if hints are not in the pool
             if location_obj.type == Types.Hint and Types.Hint not in logic_holder.settings.shuffled_location_types:
                 continue
@@ -364,6 +364,13 @@ def create_region(
                     token_location.place_locked_item(DK64Item("Bonus Completed", ItemClassification.progression_skip_balancing, None, player))
                     new_region.locations.append(token_location)
 
+            # Create blast course token location if needed
+            if location_logic.id in BLAST_COURSE_LOCATIONS and logic_holder.settings.HasWinRequirement(WinConditionComplex.blast_courses):
+                token_location = DK64Location(player, location_obj.name + " Blast Token", None, new_region)
+                set_rule(token_location, location.access_rule)
+                token_location.place_locked_item(DK64Item("Blast Course Completed", ItemClassification.progression_skip_balancing, None, player))
+                new_region.locations.append(token_location)
+
             # Apply item placement restrictions based on location type
             match location_obj.type:
                 case Types.Key | Types.Crown:
@@ -374,8 +381,10 @@ def create_region(
                     add_item_rule(location, lambda item: not (item.player == player and "Blueprint" in item.name))
 
             # Add boss defeated token if needed
-            if location_obj.type == Types.Key and (
-                logic_holder.settings.HasWinRequirement(WinConditionComplex.req_bosses) or logic_holder.settings.HasWinRequirement(WinConditionComplex.krools_challenge)
+            if (
+                location_obj.type == Types.Key
+                and location_logic.id != Locations.HelmKey
+                and (logic_holder.settings.HasWinRequirement(WinConditionComplex.req_bosses) or logic_holder.settings.HasWinRequirement(WinConditionComplex.krools_challenge))
             ):
                 token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
                 set_rule(token_location, lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic))
@@ -555,6 +564,13 @@ def create_region(
             set_rule(location, lambda state, player=player, event=event: hasDK64REvent(state, player, event))
         location.place_locked_item(DK64Item("Event, " + event.name.name, ItemClassification.progression_skip_balancing, None, player))
         new_region.locations.append(location)
+
+        # Create blast course token location if needed
+        if event.name in BLAST_COURSE_EVENTS and logic_holder.settings.HasWinRequirement(WinConditionComplex.blast_courses):
+            token_location = DK64Location(player, location_name + " Blast Token", None, new_region)
+            set_rule(token_location, location.access_rule)
+            token_location.place_locked_item(DK64Item("Blast Course Completed", ItemClassification.progression_skip_balancing, None, player))
+            new_region.locations.append(token_location)
 
     return new_region
 

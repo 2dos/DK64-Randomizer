@@ -2147,6 +2147,7 @@ class Settings:
             ),
             WinConditionComplex.req_bosses: HelmDoorInfo(7),
             WinConditionComplex.req_bonuses: HelmDoorInfo(len(getCompletableBonuses(self))),
+            WinConditionComplex.blast_courses: HelmDoorInfo(7),
         }
         random_win_con_settings = (
             WinConditionComplex.easy_random,
@@ -2173,6 +2174,13 @@ class Settings:
             self.win_condition_count = win_con_pool[selected_item]
         if self.win_condition_item in wincon_items.keys():
             self.win_condition_count = min(self.win_condition_count, wincon_items[self.win_condition_item].absolute_max)
+        if self.win_condition_item == WinConditionComplex.tasks:
+            # Each task has the same cap as the equivalent main win condition
+            for task_index in range(1, 9):
+                task_condition = getattr(self, f"task_{task_index}_condition")
+                if task_condition in wincon_items.keys():
+                    task_count = getattr(self, f"task_{task_index}_count")
+                    setattr(self, f"task_{task_index}_count", min(task_count, wincon_items[task_condition].absolute_max))
 
         # Initial Switch Level Placement - Will be corrected if level order rando is on during the fill process. Disable it for vanilla
         if self.level_randomization == LevelRandomization.vanilla:
@@ -3194,6 +3202,9 @@ class Settings:
         """Check whether the win condition, at any point, requires a certain win condition."""
         if self.win_condition_item == win_con:
             return True
+        # Task fields are only used by the tasks win condition, leftover values are ignored
+        if self.win_condition_item != WinConditionComplex.tasks:
+            return False
         tasks = [
             self.task_1_condition,
             self.task_2_condition,

@@ -646,7 +646,7 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
         WinConditionComplex.mech_fish: {"index": WinConROM.flag, "flag": 167},
         WinConditionComplex.arcade: {"index": WinConROM.flag, "flag": 132},  # Arcade R2
         WinConditionComplex.jetpac: {"index": WinConROM.flag, "flag": 379},
-        WinConditionComplex.bad_hit_detection_man: {"index": WinConROM.flag, "flag": 660},
+        WinConditionComplex.bad_hit_detection_man: {"index": WinConROM.flag, "flag": 127},
         WinConditionComplex.rareware_gb_check: {"index": WinConROM.flag, "flag": 301},
         WinConditionComplex.blast_courses: {
             "index": WinConROM.custom_item,

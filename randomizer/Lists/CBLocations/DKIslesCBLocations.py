@@ -2978,6 +2978,8 @@ BalloonList = [
         name="Training Grounds: Above rear ledge",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        item_rando_konglist=[Kongs.donkey, Kongs.chunky],
+        item_logic=lambda l: l.climbing,
         region=Regions.TrainingGrounds,
         points=[[1424, 343, 1758], [1265, 308, 1753], [1180, 343, 1846], [1094, 300, 1731]],
     ),
