@@ -39,6 +39,7 @@ from randomizer.Enums.Settings import (
     MicrohintsEnabled,
     MinigamesListSelected,
     MiscChangesSelected,
+    ProgressiveHintAlgorithm,
     ProgressiveHintItem,
     PuzzleRando,
     RandomStartingRegion,
@@ -975,6 +976,11 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     # Apply hint settings
     if options.hint_style == 0:
         settings_dict["wrinkly_hints"] = WrinklyHints.off
+    elif options.progressive_hint_item.value:
+        # Progressive hints unlock the Wrinkly hints, so they need hint_style on
+        settings_dict["progressive_hint_item"] = ProgressiveHintItem(options.progressive_hint_item.value)
+        settings_dict["progressive_hint_count"] = options.progressive_hint_count.value
+        settings_dict["progressive_hint_algorithm"] = ProgressiveHintAlgorithm(options.progressive_hint_pace.value)
 
     # Apply minigame and bonus barrel settings
     settings_dict["minigames_list_selected"] = [MinigamesListSelected[minigame] for minigame in options.shuffled_bonus_barrels]

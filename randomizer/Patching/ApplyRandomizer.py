@@ -552,8 +552,8 @@ def patching_response(fill_result_or_spoiler, settings=None, rom=None):
             ROM_COPY.seek(sav + 0x98 + (x * 2))
             ROM_COPY.writeMultipleBytes(getHintRequirementBatch(x, count, spoiler.settings.progressive_hint_algorithm), 2)
     ROM_COPY.seek(sav + 0x115)
-    ROM_COPY.writeMultipleBytes(count, 1)
-
+    # If CBs are divisible by 256, prog hints dont get enabled
+    ROM_COPY.writeMultipleBytes(min(count, 255), 1)
     # Item Locked Hint Doors
     if spoiler.settings.hint_door_item != ProgressiveHintItem.off:
         count = spoiler.settings.hint_door_item_count

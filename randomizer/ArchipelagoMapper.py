@@ -674,6 +674,9 @@ SETTINGS: Dict[str, Optional[Rule]] = {
     "hint_style": AP_ONLY,
     "shopkeeper_hints": AP_ONLY,
     "microhints": AP_ONLY,
+    "progressive_hint_item": "progressive_hint_item",
+    "progressive_hint_count": "progressive_hint_count",
+    "progressive_hint_pace": "progressive_hint_algorithm",
     # Filler Weights
     "junk_filler_weight": AP_ONLY,
     "banana_filler_weight": AP_ONLY,

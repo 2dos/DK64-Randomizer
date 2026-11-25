@@ -1361,6 +1361,66 @@ class MicroHints(Choice):
     default = 2
 
 
+class ProgressiveHintItem(Choice):
+    """Unlock the Wrinkly hints on the pause menu by collecting an item, instead of by visiting Wrinkly doors.
+
+    Hints unlock in batches as you collect more of the item, and the last hint needs progressive_hint_count of it.
+    Hints about a location are sent to the Archipelago server as they unlock, like visiting a Wrinkly door does.
+    Does nothing when hint_style is off. With "hints" in item_pool, the hint items are left out and the Wrinkly doors hold other items.
+
+    - off: No progressive hints.
+    - golden_bananas: Golden Bananas unlock hints.
+    - blueprints: Blueprints unlock hints.
+    - keys: Boss Keys unlock hints.
+    - medals: Banana Medals unlock hints.
+    - crowns: Battle Crowns unlock hints.
+    - fairies: Banana Fairies unlock hints.
+    - rainbow_coins: Rainbow Coins unlock hints.
+    - pearls: Pearls unlock hints.
+    - colored_bananas: Colored Bananas unlock hints.
+    """
+
+    display_name = "Progressive Hint Item"
+    option_off = 0
+    option_golden_bananas = 1
+    option_blueprints = 2
+    option_keys = 3
+    option_medals = 4
+    option_crowns = 5
+    option_fairies = 6
+    option_rainbow_coins = 7
+    option_pearls = 9
+    option_colored_bananas = 10
+    default = 0
+
+
+class ProgressiveHintCount(Range):
+    """Determines how many of the progressive_hint_item the last progressive hint needs. Earlier hints need fewer.
+
+    Capped at the item's total: 201 Golden Bananas, 40 Blueprints, 8 Keys, 40 Medals, 10 Crowns, 20 Fairies, 16 Rainbow Coins, 5 Pearls or 3500 Colored Bananas.
+    """
+
+    display_name = "Progressive Hint Count"
+    range_start = 1
+    range_end = 3500
+    default = 60
+
+
+class ProgressiveHintPace(Choice):
+    """How quickly progressive hints unlock as you collect their item. The last hint always needs progressive_hint_count.
+
+    - slow: Hints unlock more slowly.
+    - medium: The default pace.
+    - fast: Hints unlock more quickly.
+    """
+
+    display_name = "Progressive Hint Pace"
+    option_slow = 0
+    option_medium = 1
+    option_fast = 2
+    default = 1
+
+
 class HalfMedalPercentage(Range):
     """The percentage of the full medal colored banana requirement that a Half Medal requires.
 
@@ -2189,8 +2249,7 @@ class CrossMapBananaports(Choice):
     - coupled: Going back through a bananaport takes you back to where you came from.
     - decoupled: Going back through a bananaport can take you somewhere else.
 
-    Like the website, logic assumes you can use any bananaport in a region you can reach.
-    A bananaport that needs a move to stand on, or only appears after its bonus barrel, can be in logic early.
+    Logic assumes you can use any bananaport in a region you can reach.
     """
 
     display_name = "Cross-Map Bananaports"
@@ -2338,6 +2397,9 @@ class DK64Options(PerGameCommonOptions):
     flip_trap_weight: FlipTrapWeight
     receive_notifications: ReceiveNotifications
     hint_style: HintStyle
+    progressive_hint_item: ProgressiveHintItem
+    progressive_hint_count: ProgressiveHintCount
+    progressive_hint_pace: ProgressiveHintPace
     shuffled_bonus_barrels: ShuffledBonusBarrels
     hard_minigames: HardMinigames
     auto_complete_bonus_barrels: AutoCompleteBonusBarrels
@@ -2523,6 +2585,9 @@ dk64_option_groups: List[OptionGroup] = [
             HintStyle,
             ShopkeeperHints,
             MicroHints,
+            ProgressiveHintItem,
+            ProgressiveHintCount,
+            ProgressiveHintPace,
         ],
     ),
     OptionGroup(

@@ -12,7 +12,7 @@ from archipelago.Options import ShopPrices, HelmDoor1Item, HelmDoor2Item
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists import Item as DK64RItem
 from randomizer.Enums.Items import Items as DK64RItems
-from randomizer.Enums.Settings import WinConditionComplex
+from randomizer.Enums.Settings import ProgressiveHintItem, WinConditionComplex
 from randomizer.Enums.Types import Types as DK64RTypes, BarrierItems
 import randomizer.ItemPool as DK64RItemPoolUtility
 import copy
@@ -285,7 +285,8 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                 else:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Hint:
-                if "hints" not in world.options.item_pool:
+                # Progressive hints have no hint items, so the Wrinkly doors hold other items
+                if "hints" not in world.options.item_pool or settings.progressive_hint_item != ProgressiveHintItem.off:
                     continue
                 else:
                     ap_item.classification = ItemClassification.useful
