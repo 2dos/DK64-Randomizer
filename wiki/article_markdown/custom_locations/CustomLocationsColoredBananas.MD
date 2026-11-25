@@ -221,7 +221,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On path (15 custom, 5 Chunky) | 20 | `self.logic = lambda _: True` | 
-| On blueprint platform | 5 | `l.pineapple and l.can_use_vines and l.ischunky` | 
+| In the big scary mouth | 5 | `self.logic = lambda _: True` | 
 | Bunches on path (Chunky) | 10 | `self.logic = lambda _: True` | 
 | Entrance stalagmite | 5 | `self.logic = lambda _: True` | 
 | Entrance flames | 10 | `self.logic = lambda _: True` | 
@@ -2081,7 +2081,7 @@
 | Next to Cranky | 10 | `self.logic = lambda _: True` | 
 | Path to training area | 5 | `self.logic = lambda _: True` | 
 | In the lake | 15 | `l.swim` | 
-| Behind the waterfall | 5 | `self.logic = lambda _: True` | 
+| Waterfall | 5 | `self.logic = lambda _: True` | 
 | Banana hoard tunnel | 10 | `l.can_use_vines and l.climbing` | 
 | Banana hoard room | 20 | `l.can_use_vines and l.climbing` | 
 | Rear tunnel | 5 | `self.logic = lambda _: True` | 
@@ -2115,20 +2115,20 @@
 | Fairy Isle W5 | 5 | `self.logic = lambda _: True` | 
 | Japes entrance | 5 | `self.logic = lambda _: True` | 
 | Top of tree between tag barrel and Japes | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
-| Tree between tag barrel and Japes | 5 | `self.logic = lambda _: True` | 
-| Tree next to Japes | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
-| Tree next to Japes | 5 | `self.logic = lambda _: True` | 
-| Tree on beaver beach | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
-| Tree on beaver beach | 5 | `self.logic = lambda _: True` | 
-| Tree near W3 | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
-| Tree near W3 | 5 | `self.logic = lambda _: True` | 
+| Around tree between tag barrel and Japes | 5 | `self.logic = lambda _: True` | 
+| Top of tree next to Japes | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
+| Around tree next to Japes | 5 | `self.logic = lambda _: True` | 
+| Top of tree on beaver beach | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
+| Around tree on beaver beach | 5 | `self.logic = lambda _: True` | 
+| Top of tree near W3 | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
+| Around tree near W3 | 5 | `self.logic = lambda _: True` | 
 | Behind cannon to Forest | 5 | `self.logic = lambda _: True` | 
 | Waterfall pond | 15 | `l.swim` | 
 | Seafloor around the X platform | 10 | `l.swim` | 
 | In the pineapple cage | 10 | `l.pineapple or l.CanSTS() or l.CanPhase()` | 
 | Beach below Caves | 5 | `self.logic = lambda _: True` | 
-| Tree below Caves | 5 | `self.logic = lambda _: True` | 
-| Tree below caves | 5 | `self.logic = lambda _: True` | 
+| Top of tree below Caves | 5 | `self.logic = lambda _: True` | 
+| Around tree below caves | 5 | `self.logic = lambda _: True` | 
 | Path below Caves | 5 | `self.logic = lambda _: True` | 
 | Stairs near Aztec | 10 | `self.logic = lambda _: True` | 
 | Behind Aztec lobby | 5 | `self.logic = lambda _: True` | 
@@ -2152,8 +2152,8 @@
 | On Fairy Isle's banana peel hat left | 5 | `self.logic = lambda _: True` | 
 | On top of Fairy Isle | 5 | `self.logic = lambda _: True` | 
 | On Fairy Isle's wings | 10 | `self.logic = lambda _: True` | 
-| Up and around the fairy tree | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
-| Up and around the fairy tree | 5 | `self.logic = lambda _: True` | 
+| Top of the fairy tree | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
+| Around the fairy tree | 5 | `self.logic = lambda _: True` | 
 | In the feather cage | 10 | `l.feather or l.CanSTS() or l.CanPhase()` | 
 | Fairy Isle entrance | 5 | `self.logic = lambda _: True` | 
 | In the Pound the X rock | 10 | `Events.IslesChunkyBarrelSpawn in l.Events and l.hunkyChunky and l.Slam and l.chunky` | 
@@ -2350,6 +2350,7 @@
 | Above the entrance hole | 5 | `self.logic = lambda _: True` | 
 | Torch way up | 10 | `l.chunky and l.barrels and l.balloon` | 
 | Wall windows | 20 | `l.chunky and l.barrels and l.balloon` | 
+| Trophy flip spot | 5 | `self.logic = lambda _: True` | 
 | Acid moat | Balloon | `self.logic = lambda _: True` | 
 | Castle Lobby: Above center piece | Balloon | `self.logic = lambda _: True` | 
 | Castle Lobby: Near B.Locker | Balloon | `self.logic = lambda _: True` | 
