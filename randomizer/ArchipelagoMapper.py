@@ -32,6 +32,7 @@ import yaml
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Settings import (
+    BananaportRando,
     BLockerSetting,
     CustomMinigamesSelected,
     DKPortalRando,
@@ -401,8 +402,8 @@ def switchsanity(website: WebsiteSettings) -> Dict[str, str]:
 
 
 def loading_zone_rando(website: WebsiteSettings) -> str:
-    """Return yes when the website shuffles loading zones (coupled), otherwise no."""
-    return "yes" if website.name("level_randomization", LevelRandomization) == "loadingzone" else "no"
+    """Return yes or decoupled when the website shuffles loading zones, otherwise no."""
+    return {"loadingzone": "yes", "loadingzonesdecoupled": "decoupled"}.get(website.name("level_randomization", LevelRandomization), "no")
 
 
 def galleon_water_level(website: WebsiteSettings) -> str:
@@ -426,6 +427,11 @@ def dk_portal_location_rando(website: WebsiteSettings) -> str:
     mode = website.name("dk_portal_location_rando_v2", DKPortalRando)
     mode = DK_PORTAL_MODES.get(mode, mode)
     return mode if mode in ap_choices("dk_portal_location_rando") else "off"
+
+
+def cross_map_bananaports(website: WebsiteSettings) -> str:
+    """Return coupled or decoupled when the website shuffles bananaports across maps, otherwise off."""
+    return {"crossmap_coupled": "coupled", "crossmap_decoupled": "decoupled"}.get(website.name("bananaport_rando", BananaportRando), "off")
 
 
 # Logic
@@ -630,6 +636,10 @@ SETTINGS: Dict[str, Optional[Rule]] = {
     "galleon_water_level": galleon_water_level,
     "random_starting_region": random_starting_region,
     "dk_portal_location_rando": dk_portal_location_rando,
+    "cross_map_bananaports": cross_map_bananaports,
+    "random_bananaport_locations": "bananaport_placement_rando",
+    "bananaport_levels": names("warp_level_list_selected", Maps),
+    "activate_bananaports": "activate_all_bananaports",
     # Logic
     "logic_type": logic_type,
     "tricks_selected": names("tricks_selected", TricksSelected),

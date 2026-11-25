@@ -57,7 +57,7 @@ LogicRegions = {
         Event(Events.ForestW3aTagged, lambda _: True),
         Event(Events.ForestW4aTagged, lambda _: True),
     ], [
-        TransitionFront(Regions.ForestMinecarts, lambda l: l.Slam and l.ischunky),
+        TransitionFront(Regions.ForestMinecarts, lambda l: l.Slam and l.ischunky, Transitions.ForestMainToCarts),
         TransitionFront(Regions.GiantMushroomArea, lambda _: True),
         TransitionFront(Regions.MillArea, lambda _: True),
         TransitionFront(Regions.WormArea, lambda l: Events.WormGatesOpened in l.Events or l.CanPhase() or l.CanPhaseswim()),

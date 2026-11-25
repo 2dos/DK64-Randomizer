@@ -318,13 +318,13 @@ LogicRegions = {
         Event(Events.JapesDiddySwitch2, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.peanut or l.monkey_maneuvers) and l.isdiddy),
     ], [
         TransitionFront(Regions.JapesHillTop, lambda _: True, Transitions.JapesMineToMain),
-        TransitionFront(Regions.JapesMinecarts, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()) and ((l.charge and l.isdiddy) or l.CanPhase() or (l.monkey_maneuvers and l.isdiddy))),
+        TransitionFront(Regions.JapesMinecarts, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()) and ((l.charge and l.isdiddy) or l.CanPhase() or (l.monkey_maneuvers and l.isdiddy)), Transitions.JapesMineToCarts),
     ]),
 
     Regions.JapesMinecarts: Region("Japes Minecarts", HintRegion.CavesAndMines, Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.HasEnoughRaceCoins(Maps.JapesMinecarts, Kongs.diddy, True)),
     ], [], [
-        TransitionFront(Regions.JungleJapesMain, lambda _: True),
+        TransitionFront(Regions.JungleJapesMain, lambda _: True, Transitions.JapesCartsToMain),
     ], Transitions.JapesMineToCarts
     ),
 

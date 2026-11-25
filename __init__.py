@@ -35,7 +35,7 @@ if baseclasses_loaded:
     sys.path.append("custom_worlds/dk64.apworld/dk64/archipelago/")
     from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, CollectionState
     from BaseClasses import Location, LocationProgressType
-    from entrance_rando import randomize_entrances, EntranceRandomizationError, disconnect_entrance_for_randomization
+    from entrance_rando import randomize_entrances, EntranceRandomizationError, disconnect_entrance_for_randomization, bake_target_group_lookup
     import settings
     import logging
     import enum
@@ -46,7 +46,7 @@ if baseclasses_loaded:
     from archipelago.Items import DK64Item, full_item_table, setup_items
     from archipelago.Options import DK64Options, Goal, SwitchsanityOptions, SelectStartingKong, dk64_option_groups, LoadingZoneRando
     from archipelago.Prices import generate_prices
-    from archipelago.Regions import all_locations, create_regions, connect_regions, connect_exit_level, connect_glitch_transitions
+    from archipelago.Regions import all_locations, create_regions, connect_regions, connect_exit_level, connect_glitch_transitions, get_decoupled_target_groups
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
     from worlds.AutoWorld import WebWorld, World, AutoLogicRegister
@@ -54,7 +54,7 @@ if baseclasses_loaded:
     from archipelago.Logic import LogicVarHolder, logic_item_name_to_id
     from randomizer.Spoiler import Spoiler
     from randomizer.Settings import Settings
-    from randomizer.ShuffleWarps import LinkWarps
+    from randomizer.ShuffleWarps import LinkWarps, getLevelOfVanillaWarp
     from version import version
     from randomizer.Fill import ShuffleItems, Generate_Spoiler, IdentifyMajorItems
     from randomizer.CompileHints import compileMicrohints
@@ -587,8 +587,6 @@ if baseclasses_loaded:
                         world.options.logic_type.value = 1  # Force to glitchless
 
                 if affected_players:
-                    import logging
-
                     logging.warning(
                         f"DK64: Minimal logic is DISABLED in host.yaml. "
                         f"The following player(s) have tried to sneak Minimal Logic in: {', '.join(affected_players)}. As such, they have been forced to use glitchless logic."
@@ -721,7 +719,16 @@ if baseclasses_loaded:
             if hasattr(settings, "ut_dk_portal_locations"):
                 self.spoiler.human_entry_doors = settings.ut_dk_portal_locations
 
-            Generate_Spoiler(self.spoiler)
+            # Shuffling bananaports can run out of bananaports to pick from, so retry it like entrance randomization
+            DK64_MAX_SPOILER_ATTEMPTS = 20
+            for attempt in range(DK64_MAX_SPOILER_ATTEMPTS):
+                try:
+                    Generate_Spoiler(self.spoiler)
+                    break
+                except IndexError as error:
+                    if attempt >= DK64_MAX_SPOILER_ATTEMPTS - 1:
+                        raise IndexError(f"DK64: failed to generate the spoiler after {DK64_MAX_SPOILER_ATTEMPTS} attempts. Final error:\n\n{error}")
+                    logging.warning(f"DK64: Spoiler generation attempt {attempt + 1} failed, retrying...")
 
             # Store/retrieve blocker values for seed group synchronization
             if world.options.loading_zone_rando.value != LoadingZoneRando.option_no:
@@ -828,6 +835,24 @@ if baseclasses_loaded:
                                                 self.spoiler.RegionList[placement_region].exits[1] = TransitionFront(door_data.logicregion, lambda _: True)
                                                 break
 
+                        # Restore bananaport locations and connections
+                        if passthrough["WarpLocations"] or passthrough["BananaportReplacements"]:
+                            from randomizer.Enums.Warps import Warps
+                            from randomizer.Lists.CustomLocations import CustomLocations
+                            from randomizer.Lists.Warps import BananaportVanilla
+                            from randomizer.ShufflePorts import addPort
+
+                            for warp_name, location_index in passthrough["WarpLocations"].items():
+                                # Move the bananaport's tag from where this generation put it to where the seed put it
+                                warp = BananaportVanilla[Warps[warp_name]]
+                                region = self.spoiler.RegionList[warp.region_id]
+                                region.events = [event for event in region.events if event.name != warp.event]
+                                addPort(self.spoiler, CustomLocations[getLevelOfVanillaWarp(warp)][location_index], warp.event)
+                            if passthrough["BananaportReplacements"]:
+                                for warp in BananaportVanilla.values():
+                                    warp.tied_index = passthrough["BananaportReplacements"][warp.swap_index][0]
+                            LinkWarps(self.spoiler)
+
                         # Restore entrance randomization connections for yamlless generation
                         if passthrough.get("EntranceRando") and passthrough["EntranceRando"]:
                             # Store entrance connections for later restoration
@@ -918,7 +943,6 @@ if baseclasses_loaded:
 
         def connect_entrances(self) -> None:
             """Randomize and connect entrances if LZR is on."""
-            LinkWarps(self.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
             connect_regions(self, self.spoiler.settings, self.spoiler)
 
             if (
@@ -935,9 +959,6 @@ if baseclasses_loaded:
 
                 ap_entrance_to_transition = {}
                 for transition_enum, shufflable_exit in ShufflableExits.items():
-                    # TODO: Make this configurable with DLZR
-                    if shufflable_exit.back.reverse is None:
-                        continue
                     ap_entrance_to_transition[shufflable_exit.name] = transition_enum
 
                 # Store entrance connections for ROM patching
@@ -953,11 +974,12 @@ if baseclasses_loaded:
                         if not target_transition:
                             continue
 
-                        target_reverse = ShufflableExits[target_transition].back.reverse
-                        if target_reverse is None:
+                        # Decoupled exits take over their target's destination, coupled exits come out of their target's loading zone
+                        shuffled_id = target_transition if self.spoiler.settings.decoupled_loading_zones else ShufflableExits[target_transition].back.reverse
+                        if shuffled_id is None:
                             continue
 
-                        ShufflableExits[source_transition].shuffledId = target_reverse
+                        ShufflableExits[source_transition].shuffledId = shuffled_id
                         ShufflableExits[source_transition].shuffled = True
 
                 # Store initial entrance/exit state before randomization attempts
@@ -973,11 +995,13 @@ if baseclasses_loaded:
                         if not exit.connected_region:  # This is a randomizable exit
                             initial_exit_states[exit] = (region, exit.parent_region)
 
+                target_group_lookup = bake_target_group_lookup(self, get_decoupled_target_groups) if self.spoiler.settings.decoupled_loading_zones else {0: [0]}
+
                 # Retry entrance randomization if it fails (similar to Crystalis implementation)
                 DK64_MAX_ER_ATTEMPTS = 20
                 for attempt in range(DK64_MAX_ER_ATTEMPTS):
                     try:
-                        self.er_placement_state = randomize_entrances(self, True, {0: [0]}, on_connect=store_entrance_connections)
+                        self.er_placement_state = randomize_entrances(self, not self.spoiler.settings.decoupled_loading_zones, target_group_lookup, on_connect=store_entrance_connections)
                         break
                     except EntranceRandomizationError as error:
                         if attempt >= DK64_MAX_ER_ATTEMPTS - 1:
@@ -1605,6 +1629,7 @@ if baseclasses_loaded:
                     if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and self.spoiler.shuffled_exit_data
                     else {}
                 ),
+                "DecoupledLoadingZones": self.spoiler.settings.decoupled_loading_zones,
                 "KongModels": {
                     "DK": self.spoiler.settings.kong_model_dk.name,
                     "Diddy": self.spoiler.settings.kong_model_diddy.name,
@@ -1630,6 +1655,12 @@ if baseclasses_loaded:
                     else {}
                 ),
                 "DKPortalLocations": (self.spoiler.human_entry_doors if hasattr(self.spoiler, "human_entry_doors") and self.spoiler.human_entry_doors else {}),
+                "BananaportRando": self.spoiler.settings.bananaport_rando.name,
+                "BananaportPlacementRando": self.spoiler.settings.bananaport_placement_rando.name,
+                "WarpLevelListSelected": [level.name for level in self.spoiler.settings.warp_level_list_selected],
+                "ActivateAllBananaports": self.spoiler.settings.activate_all_bananaports.name,
+                "WarpLocations": {warp.name: location for warp, location in getattr(self.spoiler, "warp_locations", {}).items()},
+                "BananaportReplacements": getattr(self.spoiler, "bananaport_replacements", []),
             }
 
             return slot_data
@@ -1663,6 +1694,19 @@ if baseclasses_loaded:
                 for level, location in self.spoiler.human_entry_doors.items():
                     if location != "Vanilla":
                         spoiler_handle.write(f"  {level}: {location}")
+                        spoiler_handle.write("\n")
+            if hasattr(self.spoiler, "human_warp_locations"):
+                spoiler_handle.write("Bananaport Connections:")
+                spoiler_handle.write("\n")
+                for source, destination in self.spoiler.human_warp_locations.items():
+                    spoiler_handle.write(f"  {source} -> {destination}")
+                    spoiler_handle.write("\n")
+            elif hasattr(self.spoiler, "human_warps"):
+                spoiler_handle.write("Bananaport Locations:")
+                spoiler_handle.write("\n")
+                for level, warps in self.spoiler.human_warps.items():
+                    for warp, location in warps.items():
+                        spoiler_handle.write(f"  {level} {warp}: {location}")
                         spoiler_handle.write("\n")
             spoiler_handle.write("Helm Order: " + ", ".join([Kongs(room).name for room in self.spoiler.settings.helm_order]))
             spoiler_handle.write("\n")
@@ -2061,10 +2105,17 @@ if baseclasses_loaded:
             relevant_data["SmallerShopsData"] = smaller_shops_data
             relevant_data["ShopPrices"] = shop_prices
             relevant_data["EntranceRando"] = entrance_rando
+            relevant_data["DecoupledLoadingZones"] = slot_data.get("DecoupledLoadingZones", False)
             relevant_data["GalleonWater"] = galleon_water
             relevant_data["KongModels"] = kong_models
             relevant_data["StartingRegion"] = starting_region
             relevant_data["DKPortalLocations"] = dk_portal_locations
+            relevant_data["BananaportRando"] = slot_data.get("BananaportRando", "off")
+            relevant_data["BananaportPlacementRando"] = slot_data.get("BananaportPlacementRando", "off")
+            relevant_data["WarpLevelListSelected"] = slot_data.get("WarpLevelListSelected", [])
+            relevant_data["ActivateAllBananaports"] = slot_data.get("ActivateAllBananaports", "isles")
+            relevant_data["WarpLocations"] = slot_data.get("WarpLocations", {})
+            relevant_data["BananaportReplacements"] = slot_data.get("BananaportReplacements", [])
             relevant_data["StartingMovePools"] = starting_move_pools
             if "win_condition_count" in slot_data:
                 relevant_data["WinConditionItem"] = slot_data["win_condition_item"]

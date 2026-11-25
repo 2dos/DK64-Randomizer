@@ -632,9 +632,6 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
                 except Exception:
                     # Region connection may already exist or have other issues, skip it
                     pass
-        # Pre-activated Isles warps for V1
-        connect(world, "IslesMain", "IslesMainUpper", lambda state: True)
-        connect(world, "IslesMain", "KremIsleBeyondLift", lambda state: True)
         return
 
     # Build lobby transition mapping for level order shuffling
@@ -742,7 +739,7 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
 
             # Check for loading zone randomization
             if settings.level_randomization == LevelRandomization.loadingzone:
-                if exit.exitShuffleId and not exit.isGlitchTransition and ShufflableExits[exit.exitShuffleId].back.reverse:
+                if exit.exitShuffleId and not exit.isGlitchTransition and (settings.decoupled_loading_zones or ShufflableExits[exit.exitShuffleId].back.reverse):
                     # Skip Helm transitions if Helm location is not being shuffled
                     helm_transitions = {
                         Transitions.IslesMainToHelmLobby,
@@ -768,7 +765,8 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
                                 break
 
                         if target_shufflable_exit:
-                            target_region_name = target_shufflable_exit.region.name
+                            # A decoupled target is where its loading zone leads, a coupled one is where it starts
+                            target_region_name = target_shufflable_exit.back.regionId.name if settings.decoupled_loading_zones else target_shufflable_exit.region.name
                             connect(world, region_id.name, target_region_name, converted_logic, entrance_name)
                         else:
                             # Fallback to normal connection
@@ -786,13 +784,28 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
                     # Normal connection (may or may not be shufflable)
                     connection = connect(world, region_id.name, destination_name, converted_logic, entrance_name)
                     if entrance_name is not None:
-                        disconnect_entrance_for_randomization(connection)
+                        if settings.decoupled_loading_zones:
+                            # Decoupled loading zones are one-way, and each is its own group for get_decoupled_target_groups
+                            connection.randomization_type = EntranceType.ONE_WAY
+                            connection.randomization_group = exit.exitShuffleId
+                        disconnect_entrance_for_randomization(connection, one_way_target_name=entrance_name)
             except Exception:
                 pass
 
-    # Pre-activated Isles warps
-    connect(world, "IslesMain", "IslesMainUpper", lambda state: True)
-    connect(world, "IslesMain", "KremIsleBeyondLift", lambda state: True)
+    # Bananaports come from the spoiler, where they're linked for this seed. Bananaports between the same two regions share an entrance
+    bananaport_exits = {}
+    for region_id, region_obj in spoiler.RegionList.items():
+        for exit in region_obj.exits:
+            if exit.isBananaportTransition:
+                bananaport_exits.setdefault((region_id.name, exit.dest.name), []).append(exit)
+    for (source_name, destination_name), exits in bananaport_exits.items():
+        connect(
+            world,
+            source_name,
+            destination_name,
+            lambda state, player=world.player, exits=exits: any(hasDK64RTransition(state, player, exit) for exit in exits),
+            "Bananaport: " + source_name + "->" + destination_name,
+        )
 
     # Deathwarps send you to the level's DK portal
     for region_id, region_obj in all_logic_regions.items():
@@ -884,7 +897,7 @@ def connect_regions(world: World, settings: Settings, spoiler: Spoiler = None):
                         break
 
                 if target_shufflable_exit:
-                    target_region_name = target_shufflable_exit.region.name
+                    target_region_name = target_shufflable_exit.back.regionId.name if settings.decoupled_loading_zones else target_shufflable_exit.region.name
                     # Connect all regions of this level that can exit to the target
                     for region_id, region_obj in all_logic_regions.items():
                         if not region_obj.restart and region_obj.level == level:
@@ -933,6 +946,18 @@ def connect_exit_level(world: World, er_placement_state: ERPlacementState):
                 lambda state: True,
                 "Exit Level: " + region_id.name + "->" + exit_level_target_dict[region_obj.level].connected_region.name,
             )
+
+
+def get_decoupled_target_groups(exit_transition: Transitions) -> typing.List[Transitions]:
+    """Get the loading zones a decoupled exit can lead to."""
+    exit = ShufflableExits[exit_transition]
+    # Tag Anywhere doesn't work in the minecarts or the Factory, Galleon and Castle races, so a minecart can only be entered from outside them, through an exit its kong can use
+    can_tag = exit.region not in (Regions.JapesMinecarts, Regions.ForestMinecarts, Regions.FactoryTinyRace, Regions.SealRace, Regions.CastleTinyRace)
+    return [
+        target_transition
+        for target_transition, target in ShufflableExits.items()
+        if target.back.regionId not in (Regions.JapesMinecarts, Regions.ForestMinecarts) or (can_tag and exit.entryKongs.issuperset(target.regionKongs))
+    ]
 
 
 def connect(world: World, source: str, target: str, rule: typing.Optional[typing.Callable] = None, name: typing.Optional[str] = None) -> Entrance:

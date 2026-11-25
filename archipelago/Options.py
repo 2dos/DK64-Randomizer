@@ -2065,8 +2065,10 @@ class EnemiesSelected(OptionList):
 class LoadingZoneRando(TextChoice):
     """Randomize the connections between loading zones (Loading Zone Randomizer).
 
+    Decoupled: Loading zones don't lead back the way you came, and one-way loading zones like the Japes and Fungi minecarts are shuffled too.
+
     If you set this option's value to a string (ie. "LZR": 50 instead of "yes": 50), it will be used as a custom seed.
-    Every player who uses the same custom seed will have the same loading zone connections.
+    Every player who uses the same custom seed will have the same loading zone connections. Custom seeds are always coupled.
 
     WARNING: LZR is not for the faint of heart. Don't turn this on UNLESS you know what you're doing.
     """
@@ -2078,6 +2080,7 @@ class LoadingZoneRando(TextChoice):
     alias_true = 1
     alias_on = 1
     option_yes = 1
+    option_decoupled = 2
     default = 0
 
 
@@ -2175,6 +2178,96 @@ class DKPortalLocationRando(Choice):
     option_main_only_underwater = 3
     option_all_underwater = 4
     default = 0
+
+
+class CrossMapBananaports(Choice):
+    """Randomize where bananaports take you. A bananaport can take you to a different level.
+
+    bananaport_levels picks which levels' bananaports are shuffled.
+
+    - off: Bananaports take you to their vanilla partner.
+    - coupled: Going back through a bananaport takes you back to where you came from.
+    - decoupled: Going back through a bananaport can take you somewhere else.
+
+    Like the website, logic assumes you can use any bananaport in a region you can reach.
+    A bananaport that needs a move to stand on, or only appears after its bonus barrel, can be in logic early.
+    """
+
+    display_name = "Cross-Map Bananaports"
+    option_off = 0
+    option_coupled = 2
+    option_decoupled = 3
+    default = 0
+
+
+class RandomBananaportLocations(Choice):
+    """Shuffle the locations of bananaports within each level.
+
+    bananaport_levels picks which levels' bananaports are shuffled.
+
+    - off: Bananaports are in their vanilla locations.
+    - vanilla_only: Bananaports are shuffled among the vanilla bananaport locations.
+    - half_vanilla: One bananaport in each pair is vanilla, the other is in a random location.
+    - on: Both bananaports in each pair are in random locations, with a couple of exceptions for technical reasons.
+    """
+
+    display_name = "Random Bananaport Locations"
+    option_off = 1
+    option_vanilla_only = 2
+    option_half_vanilla = 3
+    option_on = 4
+    default = 1
+
+
+class BananaportLevels(OptionList):
+    """Determines which levels' bananaports cross_map_bananaports and random_bananaport_locations shuffle.
+
+    Leave empty to shuffle the bananaports in every level. Bananaports in levels that aren't picked stay vanilla.
+
+    Valid Keys:
+    "Isles"
+    "JungleJapes"
+    "AngryAztec"
+    "AztecLlamaTemple"
+    "FranticFactory"
+    "GloomyGalleon"
+    "FungiForest"
+    "CrystalCaves"
+    "CreepyCastle"
+    "CastleCrypt"
+    """
+
+    display_name = "Bananaport Levels"
+    valid_keys = {
+        "Isles",
+        "JungleJapes",
+        "AngryAztec",
+        "AztecLlamaTemple",
+        "FranticFactory",
+        "GloomyGalleon",
+        "FungiForest",
+        "CrystalCaves",
+        "CreepyCastle",
+        "CastleCrypt",
+    }
+    default = []
+
+
+class ActivateBananaports(Choice):
+    """Determines which bananaports start activated.
+
+    - off: No bananaports start activated.
+    - isles: The bananaports in DK Isles start activated.
+    - isles_inc_helm_lobby: The bananaports in DK Isles and Hideout Helm Lobby start activated.
+    - all: Every bananaport starts activated.
+    """
+
+    display_name = "Activate Bananaports"
+    option_off = 0
+    option_all = 1
+    option_isles = 2
+    option_isles_inc_helm_lobby = 3
+    default = 2
 
 
 @dataclass
@@ -2290,6 +2383,10 @@ class DK64Options(PerGameCommonOptions):
     free_trade_cbs: FreeTradeCBs
     random_starting_region: RandomStartingLocation
     dk_portal_location_rando: DKPortalLocationRando
+    cross_map_bananaports: CrossMapBananaports
+    random_bananaport_locations: RandomBananaportLocations
+    bananaport_levels: BananaportLevels
+    activate_bananaports: ActivateBananaports
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -2368,6 +2465,10 @@ dk64_option_groups: List[OptionGroup] = [
             GalleonWaterLevel,
             RandomStartingLocation,
             DKPortalLocationRando,
+            CrossMapBananaports,
+            RandomBananaportLocations,
+            BananaportLevels,
+            ActivateBananaports,
         ],
     ),
     OptionGroup(
