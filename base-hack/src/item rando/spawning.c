@@ -399,13 +399,18 @@ void renderBoulderSparkles(actorData *actor) {
 int shouldDeleteBalloon(int cb_flag, flagtypes flag_type) {
     if (checkFlag(cb_flag, flag_type)) {
         int balloon_offset = *(short*)(0x80688BCE);
-        return checkFlag((cb_flag - balloon_offset) + FLAG_BALLOON_ITEM, FLAGTYPE_PERMANENT);
+        int index = cb_flag - balloon_offset;
+        if ((index < 0) || (index >= 104) || (balloon_item_table[index].actor == NEWACTOR_NULL)) {
+            // No item to get back, so the balloon stays popped
+            return 1;
+        }
+        return checkFlag(index + FLAG_BALLOON_ITEM, FLAGTYPE_PERMANENT);
     }
     return 0;
 }
 
 int isValidBalloonObject(int index) {
-    if (index < 0) {
+    if ((index < 0) || (index >= 104)) {
         return 0;
     }
     if (BalloonSpawnBitfield[index >> 3] & (1 << (index & 7))) {
