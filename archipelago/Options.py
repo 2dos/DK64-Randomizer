@@ -994,7 +994,7 @@ class RemoveBarriers(OptionList):
 
     Valid Keys:
     "japes_coconut_gates"
-    "japes_shellhive_gates"
+    "japes_shellhive_gate"
     "aztec_tunnel_door"
     "aztec_5dtemple_switches"
     "aztec_llama_switches"
@@ -1018,7 +1018,7 @@ class RemoveBarriers(OptionList):
 
     valid_keys = {
         "japes_coconut_gates",
-        "japes_shellhive_gates",
+        "japes_shellhive_gate",
         "aztec_tunnel_door",
         "aztec_5dtemple_switches",
         "aztec_llama_switches",
