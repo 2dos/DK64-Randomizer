@@ -293,4 +293,5 @@ export enum Regions {
     MushroomVeryTopExterior = 292,
     CabinDoor = 293,
     SnideArea = 294,
+    DarkRoom = 295,
 }

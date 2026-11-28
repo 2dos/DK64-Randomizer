@@ -199,8 +199,8 @@ LogicRegions = {
         LocationLogic(Locations.GalleonKasplatNearSub, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.MelonCrate_Location05, lambda _: True),
         LocationLogic(Locations.KremKap_GalleonNPC_Seal, lambda l: l.camera and Events.SealReleased in l.Events),
-        LocationLogic(Locations.Balloon039, lambda l: l.diddy and l.peanut),
-        LocationLogic(Locations.Balloon043, lambda l: l.chunky and l.pineapple),
+        LocationLogic(Locations.Balloon039, lambda l: l.diddy and l.peanut and (l.swim or l.hard_shooting)),
+        LocationLogic(Locations.Balloon043, lambda l: l.chunky and l.pineapple and (l.swim or l.hard_shooting)),
         LocationLogic(Locations.Balloon049, lambda l: l.chunky and l.pineapple and l.swim),
         LocationLogic(Locations.Balloon050, lambda l: l.lanky and l.grape and l.swim),
     ], [

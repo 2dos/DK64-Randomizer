@@ -541,8 +541,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="In Dark room on box",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase(),
+        region=Regions.DarkRoom,
         locations=[[5, 1.0, 2130, 52, 528]],
     ),
     ColoredBananaGroup(
@@ -1032,9 +1031,9 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Dark room above moving platforms (Chunky)",
         konglist=[Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.DarkRoom,
         vanilla=True,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False),
+        logic=lambda l: l.punch,
         locations=[
             [5, 1.0, 1960.4481201171875, 106.5, 584.5081787109375],
             [5, 1.0, 1961.8372802734375, 126.5, 677.7713012695312],
@@ -1698,8 +1697,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Dark room entrance",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False),
+        region=Regions.DarkRoom,
         locations=[
             [1, 1.0, 1747, 6, 667],
             [1, 1.0, 1762, 6, 667],
@@ -1713,8 +1711,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Box in a corner of dark room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False),
+        region=Regions.DarkRoom,
         locations=[[5, 1.0, 1804, 42, 914]],
     ),
     ColoredBananaGroup(
@@ -2225,8 +2222,7 @@ BalloonList = [
         name="Dark room",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase(),
+        region=Regions.DarkRoom,
         points=[[2078, 150, 510], [2078, 150, 810]],
     ),
     Balloon(
