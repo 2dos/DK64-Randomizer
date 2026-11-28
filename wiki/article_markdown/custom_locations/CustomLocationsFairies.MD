@@ -56,7 +56,7 @@
 | Frantic Factory | Toy Monster Room | `l.camera and ((l.triangle and l.hasMoveSwitchsanity(Switches.FactoryToyMonsterGrate, False) and l.ischunky and l.climbing) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Diddy R&D Room | `l.camera and ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Chute to Storage Room | `l.camera` | 
-| Frantic Factory | Dark Room | `l.camera and (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase())` | 
+| Frantic Factory | Dark Room | `l.camera` | 
 | Factory Crusher | Crusher Room | `l.camera` | 
 
 # Gloomy Galleon

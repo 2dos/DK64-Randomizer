@@ -96,7 +96,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.tiny, lambda _: True, None, 5),  # Around Tiny BP
         Collectible(Collectibles.coin, Kongs.chunky, lambda _: True, None, 5),  # W1
     ],
-    Regions.DarkRoom:[
+    Regions.DarkRoom: [
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 3),  # Dark Room
     ],
     Regions.FactoryStoragePipe: [

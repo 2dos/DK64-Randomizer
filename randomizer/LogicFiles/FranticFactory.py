@@ -190,8 +190,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryMainEnemy_DarkRoom1, lambda _: True),
         LocationLogic(Locations.KremKap_FactoryMainEnemy_DarkRoom0, lambda l: l.camera),
         LocationLogic(Locations.KremKap_FactoryMainEnemy_DarkRoom1, lambda l: l.camera),
-    ], [],
-    [
+    ], [], [
         TransitionFront(Regions.BeyondHatch, lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase())
     ]),
 
