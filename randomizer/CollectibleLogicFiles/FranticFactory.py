@@ -88,7 +88,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 5),  # Path to shops
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 1),  # Base of pipe to free Chunky switch
         Collectible(Collectibles.bunch, Kongs.chunky, lambda _: True, None, 1),  # W1
-        
+
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda _: True, None, 3),  # Bottom of pole
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.spring or l.CanPhase() or l.CanMoontail(), None, 3),  # High ledge in Chunky's room
