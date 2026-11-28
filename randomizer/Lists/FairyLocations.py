@@ -429,10 +429,10 @@ fairy_locations = {
         FairyData(
             name="Dark Room",
             map=Maps.FranticFactory,
-            region=Regions.BeyondHatch,
+            region=Regions.DarkRoom,
             fence=Fence(1820, 526, 2079, 874),
             spawn_y=60,
-            logic=lambda l: l.camera and (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()),
+            logic=lambda l: l.camera,
         ),
         FairyData(
             name="Crusher Room",

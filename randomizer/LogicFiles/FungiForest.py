@@ -57,7 +57,7 @@ LogicRegions = {
         Event(Events.ForestW3aTagged, lambda _: True),
         Event(Events.ForestW4aTagged, lambda _: True),
     ], [
-        TransitionFront(Regions.ForestMinecarts, lambda l: l.Slam and l.ischunky),
+        TransitionFront(Regions.ForestMinecarts, lambda l: l.Slam and l.ischunky, Transitions.ForestMainToCarts),
         TransitionFront(Regions.GiantMushroomArea, lambda _: True),
         TransitionFront(Regions.MillArea, lambda _: True),
         TransitionFront(Regions.WormArea, lambda l: Events.WormGatesOpened in l.Events or l.CanPhase() or l.CanPhaseswim()),
@@ -363,7 +363,11 @@ LogicRegions = {
         TransitionFront(Regions.ForestMillTopOfNightCage, lambda l: l.isdiddy or l.istiny or l.ischunky),
     ]),
 
-    Regions.SnideArea: Region("Snide Area", HintRegion.Mills, Levels.FungiForest, False, None, [], [], [
+    Regions.SnideArea: Region("Snide Area", HintRegion.Mills, Levels.FungiForest, False, None, [
+        LocationLogic(Locations.Balloon059, lambda l: l.isdiddy and l.peanut),
+    ], [
+
+    ], [
         TransitionFront(Regions.MillArea, lambda _: True, time=Time.Day),
         TransitionFront(Regions.Snide, lambda l: l.snideAccess),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),

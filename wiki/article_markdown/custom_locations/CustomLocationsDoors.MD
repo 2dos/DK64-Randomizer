@@ -198,7 +198,7 @@
 | Frantic Factory | Diddy R&D Room - front-right | Wrinkly | `(l.isdiddy and l.guitar) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Lanky Piano Room - right | Wrinkly | `(l.islanky and l.trombone) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Lanky Piano Room - left | Wrinkly | `(l.islanky and l.trombone) or l.CanAccessRNDRoom()` | 
-| Frantic Factory | Dark Room | Wrinkly, Boss | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase() or l.generalclips` | 
+| Frantic Factory | Dark Room | Wrinkly, Boss | `self.logic = lambda _: True` | 
 | Factory Crusher | Crusher Room - start | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Factory Vanilla Level Entry | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Factory Power Hut | In the power hut | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 

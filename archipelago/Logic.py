@@ -291,13 +291,21 @@ class LogicVarHolder:
                 Maps.CreepyCastle,
                 Maps.CastleCrypt,
                 Maps.Isles,
+                # Maps.HideoutHelmLobby,  # Not in BananaportVanilla
             ]
         elif self.settings.activate_all_bananaports == ActivateAllBananaports.isles:
             activated_warp_maps = [Maps.Isles]
+        elif self.settings.activate_all_bananaports == ActivateAllBananaports.isles_inc_helm_lobby:
+            activated_warp_maps = [
+                Maps.Isles,
+                # Maps.HideoutHelmLobby,  # Not in BananaportVanilla
+            ]
         if any(activated_warp_maps):
             for warp_data in BananaportVanilla.values():
                 if warp_data.map_id in activated_warp_maps:
                     self.Events.append(warp_data.event)
+        if self.settings.activate_all_bananaports in (ActivateAllBananaports.all, ActivateAllBananaports.isles_inc_helm_lobby):
+            self.Events.extend([Events.HelmLobbyW1aTagged, Events.HelmLobbyW1bTagged])
 
         # Colored banana and coin arrays
         # Colored bananas as 9 arrays of 5 (8 levels for 5 kongs, Helm is level index 7, so skip this)
@@ -380,7 +388,7 @@ class LogicVarHolder:
             item_data = item_name.split(", ")
             event = Events[item_data[1]]
             event_list.append(event)
-        self.Events = event_list
+        self.Events.extend(event_list)  # Reset() added the tags of the bananaports that start activated
 
         self.bosses_beaten = bossesDefeated
         self.bonuses_beaten = bonusesCompleted
@@ -1245,8 +1253,8 @@ class LogicVarHolder:
         """Determine whether or not there is a fast enough path to the Mech Fish is open."""
         if self.settings.shuffle_loading_zones != ShuffleLoadingZones.all or self.settings.bananaport_rando == BananaportRando.off:
             return self.swim
-        lighthouse_gate = self.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate_opened) or self.hasMoveSwitchsanity(Switches.GalleonLighthouse, False)
-        shipyard_gate = self.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gate_opened) or self.hasMoveSwitchsanity(Switches.GalleonShipwreck, False)
+        lighthouse_gate = self.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate) or self.hasMoveSwitchsanity(Switches.GalleonLighthouse, False)
+        shipyard_gate = self.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate) or self.hasMoveSwitchsanity(Switches.GalleonShipwreck, False)
         return self.swim and lighthouse_gate and shipyard_gate
 
     def hasMoveSwitchsanity(

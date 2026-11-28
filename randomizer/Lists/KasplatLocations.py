@@ -496,8 +496,7 @@ KasplatLocationList = {
             xmax=2100,
             zmin=500,
             zmax=850,
-            region=Regions.BeyondHatch,
-            additional_logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase(),
+            region=Regions.DarkRoom,
         ),
         KasplatLocation(
             name="Factory Kasplat: Low Production Platform",

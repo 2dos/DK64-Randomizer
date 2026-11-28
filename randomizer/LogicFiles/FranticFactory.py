@@ -158,20 +158,13 @@ LogicRegions = {
     Regions.BeyondHatch: Region("Beyond Hatch", HintRegion.Storage, Levels.FranticFactory, True, -1, [
         LocationLogic(Locations.ChunkyKong, lambda l: Events.ChunkyFreed in l.Events),
         LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: Events.ChunkyFreed in l.Events),
-        LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()) and ((l.punch and l.CanSlamSwitch(Levels.FranticFactory, 1)) or l.generalclips) and l.ischunky),
-        LocationLogic(Locations.BreakableFactoryDarkRoom, lambda l: (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()) and l.Slam and l.chunky),
-        LocationLogic(Locations.RainbowCoin_Location02, lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()),
         LocationLogic(Locations.FactoryKasplatStorage, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.MelonCrate_Location04, lambda _: True),
         LocationLogic(Locations.FactoryMainEnemy_CandyCranky0, lambda _: True),
         LocationLogic(Locations.FactoryMainEnemy_CandyCranky1, lambda _: True),
-        LocationLogic(Locations.FactoryMainEnemy_DarkRoom0, lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()),
-        LocationLogic(Locations.FactoryMainEnemy_DarkRoom1, lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()),
         LocationLogic(Locations.FactoryMainEnemy_StorageRoom, lambda _: True),
         LocationLogic(Locations.KremKap_FactoryMainEnemy_CandyCranky0, lambda l: l.camera),
         LocationLogic(Locations.KremKap_FactoryMainEnemy_CandyCranky1, lambda l: l.camera),
-        LocationLogic(Locations.KremKap_FactoryMainEnemy_DarkRoom0, lambda l: l.camera and (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase())),
-        LocationLogic(Locations.KremKap_FactoryMainEnemy_DarkRoom1, lambda l: l.camera and (l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase())),
         LocationLogic(Locations.KremKap_FactoryMainEnemy_StorageRoom, lambda l: l.camera),
         LocationLogic(Locations.Balloon032, lambda l: l.donkey and l.coconut),
     ], [
@@ -185,7 +178,20 @@ LogicRegions = {
         TransitionFront(Regions.CandyFactory, lambda l: l.candyAccess),
         TransitionFront(Regions.FactoryStoragePipe, lambda l: (l.islanky and l.handstand) or l.slope_resets),
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
-        TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.FactoryMainToBBlast)
+        TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey),  # , Transitions.FactoryMainToBBlast)
+        TransitionFront(Regions.DarkRoom, lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()),
+    ]),
+
+    Regions.DarkRoom: Region("Factory Dark Room", HintRegion.Storage, Levels.FranticFactory, False, None, [
+        LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: ((l.punch and l.CanSlamSwitch(Levels.FranticFactory, 1) and l.Slam) or l.generalclips) and l.ischunky),
+        LocationLogic(Locations.BreakableFactoryDarkRoom, lambda l: l.Slam and l.ischunky),
+        LocationLogic(Locations.RainbowCoin_Location02, lambda _: True),
+        LocationLogic(Locations.FactoryMainEnemy_DarkRoom0, lambda _: True),
+        LocationLogic(Locations.FactoryMainEnemy_DarkRoom1, lambda _: True),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_DarkRoom0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_DarkRoom1, lambda l: l.camera),
+    ], [], [
+        TransitionFront(Regions.BeyondHatch, lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase())
     ]),
 
     Regions.FactoryStoragePipe: Region("Factory Storage Pipe", HintRegion.Storage, Levels.FranticFactory, False, None, [], [

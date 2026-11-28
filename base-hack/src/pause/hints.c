@@ -206,6 +206,10 @@ void handleProgressiveIndicator(int allow_ding) {
     for (int i = 0; i < GAME_HINT_COUNT; i++) {
         if (item_count >= getHintRequirement(i)) {
             new_progressive_level = i;
+            if (isAPEnabled()) {
+                // Set the bit a Wrinkly door sets, so the Archipelago client sends this hint
+                ItemInventory->hint_bitfield[i % 5] |= (1 << (i / 5));
+            }
         }
     }
     if ((CurrentMap != MAP_MAINMENU) && (allow_ding)) {

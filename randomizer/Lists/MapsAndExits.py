@@ -116,6 +116,7 @@ RegionMapList = {
     Regions.FactoryBaboonBlast: Maps.FactoryBaboonBlast,
     Regions.FactoryArcadeTunnel: Maps.FranticFactory,
     Regions.RandDUpper: Maps.FranticFactory,
+    Regions.DarkRoom: Maps.FranticFactory,
     # Galleon
     Regions.GloomyGalleonEntryHandler: Maps.GloomyGalleon,
     Regions.GloomyGalleonStart: Maps.GloomyGalleon,

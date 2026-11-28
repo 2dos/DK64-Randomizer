@@ -220,7 +220,11 @@ def CompileArchipelagoHints(world, hint_data: list):
 
     # Place hints and create mapping
     for i, (hint, location_obj) in enumerate(hint_location_pairs):
-        hint_location = hintset.getRandomHintLocation(random=world.spoiler.settings.random)
+        level_limit = None
+        # Progressive hints unlock in slot order, so Kong and key hints go in the first 20 slots
+        if world.options.progressive_hint_item and (location_obj in kong_locations or location_obj in key_locations):
+            level_limit = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon]
+        hint_location = hintset.getRandomHintLocation(random=world.spoiler.settings.random, levels=level_limit)
 
         if hint_location is None:
             continue

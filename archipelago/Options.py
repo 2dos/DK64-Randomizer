@@ -994,7 +994,7 @@ class RemoveBarriers(OptionList):
 
     Valid Keys:
     "japes_coconut_gates"
-    "japes_shellhive_gates"
+    "japes_shellhive_gate"
     "aztec_tunnel_door"
     "aztec_5dtemple_switches"
     "aztec_llama_switches"
@@ -1018,7 +1018,7 @@ class RemoveBarriers(OptionList):
 
     valid_keys = {
         "japes_coconut_gates",
-        "japes_shellhive_gates",
+        "japes_shellhive_gate",
         "aztec_tunnel_door",
         "aztec_5dtemple_switches",
         "aztec_llama_switches",
@@ -1359,6 +1359,66 @@ class MicroHints(Choice):
     option_some = 1
     option_all = 2
     default = 2
+
+
+class ProgressiveHintItem(Choice):
+    """Unlock the Wrinkly hints on the pause menu by collecting an item, instead of by visiting Wrinkly doors.
+
+    Hints unlock in batches as you collect more of the item, and the last hint needs progressive_hint_count of it.
+    Hints about a location are sent to the Archipelago server as they unlock, like visiting a Wrinkly door does.
+    Does nothing when hint_style is off. With "hints" in item_pool, the hint items are left out and the Wrinkly doors hold other items.
+
+    - off: No progressive hints.
+    - golden_bananas: Golden Bananas unlock hints.
+    - blueprints: Blueprints unlock hints.
+    - keys: Boss Keys unlock hints.
+    - medals: Banana Medals unlock hints.
+    - crowns: Battle Crowns unlock hints.
+    - fairies: Banana Fairies unlock hints.
+    - rainbow_coins: Rainbow Coins unlock hints.
+    - pearls: Pearls unlock hints.
+    - colored_bananas: Colored Bananas unlock hints.
+    """
+
+    display_name = "Progressive Hint Item"
+    option_off = 0
+    option_golden_bananas = 1
+    option_blueprints = 2
+    option_keys = 3
+    option_medals = 4
+    option_crowns = 5
+    option_fairies = 6
+    option_rainbow_coins = 7
+    option_pearls = 9
+    option_colored_bananas = 10
+    default = 0
+
+
+class ProgressiveHintCount(Range):
+    """Determines how many of the progressive_hint_item the last progressive hint needs. Earlier hints need fewer.
+
+    Capped at the item's total: 201 Golden Bananas, 40 Blueprints, 8 Keys, 40 Medals, 10 Crowns, 20 Fairies, 16 Rainbow Coins, 5 Pearls or 3500 Colored Bananas.
+    """
+
+    display_name = "Progressive Hint Count"
+    range_start = 1
+    range_end = 3500
+    default = 60
+
+
+class ProgressiveHintPace(Choice):
+    """How quickly progressive hints unlock as you collect their item. The last hint always needs progressive_hint_count.
+
+    - slow: Hints unlock more slowly.
+    - medium: The default pace.
+    - fast: Hints unlock more quickly.
+    """
+
+    display_name = "Progressive Hint Pace"
+    option_slow = 0
+    option_medium = 1
+    option_fast = 2
+    default = 1
 
 
 class HalfMedalPercentage(Range):
@@ -2065,8 +2125,10 @@ class EnemiesSelected(OptionList):
 class LoadingZoneRando(TextChoice):
     """Randomize the connections between loading zones (Loading Zone Randomizer).
 
+    Decoupled: Loading zones don't lead back the way you came, and one-way loading zones like the Japes and Fungi minecarts are shuffled too.
+
     If you set this option's value to a string (ie. "LZR": 50 instead of "yes": 50), it will be used as a custom seed.
-    Every player who uses the same custom seed will have the same loading zone connections.
+    Every player who uses the same custom seed will have the same loading zone connections. Custom seeds are always coupled.
 
     WARNING: LZR is not for the faint of heart. Don't turn this on UNLESS you know what you're doing.
     """
@@ -2078,6 +2140,7 @@ class LoadingZoneRando(TextChoice):
     alias_true = 1
     alias_on = 1
     option_yes = 1
+    option_decoupled = 2
     default = 0
 
 
@@ -2177,6 +2240,95 @@ class DKPortalLocationRando(Choice):
     default = 0
 
 
+class CrossMapBananaports(Choice):
+    """Randomize where bananaports take you. A bananaport can take you to a different level.
+
+    bananaport_levels picks which levels' bananaports are shuffled.
+
+    - off: Bananaports take you to their vanilla partner.
+    - coupled: Going back through a bananaport takes you back to where you came from.
+    - decoupled: Going back through a bananaport can take you somewhere else.
+
+    Logic assumes you can use any bananaport in a region you can reach.
+    """
+
+    display_name = "Cross-Map Bananaports"
+    option_off = 0
+    option_coupled = 2
+    option_decoupled = 3
+    default = 0
+
+
+class RandomBananaportLocations(Choice):
+    """Shuffle the locations of bananaports within each level.
+
+    bananaport_levels picks which levels' bananaports are shuffled.
+
+    - off: Bananaports are in their vanilla locations.
+    - vanilla_only: Bananaports are shuffled among the vanilla bananaport locations.
+    - half_vanilla: One bananaport in each pair is vanilla, the other is in a random location.
+    - on: Both bananaports in each pair are in random locations, with a couple of exceptions for technical reasons.
+    """
+
+    display_name = "Random Bananaport Locations"
+    option_off = 1
+    option_vanilla_only = 2
+    option_half_vanilla = 3
+    option_on = 4
+    default = 1
+
+
+class BananaportLevels(OptionList):
+    """Determines which levels' bananaports cross_map_bananaports and random_bananaport_locations shuffle.
+
+    Leave empty to shuffle the bananaports in every level. Bananaports in levels that aren't picked stay vanilla.
+
+    Valid Keys:
+    "Isles"
+    "JungleJapes"
+    "AngryAztec"
+    "AztecLlamaTemple"
+    "FranticFactory"
+    "GloomyGalleon"
+    "FungiForest"
+    "CrystalCaves"
+    "CreepyCastle"
+    "CastleCrypt"
+    """
+
+    display_name = "Bananaport Levels"
+    valid_keys = {
+        "Isles",
+        "JungleJapes",
+        "AngryAztec",
+        "AztecLlamaTemple",
+        "FranticFactory",
+        "GloomyGalleon",
+        "FungiForest",
+        "CrystalCaves",
+        "CreepyCastle",
+        "CastleCrypt",
+    }
+    default = []
+
+
+class ActivateBananaports(Choice):
+    """Determines which bananaports start activated.
+
+    - off: No bananaports start activated.
+    - isles: The bananaports in DK Isles start activated.
+    - isles_inc_helm_lobby: The bananaports in DK Isles and Hideout Helm Lobby start activated.
+    - all: Every bananaport starts activated.
+    """
+
+    display_name = "Activate Bananaports"
+    option_off = 0
+    option_all = 1
+    option_isles = 2
+    option_isles_inc_helm_lobby = 3
+    default = 2
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -2245,6 +2397,9 @@ class DK64Options(PerGameCommonOptions):
     flip_trap_weight: FlipTrapWeight
     receive_notifications: ReceiveNotifications
     hint_style: HintStyle
+    progressive_hint_item: ProgressiveHintItem
+    progressive_hint_count: ProgressiveHintCount
+    progressive_hint_pace: ProgressiveHintPace
     shuffled_bonus_barrels: ShuffledBonusBarrels
     hard_minigames: HardMinigames
     auto_complete_bonus_barrels: AutoCompleteBonusBarrels
@@ -2290,6 +2445,10 @@ class DK64Options(PerGameCommonOptions):
     free_trade_cbs: FreeTradeCBs
     random_starting_region: RandomStartingLocation
     dk_portal_location_rando: DKPortalLocationRando
+    cross_map_bananaports: CrossMapBananaports
+    random_bananaport_locations: RandomBananaportLocations
+    bananaport_levels: BananaportLevels
+    activate_bananaports: ActivateBananaports
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -2368,6 +2527,10 @@ dk64_option_groups: List[OptionGroup] = [
             GalleonWaterLevel,
             RandomStartingLocation,
             DKPortalLocationRando,
+            CrossMapBananaports,
+            RandomBananaportLocations,
+            BananaportLevels,
+            ActivateBananaports,
         ],
     ),
     OptionGroup(
@@ -2422,6 +2585,9 @@ dk64_option_groups: List[OptionGroup] = [
             HintStyle,
             ShopkeeperHints,
             MicroHints,
+            ProgressiveHintItem,
+            ProgressiveHintCount,
+            ProgressiveHintPace,
         ],
     ),
     OptionGroup(

@@ -221,7 +221,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On path (15 custom, 5 Chunky) | 20 | `self.logic = lambda _: True` | 
-| On blueprint platform | 5 | `l.pineapple and l.can_use_vines and l.ischunky` | 
+| In the big scary mouth | 5 | `self.logic = lambda _: True` | 
 | Bunches on path (Chunky) | 10 | `self.logic = lambda _: True` | 
 | Entrance stalagmite | 5 | `self.logic = lambda _: True` | 
 | Entrance flames | 10 | `self.logic = lambda _: True` | 
@@ -597,7 +597,7 @@
 | On F Key | 5 | `l.CanAccessRNDRoom() or l.trombone` | 
 | Side walls of Lanky R&D room | 10 | `l.CanAccessRNDRoom() or l.trombone` | 
 | In fall from the hatch to power shed | 5 | `self.logic = lambda _: True` | 
-| In Dark room on box | 5 | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()` | 
+| In Dark room on box | 5 | `self.logic = lambda _: True` | 
 | On Simian Spring ledge with coins | 10 | `((l.spring or l.CanMoontail()) and l.isdiddy) or l.CanPhase()` | 
 | On box in stack of boxes to Candy/Cranky - left | 5 | `self.logic = lambda _: True` | 
 | On box in stack of boxes to Candy/Cranky - right | 5 | `self.logic = lambda _: True` | 
@@ -637,7 +637,7 @@
 | Bunches around Funky's store | 15 | `self.logic = lambda _: True` | 
 | Production room spinning arms, inside ring (Chunky) | 10 | `self.logic = lambda _: True` | 
 | Production room spinning arms, outside ring (Chunky) | 10 | `self.logic = lambda _: True` | 
-| Dark room above moving platforms (Chunky) | 15 | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False)` | 
+| Dark room above moving platforms (Chunky) | 15 | `l.punch` | 
 | Tunnel from entrance to hatch (Donkey) | 5 | `self.logic = lambda _: True` | 
 | Block tower (set of 3 bunches) (Diddy) | 15 | `l.spring or l.CanMoontail()` | 
 | Block tower (set of 2 bunches) (Diddy) | 10 | `l.spring or l.CanMoontail()` | 
@@ -690,8 +690,8 @@
 | Among the storage boxes | 10 | `self.logic = lambda _: True` | 
 | Between the storage shops | 5 | `self.logic = lambda _: True` | 
 | Between boxes near the storage shops | 10 | `self.logic = lambda _: True` | 
-| Dark room entrance | 5 | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False)` | 
-| Box in a corner of dark room | 5 | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False)` | 
+| Dark room entrance | 5 | `self.logic = lambda _: True` | 
+| Box in a corner of dark room | 5 | `self.logic = lambda _: True` | 
 | On the table around warp 5 | 10 | `self.logic = lambda _: True` | 
 | Lower step of Snide | 5 | `self.logic = lambda _: True` | 
 | Testing factory-map | 5 | `self.logic = lambda _: True` | 
@@ -736,7 +736,7 @@
 | Storage Shops Room | Balloon | `self.logic = lambda _: True` | 
 | Storage Room above blue switch | Balloon | `self.logic = lambda _: True` | 
 | Storage Room Above Dark Entrance | Balloon | `self.logic = lambda _: True` | 
-| Dark room | Balloon | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()` | 
+| Dark room | Balloon | `self.logic = lambda _: True` | 
 | Arcade room | Balloon | `self.logic = lambda _: True` | 
 | Production room very top | Balloon | `self.logic = lambda _: True` | 
 | Production room near wall under Lanky pipe | Balloon | `self.logic = lambda _: True` | 
@@ -2081,7 +2081,7 @@
 | Next to Cranky | 10 | `self.logic = lambda _: True` | 
 | Path to training area | 5 | `self.logic = lambda _: True` | 
 | In the lake | 15 | `l.swim` | 
-| Behind the waterfall | 5 | `self.logic = lambda _: True` | 
+| Waterfall | 5 | `self.logic = lambda _: True` | 
 | Banana hoard tunnel | 10 | `l.can_use_vines and l.climbing` | 
 | Banana hoard room | 20 | `l.can_use_vines and l.climbing` | 
 | Rear tunnel | 5 | `self.logic = lambda _: True` | 
@@ -2115,20 +2115,20 @@
 | Fairy Isle W5 | 5 | `self.logic = lambda _: True` | 
 | Japes entrance | 5 | `self.logic = lambda _: True` | 
 | Top of tree between tag barrel and Japes | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
-| Tree between tag barrel and Japes | 5 | `self.logic = lambda _: True` | 
-| Tree next to Japes | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
-| Tree next to Japes | 5 | `self.logic = lambda _: True` | 
-| Tree on beaver beach | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
-| Tree on beaver beach | 5 | `self.logic = lambda _: True` | 
-| Tree near W3 | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
-| Tree near W3 | 5 | `self.logic = lambda _: True` | 
+| Around tree between tag barrel and Japes | 5 | `self.logic = lambda _: True` | 
+| Top of tree next to Japes | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
+| Around tree next to Japes | 5 | `self.logic = lambda _: True` | 
+| Top of tree on beaver beach | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
+| Around tree on beaver beach | 5 | `self.logic = lambda _: True` | 
+| Top of tree near W3 | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
+| Around tree near W3 | 5 | `self.logic = lambda _: True` | 
 | Behind cannon to Forest | 5 | `self.logic = lambda _: True` | 
 | Waterfall pond | 15 | `l.swim` | 
 | Seafloor around the X platform | 10 | `l.swim` | 
 | In the pineapple cage | 10 | `l.pineapple or l.CanSTS() or l.CanPhase()` | 
 | Beach below Caves | 5 | `self.logic = lambda _: True` | 
-| Tree below Caves | 5 | `self.logic = lambda _: True` | 
-| Tree below caves | 5 | `self.logic = lambda _: True` | 
+| Top of tree below Caves | 5 | `self.logic = lambda _: True` | 
+| Around tree below caves | 5 | `self.logic = lambda _: True` | 
 | Path below Caves | 5 | `self.logic = lambda _: True` | 
 | Stairs near Aztec | 10 | `self.logic = lambda _: True` | 
 | Behind Aztec lobby | 5 | `self.logic = lambda _: True` | 
@@ -2152,8 +2152,8 @@
 | On Fairy Isle's banana peel hat left | 5 | `self.logic = lambda _: True` | 
 | On top of Fairy Isle | 5 | `self.logic = lambda _: True` | 
 | On Fairy Isle's wings | 10 | `self.logic = lambda _: True` | 
-| Up and around the fairy tree | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
-| Up and around the fairy tree | 5 | `self.logic = lambda _: True` | 
+| Top of the fairy tree | 5 | `(l.climbing) or (Events.AirSpaceEntered in l.Events and l.isdiddy)` | 
+| Around the fairy tree | 5 | `self.logic = lambda _: True` | 
 | In the feather cage | 10 | `l.feather or l.CanSTS() or l.CanPhase()` | 
 | Fairy Isle entrance | 5 | `self.logic = lambda _: True` | 
 | In the Pound the X rock | 10 | `Events.IslesChunkyBarrelSpawn in l.Events and l.hunkyChunky and l.Slam and l.chunky` | 
@@ -2350,6 +2350,7 @@
 | Above the entrance hole | 5 | `self.logic = lambda _: True` | 
 | Torch way up | 10 | `l.chunky and l.barrels and l.balloon` | 
 | Wall windows | 20 | `l.chunky and l.barrels and l.balloon` | 
+| Trophy flip spot | 5 | `self.logic = lambda _: True` | 
 | Acid moat | Balloon | `self.logic = lambda _: True` | 
 | Castle Lobby: Above center piece | Balloon | `self.logic = lambda _: True` | 
 | Castle Lobby: Near B.Locker | Balloon | `self.logic = lambda _: True` | 

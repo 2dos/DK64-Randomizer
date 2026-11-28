@@ -133,7 +133,7 @@
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
 | Frantic Factory | Under R&D Grate | MelonCrate, Bananaport | `(l.grab and l.donkey) or l.CanAccessRNDRoom()` | 
-| Frantic Factory | Dark Room |  | `(l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase())` | 
+| Frantic Factory | Dark Room |  | `self.logic = lambda _: True` | 
 | Frantic Factory | On Foyer Carpet |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Near Foyer carpet |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Clock-in room left |  | `self.logic = lambda _: True` | 
@@ -149,7 +149,7 @@
 | Frantic Factory | Storage Room Corner |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Near left storage shop | MelonCrate | `self.logic = lambda _: True` | 
 | Frantic Factory | Near Right Storage Shop |  | `self.logic = lambda _: True` | 
-| Frantic Factory | Dark Room Corner |  | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.phasewalk` | 
+| Frantic Factory | Dark Room Corner |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Arcade Room Bench |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Next to DK Arcade |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Glass Window Shop |  | `self.logic = lambda _: True` | 

@@ -88,13 +88,16 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 5),  # Path to shops
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 1),  # Base of pipe to free Chunky switch
         Collectible(Collectibles.bunch, Kongs.chunky, lambda _: True, None, 1),  # W1
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch and l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False), None, 3),  # Dark Room
+
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda _: True, None, 3),  # Bottom of pole
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.spring or l.CanPhase() or l.CanMoontail(), None, 3),  # High ledge in Chunky's room
         Collectible(Collectibles.coin, Kongs.lanky, lambda _: True, None, 3),  # On boxes in Chunky's room
         Collectible(Collectibles.coin, Kongs.tiny, lambda _: True, None, 5),  # Around Tiny BP
         Collectible(Collectibles.coin, Kongs.chunky, lambda _: True, None, 5),  # W1
+    ],
+    Regions.DarkRoom: [
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 3),  # Dark Room
     ],
     Regions.FactoryStoragePipe: [
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 4),  # Pipe to free Chunky switch

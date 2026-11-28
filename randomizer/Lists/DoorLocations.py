@@ -1928,12 +1928,11 @@ door_locations = {
         DoorData(
             name="Dark Room",
             map=Maps.FranticFactory,
-            logicregion=Regions.BeyondHatch,
+            logicregion=Regions.DarkRoom,
             location=[2149.6, 6.0, 598.0, 270.0],
             kong_lst=[Kongs.chunky],
             group=6,
             moveless=False,
-            logic=lambda l: l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase() or l.generalclips,
             door_type=[DoorType.wrinkly, DoorType.boss],
         ),
         DoorData(

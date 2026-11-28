@@ -39,6 +39,7 @@ from randomizer.Enums.Settings import (
     MicrohintsEnabled,
     MinigamesListSelected,
     MiscChangesSelected,
+    ProgressiveHintAlgorithm,
     ProgressiveHintItem,
     PuzzleRando,
     RandomStartingRegion,
@@ -74,6 +75,7 @@ from archipelago.Options import (
     KroolShuffle,
     DKPortalLocationRando,
     RandomStartingLocation,
+    LoadingZoneRando,
     DK64Options,
 )
 from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, build_goal_tasks, calculate_quantity
@@ -386,6 +388,7 @@ def handle_fake_generation_settings(settings: Settings, multiworld: MultiWorld) 
                 settings.glitches_selected = passthrough["GlitchesSelected"]
                 settings.open_lobbies = passthrough["OpenLobbies"]
                 settings.free_trade_cbs = passthrough.get("FreeTradeCBs", False)
+                settings.decoupled_loading_zones = passthrough.get("DecoupledLoadingZones", False)
                 settings.starting_key_list = passthrough["StartingKeyList"]
                 settings.galleon_water = GalleonWaterSetting[passthrough["GalleonWater"]]
                 settings.galleon_water_internal = GalleonWaterSetting[passthrough["GalleonWater"]]
@@ -465,6 +468,7 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     settings_dict["helm_phase_count"] = options.helm_phase_count.value
     settings_dict["krool_phase_count"] = options.krool_phase_count.value
     settings_dict["level_randomization"] = LevelRandomization.loadingzone if options.loading_zone_rando.value else LevelRandomization.level_order_complex
+    settings_dict["decoupled_loading_zones"] = options.loading_zone_rando.value == LoadingZoneRando.option_decoupled
     if options.medal_distribution.value in (0, 4):  # pre_selected or progressive
         settings_dict["medal_cb_req"] = options.cbs_required_for_medal.value
     settings_dict["medal_requirement"] = options.jetpac_requirement.value
@@ -489,6 +493,10 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
         case _:
             settings_dict["galleon_water"] = GalleonWaterSetting.lowered
     settings_dict["no_consumable_upgrades"] = options.remove_bait_potions.value
+    settings_dict["bananaport_rando"] = BananaportRando(options.cross_map_bananaports.value)
+    settings_dict["bananaport_placement_rando"] = ShufflePortLocations(options.random_bananaport_locations.value)
+    settings_dict["warp_level_list_selected"] = [Maps[level] for level in options.bananaport_levels]
+    settings_dict["activate_all_bananaports"] = ActivateAllBananaports(options.activate_bananaports.value)
 
     # Apply switch allocation settings
     slam_map = {
@@ -968,6 +976,11 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
     # Apply hint settings
     if options.hint_style == 0:
         settings_dict["wrinkly_hints"] = WrinklyHints.off
+    elif options.progressive_hint_item.value:
+        # Progressive hints unlock the Wrinkly hints, so they need hint_style on
+        settings_dict["progressive_hint_item"] = ProgressiveHintItem(options.progressive_hint_item.value)
+        settings_dict["progressive_hint_count"] = options.progressive_hint_count.value
+        settings_dict["progressive_hint_algorithm"] = ProgressiveHintAlgorithm(options.progressive_hint_pace.value)
 
     # Apply minigame and bonus barrel settings
     settings_dict["minigames_list_selected"] = [MinigamesListSelected[minigame] for minigame in options.shuffled_bonus_barrels]
@@ -1027,6 +1040,10 @@ def fillsettings(options: DK64Options, multiworld: MultiWorld, random_obj: Rando
                 passthrough = multiworld.re_gen_passthrough["Donkey Kong 64"]
                 settings_dict["bonus_barrel_auto_complete"] = passthrough["Autocomplete"]
                 settings_dict["helm_room_bonus_count"] = HelmBonuses(passthrough["HelmBarrelCount"])
+                settings_dict["bananaport_rando"] = BananaportRando[passthrough["BananaportRando"]]
+                settings_dict["bananaport_placement_rando"] = ShufflePortLocations[passthrough["BananaportPlacementRando"]]
+                settings_dict["warp_level_list_selected"] = [Maps[level] for level in passthrough["WarpLevelListSelected"]]
+                settings_dict["activate_all_bananaports"] = ActivateAllBananaports[passthrough["ActivateAllBananaports"]]
                 # UT rerolls the YAML, so keep the goal and amounts the seed was generated with
                 if "WinConditionCount" in passthrough:
                     settings_dict["win_condition_item"] = WinConditionComplex(passthrough["WinConditionItem"])

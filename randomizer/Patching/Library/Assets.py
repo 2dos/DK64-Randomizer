@@ -276,7 +276,7 @@ def getRawFile(ROM_COPY: Union[ROM, LocalROM], table_index: TableNames, file_ind
     file_start = entry["pointing_to"]
     if "compressed_size" in entry:
         file_size = entry["compressed_size"]
-        if file_size is None:
+        if not file_size:
             return bytes(bytearray([]))
     else:
         file_end = pointer_data[table_index]["entries"][file_index + 1]["pointing_to"]

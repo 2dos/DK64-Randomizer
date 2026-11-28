@@ -50,7 +50,7 @@
 | Frantic Factory | Factory Kasplat: Starting Area | `self.additional_logic = lambda _: True` | 
 | Frantic Factory | Factory Kasplat: Near Power Hut | `self.additional_logic = lambda _: True` | 
 | Frantic Factory | Factory Kasplat: Hatch Pole Alcove | `self.additional_logic = lambda _: True` | 
-| Frantic Factory | Factory Kasplat: Dark Room | `l.hasMoveSwitchsanity(Switches.FactoryDarkRoomGrate, False) or l.CanPhase()` | 
+| Frantic Factory | Factory Kasplat: Dark Room | `self.additional_logic = lambda _: True` | 
 | Frantic Factory | Factory Kasplat: Low Production Platform | `self.additional_logic = lambda _: True` | 
 | Frantic Factory | Factory Kasplat: Upper Production Pipe | `self.additional_logic = lambda _: True` | 
 | Frantic Factory | Factory Kasplat: Base of Production | `self.additional_logic = lambda _: True` | 

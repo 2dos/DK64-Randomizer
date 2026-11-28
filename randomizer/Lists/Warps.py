@@ -51,6 +51,7 @@ class BananaportData:
             self.tied_index = swap_index + 1
         else:
             self.tied_index = swap_index - 1
+        self.default_tied_index = self.tied_index
 
     def setNewWarp(self, new_warp: int) -> None:
         """Set new warp type."""
@@ -59,6 +60,10 @@ class BananaportData:
     def reset(self) -> None:
         """Reset object to default state."""
         self.region_id = self.default_region
+        self.destination_region_id = None
+        self.new_warp = self.vanilla_warp
+        self.cross_map_placed = False
+        self.tied_index = self.default_tied_index
 
 
 BananaportVanilla = {

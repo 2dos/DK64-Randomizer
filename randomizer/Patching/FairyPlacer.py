@@ -6,7 +6,6 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.ASM import populateOverlayOffsets, readValue, writeValue, Overlay
-from randomizer.Patching.Library.Scripts import replaceScriptLines
 
 
 def ReplaceShipFairy(ROM_COPY: LocalROM):
@@ -328,5 +327,3 @@ def PlaceFairies(spoiler, ROM_COPY: LocalROM):
             item_level = item["level"]
             item_map = fairy_locations[item_level][item["fairy_index"]].map
             updateSpawnFlag(item["flag"], item_map, item["id"], ROM_COPY, offset_dict)
-            if item["script_id"] >= 0:
-                replaceScriptLines(ROM_COPY, item["map_id"], [item["script_id"]], {f"EXEC 86 | {item['id']} 0 0": "EXEC 83 | 0 0 0"})  # Remove Script Line
